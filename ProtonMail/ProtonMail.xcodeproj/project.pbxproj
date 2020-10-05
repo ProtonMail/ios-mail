@@ -1118,7 +1118,9 @@
 		89ADB34623E0749F3B62FE8D703F00BA /* AppCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175BF8CBA30FAFFA1B1BBCF6B2A4079A /* AppCache.swift */; };
 		89EB084442ADBB786FB098860EB36022 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F63E64A2521F20E5630AC0AC144F79 /* UIImage+Extension.swift */; };
 		89F31A005D3E4F2EA018AF5002C35138 /* SettingsAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90000F12DDA9FC10BA20E2A195680559 /* SettingsAccountViewModel.swift */; };
+		8A08D1C6252B10B200701A38 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8A08D1C5252B10B200701A38 /* README.md */; };
 		8A3D877F6A4EDD87232735F8FE14595B /* NSError+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6212048241C8B5D38449A43140A027 /* NSError+Extension.swift */; };
+		8A43A8E42527758F008910EB /* LogoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A43A8E32527758F008910EB /* LogoutTests.swift */; };
 		8A44BC41710FC284BC8621BE5BC2241C /* CoordinatorSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F932D364704D3F3037FE7D04D015C303 /* CoordinatorSegue.swift */; };
 		8A75D7BA711AAA0BB256FB79F74F19F1 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A720409B6462B993801F2D1E8AA88D /* UIImageView+Extension.swift */; };
 		8A99489069F5835CF7B0E2AFA9D39007 /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C5A44A396F31F83DCAFDDFF6FF0381 /* PMImagePickerController.swift */; };
@@ -2683,6 +2685,8 @@
 		897D0BE51EA2CC2FCE34C2A2AD6F9CEC /* ComposeViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModelImpl.swift; sourceTree = "<group>"; };
 		899BDDEF3A3E63FB3DBDEDD1BF91B1FD /* Pods-Keymaker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keymaker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Keymaker/Pods-Keymaker.release.xcconfig"; sourceTree = "<group>"; };
 		8A0079ABF470F5678C8F5773F88F5C12 /* MessageContainerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContainerViewModel.swift; sourceTree = "<group>"; };
+		8A08D1C5252B10B200701A38 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8A43A8E32527758F008910EB /* LogoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutTests.swift; sourceTree = "<group>"; };
 		8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = flags.bundle; sourceTree = "<group>"; };
 		8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
 		8AFD327F9665CD8F972A0FDF58A1E1AB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3273,6 +3277,7 @@
 		02423C8683D1F61352E4CB6C1F49AB36 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				8A43A8E225277579008910EB /* Logout */,
 				A7081D7BD43E6D25BFF6342BBBAF0F47 /* Composer */,
 				1C1B82D542CF2D686015AD43EC12C5AE /* Login */,
 				7F99C21B951CD60E433D732794EC773C /* ManageAccounts */,
@@ -3443,6 +3448,7 @@
 				BAF870E74CBCC7ADBA49E2BC1617DD4D /* Utils */,
 				DFCC5CF86AF472BE72A09BF44887F52C /* Info.plist */,
 				260D7947F2741985D3275A9FC719DEDE /* credentials.plist */,
+				8A08D1C5252B10B200701A38 /* README.md */,
 			);
 			path = ProtonMailUITests;
 			sourceTree = "<group>";
@@ -4167,6 +4173,14 @@
 				2CFB8736687A7913C94C156D188BF283 /* ContactsViewModelImpl.swift */,
 			);
 			path = Contacts;
+			sourceTree = "<group>";
+		};
+		8A43A8E225277579008910EB /* Logout */ = {
+			isa = PBXGroup;
+			children = (
+				8A43A8E32527758F008910EB /* LogoutTests.swift */,
+			);
+			path = Logout;
 			sourceTree = "<group>";
 		};
 		8AAC3F978D5BBEB889BA0E63A8159C5F /* Share */ = {
@@ -5310,6 +5324,7 @@
 					};
 					6C2152B9B3009541EC36C038232F5EE3 = {
 						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = 2SB5Z68H26;
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 7CC48161B0FC946A8DB234B96B6A66DD;
@@ -5511,6 +5526,7 @@
 			files = (
 				7594C7914E50FC2137BC3B8B8E3AA4B0 /* Localizable.strings in Resources */,
 				AA889AA323CA3D759D319C30AC567F56 /* credentials.plist in Resources */,
+				8A08D1C6252B10B200701A38 /* README.md in Resources */,
 				ACE33AA4FCD061F25E97D6CA07EE2EA4 /* prepare_users.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8087,6 +8103,7 @@
 				E5E5E57B22DC50D3410BA0CB0697E412 /* TestData.swift in Sources */,
 				E53D72796133AE043B1964AC624BF070 /* User.swift in Sources */,
 				19DC6D51C10AA421BA9651B12C206A72 /* Wait.swift in Sources */,
+				8A43A8E42527758F008910EB /* LogoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9129,7 +9146,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ProtonMailUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

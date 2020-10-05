@@ -8,8 +8,8 @@
 
 import XCTest
 
-private let logoutStaticText = "MenuTableViewCell.\(LocalString._sign_out)"
-private let logoutConfirmButton = "MenuTableViewCell.\(LocalString._menu_signout_title)"
+private let logoutCell = "MenuTableViewCell.\(LocalString._logout_title)"
+private let logoutConfirmButton = NSLocalizedString("Log out", comment: "comment")
 private let sentStaticText = "MenuTableViewCell.\(LocalString._menu_sent_title)"
 private let sidebarHeaderViewOtherIdentifier = "MenuViewController.headerView"
 private let manageAccountsStaticTextIdentifier = "MenuButtonViewCell.\(LocalString._menu_manage_accounts.replaceSpaces())"
@@ -38,7 +38,7 @@ class MenuRobot {
     }
     
     private func logout() -> MenuRobot {
-        Element.staticText.tapByIdentifier(logoutStaticText)
+        Element.wait.forCellWithIdentifier(logoutCell).tap()
         return self
     }
     
