@@ -1077,7 +1077,7 @@ class MessageDataService : Service, HasLocalStorage {
                 for (index, _) in messagesArray.enumerated() {
                     messagesArray[index]["UserID"] = self.userID
                 }
-                let context = self.coreDataService.backgroundManagedObjectContext
+                let context = self.coreDataService.mainManagedObjectContext
                 self.coreDataService.enqueue(context: context) { (context) in
                     do {
                         if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {

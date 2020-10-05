@@ -74,7 +74,11 @@ class SearchViewController: ProtonMailViewController {
     typealias LocalObjectsIndexRow = Dictionary<String, Any>
     private var dbContents: Array<LocalObjectsIndexRow> = []
     fileprivate var searchResult: [Message] = [] {
-        didSet { self.tableView.reloadData() }
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
     
     fileprivate var currentPage = 0;
