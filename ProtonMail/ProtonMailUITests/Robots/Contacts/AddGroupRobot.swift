@@ -17,23 +17,24 @@ fileprivate let deleteGroupText = LocalString._contact_groups_delete
 class AddContactGroupRobot {
 
     func editNameAndSave(_ name: String) -> GroupDetailsRobot {
-        editGroupName(name).save()
+        editGroupName(name).saveContactSelection()
         return GroupDetailsRobot()
     }
 
-    func groupName(_ name: String) -> AddContactGroupRobot {
-        Element.wait.forTextFieldWithIdentifier(contactGroupNameTextFieldIdentifier).tap()
-        Element.wait.forTextFieldWithIdentifier(contactGroupNameTextFieldIdentifier).typeText(name)
+    func typeGroupName(_ name: String) -> AddContactGroupRobot {
+        Element.wait.forTextFieldWithIdentifier(contactGroupNameTextFieldIdentifier)
+            .click()
+            .typeText(name)
         return self
     }
     
     @discardableResult
-    func save() -> ContactsRobot {
+    func saveContactSelection() -> ContactsRobot {
         Element.wait.forButtonWithIdentifier(saveNavBarButtonIdentifier, file: #file, line: #line).tap()
         return ContactsRobot()
     }
-    
-    func manageAddresses() -> ManageAddressesRobot {
+
+    func tapManageAddresses() -> ManageAddressesRobot {
         Element.staticText.tapByIdentifier(manageAddressesStaticText)
         return ManageAddressesRobot()
     }
@@ -47,8 +48,10 @@ class AddContactGroupRobot {
         return ContactsRobot()
     }
     
-    private func editGroupName(_ name: String) -> AddContactGroupRobot {
-        Element.wait.forTextFieldWithIdentifier(contactGroupNameTextFieldIdentifier).clear().typeText(name)
+    private func editGroupName(_ name: String) -> AddContactGroupRobot { Element.wait.forTextFieldWithIdentifier(contactGroupNameTextFieldIdentifier)
+            .click()
+            .clear()
+            .typeText(name)
         return self
     }
 }

@@ -22,7 +22,7 @@ class ContactDetailsRobot {
         return AddContactRobot()
     }
 
-    func navigateUp() -> ContactsRobot {
+    func goBackToContacts() -> ContactsRobot {
         Element.wait.forButtonWithIdentifier(backToContactsNavBarButtonIdentifier, file: #file, line: #line).tap()
         return ContactsRobot()
     }

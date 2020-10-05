@@ -32,13 +32,17 @@ class AddContactRobot {
     }
 
     private func displayName(_ name: String) -> AddContactRobot {
-        Element.wait.forTextFieldWithIdentifier(nameTextFieldIdentifier, file: #file, line: #line).tap()
-        Element.wait.forTextFieldWithIdentifier(nameTextFieldIdentifier, file: #file, line: #line).typeText(name)
+        Element.wait.forTextFieldWithIdentifier(nameTextFieldIdentifier, file: #file, line: #line)
+            .click()
+            .typeText(name)
         return self
     }
     
     private func editDisplayName(_ name: String) -> AddContactRobot {
-        Element.wait.forTextFieldWithIdentifier(nameTextFieldIdentifier, file: #file, line: #line).clear().typeText(name)
+        Element.wait.forTextFieldWithIdentifier(nameTextFieldIdentifier, file: #file, line: #line)
+            .click()
+            .clear()
+            .typeText(name)
         return self
     }
     
@@ -48,13 +52,17 @@ class AddContactRobot {
     }
 
     private func email(_ email: String) -> AddContactRobot {
-        Element.wait.forTextFieldWithIdentifier(emailTextFieldIdentifier, file: #file, line: #line).tap()
-        Element.wait.forTextFieldWithIdentifier(emailTextFieldIdentifier, file: #file, line: #line).typeText(email)
+        Element.wait.forTextFieldWithIdentifier(emailTextFieldIdentifier, file: #file, line: #line)
+            .click()
+            .typeText(email)
         return self
     }
     
     private func editEmailmail(_ email: String) -> AddContactRobot {
-        Element.wait.forTextFieldWithIdentifier(emailTextFieldIdentifier, file: #file, line: #line).clear().typeText(email)
+        Element.wait.forTextFieldWithIdentifier(emailTextFieldIdentifier, file: #file, line: #line)
+            .click()
+            .clear()
+            .typeText(email)
         return self
     }
 
