@@ -1943,6 +1943,9 @@
 /* menu title */
 "Subscription" = "Assinatura";
 
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Informação da assinatura temporariamente indisponível. Por favor, tente novamente mais tarde.";
+
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Suporte para %i domínios personalizados (ex: usuário@seudominio.com)";
 

@@ -1943,6 +1943,9 @@
 /* menu title */
 "Subscription" = "Abonnement";
 
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Abonnement-Informationen vorübergehend nicht verfügbar. Bitte versuchen Sie es später noch einmal.";
+
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Unterstützung für %i benutzerdefinierte Domains (z.B. user@yourdomain.com)";
 
@@ -1963,7 +1966,7 @@
 "Swiping gestures" = "Wischgesten";
 
 /* Alert when switched account by clicking notification of another account */
-"Switched to account '%@'" = "Zu Konto „%@” wechseln";
+"Switched to account '%@'" = "Zu Konto „%@” gewechselt";
 
 /* Error */
 "System can't copy the file" = "System konnte nicht die Datei kopieren";

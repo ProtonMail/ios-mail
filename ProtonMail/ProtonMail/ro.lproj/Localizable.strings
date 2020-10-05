@@ -1450,7 +1450,7 @@
 "Only one free account can be added" = "Doar un singur cont gratuit poate fi adăugat";
 
 /* Open action */
-"Open" = "Open";
+"Open" = "Deschidere";
 
 /* (No Comment) */
 "OpenDraft" = "Deschidere ciornă";
@@ -1943,6 +1943,9 @@
 /* menu title */
 "Subscription" = "Abonament";
 
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Informațiile despre abonament sunt momentan indisponibile. Reîncercați mai târziu.";
+
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Acceptare %i domenii personale (ex. nume@domeniuldvs.com)";
 
@@ -2055,7 +2058,7 @@
 "The total attachment size cannot exceed 25MB" = "Total fișierelor atașate nu poate depăși 25 MB";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adresa URL pe care încercați să o accesați nu este standard și s-ar putea să nu se încarce corect. Doriți să o deschideți folosind navigatorul implicit al dispozitivului?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Utilizator deja conectat";

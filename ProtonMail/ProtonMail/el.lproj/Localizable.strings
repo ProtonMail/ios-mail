@@ -1943,6 +1943,9 @@
 /* menu title */
 "Subscription" = "Συνδρομή";
 
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Subscription information temporarily unavailable. Please try again later.";
+
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Υποστήριξη για %i προσαρμοσμένους domains (πχ. user@yourdomain.com)";
 
