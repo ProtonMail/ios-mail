@@ -219,7 +219,9 @@ extension CryptoTests {
         let binaryPrivateKey = ArmorUnarmor(keyringPrivateKey, &error)!
         XCTAssertNil(error)
         
-        let privateKeyArray: [Data] = ["WrongKey".data(using: .utf8)!, binaryPrivateKey]
+        let wrongPrivateKey = ArmorUnarmor(OpenPGPDefines.feng100_private_key_1, &error)
+        XCTAssertNil(error)
+        let privateKeyArray: [Data] = ["WrongKey".data(using: .utf8)!, wrongPrivateKey!, binaryPrivateKey]
         
         var decrypted: ExplicitVerifyMessage?
         do {//with binary public key

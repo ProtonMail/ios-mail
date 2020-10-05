@@ -298,7 +298,9 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
             let binaryPrivateKey = ArmorUnarmor(self.testPrivateKey, &error)
             XCTAssertNil(error)
             
-            let privateKeyArray: [Data] = ["WrongKey".data(using: .utf8)!, binaryPrivateKey!]
+            let wrongPrivateKey = ArmorUnarmor(OpenPGPDefines.feng100_private_key_1, &error)
+            XCTAssertNil(error)
+            let privateKeyArray: [Data] = ["WrongKey".data(using: .utf8)!, wrongPrivateKey!, binaryPrivateKey!]
 
             // decrypt
             let decrypted = try crypto.decryptAttachment(keyPacket: encrypted.keyPacket!, dataPacket: encrypted.dataPacket!, privateKey: privateKeyArray, passphrase: self.testMailboxPassword)
