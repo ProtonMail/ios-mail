@@ -46,6 +46,16 @@ class ComposerRobot {
             .send()
     }
     
+    func sendMessageToContact(_ subjectText: String) -> ContactDetailsRobot {
+        return subject(subjectText)
+            .sendToContact()
+    }
+    
+    func sendMessageToGroup(_ subjectText: String) -> ContactsRobot {
+        return subject(subjectText)
+            .sendToContactGroup()
+    }
+    
     func sendMessage(_ to: String, _ cc: String, _ subjectText: String) -> InboxRobot {
         return recipients(to)
             .cc(cc)
@@ -121,6 +131,16 @@ class ComposerRobot {
     private func send() -> InboxRobot {
         Element.wait.forHittableButton(sendButtonIdentifier, file: #file, line: #line).tap()
         return InboxRobot()
+    }
+    
+    private func sendToContact() -> ContactDetailsRobot {
+        Element.wait.forHittableButton(sendButtonIdentifier, file: #file, line: #line).tap()
+        return ContactDetailsRobot()
+    }
+    
+    private func sendToContactGroup() -> ContactsRobot {
+        Element.wait.forHittableButton(sendButtonIdentifier, file: #file, line: #line).tap()
+        return ContactsRobot()
     }
     
     private func recipients(_ email: String) -> ComposerRobot {

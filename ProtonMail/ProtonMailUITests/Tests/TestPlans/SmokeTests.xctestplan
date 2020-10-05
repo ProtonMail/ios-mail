@@ -18,6 +18,8 @@
   "testTargets" : [
     {
       "selectedTests" : [
+        "ContactsTests\/testEditContact()",
+        "ContactsTests\/testEditGroup()",
         "LoginTests\/testLoginWithOnePass()",
         "LoginTests\/testLoginWithTwoPass()",
         "LogoutTests\/testLogoutOnePassUser()",
