@@ -1865,7 +1865,7 @@ class MessageDataService : Service, HasLocalStorage {
                     let _err = error?.localizedDescription ?? "Unknow error"
                     Analytics.shared.error(message: .sendMessageError, error: _err, extra: [
                         "status": status.rawValue,
-                        "emails": emails,
+                        "emailCount": emails.count,
                         "attCount": attachments.count
                     ], user: self.usersManager?.getUser(byUserId: self.userID))
                     // show message now
@@ -1904,7 +1904,7 @@ class MessageDataService : Service, HasLocalStorage {
                                                                                             subtitle: message.title))
                 Analytics.shared.error(message: .sendMessageError, error: err, extra: [
                     "status": status.rawValue,
-                    "emails": emails,
+                    "emailCount": emails.count,
                     "attCount": attachments.count
                 ], user: self.usersManager?.getUser(byUserId: self.userID))
                 completion?(nil, nil, err)

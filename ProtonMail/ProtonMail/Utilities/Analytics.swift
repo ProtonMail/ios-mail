@@ -143,6 +143,7 @@ extension Analytics {
         case updateLoginPassword = "Update Login Password"
         case updateMailBoxPassword = "Update MailBox Password"
         case fetchSubscriptionData = "Fetch Subscription Data"
+        case coreDataError = "Core Data Error"
     }
     
     struct Reason {

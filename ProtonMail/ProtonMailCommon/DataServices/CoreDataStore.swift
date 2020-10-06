@@ -80,16 +80,16 @@ class CoreDataStore {
         container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: url)]
         container.loadPersistentStores { (persistentStoreDescription, error) in
             if let ex = error as NSError? {
+                Analytics.shared.error(message: .coreDataError, error: ex)
                 PMLog.D(api: ex)
-                if (ex.domain == "NSCocoaErrorDomain" && ex.code == 134100) {
-                    do {
-                        try FileManager.default.removeItem(at: url)
-                    } catch let error as NSError{
-                        self.popError(error)
-                    }
-                } else {
-                    self.popError(ex)
+                
+                do {
+                    try FileManager.default.removeItem(at: url)
+                } catch let error as NSError{
+                    self.popError(error)
                 }
+                
+                self.popError(ex)
                 fatalError()
             } else {
                 url.excludeFromBackup()

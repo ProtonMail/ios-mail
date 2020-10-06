@@ -3828,6 +3828,17 @@
 			path = Errors;
 			sourceTree = "<group>";
 		};
+		54A7AC868BDEFEF33CD86BF62887D2B8 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				ABBE2836A3EB4F892EF7118976BD221C /* ForwardMessageTests.swift */,
+				7879E625D229BAAF027393D25071C184 /* ImageGalleryRobot.swift */,
+				D4360B6E760BC040DF6F4C0E02AB5103 /* MessageAttachmentsRobot.swift */,
+				BD7187517E038891D6BAC00757B51860 /* ReplyToMessageTests.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		5622290E33BA0E2F4A08E0D499FC8DD5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -3993,17 +4004,6 @@
 				AB1B928013A4DD34975C4B61ECE6874D /* TableCellRegister.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		54A7AC868BDEFEF33CD86BF62887D2B8 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				ABBE2836A3EB4F892EF7118976BD221C /* ForwardMessageTests.swift */,
-				7879E625D229BAAF027393D25071C184 /* ImageGalleryRobot.swift */,
-				D4360B6E760BC040DF6F4C0E02AB5103 /* MessageAttachmentsRobot.swift */,
-				BD7187517E038891D6BAC00757B51860 /* ReplyToMessageTests.swift */,
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		75E2E13B8E037303B40BA64F98DBB702 /* Resource */ = {
