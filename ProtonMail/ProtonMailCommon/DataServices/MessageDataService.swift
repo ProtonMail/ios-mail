@@ -2639,9 +2639,11 @@ class MessageDataService : Service, HasLocalStorage {
                     guard let unread = count["Unread"] as? Int else {
                         continue
                     }
-                    lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: unread, context: self.managedObjectContext)
+                    lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: unread, context: self.managedObjectContext, shouldSave: false)
                 }
             }
+            
+            _ = context.saveUpstreamIfNeeded()
             
             _ = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userID, context: self.managedObjectContext).done { (unreadCount) in
                 var badgeNumber = unreadCount
