@@ -1943,6 +1943,9 @@
 /* menu title */
 "Subscription" = "Subskrypcja";
 
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Informacja o subskrypcji jest chwilowo niedostępna. Spróbuj ponownie później.";
+
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Wsparcie dla %i niestandardowych domen (np. użytkownik@twojadomena.pl)";
 
@@ -2055,7 +2058,7 @@
 "The total attachment size cannot exceed 25MB" = "Rozmiar załącznika nie może przekroczyć 25MB";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adres URL, do którego próbujesz uzyskać dostęp nie jest standardowy i może nie wczytać się poprawnie. Czy chcesz otworzyć go przy użyciu domyślnej przeglądarki urządzenia?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adres URL, do którego próbujesz uzyskać dostęp, nie jest standardowy i może nie wczytać się poprawnie. Czy chcesz otworzyć go przy użyciu domyślnej przeglądarki urządzenia?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Użytkownik jest już zalogowany";

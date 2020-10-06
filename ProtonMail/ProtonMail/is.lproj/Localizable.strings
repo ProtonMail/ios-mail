@@ -88,7 +88,7 @@
 "Add" = "Bæta við";
 
 /* menu title */
-"Add accounts" = "Add accounts";
+"Add accounts" = "Bæta við notandaaðgöngum";
 
 /* new contacts add Anniversary */
 "Add Anniversary" = "Bæta við afmælisdegi";
@@ -1244,7 +1244,7 @@
 "Mailbox size" = "Stærð pósthólfs";
 
 /* menu title */
-"Manage accounts" = "Manage accounts";
+"Manage accounts" = "Sýsla með notandaaðganga";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Sýsla með vistföng";
@@ -1450,7 +1450,7 @@
 "Only one free account can be added" = "Aðeins er hægt að bæta við einum ókeypis aðgangi";
 
 /* Open action */
-"Open" = "Open";
+"Open" = "Opna";
 
 /* (No Comment) */
 "OpenDraft" = "Opna drög";
@@ -1943,6 +1943,9 @@
 /* menu title */
 "Subscription" = "Áskrift";
 
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Áskriftarupplýsingar eru ekki tiltækar í augnablikinu. Reyndu aftur síðar.";
+
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Stuðningur við %i sérsniðin lén (t.d. notandi@lenidmitt.com)";
 
@@ -2055,7 +2058,7 @@
 "The total attachment size cannot exceed 25MB" = "Heildarstærð viðhengja má ekki vera meiri en MB";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Slóðin sem þú ert að reyna að opna er ekki stöðluð og gæti hlaðist rangt inn. Viltu opna hana með sjálfgefna varfranum á tækinu þínu?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Notandinn er þegar skráður inn";
