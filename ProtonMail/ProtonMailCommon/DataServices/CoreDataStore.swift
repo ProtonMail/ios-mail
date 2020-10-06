@@ -85,6 +85,7 @@ class CoreDataStore {
                 
                 do {
                     try FileManager.default.removeItem(at: url)
+                    lastUpdatedStore.clear()
                 } catch let error as NSError{
                     self.popError(error)
                 }
