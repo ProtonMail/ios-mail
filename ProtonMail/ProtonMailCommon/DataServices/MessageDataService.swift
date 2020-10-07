@@ -1583,7 +1583,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         //TODO: needs to refractor
-        let context = self.coreDataService.backgroundManagedObjectContext
+        let context = self.coreDataService.mainManagedObjectContext
         self.coreDataService.enqueue(context: context) { (context) in
             guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(messageID),
                 let message = context.find(with: objectID) as? Message else

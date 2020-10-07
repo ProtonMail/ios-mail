@@ -613,7 +613,7 @@ extension ComposeViewController : ComposeViewDelegate {
                         if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
                             self.htmlEditor.update(signature: signature)
                         }
-                        MBProgressHUD.showAdded(to: self.view, animated: true)
+                        MBProgressHUD.showAdded(to: self.parent!.navigationController!.view, animated: true)
                         self.updateSenderMail(addr: addr)
                     }
                 }
@@ -640,18 +640,16 @@ extension ComposeViewController : ComposeViewDelegate {
             }
         }
         
-        _ = self.queue.sync {
+        self.queue.sync {
             self.viewModel.updateAddressID(addr.address_id).catch { (error ) in
-                {
-                    let alertController = error.localizedDescription.alertController()
-                    alertController.addOKAction()
-                    self.present(alertController, animated: true, completion: nil)
-                } ~> .main
+                let alertController = error.localizedDescription.alertController()
+                alertController.addOKAction()
+                self.present(alertController, animated: true, completion: nil)
+            }.finally {
+                self.headerView.updateFromValue(addr.email, pickerEnabled: true)
+                MBProgressHUD.hide(for: self.parent!.navigationController!.view, animated: true)
             }
         }
-        
-        self.headerView.updateFromValue(addr.email, pickerEnabled: true)
-        MBProgressHUD.hide(for: self.view, animated: true)
     }
     
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
