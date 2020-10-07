@@ -80,17 +80,7 @@ html_editor.cachedCIDs = {};
 /// set html body
 html_editor.setHtml = function(htmlBody, sanitizeConfig) {
     var cleanByConfig = DOMPurify.sanitize(htmlBody, sanitizeConfig);
-    var content = DOMPurify.sanitize(cleanByConfig);
-    html_editor.editor.innerHTML = content
-    
-    var self = this;
-    self.__intervalHandle = window.setInterval(function() {
-      html_editor.editor.innerHTML = content;
-      if (html_editor.editor.firstChild) {
-        window.clearInterval(self.__intervalHandle);
-        self.__intervalHandle = null;
-      }
-    }, 100);
+    html_editor.editor.innerHTML = DOMPurify.sanitize(cleanByConfig);
     // could update the viewport width here in the future.
 };
 
