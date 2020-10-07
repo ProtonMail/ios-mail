@@ -761,6 +761,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     
     @objc internal func pullDown() {
+        guard !tableView.isDragging else {
+            return
+        }
+        
         self.getLatestMessages()
         //temperay to fix the new messages are not loaded
         self.fetchNewMessage()
@@ -1494,6 +1498,14 @@ extension MailboxViewController: UITableViewDelegate {
             self.noResultLabel.frame = CGRect(x: frame.origin.x, y: -scrollView.contentOffset.y, width: frame.width, height: frame.height)
         } else {
             self.noResultLabel.frame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height)
+        }
+    }
+}
+
+extension MailboxViewController {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if refreshControl.isRefreshing {
+            self.pullDown()
         }
     }
 }
