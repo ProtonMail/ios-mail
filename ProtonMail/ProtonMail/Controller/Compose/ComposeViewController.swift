@@ -479,16 +479,11 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 let head = "<html><head></head><body>"
                 let foot = "</body></html>"
                 
-                var html = bodyString.replacingOccurrences(of: "\\", with: "&#92;", options: .caseInsensitive, range: nil)
-                html = bodyString.replacingOccurrences(of: "\"", with: "\\\"", options: .caseInsensitive, range: nil)
-                html = bodyString.replacingOccurrences(of: "“", with: "&quot;", options: .caseInsensitive, range: nil)
-                html = bodyString.replacingOccurrences(of: "”", with: "&quot;", options: .caseInsensitive, range: nil)
-                html = bodyString.replacingOccurrences(of: "\r", with: "\\r", options: .caseInsensitive, range: nil)
-                html = bodyString.replacingOccurrences(of: "\n", with: "\\n", options: .caseInsensitive, range: nil)
-                html = bodyString.replacingOccurrences(of: "<br>", with: "<br />", options: .caseInsensitive, range: nil)
-                html = bodyString.replacingOccurrences(of: "<hr>", with: "<hr />", options: .caseInsensitive, range: nil)
+                let mutableString = NSMutableString(string: bodyString)
+                CFStringTransform(mutableString, nil, "Any-Hex/Java" as NSString, true)
+                let resultString = mutableString as String
                 
-                var body = html.isEmpty ? bodyString : html
+                var body = resultString.isEmpty ? bodyString : resultString
                 if !body.hasPrefix(head) {
                     body = head + body
                 }
@@ -497,9 +492,18 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                     body = body + foot
                 }
                 
+//                var html = body.replacingOccurrences(of: "\\", with: "&#92;", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "\"", with: "\\\"", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "“", with: "&quot;", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "”", with: "&quot;", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "\r", with: "\\r", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "\n", with: "\\n", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "<br>", with: "<br />", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "<hr>", with: "<hr />", options: .caseInsensitive, range: nil)
+                
                 self.viewModel.collectDraft (
                     self.headerView.subject.text!,
-                    body: body,
+                    body: mutableString as String,//html.isEmpty ? body : html,
                     expir: self.headerView.expirationTimeInterval,
                     pwd:self.encryptionPassword,
                     pwdHit:self.encryptionPasswordHint
