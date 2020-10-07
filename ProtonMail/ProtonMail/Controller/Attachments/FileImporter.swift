@@ -22,10 +22,11 @@
     
 
 import Foundation
+import PromiseKit
 
 protocol FileImporter {
     func importFile(_ itemProvider: NSItemProvider, type: String, errorHandler: @escaping (String)->Void, handler: @escaping ()->Void)
-    func fileSuccessfullyImported(as fileData: FileData)
+    func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void>
     
     var documentAttachmentProvider: DocumentAttachmentProvider { get }
     var imageAttachmentProvider: PhotoAttachmentProvider { get }
@@ -43,30 +44,31 @@ extension FileImporter {
                     errorHandler: @escaping (String)->Void,
                     handler: @escaping ()->Void)
     {
-        itemProvider.loadItem(forTypeIdentifier: type, options: nil) { item, error in // async
-            defer {
-                // important: whole this closure contents will be run synchronously, so we can call the handler in the end of scope
-                // if this situation will change some day, handler should be passed over
-                handler()
-            }
-            
+        itemProvider.loadItem(forTypeIdentifier: type, options: nil) { item, error in // async            
             guard error == nil else {
                 errorHandler(error?.localizedDescription ?? "")
+                handler()
                 return
             }
             
             //TODO:: the process(XXX:) functions below. they could be abstracted out. all type of process in the same place.
             if let url = item as? URL {
-                self.documentAttachmentProvider.process(fileAt: url) // sync
+                self.documentAttachmentProvider.process(fileAt: url).ensure {
+                    handler()
+                }.cauterize()
             } else if let img = item as? UIImage {
-                self.imageAttachmentProvider.process(original: img) // sync
+                self.imageAttachmentProvider.process(original: img).ensure {
+                    handler()
+                }.cauterize()
             } else if (type as CFString == kUTTypeVCard), let data = item as? Data {
                 var fileName = "\(NSUUID().uuidString).vcf"
                 if #available(iOS 11.0, *), let name = itemProvider.suggestedName {
                     fileName = name
                 }
                 let fileData = ConcreteFileData<Data>(name: fileName, ext: "text/vcard", contents: data)
-                self.fileSuccessfullyImported(as: fileData)
+                self.fileSuccessfullyImported(as: fileData).ensure {
+                    handler()
+                }.cauterize()
             } else if let data = item as? Data {
                 var fileName = NSUUID().uuidString
                 if #available(iOS 11.0, *), let name = itemProvider.suggestedName {
@@ -79,12 +81,16 @@ extension FileImporter {
                     let mimetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType)?.takeRetainedValue() as String? else
                 {
                     errorHandler(LocalString._failed_to_determine_file_type)
+                    handler()
                     return
                 }
                 let fileData = ConcreteFileData<Data>(name: fileName + "." + filetype, ext: mimetype, contents: data)
-                self.fileSuccessfullyImported(as: fileData)
+                self.fileSuccessfullyImported(as: fileData).ensure {
+                    handler()
+                }.cauterize()
             } else {
                 errorHandler(LocalString._unsupported_file)
+                handler()
             }
         }
     }

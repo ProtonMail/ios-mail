@@ -245,11 +245,11 @@ extension Message {
                 return Message.Location.trash.title
             }
             
-            if contains(label: .trash) {
+            if contains(label: .spam) {
                 return Message.Location.spam.title
             }
             
-            if contains(label: .trash) {
+            if contains(label: .archive) {
                 return Message.Location.archive.title
             }
             lableOnly = true

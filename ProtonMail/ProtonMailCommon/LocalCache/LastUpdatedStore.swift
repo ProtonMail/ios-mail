@@ -185,11 +185,13 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
     
 
     // update unread count
-    func updateUnreadCount(by labelID : String, userID: String, count: Int, context: NSManagedObjectContext) {
+    func updateUnreadCount(by labelID : String, userID: String, count: Int, context: NSManagedObjectContext, shouldSave: Bool = true) {
         let update = self.lastUpdateDefault(by: labelID, userID: userID, context: context)
         update.unread = Int32(count)
         
-        let _ = context.saveUpstreamIfNeeded()
+        if shouldSave {
+            let _ = context.saveUpstreamIfNeeded()
+        }
         
         if labelID == Message.Location.inbox.rawValue {
             DispatchQueue.main.async {

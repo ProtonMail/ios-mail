@@ -28,11 +28,6 @@ import PMKeymaker
 import UserNotifications
 import Intents
 
-#if Enterprise
-import Fabric
-import Crashlytics
-#endif
-
 let sharedUserDataService = UserDataService(api: APIService.unauthorized)
 
 @UIApplicationMain
@@ -142,9 +137,6 @@ extension AppDelegate: UIApplicationDelegate {
         PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
         #endif
 
-        #if Enterprise
-        Fabric.with([Crashlytics.self])
-        #endif
         TrustKitWrapper.start(delegate: self)
         Analytics.shared.setup()
         

@@ -129,17 +129,22 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
             let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
             hud.label.text = LocalString._settings_resetting_cache
             hud.removeFromSuperViewOnHide = true
-            self.viewModel.userManager.messageService.cleanLocalMessageCache() { task, res, error in
-                self.cleaning = false
-                if let error = error {
-                    hud.hide(animated: true, afterDelay: 0)
-                    let alert = error.alertController()
-                    alert.addOKAction()
-                    self.present(alert, animated: true, completion: nil)
-                } else {
-                    hud.mode = MBProgressHUDMode.text
-                    hud.label.text = LocalString._general_done_button
-                    hud.hide(animated: true, afterDelay: 1)
+            
+            let usersManager = sharedServices.get(by: UsersManager.self)
+            for userManager in usersManager.users {
+                userManager.messageService.cleanLocalMessageCache() { task, res, error in
+                    guard userManager.userInfo.userId == self.viewModel.userManager.userinfo.userId else {return}
+                    self.cleaning = false
+                    if let error = error {
+                        hud.hide(animated: true, afterDelay: 0)
+                        let alert = error.alertController()
+                        alert.addOKAction()
+                        self.present(alert, animated: true, completion: nil)
+                    } else {
+                        hud.mode = MBProgressHUDMode.text
+                        hud.label.text = LocalString._general_done_button
+                        hud.hide(animated: true, afterDelay: 1)
+                    }
                 }
             }
         }

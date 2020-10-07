@@ -947,7 +947,9 @@ class MessageDataService : Service, HasLocalStorage {
             self.coreDataService.enqueue(context: context) { (context) in
                 if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                     if message.isDetailDownloaded {
-                        completion(nil, nil, Message.ObjectIDContainer(message), nil)
+                        DispatchQueue.main.async {
+                            completion(nil, nil, Message.ObjectIDContainer(message), nil)
+                        }
                     } else {
                         self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
                     }
@@ -1075,7 +1077,7 @@ class MessageDataService : Service, HasLocalStorage {
                 for (index, _) in messagesArray.enumerated() {
                     messagesArray[index]["UserID"] = self.userID
                 }
-                let context = self.coreDataService.backgroundManagedObjectContext
+                let context = self.coreDataService.mainManagedObjectContext
                 self.coreDataService.enqueue(context: context) { (context) in
                     do {
                         if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
@@ -1866,7 +1868,7 @@ class MessageDataService : Service, HasLocalStorage {
                     let _err = error?.localizedDescription ?? "Unknow error"
                     Analytics.shared.error(message: .sendMessageError, error: _err, extra: [
                         "status": status.rawValue,
-                        "emails": emails,
+                        "emailCount": emails.count,
                         "attCount": attachments.count
                     ], user: self.usersManager?.getUser(byUserId: self.userID))
                     // show message now
@@ -1905,7 +1907,7 @@ class MessageDataService : Service, HasLocalStorage {
                                                                                             subtitle: message.title))
                 Analytics.shared.error(message: .sendMessageError, error: err, extra: [
                     "status": status.rawValue,
-                    "emails": emails,
+                    "emailCount": emails.count,
                     "attCount": attachments.count
                 ], user: self.usersManager?.getUser(byUserId: self.userID))
                 completion?(nil, nil, err)
@@ -2604,6 +2606,14 @@ class MessageDataService : Service, HasLocalStorage {
                                 break
                             }
                             self.userDataSource?.setFromEvents(addressRes: parsedAddr)
+                            guard let user = self.usersManager?.getUser(byUserId: self.userID) else {
+                                break
+                            }
+                            do {
+                                try await(user.userService.activeUserKeys(userInfo: user.userinfo, auth: user.authCredential))
+                            } catch let error {
+                                print(error.localizedDescription)
+                            }
                         default:
                             PMLog.D(" unknown type in message: \(address)")
                         }
@@ -2632,9 +2642,11 @@ class MessageDataService : Service, HasLocalStorage {
                     guard let unread = count["Unread"] as? Int else {
                         continue
                     }
-                    lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: unread, context: self.managedObjectContext)
+                    lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: unread, context: self.managedObjectContext, shouldSave: false)
                 }
             }
+            
+            _ = context.saveUpstreamIfNeeded()
             
             _ = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userID, context: self.managedObjectContext).done { (unreadCount) in
                 var badgeNumber = unreadCount

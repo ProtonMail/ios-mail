@@ -326,6 +326,7 @@
 		28D9BF212CFD5583EA74A99C6A551B83 /* DocumentAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C454B0EB20457CA14B2ED3F3D5809882 /* DocumentAttachmentProvider.swift */; };
 		2924D057601C2F7658483991CDAEE842 /* OrganizationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8C88CF997A748C2D11C0419571595A /* OrganizationsAPI.swift */; };
 		2929FC1B5DB0DF55732A29D3F89E9C90 /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD83722A1989FBEACE70896416C38CF /* OpenPGP+Extension.swift */; };
+		29321B5675E259D3FF001711B95000D0 /* OnePasswordExtension.strings in Resources */ = {isa = PBXBuildFile; fileRef = 11CB768BB462AB5002A42C0D2D7852E5 /* OnePasswordExtension.strings */; };
 		293E919492AB2514FF155636A9172C41 /* OpenPGP+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484BA40D9AED8FE12BB572BA8EF99800 /* OpenPGP+String+Extension.swift */; };
 		293EF3E5E76A0C9AFFDDF7E82075B21C /* UserInfo+Locked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7950986E426E685964099CF9286868B2 /* UserInfo+Locked.swift */; };
 		2941F7672C8E4E80396A992847BFEA2B /* MultiLabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED5F906B69F8814BD7FF55E4F9C5690 /* MultiLabelDisplayView.swift */; };
@@ -1224,6 +1225,7 @@
 		99AB57B36E4C92AB4C5EAC62D759F31E /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5ECE5CE544C98F7C824484FF62D8DD9 /* PinCodeView.swift */; };
 		99C001676B3887C8A48557482E8C8E2C /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29702CCB5249E56A99A11AF8FF0AED36 /* ComposeViewModel.swift */; };
 		99D837EE7FCABBBB1569730BEB3B79F4 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6E0EEFD5426C6C3B21A1C794DCCEF1 /* Sender.swift */; };
+		99F5D0B51D6A0C4095975F018C5820CD /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CB1E24CCA74109E244612E0BD18798C /* AttachmentTableViewCell.xib */; };
 		99FEE2949141CB71885C04DA3067FA00 /* CoordinatorNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */; };
 		9A5E14B0B94E0F00C75558A64A399BB1 /* MessageHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933EE98B694B9B0A7A3F60770C74E3A0 /* MessageHeaderViewModel.swift */; };
 		9A616F0DDBC146B598C2E1B989798331 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */; };
@@ -1848,6 +1850,7 @@
 		E53D72796133AE043B1964AC624BF070 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED38F3AA08F1433223C4769A991F274 /* User.swift */; };
 		E5411238A1ABB000EC01545D251FA034 /* ServerNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4809B81E683764D08E1015C74ED8F26 /* ServerNotice.swift */; };
 		E58CB37E3EE15655942A918C2FF36521 /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7385ADE4EA34EE7A7F64BBA0E0E5BF7D /* ContactPicker.swift */; };
+		E59B4D8D972CF6C3E6F75ADF73B76450 /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CB1E24CCA74109E244612E0BD18798C /* AttachmentTableViewCell.xib */; };
 		E5E5E57B22DC50D3410BA0CB0697E412 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA85A4767DFF60E04EC425132BEE5F6 /* TestData.swift */; };
 		E5EC4179035B718A47361FB83DE07D68 /* LastUpdatedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21126C97B5EB1DCAC67FFC28CB6D406F /* LastUpdatedStore.swift */; };
 		E5FC99A725E4DFF6652A03CBA5A08A03 /* String+Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8401423E8FE838D3E637E3CAB0244D4 /* String+Alert+Extension.swift */; };
@@ -5453,6 +5456,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C53450AA10C5F34F42C1F3A630019BFC /* Alerts.storyboard in Resources */,
+				99F5D0B51D6A0C4095975F018C5820CD /* AttachmentTableViewCell.xib in Resources */,
 				AA5EE7644EE1EE9DAC9D673594B529FA /* Attachments.storyboard in Resources */,
 				BCC94FAE0B35298695549C0A155237BD /* BannerView.xib in Resources */,
 				2D8872A73A2FCCEF28D4D2D9827CD89B /* BioCodeView.xib in Resources */,
@@ -5639,6 +5643,7 @@
 				88AF0A78EE71F93D2D2A4F58CB7A8DCD /* MessageDetailBottomView.xib in Resources */,
 				D06C8E40AB7932124738AA83520E1614 /* MultiLabelDisplayView.xib in Resources */,
 				4C3ABA1F0CCF58F505BC1A338E7A5ED0 /* OnboardingView.xib in Resources */,
+				29321B5675E259D3FF001711B95000D0 /* OnePasswordExtension.strings in Resources */,
 				EDE761D3F5EE9171EA5FC0A86C9AEB97 /* PasswordExtension.strings in Resources */,
 				DED4543642C29F57B82AB63EA52398D7 /* PinCodeView.xib in Resources */,
 				A0978C5D06F4B6C098352E6F58804710 /* ProtonMail.xcdatamodeld in Resources */,
@@ -5698,6 +5703,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1ADA0F9D0407B40A03B0CA0DE92AAC3A /* Alerts.storyboard in Resources */,
+				E59B4D8D972CF6C3E6F75ADF73B76450 /* AttachmentTableViewCell.xib in Resources */,
 				E9830A69C0AB30142A16D78268A99286 /* Attachments.storyboard in Resources */,
 				1E60BAA2DDA7B2438A483B6918019E1F /* BannerView.xib in Resources */,
 				CEEC891DC802B9997F140188695AFA08 /* BioCodeView.xib in Resources */,

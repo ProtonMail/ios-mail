@@ -22,6 +22,7 @@
     
 
 import Foundation
+import PromiseKit
 
 class ComposeContainerViewModel: TableContainerViewModel {
     internal var childViewModel: ContainableComposeViewModel
@@ -79,13 +80,14 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
         self.showErrorBanner(description)
     }
     
-    func fileSuccessfullyImported(as fileData: FileData) {
+    func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
         guard self.childViewModel.currentAttachmentsSize + fileData.contents.dataSize < self.kDefaultAttachmentFileSize else {
             self.showErrorBanner(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
-            return
+            return Promise()
         }
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-        let attachment = fileData.contents.toAttachment(self.childViewModel.message!, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata)
-        self.childViewModel.uploadAtt(attachment)
+        return fileData.contents.toAttachment(self.childViewModel.message!, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata).done { (attachment) in
+            self.childViewModel.uploadAtt(attachment)
+        }
     }
 }
