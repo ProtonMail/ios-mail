@@ -311,6 +311,7 @@ extension UIImage: AttachmentConvertible {
             guard let context = message.managedObjectContext else {
                 assert(false, "Context improperly destroyed")
                 seal.fulfill(nil)
+                return
             }
             CoreDataService.shared.enqueue(context: context) { (context) in
                 if let fileData = self.toData() {
@@ -356,6 +357,7 @@ extension Data: AttachmentConvertible {
             guard let context = message.managedObjectContext else {
                 assert(false, "Context improperly destroyed")
                 seal.fulfill(nil)
+                return
             }
             CoreDataService.shared.enqueue(context: context) { (context) in
                 let attachment = Attachment(context: context)//TODO:: need check context nil or not instead of !
@@ -392,6 +394,7 @@ extension URL: AttachmentConvertible {
             guard let context = message.managedObjectContext else {
                 assert(false, "Context improperly destroyed")
                 seal.fulfill(nil)
+                return
             }
             CoreDataService.shared.enqueue(context: context) { (context) in
                 let attachment = Attachment(context: context)
