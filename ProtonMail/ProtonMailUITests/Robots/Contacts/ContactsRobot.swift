@@ -38,12 +38,12 @@ class ContactsRobot {
     }
 
     func groupsView() -> ContactsGroupView {
-        Element.wait.forButtonWithIdentifier(groupsTabBarButtonIdentifier).tap()
+        Element.wait.forButtonWithIdentifier(groupsTabBarButtonIdentifier, file: #file, line:  #line).tap()
         return ContactsGroupView()
     }
 
     func contactsView() -> ContactsView {
-        Element.wait.forButtonWithIdentifier(contactsTabBarButtonIdentifier).tap()
+        Element.wait.forButtonWithIdentifier(contactsTabBarButtonIdentifier, file: #file, line:  #line).tap()
         return ContactsView()
     }
 
@@ -53,17 +53,17 @@ class ContactsRobot {
     }
     
     private func add() -> ContactsRobot {
-        Element.wait.forButtonWithIdentifier(addContactNavBarButtonIdentifier).tap()
+        Element.wait.forButtonWithIdentifier(addContactNavBarButtonIdentifier, file: #file, line:  #line).tap()
         return ContactsRobot()
     }
     
     private func contact() -> AddContactRobot {
-        Element.wait.forButtonWithIdentifier(addContactAlertButtonText).tap()
+        Element.wait.forButtonWithIdentifier(addContactAlertButtonText, file: #file, line:  #line).tap()
         return AddContactRobot()
     }
     
     private func group() -> AddContactGroupRobot {
-        Element.wait.forButtonWithIdentifier(addGroupAlertButtonText).tap()
+        Element.wait.forButtonWithIdentifier(addGroupAlertButtonText, file: #file, line:  #line).tap()
         return AddContactGroupRobot()
     }
 
@@ -79,7 +79,7 @@ class ContactsRobot {
         }
 
         func clickContact(_ withEmail: String) -> ContactDetailsRobot {
-            Element.wait.forCellWithIdentifier(contactCellIdentifier(withEmail)).tap()
+            Element.wait.forCellWithIdentifier(contactCellIdentifier(withEmail), file: #file, line:  #line).tap()
             return ContactDetailsRobot()
         }
         
@@ -89,23 +89,23 @@ class ContactsRobot {
         }
         
         private func clickDeleteButton() -> ContactsView {
-            Element.wait.forButtonWithIdentifier(deleteButtonText).tap()
+            Element.wait.forButtonWithIdentifier(deleteButtonText, file: #file, line:  #line).tap()
             return ContactsView()
         }
         
         private func confirmDeletion() -> ContactsView {
-            Element.wait.forButtonWithIdentifier(deleteContactAlertButtonText).tap()
+            Element.wait.forButtonWithIdentifier(deleteContactAlertButtonText, file: #file, line:  #line).tap()
             return self
         }
         
         class Verify {
 
             func contactExists(_ email: String) {
-                Element.wait.forCellWithIdentifier(contactCellIdentifier(email))
+                Element.wait.forCellWithIdentifier(contactCellIdentifier(email), file: #file, line:  #line)
             }
 
             func contactDoesNotExists(_ email: String) {
-                Element.wait.forCellWithIdentifierToDisappear(contactCellIdentifier(email))
+                Element.wait.forCellWithIdentifierToDisappear(contactCellIdentifier(email), file: #file, line:  #line)
             }
         }
     }

@@ -19,6 +19,7 @@
         "ContactsTests\/testContactGroupSendMessage()",
         "LoginTests\/testLoginWithOnePassAnd2FA()",
         "LoginTests\/testLoginWithTwoPassAnd2FA()",
+        "MultiuserManagementTests\/testAddTwoFreeAccounts()",
         "MultiuserManagementTests\/testCancelLoginOnTwoFaPrompt()",
         "MultiuserManagementTests\/testConnectOnePassAccountWithTwoFa()",
         "MultiuserManagementTests\/testConnectTwoPassAccountWithTwoFa()",
