@@ -33,6 +33,8 @@ extension Attachment {
     struct Attributes {
         static let entityName   = "Attachment"
         static let attachmentID = "attachmentID"
+        static let isSoftDelete = "isSoftDeleted"
+        static let message = "message"
     }
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)

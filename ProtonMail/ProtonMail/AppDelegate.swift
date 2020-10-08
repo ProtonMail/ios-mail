@@ -305,6 +305,7 @@ extension AppDelegate: UIApplicationDelegate {
         let users: UsersManager = sharedServices.get()
         if let user = users.firstUser {
             user.messageService.purgeOldMessages()
+            user.messageService.cleanOldAttachment()
             user.messageService.updateMessageCount()
             user.messageService.backgroundFetch {
                 delayedCompletion()

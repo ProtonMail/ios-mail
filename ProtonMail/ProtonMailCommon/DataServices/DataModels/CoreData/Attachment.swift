@@ -40,4 +40,7 @@ class Attachment: NSManagedObject {
     @NSManaged var headerInfo: String?
     
     @NSManaged var message: Message
+    
+    //Added in version 1.12.5 to handle the attachment deletion failed issue
+    @NSManaged var isSoftDeleted: Bool
 }
