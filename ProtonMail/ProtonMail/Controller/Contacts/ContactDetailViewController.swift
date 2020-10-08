@@ -79,6 +79,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(didTapEditButton(sender:)))
         self.navigationItem.rightBarButtonItem = doneItem
+        self.navigationItem.assignNavItemIndentifiers()
         self.configHeaderStyle()
         
         viewModel.getDetails {

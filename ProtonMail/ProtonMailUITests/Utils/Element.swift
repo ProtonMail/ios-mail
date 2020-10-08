@@ -49,6 +49,14 @@ struct Element {
         class func swipeLeftByIdentifier(_ identifier: String) {
             app.cells[identifier].swipeLeft()
         }
+        
+        class func swipeSwipeUpUntilVisibleByIdentifier(_ identifier: String) -> XCUIElement {
+            return app.cells[identifier].swipeUpUntilVisible()
+        }
+        
+        class func swipeDownUpUntilVisibleByIdentifier(_ identifier: String) -> XCUIElement {
+            return app.cells[identifier].swipeUpUntilVisible()
+        }
     }
     
     class menuItem {
@@ -168,6 +176,7 @@ struct Element {
         @discardableResult
         static func forCellWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
             let element = app.cells[identifier]
+            XCUIApplication().scrollViews.textFields.element(boundBy: 1)
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
         }
@@ -218,5 +227,62 @@ struct Element {
             let element = app.tables[identifier]
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
         }
+        
+        @discardableResult
+        static func forImageWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
+            let element = app.images[identifier]
+            XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
+            return element
+        }
+    }
+}
+
+extension XCUIElement {
+    
+    @discardableResult
+    func swipeUpUntilVisible(maxAttempts: Int = 5) -> XCUIElement {
+        var eventCount = 0
+        let table = app.tables.element
+
+        while eventCount <= maxAttempts, !self.isVisible {
+            table.swipeUp()
+            eventCount += 1
+        }
+        return self
+    }
+    
+    @discardableResult
+    func swipeDownUntilVisible(maxAttempts: Int = 5) -> XCUIElement {
+        var eventCount = 0
+        let table = app.tables.element
+
+        while eventCount <= maxAttempts, !self.isVisible {
+            table.swipeDown()
+            eventCount += 1
+        }
+        return self
+    }
+    
+    private var isVisible: Bool {
+        guard self.exists && !self.frame.isEmpty else { return false }
+        return app.windows.element(boundBy: 0).frame.contains(self.frame)
+    }
+}
+
+extension XCUIElement {
+    /**
+     Deletes text value from text field.
+     */
+    func clear() -> XCUIElement {
+        guard let stringValue = self.value as? String else {
+            XCTFail("clear() text method was used on a field that is not textField.")
+            return self
+        }
+        /// tap at the end of the field
+        self.coordinate(withNormalizedOffset: CGVector(dx: 0.8, dy: 0.99)).tap()
+
+        let delete: String = stringValue.map { _ in XCUIKeyboardKey.delete.rawValue }.joined(separator: "")
+        self.typeText(delete)
+        return self
     }
 }

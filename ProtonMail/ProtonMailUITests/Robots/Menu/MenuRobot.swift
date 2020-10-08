@@ -11,11 +11,13 @@ import XCTest
 private let logoutCell = "MenuTableViewCell.\(LocalString._logout_title)"
 private let logoutConfirmButton = NSLocalizedString("Log out", comment: "comment")
 private let sentStaticText = "MenuTableViewCell.\(LocalString._menu_sent_title)"
+private let contactsStaticText = "MenuTableViewCell.\(LocalString._menu_contacts_title)"
 private let sidebarHeaderViewOtherIdentifier = "MenuViewController.headerView"
 private let manageAccountsStaticTextIdentifier = "MenuButtonViewCell.\(LocalString._menu_manage_accounts.replaceSpaces())"
 private func userAccountCellIdentifier(_ email: String) -> String { return "MenuUserViewCell.\(email)" }
 private func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
 private func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
+
 /**
  Represents Menu view.
 */
@@ -30,6 +32,12 @@ class MenuRobot {
     func sent() -> SentRobot {
         Element.wait.forCellWithIdentifier(sentStaticText, file: #file, line: #line).tap()
         return SentRobot()
+    }
+    
+    @discardableResult
+    func contacts() -> ContactsRobot {
+        Element.wait.forCellWithIdentifier(contactsStaticText, file: #file, line: #line).tap()
+        return ContactsRobot()
     }
     
     func accountsList() -> MenuAccountListRobot {
