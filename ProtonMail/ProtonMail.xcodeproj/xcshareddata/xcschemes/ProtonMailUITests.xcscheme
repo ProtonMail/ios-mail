@@ -45,8 +45,14 @@
       </CommandLineArguments>
       <TestPlans>
          <TestPlanReference
-            reference = "container:ProtonMailUITests/Tests/TestPlans/SmokeTests.xctestplan"
+            reference = "container:ProtonMailUITests/Tests/TestPlans/RegressionTests.xctestplan"
             default = "YES">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ProtonMailUITests/Tests/TestPlans/RegressionTests.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ProtonMailUITests/Tests/TestPlans/SmokeTests.xctestplan">
          </TestPlanReference>
       </TestPlans>
       <Testables>
@@ -84,15 +90,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7CC48161B0FC946A8DB234B96B6A66DD"
-            BuildableName = "ProtonMail.app"
-            BlueprintName = "ProtonMail"
-            ReferencedContainer = "container:ProtonMail.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

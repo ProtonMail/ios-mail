@@ -30,6 +30,8 @@ unit_tests:
     - develop
     - /^release\/.*$/
     - merge_requests
+   except:
+    - schedules
    before_script:
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
     - git submodule init
@@ -44,6 +46,8 @@ unit_tests:
 ui_tests:
    dependencies: []
    stage: test
+   except:
+    - schedules
    artifacts:
     name: "test-report"
     paths:
@@ -62,6 +66,30 @@ ui_tests:
     - fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMailUITests" --testplan "SmokeTests"  --device "iPhone 11" --clean
    tags:
     - iOS
+    
+regression_tests:
+   dependencies: []
+   stage: test
+   only:
+    - schedules
+   artifacts:
+    name: "test-report"
+    paths:
+      - ./test_output/report.html
+      - ./test_output/report.junit
+    expire_in: 20 days
+    reports:
+      junit: ./test_output/report.junit
+   before_script:
+    - *before_script_mac
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
+    - git submodule init
+    - git submodule update --init --recursive
+   script:
+    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
+    - fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMailUITests" --testplan "RegressionTests"  --device "iPhone 11" --clean --slack_url ${SLACK_UI_TESTS_URL} --slack_channel "#mail-ios-uitests" --slack_message "<https://gitlab.protontech.ch/ProtonMail/protonmail-ios/-/pipelines/${CI_PIPELINE_ID}/test_report|See test report in GitLab>"
+   tags:
+    - iOS
 
 # --- Translation related tasks ---
 i18n-sync-crowdin:
@@ -73,4 +101,3 @@ i18n-commit-locales:
   variables:
       I18N_COMMIT_CROWDIN_PROJECT: 'apple-mail'
   extends: .i18n-commit-locales-shared-apple2
-

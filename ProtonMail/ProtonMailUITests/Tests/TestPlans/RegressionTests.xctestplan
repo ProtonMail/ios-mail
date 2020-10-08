@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "16E6F902-A8D7-4213-90E9-F3F2690C5FD6",
+      "id" : "A484B2B7-DE21-4136-8EB6-EC29362804FA",
       "name" : "Configuration 1",
       "options" : {
 
@@ -17,21 +17,11 @@
         "BaseTestCase",
         "ContactsTests\/testContactDetailSendMessage()",
         "ContactsTests\/testContactGroupSendMessage()",
-        "ContactsTests\/testCreateContact()",
-        "ContactsTests\/testCreateGroup()",
-        "ContactsTests\/testDeleteContact()",
-        "ContactsTests\/testDeleteGroup()",
         "LoginTests\/testLoginWithOnePassAnd2FA()",
         "LoginTests\/testLoginWithTwoPassAnd2FA()",
-        "MultiuserManagementTests\/testAddTwoFreeAccounts()",
         "MultiuserManagementTests\/testCancelLoginOnTwoFaPrompt()",
-        "MultiuserManagementTests\/testConnectOnePassAccount()",
         "MultiuserManagementTests\/testConnectOnePassAccountWithTwoFa()",
-        "MultiuserManagementTests\/testConnectTwoPassAccount()",
         "MultiuserManagementTests\/testConnectTwoPassAccountWithTwoFa()",
-        "MultiuserManagementTests\/testLogoutSecondaryAccount()",
-        "MultiuserManagementTests\/testRemoveAllAccounts()",
-        "MultiuserManagementTests\/testRemoveSecondaryAccount()",
         "SendNewMessageTests"
       ],
       "target" : {
