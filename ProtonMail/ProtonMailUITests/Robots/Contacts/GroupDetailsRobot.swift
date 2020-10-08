@@ -17,12 +17,12 @@ class GroupDetailsRobot {
     var verify: Verify! = nil
     init() { verify = Verify() }
 
-    func edit() -> AddContactGroupRobot {
+    func editGroup() -> AddContactGroupRobot {
         Element.wait.forButtonWithIdentifier(editNavBarButtonText, file: #file, line: #line).tap()
         return AddContactGroupRobot()
     }
 
-    func navigateUp() -> ContactsRobot {
+    func goBackToContacts() -> ContactsRobot {
         Element.wait.forButtonWithIdentifier(backToContactsNavBarButtonText, file: #file, line: #line).tap()
         return ContactsRobot()
     }

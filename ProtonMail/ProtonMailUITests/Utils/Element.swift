@@ -278,11 +278,18 @@ extension XCUIElement {
             XCTFail("clear() text method was used on a field that is not textField.")
             return self
         }
-        /// tap at the end of the field
-        self.coordinate(withNormalizedOffset: CGVector(dx: 0.8, dy: 0.99)).tap()
-
-        let delete: String = stringValue.map { _ in XCUIKeyboardKey.delete.rawValue }.joined(separator: "")
+        let delete: String = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
         self.typeText(delete)
+        return self
+    }
+    
+    func type(_ text: String) -> XCUIElement {
+        self.typeText(text)
+        return self
+    }
+    
+    func click() -> XCUIElement {
+        self.tap()
         return self
     }
 }
