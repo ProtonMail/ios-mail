@@ -71,7 +71,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
 
     var attachments: [Attachment] {
         if let atts = self.message.attachments.allObjects as? [Attachment] {
-            return atts
+            return atts.filter{ !$0.isSoftDeleted }
         }
         return []
     }

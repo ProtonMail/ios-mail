@@ -536,17 +536,18 @@ class MessageDataService : Service, HasLocalStorage {
     /// - Parameter att: Attachment
     func delete(att: Attachment!) -> Promise<Void> {
         return Promise { seal in
-            let attachmentID = att.attachmentID
+            let objetcID = att.objectID.uriRepresentation().absoluteString
             let context = att.managedObjectContext
+            let _ = sharedMessageQueue.addMessage(objetcID, action: .deleteAtt, userId: self.userID)
+            dequeueIfNeeded()
+            
             self.coreDataService.enqueue(context: context) { (context) in
-                context.delete(att)
+                att.isSoftDeleted = true
                 if let error = context.saveUpstreamIfNeeded() {
                     PMLog.D(" error: \(error)")
                 }
                 seal.fulfill_()
             }
-            let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt, userId: self.userID)
-            dequeueIfNeeded()
         }
     }
     
@@ -1151,11 +1152,28 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
+    func cleanOldAttachment() {
+        let context = self.coreDataService.backgroundManagedObjectContext
+        self.coreDataService.enqueue(context: context) { (context) in
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attachment.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "(%K == 1) AND %K == NULL", Attachment.Attributes.isSoftDelete, Attachment.Attributes.message)
+            let request = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            do {
+                try context.execute(request)
+            } catch let ex as NSError {
+                Analytics.shared.error(message: .purgeOldMessages,
+                                       error: ex,
+                                       user: self.usersManager?.getUser(byUserId: self.userID))
+                PMLog.D("error : \(ex)")
+            }
+        }
+    }
+    
     // MARK : old functions
     
     fileprivate func attachmentsForMessage(_ message: Message) -> [Attachment] {
         if let all = message.attachments.allObjects as? [Attachment] {
-            return all
+            return all.filter{ !$0.isSoftDeleted }
         }
         return []
     }
@@ -1425,13 +1443,15 @@ class MessageDataService : Service, HasLocalStorage {
     
     private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.mainManagedObjectContext
-        context.performAndWait {
+        self.coreDataService.enqueue(context: context) { (context) in
             var authCredential: AuthCredential?
+            var att: Attachment?
             if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(deleteObject),
                 let managedObject = try? context.existingObject(with: objectID),
                 let attachment = managedObject as? Attachment
             {
                 authCredential = attachment.message.cachedAuthCredential
+                att = attachment
             }
             
             guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
@@ -1439,11 +1459,10 @@ class MessageDataService : Service, HasLocalStorage {
                 return
             }
             
-            let api = DeleteAttachment(attID: deleteObject, authCredential: authCredential)
+            let api = DeleteAttachment(attID: att?.attachmentID ?? "0", authCredential: authCredential)
             api.call(api: userManager.apiService) { (task, response, hasError) -> Void in
                 completion?(task, nil, nil)
             }
-            return
         }
     }
     
