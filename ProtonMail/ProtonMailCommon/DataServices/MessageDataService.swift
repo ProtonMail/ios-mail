@@ -283,7 +283,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 if let lastMsg = messages.last, let firstMsg = messages.first {
                                     let updateTime = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: self.userID, context: context)
                                     if (updateTime.isNew) {
-                                        updateTime.start = firstMsg.time!
+                                        updateTime.start = firstMsg.time ?? Date()
                                         updateTime.total = Int32(messcount)
                                     }
                                     if let time = lastMsg.time,
