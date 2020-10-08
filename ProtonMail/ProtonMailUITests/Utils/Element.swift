@@ -292,4 +292,20 @@ extension XCUIElement {
         self.tap()
         return self
     }
+    
+    func assertWithValue(_ text: String) {
+        guard let stringValue = self.value as? String else {
+            XCTFail("Element doesn't have text value.")
+            return
+        }
+        XCTAssertTrue(stringValue == text, "Expected Element text value to be: \"\(text)\", but found: \"\(stringValue)\"")
+    }
+    
+    func assertWithLabel(_ text: String) {
+        guard let label = self.label as? String else {
+            XCTFail("Element doesn't have text label.")
+            return
+        }
+        XCTAssertTrue(label == text, "Expected Element text label to be: \"\(text)\", but found: \"\(label)\"")
+    }
 }
