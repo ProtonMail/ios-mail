@@ -144,28 +144,28 @@ class ComposerRobot {
     }
     
     private func recipients(_ email: String) -> ComposerRobot {
-        Element.wait.forTextFieldWithIdentifier(toTextFieldIdentifier).tap()
+        Element.wait.forTextFieldWithIdentifier(toTextFieldIdentifier, file: #file, line: #line).tap()
         Element.textField.tapByIdentifier(toTextFieldIdentifier).typeText(email)
         Element.other.tapIfExists(popoverDismissRegionOtherIdentifier)
         return self
     }
     
     private func cc(_ email: String) -> ComposerRobot {
-        Element.wait.forTextFieldWithIdentifier(ccTextFieldIdentifier).tap()
+        Element.wait.forTextFieldWithIdentifier(ccTextFieldIdentifier, file: #file, line: #line).tap()
         Element.textField.tapByIdentifier(ccTextFieldIdentifier).typeText(email)
         Element.other.tapIfExists(popoverDismissRegionOtherIdentifier)
         return self
     }
     
     private func bcc(_ email: String) -> ComposerRobot {
-        Element.wait.forTextFieldWithIdentifier(bccTextFieldIdentifier).tap()
+        Element.wait.forTextFieldWithIdentifier(bccTextFieldIdentifier, file: #file, line: #line).tap()
         Element.textField.tapByIdentifier(bccTextFieldIdentifier).typeText(email)
         Element.other.tapIfExists(popoverDismissRegionOtherIdentifier)
         return self
     }
     
     private  func subject(_ subjectText: String) -> ComposerRobot {
-        Element.wait.forTextFieldWithIdentifier(subjectTextFieldIdentifier).tap()
+        Element.wait.forTextFieldWithIdentifier(subjectTextFieldIdentifier, file: #file, line: #line).tap()
         Element.textField(subjectTextFieldIdentifier).perform.typeText(subjectText)
         return self
     }

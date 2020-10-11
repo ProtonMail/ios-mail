@@ -3013,6 +3013,7 @@
 		E1529D2B86F3F2BDF78B10DF4FC15D2C /* MessageBodyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyViewController.swift; sourceTree = "<group>"; };
 		E16E454E695C38BFFB2E2D5D99E7CAFB /* Email+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Email+Extension.swift"; sourceTree = "<group>"; };
 		E17E49EE35CCAC16B977B295510FC090 /* LoginRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRobot.swift; sourceTree = "<group>"; };
+		E185699F7608929C988FFE9B4E096393 /* RegressionTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RegressionTests.xctestplan; sourceTree = "<group>"; };
 		E1A8F91DDC0A969EA9035A26B837BFF4 /* LabelsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsView.swift; sourceTree = "<group>"; };
 		E20C729B58B3E8CDD72CE5DCB2AD4CFF /* ProtonMail-Bridging-Header.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "ProtonMail-Bridging-Header.cpp"; sourceTree = "<group>"; };
 		E2300A42E73CE48B7B3B4F8A70ABFA3C /* EncryptionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKit.swift; sourceTree = "<group>"; };
@@ -3068,6 +3069,7 @@
 		EEB569B214044237B50A6CBEBB135CAF /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		EEBCD851C11F2C25BF177C056349D302 /* SettingsAccountCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountCoordinator.swift; sourceTree = "<group>"; };
 		EEDE82B760D18CD3FF2202AD2E74F6CC /* BugReportCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportCache.swift; sourceTree = "<group>"; };
+		EF7A5A2BF0FD6ADA8445147AFC9C0C02 /* SmokeTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SmokeTests.xctestplan; sourceTree = "<group>"; };
 		EFDE99642ECF8100FF4804856C4E4378 /* StringConversionTests+Marcel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringConversionTests+Marcel.swift"; sourceTree = "<group>"; };
 		EFDFB1E8E98A4D9DDE74D08672B33D7D /* SignatureAlertViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureAlertViewModelImpl.swift; sourceTree = "<group>"; };
 		F0299D313A7A1544B29AD839C2DA2F9E /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -4625,6 +4627,8 @@
 			isa = PBXGroup;
 			children = (
 				98AE2CD13803404A64AEF6050D54F4C9 /* scripts */,
+				E185699F7608929C988FFE9B4E096393 /* RegressionTests.xctestplan */,
+				EF7A5A2BF0FD6ADA8445147AFC9C0C02 /* SmokeTests.xctestplan */,
 			);
 			path = TestPlans;
 			sourceTree = "<group>";
