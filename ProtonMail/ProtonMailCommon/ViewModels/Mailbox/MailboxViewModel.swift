@@ -283,7 +283,7 @@ class MailboxViewModel: StorageLimit {
     
     ///
     func selectedMessages(selected: NSMutableSet) -> [Message] {
-        return messageService.fetchMessages(withIDs: selected)
+        return messageService.fetchMessages(withIDs: selected, in: self.coreDataService.mainManagedObjectContext)
     }
     
     ///

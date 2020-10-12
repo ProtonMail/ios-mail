@@ -135,13 +135,11 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                     } else {
                         
                     }
-                    
-                    context.performAndWait {
-                        let error = context.saveUpstreamIfNeeded()
-                        if let error = error {
-                            PMLog.D("error: \(error)")
-                        }
-                    }
+                }
+                
+                let error = context.saveUpstreamIfNeeded()
+                if let error = error {
+                    PMLog.D("error: \(error)")
                 }
                 
                 if archiveMessage {
