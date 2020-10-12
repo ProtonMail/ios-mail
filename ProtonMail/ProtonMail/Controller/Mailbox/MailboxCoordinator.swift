@@ -286,10 +286,10 @@ class MailboxCoordinator : DefaultCoordinator {
                     if (rawURLparts.count > 2) {
                         
                     } else {
-                        let defaultRecipient = rawURLparts[0]
+                        let defaultRecipient = rawURLparts[0].components(separatedBy: ",")
                         if defaultRecipient.count > 0 { //default to
-                            if defaultRecipient.isValidEmail() {
-                                viewModel.addToContacts(ContactVO(name: defaultRecipient, email: defaultRecipient))
+                            defaultRecipient.forEach { (recipient) in
+                                viewModel.addToContacts(ContactVO(name: recipient, email: recipient))
                             }
                             PMLog.D("to: \(defaultRecipient)")
                         }
