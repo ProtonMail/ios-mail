@@ -23,45 +23,9 @@ class TestData {
     var messageSubject: String { return "Random Subject: \(Date().millisecondsSince1970)" }
     var messageBody: String { return "Hello ProtonMail!Random body: \(Date().millisecondsSince1970)" }
     
-    var alphaNumericString: String { return "_\(randomAlphanumericString())\(Date().millisecondsSince1970)" }
-    var newEmailAddress: String { return "\(randomEmail())@pm.me" }
+    var alphaNumericString: String { return "_\(StringUtils().randomAlphanumericString())\(Date().millisecondsSince1970)" }
+    var newEmailAddress: String { return "\(StringUtils().randomEmail())@pm.me" }
     
     let editedPassword = "P@ssw0rd!"
     let editedPasswordHint = "ProtonMail"
-    
-    private func randomAlphanumericString(length: Int = 10) -> String {
-        let allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-        let allowedCharsCount = UInt32(allowedChars.count)
-        var randomString = ""
-
-        for _ in 0..<length {
-            let randomNum = Int(arc4random_uniform(allowedCharsCount))
-            let randomIndex = allowedChars.index(allowedChars.startIndex, offsetBy: randomNum)
-            let newCharacter = allowedChars[randomIndex]
-            randomString += String(newCharacter)
-        }
-
-        return randomString
-    }
-    
-    private func randomEmail(length: Int = 5) -> String {
-        let allowedChars = "abcdefghijklmnopqrstuuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#$%&'*+-=?^`{|}~"
-        let allowedCharsCount = UInt32(allowedChars.count)
-        var randomString = "a" /// needed to avoid special char in the first place
-
-        for _ in 0..<length {
-            let randomNum = Int(arc4random_uniform(allowedCharsCount))
-            let randomIndex = allowedChars.index(allowedChars.startIndex, offsetBy: randomNum)
-            let newCharacter = allowedChars[randomIndex]
-            randomString += String(newCharacter)
-        }
-
-        return randomString
-    }
-}
-
-extension Date {
- var millisecondsSince1970:Int64 {
-        return Int64((self.timeIntervalSince1970 * 1000.0).rounded())
-    }
 }
