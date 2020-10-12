@@ -733,19 +733,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         
         self.pullDown()
-        //TODO:: fix me
-//        let updateTime = viewModel.lastUpdateTime()
-//        let recordedCount = Int(updateTime.total)
-//        if updateTime.isNew || recordedCount > rowCount {
-//            self.fetchingOlder = true
-//            viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (task, messages, error) -> Void in
-//                self.fetchingOlder = false
-//                if error != nil {
-//                    PMLog.D("search error: \(String(describing: error))")
-//                }
-//                self.checkHuman()
-//            })
-//        }
     }
     
     func handleRequestError (_ error : NSError) {
@@ -774,10 +761,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     
     @objc internal func pullDown() {
-//        guard refreshControl.isRefreshing == false else {
-//            self.refreshControl?.endRefreshing()
-//            return
-//        }
+        guard !tableView.isDragging else {
+            return
+        }
+        
         self.getLatestMessages()
         //temperay to fix the new messages are not loaded
         self.fetchNewMessage()
@@ -1511,6 +1498,14 @@ extension MailboxViewController: UITableViewDelegate {
             self.noResultLabel.frame = CGRect(x: frame.origin.x, y: -scrollView.contentOffset.y, width: frame.width, height: frame.height)
         } else {
             self.noResultLabel.frame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height)
+        }
+    }
+}
+
+extension MailboxViewController {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if refreshControl.isRefreshing {
+            self.pullDown()
         }
     }
 }

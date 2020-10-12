@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.11.0">
+    <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
+        <attribute name="attachmentID" attributeType="String" valueTransformerName="StringCryptoTransformer">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="fileData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="fileName" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Name"/>
+            </userInfo>
+        </attribute>
+        <attribute name="fileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Size"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="headerInfo" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Headers"/>
+                <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isSoftDeleted" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="isTemp" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="keyChanged" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="keyPacket" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="KeyPackets"/>
+            </userInfo>
+        </attribute>
+        <attribute name="localURL" optional="YES" attributeType="Transformable" valueTransformerName="" allowsExternalBinaryDataStorage="YES" customClassName="URL"/>
+        <attribute name="mimeType" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="MIMEType"/>
+            </userInfo>
+        </attribute>
+        <attribute name="userID" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UserID"/>
+            </userInfo>
+        </attribute>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="attachments" inverseEntity="Message"/>
+        <userInfo>
+            <entry key="identityAttribute" value="attachmentID"/>
+        </userInfo>
+    </entity>
+    <entity name="Contact" representedClassName=".Contact" syncable="YES">
+        <attribute name="cardData" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Cards"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="contactID" attributeType="String" valueTransformerName="StringCryptoTransformer">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isCorrected" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="isDownloaded" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="modifyTIme" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Name"/>
+            </userInfo>
+        </attribute>
+        <attribute name="needsRebuild" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Size"/>
+            </userInfo>
+        </attribute>
+        <attribute name="userID" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UserID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="uuid" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UID"/>
+            </userInfo>
+        </attribute>
+        <relationship name="emails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Email" inverseName="contact" inverseEntity="Email">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ContactEmails"/>
+            </userInfo>
+        </relationship>
+        <fetchIndex name="byContactIDIndex">
+            <fetchIndexElement property="contactID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byNameIndex">
+            <fetchIndexElement property="name" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <userInfo>
+            <entry key="identityAttribute" value="contactID"/>
+        </userInfo>
+    </entity>
+    <entity name="Conversation" representedClassName="." syncable="YES"/>
+    <entity name="Email" representedClassName=".Email" syncable="YES">
+        <attribute name="contactID" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ContactID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="defaults" optional="YES" attributeType="Integer 16" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Defaults"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="email" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Email"/>
+            </userInfo>
+        </attribute>
+        <attribute name="emailID" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Name"/>
+            </userInfo>
+        </attribute>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Order"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="type" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Type"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="userID" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UserID"/>
+            </userInfo>
+        </attribute>
+        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="emails" inverseEntity="Contact"/>
+        <relationship name="labels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Label" inverseName="emails" inverseEntity="Label">
+            <userInfo>
+                <entry key="JSONKeyPath" value="LabelIDs"/>
+            </userInfo>
+        </relationship>
+        <userInfo>
+            <entry key="identityAttribute" value="emailID"/>
+        </userInfo>
+    </entity>
+    <entity name="Label" representedClassName=".Label" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Color"/>
+            </userInfo>
+        </attribute>
+        <attribute name="exclusive" optional="YES" attributeType="Boolean" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Exclusive"/>
+                <entry key="NumberTransformer" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isDisplay" optional="YES" attributeType="Boolean" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Display"/>
+                <entry key="NumberTransformer" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="labelID" attributeType="String" valueTransformerName="StringCryptoTransformer">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Name"/>
+            </userInfo>
+        </attribute>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Order"/>
+                <entry key="NumberTransformer" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Type"/>
+                <entry key="NumberTransformer" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="userID" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UserID"/>
+            </userInfo>
+        </attribute>
+        <relationship name="emails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Email" inverseName="labels" inverseEntity="Email"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="labels" inverseEntity="Message"/>
+        <fetchIndex name="byLabelIDIndex">
+            <fetchIndexElement property="labelID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <userInfo>
+            <entry key="identityAttribute" value="labelID"/>
+        </userInfo>
+    </entity>
+    <entity name="LabelUpdate" representedClassName=".LabelUpdate" syncable="YES">
+        <attribute name="end" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="labelID" optional="YES" attributeType="String"/>
+        <attribute name="start" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="total" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="unread" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="update" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="userID" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Message" representedClassName=".Message" syncable="YES">
+        <attribute name="action" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="addressID" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer">
+            <userInfo>
+                <entry key="JSONKeyPath" value="AddressID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="bccList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="BCCList"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="body" attributeType="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Body"/>
+            </userInfo>
+        </attribute>
+        <attribute name="cachedAddressRaw" optional="YES" transient="YES" attributeType="Binary"/>
+        <attribute name="cachedAuthCredentialRaw" optional="YES" transient="YES" attributeType="Binary"/>
+        <attribute name="cachedPassphraseRaw" optional="YES" transient="YES" attributeType="Binary"/>
+        <attribute name="cachedPrivateKeysRaw" optional="YES" transient="YES" attributeType="Binary"/>
+        <attribute name="ccList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="CCList"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="expirationOffset" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="expirationTime" optional="YES" attributeType="Date" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ExpirationTime"/>
+                <entry key="JSONTransformerName" value="DateTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="flags" optional="YES" attributeType="Integer 32" defaultValueString="1" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Flags"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="header" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Header"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isDetailDownloaded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="isEncrypted" attributeType="Integer 16" defaultValueString="NO" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="IsEncrypted"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="lastModified" optional="YES" attributeType="Date" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="modify_time"/>
+                <entry key="JSONTransformerName" value="DateTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="messageID" attributeType="String" valueTransformerName="StringCryptoTransformer">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="messageStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="mimeType" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="MIMEType"/>
+            </userInfo>
+        </attribute>
+        <attribute name="numAttachments" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="NumAttachments"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="orginalMessageID" optional="YES" attributeType="String"/>
+        <attribute name="orginalTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="password" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String"/>
+        <attribute name="passwordEncryptedBody" attributeType="String" valueTransformerName="StringCryptoTransformer"/>
+        <attribute name="passwordHint" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String"/>
+        <attribute name="replyTos" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ReplyTos"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="sender" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Sender"/>
+                <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Size"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="spamScore" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="SpamScore"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Time"/>
+                <entry key="JSONTransformerName" value="DateTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="title" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Subject"/>
+            </userInfo>
+        </attribute>
+        <attribute name="toList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ToList"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="unRead" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Unread"/>
+            </userInfo>
+        </attribute>
+        <attribute name="userID" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UserID"/>
+            </userInfo>
+        </attribute>
+        <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Attachments"/>
+            </userInfo>
+        </relationship>
+        <relationship name="labels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Label" inverseName="messages" inverseEntity="Label">
+            <userInfo>
+                <entry key="JSONKeyPath" value="LabelIDs"/>
+            </userInfo>
+        </relationship>
+        <fetchIndex name="byLastModifiedIndex">
+            <fetchIndexElement property="lastModified" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byMessageIDIndex">
+            <fetchIndexElement property="messageID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byMessageStatusIndex">
+            <fetchIndexElement property="messageStatus" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byMessageTypeIndex">
+            <fetchIndexElement property="messageType" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byTimeIndex">
+            <fetchIndexElement property="time" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byTitleIndex">
+            <fetchIndexElement property="title" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <userInfo>
+            <entry key="identityAttribute" value="messageID"/>
+        </userInfo>
+    </entity>
+    <entity name="UserEvent" representedClassName=".UserEvent" syncable="YES">
+        <attribute name="eventID" optional="YES" attributeType="String"/>
+        <attribute name="userID" optional="YES" attributeType="String"/>
+    </entity>
+    <fetchRequest name="FetchRequest" entity="Message" predicateString="messageType == 1"/>
+    <elements>
+        <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="238"/>
+        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="223"/>
+        <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
+        <element name="Email" positionX="1539" positionY="-3582" width="128" height="193"/>
+        <element name="Label" positionX="2095" positionY="-3357" width="128" height="193"/>
+        <element name="LabelUpdate" positionX="1440" positionY="-3717" width="128" height="148"/>
+        <element name="Message" positionX="1717" positionY="-3867" width="128" height="598"/>
+        <element name="UserEvent" positionX="1440" positionY="-3717" width="128" height="73"/>
+    </elements>
+</model>

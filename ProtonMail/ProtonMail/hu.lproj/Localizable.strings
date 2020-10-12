@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Hozzáadás";
 
+/* menu title */
+"Add accounts" = "Fiók hozzáadása";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Évforduló hozzáadása";
 
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Postafiók mérete";
 
+/* menu title */
+"Manage accounts" = "Fiókok kezelése";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Tagok kezelése";
 
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Csak egy ingyenes fiók adható hozzá";
+
+/* Open action */
+"Open" = "Open";
 
 /* (No Comment) */
 "OpenDraft" = "Piszkozat megnyitása";
@@ -1934,6 +1943,9 @@
 /* menu title */
 "Subscription" = "Előfizetés";
 
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Subscription information temporarily unavailable. Please try again later.";
+
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "%i domain név (pl.: sajat@domain.hu)";
 
@@ -2044,6 +2056,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "A mellékletek teljes mérete nem haladhatja meg a 25MB-ot";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "A felhasználó már belépett";

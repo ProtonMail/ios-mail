@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Dodaj";
 
+/* menu title */
+"Add accounts" = "Dodaj korisničke račune";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Dodaj godišnjicu";
 
@@ -495,7 +498,7 @@
 "Compose to" = "Nova poruka za";
 
 /* Action */
-"Confirm" = "Potvrdi";
+"Confirm" = "Potvrda";
 
 /* "Login Password" */
 "Confirm Login Password" = "Potvrdi lozinku za prijavu";
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Veličina sandučića e-pošte";
 
+/* menu title */
+"Manage accounts" = "Upravljanje korisničkim računima";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Upravljanje adresama";
 
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Možete dodati samo jedan besplatni račun";
+
+/* Open action */
+"Open" = "Otvori";
 
 /* (No Comment) */
 "OpenDraft" = "Otvori skicu";
@@ -1934,6 +1943,9 @@
 /* menu title */
 "Subscription" = "Pretplata";
 
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Informacije o pretplati su privremeno nedostupne. Pokušajte ponovno kasnije.";
+
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Podrška za %i prilagođene domene (npr. korisnik@vasadomena.hr)";
 
@@ -2044,6 +2056,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Ukupna veličina privitka ne smije biti veća od 25MB";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL kojem pokušavate pristupiti nije standardan i možda se neće pravilno učitati. Želite li ga otvoriti pomoću zadanog preglednika vašeg uređaja?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Korisnik je već prijavljen";

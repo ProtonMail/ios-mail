@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Hinzufügen";
 
+/* menu title */
+"Add accounts" = "Konten hinzufügen";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Jahrestag hinzufügen";
 
@@ -337,7 +340,7 @@
 "Call Contact" = "Kontakt anrufen";
 
 /* key size note part 2 */
-"Can take several minutes to setup." = "Dieser Schritt kann einige Minuten in Anspruch nehmen.";
+"Can take several minutes to setup." = "Die Einrichtung kann mehrere Minuten dauern.";
 
 /* Error */
 "Can't copy the file" = "Datei konnte nicht kopiert werden";
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Größe des Postfachs";
 
+/* menu title */
+"Manage accounts" = "Konten verwalten";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Adressen verwalten";
 
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Nur ein kostenloses Konto kann hinzugefügt werden";
+
+/* Open action */
+"Open" = "Öffnen";
 
 /* (No Comment) */
 "OpenDraft" = "Entwurf öffnen";
@@ -1934,6 +1943,9 @@
 /* menu title */
 "Subscription" = "Abonnement";
 
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Abonnement-Informationen vorübergehend nicht verfügbar. Bitte versuchen Sie es später noch einmal.";
+
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Unterstützung für %i benutzerdefinierte Domains (z.B. user@yourdomain.com)";
 
@@ -1954,7 +1966,7 @@
 "Swiping gestures" = "Wischgesten";
 
 /* Alert when switched account by clicking notification of another account */
-"Switched to account '%@'" = "Zu Konto „%@” wechseln";
+"Switched to account '%@'" = "Zu Konto „%@” gewechselt";
 
 /* Error */
 "System can't copy the file" = "System konnte nicht die Datei kopieren";
@@ -2044,6 +2056,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Die Gesamtgröße der Anhänge darf 25MB nicht überschreiten";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Die URL, auf die Sie zuzugreifen versuchen, entspricht nicht dem Standard und wird möglicherweise nicht richtig geladen. Möchten Sie diese Adresse jetzt mit dem Standardbrowser Ihres Geräts öffnen?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Der Benutzer ist bereits angemeldet";

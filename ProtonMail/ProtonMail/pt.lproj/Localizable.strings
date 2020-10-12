@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Adicionar";
 
+/* menu title */
+"Add accounts" = "Adicionar contas";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Adicionar aniversário";
 
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Tamanho da caixa de correio";
 
+/* menu title */
+"Manage accounts" = "Gerir contas";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Gerir endereços";
 
@@ -1399,7 +1405,7 @@
 "Not Now" = "Agora não";
 
 /* Signup user name notes */
-"Note: The Username is also your ProtonMail address." = "Nota: o nome de utilizador também é o seu endereço ProtonMail.";
+"Note: The Username is also your ProtonMail address." = "<b>Nota</b>: o nome de utilizador também é o seu endereço ProtonMail.";
 
 /* setup password notes */
 "Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Nota: isto é usado para encriptar e desencriptar as suas mensagens. Não perca esta senha, não podemos recuperá-la.";
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Apenas uma conta gratuita pode ser adicionada";
+
+/* Open action */
+"Open" = "Abrir";
 
 /* (No Comment) */
 "OpenDraft" = "Abrir rascunho";
@@ -1741,7 +1750,7 @@
 "Request Link Confirmation" = "Pedir confirmação da hiperligação";
 
 /* Action */
-"RESET MAILBOX PASSWORD" = "REDEFINIR SENHA DA CAIXA DE CORREIO";
+"RESET MAILBOX PASSWORD" = "REPOR SENHA DA CAIXA DE CORREIO";
 
 /* Title */
 "Resetting message cache ..." = "A repor lista de mensagens...";
@@ -1934,6 +1943,9 @@
 /* menu title */
 "Subscription" = "Subscrição";
 
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Informações de subscrição temporariamente indisponíveis. Por favor, tente novamente mais tarde.";
+
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Suporte para %i domínios personalizados (por exemplo: nome@meudominio.com)";
 
@@ -2044,6 +2056,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "O tamanho total dos anexos não pode exceder 25 MB";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "O URL a que está a tentar aceder não está normalizado e pode não carregar adequadamente. Deseja abrir no seu navegador predefinido?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "O utilizador já iniciou sessão";
@@ -2384,7 +2399,7 @@
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Pode obter ajuda e suporte em protonmail.com/pt/support. Os erros também podem ser reportados com a aplicação.";
 
 /* pm.me upgrade warning in composer */
-"You can't set %@ address as default because it is a paid feature." = "Não pode definir o endereço %@ como predefinição porque essa é uma funcionalidade paga.";
+"You can't set %@ address as default because it is a paid feature." = "Não pode predefinir o endereço %@, é uma funcionalidade paga.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Desactivou o FaceID nas definições do sistema. O FaceID foi utilizado para proteger informação importante da conta. Para aceder à sua conta, reactive o FaceID nas definições ou faça reinicie sessão.";

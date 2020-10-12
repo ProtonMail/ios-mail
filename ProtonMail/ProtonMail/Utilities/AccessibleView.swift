@@ -84,9 +84,30 @@ extension AccessibleView {
 
 
 extension UINavigationItem {
-    
     func assignNavItemIndentifiers() {
-        self.leftBarButtonItem?.accessibilityIdentifier = "\(type(of: self)).leftBarButtonItem"
-        self.rightBarButtonItem?.accessibilityIdentifier = "\(type(of: self)).rightBarButtonItem"
+        self.rightBarButtonItems?.forEach({ (button) in
+            button.accessibilityIdentifier = "\(type(of: self)).\(String(describing: button.action).replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "Tapped", with: "").replacingOccurrences(of: ":", with: ""))"
+        })
+        
+        self.leftBarButtonItems?.forEach({ (button) in
+            button.accessibilityIdentifier = "\(type(of: self)).\(String(describing: button.action).replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "Tapped", with: "").replacingOccurrences(of: ":", with: ""))"
+        })
+    }
+}
+
+extension UIAlertController {
+    func assignActionsAccessibilityIdentifiers() {
+        self.view.accessibilityIdentifier = "\(type(of: self))"
+    }
+}
+
+extension UITabBar {
+    func assignItemsAccessibilityIdentifiers() {
+        self.items?.forEach { (item) in
+            if (item.title != nil) {
+                item.accessibilityIdentifier =
+                    "\(type(of: self)).\(String(describing: item.title!.replacingOccurrences(of: " ", with: "_")))"
+            }
+        }
     }
 }

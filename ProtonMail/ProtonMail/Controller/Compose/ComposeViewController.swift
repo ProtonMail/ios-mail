@@ -474,20 +474,36 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     
     private func collectDraftData()  -> Guarantee<Void>  {
         return Guarantee { ret in
-            self.htmlEditor.getHtml().done { body in
+            self.htmlEditor.getHtml().done { bodyString in
                 
-                var html = body.replacingOccurrences(of: "\\", with: "&#92;", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "\"", with: "\\\"", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "“", with: "&quot;", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "”", with: "&quot;", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "\r", with: "\\r", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "\n", with: "\\n", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "<br>", with: "<br />", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "<hr>", with: "<hr />", options: .caseInsensitive, range: nil)
+                let head = "<html><head></head><body>"
+                let foot = "</body></html>"
+                
+                let mutableString = NSMutableString(string: bodyString)
+                CFStringTransform(mutableString, nil, "Any-Hex/Java" as NSString, true)
+                let resultString = mutableString as String
+                
+                var body = resultString.isEmpty ? bodyString : resultString
+                if !body.hasPrefix(head) {
+                    body = head + body
+                }
+                
+                if !body.hasSuffix(foot) {
+                    body = body + foot
+                }
+                
+//                var html = body.replacingOccurrences(of: "\\", with: "&#92;", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "\"", with: "\\\"", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "“", with: "&quot;", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "”", with: "&quot;", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "\r", with: "\\r", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "\n", with: "\\n", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "<br>", with: "<br />", options: .caseInsensitive, range: nil)
+//                html = body.replacingOccurrences(of: "<hr>", with: "<hr />", options: .caseInsensitive, range: nil)
                 
                 self.viewModel.collectDraft (
                     self.headerView.subject.text!,
-                    body: html.isEmpty ? body : html,
+                    body: mutableString as String,//html.isEmpty ? body : html,
                     expir: self.headerView.expirationTimeInterval,
                     pwd:self.encryptionPassword,
                     pwdHit:self.encryptionPasswordHint
@@ -597,7 +613,7 @@ extension ComposeViewController : ComposeViewDelegate {
                         if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
                             self.htmlEditor.update(signature: signature)
                         }
-                        MBProgressHUD.showAdded(to: self.view, animated: true)
+                        MBProgressHUD.showAdded(to: self.parent!.navigationController!.view, animated: true)
                         self.updateSenderMail(addr: addr)
                     }
                 }
@@ -624,18 +640,16 @@ extension ComposeViewController : ComposeViewDelegate {
             }
         }
         
-        _ = self.queue.sync {
+        self.queue.sync {
             self.viewModel.updateAddressID(addr.address_id).catch { (error ) in
-                {
-                    let alertController = error.localizedDescription.alertController()
-                    alertController.addOKAction()
-                    self.present(alertController, animated: true, completion: nil)
-                } ~> .main
+                let alertController = error.localizedDescription.alertController()
+                alertController.addOKAction()
+                self.present(alertController, animated: true, completion: nil)
+            }.finally {
+                self.headerView.updateFromValue(addr.email, pickerEnabled: true)
+                MBProgressHUD.hide(for: self.parent!.navigationController!.view, animated: true)
             }
         }
-        
-        self.headerView.updateFromValue(addr.email, pickerEnabled: true)
-        MBProgressHUD.hide(for: self.view, animated: true)
     }
     
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {

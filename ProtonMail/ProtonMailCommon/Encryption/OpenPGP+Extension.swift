@@ -169,7 +169,7 @@ extension PMNOpenPgp {
 
 
 extension Data {
-    func decryptAttachment(keyPackage: Data, userKeys: Data, passphrase: String, keys: [Key]) throws -> Data? {
+    func decryptAttachment(keyPackage: Data, userKeys: [Data], passphrase: String, keys: [Key]) throws -> Data? {
         var firstError : Error?
         for key in keys {
             do {
@@ -209,7 +209,7 @@ extension Data {
     }
     
     
-    func decryptAttachment(_ keyPackage: Data, passphrase: String, privKeys: Data) throws -> Data? {
+    func decryptAttachment(_ keyPackage: Data, passphrase: String, privKeys: [Data]) throws -> Data? {
         return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privKeys, passphrase: passphrase)
     }
 
@@ -232,7 +232,7 @@ extension Data {
     }
     
     //key packet part
-    func getSessionFromPubKeyPackage(_ passphrase: String, privKeys: Data) throws -> SymmetricKey? {
+    func getSessionFromPubKeyPackage(_ passphrase: String, privKeys: [Data]) throws -> SymmetricKey? {
         return try Crypto().getSession(keyPacket: self, privateKeys: privKeys, passphrase: passphrase)
     }
     
@@ -242,7 +242,7 @@ extension Data {
     }
     
     //key packet part
-    func getSessionFromPubKeyPackage(userKeys: Data, passphrase: String, keys: [Key]) throws -> SymmetricKey? {
+    func getSessionFromPubKeyPackage(userKeys: [Data], passphrase: String, keys: [Key]) throws -> SymmetricKey? {
         var firstError : Error?
         for key in keys {
             do {

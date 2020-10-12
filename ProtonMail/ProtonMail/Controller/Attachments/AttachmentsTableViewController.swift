@@ -34,7 +34,7 @@ protocol AttachmentsTableViewControllerDelegate : AnyObject {
     func attachments(_ attViewController: AttachmentsTableViewController, error: String) -> Void
 }
 
-class AttachmentsTableViewController: UITableViewController, AttachmentController {
+class AttachmentsTableViewController: UITableViewController, AttachmentController, AccessibleView {
     
     enum AttachmentSection: Int {
         case normal = 1, inline
@@ -71,7 +71,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
 
     var attachments: [Attachment] {
         if let atts = self.message.attachments.allObjects as? [Attachment] {
-            return atts
+            return atts.filter{ !$0.isSoftDeleted }
         }
         return []
     }
@@ -126,6 +126,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         self.clearsSelectionOnViewWillAppear = false
         
         updateAttachments()
+        generateAccessibilityIdentifiers()
     }
     
     func configureNavigationBar(_ navigationController: UINavigationController) {

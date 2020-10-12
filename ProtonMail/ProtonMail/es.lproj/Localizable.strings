@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Añadir";
 
+/* menu title */
+"Add accounts" = "Añadir cuentas";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Añadir aniversario";
 
@@ -235,10 +238,10 @@
 "Archived" = "Archivado";
 
 /* Alert when logout non-primary account from account manager */
-"Are you sure you want to log out?" = "¿Estás seguro de que quieres cerrar sesión?";
+"Are you sure you want to log out?" = "¿Estás seguro de que quieres cerrar la sesión?";
 
 /* Alert to confirm logout when only one account logged in */
-"Are you sure you want to logout %@?" = "¿Estás seguro de que quieres cerrar sesión %@?";
+"Are you sure you want to logout %@?" = "¿Estás seguro de que quieres cerrar la sesión %@?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "¿Estás seguro? Esta acción no se puede deshacer.";
@@ -574,7 +577,7 @@
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Crea y añade etiquetas para organizar tu bandeja de entrada. Mantén pulsado un mensaje para ver todas las opciones.";
 
 /* title of button in account connect page */
-"Create new account" = "Create new account";
+"Create new account" = "Crear una cuenta nueva";
 
 /* error message title when create new user */
 "Create user failed" = "Error al crear el usuario";
@@ -626,7 +629,7 @@
 "Default" = "Por defecto";
 
 /* Settings row */
-"Default browser" = "Navegador por defecto";
+"Default browser" = "Navegador predeterminado";
 
 /* error message when create new user */
 "Default error. Please try again." = "Ocurrió un error, inténtelo nuevamente.";
@@ -957,7 +960,7 @@
 "General Settings" = "Ajustes generales";
 
 /* Screen header, like 'Get VISIONARY' */
-"Get %@" = "Obtenga %@";
+"Get %@" = "Obtener %@";
 
 /* Action */
 "Get more information" = "Obtener más información";
@@ -1177,7 +1180,7 @@
 "Local cache can't find mailbox password" = "La caché local no puede encontrar la contraseña del buzón";
 
 /* cell title in device settings */
-"Local Cache Management" = "Gestionar caché local";
+"Local Cache Management" = "Gestión de la caché local";
 
 /* cell title in device settings */
 "Local storage limit" = "Límite de almacenamiento local";
@@ -1225,7 +1228,7 @@
 "Looking to secure your contact's details?" = "¿Buscando asegurar sus datos de contacto?";
 
 /* cell title in device settings */
-"MAILBOX" = "Buzón";
+"MAILBOX" = "BUZÓN";
 
 /* settings general section title */
 "Mailbox Password" = "Contraseña del buzón";
@@ -1240,11 +1243,14 @@
 /* cell title in device settings */
 "Mailbox size" = "Tamaño del buzón";
 
+/* menu title */
+"Manage accounts" = "Gestionar cuentas";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Gestionar direcciones";
 
 /* Settings row */
-"Manage in device Settings" = "Administrar en ajustes del dispositivo";
+"Manage in device Settings" = "Gestionar en la configuración del dispositivo";
 
 /* Title */
 "Manage Labels/Folders" = "Administrar Etiquetas/Carpetas";
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Solo se puede añadir una cuenta gratuita";
+
+/* Open action */
+"Open" = "Abrir";
 
 /* (No Comment) */
 "OpenDraft" = "Abrir borrador";
@@ -1911,7 +1920,7 @@
 "State" = "Estado";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Si todavía no encuentra una solución";
+"Still can't find a solution" = "Todavía no se ha podido encontrar una solución";
 
 /* Title */
 "Storage" = "Almacenamiento";
@@ -1933,6 +1942,9 @@
 
 /* menu title */
 "Subscription" = "Suscripción";
+
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Información de suscripción no disponible temporalmente. Por favor, inténtalo de nuevo más tarde.";
 
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Soporte para %i dominios personalizados (p. ej. usuario@sudominio.com)";
@@ -2016,7 +2028,7 @@
 "The new password can't empty" = "La nueva contraseña no puede estar vacía";
 
 /* update password error */
-"The new password does not match." = "La nueva contraseñas no coincide.";
+"The new password does not match." = "La nueva contraseña no coincide.";
 
 /* (No Comment) */
 "The new password not match" = "Las contraseñas no coinciden";
@@ -2044,6 +2056,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "El tamaño total del archivo adjunto no puede exceder los 25MB";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "La URL a la que intentas acceder no es estándar y puede que no se cargue correctamente. ¿Quieres abrirla usando el navegador predeterminado de tu dispositivo?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "El usuario ya ha iniciado sesión";
@@ -2076,7 +2091,7 @@
 "This can take a while. Please do not dismiss the app." = "Esto puede tomar un tiempo, no cierre la aplicación.";
 
 /* alert desc */
-"This contact belongs to your Address Book." = "Este contacto pertenece a su libreta de direcciones.";
+"This contact belongs to your Address Book." = "Este contacto pertenece a tu libreta de direcciones.";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo electrónico ha fallado los requisitos de autenticación de su dominio. ¡Puede ser falsificado o reenviado incorrectamente!";
@@ -2230,7 +2245,7 @@
 "Unlimited messages sent/day" = "Enviar mensajes ilimitados por día";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Unlock required" = "Desbloqueo obligatorio";
+"Unlock required" = "Desbloqueo requerido";
 
 /* The verb for describing the unread action
    VoiceOver: email is not read yet */

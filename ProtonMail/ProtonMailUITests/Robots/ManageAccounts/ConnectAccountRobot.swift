@@ -16,7 +16,6 @@ private let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
 private let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
 private let cancelButtonIdentifier = "UINavigationItem.leftBarButtonItem"
 
-
 class ConnectAccountRobot {
     
     var verify: Verify! = nil

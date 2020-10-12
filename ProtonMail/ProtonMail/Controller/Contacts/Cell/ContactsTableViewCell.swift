@@ -28,7 +28,7 @@ import MCSwipeTableViewCell
 
 
 /// Custom cell for Contact list, Group list and composer autocomplete
-final class ContactsTableViewCell: MCSwipeTableViewCell {
+final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
     
     /// easiler to access
     static let cellID = "ContactCell"
@@ -93,6 +93,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
             shortn = String(email[..<index])
         }
         shortName.text = shortn.uppercased()
+        generateCellAccessibilityIdentifiers(email)
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
