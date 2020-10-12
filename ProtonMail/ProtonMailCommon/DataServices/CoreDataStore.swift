@@ -77,12 +77,7 @@ class CoreDataStore {
     private func newPersistentContainer(_ managedObjectModel: NSManagedObjectModel, name: String, url: URL) -> NSPersistentContainer {
         var url = url
         let container = NSPersistentContainer(name: name, managedObjectModel: managedObjectModel)
-        
-        let description = NSPersistentStoreDescription(url: url)
-        description.shouldMigrateStoreAutomatically = true
-        description.shouldInferMappingModelAutomatically = true
-        
-        container.persistentStoreDescriptions = [description]
+        container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: url)]
         container.loadPersistentStores { (persistentStoreDescription, error) in
             if let ex = error as NSError? {
                 Analytics.shared.error(message: .coreDataError, error: ex)

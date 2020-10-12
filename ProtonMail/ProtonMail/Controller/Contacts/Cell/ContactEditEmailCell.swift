@@ -25,7 +25,7 @@ import Foundation
 
 
 
-final class ContactEditEmailCell: UITableViewCell, AccessibleCell {
+final class ContactEditEmailCell: UITableViewCell {
     
     fileprivate var email: ContactEditEmail!
     
@@ -72,7 +72,6 @@ final class ContactEditEmailCell: UITableViewCell, AccessibleCell {
             
             firstSetup = false
         }
-        generateCellAccessibilityIdentifiers(LocalString._contacts_email_address_placeholder)
     }
     
     // called when the contact group selection view is dismissed

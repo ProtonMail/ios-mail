@@ -10,8 +10,8 @@ import Crypto
 
 public struct CryptoSubtle: SubtleProtocol {
     public static func Random(_ len: Int) -> Data? {
-        var error : NSError?
-        return CryptoRandomToken(len, &error)
+        let pgp = CryptoGetGopenPGP()!
+        return try? pgp.randomTokenSize(len)
     }
     
     public static func DeriveKey(_ one: String, _ two: Data, _ three: Int, _ four: inout NSError?) -> Data? {

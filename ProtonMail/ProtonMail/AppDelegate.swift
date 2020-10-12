@@ -297,7 +297,6 @@ extension AppDelegate: UIApplicationDelegate {
         let users: UsersManager = sharedServices.get()
         if let user = users.firstUser {
             user.messageService.purgeOldMessages()
-            user.messageService.cleanOldAttachment()
             user.messageService.updateMessageCount()
             user.messageService.backgroundFetch {
                 delayedCompletion()
@@ -333,15 +332,6 @@ extension AppDelegate: UIApplicationDelegate {
         backgroundContext.performAndWait {
             let _ = backgroundContext.saveUpstreamIfNeeded()
         }
-    }
-    
-    func applicationWillResignActive(_ application: UIApplication) {
-        // Home button is pressed twice
-        self.coordinator.didEnterBackground()
-    }
-    
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        self.coordinator.willEnterForeground()
     }
     
     // MARK: Background methods

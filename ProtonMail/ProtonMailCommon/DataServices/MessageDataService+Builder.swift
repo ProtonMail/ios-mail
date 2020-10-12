@@ -303,7 +303,7 @@ class SendBuilder {
         }
     }
     
-    func buildMime(senderKey: Key, passphrase: String, userKeys: [Data], keys: [Key], newSchema: Bool, msgService: MessageDataService, userInfo: UserInfo) -> Promise<SendBuilder> {
+    func buildMime(senderKey: Key, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool, msgService: MessageDataService, userInfo: UserInfo) -> Promise<SendBuilder> {
         return Promise { seal in
             /// decrypt attachments
             var messageBody = self.clearBody ?? ""
@@ -378,7 +378,7 @@ class SendBuilder {
     }
     
     
-    func buildPlainText(senderKey: Key, passphrase: String, userKeys: [Data], keys: [Key], newSchema: Bool) -> Promise<SendBuilder> {
+    func buildPlainText(senderKey: Key, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool) -> Promise<SendBuilder> {
         return Promise { seal in
             async {
                 //TODO:: fix all ?

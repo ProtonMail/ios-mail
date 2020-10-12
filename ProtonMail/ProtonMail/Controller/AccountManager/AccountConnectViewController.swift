@@ -43,7 +43,6 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     private let animationDuration: TimeInterval = 0.5
     private let buttonDisabledAlpha: CGFloat    = 0.5
     private var isShowpwd      = false
-    private var twoFAFailed = false
     
     //define
     private let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0)
@@ -275,16 +274,11 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
             case .error(let error):
                 PMLog.D("error: \(error)")
                 MBProgressHUD.hide(for: self.view, animated: true)
-                guard cachedTwoCode != nil else {
-                    self.handleRequestError(error)
-                    return
-                }
-                if self.twoFAFailed {
-                    self.twoFAFailed = false
+                
+                if cachedTwoCode != nil {
                     self.coordinator?.go(to: .twoFACode, sender: self)
                 } else {
-                    self.twoFAFailed = true
-                    self.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode)
+                    self.handleRequestError(error)
                 }
             case .ok:
                 MBProgressHUD.hide(for: self.view, animated: true)

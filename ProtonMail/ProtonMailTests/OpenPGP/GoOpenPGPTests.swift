@@ -229,7 +229,7 @@ EQr2Mx42THr260IFYp5E/rIA
 
             
             let verifyOut = try Crypto().decryptVerify(encrytped: encrypted3!,
-                                                       publicKey: OpenPGPDefines.publicKey,
+                                                       publicKey: OpenPGPDefines.privateKey.unArmor!,
                                                        privateKey: OpenPGPDefines.privateKey,
                                                        passphrase: OpenPGPDefines.passphrase, verifyTime: 0)
             XCTAssertNotNil(verifyOut)

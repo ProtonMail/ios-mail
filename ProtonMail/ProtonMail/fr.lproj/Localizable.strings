@@ -87,9 +87,6 @@
 /* (No Comment) */
 "Add" = "Ajouter";
 
-/* menu title */
-"Add accounts" = "Ajouter des comptes";
-
 /* new contacts add Anniversary */
 "Add Anniversary" = "Ajouter une date de mariage";
 
@@ -1243,9 +1240,6 @@
 /* cell title in device settings */
 "Mailbox size" = "Taille de la messagerie";
 
-/* menu title */
-"Manage accounts" = "Gérer les comptes";
-
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Gérer les adresses";
 
@@ -1448,9 +1442,6 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Un seul compte gratuit peut être ajouté";
-
-/* Open action */
-"Open" = "Ouvrir";
 
 /* (No Comment) */
 "OpenDraft" = "OpenDraft";
@@ -1943,9 +1934,6 @@
 /* menu title */
 "Subscription" = "Abonnement";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Informations d'abonnement temporairement indisponibles. Veuillez réessayer ultérieurement.";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Prend en charge jusqu'à %i domaines personnels (p. ex. : utilisateur@votredomaine.com)";
 
@@ -2056,9 +2044,6 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "La taille totale de la pièce jointe ne peut pas dépasser 25Mo";
-
-/* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "L'URL à laquelle vous essayez d'accéder n'est pas standard et peut ne pas se charger correctement. Voulez-vous l'ouvrir en utilisant le navigateur par défaut de votre appareil ?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "L'utilisateur est déjà connecté";

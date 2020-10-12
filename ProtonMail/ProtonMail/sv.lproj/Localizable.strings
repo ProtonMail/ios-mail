@@ -87,9 +87,6 @@
 /* (No Comment) */
 "Add" = "Lägg till";
 
-/* menu title */
-"Add accounts" = "Lägg till konton";
-
 /* new contacts add Anniversary */
 "Add Anniversary" = "Lägg till årsdag";
 
@@ -1243,9 +1240,6 @@
 /* cell title in device settings */
 "Mailbox size" = "Brevlåda storlek";
 
-/* menu title */
-"Manage accounts" = "Hantera konton";
-
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Hantera adresser";
 
@@ -1448,9 +1442,6 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Endast ett gratiskonto kan läggas till";
-
-/* Open action */
-"Open" = "Öppna";
 
 /* (No Comment) */
 "OpenDraft" = "Öppna utkast";
@@ -1943,9 +1934,6 @@
 /* menu title */
 "Subscription" = "Prenumeration";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Abonnemangsinformation är inte tillgänglig för tillfället. Försök igen.";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Stöd för %i anpassade domäner (t.ex. user@yourdomain.com)";
 
@@ -2056,9 +2044,6 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Bilagans totala storlek får inte överstiga 25 MB";
-
-/* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Webbadressen du försöker komma åt är inte standard och kanske inte laddar korrekt. Vill du öppna den med enhetens standardwebbläsare?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Användaren är redan inloggad";

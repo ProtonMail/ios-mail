@@ -283,7 +283,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 if let lastMsg = messages.last, let firstMsg = messages.first {
                                     let updateTime = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: self.userID, context: context)
                                     if (updateTime.isNew) {
-                                        updateTime.start = firstMsg.time ?? Date()
+                                        updateTime.start = firstMsg.time!
                                         updateTime.total = Int32(messcount)
                                     }
                                     if let time = lastMsg.time,
@@ -536,18 +536,17 @@ class MessageDataService : Service, HasLocalStorage {
     /// - Parameter att: Attachment
     func delete(att: Attachment!) -> Promise<Void> {
         return Promise { seal in
-            let objetcID = att.objectID.uriRepresentation().absoluteString
+            let attachmentID = att.attachmentID
             let context = att.managedObjectContext
-            let _ = sharedMessageQueue.addMessage(objetcID, action: .deleteAtt, userId: self.userID)
-            dequeueIfNeeded()
-            
             self.coreDataService.enqueue(context: context) { (context) in
-                att.isSoftDeleted = true
+                context.delete(att)
                 if let error = context.saveUpstreamIfNeeded() {
                     PMLog.D(" error: \(error)")
                 }
                 seal.fulfill_()
             }
+            let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt, userId: self.userID)
+            dequeueIfNeeded()
         }
     }
     
@@ -1152,28 +1151,11 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    func cleanOldAttachment() {
-        let context = self.coreDataService.backgroundManagedObjectContext
-        self.coreDataService.enqueue(context: context) { (context) in
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attachment.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(%K == 1) AND %K == NULL", Attachment.Attributes.isSoftDelete, Attachment.Attributes.message)
-            let request = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-            do {
-                try context.execute(request)
-            } catch let ex as NSError {
-                Analytics.shared.error(message: .purgeOldMessages,
-                                       error: ex,
-                                       user: self.usersManager?.getUser(byUserId: self.userID))
-                PMLog.D("error : \(ex)")
-            }
-        }
-    }
-    
     // MARK : old functions
     
     fileprivate func attachmentsForMessage(_ message: Message) -> [Attachment] {
         if let all = message.attachments.allObjects as? [Attachment] {
-            return all.filter{ !$0.isSoftDeleted }
+            return all
         }
         return []
     }
@@ -1394,7 +1376,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         let signed = attachment.sign(byKey: key,
-                                     userKeys: attachment.message.cachedUser?.userPrivateKeysArray ?? userManager.userPrivateKeys,
+                                     userKeys: attachment.message.cachedUser?.userPrivateKeys ?? userManager.userPrivateKeys,
                                      passphrase: passphrase)
         let completionWrapper: CompletionBlock = { task, response, error in
             PMLog.D("SendAttachmentDebug == finish upload att!")
@@ -1443,15 +1425,13 @@ class MessageDataService : Service, HasLocalStorage {
     
     private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.mainManagedObjectContext
-        self.coreDataService.enqueue(context: context) { (context) in
+        context.performAndWait {
             var authCredential: AuthCredential?
-            var att: Attachment?
             if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(deleteObject),
                 let managedObject = try? context.existingObject(with: objectID),
                 let attachment = managedObject as? Attachment
             {
                 authCredential = attachment.message.cachedAuthCredential
-                att = attachment
             }
             
             guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
@@ -1459,10 +1439,11 @@ class MessageDataService : Service, HasLocalStorage {
                 return
             }
             
-            let api = DeleteAttachment(attID: att?.attachmentID ?? "0", authCredential: authCredential)
+            let api = DeleteAttachment(attID: deleteObject, authCredential: authCredential)
             api.call(api: userManager.apiService) { (task, response, hasError) -> Void in
                 completion?(task, nil, nil)
             }
+            return
         }
     }
     
@@ -1602,7 +1583,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         //TODO: needs to refractor
-        let context = self.coreDataService.mainManagedObjectContext
+        let context = self.coreDataService.backgroundManagedObjectContext
         self.coreDataService.enqueue(context: context) { (context) in
             guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(messageID),
                 let message = context.find(with: objectID) as? Message else
@@ -1633,10 +1614,7 @@ class MessageDataService : Service, HasLocalStorage {
             var status = SendStatus.justStart
             
             let userInfo = message.cachedUser ?? userManager.userInfo
-            
             let userPrivKeys = userInfo.userPrivateKeys
-            
-            let userPrivKeysArray = userInfo.userPrivateKeysArray
             let addrPrivKeys = userInfo.addressKeys
             let newSchema = addrPrivKeys.newSchema
             
@@ -1681,10 +1659,10 @@ class MessageDataService : Service, HasLocalStorage {
                     let bodyData = splited.dataPacket,
                     let keyData = splited.keyPacket,
                     let session = newSchema ?
-                        try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
+                        try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeys,
                                                                 passphrase: passphrase,
                                                                 keys: addrPrivKeys) :
-                        try message.getSessionKey(keys: addrPrivKeys.binPrivKeysArray,
+                        try message.getSessionKey(keys: addrPrivKeys.binPrivKeys,
                                                   passphrase: passphrase) else {
                             throw RuntimeError.cant_decrypt.error
                 }
@@ -1728,7 +1706,7 @@ class MessageDataService : Service, HasLocalStorage {
                 if sendBuilder.hasMime || sendBuilder.hasPlainText {
                     guard let clearbody = newSchema ?
                         try message.decryptBody(keys: addrPrivKeys,
-                                                userKeys: userPrivKeysArray,
+                                                userKeys: userPrivKeys,
                                                 passphrase: passphrase) :
                         try message.decryptBody(keys: addrPrivKeys,
                                                 passphrase: passphrase) else {
@@ -1742,10 +1720,10 @@ class MessageDataService : Service, HasLocalStorage {
                 for att in attachments {
                     if att.managedObjectContext != nil {
                         if let sessionPack = newSchema ?
-                            try att.getSession(userKey: userPrivKeysArray,
+                            try att.getSession(userKey: userPrivKeys,
                                                keys: addrPrivKeys,
                                                mailboxPassword: userManager.mailboxPassword) :
-                            try att.getSession(keys: addrPrivKeys.binPrivKeysArray,
+                            try att.getSession(keys: addrPrivKeys.binPrivKeys,
                                                mailboxPassword: userManager.mailboxPassword) {
                             guard let key = sessionPack.key else {
                                 continue
@@ -1774,7 +1752,7 @@ class MessageDataService : Service, HasLocalStorage {
                 //build pgp sending mime body
                 return sendBuilder.buildMime(senderKey: addressKey,
                                              passphrase: passphrase,
-                                             userKeys: userPrivKeysArray,
+                                             userKeys: userPrivKeys,
                                              keys: addrPrivKeys,
                                              newSchema: newSchema,
                                              msgService: self,
@@ -1793,7 +1771,7 @@ class MessageDataService : Service, HasLocalStorage {
                 //build pgp sending mime body
                 return sendBuilder.buildPlainText(senderKey: addressKey,
                                                   passphrase: passphrase,
-                                                  userKeys: userPrivKeysArray,
+                                                  userKeys: userPrivKeys,
                                                   keys: addrPrivKeys,
                                                   newSchema: newSchema)
             } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
@@ -2704,7 +2682,7 @@ class MessageDataService : Service, HasLocalStorage {
                                        userKeys: self.userDataSource!.userPrivateKeys,
                                        keys: keys, passphrase: passphrase, time: time) :
                 try message.body.verifyMessage(verifier: verifier,
-                                       binKeys: keys.binPrivKeysArray,
+                                       binKeys: keys.binPrivKeys,
                                        passphrase: passphrase,
                                        time: time) {
                 guard let verification = verify.signatureVerificationError else {

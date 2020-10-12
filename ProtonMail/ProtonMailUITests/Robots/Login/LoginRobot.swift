@@ -47,7 +47,7 @@ class LoginRobot {
     }
     
     private func username(_ username: String) -> LoginRobot {
-        Element.wait.forTextFieldWithIdentifier(usernameIdentifier).typeText(username)
+        Element.textField.tapByIdentifier(usernameIdentifier).typeText(username)
         return self
     }
     
@@ -62,12 +62,12 @@ class LoginRobot {
     }
     
     private func signInWithMailboxPassword() -> MailboxPasswordRobot {
-        Element.wait.forButtonWithIdentifier(signinButtonIdentifier).tap()
+        Element.button.tapByIdentifier(signinButtonIdentifier)
         return MailboxPasswordRobot()
     }
     
     private func signInWithTwoFA() -> TwoFaRobot {
-        Element.wait.forButtonWithIdentifier(signinButtonIdentifier).tap()
+        Element.button.tapByIdentifier(signinButtonIdentifier)
         return TwoFaRobot()
     }
 
