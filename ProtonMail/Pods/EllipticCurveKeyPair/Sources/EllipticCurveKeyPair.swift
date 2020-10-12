@@ -340,7 +340,7 @@ public enum EllipticCurveKeyPair {
             var error : Unmanaged<CFError>?
             var result: CFData?
             let semaphore = DispatchSemaphore(value: 0)
-            DispatchQueue.global().async {
+            DispatchQueue.main.async {
                 result = SecKeyCreateDecryptedData(privateKey.underlying, hash.encryptionEciesEcdh, encrypted as CFData, &error)
                 semaphore.signal()
             }

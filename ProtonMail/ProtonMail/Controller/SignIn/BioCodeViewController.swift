@@ -43,7 +43,13 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
         }
         
         UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
-            self.delegate?.Next()
+            if Thread.isMainThread {
+                self.delegate?.Next()
+            } else {
+                DispatchQueue.main.async {
+                    self.delegate?.Next()
+                }
+            }
         })
     }
     
@@ -86,7 +92,9 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.decideOnBioAuthentication()
+        DispatchQueue.global().async {
+            self.decideOnBioAuthentication()
+        }
     }
     
     override func viewDidLoad() {
