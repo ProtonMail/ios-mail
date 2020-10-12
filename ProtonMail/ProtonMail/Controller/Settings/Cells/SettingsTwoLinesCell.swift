@@ -23,7 +23,7 @@
 
 import UIKit
 
-@IBDesignable class SettingsTwoLinesCell: UITableViewCell {
+@IBDesignable class SettingsTwoLinesCell: UITableViewCell, AccessibleCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -38,6 +38,7 @@ import UIKit
     func config(top tValue: String, bottom bValue: String) {
         self.topLineLabel.text = tValue
         self.bottomLineLabel.text = bValue
+        generateCellAccessibilityIdentifiers(bValue)
     }
 }
 

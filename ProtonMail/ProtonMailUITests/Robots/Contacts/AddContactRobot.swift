@@ -52,9 +52,7 @@ class AddContactRobot {
     }
 
     private func email(_ email: String) -> AddContactRobot {
-        Element.wait.forTextFieldWithIdentifier(emailTextFieldIdentifier, file: #file, line: #line)
-            .click()
-            .typeText(email)
+        Element.wait.forTextFieldWithIdentifier(emailTextFieldIdentifier, file: #file, line: #line).click().typeText(email)
         return self
     }
     
