@@ -13,26 +13,15 @@
   },
   "testTargets" : [
     {
-      "skippedTests" : [
-        "BaseTestCase",
-        "ContactsTests\/testContactDetailSendMessage()",
-        "ContactsTests\/testContactGroupSendMessage()",
-        "ContactsTests\/testCreateContact()",
-        "ContactsTests\/testCreateGroup()",
-        "ContactsTests\/testDeleteContact()",
-        "ContactsTests\/testDeleteGroup()",
-        "LoginTests\/testLoginWithOnePassAnd2FA()",
-        "LoginTests\/testLoginWithTwoPassAnd2FA()",
-        "MultiuserManagementTests\/testAddTwoFreeAccounts()",
-        "MultiuserManagementTests\/testCancelLoginOnTwoFaPrompt()",
-        "MultiuserManagementTests\/testConnectOnePassAccount()",
-        "MultiuserManagementTests\/testConnectOnePassAccountWithTwoFa()",
-        "MultiuserManagementTests\/testConnectTwoPassAccount()",
-        "MultiuserManagementTests\/testConnectTwoPassAccountWithTwoFa()",
-        "MultiuserManagementTests\/testLogoutSecondaryAccount()",
-        "MultiuserManagementTests\/testRemoveAllAccounts()",
-        "MultiuserManagementTests\/testRemoveSecondaryAccount()",
-        "SendNewMessageTests"
+      "selectedTests" : [
+        "ContactsTests\/testEditContact()",
+        "ContactsTests\/testEditGroup()",
+        "LoginTests\/testLoginWithOnePass()",
+        "LoginTests\/testLoginWithTwoPass()",
+        "LogoutTests\/testLogoutOnePassUser()",
+        "MultiuserManagementTests\/testLogoutPrimaryAccount()",
+        "MultiuserManagementTests\/testRemovePrimaryAccount()",
+        "MultiuserManagementTests\/testSwitchAccount()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",

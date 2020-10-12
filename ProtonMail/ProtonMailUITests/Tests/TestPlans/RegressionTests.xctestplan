@@ -17,6 +17,7 @@
         "BaseTestCase",
         "ContactsTests\/testContactDetailSendMessage()",
         "ContactsTests\/testContactGroupSendMessage()",
+        "DraftsTests",
         "LoginTests\/testLoginWithOnePassAnd2FA()",
         "LoginTests\/testLoginWithTwoPassAnd2FA()",
         "MultiuserManagementTests\/testAddTwoFreeAccounts()",
