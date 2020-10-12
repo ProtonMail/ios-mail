@@ -1852,10 +1852,10 @@ class MessageDataService : Service, HasLocalStorage {
                     
                     NSError.alertMessageSentToast()
                     
-                    self.managedObjectContext.performAndWait {
+                    context.performAndWait {
                         if let newMessage = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
                                                                           fromJSONDictionary: res.responseDict["Sent"] as! [String: Any],
-                                                                          in: self.managedObjectContext) as? Message {
+                                                                          in: context) as? Message {
 
                             newMessage.messageStatus = 1
                             newMessage.isDetailDownloaded = true
