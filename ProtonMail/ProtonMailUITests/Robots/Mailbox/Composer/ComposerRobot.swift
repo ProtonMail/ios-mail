@@ -18,6 +18,8 @@ fileprivate let expirationButtonIdentifier = "ComposeHeaderViewController.expira
 fileprivate let passwordButtonIdentifier = "ComposeHeaderViewController.encryptedButton"
 fileprivate let attachmentButtonIdentifier = "ComposeHeaderViewController.attachmentButton"
 fileprivate let showCcBccButtonIdentifier = "ComposeHeaderViewController.showCcBccButton"
+fileprivate let cancelNavBarButtonIdentifier = "ComposeContainerViewController.cancelButton"
+fileprivate let fromStaticTextIdentifier = "ComposeHeaderViewController.fromAddress"
 
 /// Set Password modal identifiers.
 fileprivate let messagePasswordSecureTextFieldIdentifier = "ComposePasswordViewController.passwordField"
@@ -30,7 +32,8 @@ fileprivate let applyButtonIdentifier = "ComposePasswordViewController.applyButt
 fileprivate let expirationPickerIdentifier = "ExpirationPickerCell.picker"
 fileprivate let expirationActionButtonIdentifier = "expirationActionButton"
 
-//expirationDateTextField
+/// Expiration picker identifiers.
+fileprivate let saveDraftButtonText = "saveDraftButton"
 
 /**
  Represents Composer view.
@@ -40,10 +43,38 @@ class ComposerRobot {
     var verify: Verify! = nil
     init() { verify = Verify(parent: self) }
     
+    func tapCancel() -> DraftConfirmationRobot {
+        Element.button.tapByIdentifier(cancelNavBarButtonIdentifier)
+        return DraftConfirmationRobot()
+    }
+    
     func sendMessage(_ to: String, _ subjectText: String) -> InboxRobot {
         return recipients(to)
             .subject(subjectText)
             .send()
+    }
+    
+    func draftToSubjectBody(_ to: String, _ subjectText: String) -> ComposerRobot {
+        recipients(to)
+            .subject(subjectText)
+        return self
+    }
+    
+    func draftSubjectBody(_ subjectText: String, _ body: String) -> ComposerRobot {
+        subject(subjectText)
+            .body(body)
+        return self
+    }
+    
+    func draftToSubjectBodyAttachment(_ to: String, _ subjectText: String, _ body: String) -> ComposerRobot {
+        return recipients(to)
+            .subject(subjectText)
+            .body(body)
+            .addAttachment()
+            .add()
+            .photoLibrary()
+            .pickImages(1)
+            .done()
     }
     
     func sendMessageToContact(_ subjectText: String) -> ContactDetailsRobot {
@@ -128,9 +159,32 @@ class ComposerRobot {
     }
     
     @discardableResult
-    private func send() -> InboxRobot {
+    func send() -> InboxRobot {
         Element.wait.forHittableButton(sendButtonIdentifier, file: #file, line: #line).tap()
         return InboxRobot()
+    }
+    
+    func recipients(_ email: String) -> ComposerRobot {
+        Element.wait.forTextFieldWithIdentifier(toTextFieldIdentifier, file: #file, line: #line)
+            .click()
+            .typeText(email)
+        Element.other.tapIfExists(popoverDismissRegionOtherIdentifier)
+        return self
+    }
+    
+    func editRecipients(_ email: String) -> ComposerRobot {
+        Element.wait.forTextFieldWithIdentifier(toTextFieldIdentifier, file: #file, line: #line)
+            .click()
+            .clear()
+            .typeText(email)
+        Element.other.tapIfExists(popoverDismissRegionOtherIdentifier)
+        return self
+    }
+    
+    func changeFromAddressTo(_ email: String) -> ComposerRobot {
+        Element.wait.forStaticTextFieldWithIdentifier(fromStaticTextIdentifier, file: #file, line: #line).tap()
+        Element.wait.forButtonWithIdentifier(email, file: #file, line: #line).tap()
+        return ComposerRobot()
     }
     
     private func sendToContact() -> ContactDetailsRobot {
@@ -141,13 +195,6 @@ class ComposerRobot {
     private func sendToContactGroup() -> ContactsRobot {
         Element.wait.forHittableButton(sendButtonIdentifier, file: #file, line: #line).tap()
         return ContactsRobot()
-    }
-    
-    private func recipients(_ email: String) -> ComposerRobot {
-        Element.wait.forTextFieldWithIdentifier(toTextFieldIdentifier, file: #file, line: #line).tap()
-        Element.textField.tapByIdentifier(toTextFieldIdentifier).typeText(email)
-        Element.other.tapIfExists(popoverDismissRegionOtherIdentifier)
-        return self
     }
     
     private func cc(_ email: String) -> ComposerRobot {
@@ -171,7 +218,6 @@ class ComposerRobot {
     }
     
     private func body(_ text: String) -> ComposerRobot {
-        
         return self
     }
     
@@ -268,10 +314,35 @@ class ComposerRobot {
     }
     
     /**
+     Class represents Message Expiration dialog.
+     */
+    class DraftConfirmationRobot {
+        func confirmDraftSaving() -> InboxRobot {
+            Element.wait.forButtonWithIdentifier(saveDraftButtonText, file: #file, line: #line).tap()
+            return InboxRobot()
+        }
+        
+        func confirmDraftSavingFromDrafts() -> DraftsRobot {
+            Element.wait.forButtonWithIdentifier(saveDraftButtonText, file: #file, line: #line).tap()
+            return DraftsRobot()
+        }
+    }
+    
+    /**
      Contains all the validations that can be performed by ComposerRobot.
     */
     class Verify {
         unowned let composerRobot: ComposerRobot
         init(parent: ComposerRobot) { composerRobot = parent }
+        
+        func fromEmailIs(_ email: String) {
+            Element.wait.forStaticTextFieldWithIdentifier(fromStaticTextIdentifier, file: #file, line: #line)
+                .assertWithLabel(email)
+        }
+        
+        func messageWithSubjectOpened(_ subject: String) {
+            Element.wait.forTextFieldWithIdentifier(subjectTextFieldIdentifier, file: #file, line: #line)
+                .assertWithValue(subject)
+        }
     }
 }
