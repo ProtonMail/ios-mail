@@ -87,9 +87,6 @@
 /* (No Comment) */
 "Add" = "Ekle";
 
-/* menu title */
-"Add accounts" = "Hesap ekle";
-
 /* new contacts add Anniversary */
 "Add Anniversary" = "Yıldönümü ekle";
 
@@ -1193,7 +1190,7 @@
 "Lock The App" = "Uygulamayı kilitle";
 
 /* Account manager title */
-"Log in to your ProtonMail account" = "ProtonMail hesabınıza giriş yapın";
+"Log in to your ProtonMail account" = "ProtonMail hesabınıza giriş";
 
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "%@ oturumu kapatılsın mı?";
@@ -1243,14 +1240,11 @@
 /* cell title in device settings */
 "Mailbox size" = "Posta kutusu boyutu";
 
-/* menu title */
-"Manage accounts" = "Hesapları yönet";
-
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Adresleri yönet";
 
 /* Settings row */
-"Manage in device Settings" = "Cihaz ayarlarından yönet";
+"Manage in device Settings" = "Aygıt Ayarlarında Yönet";
 
 /* Title */
 "Manage Labels/Folders" = "Etiketleri/klasörleri yönetin";
@@ -1448,9 +1442,6 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Sadece bir tane ücretsiz hesap eklenebilir";
-
-/* Open action */
-"Open" = "Aç";
 
 /* (No Comment) */
 "OpenDraft" = "Taslağı aç";
@@ -1943,9 +1934,6 @@
 /* menu title */
 "Subscription" = "Abonelik";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Abonelik bilgileri geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin.";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "%i özel alan adları için destek (ör. kullanici@alanadiniz.com)";
 
@@ -1978,7 +1966,7 @@
 "Tap send anyway to send without expiration to these recipients" = "Bu alıcılara süresi dolmadan göndermek için yine de gönder öğesine dokunun";
 
 /* network troubleshot cell title */
-"Temporarily disable or remove your antivirus software." = "Virüsten koruma yazılımınızı geçici olarak devre dışı bırakın veya kaldırın.";
+"Temporarily disable or remove your antivirus software." = "Antivirüs yazılımınızı geçiçi olarak kapatın ya da kaldırın.";
 
 /* agree check box terms */
 "terms and conditions" = "şartlar ve koşullar";
@@ -2057,9 +2045,6 @@
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Toplam ek boyutu 25 MB'ı aşamaz";
 
-/* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Erişmeye çalıştığınız URL standart değildir ve düzgün yüklenmeyebilir. Cihazınızın varsayılan tarayıcısını kullanarak açmak ister misiniz?";
-
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Kullanıcı zaten oturum açtı";
 
@@ -2109,10 +2094,10 @@
 "Title" = "Başlık";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS sertifikası doğrulanması başarılı olamadı. İnternet bağlantınız takip edilecek ve uygulama güvenliğiniz için geçici olarak devre dışı bırakıldı.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS sertifikası doğrulanması baraşılı olamadı. İnternet bağlantınız takip edilecek ve uygulama güvenliğiniz için geçiçi olarak devre dışı bırakıldı.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS sertifikası doğrulanması başarılı olamadı. İnternet bağlantınız takip edilecek ve uygulama güvenliğiniz için geçici olarak devre dışı bırakıldı. \n\nbağlantıları hemen değiştir";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS sertifikası doğrulanması başarılı olamadı. İnternet bağlantınız takip edilecek ve uygulama güvenliğiniz için geçiçi olarak devre dışı bırakıldı. \n\nbağlantıları hemen değiştir";
 
 /* Title */
 "To" = "Kime";
@@ -2163,7 +2148,7 @@
 "TroubleShooting" = "Sorun Giderme";
 
 /* network troubleshot cell title */
-"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Proton'a bağlanmak için farklı bir deneyin (veya ProtonVPN veya Tor kullanın).";
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Proton'a bağlanmak için farklı bir deneyin (Veya ProtonVPN veya Tor kullanın).";
 
 /* action sheet option */
 "Turn Off" = "Kapat";
@@ -2347,7 +2332,7 @@
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Uyarı: Bir kurtarma e-postası belirlemediniz. Bu nedenle parolanızı unutursanız hesap kurtarmanız mümkün değildir. Kurtarma e-postası olmadan devam edilsin mi?";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "İletinizi, muhtemelen zayıf bir ağ bağlantısı nedeniyle gönderemedik. İletiniz taslaklara kaydedildi ve uygulamayı bir sonraki açtığınızda otomatik olarak gönderilecektir.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Mesajınızı gönderemiyoruz, muhtemelen zayıf bir ağ bağlantısı sebebiyle. Mesajınız Taslaklara kaydedildi ve uygulamayı bir sonraki açışınızda mesajınız otomatik olarak iletilecek.";
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Aboneliğinizi başarıyla etkinleştirdik. Lütfen yeni hizmet planınızı kullanmaya başlamak için uygulamayı yeniden başlatın.";
@@ -2390,7 +2375,7 @@
 "You are about to launch the web browser and navigate to" = "Web tarayıcısını başlatmak ve";
 
 /* Alert of removing all accounts */
-"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Tüm hesapları kaldırmak üzeresiniz. Bunları tekrar eklemediğiniz sürece bu cihazdan erişemezsiniz.\n\nYine de bu hesabı kaldırmak istiyor musunuz?";
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Bu hesabı kaldırırsanız, artık bu cihazdan bu hesabı yeniden ekleyene kadar hesaba erişemezsiniz.\n\nYine de bu hesabı kaldırmak istiyor musunuz?";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Kaydırma hareketlerini ProtonMail uygulama ayarlarından özelleştirebilirsiniz.";
@@ -2402,7 +2387,7 @@
 "You can't set %@ address as default because it is a paid feature." = "%@ adresini varsayılan olarak ayarlayamazsınız. Çünkü bu ücretli bir özelliktir.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "FaceID'yi sistem ayarlarında devre dışı bıraktınız. FaceID önemli hesap bilgilerinizi korumak için kullanılır. Hesabınıza erişmek için, ayarlara gidip FaceID'yi tekrar etkinleştirin ya da yeniden oturum açın.";
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "FaceID'yi sistem ayarlarında devre dışı bıraktınız. FaceID önemli hesap bilgilerinizi korumak için kullanılır. Hesabınıza erişmek için, ayarlara gidip FaceID'yi tekrar aktifleştirin ya da yeniden giriş yapın.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "İleti sona ermesini etkinleştirdiniz. Ancak tüm alıcılar bunu desteklemiyor. Lütfen bir parola ekleyin ve/veya tüm alıcılar için sona erme süresini kullanmak üzere PGP gönderimini devre dışı bırakın.";
@@ -2430,16 +2415,16 @@
 "You will be switched to %@" = "%@ hesabına yönlendiriliyorsunuz";
 
 /* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "İletiyi geri dönüşü olmayan bir şekilde sileceksiniz. Emin misiniz?";
+"You're going to delete the message irreversibly. Are you sure?" = "Bu mesajı kalıcı olarak siliyorsunuz. Emin misiniz?";
 
 /* view top title */
 "Your Country Code" = "Ülke Kodunuz";
 
 /* network troubleshot cell title */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ülkeniz Proton'a erişimi engelliyor olabilir. Proton'a erişmek için %1$@ (veya başka bir VPN) veya %2$@ kullanmayı deneyin.";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ülkeniz Proton'a erişimi engelliyor olabilir. Proton'a erişmek için%1$@ (veya başka bir VPN) veya%2$@ kullanmayı deneyin.";
 
 /* network troubleshot cell title */
-"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Ülkeniz Proton'a erişimi engelliyor olabilir. Proton'a erişmek için ProtonVPN (veya başka bir VPN) veya Tor'u kullanmayı deneyin.";
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Ülkeniz Proton'a erişimi engelliyor olabilir. Proton'a erişmek için ProtonVPN (veya başka bir VPN) veya Tor kullanmayı deneyin.";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Gelen kutunuz artık uçtan uca şifreleme ile korunmaktadır. Arkadaşlarınıza otomatik olarak güvenli bir şekilde e-posta göndermek için ProtonMail'i edinin! ProtonMail kullanmıyorlarsa, iletileri el ile de şifreleyebilirsiniz.";

@@ -45,30 +45,30 @@ extension AccessibleCell {
                 let viewMirror = Mirror(reflecting: view)
                 
                 if viewMirror.children.count > 0 {
-                   assignIdentifiers(viewMirror, replacedUniqueIdentifier, deepnessLevel + 1)
+                   assignIdentifiers(viewMirror, uniqueIdentifier, deepnessLevel + 1)
                 }
                 
-                view.accessibilityIdentifier = "\(replacedUniqueIdentifier).\(identifier!)"
+                view.accessibilityIdentifier = "\(uniqueIdentifier).\(identifier!)"
                 cellIdentifiers.insert((cell?.accessibilityIdentifier)!)
            } else if let view = child.value as? UIButton,
                 let identifier = child.label?.replacingOccurrences(of: ".storage", with: "") {
                 let viewMirror = Mirror(reflecting: view)
             
                 if viewMirror.children.count > 0 {
-                    assignIdentifiers(viewMirror, replacedUniqueIdentifier, deepnessLevel + 1)
+                    assignIdentifiers(viewMirror, uniqueIdentifier, deepnessLevel + 1)
                 }
             
-                view.accessibilityIdentifier = "\(replacedUniqueIdentifier).\(identifier)"
+                view.accessibilityIdentifier = "\(uniqueIdentifier).\(identifier)"
                 cellIdentifiers.insert(view.accessibilityIdentifier!)
            } else if let view = child.value as? UITextField,
                 let identifier = child.label?.replacingOccurrences(of: ".storage", with: "") {
                 let viewMirror = Mirror(reflecting: view)
             
                 if viewMirror.children.count > 0 {
-                   assignIdentifiers(viewMirror, replacedUniqueIdentifier, deepnessLevel + 1)
+                   assignIdentifiers(viewMirror, uniqueIdentifier, deepnessLevel + 1)
                 }
             
-                view.accessibilityIdentifier = "\(replacedUniqueIdentifier).\(identifier)"
+                view.accessibilityIdentifier = "\(uniqueIdentifier).\(identifier)"
                 cellIdentifiers.insert(view.accessibilityIdentifier!)
            }
         }

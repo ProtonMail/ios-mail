@@ -87,9 +87,6 @@
 /* (No Comment) */
 "Add" = "Toevoegen";
 
-/* menu title */
-"Add accounts" = "Accounts toevoegen";
-
 /* new contacts add Anniversary */
 "Add Anniversary" = "Jubileum toevoegen";
 
@@ -1243,9 +1240,6 @@
 /* cell title in device settings */
 "Mailbox size" = "Mailboxgrootte";
 
-/* menu title */
-"Manage accounts" = "Accounts beheren";
-
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Adressen beheren";
 
@@ -1449,9 +1443,6 @@
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Er kan slechts één gratis account worden toegevoegd";
 
-/* Open action */
-"Open" = "Open";
-
 /* (No Comment) */
 "OpenDraft" = "OpenDraft";
 
@@ -1528,7 +1519,7 @@
 "PIN & FaceID" = "PIN & FaceID";
 
 /* device settings auto lock type title */
-"PIN & TouchID" = "Pincode & TouchID";
+"PIN & TouchID" = "PIN & TouchID";
 
 /* Description */
 "Pin code can't be empty." = "Pin-code kan niet leeg zijn.";
@@ -1943,9 +1934,6 @@
 /* menu title */
 "Subscription" = "Abonnement";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Abonnementsinformatie tijdelijk niet beschikbaar. Probeer het later opnieuw.";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Ondersteuning voor %i eigen domeinen (bijv. jan@smit.com)";
 
@@ -2056,9 +2044,6 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "De totale grootte van de bijlagen kan niet meer zijn dan 25MB";
-
-/* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "De URL die u probeert te openen is niet standaard en kan mogelijk niet correct geladen worden. Wilt u deze openen met de standaard browser van uw apparaat?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "De gebruiker is al ingelogd";

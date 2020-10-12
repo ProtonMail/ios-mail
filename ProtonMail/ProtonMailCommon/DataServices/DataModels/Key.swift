@@ -134,16 +134,6 @@ extension Array where Element : Key {
         return out
     }
     
-    var binPrivKeysArray: [Data] {
-        var out: [Data] = []
-        var error: NSError?
-        for key in self {
-            if let privK = ArmorUnarmor(key.private_key, &error) {
-                out.append(privK)
-            }
-        }
-        return out
-    }
     
     var newSchema : Bool {
         for key in self {

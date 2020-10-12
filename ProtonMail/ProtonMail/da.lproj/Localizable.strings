@@ -87,9 +87,6 @@
 /* (No Comment) */
 "Add" = "Tilføj";
 
-/* menu title */
-"Add accounts" = "Add accounts";
-
 /* new contacts add Anniversary */
 "Add Anniversary" = "Tilføj årsdag";
 
@@ -244,7 +241,7 @@
 "Are you sure you want to logout %@?" = "Are you sure you want to logout %@?";
 
 /* emptify folder/label confirmation alert */
-"Are you sure? This can't be undone." = "Sikker? Handlingen kan ikke fortrydes.";
+"Are you sure? This can't be undone." = "Are you sure? This can't be undone.";
 
 /* like at 10:00pm */
 "at" = "kl.";
@@ -647,7 +644,7 @@
 "Delete" = "Slet";
 
 /* emptify folder/label confirmation alert */
-"Delete all" = "Slet alle";
+"Delete all" = "Delete all";
 
 /* Title-Contacts */
 "Delete Contact" = "Slet kontakt";
@@ -1243,9 +1240,6 @@
 /* cell title in device settings */
 "Mailbox size" = "Mailbox size";
 
-/* menu title */
-"Manage accounts" = "Manage accounts";
-
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Håndtere adresser";
 
@@ -1448,9 +1442,6 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Only one free account can be added";
-
-/* Open action */
-"Open" = "Open";
 
 /* (No Comment) */
 "OpenDraft" = " ";
@@ -1943,9 +1934,6 @@
 /* menu title */
 "Subscription" = "Abonnement";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Subscription information temporarily unavailable. Please try again later.";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Understøttelse af %i tilpassede domæner (f.eks. hans@hansen.dk)";
 
@@ -2056,9 +2044,6 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Samlede vedhæftningsstørrelse er maks. 25 MB";
-
-/* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "The user is already logged in";

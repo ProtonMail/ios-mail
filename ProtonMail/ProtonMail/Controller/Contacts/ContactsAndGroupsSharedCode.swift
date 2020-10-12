@@ -23,8 +23,8 @@
 
 import Foundation
 
-class ContactsAndGroupsSharedCode: ProtonMailViewController {
-    
+class ContactsAndGroupsSharedCode: ProtonMailViewController
+{
     var navigationItemRightNotEditing: [UIBarButtonItem]? = nil
     var navigationItemLeftNotEditing: [UIBarButtonItem]? = nil
     private var addBarButtonItem: UIBarButtonItem!
@@ -61,8 +61,6 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         
         navigationItemLeftNotEditing = navigationItem.leftBarButtonItems
         navigationItemRightNotEditing = navigationItem.rightBarButtonItems
-        self.navigationItem.assignNavItemIndentifiers()
-        generateAccessibilityIdentifiers()
     }
     
     @objc private func addButtonTapped() {
@@ -94,7 +92,6 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         /// present
         alertController.popoverPresentationController?.barButtonItem = addBarButtonItem
         alertController.popoverPresentationController?.sourceRect = self.view.frame
-        alertController.assignActionsAccessibilityIdentifiers()
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -127,7 +124,6 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         /// present
         alertController.popoverPresentationController?.barButtonItem = addBarButtonItem
         alertController.popoverPresentationController?.sourceRect = self.view.frame
-        alertController.assignActionsAccessibilityIdentifiers()
         self.present(alertController, animated: true, completion: nil)
     }
     

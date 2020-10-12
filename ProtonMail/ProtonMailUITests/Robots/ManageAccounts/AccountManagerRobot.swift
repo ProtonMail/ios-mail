@@ -6,11 +6,14 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import XCTest
+
 fileprivate let addAccountCellIdentifier = "addAccountLabel"
 fileprivate let removeAllButtonIdentifier = "UINavigationItem.rightBarButtonItem"
-fileprivate let swipeUserCellLogoutButtonIdentifier = "Log out"
-fileprivate let swipeUserCellDeleteButtonIdentifier = "Delete"
+fileprivate let swipeUserCellTrailingButtonIdentifier = "trailing0"
+
 fileprivate let removeAllLabel = "Remove All"
+
 private func userAccountCellIdentifier(_ email: String) -> String { return "AccountManagerUserCell.\(email)" }
 private func loggedOutUserAccountCellIdentifier(_ email: String) -> String { return "AccountManagerUserCell.\(email)_(logged_out)" }
 
@@ -26,7 +29,7 @@ class AccountManagerRobot {
     }
     
     func addAccount() -> ConnectAccountRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(addAccountCellIdentifier, file: #file, line: #line).tap()
+        Element.wait.forStaticTextFieldWithIdentifier(addAccountCellIdentifier).tap()
         return ConnectAccountRobot()
     }
 
@@ -48,27 +51,27 @@ class AccountManagerRobot {
     }
     
     private func removeAll() -> RemoveAllAlertRobot {
-        Element.wait.forButtonWithIdentifier(removeAllLabel, file: #file, line: #line).tap()
+        Element.wait.forButtonWithIdentifier(removeAllLabel).tap()
         return RemoveAllAlertRobot()
     }
     
     private func swipeLeft(_ email: String) -> AccountManagerRobot {
-        Element.wait.forCellWithIdentifier(userAccountCellIdentifier(email), file: #file, line: #line).swipeLeft()
+        Element.wait.forCellWithIdentifier(userAccountCellIdentifier(email)).swipeLeft()
         return AccountManagerRobot()
     }
     
     private func swipeLeftToDelete(_ email: String) -> AccountManagerRobot {
-        Element.wait.forCellWithIdentifier(loggedOutUserAccountCellIdentifier(email), file: #file, line: #line).swipeLeft()
+        Element.wait.forCellWithIdentifier(loggedOutUserAccountCellIdentifier(email)).swipeLeft()
         return AccountManagerRobot()
     }
 
     private func logout() -> LogoutAccountAlertRobot {
-        Element.wait.forButtonWithIdentifier(swipeUserCellLogoutButtonIdentifier, file: #file, line: #line).tap()
+        Element.wait.forButtonWithIdentifier(swipeUserCellTrailingButtonIdentifier).tap()
         return LogoutAccountAlertRobot()
     }
 
     private func remove() -> RemoveAccountAlertRobot {
-        Element.button.tapByIdentifier(swipeUserCellDeleteButtonIdentifier)
+        Element.button.tapByIdentifier(swipeUserCellTrailingButtonIdentifier)
         return RemoveAccountAlertRobot()
     }
 
@@ -129,6 +132,7 @@ class AccountManagerRobot {
         }
 
         func switchedToAccount(_ username: String) {
+            
         }
         
         func accountLoggedOut(_ email: String) {

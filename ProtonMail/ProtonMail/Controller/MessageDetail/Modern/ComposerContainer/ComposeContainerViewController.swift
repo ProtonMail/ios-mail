@@ -148,7 +148,6 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         }
         
         self.coordinator.inject(cell.picker)
-        cell.generateAccessibilityIdentifiers()
         return cell
     }
     
@@ -255,7 +254,7 @@ extension ComposeContainerViewController {
 }
 
 
-class ExpirationPickerCell: UITableViewCell, AccessibleView {
+class ExpirationPickerCell: UITableViewCell {
     @IBOutlet weak var picker: UIPickerView!
 }
 

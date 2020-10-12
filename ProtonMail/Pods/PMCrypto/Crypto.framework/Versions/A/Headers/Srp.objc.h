@@ -175,9 +175,6 @@ FOUNDATION_EXPORT NSData* _Nullable SrpRandomBits(long bits, NSError* _Nullable*
 
 FOUNDATION_EXPORT NSData* _Nullable SrpRandomBytes(long byes, NSError* _Nullable* _Nullable error);
 
-/**
- * VersionNumber get current libaray version
- */
 FOUNDATION_EXPORT NSString* _Nonnull SrpVersionNumber(void);
 
 #endif

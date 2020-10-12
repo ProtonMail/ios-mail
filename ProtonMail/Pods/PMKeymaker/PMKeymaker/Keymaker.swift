@@ -152,7 +152,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         // we'll return to main thread explicitly here
         let isMainThread = Thread.current.isMainThread
         
-        self.controlThread.sync {
+        self.controlThread.async {
             guard self._mainKey == nil else {
                 isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
                 return

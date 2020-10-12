@@ -23,7 +23,7 @@
 
 import UIKit
 
-class ContactAddEmailCell: UITableViewCell, AccessibleCell {
+class ContactAddEmailCell: UITableViewCell {
     fileprivate var email: ContactEditEmail!
     fileprivate var delegate: ContactEditCellDelegate?
     @IBOutlet weak var typeLabel: UILabel!
@@ -60,7 +60,6 @@ class ContactAddEmailCell: UITableViewCell, AccessibleCell {
                 self.valueField.becomeFirstResponder()
             })
         }
-        generateCellAccessibilityIdentifiers(self.valueField.placeholder!)
     }
 }
 

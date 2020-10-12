@@ -74,7 +74,7 @@ final class UserAgent {
     }
     
     private func UAString() -> String {
-        return "\(appNameAndVersion()) (\(deviceVersion()); \(deviceName()))"
+        return "\(appNameAndVersion()) \(deviceName()) \(deviceVersion()) \(CFNetworkVersion()) \(DarwinVersion())"
     }
     
     var ua : String? {

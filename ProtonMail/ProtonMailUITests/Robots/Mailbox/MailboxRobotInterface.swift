@@ -18,7 +18,7 @@ fileprivate let mailboxTableViewIdentifier = "MailboxViewController.tableView"
 class MailboxRobotInterface {
     
     init() {
-        Element.wait.forTableViewWithIdentifier(mailboxTableViewIdentifier, file: #file, line: #line, timeout: 15)
+        Element.wait.forTableViewWithIdentifier(mailboxTableViewIdentifier, file: #file, line: #line)
     }
     
     @discardableResult
@@ -38,7 +38,6 @@ class MailboxRobotInterface {
         return self
     }
 
-    @discardableResult
     func compose() -> ComposerRobot {
         Element.wait.forButtonWithIdentifier(composeButtonLabel, file: #file, line: #line).tap()
         return ComposerRobot()
@@ -51,12 +50,6 @@ class MailboxRobotInterface {
 
     func selectMessage(position: Int) -> MailboxRobotInterface {
        return self
-    }
-    
-    @discardableResult
-    func refreshMailbox() -> MailboxRobotInterface {
-        Element.tableView.swipeDownByIdentifier(mailboxTableViewIdentifier)
-        return self
     }
 }
 

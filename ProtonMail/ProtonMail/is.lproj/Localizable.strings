@@ -87,9 +87,6 @@
 /* (No Comment) */
 "Add" = "Bæta við";
 
-/* menu title */
-"Add accounts" = "Bæta við notandaaðgöngum";
-
 /* new contacts add Anniversary */
 "Add Anniversary" = "Bæta við afmælisdegi";
 
@@ -791,16 +788,16 @@
 "Enable Notification Email" = "Virkja tilkynningapóst";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Virkja PIN-númer";
+"Enable PIN" = "Enable PIN";
 
 /* settings protection section title */
 "Enable Pin Protection" = "Virkja varnir með PIN-númeri";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Virkja PIN/FaceID";
+"Enable PIN/FaceID" = "Enable PIN/FaceID";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Virkja PIN/TouchID";
+"Enable PIN/TouchID" = "Enable PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Virkja TouchID";
@@ -1243,9 +1240,6 @@
 /* cell title in device settings */
 "Mailbox size" = "Stærð pósthólfs";
 
-/* menu title */
-"Manage accounts" = "Sýsla með notandaaðganga";
-
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Sýsla með vistföng";
 
@@ -1449,9 +1443,6 @@
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Aðeins er hægt að bæta við einum ókeypis aðgangi";
 
-/* Open action */
-"Open" = "Opna";
-
 /* (No Comment) */
 "OpenDraft" = "Opna drög";
 
@@ -1522,13 +1513,13 @@
 "Photo Library" = "Myndasafn";
 
 /* device settings auto lock type title */
-"PIN" = "PIN-númer";
+"PIN" = "PIN";
 
 /* device settings auto lock type title */
-"PIN & FaceID" = "PIN og FaceID";
+"PIN & FaceID" = "PIN & FaceID";
 
 /* device settings auto lock type title */
-"PIN & TouchID" = "PIN og TouchID";
+"PIN & TouchID" = "PIN & TouchID";
 
 /* Description */
 "Pin code can't be empty." = "PIN-númer má ekki vera autt.";
@@ -1943,9 +1934,6 @@
 /* menu title */
 "Subscription" = "Áskrift";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Áskriftarupplýsingar eru ekki tiltækar í augnablikinu. Reyndu aftur síðar.";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Stuðningur við %i sérsniðin lén (t.d. notandi@lenidmitt.com)";
 
@@ -2056,9 +2044,6 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Heildarstærð viðhengja má ekki vera meiri en MB";
-
-/* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Slóðin sem þú ert að reyna að opna er ekki stöðluð og gæti hlaðist rangt inn. Viltu opna hana með sjálfgefna varfranum á tækinu þínu?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Notandinn er þegar skráður inn";

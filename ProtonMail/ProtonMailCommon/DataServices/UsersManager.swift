@@ -494,6 +494,7 @@ extension UsersManager {
             if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
                 self.remove(user: user)
                 isPrimaryAccountLogout = true
+                NSError.alertBadTokenToast()
             } else {
                 self.remove(user: user)
             }

@@ -87,9 +87,6 @@
 /* (No Comment) */
 "Add" = "新增";
 
-/* menu title */
-"Add accounts" = "Add accounts";
-
 /* new contacts add Anniversary */
 "Add Anniversary" = "新增紀念日";
 
@@ -1243,9 +1240,6 @@
 /* cell title in device settings */
 "Mailbox size" = "信箱大小";
 
-/* menu title */
-"Manage accounts" = "Manage accounts";
-
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "管理電子郵件位址";
 
@@ -1448,9 +1442,6 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "僅可新增一個免費帳號";
-
-/* Open action */
-"Open" = "Open";
 
 /* (No Comment) */
 "OpenDraft" = "正在編寫的草稿";
@@ -1943,9 +1934,6 @@
 /* menu title */
 "Subscription" = "訂閲";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Subscription information temporarily unavailable. Please try again later.";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "支持 %i 个自定域名(如 user@yourdomain.com)";
 
@@ -2056,9 +2044,6 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "附件檔案大小總和不能超過 25MB";
-
-/* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "該使用者已登入。";

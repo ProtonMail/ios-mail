@@ -87,9 +87,6 @@
 /* (No Comment) */
 "Add" = "Tambah";
 
-/* menu title */
-"Add accounts" = "Tambah akun";
-
 /* new contacts add Anniversary */
 "Add Anniversary" = "Tambahkan Hari Pernikahan";
 
@@ -1048,10 +1045,10 @@
 
 /* mail location desc
    menu title */
-"Inbox" = "Kotak masuk";
+"Inbox" = "Kootak masuk";
 
 /* mail location title */
-"INBOX" = "Kotak masuk";
+"INBOX" = "Kootak masuk";
 
 /* Title */
 "Incorrect password" = "Kata sandi salah";
@@ -1242,9 +1239,6 @@
 
 /* cell title in device settings */
 "Mailbox size" = "Ukuran Kotak Pesan";
-
-/* menu title */
-"Manage accounts" = "Kelola akun";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Kelola Alamat";
@@ -1448,9 +1442,6 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Hanya satu akun gratis yang bisa ditambahkan";
-
-/* Open action */
-"Open" = "Buka";
 
 /* (No Comment) */
 "OpenDraft" = "Open draft";
@@ -1943,9 +1934,6 @@
 /* menu title */
 "Subscription" = "Berlangganan";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Subscription information temporarily unavailable. Please try again later.";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Mendukung %i domain khusus (contoh nama@domainanda.com)";
 
@@ -2056,9 +2044,6 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Total ukuran lampiran tidak boleh melampaui 25MB";
-
-/* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL yang Anda coba akses tidak standar dan mungkin tidak dimuat dengan baik. Apakah Anda mau membukanya dengan peramban bawaan perangkat Anda?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Pengguna sudah masuk";

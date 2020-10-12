@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import XCTest
+
 /**
  Represents Sent view.
 */
@@ -26,11 +28,6 @@ class SentRobot : MailboxRobotInterface {
         return self
     }
     
-    override func refreshMailbox() -> SentRobot {
-        super.refreshMailbox()
-        return self
-    }
-    
     /**
      Contains all the validations that can be performed by SentRobot.
     */
@@ -39,7 +36,7 @@ class SentRobot : MailboxRobotInterface {
         init(parent: SentRobot) { sentRobot = parent }
         
         func messageWithSubjectExists(_ subject: String) {
-            Element.wait.forStaticTextFieldWithIdentifier(subject)
+            Element.assert.staticTextWithIdentifierExists(subject)
         }
     }
 }

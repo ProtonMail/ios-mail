@@ -153,7 +153,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
             self.navigationItem.largeTitleDisplayMode = .never
             self.navigationItem.hidesSearchBarWhenScrolling = false
             self.navigationItem.searchController = self.searchController
-            self.navigationItem.assignNavItemIndentifiers()
         } else {
             self.searchViewConstraint.constant = self.searchController.searchBar.frame.height
             self.searchView.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
@@ -324,7 +323,6 @@ extension ContactsViewController: UITableViewDelegate {
                 
                 alertController.popoverPresentationController?.sourceView = self.tableView
                 alertController.popoverPresentationController?.sourceRect = CGRect(x: self.tableView.bounds.midX, y: self.tableView.bounds.maxY - 100, width: 0, height: 0)
-                alertController.assignActionsAccessibilityIdentifiers()
                 
                 self.present(alertController, animated: true, completion: nil)
             }

@@ -45,8 +45,6 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
     private var scrollDecelerationOverlay: ViewBlowingAfterTouch!
     private var scrollDecelerationOverlayObservation: NSKeyValueObservation!
     
-    private var defaultScale: CGFloat?
-    
     deinit {
         self.contentSizeObservation = nil
         self.loadingObservation = nil
@@ -127,9 +125,6 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         self.verticalRecognizer.delegate = self
         self.verticalRecognizer.maximumNumberOfTouches = 1
         self.webView.scrollView.addGestureRecognizer(verticalRecognizer)
-        //Work around for webview tap too sensitive. Disable the recognizer when the view is just loaded.
-        self.webView.scrollView.isScrollEnabled = false
-        self.verticalRecognizer.isEnabled = false
     }
     
     override func viewDidLoad() {
@@ -229,8 +224,6 @@ extension HorizontallyScrollableWebViewContainer: WKNavigationDelegate, WKUIDele
             guard self?.shouldDefaultObserveContentSizeChanges() == true else { return }
             guard webView.estimatedProgress > 0.1 else { return } // skip first call because it will inherit irrelevant contentSize
             self?.updateHeight(to: webView.scrollView.contentSize.height)
-            //Work around for webview tap too sensitive. Save the default scale value
-            self?.defaultScale = round(webView.scrollView.zoomScale * 1000) / 1000.0
         }
  
         decisionHandler(.allow)
@@ -244,9 +237,6 @@ extension HorizontallyScrollableWebViewContainer: WKNavigationDelegate, WKUIDele
 
 extension HorizontallyScrollableWebViewContainer: UIScrollViewDelegate {
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
-        //Work around for webview tap too sensitive. Enable vertical recognizer when the webview is zooming.
-        self.webView.scrollView.isScrollEnabled = true
-        self.verticalRecognizer.isEnabled = true
         self.contentSizeObservation = nil
         self.loadingObservation = nil
         self.lastZoom = view?.transform ?? .identity
@@ -268,17 +258,6 @@ extension HorizontallyScrollableWebViewContainer: UIScrollViewDelegate {
         })
         
         self.updateHeight(to: newSize.height)
-        
-        //Work around for webview tap too sensitive
-        if let defaultScale = self.defaultScale {
-            if round(scrollView.zoomScale * 1000) / 1000.0 == defaultScale {
-                self.webView.scrollView.isScrollEnabled = false
-                self.verticalRecognizer.isEnabled = false
-                return
-            }
-        }
-        self.webView.scrollView.isScrollEnabled = true
-        self.verticalRecognizer.isEnabled = true
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
