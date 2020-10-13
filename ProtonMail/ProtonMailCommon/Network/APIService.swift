@@ -209,8 +209,8 @@ class APIService : Service {
             guard !credential.isExpired else {
                 self.authRefresh(credential) { _, newCredential, error in
                     self.debugError(error)
-                    pthread_mutex_unlock(&self.mutex)
                     if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
+                        pthread_mutex_unlock(&self.mutex)
                         DispatchQueue.main.async {
                             NSError.alertBadTokenToast()
                             completion(newCredential?.accessToken, self.sessionUID, error)
@@ -219,6 +219,7 @@ class APIService : Service {
                                                             userInfo: ["uid": self.sessionUID ])
                         }
                     } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                        pthread_mutex_unlock(&self.mutex)
                         DispatchQueue.main.async {
                             NSError.alertBadTokenToast()
                             self.fetchAuthCredential(completion)
@@ -227,6 +228,7 @@ class APIService : Service {
                         if let credential = newCredential {
                             self.sessionDeleaget?.updateAuthCredential(credential)
                         }
+                        pthread_mutex_unlock(&self.mutex)
                         DispatchQueue.main.async {
                             completion(newCredential?.accessToken, self.sessionUID, error)
                         }
