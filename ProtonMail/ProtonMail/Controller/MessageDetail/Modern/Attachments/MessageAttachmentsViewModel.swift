@@ -85,11 +85,13 @@ extension MessageAttachmentsViewModel {
         }
         
         guard FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) else {
-            attachment.localURL = nil
-            if let context = attachment.managedObjectContext,
-                let error = context.saveUpstreamIfNeeded()
-            {
-                PMLog.D(" error: \(String(describing: error))")
+            if let context = attachment.managedObjectContext {
+                context.performAndWait {
+                    attachment.localURL = nil
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(String(describing: error))")
+                    }
+                }
             }
             
             self.downloadAttachment(attachment, progressUpdate: pregressUpdate, success: decryptor, fail: fail)
