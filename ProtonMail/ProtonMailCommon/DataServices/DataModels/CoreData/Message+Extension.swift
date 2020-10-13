@@ -293,27 +293,30 @@ extension Message {
     }
     
     class func delete(labelID : String) -> Bool { //TODO:: double check if user id matters
+        var result = false
         let mContext = CoreDataService.shared.mainManagedObjectContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         
         fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@)", "\(labelID)")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-        do {
-            if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
-                for message in oldMessages {
-                    mContext.delete(message)
+        mContext.performAndWait {
+            do {
+                if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
+                    for message in oldMessages {
+                        mContext.delete(message)
+                    }
+                    if let error = mContext.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                    } else {
+                        result = true
+                    }
                 }
-                if let error = mContext.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                } else {
-                    return true
-                }
+            } catch {
+                PMLog.D(" error: \(error)")
             }
-        } catch {
-            PMLog.D(" error: \(error)")
         }
         
-        return false
+        return result
     }
     
     
