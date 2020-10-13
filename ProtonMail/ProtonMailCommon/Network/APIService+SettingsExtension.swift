@@ -30,7 +30,7 @@ extension APIService {
         static let base = "/settings/mail"
     }
     
-    //TODO::Swift
+    //TODO::Swift, seems no use
     func settingUpdateSignature(_ signature: String, authCredential: AuthCredential?, completion: @escaping CompletionBlock) {
         let path = SettingPath.base + "/signature"
         let parameters = ["Signature" : signature]
