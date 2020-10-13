@@ -119,7 +119,10 @@ class MessageDataService : Service, HasLocalStorage {
                 if count < 0 {
                     count = 0
                 }
-                lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, context: context)
+                lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, context: context, shouldSave: false)
+            }
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(error.localizedDescription)
             }
         }
     }
@@ -149,7 +152,7 @@ class MessageDataService : Service, HasLocalStorage {
     func updateCounter(plus: Bool, with labelID: String) {
         self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
             let offset = plus ? 1 : -1
-            let unreadCount = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, context: context)
+            let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, context: context)
             var count = unreadCount + offset
             if count < 0 {
                 count = 0
@@ -2638,13 +2641,15 @@ class MessageDataService : Service, HasLocalStorage {
                     guard let unread = count["Unread"] as? Int else {
                         continue
                     }
-                    lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: unread, context: self.managedObjectContext, shouldSave: false)
+                    lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: unread, context: context, shouldSave: false)
                 }
             }
             
-            _ = context.saveUpstreamIfNeeded()
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(error.localizedDescription)
+            }
             
-            _ = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userID, context: self.managedObjectContext).done { (unreadCount) in
+            _ = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userID, context: context).done { (unreadCount) in
                 var badgeNumber = unreadCount
                 if  badgeNumber < 0 {
                     badgeNumber = 0
