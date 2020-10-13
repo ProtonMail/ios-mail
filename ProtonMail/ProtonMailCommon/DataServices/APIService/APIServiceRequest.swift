@@ -123,7 +123,9 @@ class ApiRequest<T : ApiResponse> : Package {
         }
         
         var header = self.getHeaders()
-        header["x-pm-apiversion"] = self.apiVersion()
+        if self.apiVersion() != -1 {
+            header["x-pm-apiversion"] = self.apiVersion()
+        }
         
         api.request(method: self.method(),
                     path: self.path(),
