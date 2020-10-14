@@ -455,6 +455,11 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
                     }
                 }
             }
+        case .move:
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.insertRows(at: [newIndexPath], with: .fade)
+            }
         default:
             break
         }
