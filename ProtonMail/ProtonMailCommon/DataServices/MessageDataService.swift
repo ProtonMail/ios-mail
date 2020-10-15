@@ -149,13 +149,12 @@ class MessageDataService : Service, HasLocalStorage {
     func updateCounter(plus: Bool, with labelID: String) {
         self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
             let offset = plus ? 1 : -1
-            _ = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, context: context).done { (unreadCount) in
-                var count = unreadCount + offset
-                if count < 0 {
-                    count = 0
-                }
-                lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, context: context)
+            let unreadCount = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, context: context)
+            var count = unreadCount + offset
+            if count < 0 {
+                count = 0
             }
+            lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, context: context)
         }
     }
 
