@@ -139,6 +139,9 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     @objc func didEnterBackground() {
+        if let vc = self.currentWindow.topmostViewController() {
+            vc.view.endEditing(true)
+        }
         self.snapshot.show(at: self.currentWindow)
     }
     

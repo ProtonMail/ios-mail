@@ -92,9 +92,7 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        DispatchQueue.global().async {
-            self.decideOnBioAuthentication()
-        }
+        self.decideOnBioAuthentication()
     }
     
     override func viewDidLoad() {
