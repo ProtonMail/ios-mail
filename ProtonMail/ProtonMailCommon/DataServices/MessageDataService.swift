@@ -197,9 +197,16 @@ class MessageDataService : Service, HasLocalStorage {
             }
         }
         
-        let error = context.saveUpstreamIfNeeded()
-        if let error = error {
-            PMLog.D(" error: \(error)")
+        var hasError = false
+        context.performAndWait {
+            let error = context.saveUpstreamIfNeeded()
+            if let error = error {
+                PMLog.D(" error: \(error)")
+                hasError = true
+            }
+        }
+        
+        if hasError {
             return false
         }
         
