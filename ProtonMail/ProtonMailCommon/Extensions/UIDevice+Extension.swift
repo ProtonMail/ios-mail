@@ -54,6 +54,7 @@ extension UIDevice {
         switch (iOS13, hasSignificantProtection, self.userInterfaceIdiom) {
         case (_, _, .phone):    return .deeplink
         case (true, _, .pad):   return .multiwindow
+        case (false, _, .pad): return .deeplink
         default:
             assert(false, "All possible combinations should be covered by cases above")
             return .deeplink

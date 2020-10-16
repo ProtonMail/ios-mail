@@ -242,8 +242,7 @@ extension AppDelegate: UIApplicationDelegate {
             return false
         }
         
-        
-        if ["protonmail", "mailto"].contains(urlComponents.scheme) {
+        if ["protonmail", "mailto"].contains(urlComponents.scheme) || "mailto".caseInsensitiveCompare(urlComponents.scheme ?? "") == .orderedSame {
             var path = url.absoluteString
             if urlComponents.scheme == "protonmail" {
                 path = path.preg_replace("protonmail://", replaceto: "")

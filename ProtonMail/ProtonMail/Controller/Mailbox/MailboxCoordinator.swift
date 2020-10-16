@@ -281,62 +281,28 @@ class MailboxCoordinator : DefaultCoordinator {
                 let user = self.viewModel.user
                 let mailToURL = URL(string: value)!
                 let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user, coreDataService: self.services.get(by: CoreDataService.self))
-                if let mailTo: NSURL = mailToURL as NSURL, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
-                    let rawURLparts = resSpecifier.components(separatedBy: "?")
-                    if (rawURLparts.count > 2) {
-                        
-                    } else {
-                        let defaultRecipient = rawURLparts[0]
-                        if defaultRecipient.count > 0 { //default to
-                            if defaultRecipient.isValidEmail() {
-                                viewModel.addToContacts(ContactVO(name: defaultRecipient, email: defaultRecipient))
-                            }
-                            PMLog.D("to: \(defaultRecipient)")
-                        }
-                        
-                        if (rawURLparts.count == 2) {
-                            let queryString = rawURLparts[1]
-                            let params = queryString.components(separatedBy: "&")
-                            for param in params {
-                                let keyValue = param.components(separatedBy: "=")
-                                if (keyValue.count != 2) {
-                                    continue
-                                }
-                                let key = keyValue[0].lowercased()
-                                var value = keyValue[1]
-                                value = value.removingPercentEncoding ?? ""
-                                if key == "subject" {
-                                    PMLog.D("subject: \(value)")
-                                    viewModel.setSubject(value)
-                                }
-                                
-                                if key == "body" {
-                                    PMLog.D("body: \(value)")
-                                    viewModel.setBody(value)
-                                }
-                                
-                                if key == "to" {
-                                    PMLog.D("to: \(value)")
-                                    if value.isValidEmail() {
-                                        viewModel.addToContacts(ContactVO(name: value, email: value))
-                                    }
-                                }
-                                
-                                if key == "cc" {
-                                    PMLog.D("cc: \(value)")
-                                    if value.isValidEmail() {
-                                        viewModel.addCcContacts(ContactVO(name: value, email: value))
-                                    }
-                                }
-                                
-                                if key == "bcc" {
-                                    PMLog.D("bcc: \(value)")
-                                    if value.isValidEmail() {
-                                        viewModel.addBccContacts(ContactVO(name: value, email: value))
-                                    }
-                                }
-                            }
-                        }
+                
+                if let mailToData = mailToURL.parseMailtoLink() {
+                    PMLog.D("mailto: \(mailToData)")
+                    
+                    mailToData.to.forEach { (receipient) in
+                        viewModel.addToContacts(ContactVO(name: receipient, email: receipient))
+                    }
+                    
+                    mailToData.cc.forEach { (receipient) in
+                        viewModel.addCcContacts(ContactVO(name: receipient, email: receipient))
+                    }
+                    
+                    mailToData.bcc.forEach { (receipient) in
+                        viewModel.addBccContacts(ContactVO(name: receipient, email: receipient))
+                    }
+                    
+                    if let subject = mailToData.subject {
+                        viewModel.setSubject(subject)
+                    }
+                    
+                    if let body = mailToData.body {
+                        viewModel.setBody(body)
                     }
                 }
                     
