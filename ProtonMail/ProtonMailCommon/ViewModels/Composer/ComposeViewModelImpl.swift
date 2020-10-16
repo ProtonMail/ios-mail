@@ -218,44 +218,34 @@ class ComposeViewModelImpl : ComposeViewModel {
         return Promise { seal in
             let userinfo = self.user.userInfo
             guard let addr = userinfo.userAddresses.indexOfAddress(address_id),
-                let key = addr.keys.first else {
-                    throw RuntimeError.no_address.error
+                  let key = addr.keys.first else {
+                throw RuntimeError.no_address.error
             }
             
-            if let atts = self.getAttachments() {
-                for att in atts {
-                    do {
-                        //TODO: work around to wait attachment upload completed, need a better way
-                        while att.keyPacket == nil || att.keyPacket == "" {
-                            Thread.sleep(forTimeInterval: 1.0)
-                        }
-                        
-                        guard let sessionPack = self.user.newSchema ?
+            for att in self.getAttachments() ?? [] {
+                do {
+                    //TODO: work around to wait attachment upload completed, need a better way
+                    while att.keyPacket == nil || att.keyPacket == "" {
+                        Thread.sleep(forTimeInterval: 1.0)
+                    }
+                    
+                    guard let sessionPack = self.user.newSchema ?
                             try att.getSession(userKey: self.user.userPrivateKeys,
                                                keys: self.user.addressKeys,
                                                mailboxPassword: self.user.mailboxPassword) :
                             try att.getSession(keys: self.user.addressPrivateKeys,
                                                mailboxPassword: self.user.mailboxPassword) else { //DONE
-                            continue
-                        }
-                        guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
-                            continue
-                        }
-                        att.managedObjectContext?.performAndWait {
-                            att.keyPacket = newKeyPack
-                            att.keyChanged = true
-                        }
-                    } catch let err as NSError{
-                        Analytics.shared.error(message: .updateAddressIDError, error: err, user: self.user)
+                        continue
                     }
-                }
-                
-                if let context = self.message?.managedObjectContext {
-                    context.performAndWait {
-                        if let error = context.saveUpstreamIfNeeded() {
-                            PMLog.D("error: \(error)")
-                        }
+                    guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                        continue
                     }
+                    att.managedObjectContext?.performAndWait {
+                        att.keyPacket = newKeyPack
+                        att.keyChanged = true
+                    }
+                } catch let err as NSError{
+                    Analytics.shared.error(message: .updateAddressIDError, error: err, user: self.user)
                 }
             }
             
