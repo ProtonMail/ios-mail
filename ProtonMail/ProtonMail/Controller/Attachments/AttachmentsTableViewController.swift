@@ -68,6 +68,11 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     var normalAttachments: [Attachment] = []
     var inlineAttachments: [Attachment] = []
     var attachmentSections : [AttachmentSection] = []
+    lazy var processQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
 
     var attachments: [Attachment] {
         if let atts = self.message.attachments.allObjects as? [Attachment] {
@@ -89,9 +94,11 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }()
     
     func updateAttachments() {
-        self.buildAttachments()
-        self.updateAttachmentSize()
-        self.tableView?.reloadData()
+            self.buildAttachments()
+            self.updateAttachmentSize()
+        DispatchQueue.main.async {
+            self.tableView?.reloadData()
+        }
     }
     
     func buildAttachments() {
