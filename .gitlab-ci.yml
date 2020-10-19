@@ -48,6 +48,11 @@ ui_tests:
    stage: test
    except:
     - schedules
+   only:
+    - master
+    - develop
+    - /^release\/.*$/
+    - merge_requests
    artifacts:
     name: "test-report"
     paths:
