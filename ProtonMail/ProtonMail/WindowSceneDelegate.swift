@@ -36,9 +36,8 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }()
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        guard case let app = UIApplication.shared, let delegate = app.delegate as? AppDelegate else { return }
         _ = URLContexts.first { context in
-            delegate.application(app, open: context.url)
+            self.handleUrlOpen(context.url)
         }
     }
     
@@ -80,6 +79,11 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity
         {
             self.scene(scene, continue: userActivity)
+            
+            _ = connectionOptions.urlContexts.first { context in
+                self.handleUrlOpen(context.url)
+            }
+            
             return
         } else if connectionOptions.handoffUserActivityType != nil {
             // coordinator will be started by windowScene(_:performActionFor:completionHandler:)
@@ -89,9 +93,8 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.coordinator.start()
         
         //For default mail function
-        guard case let app = UIApplication.shared, let delegate = app.delegate as? AppDelegate else { return }
         _ = connectionOptions.urlContexts.first { context in
-            delegate.application(app, open: context.url)
+            self.handleUrlOpen(context.url)
         }
     }
 
@@ -137,6 +140,44 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         let application = UIApplication.shared
         application.delegate?.applicationDidBecomeActive?(application)
+    }
+    
+    private func handleUrlOpen(_ url: URL) -> Bool {
+        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+            return false
+        }
+        
+        if ["protonmail", "mailto"].contains(urlComponents.scheme) || "mailto".caseInsensitiveCompare(urlComponents.scheme ?? "") == .orderedSame {
+            var path = url.absoluteString
+            if urlComponents.scheme == "protonmail" {
+                path = path.preg_replace("protonmail://", replaceto: "")
+            }
+            
+            let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
+            deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
+            deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
+            self.coordinator.followDeeplink(deeplink)
+            return true
+        }
+        
+        guard urlComponents.host == "signup" else {
+            return false
+        }
+        guard let queryItems = urlComponents.queryItems, let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first else {
+            return false
+        }
+        
+        guard let code = verifyObject.value else {
+            return false
+        }
+        ///TODO::fixme change to deeplink
+        let info : [String:String] = ["verifyCode" : code]
+        let notification = Notification(name: .customUrlSchema,
+                                        object: nil,
+                                        userInfo: info)
+        NotificationCenter.default.post(notification)
+                
+        return true
     }
 }
 

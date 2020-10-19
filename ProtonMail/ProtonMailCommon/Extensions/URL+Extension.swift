@@ -33,5 +33,55 @@ extension URL {
             assert(false, " path: \(absoluteString) excludeFromBackup error: \(ex)")
         }
     }
+    
+    struct MailtoData {
+        var to: [String] = []
+        var cc: [String] = []
+        var bcc: [String] = []
+        var subject: String? = nil
+        var body: String? = nil
+    }
+    
+    func parseMailtoLink() -> MailtoData? {
+        
+        func splitMails(_ email: String) -> [String] {
+            return email.split(separator: ",").map(String.init)
+        }
+        
+        guard let urlComponment = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
+            return nil
+        }
+        
+        guard urlComponment.scheme == "mailto" else {
+            return nil
+        }
+        
+        let queryItems = urlComponment.queryItems
+        
+        var result = MailtoData()
+        
+        //to
+        result.to = urlComponment.path.isEmpty ? [] : splitMails(urlComponment.path)
+        
+        queryItems?.forEach({ (queryItem) in
+            guard let value = queryItem.value else {
+                return
+            }
+            switch queryItem.name {
+            case "cc":
+                result.cc += splitMails(value)
+            case "bcc":
+                result.bcc += splitMails(value)
+            case "subject" where result.subject == nil:
+                result.subject = value
+            case "body" where result.body == nil:
+                result.body = value
+            default:
+                break
+            }
+        })
+        
+        return result
+    }
 }
 
