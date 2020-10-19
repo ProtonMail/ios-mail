@@ -191,7 +191,9 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }
     
     func showSizeErrorAlert( _ didReachedSizeLimitation: Int) {
-        self.showErrorAlert(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+        DispatchQueue.main.async {
+            self.showErrorAlert(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+        }
     }
     
     func showErrorAlert( _ error: String) {
