@@ -118,6 +118,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneWillEnterForeground(_ scene: UIScene) {
+        UIApplication.shared.delegate?.applicationWillEnterForeground?(UIApplication.shared)
         self.coordinator.willEnterForeground()
     }
     
