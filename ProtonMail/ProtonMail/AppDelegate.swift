@@ -36,6 +36,7 @@ class AppDelegate: UIResponder {
         return self.coordinator.currentWindow
     }
     lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices)
+    private var currentState: UIApplication.State = .active
 }
 
 // MARK: - this is workaround to track when the SWRevealViewController first time load
@@ -175,14 +176,19 @@ extension AppDelegate: UIApplicationDelegate {
         NotificationCenter.default.addObserver(forName: Keymaker.Const.errorObtainingMainKey, object: nil, queue: .main) { notification in
             (notification.userInfo?["error"] as? Error)?.localizedDescription.alertToast()
         }
-        NotificationCenter.default.addObserver(forName: Keymaker.Const.obtainedMainKey, object: nil, queue: .main) { notification in
-            "Obtained main key".alertToastBottom()
-        }
         NotificationCenter.default.addObserver(forName: Keymaker.Const.removedMainKeyFromMemory, object: nil, queue: .main) { notification in
             "Removed main key from memory".alertToastBottom()
         }
         #endif
-        
+        NotificationCenter.default.addObserver(forName: Keymaker.Const.obtainedMainKey, object: nil, queue: .main) { notification in
+            #if DEBUG
+                "Obtained main key".alertToastBottom()
+            #endif
+            
+            if self.currentState != .active {
+                keymaker.updateAutolockCountdownStart()
+            }
+        }
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didSignOutNotification(_:)),
                                                name: NSNotification.Name.didSignOut,
@@ -278,6 +284,7 @@ extension AppDelegate: UIApplicationDelegate {
     
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
+        self.currentState = .background
         keymaker.updateAutolockCountdownStart()
         
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
@@ -342,6 +349,10 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         self.coordinator.willEnterForeground()
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        self.currentState = .active
     }
     
     // MARK: Background methods

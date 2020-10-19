@@ -113,7 +113,11 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         return newKey
     }
     
-    private let controlThread = DispatchQueue.global(qos: .userInteractive)
+    private let controlThread: OperationQueue = {
+        let operation = OperationQueue()
+        operation.maxConcurrentOperationCount = 1
+        return operation
+    }()
     
     public func wipeMainKey() {
         NoneProtection.removeCyphertext(from: self.keychain)
@@ -151,42 +155,41 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         // so for ease of use (and since most of callbacks turned out to work with UI)
         // we'll return to main thread explicitly here
         let isMainThread = Thread.current.isMainThread
-        DispatchQueue.global().async {
-            self.controlThread.sync {
-                guard self._mainKey == nil else {
-                    isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
-                    return
-                }
-                
-                guard let cypherBits = protector.getCypherBits() else {
-                    isMainThread ? DispatchQueue.main.async { handler(nil) } : handler(nil)
-                    return
-                }
-                
-                do {
-                    let mainKeyBytes = try protector.unlock(cypherBits: cypherBits)
-                    self._mainKey = mainKeyBytes
-                    NotificationCenter.default.post(name: Const.obtainedMainKey, object: self)
-                } catch let error {
-                    NotificationCenter.default.post(name: Const.errorObtainingMainKey, object: self, userInfo: ["error": error])
-                    
-                    // this CFError trows randomly on iOS 13 (up to 13.3 beta 2) on TouchID capable devices
-                    // it happens less if auth prompt is invoked with 1 sec delay after app gone foreground but still happens
-                    // description: "Could not decrypt. Failed to get externalizedContext from LAContext"
-                    if #available(iOS 13.0, *),
-                       case EllipticCurveKeyPair.Error.underlying(message: _, error: let underlyingError) = error,
-                       underlyingError.code == -2
-                    {
-                        isMainThread
-                            ? DispatchQueue.main.async { self.obtainMainKey(with: protector, handler: handler) }
-                            : self.obtainMainKey(with: protector, handler: handler)
-                    } else {
-                        self._mainKey = nil
-                    }
-                }
-                
+        
+        self.controlThread.addOperation {
+            guard self._mainKey == nil else {
                 isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
+                return
             }
+            
+            guard let cypherBits = protector.getCypherBits() else {
+                isMainThread ? DispatchQueue.main.async { handler(nil) } : handler(nil)
+                return
+            }
+            
+            do {
+                let mainKeyBytes = try protector.unlock(cypherBits: cypherBits)
+                self._mainKey = mainKeyBytes
+                NotificationCenter.default.post(name: Const.obtainedMainKey, object: self)
+            } catch let error {
+                NotificationCenter.default.post(name: Const.errorObtainingMainKey, object: self, userInfo: ["error": error])
+                
+                // this CFError trows randomly on iOS 13 (up to 13.3 beta 2) on TouchID capable devices
+                // it happens less if auth prompt is invoked with 1 sec delay after app gone foreground but still happens
+                // description: "Could not decrypt. Failed to get externalizedContext from LAContext"
+                if #available(iOS 13.0, *),
+                   case EllipticCurveKeyPair.Error.underlying(message: _, error: let underlyingError) = error,
+                   underlyingError.code == -2
+                {
+                    isMainThread
+                        ? DispatchQueue.main.async { self.obtainMainKey(with: protector, handler: handler) }
+                        : self.obtainMainKey(with: protector, handler: handler)
+                } else {
+                    self._mainKey = nil
+                }
+            }
+            
+            isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
         }
     }
     
@@ -195,7 +198,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
                          completion: @escaping (Bool) -> Void)
     {
         let isMainThread = Thread.current.isMainThread
-        self.controlThread.async {
+        self.controlThread.addOperation {
             guard let mainKey = self.mainKey,
                 //swiftlint:disable unused_optional_binding
                 let _ = try? protector.lock(value: mainKey) else
