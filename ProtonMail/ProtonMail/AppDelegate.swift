@@ -364,9 +364,7 @@ extension AppDelegate: UIApplicationDelegate {
             return
         }
         let usersManager: UsersManager = sharedServices.get()
-        usersManager.firstUser?.messageService.backgroundFetch(notify: {
-            completionHandler(.newData)
-        })
+        usersManager.firstUser?.messageService.backgroundFetch(notify: nil)
         //HACK: Call this after n seconds to prevent app got killed.
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
             completionHandler(.newData)
