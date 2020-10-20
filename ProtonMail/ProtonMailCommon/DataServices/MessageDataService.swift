@@ -752,30 +752,26 @@ class MessageDataService : Service, HasLocalStorage {
         
         // TODO: check for existing download tasks and return that task rather than start a new download
         queue { () -> Void in
-            if attachment.managedObjectContext != nil {
+            if let context = attachment.managedObjectContext {
                 self.apiService.downloadAttachment(byID: attachment.attachmentID,
                                                     destinationDirectoryURL: FileManager.default.attachmentDirectory,
                                                     customAuthCredential: customAuthCredential,
                                                     downloadTask: downloadTask,
                                                     completion: { task, fileURL, error in
                                                         var error = error
-                                                        let context = self.coreDataService.backgroundManagedObjectContext
-                                                        let objectId = attachment.objectID
                                                         self.coreDataService.enqueue(context: context) { (context) in
-                                                            if let att = context.object(with: objectId) as? Attachment {
-                                                                if let fileURL = fileURL {
-                                                                    att.localURL = fileURL
-                                                                    if #available(iOS 12, *) {
-                                                                        if !self.isFirstTimeSaveAttData {
-                                                                            att.fileData = try? Data(contentsOf: fileURL)
-                                                                        }
-                                                                    } else {
-                                                                        att.fileData = try? Data(contentsOf: fileURL)
+                                                            if let fileURL = fileURL {
+                                                                attachment.localURL = fileURL
+                                                                if #available(iOS 12, *) {
+                                                                    if !self.isFirstTimeSaveAttData {
+                                                                        attachment.fileData = try? Data(contentsOf: fileURL)
                                                                     }
-                                                                    error = context.saveUpstreamIfNeeded()
-                                                                    if error != nil  {
-                                                                        PMLog.D(" error: \(String(describing: error))")
-                                                                    }
+                                                                } else {
+                                                                    attachment.fileData = try? Data(contentsOf: fileURL)
+                                                                }
+                                                                error = context.saveUpstreamIfNeeded()
+                                                                if error != nil  {
+                                                                    PMLog.D(" error: \(String(describing: error))")
                                                                 }
                                                             }
                                                             completion?(task, fileURL, error)

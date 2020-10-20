@@ -294,7 +294,6 @@ class SendBuilder {
                                                             customAuthCredential: att.message.cachedAuthCredential,
                                                             downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in },
                                                             completion: { (_, url, error) -> Void in
-                                                                att.localURL = url;
                                                                 seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
                                                                 if error != nil {
                                                                     PMLog.D("\(String(describing: error))")
