@@ -492,18 +492,9 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                     body = body + foot
                 }
                 
-//                var html = body.replacingOccurrences(of: "\\", with: "&#92;", options: .caseInsensitive, range: nil)
-//                html = body.replacingOccurrences(of: "\"", with: "\\\"", options: .caseInsensitive, range: nil)
-//                html = body.replacingOccurrences(of: "“", with: "&quot;", options: .caseInsensitive, range: nil)
-//                html = body.replacingOccurrences(of: "”", with: "&quot;", options: .caseInsensitive, range: nil)
-//                html = body.replacingOccurrences(of: "\r", with: "\\r", options: .caseInsensitive, range: nil)
-//                html = body.replacingOccurrences(of: "\n", with: "\\n", options: .caseInsensitive, range: nil)
-//                html = body.replacingOccurrences(of: "<br>", with: "<br />", options: .caseInsensitive, range: nil)
-//                html = body.replacingOccurrences(of: "<hr>", with: "<hr />", options: .caseInsensitive, range: nil)
-                
                 self.viewModel.collectDraft (
                     self.headerView.subject.text!,
-                    body: mutableString as String,//html.isEmpty ? body : html,
+                    body: body,
                     expir: self.headerView.expirationTimeInterval,
                     pwd:self.encryptionPassword,
                     pwdHit:self.encryptionPasswordHint
