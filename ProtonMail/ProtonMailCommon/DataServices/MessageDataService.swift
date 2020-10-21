@@ -1212,8 +1212,9 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 let completionWrapper: CompletionBlock = { task, response, error in
                     guard let mess = response else {
-                        if let errmsg = error?.localizedDescription {
-                            NSError.alertSavingDraftError(details: errmsg)
+                        if let err = error {
+                            Analytics.shared.error(message: .saveDraftError, error: err, user: self.usersManager?.firstUser)
+                            NSError.alertSavingDraftError(details: err.localizedDescription)
                         }
                         // error: response nil
                         completion?(task, nil, error)
@@ -1279,6 +1280,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 PMLog.D(" error: \(save_error)")
                             }
                         } catch let exc as NSError {
+                            Analytics.shared.error(message: .grtJSONSerialization, error: exc, user: self.usersManager?.firstUser)
                             completion?(task, response, exc)
                             return
                         }
@@ -1323,6 +1325,7 @@ class MessageDataService : Service, HasLocalStorage {
                 }
             } catch let ex as NSError {
                 // error: context thrown trying to get Message
+                Analytics.shared.error(message: .saveDraftError, error: ex, user: self.usersManager?.firstUser)
                 let _ = sharedMessageQueue.remove(writeQueueUUID)
                 self.dequeueIfNeeded()
                 completion?(nil, nil, ex)
@@ -1430,6 +1433,9 @@ class MessageDataService : Service, HasLocalStorage {
                     completion?(task, response, error)
                 }
             } else {
+                if let err = error {
+                    Analytics.shared.error(message: .uploadAttachmentError, error: err, user: self.usersManager?.firstUser)
+                }
                 completion?(task, response, error)
             }
         }
@@ -2014,6 +2020,10 @@ class MessageDataService : Service, HasLocalStorage {
                 self.dequeueIfNeeded()
             } else {
                 PMLog.D(" error: \(String(describing: error))")
+                if let err = error {
+                    Analytics.shared.error(message: .queueError, error: err, user: self.usersManager?.firstUser)
+                }
+                
                 var statusCode = 200
                 let errorCode = error?.code ?? 200
                 var isInternetIssue = false
