@@ -133,6 +133,8 @@ extension Analytics {
         case keychainError = "Keychain Error"
         case notificationError = "Notification Error"
         case sendMessageError = "Send Message Error"
+        case saveDraftError = "Save Draft Error"
+        case uploadAttachmentError = "Upload Att Error"
         case fetchMetadata = "FetchMetadata"
         case grtJSONSerialization = "GRTJSONSerialization"
         case vcard = "vcard"
