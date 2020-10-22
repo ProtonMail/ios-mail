@@ -306,7 +306,8 @@ class SendBuilder {
     func buildMime(senderKey: Key, passphrase: String, userKeys: [Data], keys: [Key], newSchema: Bool, msgService: MessageDataService, userInfo: UserInfo) -> Promise<SendBuilder> {
         return Promise { seal in
             /// decrypt attachments
-            let messageBody = self.clearBody ?? ""
+            var messageBody = self.clearBody ?? ""
+            messageBody = QuotedPrintable.encode(string: messageBody)
             var signbody = ""
             var boundaryMsg : String = "uF5XZWCLa1E8CXCUr2Kg8CSEyuEhhw9WU222" //default
             do {
@@ -323,7 +324,7 @@ class SendBuilder {
             signbody.append(contentsOf: "\r\n")
             signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
             signbody.append(contentsOf: "Content-Type: text/html; charset=utf-8" + "\r\n")
-            signbody.append(contentsOf: "Content-Transfer-Encoding: 7bit" + "\r\n")
+            signbody.append(contentsOf: "Content-Transfer-Encoding: quoted-printable" + "\r\n")
             signbody.append(contentsOf: "Content-Language: en-US" + "\r\n")
             signbody.append(contentsOf: "\r\n")
             signbody.append(contentsOf: messageBody +  "\r\n")
