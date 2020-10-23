@@ -214,7 +214,7 @@ class APIService : Service {
                         DispatchQueue.main.async {
                             NSError.alertBadTokenToast()
                             completion(newCredential?.accessToken, self.sessionUID, error)
-                            NotificationCenter.default.post(name: .didReovke,
+                            NotificationCenter.default.post(name: .didRevoke,
                                                             object: nil,
                                                             userInfo: ["uid": self.sessionUID ])
                         }
@@ -506,7 +506,7 @@ class APIService : Service {
                                                  customAuthCredential: customAuthCredential,
                                                  completion: completion)
                                 } else {
-                                    NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
+                                    NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": userID ?? ""])
                                 }
                             }
                         } else if let responseDict = response as? [String : Any], let responseCode = responseDict["Code"] as? Int {
@@ -565,7 +565,7 @@ class APIService : Service {
                                                      customAuthCredential: customAuthCredential,
                                                      completion: completion)
                                     } else {
-                                        NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
+                                        NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": userID ?? ""])
                                     }
                                 }
                             } else if responseCode.forceUpgrade  {
