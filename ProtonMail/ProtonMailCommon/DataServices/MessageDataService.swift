@@ -622,7 +622,6 @@ class MessageDataService : Service, HasLocalStorage {
             att.localURL = nil
             self.fetchAttachmentForAttachment(att, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
                 context.perform {
-                    att.localURL = url
                     complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
                     if error != nil {
                         PMLog.D("\(String(describing: error))")
