@@ -435,6 +435,7 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.lastAuthCacheVersion)
         getShared().removeObject(forKey: Key.isPM_MEWarningDisabled)
         getShared().removeObject(forKey: Key.combineContactFlag)
+        getShared().removeObject(forKey: Key.browser)
         
         //pin code
         getShared().removeObject(forKey: Key.lastPinFailedTimes)
@@ -567,14 +568,13 @@ extension UserCachedStatus {
 extension UserCachedStatus {
     var browser: LinkOpener {
         get {
-            guard let string = KeychainWrapper.keychain.string(forKey: Key.browser),
-                let mode = LinkOpener(rawValue: string) else
-            {
+            guard let raw = KeychainWrapper.keychain.string(forKey: Key.browser) ?? getShared().string(forKey: Key.browser) else {
                 return .safari
             }
-            return mode
+            return LinkOpener(rawValue: raw) ?? .safari
         }
         set {
+            getShared().setValue(newValue.rawValue, forKey: Key.browser)
             KeychainWrapper.keychain.set(newValue.rawValue, forKey: Key.browser)
         }
     }
