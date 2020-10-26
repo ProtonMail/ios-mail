@@ -82,7 +82,7 @@ class WindowsCoordinator: CoordinatorNew {
             NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.Const.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
-            NotificationCenter.default.addObserver(forName: .didReovke, object: nil, queue: .main) { [weak self] (noti) in
+            NotificationCenter.default.addObserver(forName: .didRevoke, object: nil, queue: .main) { [weak self] (noti) in
                 if let uid = noti.userInfo?["uid"] as? String {
                     self?.didReceiveTokenRevoke(uid: uid)
                 }
@@ -172,25 +172,26 @@ class WindowsCoordinator: CoordinatorNew {
     
     @objc func didReceiveTokenRevoke(uid: String) {
         let usersManager: UsersManager = services.get()
-        var foundUser = false
+        
         if let user = usersManager.getUser(bySessionID: uid) {
             Analytics.shared.debug(message: .logout, extra: [
                 Analytics.Reason.reason: Analytics.Reason.tokenRevoke
             ], user: user)
-            usersManager.logout(user: user, shouldAlert: true).cauterize()
-            foundUser = true
-        }
-        
-        guard let appWindow = self.appWindow else {return}
-        appWindow.enumerateViewControllerHierarchy { controller, stop in
-            if let menu = controller as? MenuViewController {
-                //Work Around: trigger viewDidLoad of menu view controller
-                _ = menu.view
+            usersManager.logout(user: user, shouldAlert: true).done { [weak self] (_) in
+                guard let self = self else { return }
                 
-                if !foundUser {
-                    menu.toInbox()
+                guard let appWindow = self.appWindow else {return}
+                
+                if usersManager.hasUsers() {
+                    appWindow.enumerateViewControllerHierarchy { controller, stop in
+                        if let menu = controller as? MenuViewController {
+                            //Work Around: trigger viewDidLoad of menu view controller
+                            _ = menu.view
+                            menu.toInbox()
+                        }
+                    }
                 }
-            }
+            }.cauterize()
         }
     }
     

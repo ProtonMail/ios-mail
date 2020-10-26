@@ -65,7 +65,7 @@ extension Notification.Name {
     }
     
     /// notify token revoke
-    static var didReovke: Notification.Name {
+    static var didRevoke: Notification.Name {
         return .init("ApiTokenRevoked")
     }
     
