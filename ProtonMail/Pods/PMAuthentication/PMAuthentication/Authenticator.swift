@@ -89,6 +89,7 @@ public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol
     /// Clear login, when preiously unauthenticated
     public func authenticate(username: String,
                              password: String,
+                             retryVersion: Int? = nil,
                              completion: @escaping Completion,
                              dohCheck: @escaping DohCheck)
     {
@@ -125,7 +126,10 @@ public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol
                 
                 // server SRP
                 let response = try decoder.decode(AuthService.InfoEndpoint.Response.self, from: responseData)
-                guard let auth = SRP(response.version,
+                
+                let version = (retryVersion != nil && (retryVersion ?? 0) > 0) ? retryVersion! : response.version
+                
+                guard let auth = SRP(version,
                                          username: username,
                                          password: password,
                                          salt: response.salt,
@@ -179,6 +183,15 @@ public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol
                         do {
                             // server error code
                             if let error = try? decoder.decode(ErrorResponse.self, from: responseData) {
+                                
+                                if let retryVer = retryVersion, retryVer - 1 > 0 {
+                                    return self.authenticate(username: username,
+                                                             password: password,
+                                                             retryVersion: retryVer - 1,
+                                                             completion: completion,
+                                                             dohCheck: dohCheck)
+                                }
+                                
                                 throw Errors.serverError(NSError(error))
                             }
                             
