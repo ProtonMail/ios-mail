@@ -99,20 +99,28 @@ class MessageDataService : Service, HasLocalStorage {
         guard message.unRead != unRead else {
             return false
         }
-        message.unRead = unRead
-        let error = context.saveUpstreamIfNeeded()
-        if let error = error {
-            PMLog.D(" error: \(error)")
+        var hasError = false
+        context.performAndWait {
+            message.unRead = unRead
+            let error = context.saveUpstreamIfNeeded()
+            if let error = error {
+                PMLog.D(" error: \(error)")
+                hasError = true
+            }
+        }
+        
+        if hasError {
             return false
         }
-        self.updateCounter(markUnRead: unRead, on: message)
+        
+        self.updateCounter(markUnRead: unRead, on: message, context: context)
         return true
     }
     
-    private func updateCounter(markUnRead: Bool, on message: Message) {
+    private func updateCounter(markUnRead: Bool, on message: Message, context: NSManagedObjectContext) {
         let offset = markUnRead ? 1 : -1
         let labelIDs: [String] = message.getLableIDs()
-        self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
+        self.coreDataService.enqueue(context: context) { (context) in
             for lID in labelIDs {
                 let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context)
                 var count = unreadCount + offset
@@ -126,25 +134,48 @@ class MessageDataService : Service, HasLocalStorage {
             }
         }
     }
+    
+    private func updateCounterSync(markUnRead: Bool, on message: Message, context: NSManagedObjectContext) {
+        let offset = markUnRead ? 1 : -1
+        let labelIDs: [String] = message.getLableIDs()
+        for lID in labelIDs {
+            let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context)
+            var count = unreadCount + offset
+            if count < 0 {
+                count = 0
+            }
+            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, context: context, shouldSave: false)
+        }
+    }
+    
     @discardableResult
     func label(message: Message, label: String, apply: Bool) -> Bool {
         guard let context = message.managedObjectContext else {
             return false
         }
-        if apply {
-            if message.add(labelID: label) != nil && message.unRead {
-                self.updateCounter(plus: true, with: label)
+
+        var hasError = false
+        context.performAndWait {
+            if apply {
+                if message.add(labelID: label) != nil && message.unRead {
+                    self.updateCounterSync(plus: true, with: label, context: context)
+                }
+            } else {
+                if message.remove(labelID: label) != nil && message.unRead {
+                    self.updateCounterSync(plus: false, with: label, context: context)
+                }
             }
-        } else {
-            if message.remove(labelID: label) != nil && message.unRead {
-                self.updateCounter(plus: false, with: label)
+            let error = context.saveUpstreamIfNeeded()
+            if let error = error {
+                PMLog.D(" error: \(error)")
+                hasError = true
             }
         }
-        let error = context.saveUpstreamIfNeeded()
-        if let error = error {
-            PMLog.D(" error: \(error)")
+        
+        if hasError {
             return false
         }
+        
         self.queue(message, action: apply ? .label : .unlabel, data1: label)
         return true
     }
@@ -164,41 +195,52 @@ class MessageDataService : Service, HasLocalStorage {
             }
         }
     }
+    
+    func updateCounterSync(plus: Bool, with labelID: String, context: NSManagedObjectContext) {
+        let offset = plus ? 1 : -1
+        let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, context: context)
+        var count = unreadCount + offset
+        if count < 0 {
+            count = 0
+        }
+        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, context: context)
+    }
 
     @discardableResult
     func move(message: Message, from fLabel: String, to tLabel: String, queue: Bool = true) -> Bool {
         guard let context = message.managedObjectContext else {
             return false
         }
-        if let lid = message.remove(labelID: fLabel), message.unRead {
-            self.updateCounter(plus: false, with: lid)
-            if let id = message.selfSent(labelID: lid) {
-                self.updateCounter(plus: false, with: id)
-            }
-        }
-        if let lid = message.add(labelID: tLabel) {
-            //if move to trash. clean lables.
-            var labelsFound = message.getNormalLableIDs()
-            labelsFound.append(Message.Location.starred.rawValue)
-            labelsFound.append(Message.Location.allmail.rawValue)
-            if lid == Message.Location.trash.rawValue {
-                self.remove(labels: labelsFound, on: message, cleanUnread: true)
-                message.unRead = false
-            }
-            if lid == Message.Location.spam.rawValue {
-                self.remove(labels: labelsFound, on: message, cleanUnread: false)
-            }
-            
-            if message.unRead {
-                self.updateCounter(plus: true, with: lid)
-                if let id = message.selfSent(labelID: lid) {
-                    self.updateCounter(plus: true, with: id)
-                }
-            }
-        }
-        
+
         var hasError = false
         context.performAndWait {
+            if let lid = message.remove(labelID: fLabel), message.unRead {
+                self.updateCounterSync(plus: false, with: lid, context: context)
+                if let id = message.selfSent(labelID: lid) {
+                    self.updateCounterSync(plus: false, with: id, context: context)
+                }
+            }
+            if let lid = message.add(labelID: tLabel) {
+                //if move to trash. clean lables.
+                var labelsFound = message.getNormalLableIDs()
+                labelsFound.append(Message.Location.starred.rawValue)
+                labelsFound.append(Message.Location.allmail.rawValue)
+                if lid == Message.Location.trash.rawValue {
+                    self.remove(labels: labelsFound, on: message, cleanUnread: true)
+                    message.unRead = false
+                }
+                if lid == Message.Location.spam.rawValue {
+                    self.remove(labels: labelsFound, on: message, cleanUnread: false)
+                }
+                
+                if message.unRead {
+                    self.updateCounterSync(plus: true, with: lid, context: context)
+                    if let id = message.selfSent(labelID: lid) {
+                        self.updateCounterSync(plus: true, with: id, context: context)
+                    }
+                }
+            }
+            
             let error = context.saveUpstreamIfNeeded()
             if let error = error {
                 PMLog.D(" error: \(error)")
@@ -233,29 +275,36 @@ class MessageDataService : Service, HasLocalStorage {
         guard let context = message.managedObjectContext else {
             return false
         }
-        
-        self.queue(message, action: .delete)
-        
-        if let lid = message.remove(labelID: label), message.unRead {
-            self.updateCounter(plus: false, with: lid)
-            if let id = message.selfSent(labelID: lid) {
-                self.updateCounter(plus: false, with: id)
+        var hasError = false
+        context.performAndWait {
+            self.queue(message, action: .delete)
+            
+            if let lid = message.remove(labelID: label), message.unRead {
+                self.updateCounterSync(plus: false, with: lid, context: context)
+                if let id = message.selfSent(labelID: lid) {
+                    self.updateCounterSync(plus: false, with: id, context: context)
+                }
+            }
+            var labelsFound = message.getNormalLableIDs()
+            labelsFound.append(Message.Location.starred.rawValue)
+            labelsFound.append(Message.Location.allmail.rawValue)
+            self.remove(labels: labelsFound, on: message, cleanUnread: true)
+            let labelObjs = message.mutableSetValue(forKey: "labels")
+            labelObjs.removeAllObjects()
+            message.setValue(labelObjs, forKey: "labels")
+            context.delete(message)
+            
+            let error = context.saveUpstreamIfNeeded()
+            if let error = error {
+                PMLog.D(" error: \(error)")
+                hasError = true
             }
         }
-        var labelsFound = message.getNormalLableIDs()
-        labelsFound.append(Message.Location.starred.rawValue)
-        labelsFound.append(Message.Location.allmail.rawValue)
-        self.remove(labels: labelsFound, on: message, cleanUnread: true)
-        let labelObjs = message.mutableSetValue(forKey: "labels")
-        labelObjs.removeAllObjects()
-        message.setValue(labelObjs, forKey: "labels")
-        context.delete(message)
         
-        let error = context.saveUpstreamIfNeeded()
-        if let error = error {
-            PMLog.D(" error: \(error)")
+        if hasError {
             return false
         }
+        
         return true
     }
     
@@ -522,26 +571,14 @@ class MessageDataService : Service, HasLocalStorage {
     ///
     /// - Parameter att: Attachment
     func upload( att : Attachment) {
-        let context = self.coreDataService.mainManagedObjectContext
-        if let error = context.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
-            self.dequeueIfNeeded()
-        } else {
-            self.queue(att, action: .uploadAtt)
-        }
+        self.queue(att, action: .uploadAtt)
     }
     
     /// upload attachment to server
     ///
     /// - Parameter att: Attachment
     func upload( pubKey : Attachment) {
-        let context = self.coreDataService.mainManagedObjectContext
-        if let error = context.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
-            self.dequeueIfNeeded()
-        } else {
-            self.queue(pubKey, action: .uploadPubkey)
-        }
+        self.queue(pubKey, action: .uploadPubkey)
     }
     
     /// delete attachment from server
@@ -585,7 +622,6 @@ class MessageDataService : Service, HasLocalStorage {
             att.localURL = nil
             self.fetchAttachmentForAttachment(att, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
                 context.perform {
-                    att.localURL = url
                     complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
                     if error != nil {
                         PMLog.D("\(String(describing: error))")
@@ -752,30 +788,26 @@ class MessageDataService : Service, HasLocalStorage {
         
         // TODO: check for existing download tasks and return that task rather than start a new download
         queue { () -> Void in
-            if attachment.managedObjectContext != nil {
+            if let context = attachment.managedObjectContext {
                 self.apiService.downloadAttachment(byID: attachment.attachmentID,
                                                     destinationDirectoryURL: FileManager.default.attachmentDirectory,
                                                     customAuthCredential: customAuthCredential,
                                                     downloadTask: downloadTask,
                                                     completion: { task, fileURL, error in
                                                         var error = error
-                                                        let context = self.coreDataService.backgroundManagedObjectContext
-                                                        let objectId = attachment.objectID
                                                         self.coreDataService.enqueue(context: context) { (context) in
-                                                            if let att = context.object(with: objectId) as? Attachment {
-                                                                if let fileURL = fileURL {
-                                                                    att.localURL = fileURL
-                                                                    if #available(iOS 12, *) {
-                                                                        if !self.isFirstTimeSaveAttData {
-                                                                            att.fileData = try? Data(contentsOf: fileURL)
-                                                                        }
-                                                                    } else {
-                                                                        att.fileData = try? Data(contentsOf: fileURL)
+                                                            if let fileURL = fileURL {
+                                                                attachment.localURL = fileURL
+                                                                if #available(iOS 12, *) {
+                                                                    if !self.isFirstTimeSaveAttData {
+                                                                        attachment.fileData = try? Data(contentsOf: fileURL)
                                                                     }
-                                                                    error = context.saveUpstreamIfNeeded()
-                                                                    if error != nil  {
-                                                                        PMLog.D(" error: \(String(describing: error))")
-                                                                    }
+                                                                } else {
+                                                                    attachment.fileData = try? Data(contentsOf: fileURL)
+                                                                }
+                                                                error = context.saveUpstreamIfNeeded()
+                                                                if error != nil  {
+                                                                    PMLog.D(" error: \(String(describing: error))")
                                                                 }
                                                             }
                                                             completion?(task, fileURL, error)
@@ -819,7 +851,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 newMessage.messageStatus = 1
                                 self.queue(newMessage, action: .read)
                                 if newMessage.unRead {
-                                    self.updateCounter(markUnRead: false, on: newMessage)
+                                    self.updateCounterSync(markUnRead: false, on: newMessage, context: context)
                                 }
                                 newMessage.unRead = false
                                 error = context.saveUpstreamIfNeeded()
@@ -871,7 +903,7 @@ class MessageDataService : Service, HasLocalStorage {
                                         message_n.isDetailDownloaded = true
                                         self.queue(message, action: .read)
                                         if message_n.unRead {
-                                            self.updateCounter(markUnRead: false, on: message)
+                                            self.updateCounterSync(markUnRead: false, on: message, context: context)
                                         }
                                         message_n.unRead = false
                                         
@@ -931,7 +963,7 @@ class MessageDataService : Service, HasLocalStorage {
                                     self.queue(message_out, action: .read)
                                     if message_out.unRead == true {
                                         message_out.unRead = false
-                                        self.updateCounter(markUnRead: false, on: message_out)
+                                        self.updateCounterSync(markUnRead: false, on: message_out, context: context)
                                     }
                                     let tmpError = context.saveUpstreamIfNeeded()
                                     
@@ -1125,20 +1157,12 @@ class MessageDataService : Service, HasLocalStorage {
     
     func saveDraft(_ message : Message?) {
         if let message = message, let context = message.managedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            } else {
-                self.queue(message, action: .saveDraft)
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                }
             }
-        }
-    }
-    
-    func deleteDraft (_ message : Message!) {
-        let context = CoreDataService.shared.mainManagedObjectContext
-        if let error = context.saveUpstreamIfNeeded() {
-            PMLog.D(" error: \(error)")
-        } else {
-            self.queue(message, action: .delete)
+            self.queue(message, action: .saveDraft)
         }
     }
     

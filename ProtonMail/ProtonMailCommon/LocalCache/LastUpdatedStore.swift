@@ -30,7 +30,7 @@ import PromiseKit
 let lastUpdatedStore = LastUpdatedStore(coreDataService: sharedServices.get(by: CoreDataService.self))
 
 final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
-
+    
     fileprivate struct Key {
         
         static let unreadMessageCount  = "unreadMessageCount"  //total unread
@@ -49,8 +49,8 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
         static let lastEventID         = "lastEventID"
         
     }
-
-
+    
+    
     
     var contactsCached: Int {
         get {
@@ -77,13 +77,12 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
         self.coreDataService = coreDataService
         super.init()
     }
-
+    
     
     /**
-    clear the last update time cache
-    */
+     clear the last update time cache
+     */
     func clear() {
-        
         
         //in use
         getShared().removeObject(forKey: Key.lastCantactsUpdated)
@@ -101,6 +100,27 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
         getShared().synchronize()
         
         UIApplication.setBadge(badge: 0)
+    }
+    
+    static func clear() {
+        if let userDefault = UserDefaults(suiteName: Constants.App.APP_GROUP) {
+            //in use
+            userDefault.removeObject(forKey: Key.lastCantactsUpdated)
+            userDefault.removeObject(forKey: Key.lastLabelsUpdated)
+            userDefault.removeObject(forKey: Key.unreadMessageCount)
+            userDefault.removeObject(forKey: Key.labelsUnreadCount)
+            userDefault.removeObject(forKey: Key.isContactsCached)
+            
+            //removed
+            userDefault.removeObject(forKey: Key.mailboxUnreadCount)
+            userDefault.removeObject(forKey: Key.lastInboxesUpdated)
+            userDefault.removeObject(forKey: Key.lastEventID)
+            
+            //sync
+            userDefault.synchronize()
+            
+            UIApplication.setBadge(badge: 0)
+        }
     }
     
     func cleanUp() -> Promise<Void> {
@@ -183,7 +203,7 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
         return Int(result)
     }
     
-
+    
     // update unread count
     func updateUnreadCount(by labelID : String, userID: String, count: Int, context: NSManagedObjectContext, shouldSave: Bool = true) {
         let update = self.lastUpdateDefault(by: labelID, userID: userID, context: context)
