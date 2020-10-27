@@ -2091,21 +2091,31 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 if !isInternetIssue && (errorCode != NSError.authCacheLocked().code) {
                     self.dequeueIfNeeded()
-                } else {
-                    if !sharedMessageQueue.isBlocked && self.readQueue.count > 0 {
-                        PMLog.D("left redaQueue count : \(self.readQueue.count)")
-                        self.readQueue.remove(at: 0)()
-                        self.dequeueIfNeeded()
-                    }
+                } else if sharedMessageQueue.isBlocked {
+                    self.pauseNotify?()
+                    self.pauseNotify = nil
+                    self.dequieNotify = nil
+                    sharedMessageQueue.isBlocked = false
+                    
+                } else if !sharedMessageQueue.isBlocked && self.readQueue.count > 0 {
+                    PMLog.D("left redaQueue count : \(self.readQueue.count)")
+                    self.readQueue.remove(at: 0)()
+                    self.dequeueIfNeeded()
                 }
             }
         }
     }
     
     var dequieNotify : (() -> Void)?
+    var pauseNotify: (() -> Void)?
     
     func backgroundFetch(notify : (() -> Void)?) {
         self.dequeueIfNeeded(notify: notify)
+    }
+    
+    func pauseQueueAction(didStop: (() -> Void)?) {
+        self.pauseNotify = didStop
+        sharedMessageQueue.isBlocked = true
     }
     
     private func dequeueIfNeeded(notify : (() -> Void)? = nil) {
@@ -2166,6 +2176,11 @@ class MessageDataService : Service, HasLocalStorage {
         } else if !sharedMessageQueue.isBlocked && readQueue.count > 0 { //sharedMessageQueue.count == 0 &&
             readQueue.remove(at: 0)()
             dequeueIfNeeded()
+        } else if sharedMessageQueue.isBlocked {
+            self.pauseNotify?()
+            self.pauseNotify = nil
+            self.dequieNotify = nil
+            sharedMessageQueue.isBlocked = false
         }
     }
     

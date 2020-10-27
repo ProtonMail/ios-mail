@@ -286,11 +286,18 @@ extension AppDelegate: UIApplicationDelegate {
         self.currentState = .background
         keymaker.updateAutolockCountdownStart()
         
+        let users: UsersManager = sharedServices.get()
+        
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask {
             PMLog.D("Background Task Timed Out")
-            application.endBackgroundTask(taskID)
-            taskID = .invalid
+            
+            if let user = users.firstUser {
+                user.messageService.pauseQueueAction {
+                    application.endBackgroundTask(taskID)
+                    taskID = .invalid
+                }
+            }
         }
         let delayedCompletion: ()->Void = {
             delay(3) {
@@ -300,7 +307,6 @@ extension AppDelegate: UIApplicationDelegate {
             }
         }
         
-        let users: UsersManager = sharedServices.get()
         if let user = users.firstUser {
             user.messageService.purgeOldMessages()
             user.messageService.cleanOldAttachment()
@@ -364,10 +370,14 @@ extension AppDelegate: UIApplicationDelegate {
             return
         }
         let usersManager: UsersManager = sharedServices.get()
-        usersManager.firstUser?.messageService.backgroundFetch(notify: nil)
+        usersManager.firstUser?.messageService.backgroundFetch(notify: {
+            completionHandler(.newData)
+        })
         //HACK: Call this after n seconds to prevent app got killed.
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
-            completionHandler(.newData)
+            usersManager.firstUser?.messageService.pauseQueueAction(didStop: {
+                completionHandler(.newData)
+            })
         }
     }
     
