@@ -494,7 +494,7 @@ class LocalizedString {
     /// "Update"
     lazy var _general_update_action   = NSLocalizedString("Update", comment: "like top right action text")
     /// "Invalid access token. Please try loging in again."
-    lazy var _general_invalid_access_token = NSLocalizedString("Invalid access token. Please relogin.", comment: "Description")
+    lazy var _general_invalid_access_token = NSLocalizedString("Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in.", comment: "Description")
     /// "A new version of ProtonMail app is available. Please update to the latest version."
     lazy var _general_force_upgrade_desc = NSLocalizedString("A new version of ProtonMail app is available. Please update to the latest version.", comment: "Description")
     /// "Search"

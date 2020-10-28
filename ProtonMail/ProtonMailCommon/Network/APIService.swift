@@ -212,7 +212,7 @@ class APIService : Service {
                     if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                         pthread_mutex_unlock(&self.mutex)
                         DispatchQueue.main.async {
-                            NSError.alertBadTokenToast()
+                            NSError.alertBadToken()
                             completion(newCredential?.accessToken, self.sessionUID, error)
                             NotificationCenter.default.post(name: .didRevoke,
                                                             object: nil,
@@ -221,7 +221,7 @@ class APIService : Service {
                     } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                         pthread_mutex_unlock(&self.mutex)
                         DispatchQueue.main.async {
-                            NSError.alertBadTokenToast()
+                            NSError.alertBadToken()
                             self.fetchAuthCredential(completion)
                         }
                     } else {
