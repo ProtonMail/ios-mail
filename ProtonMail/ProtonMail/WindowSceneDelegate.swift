@@ -133,16 +133,6 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
-    func sceneWillResignActive(_ scene: UIScene) {
-        let application = UIApplication.shared
-        application.delegate?.applicationWillResignActive?(application)
-    }
-    
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        let application = UIApplication.shared
-        application.delegate?.applicationDidBecomeActive?(application)
-    }
-    
     private func handleUrlOpen(_ url: URL) -> Bool {
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
             return false

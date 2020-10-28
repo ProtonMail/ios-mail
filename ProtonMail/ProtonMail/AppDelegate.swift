@@ -347,15 +347,6 @@ extension AppDelegate: UIApplicationDelegate {
         }
     }
     
-    func applicationWillResignActive(_ application: UIApplication) {
-        // Home button is pressed twice
-        self.coordinator.didEnterBackground()
-    }
-    
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        self.coordinator.willEnterForeground()
-    }
-    
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.currentState = .active
     }
