@@ -315,14 +315,16 @@ struct SettingsAPI {
     /// base settings api path
     static let path :String = "/\(Constants.App.API_PREFIXED)/settings"
     
+    static let settingsPath: String = "/settings"
+    
     /// Get general settings [GET]
-    static let v_get_general_settings : Int = -1
+    static let v_get_general_settings : Int = 3
     
     /// Turn on/off email notifications [PUT]
-    static let v_update_notify : Int = -1
+    static let v_update_notify : Int = 3
     
     /// Update email [PUT]
-    static let v_update_email : Int = -1
+    static let v_update_email : Int = 3
     
     /// Update swipe left flag [PUT]
     static let v_update_swipe_left_right : Int = -1
@@ -340,7 +342,7 @@ struct SettingsAPI {
     static let v_update_shwo_images : Int = -1
     
     /// Update login password [PUT]
-    static let v_update_login_password : Int = -1
+    static let v_update_login_password : Int = 3
     
     /// Update login password [PUT]
     static let v_update_link_confirmation : Int = -1
