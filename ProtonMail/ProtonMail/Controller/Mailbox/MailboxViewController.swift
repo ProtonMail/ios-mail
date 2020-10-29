@@ -253,8 +253,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         if self.viewModel.notificationMessageID != nil {
             self.coordinator?.go(to: .detailsFromNotify)
-        } else {
-            checkHuman()
+        } else if checkHuman() {
+            self.handleUpdateAlert()
         }
     }
     
@@ -1097,6 +1097,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             search.user = self.viewModel.user
         }
         super.prepare(for: segue, sender: sender)
+    }
+    
+    private func handleUpdateAlert() {
+        if self.viewModel.shouldShowUpdateAlert() {
+            let alertVC = UIAlertController(title: LocalString._ios10_update_title, message: LocalString._ios10_update_body, preferredStyle: .alert)
+            alertVC.addOKAction { (_) in
+                self.viewModel.setiOS10AlertIsShown()
+            }
+            self.present(alertVC, animated: true, completion: nil)
+        }
     }
 }
 

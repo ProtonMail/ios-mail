@@ -500,4 +500,21 @@ class MailboxViewModel: StorageLimit {
         let maxStorageSpace = self.user.userInfo.maxSpace
         checkSpace(usedStorageSpace, maxSpace: maxStorageSpace, user: self.user)
     }
+    
+    func shouldShowUpdateAlert() -> Bool {
+        //check ios version
+        if #available(iOS 11, *) {
+            return false
+        } else if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
+                  version == "1.12.5",
+                  !userCachedStatus.iOS10AlertIsShown {
+            return true
+        }
+        
+        return false
+    }
+    
+    func setiOS10AlertIsShown() {
+        userCachedStatus.iOS10AlertIsShown = true
+    }
 }
