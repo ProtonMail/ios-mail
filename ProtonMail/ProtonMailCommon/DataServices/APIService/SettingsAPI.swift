@@ -36,7 +36,7 @@ struct News : OptionSet {
 // Mark : get settings
 final class GetUserSettings : ApiRequestNew<SettingsResponse> {
     override func path() -> String {
-        return SettingsAPI.path + Constants.App.DEBUG_OPTION
+        return SettingsAPI.settingsPath + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -155,7 +155,7 @@ final class UpdateNotify : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return SettingsAPI.path + "/email/notify" + Constants.App.DEBUG_OPTION
+        return SettingsAPI.settingsPath + "/email/notify" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -232,7 +232,7 @@ final class UpdateNotificationEmail : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return SettingsAPI.path + "/email" + Constants.App.DEBUG_OPTION
+        return SettingsAPI.settingsPath + "/email" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -471,7 +471,7 @@ final class UpdateLoginPassword : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return SettingsAPI.path + "/password" + Constants.App.DEBUG_OPTION
+        return SettingsAPI.settingsPath + "/password" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
