@@ -128,7 +128,7 @@ class AccountManagerRobot {
         func manageAccountsOpened() {
         }
 
-        func switchedToAccount(_ username: String) {
+        func switchedToAccount(_ user: User) {
         }
         
         func accountLoggedOut(_ email: String) {

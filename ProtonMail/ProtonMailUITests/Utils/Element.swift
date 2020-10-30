@@ -30,12 +30,34 @@ struct Element {
             let element = app.staticTexts[identifier]
             XCTAssertTrue(element.exists, "StaticText element \(element.debugDescription) does not exist.", file: file, line: line)
         }
+        
+        static func cellWithIdentifierExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
+            let element = app.cells[identifier]
+            XCTAssertTrue(element.exists, "Cell element \(element.debugDescription) does not exist but it should.", file: file, line: line)
+        }
+        
+        static func cellWithIdentifierDoesNotExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
+            let element = app.cells[identifier]
+            XCTAssertFalse(element.exists, "Cell element \(element.debugDescription) exists but it should not.", file: file, line: line)
+        }
+        
+        static func switchByIndexHasValue(_ index: Int, _ value: Int, file: StaticString = #file, line: UInt = #line) {
+            let element = app.switches.element(boundBy: index)
+            XCTAssertTrue(Int((element.value as? String)!) == value, "Switch element \(element.debugDescription) should be in state \(value), but is \(element.value).", file: file, line: line)
+        }
     }
     
     class button {
         @discardableResult
         class func tapByIdentifier(_ identifier: String) -> XCUIElement {
             let element = app.buttons[identifier]
+            element.tap()
+            return element
+        }
+        
+        @discardableResult
+        class func tapByIndex(_ index: Int) -> XCUIElement {
+            let element = app.buttons.element(boundBy: index)
             element.tap()
             return element
         }
@@ -104,8 +126,14 @@ struct Element {
             return element
         }
         
-        class func typeTextByIdentifier(_ text: String) {
-            app.textFields[text].tap()
+        class func typeTextByIdentifier(_ identifier: String, _ text: String) {
+            app.textFields[identifier].typeText(text)
+        }
+        
+        class func tapByIndex(_ index: Int) -> XCUIElement {
+            let element = app.secureTextFields.element(boundBy: index)
+            element.tap()
+            return element
         }
     }
     
@@ -119,6 +147,21 @@ struct Element {
         
         class func tapByIndex(_ index: Int) -> XCUIElement {
             let element = app.staticTexts.element(boundBy: index)
+            element.tap()
+            return element
+        }
+    }
+    
+    /// As "switch" is reserved swift word use "swittch" instead.
+    class swittch {
+        class func isEnabledByIndex(_ index: Int) -> Bool {
+            let switchValue = app.switches.element(boundBy: index).value as? String
+            return 1 == Int(switchValue!)
+        }
+        
+        @discardableResult
+        class func tapByIndex(_ index: Int) -> XCUIElement {
+            let element = app.switches.element(boundBy: index)
             element.tap()
             return element
         }
@@ -164,6 +207,20 @@ struct Element {
         }
     }
     
+    class textView {
+        
+        var perform: XCUIElement
+        init(_ identifier: String) {
+            self.perform = app.textFields[identifier]
+        }
+
+        class func tapByIndex(_ index: Int) -> XCUIElement {
+            let element = app.textViews.element(boundBy: index)
+            element.tap()
+            return element
+        }
+    }
+    
     class wait {
         
         @discardableResult
@@ -179,6 +236,10 @@ struct Element {
             XCUIApplication().scrollViews.textFields.element(boundBy: 1)
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
+        }
+        
+        class func forCellByIndex(_ index: Int) -> XCUIElement {
+            return app.cells.element(boundBy: index)
         }
         
         @discardableResult
@@ -307,5 +368,9 @@ extension XCUIElement {
             return
         }
         XCTAssertTrue(label == text, "Expected Element text label to be: \"\(text)\", but found: \"\(label)\"")
+    }
+    
+    func assertHasStaticTextChild(withText: String) {
+        XCTAssertTrue(self.staticTexts[withText].exists, "Expected to have StaticText element with label: \"\(withText)\" but found nothing.")
     }
 }

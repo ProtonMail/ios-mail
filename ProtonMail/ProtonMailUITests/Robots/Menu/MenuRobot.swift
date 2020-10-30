@@ -13,6 +13,7 @@ private let logoutConfirmButton = NSLocalizedString("Log out", comment: "comment
 private let sentStaticText = "MenuTableViewCell.\(LocalString._menu_sent_title)"
 private let contactsStaticText = "MenuTableViewCell.\(LocalString._menu_contacts_title)"
 private let draftsStaticText = "MenuTableViewCell.\(LocalString._menu_drafts_title)"
+private let settingsStaticText = "MenuTableViewCell.\(LocalString._menu_settings_title)"
 private let sidebarHeaderViewOtherIdentifier = "MenuViewController.headerView"
 private let manageAccountsStaticTextIdentifier = "MenuButtonViewCell.\(LocalString._menu_manage_accounts.replaceSpaces())"
 private func userAccountCellIdentifier(_ email: String) -> String { return "MenuUserViewCell.\(email)" }
@@ -49,6 +50,11 @@ class MenuRobot {
     func accountsList() -> MenuAccountListRobot {
         Element.wait.forOtherFieldWithIdentifier(sidebarHeaderViewOtherIdentifier, file: #file, line: #line).tap()
         return MenuAccountListRobot()
+    }
+    
+    func settings() -> SettingsRobot {
+        Element.wait.forCellWithIdentifier(settingsStaticText, file: #file, line: #line).tap()
+        return SettingsRobot()
     }
     
     private func logout() -> MenuRobot {

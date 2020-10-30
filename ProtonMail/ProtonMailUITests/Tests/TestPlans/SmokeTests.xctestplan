@@ -14,6 +14,8 @@
   "testTargets" : [
     {
       "selectedTests" : [
+        "AccountSettingsTests\/testCreateAndDeleteFolder()",
+        "AccountSettingsTests\/testCreateAndDeleteLabel()",
         "ContactsTests\/testEditContact()",
         "ContactsTests\/testEditGroup()",
         "LoginTests\/testLoginWithOnePass()",

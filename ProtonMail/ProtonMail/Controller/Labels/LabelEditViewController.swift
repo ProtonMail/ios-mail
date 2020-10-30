@@ -24,7 +24,7 @@
 import Foundation
 import MBProgressHUD
 
-class LableEditViewController : UIViewController {
+class LableEditViewController : UIViewController, AccessibleView {
     
     var viewModel : LabelEditViewModel!
 
@@ -64,6 +64,7 @@ class LableEditViewController : UIViewController {
         cancelButton.setTitle(LocalString._general_cancel_button, for: UIControl.State())
         
         applyButton.isEnabled = !name.isEmpty
+        generateAccessibilityIdentifiers()
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
