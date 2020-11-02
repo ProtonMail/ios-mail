@@ -488,7 +488,7 @@ extension UsersManager {
         self.users.forEach { $0.launchCleanUpIfNeeded() }
     }
     
-    func logout(user: UserManager, shouldAlert: Bool = false) -> Promise<Void> {
+    func logout(user: UserManager, shouldShowAccountSwitchAlert: Bool = false) -> Promise<Void> {
         var isPrimaryAccountLogout = false
         return user.cleanUp().then { _ -> Promise<Void> in
             if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
@@ -500,7 +500,7 @@ extension UsersManager {
             
             if self.users.isEmpty {
                 return self.clean()
-            } else if shouldAlert {
+            } else if shouldShowAccountSwitchAlert {
                 String(format: LocalString._logout_account_switched_when_token_revoked,
                        arguments: [user.defaultEmail,
                                    self.users.first!.defaultEmail]).alertToast()

@@ -174,10 +174,13 @@ class WindowsCoordinator: CoordinatorNew {
         let usersManager: UsersManager = services.get()
         
         if let user = usersManager.getUser(bySessionID: uid) {
+            let shouldShowBadTokenAlert = usersManager.count == 1
+            let isPrimaryAccountLoggingOut = user.userinfo.userId == usersManager.firstUser?.userinfo.userId
+            
             Analytics.shared.debug(message: .logout, extra: [
                 Analytics.Reason.reason: Analytics.Reason.tokenRevoke
             ], user: user)
-            usersManager.logout(user: user, shouldAlert: true).done { [weak self] (_) in
+            usersManager.logout(user: user, shouldShowAccountSwitchAlert: isPrimaryAccountLoggingOut).done { [weak self] (_) in
                 guard let self = self else { return }
                 
                 guard let appWindow = self.appWindow else {return}
@@ -190,6 +193,10 @@ class WindowsCoordinator: CoordinatorNew {
                             menu.toInbox()
                         }
                     }
+                }
+            }.done { (_) in
+                if shouldShowBadTokenAlert {
+                    NSError.alertBadToken()
                 }
             }.cauterize()
         }
