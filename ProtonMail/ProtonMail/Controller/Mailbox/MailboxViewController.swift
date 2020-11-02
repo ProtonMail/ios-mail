@@ -830,7 +830,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                         self.retryCounter += 1
                     }
                 } else {
-                    self.refreshControl.endRefreshing()
                     self.retryCounter = 0
                     if self.fetchingStopped! == true {
                         return
@@ -1335,7 +1334,11 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        
         self.tableView.endUpdates()
+        if self.refreshControl.isRefreshing {
+            self.refreshControl.endRefreshing()
+        }
         self.showNewMessageCount(self.newMessageCount)
     }
     
