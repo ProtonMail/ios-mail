@@ -84,18 +84,18 @@ extension NSError {
     }
     
     public class func alertBadToken() {
-        guard let window = UIApplication.shared.keyWindow, !NSError.isAlertShown else {
-            return
-        }
-        NSError.isAlertShown = true
-        
-        let message = LocalString._general_invalid_access_token
-        let title = LocalString._general_alert_title
-        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertVC.addOKAction { (_) in
-            NSError.isAlertShown = false
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+            guard let window = UIApplication.shared.keyWindow, !NSError.isAlertShown else {
+                return
+            }
+            NSError.isAlertShown = true
+            
+            let message = LocalString._general_invalid_access_token
+            let title = LocalString._general_alert_title
+            let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alertVC.addOKAction { (_) in
+                NSError.isAlertShown = false
+            }
             window.topmostViewController()?.present(alertVC, animated: true, completion: nil)
         }
     }
