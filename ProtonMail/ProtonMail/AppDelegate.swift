@@ -44,7 +44,7 @@ extension SWRevealViewController {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "sw_rear") {
             if let menuViewController =  segue.destination as? MenuViewController {
-                let usersManager : UsersManager = sharedServices.get()
+                let usersManager = sharedServices.get(by: UsersManager.self)
                 let viewModel = MenuViewModelImpl(usersManager: usersManager)
                 let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel, services: sharedServices)
                 menu.start()
@@ -54,7 +54,7 @@ extension SWRevealViewController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
                     ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
                     sharedVMService.mailbox(fromMenu: mailboxViewController)
-                    let usersManager : UsersManager = sharedServices.get()
+                    let usersManager = sharedServices.get(by: UsersManager.self)
                     let user = usersManager.firstUser!
                     let viewModel = MailboxViewModelImpl(label: .inbox,
                                                          userManager: user,

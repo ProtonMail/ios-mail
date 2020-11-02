@@ -146,6 +146,8 @@ extension Analytics {
         case updateMailBoxPassword = "Update MailBox Password"
         case fetchSubscriptionData = "Fetch Subscription Data"
         case coreDataError = "Core Data Error"
+        case menuSetupFailed = "Menu Failed to setup"
+        case usersRestoreFailed = "Users Restore Failed"
     }
     
     struct Reason {

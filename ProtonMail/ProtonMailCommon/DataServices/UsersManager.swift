@@ -350,6 +350,7 @@ class UsersManager : Service, Migrate {
     func tryRestore() {
         // try new version first
         guard let mainKey = keymaker.mainKey else {
+            Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsMainKeyNil": true])
             return
         }
         
@@ -374,30 +375,42 @@ class UsersManager : Service, Migrate {
             
         } else {
             guard let encryptedAuthData = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) else {
+                Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsKeychainNil": true])
                 return
             }
             let authlocked = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
             guard let auths = try? authlocked.unlock(with: mainKey) else {
+                Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsUnlockFail": true])
                 return
             }
             
             guard let encryptedUsersData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.usersInfo) else {
+                Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsDataNil": true])
                 return
             }
             
             let userslocked = Locked<[UserInfo]>(encryptedValue: encryptedUsersData)
             guard let userinfos = try? userslocked.unlock(with: mainKey)  else {
+                Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsDataUnlockFail": true])
                 return
             }
             
             guard userinfos.count == auths.count else {
+                Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsDataNotMatch": true])
                 return
             }
             
-            //TODO:: temp
-            if users.count > 0 {
+            //Check if the existing users is the same as the users stored on the device
+            let userIds = userinfos.map { $0.userId }
+            let existUserIds = users.map { $0.userinfo.userId }
+            if users.count > 0 &&
+                existUserIds.count == userIds.count &&
+                existUserIds.map({ userIds.contains($0) }).filter({ $0 }).count == userIds.count {
                 return
             }
+            
+            users.removeAll()
+            
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
                 let userID = user.userId
