@@ -2121,7 +2121,7 @@
 "To" = "Кому";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Для предотвращения злоупотребления ProtonMail&#13;\n нам необходимо убедиться, что вы – человек.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Для предотвращения злоупотребления ProtonMail\r\n нам необходимо убедиться, что вы – человек.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Для сброса пароля почтового ящика, пожалуйста, используйте веб-версию ProtonMail по адресу protonmail.com";
@@ -2451,7 +2451,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ваша новая учётная запись зашифрованной электронной почты уже настроена и готова отправлять и принимать шифрованные сообщения.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Ваша новая учётная запись&#13;\n защищённой эл. почты готова.";
+"Your new secure email\r\n account is ready." = "Ваша новая учётная запись\r\n защищённой эл. почты готова.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Ваш тариф сейчас активен до";

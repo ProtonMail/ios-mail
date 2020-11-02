@@ -2121,7 +2121,7 @@
 "To" = "Para";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Para prevenir abusos de ProtonMail,&#13;\n necesitamos verificar que es humano.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Para prevenir abusos de ProtonMail,\r\n necesitamos verificar que es humano.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com";
@@ -2451,7 +2451,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Tu nueva cuenta de correo electrónico cifrado ha sido configurada y está lista para enviar y recibir mensajes cifrados.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Tu nueva cuenta de correo electrónico&#13;\n seguro está lista.";
+"Your new secure email\r\n account is ready." = "Tu nueva cuenta de correo electrónico\r\n seguro está lista.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Su plan está activo hasta";

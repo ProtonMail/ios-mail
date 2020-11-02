@@ -2121,7 +2121,7 @@
 "To" = "Kime";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "ProtonMail'in kötüye kullanımını önlemek için,&#13;\ninsan olduğunuzu doğrulamamız gerekiyor.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "ProtonMail'in kötüye kullanımını önlemek için,\r\ninsan olduğunuzu doğrulamamız gerekiyor.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Posta kutusu parolanızı sıfırlamak için, lütfen protonmail.com adresinden ProtonMail'in web sürümünü kullanın";
@@ -2451,7 +2451,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Yeni şifreli e-posta hesabınız kuruldu ve şifrelenmiş iletiler göndermeye ve almaya hazır.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Yeni güvenli e-posta&#13;\nhesabınız hazır.";
+"Your new secure email\r\n account is ready." = "Yeni güvenli e-posta\r\nhesabınız hazır.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Planınız şu anda tarihine kadar etkin";

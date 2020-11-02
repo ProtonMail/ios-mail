@@ -2121,7 +2121,7 @@
 "To" = "Untuk";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Untuk mencegah penyalahgunaan ProtonMail,&#13;\n kami perlu memverifikasi bahwa Anda manusia.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Untuk mencegah penyalahgunaan ProtonMail,\r\n kami perlu memverifikasi bahwa Anda manusia.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Untuk mengatur ulang kata sandi kotak surat Anda, mohon gunakan ProtonMail versi web di protonmail.com";
@@ -2451,7 +2451,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Akun surel terenkripsi baru Anda sudah diatur dan siap untuk mengirim dan menerima pesan terenkripsi.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Akun surel aman Anda&#13;\n telah siap digunakan.";
+"Your new secure email\r\n account is ready." = "Akun surel aman Anda\r\n telah siap digunakan.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Paket Anda aktif sampai";

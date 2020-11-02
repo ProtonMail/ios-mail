@@ -2121,7 +2121,7 @@
 "To" = "Címzett";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "A ProtonMaillel való visszaélések elkerülése érdekében &#13;\n ellenőriznünk kell, hogy nem robot.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "A ProtonMaillel való visszaélések elkerülése érdekében \r\n ellenőriznünk kell, hogy nem robot.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Az e-mail fiók jelszavának helyreállításához, kérjük, használja a ProtonMail webes felületét, a protonmail.com címen";
@@ -2451,7 +2451,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Az új e-mail fiókja készen áll a titkosított üzenetek fogadására és küldésére.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Az új biztonságos e-mail&#13;\n fiókja készen áll.";
+"Your new secure email\r\n account is ready." = "Az új biztonságos e-mail\r\n fiókja készen áll.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "A jelenlegi csomagja aktív:";
