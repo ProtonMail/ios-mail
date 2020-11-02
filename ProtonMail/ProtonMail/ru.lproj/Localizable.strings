@@ -1195,6 +1195,9 @@
 /* Account manager title */
 "Log in to your ProtonMail account" = "Вход в вашу учётную запись ProtonMail";
 
+/* comment */
+"Log out" = "Log out";
+
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Выйти из %@?";
 
@@ -1944,7 +1947,7 @@
 "Subscription" = "Подписка";
 
 /* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Subscription information temporarily unavailable. Please try again later.";
+"Subscription information temporarily unavailable. Please try again later." = "Информация о подписке временно недоступна. Повторите попытку позже.";
 
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Поддержка %i своих доменов (пример: user@yourdomain.com)";

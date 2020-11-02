@@ -1195,6 +1195,9 @@
 /* Account manager title */
 "Log in to your ProtonMail account" = "Masuk ke akun ProtonMail anda";
 
+/* comment */
+"Log out" = "Log out";
+
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Keluar %@?";
 

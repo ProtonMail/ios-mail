@@ -1195,6 +1195,9 @@
 /* Account manager title */
 "Log in to your ProtonMail account" = "Entreu al vostre compte de ProtonMail";
 
+/* comment */
+"Log out" = "Tanca la sessió";
+
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Tancar sessió %@?";
 

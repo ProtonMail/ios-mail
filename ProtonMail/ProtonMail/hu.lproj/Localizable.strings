@@ -1195,6 +1195,9 @@
 /* Account manager title */
 "Log in to your ProtonMail account" = "Jelentkezzen be a ProtonMail fiókjába";
 
+/* comment */
+"Log out" = "Log out";
+
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Biztos, hogy ki szeretnél lépni?";
 

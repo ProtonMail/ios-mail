@@ -1195,6 +1195,9 @@
 /* Account manager title */
 "Log in to your ProtonMail account" = "Connectez-vous à votre compte ProtonMail";
 
+/* comment */
+"Log out" = "Se déconnecter";
+
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Se déconnecter de %@ ?";
 

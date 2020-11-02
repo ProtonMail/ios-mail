@@ -88,7 +88,7 @@
 "Add" = "新建";
 
 /* menu title */
-"Add accounts" = "Add accounts";
+"Add accounts" = "添加账户";
 
 /* new contacts add Anniversary */
 "Add Anniversary" = "添加纪念日";
@@ -207,10 +207,10 @@
 "App Settings" = "程序设置";
 
 /* Price breakdown */
-"Apple in-app purchase fee" = "Apple App 内购买分成";
+"Apple in-app purchase fee" = "Apple 应用内购分成";
 
 /* Error message */
-"Apple informed us they could not process the purchase." = "Apple 告诉我们他们未能完成此交易。";
+"Apple informed us they could not process the purchase." = "Apple 告诉我们此交易未能完成。";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple 告诉我们您已完成升级，但没有指明升级的是哪一个 ProtonMail 账户。";
@@ -1195,6 +1195,9 @@
 /* Account manager title */
 "Log in to your ProtonMail account" = "登录 ProtonMail 账户";
 
+/* comment */
+"Log out" = "退出账户";
+
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "退出 %@？";
 
@@ -1244,7 +1247,7 @@
 "Mailbox size" = "邮箱容量";
 
 /* menu title */
-"Manage accounts" = "Manage accounts";
+"Manage accounts" = "管理账户";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "管理地址";
@@ -1323,7 +1326,7 @@
 "More Credits" = "充值";
 
 /* move action */
-"Move to All Mail" = "Move to All Mail";
+"Move to All Mail" = "移动到所有邮件";
 
 /* move action */
 "Move to Archive" = "移动到归档";
@@ -1450,7 +1453,7 @@
 "Only one free account can be added" = "只能同时登录一个免费账户";
 
 /* Open action */
-"Open" = "Open";
+"Open" = "打开";
 
 /* (No Comment) */
 "OpenDraft" = "正在编写的草稿";
@@ -1944,7 +1947,7 @@
 "Subscription" = "账户";
 
 /* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Subscription information temporarily unavailable. Please try again later.";
+"Subscription information temporarily unavailable. Please try again later." = "暂时无法获取等级信息，请稍后再试。";
 
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "支持 %i 个自有域名（如 user@yourdomain.com）";
@@ -2058,7 +2061,7 @@
 "The total attachment size cannot exceed 25MB" = "附件大小合计不能超过 25 MB";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "您即将打开的不是常见的 URL，可能不能正常加载。确定要用默认的浏览器打开吗？";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "用户已登录";
@@ -2112,13 +2115,13 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS 证书验证失败，您的网络可能已受到监控。为保证安全，本程序已暂停运作。\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS 证书校验失败，您的网络可能已被监视，为确保安全，此程序已停止运转。\n\n立即更换网络";
 
 /* Title */
 "To" = "收件人";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "为避免 ProtonMail 被滥用，\r\n我们需要验证您不是机器人。";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "为避免 ProtonMail 被滥用，\r我们需要验证您不是机器人。";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "请前往 protonmail.com 使用网页版 ProtonMail 重置邮箱密码";
@@ -2448,7 +2451,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "您的加密邮箱账户已经设置完毕，可以收发加密邮件了。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "您的安全邮箱\r\n现已就绪。";
+"Your new secure email\r\n account is ready." = "您的安全邮箱\r现已就绪。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "您的订阅有效期至";

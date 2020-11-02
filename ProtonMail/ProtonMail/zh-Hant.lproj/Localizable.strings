@@ -1195,6 +1195,9 @@
 /* Account manager title */
 "Log in to your ProtonMail account" = "登入您的 ProtonMail 帳號";
 
+/* comment */
+"Log out" = "Log out";
+
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "登出 %@？";
 

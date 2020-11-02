@@ -1195,6 +1195,9 @@
 /* Account manager title */
 "Log in to your ProtonMail account" = "Prijavite se u svoj ProtonMail račun";
 
+/* comment */
+"Log out" = "Odjavite se";
+
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Odjavi %@?";
 

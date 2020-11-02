@@ -189,7 +189,7 @@
 "Anniversary" = "Amulli";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Antivirus interference";
+"Antivirus interference" = "Iguren akked umgal-avirus";
 
 /* when server not reachable */
 "API Server not reachable..." = "API n uqeddac ur yettwawaḍ ara...";
@@ -1114,7 +1114,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Ur tezmireḍ ara ad tɛeddiḍ ɣer %@ seg usnas-nneɣ iOS.";
 
 /* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.";
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "D awezɣi umeɣru n ufaris i d-tesɣiḍ seg App Store akked d yifuras i yellan deg uqeddac-nneɣ. Ttxil ččar aneqqis n ubug akken tarbaɛt-nneɣ n tallelt n yimsaɣen ad ak-kem-d-tnermes.";
 
 /* Title */
 "Keep me updated about new features" = "Lɣu-yi-d ɣef timahilin timaynutin";
@@ -1194,6 +1194,9 @@
 
 /* Account manager title */
 "Log in to your ProtonMail account" = "Qqen ɣer umiḍan-inek/m ProtonMail";
+
+/* comment */
+"Log out" = "Asenser";
 
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Ffeɣ %@?";
@@ -1465,7 +1468,7 @@
 "OTHER PLANS" = "IƔAWASEN NNIḌEN";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Tarbaɛt-nneɣ n tallelt n yimsaɣen ad teɛreḍ ad termed aɣawas-ik•im n useqdec s ufus ma tqebleḍ ad d-tessedduḍ isefka itikniken i d-yettunefken i usnas sɣur AppStore deg wakud n tmesɣiwt. Isefka-a ur gebbren ara ifatusen ɣef umiḍan-ik•im iTunes, asulay ID n Apple, tikarḍiwin n usmad i icudden ɣur-s, neɣ isallen-nniḍen ɣef useqdac. Isefka itikniken ad aɣ-ɛawnen kan ad nsenqed dakken tanigawt teḍra-d deg yiqeddacen n AppStore.";
 
 /* mail location desc */
 "Outbox" = "Tanaka n tuzna";
@@ -1552,10 +1555,10 @@
 "Please input a valid email address." = "Ttxil-k sekcem imayl ameɣtu.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Ttxil qqen ɣer umiḍan-ik•im ProtoMail iwumi tleqqmeḍ aɣawas n useqdec akken ad nesmed timseɣiwt.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Ttxil qqen ɣer umiḍan-ik•im ProtoMail iwumi tleqqmeḍ aɣawas n useqdec akken ad nesmed armad n uɣawas n useqdec.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Ttxil-k/m senqed d akken tuqqna-inek/m internet tetteddu akken iwata.";
@@ -1678,7 +1681,7 @@
 "ProtonVPN included" = "Yedda ProtonVPN";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Proxy/Firewall interference";
+"Proxy/Firewall interference" = "Uguren akked Apriksi/Aɣrab n tmes";
 
 /* cell title in device settings */
 "Push Notifications" = "Push Notifications";
@@ -1877,7 +1880,7 @@
 "Snoozed till" = "Smezger alama";
 
 /* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!";
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Suref-aɣ, ur nezmir ara ad nermed timahilin n tmesɣiwt deg lqem beta n usnas iOS. Tanemmirt imi tettekkaḍ deg lqem-nneɣ beta azayez!";
 
 /* (No Comment) */
 "Space Warning" = "Alɣu n talɣut";
