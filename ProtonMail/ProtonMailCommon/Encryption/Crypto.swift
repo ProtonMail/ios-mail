@@ -589,13 +589,13 @@ class Crypto {
     // MARK: - encrypt with password
     public func encrypt(plainText: String, token: String) throws -> String? {
         let plainTextMessage = CryptoNewPlainMessageFromString(plainText)
-        let tokenBytes = Data(base64Encoded: token, options: NSData.Base64DecodingOptions(rawValue: 0))
-        let key = CryptoNewSessionKeyFromToken(tokenBytes, Algo.AES256.value)
-        let pgpMessage = try key?.encrypt(plainTextMessage)
-        
+        let tokenBytes = token.data(using: .utf8)
         var error: NSError?
+        let encryptedMessage = CryptoEncryptMessageWithPassword(plainTextMessage, tokenBytes, &error)
+        if let err = error {
+            throw err
+        }
         
-        let encryptedMessage = CryptoNewPGPMessage(pgpMessage)
         let armoredMessage = encryptedMessage?.getArmored(&error)
         if let err = error {
             throw err
@@ -604,14 +604,16 @@ class Crypto {
     }
     
     public func decrypt(encrypted: String, token: String) throws -> String? {
-        let tokenBytes = Data(base64Encoded: token, options: NSData.Base64DecodingOptions(rawValue: 0))
-        let key = CryptoNewSessionKeyFromToken(tokenBytes, Algo.AES256.value)
+        let tokenBytes = token.data(using: .utf8)
         var error: NSError?
         let pgpMsg = CryptoNewPGPMessageFromArmored(encrypted, &error)
         if let err = error {
             throw err
         }
-        let message = try key?.decrypt(pgpMsg?.getBinary())
+        let message = CryptoDecryptMessageWithPassword(pgpMsg, tokenBytes, &error)
+        if let err = error {
+            throw err
+        }
         return message?.getString()
     }
 
