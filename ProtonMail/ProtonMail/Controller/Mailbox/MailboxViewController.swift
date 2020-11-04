@@ -830,6 +830,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                         self.retryCounter += 1
                     }
                 } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                        if self.refreshControl.isRefreshing {
+                            self.refreshControl.endRefreshing()
+                        }
+                    }
+                    
                     self.retryCounter = 0
                     if self.fetchingStopped! == true {
                         return
