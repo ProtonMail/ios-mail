@@ -70,12 +70,12 @@ ui_tests:
     - fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMailUITests" --testplan "SmokeTests"  --device "iPhone 11" --clean
   tags:
     - iOS
-
-regression_tests:
+    
+feature_tests:
   dependencies: []
   stage: test
   rules:
-    - if: '$TEST_TYPE == "regression"'
+    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
   artifacts:
     name: "test-report"
     paths:
@@ -91,7 +91,7 @@ regression_tests:
     - git submodule update --init --recursive
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-    - fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMailUITests" --testplan "RegressionTests"  --device "iPhone 11" --clean --slack_url ${SLACK_UI_TESTS_URL} --slack_channel "#mail-ios-uitests" --slack_message "<https://gitlab.protontech.ch/ProtonMail/protonmail-ios/-/pipelines/${CI_PIPELINE_ID}/test_report|See test report in GitLab>"
+    - fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMailUITests" --testplan "$TEST_PLAN"  --device "iPhone 11" --clean --slack_url ${SLACK_UI_TESTS_URL} --slack_channel "#mail-ios-uitests" --slack_message "*$TEST_PLAN*\n<https://gitlab.protontech.ch/ProtonMail/protonmail-ios/-/pipelines/${CI_PIPELINE_ID}/test_report|See test report in GitLab>"
   tags:
     - iOS
 
@@ -121,6 +121,7 @@ build-app-and-upload:
     - fastlane ios build
   tags:
     - iOS
+
 
 # --- Translation related tasks ---
 i18n-sync-crowdin:

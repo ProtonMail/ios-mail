@@ -336,9 +336,7 @@ extension XCUIElement {
         guard self.exists && !self.frame.isEmpty else { return false }
         return app.windows.element(boundBy: 0).frame.contains(self.frame)
     }
-}
-
-extension XCUIElement {
+    
     /**
      Deletes text value from text field.
      */

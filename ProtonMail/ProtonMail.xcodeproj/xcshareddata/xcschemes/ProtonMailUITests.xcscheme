@@ -54,6 +54,33 @@
          <TestPlanReference
             reference = "container:ProtonMailUITests/Tests/TestPlans/SmokeTests.xctestplan">
          </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ProtonMailUITests/Tests/TestPlans/AccountSettingsTests.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ProtonMailUITests/Tests/TestPlans/DraftsTests.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ProtonMailUITests/Tests/TestPlans/ContactsTests.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ProtonMailUITests/Tests/TestPlans/MultiuserManagementTests.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ProtonMailUITests/Tests/TestPlans/SendNewMessageTests.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ProtonMailUITests/Tests/TestPlans/LabelsFoldersTests.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ProtonMailUITests/Tests/TestPlans/LoginTests.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ProtonMailUITests/Tests/TestPlans/LogoutTests.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ProtonMailUITests/Tests/TestPlans/MenuTests.xctestplan">
+         </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference
@@ -90,6 +117,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "7CC48161B0FC946A8DB234B96B6A66DD"
+            BuildableName = "ProtonMail.app"
+            BlueprintName = "ProtonMail"
+            ReferencedContainer = "container:ProtonMail.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
