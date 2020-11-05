@@ -433,8 +433,12 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     break
                 }
             }
-            self.contact.needsRebuild = false
-            let _ = self.contact.managedObjectContext?.saveUpstreamIfNeeded()
+            self.contact.managedObjectContext?.performAndWait {
+                self.contact.needsRebuild = false
+                if let error = self.contact.managedObjectContext?.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            }
             
             if self.origEmails.count == 0 {
                 for (i, item) in self.typeSection.enumerated() {

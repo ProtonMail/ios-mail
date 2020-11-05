@@ -116,7 +116,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                         api.call(api: self.apiService, nil)
                         for mm in self.messages {
                             if mm.remove(labelID: value.label.labelID) != nil && mm.unRead {
-                                self.messageService.updateCounter(plus: false, with: value.label.labelID)
+                                self.messageService.updateCounterSync(plus: false, with: value.label.labelID, context: context)
                             }
                         }
                     } else if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
@@ -125,7 +125,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                         api.call(api: self.apiService, nil)
                         for mm in self.messages {
                             if mm.add(labelID: value.label.labelID) != nil && mm.unRead {
-                                self.messageService.updateCounter(plus: true, with: value.label.labelID)
+                                self.messageService.updateCounterSync(plus: true, with: value.label.labelID, context: context)
                             }
                         }
                     } else {

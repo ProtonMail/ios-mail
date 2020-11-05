@@ -58,7 +58,9 @@ final class ContactsViewModelImpl : ContactsViewModel {
                         }
                     }
                     if needsSave {
-                        let _ = context.saveUpstreamIfNeeded()
+                        if let error = context.saveUpstreamIfNeeded() {
+                            PMLog.D("error: \(error)")
+                        }
                         self.fetchedResultsController = self.getFetchedResultsController()
                     }
                     completion?()

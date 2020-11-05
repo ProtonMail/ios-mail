@@ -62,14 +62,14 @@ final public class FolderEditingViewModelImple : LabelEditViewModel {
             if hasError {
                 error(response?.code ?? 1000, response?.errorMessage ?? "");
             } else {
-                self.currentLabel.name = name
-                self.currentLabel.color = color
-                if let context = self.currentLabel.managedObjectContext {
-                    context.perform {
-                        let _ = context.saveUpstreamIfNeeded()
+                self.coreDataService.enqueue(context: self.currentLabel.managedObjectContext) { (context) in
+                    self.currentLabel.name = name
+                    self.currentLabel.color = color
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D("error: \(error)")
                     }
+                    complete()
                 }
-                complete()
             }
         }
     }
