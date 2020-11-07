@@ -944,7 +944,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
             
             self.viewModel.messageService.ForcefetchDetailForMessage(message) {_, _, msg, error in
-                PMLog.D("message loaded 1")
                 guard let objectId = msg?.objectID,
                     let message = self.viewModel.object(by: objectId),
                     message.body.isEmpty == false else
@@ -961,13 +960,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     self.updateTapped(status: false)
                     return
                 }
+                
                 if self.checkHuman() {
                     self.coordinator?.go(to: .composeShow, sender: message)
                     self.tableView.indexPathsForSelectedRows?.forEach {
                         self.tableView.deselectRow(at: $0, animated: true)
                     }
-                    self.updateTapped(status: false)
                 }
+                self.updateTapped(status: false)
             }
         }
         
