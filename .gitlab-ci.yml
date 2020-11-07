@@ -111,7 +111,6 @@ build-app-and-upload:
   script:
     - cd ProtonMail
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
-    - fastlane sigh download_all --download_xcode_profiles
     - fastlane ios build
   tags:
     - iOS
