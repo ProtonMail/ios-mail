@@ -931,6 +931,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.tableView.indexPathsForSelectedRows?.forEach {
                     self.tableView.deselectRow(at: $0, animated: true)
                 }
+                self.updateTapped(status: false)
                 return
             }
             guard !message.messageID.isEmpty else {
@@ -938,6 +939,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     //TODO::QA
                     self.coordinator?.go(to: .composeShow)
                 }
+                self.updateTapped(status: false)
                 return
             }
             
@@ -956,6 +958,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                             self.tableView.deselectRow(at: $0, animated: true)
                         }
                     }
+                    self.updateTapped(status: false)
                     return
                 }
                 if self.checkHuman() {
