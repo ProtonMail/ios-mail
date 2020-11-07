@@ -824,7 +824,7 @@ class MessageDataService : Service, HasLocalStorage {
         queue {
             let completionWrapper: CompletionBlock = { task, response, error in
                 let objectId = message.objectID
-                let context = self.coreDataService.backgroundManagedObjectContext
+                let context = self.coreDataService.mainManagedObjectContext
                 self.coreDataService.enqueue(context: context) { (context) in
                     var error: NSError?
                     if let newMessage = context.object(with: objectId) as? Message, response != nil {
@@ -2299,7 +2299,7 @@ class MessageDataService : Service, HasLocalStorage {
         
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         self.incrementalUpdateQueue.sync {
-            let context = self.coreDataService.backgroundManagedObjectContext
+            let context = self.coreDataService.mainManagedObjectContext
             self.coreDataService.enqueue(context: context) { (context) in
                 var error: NSError?
                 var messagesNoCache : [String] = []
