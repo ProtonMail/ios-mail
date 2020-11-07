@@ -2267,7 +2267,7 @@ class MessageDataService : Service, HasLocalStorage {
                         }
                         
                         if let lo = msg.message?["Location"] as? Int {
-                            if lo == 1 { //if it is a draft
+                            if lo == 1 || lo == 8 { //if it is a draft
                                 if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
                                     if exsitMes.messageStatus == 1 {
                                         if let subject = msg.message?["Subject"] as? String {
