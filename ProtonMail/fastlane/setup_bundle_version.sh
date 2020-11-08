@@ -11,6 +11,8 @@
 
 cd ..
 FOLDERS=("ProtonMail/Supporting Files" "PushService" "Share" "Siri")
+BUNDLE_VERSION=$(git rev-list --count HEAD)
+echo $BUNDLE_VERSION
 
 for name in "${FOLDERS[@]}"
 do
@@ -20,7 +22,6 @@ do
     then
         /usr/libexec/PlistBuddy -c "Set CFBundleVersion $1" "$PLIST"
     else 
-        BUNDLE_VERSION=$(git rev-list --count HEAD)
         /usr/libexec/PlistBuddy -c "Set CFBundleVersion $BUNDLE_VERSION" "$PLIST"
     fi  
 done

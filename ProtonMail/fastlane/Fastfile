@@ -22,6 +22,7 @@ CERTIFICATE_PATH = "Certificates.p12"
 API_KEY_DURATION = 30 * 60 # 30 mins * 60 seconds
 APP_IDENTIFIER = "ch.protonmail.protonmail"
 
+
 def clean_data
   xcode_select("/Applications/Xcode.app")
   clear_derived_data
@@ -88,7 +89,7 @@ def get_latest_build_number(api_key)
   )
 end 
 
-def set_up_change_log(latest_build_number)
+def set_up_changelog(latest_build_number)
   hash = sh("./get_commit_hash.sh #{latest_build_number}")
   changelog_from_git_commits(
     between: [hash.strip, "HEAD"],  # Optional, lets you specify a revision/tag range between which to collect commit info
@@ -117,6 +118,26 @@ def build_release_app
   )
 end
 
+def send_to_slack(success, changelog, exception, bundle_version)
+  version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail")
+  payload = success ? {"Changelog" => changelog} : {"Error" => exception}
+  message = ""
+  if success
+    message = "CI BOT: iOS mail app v#{version}(#{bundle_version})"
+  else
+    message = "CI BOT: iOS mail app build failed"
+  end
+
+  slack(
+    message: message,
+    channel: "@Anson Chen",
+    use_webhook_configured_username_and_icon: true,
+    slack_url: ENV["SLACK_CI_BOT_URL"],
+    payload: payload,
+    success: success
+  )
+end
+
 platform :ios do 
   desc "Build app"
   lane :build do |options|
@@ -130,19 +151,25 @@ platform :ios do
 
     # Collect change logs
     latest_build_number = get_latest_build_number(api_key)
-    change_log = set_up_change_log(latest_build_number)
+    changelog = set_up_changelog(latest_build_number)
     
     # Set build version by git log numbers
-    sh("./setup_bundle_version.sh")
+    bundle_version = sh("./setup_bundle_version.sh")
 
     build_release_app
 
     # upload_to_testflight(
     #   api_key: api_key,
     #   team_name: "Proton Technologies AG",
+    #   skip_waiting_for_build_processing: true
     # )
 
     tear_down_keychain
     sh("./setup_bundle_version.sh Debug")
+    send_to_slack(true, changelog, "", bundle_version.strip)
+  end
+
+  error do |lane, exception|
+    send_to_slack(false, "", exception, "")
   end
 end
