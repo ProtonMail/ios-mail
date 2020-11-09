@@ -408,8 +408,7 @@ class UserDataService : Service, HasLocalStorage {
         }
         
         if let authRes = UserDataService.authResponse {
-            let code = Int(twoFACode ?? "0") ?? 0
-            apiService.confirm2FA(code, password: password, context: authRes, completion: completionWrapper)
+            apiService.confirm2FA(twoFACode ?? "", password: password, context: authRes, completion: completionWrapper)
         } else {
             apiService.authenticate(username: username, password: password, noKey: noKeyUser, completion: completionWrapper)
         }
