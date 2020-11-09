@@ -110,6 +110,7 @@ build-app-and-upload:
     - git submodule update --init --recursive
   script:
     - cd ProtonMail
+    - curl -sL https://sentry.io/get-cli/ | bash || true
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - fastlane ios build
   tags:
