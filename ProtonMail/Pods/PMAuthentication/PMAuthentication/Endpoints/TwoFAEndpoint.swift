@@ -17,7 +17,7 @@ extension AuthService {
         
         var request: URLRequest
         
-        init(code: Int,
+        init(code: String,
              token: String,
              UID: String)
         {
