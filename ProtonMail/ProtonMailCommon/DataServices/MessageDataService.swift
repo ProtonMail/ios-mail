@@ -1178,7 +1178,20 @@ class MessageDataService : Service, HasLocalStorage {
                     for message in badMessages {
                         badIDs.append(message.messageID)
                     }
-                    self.fetchMetadata(with: badIDs)
+                    
+                    var temp: [String] = []
+                    for i in 0..<badIDs.count {
+                        if temp.count > 10 {
+                            self.fetchMetadata(with: temp)
+                            temp.removeAll()
+                        } else {
+                            temp.append(badIDs[i])
+                            continue
+                        }
+                    }
+                    if !temp.isEmpty {
+                        self.fetchMetadata(with: temp)
+                    }
                 }
             } catch let ex as NSError {
                 Analytics.shared.error(message: .purgeOldMessages,
