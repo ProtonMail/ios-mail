@@ -123,6 +123,12 @@ def copy_archive_to_builds
   sh("./copy_archive_to_builds.sh")
 end
 
+def upload_dsym_to_sentry 
+  sentry_upload_dsym(
+    dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+  )
+end
+
 def send_to_slack(success, changelog, exception, bundle_version)
   version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail")
   payload = success ? {"Changelog" => changelog} : {"Error" => exception}
@@ -161,7 +167,6 @@ platform :ios do
     # Set build version by git log numbers
     bundle_version = sh("./setup_bundle_version.sh")
 
-    ENV["DWARF_DSYM_FOLDER_PATH"] = "../builds/ProtonMail.app.dSYM.zip"
     build_release_app
 
     # upload_to_testflight(
@@ -171,6 +176,7 @@ platform :ios do
     # )
 
     copy_archive_to_builds
+    upload_dsym_to_sentry
     tear_down_keychain
     sh("./setup_bundle_version.sh Debug")
     
