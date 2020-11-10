@@ -11,7 +11,7 @@
 #
 
 # Uncomment the line if you want fastlane to automatically update itself
-update_fastlane
+# update_fastlane
 
 default_platform(:ios)
 
@@ -118,6 +118,17 @@ def build_release_app
   )
 end
 
+def copy_archive_to_builds
+  ENV["XCODEBUILD_ARCHIVE"] = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+  sh("./copy_archive_to_builds.sh")
+end
+
+def upload_dsym_to_sentry 
+  sentry_upload_dsym(
+    dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+  )
+end
+
 def send_to_slack(success, changelog, exception, bundle_version)
   version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail")
   payload = success ? {"Changelog" => changelog} : {"Error" => exception}
@@ -164,8 +175,11 @@ platform :ios do
     #   skip_waiting_for_build_processing: true
     # )
 
+    copy_archive_to_builds
+    # upload_dsym_to_sentry
     tear_down_keychain
     sh("./setup_bundle_version.sh Debug")
+    
     send_to_slack(true, changelog, "", bundle_version.strip)
   end
 
