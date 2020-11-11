@@ -103,5 +103,22 @@ class SignInViewModel : NSObject {
         return Promise<String>.init(error: TokenError.unsupport)
         #endif
     }
+    
+    func shouldShowUpdateAlert() -> Bool {
+        //check ios version
+        if #available(iOS 11, *) {
+            return false
+        } else if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
+                  version == "1.12.6",
+                  !userCachedStatus.iOS10AlertIsShown {
+            return true
+        }
+        
+        return false
+    }
+    
+    func setiOS10AlertIsShown() {
+        userCachedStatus.iOS10AlertIsShown = true
+    }
 }
 
