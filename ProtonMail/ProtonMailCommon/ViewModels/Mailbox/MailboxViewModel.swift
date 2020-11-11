@@ -506,7 +506,7 @@ class MailboxViewModel: StorageLimit {
         if #available(iOS 11, *) {
             return false
         } else if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
-                  version == "1.12.5",
+                  version == "1.12.6",
                   !userCachedStatus.iOS10AlertIsShown {
             return true
         }
