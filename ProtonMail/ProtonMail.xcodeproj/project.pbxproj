@@ -1905,6 +1905,7 @@
 		E7CBD73204DBDE75603A0F77DFA70A1B /* TextInsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66ECFE85614856773C0AB02A79A1B127 /* TextInsetTextField.swift */; };
 		E7D6855F9C8F2737DC5A6BF8304D7E87 /* Message+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E4AC8179E64BE4F4E1C508F653E628 /* Message+String+Extension.swift */; };
 		E7DD0041AAE7660B8B47401D4863F9CF /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B353F65994664847D220F289184C2A5B /* Colors.swift */; };
+		E81D504EC61F804FB54B1B8E9D534BE1 /* UserAgentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6F6CDA2C92F4D433891E3BE204344A /* UserAgentTest.swift */; };
 		E8259C3D148E34E4DADFE58E853515FA /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E73966B7175FDEFB1CA1F9CE6C8D75 /* Images.swift */; };
 		E84CECD826C05D7F8C6378C35F9C3A67 /* ComposeContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725761D634B18B26A40AECAE90E517B7 /* ComposeContainerViewCoordinator.swift */; };
 		E8509B1BE23AD8B4BD0BE519E3E2F7F6 /* MailboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46F72AFDE901F2582A2569BFBC7E6EC /* MailboxViewController.swift */; };
@@ -2723,6 +2724,7 @@
 		899BDDEF3A3E63FB3DBDEDD1BF91B1FD /* Pods-Keymaker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keymaker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Keymaker/Pods-Keymaker.release.xcconfig"; sourceTree = "<group>"; };
 		8A0079ABF470F5678C8F5773F88F5C12 /* MessageContainerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContainerViewModel.swift; sourceTree = "<group>"; };
 		8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = flags.bundle; sourceTree = "<group>"; };
+		8A6F6CDA2C92F4D433891E3BE204344A /* UserAgentTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserAgentTest.swift; path = ProtonMailTests/UserAgentTest.swift; sourceTree = SOURCE_ROOT; };
 		8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
 		8AFD327F9665CD8F972A0FDF58A1E1AB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
@@ -5035,6 +5037,7 @@
 				450D2530B2F47C55FBEABC6AC343D094 /* OpenPGPDefines.swift */,
 				20DFD8B753A7854396B088FEFEAE98FC /* OpenPGPTests.swift */,
 				9D86885F81926481E690777368F4F1CA /* OpenPGPTestsDefine.bundle */,
+				8A6F6CDA2C92F4D433891E3BE204344A /* UserAgentTest.swift */,
 			);
 			path = OpenPGP;
 			sourceTree = "<group>";
@@ -6384,6 +6387,7 @@
 				9829B266A80AF788258DC120521C2EEE /* StringConversionTests+Marcel.swift in Sources */,
 				6A17C94096C82F4E2DB4550E24B08F64 /* StringConversionTests+PM.swift in Sources */,
 				8D736AA84AE2B9974174DC758D856BC6 /* URL_ExtensionTests.swift in Sources */,
+				E81D504EC61F804FB54B1B8E9D534BE1 /* UserAgentTest.swift in Sources */,
 				1EB7641F18E90182D192C09DF06E0355 /* UserDefaultsSaverTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
