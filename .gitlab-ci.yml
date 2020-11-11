@@ -105,8 +105,9 @@ build-app-and-upload:
     - develop
     - /^release\/.*$/
   artifacts:
+    name: "iOS mail app builds"
     paths:
-      - builds
+      - builds/
     expire_in: 1 days
   before_script:
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
@@ -114,6 +115,7 @@ build-app-and-upload:
     - git submodule update --init --recursive
   script:
     - cd ProtonMail
+    - touch ~/.bashrc
     - curl -sL https://sentry.io/get-cli/ | bash || true
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - fastlane ios build
