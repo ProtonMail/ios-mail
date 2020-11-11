@@ -131,7 +131,11 @@ end
 
 def send_to_slack(success, changelog, exception, bundle_version)
   version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail")
+  
+  pipeline = "https://gitlab.protontech.ch/ProtonMail/protonmail-ios/-/pipelines/#{ENV["CI_PIPELINE_ID"]}"
   payload = success ? {"Changelog" => changelog} : {"Error" => exception}
+  payload.store("pipeline", pipeline)
+
   message = ""
   if success
     message = "CI BOT: iOS mail app v#{version}(#{bundle_version})"
@@ -176,9 +180,8 @@ platform :ios do
     # )
 
     copy_archive_to_builds
-    upload_dsym_to_sentry
+    # upload_dsym_to_sentry
     tear_down_keychain
-    sh("./setup_bundle_version.sh Debug")
     
     send_to_slack(true, changelog, "", bundle_version.strip)
   end
