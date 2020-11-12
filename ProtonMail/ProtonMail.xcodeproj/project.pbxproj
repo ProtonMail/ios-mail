@@ -5310,7 +5310,7 @@
 				B7EBEAA51F130EAAA1213E69D9E40DBD /* [CP] Embed Pods Frameworks */,
 				E04C8B5D7BBBD207F1F503EE464CC7BE /* Embed App Extensions */,
 				D69E6F42AB3779456E68CFB51F664382 /* Embed Frameworks */,
-				9AA3453632AC0DF31B07A4B30A970202 /* Run Proton Sentry script */,
+				0C4F83DFBCEE3602444D4B29BCD6E871 /* Run Proton Sentry script */,
 			);
 			buildRules = (
 			);
@@ -6018,7 +6018,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9AA3453632AC0DF31B07A4B30A970202 /* Run Proton Sentry script */ = {
+		0C4F83DFBCEE3602444D4B29BCD6E871 /* Run Proton Sentry script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
 			files = (

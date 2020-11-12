@@ -105,7 +105,7 @@ def build_release_app
   build_app(
     scheme: "ProtonMail",
     clean: true,
-    output_directory: "builds/",
+    output_directory: "outputs/",
     export_method: "app-store",
     export_options: {
         provisioningProfiles: {
@@ -121,12 +121,6 @@ end
 def copy_archive_to_builds
   ENV["XCODEBUILD_ARCHIVE"] = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
   sh("./copy_archive_to_builds.sh")
-end
-
-def upload_dsym_to_sentry 
-  sentry_upload_dsym(
-    dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-  )
 end
 
 def send_to_slack(success, changelog, exception, bundle_version)
@@ -179,8 +173,8 @@ platform :ios do
     #   skip_waiting_for_build_processing: true
     # )
 
-    copy_archive_to_builds
-    # upload_dsym_to_sentry
+    # Disable this since archive is too large.
+    # copy_archive_to_builds
     tear_down_keychain
     
     send_to_slack(true, changelog, "", bundle_version.strip)
