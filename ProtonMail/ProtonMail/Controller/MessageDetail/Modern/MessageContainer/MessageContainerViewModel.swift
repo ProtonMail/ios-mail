@@ -335,13 +335,13 @@ class MessageContainerViewModel: TableContainerViewModel {
     }
     
     internal func downloadThreadDetails() {
-        self.messages.forEach { [weak self] message in
-            self?.messageService.fetchMessageDetailForMessage(message) { (_, _, _, error) in
+        self.messages.forEach { message in
+            self.messageService.fetchMessageDetailForMessage(message) { (_, _, _, error) in
                 guard error == nil else {
-                    self?.errorWhileReloading(message: message, error: error!)
+                    self.errorWhileReloading(message: message, error: error!)
                     return
                 }
-                self?.reload(message: message)
+                self.reload(message: message)
             }
         }
     }
