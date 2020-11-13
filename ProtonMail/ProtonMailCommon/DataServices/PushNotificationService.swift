@@ -48,6 +48,8 @@ public class PushNotificationService: NSObject, Service {
     private let unlockProvider: UnlockProvider
     private let deviceTokenSaver: Saver<String>
     
+    private let unlockQueue = DispatchQueue(label: "PushNotificationService.unlock")
+    
     init(service: MessageDataService? = nil,
          subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
@@ -113,7 +115,7 @@ public class PushNotificationService: NSObject, Service {
     }
     
     @objc private func didUnlockAsync() {
-        DispatchQueue.global().async {
+        unlockQueue.async {
             self.didUnlock()    // cuz encryption kit generation can take significant time
         }
     }
