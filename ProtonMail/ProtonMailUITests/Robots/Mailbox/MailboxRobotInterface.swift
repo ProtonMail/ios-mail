@@ -6,12 +6,11 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-import XCTest
-
 fileprivate let menuButton = "Menu"
 let composeButtonLabel = "Compose"
 fileprivate let mailboxTableViewIdentifier = "MailboxViewController.tableView"
 fileprivate let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
+fileprivate func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)" }
 
 /**
  Parent class for all the Mailbox Robot classes like Inbox, Sent, Trash, etc.
@@ -23,9 +22,15 @@ class MailboxRobotInterface {
     }
     
     @discardableResult
-    func clickMessageBySubject(_ identifier: String) -> MailboxRobotInterface {
-        Element.wait.forCellWithIdentifier(identifier).tap()
-        return self
+    func clickMessageBySubject(_ subject: String) -> MessageRobot {
+        Element.wait.forCellWithIdentifier(messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).tap()
+        return MessageRobot()
+    }
+    
+    @discardableResult
+    func clickMessageByIndex(_ index: Int) -> MessageRobot {
+        Element.wait.forCellByIndex(index).tap()
+        return MessageRobot()
     }
     
     @discardableResult
@@ -74,8 +79,8 @@ class MailboxRobotInterface {
 */
 class MailboxRobotVerifyInterface {
     
-    func messageMoved(messageSubject: String) {
-        
+    func messageExists(_ subject: String) {
+        Element.wait.forCellWithIdentifier(messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_")))
     }
 
     func draftWithAttachmentSaved(draftSubject: String) {

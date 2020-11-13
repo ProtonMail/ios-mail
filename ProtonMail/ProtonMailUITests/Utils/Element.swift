@@ -243,6 +243,14 @@ struct Element {
         }
         
         @discardableResult
+        static func forCollectionViewWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
+            let element = app.collectionViews[identifier]
+            XCUIApplication().scrollViews.textFields.element(boundBy: 1)
+            XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
+            return element
+        }
+        
+        @discardableResult
         static func forHittableButton(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
             let element = app.buttons[identifier]
             Wait().forElementToBeHittable(element, file, line)
@@ -372,5 +380,9 @@ extension XCUIElement {
     
     func assertHasStaticTextChild(withText: String) {
         XCTAssertTrue(self.staticTexts[withText].exists, "Expected to have StaticText element with label: \"\(withText)\" but found nothing.")
+    }
+    
+    func clickCellByIndex(_ index: Int) {
+        self.cells.element(boundBy: index)
     }
 }

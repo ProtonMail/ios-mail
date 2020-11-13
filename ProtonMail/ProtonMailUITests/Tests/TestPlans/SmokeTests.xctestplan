@@ -18,6 +18,8 @@
         "AccountSettingsTests\/testCreateAndDeleteLabel()",
         "ContactsTests\/testEditContact()",
         "ContactsTests\/testEditGroup()",
+        "LabelsFoldersTests\/testCreateAndDeleteCustomFolder()",
+        "LabelsFoldersTests\/testEditCustomLabelNameAndColor()",
         "LoginTests\/testLoginWithOnePass()",
         "LoginTests\/testLoginWithTwoPass()",
         "LogoutTests\/testLogoutOnePassUser()",

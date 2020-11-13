@@ -22,8 +22,9 @@ class SettingsRobot {
         return MenuRobot()
     }
 
-    func selectAccount(_ email: String) {
+    func selectAccount(_ email: String) -> AccountSettingsRobot {
         Element.wait.forCellWithIdentifier(accountCellIdentifier(email)).tap()
+        return AccountSettingsRobot()
     }
 
     /**

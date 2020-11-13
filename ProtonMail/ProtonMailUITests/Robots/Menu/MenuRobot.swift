@@ -19,6 +19,7 @@ private let manageAccountsStaticTextIdentifier = "MenuButtonViewCell.\(LocalStri
 private func userAccountCellIdentifier(_ email: String) -> String { return "MenuUserViewCell.\(email)" }
 private func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
 private func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
+private func folderLabelCellIdentifier(_ name: String) -> String { return "MenuLabelViewCell.\(name)" }
 
 /**
  Represents Menu view.
@@ -50,6 +51,11 @@ class MenuRobot {
     func accountsList() -> MenuAccountListRobot {
         Element.wait.forOtherFieldWithIdentifier(sidebarHeaderViewOtherIdentifier, file: #file, line: #line).tap()
         return MenuAccountListRobot()
+    }
+    
+    func folderOrLabel(_ name: String) -> LabelFolderRobot {
+        Element.wait.forCellWithIdentifier(folderLabelCellIdentifier(name.replacingOccurrences(of: " ", with: "_")), file: #file, line: #line).tap()
+        return LabelFolderRobot()
     }
     
     func settings() -> SettingsRobot {

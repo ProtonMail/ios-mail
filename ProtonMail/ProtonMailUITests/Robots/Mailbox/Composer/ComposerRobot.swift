@@ -11,6 +11,7 @@ fileprivate let sendButtonIdentifier = "ComposeContainerViewController.sendButto
 fileprivate let toTextFieldIdentifier = "ToTextField"
 fileprivate let ccTextFieldIdentifier = "ccTextField"
 fileprivate let bccTextFieldIdentifier = "bccTextField"
+fileprivate let composerWebViewIdentifier = "ComposerBody"
 fileprivate let subjectTextFieldIdentifier = "ComposeHeaderViewController.subject"
 fileprivate let pasteMenuItem = app.menuItems.staticTexts.element(boundBy: 0)
 fileprivate let popoverDismissRegionOtherIdentifier = "PopoverDismissRegion"
@@ -54,9 +55,10 @@ class ComposerRobot {
             .send()
     }
     
-    func draftToSubjectBody(_ to: String, _ subjectText: String) -> ComposerRobot {
+    func draftToSubjectBody(_ to: String, _ subjectText: String, _ body: String) -> ComposerRobot {
         recipients(to)
             .subject(subjectText)
+            .body(body)
         return self
     }
     
@@ -187,6 +189,21 @@ class ComposerRobot {
         return ComposerRobot()
     }
     
+    func changeSubjectTo(_ subjectText: String) -> ComposerRobot {
+        Element.wait.forTextFieldWithIdentifier(subjectTextFieldIdentifier, file: #file, line: #line)
+            .click()
+            .clear()
+            .typeText(subjectText)
+        return ComposerRobot()
+    }
+    
+    func changeBodyTo(_ body: String) -> ComposerRobot {
+        Element.wait.forTextFieldWithIdentifier(subjectTextFieldIdentifier, file: #file, line: #line)
+            .clear()
+            .typeText(body)
+        return ComposerRobot()
+    }
+    
     private func sendToContact() -> ContactDetailsRobot {
         Element.wait.forHittableButton(sendButtonIdentifier, file: #file, line: #line).tap()
         return ContactDetailsRobot()
@@ -218,6 +235,7 @@ class ComposerRobot {
     }
     
     private func body(_ text: String) -> ComposerRobot {
+        ///TODO: add body update when WebView field will be accessible.
         return self
     }
     

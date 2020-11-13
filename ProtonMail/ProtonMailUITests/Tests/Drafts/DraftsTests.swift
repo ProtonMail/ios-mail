@@ -17,14 +17,14 @@ class DraftsTests: BaseTestCase {
         super.setUp()
         subject = testData.messageSubject
         body = testData.messageBody
-        to = testData.internalEmailTrustedKeys.email
+        to = testData.twoPassUser.email
     }
 
     func testSaveDraft() {
         loginRobot
             .loginUser(testData.onePassUser)
             .compose()
-            .draftToSubjectBody(to, subject)
+            .draftToSubjectBody(to, subject, body)
             .tapCancel()
             .confirmDraftSaving()
             .menuDrawer()
@@ -109,5 +109,24 @@ class DraftsTests: BaseTestCase {
             .confirmDraftSavingFromDrafts()
             .clickDraftBySubject(subject)
             .verify.fromEmailIs(onePassUserSecondEmail)
+    }
+    
+    func testChangeDraftSubjectAndSendMessage() {
+        let newSubject = testData.messageSubject
+
+        loginRobot
+            .loginUser(testData.onePassUser)
+            .compose()
+            .draftToSubjectBody(to, subject, body)
+            .tapCancel()
+            .confirmDraftSaving()
+            .menuDrawer()
+            .drafts()
+            .clickDraftBySubject(subject)
+            .changeSubjectTo(newSubject)
+            .send()
+            .menuDrawer()
+            .sent()
+            .verify.messageWithSubjectExists(newSubject)
     }
 }
