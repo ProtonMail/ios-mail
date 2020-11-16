@@ -1,7 +1,7 @@
 stages:
   - test
-  - bot # comes from translations/generator job
   - test_flight
+  - bot # comes from translations/generator job
 
 .before_script_mac: &before_script_mac
   - cd ProtonMail/ProtonMailUITests/ && sh Tests/TestPlans/scripts/prepare_users.sh && cd .. && cd ..
