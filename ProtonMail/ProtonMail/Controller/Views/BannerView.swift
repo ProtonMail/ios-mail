@@ -41,7 +41,7 @@ class BannerView : PMView {
     
     @IBOutlet private weak var button: UIButton!
     @IBOutlet private var backgroundView: UIView!
-    @IBOutlet private weak var messageLabel: UILabel!
+    @IBOutlet private var messageTextview: UITextView!
     @IBOutlet weak var secondButton: UIButton!
     
     override func getNibName() -> String {
@@ -99,8 +99,11 @@ class BannerView : PMView {
         super.init(frame: CGRect.zero)
         
         self.roundCorners()
-        self.messageLabel.text = message
-        self.messageLabel.textColor = appearance.textColor
+        self.messageTextview.delegate = self
+        self.messageTextview.textContainer.lineFragmentPadding = 0
+        self.messageTextview.textContainerInset = .zero
+        self.messageTextview.text = message
+        self.messageTextview.textColor = appearance.textColor
         self.backgroundView.backgroundColor = appearance.backgroundColor
         self.backgroundView.alpha = appearance.backgroundAlpha
         self.buttonConfig = buttons
@@ -112,15 +115,20 @@ class BannerView : PMView {
             self.button.isHidden = true
         }
         
-        self.secondButtonConfig = button2
-        let attributeString = NSMutableAttributedString(string: "Troubleshoot",
-                                                        attributes: yourAttributes)
-        secondButton.setAttributedTitle(attributeString, for: .normal)
-        secondButton.isHidden = button2 == nil
         
-        messageLabel.sizeToFit()
+        self.secondButtonConfig = button2
+        if let _ = button2 {
+            let attributed = NSMutableAttributedString(string: "\(message) ", attributes: [NSAttributedString.Key.foregroundColor: appearance.textColor, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17)])
+            let troubleAttribute = NSAttributedString(string: "Troubleshoot", attributes: [NSAttributedString.Key.link: "troubleshoot://"])
+            attributed.append(troubleAttribute)
+            self.messageTextview.attributedText = attributed
+            self.messageTextview.linkTextAttributes = yourAttributes
+        }
+        
+        self.messageTextview.sizeToFit()
         self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(onPan(gesture:))))
         
+        self.sizeToFit()
         self.layoutIfNeeded()
     }
     
@@ -140,14 +148,18 @@ extension BannerView: UIGestureRecognizerDelegate {
         let xPadding: CGFloat = 16.0
         let yPadding: CGFloat = 12.0
         let space: CGFloat = 2 * 8.0
-        let sizeOfText = self.messageLabel.textRect(forBounds: baseView.bounds.insetBy(dx: 3.0 * xPadding + self.button.bounds.width, dy: 0), limitedToNumberOfLines: 0).insetBy(dx: 0, dy: -1.0 * yPadding)
+        let bannerWidth: CGFloat = baseView.bounds.width - 2 * xPadding
+        let horizontalStackWidth: CGFloat = bannerWidth - 20 - 20
+        let verticalStackWidth: CGFloat = horizontalStackWidth - 41 - 8
+        let textViewWidht = verticalStackWidth - 20
+        let sizeOfText = self.messageTextview.sizeThatFits(CGSize(width: textViewWidht, height: CGFloat.greatestFiniteMagnitude))
         
         var buttonHeight = secondButton.frame.height
         if !secondButton.isHidden {
             buttonHeight = buttonHeight + space
         }
         
-        let size = CGSize(width: baseView.bounds.insetBy(dx: xPadding, dy: 0).width, height: sizeOfText.height + buttonHeight)
+        let size = CGSize(width: bannerWidth, height: sizeOfText.height + buttonHeight + yPadding)
         self.frame = CGRect(origin: .zero, size: size)
         let initAnchor = CGPoint(x: (baseView.bounds.width / 2),
                                  y: from == .bottom ? (baseView.bounds.height - self.bounds.height / 2) - offset
@@ -262,5 +274,14 @@ extension BannerView: UIGestureRecognizerDelegate {
         let absOffset = abs(offset)
         let result = (constant * absOffset * dimension) / (dimension + constant * absOffset)
         return offset < 0 ? -result : result
+    }
+}
+
+extension BannerView: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        if URL.absoluteString.starts(with: "troubleshoot") {
+            self.secondAction("")
+        }
+        return false
     }
 }

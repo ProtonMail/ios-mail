@@ -1,3 +1,24 @@
+/* Key size text when setup key */
+"(2048 bit)" = "(2048 bita)";
+
+/* Key size text when setup key */
+"(4096 bit)" = "(4096 bita)";
+
+/* Comment for disconnected account in Account Manager */
+"(logged out)" = "(odjavljen)";
+
+/* Service plan capability detail; like in '50 email addresses (total)' */
+"(total)" = "(ukupno)";
+
+/* secret */
+"**********" = "**********";
+
+/* optional text field */
+"*OPTIONAL" = "*NEOBAVEZNO";
+
+/* Service plan capability detail; like in '5 email addresses/user' */
+"/user" = "/korisniku";
+
 /* Service plan capability */
 "%@ storage capacity" = "%@ prostora za pohranu";
 
@@ -22,32 +43,14 @@
 /* Service plan capability; i = 5 or 50 */
 "%i email addresses" = "%i adresa e-pošte";
 
-/* Key size text when setup key */
-"(2048 bit)" = "(2048 bita)";
-
-/* Key size text when setup key */
-"(4096 bit)" = "(4096 bita)";
-
-/* Service plan capability detail; like in '50 email addresses (total)' */
-"(total)" = "(ukupno)";
-
-/* secret */
-"**********" = "**********";
-
-/* optional text field */
-"*OPTIONAL" = "*NEOBAVEZNO";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Ispustite ovdje da biste dodali kao privitak";
 
-/* Service plan capability detail; like in '5 email addresses/user' */
-"/user" = "/korisniku";
-
-/* 2fa verification failed */
-"2FA failed. Please try to login again." = "Provjera autentičnosti nije uspjela. Molim pokušajte se prijaviti ponovno.";
-
 /* default empty object */
 "<no object>" = "<no object>";
+
+/* 2fa verification failed */
+"2FA failed. Please try to login again." = "Ne uspješna dvofaktorska autentikacija. Molim pokušajte se prijaviti ponovno.";
 
 /* *
  *  LabelTableViewCell */
@@ -65,25 +68,23 @@
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "Šifra nije postavljena, omogućite je u postavkama sustava";
 
-/* when server not reachable */
-"API Server not reachable..." = "API poslužitelj nije dostupan...";
-
-/* mail location title */
-"ARCHIVE" = "Arhiva";
-
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Pristup ovom računu onemogućen je zbog neplaćanja. Prijavite se putem protonmail.com kako biste platili neplaćenu fakturu.";
 
-/* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Pristup ovom računu je onemogućen zbog neplaćanja.
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Pristup ovom računu je onemogućen zbog neplaćanja.\n\nMolimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">našu bazu znanja</a> za više informacija.";
 
-Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">našu bazu znanja</a> za više informacija.";
+/* Account manager title */
+"Account" = "Korisnički račun";
 
 /* 
  & title */
-"Account password invalid" = "Neispravna lozinka računa";
+"Account password invalid" = "Nevažeća lozinka računa";
 
-/* None */
+/* section title in settings */
+"Account Settings" = "Postavke računa";
+
+/* (No Comment) */
 "Add" = "Dodaj";
 
 /* new contacts add Anniversary */
@@ -110,11 +111,29 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* add label action */
 "Add Label" = "Dodaj oznaku";
 
+/* add new address action */
+"Add new address" = "Dodaj novu adresu";
+
+/* new custom field action */
+"Add new custom field" = "Dodaj novo prilagođeno polje";
+
+/* new email action */
+"Add new email" = "Dodaj novu adresu e-pošte";
+
+/* new field action */
+"Add new field" = "Dodati novo polje";
+
 /* add a new folder */
 "Add New Folder" = "Dodaj novu mapu";
 
 /* add a new folder */
 "Add New Label" = "Dodaj novu oznaku";
+
+/* new phone action */
+"Add new phone number" = "Dodaj novi broj telefona";
+
+/* action */
+"Add new URL" = "Dodaj novi URL";
 
 /* new contacts add Nickname */
 "Add Nickname" = "Dodaj nadimak";
@@ -131,40 +150,28 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* new contacts add Title */
 "Add Title" = "Dodaj naslov";
 
-/* add new address action */
-"Add new address" = "Dodaj novu adresu";
-
-/* new custom field action */
-"Add new custom field" = "Dodaj novo prilagođeno polje";
-
-/* new email action */
-"Add new email" = "Dodaj novu adresu e-pošte";
-
-/* new field action */
-"Add new field" = "Dodati novo polje";
-
-/* new phone action */
-"Add new phone number" = "Dodaj novi broj telefona";
-
-/* action */
-"Add new url" = "Dodaj novi URL";
-
 /* Title */
 "Add to contacts" = "Dodaj u kontakte";
 
 /* default vcard types */
 "Address" = "Adresa";
 
+/* cell title in device settings */
+"Addresses" = "Adrese";
+
 /* Title */
 "Alert" = "Upozorenje";
+
+/* Title */
+"All contacts are imported" = "Svi kontakti su uvezeni";
 
 /* mail location desc
    mail location title
    menu title */
 "All Mail" = "Sva pošta";
 
-/* Title */
-"All contacts are imported" = "Svi kontakti su uvezeni";
+/* network troubleshot cell title */
+"Allow alternative routing" = "Omogući alternativno usmjeravanje";
 
 /* archive when apply label */
 "Also Archive" = "Također i arhivu";
@@ -172,11 +179,29 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Description */
 "Also used to reset a forgotten password." = "Također se koristi za ponovno postavljanje izgubljene lozinke.";
 
+/* agree check box middle word */
+"and" = "i";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Godišnjica";
 
+/* network troubleshot cell title */
+"Antivirus interference" = "Smetnje s antivirusom";
+
+/* when server not reachable */
+"API Server not reachable..." = "API poslužitelj nije dostupan...";
+
+/* section title in settings */
+"APP INFORMATION" = "INFORMACIJE O APLIKACIJI";
+
 /* Error */
 "App is locked" = "Aplikacija je zaključana";
+
+/* cell title in device settings */
+"App Language" = "Jezik aplikacije";
+
+/* section title in settings */
+"App Settings" = "Postavke aplikacije";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Appleova naknada za kupnju u aplikaciji";
@@ -188,7 +213,7 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple nas je obavijestio da ste nadogradili plan usluga, ali niste odabrali koji od vaših ProtonMail računa želite nadograditi u slučaju da imate više od jednog računa.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple nas je obavijestio da ste nadogradili plan usluga, ali nedostajali su neki tehnički podaci. Ispunite izvještaj o pogrešci i naš tim za korisničku podršku će vas kontaktirati.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nas je obavijestio da ste nadogradili plan usluga, ali nedostajali su neki tehnički podaci. Ispunite izvještaj o pogrešci i naš tim za korisničku podršku će vas kontaktirati.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nas je obavijestio da ste nadogradili plan usluge, ali smo otkrili da ste se od tada odjavili s računa.";
@@ -203,11 +228,23 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
    menu title */
 "Archive" = "Arhiva";
 
+/* mail location title */
+"ARCHIVE" = "Arhiva";
+
 /* Description */
 "Archived" = "Arhivirano";
 
-/* Alert to confirm logout */
-"Are you sure you want to logout?" = "Jeste li sigurni da se želite odjaviti?";
+/* Alert when logout non-primary account from account manager */
+"Are you sure you want to log out?" = "Jeste li sigurni da se želite odjaviti?";
+
+/* Alert to confirm logout when only one account logged in */
+"Are you sure you want to logout %@?" = "Jeste li sigurni da želite odjaviti s %@?";
+
+/* emptify folder/label confirmation alert */
+"Are you sure? This can't be undone." = "Jeste li sigurni? Ova radnja se ne može poništiti.";
+
+/* like at 10:00pm */
+"at" = "u";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Privitak je uvezen";
@@ -215,20 +252,29 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* VoiceOver: email has attachments */
 "Attachments" = "Privitci";
 
-/* Title */
-"Authentication" = "Autentifikacija";
+/* Error */
+"attempt remaining until secure data wipe!" = "pokušaj preostalo do sigurnog brisanja podataka!";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "Provjera autentičnosti nije uspjela: pogrešno korisničko ime ili lozinka.";
-
-/* Description */
-"Authentication failed" = "Autentifikacija neuspješna";
+"attempts remaining" = "pokušaja preostalo";
 
 /* Error */
-"Authentication failed. Please try to login again." = "Provjera autentičnosti nije uspjela. Molim pokušajte se prijaviti ponovno.";
+"attempts remaining until secure data wipe!" = "pokušaja preostalo do sigurnog brisanja podataka!";
+
+/* Title */
+"Authentication" = "Autentikacija";
 
 /* Description */
-"Authentication token is not accessible because the app is locked" = "Token autentifikacije nije dostupan jer je aplikacija zaključana";
+"Authentication failed" = "Ne uspješna autentikacija";
+
+/* Description */
+"Authentication Failed Wrong username or password" = "Neuspješna autentikacija: pogrešno korisničko ime ili lozinka.";
+
+/* Error */
+"Authentication failed. Please try to login again." = "Ne uspješna autentikacija. Pokušajte se prijaviti ponovno.";
+
+/* Description */
+"Authentication token is not accessible because the app is locked" = "Token autentikacije nije dostupan jer je aplikacija zaključana";
 
 /* Description */
 "Authentication was cancelled by the system" = "Sustav je poništio autorizaciju";
@@ -238,6 +284,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* settings general section title */
 "Auto Show Images" = "Automatsko prikazivanje slika";
+
+/* section title in settings */
+"Auto-lock" = "Automatsko zaključavanje";
 
 /* top left back button */
 "Back" = "Natrag";
@@ -275,14 +324,14 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Link to More Credits screen */
 "Buy More Credits" = "Kupite više kredita";
 
+/* Alert for removing disconnected accounts */
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "Uklanjanjem ovog računa više mu nećete moći pristupiti s ovog uređaja sve dok ga ponovo ne dodate.\n\nŽelite li ukloniti ovaj račun?";
+
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "Koristeći ProtonMail, slažete se s našim";
 
 /* No comment provided by engineer. */
 "By using protonmail, you agree to our %@ and %@." = "Koristeći ProtonMail, slažete se s našim %1$@ i %2$@.";
-
-/* human check option button */
-"CAPTCHA" = "CAPTCHA";
 
 /* Call the contact (button title text) */
 "Call Contact" = "Nazovi kontakta";
@@ -318,11 +367,14 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
 "Can't fetch contact groups" = "Neuspješno dohvaćanje grupa kontakata";
 
-/* None */
+/* (No Comment) */
 "Can't find the clicked message please try again!" = "Ne mogu pronaći pritisnutu poruku. Molimo pokušajte ponovno!";
 
 /* Description */
 "Can't find the selected message. Please try again." = "Ne mogu pronaći odabranu poruku. Molimo pokušajte ponovno.";
+
+/* Description */
+"Can't find the value from the response body" = "Ne mogu pronaći vrijednost iz tijela odgovora";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Neuspješno pronalaženje ovog privitka!";
@@ -334,16 +386,13 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Can't get a Moduls!" = "Nije moguće dobiti Moduls!";
 
 /* update password error */
-"Can't get user auth info" = "Ne mogu dobiti informacije o autentifikaciji korisnika";
+"Can't get user auth info" = "Ne uspješno dohvaćanje informacije o autentikaciji korisnika";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Can't load share content!" = "Nije moguće učitati dijeljeni sadržaj!";
 
 /* Error */
 "Can't load the file" = "Nije moguće učitavanje datoteke";
-
-/* Description */
-"Can't find the value from the response body" = "Ne mogu pronaći vrijednost iz tijela odgovora";
 
 /* Error */
 "Can't open the file" = "Nije moguće otvoriti datoteku";
@@ -358,13 +407,16 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Cancel" = "Poništi";
 
 /* Action */
-"Cancel Check" = "Odustani od provjere";
+"Cancel Check" = "Poništi provjeru";
 
 /* Title */
 "Cancelling" = "Otkazivanje";
 
-/* None */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "Neuspješno dešifriranje ovog privitka.";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCHA";
 
 /* Title */
 "Cc" = "CC";
@@ -374,6 +426,12 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* place holder */
 "Cell phone number" = "Broj telefona";
+
+/* Title */
+"Change default address to .." = "Promijeni zadanu adresu u...";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Promjeni radnje prelaska prstom ulijevo";
 
 /* change password input label */
 "Change Login Password" = "Promijeni lozinku za prijavu";
@@ -387,23 +445,20 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* settings protection section title */
 "Change Pin" = "Promijenite PIN";
 
-/* Title */
-"Change Single Password" = "Promijeni samostalnu lozinku";
-
-/* Title */
-"Change default address to .." = "Promijeni zadanu adresu u...";
-
 /* settings swipe actions section action description */
-"Change left swipe action" = "Promjeni lijevu radnju prelaska prstom";
-
-/* settings swipe actions section action description */
-"Change right swipe action" = "Promjeni desnu radnju prelaska prstom";
+"Change right swipe action" = "Promjeni radnje prelaska prstom udesno";
 
 /* Title */
 "Change sender address to .." = "Promijeni adresu pošiljatelja u...";
 
+/* Title */
+"Change Single Password" = "Promijeni samostalnu lozinku";
+
 /* Action */
 "Check Again" = "Provjeri ponovno";
+
+/* network troubleshot cell title */
+"Check Proton Status for our system status." = "Provjerite Proton Status za uvid u status našeg sustava.";
 
 /* loading message */
 "Checking ...." = "Provjera...";
@@ -417,13 +472,23 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* settings general section title */
 "Clear Local Message Cache" = "Očisti lokalnu predmemoriju poruka";
 
+/* Menu action to remove text formatting */
+"Clear Style" = "Očisti oblikovanja";
+
 /* general close action */
 "Close" = "Zatvori";
+
+/* Action */
+"close tour" = "zatvori obilazak";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Zatvaranje";
 
-/* Action */
+/* cell title in device settings */
+"Combined Contacts" = "Spojeni kontakti";
+
+/* Action
+   Springboard (3D Touch) shortcuts action */
 "Compose" = "Nova poruka";
 
 /* Title */
@@ -438,9 +503,6 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Potvrdi lozinku za sandučić e-pošte";
 
-/* Placeholder */
-"Confirm Password" = "Potvrdi lozinku";
-
 /* Title */
 "Confirm new login password" = "Potvrdi novu lozinku za prijavu";
 
@@ -449,6 +511,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* Placeholder */
 "Confirm new password" = "Potvrdi novu lozinku";
+
+/* Placeholder */
+"Confirm Password" = "Potvrdi lozinku";
 
 /* alert title */
 "Confirm phishing report" = "Potvrdi izvještaj o krađi identiteta";
@@ -459,11 +524,17 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* view top title */
 "Congratulations!" = "Čestitamo!";
 
+/* Account manager title */
+"Connect Account" = "Poveži račun";
+
 /* contact section title */
 "Contact Details" = "Detalji o kontaktu";
 
 /* Title */
 "Contact the ProtonMail team" = "Kontaktirajte ProtonMail tim";
+
+/* network troubleshot cell title */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Kontaktirajte nas izravno putem obrasca za podršku, e-poštom (support@protonmail.com) ili na Twitteru.";
 
 /* Action and title
    menu title */
@@ -479,7 +550,7 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Copy address" = "Kopiraj adresu";
 
 /* Title */
-"Copy name" = "Kopiraj ime";
+"Copy name" = "Kopiraj naziv";
 
 /* Error message */
 "Could not connect to Store. Please try again later." = "Povezivanje s trgovinom nije uspjelo. Molimo pokušajte kasnije.";
@@ -490,23 +561,26 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* top right action text */
 "Create" = "Stvori";
 
-/* Create account button */
-"Create Account" = "Stvori račun";
-
-/* Error */
-"Create User failed. Please try again." = "Izrada korisnka nije uspjela. Molimo Vas pokušajte ponovo.";
-
 /* Signup top title */
 "Create a new account" = "Stvori novi račun";
+
+/* Create account button */
+"Create Account" = "Stvori račun";
 
 /* Description */
 "Create and add Labels to organize your inbox. Long press on a message for all options." = "Stvorite i dodajte oznake da biste organizirali pristiglu poštu. Dugo pritisnite i držite poruku za prikaz svih opcija.";
 
-/* None */
+/* (No Comment) */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Stvorite i dodajte oznake da biste organizirali pristiglu poštu. Pritisnite i držite poruku za sve opcije.";
+
+/* title of button in account connect page */
+"Create new account" = "Stvori novi račun";
 
 /* error message title when create new user */
 "Create user failed" = "Neuspješno stvaranje korisnika";
+
+/* Error */
+"Create User failed. Please try again." = "Izrada korisnka nije uspjela. Molimo Vas pokušajte ponovo.";
 
 /* Change language title */
 "Current Language is: " = "Trenutni jezik je: ";
@@ -521,12 +595,6 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
    contacts default label type */
 "Custom" = "Prilagođeno";
 
-/* Title */
-"DECRYPT MAILBOX" = "DEŠIFRIRANJE SANDUČIĆA E-POŠTE";
-
-/* mail location title */
-"DRAFTS" = "Skice";
-
 /* message Date: text */
 "Date:" = "Datum:";
 
@@ -534,10 +602,16 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Date: %@" = "Datum: %@";
 
 /* Title */
+"days" = "Dani";
+
+/* Title */
 "Debug" = "Otklanjanje pogrešaka";
 
 /* Action */
 "Decrypt" = "Dešifriranje";
+
+/* Title */
+"DECRYPT MAILBOX" = "DEŠIFRIRANJE SANDUČIĆA E-POŠTE";
 
 /* Description */
 "Decrypt token failed. Please try again." = "Neuspješno dešifriranje tokena. Molimo pokuštajte ponovno.";
@@ -551,8 +625,11 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "Default" = "Zadano";
 
+/* Settings row */
+"Default browser" = "Zadani preglednik";
+
 /* error message when create new user */
-"Default error. Please try again." = "Zadana greška. Molimo pokušajte ponovno.";
+"Default error. Please try again." = "Zadana pogreška. Molimo pokušajte ponovno.";
 
 /* Placeholder */
 "Define Expiration Date" = "Odredite datum vremenskog isteka";
@@ -564,13 +641,16 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Define Password" = "Lozinka";
 
 /* general delete action */
-"Delete" = "Obriši";
+"Delete" = "Izbriši";
+
+/* emptify folder/label confirmation alert */
+"Delete all" = "Izbriši sve";
 
 /* Title-Contacts */
-"Delete Contact" = "Obriši kontakt";
+"Delete Contact" = "Izbriši kontakt";
 
 /* The description of the button for deleting the contact group */
-"Delete Contact Group" = "Obriši grupu kontakta";
+"Delete Contact Group" = "Izbriši grupu kontakta";
 
 /* mail location desc */
 "Deleted" = "Izbrisano";
@@ -578,20 +658,26 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "Details" = "Pojedinosti";
 
+/* network troubleshot cell title */
+"Disable any proxies or firewalls, or contact your network administrator." = "Onemogućite sve proxye ili vatrozide ili se obratite mrežnom administratoru.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Onemogući provjeru valjanosti";
+
 /* Action */
 "Discard changes" = "Odbaciti promjene";
 
 /* Action */
 "Discard draft" = "Odbaci skicu";
 
+/* (No Comment) */
+"Display name" = "Zaslonsko ime";
+
 /* Title in settings */
 "Display Name" = "Zaslonsko ime";
 
 /* Title */
 "Display Name Updated" = "Zaslonsko ime je ažurirano";
-
-/* None */
-"Display name" = "Zaslonsko ime";
 
 /* Title in display name settings */
 "DisplayName" = "Zaslonsko ime";
@@ -605,11 +691,11 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "Do you want to save the unsaved changes?" = "Želite li sačuvati izmjene?";
 
-/* Title */
-"Don't Show Again" = "Ne prikazuj ponovno";
-
 /* Action */
 "Don't remind me again" = "Ne podsjećaj me više";
+
+/* Title */
+"Don't Show Again" = "Ne prikazuj ponovno";
 
 /* Done action */
 "Done" = "Gotovo";
@@ -623,6 +709,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* menu title */
 "Drafts" = "Skice";
+
+/* mail location title */
+"DRAFTS" = "Skice";
 
 /* Action */
 "Edit" = "Uredi";
@@ -640,26 +729,20 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "Edit Label" = "Uredi oznaku";
 
+/* title */
+"Edit mobile signature" = "Uredi potpis na mobilnim uređajima";
+
 /* The button text for edit profile picture */
 "Edit Photo" = "Uredi fotografiju";
 
 /* title */
-"Edit mobile signature" = "Uredi potpis na mobilnim uređajima";
-
-/* title */
 "Edit signature" = "Uredi potpis";
+
+/* network troubleshot cell title */
+"email" = "e-pošta";
 
 /* default vcard types */
 "Email" = "E-pošta";
-
-/* contact detail view, email addresses section title */
-"Email Addresses" = "Adrese e-pošte";
-
-/* Send an email to the current contact (button title text) */
-"Email Contact" = "Pošalji poruku e-pošte kontaktu";
-
-/* human check option button */
-"Email Verification" = "Potvrda putem e-pošte";
 
 /* contact placeholder */
 "Email address" = "Adresa e-pošte";
@@ -667,15 +750,30 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "Email address invalid" = "Adresa e-pošte nije valjana";
 
+/* contact detail view, email addresses section title */
+"Email Addresses" = "Adrese e-pošte";
+
+/* Send an email to the current contact (button title text) */
+"Email Contact" = "Pošalji poruku e-pošte kontaktu";
+
 /* place holder */
 "Email default signature" = "Zadani potpis e-pošte";
 
 /* 
  & title */
-"Email domain invalid" = "Neispravna domena e-pošte";
+"Email domain invalid" = "Nevažeća domena e-pošte";
 
-/* empty folder, for spam and trash */
+/* human check option button */
+"Email Verification" = "Potvrda putem e-pošte";
+
+/* cell title in device setting */
+"Empty Cache" = "Očisti predmemoriju";
+
+/* empty folder, for spam and trash and drafts */
 "Empty Folder" = "Isprazni mapu";
+
+/* it is an option to empty the label */
+"Empty Label" = "Prazna oznaka";
 
 /* Title */
 "Enable Default Signature" = "Omogući zadani potpis e-pošte";
@@ -689,8 +787,17 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "Enable Notification Email" = "Omogući obavijesti e-pošte";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Omogući PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "Omogući PIN zaštitu";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Omogući PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Omogući PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Omogući TouchID";
@@ -722,9 +829,6 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* settings option (End Time: 8am) */
 "End Time" = "Vrijeme završetka";
 
-/* Title */
-"End-to-End Encryption" = "End-to-End šifriranje";
-
 /* encryption lock description */
 "End-to-end encrypted" = "End-to-End šifriranje";
 
@@ -737,23 +841,29 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "End-to-end šifiranje za potvrđenu adresu";
 
+/* Title */
+"End-to-End Encryption" = "End-to-End šifriranje";
+
 /* Action in 2fa popup view */
 "Enter" = "U redu";
 
 /* Title */
-"Enter Verification Code" = "Unesite kôd za provjeru";
-
-/* set pin title */
-"Enter your PIN" = "Unesite PIN";
-
-/* Title */
-"Enter your PIN to unlock your inbox." = "Unesite vaš PIN za otključavanje pristigle pošte.";
+"Enter Verification Code" = "Unesite kȏd za provjeru";
 
 /* human verification top title */
 "Enter your cell phone number" = "Unesite broj svog mobilnog telefona";
 
 /* top title */
 "Enter your existing email address." = "Unesite vašu postojeću adresu e-pošte.";
+
+/* Account manager title */
+"Enter your mailbox password" = "Unesite vašu lozinku sandučića e-pošte";
+
+/* set pin title */
+"Enter your PIN" = "Unesite PIN";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Unesite vaš PIN za otključavanje pristigle pošte.";
 
 /* settings debug section title */
 "Error Logs" = "Evidencija grešaka";
@@ -775,12 +885,6 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* Key size checkbox */
 "Extreme Security" = "Ekstremna sigurnost";
-
-/* login page forgot pwd */
-"FORGOT PASSWORD?" = "Zaboravili ste lozinku?";
-
-/* abbreviation of forward: */
-"FW:" = "FW:";
 
 /* Error message */
 "Failed to determine type of file" = "Utvrđivanje vrste datoteke nije uspjelo";
@@ -816,11 +920,17 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Service Plan description */
 "For individuals that need more capacity, customization and advanced features" = "Za pojedince kojima je potreban veći kapacitet, prilagodljivost i napredne značajke";
 
+/* Buy button second line */
+"for one year" = "na jednu godinu";
+
 /* Service Plan description */
 "For organizations that need multi-user support and additional productivity features" = "Za organizacije kojima je potrebna podrška za više korisnika i dodatne značajke produktivnosti";
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Za napredne korisnike i grupe ljudi koji cijene punu anonimnost i privatnost";
+
+/* login page forgot pwd */
+"FORGOT PASSWORD?" = "Zaboravili ste lozinku?";
 
 /* forward action */
 "Forward" = "Proslijedi";
@@ -833,6 +943,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* message From: field text */
 "From:" = "Od:";
+
+/* abbreviation of forward: */
+"FW:" = "FW:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Fwd:";
@@ -851,6 +964,15 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* Action */
 "Go to inbox" = "Idi u pristiglu poštu";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to login" = "Idi na prijavu";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Idi na postavke";
+
+/* network troubleshot cell title */
+"Government block" = "Državna cenzura";
 
 /* The title for the contact group detail view */
 "Group Details" = "Detalji o grupi";
@@ -879,6 +1001,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Key size checkbox */
 "High Security" = "Velika sigurnost";
 
+/* (No Comment) */
+"hours" = "Sati";
+
 /* Title */
 "Hours" = "Sati";
 
@@ -894,20 +1019,26 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP podrška putem ProtonMail Bridgea";
 
-/* mail location title */
-"INBOX" = "Pristigla pošta";
-
 /* Action */
 "Import Error" = "Pogreška uvoza";
 
 /* Title */
 "Import File From..." = "Uvezi datoteku iz...";
 
-/* import contact title */
-"Importing Contacts" = "Uvoz kontakata";
+/* Downloading attachments from cloud */
+"Importing" = "Uvoz";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Uvozi se privitak, što može potrajati";
+
+/* import contact title */
+"Importing Contacts" = "Uvoz kontakata";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "U slučaju da su Protonove stranice blokirane, ova postavka omogućuje aplikaciji da isproba alternativno mrežno usmjeravanje do Protona, što može biti korisno u zaobilaženju vatrozida ili problema s mrežom. Preporučujemo da ovu postavku zadržite omogućenom radi veće pouzdanosti. [Saznajte više]";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "U slučaju da su Protonove stranice blokirane, ova postavka omogućuje aplikaciji da isproba alternativno mrežno usmjeravanje do Protona, što može biti korisno u zaobilaženju vatrozida ili problema s mrežom. Preporučujemo da ovu postavku zadržite omogućenom radi veće pouzdanosti. %1$@";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Da biste koristili naše usluge, morate prihvatiti Uvjete pružanja usluge ProtonMaila.";
@@ -916,17 +1047,26 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
    menu title */
 "Inbox" = "Pristigla pošta";
 
+/* mail location title */
+"INBOX" = "Pristigla pošta";
+
+/* Title */
+"Incorrect password" = "Nevažeća lozinka";
+
 /* Error */
 "Incorrect PIN," = "Pogrešan PIN,";
 
 /* Title */
-"Incorrect password" = "Neispravna lozinka";
+"inline attachments" = "ugrađeni privitak";
 
 /* place holder */
 "Input Display Name ..." = "Unesite zaslonsko ime...";
 
 /* place holder */
 "Input Notification Email ..." = "Unesite adresu e-pošte za obavijesti...";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Nesigurna veza";
 
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Izrada instantnog ProtonMail računa privremeno je onemogućena. Idite na https://protonmail.com/invite da biste zatražili pozivnicu.";
@@ -936,6 +1076,21 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* default vcard types */
 "Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Problem s pružateljem internetskih usluga (ISP)";
+
+/* (No Comment) */
+"Invalid access token please relogin" = "Nevažeći token za pristup. Molimo prijavite se ponovno";
+
+/* Description */
+"Invalid access token. Please relogin." = "Nevažeći token za pristup. Molimo prijavite se ponovno.";
+
+/* Error */
+"Invalid credential" = "Nevažeće vjerodajnice";
+
+/* update password error */
+"Invalid hashed password!" = "Nevažeća hashirana lozinka!";
 
 /* Error */
 "Invalid Password" = "Netočna lozinka";
@@ -947,19 +1102,7 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Invalid UserName" = "Nevažeće korisničko ime";
 
 /* Error message */
-"Invalid UserName!" = "Neispravno korisničko ime!";
-
-/* None */
-"Invalid access token please relogin" = "Nevažeći token za pristup. Molimo prijavite se ponovno";
-
-/* Description */
-"Invalid access token. Please relogin." = "Nevažeći token za pristup. Molimo prijavite se ponovno.";
-
-/* Error */
-"Invalid credential" = "Neispravne vjerodajnice";
-
-/* update password error */
-"Invalid hashed password!" = "Neispravna hashirana lozinka!";
+"Invalid UserName!" = "Nevažeće korisničko ime!";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Je li ovo izvješće o greški vezano za kupnju u aplikaciji?";
@@ -974,16 +1117,16 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Keep me updated about new features" = "Informirajte me o novim značajkama";
 
 /* Error */
-"Key generation failed" = "Generiranje ključa nije uspjelo";
+"Key generation failed" = "Neuspješno stvaranje ključa";
 
 /* Error */
-"Key generation failed. Please try again." = "Izrada ključa nije uspjela. Molimo Vas pokušajte ponovo.";
+"Key generation failed. Please try again." = "Neuspješno stvaranje ključa. Molimo pokušajte ponovo.";
 
 /* Error */
 "Key invalid. Please go back and try again." = "Ključ nije valjan. Vratite se natrag i pokušajte ponovno.";
 
-/* None */
-"LOGIN" = "Prijava";
+/* Title */
+"Label as..." = "Označi kao...";
 
 /* Title */
 "Label Management" = "Upravljanje oznakama";
@@ -991,11 +1134,11 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* createing lable input place holder */
 "Label Name" = "Naziv oznake";
 
-/* Title */
-"Label as..." = "Označi kao...";
-
 /* VoiceOver: email has lables */
 "Labels" = "Oznake";
+
+/* cell title in device settings */
+"Labels & Folders" = "Oznake i mape";
 
 /* Title */
 "Labels have been applied." = "Oznake su primijenjene.";
@@ -1009,11 +1152,17 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "Language" = "Jezik";
 
+/* network troubleshot cell title */
+"Learn more" = "Saznajte više";
+
 /* Action */
 "Learn More" = "Saznaj više";
 
 /* learn more button */
 "Learn more here" = "Saznajte više ovdje";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "Ograničenje je dosegnuto";
 
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "Ograničeno na 150 poruka poslano po danu";
@@ -1021,11 +1170,17 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Action */
 "Load remote content" = "Prikaži udaljeni sadržaj";
 
-/* None */
+/* (No Comment) */
 "Loading..." = "Učitavanje...";
 
 /* Description */
 "Local cache can't find mailbox password" = "Neuspješno pronalaženje lozinke sandučića e-pošte u lokalnoj predmemoriji";
+
+/* cell title in device settings */
+"Local Cache Management" = "Upravitelj predmemorijom";
+
+/* cell title in device settings */
+"Local storage limit" = "Ograničenje lokalne pohrane";
 
 /* *
  *  file string type */
@@ -1034,8 +1189,23 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* menu title */
 "Lock The App" = "Zaključaj aplikaciju";
 
+/* Account manager title */
+"Log in to your ProtonMail account" = "Prijavite se u svoj ProtonMail račun";
+
+/* Alert title when logout non-primary account from account manager */
+"Log out %@?" = "Odjavi %@?";
+
+/* Action */
+"Log Out All" = "Odjavi sve";
+
+/* Alert when auth token is revoked and switch to another */
+"Logged out from %@ and signed in with %@" = "Odjavili ste se s %1$@ i prijavili s %2$@";
+
 /* Title */
 "Login" = "Prijava";
+
+/* (No Comment) */
+"LOGIN" = "Prijava";
 
 /* settings general section title */
 "Login Password" = "Lozinka za prijavu";
@@ -1043,7 +1213,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Error */
 "Login password doesn't match" = "Lozinke za prijavu se ne poklapaju";
 
-/* menu title */
+/* Alert title to confirm logout
+   Alert title when logout primary account from account manager
+   menu title */
 "Logout" = "Odjava";
 
 /* error title */
@@ -1052,30 +1224,39 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Želite li osigurati svoje detalje o kontaktima?";
 
-/* *
- *  MailboxPasswordViewController */
-"MAILBOX PASSWORD" = "Lozinka sandučića e-pošte";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
+/* cell title in device settings */
+"MAILBOX" = "SANDUČIĆ E-POŠTE";
 
 /* settings general section title */
 "Mailbox Password" = "Lozinka sandučića e-pošte";
 
-/* None */
+/* *
+ *  MailboxPasswordViewController */
+"MAILBOX PASSWORD" = "Lozinka sandučića e-pošte";
+
+/* (No Comment) */
 "Mailbox password doesn't match" = "Lozinke sandučića e-pošte se ne podudaraju";
+
+/* cell title in device settings */
+"Mailbox size" = "Veličina sandučića e-pošte";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Upravljanje adresama";
 
+/* Settings row */
+"Manage in device Settings" = "Upravljanje u postakama uređaja";
+
 /* Title */
 "Manage Labels/Folders" = "Upravljanje Oznakama/Mapama";
+
+/* Action */
+"Mark as unread" = "Označi kao nepročitano";
 
 /* mark message as read action */
 "Mark Read" = "Označi kao pročitano";
 
-/* Action */
-"Mark as unread" = "Označi kao nepročitano";
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Izbornik";
@@ -1083,29 +1264,26 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Message with title */
 "Message %@" = "Poruka %@";
 
-/* Placeholder */
-"Message Password" = "Lozinka poruke";
-
-/* settings debug section title */
-"Message Queue" = "Red čekanja poruka";
-
-/* Title */
-"Message Swipe Actions" = "Upravljanje radnjama pomicanja prstom";
-
 /* *
  *  Expiration View */
 "Message expired" = "Poruka je istekla";
 
 /* Title */
-"Message has been deleted." = "Poruka je obrisana.";
+"Message has been deleted." = "Poruka je izbrisana.";
 
 /* Title */
 "Message has been moved." = "Poruka je premještena.";
 
+/* Placeholder */
+"Message Password" = "Lozinka poruke";
+
 /* Description */
 "Message password does not match." = "Lozinke poruke se ne podudaraju.";
 
-/* None */
+/* settings debug section title */
+"Message Queue" = "Red čekanja poruka";
+
+/* (No Comment) */
 "Message sending failed please try again" = "Slanje poruke nije uspjelo. Molimo pokušajte ponovno";
 
 /* Description */
@@ -1113,6 +1291,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* Description after message have been sent */
 "Message sent" = "Poruka je poslana";
+
+/* Title */
+"Message Swipe Actions" = "Povlačenje prstom";
 
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Poruke koje šaljete mogu se podesiti na automatsko brisanje nakon određenog vremenskog razdoblja.";
@@ -1136,7 +1317,7 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "More Credits" = "Više kredita";
 
 /* move action */
-"Move to AllMail" = "Premjesti u svu poštu";
+"Move to All Mail" = "Premjesti u svu poštu";
 
 /* move action */
 "Move to Archive" = "Premjesti u arhivu";
@@ -1165,11 +1346,14 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "Multiple Addresses" = "Više adresa";
 
+/* title */
+"Name" = "Naziv";
+
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Prijavite se besplatno";
 
-/* title */
-"Name" = "Naziv";
+/* section title */
+"Networking" = "Mreža";
 
 /* Title */
 "New login password" = "Nova lozinka za prijavu";
@@ -1183,11 +1367,17 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* contacts talbe cell Nickname title */
 "Nickname" = "Nadimak";
 
+/* Title */
+"No connectivity detected..." = "Nije otkrivena veza...";
+
+/* network troubleshot cell title */
+"No internet connection" = "Nema internetske veze";
+
 /* message when mailbox doesnt have emailsß */
 "No Messages" = "Nema poruka";
 
-/* Title */
-"No connectivity detected..." = "Nije otkrivena veza...";
+/* no object error, local only , this could be not translated! */
+"no object" = "no object";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "Ne, za drugi ProtonMail račun";
@@ -1199,11 +1389,14 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
    Title */
 "None" = "Ništa";
 
-/* Action */
-"Not Now" = "Ne sada";
+/* Title */
+"normal attachments" = "normalni privitci";
 
 /* alert description */
 "Not all recipients support message expiration" = "Ne podržavaju svi primatelji poruke s istekom";
+
+/* Action */
+"Not Now" = "Ne sada";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Napomena: Korisničko ime je također i vaša ProtonMail adresa.";
@@ -1238,9 +1431,6 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Action */
 "OK" = "U redu";
 
-/* Section header */
-"OTHER PLANS" = "OSTALI PLANOVI";
-
 /* Title */
 "On" = "Dana";
 
@@ -1250,7 +1440,10 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Dana EE, d. MMM, yyyy u %1$@, %2$@ je napisao/la:";
 
-/* None */
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Možete dodati samo jedan besplatni račun";
+
+/* (No Comment) */
 "OpenDraft" = "Otvori skicu";
 
 /* contacts talbe cell Organization title */
@@ -1259,11 +1452,35 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* default vcard types */
 "Other" = "Ostalo";
 
+/* Section header */
+"OTHER PLANS" = "OSTALI PLANOVI";
+
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Naš tim za korisničku podršku pokušat će ručno aktivirati vaš servisni plan ako pristanete priložiti tehničke podatke koje je AppStore dostavio u trenutku kupnje. Ovi podaci ne uključuju nikakve pojedinosti o vašem iTunes računu, Apple ID-u, povezanim kreditnim karticama ili bilo kojim drugim korisničkim informacijama. Tehnički podaci nam samo pomažu provjeriti i ovjeriti da li je transakcija dovršena na poslužiteljima AppStorea.";
 
 /* mail location desc */
 "Outbox" = "Odlazni spremnik";
+
+/* title */
+"Password" = "Lozinka";
+
+/* Description */
+"Password cannot be empty." = "Lozinka ne može biti prazna.";
+
+/* cell title in device settings */
+"Password management" = "Upravitelj lozinkama";
+
+/* Title */
+"Password Mismatch" = "Lozinke se ne poklapaju";
+
+/* update password error */
+"Password update failed" = "Promjena lozinke neuspješna";
+
+/* Title */
+"Password Updated" = "Lozinka je ažurirana";
+
+/* default vcard types */
+"Personal" = "Privatno";
 
 /* encryption lock description */
 "PGP-encrypted" = "PGP šifrirano";
@@ -1280,32 +1497,8 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP-potpisana poruka od potvrđene adrese";
 
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "PREMIUM ZNAČAJKE";
-
-/* title */
-"Password" = "Lozinka";
-
-/* Title */
-"Password Mismatch" = "Lozinke se ne poklapaju";
-
-/* Title */
-"Password Updated" = "Lozinka je ažurirana";
-
-/* Description */
-"Password cannot be empty." = "Lozinka ne može biti prazna.";
-
-/* update password error */
-"Password update failed" = "Promjena lozinke neuspješna";
-
-/* default vcard types */
-"Personal" = "Privatno";
-
 /* default vcard types */
 "Phone" = "Telefon";
-
-/* human check option button */
-"Phone Verification" = "Potvrda telefonom";
 
 /* contact placeholder */
 "Phone number" = "Broj telefona";
@@ -1313,8 +1506,20 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "Phone number invalid" = "Telefonski broj nije ispravan";
 
+/* human check option button */
+"Phone Verification" = "Potvrda telefonom";
+
 /* Title */
 "Photo Library" = "Galerija";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN i FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN i TouchID";
 
 /* Description */
 "Pin code can't be empty." = "PIN ne može biti prazan.";
@@ -1323,10 +1528,10 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Please add a password for the following recipients." = "Molimo dodajte lozinku za sljedeće primatelje.";
 
 /* Description */
-"Please check your cell phone for the verification code." = "Provjerite vaš mobilni uređaj za kontrolni kôd.";
+"Please check your cell phone for the verification code." = "Provjerite je li kȏd za provjeru došao na vaš mobilni uređaj.";
 
 /* error message */
-"Please check your email for the verification code." = "Provjerite vašu e-poštu za kontrolni kôd.";
+"Please check your email for the verification code." = "Provjerite je li kȏd za provjeru došao na vašu adresu e-pošte.";
 
 /* alert description */
 "Please disable PGP Sending for following addresses." = "Molimo onemogućite PGP Slanja za sljedeće adrese.";
@@ -1343,6 +1548,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Error message */
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Prijavite se na ProtonMail račun za koji nadograđujete plan usluga, kako bismo mogli dovršiti aktivaciju plana usluga.";
 
+/* network troubleshot cell title */
+"Please make sure that your internet connection is working." = "Provjerite da li vaša internetska veza radi.";
+
 /* Error */
 "Please pick a user name first!" = "Molim vas prvo odaberite nadimak!";
 
@@ -1351,6 +1559,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* when switch sender but email has attachments */
 "Please remove all attachments before changing sender!" = "Molimo uklonite sve privitke prije mijenjanja pošiljatelja";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "Odaberite najmanje jednu poruku e-pošte";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Odaberite barem jednu adresu e-pošte za grupu kontakata";
@@ -1361,16 +1572,16 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Description */
 "Please set a password." = "Molimo vas da postavite lozinku.";
 
-/* None */
+/* (No Comment) */
 "Please try a different domain." = "Molimo pokušajte drugu domenu.";
 
-/* None */
+/* (No Comment) */
 "Please try a different email address." = "Molimo pokušajte drugu adresu e-pošte.";
 
-/* None */
+/* (No Comment) */
 "Please try a different password." = "Molimo pokušajte drugu lozinku.";
 
-/* None */
+/* (No Comment) */
 "Please try a different user name." = "Molimo pokušajte drugo korisničko ime.";
 
 /* 
@@ -1387,7 +1598,7 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Alert */
 "Please use the web application to reset your password." = "Molimo da pomoću web aplikacije poništite lozinku.";
 
-/* None */
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Molimo koristite web verziju ProtonMaila da promijenite svoje lozinke sandučića e-pošte!";
 
 /* Alert */
@@ -1403,8 +1614,20 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
  & alert title */
 "Please, manage it in your phone." = "Molimo, upravljajte time na mobilnom uređaju.";
 
+/* Upgrade warning title */
+"PREMIUM FEATURE" = "PREMIUM ZNAČAJKE";
+
 /* Action */
 "Print" = "Ispis";
+
+/* cell title in device settings */
+"Privacy" = "Privatnost";
+
+/* agree check box privacy */
+"privacy policy." = "pravila privatnosti.";
+
+/* Local notification title */
+"Problem sending message" = "Problem pri slanju poruke";
 
 /* Title */
 "Protection" = "Zaštita";
@@ -1412,14 +1635,14 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* settings protection section title */
 "Protection Entire App" = "Zaštita cijele aplikacije";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton je van mreže";
+
+/* network troubleshot cell title */
+"Proton Status" = "Proton Status";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
-
-/* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus je nužan za uređivanje potpisa na mobilnim uređajima";
-
-/* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary omogućuje vam dodavanje i uređivanje detalja o kontaktima osim imena i e-pošte kontakta. Pomoću ProtonMaila ti će podaci biti sigurni kao i vaša end-to-end šifrirana e-pošte.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail ne prodaje oglase niti zloupotrebljava vašu privatnost. Vaša podrška je ključna za održavanje ProtonMaila. Možete nadograditi na plaćeni račun ili donirajte za podršku ProtonMailu.";
@@ -1430,14 +1653,29 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail je trenutno nedostupan, provjerite naš twitter za trenutni status: https://twitter.com/protonmail";
 
+/* Title */
+"ProtonMail is currently offline..." = "ProtonMail je trenutno van mreže...";
+
+/* Description */
+"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus je nužan za uređivanje potpisa na mobilnim uređajima";
+
+/* Upgrade warning message */
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary omogućuje vam dodavanje i uređivanje detalja o kontaktima osim imena i e-pošte kontakta. Pomoću ProtonMaila ti će podaci biti sigurni kao i vaša end-to-end šifrirana e-pošte.";
+
+/* network troubleshot cell title */
+"ProtonVPN" = "ProtonVPN";
+
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN uključen";
 
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Smetnje s Proxy-em/Vatrozidom";
+
+/* cell title in device settings */
+"Push Notifications" = "Obavijesti";
+
 /* Title */
 "Quick swipe actions" = "Radnje brzog prelaska prstom";
-
-/* Action */
-"RESET MAILBOX PASSWORD" = "PONOVNO POSTAVLJANJE LOZINKE SANDUČIĆA E-POŠTE";
 
 /* Title */
 "Rate & Review" = "Ocijenite i pregledajte";
@@ -1452,7 +1690,7 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Reading device contacts data..." = "Čitanje podataka o kontaktima uređaja...";
 
 /* Title */
-"Recovery Code" = "Kôd za oporavak";
+"Recovery Code" = "Kȏd za oporavak";
 
 /* Title */
 "Recovery Email" = "Adresa e-pošte za oporavak";
@@ -1466,6 +1704,12 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* remove action */
 "Remove" = "Ukloni";
 
+/* account right bar item title */
+"Remove All" = "Ukloni sve";
+
+/* Settings row */
+"Remove image meta-data" = "Ukloni meta podatke slika";
+
 /* un star message */
 "Remove Star" = "Ukloni zvjezdicu";
 
@@ -1473,7 +1717,7 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Repeat" = "Ponovi";
 
 /* reply action */
-"Reply" = "Odgovor";
+"Reply" = "Odgovori";
 
 /* reply all action */
 "Reply All" = "Odgovori svima";
@@ -1481,7 +1725,7 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* composer view model impl */
 "Reply message" = "Odgovori na poruku";
 
-/* None */
+/* (No Comment) */
 "ReplyAll" = "Odgovori svima";
 
 /* menu title */
@@ -1496,6 +1740,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* link opeining confirmation */
 "Request Link Confirmation" = "Zatražite potvrdu poveznice";
 
+/* Action */
+"RESET MAILBOX PASSWORD" = "PONOVNO POSTAVLJANJE LOZINKE SANDUČIĆA E-POŠTE";
+
 /* Title */
 "Resetting message cache ..." = "Ponovno postavljanje predmemorije poruka...";
 
@@ -1504,21 +1751,6 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Pokušajte ponovno za %d sekundi";
-
-/* mail location title */
-"SENT" = "Poslano";
-
-/* mail location title */
-"SPAM" = "Neželjena pošta";
-
-/* Error */
-"SRP Client" = "SRP Client";
-
-/* Error */
-"SRP Server" = "SRP Server";
-
-/* mail location title */
-"STARRED" = "Sa zvjezdicom";
 
 /* Title */
 "Save" = "Spremi";
@@ -1532,7 +1764,8 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* action sheet option */
 "Scheduled" = "Planirano";
 
-/* Title */
+/* Springboard (3D Touch) shortcuts action
+   Title */
 "Search" = "Pretraga";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1541,14 +1774,11 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* The title for the view where user can select the color for the group */
 "Select Color" = "Odabir boje";
 
-/* None */
+/* (No Comment) */
 "Select your language" = "Odaberite svoj jezik";
 
 /* Action */
 "Send" = "Pošalji";
-
-/* Title */
-"Send Verification Code" = "Pošalji kôd za provjeru";
 
 /* Action */
 "Send anyway" = "Svejedno pošalji";
@@ -1559,14 +1789,17 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "Send plain but stored enc" = "Pošalji kao obično, ali pohranjeno šifriranje";
 
+/* Title */
+"Send Verification Code" = "Pošalji kȏd za provjeru";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Neuspjela potvrda pošiljatelja";
 
-/* Description */
-"Sending Message" = "Poruka se šalje";
-
 /* Alert title */
 "Sending message" = "Poruka se šalje";
+
+/* Description */
+"Sending Message" = "Poruka se šalje";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Slanje poruka s %1$@ adrese je plaćena značajka. Vaša će poruka biti poslana s Vaše zadane adrese %2$@";
@@ -1574,23 +1807,26 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* menu title */
 "Sent" = "Poslano";
 
-/* Description */
-"Sent Failed" = "Poruka nije poslana";
+/* mail location title */
+"SENT" = "Poslano";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "Poslano putem ProtonMaila s šifriranjem nultog pristupa";
 
 /* encryption lock description */
-"Sent by you with end-to-end encryption" = "Poslano od strane Vas s end-to-end šifriranjem";
+"Sent by you with end-to-end encryption" = "Poslano koristeći end-to-end šifriranje";
 
 /* Description */
-"Server proofs not valid!" = "Server proofs not valid!";
+"Sent Failed" = "Poruka nije poslana";
 
-/* Title */
-"Set Password" = "Postavite lozinku";
+/* Description */
+"Server proofs not valid!" = "Dokazi poslužitelja nisu valjani!";
 
 /* Description */
 "Set a password to encrypt this message for non-ProtonMail users." = "Postavite lozinku za šifriranje ove poruke za one koji nisu korisnici ProtonMaila.";
+
+/* Title */
+"Set Password" = "Postavite lozinku";
 
 /* Signup passwords top title */
 "Set passwords" = "Postavi lozinke";
@@ -1619,6 +1855,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* settings general section title */
 "Single Password" = "Jedna lozinka";
 
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Utišaj";
+
 /* settings option */
 "Snooze Notifications" = "Utišaj obavijesti";
 
@@ -1631,15 +1870,24 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Nažalost, ne možemo obrađivati kupnje u beta inačici aplikacije na iOS-u. Hvala što sudjelujete u našoj javnoj beta verziji!";
 
-/* None */
+/* (No Comment) */
 "Space Warning" = "Upozorenje o slobodnom prostoru";
 
 /* mail location desc
    menu title */
 "Spam" = "Neželjena pošta";
 
+/* mail location title */
+"SPAM" = "Neželjena pošta";
+
 /* Description */
 "Spammed" = "Neželjena pošta";
+
+/* Error */
+"SRP Client" = "SRP Client";
+
+/* Error */
+"SRP Server" = "SRP poslužitelj";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1649,14 +1897,21 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* mail location desc
    menu title
+   Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Sa zvjezdicom";
+
+/* mail location title */
+"STARRED" = "Sa zvjezdicom";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Vrijeme početka";
 
 /* contact placeholder */
 "State" = "Država";
+
+/* network troubleshot cell title */
+"Still can't find a solution" = "Još uvijek ne mogu pronaći rješenje";
 
 /* Title */
 "Storage" = "Prostor za pohranu";
@@ -1679,23 +1934,30 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* menu title */
 "Subscription" = "Pretplata";
 
-/* Action */
-"Support ProtonMail" = "Podržite ProtonMail";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Podrška za %i prilagođene domene (npr. korisnik@vasadomena.hr)";
 
-/* settings swipe actions section title */
-"Swipe Left to Right" = "Prijeđite prstom s lijeva na desno";
+/* network troubleshot cell title */
+"support form" = "obrazac za podršku";
+
+/* Action */
+"Support ProtonMail" = "Podržite ProtonMail";
 
 /* settings swipe actions section title */
-"Swipe Right to Left" = "Prijeđite prstom s desna na lijevo";
+"Swipe Left to Right" = "Prelazak prstom udesno";
+
+/* settings swipe actions section title */
+"Swipe Right to Left" = "Prelazak prstom ulijevo";
+
+/* cell title in device settings
+   Swiping gestures */
+"Swiping gestures" = "Povlačenje prstom";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "Prebačeno na '%@' račun";
 
 /* Error */
 "System can't copy the file" = "Sustav ne može kopirati datoteku";
-
-/* mail location title */
-"TRASH" = "Otpad";
 
 /* Title */
 "Take a Photo" = "Uslikaj fotografiju";
@@ -1703,25 +1965,21 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Pritisnite pošalji ako svejedno želite poslati poruku ovim primateljima, ali bez isteka poruke";
 
-/* None */
+/* network troubleshot cell title */
+"Temporarily disable or remove your antivirus software." = "Privremeno onemogućite ili uklonite svoj antivirusni softver.";
+
+/* agree check box terms */
+"terms and conditions" = "uvjeti i odredbe";
+
+/* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Hvala što ste poslali izvješće o pogrešci. Dodali smo vaše izvješće našem sustavu za praćenja pogrešaka.";
 
-/* update password error */
-"The Password is wrong." = "Pogrešna lozinka.";
-
-/* Title */
-"The ProtonMail current offline..." = "ProtonMail je trenutno van mreže...";
-
-/* 
- */
-"The UserName have been taken." = "Korisničko ime je zauzeto.";
-
 /* Description */
-"The authentication credentials are invalid." = "Vjerodajnice za provjeru autentičnosti nisu važeće.";
+"The authentication credentials are invalid." = "Vjerodajnice autentikacije nisu važeće.";
 
 /* 
  */
-"The authentication token has expired." = "Token za autentifikaciju je istekao.";
+"The authentication token has expired." = "Token za autentikaciju je istekao.";
 
 /* key size notes */
 "The current standard" = "Trenutni standard";
@@ -1738,7 +1996,7 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* key size note part 1 */
 "The highest level of encryption available." = "Najviša dostupna razina šifriranja.";
 
-/* None */
+/* (No Comment) */
 "The label name is duplicate" = "Naziv oznake je duplikat";
 
 /* Error */
@@ -1751,20 +2009,23 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
  *  LabelsViewController */
 "The maximum number of labels is %d." = "Maksimalan broj oznaka je %d.";
 
-/* None */
+/* update password error */
+"The new password can't be empty." = "Nova lozinka ne može biti prazna.";
+
+/* (No Comment) */
 "The new password can't empty" = "Nova lozinka ne može biti prazna";
 
 /* update password error */
-"The new password can't empty." = "Nova lozinka ne može biti prazna.";
+"The new password does not match." = "Nova lozinka se ne podudara.";
 
-/* None */
+/* (No Comment) */
 "The new password not match" = "Lozinke se ne poklapaju";
-
-/* update password error */
-"The new password not match." = "Nova lozinka se ne podudara.";
 
 /* recovery email notes */
 "The optional recovery email address allows you to reset your login password if you forget it." = "Opcionalna adresa e-pošte za oporavak omogućuje vam da poništite lozinku za prijavu ako je zaboravite.";
+
+/* update password error */
+"The Password is wrong." = "Pogrešna lozinka.";
 
 /* Description */
 "The password you entered does not match the current password." = "Lozinka koju ste unijeli ne odgovara trenutnoj lozinki.";
@@ -1778,11 +2039,18 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "The request timed out." = "Zahtjev je istekao.";
 
-/* None */
+/* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "Ukupna veličina privitka ne smije biti veća od 25MB";
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Ukupna veličina privitka ne smije biti veća od 25MB";
+
+/* Alert when the account is already logged in */
+"The user is already logged in" = "Korisnik je već prijavljen";
+
+/* 
+ */
+"The UserName have been taken." = "Korisničko ime je zauzeto.";
 
 /* 
  & title */
@@ -1790,6 +2058,12 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* Error */
 "The verification failed!" = "Provjera nije uspjela!";
+
+/* alert when logout user if in queue still have tasks */
+"There are still some messages in queue. If you log out, the draft will be deleted." = "Postoji još nekoliko poruka u redu čekanja za slanje. Ako se odjavite, skice će biti izbrisane.";
+
+/* Alert to confirm logout with pending message in the queue */
+"There are unsent messages that will be lost if you log out" = "Poruke koje nisu poslane biti će izgubljene ako se odjavite";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "Došlo je do pogreške prilikom izrade ili učitavanja spremljenih podataka aplikacije.";
@@ -1805,26 +2079,33 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "This contact belongs to your Address Book." = "Ovaj kontakt pripada vašem adresaru.";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte nije ispunila zahtjeve za provjeru autentičnosti svoje domene. Može biti lažna ili nepropisno proslijeđena!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte nije prošla autentikaciju vlastite domene. Može biti lažna ili nepropisno proslijeđena!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Čini se da je ova poruka e-pošte s adrese ProtonMail, ali je došla izvan našeg sustava i nije ispunila naše zahtjeve za provjeru autentičnosti. Može biti lažna ili nepropisno proslijeđena!";
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte izgleda kao da je od ProtonMail adrese, ali je došla izvan našeg sustava i nije ispunila naše zahtjeve autentikacije. Može biti lažna ili nepropisno proslijeđena!";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ova poruka može biti pokušaj krađe identiteta. Provjerite pošiljatelja i sadržaj kako biste bili sigurni da su legitimni.";
 
+/* Title */
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Ova opcija će se vratiti na Safari ako odabrani preglednik bude uklonjen.";
+
 /* contacts talbe cell Title title */
 "Title" = "Naslov";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Provjera TLS certifikata nije uspjela. Vaša veza može biti nadzirana te je aplikacija je privremeno blokirana zbog vaše sigurnosti.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Provjera TLS certifikata nije uspjela. Vaša veza može biti nadzirana te je aplikacija je privremeno blokirana zbog vaše sigurnosti.\n\nOdmah promijenite mrežu";
 
 /* Title */
 "To" = "Za";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMaila,
- morate potvrditi da ste čovjek.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMaila,&#13;\n morate potvrditi da ste čovjek.";
 
-/* None */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na adresi protonmail.com";
 
 /* Description */
@@ -1840,6 +2121,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Alert title */
 "Too many recipients" = "Previše primatelja";
 
+/* network troubleshot cell title */
+"Tor" = "Tor";
+
 /* settings touchid error */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID nije registriran, omogućite ga u postavkama sustava";
 
@@ -1851,8 +2135,20 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
    move action */
 "Trash" = "Otpad";
 
+/* mail location title */
+"TRASH" = "Otpad";
+
 /* Title */
 "Trouble shooting guide" = "Vodič za rješavanje problema";
+
+/* troubleshooting view button */
+"Troubleshoot" = "Rješavanje problema";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Rješavanje problema";
+
+/* network troubleshot cell title */
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Pokušajte se povezati na Proton s druge mreže (ili upotrijebite ProtonVPN ili Tor).";
 
 /* action sheet option */
 "Turn Off" = "Isključi";
@@ -1860,17 +2156,14 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "Tweet about ProtonMail" = "Tweetaj o ProtonMailu";
 
+/* network troubleshot cell title */
+"Twitter" = "Twitter";
+
 /* Placeholder */
-"Two Factor Code" = "Šifra za provjeru autentičnosti u dva koraka";
+"Two Factor Code" = "Kȏd dvofaktorske autentikacije";
 
 /* Internal type casting error */
 "Type casting error" = "Type casting error";
-
-/* default vcard types */
-"URL" = "URL";
-
-/* Title */
-"USER LOGIN" = "Prijava korisnika";
 
 /* Description */
 "Unable to connect to the server" = "Nije se moguće povezati na poslužitelj";
@@ -1889,27 +2182,25 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Unable to edit this message offline" = "Nije moguće urediti ovu poruku izvan mreže";
 
 /* Description */
-"Unable to generate hashed password!" = "Nije moguće generirati hashiranu lozinke!";
+"Unable to generate hashed password!" = "Nije moguće stvoriti hashiranu lozinke!";
 
 /* Error */
 "Unable to get contacts" = "Nije moguće dohvatiti kontakte";
 
 /* Description */
-"Unable to parse authentication info!" = "Nije moguće parsirati podatke o provjeri autentičnosti!";
+"Unable to parse authentication info!" = "Nije moguće parsirati podatke o autentikaciji!";
 
 /* Description */
-"Unable to parse authentication token!" = "Nije moguće parsirati token za provjeru autentičnosti!";
+"Unable to parse authentication token!" = "Nije moguće parsirati token za autentikaciju!";
 
 /* Description */
-"Unable to parse cached authentication token!" = "Nije moguće parsirati predmemorirani token za provjeru autentičnosti!";
+"Unable to parse cached authentication token!" = "Nije moguće parsirati predmemorirani token za autentikaciju!";
 
 /* Description */
 "Unable to parse response" = "Nije moguće parsirati odgovor";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Nije moguće parsirati objekt odgovora:
-%@";
+"Unable to parse the response object:\n%@" = "Nije moguće parsirati objekt odgovora:\n%@";
 
 /* Error */
 "Unable to parse token" = "Nije moguće parsirati token";
@@ -1921,22 +2212,25 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Undo" = "Poništi";
 
 /* Description */
-"Unknow Error" = "Nepoznata greška";
+"Unknow Error" = "Nepoznata pogreška";
 
-/* None */
+/* (No Comment) */
 "Unknow file" = "Nepoznata datoteka";
 
 /* title, default display name */
 "Unknown" = "Nepoznato";
 
 /* Error */
-"Unknown Error" = "Nepoznata greška";
+"Unknown Error" = "Nepoznata pogreška";
 
-/* None */
+/* (No Comment) */
 "Unkonw Version" = "Nepoznata verzija";
 
 /* Service plan capability; */
 "Unlimited messages sent/day" = "Noegraničeno slanje poruka po danu";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Potrebno je otključati";
 
 /* The verb for describing the unread action
    VoiceOver: email is not read yet */
@@ -1981,11 +2275,17 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* default vcard types */
 "Url" = "Url";
 
+/* default vcard types */
+"URL" = "URL";
+
 /* error when user already exist */
 "User already exist!" = "Korisničko ime je zauzeto";
 
-/* None */
+/* (No Comment) */
 "User is available!" = "Korisničko ime je dostupno";
+
+/* Title */
+"USER LOGIN" = "Prijava korisnika";
 
 /* 
  & title */
@@ -2002,7 +2302,7 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Verification code request failed" = "Zahtjev za kodom za potvrdu nije uspjeo";
 
 /* Title */
-"Verification code sent" = "Kôd za potvrdu je poslan";
+"Verification code sent" = "Kȏd za potvrdu je poslan";
 
 /* error title */
 "Verification error" = "Pogreška pri provjeri valjanosti";
@@ -2010,11 +2310,14 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* error details */
 "Verification of this content’s signature failed" = "Provjera potpisa ovog sadržaja nije uspjela";
 
-/* None */
+/* (No Comment) */
 "Version %@ %@" = "Verzija %@ %@";
 
 /* message details-> more action-> view headers */
 "View Headers" = "Pregled zaglavlja";
+
+/* message details-> more action-> view raw html of message body */
+"View HTML" = "Pregledaj HTML";
 
 /* Action */
 "View Plans" = "Pregledajte planove";
@@ -2028,14 +2331,17 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Upozorenje: Vi niste postavili adresu e-pošte za oporavak računa, stoga je oporavak računa nemoguć u slučaju da zaboravite lozinku. Želite nastaviti bez e-pošte za oporavak?";
 
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nismo mogli poslati vašu poruku, zbog moguće loše mrežne veze. Vaša je poruka spremljena u Skice i biti će automatski poslana sljedeći put kada otvorite aplikaciju.";
+
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Uspješno smo aktivirali vašu pretplatu. Ponovno pokrenite aplikaciju da biste počeli koristiti novi plan usluge.";
 
 /* text field notes */
-"We will send a verification code to the cell phone above." = "Poslati ćemo kôd za potvrdu na gore navedeni telefonski broj.";
+"We will send a verification code to the cell phone above." = "Poslati ćemo kȏd za potvrdu na gore navedeni telefonski broj.";
 
 /* email field notes */
-"We will send a verification code to the email address above." = "Poslati ćemo kôd za potvrdu na gore navedenu adresu e-pošte.";
+"We will send a verification code to the email address above." = "Poslati ćemo kȏd za potvrdu na gore navedenu adresu e-pošte.";
 
 /* Title */
 "We would like to know what we can do better." = "Željeli bismo znati što možemo učiniti boljim.";
@@ -2054,7 +2360,10 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* 
  & title */
-"Wrong verification code" = "Netočan kôd za provjeru";
+"Wrong verification code" = "Netočan kȏd za provjeru";
+
+/* Title */
+"wrote:" = "je napisao/la:";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Da, aktiviraj za ";
@@ -2065,6 +2374,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Upravo ćete pokrenuti web preglednik i otići na";
 
+/* Alert of removing all accounts */
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Ukloniti će te sve račune. Nećete im moći pristupiti s ovog uređaja sve dok ih ponovo ne dodate.\n\nŽelite li ukloniti sve račune?";
+
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Geste pokreta prsta možete prilagoditi u postavkama ProtonMail aplikacije.";
 
@@ -2073,6 +2385,9 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Ne možete postaviti %@ adresu kao zadanu jer je to plaćena značajka.";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Onemogućili ste FaceID u postavkama sustava. FaceID je bio korišten za zaštitu važnih podataka računa. Da biste pristupili svom računu, idite u postavke i ponovno aktivirajte FaceID ili se ponovno prijavite.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Omogućili ste vremenski istek poruke, ali to ne podržavaju svi primatelji. Dodajte lozinku i/ili onemogućite PGP slanje za korištenje isteka za sve primatelje.";
@@ -2095,8 +2410,21 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Description */
 "You need at least one recipient to send" = "Potreban je barem jedan primatelj za slanje";
 
+/* Alert to confirm logout
+   Alert when logout primary account from account manager */
+"You will be switched to %@" = "Biti će te prebačeni na %@";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "Poruku će te nepovratno izbrisati. Jeste li sigurni?";
+
 /* view top title */
 "Your Country Code" = "Pozivni broj države";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Vaša država možda blokira pristup Protonu. Pokušajte koristiti %1$@ (ili bilo koji drugi VPN) ili %2$@ za pristup Protonu.";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Vaša država možda blokira pristup Protonu. Pokušajte koristiti ProtonVPN (ili bilo koji drugi VPN) ili Tor za pristup Protonu.";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Vaša pristigla pošta sada je zaštićena s end-to-end enkripcijom. Da biste automatski slali sigurne poruke e-pošte kontaktima, pozovite ih da koriste ProtonMail! Također možete ručno šifrirati poruke ako ne koriste ProtonMail.";
@@ -2105,9 +2433,7 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Vaš novi šifrirani račun e-pošte je postavljen i spreman za slanje i primanje šifriranih poruka.";
 
 /* view top title */
-"Your new secure email
- account is ready." = "Vaš novi, sigurni račun
- e-pošte je spreman.";
+"Your new secure email\r\n account is ready." = "Vaš novi, sigurni račun&#13;\n e-pošte je spreman.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Vaš plan je trenutno aktivan do";
@@ -2120,52 +2446,4 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 
 /* contact placeholder */
 "ZIP" = "Poštanski broj";
-
-/* agree check box middle word */
-"and" = "i";
-
-/* like at 10:00pm */
-"at" = "u";
-
-/* Error */
-"attempt remaining until secure data wipe!" = "pokušaj preostalo do sigurnog brisanja podataka!";
-
-/* Description */
-"attempts remaining" = "pokušaja preostalo";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "pokušaja preostalo do sigurnog brisanja podataka!";
-
-/* Action */
-"close tour" = "zatvori obilazak";
-
-/* Title */
-"days" = "Dani";
-
-/* Buy button second line */
-"for one year" = "na jednu godinu";
-
-/* contacts api error when fetch */
-"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() je neuspješno, peopleOrderedByUsersPreference vraća null!!";
-
-/* None */
-"hours" = "Sati";
-
-/* Title */
-"inline attachments" = "ugrađeni privitak";
-
-/* no object error, local only , this could be not translated! */
-"no object" = "no object";
-
-/* Title */
-"normal attachments" = "normalni privitci";
-
-/* agree check box privacy */
-"privacy policy." = "pravila privatnosti.";
-
-/* agree check box terms */
-"terms and conditions" = "uvjeti i odredbe";
-
-/* Title */
-"wrote:" = "je napisao:";
 

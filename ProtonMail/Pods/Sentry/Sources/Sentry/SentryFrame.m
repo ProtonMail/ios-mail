@@ -1,24 +1,11 @@
-//
-//  SentryFrame.m
-//  Sentry
-//
-//  Created by Daniel Griesser on 05/05/2017.
-//  Copyright © 2017 Sentry. All rights reserved.
-//
-
-#if __has_include(<Sentry/Sentry.h>)
-
-#import <Sentry/SentryFrame.h>
-
-#else
 #import "SentryFrame.h"
-#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation SentryFrame
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [super init];
     if (self) {
         self.function = @"<redacted>";
@@ -26,9 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (NSDictionary<NSString *, id> *)serialize {
+- (NSDictionary<NSString *, id> *)serialize
+{
     NSMutableDictionary *serializedData = [NSMutableDictionary new];
-    
+
     [serializedData setValue:self.symbolAddress forKey:@"symbol_addr"];
     [serializedData setValue:self.fileName forKey:@"filename"];
     [serializedData setValue:self.function forKey:@"function"];
@@ -39,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
     [serializedData setValue:self.imageAddress forKey:@"image_addr"];
     [serializedData setValue:self.instructionAddress forKey:@"instruction_addr"];
     [serializedData setValue:self.platform forKey:@"platform"];
+    [serializedData setValue:self.inApp forKey:@"in_app"];
 
     return serializedData;
 }

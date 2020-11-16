@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17147" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17120"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -11,7 +12,7 @@
             <connections>
                 <outlet property="backgroundView" destination="xJO-33-baX" id="JA1-Nq-X8l"/>
                 <outlet property="button" destination="owB-dp-e5H" id="mHR-oj-pra"/>
-                <outlet property="messageLabel" destination="Egh-Qx-kBz" id="g4r-YH-10e"/>
+                <outlet property="messageTextview" destination="PWd-RQ-O7c" id="pLE-La-pD4"/>
                 <outlet property="secondButton" destination="DWs-10-ddZ" id="mNz-iH-2ui"/>
             </connections>
         </placeholder>
@@ -32,14 +33,18 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" axis="vertical" distribution="equalCentering" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="AnJ-Ae-mrH">
                                         <rect key="frame" x="0.0" y="0.0" width="285" height="68"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Message of the alert" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Egh-Qx-kBz">
-                                                <rect key="frame" x="0.0" y="0.0" width="265" height="20.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DWs-10-ddZ">
-                                                <rect key="frame" x="0.0" y="38" width="265" height="30"/>
+                                            <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Message label" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PWd-RQ-O7c">
+                                                <rect key="frame" x="0.0" y="0.0" width="265" height="68"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="textColor" systemColor="labelColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DWs-10-ddZ">
+                                                <rect key="frame" x="0.0" y="0.0" width="265" height="12"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="12" id="6k5-CL-ILh"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <state key="normal" title="TroubleShoot">
                                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -50,11 +55,11 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="Egh-Qx-kBz" secondAttribute="trailing" constant="20" symbolic="YES" id="BRU-R9-2ha"/>
                                             <constraint firstAttribute="trailing" secondItem="DWs-10-ddZ" secondAttribute="trailing" constant="20" id="U3D-qf-kAZ"/>
+                                            <constraint firstAttribute="trailing" secondItem="PWd-RQ-O7c" secondAttribute="trailing" constant="20" id="Wqy-GA-Qh7"/>
                                         </constraints>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="900" verticalHuggingPriority="900" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="owB-dp-e5H">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="900" verticalHuggingPriority="900" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="owB-dp-e5H">
                                         <rect key="frame" x="293" y="0.0" width="41" height="68"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <state key="normal" title="Retry">
@@ -68,10 +73,10 @@
                             </stackView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="7wR-5r-dTV" firstAttribute="leading" secondItem="xJO-33-baX" secondAttribute="leading" constant="20" symbolic="YES" id="57s-v4-XNN"/>
+                            <constraint firstItem="7wR-5r-dTV" firstAttribute="leading" secondItem="xJO-33-baX" secondAttribute="leading" constant="20" id="Fjo-Mu-eK6"/>
                             <constraint firstItem="7wR-5r-dTV" firstAttribute="top" secondItem="xJO-33-baX" secondAttribute="top" constant="8" id="I8y-pH-LWT"/>
                             <constraint firstAttribute="bottom" secondItem="7wR-5r-dTV" secondAttribute="bottom" constant="8" id="NiG-Hw-xTq"/>
-                            <constraint firstAttribute="trailing" secondItem="7wR-5r-dTV" secondAttribute="trailing" constant="20" symbolic="YES" id="ab7-Qh-uGR"/>
+                            <constraint firstAttribute="trailing" secondItem="7wR-5r-dTV" secondAttribute="trailing" constant="20" id="wDa-yw-w5z"/>
                         </constraints>
                     </view>
                     <blurEffect style="extraLight"/>
@@ -88,4 +93,9 @@
             <point key="canvasLocation" x="905.60000000000002" y="823.98800599700155"/>
         </view>
     </objects>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

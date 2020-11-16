@@ -318,10 +318,10 @@ class ComposeViewModelImpl : ComposeViewModel {
                 }
             }
             complete?(c.lock, c.pgpType.rawValue)
-        }.catch({ (error) in
+        }.catch(policy: .allErrors) { (error) in
             PMLog.D(error.localizedDescription)
             complete?(nil, -1)
-        })
+        }
     }
     
     override func getDefaultSendAddress() -> Address? {

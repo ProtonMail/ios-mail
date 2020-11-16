@@ -1,0 +1,2449 @@
+/* Key size text when setup key */
+"(2048 bit)" = "(2048 bit)";
+
+/* Key size text when setup key */
+"(4096 bit)" = "(4096 bit)";
+
+/* Comment for disconnected account in Account Manager */
+"(logged out)" = "(αποσυνδέθηκε)";
+
+/* Service plan capability detail; like in '50 email addresses (total)' */
+"(total)" = "(σύνολο)";
+
+/* secret */
+"**********" = "**********";
+
+/* optional text field */
+"*OPTIONAL" = "*ΠΡΟΑΙΡΕΤΙΚΟ";
+
+/* Service plan capability detail; like in '5 email addresses/user' */
+"/user" = "/χρήστης";
+
+/* Service plan capability */
+"%@ storage capacity" = "%@ χωρητικότητα αποθήκευσης";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d Μέλος";
+
+/* The string that describes whether there are 2 or more members in the contact group */
+"%d Members" = "%d Μέλη";
+
+/* auto lock time format */
+"%d Minute" = "%d λεπτό";
+
+/* auto lock time format */
+"%d Minutes" = "%d λεπτά";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d Επιλεγμένο";
+
+/* Service plan capability; i = 1 */
+"%i email address" = "%i Διεύθυνση E-mail";
+
+/* Service plan capability; i = 5 or 50 */
+"%i email addresses" = "%i Διευθύνσεις E-mail";
+
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Τοποθετήστε εδώ για προσθήκη ως συνημμένο";
+
+/* default empty object */
+"<no object>" = "<no object>";
+
+/* 2fa verification failed */
+"2FA failed. Please try to login again." = "Το 2FA απέτυχε. Δοκιμάστε να συνδεθείτε ξανά.";
+
+/* *
+ *  LabelTableViewCell */
+"A message cannot have more than 5 labels" = "Το μήνυμα δεν μπορεί να έχει περισσότερες από 5 ετικέτες";
+
+/* "Alert" = "Alert"; */
+"A new version of ProtonMail app is available, please update to latest version." = "Μια νέα έκδοση της εφαρμογής ProtonMail είναι διαθέσιμη, ενημερώστε στην τελευταία έκδοση.";
+
+/* Description */
+"A new version of ProtonMail app is available. Please update to the latest version." = "Μια νέα έκδοση της εφαρμογής ProtonMail είναι διαθέσιμη, ενημερώστε στην τελευταία έκδοση.";
+
+/* alert description */
+"A paid ProtonMail plan is required to use this feature" = "Ένας επί πληρωμή λογαριασμός ProtonMail απαιτείται για να χρησιμοποιήσετε αυτή τη λειτουργία";
+
+/* settings touchid error */
+"A passcode has not been set, enable it in the system Settings" = "Ένας κωδικός πρόσβασης δεν έχει οριστεί, ενεργοποιήστε το στις ρυθμίσεις συστήματος";
+
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη λόγω μη πληρωμής. Συνδεθείτε μέσω του protonmail.com για να εξοφλήσετε το υπόλοιπο σας.";
+
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη λόγω μη πληρωμής.\n Παρακαλώ επισκεφθείτε <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">βάση γνώσεων μας</a> για περισσότερες πληροφορίες.";
+
+/* Account manager title */
+"Account" = "Λογαριασμός";
+
+/* 
+ & title */
+"Account password invalid" = "Μη έγκυρος κωδικός πρόσβασης λογαριασμού";
+
+/* section title in settings */
+"Account Settings" = "Ρυθμίσεις Λογαριασμού";
+
+/* (No Comment) */
+"Add" = "Προσθήκη";
+
+/* new contacts add Anniversary */
+"Add Anniversary" = "Προσθήκη Επετείου";
+
+/* new contacts add Birthday */
+"Add Birthday" = "Προσθήκη Γενεθλίων";
+
+/* Contacts add new contact */
+"Add Contact" = "Προσθήκη επαφής";
+
+/* add custom label type action */
+"Add Custom Label" = "Προσθήκη Προσαρμοσμένης Ετικέτας";
+
+/* Action */
+"Add Folder" = "Προσθήκη φακέλου";
+
+/* new contacts add Gender */
+"Add Gender" = "Προσθήκη Φύλου";
+
+/* The title for the contact group creation view */
+"Add Group" = "Προσθήκη Ομάδας";
+
+/* add label action */
+"Add Label" = "Προσθήκη Ετικέτας";
+
+/* add new address action */
+"Add new address" = "Προσθέστε νέα διεύθυνση";
+
+/* new custom field action */
+"Add new custom field" = "Προσθέστε νέο προσαρμοσμένο πεδίο";
+
+/* new email action */
+"Add new email" = "Προσθήκη νέου email";
+
+/* new field action */
+"Add new field" = "Προσθήκη νέου πεδίου";
+
+/* add a new folder */
+"Add New Folder" = "Προσθήκη νέου φακέλου";
+
+/* add a new folder */
+"Add New Label" = "Προσθέστε νέα ετικέτα";
+
+/* new phone action */
+"Add new phone number" = "Προσθήκη νέου αριθμού τηλεφώνου";
+
+/* action */
+"Add new URL" = "Προσθήκη νέου URL";
+
+/* new contacts add Nickname */
+"Add Nickname" = "Προσθέστε το ψευδώνυμο σας";
+
+/* new contacts add Organization */
+"Add Organization" = "Προσθήκη οργανισμού";
+
+/* The button text for add profile picture */
+"Add Photo" = "Προσθήκη Φωτογραφίας";
+
+/* mark message star */
+"Add Star" = "Προσθήκη αστεριού";
+
+/* new contacts add Title */
+"Add Title" = "Προσθέστε τίτλο";
+
+/* Title */
+"Add to contacts" = "Προσθήκη στις επαφές";
+
+/* default vcard types */
+"Address" = "Διεύθυνση";
+
+/* cell title in device settings */
+"Addresses" = "Διευθύνσεις";
+
+/* Title */
+"Alert" = "Προειδοποίηση";
+
+/* Title */
+"All contacts are imported" = "Όλες οι επαφές έχουν εισαχθεί";
+
+/* mail location desc
+   mail location title
+   menu title */
+"All Mail" = "Όλα τα Μηνύματα";
+
+/* network troubleshot cell title */
+"Allow alternative routing" = "Επιτρέψτε εναλλακτική δρομολόγηση";
+
+/* archive when apply label */
+"Also Archive" = "Επίσης Αρχειοθετείστε";
+
+/* Description */
+"Also used to reset a forgotten password." = "Επίσης χρησιμοποιείται για την επαναφορά ενός ξεχασμένου κωδικού πρόσβασης.";
+
+/* agree check box middle word */
+"and" = "και";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Επέτειος";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Παρέμβαση του Antivirus";
+
+/* when server not reachable */
+"API Server not reachable..." = "Ο διακομιστής API δεν είναι προσβάσιμος...";
+
+/* section title in settings */
+"APP INFORMATION" = "ΠΛΗΡΟΦΟΡΙΕΣ ΕΦΑΡΜΟΓΗΣ";
+
+/* Error */
+"App is locked" = "Η εφαρμογή είναι κλειδωμένη";
+
+/* cell title in device settings */
+"App Language" = "Γλώσσα Εφαρμογής";
+
+/* section title in settings */
+"App Settings" = "Ρυθμίσεις Εφαρμογής";
+
+/* Price breakdown */
+"Apple in-app purchase fee" = "Αγορές εντός εφαρμογής της Apple";
+
+/* Error message */
+"Apple informed us they could not process the purchase." = "Η Apple μας ενημέρωσε ότι δεν μπόρεσαν να επεξεργαστούν την αγορά.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το πακέτο συνδρομής/πλάνο, αλλά δεν είπε ποιός από τους λογαριασμούς σας ProtonMail θα αναβαθμιστεί σε περίπτωση που έχετε περισσότερους από έναν.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το πακέτο/πλάνο σας, αλλά λείπουν ορισμένα τεχνικά δεδομένα. Συμπληρώστε την φόρμα αναφοράς σφαλμάτων και η ομάδα υποστήριξης πελατών μας, θα επικοινωνήσει μαζί σας.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το λογαριασμό σας / πλάνο, αλλά εντοπίσαμε ότι έχετε αποσυνδεθεί από το λογαριασμό σας, από τότε.";
+
+/* Apply action */
+"Apply" = "Εφαρμογή";
+
+/* Title */
+"Apply Labels" = "Εφαρμογή Eτικετών";
+
+/* mail location desc
+   menu title */
+"Archive" = "Αρχειοθέτηση";
+
+/* mail location title */
+"ARCHIVE" = "Αρχείο";
+
+/* Description */
+"Archived" = "Αρχειοθετημένα";
+
+/* Alert when logout non-primary account from account manager */
+"Are you sure you want to log out?" = "Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε;";
+
+/* Alert to confirm logout when only one account logged in */
+"Are you sure you want to logout %@?" = "Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε %@;";
+
+/* emptify folder/label confirmation alert */
+"Are you sure? This can't be undone." = "Είστε βέβαιοι? Αυτό δεν μπορεί να αναιρεθεί.";
+
+/* like at 10:00pm */
+"at" = "στις";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Το συνημμένο έχει εισαχθεί";
+
+/* VoiceOver: email has attachments */
+"Attachments" = "Συνημμένα";
+
+/* Error */
+"attempt remaining until secure data wipe!" = "προσπάθεια απομένει μέχρι την ασφαλή διαγραφή δεδομένων!";
+
+/* Description */
+"attempts remaining" = "προσπάθειες που απομένουν";
+
+/* Error */
+"attempts remaining until secure data wipe!" = "προσπάθειες απομένουν μέχρι την ασφαλή διαγραφή δεδομένων!";
+
+/* Title */
+"Authentication" = "Έλεγχος ταυτότητας";
+
+/* Description */
+"Authentication failed" = "Αποτυχία ταυτοποίησης";
+
+/* Description */
+"Authentication Failed Wrong username or password" = "Ο έλεγχος ταυτότητας απέτυχε: λάθος όνομα χρήστη ή κωδικός.";
+
+/* Error */
+"Authentication failed. Please try to login again." = "Η ταυτοποίηση απέτυχε. Δοκιμάστε να συνδεθείτε ξανά.";
+
+/* Description */
+"Authentication token is not accessible because the app is locked" = "Δεν είναι προσβάσιμο το διακριτικό ελέγχου ταυτότητας επειδή η εφαρμογή είναι κλειδωμένη";
+
+/* Description */
+"Authentication was cancelled by the system" = "Ο έλεγχος ταυτότητας ακυρώθηκε από το σύστημα";
+
+/* Title */
+"Auto Lock Time" = "Χρονικό Όριο Αυτόματου Κλειδώματος";
+
+/* settings general section title */
+"Auto Show Images" = "Αυτόματη εμφάνιση εικόνων";
+
+/* section title in settings */
+"Auto-lock" = "Αυτόματο κλείδωμα";
+
+/* top left back button */
+"Back" = "Πίσω";
+
+/* Error */
+"Bad auth cache" = "Bad auth cache";
+
+/* Error title */
+"Bad parameter" = "Κακή παράμετρος";
+
+/* Error Description */
+"Bad parameter: %@" = "Κακή παράμετρος: %@";
+
+/* title */
+"Bad path" = "Κακή διαδρομή";
+
+/* Error Description */
+"Bad response" = "Κακή ανταπόκριση";
+
+/* Title */
+"Bcc" = "Κρυφή κοινοποίηση (BCC)";
+
+/* message Bcc: feild */
+"Bcc:" = "Κρυφή κοιν: ";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "Γενέθλια";
+
+/* Title */
+"Bug Description" = "Περιγραφή Σφάλματος";
+
+/* Title */
+"Bug Report Received" = "Η αναφορά σφάλματος ελήφθη";
+
+/* Link to More Credits screen */
+"Buy More Credits" = "Αγοράστε Περισσότερες Μονάδες";
+
+/* Alert for removing disconnected accounts */
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "Καταργώντας αυτόν τον λογαριασμό, δεν θα μπορείτε πλέον να έχετε πρόσβαση σε αυτόν από αυτήν τη συσκευή, εκτός εάν τον προσθέσετε ξανά.\n\nΘέλετε να καταργήσετε αυτόν τον λογαριασμό ούτως ή άλλως;";
+
+/* agree check box first part words */
+"By using protonmail, you agree to our" = "Χρησιμοποιώντας το protonmail, συμφωνείτε με";
+
+/* No comment provided by engineer. */
+"By using protonmail, you agree to our %@ and %@." = "Χρησιμοποιώντας το protonmail, συμφωνείτε με %1$@ και %2$@.";
+
+/* Call the contact (button title text) */
+"Call Contact" = "Κλήση επαφής";
+
+/* key size note part 2 */
+"Can take several minutes to setup." = "Μπορεί να χρειαστούν αρκετά λεπτά για να πραγματοποιηθεί η ρύθμιση.";
+
+/* Error */
+"Can't copy the file" = "Αδύνατη η αντιγραφή του αρχείου";
+
+/* update password error */
+"Can't create a SRP Client" = "Δεν είναι δυνατή η δημιουργία ενός προγράμματος-πελάτη SRP";
+
+/* update password error */
+"Can't create a SRP verifier!" = "Δεν είναι δυνατή η δημιουργία επαληθευτή SRP!";
+
+/* When quick look attachment but can't decrypt it! */
+"Can't decrypt this attachment!" = "Δεν είναι δυνατή η αποκρυπτογράφηση αυτού του συνημμένου!";
+
+/* The error message title that will be shown when the deletion of the contact group failed */
+"Can't delete contact group" = "Δεν είναι δυνατή η διαγραφή ομάδας επαφών";
+
+/* The error message will be shown when the deletionn of the contact group through API failed */
+"Can't delete contact group through API" = "Δεν είναι δυνατή η διαγραφή ομάδας επαφών μέσω του API";
+
+/* *
+ *  MessageViewController */
+"Can't download message body, please try again." = "Δεν είναι δυνατή η λήψη του body των μηνυμάτων, παρακαλώ δοκιμάστε ξανά.";
+
+/* Error */
+"Can't download message body. Please try again." = "Δεν είναι δυνατή η λήψη του body των μηνυμάτων, παρακαλώ δοκιμάστε ξανά.";
+
+/* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
+"Can't fetch contact groups" = "Δεν είναι δυνατή η συγχώνευση της ομάδας επαφών";
+
+/* (No Comment) */
+"Can't find the clicked message please try again!" = "Δεν είναι δυνατή η εύρεση του μηνύματος με κλικ, παρακαλώ δοκιμάστε ξανά!";
+
+/* Description */
+"Can't find the selected message. Please try again." = "Δεν είναι δυνατή η εύρεση του επιλεγμένου μηνύματος. Παρακαλώ προσπαθήστε ξανά.";
+
+/* Description */
+"Can't find the value from the response body" = "Δεν είναι δυνατή η εύρεση της τιμής από το σώμα απόκρισης";
+
+/* when quick look attachment but can't find the data */
+"Can't find this attachment!" = "Δεν μπορεί να βρεθεί αυτό το συνημμένο!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls ID!" = "Δεν είναι δυνατή η λήψη αναγνωριστικού Modulus!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls!" = "Δεν μπορεί να βρεθεί ένα Modulus!";
+
+/* update password error */
+"Can't get user auth info" = "Δεν είναι δυνατή η λήψη πληροφοριών χρήστη auth";
+
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Can't load share content!" = "Δεν είναι δυνατή η φόρτωση περιεχομένου κοινής χρήσης!";
+
+/* Error */
+"Can't load the file" = "Δεν είναι δυνατή η φόρτωση του αρχείου";
+
+/* Error */
+"Can't open the file" = "Δεν είναι δυνατό να ανοίξει το αρχείο";
+
+/* The error message title that will be shown when the contact group being created or edited can't be saved */
+"Can't save contact group" = "Δεν είναι δυνατή η αποθήκευση της ομάδας επαφών";
+
+/* The error message will be shown when the update of the contact group through API failed */
+"Can't update contact group through the API" = "Δεν είναι δυνατή η ενημέρωση ομάδας επαφών μέσω του API";
+
+/* Cancel action */
+"Cancel" = "Ακύρωση";
+
+/* Action */
+"Cancel Check" = "Ακύρωση Ελέγχου";
+
+/* Title */
+"Cancelling" = "Γίνεται Ακύρωση";
+
+/* (No Comment) */
+"Cant' decrypt this attachment!" = "Δεν είναι δυνατή η αποκρυπτογράφηση αυτού του συνημμένου.";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCHA";
+
+/* Title */
+"Cc" = "Κοινοποίηση(CC)";
+
+/* message Cc: feild */
+"Cc:" = "Κοιν:";
+
+/* place holder */
+"Cell phone number" = "Αριθμό κινητού τηλεφώνου";
+
+/* Title */
+"Change default address to .." = "Αλλάξτε την προεπιλεγμένη διεύθυνση σε...";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Αλλαγή ενέργειας αριστερής ολίσθησης";
+
+/* change password input label */
+"Change Login Password" = "Αλλαγή Κωδικού Σύνδεσης";
+
+/* Title */
+"Change Mailbox Password" = "Αλλαγή Κωδικού Θυρίδας";
+
+/* update password error title */
+"Change Password" = "Αλλαγή κωδικού πρόσβασης";
+
+/* settings protection section title */
+"Change Pin" = "Αλλαγή PIN";
+
+/* settings swipe actions section action description */
+"Change right swipe action" = "Αλλαγή ενέργειας δεξιάς ολίσθησης";
+
+/* Title */
+"Change sender address to .." = "Αλλαγή διεύθυνσης αποστολέα σε...";
+
+/* Title */
+"Change Single Password" = "Αλλαγή ενιαίου κωδικού πρόσβασης";
+
+/* Action */
+"Check Again" = "Ελέγξτε πάλι";
+
+/* network troubleshot cell title */
+"Check Proton Status for our system status." = "Ελέγξτε την κατάσταση Proton για την κατάσταση του συστήματός μας.";
+
+/* loading message */
+"Checking ...." = "Έλεγχος...";
+
+/* place holder */
+"Choose a Password" = "Επιλέξτε έναν Κωδικό πρόσβασης";
+
+/* contact placeholder */
+"City" = "Πόλη";
+
+/* settings general section title */
+"Clear Local Message Cache" = "Διαγραφή της προσωρινής μνήμης τοπικών μηνυμάτων";
+
+/* Menu action to remove text formatting */
+"Clear Style" = "Καθαρό Στύλ";
+
+/* general close action */
+"Close" = "Κλείσιμο";
+
+/* Action */
+"close tour" = "κλείσιμο οδηγιών";
+
+/* the message will show when closing a draft from the share extension */
+"Closing" = "Κλείσιμο";
+
+/* cell title in device settings */
+"Combined Contacts" = "Συνδυασμένες Επαφές";
+
+/* Action
+   Springboard (3D Touch) shortcuts action */
+"Compose" = "Σύνταξη";
+
+/* Title */
+"Compose to" = "Σύνθεση σε";
+
+/* Action */
+"Confirm" = "Επιβεβαίωση";
+
+/* "Login Password" */
+"Confirm Login Password" = "Επιβεβαίωση κωδικού σύνδεσης";
+
+/* "Mailbox Password" */
+"Confirm Mailbox Password" = "Επιβεβαίωση Κωδικού θυρίδας";
+
+/* Title */
+"Confirm new login password" = "Επιβεβαίωση νέου κωδικού σύνδεσης";
+
+/* Title */
+"Confirm new mailbox password" = "Επιβεβαιώστε τον νέο κωδικό θυρίδας";
+
+/* Placeholder */
+"Confirm new password" = "Επιβεβαίωση νέου κωδικού";
+
+/* Placeholder */
+"Confirm Password" = "Επιβεβαίωση κωδικού πρόσβασης";
+
+/* alert title */
+"Confirm phishing report" = "Επιβεβαίωση αναφοράς ηλεκτρονικού \"ψαρέματος\" (Phishing)";
+
+/* Title */
+"Confirmation" = "Επιβεβαίωση";
+
+/* view top title */
+"Congratulations!" = "Συγχαρητήρια!";
+
+/* Account manager title */
+"Connect Account" = "Σύνδεση Λογαριασμού";
+
+/* contact section title */
+"Contact Details" = "Λεπτομέρειες Επαφής";
+
+/* Title */
+"Contact the ProtonMail team" = "Επικοινωνήστε με την ομάδα του ProtonMail";
+
+/* network troubleshot cell title */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Επικοινωνήστε μαζί μας απευθείας μέσω της φόρμας υποστήριξης, email (support@protonmail.com) ή Twitter.";
+
+/* Action and title
+   menu title */
+"Contacts" = "Επαφές";
+
+/* Action */
+"Continue" = "Συνέχεια";
+
+/* Action */
+"Continue and Don't ask again" = "Συνέχεια και μην ξαναγίνει ερώτηση";
+
+/* Title */
+"Copy address" = "Αντιγραφή διεύθυνσης";
+
+/* Title */
+"Copy name" = "Αντιγραφή ονόματος";
+
+/* Error message */
+"Could not connect to Store. Please try again later." = "Δεν ήταν δυνατή η σύνδεση στο Κατάστημα. Παρακαλώ δοκιμάστε ξανά αργότερα.";
+
+/* contact placeholder */
+"Country" = "Χώρα";
+
+/* top right action text */
+"Create" = "Δημιουργία";
+
+/* Signup top title */
+"Create a new account" = "Δημιουργήστε ένα νέο λογαριασμό";
+
+/* Create account button */
+"Create Account" = "Δημιουργία Λογαριασμού";
+
+/* Description */
+"Create and add Labels to organize your inbox. Long press on a message for all options." = "Δημιουργήστε και προσθέστε ετικέτες για να οργανώσετε τα εισερχόμενα σας. Πατήστε και κρατήστε πατημένο ένα μήνυμα για να εμφανίσετε όλες τις επιλογές.";
+
+/* (No Comment) */
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Δημιουργήστε και προσθέστε ετικέτες για να οργανώσετε τα εισερχόμενα σας. Πατήστε και κρατήστε πατημένο ένα μήνυμα για να εμφανίσετε όλες τις επιλογές.";
+
+/* title of button in account connect page */
+"Create new account" = "Δημιουργία νέου λογαριασμού";
+
+/* error message title when create new user */
+"Create user failed" = "Η δημιουργία χρήστη απέτυχε";
+
+/* Error */
+"Create User failed. Please try again." = "Η δημιουργία χρήστη απέτυχε. Παρακαλώ προσπαθήστε ξανά.";
+
+/* Change language title */
+"Current Language is: " = "Η Τρέχουσα Γλώσσα είναι: ";
+
+/* Title */
+"Current login password" = "Τρέχων Κωδικός Σύνδεσης";
+
+/* Placeholder */
+"Current password" = "Τρέχων κωδικός";
+
+/* action sheet option
+   contacts default label type */
+"Custom" = "Προσαρμοσμένο";
+
+/* message Date: text */
+"Date:" = "Ημερομηνία:";
+
+/* like Date: 2017-10-10 */
+"Date: %@" = "Ημερομηνία: %@";
+
+/* Title */
+"days" = "Ημέρες";
+
+/* Title */
+"Debug" = "Αποσφαλμάτωση";
+
+/* Action */
+"Decrypt" = "Αποκρυπτογράφηση";
+
+/* Title */
+"DECRYPT MAILBOX" = "ΑΠΟΚΡΥΠΤΟΓΡΑΦΗΣΗ ΘΥΡΙΔΑΣ";
+
+/* Description */
+"Decrypt token failed. Please try again." = "Αποτυχία αποκρυπτογράφησης του διακριτικού. Παρακαλώ προσπαθήστε ξανά.";
+
+/* error title */
+"Decryption error" = "Σφάλμα κατά την αποκρυπτογράφηση";
+
+/* error details */
+"Decryption of this content failed" = "Η αποκρυπτογράφηση αυτού του περιεχομένου απέτυχε";
+
+/* Title */
+"Default" = "Προεπιλογή";
+
+/* Settings row */
+"Default browser" = "Προεπιλεγμένος browser";
+
+/* error message when create new user */
+"Default error. Please try again." = "Σφάλμα προεπιλογής. Παρακαλώ προσπαθήστε ξανά.";
+
+/* Placeholder */
+"Define Expiration Date" = "Προσδιορίστε την ημερομηνία λήξης";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Προσδιορίστε Υπόδειξη (Προαιρετικό)";
+
+/* place holder */
+"Define Password" = "Ορίστε τον κωδικό πρόσβασης";
+
+/* general delete action */
+"Delete" = "Διαγραφή";
+
+/* emptify folder/label confirmation alert */
+"Delete all" = "Διαγραφή όλων";
+
+/* Title-Contacts */
+"Delete Contact" = "Διαγραφή επαφής";
+
+/* The description of the button for deleting the contact group */
+"Delete Contact Group" = "Διαγραφή Ομάδας Επαφών";
+
+/* mail location desc */
+"Deleted" = "Διαγράφηκαν";
+
+/* Title */
+"Details" = "Λεπτομέρειες";
+
+/* network troubleshot cell title */
+"Disable any proxies or firewalls, or contact your network administrator." = "Απενεργοποιήστε οποιαδήποτε proxies ή firewalls, ή επικοινωνήστε με το διαχειριστή του δικτύου σας.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Απενεργοποίηση Επαλήθευσης";
+
+/* Action */
+"Discard changes" = "Απόρριψη αλλαγών";
+
+/* Action */
+"Discard draft" = "Απόρριψη προχείρου";
+
+/* (No Comment) */
+"Display name" = "Εμφανιζόμενο Όνομα";
+
+/* Title in settings */
+"Display Name" = "Εμφανιζόμενο Όνομα";
+
+/* Title */
+"Display Name Updated" = "Το Εμφανιζόμενο Όνομα Ενημερώθηκε";
+
+/* Title in display name settings */
+"DisplayName" = "Εμφανιζόμενο Όνομα";
+
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchased service plan for " = "Θέλετε να ενεργοποιήσετε το πακέτο/πλάνο υπηρεσίας που έχετε αγοράσει για ";
+
+/* Description */
+"Do you want to cancel the process?" = "Θέλετε να ακυρώσετε την διαδικασία;";
+
+/* Title */
+"Do you want to save the unsaved changes?" = "Θέλετε να αποθηκεύσετε τις μη αποθηκευμένες αλλαγές;";
+
+/* Action */
+"Don't remind me again" = "Μην μου υπενθυμίσεις ξανά";
+
+/* Title */
+"Don't Show Again" = "Να μην εμφανιστεί ξανά";
+
+/* Done action */
+"Done" = "Ολοκληρώθηκε";
+
+/* VoiceOver action description */
+"Double tap to setup" = "Πατήστε δύο φορές για να ρυθμίσετε";
+
+/* Action
+   mail location desc */
+"Draft" = "Πρόχειρο";
+
+/* menu title */
+"Drafts" = "Πρόχειρα";
+
+/* mail location title */
+"DRAFTS" = "Πρόχειρα";
+
+/* Action */
+"Edit" = "Επεξεργασία";
+
+/* *
+ *  Edit Contact view controller */
+"Edit Contact" = "Επεξεργασία επαφής";
+
+/* Title */
+"Edit Folder" = "Επεξεργασία φακέλου";
+
+/* The title for the contact group editing view */
+"Edit Group" = "Επεξεργασία Ομάδας";
+
+/* Title */
+"Edit Label" = "Επεξεργασία ετικέτας";
+
+/* title */
+"Edit mobile signature" = "Επεξεργασία υπογραφής κινητού";
+
+/* The button text for edit profile picture */
+"Edit Photo" = "Επεξεργασία φωτογραφίας";
+
+/* title */
+"Edit signature" = "Επεξεργασία υπογραφής";
+
+/* network troubleshot cell title */
+"email" = "email";
+
+/* default vcard types */
+"Email" = "E-mail";
+
+/* contact placeholder */
+"Email address" = "Διεύθυνση E-mail";
+
+/* Title */
+"Email address invalid" = "Η διεύθυνση E-mail δεν είναι έγκυρη";
+
+/* contact detail view, email addresses section title */
+"Email Addresses" = "Διευθύνσεις Email";
+
+/* Send an email to the current contact (button title text) */
+"Email Contact" = "Στείλτε E-mail στην Επαφή";
+
+/* place holder */
+"Email default signature" = "Προεπιλεγμένη υπογραφή E-mail";
+
+/* 
+ & title */
+"Email domain invalid" = "Μη έγκυρο domain ηλεκτρονικού ταχυδρομείου";
+
+/* human check option button */
+"Email Verification" = "Επαλήθευση E-mail";
+
+/* cell title in device setting */
+"Empty Cache" = "Εκκαθάριση Cache";
+
+/* empty folder, for spam and trash and drafts */
+"Empty Folder" = "Άδειος φάκελος";
+
+/* it is an option to empty the label */
+"Empty Label" = "Κενή Ετικέτα";
+
+/* Title */
+"Enable Default Signature" = "Ενεργοποίηση προεπιλεγμένης υπογραφής";
+
+/* settings protection section title */
+"Enable FaceID" = "Ενεργοποίηση FaceID";
+
+/* Title */
+"Enable Mobile Signature" = "Ενεργοποίηση υπογραφής κινητού";
+
+/* Title */
+"Enable Notification Email" = "Ενεργοποίηση μηνύματος ειδοποίησης με E-mail";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Enable PIN";
+
+/* settings protection section title */
+"Enable Pin Protection" = "Ενεργοποίηση προστασίας PIN";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Enable PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Enable PIN/TouchID";
+
+/* settings protection section title */
+"Enable TouchID" = "Ενεργοποίηση TouchID";
+
+/* contact section title */
+"Encrypted Contact Details" = "Κρυπτογραφημένα στοιχεία επαφής";
+
+/* Title */
+"Encrypted for outside" = "Κρυπτογραφημένο για έξω";
+
+/* Title */
+"Encrypted for outside reply" = "Κρυπτογραφημένο για εξωτερική απάντηση";
+
+/* Title */
+"Encrypted from outside" = "Κρυπτογραφημένο από έξω";
+
+/* Title */
+"Encrypted from outside PGP inline" = "Κρυπτογραφείται έξω από το PGP inline";
+
+/* Title */
+"Encrypted from outside PGP/MIME" = "Κρυπτογραφείται έξω από το PGP /MIME";
+
+/* Title */
+"Encrypted from outside signed PGP/MIME" = "Κρυπτογραφείται από εξωτερικά υπογεγραμμένο PGP / MIME";
+
+/* key setup top title */
+"Encryption Setup" = "Ρύθμιση Κρυπτογράφησης";
+
+/* settings option (End Time: 8am) */
+"End Time" = "Ώρα λήξης";
+
+/* encryption lock description */
+"End-to-end encrypted" = "Κρυπτογραφημένο από άκρο σε άκρο";
+
+/* encryption lock description */
+"End-to-end encrypted message" = "Μήνυμα κρυπτογραφημένο από άκρο σε άκρο";
+
+/* encryption lock description */
+"End-to-end encrypted message from verified address" = "Από άκρη σε άκρη κρυπτογραφημένο μήνυμα, από επαληθευμένη διεύθυνση";
+
+/* encryption lock description */
+"End-to-end encrypted to verified address" = "Κρυπτογραφημένο από άκρο σε άκρο σε επαληθευμένη διεύθυνση";
+
+/* Title */
+"End-to-End Encryption" = "Κρυπτογράφηση από άκρο σε άκρο";
+
+/* Action in 2fa popup view */
+"Enter" = "Εισαγωγή";
+
+/* Title */
+"Enter Verification Code" = "Εισάγετε τον κωδικό επαλήθευσης";
+
+/* human verification top title */
+"Enter your cell phone number" = "Εισάγετε τον αριθμό κινητού τηλεφώνου σας";
+
+/* top title */
+"Enter your existing email address." = "Εισάγετε την υπάρχουσα διεύθυνση E-mail σας.";
+
+/* Account manager title */
+"Enter your mailbox password" = "Εισάγετε τον κωδικό θυρίδας";
+
+/* set pin title */
+"Enter your PIN" = "Εισαγάγετε το PIN σας";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Εισάγετε το PIN για να ξεκλειδώσετε τα εισερχόμενα σας.";
+
+/* settings debug section title */
+"Error Logs" = "Αρχεία καταγραφής των σφαλμάτων";
+
+/* Error alert title */
+"Error occured" = "Παρουσιάστηκε σφάλμα";
+
+/* lock app option */
+"Every time enter app" = "Κάθε φορά που ανοίγω την εφαρμογή";
+
+/* VoiceOver: email can expire */
+"Expires" = "Λήγει";
+
+/* expiration time count down */
+"Expires in %d days %d hours %d mins %d seconds" = "Λήγει σε %1$d μέρες %2$d ώρες %3$d λεπτά %4$d δευτερόλεπτα";
+
+/* Title */
+"Expiring Messages" = "Μηνύματα που λήγουν";
+
+/* Key size checkbox */
+"Extreme Security" = "Ύψιστη Ασφάλεια";
+
+/* Error message */
+"Failed to determine type of file" = "Αποτυχία προσδιορισμού του τύπου αρχείου";
+
+/* Error message */
+"Failed to get list of available products from AppStore." = "Αποτυχία λήψης της λίστας διαθέσιμων προϊόντων από το AppStore.";
+
+/* Description */
+"Failed to initialize the app's saved data" = "Δεν ήταν δυνατή η εκκίνηση των αποθηκευμένων δεδομένων εφαρμογής";
+
+/* *
+ *  Core Data Service & local error */
+"Failed to initialize the application's saved data" = "Δεν ήταν δυνατή η εκκίνηση των αποθηκευμένων δεδομένων εφαρμογής";
+
+/* default vcard types */
+"Fax" = "Φαξ";
+
+/* menu title */
+"Feedback" = "Αξιολόγηση";
+
+/* Error */
+"Fetch user info failed" = "Η λήψη πληροφοριών χρήστη απέτυχε";
+
+/* VoiceOver: email belongs to folder */
+"Folder" = "Φάκελος";
+
+/* place holder */
+"Folder Name" = "Όνομα φακέλου";
+
+/* Service Plan description */
+"For individuals looking to benefit from secure communication at no cost" = "Για αυτούς που θέλουν να επωφεληθούν την ασφαλή επικοινωνία χωρίς κόστος";
+
+/* Service Plan description */
+"For individuals that need more capacity, customization and advanced features" = "Για αυτούς που χρειάζονται περισσότερη χωρητικότητα, δυνατότητες προσαρμογής και προηγμένες λειτουργίες";
+
+/* Buy button second line */
+"for one year" = "για ένα χρόνο";
+
+/* Service Plan description */
+"For organizations that need multi-user support and additional productivity features" = "Για οργανισμούς που χρειάζονται υποστήριξη από πολλούς χρήστες και πρόσθετα χαρακτηριστικά παραγωγικότητας";
+
+/* Service Plan description */
+"For power users and groups of people that value full anonymity and privacy" = "Για δυνατούς χρήστες και ομάδες ανθρώπων που δίνουν αξία στην πλήρη ανωνυμία και ιδιωτικότητα";
+
+/* login page forgot pwd */
+"FORGOT PASSWORD?" = "Ξεχάσατε τον κωδικό;";
+
+/* forward action */
+"Forward" = "Προώθηση";
+
+/* forwarded message title */
+"Forwarded message" = "Προωθημένο μήνυμα";
+
+/* Title */
+"From" = "Από";
+
+/* message From: field text */
+"From:" = "Από:";
+
+/* abbreviation of forward: */
+"FW:" = "ΠΡΟΩΘ:";
+
+/* abbreviation of forward: */
+"Fwd:" = "Προωθ:";
+
+/* contacts talbe cell gender title */
+"Gender" = "Φύλο";
+
+/* Title */
+"General Settings" = "Γενικές ρυθμίσεις";
+
+/* Screen header, like 'Get VISIONARY' */
+"Get %@" = "Αποκτήστε %@";
+
+/* Action */
+"Get more information" = "Λάβετε περισσότερες πληροφορίες";
+
+/* Action */
+"Go to inbox" = "Μετάβαση στα Εισερχόμενα";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to login" = "Μεταβείτε στη σύνδεση";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Μετάβαση στις ρυθμίσεις";
+
+/* network troubleshot cell title */
+"Government block" = "Κυβερνητική απαγόρευση";
+
+/* The title for the contact group detail view */
+"Group Details" = "Στοιχεία ομάδας";
+
+/* The instruction label for the group name textfield */
+"Group Name" = "Όνομα Ομάδας";
+
+/* menu title (contact groups) */
+"Groups" = "Ομάδες";
+
+/* Title */
+"Help & Support" = "Βοήθεια & Υποστήριξη";
+
+/* Title */
+"Help us to improve ProtonMail with your input." = "Βοηθήστε μας να βελτιώσουμε το ProtonMail με τα σχόλια σας.";
+
+/* Title */
+"Help us to make privacy the default in the web." = "Βοηθήστε μας να κάνουμε το απόρρητο προεπιλογή στο διαδίκτυο.";
+
+/* Action */
+"Hide" = "Απόκρυψη";
+
+/* Title */
+"Hide Details" = "Απόκρυψη λεπτομερειών";
+
+/* Key size checkbox */
+"High Security" = "Υψηλή ασφάλεια";
+
+/* (No Comment) */
+"hours" = "Ώρες";
+
+/* Title */
+"Hours" = "Ώρες";
+
+/* Description */
+"Human Check Failed" = "Ο ανθρώπινος Έλεγχος Απέτυχε";
+
+/* human check warning title */
+"Human Check Warning" = "Προειδοποίηση ανθρώπινου ελέγχου";
+
+/* top title */
+"Human Verification" = "Ανθρώπινη Επαλήθευση";
+
+/* Service plan capability */
+"IMAP/SMTP Support via ProtonMail Bridge" = "Υποστήριξη IMAP/SMTP μέσω ProtonMail Bridge";
+
+/* Action */
+"Import Error" = "Σφάλμα κατά την Εισαγωγή";
+
+/* Title */
+"Import File From..." = "Εισαγωγή αρχείου από...";
+
+/* Downloading attachments from cloud */
+"Importing" = "Γίνεται Εισαγωγή";
+
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Εισαγωγή συνημμένου, μπορεί να πάρει λίγο χρόνο";
+
+/* import contact title */
+"Importing Contacts" = "Εισαγωγή Επαφών";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "Σε περίπτωση αποκλεισμού των ιστοσελίδων Proton, αυτή η ρύθμιση θα επιτρέψει στην εφαρμογή να δοκιμάσει εναλλακτική δρομολόγηση του δικτύου για να φτάσει στο Proton, το οποίο μπορεί να είναι χρήσιμο για παράκαμψη τείχους προστασίας ή ζητήματα δικτύου. Συνιστούμε να διατηρήσετε αυτήν τη ρύθμιση για μεγαλύτερη αξιοπιστία. [Μάθε περισσότερα]";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Σε περίπτωση που μπλοκάρουν τις ιστοσελίδες Proton, αυτή η ρύθμιση θα επιτρέψει στην εφαρμογή να δοκιμάσει εναλλακτική δρομολόγηση δικτύου ώστε να φτάσει στο Proton, το οποίο μπορεί να είναι χρήσιμο για παράκαμψη τείχους προστασίας ή ζητήματα δικτύου. Συνιστούμε να διατηρήσετε αυτήν τη ρύθμιση για μεγαλύτερη αξιοπιστία. %1$@";
+
+/* Error */
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Για να χρησιμοποιήσετε τις υπηρεσίες μας, πρέπει να συμφωνήσετε με τους Όρους Παροχής Υπηρεσιών του ProtonMail.";
+
+/* mail location desc
+   menu title */
+"Inbox" = "Εισερχόμενα";
+
+/* mail location title */
+"INBOX" = "Εισερχόμενα";
+
+/* Title */
+"Incorrect password" = "Λάθος κωδικός";
+
+/* Error */
+"Incorrect PIN," = "Λανθασμένο PIN";
+
+/* Title */
+"inline attachments" = "inline συνημμένα";
+
+/* place holder */
+"Input Display Name ..." = "Εισαγωγή ονόματος εμφάνισης...";
+
+/* place holder */
+"Input Notification Email ..." = "Εισαγωγή E-mail ειδοποίησης...";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Μη-ασφαλής σύνδεση";
+
+/* Error */
+"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Η άμεση δημιουργία λογαριασμού ProtonMail έχει προσωρινά απενεργοποιηθεί. Μεταβείτε στη διεύθυνση https://protonmail.com/invite για να ζητήσετε μια πρόσκληση.";
+
+/* The preconditions are not met */
+"Internal Error" = "Εσωτερικό σφάλμα";
+
+/* default vcard types */
+"Internet" = "Διαδίκτυο";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Πρόβλημα παρόχου Internet (ISP)";
+
+/* (No Comment) */
+"Invalid access token please relogin" = "Μη έγκυρο αναγνωριστικό πρόσβασης παρακαλώ επανασυνδεθείτε";
+
+/* Description */
+"Invalid access token. Please relogin." = "Μη έγκυρο αναγνωριστικό πρόσβασης παρακαλώ επανασυνδεθείτε.";
+
+/* Error */
+"Invalid credential" = "Μη έγκυρο διαπιστευτήριο";
+
+/* update password error */
+"Invalid hashed password!" = "Μη έγκυρος hashed κωδικός πρόσβασης!";
+
+/* Error */
+"Invalid Password" = "Μη έγκυρος κωδικός";
+
+/* Invalid URL error when click a url in contact */
+"Invalid URL" = "Μη έγκυρη διεύθυνση URL";
+
+/* title */
+"Invalid UserName" = "Μη έγκυρο όνομα χρήστη";
+
+/* Error message */
+"Invalid UserName!" = "Invalid UserName!";
+
+/* Error message */
+"Is this bug report about an in-app purchase?" = "Αυτή η αναφορά σφάλματος αφορά μια αγορά εντός της εφαρμογής;";
+
+/* It is not possible to switch to `plan` within our iOS app. */
+"It is not possible to switch to %@ within our iOS app." = "Δεν είναι δυνατό να μεταβείτε στο %@ μέσα στην εφαρμογή iOS.";
+
+/* Error message */
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Δεν κατέστει εφικτό να ταιριάξει το προϊόν του App Store που αγοράσατε σε οποιοδήποτε προϊόν του διακομιστή μας. Συμπληρώστε την αναφορά σφάλματος και η ομάδα υποστήριξης πελατών μας θα επικοινωνήσει μαζί σας.";
+
+/* Title */
+"Keep me updated about new features" = "Κρατήστε με ενημερωμένο σχετικά με τις νέες λειτουργίες";
+
+/* Error */
+"Key generation failed" = "Η δημιουργία του κλειδιού απέτυχε";
+
+/* Error */
+"Key generation failed. Please try again." = "Η δημιουργία του κλειδιού απέτυχε. Παρακαλώ προσπαθήστε ξανά.";
+
+/* Error */
+"Key invalid. Please go back and try again." = "Το κλειδί δεν είναι έγκυρο. Επιστρέψτε και δοκιμάστε ξανά.";
+
+/* Title */
+"Label as..." = "Ορίστε ετικέτα...";
+
+/* Title */
+"Label Management" = "Διαχείριση ετικετών";
+
+/* createing lable input place holder */
+"Label Name" = "Όνομα Ετικέτας";
+
+/* VoiceOver: email has lables */
+"Labels" = "Ετικέτες";
+
+/* cell title in device settings */
+"Labels & Folders" = "Ετικέτες & Φάκελοι";
+
+/* Title */
+"Labels have been applied." = "Οι ετικέτες έχουν εφαρμοστεί.";
+
+/* Service plan capability */
+"Labels, Folders, Filters & More" = "Ετικέτες, Φάκελοι, Φίλτρα & Περισσότερα";
+
+/* Title */
+"Labels/Folders" = "Ετικέτες/Φάκελοι";
+
+/* Title */
+"Language" = "Γλώσσα";
+
+/* network troubleshot cell title */
+"Learn more" = "Μάθετε περισσότερα";
+
+/* Action */
+"Learn More" = "Μάθετε Περισσότερα";
+
+/* learn more button */
+"Learn more here" = "Μάθετε περισσότερα εδώ";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "Επίτευξη ορίου";
+
+/* Service plan capability */
+"Limited to 150 messages sent/day" = "Περιορισμένο σε 150 απεσταλμένα μηνύματα την ημέρα";
+
+/* Action */
+"Load remote content" = "Φόρτωση απομακρυσμένου περιεχομένου";
+
+/* (No Comment) */
+"Loading..." = "Φόρτωση...";
+
+/* Description */
+"Local cache can't find mailbox password" = "Η τοπική μνήμη cache δεν μπορεί να βρει το κωδικό θυρίδας";
+
+/* cell title in device settings */
+"Local Cache Management" = "Διαχείριση τοπικής προσωρινής μνήμης";
+
+/* cell title in device settings */
+"Local storage limit" = "Όριο τοπικής αποθήκευσης";
+
+/* *
+ *  file string type */
+"Localizable.strings" = "Base";
+
+/* menu title */
+"Lock The App" = "Κλείδωμα εφαρμογής";
+
+/* Account manager title */
+"Log in to your ProtonMail account" = "Συνδεθείτε στον ProtonMail λογαριασμό σας";
+
+/* Alert title when logout non-primary account from account manager */
+"Log out %@?" = "Αποσύνδεση %@;";
+
+/* Action */
+"Log Out All" = "Αποσύνδεση όλων";
+
+/* Alert when auth token is revoked and switch to another */
+"Logged out from %@ and signed in with %@" = "Αποσυνδεθήκατε από το %1$@ και συνδεθήκατε με το %2$@";
+
+/* Title */
+"Login" = "Σύνδεση";
+
+/* (No Comment) */
+"LOGIN" = "Είσοδος";
+
+/* settings general section title */
+"Login Password" = "Κωδικός σύνδεσης";
+
+/* Error */
+"Login password doesn't match" = "Ο κωδικός πρόσβασης δεν ταιριάζει";
+
+/* Alert title to confirm logout
+   Alert title when logout primary account from account manager
+   menu title */
+"Logout" = "Αποσύνδεση";
+
+/* error title */
+"Logs" = "Αρχεία καταγραφής";
+
+/* Upgrade warning title */
+"Looking to secure your contact's details?" = "Ψάχνετε να εξασφαλίσετε τα στοιχεία της επαφής σας;";
+
+/* cell title in device settings */
+"MAILBOX" = "ΘΥΡΙΔΑ";
+
+/* settings general section title */
+"Mailbox Password" = "Κωδικός Θυρίδας";
+
+/* *
+ *  MailboxPasswordViewController */
+"MAILBOX PASSWORD" = "Κωδικός Θυρίδας";
+
+/* (No Comment) */
+"Mailbox password doesn't match" = "Ο κωδικός θυρίδας δεν ταιριάζει";
+
+/* cell title in device settings */
+"Mailbox size" = "Μέγεθος θυρίδας";
+
+/* The title for the view where user can manage emails in the contact group */
+"Manage Addresses" = "Διαχείριση Διευθύνσεων";
+
+/* Settings row */
+"Manage in device Settings" = "Διαχείριση στις Ρυθμίσεις συσκευής";
+
+/* Title */
+"Manage Labels/Folders" = "Διαχείριση Ετικετών/Φακέλων";
+
+/* Action */
+"Mark as unread" = "Επισήμανση ως μη αναγνωσμένο";
+
+/* mark message as read action */
+"Mark Read" = "Επισήμανση ως αναγνωσμένο";
+
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
+
+/* menu title */
+"Menu" = "Μενού";
+
+/* Message with title */
+"Message %@" = "Μήνυμα %@";
+
+/* *
+ *  Expiration View */
+"Message expired" = "Το μήνυμα έληξε";
+
+/* Title */
+"Message has been deleted." = "Το μήνυμα διαγράφηκε.";
+
+/* Title */
+"Message has been moved." = "Το μήνυμα έχει μεταφερθεί.";
+
+/* Placeholder */
+"Message Password" = "Κωδικός πρόσβασης μηνύματος";
+
+/* Description */
+"Message password does not match." = "Ο κωδικός πρόσβασης μηνύματος δεν ταιριάζει.";
+
+/* settings debug section title */
+"Message Queue" = "Σειρά μηνυμάτων";
+
+/* (No Comment) */
+"Message sending failed please try again" = "Η Αποστολή του μηνύματος απέτυχε, παρακαλώ δοκιμάστε ξανά";
+
+/* Description */
+"Message sending failed. Please try again." = "Η Αποστολή του μηνύματος απέτυχε, παρακαλώ δοκιμάστε ξανά.";
+
+/* Description after message have been sent */
+"Message sent" = "Το μήνυμα στάλθηκε";
+
+/* Title */
+"Message Swipe Actions" = "Ενέργειες Ολίσθησης Μηνυμάτων";
+
+/* Description */
+"Messages you send can be set to auto delete after a certain time period." = "Τα μηνύματα που στέλνετε μπορούν να ρυθμιστούν για αυτόματη διαγραφή μετά από ένα συγκεκριμένο χρονικό διάστημα.";
+
+/* default vcard types */
+"Mobile" = "Κινητό";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Υπογραφή κινητού";
+
+/* Description */
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Οι εγγραφές μέσω κινητού είναι προσωρινά απενεργοποιημένες. Δοκιμάστε ξανά αργότερα ή δοκιμάστε να εγγραφείτε στο protonmail.com χρησιμοποιώντας έναν σταθερό ή έναν φορητό υπολογιστή.";
+
+/* Description */
+"Modifying or turning off the default mobile signature is a paid feature." = "Η τροποποίηση ή η απενεργοποίηση της προεπιλεγμένης υπογραφής κινητού είναι μια λειτουργία επί πληρωμής.";
+
+/* More actions button */
+"More" = "Περισσότερα";
+
+/* Screen header */
+"More Credits" = "Περισσότερες Μονάδες";
+
+/* move action */
+"Move to All Mail" = "Μεταφορά σε \"Όλα τα Μηνύματα\"";
+
+/* move action */
+"Move to Archive" = "Μεταφορά στα Αρχειοθετημένα";
+
+/* move action */
+"Move to Draft" = "Μεταφορά στο πρόχειρο";
+
+/* folder apply - title */
+"Move to Folder" = "Μετακίνηση σε Φάκελο";
+
+/* move action */
+"Move to Inbox" = "Μετακίνηση στα Εισερχόμενα";
+
+/* move action */
+"Move to Outbox" = "Μετακίνηση στα Εξερχόμενα";
+
+/* move action */
+"Move to Spam" = "Μετακίνηση στα Ανεπιθύμητα";
+
+/* move action */
+"Move to Trash" = "Μετακίνηση στον Κάδο Απορριμμάτων";
+
+/* Title */
+"Move to..." = "Μετακίνηση σε...";
+
+/* Title */
+"Multiple Addresses" = "Πολλαπλές διευθύνσεις";
+
+/* title */
+"Name" = "Όνομα";
+
+/* Action */
+"NEED AN ACCOUNT? SIGN UP." = "Εγγραφείτε δωρεάν";
+
+/* section title */
+"Networking" = "Δικτύωση";
+
+/* Title */
+"New login password" = "Νέος κωδικός σύνδεσης";
+
+/* Title */
+"New mailbox password" = "Νέος Κωδικός Θυρίδας";
+
+/* Placeholder */
+"New password" = "Νέος κωδικός πρόσβασης";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Ψευδώνυμο";
+
+/* Title */
+"No connectivity detected..." = "Η σύνδεση δεν εντοπίστηκε...";
+
+/* network troubleshot cell title */
+"No internet connection" = "Δεν υπάρχει σύνδεση στο Διαδίκτυο";
+
+/* message when mailbox doesnt have emailsß */
+"No Messages" = "Δεν υπάρχουν μηνύματα";
+
+/* no object error, local only , this could be not translated! */
+"no object" = "no object";
+
+/* Warning message option when user want to relogin to another account */
+"No, for another ProtonMail account" = "Όχι, για έναν άλλο λογαριασμό ProtonMail";
+
+/* Error message */
+"No, not related to in-app purchase" = "Όχι, δεν σχετίζεται με την αγορά εντός της εφαρμογής";
+
+/* A *short* description saying that there is no contact group associated with this contact email
+   Title */
+"None" = "Κανένα";
+
+/* Title */
+"normal attachments" = "κανονικά συνημμένα";
+
+/* alert description */
+"Not all recipients support message expiration" = "Δεν υποστηρίζουν όλοι οι παραλήπτες τα μηνύματα με λειτουργία χρονικού ορίου";
+
+/* Action */
+"Not Now" = "Όχι τώρα";
+
+/* Signup user name notes */
+"Note: The Username is also your ProtonMail address." = "Σημείωση: Το όνομα χρήστη είναι επίσης και η διεύθυνση ProtonMail σας.";
+
+/* setup password notes */
+"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Σημείωση: Αυτό χρησιμοποιείται για την κρυπτογράφηση και αποκρυπτογράφηση των μηνυμάτων σας. Μην χάσετε αυτόν τον κωδικό πρόσβασης - δεν μπορούμε να τον ανακτήσουμε.";
+
+/* setup password notes */
+"Note: This is used to log you into your account." = "Σημείωση: Χρησιμοποιείται για τη σύνδεση στο λογαριασμό σας.";
+
+/* title */
+"Notes" = "Σημειώσεις";
+
+/* Alert title */
+"Notice" = "Ειδοποίηση";
+
+/* Title */
+"Notification / Recovery Email" = "Email Ειδοποίησης/ανάκτησης";
+
+/* Title */
+"Notification Email" = "Email ειδοποίησης";
+
+/* title of action sheet */
+"Notification Snooze" = "Αναβολή Ειδοποίησης";
+
+/* VoiceOver description */
+"Notifications Are Snoozed" = "Οι ειδοποιήσεις έχουν αναβληθεί";
+
+/* VoiceOver description */
+"Notifications Snooze Off" = "Ειδοποιήσεις Αναβολής Off";
+
+/* Action */
+"OK" = "ΟΚ";
+
+/* Title */
+"On" = "Ενεργό";
+
+/* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
+"On EE, MMM d, yyyy at %@" = "Στις ΗΜ, ΜΗΝ η, χχχχ στις %@";
+
+/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "Στις ΗΜ, ΜΗΝ η, χχχχ στις %1$@, %2$@, έγραψε:";
+
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Μόνο ένας δωρεάν λογαριασμός μπορεί να προστεθεί";
+
+/* (No Comment) */
+"OpenDraft" = "Open draft";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Οργανισμός";
+
+/* default vcard types */
+"Other" = "Άλλο";
+
+/* Section header */
+"OTHER PLANS" = "ΑΛΛΑ ΠΑΚΕΤΑ";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Η ομάδα υποστήριξης πελατών θα προσπαθήσει να ενεργοποιήσει το πακέτο/plan σας με μη αυτόματο τρόπο, εφόσον συμφωνείτε να επισυνάψετε τα τεχνικά δεδομένα που παρέσχε η AppStore στην εφαρμογή τη στιγμή της αγοράς. Αυτά τα δεδομένα δεν περιλαμβάνουν λεπτομέρειες σχετικά με το λογαριασμό σας στο iTunes, το αναγνωριστικό της Apple, τις συνδεδεμένες πιστωτικές κάρτες ή οποιεσδήποτε άλλες πληροφορίες χρήστη. Τα τεχνικά δεδομένα, μας βοηθούν να ελέγξουμε και να επαληθεύσουμε ότι η συναλλαγή ολοκληρώθηκε στους διακομιστές του AppStore.";
+
+/* mail location desc */
+"Outbox" = "Εξερχόμενα";
+
+/* title */
+"Password" = "Κωδικός";
+
+/* Description */
+"Password cannot be empty." = "Ο κωδικός πρόσβασης δεν είναι πρέπει να είναι κενός.";
+
+/* cell title in device settings */
+"Password management" = "Διαχείριση κωδικών πρόσβασης";
+
+/* Title */
+"Password Mismatch" = "Οι κωδικοί πρόσβασης δεν ταιριάζουν";
+
+/* update password error */
+"Password update failed" = "Ενημέρωση του κωδικού πρόσβασης απέτυχε";
+
+/* Title */
+"Password Updated" = "Ο κωδικός πρόσβασης ενημερώθηκε";
+
+/* default vcard types */
+"Personal" = "Προσωπικό";
+
+/* encryption lock description */
+"PGP-encrypted" = "PGP-κρυπτογραφημένο";
+
+/* encryption lock description */
+"PGP-encrypted message" = "Κρυπτογραφημένο μήνυμα με PGP";
+
+/* encryption lock description */
+"PGP-encrypted message from verified address" = "Κρυπτογραφημένο μήνυμα με PGP απο επαληθευμένη διεύθυνση";
+
+/* encryption lock description */
+"PGP-signed" = "Υπογεγραμμένο με PGP";
+
+/* encryption lock description */
+"PGP-signed message from verified address" = "Μήνυμα υπογεγραμμένο με PGP, απο επαληθευμένη διεύθυνση";
+
+/* default vcard types */
+"Phone" = "Τηλέφωνο";
+
+/* contact placeholder */
+"Phone number" = "Αριθμός τηλεφώνου";
+
+/* Title */
+"Phone number invalid" = "Ο αριθμός τηλεφώνου δεν είναι έγκυρος";
+
+/* human check option button */
+"Phone Verification" = "Επαλήθευση Τηλεφώνου";
+
+/* Title */
+"Photo Library" = "Βιβλιοθήκη φωτογραφιών";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN & FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN & TouchID";
+
+/* Description */
+"Pin code can't be empty." = "Το πεδίο κωδικού Pin δεν μπορεί να είναι κενό.";
+
+/* alert description */
+"Please add a password for the following recipients." = "Προσθέστε έναν κωδικό πρόσβασης για τους ακόλουθους παραλήπτες.";
+
+/* Description */
+"Please check your cell phone for the verification code." = "Παρακαλώ ελέγξτε το κινητό σας για τον κωδικό επαλήθευσης.";
+
+/* error message */
+"Please check your email for the verification code." = "Παρακαλώ ελέγξτε το E-mail σας για τον κωδικό επαλήθευσης.";
+
+/* alert description */
+"Please disable PGP Sending for following addresses." = "Παρακαλώ απενεργοποιήστε την αποστολή PGP για τις ακόλουθες διευθύνσεις.";
+
+/* Description */
+"Please input a valid cell phone number." = "Παρακαλώ Εισάγετε έναν έγκυρο αριθμό κινητού τηλεφώνου.";
+
+/* error message */
+"Please input a valid email address." = "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση E-mail.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Παρακαλώ συνδεθείτε στο λογαριασμό ProtonMail που αναβαθμίζετε το πακέτο/πλάνο υπηρεσίας έτσι ώστε να μπορέσουμε να ολοκληρώσουμε την αγορά.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Παρακαλώ συνδεθείτε στο λογαριασμό ProtonMail που αναβαθμίζετε το πακέτο/πλάνο υπηρεσίας έτσι ώστε να μπορέσουμε να ολοκληρώσουμε την ενεργοποίηση του πακέτου υπηρεσίας.";
+
+/* network troubleshot cell title */
+"Please make sure that your internet connection is working." = "Βεβαιωθείτε ότι η σύνδεση σας στο διαδίκτυο λειτουργεί.";
+
+/* Error */
+"Please pick a user name first!" = "Παρακαλώ επιλέξτε πρώτα ένα όνομα χρήστη!";
+
+/* The message will show up when the user attempts to create a contact group without any name specified */
+"Please provide a group name" = "Παρακαλώ καταχωρίστε ένα όνομα ομάδας";
+
+/* when switch sender but email has attachments */
+"Please remove all attachments before changing sender!" = "Παρακαλώ καταργήστε όλα τα συνημμένα πριν αλλάξτε τον αποστολέα";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "Παρακαλώ επιλέξτε τουλάχιστον ένα email";
+
+/* The message will show up when the user attempts to create a contact group without any email selected */
+"Please select at least one email for the contact group" = "Παρακαλώ επιλέξτε τουλάχιστον ένα E-mail για την ομάδα επαφών";
+
+/* human check select option title */
+"Please select one of the following options:" = "Παρακαλώ επιλέξτε μία από τις παρακάτω επιλογές:";
+
+/* Description */
+"Please set a password." = "Παρακαλούμε να ορίσετε έναν κωδικό πρόσβασης.";
+
+/* (No Comment) */
+"Please try a different domain." = "Παρακαλώ δοκιμάστε ένα διαφορετικό domain.";
+
+/* (No Comment) */
+"Please try a different email address." = "Παρακαλώ δοκιμάστε μία διαφορετική διεύθυνση E-mail.";
+
+/* (No Comment) */
+"Please try a different password." = "Παρακαλώ δοκιμάστε έναν διαφορετικό κωδικό πρόσβασης.";
+
+/* (No Comment) */
+"Please try a different user name." = "Παρακαλώ δοκιμάστε ένα διαφορετικό όνομα χρήστη.";
+
+/* 
+
+ */
+"Please try again." = "Παρακαλούμε δοκιμάστε ξανά";
+
+/* Error message */
+"Please unlock the app to proceed with your service plan activation" = "Παρακαλώ ξεκλειδώστε την εφαρμογή για να προχωρήσετε στην ενεργοποίηση του πακέτου/πλάνου υπηρεσίας σας";
+
+/* Description */
+"Please use ProtonMail App login first." = "Παρακαλούμε χρησιμοποιήστε πρώτα την εφαρμογή σύνδεσης του ProtonMail.";
+
+/* Alert */
+"Please use the web application to reset your password." = "Παρακαλώ χρησιμοποιήστε την εφαρμογή web για να επαναφέρετε τον κωδικό σας.";
+
+/* (No Comment) */
+"Please use the web version of ProtonMail to change your mailbox password!" = "Παρακαλώ χρησιμοποιήστε την έκδοση web του ProtonMail για να αλλάξετε τον κωδικό θυρίδας σας!";
+
+/* Alert */
+"Please use the web version of ProtonMail to change your passwords!" = "Παρακαλώ χρησιμοποιήστε την έκδοση web του ProtonMail για να αλλάξετε τους κωδικούς σας!";
+
+/* Description */
+"Please use your new password when signing in." = "Χρησιμοποιήστε τον νέο κωδικό πρόσβασης κατά τη σύνδεση.";
+
+/* The */
+"Please wait until the email downloaded!" = "Περιμένετε μέχρι να γίνει η λήψη του E-mail!";
+
+/* 
+ & alert title */
+"Please, manage it in your phone." = "Please, manage it in your phone.";
+
+/* Upgrade warning title */
+"PREMIUM FEATURE" = "PREMIUM ΧΑΡΑΚΤΗΡΗΣΤΙΚΑ";
+
+/* Action */
+"Print" = "Εκτύπωση";
+
+/* cell title in device settings */
+"Privacy" = "Απόρρητο";
+
+/* agree check box privacy */
+"privacy policy." = "πολιτική απορρήτου.";
+
+/* Local notification title */
+"Problem sending message" = "Πρόβλημα κατά την αποστολή μηνύματος";
+
+/* Title */
+"Protection" = "Προστασία";
+
+/* settings protection section title */
+"Protection Entire App" = "Προστασία ολόκληρης της εφαρμογής";
+
+/* network troubleshot cell title */
+"Proton is down" = "Το Proton έχει πέσει";
+
+/* network troubleshot cell title */
+"Proton Status" = "Κατάσταση Proton";
+
+/* Title */
+"ProtonMail" = "ProtonMail";
+
+/* Description */
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "Το ProtonMail δεν πωλεί διαφημίσεις ούτε καταχράζεται το απόρρητο σας. Η υποστήριξή σας είναι απαραίτητη για τη λειτουργία του ProtonMail. Μπορείτε να κάνετε αναβάθμιση σε έναν λογαριασμό επί πληρωμής ή να κάνετε μια δωρεά για να υποστηρίξετε το ProtonMail.";
+
+/* Title */
+"ProtonMail encrypted emails" = "Κρυπτογραφημένα Email ProtonMail";
+
+/* Description */
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Το ProtonMail είναι εκτός σύνδεσης, ελέγξτε το twitter για την τρέχουσα κατάσταση: https://twitter.com/protonmail";
+
+/* Title */
+"ProtonMail is currently offline..." = "Το ProtonMail αυτή τη στιγμή είναι εκτός σύνδεσης...";
+
+/* Description */
+"ProtonMail Plus is required to customize your mobile signature" = "Το ProtonMail Plus απαιτείται για να μπορείτε να επεξεργαστείτε την υπογραφή κινητού";
+
+/* Upgrade warning message */
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "Το ProtonMail Plus / Professional / Visionary σάς δίνει τη δυνατότητα να προσθέτετε και να επεξεργάζεστε στοιχεία επικοινωνίας πέρα από το όνομα και το ηλεκτρονικό ταχυδρομείο της επαφής σας. Χρησιμοποιώντας το ProtonMail, αυτά τα δεδομένα θα είναι εξίσου ασφαλή με το κρυπτογραφημένο ηλεκτρονικό ταχυδρομείο σας.";
+
+/* network troubleshot cell title */
+"ProtonVPN" = "ProtonVPN";
+
+/* Service plan capability */
+"ProtonVPN included" = "Περιλαμβάνεται το ProtonVPN";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Παρέμβαση Proxy/Firewall";
+
+/* cell title in device settings */
+"Push Notifications" = "Ειδοποιήσεις Push";
+
+/* Title */
+"Quick swipe actions" = "Γρήγορες ενέργειες ολίσθησης";
+
+/* Title */
+"Rate & Review" = "Τιμή & Αξιολόγηση";
+
+/* set pin title */
+"Re-Enter your PIN" = "Καταχωρίστε ξανά τον κωδικό PIN";
+
+/* abbreviation of reply: */
+"Re:" = "Απ:";
+
+/* Title */
+"Reading device contacts data..." = "Ανάγνωση δεδομένων επαφών συσκευής...";
+
+/* Title */
+"Recovery Code" = "Κωδικός Ανάκτησης";
+
+/* Title */
+"Recovery Email" = "Email ανάκτησης";
+
+/* Title */
+"Recovery Email Warning" = "Προειδοποίηση E-mail Ανάκτησης";
+
+/* Title */
+"Remind Me Later" = "Υπενθύμιση αργότερα";
+
+/* remove action */
+"Remove" = "Αφαίρεση";
+
+/* account right bar item title */
+"Remove All" = "Αφαίρεση Όλων";
+
+/* Settings row */
+"Remove image meta-data" = "Κατάργηση μετα-δεδομένων εικόνας";
+
+/* un star message */
+"Remove Star" = "Αφαίρεση αστεριού";
+
+/* settings option (Repeat: sun, mon, thu) */
+"Repeat" = "Επανάληψη";
+
+/* reply action */
+"Reply" = "Απάντηση";
+
+/* reply all action */
+"Reply All" = "Απάντηση σε όλους";
+
+/* composer view model impl */
+"Reply message" = "Απάντηση μηνύματος";
+
+/* (No Comment) */
+"ReplyAll" = "Απάντηση σε όλους";
+
+/* menu title */
+"Report Bugs" = "Αναφορά σφαλμάτων";
+
+/* message details-> more action-> report phishing */
+"Report Phishing" = "Αναφορά ηλεκτρονικού «ψαρέματος»";
+
+/* alert message */
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Η αναφορά ενός μηνύματος ως προσπάθεια ηλεκτρονικού \"ψαρέματος\" (phising) θα το αποστείλει σε εμάς, ώστε να το αναλύσουμε και να βελτιώσουμε τα φίλτρα μας. Αυτό σημαίνει ότι θα μπορέσουμε να δούμε το περιεχόμενο ολόκληρου του μηνύματος.";
+
+/* link opeining confirmation */
+"Request Link Confirmation" = "Ζητήστε σύνδεσμο επιβεβαίωσης";
+
+/* Action */
+"RESET MAILBOX PASSWORD" = "ΕΠΑΝΑΦΟΡΑ ΚΩΔΙΚΟΥ ΘΥΡΙΔΑΣ";
+
+/* Title */
+"Resetting message cache ..." = "Επαναφορά της προσωρινής μνήμης μηνυμάτων...";
+
+/* Action */
+"Retry" = "Δοκιμάστε ξανά";
+
+/* email verify code resend count down */
+"Retry after %d seconds" = "Νέα προσπάθεια μετά από %d δευτερόλεπτα";
+
+/* Title */
+"Save" = "Αποθήκευση";
+
+/* title */
+"Save Changes" = "Αποθήκευση Αλλαγών";
+
+/* Action */
+"Save draft" = "Αποθήκευση προχείρου";
+
+/* action sheet option */
+"Scheduled" = "Προγραμματισμένο";
+
+/* Springboard (3D Touch) shortcuts action
+   Title */
+"Search" = "Αναζήτηση";
+
+/* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
+"Select An Option" = "Διαλέξτε μια Επιλογή";
+
+/* The title for the view where user can select the color for the group */
+"Select Color" = "Επιλέξτε χρώμα";
+
+/* (No Comment) */
+"Select your language" = "Επιλέξτε τη γλώσσα σας";
+
+/* Action */
+"Send" = "Αποστολή";
+
+/* Action */
+"Send anyway" = "Αποστολή ούτως ή άλλως";
+
+/* Description */
+"Send message without subject?" = "Αποστολή μηνύματος χωρίς θέμα;";
+
+/* Title */
+"Send plain but stored enc" = "Αποστολή απλού αλλά αποθηκευμένου enc";
+
+/* Title */
+"Send Verification Code" = "Αποστολή Κωδικού Επαλήθευσης";
+
+/* encryption lock description */
+"Sender Verification Failed" = "Η επαλήθευση του αποστολέα απέτυχε";
+
+/* Alert title */
+"Sending message" = "Γίνεται αποστολή μηνύματος";
+
+/* Description */
+"Sending Message" = "Γίνεται αποστολή μηνύματος";
+
+/* pm.me upgrade warning in composer */
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Η αποστολή μηνυμάτων από τη διεύθυνση %1$@ είναι μια λειτουργία επί πληρωμής. Το μήνυμα σας θα σταλεί από την προεπιλεγμένη σας διεύθυνση %2$@";
+
+/* menu title */
+"Sent" = "Απεσταλμένα";
+
+/* mail location title */
+"SENT" = "Απεσταλμένα";
+
+/* encryption lock description for auto reply */
+"Sent by ProtonMail with zero access encryption" = "Στάλθηκε από το ProtonMail με κρυπτογράφηση μηδενικής πρόσβασης";
+
+/* encryption lock description */
+"Sent by you with end-to-end encryption" = "Στάλθηκε από εσάς με κρυπτογράφηση από άκρο σε άκρο";
+
+/* Description */
+"Sent Failed" = "Αποτυχία αποστολής";
+
+/* Description */
+"Server proofs not valid!" = "Το όνομα του Server είναι εσφαλμένο!";
+
+/* Description */
+"Set a password to encrypt this message for non-ProtonMail users." = "Ορίστε έναν κωδικό πρόσβασης για την κρυπτογράφηση αυτού του μηνύματος, σε χρήστες που δεν χρησιμοποιούν το ProtonMail.";
+
+/* Title */
+"Set Password" = "Ορισμός Κωδικού Πρόσβασης";
+
+/* Signup passwords top title */
+"Set passwords" = "Ορισμός κωδικού πρόσβασης";
+
+/* menu title */
+"Settings" = "Ρυθμίσεις";
+
+/* Title */
+"Share Alert" = "Ειδοποίηση Κοινοποίησης";
+
+/* action */
+"Share Contact" = "Κοινή χρήση επαφής";
+
+/* Title */
+"Share it with your friends" = "Μοιραστείτε το με τους φίλους σας";
+
+/* Action */
+"Sign Out" = "Αποσύνδεση";
+
+/* Title in signature settings */
+"Signature" = "Υπογραφή";
+
+/* Title */
+"Signature Updated" = "Η υπογραφή ενημερώθηκε";
+
+/* settings general section title */
+"Single Password" = "Ενιαίος Κωδικός";
+
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Αναβολή";
+
+/* settings option */
+"Snooze Notifications" = "Αναβολή Ειδοποιήσεων";
+
+/* title of action sheet when quick snooze is active (Snoozed for 30min) */
+"Snoozed for" = "Αναβλήθηκε για";
+
+/* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
+"Snoozed till" = "Αναβλήθηκε μέχρι";
+
+/* Error message for beta users */
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Δυστυχώς, δεν μπορούμε να επεξεργαστούμε τις αγορές στην έκδοση beta της εφαρμογής iOS. Σας ευχαριστούμε για τη συμμετοχή σας στο pubic beta!";
+
+/* (No Comment) */
+"Space Warning" = "Προειδοποίηση χώρου";
+
+/* mail location desc
+   menu title */
+"Spam" = "Ανεπιθύμητα";
+
+/* mail location title */
+"SPAM" = "Ανεπιθύμητα";
+
+/* Description */
+"Spammed" = "Χαρακτηρίστηκε Ανεπιθύμητο";
+
+/* Error */
+"SRP Client" = "SRP Client";
+
+/* Error */
+"SRP Server" = "Διακομιστής SRP";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
+
+/* Title */
+"Star" = "Προσθήκη αστεριού";
+
+/* mail location desc
+   menu title
+   Springboard (3D Touch) shortcuts action
+   VoiceOver: email is starred */
+"Starred" = "Με αστέρι";
+
+/* mail location title */
+"STARRED" = "Με αστέρι";
+
+/* settings option (Start Time: 8am) */
+"Start Time" = "Ώρα Έναρξης";
+
+/* contact placeholder */
+"State" = "Κατάσταση";
+
+/* network troubleshot cell title */
+"Still can't find a solution" = "Ακόμα δεν μπορεί να βρεθεί λύση";
+
+/* Title */
+"Storage" = "Αποθηκευτικός χώρος";
+
+/* Title */
+"Storage Warning" = "Προειδοποίηση αποθήκευσης";
+
+/* encryption lock description */
+"Stored with zero access encryption" = "Αποθηκευμένο με κρυπτογράφηση μηδενικής πρόσβασης";
+
+/* contact placeholder */
+"Street" = "Οδός";
+
+/* Placeholder */
+"Subject" = "Θέμα";
+
+/* subject: text when forward */
+"Subject:" = "Θέμα:";
+
+/* menu title */
+"Subscription" = "Συνδρομή";
+
+/* Service plan capability; i = 2 */
+"Support for %i custom domains (e.g. user@yourdomain.com)" = "Υποστήριξη για %i προσαρμοσμένους domains (πχ. user@yourdomain.com)";
+
+/* network troubleshot cell title */
+"support form" = "φόρμα υποστήριξης";
+
+/* Action */
+"Support ProtonMail" = "Υποστήριξη ProtonMail";
+
+/* settings swipe actions section title */
+"Swipe Left to Right" = "Σύρετε αριστερά προς τα δεξιά";
+
+/* settings swipe actions section title */
+"Swipe Right to Left" = "Σύρετε δεξιά προς τα αριστερά";
+
+/* cell title in device settings
+   Swiping gestures */
+"Swiping gestures" = "Χειρονομίες ολίσθησης";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "Έγινε αλλαγή σε λογαριασμό '%@'";
+
+/* Error */
+"System can't copy the file" = "Το σύστημα δεν μπορεί να αντιγράψει το αρχείο";
+
+/* Title */
+"Take a Photo" = "Λήψη φωτογραφίας";
+
+/* alert description */
+"Tap send anyway to send without expiration to these recipients" = "Πατήστε \"αποστολή ούτως ή άλλως\" για αποστολή χωρίς το χρονικό όριο λήξης σε αυτούς τους παραλήπτες";
+
+/* network troubleshot cell title */
+"Temporarily disable or remove your antivirus software." = "Απενεργοποιήστε ή αφαιρέστε προσωρινά το antivirus.";
+
+/* agree check box terms */
+"terms and conditions" = "όροι και προϋποθέσεις";
+
+/* (No Comment) */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Σας ευχαριστούμε που υποβάλατε μια αναφορά σφάλματος. Προσθέσαμε την αναφορά σας στο σύστημα παρακολούθησης σφαλμάτων.";
+
+/* Description */
+"The authentication credentials are invalid." = "Τα στοιχεία επαλήθευσης δεν είναι έγκυρα.";
+
+/* 
+ */
+"The authentication token has expired." = "Το διακριτικό ελέγχου ταυτότητας έχει λήξει.";
+
+/* key size notes */
+"The current standard" = "Το ισχύον πρότυπο";
+
+/* Description */
+"The display name is now %@." = "Το εμφανιζόμενο όνομα είναι τώρα %@.";
+
+/* Description */
+"The draft cache is broken. Please try again." = "Η προσωρινή μνήμη προχείρου είναι εσφαλμένη. Παρακαλώ προσπαθήστε ξανά.";
+
+/* error when sending the message */
+"The draft format incorrectly sending failed!" = "Η αποστολή απέτυχε. Παρουσιάστηκε σφάλμα με την μορφοποίηση προχείρου.";
+
+/* key size note part 1 */
+"The highest level of encryption available." = "Το υψηλότερο δυνατό επίπεδο κρυπτογράφησης.";
+
+/* (No Comment) */
+"The label name is duplicate" = "Το όνομα της ετικέτας είναι διπλότυπο";
+
+/* Error */
+"The mailbox password is incorrect." = "Ο κωδικός θυρίδας είναι λάθος.";
+
+/* Alert message */
+"The maximum number of distinct recipients is %d" = "Ο μέγιστος αριθμός διαφορετικών παραληπτών είναι %d";
+
+/* *
+ *  LabelsViewController */
+"The maximum number of labels is %d." = "Ο μέγιστος αριθμός ετικετών είναι %d.";
+
+/* update password error */
+"The new password can't be empty." = "Ο νέος κωδικός δεν μπορεί να είναι κενός.";
+
+/* (No Comment) */
+"The new password can't empty" = "Ο νέος κωδικός δεν μπορεί να είναι κενός";
+
+/* update password error */
+"The new password does not match." = "Ο νέος κωδικός δεν ταιριάζει.";
+
+/* (No Comment) */
+"The new password not match" = "Οι κωδικοί πρόσβασης δεν ταιριάζουν";
+
+/* recovery email notes */
+"The optional recovery email address allows you to reset your login password if you forget it." = "Το προαιρετικό E-mail ανάκτησης, σάς επιτρέπει να επαναφέρετε τον κωδικό σύνδεσης σας, σε περίπτωση που τον ξεχάσετε.";
+
+/* update password error */
+"The Password is wrong." = "Ο κωδικός είναι λάθος.";
+
+/* Description */
+"The password you entered does not match the current password." = "Ο κωδικός που έχετε εισάγει δεν αντιστοιχεί στον τρέχον κωδικό πρόσβασης.";
+
+/* Description */
+"The passwords you entered do not match." = "Οι κωδικοί πρόσβασης που εισάγατε δεν ταιριάζουν.";
+
+/* update password error */
+"The private key update failed." = "Η ενημέρωση του ιδιωτικού κλειδιού απέτυχε.";
+
+/* Title */
+"The request timed out." = "Το χρονικό όριο της αίτησης εξαντλήθηκε.";
+
+/* (No Comment) */
+"The total attachment size can't be bigger than 25MB" = "Το συνολικό μέγεθος του συννημένου δεν μπορεί να είναι μεγαλύτερο από 25MB";
+
+/* Description */
+"The total attachment size cannot exceed 25MB" = "Το συνολικό μέγεθος του συννημένου δεν μπορεί να υπερβαίνει τα 25MB";
+
+/* Alert when the account is already logged in */
+"The user is already logged in" = "Ο χρήστης έχει συνδεθεί ήδη";
+
+/* 
+ */
+"The UserName have been taken." = "Το όνομα χρήστη έχει ήδη δεσμευτεί.";
+
+/* 
+ & title */
+"The verification email invalid" = "Μη έγκυρο email επαλήθευσης";
+
+/* Error */
+"The verification failed!" = "Η επαλήθευση απέτυχε!";
+
+/* alert when logout user if in queue still have tasks */
+"There are still some messages in queue. If you log out, the draft will be deleted." = "Υπάρχουν ακόμα ορισμένα μηνύματα στην ουρά. Εάν αποσυνδεθείτε, το πρόχειρο θα διαγραφεί.";
+
+/* Alert to confirm logout with pending message in the queue */
+"There are unsent messages that will be lost if you log out" = "Υπάρχουν μη απεσταλμένα μηνύματα που θα χαθούν εάν αποσυνδεθείτε";
+
+/* Description */
+"There was an error creating or loading the app's saved data." = "Παρουσιάστηκε σφάλμα κατά τη δημιουργία ή τη φόρτωση των αποθηκευμένων δεδομένων της εφαρμογής.";
+
+/* 
+ & local error */
+"There was an error creating or loading the application's saved data." = "Παρουσιάστηκε ένα σφάλμα κατά τη δημιουργία ή τη φόρτωση των αποθηκευμένων δεδομένων της εφαρμογής.";
+
+/* Alert message */
+"This can take a while. Please do not dismiss the app." = "Αυτό μπορεί να διαρκέσει λίγο. Μην κλείσετε την εφαρμογή.";
+
+/* alert desc */
+"This contact belongs to your Address Book." = "Αυτή η επαφή ανήκει στο βιβλίο διευθύνσεων σας.";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Αυτό το μήνυμα ηλεκτρονικού ταχυδρομείου απέτυχε στις απαιτήσεις του ελέγχου ταυτότητας domain. Μπορεί να έχει πλαστογραφηθεί ή να έχει προωθηθεί λάθος!";
+
+/* spam score warning */
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Αυτό το μήνυμα ηλεκτρονικού ταχυδρομείου φαίνεται να προέρχεται από μια διεύθυνση ProtonMail, αλλά προήλθε έξω από το σύστημα μας και απέτυχε τις απαιτήσεις ελέγχου ταυτότητας μας. Μπορεί να έχει πλαστογραφηθεί ή να έχει προωθηθεί εσφαλμένα!";
+
+/* spam score warning */
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Αυτό το μήνυμα μπορεί να είναι απόπειρα ηλεκτρονικού \"ψαρέματος\". Ελέγξτε τον αποστολέα και το περιεχόμενο για να βεβαιωθείτε ότι είναι αυθεντικό.";
+
+/* Title */
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Αυτή η προτίμηση θα επιστρέψει στο Safari εάν το πρόγραμμα περιήγησης, της επιλογής σας, θα απεγκατασταθεί.";
+
+/* contacts talbe cell Title title */
+"Title" = "Τίτλος";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Η επικύρωση πιστοποιητικού TLS απέτυχε. Η σύνδεση σας μπορεί να παρακολουθείται και η εφαρμογή είναι προσωρινά αποκλεισμένη για την ασφάλειά σας.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Η επικύρωση του πιστοποιητικού TLS απέτυχε. Η σύνδεση σας μπορεί να παρακολουθείται και η εφαρμογή είναι προσωρινά αποκλεισμένη για την ασφάλειά σας.\n\nαλλάξτε δίκτυα αμέσως";
+
+/* Title */
+"To" = "Προς";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Για να αποτρέψουμε την κατάχρηση του ProtonMail,&#13;\n πρέπει να επαληθεύσουμε ότι είστε άνθρωπος.";
+
+/* (No Comment) */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Για να επαναφέρετε τον κωδικό θυρίδας σας, παρακαλώ χρησιμοποιήστε την έκδοση web του ProtonMail στο protonmail.com";
+
+/* Description */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Για να επαναφέρετε τον κωδικό θυρίδας σας, παρακαλώ χρησιμοποιήστε την έκδοση web του ProtonMail στο protonmail.com";
+
+/* message To: feild */
+"To:" = "Προς:";
+
+/* *
+ *  API Error & alert title */
+"Token expired" = "Το token έχει λήξει";
+
+/* Alert title */
+"Too many recipients" = "Πάρα πολλοί παραλήπτες";
+
+/* network troubleshot cell title */
+"Tor" = "Tor";
+
+/* settings touchid error */
+"TouchID is not enrolled, enable it in the system Settings" = "Το TouchID δεν είναι εγγεγραμμένο, ενεργοποιήστε το από τις ρυθμίσεις συστήματος";
+
+/* settings touchid/faceid error */
+"TouchID not available" = "Το TouchID δεν είναι διαθέσιμο";
+
+/* mail location desc
+   menu title
+   move action */
+"Trash" = "Κάδος Απορριμμάτων";
+
+/* mail location title */
+"TRASH" = "Κάδος Απορριμμάτων";
+
+/* Title */
+"Trouble shooting guide" = "Οδηγός επίλυσης προβλημάτων";
+
+/* troubleshooting view button */
+"Troubleshoot" = "Αντιμετώπιση προβλημάτων";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Αντιμετώπιση προβλημάτων";
+
+/* network troubleshot cell title */
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Δοκιμάστε να συνδεθείτε στο Proton από διαφορετικό δίκτυο (ή χρησιμοποιήστε το ProtonVPN ή το Tor).";
+
+/* action sheet option */
+"Turn Off" = "Απενεργοποιήστε";
+
+/* Title */
+"Tweet about ProtonMail" = "Tweet σχετικά με το ProtonMail";
+
+/* network troubleshot cell title */
+"Twitter" = "Twitter";
+
+/* Placeholder */
+"Two Factor Code" = "Κωδικός Δύο Παραγόντων (2FA)";
+
+/* Internal type casting error */
+"Type casting error" = "Type casting error";
+
+/* Description */
+"Unable to connect to the server" = "Αδυναμία σύνδεσης στο διακομιστή";
+
+/* 
+ */
+"Unable to construct a valid URL with the following path: %@" = "Δεν είναι δυνατή η δημιουργία έγκυρης διεύθυνσης URL με την ακόλουθη διαδρομή: %@";
+
+/* Description */
+"Unable to create SRP Client!" = "Δεν είναι δυνατή η δημιουργία του προγράμματος-πελάτη SRP!";
+
+/* Error */
+"Unable to decrypt message." = "Δεν είναι δυνατή η αποκρυπτογράφηση του μηνύματος.";
+
+/* Description */
+"Unable to edit this message offline" = "Δεν είναι δυνατή η επεξεργασία αυτού του μηνύματος, ενώ βρίσκεστε εκτός σύνδεσης";
+
+/* Description */
+"Unable to generate hashed password!" = "Δεν είναι δυνατή η δημιουργία hashed κωδικού!";
+
+/* Error */
+"Unable to get contacts" = "Δεν είναι δυνατή η λήψη επαφών";
+
+/* Description */
+"Unable to parse authentication info!" = "Δεν είναι δυνατή η ανάλυση των στοιχείων επαλήθευσης!";
+
+/* Description */
+"Unable to parse authentication token!" = "Δεν είναι δυνατή η ανάλυση του διακριτικού ελέγχου ταυτότητας!";
+
+/* Description */
+"Unable to parse cached authentication token!" = "Δεν είναι δυνατή η ανάλυση του διακριτικού επαλήθευσης!";
+
+/* Description */
+"Unable to parse response" = "Δεν είναι δυνατή η ανάλυση της απάντησης";
+
+/* Description */
+"Unable to parse the response object:\n%@" = "Δεν είναι δυνατή η ανάλυση του αντικειμένου απόκρισης:\n%@";
+
+/* Error */
+"Unable to parse token" = "Δεν είναι δυνατή η ανάλυση του διακριτικού";
+
+/* error when sending the message */
+"Unable to send the email" = "Δεν είναι δυνατή η αποστολή του E-mail.";
+
+/* Action */
+"Undo" = "Αναίρεση";
+
+/* Description */
+"Unknow Error" = "Άγνωστο σφάλμα";
+
+/* (No Comment) */
+"Unknow file" = "Άγνωστο αρχείο";
+
+/* title, default display name */
+"Unknown" = "Άγνωστο";
+
+/* Error */
+"Unknown Error" = "Άγνωστο Σφάλμα";
+
+/* (No Comment) */
+"Unkonw Version" = "Άγνωστη έκδοση";
+
+/* Service plan capability; */
+"Unlimited messages sent/day" = "Απεριόριστα μηνύματα για αποστολή ανά ημέρα";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Απαιτείται ξεκλείδωμα";
+
+/* The verb for describing the unread action
+   VoiceOver: email is not read yet */
+"Unread" = "Μη αναγνωσμένα";
+
+/* Error message */
+"Unsupported file type" = "Μη υποστηριζόμενος τύπος αρχείου";
+
+/* Service plan capability; i = 6 */
+"Up to %i users" = "Έως και %i χρήστες";
+
+/* like top right action text */
+"Update" = "Αναβάθμιση";
+
+/* Contacts Update contact */
+"Update Contact" = "Ενημέρωση Επαφής";
+
+/* update notification email error title */
+"Update Notification Email" = "Ενημέρωση E-mail ειδοποίησης";
+
+/* title */
+"Update Now" = "Ενημέρωση Τώρα";
+
+/* title */
+"Update Required" = "Απαιτείται Ενημέρωση";
+
+/* Service plan description footer */
+"Upgrade to a paid plan to benefit from more features" = "Αναβαθμίστε σε ένα λογαριασμό επί πληρωμής για να επωφεληθείτε από περισσότερες λειτουργίες";
+
+/* Error */
+"Upgrade to a paid plan to send from your %@ address" = "Αναβαθμίστε σε ένα λογαριασμό επί πληρωμής για αποστολή από τη διεύθυνση %@";
+
+/* alert description */
+"Upgrade to get all paid features." = "Κάντε αναβάθμιση για να λάβετε όλες τις λειτουργίες που παρέχονται στους λογαριασμούς επί πληρωμής.";
+
+/* Action */
+"Upload Contacts" = "Μεταφόρτωση Επαφών";
+
+/* Description */
+"Upload iOS contacts to ProtonMail?" = "Μεταφόρτωση επαφών iOS στο ProtonMail;";
+
+/* default vcard types */
+"Url" = "Url";
+
+/* default vcard types */
+"URL" = "Διεύθυνση URL";
+
+/* error when user already exist */
+"User already exist!" = "Το όνομα χρήστη χρησιμοποιείται ήδη";
+
+/* (No Comment) */
+"User is available!" = "Το όνομα χρήστη είναι διαθέσιμο";
+
+/* Title */
+"USER LOGIN" = "Είσοδος Χρήστη";
+
+/* 
+ & title */
+"User name exist" = "Υπάρχει όνομα χρήστη";
+
+/* 
+ & alert title */
+"User name invalid" = "Μη έγκυρο όνομα χρήστη";
+
+/* Title */
+"Username" = "Όνομα χρήστη";
+
+/* Title */
+"Verification code request failed" = "Η αίτηση του κωδικού επαλήθευσης απέτυχε";
+
+/* Title */
+"Verification code sent" = "Ο κωδικός επαλήθευσης στάλθηκε";
+
+/* error title */
+"Verification error" = "Σφάλμα επαλήθευσης";
+
+/* error details */
+"Verification of this content’s signature failed" = "Η επαλήθευση της υπογραφής αυτού του περιεχομένου απέτυχε";
+
+/* (No Comment) */
+"Version %@ %@" = "Έκδοση %@ %@";
+
+/* message details-> more action-> view headers */
+"View Headers" = "Προβολή Headers";
+
+/* message details-> more action-> view raw html of message body */
+"View HTML" = "Προβολή HTML";
+
+/* Action */
+"View Plans" = "Προβολή πακέτων/πλάνων";
+
+/* Title */
+"Warning" = "Προειδοποίηση";
+
+/* human check warning description */
+"Warning: Before you pass the human check you can't sent email!!!" = "Προειδοποίηση: Πριν ολοκληρώστε την \"ανθρώπινη επαλήθευση\" δεν μπορείτε να στείλετε email!!!";
+
+/* Description */
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Προειδοποίηση: Δεν έχετε ορίσει ένα E-mail ανάκτησης, με αποτέλεσμα η ανάκτηση λογαριασμού να είναι αδύνατη αν ξεχάσετε τον κωδικό πρόσβασής σας. Θέλετε να συνεχίσετε χωρίς E-mail ανάκτησης;";
+
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Δεν ήταν δυνατή η αποστολή του μηνύματος σας, πιθανώς λόγω κακής σύνδεσης δικτύου. Το μήνυμα σας αποθηκεύτηκε στα Πρόχειρα και θα σταλεί αυτόματα την επόμενη φορά που θα ανοίξετε την εφαρμογή.";
+
+/* Error message */
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Ενεργοποιήσαμε επιτυχώς τη συνδρομή σας. Κάντε επανεκκίνηση της εφαρμογής για να ξεκινήσετε να χρησιμοποιείτε το νέο σας πρόγραμμα υπηρεσιών.";
+
+/* text field notes */
+"We will send a verification code to the cell phone above." = "Θα στείλουμε έναν κωδικό επαλήθευσης στο παραπάνω κινητό τηλέφωνο.";
+
+/* email field notes */
+"We will send a verification code to the email address above." = "Θα στείλουμε έναν κωδικό επαλήθευσης στην παραπάνω διεύθυνση E-Mail.";
+
+/* Title */
+"We would like to know what we can do better." = "Θα θέλαμε να μάθουμε τι μπορούμε να βελτιώσουμε.";
+
+/* Title */
+"Welcome to ProtonMail!" = "Καλώς ήρθατε στο ProtonMail";
+
+/* Description */
+"What people see in the \"From\" field." = "Τι βλέπουν οι υπόλοιποι στο πεδίο \"Από\".";
+
+/* display name notes */
+"When you send an email, this is the name that appears in the sender field." = "Όταν στέλνετε ένα μήνυμα ηλεκτρονικού ταχυδρομείου, αυτό είναι το όνομα που εμφανίζεται στο πεδίο αποστολέα.";
+
+/* default vcard types */
+"Work" = "Εργασία";
+
+/* 
+ & title */
+"Wrong verification code" = "Λάθος κωδικός επαλήθευσης";
+
+/* Title */
+"wrote:" = "έγραψε:";
+
+/* Warning message option to bypass validation and activate plan for current username */
+"Yes, activate it for " = "Ναι, ενεργοποιήστε το για ";
+
+/* Error message */
+"Yes, attach details of payment" = "Ναι, επισυνάψτε τα στοιχεία πληρωμής";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Πρόκειται να εκκινήσετε το πρόγραμμα περιήγησης και να πλοηγηθείτε στο";
+
+/* Alert of removing all accounts */
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Πρόκειται να καταργήσετε όλους τους λογαριασμούς. Δεν θα έχετε πρόσβαση σε αυτά από αυτήν τη συσκευή, εκτός εάν τα προσθέσετε ξανά.\n\nΘέλετε να καταργήσετε όλους τους λογαριασμούς σας ούτως ή άλλως;";
+
+/* Description */
+"You can customize swipe gestures in the ProtonMail App Settings." = "Μπορείτε να προσαρμόσετε τα gestures ολίσθησης, στις ρυθμίσεις εφαρμογής ProtonMail.";
+
+/* Description */
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Μπορείτε να λάβετε βοήθεια και υποστήριξη στο protonmail.com/support. Μπορούν επίσης να αναφερθούν και σφάλματα σχετικά με την εφαρμογή.";
+
+/* pm.me upgrade warning in composer */
+"You can't set %@ address as default because it is a paid feature." = "Δεν μπορείτε να ορίσετε την διεύθυνση %@ ως προεπιλογή επειδή είναι μια λειτουργία επί πληρωμής.";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Απενεργοποιείτε το Face ID στις ρυθμίσεις dου συστήματός σας. Το Face ID έχει χρησιμοποιηθεί για την προστασία σημαντικdν πληροφοριών λογαριασμού. Για πρόσβαση στον λογαριασμό σας, μεταβείτε στις ρυθμίσεις και ενεργοποιήστε ξανά το FaceID ή συνδεθείτε ξανά.";
+
+/* description */
+"You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Ενεργοποιήσατε τη λήξη χρονικού ορίου μηνύματος, αλλά δεν το υποστηρίζουν όλοι οι παραλήπτες. Προσθέστε έναν κωδικό πρόσβασης ή /και απενεργοποιήστε την αποστολή PGP για να χρησιμοποιήσετε το όριο λήξης για όλους τους παραλήπτες.";
+
+/* Message */
+"You have %d new emails!" = "Έχετε %d νέα E-mail!";
+
+/* Title */
+"You have a new email!" = "Έχετε ένα νέο E-mail!";
+
+/* Confirmation message */
+"You have unsaved changes. Do you want to save it?" = "Έχετε μη αποθηκευμένες αλλαγές. Θέλετε να τις αποθηκεύσετε;";
+
+/* Description */
+"You have used %d%% of your storage space (%@)." = "Έχετε χρησιμοποιήσει το %1$d%% του χώρου αποθήκευσης σας (%2$@).";
+
+/* Description */
+"You have used up all of your storage space (%@)." = "Έχετε εξαντλήσει όλο το χώρο αποθήκευσης σας (%@).";
+
+/* Description */
+"You need at least one recipient to send" = "Χρειάζεστε τουλάχιστον έναν παραλήπτη για αποστολή";
+
+/* Alert to confirm logout
+   Alert when logout primary account from account manager */
+"You will be switched to %@" = "Θα αλλάξετε σε %@";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "Θα διαγράψετε το μήνυμα για πάντα. Είστε σίγουρος;";
+
+/* view top title */
+"Your Country Code" = "Κωδικός χώρας";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Η χώρα σας ενδέχεται να μπλοκάρει την πρόσβαση στο Proton. Δοκιμάστε να χρησιμοποιήσετε %1$@ (ή οποιοδήποτε άλλο VPN) ή %2$@ για να έχετε πρόσβαση στο Proton.";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Η χώρα σας ενδέχεται να μπλοκάρει την πρόσβαση στο Proton. Δοκιμάστε να χρησιμοποιήσετε το ProtonVPN (ή οποιοδήποτε άλλο VPN) ή το Tor για πρόσβαση στο Proton.";
+
+/* Description */
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Τα εισερχόμενά σας προστατεύονται πλέον με κρυπτογράφηση από άκρο σε άκρο. Για να στέλνετε ασφαλή μηνύματα ηλεκτρονικού ταχυδρομείου αυτόματα στους φίλους σας, προσκαλέστε τους φίλους σας να χρησιμοποιήσουν το ProtonMail! Μπορείτε επίσης να κρυπτογραφήσετε χειροκίνητα τα μηνύματα αυτά, εφόσον δεν χρησιμοποιούν ProtonMail.";
+
+/* Description */
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ο νέος σας κρυπτογραφημένος λογαριασμός email έχει ρυθμιστεί και είναι έτοιμος να στέλνει και να λαμβάνει κρυπτογραφημένα μηνύματα.";
+
+/* view top title */
+"Your new secure email\r\n account is ready." = "Ο νέος σας ασφαλής λογαριασμός E-mail&#13;\n είναι έτοιμος.";
+
+/* Service plan description footer */
+"Your plan is currently active until" = "Το πακέτο/πλάνο σας είναι ενεργό μέχρι";
+
+/* Service plan description footer */
+"Your plan will automatically renew on" = "Η συνδρομή σας θα ανανεωθεί αυτόματα στις";
+
+/* Description */
+"Your signature has been updated." = "Η υπογραφή σας έχει ενημερωθεί.";
+
+/* contact placeholder */
+"ZIP" = "T.K";
+

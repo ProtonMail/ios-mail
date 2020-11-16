@@ -197,9 +197,9 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
                 when(fulfilled: arrayOfPromises).done {
                     seal.fulfill(())
                     self.selectedGroupIDs.removeAll()
-                    }.catch {
-                        error in
-                        seal.reject(error)
+                }.catch(policy: .allErrors) {
+                    error in
+                    seal.reject(error)
                 }
             } else {
                 seal.fulfill(())

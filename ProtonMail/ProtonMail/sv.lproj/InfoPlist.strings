@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Krävs för att bifoga foton till e-postmeddelandet.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
+"NSContactsUsageDescription" = "Används för att komma åt e-postadresser för kontakter som sparats på enheten så att de kan användas när du skriver ett meddelande eller när du manuellt laddar upp enhetskontakterna till ditt konto. Kontaktuppgifter laddas inte upp till våra servrar utan en uttrycklig godkännande åtgärd för att göra det.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Gör att du snabbt och säkert kan låsa upp applikationen.";

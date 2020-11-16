@@ -1,3 +1,24 @@
+/* Key size text when setup key */
+"(2048 bit)" = "(2048 bit)";
+
+/* Key size text when setup key */
+"(4096 bit)" = "(4096 bit)";
+
+/* Comment for disconnected account in Account Manager */
+"(logged out)" = "(kijelentkezve)";
+
+/* Service plan capability detail; like in '50 email addresses (total)' */
+"(total)" = "(összesen)";
+
+/* secret */
+"**********" = "**********";
+
+/* optional text field */
+"*OPTIONAL" = "* OPCIONÁLIS";
+
+/* Service plan capability detail; like in '5 email addresses/user' */
+"/user" = " felhasználónként";
+
 /* Service plan capability */
 "%@ storage capacity" = "%@ tárhely";
 
@@ -22,32 +43,14 @@
 /* Service plan capability; i = 5 or 50 */
 "%i email addresses" = "%i e-mail cím";
 
-/* Key size text when setup key */
-"(2048 bit)" = "(2048 bit)";
-
-/* Key size text when setup key */
-"(4096 bit)" = "(4096 bit)";
-
-/* Service plan capability detail; like in '50 email addresses (total)' */
-"(total)" = "(összesen)";
-
-/* secret */
-"**********" = "**********";
-
-/* optional text field */
-"*OPTIONAL" = "* OPCIONÁLIS";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Húzza ide a melléklet csatolásához";
 
-/* Service plan capability detail; like in '5 email addresses/user' */
-"/user" = " felhasználónként";
+/* default empty object */
+"<no object>" = "<no object>";
 
 /* 2fa verification failed */
 "2FA failed. Please try to login again." = "A bejelentkezés nem sikerült. Próbálja meg újra.";
-
-/* default empty object */
-"<no object>" = "<no object>";
 
 /* *
  *  LabelTableViewCell */
@@ -63,27 +66,25 @@
 "A paid ProtonMail plan is required to use this feature" = "A funkció használatához egy előfizetéses ProtonMail csomag szükséges";
 
 /* settings touchid error */
-"A passcode has not been set, enable it in the system Settings" = "Nincs beállítva kód. Engedélyezze a rendszer Beállításoknál";
-
-/* when server not reachable */
-"API Server not reachable..." = "API szerver nem elérhető...";
-
-/* mail location title */
-"ARCHIVE" = "Archív";
+"A passcode has not been set, enable it in the system Settings" = "Nincs beállítva jelkód. Kapcsolja be a rendszerbeállításokban.";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "A fiók elérése számlatartozás miatt le van tiltva. Kérjük, lépjen be a protonmail.com weblapon és egyenlítse ki a számláit.";
 
-/* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "A fiók elérése számlatartozás miatt le van tiltva.
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "A fiók elérése számlatartozás miatt le van tiltva.\n\nKérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">tudásbázist</a> további információkért.";
 
-Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">tudásbázist</a> további információkért.";
+/* Account manager title */
+"Account" = "Fiók";
 
 /* 
  & title */
 "Account password invalid" = "Érvénytelen fiók jelszó";
 
-/* None */
+/* section title in settings */
+"Account Settings" = "Fiók Beállításai";
+
+/* (No Comment) */
 "Add" = "Hozzáadás";
 
 /* new contacts add Anniversary */
@@ -110,11 +111,29 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* add label action */
 "Add Label" = "Címke hozzáadása";
 
+/* add new address action */
+"Add new address" = "Cím hozzáadása";
+
+/* new custom field action */
+"Add new custom field" = "Egyéni mező hozzáadása";
+
+/* new email action */
+"Add new email" = "E-mail cím hozzáadása";
+
+/* new field action */
+"Add new field" = "Új mező hozzáadása";
+
 /* add a new folder */
 "Add New Folder" = "Új mappa hozzáadása";
 
 /* add a new folder */
 "Add New Label" = "Új címke hozzáadása";
+
+/* new phone action */
+"Add new phone number" = "Telefonszám hozzáadása";
+
+/* action */
+"Add new URL" = "Új URL hozzáadása";
 
 /* new contacts add Nickname */
 "Add Nickname" = "Becenév hozzáadása";
@@ -131,40 +150,28 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* new contacts add Title */
 "Add Title" = "Beosztás hozzáadása";
 
-/* add new address action */
-"Add new address" = "Cím hozzáadása";
-
-/* new custom field action */
-"Add new custom field" = "Egyéni mező hozzáadása";
-
-/* new email action */
-"Add new email" = "E-mail cím hozzáadása";
-
-/* new field action */
-"Add new field" = "Új mező hozzáadása";
-
-/* new phone action */
-"Add new phone number" = "Telefonszám hozzáadása";
-
-/* action */
-"Add new url" = "URL hozzáadása";
-
 /* Title */
 "Add to contacts" = "Hozzáadása a névjegyekhez";
 
 /* default vcard types */
 "Address" = "Cím";
 
+/* cell title in device settings */
+"Addresses" = "Címek";
+
 /* Title */
 "Alert" = "Figyelmeztetés";
+
+/* Title */
+"All contacts are imported" = "Minden névjegy importálva";
 
 /* mail location desc
    mail location title
    menu title */
 "All Mail" = "Összes levél";
 
-/* Title */
-"All contacts are imported" = "Minden névjegy importálva";
+/* network troubleshot cell title */
+"Allow alternative routing" = "Alternatív útválasztó engedélyezése";
 
 /* archive when apply label */
 "Also Archive" = "Archiválás";
@@ -172,11 +179,29 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Description */
 "Also used to reset a forgotten password." = "Használható elfelejtett jelszó helyreállítására is.";
 
+/* agree check box middle word */
+"and" = "és";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Évforduló";
 
+/* network troubleshot cell title */
+"Antivirus interference" = "Antivírus interferencia";
+
+/* when server not reachable */
+"API Server not reachable..." = "API szerver nem elérhető...";
+
+/* section title in settings */
+"APP INFORMATION" = "ALKALMAZÁS INFORMÁCIÓK";
+
 /* Error */
 "App is locked" = "Az alkalmazás zárolt";
+
+/* cell title in device settings */
+"App Language" = "Alkalmazás nyelve";
+
+/* section title in settings */
+"App Settings" = "Alkalmazás beállítások";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple alkalmazáson belüli vásárlás költsége";
@@ -188,7 +213,7 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de nem adta meg, hogy melyik ProtonMail fiókját kívánja frissíteni, amennyiben több is van.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de bizonyos technikai adatok hiányoznak. Kérjük, töltsön ki egy hiba jelentést és a támogatási csoportunk felveszi önnel a kapcsolatot.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de bizonyos technikai adatok hiányoznak. Kérjük, töltsön ki egy hiba jelentést és a támogatási csoportunk felveszi önnel a kapcsolatot.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de úgy vettük észre, hogy azóta kilépett a fiókból.";
@@ -203,11 +228,23 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
    menu title */
 "Archive" = "Archív";
 
+/* mail location title */
+"ARCHIVE" = "Archív";
+
 /* Description */
 "Archived" = "Archivált";
 
-/* Alert to confirm logout */
-"Are you sure you want to logout?" = "Biztos, hogy ki szeretne jelentkezni?";
+/* Alert when logout non-primary account from account manager */
+"Are you sure you want to log out?" = "Biztos, hogy ki szeretne jelentkezni?";
+
+/* Alert to confirm logout when only one account logged in */
+"Are you sure you want to logout %@?" = "Biztos, hogy ki szeretne jelentkezni, %@?";
+
+/* emptify folder/label confirmation alert */
+"Are you sure? This can't be undone." = "Biztos benne? Ezt nem lehet visszavonni.";
+
+/* like at 10:00pm */
+"at" = ".";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "A melléklet importálva";
@@ -215,14 +252,23 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* VoiceOver: email has attachments */
 "Attachments" = "Mellékletek";
 
+/* Error */
+"attempt remaining until secure data wipe!" = "kísérlet maradt az adatok biztonságos törléséig!";
+
+/* Description */
+"attempts remaining" = "kísérlet maradt";
+
+/* Error */
+"attempts remaining until secure data wipe!" = "kísérlet maradt az adatok biztonságos törléséig!";
+
 /* Title */
 "Authentication" = "Azonosítás";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "A bejelentkezés sikertelen: hibás felhasználónév vagy jelszó.";
+"Authentication failed" = "Sikertelen bejelentkezés";
 
 /* Description */
-"Authentication failed" = "Sikertelen bejelentkezés";
+"Authentication Failed Wrong username or password" = "A bejelentkezés sikertelen: hibás felhasználónév vagy jelszó.";
 
 /* Error */
 "Authentication failed. Please try to login again." = "A bejelentkezés nem sikerült. Próbálja meg újra.";
@@ -238,6 +284,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* settings general section title */
 "Auto Show Images" = "Képek automatikus megjelenítése";
+
+/* section title in settings */
+"Auto-lock" = "Automatikus lezárás";
 
 /* top left back button */
 "Back" = "Vissza";
@@ -275,14 +324,14 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Link to More Credits screen */
 "Buy More Credits" = "Vásároljon további kreditet";
 
+/* Alert for removing disconnected accounts */
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "A fiók törlése után nem fogja elérni a leveleit erről az eszközről, hacsak nem újra beállítja.\n\nBiztosan törölni szeretné ezt a fiókot?";
+
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "A ProtonMail használatával elfogadja a";
 
 /* No comment provided by engineer. */
 "By using protonmail, you agree to our %@ and %@." = "ProtonMail használatával elfogadja, a %1$@ és %2$@ dokumentumokat.";
-
-/* human check option button */
-"CAPTCHA" = "CAPTCHA";
 
 /* Call the contact (button title text) */
 "Call Contact" = "Partner felhívása";
@@ -318,11 +367,14 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
 "Can't fetch contact groups" = "Névjegy csoportok letöltése nem sikerült";
 
-/* None */
+/* (No Comment) */
 "Can't find the clicked message please try again!" = "A kiválasztott üzenet nem található. Próbálja meg újra!";
 
 /* Description */
 "Can't find the selected message. Please try again." = "Nem található a kijelölt üzenetet. Kérjük, próbálja meg újra.";
+
+/* Description */
+"Can't find the value from the response body" = "A válasz törzsében nem található meg a kívánt érték";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Ez a melléklet nem található!";
@@ -342,9 +394,6 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Error */
 "Can't load the file" = "Nem tölthető be a fájl";
 
-/* Description */
-"Can't find the value from the response body" = "A válasz törzsében nem található meg a kívánt érték";
-
 /* Error */
 "Can't open the file" = "A fájl nem nyitható meg";
 
@@ -363,8 +412,11 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "Cancelling" = "Megszakítás";
 
-/* None */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "Melléklet visszafejtése sikertelen.";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCHA";
 
 /* Title */
 "Cc" = "Másolat";
@@ -374,6 +426,12 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* place holder */
 "Cell phone number" = "Mobil telefonszám";
+
+/* Title */
+"Change default address to .." = "Alapértelmezett cím átállítása...";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Balra csúsztatás művelet megváltoztatása";
 
 /* change password input label */
 "Change Login Password" = "Bejelentkezési jelszó módosítása";
@@ -387,23 +445,20 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* settings protection section title */
 "Change Pin" = "PIN módosítása";
 
-/* Title */
-"Change Single Password" = "Egy jelszavas jelszó módosítása";
-
-/* Title */
-"Change default address to .." = "Alapértelmezett cím átállítása...";
-
-/* settings swipe actions section action description */
-"Change left swipe action" = "Balra csúsztatás művelet megváltoztatása";
-
 /* settings swipe actions section action description */
 "Change right swipe action" = "Jobbra csúsztatás művelet megváltoztatása";
 
 /* Title */
 "Change sender address to .." = "Feladó címének megváltoztatása...";
 
+/* Title */
+"Change Single Password" = "Egy jelszavas jelszó módosítása";
+
 /* Action */
 "Check Again" = "Ellenőrizze újra";
+
+/* network troubleshot cell title */
+"Check Proton Status for our system status." = "Ellenőrizze a Proton állapotát a rendszer jelentésekben.";
 
 /* loading message */
 "Checking ...." = "Ellenőrzés...";
@@ -417,13 +472,23 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* settings general section title */
 "Clear Local Message Cache" = "Helyi üzenet gyorstár törlése";
 
+/* Menu action to remove text formatting */
+"Clear Style" = "Letisztult Stílus";
+
 /* general close action */
 "Close" = "Bezárás";
+
+/* Action */
+"close tour" = "bemutató bezárása";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Bezárás";
 
-/* Action */
+/* cell title in device settings */
+"Combined Contacts" = "Kombinált névjegyek";
+
+/* Action
+   Springboard (3D Touch) shortcuts action */
 "Compose" = "Levélírás";
 
 /* Title */
@@ -438,9 +503,6 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "E-mail jelszó megerősítése";
 
-/* Placeholder */
-"Confirm Password" = "Jelszó megerősítése";
-
 /* Title */
 "Confirm new login password" = "Új bejelentkezési jelszó megerősítése";
 
@@ -449,6 +511,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* Placeholder */
 "Confirm new password" = "Új jelszó megerősítése";
+
+/* Placeholder */
+"Confirm Password" = "Jelszó megerősítése";
 
 /* alert title */
 "Confirm phishing report" = "Erősítse meg az adathalász bejelentést";
@@ -459,11 +524,17 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* view top title */
 "Congratulations!" = "Gratulálunk!";
 
+/* Account manager title */
+"Connect Account" = "Fiók csatlakoztatása";
+
 /* contact section title */
 "Contact Details" = "Névjegy részletei";
 
 /* Title */
 "Contact the ProtonMail team" = "Kapcsolatfelvétel a ProtonMail csapattal";
+
+/* network troubleshot cell title */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Vegye fel velünk a kapcsolatot a támogatási űrlapon, e-mailben (support@protonmail.com), vagy a Twitter segítségével.";
 
 /* Action and title
    menu title */
@@ -490,23 +561,26 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* top right action text */
 "Create" = "Létrehozás";
 
-/* Create account button */
-"Create Account" = "Fiók létrehozása";
-
-/* Error */
-"Create User failed. Please try again." = "A felhasználó létrehozása nem sikerült. Próbálja meg újra.";
-
 /* Signup top title */
 "Create a new account" = "Új fiók létrehozása";
+
+/* Create account button */
+"Create Account" = "Fiók létrehozása";
 
 /* Description */
 "Create and add Labels to organize your inbox. Long press on a message for all options." = "Címkékkel jelölheti meg a beérkezett üzeneteket. Érintsen meg hosszan egy üzenetet az összes lehetőség megjelenítéséhez.";
 
-/* None */
+/* (No Comment) */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Címkékkel jelölheti meg a beérkezett üzeneteket. Érintsen meg egy üzenetet és tartsa lenyomva a lehetőségek megjelenítéséhez.";
+
+/* title of button in account connect page */
+"Create new account" = "Új fiók létrehozása";
 
 /* error message title when create new user */
 "Create user failed" = "A felhasználó létrehozása nem sikerült";
+
+/* Error */
+"Create User failed. Please try again." = "A felhasználó létrehozása nem sikerült. Próbálja meg újra.";
 
 /* Change language title */
 "Current Language is: " = "Jelenlegi nyelv: ";
@@ -521,12 +595,6 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
    contacts default label type */
 "Custom" = "Egyéni";
 
-/* Title */
-"DECRYPT MAILBOX" = "LEVELEK VISSZAFEJTÉSE";
-
-/* mail location title */
-"DRAFTS" = "Piszkozatok";
-
 /* message Date: text */
 "Date:" = "Dátum:";
 
@@ -534,10 +602,16 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 "Date: %@" = "Dátum: %@";
 
 /* Title */
+"days" = "Nap";
+
+/* Title */
 "Debug" = "Hibakeresés";
 
 /* Action */
 "Decrypt" = "Visszafejtés";
+
+/* Title */
+"DECRYPT MAILBOX" = "LEVELEK VISSZAFEJTÉSE";
 
 /* Description */
 "Decrypt token failed. Please try again." = "Token visszafejtése sikertelen. Próbálja meg újra.";
@@ -550,6 +624,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* Title */
 "Default" = "Alapértelmezett";
+
+/* Settings row */
+"Default browser" = "Alapértelmezett böngésző";
 
 /* error message when create new user */
 "Default error. Please try again." = "Alapértelmezett hiba. Próbálja meg újra.";
@@ -566,6 +643,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* general delete action */
 "Delete" = "Törlés";
 
+/* emptify folder/label confirmation alert */
+"Delete all" = "Összes törlése";
+
 /* Title-Contacts */
 "Delete Contact" = "Névjegy törlése";
 
@@ -578,20 +658,26 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "Details" = "Részletek";
 
+/* network troubleshot cell title */
+"Disable any proxies or firewalls, or contact your network administrator." = "Kapcsolja ki a proxy-t vagy a tűzfalat, vagy vegye fel a kapcsolatot a hálózati rendszergazdával.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Tanúsítás letiltása";
+
 /* Action */
 "Discard changes" = "Módosítások elvetése";
 
 /* Action */
 "Discard draft" = "Piszkozat elvetése";
 
+/* (No Comment) */
+"Display name" = "Megjelenítendő név";
+
 /* Title in settings */
 "Display Name" = "Megjelenített név";
 
 /* Title */
 "Display Name Updated" = "Megjelenített név frissítve";
-
-/* None */
-"Display name" = "Megjelenítendő név";
 
 /* Title in display name settings */
 "DisplayName" = "Megjelenítendő név";
@@ -605,11 +691,11 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "Do you want to save the unsaved changes?" = "Kívánja menteni a változásokat?";
 
-/* Title */
-"Don't Show Again" = "Ne jelenjen meg újra";
-
 /* Action */
 "Don't remind me again" = "Ne emlékeztessen újra";
+
+/* Title */
+"Don't Show Again" = "Ne jelenjen meg újra";
 
 /* Done action */
 "Done" = "Kész";
@@ -623,6 +709,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* menu title */
 "Drafts" = "Piszkozatok";
+
+/* mail location title */
+"DRAFTS" = "Piszkozatok";
 
 /* Action */
 "Edit" = "Szerkesztés";
@@ -640,32 +729,32 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "Edit Label" = "Címke szerkesztése";
 
+/* title */
+"Edit mobile signature" = "Mobil aláírás szerkesztése";
+
 /* The button text for edit profile picture */
 "Edit Photo" = "Fénykép szerkesztése";
 
 /* title */
-"Edit mobile signature" = "Mobil aláírás szerkesztése";
-
-/* title */
 "Edit signature" = "Aláírás szerkesztése";
+
+/* network troubleshot cell title */
+"email" = "email";
 
 /* default vcard types */
 "Email" = "E-mail";
-
-/* contact detail view, email addresses section title */
-"Email Addresses" = "E-mail cím";
-
-/* Send an email to the current contact (button title text) */
-"Email Contact" = "E-mail küldése";
-
-/* human check option button */
-"Email Verification" = "E-mailes ellenőrzés";
 
 /* contact placeholder */
 "Email address" = "E-mail cím";
 
 /* Title */
 "Email address invalid" = "Érvénytelen e-mail cím";
+
+/* contact detail view, email addresses section title */
+"Email Addresses" = "E-mail cím";
+
+/* Send an email to the current contact (button title text) */
+"Email Contact" = "E-mail küldése";
 
 /* place holder */
 "Email default signature" = "Alapértelmezett e-mail aláírás";
@@ -674,8 +763,17 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
  & title */
 "Email domain invalid" = "Érvénytelen email domain";
 
-/* empty folder, for spam and trash */
+/* human check option button */
+"Email Verification" = "E-mailes ellenőrzés";
+
+/* cell title in device setting */
+"Empty Cache" = "Gyorsítótár ürítése";
+
+/* empty folder, for spam and trash and drafts */
 "Empty Folder" = "Mappa kiürítése";
+
+/* it is an option to empty the label */
+"Empty Label" = "Címke kiürítése";
 
 /* Title */
 "Enable Default Signature" = "Alapértelmezett aláírás bekapcsolása";
@@ -689,8 +787,17 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "Enable Notification Email" = "Értesítési e-mail engedélyezése";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Enable PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "PIN kódos védelem engedélyezése";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Enable PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Enable PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "TouchID engedélyezése";
@@ -722,9 +829,6 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* settings option (End Time: 8am) */
 "End Time" = "Befejezés";
 
-/* Title */
-"End-to-End Encryption" = "Végpontok közti titkosítás";
-
 /* encryption lock description */
 "End-to-end encrypted" = "Végpontok közt titkosított";
 
@@ -737,23 +841,29 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Végpontok közt titkosított, ellenőrzött címre";
 
+/* Title */
+"End-to-End Encryption" = "Végpontok közti titkosítás";
+
 /* Action in 2fa popup view */
 "Enter" = "Belépés";
 
 /* Title */
 "Enter Verification Code" = "Írja be az ellenőrző kódot";
 
-/* set pin title */
-"Enter your PIN" = "Írja be a PIN kódot";
-
-/* Title */
-"Enter your PIN to unlock your inbox." = "Írja be a PIN kódot a levelek feloldásához.";
-
 /* human verification top title */
 "Enter your cell phone number" = "Írja be a mobiltelefonszámát";
 
 /* top title */
 "Enter your existing email address." = "Adjon meg egy létező e-mail címet.";
+
+/* Account manager title */
+"Enter your mailbox password" = "Adja meg a postafiók jelszavát";
+
+/* set pin title */
+"Enter your PIN" = "Írja be a PIN kódot";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Írja be a PIN kódot a levelek feloldásához.";
 
 /* settings debug section title */
 "Error Logs" = "Hibanaplók";
@@ -775,12 +885,6 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* Key size checkbox */
 "Extreme Security" = "Extrém biztonság";
-
-/* login page forgot pwd */
-"FORGOT PASSWORD?" = "Elfelejtett jelszó?";
-
-/* abbreviation of forward: */
-"FW:" = "Továbbítás:";
 
 /* Error message */
 "Failed to determine type of file" = "Nem sikerült meghatározni a fájl típusát";
@@ -816,11 +920,17 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Service Plan description */
 "For individuals that need more capacity, customization and advanced features" = "Azoknak, akiknek nagyobb csomagra, testreszabharóságra és komolyabb funkcióra van szüksége";
 
+/* Buy button second line */
+"for one year" = "egy évre";
+
 /* Service Plan description */
 "For organizations that need multi-user support and additional productivity features" = "Szervezeteknek, akiknek több felhasználóra és további produktív funkciókra van szüksége";
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Magas szintű felhasználóknak és felhasználói csoportoknak, akik értékelik a teljes anonimitást és adatvédelmet";
+
+/* login page forgot pwd */
+"FORGOT PASSWORD?" = "Elfelejtett jelszó?";
 
 /* forward action */
 "Forward" = "Továbbítás";
@@ -833,6 +943,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* message From: field text */
 "From:" = "Feladó:";
+
+/* abbreviation of forward: */
+"FW:" = "Továbbítás:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Fwd:";
@@ -851,6 +964,15 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* Action */
 "Go to inbox" = "Ugrás a beérkezett üzenetekhez";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to login" = "Menjen a bejelentkezéshez";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Ugrás a Beállításokhoz";
+
+/* network troubleshot cell title */
+"Government block" = "Kormányzati blokk";
 
 /* The title for the contact group detail view */
 "Group Details" = "Csoport beállításai";
@@ -879,6 +1001,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Key size checkbox */
 "High Security" = "Magas szintű biztonság";
 
+/* (No Comment) */
+"hours" = "Óra";
+
 /* Title */
 "Hours" = "Óra";
 
@@ -894,20 +1019,26 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP támogatás a ProtonMail Bridge segítségével";
 
-/* mail location title */
-"INBOX" = "Beérkezett üzenetek";
-
 /* Action */
 "Import Error" = "Importálási hiba";
 
 /* Title */
 "Import File From..." = "Importálás fájlból...";
 
-/* import contact title */
-"Importing Contacts" = "Névjegyek importálása";
+/* Downloading attachments from cloud */
+"Importing" = "Importálás";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Melléklet importálása. Ez eltarthat egy ideig";
+
+/* import contact title */
+"Importing Contacts" = "Névjegyek importálása";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Ha a Proton szolgáltatásai le vannak tiltva, ezzel a beállítással az alkalmazás alternatív hálózati útvonalakat próbál meg használni, ami hasznos lehet tűzfalak megkerüléséhez vagy hálózati problémák megoldásához. Javasoljuk, hogy tartsa ezt a beállítást bekapcsolva a nagyobb megbízhatóság érdekében. %1$@";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "A szolgáltatásink használatához el kell fogadnia a ProtonMail Felhasználási Feltételeket.";
@@ -916,17 +1047,26 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
    menu title */
 "Inbox" = "Beérkezett üzenetek";
 
+/* mail location title */
+"INBOX" = "Beérkezett üzenetek";
+
+/* Title */
+"Incorrect password" = "Hibás jelszó";
+
 /* Error */
 "Incorrect PIN," = "Helytelen PIN-kód,";
 
 /* Title */
-"Incorrect password" = "Hibás jelszó";
+"inline attachments" = "beszúrt mellékletek";
 
 /* place holder */
 "Input Display Name ..." = "Írja be a megjelenítendő nevet...";
 
 /* place holder */
 "Input Notification Email ..." = "Írja be az értesítési e-mail címet...";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Nem biztonságos kapcsolat";
 
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "A ProtonMail fiók létrehozás átmenetileg nem elérhető. Kérjük, látogasson el a https://protonmail.com/invite címre és kérjen egy meghívót.";
@@ -936,6 +1076,21 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* default vcard types */
 "Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Internet szolgáltató (ISP) probléma";
+
+/* (No Comment) */
+"Invalid access token please relogin" = "Érvénytelen elérési token, kérjük jelentkezzen be újra";
+
+/* Description */
+"Invalid access token. Please relogin." = "Érvénytelen elérési token, kérjük jelentkezzen be újra.";
+
+/* Error */
+"Invalid credential" = "Érvénytelen bejelentkezési adatok";
+
+/* update password error */
+"Invalid hashed password!" = "Érvénytelen hash-elt jelszó!";
 
 /* Error */
 "Invalid Password" = "Hibás jelszó";
@@ -948,18 +1103,6 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* Error message */
 "Invalid UserName!" = "Érvénytelen felhasználónév!";
-
-/* None */
-"Invalid access token please relogin" = "Érvénytelen elérési token, kérjük jelentkezzen be újra";
-
-/* Description */
-"Invalid access token. Please relogin." = "Érvénytelen elérési token, kérjük jelentkezzen be újra.";
-
-/* Error */
-"Invalid credential" = "Érvénytelen bejelentkezési adatok";
-
-/* update password error */
-"Invalid hashed password!" = "Érvénytelen hash-elt jelszó!";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Ez a hiba bejelentés egy alkalmazáson belüli vásárlást érint?";
@@ -982,8 +1125,8 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Error */
 "Key invalid. Please go back and try again." = "Érvénytelen kulcs. Kérjük, menjen vissza és próbálja meg újra.";
 
-/* None */
-"LOGIN" = "Bejelentkezés";
+/* Title */
+"Label as..." = "Címkézés, mint...";
 
 /* Title */
 "Label Management" = "Címke kezelés";
@@ -991,11 +1134,11 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* createing lable input place holder */
 "Label Name" = "Címke neve";
 
-/* Title */
-"Label as..." = "Címkézés, mint...";
-
 /* VoiceOver: email has lables */
 "Labels" = "Címkék";
+
+/* cell title in device settings */
+"Labels & Folders" = "Címkék és Mappák ";
 
 /* Title */
 "Labels have been applied." = "Címkék alkalmazva.";
@@ -1009,11 +1152,17 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "Language" = "Nyelv";
 
+/* network troubleshot cell title */
+"Learn more" = "További információk";
+
 /* Action */
 "Learn More" = "További információk";
 
 /* learn more button */
 "Learn more here" = "További információk";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "Korlát elérve";
 
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "Maximum 150 üzenet küldése naponta";
@@ -1021,11 +1170,17 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Action */
 "Load remote content" = "Távoli tartalom betöltése";
 
-/* None */
+/* (No Comment) */
 "Loading..." = "Betöltés...";
 
 /* Description */
 "Local cache can't find mailbox password" = "Nem található meg az e-mail jelszó a helyi gyorstárban";
+
+/* cell title in device settings */
+"Local Cache Management" = "Helyi gyorsítótár-kezelő";
+
+/* cell title in device settings */
+"Local storage limit" = "Helyi tárhely korlát";
 
 /* *
  *  file string type */
@@ -1034,8 +1189,23 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* menu title */
 "Lock The App" = "Alkalmazás zárolása";
 
+/* Account manager title */
+"Log in to your ProtonMail account" = "Jelentkezzen be a ProtonMail fiókjába";
+
+/* Alert title when logout non-primary account from account manager */
+"Log out %@?" = "Biztos, hogy ki szeretnél lépni?";
+
+/* Action */
+"Log Out All" = "Kijelentkezés mindenhonnan";
+
+/* Alert when auth token is revoked and switch to another */
+"Logged out from %@ and signed in with %@" = "Kijelentkezett a következőből: %1$s és bejelentkezett a következőbe: %2$s-vel";
+
 /* Title */
 "Login" = "Bejelentkezés";
+
+/* (No Comment) */
+"LOGIN" = "Bejelentkezés";
 
 /* settings general section title */
 "Login Password" = "Bejelentkezési jelszó";
@@ -1043,7 +1213,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Error */
 "Login password doesn't match" = "Bejelentkezési a jelszó nem egyezik";
 
-/* menu title */
+/* Alert title to confirm logout
+   Alert title when logout primary account from account manager
+   menu title */
 "Logout" = "Kijelentkezés";
 
 /* error title */
@@ -1052,45 +1224,45 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Titkosítani szeretné a névjegyek részleteit?";
 
-/* *
- *  MailboxPasswordViewController */
-"MAILBOX PASSWORD" = "E-mail jelszó";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
+/* cell title in device settings */
+"MAILBOX" = "POSTAFIÓK";
 
 /* settings general section title */
 "Mailbox Password" = "E-mail jelszó";
 
-/* None */
+/* *
+ *  MailboxPasswordViewController */
+"MAILBOX PASSWORD" = "E-mail jelszó";
+
+/* (No Comment) */
 "Mailbox password doesn't match" = "Az e-mail jelszó nem egyezik";
+
+/* cell title in device settings */
+"Mailbox size" = "Postafiók mérete";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Tagok kezelése";
 
+/* Settings row */
+"Manage in device Settings" = "Az eszköz Beállításainál kezelhető";
+
 /* Title */
 "Manage Labels/Folders" = "Címékék és mappák kezelése";
+
+/* Action */
+"Mark as unread" = "Megjelölés olvasatlanként";
 
 /* mark message as read action */
 "Mark Read" = "Megjelölés olvasottként";
 
-/* Action */
-"Mark as unread" = "Megjelölés olvasatlanként";
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Menü";
 
 /* Message with title */
 "Message %@" = "Üzenet %@";
-
-/* Placeholder */
-"Message Password" = "Üzenet jelszó";
-
-/* settings debug section title */
-"Message Queue" = "Üzenet várólista";
-
-/* Title */
-"Message Swipe Actions" = "Üzenet csúsztatási műveletek";
 
 /* *
  *  Expiration View */
@@ -1102,10 +1274,16 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "Message has been moved." = "Üzenet áthelyezve.";
 
+/* Placeholder */
+"Message Password" = "Üzenet jelszó";
+
 /* Description */
 "Message password does not match." = "Az üzenet jelszó nem egyezik meg.";
 
-/* None */
+/* settings debug section title */
+"Message Queue" = "Üzenet várólista";
+
+/* (No Comment) */
 "Message sending failed please try again" = "Üzenet küldése sikertelen, próbálja meg újra";
 
 /* Description */
@@ -1113,6 +1291,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* Description after message have been sent */
 "Message sent" = "Üzenet elküldve";
+
+/* Title */
+"Message Swipe Actions" = "Üzenet csúsztatási műveletek";
 
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Az elküldött üzenetek beállíthatóak úgy, hogy bizonyos idő elteltével automatikusan törlődjenek.";
@@ -1136,7 +1317,7 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 "More Credits" = "Több kredit";
 
 /* move action */
-"Move to AllMail" = "Áthelyezés az Összes Üzenethez";
+"Move to All Mail" = "Áthelyezés az Összes Üzenethez";
 
 /* move action */
 "Move to Archive" = "Archiválás";
@@ -1165,11 +1346,14 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "Multiple Addresses" = "Több cím";
 
+/* title */
+"Name" = "Név";
+
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Regisztráljon ingyenesen";
 
-/* title */
-"Name" = "Név";
+/* section title */
+"Networking" = "Hálózat";
 
 /* Title */
 "New login password" = "Új bejelentkezési jelszó";
@@ -1183,11 +1367,17 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* contacts talbe cell Nickname title */
 "Nickname" = "Becenév";
 
+/* Title */
+"No connectivity detected..." = "Nincs kapcsolat...";
+
+/* network troubleshot cell title */
+"No internet connection" = "Nincs internet kapcsolat";
+
 /* message when mailbox doesnt have emailsß */
 "No Messages" = "Nincsenek üzenetek";
 
-/* Title */
-"No connectivity detected..." = "Nincs kapcsolat...";
+/* no object error, local only , this could be not translated! */
+"no object" = "no object";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "Nem, egy másik ProtonMail fiókhoz";
@@ -1199,11 +1389,14 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
    Title */
 "None" = "Nincs";
 
-/* Action */
-"Not Now" = "Most nem";
+/* Title */
+"normal attachments" = "csatolt mellékletek";
 
 /* alert description */
 "Not all recipients support message expiration" = "Nem minden címzett támogatja az időkorlátos üzeneteket";
+
+/* Action */
+"Not Now" = "Most nem";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Megjegyzés: A felhasználónév egyben a ProtonMail e-mail cím is.";
@@ -1238,9 +1431,6 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Action */
 "OK" = "OK";
 
-/* Section header */
-"OTHER PLANS" = "TOVÁBBI CSOMAGOK";
-
 /* Title */
 "On" = "Ekkor:";
 
@@ -1250,7 +1440,10 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy. MMM d., EE, keltezéssel, %1$@, %2$@ írta:";
 
-/* None */
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Csak egy ingyenes fiók adható hozzá";
+
+/* (No Comment) */
 "OpenDraft" = "Piszkozat megnyitása";
 
 /* contacts talbe cell Organization title */
@@ -1259,11 +1452,35 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* default vcard types */
 "Other" = "Egyéb";
 
+/* Section header */
+"OTHER PLANS" = "TOVÁBBI CSOMAGOK";
+
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Ügyfélszolgálatunk megpróbálja manuálisan aktiválni az Ön szolgáltatási csomagját, amennyiben beleegyezik, hogy a vásárlás folyamán keletkező technikai adatok csatolva legyenek. Ezek az adatok nem tartalmazzák sem az iTunes, sem az Apple-azonosítót, sem pedig a bankkártyával vagy a felhasználóval kapcsolatos egyéb információkat. Mindössze azt segít ellenőrizni, hogy az ügylet teljesült-e az AppStore szerverein.";
 
 /* mail location desc */
 "Outbox" = "Kimenő";
+
+/* title */
+"Password" = "Jelszó";
+
+/* Description */
+"Password cannot be empty." = "A jelszó nem lehet üres.";
+
+/* cell title in device settings */
+"Password management" = "Jelszókezelő";
+
+/* Title */
+"Password Mismatch" = "A jelszavak nem egyeznek meg";
+
+/* update password error */
+"Password update failed" = "A jelszó frissítése nem sikerült";
+
+/* Title */
+"Password Updated" = "Jelszó frissítve";
+
+/* default vcard types */
+"Personal" = "Személyes";
 
 /* encryption lock description */
 "PGP-encrypted" = "PGP titkosított";
@@ -1280,32 +1497,8 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP aláírt üzenet, ellenőrzött címről";
 
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "PRÉMIUM FUNKCIÓ";
-
-/* title */
-"Password" = "Jelszó";
-
-/* Title */
-"Password Mismatch" = "A jelszavak nem egyeznek meg";
-
-/* Title */
-"Password Updated" = "Jelszó frissítve";
-
-/* Description */
-"Password cannot be empty." = "A jelszó nem lehet üres.";
-
-/* update password error */
-"Password update failed" = "A jelszó frissítése nem sikerült";
-
-/* default vcard types */
-"Personal" = "Személyes";
-
 /* default vcard types */
 "Phone" = "Telefonszám";
-
-/* human check option button */
-"Phone Verification" = "Telefonos ellenőrzés";
 
 /* contact placeholder */
 "Phone number" = "Telefonszám";
@@ -1313,8 +1506,20 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "Phone number invalid" = "Érvénytelen telefonszám";
 
+/* human check option button */
+"Phone Verification" = "Telefonos ellenőrzés";
+
 /* Title */
 "Photo Library" = "Fotók";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN & FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN & TouchID";
 
 /* Description */
 "Pin code can't be empty." = "A PIN kód nem lehet üres.";
@@ -1343,6 +1548,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Error message */
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Kérjük, jelentkezzen be ProtonMail fiókjába, hogy az Ön által vásárolt előfizetői csomag aktiválásra kerüljön.";
 
+/* network troubleshot cell title */
+"Please make sure that your internet connection is working." = "Ellenőrizze, hogy az internet kapcsolat működik-e.";
+
 /* Error */
 "Please pick a user name first!" = "Kérjük, először válasszon egy felhasználónevet!";
 
@@ -1351,6 +1559,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* when switch sender but email has attachments */
 "Please remove all attachments before changing sender!" = "Kérjük, törölje az összes mellékletet, mielőtt megváltoztatja a feladót";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "Válasszon ki legalább egy üzenetet";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Kérjük, válasszon ki legalább egy e-mailt a névjegy-csoport számára";
@@ -1361,16 +1572,16 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Description */
 "Please set a password." = "Kérjük, állítson be jelszót.";
 
-/* None */
+/* (No Comment) */
 "Please try a different domain." = "Kérjük, próbálkozzon másik domainnel.";
 
-/* None */
+/* (No Comment) */
 "Please try a different email address." = "Kérjük, próbálkozzon másik e-mail címmel.";
 
-/* None */
+/* (No Comment) */
 "Please try a different password." = "Kérjük, próbálkozzon másik jelszóval.";
 
-/* None */
+/* (No Comment) */
 "Please try a different user name." = "Kérjük, próbálkozzon másik felhasználó névvel.";
 
 /* 
@@ -1387,7 +1598,7 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Alert */
 "Please use the web application to reset your password." = "Kérjük, a jelszó visszaállításához a webes alkalmazást használja.";
 
-/* None */
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Kérjük, hogy a postafiók jelszavának megváltoztatásához a ProtonMail webes verzióját használja!";
 
 /* Alert */
@@ -1403,8 +1614,20 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
  & alert title */
 "Please, manage it in your phone." = "Please, manage it in your phone.";
 
+/* Upgrade warning title */
+"PREMIUM FEATURE" = "PRÉMIUM FUNKCIÓ";
+
 /* Action */
 "Print" = "Nyomtatás";
+
+/* cell title in device settings */
+"Privacy" = "Adatvédelem";
+
+/* agree check box privacy */
+"privacy policy." = "adatvédelmi irányelvek.";
+
+/* Local notification title */
+"Problem sending message" = "Hiba az üzenet küldése közben";
 
 /* Title */
 "Protection" = "Védelem";
@@ -1412,14 +1635,14 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* settings protection section title */
 "Protection Entire App" = "A teljes alkalmazás védelme";
 
+/* network troubleshot cell title */
+"Proton is down" = "A Proton nem működik";
+
+/* network troubleshot cell title */
+"Proton Status" = "Proton Állapot";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
-
-/* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "A mobil aláírás testreszabásához ProtonMail Plus előfizetés szükséges";
-
-/* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary csomagok lehetővé teszik, hogy a néven és e-mail címen kívül további kapcsolattartási adatokat is tárolhasson a névjegyekben. A ProtonMail használatával ezek az adatok olyan biztonságban lesznek, mint a végpontok közt titkosított üzenetek.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "A ProtonMail nem küld hirdetéseket és nem él vissza magánéletével. Támogatása elengedhetetlen a ProtonMail fenntartásához. Támogathatja munkánkat adományokkal, vagy valamely előfizetői csomag választásával.";
@@ -1430,14 +1653,29 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "A ProtonMail jelenleg offline, kérjük figyelje a bejelentéseket Twitter oldalunkon: https://twitter.com/protonmail";
 
+/* Title */
+"ProtonMail is currently offline..." = "A ProtonMail jelenleg nem elérhető...";
+
+/* Description */
+"ProtonMail Plus is required to customize your mobile signature" = "A mobil aláírás testreszabásához ProtonMail Plus előfizetés szükséges";
+
+/* Upgrade warning message */
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary csomagok lehetővé teszik, hogy a néven és e-mail címen kívül további kapcsolattartási adatokat is tárolhasson a névjegyekben. A ProtonMail használatával ezek az adatok olyan biztonságban lesznek, mint a végpontok közt titkosított üzenetek.";
+
+/* network troubleshot cell title */
+"ProtonVPN" = "ProtonVPN";
+
 /* Service plan capability */
 "ProtonVPN included" = "Tartalmazza a ProtonVPN-t";
 
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Proxy/tűzfal interferencia";
+
+/* cell title in device settings */
+"Push Notifications" = "Push értesítések";
+
 /* Title */
 "Quick swipe actions" = "Gyors csúsztatási műveletek";
-
-/* Action */
-"RESET MAILBOX PASSWORD" = "POSTAFIÓK-JELSZÓ ALAPHELYZETBE ÁLLÍTÁSA";
 
 /* Title */
 "Rate & Review" = "Értékelés és vélemény írása";
@@ -1466,6 +1704,12 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* remove action */
 "Remove" = "Eltávolítás";
 
+/* account right bar item title */
+"Remove All" = "Összes eltávolítása";
+
+/* Settings row */
+"Remove image meta-data" = "Kép metaadatok eltávolítása";
+
 /* un star message */
 "Remove Star" = "Csillag törlése";
 
@@ -1481,7 +1725,7 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* composer view model impl */
 "Reply message" = "Válasz üzenet";
 
-/* None */
+/* (No Comment) */
 "ReplyAll" = "Válasz mindenkinek";
 
 /* menu title */
@@ -1496,6 +1740,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* link opeining confirmation */
 "Request Link Confirmation" = "Link jóváhagyás kérése";
 
+/* Action */
+"RESET MAILBOX PASSWORD" = "POSTAFIÓK-JELSZÓ ALAPHELYZETBE ÁLLÍTÁSA";
+
 /* Title */
 "Resetting message cache ..." = "Üzenet gyorstár törlése...";
 
@@ -1504,21 +1751,6 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Újraküldés %d mp után";
-
-/* mail location title */
-"SENT" = "Elküldött";
-
-/* mail location title */
-"SPAM" = "Levélszemét";
-
-/* Error */
-"SRP Client" = "SRP kliens";
-
-/* Error */
-"SRP Server" = "SRP szerver";
-
-/* mail location title */
-"STARRED" = "Csillagozott";
 
 /* Title */
 "Save" = "Mentés";
@@ -1532,7 +1764,8 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* action sheet option */
 "Scheduled" = "Ütemezett";
 
-/* Title */
+/* Springboard (3D Touch) shortcuts action
+   Title */
 "Search" = "Keresés";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1541,14 +1774,11 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* The title for the view where user can select the color for the group */
 "Select Color" = "Szín kiválasztása";
 
-/* None */
+/* (No Comment) */
 "Select your language" = "Nyelv kiválasztása";
 
 /* Action */
 "Send" = "Küldés";
-
-/* Title */
-"Send Verification Code" = "Ellenőrző kód küldése";
 
 /* Action */
 "Send anyway" = "Küldés mindenképpen";
@@ -1559,14 +1789,17 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "Send plain but stored enc" = "Titkosítatlanul küldve, titkosítottan tárolva";
 
+/* Title */
+"Send Verification Code" = "Ellenőrző kód küldése";
+
 /* encryption lock description */
 "Sender Verification Failed" = "A küldő ellenőrzése sikertelen volt";
 
-/* Description */
-"Sending Message" = "Üzenet küldése";
-
 /* Alert title */
 "Sending message" = "Üzenet küldése";
+
+/* Description */
+"Sending Message" = "Üzenet küldése";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Üzenetek küldése a %1$@ címről előfizetéshez kötött. Az Ön üzenete az %2$@, alapértelmezett címről lesz elküldve";
@@ -1574,8 +1807,8 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* menu title */
 "Sent" = "Elküldött";
 
-/* Description */
-"Sent Failed" = "Küldés sikertelen";
+/* mail location title */
+"SENT" = "Elküldött";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "A ProtonMail küldte, Zéró Hozzáférés titkosítással";
@@ -1584,13 +1817,16 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 "Sent by you with end-to-end encryption" = "Ön által küldve, végpontok közt titkosítva";
 
 /* Description */
-"Server proofs not valid!" = "Szerver tanúsítvány (proof) érvénytelen!";
+"Sent Failed" = "Küldés sikertelen";
 
-/* Title */
-"Set Password" = "Jelszó beállítása";
+/* Description */
+"Server proofs not valid!" = "Szerver tanúsítvány (proof) érvénytelen!";
 
 /* Description */
 "Set a password to encrypt this message for non-ProtonMail users." = "Állítson be egy jelszót a nem ProtonMail felhasználók számára küldött titkosított üzenethez.";
+
+/* Title */
+"Set Password" = "Jelszó beállítása";
 
 /* Signup passwords top title */
 "Set passwords" = "Jelszavak beállítása";
@@ -1619,6 +1855,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* settings general section title */
 "Single Password" = "Jelszó";
 
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Szüneteltetés";
+
 /* settings option */
 "Snooze Notifications" = "Értesítések szüneteltetése";
 
@@ -1631,15 +1870,24 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Elnézést, de az iOS alkalmazás béta verziójából nem tudunk vásárlásokat fogadni. De azért köszönjük, hogy részt vesz a béta programban!";
 
-/* None */
+/* (No Comment) */
 "Space Warning" = "Tárhely figyelmeztetés";
 
 /* mail location desc
    menu title */
 "Spam" = "Levélszemét";
 
+/* mail location title */
+"SPAM" = "Levélszemét";
+
 /* Description */
 "Spammed" = "Levélszemét küldés";
+
+/* Error */
+"SRP Client" = "SRP kliens";
+
+/* Error */
+"SRP Server" = "SRP szerver";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1649,14 +1897,21 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* mail location desc
    menu title
+   Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Csillagozott";
+
+/* mail location title */
+"STARRED" = "Csillagozott";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Kezdő időpont";
 
 /* contact placeholder */
 "State" = "Megye/régió";
+
+/* network troubleshot cell title */
+"Still can't find a solution" = "Nem sikerült megoldást találni";
 
 /* Title */
 "Storage" = "Tárhely";
@@ -1679,11 +1934,14 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* menu title */
 "Subscription" = "Előfizetés";
 
-/* Action */
-"Support ProtonMail" = "A ProtonMail támogatása";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "%i domain név (pl.: sajat@domain.hu)";
+
+/* network troubleshot cell title */
+"support form" = "támogatási űrlap";
+
+/* Action */
+"Support ProtonMail" = "A ProtonMail támogatása";
 
 /* settings swipe actions section title */
 "Swipe Left to Right" = "Csúsztatás balról jobbra";
@@ -1691,11 +1949,15 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* settings swipe actions section title */
 "Swipe Right to Left" = "Csúsztatás jobbról balra";
 
+/* cell title in device settings
+   Swiping gestures */
+"Swiping gestures" = "Csúsztatási műveletek";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "Átlépve a fiókba: '%@'";
+
 /* Error */
 "System can't copy the file" = "A fájl másolása nem sikerült";
-
-/* mail location title */
-"TRASH" = "Lomtár";
 
 /* Title */
 "Take a Photo" = "Fotó készítése";
@@ -1703,18 +1965,14 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Érintse meg, hogy ezeknek a címzetteknek időkorlát nélküli üzenetet küldjön";
 
-/* None */
+/* network troubleshot cell title */
+"Temporarily disable or remove your antivirus software." = "Ideiglenesen kapcsolja ki vagy távolítsa el az antivírus programot.";
+
+/* agree check box terms */
+"terms and conditions" = "felhasználási feltételek";
+
+/* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Köszönjük, hogy hibajelentést küldött. A bejelentést nyilvántartásba vettük.";
-
-/* update password error */
-"The Password is wrong." = "A megadott jelszó hibás.";
-
-/* Title */
-"The ProtonMail current offline..." = "A ProtonMail jelenleg offline...";
-
-/* 
- */
-"The UserName have been taken." = "A felhasználónév foglalt.";
 
 /* Description */
 "The authentication credentials are invalid." = "A bejelentkezési adatok helytelenek.";
@@ -1738,7 +1996,7 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* key size note part 1 */
 "The highest level of encryption available." = "Az elérhető legnagyobb titkosítási szint.";
 
-/* None */
+/* (No Comment) */
 "The label name is duplicate" = "Van már ilyen címke";
 
 /* Error */
@@ -1751,20 +2009,23 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
  *  LabelsViewController */
 "The maximum number of labels is %d." = "A címkék maximális száma: %d.";
 
-/* None */
+/* update password error */
+"The new password can't be empty." = "Az új jelszó nem lehet üres.";
+
+/* (No Comment) */
 "The new password can't empty" = "Az új jelszó nem lehet üres";
 
 /* update password error */
-"The new password can't empty." = "Az új jelszó nem lehet üres.";
+"The new password does not match." = "Az új jelszó nem egyezik.";
 
-/* None */
+/* (No Comment) */
 "The new password not match" = "A jelszavak nem egyeznek meg";
-
-/* update password error */
-"The new password not match." = "Az új jelszó nem egyezik.";
 
 /* recovery email notes */
 "The optional recovery email address allows you to reset your login password if you forget it." = "Az opcionális helyreállító e-mail cím, lehetőséget biztosít a bejelentkezési jelszó visszaállítására, ha elfelejtené azt.";
+
+/* update password error */
+"The Password is wrong." = "A megadott jelszó hibás.";
 
 /* Description */
 "The password you entered does not match the current password." = "A beírt jelszó nem egyezik meg a jelenlegi jelszóval.";
@@ -1778,11 +2039,18 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "The request timed out." = "A kérés túllépte az időkorlátot.";
 
-/* None */
+/* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "A mellékletek maximális mérete összesen 25MB lehet";
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "A mellékletek teljes mérete nem haladhatja meg a 25MB-ot";
+
+/* Alert when the account is already logged in */
+"The user is already logged in" = "A felhasználó már belépett";
+
+/* 
+ */
+"The UserName have been taken." = "A felhasználónév foglalt.";
 
 /* 
  & title */
@@ -1790,6 +2058,12 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* Error */
 "The verification failed!" = "Az ellenőrzés sikertelen!";
+
+/* alert when logout user if in queue still have tasks */
+"There are still some messages in queue. If you log out, the draft will be deleted." = "Még feldolgozás alatt vannak bizonyos üzenetek. Ha kilép, a piszkozat törlésre kerül.";
+
+/* Alert to confirm logout with pending message in the queue */
+"There are unsent messages that will be lost if you log out" = "Még vannak elküldetlen üzenetek. Ha kilép, ezek elvesznek";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "Hiba történt az alkalmazás mentett adatainak betöltésekor vagy létrehozásakor.";
@@ -1813,18 +2087,25 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ez az üzenet lehetséges, hogy egy adathalászati kísérlet! Kérjük, alaposan ellenőrizze, hogy a feladó és az üzenet szövege megbízható-e.";
 
+/* Title */
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Ez visszaáll a Safarira ha a kiválasztott böngésző eltávolításra kerül.";
+
 /* contacts talbe cell Title title */
 "Title" = "Beosztás";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS tanúsítvány ellenőrzése nem sikerült. A kapcsolatot megfigyelhetik. Az ön biztonsága érdekében az alkalmazás átmenetileg lezárt.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS tanúsítvány ellenőrzése nem sikerült. A kapcsolatot megfigyelhetik. Az ön biztonsága érdekében az alkalmazás átmenetileg lezárt.\n\nazonnal váltson hálózatot";
 
 /* Title */
 "To" = "Címzett";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "A ProtonMaillel való visszaélések elkerülése érdekében
- ellenőriznünk kell, hogy nem robot.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "A ProtonMaillel való visszaélések elkerülése érdekében &#13;\n ellenőriznünk kell, hogy nem robot.";
 
-/* None */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Az e-mail fiók jelszavának helyreállításához, kérjük, használja a ProtonMail webes felületét, a protonmail.com címen";
 
 /* Description */
@@ -1840,6 +2121,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Alert title */
 "Too many recipients" = "Túl sok címzett";
 
+/* network troubleshot cell title */
+"Tor" = "Tor";
+
 /* settings touchid error */
 "TouchID is not enrolled, enable it in the system Settings" = "A TouchID nincs beállítva. Engedélyezze a rendszer Beállításoknál";
 
@@ -1851,8 +2135,20 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
    move action */
 "Trash" = "Lomtár";
 
+/* mail location title */
+"TRASH" = "Lomtár";
+
 /* Title */
 "Trouble shooting guide" = "Problémamegoldó kézikönyv";
+
+/* troubleshooting view button */
+"Troubleshoot" = "Hibaelhárítás";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Hibaelhárítás";
+
+/* network troubleshot cell title */
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Csatlakozzon a Prontonhoz egy másik hálózaton keresztül (vagy használjon ProtonVPN-t vagy Tor-t).";
 
 /* action sheet option */
 "Turn Off" = "Kikapcsolás";
@@ -1860,17 +2156,14 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "Tweet about ProtonMail" = "Tweeteljen a ProtonMailről";
 
+/* network troubleshot cell title */
+"Twitter" = "Twitter";
+
 /* Placeholder */
 "Two Factor Code" = "Kétlépcsős kód";
 
 /* Internal type casting error */
 "Type casting error" = "Type casting error";
-
-/* default vcard types */
-"URL" = "URL";
-
-/* Title */
-"USER LOGIN" = "Bejelentkezés";
 
 /* Description */
 "Unable to connect to the server" = "Nem lehet csatlakozni a kiszolgálóhoz";
@@ -1907,9 +2200,7 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 "Unable to parse response" = "A válasz feldolgozása nem sikerült";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "A válasz objektum feldolgozása nem sikerült:
-%@";
+"Unable to parse the response object:\n%@" = "A válasz objektum feldolgozása nem sikerült:\n%@";
 
 /* Error */
 "Unable to parse token" = "A token feldolgozása nem sikerült";
@@ -1923,7 +2214,7 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Description */
 "Unknow Error" = "Ismeretlen hiba";
 
-/* None */
+/* (No Comment) */
 "Unknow file" = "Ismeretlen fájl";
 
 /* title, default display name */
@@ -1932,11 +2223,14 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Error */
 "Unknown Error" = "Ismeretlen hiba";
 
-/* None */
+/* (No Comment) */
 "Unkonw Version" = "Ismeretlen verzió";
 
 /* Service plan capability; */
 "Unlimited messages sent/day" = "Korlátlan számú üzenet küldése";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Feloldás szükséges";
 
 /* The verb for describing the unread action
    VoiceOver: email is not read yet */
@@ -1981,11 +2275,17 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* default vcard types */
 "Url" = "Url";
 
+/* default vcard types */
+"URL" = "URL";
+
 /* error when user already exist */
 "User already exist!" = "A felhasználónév már foglalt";
 
-/* None */
+/* (No Comment) */
 "User is available!" = "A felhasználónév elérhető";
+
+/* Title */
+"USER LOGIN" = "Bejelentkezés";
 
 /* 
  & title */
@@ -2010,11 +2310,14 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* error details */
 "Verification of this content’s signature failed" = "A tartalom aláírásának ellenőrzése sikertelen";
 
-/* None */
+/* (No Comment) */
 "Version %@ %@" = "Verzió %@ %@";
 
 /* message details-> more action-> view headers */
 "View Headers" = "Fejlécek megtekintése";
+
+/* message details-> more action-> view raw html of message body */
+"View HTML" = "HTML megjelenítése";
 
 /* Action */
 "View Plans" = "Csomagok";
@@ -2027,6 +2330,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Figyelem: nem adott meg helyreállító e-mail címet. Ha elveszíti a jelszavát, így lehetetlen lesz visszaszereznie a fiók elérést. Biztos, hogy folytatja helyreállító e-mail nélkül?";
+
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Az üzenet elküldése nem sikerült, valószínűleg akadozó internet kapcsolat miatt. Az üzenet a Piszkozatok közé került mentésre és az alkalmazás következő indításakor automatikusan elküldésre kerül.";
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Új előfizetését sikeresen aktiváltuk. Indítsa újra az alkalmazást, az új csomag funkcióinak eléréséhez.";
@@ -2056,6 +2362,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
  & title */
 "Wrong verification code" = "Hibás ellenőrző kód";
 
+/* Title */
+"wrote:" = "írta:";
+
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Igen, aktiváljuk ehhez: ";
 
@@ -2065,6 +2374,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Webböngészőt fog megnyitni a következő címmel:";
 
+/* Alert of removing all accounts */
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Az összes fiók eltávolítására készül. Nem fogja elérni a leveleit erről az eszközről, hacsak nem újra felveszi a fiókokat. \n\nBiztos, hogy eltávolítja az összes fiókot?";
+
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "A csúsztatásos műveleteket a ProtonMail Beállítások menüjében állíthatja be igényeihez.";
 
@@ -2073,6 +2385,9 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "%@ cím nem állítható be az alapértelmezettként, mert ez egy fizetős szolgáltatás.";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "A rendszer beállításoknál letiltotta a FaceID-t. A FaceID fontos fiók információk védelmére volt használva. A fiók eléréshez engedélyezze újra a FaceID-t az eszköz beállításainál, vagy jelentkezzen be újra.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Nem minden címzett támogatja az időkorlátos üzeneteket. Adjon meg jelszót és/vagy kapcsolja ki a PGP küldést, hogy minden címzetthez időkorlátos üzenetet küldhessen.";
@@ -2095,8 +2410,21 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Description */
 "You need at least one recipient to send" = "A küldéshez legalább 1 címzett megadása szükséges";
 
+/* Alert to confirm logout
+   Alert when logout primary account from account manager */
+"You will be switched to %@" = "Átlép a következőbe: %@";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "Az üzenetet visszavonhatatlanul törli. Folytatja?";
+
 /* view top title */
 "Your Country Code" = "Országkód";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Az ön országában a Proton elérése korlátozott lehet. Használjon %1$@-t (vagy bármely más VPN-t) vagy %2$@-t a Proton eléréshez.";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Az ön országában a Proton elérése korlátozott lehet. Használjon ProtonVPN-t (vagy bármely más VPN-t) vagy Tor-t a Proton eléréshez.";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "A beérkezett üzenetek mostantól végpontok közötti titkosítással védettek. Amennyiben szeretné elküldött üzeneteit automatikusan biztonságossá tenni, kérje fel ismerőseit a ProtonMail használatára! Természetesen manuálisan is küldhet titkosított e-mailt, amennyiben a címzett nem ProtonMail felhasználó.";
@@ -2105,9 +2433,7 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Az új e-mail fiókja készen áll a titkosított üzenetek fogadására és küldésére.";
 
 /* view top title */
-"Your new secure email
- account is ready." = "Az új biztonságos e-mail
- fiókja készen áll.";
+"Your new secure email\r\n account is ready." = "Az új biztonságos e-mail&#13;\n fiókja készen áll.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "A jelenlegi csomagja aktív:";
@@ -2120,52 +2446,4 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 
 /* contact placeholder */
 "ZIP" = "Irányítószám";
-
-/* agree check box middle word */
-"and" = "és";
-
-/* like at 10:00pm */
-"at" = ".";
-
-/* Error */
-"attempt remaining until secure data wipe!" = "kísérlet maradt az adatok biztonságos törléséig!";
-
-/* Description */
-"attempts remaining" = "kísérlet maradt";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "kísérlet maradt az adatok biztonságos törléséig!";
-
-/* Action */
-"close tour" = "bemutató bezárása";
-
-/* Title */
-"days" = "Nap";
-
-/* Buy button second line */
-"for one year" = "egy évre";
-
-/* contacts api error when fetch */
-"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() failed, peopleOrderedByUsersPreference return null!!";
-
-/* None */
-"hours" = "Óra";
-
-/* Title */
-"inline attachments" = "beszúrt mellékletek";
-
-/* no object error, local only , this could be not translated! */
-"no object" = "no object";
-
-/* Title */
-"normal attachments" = "csatolt mellékletek";
-
-/* agree check box privacy */
-"privacy policy." = "adatvédelmi irányelvek.";
-
-/* agree check box terms */
-"terms and conditions" = "felhasználási feltételek";
-
-/* Title */
-"wrote:" = "írta:";
 

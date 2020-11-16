@@ -103,7 +103,13 @@ class MenuViewModelImpl : MenuViewModel {
     let usersManager : UsersManager
     
     //
-    lazy var labelDataService : LabelsDataService = self.currentUser!.labelService
+    lazy var labelDataService : LabelsDataService? = {
+        if let user = self.currentUser {
+            return user.labelService
+        } else {
+            return nil
+        }
+    }()
     
     init(usersManager : UsersManager) {
         self.usersManager = usersManager
@@ -139,7 +145,7 @@ class MenuViewModelImpl : MenuViewModel {
             return
         }
         self.labelDataService = labelService
-        self.fetchedLabels = self.labelDataService.fetchedResultsController(.all)
+        self.fetchedLabels = self.labelDataService!.fetchedResultsController(.all)
         self.fetchedLabels?.delegate = delegate
         if let fetchedResultsController = fetchedLabels {
             do {
@@ -149,7 +155,7 @@ class MenuViewModelImpl : MenuViewModel {
             }
         }
         ///TODO::fixme not necessary
-        self.labelDataService.fetchLabels()
+        self.labelDataService!.fetchLabels()
     }
     
     func sectionCount() -> Int {
@@ -164,7 +170,11 @@ class MenuViewModelImpl : MenuViewModel {
     }
     
     func count(by labelID: String, userID: String? = nil) -> Int {
-        return labelDataService.unreadCount(by: labelID, userID: userID)
+        if let service = self.labelDataService {
+            return service.unreadCount(by: labelID, userID: userID)
+        } else {
+            return 0
+        }
     }
 
     func inboxesCount() -> Int {

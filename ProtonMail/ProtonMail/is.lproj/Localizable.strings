@@ -1,3 +1,24 @@
+/* Key size text when setup key */
+"(2048 bit)" = "(2048 bita)";
+
+/* Key size text when setup key */
+"(4096 bit)" = "(4096 bita)";
+
+/* Comment for disconnected account in Account Manager */
+"(logged out)" = "(skráð/ur út)";
+
+/* Service plan capability detail; like in '50 email addresses (total)' */
+"(total)" = "(alls)";
+
+/* secret */
+"**********" = "**********";
+
+/* optional text field */
+"*OPTIONAL" = "*VALFRJÁLST";
+
+/* Service plan capability detail; like in '5 email addresses/user' */
+"/user" = "/notanda";
+
 /* Service plan capability */
 "%@ storage capacity" = "%@ geymslurými";
 
@@ -22,32 +43,14 @@
 /* Service plan capability; i = 5 or 50 */
 "%i email addresses" = "%i tölvupóstföng";
 
-/* Key size text when setup key */
-"(2048 bit)" = "(2048 bita)";
-
-/* Key size text when setup key */
-"(4096 bit)" = "(4096 bita)";
-
-/* Service plan capability detail; like in '50 email addresses (total)' */
-"(total)" = "(alls)";
-
-/* secret */
-"**********" = "**********";
-
-/* optional text field */
-"*OPTIONAL" = "*VALFRJÁLST";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Slepptu hér til að bæta við sem viðhengi";
 
-/* Service plan capability detail; like in '5 email addresses/user' */
-"/user" = "/notanda";
+/* default empty object */
+"<no object>" = "<ekkert atriði>";
 
 /* 2fa verification failed */
 "2FA failed. Please try to login again." = "2FA auðkenning mistókst. Reyndu aftur að skrá þig inn.";
-
-/* default empty object */
-"<no object>" = "<ekkert atriði>";
 
 /* *
  *  LabelTableViewCell */
@@ -65,25 +68,23 @@
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "Aðgangskóði hefur ekki verið settur, virkjaðu það í kerfisstillingunum";
 
-/* when server not reachable */
-"API Server not reachable..." = "API-þjónn finnst ekki...";
-
-/* mail location title */
-"ARCHIVE" = "Safn";
-
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. Skráðu þig inn í protonmail.com til að greiða ófrágenginn reikning.";
 
-/* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. 
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. \n\nSkoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">upplýsingasíðurnar okkar</a> til að sjá nánari upplýsingar.";
 
-Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">upplýsingasíðurnar okkar</a> til að sjá nánari upplýsingar.";
+/* Account manager title */
+"Account" = "Notandaaðgangur";
 
 /* 
  & title */
 "Account password invalid" = "Ógilt aðgangslykilorð";
 
-/* None */
+/* section title in settings */
+"Account Settings" = "Stillingar notandaaðgangs";
+
+/* (No Comment) */
 "Add" = "Bæta við";
 
 /* new contacts add Anniversary */
@@ -110,11 +111,29 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* add label action */
 "Add Label" = "Bæta við merki";
 
+/* add new address action */
+"Add new address" = "Bæta við nýju heimilisfangi";
+
+/* new custom field action */
+"Add new custom field" = "Bæta við nýjum sérsniðnum reit";
+
+/* new email action */
+"Add new email" = "Bæta við nýju tölvupóstfangi";
+
+/* new field action */
+"Add new field" = "Bæta við nýjum reit";
+
 /* add a new folder */
 "Add New Folder" = "Bæta við nýrri möppu";
 
 /* add a new folder */
 "Add New Label" = "Bæta við nýju merki";
+
+/* new phone action */
+"Add new phone number" = "Bæta við nýju símanúmeri";
+
+/* action */
+"Add new URL" = "Bæta við nýrri URL-slóð";
 
 /* new contacts add Nickname */
 "Add Nickname" = "Bæta við gælunafni";
@@ -131,40 +150,28 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* new contacts add Title */
 "Add Title" = "Bæta við titli";
 
-/* add new address action */
-"Add new address" = "Bæta við nýju heimilisfangi";
-
-/* new custom field action */
-"Add new custom field" = "Bæta við nýjum sérsniðnum reit";
-
-/* new email action */
-"Add new email" = "Bæta við nýju tölvupóstfangi";
-
-/* new field action */
-"Add new field" = "Bæta við nýjum reit";
-
-/* new phone action */
-"Add new phone number" = "Bæta við nýju símanúmeri";
-
-/* action */
-"Add new url" = "Bæta við nýrri vefslóð";
-
 /* Title */
 "Add to contacts" = "Bæta í tengiliði";
 
 /* default vcard types */
 "Address" = "Heimilisfang";
 
+/* cell title in device settings */
+"Addresses" = "Tölvupóstföng";
+
 /* Title */
 "Alert" = "Aðvörun";
+
+/* Title */
+"All contacts are imported" = "Allir tengiliðir fluttir inn";
 
 /* mail location desc
    mail location title
    menu title */
 "All Mail" = "Allur póstur";
 
-/* Title */
-"All contacts are imported" = "Allir tengiliðir fluttir inn";
+/* network troubleshot cell title */
+"Allow alternative routing" = "Leyfa varaleið beiningar";
 
 /* archive when apply label */
 "Also Archive" = "Einnig safn";
@@ -172,11 +179,29 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Description */
 "Also used to reset a forgotten password." = "Einnig notað til að endurstilla gleymt lykilorð.";
 
+/* agree check box middle word */
+"and" = "og";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Afmæli";
 
+/* network troubleshot cell title */
+"Antivirus interference" = "Truflanir vegna vírusvarna";
+
+/* when server not reachable */
+"API Server not reachable..." = "API-þjónn finnst ekki...";
+
+/* section title in settings */
+"APP INFORMATION" = "UPPLÝSINGAR UM FORRIT";
+
 /* Error */
 "App is locked" = "Forritið er læst";
+
+/* cell title in device settings */
+"App Language" = "Tungumál forrits";
+
+/* section title in settings */
+"App Settings" = "Stillingar forrits";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Þóknun Apple fyrir kaup í forritinu";
@@ -188,7 +213,7 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en tiltóku ekki hvaða notandaaðgang ProtonMail eigi að uppfæra, sértu með fleiri en einn notandaaðgang.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en einhvejar tæknilegar upplýsingar vantaði. Gefðu þær upp í villuskýrslunni og mun notendaaðstoðarteymið okkar síðan hafa samband við þig.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en einhverjar tæknilegar upplýsingar vantaði. Gefðu þær upp í villuskýrslunni og mun notendaaðstoðarteymið okkar síðan hafa samband við þig.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en við sjáum að þú hefur skráð þig út af notandaaðgangnum síðan þá.";
@@ -203,11 +228,23 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
    menu title */
 "Archive" = "Safn";
 
+/* mail location title */
+"ARCHIVE" = "Safn";
+
 /* Description */
 "Archived" = "Geymt";
 
-/* Alert to confirm logout */
-"Are you sure you want to logout?" = "Ertu viss um að þú viljir skrá þig út?";
+/* Alert when logout non-primary account from account manager */
+"Are you sure you want to log out?" = "Ertu viss að þú viljir skrá þig út?";
+
+/* Alert to confirm logout when only one account logged in */
+"Are you sure you want to logout %@?" = "Ertu viss um að þú viljir skrá %@ út?";
+
+/* emptify folder/label confirmation alert */
+"Are you sure? This can't be undone." = "Ertu viss? Það er ekki hægt að taka þetta aftur.";
+
+/* like at 10:00pm */
+"at" = "hjá";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Viðhengi flutt inn";
@@ -215,14 +252,23 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* VoiceOver: email has attachments */
 "Attachments" = "Viðhengi";
 
+/* Error */
+"attempt remaining until secure data wipe!" = "tilraun eftir þar til tækið verður hreinsað í öryggisskyni!";
+
+/* Description */
+"attempts remaining" = "tilraunir eftir";
+
+/* Error */
+"attempts remaining until secure data wipe!" = "tilraunir eftir þar til tækið verður hreinsað í öryggisskyni!";
+
 /* Title */
 "Authentication" = "Auðkenning";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "Auðkenning mistókst: rangt notandanafn eða lykilorð";
+"Authentication failed" = "Auðkenning mistókst";
 
 /* Description */
-"Authentication failed" = "Auðkenning mistókst";
+"Authentication Failed Wrong username or password" = "Auðkenning mistókst: rangt notandanafn eða lykilorð";
 
 /* Error */
 "Authentication failed. Please try to login again." = "Auðkenning mistókst, reyndu aftur að skrá þig inn.";
@@ -238,6 +284,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* settings general section title */
 "Auto Show Images" = "Birta myndir sjálfkrafa";
+
+/* section title in settings */
+"Auto-lock" = "Sjálfvirk læsing";
 
 /* top left back button */
 "Back" = "Til baka";
@@ -275,14 +324,14 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Link to More Credits screen */
 "Buy More Credits" = "Kaupa meiri inneign";
 
+/* Alert for removing disconnected accounts */
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "Með því að fjarlægja þennan notandaaðgang, muntu ekki lengur hafa aðgang að honum á þessu tæki nema með því að bæta honum við aftur.\n\nViltu samt fjarlægja þennan notandaaðgang?";
+
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "Með því að nota ProtonMail, samþykkir þú";
 
 /* No comment provided by engineer. */
 "By using protonmail, you agree to our %@ and %@." = "Með því að nota ProtonMail, samþykkir þú %1$@ og %2$@.";
-
-/* human check option button */
-"CAPTCHA" = "CAPTCHA-mennskupróf";
 
 /* Call the contact (button title text) */
 "Call Contact" = "Hringja í tengilið";
@@ -318,11 +367,14 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
 "Can't fetch contact groups" = "Gat ekki sótt hópa tengiliða";
 
-/* None */
+/* (No Comment) */
 "Can't find the clicked message please try again!" = "Fann ekki skilaboðin sem smellt var á, reyndu aftur!";
 
 /* Description */
 "Can't find the selected message. Please try again." = "Fann ekki valin skilaboð. Reyndu aftur.";
+
+/* Description */
+"Can't find the value from the response body" = "Fann ekki gildið í meginmáli svarsins";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Gat ekki fundið þetta viðhengi!";
@@ -342,9 +394,6 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Error */
 "Can't load the file" = "Get ekki hlaðið inn skránni";
 
-/* Description */
-"Can't find the value from the response body" = "Ekki er hægt að finna gildið úr meginmáli svars";
-
 /* Error */
 "Can't open the file" = "Gat ekki opnað skrána";
 
@@ -363,8 +412,11 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "Cancelling" = "Hætti við";
 
-/* None */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "Tókst ekki að afkóða þetta viðhengi.";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCHA-mennskupróf";
 
 /* Title */
 "Cc" = "Afrit";
@@ -374,6 +426,12 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* place holder */
 "Cell phone number" = "Farsímanúmer";
+
+/* Title */
+"Change default address to .." = "Breyta sjálfgefnu tölvupóstfangi í ..";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Breyta aðgerð þegar strokið er til vinstri";
 
 /* change password input label */
 "Change Login Password" = "Breyta lykilorði innskráningar";
@@ -387,23 +445,20 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* settings protection section title */
 "Change Pin" = "Breyta PIN-númeri";
 
-/* Title */
-"Change Single Password" = "Breyta einföldu lykilorði";
-
-/* Title */
-"Change default address to .." = "Breyta sjálfgefnu tölvupóstfangi í ..";
-
-/* settings swipe actions section action description */
-"Change left swipe action" = "Breyta aðgerð þegar strokið er til vinstri";
-
 /* settings swipe actions section action description */
 "Change right swipe action" = "Breyta aðgerð þegar strokið er til hægri";
 
 /* Title */
 "Change sender address to .." = "Breyta tölvupóstfangi sendanda í ...";
 
+/* Title */
+"Change Single Password" = "Breyta einföldu lykilorði";
+
 /* Action */
 "Check Again" = "Athuga aftur";
+
+/* network troubleshot cell title */
+"Check Proton Status for our system status." = "Athugaðu stöðu Proton til að sjá ástandið á kerfinu okkar.";
 
 /* loading message */
 "Checking ...." = "Athuga ....";
@@ -417,13 +472,23 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* settings general section title */
 "Clear Local Message Cache" = "Hreinsa skyndiminni skilaboða á tækinu";
 
+/* Menu action to remove text formatting */
+"Clear Style" = "Hreinsa stíl";
+
 /* general close action */
 "Close" = "Loka";
+
+/* Action */
+"close tour" = "loka yfirferð";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Loka";
 
-/* Action */
+/* cell title in device settings */
+"Combined Contacts" = "Sameinaðir tengiliðir";
+
+/* Action
+   Springboard (3D Touch) shortcuts action */
 "Compose" = "Semja skilaboð";
 
 /* Title */
@@ -438,9 +503,6 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Staðfestu lykilorð fyrir pósthólf";
 
-/* Placeholder */
-"Confirm Password" = "Staðfestu lykilorð";
-
 /* Title */
 "Confirm new login password" = "Staðfestu nýtt innskráningarlykilorð";
 
@@ -449,6 +511,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* Placeholder */
 "Confirm new password" = "Staðfestu nýtt lykilorð";
+
+/* Placeholder */
+"Confirm Password" = "Staðfestu lykilorð";
 
 /* alert title */
 "Confirm phishing report" = "Staðfestu skýrslu um veiðipóst";
@@ -459,11 +524,17 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* view top title */
 "Congratulations!" = "Til hamingju!";
 
+/* Account manager title */
+"Connect Account" = "Tengja notandaaðgang";
+
 /* contact section title */
 "Contact Details" = "Nánar um tengilið";
 
 /* Title */
 "Contact the ProtonMail team" = "Hafðu samband við ProtonMail-teymið";
+
+/* network troubleshot cell title */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Hafðu beint samband við okkur í gegnum aðstoðarsíðuna okkar, með tölvupósti (support@protonmail.com) eða á Twitter.";
 
 /* Action and title
    menu title */
@@ -490,23 +561,26 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* top right action text */
 "Create" = "Búa til";
 
-/* Create account button */
-"Create Account" = "Búa til notandaaðgang";
-
-/* Error */
-"Create User failed. Please try again." = "Mistókst að búa til notanda. Reyndu aftur.";
-
 /* Signup top title */
 "Create a new account" = "Búa til nýjan notandaaðgang";
+
+/* Create account button */
+"Create Account" = "Búa til notandaaðgang";
 
 /* Description */
 "Create and add Labels to organize your inbox. Long press on a message for all options." = "Búðu til og bættu við merkingum til að skipuleggja innhólfið þitt. Ýttu og haltu niðri á skilaboðum til að sjá alla mögulega valkosti.";
 
-/* None */
+/* (No Comment) */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Búðu til og bættu við merkingum til að skipuleggja innhólfið þitt. Ýttu og haltu niðri á skilaboðum til að sjá alla mögulega valkosti.";
+
+/* title of button in account connect page */
+"Create new account" = "Búa til nýjan notandaaðgang";
 
 /* error message title when create new user */
 "Create user failed" = "Mistókst að búa til notandaaðgang";
+
+/* Error */
+"Create User failed. Please try again." = "Mistókst að búa til notanda. Reyndu aftur.";
 
 /* Change language title */
 "Current Language is: " = "Núverandi tungumál er: ";
@@ -521,12 +595,6 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
    contacts default label type */
 "Custom" = "Sérsniðið";
 
-/* Title */
-"DECRYPT MAILBOX" = "AFKÓÐA PÓSTHÓLF";
-
-/* mail location title */
-"DRAFTS" = "Drög";
-
 /* message Date: text */
 "Date:" = "Dagsetning:";
 
@@ -534,10 +602,16 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 "Date: %@" = "Dagsetning: %@";
 
 /* Title */
+"days" = "dagar";
+
+/* Title */
 "Debug" = "Villukemba";
 
 /* Action */
 "Decrypt" = "Afkóða";
+
+/* Title */
+"DECRYPT MAILBOX" = "AFKÓÐA PÓSTHÓLF";
 
 /* Description */
 "Decrypt token failed. Please try again." = "Afkóðun á teikni mistókst, reyndu aftur.";
@@ -550,6 +624,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* Title */
 "Default" = "Sjálfgefið";
+
+/* Settings row */
+"Default browser" = "Sjálfgefinn vafri";
 
 /* error message when create new user */
 "Default error. Please try again." = "Villa í sjálfgefnu. Reyndu aftur.";
@@ -566,6 +643,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* general delete action */
 "Delete" = "Eyða";
 
+/* emptify folder/label confirmation alert */
+"Delete all" = "Eyða öllu";
+
 /* Title-Contacts */
 "Delete Contact" = "Eyða tengilið";
 
@@ -578,20 +658,26 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "Details" = "Nánar";
 
+/* network troubleshot cell title */
+"Disable any proxies or firewalls, or contact your network administrator." = "Gerðu alla eldveggi og milliþjóna (proxies) óvirka, eða hafðu samband við kerfisstjórann þinn.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Gera sannprófun óvirka";
+
 /* Action */
 "Discard changes" = "Henda breytingum";
 
 /* Action */
 "Discard draft" = "Henda drögum";
 
+/* (No Comment) */
+"Display name" = "Birtingarnafn";
+
 /* Title in settings */
 "Display Name" = "Birtingarnafn";
 
 /* Title */
 "Display Name Updated" = "Birtingarnafn uppfært";
-
-/* None */
-"Display name" = "Birtingarnafn";
 
 /* Title in display name settings */
 "DisplayName" = "Birtingarnafn";
@@ -605,11 +691,11 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "Do you want to save the unsaved changes?" = "Viltu vista óvistuðu breytingarnar?";
 
-/* Title */
-"Don't Show Again" = "Ekki birta þetta aftur";
-
 /* Action */
 "Don't remind me again" = "Ekki minna mig á þetta aftur";
+
+/* Title */
+"Don't Show Again" = "Ekki birta þetta aftur";
 
 /* Done action */
 "Done" = "Lokið";
@@ -623,6 +709,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* menu title */
 "Drafts" = "Drög";
+
+/* mail location title */
+"DRAFTS" = "Drög";
 
 /* Action */
 "Edit" = "Breyta";
@@ -640,32 +729,32 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "Edit Label" = "Breyta merki";
 
+/* title */
+"Edit mobile signature" = "Breyta farsímaundirskrift";
+
 /* The button text for edit profile picture */
 "Edit Photo" = "Breyta mynd";
 
 /* title */
-"Edit mobile signature" = "Breyta farsímaundirskrift";
-
-/* title */
 "Edit signature" = "Breyta undirskrift";
+
+/* network troubleshot cell title */
+"email" = "tölvupóstur";
 
 /* default vcard types */
 "Email" = "Tölvupóstur";
-
-/* contact detail view, email addresses section title */
-"Email Addresses" = "Tölvupóstföng";
-
-/* Send an email to the current contact (button title text) */
-"Email Contact" = "Senda tengilið tölvupóst";
-
-/* human check option button */
-"Email Verification" = "Sannvottun tölvupósts";
 
 /* contact placeholder */
 "Email address" = "Tölvupóstfang";
 
 /* Title */
 "Email address invalid" = "Tölvupóstfang er ógilt";
+
+/* contact detail view, email addresses section title */
+"Email Addresses" = "Tölvupóstföng";
+
+/* Send an email to the current contact (button title text) */
+"Email Contact" = "Senda tengilið tölvupóst";
 
 /* place holder */
 "Email default signature" = "Sjálfgefin undirritun tölvupósts";
@@ -674,8 +763,17 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
  & title */
 "Email domain invalid" = "Ógilt tölvupóstlén";
 
-/* empty folder, for spam and trash */
+/* human check option button */
+"Email Verification" = "Sannvottun tölvupósts";
+
+/* cell title in device setting */
+"Empty Cache" = "Tæma skyndiminni";
+
+/* empty folder, for spam and trash and drafts */
 "Empty Folder" = "Tóm mappa";
+
+/* it is an option to empty the label */
+"Empty Label" = "Tóm merking";
 
 /* Title */
 "Enable Default Signature" = "Virkja sjálfgefna undirskrift";
@@ -689,8 +787,17 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "Enable Notification Email" = "Virkja tilkynningapóst";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Enable PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "Virkja varnir með PIN-númeri";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Enable PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Enable PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Virkja TouchID";
@@ -722,9 +829,6 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* settings option (End Time: 8am) */
 "End Time" = "Lokatími";
 
-/* Title */
-"End-to-End Encryption" = "Enda-í-enda dulritun";
-
 /* encryption lock description */
 "End-to-end encrypted" = "Enda-í-enda dulritað";
 
@@ -737,23 +841,29 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Enda-í-enda dulritað til sannvottaðs tölvupóstfangs";
 
+/* Title */
+"End-to-End Encryption" = "Enda-í-enda dulritun";
+
 /* Action in 2fa popup view */
 "Enter" = "Setja inn";
 
 /* Title */
 "Enter Verification Code" = "Settu inn sannvottunarkóða";
 
-/* set pin title */
-"Enter your PIN" = "Settu inn PIN-kóðann þinn";
-
-/* Title */
-"Enter your PIN to unlock your inbox." = "Settu inn PIN-kóðann þinn til að aflæsa innhólfinu.";
-
 /* human verification top title */
 "Enter your cell phone number" = "Settu inn farsímanúmerið þitt";
 
 /* top title */
 "Enter your existing email address." = "Settu inn núverandi tölvupóstfangið þitt.";
+
+/* Account manager title */
+"Enter your mailbox password" = "Settu inn lykilorðið fyrir pósthólfið þitt";
+
+/* set pin title */
+"Enter your PIN" = "Settu inn PIN-kóðann þinn";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Settu inn PIN-kóðann þinn til að aflæsa innhólfinu.";
 
 /* settings debug section title */
 "Error Logs" = "Villuskráningar";
@@ -775,12 +885,6 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* Key size checkbox */
 "Extreme Security" = "Ofuröryggi";
-
-/* login page forgot pwd */
-"FORGOT PASSWORD?" = "Gleymt lykilorð?";
-
-/* abbreviation of forward: */
-"FW:" = "Áfram:";
 
 /* Error message */
 "Failed to determine type of file" = "Tókst ekki að ákvarða gerð skráar";
@@ -816,11 +920,17 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Service Plan description */
 "For individuals that need more capacity, customization and advanced features" = "Fyrir einstaklinga sem þurfa meira gagnamagn, vilja geta sérsniðið eftir sínum þörfum og þá sem þurfa þróaða eiginleika";
 
+/* Buy button second line */
+"for one year" = "í eitt ár";
+
 /* Service Plan description */
 "For organizations that need multi-user support and additional productivity features" = "Fyrir stofnanir og félög sem þurfa margnotendastuðning og viðbótareiginleika fyrir daglegan rekstur";
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Fyrir kraftnotendur og hópa fólks sem kunna að meta fullt nafnleysi og gagnaleynd";
+
+/* login page forgot pwd */
+"FORGOT PASSWORD?" = "Gleymt lykilorð?";
 
 /* forward action */
 "Forward" = "Áframsenda";
@@ -833,6 +943,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* message From: field text */
 "From:" = "Frá:";
+
+/* abbreviation of forward: */
+"FW:" = "Áfram:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Áfram:";
@@ -851,6 +964,15 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* Action */
 "Go to inbox" = "Fara í innhólf";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to login" = "Fara í innskráningu";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Fara í stillingar";
+
+/* network troubleshot cell title */
+"Government block" = "Lokun á vegum stjórnvalda";
 
 /* The title for the contact group detail view */
 "Group Details" = "Nánar um hóp";
@@ -879,6 +1001,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Key size checkbox */
 "High Security" = "Mikið öryggi";
 
+/* (No Comment) */
+"hours" = "Klukkustundir";
+
 /* Title */
 "Hours" = "Klukkustundir";
 
@@ -894,20 +1019,26 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP stuðningur í gegnum ProtonMail-brú";
 
-/* mail location title */
-"INBOX" = "Innhólf";
-
 /* Action */
 "Import Error" = "Innflutningsvilla";
 
 /* Title */
 "Import File From..." = "Flytja inn skrá úr...";
 
-/* import contact title */
-"Importing Contacts" = "Flyt inn tengiliði";
+/* Downloading attachments from cloud */
+"Importing" = "Innflutningur";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Flyt inn viðhengi, það getur tekið nokkra stund";
+
+/* import contact title */
+"Importing Contacts" = "Flyt inn tengiliði";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "Sé lokað á Proton-vefsvæði, gerir þessi stilling forritinu kleift að reyna að nota aðra leið um netið til að tengjast Proton, sem aftur getur nýst til að komast fram hjá eldveggjum eða vandamálum varðandi netkerfið. Við mælum með því að hafa þessa stillingu virka til að auka áreiðanleika forritsins. [Kanna nánar]";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Sé lokað á Proton-vefsvæði, gerir þessi stilling forritinu kleift að reyna að nota aðra leið um netið til að tengjast Proton, sem aftur getur nýst til að komast fram hjá eldveggjum eða vandamálum varðandi netkerfið. Við mælum með því að hafa þessa stillingu virka til að auka áreiðanleika forritsins. %1$@";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Til þess að geta notað þjónustuna okkar, verðurðu að samþykkja skilmála og kvaðir ProtonMail.";
@@ -916,17 +1047,26 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
    menu title */
 "Inbox" = "Innhólf";
 
+/* mail location title */
+"INBOX" = "Innhólf";
+
+/* Title */
+"Incorrect password" = "Rangt lykilorð";
+
 /* Error */
 "Incorrect PIN," = "Rangt PIN-númer,";
 
 /* Title */
-"Incorrect password" = "Rangt lykilorð";
+"inline attachments" = "innfelld viðhengi";
 
 /* place holder */
 "Input Display Name ..." = "Settu inn birtingarnafn ...";
 
 /* place holder */
 "Input Notification Email ..." = "Setja inn tilkynningapóst ...";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Óörugg tenging";
 
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Gerð samstundis-aðganga að ProtonMail er óvirk í augnablikinu. Farðu á https://protonmail.com/invite til að biðja um boðsaðgang.";
@@ -936,6 +1076,21 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* default vcard types */
 "Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Vandamál hjá internetþjónustuaðila (Internet Service Provider - ISP)";
+
+/* (No Comment) */
+"Invalid access token please relogin" = "Ógilt auðkennisteikn, skráðu þig inn aftur";
+
+/* Description */
+"Invalid access token. Please relogin." = "Ógilt aðgangsteikn, skráðu inn aftur.";
+
+/* Error */
+"Invalid credential" = "Ógilt auðkenni";
+
+/* update password error */
+"Invalid hashed password!" = "Ógilt tætigildislykilorð!";
 
 /* Error */
 "Invalid Password" = "Ógilt lykilorð";
@@ -948,18 +1103,6 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* Error message */
 "Invalid UserName!" = "Ógilt notandanafn!";
-
-/* None */
-"Invalid access token please relogin" = "Ógilt auðkennisteikn, skráðu þig inn aftur";
-
-/* Description */
-"Invalid access token. Please relogin." = "Ógilt aðgangsteikn, skráðu inn aftur.";
-
-/* Error */
-"Invalid credential" = "Ógilt auðkenni";
-
-/* update password error */
-"Invalid hashed password!" = "Ógilt tætigildislykilorð!";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Er þessi villuskýrsla vegna kaupa í forritinu?";
@@ -982,8 +1125,8 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Error */
 "Key invalid. Please go back and try again." = "Ógildur lykill, farðu til baka og reyndu aftur.";
 
-/* None */
-"LOGIN" = "Innskráning";
+/* Title */
+"Label as..." = "Merkja sem...";
 
 /* Title */
 "Label Management" = "Umsýsla merkinga";
@@ -991,11 +1134,11 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* createing lable input place holder */
 "Label Name" = "Heiti merkis";
 
-/* Title */
-"Label as..." = "Merkja sem...";
-
 /* VoiceOver: email has lables */
 "Labels" = "Merkingar";
+
+/* cell title in device settings */
+"Labels & Folders" = "Merkingar og möppur";
 
 /* Title */
 "Labels have been applied." = "Merkingum hefur verið beitt.";
@@ -1009,11 +1152,17 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "Language" = "Tungumál";
 
+/* network troubleshot cell title */
+"Learn more" = "Kanna nánar";
+
 /* Action */
 "Learn More" = "Kanna nánar";
 
 /* learn more button */
 "Learn more here" = "Fræðstu betur hérna";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "Takmörkum náð";
 
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "Takmarkað við 150 skilaboð send/dag";
@@ -1021,11 +1170,17 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Action */
 "Load remote content" = "Hlaða inn fjartengdu efni";
 
-/* None */
+/* (No Comment) */
 "Loading..." = "Hleð inn...";
 
 /* Description */
 "Local cache can't find mailbox password" = "Staðvært skyndiminni finnur ekki aðgangsorð pósthólfs";
+
+/* cell title in device settings */
+"Local Cache Management" = "Stýring á staðværu skyndiminni";
+
+/* cell title in device settings */
+"Local storage limit" = "Takmörk á staðværu geymslurými";
 
 /* *
  *  file string type */
@@ -1034,8 +1189,23 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* menu title */
 "Lock The App" = "Læsa forritinu";
 
+/* Account manager title */
+"Log in to your ProtonMail account" = "Skrá inn á  ProtonMail-aðganginn þinn";
+
+/* Alert title when logout non-primary account from account manager */
+"Log out %@?" = "Skrá út %@?";
+
+/* Action */
+"Log Out All" = "Skrá allt út";
+
+/* Alert when auth token is revoked and switch to another */
+"Logged out from %@ and signed in with %@" = "Skráð út úr %1$@ og skráð inn með %2$@";
+
 /* Title */
 "Login" = "Innskráning";
+
+/* (No Comment) */
+"LOGIN" = "Innskráning";
 
 /* settings general section title */
 "Login Password" = "Lykilorð Innskráningar";
@@ -1043,54 +1213,56 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Error */
 "Login password doesn't match" = "Lykilorð innskráningar samsvarar ekki";
 
-/* menu title */
+/* Alert title to confirm logout
+   Alert title when logout primary account from account manager
+   menu title */
 "Logout" = "Útskráning";
 
 /* error title */
 "Logs" = "Aðgerðaskrár";
 
 /* Upgrade warning title */
-"Looking to secure your contact's details?" = "Ertu að leita að tryggja öryggi upplýsinga um tengiliðinn þinn?";
+"Looking to secure your contact's details?" = "Ertu að reyna að tryggja öryggi upplýsinga um tengiliðinn þinn?";
+
+/* cell title in device settings */
+"MAILBOX" = "PÓSTHÓLF";
+
+/* settings general section title */
+"Mailbox Password" = "Lykilorð á pósthólfi";
 
 /* *
  *  MailboxPasswordViewController */
 "MAILBOX PASSWORD" = "Lykilorð á pósthólfi";
 
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
-
-/* settings general section title */
-"Mailbox Password" = "Lykilorð á pósthólfi";
-
-/* None */
+/* (No Comment) */
 "Mailbox password doesn't match" = "Lykilorð á pósthólfi samsvarar ekki";
+
+/* cell title in device settings */
+"Mailbox size" = "Stærð pósthólfs";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Sýsla með vistföng";
 
+/* Settings row */
+"Manage in device Settings" = "Stjórna í stillingum tækis";
+
 /* Title */
 "Manage Labels/Folders" = "Sýsla með merkingar/möppur";
+
+/* Action */
+"Mark as unread" = "Merkja sem ólesið";
 
 /* mark message as read action */
 "Mark Read" = "Merkja sem lesið";
 
-/* Action */
-"Mark as unread" = "Merkja sem ólesið";
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Valmynd";
 
 /* Message with title */
 "Message %@" = "Skilaboð %@";
-
-/* Placeholder */
-"Message Password" = "Lykilorð skilaboða";
-
-/* settings debug section title */
-"Message Queue" = "Skilaboð í biðröð";
-
-/* Title */
-"Message Swipe Actions" = "Aðgerðir þegar strokið er á skilaboð";
 
 /* *
  *  Expiration View */
@@ -1102,10 +1274,16 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "Message has been moved." = "Skilaboð voru færð.";
 
+/* Placeholder */
+"Message Password" = "Lykilorð skilaboða";
+
 /* Description */
 "Message password does not match." = "Lykilorð skilaboða samsvarar ekki.";
 
-/* None */
+/* settings debug section title */
+"Message Queue" = "Skilaboð í biðröð";
+
+/* (No Comment) */
 "Message sending failed please try again" = "Sending skilaboða mistókst, reyndu aftur";
 
 /* Description */
@@ -1113,6 +1291,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* Description after message have been sent */
 "Message sent" = "Skilaboð send";
+
+/* Title */
+"Message Swipe Actions" = "Aðgerðir þegar strokið er á skilaboð";
 
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Skilaboð sem þú sendir er hægt að stilla þannig að þau eyðist sjálfvirkt eftir ákveðinn tíma.";
@@ -1136,7 +1317,7 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 "More Credits" = "Meiri inneign";
 
 /* move action */
-"Move to AllMail" = "Flytja í Allur póstur";
+"Move to All Mail" = "Flytja í Allur póstur";
 
 /* move action */
 "Move to Archive" = "Flytja í safn";
@@ -1165,11 +1346,14 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "Multiple Addresses" = "Mörg póstföng";
 
+/* title */
+"Name" = "Nafn";
+
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Skráðu þig án kvaða";
 
-/* title */
-"Name" = "Nafn";
+/* section title */
+"Networking" = "Netvinnsla";
 
 /* Title */
 "New login password" = "Nýtt lykilorð Innskráningar";
@@ -1183,11 +1367,17 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* contacts talbe cell Nickname title */
 "Nickname" = "Gælunafn";
 
+/* Title */
+"No connectivity detected..." = "Engin tenging fannst...";
+
+/* network troubleshot cell title */
+"No internet connection" = "Engin internettenging";
+
 /* message when mailbox doesnt have emailsß */
 "No Messages" = "Engin skilaboð";
 
-/* Title */
-"No connectivity detected..." = "Engin tenging fannst...";
+/* no object error, local only , this could be not translated! */
+"no object" = "enginn hlutur";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "Nei, fyrir annan ProtonMail-aðgang";
@@ -1199,11 +1389,14 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
    Title */
 "None" = "Ekkert";
 
-/* Action */
-"Not Now" = "Ekki núna";
+/* Title */
+"normal attachments" = "venjuleg viðhengi";
 
 /* alert description */
 "Not all recipients support message expiration" = "Ekki styðja allir viðtakendur að skilaboð renni út";
+
+/* Action */
+"Not Now" = "Ekki núna";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Athugaðu: Notandanafnið er líka vistfang þitt hjá ProtonMail.";
@@ -1238,9 +1431,6 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Action */
 "OK" = "Í lagi";
 
-/* Section header */
-"OTHER PLANS" = "AÐRAR ÁSKRIFTIR";
-
 /* Title */
 "On" = "Kveikt";
 
@@ -1250,7 +1440,10 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "%2$@ skrifaði EE, d. MMM, yyyy klukkan %1$@:";
 
-/* None */
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Aðeins er hægt að bæta við einum ókeypis aðgangi";
+
+/* (No Comment) */
 "OpenDraft" = "Opna drög";
 
 /* contacts talbe cell Organization title */
@@ -1259,11 +1452,35 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* default vcard types */
 "Other" = "Annað";
 
+/* Section header */
+"OTHER PLANS" = "AÐRAR ÁSKRIFTIR";
+
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Notendaaðstoðarteymið okkar mun reyna að virkja þjónustuáskriftina þína handvirkt ef þú fellst á að láta fylgja með þau tæknilegu gögn sem AppStore-verslunin gaf forritinu þegar viðskiptin fóru fram. Þessi gögn innihalda eingar viðkvæmar upplýsingar um about your iTunes aðganginn þinn, Apple ID auðkenni, tengd greiðslukort eða aðrar notandaupplýsingar. Tæknilegu upplýsingarnar hjálpa einungis til við að sannreyna að viðskiptin hafi átt sér stað á vefþjónum AppStore.";
 
 /* mail location desc */
 "Outbox" = "Úthólf";
+
+/* title */
+"Password" = "Lykilorð";
+
+/* Description */
+"Password cannot be empty." = "Lykilorð getur ekki verið autt.";
+
+/* cell title in device settings */
+"Password management" = "Sýsl með lykilorð";
+
+/* Title */
+"Password Mismatch" = "Lykilorð stemma ekki";
+
+/* update password error */
+"Password update failed" = "Uppfærsla lykilorðs mistókst";
+
+/* Title */
+"Password Updated" = "Lykilorð uppfært";
+
+/* default vcard types */
+"Personal" = "Einka";
 
 /* encryption lock description */
 "PGP-encrypted" = "PGP-dulritað";
@@ -1280,32 +1497,8 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP-undirrituð skilaboð frá sannvottuðu tölvupóstfangi";
 
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "PREMIUM EIGINLEIKI";
-
-/* title */
-"Password" = "Lykilorð";
-
-/* Title */
-"Password Mismatch" = "Lykilorð stemma ekki";
-
-/* Title */
-"Password Updated" = "Lykilorð uppfært";
-
-/* Description */
-"Password cannot be empty." = "Lykilorð getur ekki verið autt.";
-
-/* update password error */
-"Password update failed" = "Uppfærsla lykilorðs mistókst";
-
-/* default vcard types */
-"Personal" = "Einka";
-
 /* default vcard types */
 "Phone" = "Sími";
-
-/* human check option button */
-"Phone Verification" = "Sannprófun símanúmers";
 
 /* contact placeholder */
 "Phone number" = "Símanúmer";
@@ -1313,8 +1506,20 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "Phone number invalid" = "Símanúmer er ógilt";
 
+/* human check option button */
+"Phone Verification" = "Sannprófun símanúmers";
+
 /* Title */
 "Photo Library" = "Myndasafn";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN & FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN & TouchID";
 
 /* Description */
 "Pin code can't be empty." = "PIN-númer má ekki vera autt.";
@@ -1343,6 +1548,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Error message */
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Skráðu þig inn í ProtonMail-aðganginn sem þú ætlar að uppfæra þjónustuáskriftina fyrir, svo að við getum lokið virkjun þjónustuáskriftarinnar.";
 
+/* network troubleshot cell title */
+"Please make sure that your internet connection is working." = "Gakktu úr skugga um að nettengingin þín virki.";
+
 /* Error */
 "Please pick a user name first!" = "Veldu fyrst notandanafn!";
 
@@ -1351,6 +1559,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* when switch sender but email has attachments */
 "Please remove all attachments before changing sender!" = "Fjarlægðu öll viðhengi til að geta breytt vistfangi sendanda";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "Veldu a.m.k. eitt tölvupóstfang";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Veldu a.m.k. eitt tölvupóstfang fyrir tengiliðahópinn";
@@ -1361,16 +1572,16 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Description */
 "Please set a password." = "Stilltu lykilorð.";
 
-/* None */
+/* (No Comment) */
 "Please try a different domain." = "Prófaðu eitthvað annað lén.";
 
-/* None */
+/* (No Comment) */
 "Please try a different email address." = "Prófaðu eitthvað annað tölvupóstfang.";
 
-/* None */
+/* (No Comment) */
 "Please try a different password." = "Prófaðu eitthvað annað lykilorð.";
 
-/* None */
+/* (No Comment) */
 "Please try a different user name." = "Prófaðu eitthvað annað notandanafn.";
 
 /* 
@@ -1387,7 +1598,7 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Alert */
 "Please use the web application to reset your password." = "Notaðu vefforritið til að endurstilla lykilorðið.";
 
-/* None */
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Notaðu vefútgáfu ProtonMail til að breyta lykilorði pósthólfsins þíns!";
 
 /* Alert */
@@ -1403,8 +1614,20 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
  & alert title */
 "Please, manage it in your phone." = "Stjórnaðu því í símanum þínum.";
 
+/* Upgrade warning title */
+"PREMIUM FEATURE" = "PREMIUM EIGINLEIKI";
+
 /* Action */
 "Print" = "Prenta";
+
+/* cell title in device settings */
+"Privacy" = "Gagnaleynd";
+
+/* agree check box privacy */
+"privacy policy." = "stefna vegna meðferðar persónuupplýsinga.";
+
+/* Local notification title */
+"Problem sending message" = "Vandamál við að senda skilaboð";
 
 /* Title */
 "Protection" = "Verndun";
@@ -1412,14 +1635,14 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* settings protection section title */
 "Protection Entire App" = "Vörn fyrir allt forritið";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton liggur niðri";
+
+/* network troubleshot cell title */
+"Proton Status" = "Staða ProtonProton Status";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
-
-/* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "Til að sérsníða farsímaundirskrift er nauðsynlegt að vera með ProtonMail Plus";
-
-/* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary gera þér kleift að bæta við og breyta upplýsingum um tengiliði oðrum en bara nafni þeirra og tölvupóstfangi. Með því að nota ProtonMail eru þessar upplýsingar jafn öruggar og enda-í-enda dulritaðir tölvupóstar.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail selur ekki auglýsingar eða misnotar gagnaleynd þína. Stuðningur þinn er nauðsynlegur til að halda ProtonMail gangandi. Þú getur uppfært í greidda áskrift eða gefið peninga til að styðja ProtonMail.";
@@ -1430,14 +1653,29 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail er í augnablikinu án nettengingar, skoðaðu síðustu stöðu mála á Twitter: https://twitter.com/protonmail";
 
+/* Title */
+"ProtonMail is currently offline..." = "ProtonMail er ótengt í augnablikinu...";
+
+/* Description */
+"ProtonMail Plus is required to customize your mobile signature" = "Til að sérsníða farsímaundirskrift er nauðsynlegt að vera með ProtonMail Plus";
+
+/* Upgrade warning message */
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary gera þér kleift að bæta við og breyta upplýsingum um tengiliði oðrum en bara nafni þeirra og tölvupóstfangi. Með því að nota ProtonMail eru þessar upplýsingar jafn öruggar og enda-í-enda dulritaðir tölvupóstar.";
+
+/* network troubleshot cell title */
+"ProtonVPN" = "ProtonVPN";
+
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN innifalið";
 
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Truflanir vegna milliþjóna/eldveggja";
+
+/* cell title in device settings */
+"Push Notifications" = "Ýti-tilkynningar";
+
 /* Title */
 "Quick swipe actions" = "Flýtiaðgerðir við stroku";
-
-/* Action */
-"RESET MAILBOX PASSWORD" = "ENDURSTILLA LYKILORÐ Á PÓSTHÓLFI";
 
 /* Title */
 "Rate & Review" = "Yfirfara & senda umsögn";
@@ -1466,6 +1704,12 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* remove action */
 "Remove" = "Fjarlægja";
 
+/* account right bar item title */
+"Remove All" = "Fjarlægja allt";
+
+/* Settings row */
+"Remove image meta-data" = "Fjarlægja lýsigögn myndar";
+
 /* un star message */
 "Remove Star" = "Fjarlægja stjörnu";
 
@@ -1481,7 +1725,7 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* composer view model impl */
 "Reply message" = "Svara skilaboðum";
 
-/* None */
+/* (No Comment) */
 "ReplyAll" = "Svara öllum";
 
 /* menu title */
@@ -1496,6 +1740,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* link opeining confirmation */
 "Request Link Confirmation" = "Krefjast staðfestingar á tengli";
 
+/* Action */
+"RESET MAILBOX PASSWORD" = "ENDURSTILLA LYKILORÐ Á PÓSTHÓLFI";
+
 /* Title */
 "Resetting message cache ..." = "Endurstilli skyndiminni skilaboða ...";
 
@@ -1504,21 +1751,6 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Reyna aftur eftir %d sekúndur";
-
-/* mail location title */
-"SENT" = "SENT";
-
-/* mail location title */
-"SPAM" = "Ruslpóstur";
-
-/* Error */
-"SRP Client" = "SRP-biðlari";
-
-/* Error */
-"SRP Server" = "SRP-þjónn";
-
-/* mail location title */
-"STARRED" = "Stjörnumerkt";
 
 /* Title */
 "Save" = "Vista";
@@ -1532,7 +1764,8 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* action sheet option */
 "Scheduled" = "Áætlað";
 
-/* Title */
+/* Springboard (3D Touch) shortcuts action
+   Title */
 "Search" = "Leita";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1541,14 +1774,11 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* The title for the view where user can select the color for the group */
 "Select Color" = "Veldu lit";
 
-/* None */
+/* (No Comment) */
 "Select your language" = "Veldu tungumálið þitt";
 
 /* Action */
 "Send" = "Senda";
-
-/* Title */
-"Send Verification Code" = "Senda sannvottunarkóða";
 
 /* Action */
 "Send anyway" = "Senda samt";
@@ -1559,14 +1789,17 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "Send plain but stored enc" = "Senda sem hreinan texta en geyma dulritað";
 
+/* Title */
+"Send Verification Code" = "Senda sannvottunarkóða";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Sannvottun sendanda mistókst";
 
-/* Description */
-"Sending Message" = "Sendi skilaboð";
-
 /* Alert title */
 "Sending message" = "Sendi skilaboð";
+
+/* Description */
+"Sending Message" = "Sendi skilaboð";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Að senda skilaboð frá %1$@ póstföngum er eiginleiki sem greiða þarf fyrir. Skilaboðin þín verða send frá sjálfgefna tölvupóstfanginu %2$@";
@@ -1574,8 +1807,8 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* menu title */
 "Sent" = "Sent";
 
-/* Description */
-"Sent Failed" = "Sending mistókst";
+/* mail location title */
+"SENT" = "SENT";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "Sent úr ProtonMail með órjúfanlegri dulritun";
@@ -1584,13 +1817,16 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 "Sent by you with end-to-end encryption" = "Sent af þér með enda-í-enda dulritun";
 
 /* Description */
-"Server proofs not valid!" = "Sannvottunarauðkenni vefþjóns eru ekki gild!";
+"Sent Failed" = "Sending mistókst";
 
-/* Title */
-"Set Password" = "Setja lykilorð";
+/* Description */
+"Server proofs not valid!" = "Sannvottunarauðkenni vefþjóns eru ekki gild!";
 
 /* Description */
 "Set a password to encrypt this message for non-ProtonMail users." = "Settu lykilorð til að dulrita þessi skilaboð fyrir notendur sem ekki nota ProtonMail.";
+
+/* Title */
+"Set Password" = "Setja lykilorð";
 
 /* Signup passwords top title */
 "Set passwords" = "Stilltu lykilorð";
@@ -1619,6 +1855,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* settings general section title */
 "Single Password" = "Einfalt lykilorð";
 
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Blunda";
+
 /* settings option */
 "Snooze Notifications" = "Fresta tilkynningum";
 
@@ -1631,15 +1870,24 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Því miður getum við ekki meðhöndlað viðskipti í beta-þróunarútgáfu iOS-forritsins. Við þökkum þér hinsvegar fyrir að taka þátt í þróunarvinnu opinberu beta-útgáfunnar.";
 
-/* None */
+/* (No Comment) */
 "Space Warning" = "Aðvörun vegna lítils diskpláss";
 
 /* mail location desc
    menu title */
 "Spam" = "Ruslpóstur";
 
+/* mail location title */
+"SPAM" = "Ruslpóstur";
+
 /* Description */
 "Spammed" = "Ruslpóstur";
+
+/* Error */
+"SRP Client" = "SRP-biðlari";
+
+/* Error */
+"SRP Server" = "SRP-þjónn";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1649,14 +1897,21 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* mail location desc
    menu title
+   Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Stjörnumerkt";
+
+/* mail location title */
+"STARRED" = "Stjörnumerkt";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Upphafstími";
 
 /* contact placeholder */
 "State" = "Hérað/Fylki";
+
+/* network troubleshot cell title */
+"Still can't find a solution" = "Finn ekki ennþá neina lausn";
 
 /* Title */
 "Storage" = "Geymslurými";
@@ -1679,11 +1934,14 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* menu title */
 "Subscription" = "Áskrift";
 
-/* Action */
-"Support ProtonMail" = "Styðja við ProtonMail";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Stuðningur við %i sérsniðin lén (t.d. notandi@lenidmitt.com)";
+
+/* network troubleshot cell title */
+"support form" = "aðstoðareyðublað";
+
+/* Action */
+"Support ProtonMail" = "Styðja við ProtonMail";
 
 /* settings swipe actions section title */
 "Swipe Left to Right" = "Strjúka frá vinstri til hægri";
@@ -1691,11 +1949,15 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* settings swipe actions section title */
 "Swipe Right to Left" = "Strjúka frá hægri til vinstri";
 
+/* cell title in device settings
+   Swiping gestures */
+"Swiping gestures" = "Strokubendingar";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "Skipti yfir í aðganginn '%@'";
+
 /* Error */
 "System can't copy the file" = "Kerfinu mistókst að afrita skrána";
-
-/* mail location title */
-"TRASH" = "Rusl";
 
 /* Title */
 "Take a Photo" = "Taktu mynd";
@@ -1703,18 +1965,14 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Ýttu samt á sendihnappinn til að senda án gildistíma til þessara viðtakenda";
 
-/* None */
+/* network troubleshot cell title */
+"Temporarily disable or remove your antivirus software." = "Gerðu vírusvarnaforritið þitt tímabundið óvirkt.";
+
+/* agree check box terms */
+"terms and conditions" = "skilmálar og kvaðir";
+
+/* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Takk fyrir að senda inn villuskýrslu.  Við höfum bætt skýrslunni þinni í villuskráningarkerfið okkar.";
-
-/* update password error */
-"The Password is wrong." = "Lykilorðið er rangt.";
-
-/* Title */
-"The ProtonMail current offline..." = "Protonmail er ótengt í augnablikinu...";
-
-/* 
- */
-"The UserName have been taken." = "Notandanafnið er þegar í notkun.";
 
 /* Description */
 "The authentication credentials are invalid." = "Auðkenni sannvottunar eru ógild.";
@@ -1738,7 +1996,7 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* key size note part 1 */
 "The highest level of encryption available." = "Hæsta stig dulritunar í boði.";
 
-/* None */
+/* (No Comment) */
 "The label name is duplicate" = "Heiti merkisins er tvítekið";
 
 /* Error */
@@ -1751,20 +2009,23 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
  *  LabelsViewController */
 "The maximum number of labels is %d." = "Hámarksfjöldi merkinga er %d.";
 
-/* None */
+/* update password error */
+"The new password can't be empty." = "Nýja lykilorðið getur ekki verið autt.";
+
+/* (No Comment) */
 "The new password can't empty" = "Nýja lykilorðið getur ekki verið autt";
 
 /* update password error */
-"The new password can't empty." = "Nýja lykilorðið getur ekki verið autt.";
+"The new password does not match." = "Nýju lykilorðin stemma ekki.";
 
-/* None */
+/* (No Comment) */
 "The new password not match" = "Lykilorðin stemma ekki";
-
-/* update password error */
-"The new password not match." = "Nýja lykilorðið samsvarar ekki.";
 
 /* recovery email notes */
 "The optional recovery email address allows you to reset your login password if you forget it." = "Valkvæða endurheimtupóstfangið gerir þér kleift að endurstilla innskráningarlykilorðið ef þú gleymir því.";
+
+/* update password error */
+"The Password is wrong." = "Lykilorðið er rangt.";
 
 /* Description */
 "The password you entered does not match the current password." = "Lykilorðið sem þú settir inn samsvarar ekki núgildandi lykilorði.";
@@ -1778,11 +2039,18 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "The request timed out." = "Beiðnin féll á tíma.";
 
-/* None */
+/* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "Heildarstærð viðhengja má ekki vera meiri en 25MB";
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Heildarstærð viðhengja má ekki vera meiri en MB";
+
+/* Alert when the account is already logged in */
+"The user is already logged in" = "Notandinn er þegar skráður inn";
+
+/* 
+ */
+"The UserName have been taken." = "Notandanafnið er þegar í notkun.";
 
 /* 
  & title */
@@ -1790,6 +2058,12 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* Error */
 "The verification failed!" = "Sannvottunin mistókst!";
+
+/* alert when logout user if in queue still have tasks */
+"There are still some messages in queue. If you log out, the draft will be deleted." = "Enn eru ósend skilaboð í biðröð. Ef þú skráir þig út mun drögunum verða eytt.";
+
+/* Alert to confirm logout with pending message in the queue */
+"There are unsent messages that will be lost if you log out" = "Enn eru ósend skilaboð sem munu tapast ef þú skráir þig út";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "Villa kom upp þegar búa átti til eða hlaða inn vistuðum gögnum forritsins.";
@@ -1813,18 +2087,25 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Þessi skilaboð gætu verið tilraun til að veiða upplýsingar (phishing). Skoðaðu vel sendandann og efni póstsins til að ákveða hvort um löglegan póst sé að ræða.";
 
+/* Title */
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Þessi stilling mun velja aftur Safari ef valinn vafri verður tekinn út.";
+
 /* contacts talbe cell Title title */
 "Title" = "Titill";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Sannvottun TLS-skilríkis mistókst. Mögulega er fylgst með tengingunni þinni og hefur því öryggis þíns vegna verið lokað tímabundið á forritið.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Sannvottun TLS-skilríkis mistókst. Mögulega er fylgst með tengingunni þinni og hefur því öryggis þíns vegna verið lokað tímabundið á forritið.\n\nSkiptu strax um netkerfi";
 
 /* Title */
 "To" = "Til";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "Til að koma í veg fyrir misnotkun á ProtonMail,
- þurfum við að ganga úr skugga um að þú sért mennskur.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Til að koma í veg fyrir misnotkun á ProtonMail,&#13;\n þurfum við að ganga úr skugga um að þú sért mennskur.";
 
-/* None */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu, notaðu þá vefútgáfu ProtonMail á protonmail.com";
 
 /* Description */
@@ -1840,6 +2121,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Alert title */
 "Too many recipients" = "Of margir viðtakendur";
 
+/* network troubleshot cell title */
+"Tor" = "Tor";
+
 /* settings touchid error */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID hefur ekki verið stillt, virkjaðu það í kerfisstillingunum";
 
@@ -1851,8 +2135,20 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
    move action */
 "Trash" = "Rusl";
 
+/* mail location title */
+"TRASH" = "Rusl";
+
 /* Title */
 "Trouble shooting guide" = "Leiðarvísir fyrir vandamál";
+
+/* troubleshooting view button */
+"Troubleshoot" = "Leysa vandamál";
+
+/* network troubleshot view title */
+"TroubleShooting" = "LausnVandamála";
+
+/* network troubleshot cell title */
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Reyndu að tengjast Proton frá öðru netkerfi (eða nota ProtonVPN eða Tor).";
 
 /* action sheet option */
 "Turn Off" = "Slökkva á";
@@ -1860,17 +2156,14 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "Tweet about ProtonMail" = "Tístu um ProtonMail";
 
+/* network troubleshot cell title */
+"Twitter" = "Twitter";
+
 /* Placeholder */
 "Two Factor Code" = "Tveggja-þátta lykilkóði";
 
 /* Internal type casting error */
 "Type casting error" = "Type casting error";
-
-/* default vcard types */
-"URL" = "Slóð (URL)";
-
-/* Title */
-"USER LOGIN" = "Innskráning notanda";
 
 /* Description */
 "Unable to connect to the server" = "Get ekki tengst við netþjón";
@@ -1907,9 +2200,7 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 "Unable to parse response" = "Ekki tókst að þátta svarið";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Tókst ekki að þátta svarhlutann:
-%@";
+"Unable to parse the response object:\n%@" = "Tókst ekki að þátta svarhlutann:\n%@";
 
 /* Error */
 "Unable to parse token" = "Ekki tókst að þátta teiknið";
@@ -1923,7 +2214,7 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Description */
 "Unknow Error" = "Óþekkt villa";
 
-/* None */
+/* (No Comment) */
 "Unknow file" = "Óþekkt skrá";
 
 /* title, default display name */
@@ -1932,11 +2223,14 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Error */
 "Unknown Error" = "Óþekkt villa";
 
-/* None */
+/* (No Comment) */
 "Unkonw Version" = "Óþekkt útgáfa";
 
 /* Service plan capability; */
 "Unlimited messages sent/day" = "Ótakmörkuð skilaboð send/dag";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Krafist er aflæsingar";
 
 /* The verb for describing the unread action
    VoiceOver: email is not read yet */
@@ -1981,11 +2275,17 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* default vcard types */
 "Url" = "Slóð";
 
+/* default vcard types */
+"URL" = "Slóð (URL)";
+
 /* error when user already exist */
 "User already exist!" = "Notandanafnið er þegar til staðar!";
 
-/* None */
+/* (No Comment) */
 "User is available!" = "Notandanafnið er tiltækt!";
+
+/* Title */
+"USER LOGIN" = "Innskráning notanda";
 
 /* 
  & title */
@@ -2010,11 +2310,14 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* error details */
 "Verification of this content’s signature failed" = "Sannvottun á undirritun þessa efnis brást";
 
-/* None */
+/* (No Comment) */
 "Version %@ %@" = "Útgáfa %@ %@";
 
 /* message details-> more action-> view headers */
 "View Headers" = "Skoða hausa";
+
+/* message details-> more action-> view raw html of message body */
+"View HTML" = "Skoða HTML";
 
 /* Action */
 "View Plans" = "Skoða áskriftir";
@@ -2027,6 +2330,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Aðvörun: Þú stilltir ekki póstfang fyrir endurheimtupóst, þannig að ekki er mögulegt að endurheimta notandaaðganginn þinn ef þú gleymir lykilorðinu. Á að halda áfram án endurheimtupóstfangs?";
+
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Ekki var hægt að senda skilaboðin þín, mögulega vegna lélegrar nettengingar. Skilaboðin þín voru vistuð í Drög og verða sjálfkrafa send næst þegar þú opnar forritið.";
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Okkur tókst að virkja áskriftina þína. Endurræstu forritið til að fara að nota nýju þjónustuáskriftina.";
@@ -2056,6 +2362,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
  & title */
 "Wrong verification code" = "Rangur sannvottunarkóði";
 
+/* Title */
+"wrote:" = "skrifaði:";
+
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Já, virkja það fyrir ";
 
@@ -2065,6 +2374,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Þú ert í þann mund að ræsa vafra og fara á";
 
+/* Alert of removing all accounts */
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Þú ert í þann mund að fara að fjarlægja alla notandaaðganga. Þú munt ekki lengur hafa aðgang að þeim á þessu tæki nema með því að bæta þeim við aftur.\n\nViltu samt fjarlægja alla notandaaðgangana þína?";
+
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Þú getur sérsniðið aðgerðir við strokur í stillingum ProtonMail-forritsins.";
 
@@ -2073,6 +2385,9 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Þú getur ekki sett %@ póstfangið sem sjálfgefið því það er eiginleiki sem þarf að greiða fyrir.";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Þú gerðir FaceID óvirkt í kerfisstillingunum þínum. FaceID var notað til að vernda mikilvægar upplýsingar notandaaðgangsins. Til að tengjast notandaaðgangnum, farðu þá í kerfisstillingarnar og virkjaðu FaceID aftur, eða skráðu þig aftur inn.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Þú virkjaðir takmörkun á gildistíma skilaboða, en ekki styðja allir viðtakendur þennan eiginleika. Bættu við lykilorði og/eða gerðu sendingu með PGP óvirka til að nota takmörkun á gildistíma fyrir alla viðtakendur.";
@@ -2087,7 +2402,7 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 "You have unsaved changes. Do you want to save it?" = "Það eru óvistaðar breytingar. Viltu vista þær?";
 
 /* Description */
-"You have used %d%% of your storage space (%@)." = "Þú hefur notað %1$d% af geymslurýminu þínu (%2$@).";
+"You have used %d%% of your storage space (%@)." = "Þú hefur notað %1$d%% af geymslurýminu þínu (%2$@).";
 
 /* Description */
 "You have used up all of your storage space (%@)." = "Þú hefur notað allt geymslurýmið þitt (%@).";
@@ -2095,8 +2410,21 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Description */
 "You need at least one recipient to send" = "Bættu við a.m.k. einum viðtakanda til að geta sent";
 
+/* Alert to confirm logout
+   Alert when logout primary account from account manager */
+"You will be switched to %@" = "Þér mun verða skipt yfir á %@";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "Þú ert að fara að eyða skilaboðunum óafturkræft. Ertu viss?";
+
 /* view top title */
 "Your Country Code" = "Landsnúmer";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Yfirvöld í landinu þínu gætu verið að hindra aðgang að Proton. Prófaðu að nota %1$@ (eða einhverja VPN-þjónustu) eða %2$@ til að tengjast Proton.";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Yfirvöld í landinu þínu gætu verið að hindra aðgang að Proton. Prófaðu að nota ProtonVPN (eða einhverja VPN-þjónustu) eða Tor til að tengjast Proton.";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Pósthólfið þitt er núna varið með enda-í-enda dulritun. Til að senda sjálfvirkt örugga tölvupósta á tengiliðina þína, skaltu bjóða þeim að nota ProtonMail!  Þú getur líka dulritað handvirkt skilaboð til þeirra, ef þeir eru ekki að nota ProtonMail.";
@@ -2105,9 +2433,7 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Nýi dulritaði tölvupóstaðgangurinn þinn er uppsettur og tilbúinn til að senda og taka á móti dulrituðum skilaboðum.";
 
 /* view top title */
-"Your new secure email
- account is ready." = "Nýi öruggi tölvupóstaðgangurinn
- þinn er tilbúinn.";
+"Your new secure email\r\n account is ready." = "Nýi öruggi tölvupóstaðgangurinn\n þinn er tilbúinn.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Áskriftin þín er núna virk til";
@@ -2120,52 +2446,4 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 
 /* contact placeholder */
 "ZIP" = "Póstnúmer";
-
-/* agree check box middle word */
-"and" = "og";
-
-/* like at 10:00pm */
-"at" = "hjá";
-
-/* Error */
-"attempt remaining until secure data wipe!" = "tilraun eftir þar til tækið verður hreinsað í öryggisskyni!";
-
-/* Description */
-"attempts remaining" = "tilraunir eftir";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "tilraunir eftir þar til tækið verður hreinsað í öryggisskyni!";
-
-/* Action */
-"close tour" = "loka yfirferð";
-
-/* Title */
-"days" = "dagar";
-
-/* Buy button second line */
-"for one year" = "í eitt ár";
-
-/* contacts api error when fetch */
-"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() failed, peopleOrderedByUsersPreference return null!!";
-
-/* None */
-"hours" = "Klukkustundir";
-
-/* Title */
-"inline attachments" = "innfelld viðhengi";
-
-/* no object error, local only , this could be not translated! */
-"no object" = "enginn hlutur";
-
-/* Title */
-"normal attachments" = "venjuleg viðhengi";
-
-/* agree check box privacy */
-"privacy policy." = "stefna vegna meðferðar persónuupplýsinga.";
-
-/* agree check box terms */
-"terms and conditions" = "skilmálar og kvaðir";
-
-/* Title */
-"wrote:" = "skrifaði:";
 

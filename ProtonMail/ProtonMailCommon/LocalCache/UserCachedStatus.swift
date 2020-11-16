@@ -435,13 +435,14 @@ final class UserCachedStatus : SharedCacheBase {
         KeychainWrapper.keychain.remove(forKey: Key.browser)
         
         ////
-        getShared().removeObject(forKey: Key.dohFlag)
         getShared().removeObject(forKey: Key.dohWarningAsk)
                         
         getShared().synchronize()
     }
     
     func cleanGlobal() {
+        getShared().removeObject(forKey: Key.dohFlag)
+        
         getShared().removeObject(forKey: Key.lastSplashViersion)
         getShared().removeObject(forKey: Key.lastTourViersion)
         

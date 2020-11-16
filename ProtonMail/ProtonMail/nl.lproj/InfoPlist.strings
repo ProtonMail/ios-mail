@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Vereist voor het toevoegen van foto's aan de e-mails.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
+"NSContactsUsageDescription" = "Wordt gebruikt voor toegang tot e-mailadressen voor contactpersonen die op het apparaat zijn opgeslagen, zodat deze kunnen worden gebruikt bij het opstellen van een bericht of bij het handmatig uploaden van de contactpersonen van het apparaat naar uw account. Contactgegevens worden niet geüpload naar onze servers zonder een expliciete actie om dit te doen.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Hiermee kunt u de applicatie snel en veilig ontgrendelen.";

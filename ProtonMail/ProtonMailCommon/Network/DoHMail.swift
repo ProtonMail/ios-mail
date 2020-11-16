@@ -32,4 +32,11 @@ class DoHMail : DoH, DoHConfig {
     var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
     //singleton
     static let `default` = try! DoHMail()
+    
+    /// debug mode
+    var debugMode: Bool = false
+    var blockList: [String : Int] = [:]
+    //["api.protonmail.ch" : NSURLErrorTimedOut,
+//                                     "ec2-18-156-162-103.eu-central-1.compute.amazonaws.com" : NSURLErrorTimedOut,
+//                                     "ec2-3-122-52-63.eu-central-1.compute.amazonaws.com" : NSURLErrorTimedOut]
 }

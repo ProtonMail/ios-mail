@@ -1,27 +1,11 @@
-//
-//  SentryBreadcrumb.m
-//  Sentry
-//
-//  Created by Daniel Griesser on 22/05/2017.
-//  Copyright © 2017 Sentry. All rights reserved.
-//
-
-#if __has_include(<Sentry/Sentry.h>)
-
-#import <Sentry/SentryBreadcrumb.h>
-#import <Sentry/NSDate+Extras.h>
-#import <Sentry/NSDictionary+Sanitize.h>
-
-#else
 #import "SentryBreadcrumb.h"
-#import "NSDate+Extras.h"
-#import "NSDictionary+Sanitize.h"
-#endif
-
+#import "NSDate+SentryExtras.h"
+#import "NSDictionary+SentrySanitize.h"
 
 @implementation SentryBreadcrumb
 
-- (instancetype)initWithLevel:(enum SentrySeverity)level category:(NSString *)category {
+- (instancetype)initWithLevel:(enum SentryLevel)level category:(NSString *)category
+{
     self = [super init];
     if (self) {
         self.level = level;
@@ -31,10 +15,16 @@
     return self;
 }
 
-- (NSDictionary<NSString *, id> *)serialize {
+- (instancetype)init
+{
+    return [self initWithLevel:kSentryLevelInfo category:@"default"];
+}
+
+- (NSDictionary<NSString *, id> *)serialize
+{
     NSMutableDictionary *serializedData = [NSMutableDictionary new];
 
-    [serializedData setValue:SentrySeverityNames[self.level] forKey:@"level"];
+    [serializedData setValue:SentryLevelNames[self.level] forKey:@"level"];
     [serializedData setValue:[self.timestamp sentry_toIso8601String] forKey:@"timestamp"];
     [serializedData setValue:self.category forKey:@"category"];
     [serializedData setValue:self.type forKey:@"type"];

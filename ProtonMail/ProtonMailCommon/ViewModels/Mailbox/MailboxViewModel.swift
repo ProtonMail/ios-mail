@@ -223,6 +223,7 @@ class MailboxViewModel {
         if let context = fetchedResultsController?.managedObjectContext {
             context.perform {
                 let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+                //TODO:: need filter by user id
                 fetchRequest.predicate = NSPredicate(format: "%K == 1", Message.Attributes.messageType)
                 do {
                     if let messages = try context.fetch(fetchRequest) as? [Message] {

@@ -99,8 +99,7 @@ extension MessageBodyViewController : LinkOpeningValidator {
             
         default:
             self.renderObservation = self.loader.renderedContents.observe(\.height) { [weak self] renderedContents, _ in
-                guard let remoteContentMode = self?.viewModel.contents?.remoteContentMode else { return }
-                self?.updateHeight(to: remoteContentMode == .allowed ? renderedContents.height : renderedContents.preheight)
+                self?.updateHeight(to: renderedContents.height)
             }
             
             super.webView(webView, decidePolicyFor: navigationAction, decisionHandler: decisionHandler)

@@ -1,3 +1,24 @@
+/* Key size text when setup key */
+"(2048 bit)" = "(2048 bit)";
+
+/* Key size text when setup key */
+"(4096 bit)" = "(4096 bit)";
+
+/* Comment for disconnected account in Account Manager */
+"(logged out)" = "(desconnectat)";
+
+/* Service plan capability detail; like in '50 email addresses (total)' */
+"(total)" = "(total)";
+
+/* secret */
+"**********" = "**********";
+
+/* optional text field */
+"*OPTIONAL" = "*OPCIONAL";
+
+/* Service plan capability detail; like in '5 email addresses/user' */
+"/user" = "/usuari";
+
 /* Service plan capability */
 "%@ storage capacity" = "%@ de capacitat d'emmagatzemament";
 
@@ -22,32 +43,14 @@
 /* Service plan capability; i = 5 or 50 */
 "%i email addresses" = "%i direccions de correu";
 
-/* Key size text when setup key */
-"(2048 bit)" = "(2048 bit)";
-
-/* Key size text when setup key */
-"(4096 bit)" = "(4096 bit)";
-
-/* Service plan capability detail; like in '50 email addresses (total)' */
-"(total)" = "(total)";
-
-/* secret */
-"**********" = "**********";
-
-/* optional text field */
-"*OPTIONAL" = "*OPCIONAL";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Obri aquí per afegir com a fitxer adjunt";
 
-/* Service plan capability detail; like in '5 email addresses/user' */
-"/user" = "/usuari";
+/* default empty object */
+"<no object>" = "<no object>";
 
 /* 2fa verification failed */
 "2FA failed. Please try to login again." = "2FA ha fallat. Si us plau, intenta connectar una altra vegada.";
-
-/* default empty object */
-"<no object>" = "<no object>";
 
 /* *
  *  LabelTableViewCell */
@@ -65,25 +68,23 @@
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "No s'ha establert un codi d'accés, habiliteu-lo a la configuració del sistema";
 
-/* when server not reachable */
-"API Server not reachable..." = "El servidor de l'API no és accessible...";
-
-/* mail location title */
-"ARCHIVE" = "ARXIU";
-
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "L'accés a aquest compte està desactivat per falta de pagament. Inicieu la sessió a través de protonmail.com per pagar la factura no pagada.";
 
-/* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accés a aquest compte està deshabilitat per falta de pagament.
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accés a aquest compte està deshabilitat per falta de pagament.\n\nVisiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">la base de coneixement</a> per més informació.";
 
-Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">la base de coneixement</a> per més informació.";
+/* Account manager title */
+"Account" = "Compte";
 
 /* 
  & title */
 "Account password invalid" = "Contrasenya de compte incorrecta";
 
-/* None */
+/* section title in settings */
+"Account Settings" = "Configuració de compte";
+
+/* (No Comment) */
 "Add" = "Afegir";
 
 /* new contacts add Anniversary */
@@ -110,11 +111,29 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* add label action */
 "Add Label" = "Afegeix etiqueta";
 
+/* add new address action */
+"Add new address" = "Afegir una nova adreça";
+
+/* new custom field action */
+"Add new custom field" = "Afegiu un camp personalitzat nou";
+
+/* new email action */
+"Add new email" = "Afegiu un correu electrònic nou";
+
+/* new field action */
+"Add new field" = "Afegir un nou camp";
+
 /* add a new folder */
 "Add New Folder" = "Afegir carpeta nova";
 
 /* add a new folder */
 "Add New Label" = "Afegir etiqueta nova";
+
+/* new phone action */
+"Add new phone number" = "Afegeix un nou número de telèfon";
+
+/* action */
+"Add new URL" = "Afegir una nova URL";
 
 /* new contacts add Nickname */
 "Add Nickname" = "Afegir àlies";
@@ -131,40 +150,28 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* new contacts add Title */
 "Add Title" = "Afegir títol";
 
-/* add new address action */
-"Add new address" = "Afegir una nova adreça";
-
-/* new custom field action */
-"Add new custom field" = "Afegiu un camp personalitzat nou";
-
-/* new email action */
-"Add new email" = "Afegiu un correu electrònic nou";
-
-/* new field action */
-"Add new field" = "Afegir un nou camp";
-
-/* new phone action */
-"Add new phone number" = "Afegeix un nou número de telèfon";
-
-/* action */
-"Add new url" = "Afegeix una url nova";
-
 /* Title */
 "Add to contacts" = "Afegir als contactes";
 
 /* default vcard types */
 "Address" = "Adreça";
 
+/* cell title in device settings */
+"Addresses" = "Adreces";
+
 /* Title */
 "Alert" = "Alerta";
+
+/* Title */
+"All contacts are imported" = "S'importen tots els contactes";
 
 /* mail location desc
    mail location title
    menu title */
 "All Mail" = "Tot el correu";
 
-/* Title */
-"All contacts are imported" = "S'importen tots els contactes";
+/* network troubleshot cell title */
+"Allow alternative routing" = "Autoritza un enrutament alternatiu";
 
 /* archive when apply label */
 "Also Archive" = "Archivar també";
@@ -172,11 +179,29 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Description */
 "Also used to reset a forgotten password." = "També s'utilitza per a restablir una contrasenya oblidada.";
 
+/* agree check box middle word */
+"and" = "i";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversari";
 
+/* network troubleshot cell title */
+"Antivirus interference" = "Interferència de l'antivirus";
+
+/* when server not reachable */
+"API Server not reachable..." = "El servidor de l'API no és accessible...";
+
+/* section title in settings */
+"APP INFORMATION" = "INFORMACIÓN DE APLICACIÓ";
+
 /* Error */
 "App is locked" = "L'aplicació està bloquejada";
+
+/* cell title in device settings */
+"App Language" = "Idioma de la aplicació";
+
+/* section title in settings */
+"App Settings" = "Configuració de l'aplicació";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Tarifa de compra en l'aplicació d'Apple";
@@ -188,7 +213,7 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple ens ha informat que heu subscrit un nou abonament, però en cas que tingueu més d'un compte ProtonMail no ens ha indicat de quin es tracta.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple ens ha informat que heu subscrit un nou abonament, però falten algunes dades tècniques. Envieu-nos un informe d'errors i el nostre equip es posarà en contacte amb vos.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ens ha informat que heu subscrit un nou abonament, però falten algunes dades tècniques. Envieu-nos un informe d'errors i el nostre equip es posarà en contacte amb vosté.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple ens ha informat que heu subscrit un nou abonament, però hem detectat que us heu desconnectat del compte després de la subscripció.";
@@ -203,11 +228,23 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
    menu title */
 "Archive" = "Arxivar";
 
+/* mail location title */
+"ARCHIVE" = "ARXIU";
+
 /* Description */
 "Archived" = "Arxivat";
 
-/* Alert to confirm logout */
-"Are you sure you want to logout?" = "Esteu segur que voleu tancar la sessió?";
+/* Alert when logout non-primary account from account manager */
+"Are you sure you want to log out?" = "Està segur que desitja tancar la sessió?";
+
+/* Alert to confirm logout when only one account logged in */
+"Are you sure you want to logout %@?" = "Està segur que desitja tancar la sessió %@?";
+
+/* emptify folder/label confirmation alert */
+"Are you sure? This can't be undone." = "Esteu segur? Això no es pot desfer.";
+
+/* like at 10:00pm */
+"at" = "a";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Fitxer adjunt importat";
@@ -215,14 +252,23 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* VoiceOver: email has attachments */
 "Attachments" = "Adjunts";
 
+/* Error */
+"attempt remaining until secure data wipe!" = "intenteu quedar-se fins que es netegeu la informació segura!";
+
+/* Description */
+"attempts remaining" = "intents restants";
+
+/* Error */
+"attempts remaining until secure data wipe!" = "els intents continuen fins que es netegeu la informació segura!";
+
 /* Title */
 "Authentication" = "Autentificació";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "Ha fallat l'inici de sessió. Nom d'usuari o contrasenya incorrectes";
+"Authentication failed" = "Autentificació fallida";
 
 /* Description */
-"Authentication failed" = "Autentificació fallida";
+"Authentication Failed Wrong username or password" = "Ha fallat l'inici de sessió. Nom d'usuari o contrasenya incorrectes";
 
 /* Error */
 "Authentication failed. Please try to login again." = "Error d'autenticació. Torneu-ho a intentar.";
@@ -238,6 +284,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* settings general section title */
 "Auto Show Images" = "Mostra imatges automàtiques";
+
+/* section title in settings */
+"Auto-lock" = "Bloqueig automàtic";
 
 /* top left back button */
 "Back" = "Torna";
@@ -275,14 +324,14 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Link to More Credits screen */
 "Buy More Credits" = "Comprar Més Crèdits";
 
+/* Alert for removing disconnected accounts */
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "Si suprimiu aquest compte ja no podreu accedir-hi des d'aquest dispositiu si no l'afegiu de nou.\n\n Vols suprimir aquest compte de totes maneres?";
+
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "Fent ús de protonmail, accepteu la nostra";
 
 /* No comment provided by engineer. */
 "By using protonmail, you agree to our %@ and %@." = "Si utilitzeu protonmail, accepteu el nostre %1$@ i %2$@.";
-
-/* human check option button */
-"CAPTCHA" = "CAPTCHA";
 
 /* Call the contact (button title text) */
 "Call Contact" = "Trucar al contacte";
@@ -318,11 +367,14 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
 "Can't fetch contact groups" = "Impossible recuperar els grups de contactes";
 
-/* None */
+/* (No Comment) */
 "Can't find the clicked message please try again!" = "No trobeu el missatge clicat, torna-ho a provar!";
 
 /* Description */
 "Can't find the selected message. Please try again." = "No es pot trobar el missatge seleccionat. Torneu-ho a intentar.";
+
+/* Description */
+"Can't find the value from the response body" = "No es pot trobar el valor del cos de resposta";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "No es pot trobar el fitxer adjunt!";
@@ -342,9 +394,6 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Error */
 "Can't load the file" = "No es pot carregar el fitxer";
 
-/* Description */
-"Can't find the value from the response body" = "No es pot trobar el valor del cos de resposta";
-
 /* Error */
 "Can't open the file" = "No es pot obrir el fitxer";
 
@@ -363,8 +412,11 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "Cancelling" = "Cancel·lant";
 
-/* None */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "Impossible desxifrar aquest fitxer adjunt.";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCHA";
 
 /* Title */
 "Cc" = "Cc";
@@ -374,6 +426,12 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* place holder */
 "Cell phone number" = "Número de telèfon mòbil";
+
+/* Title */
+"Change default address to .." = "Canvieu l'adreça predeterminada a ..";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Canvieu l'acció de lliscar a l'esquerra";
 
 /* change password input label */
 "Change Login Password" = "Canvia la contrasenya d'inici de sessió";
@@ -387,23 +445,20 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* settings protection section title */
 "Change Pin" = "Canvia el Pin";
 
-/* Title */
-"Change Single Password" = "Canvi de contrasenya única";
-
-/* Title */
-"Change default address to .." = "Canvieu l'adreça predeterminada a ..";
-
-/* settings swipe actions section action description */
-"Change left swipe action" = "Canvieu l'acció de lliscar a l'esquerra";
-
 /* settings swipe actions section action description */
 "Change right swipe action" = "Canvieu l'acció de desplaçament cap a la dreta";
 
 /* Title */
 "Change sender address to .." = "Canvieu l'adreça del remitent a ..";
 
+/* Title */
+"Change Single Password" = "Canvi de contrasenya única";
+
 /* Action */
 "Check Again" = "Comprovar-ho un altre cop";
+
+/* network troubleshot cell title */
+"Check Proton Status for our system status." = "Comproveu l'estat de Proton per conèixer l'estat del nostre sistema.";
 
 /* loading message */
 "Checking ...." = "Comprovant....";
@@ -417,13 +472,23 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* settings general section title */
 "Clear Local Message Cache" = "Esborra la memòria cau de missatges locals";
 
+/* Menu action to remove text formatting */
+"Clear Style" = "Netetja Estil";
+
 /* general close action */
 "Close" = "Tanca";
+
+/* Action */
+"close tour" = "tancar recorregut";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Tancant";
 
-/* Action */
+/* cell title in device settings */
+"Combined Contacts" = "Contactes combinats";
+
+/* Action
+   Springboard (3D Touch) shortcuts action */
 "Compose" = "Envia missatge";
 
 /* Title */
@@ -438,9 +503,6 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Confirma la contrasenya de la bústia";
 
-/* Placeholder */
-"Confirm Password" = "Confirmar contrasenya";
-
 /* Title */
 "Confirm new login password" = "Confirma la nova contrasenya d'inici de sessió";
 
@@ -449,6 +511,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* Placeholder */
 "Confirm new password" = "Confirmi la nova contrasenya";
+
+/* Placeholder */
+"Confirm Password" = "Confirmar contrasenya";
 
 /* alert title */
 "Confirm phishing report" = "Confirmeu l'informe de phishing";
@@ -459,11 +524,17 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* view top title */
 "Congratulations!" = "Enhorabona!";
 
+/* Account manager title */
+"Connect Account" = "Connecta el Compte";
+
 /* contact section title */
 "Contact Details" = "Dades de contacte";
 
 /* Title */
 "Contact the ProtonMail team" = "Contacteu l'equip de ProtonMail";
+
+/* network troubleshot cell title */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contacteu-nos directament a través del nostre formulari d’assistència, correu electrònic (support@protonmail.com) o Twitter.";
 
 /* Action and title
    menu title */
@@ -490,23 +561,26 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* top right action text */
 "Create" = "Crea";
 
-/* Create account button */
-"Create Account" = "Crea un compte";
-
-/* Error */
-"Create User failed. Please try again." = "Creació d'usuari fallida. Si us plau, torneu-ho a provar.";
-
 /* Signup top title */
 "Create a new account" = "Crea un nou compte";
+
+/* Create account button */
+"Create Account" = "Crea un compte";
 
 /* Description */
 "Create and add Labels to organize your inbox. Long press on a message for all options." = "Crea i afegeix etiquetes per organitzar la safata d'entrada. Mantingui pressionat sobre un missatge per visualitzar totes les opcions.";
 
-/* None */
+/* (No Comment) */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Crea i afegeix etiquetes per organitzar la safata d'entrada. Mantingui pressionat sobre un missatge per visualitzar totes les opcions.";
+
+/* title of button in account connect page */
+"Create new account" = "Crea un compte nou";
 
 /* error message title when create new user */
 "Create user failed" = "No s'ha pogut crear l'usuari";
+
+/* Error */
+"Create User failed. Please try again." = "Creació d'usuari fallida. Si us plau, torneu-ho a provar.";
 
 /* Change language title */
 "Current Language is: " = "Idioma actual: ";
@@ -521,12 +595,6 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
    contacts default label type */
 "Custom" = "Personalitza";
 
-/* Title */
-"DECRYPT MAILBOX" = "DESXIFRAR BÚSTIA DE CORREU";
-
-/* mail location title */
-"DRAFTS" = "ESBORRANYS";
-
 /* message Date: text */
 "Date:" = "Data:";
 
@@ -534,10 +602,16 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 "Date: %@" = "Date: %@";
 
 /* Title */
+"days" = "dies";
+
+/* Title */
 "Debug" = "Depura";
 
 /* Action */
 "Decrypt" = "Desxifra";
+
+/* Title */
+"DECRYPT MAILBOX" = "DESXIFRAR BÚSTIA DE CORREU";
 
 /* Description */
 "Decrypt token failed. Please try again." = "El token de xifrat ha fallat. Si us plau, torneu-ho a intentar.";
@@ -550,6 +624,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* Title */
 "Default" = "Per defecte";
+
+/* Settings row */
+"Default browser" = "Navegador predeterminat";
 
 /* error message when create new user */
 "Default error. Please try again." = "Error per defecte. Si us plau, torneu-ho a provar.";
@@ -566,6 +643,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* general delete action */
 "Delete" = "Esborra";
 
+/* emptify folder/label confirmation alert */
+"Delete all" = "Esborrar tot";
+
 /* Title-Contacts */
 "Delete Contact" = "Eliminar contacte";
 
@@ -578,20 +658,26 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "Details" = "Detalls";
 
+/* network troubleshot cell title */
+"Disable any proxies or firewalls, or contact your network administrator." = "Deshabilita qualsevol proxy o tallafoc, o contacta amb el teu administrador de xarxa.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Desactiva la Validació";
+
 /* Action */
 "Discard changes" = "Descarta els canvis";
 
 /* Action */
 "Discard draft" = "Esborra l’esborrany";
 
+/* (No Comment) */
+"Display name" = "Nom a mostrar";
+
 /* Title in settings */
 "Display Name" = "Nom a mostrar";
 
 /* Title */
 "Display Name Updated" = "Nom a mostrar actualitzat";
-
-/* None */
-"Display name" = "Nom a mostrar";
 
 /* Title in display name settings */
 "DisplayName" = "Nom a mostrar";
@@ -605,11 +691,11 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "Do you want to save the unsaved changes?" = "Voleu desar els canvis sense desar?";
 
-/* Title */
-"Don't Show Again" = "No ho tornis a mostrar";
-
 /* Action */
 "Don't remind me again" = "No em tornis a recordar";
+
+/* Title */
+"Don't Show Again" = "No ho tornis a mostrar";
 
 /* Done action */
 "Done" = "Fet";
@@ -623,6 +709,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* menu title */
 "Drafts" = "Esborranys";
+
+/* mail location title */
+"DRAFTS" = "ESBORRANYS";
 
 /* Action */
 "Edit" = "Edita";
@@ -640,32 +729,32 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "Edit Label" = "Edita l'etiqueta";
 
+/* title */
+"Edit mobile signature" = "Editeu la signatura mòbil";
+
 /* The button text for edit profile picture */
 "Edit Photo" = "Editar foto";
 
 /* title */
-"Edit mobile signature" = "Editeu la signatura mòbil";
-
-/* title */
 "Edit signature" = "Edita la signatura";
+
+/* network troubleshot cell title */
+"email" = "correu electrònic";
 
 /* default vcard types */
 "Email" = "Correu electrònic";
-
-/* contact detail view, email addresses section title */
-"Email Addresses" = "Adreces de correu electrònic";
-
-/* Send an email to the current contact (button title text) */
-"Email Contact" = "Enviar correu electrònic a un contacte";
-
-/* human check option button */
-"Email Verification" = "Verificació de correu electrònic";
 
 /* contact placeholder */
 "Email address" = "Adreça de correu electrònic";
 
 /* Title */
 "Email address invalid" = "L'adreça de correu electrònic no és vàlida";
+
+/* contact detail view, email addresses section title */
+"Email Addresses" = "Adreces de correu electrònic";
+
+/* Send an email to the current contact (button title text) */
+"Email Contact" = "Enviar correu electrònic a un contacte";
 
 /* place holder */
 "Email default signature" = "Signatura per defecte per correu electrònic";
@@ -674,8 +763,17 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
  & title */
 "Email domain invalid" = "Domini de correu electrònic no vàlid";
 
-/* empty folder, for spam and trash */
+/* human check option button */
+"Email Verification" = "Verificació de correu electrònic";
+
+/* cell title in device setting */
+"Empty Cache" = "Buidar cache";
+
+/* empty folder, for spam and trash and drafts */
 "Empty Folder" = "Buidar carpeta";
+
+/* it is an option to empty the label */
+"Empty Label" = "Buidar etiqueta";
 
 /* Title */
 "Enable Default Signature" = "Activa la signatura predeterminada";
@@ -689,8 +787,17 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "Enable Notification Email" = "Activa les notificacions";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Habilitar PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "Activa la protecció del pin";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Habilitar PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Habilitar PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Activa l'identificador tàctil";
@@ -722,9 +829,6 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* settings option (End Time: 8am) */
 "End Time" = "Hora de finalització";
 
-/* Title */
-"End-to-End Encryption" = "Xiftar d'extrem a extrem";
-
 /* encryption lock description */
 "End-to-end encrypted" = "Encriptat extrem a extrem";
 
@@ -737,23 +841,29 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "D'extrem a extrem encriptada a l'adreça verificada";
 
+/* Title */
+"End-to-End Encryption" = "Xiftar d'extrem a extrem";
+
 /* Action in 2fa popup view */
 "Enter" = "Entrar";
 
 /* Title */
 "Enter Verification Code" = "Introduïu el codi de verificació";
 
-/* set pin title */
-"Enter your PIN" = "Introduïu el vostre PIN";
-
-/* Title */
-"Enter your PIN to unlock your inbox." = "Introduïu el PIN per desbloquejar la safata d'entrada.";
-
 /* human verification top title */
 "Enter your cell phone number" = "Introdueix el teu número de telèfon mòbil";
 
 /* top title */
 "Enter your existing email address." = "Introduïu la vostra adreça electrònica existent.";
+
+/* Account manager title */
+"Enter your mailbox password" = "Introduïu la contrasenya d'accés";
+
+/* set pin title */
+"Enter your PIN" = "Introduïu el vostre PIN";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Introduïu el PIN per desbloquejar la safata d'entrada.";
 
 /* settings debug section title */
 "Error Logs" = "Registres d'errors";
@@ -775,12 +885,6 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* Key size checkbox */
 "Extreme Security" = "Seguretat extrema";
-
-/* login page forgot pwd */
-"FORGOT PASSWORD?" = "HAS OBLIDAT LA CONTRASENYA?";
-
-/* abbreviation of forward: */
-"FW:" = "RV:";
 
 /* Error message */
 "Failed to determine type of file" = "Impossible determinar el tipus de fitxer";
@@ -816,14 +920,20 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Service Plan description */
 "For individuals that need more capacity, customization and advanced features" = "Per persones que necessiten més capacitat, personalització i funcions avançades";
 
+/* Buy button second line */
+"for one year" = "per un any";
+
 /* Service Plan description */
 "For organizations that need multi-user support and additional productivity features" = "Per organitzacions que necessiten suport multi-usuari i funcions de productivitat adicionals";
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Per persones i grups que valoren l'anonimat i la privadesa";
 
+/* login page forgot pwd */
+"FORGOT PASSWORD?" = "HAS OBLIDAT LA CONTRASENYA?";
+
 /* forward action */
-"Forward" = "Reenviar";
+"Forward" = "Reenvia";
 
 /* forwarded message title */
 "Forwarded message" = "Missatge reenviat";
@@ -833,6 +943,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* message From: field text */
 "From:" = "Des de:";
+
+/* abbreviation of forward: */
+"FW:" = "RV:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Rv:";
@@ -851,6 +964,15 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* Action */
 "Go to inbox" = "Vés a la safata d'entrada";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to login" = "Anar a inici de sessió";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Anar a configuració";
+
+/* network troubleshot cell title */
+"Government block" = "Bloqueig Gubernamental";
 
 /* The title for the contact group detail view */
 "Group Details" = "Detalls del grup";
@@ -879,6 +1001,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Key size checkbox */
 "High Security" = "Alta seguretat";
 
+/* (No Comment) */
+"hours" = "Hores";
+
 /* Title */
 "Hours" = "Hores";
 
@@ -894,20 +1019,26 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Suport IMAP/SMTP mitjançant ProtonMail Bridge";
 
-/* mail location title */
-"INBOX" = "SAFATA D'ENTRADA";
-
 /* Action */
 "Import Error" = "Error d'importació";
 
 /* Title */
 "Import File From..." = "Importa el fitxer des de...";
 
-/* import contact title */
-"Importing Contacts" = "Importació de contactes";
+/* Downloading attachments from cloud */
+"Importing" = "Important";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Importació d’adjunts, que pot trigar una estona";
+
+/* import contact title */
+"Importing Contacts" = "Importació de contactes";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l'aplicació provar l'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat. [Sebre més]";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l'aplicació provar l'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat. %1$@";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Per utilitzar els nostres serveis, haureu d'acceptar les Condicions del servei de ProtonMail.";
@@ -916,17 +1047,26 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
    menu title */
 "Inbox" = "Safata d'entrada";
 
+/* mail location title */
+"INBOX" = "SAFATA D'ENTRADA";
+
+/* Title */
+"Incorrect password" = "Contrasenya incorrecta";
+
 /* Error */
 "Incorrect PIN," = "PIN incorrecte,";
 
 /* Title */
-"Incorrect password" = "Contrasenya incorrecta";
+"inline attachments" = "adjunts en línia";
 
 /* place holder */
 "Input Display Name ..." = "Introduiu el nom per a mostrar...";
 
 /* place holder */
 "Input Notification Email ..." = "Notificació d'entrada de correu electrònic ...";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Connexió insegura";
 
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "La creació de compte Instant ProtonMail s'ha desactivat temporalment. Aneu a https://protonmail.com/inviteu per sol·licitar una invitació.";
@@ -936,6 +1076,21 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* default vcard types */
 "Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Problema amb el proveïdor d'accés a internet";
+
+/* (No Comment) */
+"Invalid access token please relogin" = "Token d'accés no vàlid relogin";
+
+/* Description */
+"Invalid access token. Please relogin." = "Token d'accés no vàlid. Si us plau, torneu a iniciar sessió.";
+
+/* Error */
+"Invalid credential" = "Credencial no vàlida";
+
+/* update password error */
+"Invalid hashed password!" = "Contrasenya amb contrasenya no vàlida!";
 
 /* Error */
 "Invalid Password" = "Contrasenya no vàlida";
@@ -948,18 +1103,6 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* Error message */
 "Invalid UserName!" = "Nom d'usuari no vàlid!";
-
-/* None */
-"Invalid access token please relogin" = "Token d'accés no vàlid relogin";
-
-/* Description */
-"Invalid access token. Please relogin." = "Token d'accés no vàlid. Si us plau, torneu a iniciar sessió.";
-
-/* Error */
-"Invalid credential" = "Credencial no vàlida";
-
-/* update password error */
-"Invalid hashed password!" = "Contrasenya amb contrasenya no vàlida!";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Aquest informe és sobre una compra des de l'aplicació?";
@@ -982,8 +1125,8 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Error */
 "Key invalid. Please go back and try again." = "La clau no és vàlida. Si su plau, torneu-ho a provar.";
 
-/* None */
-"LOGIN" = "Iniciar Sessió";
+/* Title */
+"Label as..." = "Etiqueta com a...";
 
 /* Title */
 "Label Management" = "Gestió d'etiquetes";
@@ -991,11 +1134,11 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* createing lable input place holder */
 "Label Name" = "Nom de etiqueta";
 
-/* Title */
-"Label as..." = "Etiqueta com a...";
-
 /* VoiceOver: email has lables */
 "Labels" = "Etiquetes";
+
+/* cell title in device settings */
+"Labels & Folders" = "Etiquetes i Carpetes";
 
 /* Title */
 "Labels have been applied." = "Les etiquetes s'han aplicat.";
@@ -1009,11 +1152,17 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "Language" = "Idioma";
 
+/* network troubleshot cell title */
+"Learn more" = "Més informació";
+
 /* Action */
 "Learn More" = "Més informació";
 
 /* learn more button */
 "Learn more here" = "Més informació aquí";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "S'ha assolit el límit";
 
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "Limitat a 150 missatges enviats per dia";
@@ -1021,11 +1170,17 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Action */
 "Load remote content" = "Carrega el contingut remot";
 
-/* None */
+/* (No Comment) */
 "Loading..." = "Carregant...";
 
 /* Description */
 "Local cache can't find mailbox password" = "La memòria cau local no pot trobar la contrasenya de la bústia";
+
+/* cell title in device settings */
+"Local Cache Management" = "Administrador de Memória Cau Local";
+
+/* cell title in device settings */
+"Local storage limit" = "Límit d'emmagatzematge local";
 
 /* *
  *  file string type */
@@ -1034,8 +1189,23 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* menu title */
 "Lock The App" = "Bloqueja l'aplicació";
 
+/* Account manager title */
+"Log in to your ProtonMail account" = "Entreu al vostre compte de ProtonMail";
+
+/* Alert title when logout non-primary account from account manager */
+"Log out %@?" = "Tancar sessió %@?";
+
+/* Action */
+"Log Out All" = "Sortir de tot";
+
+/* Alert when auth token is revoked and switch to another */
+"Logged out from %@ and signed in with %@" = "Sessió tancada per a %1$@ i identificada amb %2$@";
+
 /* Title */
 "Login" = "Iniciar Sessió";
+
+/* (No Comment) */
+"LOGIN" = "Iniciar Sessió";
 
 /* settings general section title */
 "Login Password" = "Contrasenya d'inici de sessió";
@@ -1043,7 +1213,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Error */
 "Login password doesn't match" = "La contrasenya d'inici de sessió no coincideix";
 
-/* menu title */
+/* Alert title to confirm logout
+   Alert title when logout primary account from account manager
+   menu title */
 "Logout" = "Tanca sessió";
 
 /* error title */
@@ -1052,45 +1224,45 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Esteu buscant la informació dels vostres contactes?";
 
-/* *
- *  MailboxPasswordViewController */
-"MAILBOX PASSWORD" = "Contrasenya de la bústia";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
+/* cell title in device settings */
+"MAILBOX" = "BÚSTIA DE CORREU";
 
 /* settings general section title */
 "Mailbox Password" = "Contrasenya de la bústia";
 
-/* None */
+/* *
+ *  MailboxPasswordViewController */
+"MAILBOX PASSWORD" = "Contrasenya de la bústia";
+
+/* (No Comment) */
 "Mailbox password doesn't match" = "La contrasenya de la bústia no coincideix";
+
+/* cell title in device settings */
+"Mailbox size" = "Mida de la bústia";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Gestionar les adreces";
 
+/* Settings row */
+"Manage in device Settings" = "Gestionar en ajustaments de dispositiu";
+
 /* Title */
 "Manage Labels/Folders" = "Gestiona etiquetes/carpetes";
+
+/* Action */
+"Mark as unread" = "Marca com a no llegit";
 
 /* mark message as read action */
 "Mark Read" = "Marca com a llegit";
 
-/* Action */
-"Mark as unread" = "Marca com a no llegit";
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Menú";
 
 /* Message with title */
 "Message %@" = "Missatges %@";
-
-/* Placeholder */
-"Message Password" = "Contrasenya del missatge";
-
-/* settings debug section title */
-"Message Queue" = "Cua de missatges";
-
-/* Title */
-"Message Swipe Actions" = "Accions de desplaçament del missatge";
 
 /* *
  *  Expiration View */
@@ -1102,10 +1274,16 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "Message has been moved." = "El missatge s'ha mogut.";
 
+/* Placeholder */
+"Message Password" = "Contrasenya del missatge";
+
 /* Description */
 "Message password does not match." = "La contrasenya del missatge no coincideix.";
 
-/* None */
+/* settings debug section title */
+"Message Queue" = "Cua de missatges";
+
+/* (No Comment) */
 "Message sending failed please try again" = "Error en l'enviament de missatges. Torna-ho a provar";
 
 /* Description */
@@ -1113,6 +1291,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* Description after message have been sent */
 "Message sent" = "Missatge enviat";
+
+/* Title */
+"Message Swipe Actions" = "Accions de desplaçament del missatge";
 
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Els missatges que envieu poden configurar-se com a supressió automàtica després d'un cert període de temps.";
@@ -1136,7 +1317,7 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 "More Credits" = "Més Crèdits";
 
 /* move action */
-"Move to AllMail" = "Mou a tot correu";
+"Move to All Mail" = "Mou a Tot el Correu";
 
 /* move action */
 "Move to Archive" = "Moure al arxivador";
@@ -1165,11 +1346,14 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "Multiple Addresses" = "Adreces múltiples";
 
+/* title */
+"Name" = "Nom";
+
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Necessita Un Compte? Registra'T";
 
-/* title */
-"Name" = "Nom";
+/* section title */
+"Networking" = "Xarxa";
 
 /* Title */
 "New login password" = "Nova contrasenya d'inici de sessió";
@@ -1183,11 +1367,17 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* contacts talbe cell Nickname title */
 "Nickname" = "Sobrenom";
 
+/* Title */
+"No connectivity detected..." = "No s'ha detectat cap connectivitat...";
+
+/* network troubleshot cell title */
+"No internet connection" = "No hi ha connexió a Internet";
+
 /* message when mailbox doesnt have emailsß */
 "No Messages" = "No hi ha missatges";
 
-/* Title */
-"No connectivity detected..." = "No s'ha detectat cap connectivitat...";
+/* no object error, local only , this could be not translated! */
+"no object" = "cap objecte";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "No, per un altre compte de ProtonMail";
@@ -1199,11 +1389,14 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
    Title */
 "None" = "Cap";
 
-/* Action */
-"Not Now" = "Ara no";
+/* Title */
+"normal attachments" = "adjunts normals";
 
 /* alert description */
 "Not all recipients support message expiration" = "No tots els destinataris admeten la data de caducitat del missatge";
+
+/* Action */
+"Not Now" = "Ara no";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Nota: El nom d'usuari també és l'adreça de ProtonMail.";
@@ -1238,9 +1431,6 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Action */
 "OK" = "Accepta";
 
-/* Section header */
-"OTHER PLANS" = "ALTRES PLANS";
-
 /* Title */
 "On" = "Actiu";
 
@@ -1250,7 +1440,10 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "El EE, MMM d, yyyy a les %1$@, %2$@, va escriure:";
 
-/* None */
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Només es pot afegir un compte gratuït";
+
+/* (No Comment) */
 "OpenDraft" = "EsborranyObert";
 
 /* contacts talbe cell Organization title */
@@ -1259,11 +1452,35 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* default vcard types */
 "Other" = "Altres";
 
+/* Section header */
+"OTHER PLANS" = "ALTRES PLANS";
+
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "El nostre equip intentarà activar el vostre abonament manualment si està d'acord en adjuntar les dades tècniques que l'AppStore ens proporcionà en el moment de la compra. Aquestes dades no inclouen detalls del seu compte d'iTunes, d'Apple ID, de tarjetes de crèdit o cap altra informació personal. Solament servirà per verificar que la transacció s'ha realitzat en els servidors d'AppStore.";
 
 /* mail location desc */
 "Outbox" = "Bústia de sortida";
+
+/* title */
+"Password" = "Contrasenya";
+
+/* Description */
+"Password cannot be empty." = "La contrasenya no es pot deixar en blanc.";
+
+/* cell title in device settings */
+"Password management" = "Administrador de contrasenyes";
+
+/* Title */
+"Password Mismatch" = "La contrasenya no coincideix";
+
+/* update password error */
+"Password update failed" = "Actualització de contrasenya ha fallat";
+
+/* Title */
+"Password Updated" = "Contrasenya actualitzada";
+
+/* default vcard types */
+"Personal" = "Personal";
 
 /* encryption lock description */
 "PGP-encrypted" = "PGP-encriptat";
@@ -1280,32 +1497,8 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* encryption lock description */
 "PGP-signed message from verified address" = "Missatge signat per PGP d'una adreça verificada";
 
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "CARACTERÍSTIQUES PRÈMIUM";
-
-/* title */
-"Password" = "Contrasenya";
-
-/* Title */
-"Password Mismatch" = "La contrasenya no coincideix";
-
-/* Title */
-"Password Updated" = "Contrasenya actualitzada";
-
-/* Description */
-"Password cannot be empty." = "La contrasenya no es pot deixar en blanc.";
-
-/* update password error */
-"Password update failed" = "Actualització de contrasenya ha fallat";
-
-/* default vcard types */
-"Personal" = "Personal";
-
 /* default vcard types */
 "Phone" = "Telèfon";
-
-/* human check option button */
-"Phone Verification" = "Verificació del telèfon";
 
 /* contact placeholder */
 "Phone number" = "Número de telèfon";
@@ -1313,8 +1506,20 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "Phone number invalid" = "El número de telèfon no és vàlid";
 
+/* human check option button */
+"Phone Verification" = "Verificació del telèfon";
+
 /* Title */
 "Photo Library" = "Biblioteca de fotografies";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN i FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN i TouchID";
 
 /* Description */
 "Pin code can't be empty." = "El codi del Pin no pot estar buit.";
@@ -1343,6 +1548,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Error message */
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Si us plau, accediu al compte de ProtonMail que voleu actualitzar per poder completar la compra.";
 
+/* network troubleshot cell title */
+"Please make sure that your internet connection is working." = "Si us plau, assegura't que la teva connexió a internet funciona.";
+
 /* Error */
 "Please pick a user name first!" = "Selecciona un nom d'usuari primer!";
 
@@ -1351,6 +1559,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* when switch sender but email has attachments */
 "Please remove all attachments before changing sender!" = "Si us plau, elimineu tots els fitxers adjunts abans de canviar el remitent";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "Seleccioneu com a mínim un correu electrònic";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Si us plau, seleccioneu almenys un e-mail per al grup de contacte";
@@ -1361,16 +1572,16 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Description */
 "Please set a password." = "Si us plau establiu una contrasenya.";
 
-/* None */
+/* (No Comment) */
 "Please try a different domain." = "Si us plau, proveu un domini diferent.";
 
-/* None */
+/* (No Comment) */
 "Please try a different email address." = "Si us plau, proveu una altra adreça electrònica.";
 
-/* None */
+/* (No Comment) */
 "Please try a different password." = "Si us plau, proveu una contrasenya diferent.";
 
-/* None */
+/* (No Comment) */
 "Please try a different user name." = "Si us plau, proveu un nom d’usuari diferent.";
 
 /* 
@@ -1387,7 +1598,7 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Alert */
 "Please use the web application to reset your password." = "Utilitzeu l'aplicació web per restablir la vostra contrasenya.";
 
-/* None */
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Si us plau, utilitzeu la versió web de ProtonMail per canviar la contrasenya de bústia!";
 
 /* Alert */
@@ -1403,8 +1614,20 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
  & alert title */
 "Please, manage it in your phone." = "Si us plau, féu-ho en el telèfon.";
 
+/* Upgrade warning title */
+"PREMIUM FEATURE" = "CARACTERÍSTIQUES PRÈMIUM";
+
 /* Action */
 "Print" = "Imprimeix";
+
+/* cell title in device settings */
+"Privacy" = "Privacitat";
+
+/* agree check box privacy */
+"privacy policy." = "política de privacitat.";
+
+/* Local notification title */
+"Problem sending message" = "Problema enviant el missatge";
 
 /* Title */
 "Protection" = "Protecció";
@@ -1412,14 +1635,14 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* settings protection section title */
 "Protection Entire App" = "Aplicació completa de protecció";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton està caigut";
+
+/* network troubleshot cell title */
+"Proton Status" = "Estat de Proton";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
-
-/* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "Es requereix ProtonMail Plus per personalitzar la vostra signatura mòbil";
-
-/* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionario li permet afegir i editar detalls de contacte més enllà del nom i correu electrònic del vostre contacte. Mitjançant l'ús de ProtonMail, aquestes dades seran tan segures com el vostre correu electrònic xifrat extrem a extrem.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail no ven anuncis ni abusos de la vostra privadesa. El vostre suport és essencial per mantenir funcionant ProtonMail. Podeu actualitzar a un compte de pagament o donar per donar suport a ProtonMail.";
@@ -1430,14 +1653,29 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Actualment ProtonMail es troba fora de línia, consulta'n l'estat actual al nostre twitter: https://twitter.com/protonmail";
 
+/* Title */
+"ProtonMail is currently offline..." = "ProtonMail està actualment fora de línia...";
+
+/* Description */
+"ProtonMail Plus is required to customize your mobile signature" = "Es requereix ProtonMail Plus per personalitzar la vostra signatura mòbil";
+
+/* Upgrade warning message */
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionario li permet afegir i editar detalls de contacte més enllà del nom i correu electrònic del vostre contacte. Mitjançant l'ús de ProtonMail, aquestes dades seran tan segures com el vostre correu electrònic xifrat extrem a extrem.";
+
+/* network troubleshot cell title */
+"ProtonVPN" = "ProtonVPN";
+
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN inclòs";
 
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Interferència d'un proxy/firewall";
+
+/* cell title in device settings */
+"Push Notifications" = "Notificacions push";
+
 /* Title */
 "Quick swipe actions" = "Accions de desplaçament ràpid";
-
-/* Action */
-"RESET MAILBOX PASSWORD" = "RESTABLIR LA CONTRASENYA DE LA BÚSTIA DE CORREU";
 
 /* Title */
 "Rate & Review" = "Tarifa & Revisió";
@@ -1466,6 +1704,12 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* remove action */
 "Remove" = "Elimina";
 
+/* account right bar item title */
+"Remove All" = "Esborra-ho tot";
+
+/* Settings row */
+"Remove image meta-data" = "Esborrar meta-data de la imatge";
+
 /* un star message */
 "Remove Star" = "Treure estrella";
 
@@ -1481,7 +1725,7 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* composer view model impl */
 "Reply message" = "Respondre al missatge";
 
-/* None */
+/* (No Comment) */
 "ReplyAll" = "Respondre a tots";
 
 /* menu title */
@@ -1496,6 +1740,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* link opeining confirmation */
 "Request Link Confirmation" = "Sol·licita Confirmació d'Enllaços";
 
+/* Action */
+"RESET MAILBOX PASSWORD" = "RESTABLIR LA CONTRASENYA DE LA BÚSTIA DE CORREU";
+
 /* Title */
 "Resetting message cache ..." = "S'està restablint la memòria cau del missatge ...";
 
@@ -1504,21 +1751,6 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Torneu a provar després de %d segons";
-
-/* mail location title */
-"SENT" = "ENVIAT";
-
-/* mail location title */
-"SPAM" = "CORREU BROSSA";
-
-/* Error */
-"SRP Client" = "Client SRP";
-
-/* Error */
-"SRP Server" = "Servidor SRP";
-
-/* mail location title */
-"STARRED" = "DESTACATS";
 
 /* Title */
 "Save" = "Desa";
@@ -1532,7 +1764,8 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* action sheet option */
 "Scheduled" = "Programat";
 
-/* Title */
+/* Springboard (3D Touch) shortcuts action
+   Title */
 "Search" = "Cerca";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1541,14 +1774,11 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* The title for the view where user can select the color for the group */
 "Select Color" = "Seleccioneu un color";
 
-/* None */
+/* (No Comment) */
 "Select your language" = "Seleccioneu la vostra llengua";
 
 /* Action */
 "Send" = "Envia";
-
-/* Title */
-"Send Verification Code" = "Envia el codi de verificació";
 
 /* Action */
 "Send anyway" = "Enviar de totes maneres";
@@ -1559,14 +1789,17 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "Send plain but stored enc" = "Envia en text plà però emmagatzemat enc";
 
+/* Title */
+"Send Verification Code" = "Envia el codi de verificació";
+
 /* encryption lock description */
 "Sender Verification Failed" = "La verificació del remitent ha fallat";
 
-/* Description */
-"Sending Message" = "Missatge d'enviament";
-
 /* Alert title */
 "Sending message" = "S'està enviant el missatge";
+
+/* Description */
+"Sending Message" = "Missatge d'enviament";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "S'estan enviant missatges de %1$@ L'adreça és una funció remunerada. El vostre missatge s'enviarà des de la vostra adreça predeterminada %2$@";
@@ -1574,8 +1807,8 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* menu title */
 "Sent" = "Enviat";
 
-/* Description */
-"Sent Failed" = "Enviament fallit";
+/* mail location title */
+"SENT" = "ENVIAT";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "Enviat per ProtonMail amb xifrat d'accés zero";
@@ -1584,13 +1817,16 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 "Sent by you with end-to-end encryption" = "Enviat per vostè amb xifrat d'extrem a extrem";
 
 /* Description */
-"Server proofs not valid!" = "Les proves del servidor no són vàlides!";
+"Sent Failed" = "Enviament fallit";
 
-/* Title */
-"Set Password" = "Establir contrasenya";
+/* Description */
+"Server proofs not valid!" = "Les proves del servidor no són vàlides!";
 
 /* Description */
 "Set a password to encrypt this message for non-ProtonMail users." = "Estableix una contrasenya per xifrar aquest missatge per usuaris que no siguin de ProtonMail.";
+
+/* Title */
+"Set Password" = "Establir contrasenya";
 
 /* Signup passwords top title */
 "Set passwords" = "Estableix la contrasenya";
@@ -1619,6 +1855,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* settings general section title */
 "Single Password" = "Contrasenya individual";
 
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Posposa";
+
 /* settings option */
 "Snooze Notifications" = "Posposar Notificacions";
 
@@ -1631,15 +1870,24 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Ho sentim, no processem compres en la versió beta de l’app iOS. Gràcies per participar en la nostra beta pública!";
 
-/* None */
+/* (No Comment) */
 "Space Warning" = "Avís espacial";
 
 /* mail location desc
    menu title */
 "Spam" = "Correu brossa";
 
+/* mail location title */
+"SPAM" = "CORREU BROSSA";
+
 /* Description */
 "Spammed" = "Correu brossa";
+
+/* Error */
+"SRP Client" = "Client SRP";
+
+/* Error */
+"SRP Server" = "Servidor SRP";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp única clau keyslat no és vàlid!";
@@ -1649,14 +1897,21 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* mail location desc
    menu title
+   Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Destacats";
+
+/* mail location title */
+"STARRED" = "DESTACATS";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Hora d'inici";
 
 /* contact placeholder */
 "State" = "Estat";
+
+/* network troubleshot cell title */
+"Still can't find a solution" = "No s'ha pogut trobar uns solució encara";
 
 /* Title */
 "Storage" = "Emmagatzematge";
@@ -1679,11 +1934,14 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* menu title */
 "Subscription" = "Subscripció";
 
-/* Action */
-"Support ProtonMail" = "Suport ProtonMail";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Suport per a %i dominis personalitzats (p. ex. usuari@elteudomini.com)";
+
+/* network troubleshot cell title */
+"support form" = "formulari de suport";
+
+/* Action */
+"Support ProtonMail" = "Suport ProtonMail";
 
 /* settings swipe actions section title */
 "Swipe Left to Right" = "Llisca a l'esquerra o a la dreta";
@@ -1691,11 +1949,15 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* settings swipe actions section title */
 "Swipe Right to Left" = "Llisca de dreta a esquerra";
 
+/* cell title in device settings
+   Swiping gestures */
+"Swiping gestures" = "Gest de lliscament";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "Canviar al compte ‘%@’";
+
 /* Error */
 "System can't copy the file" = "El sistema no pot copiar el fitxer";
-
-/* mail location title */
-"TRASH" = "PAPERERA";
 
 /* Title */
 "Take a Photo" = "Fes una foto";
@@ -1703,18 +1965,14 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Toca enviar de totes maneres per enviar sense venciment a aquests destinataris";
 
-/* None */
+/* network troubleshot cell title */
+"Temporarily disable or remove your antivirus software." = "Deshabilita temporalment o elimina el teu software d'antivirus.";
+
+/* agree check box terms */
+"terms and conditions" = "termes i condicions";
+
+/* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gràcies per enviar un informe d'error. Hem afegit el vostre informe al nostre sistema de seguiment d'errors.";
-
-/* update password error */
-"The Password is wrong." = "La contrasenya és incorrecta.";
-
-/* Title */
-"The ProtonMail current offline..." = "L'actual ProtonMail està fora de línia...";
-
-/* 
- */
-"The UserName have been taken." = "El nom d'usuari ja està agafat.";
 
 /* Description */
 "The authentication credentials are invalid." = "Les credencials d'autenticació no són vàlides.";
@@ -1738,7 +1996,7 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* key size note part 1 */
 "The highest level of encryption available." = "El nivell més alt de xifrat disponible.";
 
-/* None */
+/* (No Comment) */
 "The label name is duplicate" = "El nom de l’etiqueta està duplicat";
 
 /* Error */
@@ -1751,20 +2009,23 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
  *  LabelsViewController */
 "The maximum number of labels is %d." = "El nombre màxim d'etiquetes és %d.";
 
-/* None */
+/* update password error */
+"The new password can't be empty." = "La nova contrasenya no pot estar buida.";
+
+/* (No Comment) */
 "The new password can't empty" = "La nova contrasenya no pot estar buida";
 
 /* update password error */
-"The new password can't empty." = "La nova contrasenya no es pot buidar.";
+"The new password does not match." = "La nova contrasenya no coincideix.";
 
-/* None */
+/* (No Comment) */
 "The new password not match" = "Les contrasenyes no coincideixen";
-
-/* update password error */
-"The new password not match." = "La nova contrasenya no coincideix.";
 
 /* recovery email notes */
 "The optional recovery email address allows you to reset your login password if you forget it." = "L'adreça electrònica de recuperació opcional us permet restablir la vostra contrasenya d'inici de sessió si l'oblideu.";
+
+/* update password error */
+"The Password is wrong." = "La contrasenya és incorrecta.";
 
 /* Description */
 "The password you entered does not match the current password." = "La contrasenya que heu introduït no coincideix amb la contrasenya actual.";
@@ -1778,11 +2039,18 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "The request timed out." = "S'ha esgotat la sol·licitud.";
 
-/* None */
+/* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "La mida del fitxer adjunt no pot ser superior a 25 Mb";
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "La mida total del fitxer adjunt no pot ser superior a 25 Mb";
+
+/* Alert when the account is already logged in */
+"The user is already logged in" = "Es usuari ja està identificat";
+
+/* 
+ */
+"The UserName have been taken." = "El nom d'usuari ja està agafat.";
 
 /* 
  & title */
@@ -1790,6 +2058,12 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* Error */
 "The verification failed!" = "La verificació ha fallat!";
+
+/* alert when logout user if in queue still have tasks */
+"There are still some messages in queue. If you log out, the draft will be deleted." = "Encara hi ha alguns missatges a la cua. Si tanqueu la sessió, esborrarà l'esborrany.";
+
+/* Alert to confirm logout with pending message in the queue */
+"There are unsent messages that will be lost if you log out" = "Hi ha missatges no enviats que es perdran en tancar la sessió";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "S'ha produït un error en crear o carregar les dades desades de l'aplicació.";
@@ -1813,18 +2087,25 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Aquest missatge pot ser un intent de suplantació d’identitat. Comproveu el remitent i els continguts per assegurar-vos que són legítims.";
 
+/* Title */
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Aquesta preferència converteix al Safari si es desinstal·la el navegador escollit.";
+
 /* contacts talbe cell Title title */
 "Title" = "Títol";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Ha fallat la validació del certificat TLS. Es pot supervisar la vostra connexió i l'aplicació es bloqueja temporalment per a la vostra seguretat. Canvia la xarxa inmediatament.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Ha fallat la validació del certificat TLS. Es pot supervisar la vostra connexió i l'aplicació es bloqueja temporalment per a la vostra seguretat.\n\n canviar les xarxes immediatament";
 
 /* Title */
 "To" = "Per a";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "Per evitar l'ús abusiu de ProtonMail,
- necessitem verificar que sou humà.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Per evitar l'ús abusiu de ProtonMail,&#13;\n necessitem verificar que sou humà.";
 
-/* None */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Per restablir la contrasenya de la vostra bústia, si us plau, feu servir la versió de ProtonMail a protonmail.com";
 
 /* Description */
@@ -1840,6 +2121,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Alert title */
 "Too many recipients" = "Massa destinataris";
 
+/* network troubleshot cell title */
+"Tor" = "Tor";
+
 /* settings touchid error */
 "TouchID is not enrolled, enable it in the system Settings" = "L'identificador tàctil no està inscrit, habiliteu-lo a la configuració del sistema";
 
@@ -1851,8 +2135,20 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
    move action */
 "Trash" = "Paperera";
 
+/* mail location title */
+"TRASH" = "PAPERERA";
+
 /* Title */
 "Trouble shooting guide" = "Guia de resolució de problemes";
+
+/* troubleshooting view button */
+"Troubleshoot" = "Resolució de problemes";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Resolució de problemes";
+
+/* network troubleshot cell title */
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Intenta connectar-te al Proton des d'una xarxa diferent (o utilitzi ProtonVPN o Tor).";
 
 /* action sheet option */
 "Turn Off" = "Apagar";
@@ -1860,17 +2156,14 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "Tweet about ProtonMail" = "Trucada sobre ProtonMail";
 
+/* network troubleshot cell title */
+"Twitter" = "Twitter";
+
 /* Placeholder */
 "Two Factor Code" = "Codi de dos factors";
 
 /* Internal type casting error */
 "Type casting error" = "Type casting error";
-
-/* default vcard types */
-"URL" = "URL";
-
-/* Title */
-"USER LOGIN" = "LOGIN D'USUARI";
 
 /* Description */
 "Unable to connect to the server" = "No es pot connectar al servidor";
@@ -1907,9 +2200,7 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 "Unable to parse response" = "No s'ha pogut analitzar la resposta";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Impossible analitzar l’objecte de resposta:
-%@";
+"Unable to parse the response object:\n%@" = "Impossible analitzar l’objecte de resposta:\n%@";
 
 /* Error */
 "Unable to parse token" = "No s'ha pogut analitzar token";
@@ -1923,7 +2214,7 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Description */
 "Unknow Error" = "Error desconegut";
 
-/* None */
+/* (No Comment) */
 "Unknow file" = "Fitxer desconegut";
 
 /* title, default display name */
@@ -1932,11 +2223,14 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Error */
 "Unknown Error" = "Error desconegut";
 
-/* None */
+/* (No Comment) */
 "Unkonw Version" = "Versió desconeguda";
 
 /* Service plan capability; */
 "Unlimited messages sent/day" = "Nombre il·limitat de missatges enviats/dia";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Desbloqueig requerit";
 
 /* The verb for describing the unread action
    VoiceOver: email is not read yet */
@@ -1981,11 +2275,17 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* default vcard types */
 "Url" = "Url";
 
+/* default vcard types */
+"URL" = "URL";
+
 /* error when user already exist */
 "User already exist!" = "L'usuari existeix!";
 
-/* None */
+/* (No Comment) */
 "User is available!" = "L'usuari està disponible!";
+
+/* Title */
+"USER LOGIN" = "LOGIN D'USUARI";
 
 /* 
  & title */
@@ -2010,11 +2310,14 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* error details */
 "Verification of this content’s signature failed" = "La verificació de la signatura d'aquest contingut ha fallat";
 
-/* None */
+/* (No Comment) */
 "Version %@ %@" = "Versió %@ %@";
 
 /* message details-> more action-> view headers */
 "View Headers" = "Mostrar les capçaleres";
+
+/* message details-> more action-> view raw html of message body */
+"View HTML" = "Veure HTML";
 
 /* Action */
 "View Plans" = "Veure els Plans";
@@ -2027,6 +2330,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Advertència: no heu establert un correu electrònic de recuperació per tal que la recuperació del compte sigui impossible si oblideu la vostra contrasenya. Procediu sense correu electrònic de recuperació?";
+
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No hem pogut enviar el vostre missatge, possiblement a causa d'una mala connexió de xarxa. El vostre missatge s'ha desat a Esborranys i s'enviarà automàticament la propera vegada que obriu l'aplicació.";
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Heu activat l’abonament correctament. Si us plau, reinicieu l'app per començar a utilitzar els nous serveis.";
@@ -2056,6 +2362,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
  & title */
 "Wrong verification code" = "Codi de verificació no vàlid";
 
+/* Title */
+"wrote:" = "va escriure:";
+
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Sí, activeu-lo ara ";
 
@@ -2065,6 +2374,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Esteu a punt de llançar el navegador web i navegar fins a";
 
+/* Alert of removing all accounts */
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Esteu a punt d’eliminar tots els comptes. No podreu accedir-hi des d'aquest dispositiu si no els afegiu de nou.\n\nVols suprimir tots els comptes de totes maneres?";
+
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Pots personalitzar els gestos de lliscament en la configuració de l'aplicació de ProtonMail.";
 
@@ -2073,6 +2385,9 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "No podeu configurar %@ adreça com a predeterminada perquè és una funció de pagament.";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "El FaceID està deshabilitat a la configuració del sistema. El FaceID s’ha utilitzat per protegir informació important del compte. Per accedir al vostre compte, aneu a la configuració i reactiveu FaceID o inicieu la sessió.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Heu activat la data de caducitat del missatge, però no tots els destinataris ho admeten. Afegiu una contrasenya i/o desactiveu l'enviament PGP per utilitzar la caducitat per a tots els destinataris.";
@@ -2095,8 +2410,21 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Description */
 "You need at least one recipient to send" = "Necessites almenys un destinatari per enviar";
 
+/* Alert to confirm logout
+   Alert when logout primary account from account manager */
+"You will be switched to %@" = "Es canviarà a %@";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "Aixó esborrarà el missatge de manera irreversible. Està segur?";
+
 /* view top title */
 "Your Country Code" = "Codi del país";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "El teu país pot bloquetgar l’accés a Proton. Provi utilitzar %1$@ (o altre VPN) o %2$@ per accedir a Proton.";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "El teu país pot bloquetgar l’accés a Proton. Provi utilitzar ProtonVPN (o altre VPN) o Tor per accedir a Proton.";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "La safata d'entrada està protegida amb el xifrat extrem a extrem. Per enviar missatges de correu electrònic de manera automàtica, envieu-los a ProtonMail. També podeu xifrar manualment missatges si no utilitza ProtonMail.";
@@ -2105,9 +2433,7 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "La seva nova compte de correu electrònic ja està configurada i llesta per enviar i rebre missatges xifrats.";
 
 /* view top title */
-"Your new secure email
- account is ready." = "El vostre nou compte de correu electrònic
- segur està preparat.";
+"Your new secure email\r\n account is ready." = "El vostre nou compte de correu electrònic&#13;\n segur està preparat.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "El vostre plà restarà actiu fins";
@@ -2120,52 +2446,4 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 
 /* contact placeholder */
 "ZIP" = "Codi postal";
-
-/* agree check box middle word */
-"and" = "i";
-
-/* like at 10:00pm */
-"at" = "a";
-
-/* Error */
-"attempt remaining until secure data wipe!" = "intenteu quedar-se fins que es netegeu la informació segura!";
-
-/* Description */
-"attempts remaining" = "intents restants";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "els intents continuen fins que es netegeu la informació segura!";
-
-/* Action */
-"close tour" = "tancar recorregut";
-
-/* Title */
-"days" = "dies";
-
-/* Buy button second line */
-"for one year" = "per un any";
-
-/* contacts api error when fetch */
-"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "obtenir el contactes() ha fallat, peopleOrderedByUsersPreference retorn nul!!";
-
-/* None */
-"hours" = "Hores";
-
-/* Title */
-"inline attachments" = "adjunts en línia";
-
-/* no object error, local only , this could be not translated! */
-"no object" = "cap objecte";
-
-/* Title */
-"normal attachments" = "adjunts normals";
-
-/* agree check box privacy */
-"privacy policy." = "política de privacitat.";
-
-/* agree check box terms */
-"terms and conditions" = "termes i condicions";
-
-/* Title */
-"wrote:" = "va escriure:";
 

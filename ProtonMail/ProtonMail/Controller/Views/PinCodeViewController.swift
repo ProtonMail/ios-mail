@@ -74,6 +74,10 @@ class PinCodeViewController : UIViewController, BioAuthenticating {
                 self.decideOnBioAuthentication()
             }
         }
+        
+        if self.viewModel.getPinFailedRemainingCount() < 4 {
+            self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: true)
+        }
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {

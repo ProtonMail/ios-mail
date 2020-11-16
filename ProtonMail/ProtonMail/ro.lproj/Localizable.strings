@@ -1,3 +1,24 @@
+/* Key size text when setup key */
+"(2048 bit)" = "(2048 de biți)";
+
+/* Key size text when setup key */
+"(4096 bit)" = "(4096 de biți)";
+
+/* Comment for disconnected account in Account Manager */
+"(logged out)" = "(deconectat)";
+
+/* Service plan capability detail; like in '50 email addresses (total)' */
+"(total)" = "(total)";
+
+/* secret */
+"**********" = "**********";
+
+/* optional text field */
+"*OPTIONAL" = "*OPȚIONAL";
+
+/* Service plan capability detail; like in '5 email addresses/user' */
+"/user" = "/utilizator";
+
 /* Service plan capability */
 "%@ storage capacity" = "Spațiu de stocare %@";
 
@@ -22,32 +43,14 @@
 /* Service plan capability; i = 5 or 50 */
 "%i email addresses" = "%i adrese de e-mail";
 
-/* Key size text when setup key */
-"(2048 bit)" = "(2048 de biți)";
-
-/* Key size text when setup key */
-"(4096 bit)" = "(4096 de biți)";
-
-/* Service plan capability detail; like in '50 email addresses (total)' */
-"(total)" = "(total)";
-
-/* secret */
-"**********" = "**********";
-
-/* optional text field */
-"*OPTIONAL" = "*OPȚIONAL";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Plasează aici pentru atașare";
 
-/* Service plan capability detail; like in '5 email addresses/user' */
-"/user" = "/utilizator";
+/* default empty object */
+"<no object>" = "<lipsă obiect>";
 
 /* 2fa verification failed */
 "2FA failed. Please try to login again." = "Autentificare cu doi factori a eșuat. Mai încercați.";
-
-/* default empty object */
-"<no object>" = "<lipsă obiect>";
 
 /* *
  *  LabelTableViewCell */
@@ -65,25 +68,23 @@
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "Nu a fost stabilit un cod de acces. Activați-l în setările sistemului.";
 
-/* when server not reachable */
-"API Server not reachable..." = "Serverul API nu poate fi contactat...";
-
-/* mail location title */
-"ARCHIVE" = "ARHIVĂ";
-
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Accesul la acest cont este dezactivat din cauza neplății. Vă rugăm să vă conectați prin protonmail.com pentru plata facturii restante.";
 
-/* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Accesul la acest cont este dezactivat din cauza neplății.
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Accesul la acest cont este dezactivat din cauza neplății.\n\nVă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">baza de cunoștințe</a> pentru mai multe informații.";
 
-Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">baza de cunoștințe</a> pentru mai multe informații.";
+/* Account manager title */
+"Account" = "Cont";
 
 /* 
  & title */
 "Account password invalid" = "Parola contului este greșită";
 
-/* None */
+/* section title in settings */
+"Account Settings" = "Setări cont";
+
+/* (No Comment) */
 "Add" = "Adăugare";
 
 /* new contacts add Anniversary */
@@ -110,27 +111,6 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* add label action */
 "Add Label" = "Adăugare etichetă";
 
-/* add a new folder */
-"Add New Folder" = "Adăugare folder nou";
-
-/* add a new folder */
-"Add New Label" = "Adăugare etichetă nouă";
-
-/* new contacts add Nickname */
-"Add Nickname" = "Adăugare poreclă";
-
-/* new contacts add Organization */
-"Add Organization" = "Adăugare organizație";
-
-/* The button text for add profile picture */
-"Add Photo" = "Adăugare fotografie";
-
-/* mark message star */
-"Add Star" = "Marcare";
-
-/* new contacts add Title */
-"Add Title" = "Adăugare adresare";
-
 /* add new address action */
 "Add new address" = "Adăugare adresă nouă";
 
@@ -143,11 +123,32 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* new field action */
 "Add new field" = "Adăugare câmp";
 
+/* add a new folder */
+"Add New Folder" = "Adăugare folder nou";
+
+/* add a new folder */
+"Add New Label" = "Adăugare etichetă nouă";
+
 /* new phone action */
 "Add new phone number" = "Adăugare număr de telefon";
 
 /* action */
-"Add new url" = "Adaugare URL";
+"Add new URL" = "Adăugare URL";
+
+/* new contacts add Nickname */
+"Add Nickname" = "Adăugare poreclă";
+
+/* new contacts add Organization */
+"Add Organization" = "Adăugare organizație";
+
+/* The button text for add profile picture */
+"Add Photo" = "Adăugare fotografie";
+
+/* mark message star */
+"Add Star" = "Pune stea";
+
+/* new contacts add Title */
+"Add Title" = "Adăugare adresare";
 
 /* Title */
 "Add to contacts" = "Adăugare la contacte";
@@ -155,16 +156,22 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* default vcard types */
 "Address" = "Adresa";
 
+/* cell title in device settings */
+"Addresses" = "Adrese";
+
 /* Title */
 "Alert" = "Alertă";
+
+/* Title */
+"All contacts are imported" = "S-au importat toate contactele";
 
 /* mail location desc
    mail location title
    menu title */
 "All Mail" = "Toate mesajele";
 
-/* Title */
-"All contacts are imported" = "S-au importat toate contactele";
+/* network troubleshot cell title */
+"Allow alternative routing" = "Permite rută alternativă";
 
 /* archive when apply label */
 "Also Archive" = "Și arhivează";
@@ -172,11 +179,29 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Description */
 "Also used to reset a forgotten password." = "Folosit și pentru resetarea parolelor uitate.";
 
+/* agree check box middle word */
+"and" = "și";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversare";
 
+/* network troubleshot cell title */
+"Antivirus interference" = "Interferență antivirus";
+
+/* when server not reachable */
+"API Server not reachable..." = "Serverul API nu poate fi contactat...";
+
+/* section title in settings */
+"APP INFORMATION" = "INFORMAȚII APLICAȚIE";
+
 /* Error */
 "App is locked" = "Aplicația este blocată";
+
+/* cell title in device settings */
+"App Language" = "Limbă aplicație";
+
+/* section title in settings */
+"App Settings" = "Setări aplicație";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Taxa Apple de achiziție în aplicație";
@@ -188,7 +213,7 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple ne-a informat că ați trecut la alt plan al serviciului, dar nu ați specificat care cont ProtonMail să fie modificat în cazul în care aveți mai multe.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple ne-a informat că ați trecut la alt plan al serviciului, dar lipsesc unele date tehnice. Completați raportul de erori și echipa de suport vă va contacta.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ne-a informat că ați trecut la alt plan al serviciului, dar lipsesc unele date tehnice. Completați raportul de erori și echipa de suport vă va contacta.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple ne-a informat că ați trecut la alt plan al serviciului, dar am detectat că v-ați deconectat din cont de atunci.";
@@ -203,11 +228,23 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
    menu title */
 "Archive" = "Arhivă";
 
+/* mail location title */
+"ARCHIVE" = "ARHIVĂ";
+
 /* Description */
 "Archived" = "Arhivat";
 
-/* Alert to confirm logout */
-"Are you sure you want to logout?" = "Sigur doriți să vă deconectați?";
+/* Alert when logout non-primary account from account manager */
+"Are you sure you want to log out?" = "Sigur doriți să vă deconectați?";
+
+/* Alert to confirm logout when only one account logged in */
+"Are you sure you want to logout %@?" = "Sigur doriți să vă deconectați din %@?";
+
+/* emptify folder/label confirmation alert */
+"Are you sure? This can't be undone." = "Sigur? Această acțiune nu poate fi anulată.";
+
+/* like at 10:00pm */
+"at" = "la";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Atașament importat";
@@ -215,14 +252,23 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* VoiceOver: email has attachments */
 "Attachments" = "Atașamente";
 
+/* Error */
+"attempt remaining until secure data wipe!" = "încercare rămasă până la ștergerea sigură a datelor!";
+
+/* Description */
+"attempts remaining" = "încercări rămase";
+
+/* Error */
+"attempts remaining until secure data wipe!" = "încercări rămase până până la distrugerea sigură a datelor!";
+
 /* Title */
 "Authentication" = "Autentificare";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "Conectare nereușită: nume de utilizator sau parolă greșită";
+"Authentication failed" = "Autentificare eșuată";
 
 /* Description */
-"Authentication failed" = "Autentificare eșuată";
+"Authentication Failed Wrong username or password" = "Conectare nereușită: nume de utilizator sau parolă greșită";
 
 /* Error */
 "Authentication failed. Please try to login again." = "Autentificare eșuată. Reîncercați autentificarea.";
@@ -238,6 +284,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* settings general section title */
 "Auto Show Images" = "Afișare automată imagini";
+
+/* section title in settings */
+"Auto-lock" = "Autoblocare";
 
 /* top left back button */
 "Back" = "Înapoi";
@@ -275,14 +324,14 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Link to More Credits screen */
 "Buy More Credits" = "Cumpărare credite";
 
+/* Alert for removing disconnected accounts */
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "Ștergând acest cont, nu îl veți mai putea accesa de pe acest dispozitiv decât dacă îl adăugați din nou.\n\nDoriți totuși să ștergeți acest cont?";
+
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "Folosind ProtonMail, sunteți de acord cu";
 
 /* No comment provided by engineer. */
 "By using protonmail, you agree to our %@ and %@." = "Folosind ProtonMail, sunteți de acord cu %1$@ și %2$@.";
-
-/* human check option button */
-"CAPTCHA" = "CAPTCHA";
 
 /* Call the contact (button title text) */
 "Call Contact" = "Apelare contact";
@@ -318,11 +367,14 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
 "Can't fetch contact groups" = "Nu se poate prelua grupul de contacte";
 
-/* None */
+/* (No Comment) */
 "Can't find the clicked message please try again!" = "Nu se poate găsi mesajul selectat. Reîncercați!";
 
 /* Description */
 "Can't find the selected message. Please try again." = "Nu se poate găsi mesajul selectat. Mai încercați.";
+
+/* Description */
+"Can't find the value from the response body" = "Nu se găsește valoarea din corpul de răspuns";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Atașamentul nu poate fi găsit!";
@@ -342,9 +394,6 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Error */
 "Can't load the file" = "Nu se poate încărca fișierul";
 
-/* Description */
-"Can't find the value from the response body" = "Nu se poate găsi valoarea din corpul de răspuns";
-
 /* Error */
 "Can't open the file" = "Fișierul nu poate fi deschis";
 
@@ -363,8 +412,11 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "Cancelling" = "Anulare";
 
-/* None */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "Atașamentul nu poate fi decriptat.";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCHA";
 
 /* Title */
 "Cc" = "Cc";
@@ -374,6 +426,12 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* place holder */
 "Cell phone number" = "Număr telefon mobil";
+
+/* Title */
+"Change default address to .." = "Schimbare adresă implicită cu ...";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Schimbare acțiune glisare spre stânga";
 
 /* change password input label */
 "Change Login Password" = "Schimbare parolă conectare";
@@ -387,23 +445,20 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* settings protection section title */
 "Change Pin" = "Schimbare PIN";
 
-/* Title */
-"Change Single Password" = "Schimbare parolă unică";
-
-/* Title */
-"Change default address to .." = "Schimbare adresă implicită cu ...";
-
-/* settings swipe actions section action description */
-"Change left swipe action" = "Schimbare acțiune glisare spre stânga";
-
 /* settings swipe actions section action description */
 "Change right swipe action" = "Schimbare acțiune glisare spre dreapta";
 
 /* Title */
 "Change sender address to .." = "Schimbare adresă expeditor cu ...";
 
+/* Title */
+"Change Single Password" = "Schimbare parolă unică";
+
 /* Action */
 "Check Again" = "Reverificare";
+
+/* network troubleshot cell title */
+"Check Proton Status for our system status." = "Verifică starea Proton pentru starea sistemului nostru.";
 
 /* loading message */
 "Checking ...." = "Se verifică ...";
@@ -417,13 +472,23 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* settings general section title */
 "Clear Local Message Cache" = "Golire buffer mesaje locale";
 
+/* Menu action to remove text formatting */
+"Clear Style" = "Eliminare stil";
+
 /* general close action */
 "Close" = "Închidere";
+
+/* Action */
+"close tour" = "închidere";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Închidere";
 
-/* Action */
+/* cell title in device settings */
+"Combined Contacts" = "Contacte combinate";
+
+/* Action
+   Springboard (3D Touch) shortcuts action */
 "Compose" = "Compunere";
 
 /* Title */
@@ -438,9 +503,6 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Confirmare parolă mesaje";
 
-/* Placeholder */
-"Confirm Password" = "Confirmare parolă";
-
 /* Title */
 "Confirm new login password" = "Confirmare parolă de conectare";
 
@@ -449,6 +511,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* Placeholder */
 "Confirm new password" = "Confirmare parolă nouă";
+
+/* Placeholder */
+"Confirm Password" = "Confirmare parolă";
 
 /* alert title */
 "Confirm phishing report" = "Confirmare raportare înșelăciune";
@@ -459,11 +524,17 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* view top title */
 "Congratulations!" = "Felicitări!";
 
+/* Account manager title */
+"Connect Account" = "Conectare cont";
+
 /* contact section title */
 "Contact Details" = "Detalii contact";
 
 /* Title */
 "Contact the ProtonMail team" = "Contactare echipă ProtonMail";
+
+/* network troubleshot cell title */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contactați-ne direct prin formularul nostru de suport, e-mail (support@protonmail.com) sau Twitter.";
 
 /* Action and title
    menu title */
@@ -490,23 +561,26 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* top right action text */
 "Create" = "Creare";
 
-/* Create account button */
-"Create Account" = "Creare cont";
-
-/* Error */
-"Create User failed. Please try again." = "Eșuare creare utilizator. Mai încercați.";
-
 /* Signup top title */
 "Create a new account" = "Creare cont nou";
+
+/* Create account button */
+"Create Account" = "Creare cont";
 
 /* Description */
 "Create and add Labels to organize your inbox. Long press on a message for all options." = "Creați și adaugați etichete pentru organizarea mesajelor. Țineți apăsat pe un mesaj pentru opțiuni.";
 
-/* None */
+/* (No Comment) */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Creați și adaugați etichete pentru organizarea mesajelor. Țineți apăsat pe un mesaj pentru opțiuni.";
+
+/* title of button in account connect page */
+"Create new account" = "Creare cont nou";
 
 /* error message title when create new user */
 "Create user failed" = "Creare utilizator eșuată";
+
+/* Error */
+"Create User failed. Please try again." = "Eșuare creare utilizator. Mai încercați.";
 
 /* Change language title */
 "Current Language is: " = "Limba curentă este: ";
@@ -521,12 +595,6 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
    contacts default label type */
 "Custom" = "Personalizat";
 
-/* Title */
-"DECRYPT MAILBOX" = "DECRIPTARE MESAJE";
-
-/* mail location title */
-"DRAFTS" = "CIORNE";
-
 /* message Date: text */
 "Date:" = "Data:";
 
@@ -534,10 +602,16 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 "Date: %@" = "Data: %@";
 
 /* Title */
+"days" = "zile";
+
+/* Title */
 "Debug" = "Depanare";
 
 /* Action */
 "Decrypt" = "Decriptare";
+
+/* Title */
+"DECRYPT MAILBOX" = "DECRIPTARE MESAJE";
 
 /* Description */
 "Decrypt token failed. Please try again." = "Eșuare decriptare semnătură de acces. Reîncercați.";
@@ -550,6 +624,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* Title */
 "Default" = "Implicit";
+
+/* Settings row */
+"Default browser" = "Navigator implicit";
 
 /* error message when create new user */
 "Default error. Please try again." = "Eroare implicită. Mai încercați.";
@@ -566,6 +643,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* general delete action */
 "Delete" = "Ștergere";
 
+/* emptify folder/label confirmation alert */
+"Delete all" = "Ștergere toate";
+
 /* Title-Contacts */
 "Delete Contact" = "Ștergere contact";
 
@@ -578,20 +658,26 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "Details" = "Detalii";
 
+/* network troubleshot cell title */
+"Disable any proxies or firewalls, or contact your network administrator." = "Dezactivați setările din proxy sau paravan de protecție sau contactați administratorul de rețea.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Dezactivare validare";
+
 /* Action */
 "Discard changes" = "Anulare modificări";
 
 /* Action */
 "Discard draft" = "Aruncare ciornă";
 
+/* (No Comment) */
+"Display name" = "Nume afișat";
+
 /* Title in settings */
 "Display Name" = "Nume afișat";
 
 /* Title */
 "Display Name Updated" = "Nume afișat actualizat";
-
-/* None */
-"Display name" = "Nume afișat";
 
 /* Title in display name settings */
 "DisplayName" = "Nume afișat";
@@ -605,11 +691,11 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "Do you want to save the unsaved changes?" = "Doriți să salvați modificările nesalvate?";
 
-/* Title */
-"Don't Show Again" = "Nu mai afișa";
-
 /* Action */
 "Don't remind me again" = "Nu mă mai atenționa";
+
+/* Title */
+"Don't Show Again" = "Nu mai afișa";
 
 /* Done action */
 "Done" = "Gata";
@@ -623,6 +709,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* menu title */
 "Drafts" = "Ciorne";
+
+/* mail location title */
+"DRAFTS" = "CIORNE";
 
 /* Action */
 "Edit" = "Editare";
@@ -640,32 +729,32 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "Edit Label" = "Editare etichetă";
 
+/* title */
+"Edit mobile signature" = "Editare semnătură mobil";
+
 /* The button text for edit profile picture */
 "Edit Photo" = "Editare foto";
 
 /* title */
-"Edit mobile signature" = "Editare semnătură mobil";
-
-/* title */
 "Edit signature" = "Editare semnătură";
+
+/* network troubleshot cell title */
+"email" = "e-mail";
 
 /* default vcard types */
 "Email" = "E-mail";
-
-/* contact detail view, email addresses section title */
-"Email Addresses" = "Adrese de e-mail";
-
-/* Send an email to the current contact (button title text) */
-"Email Contact" = "Scrie contactului";
-
-/* human check option button */
-"Email Verification" = "Verificare e-mail";
 
 /* contact placeholder */
 "Email address" = "Adresă de e-mail";
 
 /* Title */
 "Email address invalid" = "Adresa de e-mail nu este validă";
+
+/* contact detail view, email addresses section title */
+"Email Addresses" = "Adrese de e-mail";
+
+/* Send an email to the current contact (button title text) */
+"Email Contact" = "Scrie contactului";
 
 /* place holder */
 "Email default signature" = "Semnătură implicită e-mail";
@@ -674,8 +763,17 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
  & title */
 "Email domain invalid" = "Domeniu e-mail nevalid";
 
-/* empty folder, for spam and trash */
+/* human check option button */
+"Email Verification" = "Verificare e-mail";
+
+/* cell title in device setting */
+"Empty Cache" = "Golire buffer";
+
+/* empty folder, for spam and trash and drafts */
 "Empty Folder" = "Golire folder";
+
+/* it is an option to empty the label */
+"Empty Label" = "Eliminare etichetă";
 
 /* Title */
 "Enable Default Signature" = "Activare semnătură implicită";
@@ -689,8 +787,17 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "Enable Notification Email" = "Activare e-mail de notificare";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Activare PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "Activare protecție PIN";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Activare PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Activare PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Activare TouchID";
@@ -722,9 +829,6 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* settings option (End Time: 8am) */
 "End Time" = "Oră oprire";
 
-/* Title */
-"End-to-End Encryption" = "Criptare în ambele părți";
-
 /* encryption lock description */
 "End-to-end encrypted" = "Criptat în ambele părți";
 
@@ -737,23 +841,29 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Criptat în ambele părți spre adresă verificată";
 
+/* Title */
+"End-to-End Encryption" = "Criptare în ambele părți";
+
 /* Action in 2fa popup view */
 "Enter" = "Introducere";
 
 /* Title */
 "Enter Verification Code" = "Introducere cod de verificare";
 
-/* set pin title */
-"Enter your PIN" = "Introducere PIN";
-
-/* Title */
-"Enter your PIN to unlock your inbox." = "Introduceți codul PIN pentru deblocare mesaje.";
-
 /* human verification top title */
 "Enter your cell phone number" = "Introduceți numărul de telefon";
 
 /* top title */
 "Enter your existing email address." = "Introduceți adresa de e-mail curentă.";
+
+/* Account manager title */
+"Enter your mailbox password" = "Introduceți parola pentru mesaje";
+
+/* set pin title */
+"Enter your PIN" = "Introducere PIN";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Introduceți codul PIN pentru deblocare mesaje.";
 
 /* settings debug section title */
 "Error Logs" = "Jurnal de erori";
@@ -775,12 +885,6 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* Key size checkbox */
 "Extreme Security" = "Securitate extremă";
-
-/* login page forgot pwd */
-"FORGOT PASSWORD?" = "V-AȚI UITAT PAROLA?";
-
-/* abbreviation of forward: */
-"FW:" = "RD:";
 
 /* Error message */
 "Failed to determine type of file" = "Eșuare determinare tip fișier";
@@ -816,11 +920,17 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Service Plan description */
 "For individuals that need more capacity, customization and advanced features" = "Pentru persoane ce doresc mai mult spațiu, personalizare și funcții avansate";
 
+/* Buy button second line */
+"for one year" = "pentru un an";
+
 /* Service Plan description */
 "For organizations that need multi-user support and additional productivity features" = "Pentru organizații ce doresc suport multiutilizatori și funcții adiționale de productivitate";
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Pentru utilizatori avansați și grupuri de persoane ce apreciază anonimatul și intimitatea";
+
+/* login page forgot pwd */
+"FORGOT PASSWORD?" = "V-AȚI UITAT PAROLA?";
 
 /* forward action */
 "Forward" = "Redirecționare";
@@ -833,6 +943,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* message From: field text */
 "From:" = "De la:";
+
+/* abbreviation of forward: */
+"FW:" = "RD:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Fwd:";
@@ -851,6 +964,15 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* Action */
 "Go to inbox" = "Salt la «Primite»";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to login" = "Conectați-vă";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Accesați setările";
+
+/* network troubleshot cell title */
+"Government block" = "Blocare națională";
 
 /* The title for the contact group detail view */
 "Group Details" = "Detalii grup";
@@ -879,6 +1001,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Key size checkbox */
 "High Security" = "Securitate ridicată";
 
+/* (No Comment) */
+"hours" = "Ore";
+
 /* Title */
 "Hours" = "Ore";
 
@@ -894,20 +1019,26 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Suport IMAP/SMTP prin ProtonMail Bridge";
 
-/* mail location title */
-"INBOX" = "PRIMITE";
-
 /* Action */
 "Import Error" = "Eroare importare";
 
 /* Title */
 "Import File From..." = "Importare fișier din...";
 
-/* import contact title */
-"Importing Contacts" = "Importare contacte";
+/* Downloading attachments from cloud */
+"Importing" = "Importare";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Importare atașament, ar putea dura un timp.";
+
+/* import contact title */
+"Importing Contacts" = "Importare contacte";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare. [Detalii]";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare. %1$@";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pentru a folosi serviciile noastre, trebuie să acceptați 'Termenii serviciului' ProtonMail.";
@@ -916,17 +1047,26 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
    menu title */
 "Inbox" = "Primite";
 
+/* mail location title */
+"INBOX" = "PRIMITE";
+
+/* Title */
+"Incorrect password" = "Parolă incorectă";
+
 /* Error */
 "Incorrect PIN," = "PIN incorect,";
 
 /* Title */
-"Incorrect password" = "Parolă incorectă";
+"inline attachments" = "atașamente incluse";
 
 /* place holder */
 "Input Display Name ..." = "Introducere nume afișat...";
 
 /* place holder */
 "Input Notification Email ..." = "Introducere e-mail de notificare...";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Conexiune nesigură";
 
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Crearea unui cont de ProtonMail instant a fost dezactivat temporar. Vă rugăm să vizitați https://protonmail.com/invite pentru a solicita o invitație.";
@@ -936,6 +1076,21 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* default vcard types */
 "Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Problemă cu furnizorul de servicii internet (ISP)";
+
+/* (No Comment) */
+"Invalid access token please relogin" = "Semnătură de acces nevalidă. Reconectați-vă.";
+
+/* Description */
+"Invalid access token. Please relogin." = "Semnătură de acces nevalidă. Reconectați-vă.";
+
+/* Error */
+"Invalid credential" = "Acreditări nevalide";
+
+/* update password error */
+"Invalid hashed password!" = "Parolă generată nevalidă!";
 
 /* Error */
 "Invalid Password" = "Parolă nevalidă";
@@ -948,18 +1103,6 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* Error message */
 "Invalid UserName!" = "Nume de utilizator nevalid!";
-
-/* None */
-"Invalid access token please relogin" = "Semnătură de acces nevalidă. Reconectați-vă.";
-
-/* Description */
-"Invalid access token. Please relogin." = "Semnătură de acces nevalidă. Reconectați-vă.";
-
-/* Error */
-"Invalid credential" = "Acreditări nevalide";
-
-/* update password error */
-"Invalid hashed password!" = "Parolă generată nevalidă!";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Acest raport de eroare este despre o achiziție din aplicație?";
@@ -982,8 +1125,8 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Error */
 "Key invalid. Please go back and try again." = "Cheie nevalidă. Reveniți și reîncercați.";
 
-/* None */
-"LOGIN" = "Conectare";
+/* Title */
+"Label as..." = "Etichetare ca...";
 
 /* Title */
 "Label Management" = "Gestionare etichete";
@@ -991,11 +1134,11 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* createing lable input place holder */
 "Label Name" = "Nume etichetă";
 
-/* Title */
-"Label as..." = "Etichetare ca...";
-
 /* VoiceOver: email has lables */
 "Labels" = "Etichete";
+
+/* cell title in device settings */
+"Labels & Folders" = "Etichete și foldere";
 
 /* Title */
 "Labels have been applied." = "Eticheta a fost aplicată.";
@@ -1009,11 +1152,17 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "Language" = "Limba";
 
+/* network troubleshot cell title */
+"Learn more" = "Detalii";
+
 /* Action */
 "Learn More" = "Aflați mai multe";
 
 /* learn more button */
 "Learn more here" = "Detalii aici";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "Limită atinsă";
 
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "Maxim 150 de mesaje trimise/zi";
@@ -1021,11 +1170,17 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Action */
 "Load remote content" = "Încărcare conținut extern";
 
-/* None */
+/* (No Comment) */
 "Loading..." = "Se încarcă...";
 
 /* Description */
 "Local cache can't find mailbox password" = "Nu se poate găsi parola mesajelor în bufferul local";
+
+/* cell title in device settings */
+"Local Cache Management" = "Gestionare buffer local";
+
+/* cell title in device settings */
+"Local storage limit" = "Limită stocare locală";
 
 /* *
  *  file string type */
@@ -1034,8 +1189,23 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* menu title */
 "Lock The App" = "Blocare aplicație";
 
+/* Account manager title */
+"Log in to your ProtonMail account" = "Conectare la contul ProtonMail";
+
+/* Alert title when logout non-primary account from account manager */
+"Log out %@?" = "Ieșiti din %@?";
+
+/* Action */
+"Log Out All" = "Ieșire din toate";
+
+/* Alert when auth token is revoked and switch to another */
+"Logged out from %@ and signed in with %@" = "Deconectat din %1$@ și conectat în %2$@";
+
 /* Title */
 "Login" = "Conectare";
+
+/* (No Comment) */
+"LOGIN" = "Conectare";
 
 /* settings general section title */
 "Login Password" = "Parolă de autentificare";
@@ -1043,7 +1213,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Error */
 "Login password doesn't match" = "Parola de conectare nu se potrivește";
 
-/* menu title */
+/* Alert title to confirm logout
+   Alert title when logout primary account from account manager
+   menu title */
 "Logout" = "Deconectare";
 
 /* error title */
@@ -1052,45 +1224,45 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Doriți securizarea detaliilor contactelor?";
 
-/* *
- *  MailboxPasswordViewController */
-"MAILBOX PASSWORD" = "Parolă mesaje";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
+/* cell title in device settings */
+"MAILBOX" = "MESAJE";
 
 /* settings general section title */
 "Mailbox Password" = "Parolă mesaje";
 
-/* None */
+/* *
+ *  MailboxPasswordViewController */
+"MAILBOX PASSWORD" = "Parolă mesaje";
+
+/* (No Comment) */
 "Mailbox password doesn't match" = "Parolele pentru mesaje nu coincid";
+
+/* cell title in device settings */
+"Mailbox size" = "Mărime stocare mesaje";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Gestionare adrese";
 
+/* Settings row */
+"Manage in device Settings" = "Gestionare în setări dispozitiv";
+
 /* Title */
 "Manage Labels/Folders" = "Gestionare etichete/foldere";
+
+/* Action */
+"Mark as unread" = "Marcare ca necitit";
 
 /* mark message as read action */
 "Mark Read" = "Marcare ca citit";
 
-/* Action */
-"Mark as unread" = "Marcare ca necitit";
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Meniu";
 
 /* Message with title */
 "Message %@" = "Mesaj %@";
-
-/* Placeholder */
-"Message Password" = "Parolă mesaj";
-
-/* settings debug section title */
-"Message Queue" = "Mesaje în așteptare";
-
-/* Title */
-"Message Swipe Actions" = "Acțiuni glisare mesaje";
 
 /* *
  *  Expiration View */
@@ -1102,10 +1274,16 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "Message has been moved." = "Mesajul a fost mutat.";
 
+/* Placeholder */
+"Message Password" = "Parolă mesaj";
+
 /* Description */
 "Message password does not match." = "Parola mesajului nu se potrivește.";
 
-/* None */
+/* settings debug section title */
+"Message Queue" = "Mesaje în așteptare";
+
+/* (No Comment) */
 "Message sending failed please try again" = "Trimitere mesaj eșuată. Reîncercați.";
 
 /* Description */
@@ -1113,6 +1291,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* Description after message have been sent */
 "Message sent" = "Mesaj trimis";
+
+/* Title */
+"Message Swipe Actions" = "Acțiuni glisare mesaje";
 
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Mesajele trimise pot fi setate să se șteargă automat după o anumită perioadă.";
@@ -1136,7 +1317,7 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 "More Credits" = "Cumpărare credite";
 
 /* move action */
-"Move to AllMail" = "Mutare în «Toate mesajele»";
+"Move to All Mail" = "Mutare în «Toate mesajele»";
 
 /* move action */
 "Move to Archive" = "Mutare în «Arhivă»";
@@ -1165,11 +1346,14 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "Multiple Addresses" = "Adrese multiple";
 
+/* title */
+"Name" = "Nume";
+
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "DORIȚI UN CONT? ÎNREGISTRAȚI-VĂ.";
 
-/* title */
-"Name" = "Nume";
+/* section title */
+"Networking" = "Rețea";
 
 /* Title */
 "New login password" = "Parola nouă de conectare";
@@ -1183,11 +1367,17 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* contacts talbe cell Nickname title */
 "Nickname" = "Porecla";
 
+/* Title */
+"No connectivity detected..." = "Nu există conexiune...";
+
+/* network troubleshot cell title */
+"No internet connection" = "Nu există conexiune la internet";
+
 /* message when mailbox doesnt have emailsß */
 "No Messages" = "Nu sunt mesaje";
 
-/* Title */
-"No connectivity detected..." = "Nu există conexiune...";
+/* no object error, local only , this could be not translated! */
+"no object" = "fără obiect";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "Nu, pentru alt cont ProtonMail";
@@ -1199,11 +1389,14 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
    Title */
 "None" = "Nimic";
 
-/* Action */
-"Not Now" = "Nu acum";
+/* Title */
+"normal attachments" = "atașamente normale";
 
 /* alert description */
 "Not all recipients support message expiration" = "Nu toți destinatarii suportă mesaje care expiră";
+
+/* Action */
+"Not Now" = "Nu acum";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Notă: Numele contului este adresa din ProtonMail.";
@@ -1238,9 +1431,6 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Action */
 "OK" = "OK";
 
-/* Section header */
-"OTHER PLANS" = "ALTE PLANURI";
-
 /* Title */
 "On" = "Pornit";
 
@@ -1250,7 +1440,10 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d MMM yyyy la %1$@, %2$@, a scris:";
 
-/* None */
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Doar un singur cont gratuit poate fi adăugat";
+
+/* (No Comment) */
 "OpenDraft" = "Deschidere ciornă";
 
 /* contacts talbe cell Organization title */
@@ -1259,11 +1452,35 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* default vcard types */
 "Other" = "Altele";
 
+/* Section header */
+"OTHER PLANS" = "ALTE PLANURI";
+
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Echipa noastră de asistență pentru clienți va încerca să activeze manual abonamentul dacă sunteți de acord să atașați datele tehnice pe care magazinul de aplicații le-a furnizat aplicației la momentul cumpărării. Aceste date nu includ detalii despre contul iTunes, ID-ul Apple, cardurile de credit asociate sau orice alte informații despre utilizator. Datele tehnice ne ajută doar să verificăm dacă tranzacția a fost realizară pe serverele magazinului de aplicații.";
 
 /* mail location desc */
 "Outbox" = "De trimis";
+
+/* title */
+"Password" = "Parolă";
+
+/* Description */
+"Password cannot be empty." = "Parola nu poate fi goală.";
+
+/* cell title in device settings */
+"Password management" = "Gestionare parole";
+
+/* Title */
+"Password Mismatch" = "Parolele nu se potrivesc";
+
+/* update password error */
+"Password update failed" = "Eșuare actualizare parolă";
+
+/* Title */
+"Password Updated" = "Parolă actualizată";
+
+/* default vcard types */
+"Personal" = "Personal";
 
 /* encryption lock description */
 "PGP-encrypted" = "Criptat cu PGP";
@@ -1280,32 +1497,8 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* encryption lock description */
 "PGP-signed message from verified address" = "Mesaj semnat cu PGP de la adresă verificată";
 
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "FUNCȚIE PREMIUM";
-
-/* title */
-"Password" = "Parolă";
-
-/* Title */
-"Password Mismatch" = "Parolele nu se potrivesc";
-
-/* Title */
-"Password Updated" = "Parolă actualizată";
-
-/* Description */
-"Password cannot be empty." = "Parola nu poate fi goală.";
-
-/* update password error */
-"Password update failed" = "Eșuare actualizare parolă";
-
-/* default vcard types */
-"Personal" = "Personal";
-
 /* default vcard types */
 "Phone" = "Telefon";
-
-/* human check option button */
-"Phone Verification" = "Verificare telefon";
 
 /* contact placeholder */
 "Phone number" = "Număr de telefon";
@@ -1313,8 +1506,20 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "Phone number invalid" = "Numărul de telefon nu este valid";
 
+/* human check option button */
+"Phone Verification" = "Verificare telefon";
+
 /* Title */
 "Photo Library" = "Galerie foto";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN & FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN & TouchID";
 
 /* Description */
 "Pin code can't be empty." = "Codul PIN nu poate fi gol.";
@@ -1343,6 +1548,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Error message */
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Conectați-vă la contul ProtonMail pentru care modificați tipul de abonament pentru a putea finaliza activarea abonamentului.";
 
+/* network troubleshot cell title */
+"Please make sure that your internet connection is working." = "Asigurați-vă că aveți conexiune la internet.";
+
 /* Error */
 "Please pick a user name first!" = "Alegeți un nume de utilizator!";
 
@@ -1351,6 +1559,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* when switch sender but email has attachments */
 "Please remove all attachments before changing sender!" = "Eliminați toate fișierele atașate înainte de a schimba expeditorul";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "Selectați cel puțin un mesaj";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Selectați cel puțin un membru pentru grupul de contacte";
@@ -1361,16 +1572,16 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Description */
 "Please set a password." = "Stabiliți o parolă.";
 
-/* None */
+/* (No Comment) */
 "Please try a different domain." = "Încercați un domeniu diferit.";
 
-/* None */
+/* (No Comment) */
 "Please try a different email address." = "Încercați o adresă de e-mail diferită.";
 
-/* None */
+/* (No Comment) */
 "Please try a different password." = "Încercați o altă parolă.";
 
-/* None */
+/* (No Comment) */
 "Please try a different user name." = "Alegeți alt nume de utilizator.";
 
 /* 
@@ -1387,7 +1598,7 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Alert */
 "Please use the web application to reset your password." = "Folosiți aplicația web pentru a vă reseta parola.";
 
-/* None */
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Folosiți versiunea web a ProtonMail pentru a modifica parola mesajelor!";
 
 /* Alert */
@@ -1403,8 +1614,20 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
  & alert title */
 "Please, manage it in your phone." = "Gestionarea se face în telefon.";
 
+/* Upgrade warning title */
+"PREMIUM FEATURE" = "FUNCȚIE PREMIUM";
+
 /* Action */
 "Print" = "Imprimare";
+
+/* cell title in device settings */
+"Privacy" = "Confidențialitate";
+
+/* agree check box privacy */
+"privacy policy." = "politica de confidențialitate.";
+
+/* Local notification title */
+"Problem sending message" = "Problemă trimitere mesaj";
 
 /* Title */
 "Protection" = "Protecție";
@@ -1412,14 +1635,14 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* settings protection section title */
 "Protection Entire App" = "Protejare întreaga aplicație";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton indisponibil";
+
+/* network troubleshot cell title */
+"Proton Status" = "Stare Proton";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
-
-/* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus este necesar pentru a putea edita semnătura mobilului";
-
-/* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional Visionary vă permite să adăugați și să editați mai multe detalii pentru contacte, pe lângă numele și adresa de e-mail a acestora. Folosind ProtonMail, aceste date vor fi la fel de sigure ca și e-mailul criptat în ambele părți.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail nu vinde reclame și nu vă abuzează intimitatea. Suportul dvs. este esențial pentru funcționarea ProtonMail. Puteți trece la un cont cu plată sau dona pentru a ajuta ProtonMail.";
@@ -1430,14 +1653,29 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail este momentan offline, pentru starea curentă verificați: https://twitter.com/protonmail";
 
+/* Title */
+"ProtonMail is currently offline..." = "ProtonMail este momentan deconectat...";
+
+/* Description */
+"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus este necesar pentru a putea edita semnătura mobilului";
+
+/* Upgrade warning message */
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional Visionary vă permite să adăugați și să editați mai multe detalii pentru contacte, pe lângă numele și adresa de e-mail a acestora. Folosind ProtonMail, aceste date vor fi la fel de sigure ca și e-mailul criptat în ambele părți.";
+
+/* network troubleshot cell title */
+"ProtonVPN" = "ProtonVPN";
+
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN inclus";
 
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Interferență Proxy/Paravan protecție";
+
+/* cell title in device settings */
+"Push Notifications" = "Notificari instante";
+
 /* Title */
 "Quick swipe actions" = "Acțiuni rapide glisare";
-
-/* Action */
-"RESET MAILBOX PASSWORD" = "RESETARE PAROLĂ MESAJE";
 
 /* Title */
 "Rate & Review" = "Votare & Recenzie";
@@ -1466,8 +1704,14 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* remove action */
 "Remove" = "Eliminare";
 
+/* account right bar item title */
+"Remove All" = "Eliminare tot";
+
+/* Settings row */
+"Remove image meta-data" = "Eliminare metadate imagine";
+
 /* un star message */
-"Remove Star" = "Anulare marcare";
+"Remove Star" = "Eliminare stea";
 
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Repetare";
@@ -1481,7 +1725,7 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* composer view model impl */
 "Reply message" = "Răspuns la mesaj";
 
-/* None */
+/* (No Comment) */
 "ReplyAll" = "Răspuns tuturor";
 
 /* menu title */
@@ -1496,6 +1740,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* link opeining confirmation */
 "Request Link Confirmation" = "Solicitare de confirmare";
 
+/* Action */
+"RESET MAILBOX PASSWORD" = "RESETARE PAROLĂ MESAJE";
+
 /* Title */
 "Resetting message cache ..." = "Resetare buffer mesaje...";
 
@@ -1504,21 +1751,6 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Reîncercați după %d secunde";
-
-/* mail location title */
-"SENT" = "TRIMIS";
-
-/* mail location title */
-"SPAM" = "SPAM";
-
-/* Error */
-"SRP Client" = "Client SRP";
-
-/* Error */
-"SRP Server" = "Server SRP";
-
-/* mail location title */
-"STARRED" = "MARCATE";
 
 /* Title */
 "Save" = "Salvare";
@@ -1532,7 +1764,8 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* action sheet option */
 "Scheduled" = "Programat";
 
-/* Title */
+/* Springboard (3D Touch) shortcuts action
+   Title */
 "Search" = "Căutare";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1541,14 +1774,11 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* The title for the view where user can select the color for the group */
 "Select Color" = "Selectare culoare";
 
-/* None */
+/* (No Comment) */
 "Select your language" = "Selectare limbă";
 
 /* Action */
 "Send" = "Trimite";
-
-/* Title */
-"Send Verification Code" = "Trimitere cod de verificare";
 
 /* Action */
 "Send anyway" = "Trimite așa";
@@ -1559,14 +1789,17 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "Send plain but stored enc" = "Trimitere simplu, dar stocat criptat";
 
+/* Title */
+"Send Verification Code" = "Trimitere cod de verificare";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Verificare eșuată expeditor";
 
-/* Description */
-"Sending Message" = "Se trimite mesajul";
-
 /* Alert title */
 "Sending message" = "Expediere mesaj";
+
+/* Description */
+"Sending Message" = "Se trimite mesajul";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Trimiterea de mesaje de la adrese %1$@ este o facilitate plătită. Mesajul vă va fi trimis de pe adresa implicită %2$@";
@@ -1574,8 +1807,8 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* menu title */
 "Sent" = "Trimis";
 
-/* Description */
-"Sent Failed" = "Trimitere eșuată";
+/* mail location title */
+"SENT" = "TRIMIS";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "Trimis de ProtonMail cu criptare cu acces zero";
@@ -1584,13 +1817,16 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 "Sent by you with end-to-end encryption" = "Trimis de dvs. cu criptare în ambele părți";
 
 /* Description */
-"Server proofs not valid!" = "Dovezile serverului nu sunt valide!";
+"Sent Failed" = "Trimitere eșuată";
 
-/* Title */
-"Set Password" = "Setare parolă";
+/* Description */
+"Server proofs not valid!" = "Dovezile serverului nu sunt valide!";
 
 /* Description */
 "Set a password to encrypt this message for non-ProtonMail users." = "Setați o parolă de criptare a acestui mesaj pentru cei ce nu folosesc ProtonMail.";
+
+/* Title */
+"Set Password" = "Setare parolă";
 
 /* Signup passwords top title */
 "Set passwords" = "Setare parole";
@@ -1619,6 +1855,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* settings general section title */
 "Single Password" = "Parolă unică";
 
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Amânare";
+
 /* settings option */
 "Snooze Notifications" = "Amânare notificări";
 
@@ -1631,32 +1870,48 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Ne pare rău, nu putem procesa achizițiile în versiunea beta a aplicației. Vă mulțumim pentru participarea la testul nostru beta public!";
 
-/* None */
+/* (No Comment) */
 "Space Warning" = "Avertizare spațiu";
 
 /* mail location desc
    menu title */
 "Spam" = "Spam";
 
+/* mail location title */
+"SPAM" = "SPAM";
+
 /* Description */
 "Spammed" = "Nesolicitat";
+
+/* Error */
+"SRP Client" = "Client SRP";
+
+/* Error */
+"SRP Server" = "Server SRP";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Șirul unic al parolei unice SRP nevalid!";
 
 /* Title */
-"Star" = "Marcare";
+"Star" = "Stea";
 
 /* mail location desc
    menu title
+   Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
-"Starred" = "Marcate";
+"Starred" = "Cu stea";
+
+/* mail location title */
+"STARRED" = "CU STEA";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Oră pornire";
 
 /* contact placeholder */
 "State" = "Judet";
+
+/* network troubleshot cell title */
+"Still can't find a solution" = "Încă nu găsesc o soluție";
 
 /* Title */
 "Storage" = "Spațiu stocare";
@@ -1679,11 +1934,14 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* menu title */
 "Subscription" = "Abonament";
 
-/* Action */
-"Support ProtonMail" = "Asistență ProtonMail";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Acceptare %i domenii personale (ex. nume@domeniuldvs.com)";
+
+/* network troubleshot cell title */
+"support form" = "formular de suport";
+
+/* Action */
+"Support ProtonMail" = "Asistență ProtonMail";
 
 /* settings swipe actions section title */
 "Swipe Left to Right" = "Glisare spre dreapta";
@@ -1691,11 +1949,15 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* settings swipe actions section title */
 "Swipe Right to Left" = "Glisare spre stânga";
 
+/* cell title in device settings
+   Swiping gestures */
+"Swiping gestures" = "Gesturi glisare";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "S-a comutat la contul '%@'";
+
 /* Error */
 "System can't copy the file" = "Sistemul nu poate copia afișierul";
-
-/* mail location title */
-"TRASH" = "GUNOI";
 
 /* Title */
 "Take a Photo" = "Faceți o fotografie";
@@ -1703,18 +1965,14 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Atingeți «Trimite așa» pentru trimitere fără expirare acestor destinatari";
 
-/* None */
+/* network troubleshot cell title */
+"Temporarily disable or remove your antivirus software." = "Dezactivați temporar sau eliminați antivirusul.";
+
+/* agree check box terms */
+"terms and conditions" = "termeni și condiții";
+
+/* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Vă mulțumim pentru trimiterea raportului de erori.  V-am adăugat raportul la sistem nostru de urmărire a erorilor.";
-
-/* update password error */
-"The Password is wrong." = "Parola este greșită.";
-
-/* Title */
-"The ProtonMail current offline..." = "ProtonMail este momentan offline...";
-
-/* 
- */
-"The UserName have been taken." = "Numele de utilizator este deja luat.";
 
 /* Description */
 "The authentication credentials are invalid." = "Acreditările de autentificare nu sunt valide.";
@@ -1738,7 +1996,7 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* key size note part 1 */
 "The highest level of encryption available." = "Cel mai mare nivel de criptare disponibil.";
 
-/* None */
+/* (No Comment) */
 "The label name is duplicate" = "Numele etichetei există deja";
 
 /* Error */
@@ -1751,20 +2009,23 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
  *  LabelsViewController */
 "The maximum number of labels is %d." = "Se acceptă maxim %d etichete.";
 
-/* None */
+/* update password error */
+"The new password can't be empty." = "Parola nouă nu poate fi goală.";
+
+/* (No Comment) */
 "The new password can't empty" = "Parola nouă nu poate fi goală";
 
 /* update password error */
-"The new password can't empty." = "Parola nouă nu poate fi goală.";
+"The new password does not match." = "Parolele noi nu sunt identice.";
 
-/* None */
+/* (No Comment) */
 "The new password not match" = "Parolele nu coincid";
-
-/* update password error */
-"The new password not match." = "Parolele noi nu sunt identice.";
 
 /* recovery email notes */
 "The optional recovery email address allows you to reset your login password if you forget it." = "Adresă de e-mail opțională de recuperare vă permite să resetați parola de conectare dacă o uitați.";
+
+/* update password error */
+"The Password is wrong." = "Parola este greșită.";
 
 /* Description */
 "The password you entered does not match the current password." = "Parola introdusă nu coincide cu parola actuală.";
@@ -1778,11 +2039,18 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "The request timed out." = "Solicitarea a expirat.";
 
-/* None */
+/* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "Dimensiunea totală a atașamentelor nu poate depăși 25 MB";
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Total fișierelor atașate nu poate depăși 25 MB";
+
+/* Alert when the account is already logged in */
+"The user is already logged in" = "Utilizator deja conectat";
+
+/* 
+ */
+"The UserName have been taken." = "Numele de utilizator este deja luat.";
 
 /* 
  & title */
@@ -1790,6 +2058,12 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* Error */
 "The verification failed!" = "Verificarea a eșuat!";
+
+/* alert when logout user if in queue still have tasks */
+"There are still some messages in queue. If you log out, the draft will be deleted." = "Încă mai sunt mesaje în așteptare. Dacă vă deconectați, ciorna va fi ștearsă.";
+
+/* Alert to confirm logout with pending message in the queue */
+"There are unsent messages that will be lost if you log out" = "Există mesaje netrimise care vor fi pierdute dacă vă deconectați";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "A apărut o eroare la crearea sau încărcarea datelor salvate ale aplicației.";
@@ -1813,18 +2087,25 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Acest mesaj poate fi o încercare de înșelăciune. Verificați expeditorul și conținutul pentru a vă asigura că acestea sunt legitime.";
 
+/* Title */
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Această setare va reveni la Safari dacă navigatorul ales va fi dezinstalat.";
+
 /* contacts talbe cell Title title */
 "Title" = "Adresare";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Validarea certificatului TLS a eșuat. Conexiunea vă poate fi monitorizată, iar aplicația este blocată temporar pentru siguranță.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Validarea certificatului TLS a eșuat. Conexiunea vă poate fi monitorizată, iar aplicația este blocată temporar pentru siguranță.\n\nSchimbați imediat rețeaua";
 
 /* Title */
 "To" = "Către";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "Pentru a preveni abuzarea ProtonMail,
- verificăm dacă sunteți persoană.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Pentru a preveni abuzarea ProtonMail,&#13;\n verificăm dacă sunteți persoană.";
 
-/* None */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pentru a reseta parola mesajelor, vă rugăm să folosiți versiunea web a ProtonMail de la protonmail.com";
 
 /* Description */
@@ -1840,6 +2121,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Alert title */
 "Too many recipients" = "Prea mulți destinatari";
 
+/* network troubleshot cell title */
+"Tor" = "Tor";
+
 /* settings touchid error */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID nu este înregistrat. Activați-l în setările sistemului.";
 
@@ -1851,8 +2135,20 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
    move action */
 "Trash" = "Gunoi";
 
+/* mail location title */
+"TRASH" = "GUNOI";
+
 /* Title */
 "Trouble shooting guide" = "Ghid de depanare";
+
+/* troubleshooting view button */
+"Troubleshoot" = "Depanare";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Depanare";
+
+/* network troubleshot cell title */
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Încercați să vă conectați la Proton dintr-o rețea diferită (sau folosiți ProtonVPN sau Tor).";
 
 /* action sheet option */
 "Turn Off" = "Oprire";
@@ -1860,17 +2156,14 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "Tweet about ProtonMail" = "Scrieți pe Tweeter despre ProtonMail";
 
+/* network troubleshot cell title */
+"Twitter" = "Twitter";
+
 /* Placeholder */
 "Two Factor Code" = "Cod doi factori";
 
 /* Internal type casting error */
 "Type casting error" = "Eroare de asociere";
-
-/* default vcard types */
-"URL" = "URL";
-
-/* Title */
-"USER LOGIN" = "AUTENTIFICARE";
 
 /* Description */
 "Unable to connect to the server" = "Imposibil de conectat la server";
@@ -1907,9 +2200,7 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 "Unable to parse response" = "Nu se poate prelucra răspunsul";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Nu se poate analiza obiectul de răspuns:
-%@";
+"Unable to parse the response object:\n%@" = "Nu se poate analiza obiectul de răspuns:\n%@";
 
 /* Error */
 "Unable to parse token" = "Nu se poate prelucra semnătura";
@@ -1923,7 +2214,7 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Description */
 "Unknow Error" = "Eroare necunoscută";
 
-/* None */
+/* (No Comment) */
 "Unknow file" = "Fișier necunoscut";
 
 /* title, default display name */
@@ -1932,11 +2223,14 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Error */
 "Unknown Error" = "Eroare necunoscută";
 
-/* None */
+/* (No Comment) */
 "Unkonw Version" = "Versiune necunoscută";
 
 /* Service plan capability; */
 "Unlimited messages sent/day" = "Mesaje trimise/zi nelimitate";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Deblocare necesară";
 
 /* The verb for describing the unread action
    VoiceOver: email is not read yet */
@@ -1981,11 +2275,17 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* default vcard types */
 "Url" = "URL";
 
+/* default vcard types */
+"URL" = "URL";
+
 /* error when user already exist */
 "User already exist!" = "Utilizatorul există deja!";
 
-/* None */
+/* (No Comment) */
 "User is available!" = "Nume disponibil!";
+
+/* Title */
+"USER LOGIN" = "AUTENTIFICARE";
 
 /* 
  & title */
@@ -2010,11 +2310,14 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* error details */
 "Verification of this content’s signature failed" = "Verificarea semnăturii acestui conținut a eșuat";
 
-/* None */
+/* (No Comment) */
 "Version %@ %@" = "Versiunea %@ %@";
 
 /* message details-> more action-> view headers */
 "View Headers" = "Afișare antete";
+
+/* message details-> more action-> view raw html of message body */
+"View HTML" = "Afișare HTML";
 
 /* Action */
 "View Plans" = "Afișare planuri";
@@ -2027,6 +2330,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Avertizare: Nu ați setat un e-mail de recuperare pentru a vă putea recuperarea contul dacă vă uitați parola. Continuați fără e-mail de recuperare?";
+
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nu am putut trimite mesajul, probabil din cauza unei conexiuni slabe la rețea. Mesajul a fost salvat în «Ciorne» și va fi trimis automat data viitoare la deschiderea aplicației.";
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "V-am activat cu succes abonamentul. Reporniți aplicația pentru a începe să utilizați noul tip de abonament.";
@@ -2056,6 +2362,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
  & title */
 "Wrong verification code" = "Cod de verificare incorect";
 
+/* Title */
+"wrote:" = "a scris:";
+
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Da, activare pentru ";
 
@@ -2065,6 +2374,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Urmează să lansezi navigatorul și să accesezi";
 
+/* Alert of removing all accounts */
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Sunteți pe cale să eliminați toate conturile. Nu le veți putea accesa de pe acest dispozitiv decât dacă le veți adăuga din nou.\n\nDoriți totuși să vă ștergeți toate conturile?";
+
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Puteți personaliza gesturile de glisare în setările aplicației ProtonMail.";
 
@@ -2073,6 +2385,9 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Nu puteți seta adresa %@ ca fiind implicită. Această este o funcție cu plată.";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Aţi dezactivat FaceID în setările de sistem. FaceID a fost utilizat pentru a proteja informaţii importante despre cont. Pentru a accesa contul, accesați setările și reactivați FaceID sau reconectați-vă.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Ați activat expirarea mesajelor, dar nu toți destinatarii suportă această funcție. Adăugați o parolă și/sau dezactivați trimiterea cu PGP pentru a folosi expirarea pentru toți.";
@@ -2087,7 +2402,7 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 "You have unsaved changes. Do you want to save it?" = "Aveți modificări nesalvate. Doriți să le salvați?";
 
 /* Description */
-"You have used %d%% of your storage space (%@)." = "Ați utilizat %1$d% din spațiul de stocare (%2$@).";
+"You have used %d%% of your storage space (%@)." = "Ați utilizat %1$d%% din spațiul de stocare (%2$@).";
 
 /* Description */
 "You have used up all of your storage space (%@)." = "Ați utilizat tot spațiul de stocare disponibil (%@).";
@@ -2095,8 +2410,21 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Description */
 "You need at least one recipient to send" = "Trebuie cel puțin un destinatar pentru a trimite mesajul";
 
+/* Alert to confirm logout
+   Alert when logout primary account from account manager */
+"You will be switched to %@" = "Veți fi comutat la %@";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "Vei șterge mesajul în mod ireversibil. Sunteți sigur?";
+
 /* view top title */
 "Your Country Code" = "Codul de țară";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Țara dvs. ar putea bloca accesul la Proton. Încercați să folosiți %1$@ (sau orice alt VPN) sau %2$@ pentru a accesa Proton.";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Țara dvs. ar putea bloca accesul la Proton. Încercați să folosiți ProtonVPN (sau orice alt VPN) sau Tor pentru a accesa Proton.";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Mesajele sunt acum protejate cu criptare de ambele părți. Pentru a trimite prietenilor mesaje sigure automat, convingeți-i să se înscrie în ProtonMail! Puteți și să criptați manual mesajele dacă aceștia nu folosesc ProtonMail.";
@@ -2105,9 +2433,7 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Noul dvs. cont de e-mail criptat a fost setat și este pregătit pentru trimiterea și primirea mesajelor criptate.";
 
 /* view top title */
-"Your new secure email
- account is ready." = "Noul cont de e-mail
- securizat este gata.";
+"Your new secure email\r\n account is ready." = "Noul cont de e-mail&#13;\n securizat este gata.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Abonamentul este activ până la";
@@ -2120,52 +2446,4 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 
 /* contact placeholder */
 "ZIP" = "Cod poştal";
-
-/* agree check box middle word */
-"and" = "și";
-
-/* like at 10:00pm */
-"at" = "la";
-
-/* Error */
-"attempt remaining until secure data wipe!" = "încercare rămasă până la ștergerea sigură a datelor!";
-
-/* Description */
-"attempts remaining" = "încercări rămase";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "încercări rămase până până la distrugerea sigură a datelor!";
-
-/* Action */
-"close tour" = "închidere";
-
-/* Title */
-"days" = "zile";
-
-/* Buy button second line */
-"for one year" = "pentru un an";
-
-/* contacts api error when fetch */
-"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() a eșuat, peopleOrderedByUsersPreference a returnat null!!";
-
-/* None */
-"hours" = "Ore";
-
-/* Title */
-"inline attachments" = "atașamente incluse";
-
-/* no object error, local only , this could be not translated! */
-"no object" = "fără obiect";
-
-/* Title */
-"normal attachments" = "atașamente normale";
-
-/* agree check box privacy */
-"privacy policy." = "politica de confidențialitate.";
-
-/* agree check box terms */
-"terms and conditions" = "termeni și condiții";
-
-/* Title */
-"wrote:" = "a scris:";
 

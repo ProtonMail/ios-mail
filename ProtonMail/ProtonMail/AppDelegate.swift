@@ -24,7 +24,6 @@
 import UIKit
 import SWRevealViewController
 import AFNetworking
-import AFNetworkActivityLogger
 import PMKeymaker
 import UserNotifications
 import Intents
@@ -158,22 +157,12 @@ extension AppDelegate: UIApplicationDelegate {
         
         //get build mode if debug mode enable network logging
         let mode = UIApplication.shared.releaseMode()
-        //network debug options
-        if let logger = AFNetworkActivityLogger.shared().loggers.first as? AFNetworkActivityConsoleLogger {
-            logger.level = .AFLoggerLevelDebug;
-        }
         //start network notifier
         sharedInternetReachability.startNotifier()
         
         // moved to coordinator
         //sharedMessageDataService.launchCleanUpIfNeeded()
         //sharedUserDataService.delegate = self
-        
-        AFNetworkActivityLogger.shared().startLogging()
-        if mode != .dev && mode != .sim {
-            AFNetworkActivityLogger.shared().stopLogging()
-        }
-        AFNetworkActivityLogger.shared().stopLogging()
         
         // setup language: iOS 13 allows setting language per-app in Settings.app, so we trust that value
         // we still use LanguageManager because Bundle.main of Share extension will take the value from host application :(
@@ -360,6 +349,10 @@ extension AppDelegate: UIApplicationDelegate {
         usersManager.firstUser?.messageService.backgroundFetch(notify: {
             completionHandler(.newData)
         })
+        //HACK: Call this after n seconds to prevent app got killed.
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+            completionHandler(.newData)
+        }
     }
     
     // MARK: Notification methods

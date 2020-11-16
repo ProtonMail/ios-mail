@@ -1060,14 +1060,13 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    func purgeOldMessages() {
+    func purgeOldMessages() { //TODO:: later we need to clean the message with a bad user id
         // need fetch status bad messages
         let context = CoreDataService.shared.backgroundManagedObjectContext
         context.performAndWait {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K == 0", Message.Attributes.messageStatus)
+            fetchRequest.predicate = NSPredicate(format: "(%K == 0) AND %K == %@", Message.Attributes.messageStatus, Contact.Attributes.userID, self.userID)
             do {
-                
                 if let badMessages = try context.fetch(fetchRequest) as? [Message] {
                     var badIDs : [String] = []
                     for message in badMessages {
@@ -1416,8 +1415,10 @@ class MessageDataService : Service, HasLocalStorage {
     private func empty(labelId: String, UID: String, completion: CompletionBlock?) {
         if let location = Message.Location(rawValue: labelId) {
             self.empty(at: location, UID: UID, completion: completion)
+        } else {
+            self.empty(labelID: labelId, completion: completion)
         }
-        completion?(nil, nil, nil)
+//        completion?(nil, nil, nil)
     }
     
     private func empty(at location: Message.Location, UID: String, completion: CompletionBlock?) {
@@ -1783,7 +1784,7 @@ class MessageDataService : Service, HasLocalStorage {
                                                                                                  subtitle: message.title))
                 }
                 completion?(nil, nil, error)
-            }.catch { (error) in
+            }.catch(policy: .allErrors) { (error) in
                 status.insert(SendStatus.exceptionCatched)
                 
                 let err = error as NSError
@@ -2190,6 +2191,10 @@ class MessageDataService : Service, HasLocalStorage {
                                 }
                                 
                                 messageObject.userID = self.userID
+                                if msg.Action == IncrementalUpdateType.update1 {
+                                    messageObject.isDetailDownloaded = false
+                                }
+
                                 
                                 if let added = msg.message?["LabelIDsAdded"] as? NSArray {
                                     for add in added {

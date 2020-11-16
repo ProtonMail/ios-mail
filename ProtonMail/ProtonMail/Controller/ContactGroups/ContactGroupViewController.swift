@@ -289,8 +289,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                                                 style: .destructive,
                                                 handler: deleteHandler))
         
-        alertController.popoverPresentationController?.sourceView = self.view
-        alertController.popoverPresentationController?.sourceRect = self.view.frame
+        alertController.popoverPresentationController?.barButtonItem = trashcanBarButtonItem
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -345,6 +344,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.isOnMainView = false // hide the tab bar
+        let viewController = segue.destination
         
         if segue.identifier == kToContactGroupDetailSegue {
             let contactGroupDetailViewController = segue.destination as! ContactGroupDetailViewController
@@ -362,6 +362,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             let addContactGroupViewController = segue.destination.children[0] as! ContactGroupEditViewController
             sharedVMService.contactGroupEditViewModel(addContactGroupViewController, user: self.viewModel.user, state: .create)
         } else if segue.identifier == kSegueToImportView {
+            self.isOnMainView = true
             let popup = segue.destination as! ContactImportViewController
             // TODO: inject it via ViewModel when ContactImportViewController will have one
             popup.user = self.viewModel.user
@@ -391,6 +392,13 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             self.setPresentationStyleForSelfController(self,
                                                        presentingController: popup,
                                                        style: .overFullScreen)
+        }
+        
+        if #available(iOS 13, *) { // detect view dismiss above iOS 13
+            if let nav = viewController as? UINavigationController {
+                nav.children[0].presentationController?.delegate = self
+            }
+            segue.destination.presentationController?.delegate = self
         }
     }
     
@@ -671,5 +679,14 @@ extension ContactGroupsViewController: NSNotificationCenterKeyboardObserverProto
                             self.view.layoutIfNeeded()
             }, completion: nil)
         }
+    }
+}
+
+
+// detect view dismiss above iOS 13
+@available (iOS 13, *)
+extension ContactGroupsViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        self.isOnMainView = true
     }
 }

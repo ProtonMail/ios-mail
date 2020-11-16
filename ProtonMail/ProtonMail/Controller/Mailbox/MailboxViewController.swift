@@ -726,9 +726,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
   
     
     fileprivate func checkEmptyMailbox () {
-        guard self.fetchingStopped == true else {
-            return
-        }
         guard self.viewModel.sectionCount() > 0 else {
             return
         }
@@ -736,6 +733,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard rowCount == 0 else {
             return
         }
+        self.pullDown()
         //TODO:: fix me
 //        let updateTime = viewModel.lastUpdateTime()
 //        let recordedCount = Int(updateTime.total)

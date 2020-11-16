@@ -26,8 +26,7 @@ def common_pods
     #parse respons to core data
     pod 'Groot', '3.0.1'
     #networking
-    pod 'AFNetworking', '3.2.1'
-    pod 'AFNetworkActivityLogger', :git => 'https://github.com/AFNetworking/AFNetworkActivityLogger.git', :branch => '3_0_0'
+    pod 'AFNetworking', '4.0.1'
     
     #based on 1.0.4
     pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
@@ -45,7 +44,7 @@ def common_pods
     pod 'AwaitKit', '~> 5.0.0'
     #pod 'ReachabilitySwift' #use this later
     
-    pod 'Sentry', '4.1.0'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '5.2.0'
     pod 'MBProgressHUD' , '1.1.0'
     
     pod 'TrustKit', '1.6.2'
@@ -98,7 +97,7 @@ end
 target 'ProtonMailTests' do
     inherit! :search_paths
     pod 'OpenPGP', :path => '../OpenPGP'
-    pod 'AFNetworking', '3.2.1'
+    pod 'AFNetworking', '4.0.1'
     pod 'OHHTTPStubs/Swift'
     pod 'Groot', '3.0.1'
 end

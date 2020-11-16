@@ -30,35 +30,30 @@ class Analytics {
     
     private var sentryEndpoint: String {
         #if Enterprise
-            return "https://3f5b27555fa64b519002266dcdc7744c:d9b72932c36d4456b9535c93b7c7e834@api.protonmail.ch/reports/sentry/25"
+            return "https://3f5b27555fa64b519002266dcdc7744c@api.protonmail.ch/reports/sentry/25"
         #else
-            return "https://bcbe8b2a026848c4b139df228d088072:b0643c66a54347f299b4e70bc39ce6ba@api.protonmail.ch/reports/sentry/7"
+            return "https://bcbe8b2a026848c4b139df228d088072@api.protonmail.ch/reports/sentry/7"
         #endif
     }
     
     func setup() {
-        do {
-            Client.shared = try Client(dsn: self.sentryEndpoint)
-            try Client.shared?.startCrashHandler()
-        } catch let error {
-            PMLog.D("Error starting Sentry: \(error)")
+        SentrySDK.start { (options) in
+            options.dsn = self.sentryEndpoint
+            #if DEBUG
+            options.debug = true
+            #endif
         }
     }
     
     func logCustomEvent(customAttributes: Dictionary<String, Any>) {
-        Client.shared?.snapshotStacktrace {
-            let event = Event(level: .debug)
-            event.message = customAttributes.json()
-            Client.shared?.send(event: event)
-        }
+        let event = Event(level: .debug)
+        event.message = customAttributes.json()
+        SentrySDK.capture(event: event)
     }
     
     func recordError(_ error: NSError) {
-        Client.shared?.snapshotStacktrace {
-            let event = Event(level: .error)
-            event.message = error.localizedDescription
-            Client.shared?.appendStacktrace(to: event)
-            Client.shared?.send(event: event)
-        }
+        let event = Event(level: .error)
+        event.message = error.localizedDescription
+        SentrySDK.capture(event: event)
     }
 }

@@ -1,0 +1,12 @@
+/* (No Comment) */
+"Enabled" = "Etkin";
+
+/* A single strings file, whose title is specified in your preferences schema. The strings files provide the localized content to display to the user for each of your preferences. */
+"Group" = "Grup";
+
+/* (No Comment) */
+"Name" = "Ad";
+
+/* (No Comment) */
+"none given" = "hiçbiri verilmedi";
+

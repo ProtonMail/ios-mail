@@ -24,7 +24,6 @@
 import CoreData
 import Foundation
 import AFNetworking
-import AFNetworkActivityLogger
 import TrustKit
 import PMNetworking
 import PMAuthentication
@@ -113,34 +112,16 @@ class APIService : Service {
     
     static var sharedSessionManager: AFHTTPSessionManager? = nil
     
-    private func initSessionManager(apiHostUrl: String) -> AFHTTPSessionManager {
-        let sessionManager = AFHTTPSessionManager(baseURL: URL(string: apiHostUrl)!)
-        sessionManager.requestSerializer = AFJSONRequestSerializer()
-        sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
-        sessionManager.requestSerializer.stringEncoding = String.Encoding.utf8.rawValue
-        
-        sessionManager.responseSerializer.acceptableContentTypes?.insert("text/html")
-        
-        sessionManager.securityPolicy.validatesDomainName = false
-        sessionManager.securityPolicy.allowInvalidCertificates = false
-        #if DEBUG
-        sessionManager.securityPolicy.allowInvalidCertificates = true
-        #endif
-        
-        return sessionManager
-    }
-
     // MARK: - Internal methods
     required init(config: APIServerConfig, sessionUID: String, userID: String) {
         // init lock
         pthread_mutex_init(&mutex, nil)
 
         doh.status = userCachedStatus.isDohOn ? .on : .off
-
-        // set config
-//        self.serverConfig = config
+        
         self.sessionUID = sessionUID
         self.userID = userID
+        
         // clear all response cache
         URLCache.shared.removeAllCachedResponses()
         let apiHostUrl = self.doh.getHostUrl()
@@ -155,9 +136,14 @@ class APIService : Service {
         #if DEBUG
         sessionManager.securityPolicy.allowInvalidCertificates = false
         #endif
-
+        
         sessionManager.setSessionDidReceiveAuthenticationChallenge { session, challenge, credential -> URLSession.AuthChallengeDisposition in
             var dispositionToReturn: URLSession.AuthChallengeDisposition = .performDefaultHandling
+            
+            //debug code to disable the pinning
+            //dispositionToReturn = URLSession.AuthChallengeDisposition.useCredential
+            //credential?.pointee = URLCredential(trust: challenge.protectionSpace.serverTrust!)
+            
             if let validator = TrustKitWrapper.current?.pinningValidator {
                 validator.handle(challenge, completionHandler: { (disposition, credentialOut) in
                     credential?.pointee = credentialOut
@@ -228,7 +214,9 @@ class APIService : Service {
                         DispatchQueue.main.async {
                             NSError.alertBadTokenToast()
                             completion(newCredential?.accessToken, self.sessionUID, error)
-                            NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": self.sessionUID ])
+                            NotificationCenter.default.post(name: .didReovke,
+                                                            object: nil,
+                                                            userInfo: ["uid": self.sessionUID ])
                         }
                     } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                         DispatchQueue.main.async {
@@ -285,9 +273,10 @@ class APIService : Service {
                 self.debugError(error)
                 completion(nil, nil, error)
             } else {
-                let request = self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
+                
+                let request = try! self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
                                                                             urlString: url,
-                                                                            parameters: nil, error: nil)
+                                                                            parameters: nil)
                 if let header = headers {
                     for (k, v) in header {
                         request.setValue("\(v)", forHTTPHeaderField: k)
@@ -569,10 +558,12 @@ class APIService : Service {
                     }
                 }
                 let url = self.doh.getHostUrl() + path
-                let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
-                                                                            urlString: url,
-                                                                            parameters: parameters,
-                                                                            error: nil)
+                PMLog.D("Start Request: " + url)
+                //TODO:: fix me  change try ! to a better way
+                let request = try! self.sessionManager.requestSerializer.request(withMethod: method.toString(),
+                                                                                 urlString: url,
+                                                                                 parameters: parameters)
+                request.timeoutInterval = self.doh.status == .off ? 60.0 : 30.0
                 if let header = headers {
                     for (k, v) in header {
                         request.setValue("\(v)", forHTTPHeaderField: k)
@@ -615,9 +606,21 @@ class APIService : Service {
                         }
                     }
                     
-                    DoHMail.default.handleError(host: url, error: error)
-                    /// parse urlresponse
-                    parseBlock(task, res, error)
+                    if self.doh.handleError(host: url, error: error) {
+                        //retry here
+                        PMLog.D(" DOH Retry: " + url)
+                        self.request(method: method,
+                                     path: path,
+                                     parameters: parameters,
+                                     headers: headers,
+                                     authenticated: authenticated,
+                                     authRetry: authRetry,
+                                     authRetryRemains: authRetryRemains,
+                                     customAuthCredential: customAuthCredential, completion: completion)
+                    } else {
+                        /// parse urlresponse
+                        parseBlock(task, res, error)
+                    }
                 })
                 task!.resume()
             }

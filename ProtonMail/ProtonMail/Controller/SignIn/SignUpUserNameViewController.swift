@@ -24,7 +24,7 @@
 import UIKit
 import MBProgressHUD
 
-class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
+class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
     
     @IBOutlet weak var usernameTextField: TextInsetTextField!
     @IBOutlet weak var pickedDomainLabel: UILabel!

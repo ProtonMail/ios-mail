@@ -1,3 +1,24 @@
+/* Key size text when setup key */
+"(2048 bit)" = "(2048 bitů)";
+
+/* Key size text when setup key */
+"(4096 bit)" = "(4096 bitů)";
+
+/* Comment for disconnected account in Account Manager */
+"(logged out)" = "(odhlášeno)";
+
+/* Service plan capability detail; like in '50 email addresses (total)' */
+"(total)" = "(celkem)";
+
+/* secret */
+"**********" = "**********";
+
+/* optional text field */
+"*OPTIONAL" = "* VOLITELNÉ";
+
+/* Service plan capability detail; like in '5 email addresses/user' */
+"/user" = "/uživatel";
+
 /* Service plan capability */
 "%@ storage capacity" = "%@ úložné kapacity";
 
@@ -22,32 +43,14 @@
 /* Service plan capability; i = 5 or 50 */
 "%i email addresses" = "%i e-mailové adresy";
 
-/* Key size text when setup key */
-"(2048 bit)" = "(2048 bitů)";
-
-/* Key size text when setup key */
-"(4096 bit)" = "(4096 bitů)";
-
-/* Service plan capability detail; like in '50 email addresses (total)' */
-"(total)" = "(celkem)";
-
-/* secret */
-"**********" = "**********";
-
-/* optional text field */
-"*OPTIONAL" = "* VOLITELNÉ";
-
 /* Drag and drop zone for attachments */
-"+ Drop here to add as attachment" = "+ Drop here to add as attachment";
-
-/* Service plan capability detail; like in '5 email addresses/user' */
-"/user" = "/uživatel";
-
-/* 2fa verification failed */
-"2FA failed. Please try to login again." = "2FA ověřování se nezdařilo. Zkuste se přihlásit znovu.";
+"+ Drop here to add as attachment" = "+ Přetažením sem přidáte přílohu";
 
 /* default empty object */
 "<no object>" = "<no object>";
+
+/* 2fa verification failed */
+"2FA failed. Please try to login again." = "2FA ověřování se nezdařilo. Zkuste se přihlásit znovu.";
 
 /* *
  *  LabelTableViewCell */
@@ -65,25 +68,23 @@
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "Přístupový kód nebyl nastaven, povolte ho v nastavení systému";
 
-/* when server not reachable */
-"API Server not reachable..." = "API Server není dosažitelný...";
-
-/* mail location title */
-"ARCHIVE" = "ARCHIV";
-
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Z důvodů neplacení je přístup k tomuto účtu zakázán. Prosím přihlašte se prostřednictvím protonmail.com a uhraďte nezaplacenou fakturu.";
 
-/* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Z důvodů neplacení je přístup k tomuto účtu zakázán.
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Z důvodů neplacení je přístup k tomuto účtu zakázán.\n\nPro další informace navštivte <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">naši sbírku znalostí.</a>";
 
-Pro další informace navštivte <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">naši sbírku znalostí.</a>";
+/* Account manager title */
+"Account" = "Účet";
 
 /* 
  & title */
 "Account password invalid" = "Neplatné heslo účtu";
 
-/* None */
+/* section title in settings */
+"Account Settings" = "Nastavení účtu";
+
+/* (No Comment) */
 "Add" = "Přidat";
 
 /* new contacts add Anniversary */
@@ -110,11 +111,29 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* add label action */
 "Add Label" = "Přidat označení";
 
+/* add new address action */
+"Add new address" = "Přidat novou adresu";
+
+/* new custom field action */
+"Add new custom field" = "Přidat nové vlastní pole";
+
+/* new email action */
+"Add new email" = "Přidat nový E-mail";
+
+/* new field action */
+"Add new field" = "Přidat nové pole";
+
 /* add a new folder */
 "Add New Folder" = "Přidat novou složku";
 
 /* add a new folder */
 "Add New Label" = "Přidat nové označení";
+
+/* new phone action */
+"Add new phone number" = "Přidat nové telefonní číslo";
+
+/* action */
+"Add new URL" = "Add new URL";
 
 /* new contacts add Nickname */
 "Add Nickname" = "Přidat přezdívku";
@@ -131,40 +150,28 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* new contacts add Title */
 "Add Title" = "Přidat titul";
 
-/* add new address action */
-"Add new address" = "Přidat novou adresu";
-
-/* new custom field action */
-"Add new custom field" = "Přidat nové vlastní pole";
-
-/* new email action */
-"Add new email" = "Přidat nový E-mail";
-
-/* new field action */
-"Add new field" = "Přidat nové pole";
-
-/* new phone action */
-"Add new phone number" = "Přidat nové telefonní číslo";
-
-/* action */
-"Add new url" = "Přidat novou adresu url";
-
 /* Title */
 "Add to contacts" = "Přidat do kontaktů";
 
 /* default vcard types */
 "Address" = "Adresa";
 
+/* cell title in device settings */
+"Addresses" = "Adresy";
+
 /* Title */
 "Alert" = "Upozornění";
+
+/* Title */
+"All contacts are imported" = "Všechny kontakty byly naimportovány";
 
 /* mail location desc
    mail location title
    menu title */
 "All Mail" = "Všechna pošta";
 
-/* Title */
-"All contacts are imported" = "Všechny kontakty byly naimportovány";
+/* network troubleshot cell title */
+"Allow alternative routing" = "Allow alternative routing";
 
 /* archive when apply label */
 "Also Archive" = "Také archivovat";
@@ -172,11 +179,29 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Description */
 "Also used to reset a forgotten password." = "Použito také k obnovení zapomenutého hesla.";
 
+/* agree check box middle word */
+"and" = "a";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Výročí";
 
+/* network troubleshot cell title */
+"Antivirus interference" = "Antivirus interference";
+
+/* when server not reachable */
+"API Server not reachable..." = "API Server není dosažitelný...";
+
+/* section title in settings */
+"APP INFORMATION" = "INFORMACE O APLIKACI";
+
 /* Error */
 "App is locked" = "Aplikace je uzamčena";
+
+/* cell title in device settings */
+"App Language" = "Jazyk aplikace";
+
+/* section title in settings */
+"App Settings" = "Nastavení aplikace";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple in-app pořizovací poplatek";
@@ -188,7 +213,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple nás informoval, že jste navýšil/a plán služby, ale neřekl, který z vašich ProtonMail účtů má být navýšen v případě, že jich máte více než jeden.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple nás informoval, že jste navýšil/a plán služby, ale některé technické údaje chyběly. Prosím vyplňte zprávu o chybě a náš tým podpory zákazníků vás bude kontaktovat.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nás informoval, že jste navýšil/a servisní plán, ale zjistili jsme, že jste se od té doby z účtu odhlásili.";
@@ -203,26 +228,47 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
    menu title */
 "Archive" = "Archiv";
 
+/* mail location title */
+"ARCHIVE" = "ARCHIV";
+
 /* Description */
 "Archived" = "Archivováno";
 
-/* Alert to confirm logout */
-"Are you sure you want to logout?" = "Are you sure you want to logout?";
+/* Alert when logout non-primary account from account manager */
+"Are you sure you want to log out?" = "Opravdu se chcete odhlásit?";
+
+/* Alert to confirm logout when only one account logged in */
+"Are you sure you want to logout %@?" = "Opravdu se chcete odhlásit z účtu %@?";
+
+/* emptify folder/label confirmation alert */
+"Are you sure? This can't be undone." = "Are you sure? This can't be undone.";
+
+/* like at 10:00pm */
+"at" = "v(ve)";
 
 /* Drag and drop zone for attachments */
-"Attachment imported" = "Attachment imported";
+"Attachment imported" = "Příloha byla importována";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Přílohy";
+
+/* Error */
+"attempt remaining until secure data wipe!" = "zbývající pokus do zabezpečeného vymazání dat!";
+
+/* Description */
+"attempts remaining" = "zbývající pokusy";
+
+/* Error */
+"attempts remaining until secure data wipe!" = "zbývající pokusy do zabezpečeného vymazání dat!";
 
 /* Title */
 "Authentication" = "Ověření";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "Ověření se nezdařilo: nesprávné uživatelské jméno nebo heslo";
+"Authentication failed" = "Ověření se nezdařilo";
 
 /* Description */
-"Authentication failed" = "Ověření se nezdařilo";
+"Authentication Failed Wrong username or password" = "Ověření se nezdařilo: nesprávné uživatelské jméno nebo heslo";
 
 /* Error */
 "Authentication failed. Please try to login again." = "Ověřování se nezdařilo. Zkuste se přihlásit znovu.";
@@ -238,6 +284,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* settings general section title */
 "Auto Show Images" = "Automaticky zobrazovat obrázky";
+
+/* section title in settings */
+"Auto-lock" = "Automatické uzamčení";
 
 /* top left back button */
 "Back" = "Zpět";
@@ -275,14 +324,14 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Link to More Credits screen */
 "Buy More Credits" = "Koupit víc kreditů";
 
+/* Alert for removing disconnected accounts */
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?";
+
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "Užíváním protonmailu souhlasíte s našimi";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "By using protonmail, you agree to our %1$@ and %2$@.";
-
-/* human check option button */
-"CAPTCHA" = "CAPTCHA";
+"By using protonmail, you agree to our %@ and %@." = "Užíváním ProtonMailu souhlasíte s našimi %1$@ a %2$@.";
 
 /* Call the contact (button title text) */
 "Call Contact" = "Zavolat kontakt";
@@ -318,11 +367,14 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
 "Can't fetch contact groups" = "Nelze načíst skupiny kontaktů";
 
-/* None */
+/* (No Comment) */
 "Can't find the clicked message please try again!" = "Nelze nalézt označenou zprávu, zkuste prosím znovu!";
 
 /* Description */
 "Can't find the selected message. Please try again." = "Nelze nalézt označenou zprávu. Zkuste to prosím znova.";
+
+/* Description */
+"Can't find the value from the response body" = "Can't find the value from the response body";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Nelze najít tuto přílohu!";
@@ -342,9 +394,6 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Error */
 "Can't load the file" = "Nelze načíst soubor";
 
-/* Description */
-"Can't find the value from the response body" = "V těle odpovědi nelze najít hodnotu";
-
 /* Error */
 "Can't open the file" = "Soubor nelze otevřít";
 
@@ -363,8 +412,11 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "Cancelling" = "Ruší se";
 
-/* None */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "Tuto přílohu nelze dešifrovat.";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCHA";
 
 /* Title */
 "Cc" = "Kopie";
@@ -374,6 +426,12 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* place holder */
 "Cell phone number" = "Telefonní číslo mobilu";
+
+/* Title */
+"Change default address to .." = "Změnit výchozí adresu na...";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Změna akce pro přetažení vlevo";
 
 /* change password input label */
 "Change Login Password" = "Změnit přihlašovací heslo";
@@ -387,23 +445,20 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* settings protection section title */
 "Change Pin" = "Změnit PIN kód";
 
-/* Title */
-"Change Single Password" = "Změna jednoho hesla";
-
-/* Title */
-"Change default address to .." = "Změnit výchozí adresu na...";
-
-/* settings swipe actions section action description */
-"Change left swipe action" = "Změna akce pro přetažení vlevo";
-
 /* settings swipe actions section action description */
 "Change right swipe action" = "Změna akce pro přetažení vpravo";
 
 /* Title */
 "Change sender address to .." = "Změnit adresu odesílatele na...";
 
+/* Title */
+"Change Single Password" = "Změna jednoho hesla";
+
 /* Action */
 "Check Again" = "Zkontrolovat znovu";
+
+/* network troubleshot cell title */
+"Check Proton Status for our system status." = "Check Proton Status for our system status.";
 
 /* loading message */
 "Checking ...." = "Kontrola ....";
@@ -417,13 +472,23 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* settings general section title */
 "Clear Local Message Cache" = "Vyčisti mezipaměť místních zpráv";
 
+/* Menu action to remove text formatting */
+"Clear Style" = "Clear Style";
+
 /* general close action */
 "Close" = "Zavřít";
+
+/* Action */
+"close tour" = "ukončit průvodce";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Zavírání";
 
-/* Action */
+/* cell title in device settings */
+"Combined Contacts" = "Combined Contacts";
+
+/* Action
+   Springboard (3D Touch) shortcuts action */
 "Compose" = "Nová zpráva";
 
 /* Title */
@@ -438,9 +503,6 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Potvrdit heslo k poštovní schránce";
 
-/* Placeholder */
-"Confirm Password" = "Potvrdit heslo";
-
 /* Title */
 "Confirm new login password" = "Potvrdit nové přihlašovací heslo";
 
@@ -449,6 +511,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* Placeholder */
 "Confirm new password" = "Potvrdit nové heslo";
+
+/* Placeholder */
+"Confirm Password" = "Potvrdit heslo";
 
 /* alert title */
 "Confirm phishing report" = "Potvrdit oznámení phishingu";
@@ -459,11 +524,17 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* view top title */
 "Congratulations!" = "Blahopřejeme!";
 
+/* Account manager title */
+"Connect Account" = "Connect Account";
+
 /* contact section title */
 "Contact Details" = "Detaily kontaktu";
 
 /* Title */
 "Contact the ProtonMail team" = "Kontaktuj tým ProtonMailu";
+
+/* network troubleshot cell title */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
 
 /* Action and title
    menu title */
@@ -473,7 +544,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "Continue" = "Pokračovat";
 
 /* Action */
-"Continue and Don't ask again" = "Continue and Don't ask again";
+"Continue and Don't ask again" = "Pokračovat a příště se již neptat";
 
 /* Title */
 "Copy address" = "Kopírovat adresu";
@@ -490,23 +561,26 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* top right action text */
 "Create" = "Vytvořit";
 
-/* Create account button */
-"Create Account" = "Vytvořit účet";
-
-/* Error */
-"Create User failed. Please try again." = "Vytváření uživatele selhalo, zkuste to prosím znovu.";
-
 /* Signup top title */
 "Create a new account" = "Vytvořit nový účet";
+
+/* Create account button */
+"Create Account" = "Vytvořit účet";
 
 /* Description */
 "Create and add Labels to organize your inbox. Long press on a message for all options." = "Vytvoř a přidej Označení pro třídění doručené pošty. Dlouze stiskni na zprávě pro zobrazení všech možností.";
 
-/* None */
+/* (No Comment) */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Vytvoř a přidej označení pro třídění doručené pošty. Stiskni a přidrž na zprávě pro zobrazení všech možností.";
+
+/* title of button in account connect page */
+"Create new account" = "Create new account";
 
 /* error message title when create new user */
 "Create user failed" = "Vytváření uživatele selhalo";
+
+/* Error */
+"Create User failed. Please try again." = "Vytváření uživatele selhalo, zkuste to prosím znovu.";
 
 /* Change language title */
 "Current Language is: " = "Aktuální jazyk je: ";
@@ -521,12 +595,6 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
    contacts default label type */
 "Custom" = "Vlastní";
 
-/* Title */
-"DECRYPT MAILBOX" = "DEŠIFROVAT SCHRÁNKU";
-
-/* mail location title */
-"DRAFTS" = "KONCEPTY";
-
 /* message Date: text */
 "Date:" = "Datum:";
 
@@ -534,10 +602,16 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "Date: %@" = "Datum: %@";
 
 /* Title */
+"days" = "dny";
+
+/* Title */
 "Debug" = "Ladění";
 
 /* Action */
 "Decrypt" = "Dešifrovat";
+
+/* Title */
+"DECRYPT MAILBOX" = "DEŠIFROVAT SCHRÁNKU";
 
 /* Description */
 "Decrypt token failed. Please try again." = "Dešifrování selhalo. Zkuste to znovu.";
@@ -550,6 +624,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* Title */
 "Default" = "Výchozí";
+
+/* Settings row */
+"Default browser" = "Default browser";
 
 /* error message when create new user */
 "Default error. Please try again." = "Defaultní chyba. Prosím, zkuste znovu.";
@@ -566,6 +643,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* general delete action */
 "Delete" = "Smazat";
 
+/* emptify folder/label confirmation alert */
+"Delete all" = "Delete all";
+
 /* Title-Contacts */
 "Delete Contact" = "Smazat kontakt";
 
@@ -578,20 +658,26 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "Details" = "Detaily";
 
+/* network troubleshot cell title */
+"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Disable Validation";
+
 /* Action */
 "Discard changes" = "Zahodit změny";
 
 /* Action */
 "Discard draft" = "Zahodit koncept";
 
+/* (No Comment) */
+"Display name" = "Zobrazované jméno";
+
 /* Title in settings */
 "Display Name" = "Zobrazované jméno";
 
 /* Title */
 "Display Name Updated" = "Zobrazované jméno aktualizováno";
-
-/* None */
-"Display name" = "Zobrazované jméno";
 
 /* Title in display name settings */
 "DisplayName" = "Zobrazované jméno";
@@ -605,11 +691,11 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "Do you want to save the unsaved changes?" = "Chcete uložit provedené změny?";
 
-/* Title */
-"Don't Show Again" = "Příště nezobrazovat";
-
 /* Action */
 "Don't remind me again" = "Znovu nepřípomínat";
+
+/* Title */
+"Don't Show Again" = "Příště nezobrazovat";
 
 /* Done action */
 "Done" = "Hotovo";
@@ -623,6 +709,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* menu title */
 "Drafts" = "Koncepty";
+
+/* mail location title */
+"DRAFTS" = "KONCEPTY";
 
 /* Action */
 "Edit" = "Upravit";
@@ -640,32 +729,32 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "Edit Label" = "Upravit označení";
 
+/* title */
+"Edit mobile signature" = "Upravit podpis v mobilní aplikaci";
+
 /* The button text for edit profile picture */
 "Edit Photo" = "Upravit fotografii";
 
 /* title */
-"Edit mobile signature" = "Upravit podpis v mobilní aplikaci";
-
-/* title */
 "Edit signature" = "Upravit podpis";
+
+/* network troubleshot cell title */
+"email" = "email";
 
 /* default vcard types */
 "Email" = "E-mail";
-
-/* contact detail view, email addresses section title */
-"Email Addresses" = "E-mailové adresy";
-
-/* Send an email to the current contact (button title text) */
-"Email Contact" = "E-mailový kontakt";
-
-/* human check option button */
-"Email Verification" = "Ověření e-mailu";
 
 /* contact placeholder */
 "Email address" = "E-mailová adresa";
 
 /* Title */
 "Email address invalid" = "E-mailová adresa je neplatná";
+
+/* contact detail view, email addresses section title */
+"Email Addresses" = "E-mailové adresy";
+
+/* Send an email to the current contact (button title text) */
+"Email Contact" = "E-mailový kontakt";
 
 /* place holder */
 "Email default signature" = "Výchozí podpis e-mailu";
@@ -674,8 +763,17 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
  & title */
 "Email domain invalid" = "Neplatná e-mailová doména";
 
-/* empty folder, for spam and trash */
-"Empty Folder" = "Prázdná složka";
+/* human check option button */
+"Email Verification" = "Ověření e-mailu";
+
+/* cell title in device setting */
+"Empty Cache" = "Empty Cache";
+
+/* empty folder, for spam and trash and drafts */
+"Empty Folder" = "Vyprázdnit složku";
+
+/* it is an option to empty the label */
+"Empty Label" = "Empty Label";
 
 /* Title */
 "Enable Default Signature" = "Povolit výchozí podpis";
@@ -689,8 +787,17 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "Enable Notification Email" = "Povolit e-mailové notifikace";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Enable PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "Zapnout ochranu PIN kódem";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Enable PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Enable PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Povolit TouchID";
@@ -708,7 +815,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "Encrypted from outside" = "Šifrováno zvenku";
 
 /* Title */
-"Encrypted from outside PGP inline" = "Encrypted from outside PGP inline";
+"Encrypted from outside PGP inline" = "Šifrováno zvenku pomocí PGP inline";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Šifrováno zvenku PGP/MIME";
@@ -722,9 +829,6 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* settings option (End Time: 8am) */
 "End Time" = "Čas ukončení";
 
-/* Title */
-"End-to-End Encryption" = "End-to-End šifrování";
-
 /* encryption lock description */
 "End-to-end encrypted" = "End-to-End šifrováno";
 
@@ -737,23 +841,29 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Zašifrováno End-to-end k ověřenému příjemci";
 
+/* Title */
+"End-to-End Encryption" = "End-to-End šifrování";
+
 /* Action in 2fa popup view */
 "Enter" = "Zadejte";
 
 /* Title */
 "Enter Verification Code" = "Zadejte ověřovací kód";
 
-/* set pin title */
-"Enter your PIN" = "Zadejte Váš PIN";
-
-/* Title */
-"Enter your PIN to unlock your inbox." = "Zadejte svůj PIN k odemčení schránky.";
-
 /* human verification top title */
 "Enter your cell phone number" = "Zadejte číslo svého mobilního telefonu";
 
 /* top title */
 "Enter your existing email address." = "Zadejte svoji existující emailovou adresu.";
+
+/* Account manager title */
+"Enter your mailbox password" = "Enter your mailbox password";
+
+/* set pin title */
+"Enter your PIN" = "Zadejte Váš PIN";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Zadejte svůj PIN k odemčení schránky.";
 
 /* settings debug section title */
 "Error Logs" = "Záznamy chyb";
@@ -775,12 +885,6 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* Key size checkbox */
 "Extreme Security" = "Extrémní bezpečnost";
-
-/* login page forgot pwd */
-"FORGOT PASSWORD?" = "ZAPOMNĚLI JSTE HESLO?";
-
-/* abbreviation of forward: */
-"FW:" = "Přeposlat:";
 
 /* Error message */
 "Failed to determine type of file" = "Určení typu souboru zlyhalo";
@@ -816,11 +920,17 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Service Plan description */
 "For individuals that need more capacity, customization and advanced features" = "Pro jednotlivce, kteří potřebují větší kapacitu, víc možností úprav a pokročilých funkcí";
 
+/* Buy button second line */
+"for one year" = "na jeden rok";
+
 /* Service Plan description */
 "For organizations that need multi-user support and additional productivity features" = "Pro organizace, které potřebují podporu pro mnoho uživatelů a další funkce pro zvýšení produktivity";
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Pro pokročilé uživatele a skupiny lidí, kteří si cení plné anonymity a soukromí";
+
+/* login page forgot pwd */
+"FORGOT PASSWORD?" = "ZAPOMNĚLI JSTE HESLO?";
 
 /* forward action */
 "Forward" = "Přeposlat";
@@ -833,6 +943,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* message From: field text */
 "From:" = "Od:";
+
+/* abbreviation of forward: */
+"FW:" = "Přeposlat:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Fwd:";
@@ -851,6 +964,15 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* Action */
 "Go to inbox" = "Přejít do složky Doručené";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to login" = "Go to login";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Go to settings";
+
+/* network troubleshot cell title */
+"Government block" = "Government block";
 
 /* The title for the contact group detail view */
 "Group Details" = "Podrobnosti o skupině";
@@ -879,6 +1001,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Key size checkbox */
 "High Security" = "Vysoké zabezpečení";
 
+/* (No Comment) */
+"hours" = "Hodiny";
+
 /* Title */
 "Hours" = "Hodiny";
 
@@ -894,20 +1019,26 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Podpora IMAP/SMTP přes ProtonMail Bridge";
 
-/* mail location title */
-"INBOX" = "DORUČENÁ POŠTA";
-
 /* Action */
 "Import Error" = "Chyba importu";
 
 /* Title */
 "Import File From..." = "Importovat soubor...";
 
+/* Downloading attachments from cloud */
+"Importing" = "Importing";
+
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Importování přílohy, může to chvíli trvat";
+
 /* import contact title */
 "Importing Contacts" = "Importování kontaktů";
 
-/* Drag and drop zone for attachments */
-"Importing attachment, that can take a while" = "Importing attachment, that can take a while";
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Chcete-li využívat našich služeb, musíte souhlasit s podmínkami užívání služby ProtonMail.";
@@ -916,17 +1047,26 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
    menu title */
 "Inbox" = "Doručená pošta";
 
+/* mail location title */
+"INBOX" = "DORUČENÁ POŠTA";
+
+/* Title */
+"Incorrect password" = "Nesprávné heslo";
+
 /* Error */
 "Incorrect PIN," = "Nesprávný kód PIN,";
 
 /* Title */
-"Incorrect password" = "Nesprávné heslo";
+"inline attachments" = "vložené přílohy";
 
 /* place holder */
 "Input Display Name ..." = "Vložte zobrazované jméno ...";
 
 /* place holder */
 "Input Notification Email ..." = "Vložte e-mail pro zasílání notofikací ...";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Insecure connection";
 
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Okamžité vytvoření účtu ProtonMail bylo dočasně vypnuto. Přejděte prosím na https://protonmail.com/invite a zažádejte o pozvánku.";
@@ -936,6 +1076,21 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* default vcard types */
 "Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+
+/* (No Comment) */
+"Invalid access token please relogin" = "Neplatný token pro přístup. Přihlašte se prosím znovu";
+
+/* Description */
+"Invalid access token. Please relogin." = "Neplatný token pro přístup. Přihlašte se prosím znovu.";
+
+/* Error */
+"Invalid credential" = "Neplatné přihlašovací údaje";
+
+/* update password error */
+"Invalid hashed password!" = "Neplatný hash hesla!";
 
 /* Error */
 "Invalid Password" = "Neplatné heslo";
@@ -948,18 +1103,6 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* Error message */
 "Invalid UserName!" = "Neplatné uživatelské jméno!";
-
-/* None */
-"Invalid access token please relogin" = "Neplatný token pro přístup. Přihlašte se prosím znovu";
-
-/* Description */
-"Invalid access token. Please relogin." = "Neplatný token pro přístup. Přihlašte se prosím znovu.";
-
-/* Error */
-"Invalid credential" = "Neplatné přihlašovací údaje";
-
-/* update password error */
-"Invalid hashed password!" = "Neplatný hash hesla!";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Týká se tato zpráva o chybě nákupu v aplikaci?";
@@ -982,8 +1125,8 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Error */
 "Key invalid. Please go back and try again." = "Neplatný klíč. Přejděte prosím zpět a zkuste to znova.";
 
-/* None */
-"LOGIN" = "Přihlášení";
+/* Title */
+"Label as..." = "Označit jako...";
 
 /* Title */
 "Label Management" = "Správa označení";
@@ -991,11 +1134,11 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* createing lable input place holder */
 "Label Name" = "Název označení";
 
-/* Title */
-"Label as..." = "Označit jako...";
-
 /* VoiceOver: email has lables */
 "Labels" = "Štítky";
+
+/* cell title in device settings */
+"Labels & Folders" = "Labels & Folders";
 
 /* Title */
 "Labels have been applied." = "Označení bylo použito.";
@@ -1009,11 +1152,17 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "Language" = "Jazyk";
 
+/* network troubleshot cell title */
+"Learn more" = "Learn more";
+
 /* Action */
 "Learn More" = "Více informací";
 
 /* learn more button */
 "Learn more here" = "Více informací zde";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "Limit reached";
 
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "Omezeno na 150 odeslaných zpráv/den";
@@ -1021,11 +1170,17 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Action */
 "Load remote content" = "Načíst vzdálený obsah";
 
-/* None */
+/* (No Comment) */
 "Loading..." = "Načítání...";
 
 /* Description */
 "Local cache can't find mailbox password" = "Místní mezipaměť nemůže najít heslo poštovní schránky";
+
+/* cell title in device settings */
+"Local Cache Management" = "Local Cache Management";
+
+/* cell title in device settings */
+"Local storage limit" = "Local storage limit";
 
 /* *
  *  file string type */
@@ -1034,8 +1189,23 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* menu title */
 "Lock The App" = "Zamknout aplikaci";
 
+/* Account manager title */
+"Log in to your ProtonMail account" = "Log in to your ProtonMail account";
+
+/* Alert title when logout non-primary account from account manager */
+"Log out %@?" = "Log out %@?";
+
+/* Action */
+"Log Out All" = "Log Out All";
+
+/* Alert when auth token is revoked and switch to another */
+"Logged out from %@ and signed in with %@" = "Logged out from %1$@ and signed in with %2$@";
+
 /* Title */
 "Login" = "Přihlášení";
+
+/* (No Comment) */
+"LOGIN" = "Přihlášení";
 
 /* settings general section title */
 "Login Password" = "Přihlašovací heslo";
@@ -1043,7 +1213,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Error */
 "Login password doesn't match" = "Přihlašovací heslo se neshoduje";
 
-/* menu title */
+/* Alert title to confirm logout
+   Alert title when logout primary account from account manager
+   menu title */
 "Logout" = "Odhlásit se";
 
 /* error title */
@@ -1052,45 +1224,45 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Chcete zabezpečit Vaše kontaktní údaje?";
 
-/* *
- *  MailboxPasswordViewController */
-"MAILBOX PASSWORD" = "Heslo k e-mailové schránce";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
+/* cell title in device settings */
+"MAILBOX" = "MAILBOX";
 
 /* settings general section title */
 "Mailbox Password" = "Heslo k poštovní schránce";
 
-/* None */
+/* *
+ *  MailboxPasswordViewController */
+"MAILBOX PASSWORD" = "Heslo k e-mailové schránce";
+
+/* (No Comment) */
 "Mailbox password doesn't match" = "Hesla k e-mailové schránce se neshodují";
+
+/* cell title in device settings */
+"Mailbox size" = "Mailbox size";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Spravovat Adresy";
 
+/* Settings row */
+"Manage in device Settings" = "Manage in device Settings";
+
 /* Title */
 "Manage Labels/Folders" = "Spravovat Označení/Složky";
+
+/* Action */
+"Mark as unread" = "Označit jako nepřečtené";
 
 /* mark message as read action */
 "Mark Read" = "Označit jako přečtené";
 
-/* Action */
-"Mark as unread" = "Označit jako nepřečtené";
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Menu";
 
 /* Message with title */
 "Message %@" = "Zpráva %@";
-
-/* Placeholder */
-"Message Password" = "Heslo zprávy";
-
-/* settings debug section title */
-"Message Queue" = "Fronta zpráv";
-
-/* Title */
-"Message Swipe Actions" = "Akce přetažení zpráv";
 
 /* *
  *  Expiration View */
@@ -1102,10 +1274,16 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "Message has been moved." = "Zpráva byla přesunuta.";
 
+/* Placeholder */
+"Message Password" = "Heslo zprávy";
+
 /* Description */
 "Message password does not match." = "Heslo zprávy se neshoduje.";
 
-/* None */
+/* settings debug section title */
+"Message Queue" = "Fronta zpráv";
+
+/* (No Comment) */
 "Message sending failed please try again" = "Odeslání zprávy se nezdařilo, prosím zkuste to znovu";
 
 /* Description */
@@ -1113,6 +1291,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* Description after message have been sent */
 "Message sent" = "Zpráva byla odeslána";
+
+/* Title */
+"Message Swipe Actions" = "Akce přetažení zpráv";
 
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Odesílané zprávy lze nastavit na automatické odstranění po určitém časovém období.";
@@ -1136,7 +1317,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "More Credits" = "Víc kreditů";
 
 /* move action */
-"Move to AllMail" = "Přesunout do složky Všechny zprávy";
+"Move to All Mail" = "Přesunout do šložky Všechny zprávy";
 
 /* move action */
 "Move to Archive" = "Přesunout do archivu";
@@ -1165,11 +1346,14 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "Multiple Addresses" = "Více adres";
 
+/* title */
+"Name" = "Název";
+
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "POTŘEBUJETE ÚČET? REGISTRUJTE SE.";
 
-/* title */
-"Name" = "Název";
+/* section title */
+"Networking" = "Networking";
 
 /* Title */
 "New login password" = "Nové přihlašovací heslo";
@@ -1183,11 +1367,17 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* contacts talbe cell Nickname title */
 "Nickname" = "Přezdívka";
 
+/* Title */
+"No connectivity detected..." = "Bez připojení...";
+
+/* network troubleshot cell title */
+"No internet connection" = "No internet connection";
+
 /* message when mailbox doesnt have emailsß */
 "No Messages" = "Žádné zprávy";
 
-/* Title */
-"No connectivity detected..." = "Bez připojení...";
+/* no object error, local only , this could be not translated! */
+"no object" = "žádný objekt";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "Ne, pro další účet ProtonMail";
@@ -1199,11 +1389,14 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
    Title */
 "None" = "Žádné";
 
-/* Action */
-"Not Now" = "Teď ne";
+/* Title */
+"normal attachments" = "normální přílohy";
 
 /* alert description */
 "Not all recipients support message expiration" = "Ne všichni příjemci podporují zprávy s nastavenou expirací";
+
+/* Action */
+"Not Now" = "Teď ne";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Poznámka: Uživatelské jméno je také Vaše ProtonMail adresa.";
@@ -1238,9 +1431,6 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Action */
 "OK" = "OK";
 
-/* Section header */
-"OTHER PLANS" = "JINÉ PLÁNY";
-
 /* Title */
 "On" = "Zapnuto";
 
@@ -1248,9 +1438,12 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "On EE, MMM d, yyyy at %@" = "V EE, d. MMM. yyyy ve %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@, wrote:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "V EE, d. MMM. yyyy ve %1$@, %2$@, napsal/a:";
 
-/* None */
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Only one free account can be added";
+
+/* (No Comment) */
 "OpenDraft" = "Otevřít rozepsaný";
 
 /* contacts talbe cell Organization title */
@@ -1259,11 +1452,35 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* default vcard types */
 "Other" = "Ostatní";
 
+/* Section header */
+"OTHER PLANS" = "JINÉ PLÁNY";
+
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Náš tým pro podporu zákazníků se pokusí aktivovat Váš plán poskytovaných služeb ručně, pokud souhlasíte s přiložením technických údajů, které AppStore poskytl v okamžiku nákupu. Tyto údaje neobsahují žádné informace o Vašem iTunes účtu, Apple ID, připojených kreditních kartách, nebo jakékoli jiné informace o uživateli. Technická data nám jenom pomůžou ověřit, že transakce byla provedena na serverech AppStore.";
 
 /* mail location desc */
 "Outbox" = "K odeslání";
+
+/* title */
+"Password" = "Heslo";
+
+/* Description */
+"Password cannot be empty." = "Heslo nemůže být prázdné.";
+
+/* cell title in device settings */
+"Password management" = "Password management";
+
+/* Title */
+"Password Mismatch" = "Heslo se neshoduje";
+
+/* update password error */
+"Password update failed" = "Aktualizace hesla se nezdařila";
+
+/* Title */
+"Password Updated" = "Heslo bylo změněno";
+
+/* default vcard types */
+"Personal" = "Osobní";
 
 /* encryption lock description */
 "PGP-encrypted" = "Šifrováno pomocí PGP";
@@ -1280,32 +1497,8 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* encryption lock description */
 "PGP-signed message from verified address" = "Zpráva podepsaná pomocí PGP z ověřené adresy";
 
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "PRÉMIOVÁ FUNKCE";
-
-/* title */
-"Password" = "Heslo";
-
-/* Title */
-"Password Mismatch" = "Heslo se neshoduje";
-
-/* Title */
-"Password Updated" = "Heslo bylo změněno";
-
-/* Description */
-"Password cannot be empty." = "Heslo nemůže být prázdné.";
-
-/* update password error */
-"Password update failed" = "Aktualizace hesla se nezdařila";
-
-/* default vcard types */
-"Personal" = "Osobní";
-
 /* default vcard types */
 "Phone" = "Telefon";
-
-/* human check option button */
-"Phone Verification" = "Ověření pomocí telefonu";
 
 /* contact placeholder */
 "Phone number" = "Telefonní číslo";
@@ -1313,8 +1506,20 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "Phone number invalid" = "Neplatné telefonní číslo";
 
+/* human check option button */
+"Phone Verification" = "Ověření pomocí telefonu";
+
 /* Title */
 "Photo Library" = "Knihovna fotografií";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN & FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN & TouchID";
 
 /* Description */
 "Pin code can't be empty." = "PIN kód nemůže být prázdný.";
@@ -1343,6 +1548,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Error message */
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Prosím, přihlašte se do ProtonMail účtu pro který aktualizujete plán služby, aby bylo možné dokončit aktivaci.";
 
+/* network troubleshot cell title */
+"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
+
 /* Error */
 "Please pick a user name first!" = "Nejprve si prosím vyberte uživatelské jméno!";
 
@@ -1351,6 +1559,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* when switch sender but email has attachments */
 "Please remove all attachments before changing sender!" = "Před změnou odesílatele odstraňte prosím všechny přílohy";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "Please select at least one email";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Prosím zvolte alespoň jeden e-mail pro kontaktní skupinu";
@@ -1361,16 +1572,16 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Description */
 "Please set a password." = "Nastavte prosím heslo.";
 
-/* None */
+/* (No Comment) */
 "Please try a different domain." = "Zkuste jinou doménu.";
 
-/* None */
+/* (No Comment) */
 "Please try a different email address." = "Zkuste jinou e-mailovou adresu.";
 
-/* None */
+/* (No Comment) */
 "Please try a different password." = "Zkuste jiné heslo.";
 
-/* None */
+/* (No Comment) */
 "Please try a different user name." = "Zkuste jiné uživatelské jméno.";
 
 /* 
@@ -1387,7 +1598,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Alert */
 "Please use the web application to reset your password." = "Pro obnovení hesla použijte prosím webovou aplikaci.";
 
-/* None */
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Ke změně hesla schránky použijte prosím webovou verzi aplikace ProtonMail!";
 
 /* Alert */
@@ -1403,8 +1614,20 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
  & alert title */
 "Please, manage it in your phone." = "Prosím, upravte to ve vašem telefonu.";
 
+/* Upgrade warning title */
+"PREMIUM FEATURE" = "PRÉMIOVÁ FUNKCE";
+
 /* Action */
 "Print" = "Tisk";
+
+/* cell title in device settings */
+"Privacy" = "Privacy";
+
+/* agree check box privacy */
+"privacy policy." = "zásady ochrany osobních údajů.";
+
+/* Local notification title */
+"Problem sending message" = "Problem sending message";
 
 /* Title */
 "Protection" = "Ochrana";
@@ -1412,14 +1635,14 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* settings protection section title */
 "Protection Entire App" = "Ochrana celé aplikace";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton is down";
+
+/* network troubleshot cell title */
+"Proton Status" = "Proton Status";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
-
-/* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus je nutný k úpravě vašeho mobilního podpisu";
-
-/* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary Vám umožní přidávat a upravovat detaily kontaktů víc než jejich jméno a e-mail. Použitím ProtonMailu budou tyto údaje stejně zabezpečené jako Vaše end-to-end šifrované e-maily.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail neprodává reklamy a nezneužívá Vaše soukromí. Vaše podpora je nezbytná pro udržení chodu ProtonMail. Můžete upgradovat na placený účet nebo přispět na podporu ProtonMail.";
@@ -1430,14 +1653,29 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail je nyní v režimu offline, zkontrolujte náš twitter pro aktuální stav: https://twitter.com/protonmail";
 
+/* Title */
+"ProtonMail is currently offline..." = "ProtonMail je v režimu offline...";
+
+/* Description */
+"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus je nutný k úpravě vašeho mobilního podpisu";
+
+/* Upgrade warning message */
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary Vám umožní přidávat a upravovat detaily kontaktů víc než jejich jméno a e-mail. Použitím ProtonMailu budou tyto údaje stejně zabezpečené jako Vaše end-to-end šifrované e-maily.";
+
+/* network troubleshot cell title */
+"ProtonVPN" = "ProtonVPN";
+
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN v ceně";
 
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Proxy/Firewall interference";
+
+/* cell title in device settings */
+"Push Notifications" = "Push Notifications";
+
 /* Title */
 "Quick swipe actions" = "Akce rychlého přetažení";
-
-/* Action */
-"RESET MAILBOX PASSWORD" = "OBNOVIT HESLO POŠTOVNÍ SCHRÁNKY";
 
 /* Title */
 "Rate & Review" = "Ohodnotit & Recenzovat";
@@ -1466,6 +1704,12 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* remove action */
 "Remove" = "Odstranit";
 
+/* account right bar item title */
+"Remove All" = "Remove All";
+
+/* Settings row */
+"Remove image meta-data" = "Remove image meta-data";
+
 /* un star message */
 "Remove Star" = "Odebrat hvězdičku";
 
@@ -1481,7 +1725,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* composer view model impl */
 "Reply message" = "Odpověď";
 
-/* None */
+/* (No Comment) */
 "ReplyAll" = "Odpovědět všem";
 
 /* menu title */
@@ -1496,6 +1740,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* link opeining confirmation */
 "Request Link Confirmation" = "Požadovat potvrzení odkazu";
 
+/* Action */
+"RESET MAILBOX PASSWORD" = "OBNOVIT HESLO POŠTOVNÍ SCHRÁNKY";
+
 /* Title */
 "Resetting message cache ..." = "Resetování mezipaměti zprávy...";
 
@@ -1504,21 +1751,6 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Zkusit znovu po %d sekundách";
-
-/* mail location title */
-"SENT" = "ODESLANÉ";
-
-/* mail location title */
-"SPAM" = "SPAM";
-
-/* Error */
-"SRP Client" = "SRP klient";
-
-/* Error */
-"SRP Server" = "SRP Server";
-
-/* mail location title */
-"STARRED" = "S HVĚZDIČKOU";
 
 /* Title */
 "Save" = "Uložit";
@@ -1532,7 +1764,8 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* action sheet option */
 "Scheduled" = "Naplánováno";
 
-/* Title */
+/* Springboard (3D Touch) shortcuts action
+   Title */
 "Search" = "Vyhledat";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1541,14 +1774,11 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* The title for the view where user can select the color for the group */
 "Select Color" = "Vybrat barvu";
 
-/* None */
+/* (No Comment) */
 "Select your language" = "Vyberte Váš jazyk";
 
 /* Action */
 "Send" = "Odeslat";
-
-/* Title */
-"Send Verification Code" = "Odeslat ověřovací kód";
 
 /* Action */
 "Send anyway" = "Přesto odeslat";
@@ -1559,14 +1789,17 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "Send plain but stored enc" = "Odeslat jako prostý text ale uložit šifrovaně";
 
+/* Title */
+"Send Verification Code" = "Odeslat ověřovací kód";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Ověření odesílatele se selhalo";
 
-/* Description */
-"Sending Message" = "Odesílání zprávy";
-
 /* Alert title */
 "Sending message" = "Odesílání zprávy";
+
+/* Description */
+"Sending Message" = "Odesílání zprávy";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Odesílání zpráv z adresy %1$@ je placená funkce. Vaše zpráva bude odeslána z Vaší výchozí adresy %2$@";
@@ -1574,8 +1807,8 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* menu title */
 "Sent" = "Odeslané";
 
-/* Description */
-"Sent Failed" = "Odesílání selhalo";
+/* mail location title */
+"SENT" = "ODESLANÉ";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "Odesláno pomocí ProtonMail s nulovým přístupem šifrování";
@@ -1584,13 +1817,16 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "Sent by you with end-to-end encryption" = "Odesláno Vámi s end-to-end šifrováním";
 
 /* Description */
-"Server proofs not valid!" = "Důkazy serveru nejsou platné!";
+"Sent Failed" = "Odesílání selhalo";
 
-/* Title */
-"Set Password" = "Nastavit heslo";
+/* Description */
+"Server proofs not valid!" = "Důkazy serveru nejsou platné!";
 
 /* Description */
 "Set a password to encrypt this message for non-ProtonMail users." = "Nastavit heslo pro šifrování této zprávy uživatelům mimo ProtonMailu.";
+
+/* Title */
+"Set Password" = "Nastavit heslo";
 
 /* Signup passwords top title */
 "Set passwords" = "Nastavit hesla";
@@ -1619,6 +1855,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* settings general section title */
 "Single Password" = "Jednotné heslo";
 
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Snooze";
+
 /* settings option */
 "Snooze Notifications" = "Odložit oznámení";
 
@@ -1631,15 +1870,24 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Omlouváme se, ale nemůžeme zpracovávat nákupy v beta verzi aplikace pro iOS. Děkujeme Vám za účast v našem veřejném beta testování!";
 
-/* None */
+/* (No Comment) */
 "Space Warning" = "Varování: dochází místo";
 
 /* mail location desc
    menu title */
 "Spam" = "Spam";
 
+/* mail location title */
+"SPAM" = "SPAM";
+
 /* Description */
 "Spammed" = "Spam";
+
+/* Error */
+"SRP Client" = "SRP klient";
+
+/* Error */
+"SRP Server" = "SRP Server";
 
 /* Description */
 "Srp single password keyslat invalid!" = "SRP jednotné heslo klíče je neplatné!";
@@ -1649,14 +1897,21 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* mail location desc
    menu title
+   Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "S hvězdičkou";
+
+/* mail location title */
+"STARRED" = "S HVĚZDIČKOU";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Čas zahájení";
 
 /* contact placeholder */
 "State" = "Stav";
+
+/* network troubleshot cell title */
+"Still can't find a solution" = "Still can't find a solution";
 
 /* Title */
 "Storage" = "Úložiště";
@@ -1679,11 +1934,14 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* menu title */
 "Subscription" = "Předplatné";
 
-/* Action */
-"Support ProtonMail" = "Podpořte ProtonMail";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Podpora %i specifických domén (např. uživatel@vašedoména.cz)";
+
+/* network troubleshot cell title */
+"support form" = "support form";
+
+/* Action */
+"Support ProtonMail" = "Podpořte ProtonMail";
 
 /* settings swipe actions section title */
 "Swipe Left to Right" = "Přejetí zleva doprava";
@@ -1691,11 +1949,15 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* settings swipe actions section title */
 "Swipe Right to Left" = "Přejetí zprava doleva";
 
+/* cell title in device settings
+   Swiping gestures */
+"Swiping gestures" = "Swiping gestures";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "Switched to account '%@'";
+
 /* Error */
 "System can't copy the file" = "Systém nemůže zkopírovat soubor";
-
-/* mail location title */
-"TRASH" = "KOŠ";
 
 /* Title */
 "Take a Photo" = "Vyfotit";
@@ -1703,18 +1965,14 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Klepněte na \"Beztak Odeslat\" pro odeslání bez vypršení platnosti těmto příjemcům";
 
-/* None */
+/* network troubleshot cell title */
+"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+
+/* agree check box terms */
+"terms and conditions" = "smluvní podmínky užívání";
+
+/* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Děkujeme vám za odeslání hlášení o chybě.  Vaši zprávu jsme přidali do našeho systému sledování chyb.";
-
-/* update password error */
-"The Password is wrong." = "Heslo je nesprávné.";
-
-/* Title */
-"The ProtonMail current offline..." = "ProtonMail není dostupný...";
-
-/* 
- */
-"The UserName have been taken." = "Uživatelské jméno už bylo použito.";
 
 /* Description */
 "The authentication credentials are invalid." = "Přihlašovací údaje jsou neplatné.";
@@ -1738,7 +1996,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* key size note part 1 */
 "The highest level of encryption available." = "K dispozici je nejvyšší úroveň šifrování.";
 
-/* None */
+/* (No Comment) */
 "The label name is duplicate" = "Jméno štítku je již použito";
 
 /* Error */
@@ -1751,20 +2009,23 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
  *  LabelsViewController */
 "The maximum number of labels is %d." = "Maximální počet štítků je %d.";
 
-/* None */
+/* update password error */
+"The new password can't be empty." = "Nové heslo nesmí být prázdné.";
+
+/* (No Comment) */
 "The new password can't empty" = "Nové heslo nesmí být prázdné";
 
 /* update password error */
-"The new password can't empty." = "Nové heslo nesmí být prázdné.";
+"The new password does not match." = "Nová hesla se neshodují.";
 
-/* None */
+/* (No Comment) */
 "The new password not match" = "Hesla se neshodují";
-
-/* update password error */
-"The new password not match." = "Nové heslo se neshoduje.";
 
 /* recovery email notes */
 "The optional recovery email address allows you to reset your login password if you forget it." = "Volitelná e-mailová adresa pro obnovení Vám umožní provést znovu nastavení přihlašovacího hesla pokud ho zapomenete.";
+
+/* update password error */
+"The Password is wrong." = "Heslo je nesprávné.";
 
 /* Description */
 "The password you entered does not match the current password." = "Zadané heslo se neshoduje s aktuálním heslem.";
@@ -1778,11 +2039,18 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "The request timed out." = "Vypršel časový limit žádosti.";
 
-/* None */
+/* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "Celková velikost příloh nemůže přesáhnout 25MB";
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Celková velikost příloh nemůže být větší než 25MB";
+
+/* Alert when the account is already logged in */
+"The user is already logged in" = "The user is already logged in";
+
+/* 
+ */
+"The UserName have been taken." = "Uživatelské jméno už bylo použito.";
 
 /* 
  & title */
@@ -1790,6 +2058,12 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* Error */
 "The verification failed!" = "Ověření selhalo!";
+
+/* alert when logout user if in queue still have tasks */
+"There are still some messages in queue. If you log out, the draft will be deleted." = "There are still some messages in queue. If you log out, the draft will be deleted.";
+
+/* Alert to confirm logout with pending message in the queue */
+"There are unsent messages that will be lost if you log out" = "There are unsent messages that will be lost if you log out";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "Došlo k chybě při vytváření nebo načítání uložených dat aplikace.";
@@ -1813,18 +2087,25 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Tato zpráva může být pokus o phishing. Prosím zkontrolujte odesílatele a obsah a ujistěte se, že jsou skutečné.";
 
+/* Title */
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "This preference will fallback to Safari if the browser of choice will be uninstalled.";
+
 /* contacts talbe cell Title title */
 "Title" = "Titul";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately";
 
 /* Title */
 "To" = "Komu";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "Pro ochranu proti zneužití služby ProtonMail,
- potřebujeme ověřit, že jste člověk.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Pro ochranu proti zneužití služby ProtonMail,&#13;\n potřebujeme ověřit, že jste člověk.";
 
-/* None */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Chcete-li nastavit nové heslo poštovní schránky, použijte prosím webovou verzi ProtonMail na protonmail.com";
 
 /* Description */
@@ -1840,6 +2121,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Alert title */
 "Too many recipients" = "Příliš mnoho příjemců";
 
+/* network troubleshot cell title */
+"Tor" = "Tor";
+
 /* settings touchid error */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID není povoleno, povolte jej prosím v Nastavení systému";
 
@@ -1851,8 +2135,20 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
    move action */
 "Trash" = "Koš";
 
+/* mail location title */
+"TRASH" = "KOŠ";
+
 /* Title */
 "Trouble shooting guide" = "Průvodce odstraňováním problémů";
+
+/* troubleshooting view button */
+"Troubleshoot" = "Troubleshoot";
+
+/* network troubleshot view title */
+"TroubleShooting" = "TroubleShooting";
+
+/* network troubleshot cell title */
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Try connecting to Proton from a different network (or use ProtonVPN or Tor).";
 
 /* action sheet option */
 "Turn Off" = "Vypnout";
@@ -1860,17 +2156,14 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "Tweet about ProtonMail" = "Tvítovat o ProtonMailu";
 
+/* network troubleshot cell title */
+"Twitter" = "Twitter";
+
 /* Placeholder */
 "Two Factor Code" = "Dvoufázový kód";
 
 /* Internal type casting error */
 "Type casting error" = "Type casting error";
-
-/* default vcard types */
-"URL" = "URL";
-
-/* Title */
-"USER LOGIN" = "PŘIHLÁŠENÍ UŽIVATELE";
 
 /* Description */
 "Unable to connect to the server" = "Nelze se připojit k serveru";
@@ -1907,9 +2200,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "Unable to parse response" = "Nelze zpracovat odpověď";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Nelze zpracovat objekt odpovědi:
-%@";
+"Unable to parse the response object:\n%@" = "Nelze zpracovat objekt odpovědi:\n%@";
 
 /* Error */
 "Unable to parse token" = "Nelze zpracovat token";
@@ -1923,7 +2214,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Description */
 "Unknow Error" = "Neznámá chyba";
 
-/* None */
+/* (No Comment) */
 "Unknow file" = "Neznámý soubor";
 
 /* title, default display name */
@@ -1932,11 +2223,14 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Error */
 "Unknown Error" = "Neznámá chyba";
 
-/* None */
+/* (No Comment) */
 "Unkonw Version" = "Neznámá verze";
 
 /* Service plan capability; */
 "Unlimited messages sent/day" = "Neomezený počet odeslaných zpráv/den";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Unlock required";
 
 /* The verb for describing the unread action
    VoiceOver: email is not read yet */
@@ -1981,11 +2275,17 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* default vcard types */
 "Url" = "Url";
 
+/* default vcard types */
+"URL" = "URL";
+
 /* error when user already exist */
 "User already exist!" = "Uživatel již existuje!";
 
-/* None */
+/* (No Comment) */
 "User is available!" = "Uživatel je k dispozici!";
+
+/* Title */
+"USER LOGIN" = "PŘIHLÁŠENÍ UŽIVATELE";
 
 /* 
  & title */
@@ -2010,11 +2310,14 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* error details */
 "Verification of this content’s signature failed" = "Ověření podpisu tohoto obsahu selhalo";
 
-/* None */
+/* (No Comment) */
 "Version %@ %@" = "Verze %@ %@";
 
 /* message details-> more action-> view headers */
 "View Headers" = "Zobrazit záhlaví";
+
+/* message details-> more action-> view raw html of message body */
+"View HTML" = "View HTML";
 
 /* Action */
 "View Plans" = "Zobrazit tarify";
@@ -2027,6 +2330,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Upozornění: Nenastavili jste e-mail pro obnovení, v případě ztráty hesla, nebude možné účet obnovit. Pokračovat bez e-mailu pro obnovení?";
+
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app.";
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Úspěšně jsme aktivovali Vaše předplatné. Prosím znovu spusťte aplikaci, aby jste mohli začít využívat Vás nový plán služeb.";
@@ -2056,6 +2362,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
  & title */
 "Wrong verification code" = "Neplatný ověřovací kód";
 
+/* Title */
+"wrote:" = "napsal/a:";
+
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Ano, aktivujte pro ";
 
@@ -2063,7 +2372,10 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "Yes, attach details of payment" = "Ano, přiložit detail platby";
 
 /* link opeining confirmation */
-"You are about to launch the web browser and navigate to" = "You are about to launch the web browser and navigate to";
+"You are about to launch the web browser and navigate to" = "Chystáte se otevřít webový prohlížeč a přejít na";
+
+/* Alert of removing all accounts */
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Gesta přejíždění můžete upravit v nastavení aplikace ProtonMail.";
@@ -2073,6 +2385,9 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "%@ adresu nelze nastavit jako výchozí, protože je to placená funkce.";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Je zapnuto vypršení platnosti zprávy, ale ne všichni příjemci to podporují. Prosím, přidejte heslo a/nebo zakažte PGP odesílání pro použití vypršení platnosti pro všechny příjemce.";
@@ -2087,7 +2402,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "You have unsaved changes. Do you want to save it?" = "Máte neuložené změny, chcete je uložit?";
 
 /* Description */
-"You have used %d%% of your storage space (%@)." = "Využíváte %1$d%% úložného prostoru (%2$@).";
+"You have used %d%% of your storage space (%@)." = "You have used %1$d%% of your storage space (%2$@).";
 
 /* Description */
 "You have used up all of your storage space (%@)." = "Vyčerpali jste celý váš úložný prostor (%@).";
@@ -2095,8 +2410,21 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Description */
 "You need at least one recipient to send" = "Potřebujete alespoň jednoho příjemce k odeslání";
 
+/* Alert to confirm logout
+   Alert when logout primary account from account manager */
+"You will be switched to %@" = "You will be switched to %@";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "You're going to delete the message irreversibly. Are you sure?";
+
 /* view top title */
 "Your Country Code" = "Kód Vaší země";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton.";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Vaše doručená pošta je nyní chráněna pomocí přímého šifrování. Pro automatické odesílání zabezpečených e-mailů Vašim kontaktům je vyzvěte k použití ProtonMail! Pokud jej nepoužívají, zprávy můžete taky zašifrovat manuálně.";
@@ -2105,9 +2433,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Váš nový šifrovaný e-mailový účet byl nastaven a je připraven k odesílání a přijímání šifrovaných zpráv.";
 
 /* view top title */
-"Your new secure email
- account is ready." = "Váš nový zabezpečený e-mail
- je připraven.";
+"Your new secure email\r\n account is ready." = "Váš nový zabezpečený e-mail&#13;\n je připraven.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Váš plán je v současné době aktivní do";
@@ -2120,52 +2446,4 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 
 /* contact placeholder */
 "ZIP" = "PSČ";
-
-/* agree check box middle word */
-"and" = "a";
-
-/* like at 10:00pm */
-"at" = "v(ve)";
-
-/* Error */
-"attempt remaining until secure data wipe!" = "zbývající pokus do zabezpečeného vymazání dat!";
-
-/* Description */
-"attempts remaining" = "zbývající pokusy";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "zbývající pokusy do zabezpečeného vymazání dat!";
-
-/* Action */
-"close tour" = "ukončit průvodce";
-
-/* Title */
-"days" = "dny";
-
-/* Buy button second line */
-"for one year" = "na jeden rok";
-
-/* contacts api error when fetch */
-"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "získání contacts() se nezdařilo, vrácená hodnota null pro peopleOrderedByUsersPreference!!";
-
-/* None */
-"hours" = "Hodiny";
-
-/* Title */
-"inline attachments" = "vložené přílohy";
-
-/* no object error, local only , this could be not translated! */
-"no object" = "žádný objekt";
-
-/* Title */
-"normal attachments" = "normální přílohy";
-
-/* agree check box privacy */
-"privacy policy." = "zásady ochrany osobních údajů.";
-
-/* agree check box terms */
-"terms and conditions" = "smluvní podmínky užívání";
-
-/* Title */
-"wrote:" = "napsal/a:";
 

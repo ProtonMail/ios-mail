@@ -1,26 +1,12 @@
-//
-//  SentryUser.m
-//  Sentry
-//
-//  Created by Daniel Griesser on 05/05/2017.
-//  Copyright © 2017 Sentry. All rights reserved.
-//
-
-#if __has_include(<Sentry/Sentry.h>)
-
-#import <Sentry/SentryUser.h>
-#import <Sentry/NSDictionary+Sanitize.h>
-
-#else
 #import "SentryUser.h"
-#import "NSDictionary+Sanitize.h"
-#endif
+#import "NSDictionary+SentrySanitize.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation SentryUser
 
-- (instancetype)initWithUserId:(NSString *)userId {
+- (instancetype)initWithUserId:(NSString *)userId
+{
     self = [super init];
     if (self) {
         self.userId = userId;
@@ -28,21 +14,32 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (instancetype)init {
+- (instancetype)init
+{
     return [super init];
 }
 
-- (NSDictionary<NSString *, id> *)serialize {
+- (id)copyWithZone:(nullable NSZone *)zone
+{
+    SentryUser *user = [[SentryUser allocWithZone:zone] init];
+    user.userId = self.userId;
+    user.email = self.email;
+    user.username = self.username;
+    user.data = self.data.mutableCopy;
+    return user;
+}
+
+- (NSDictionary<NSString *, id> *)serialize
+{
     NSMutableDictionary *serializedData = [[NSMutableDictionary alloc] init];
-    
+
     [serializedData setValue:self.userId forKey:@"id"];
     [serializedData setValue:self.email forKey:@"email"];
     [serializedData setValue:self.username forKey:@"username"];
-    [serializedData setValue:[self.extra sentry_sanitize] forKey:@"extra"];
-    
+    [serializedData setValue:[self.data sentry_sanitize] forKey:@"data"];
+
     return serializedData;
 }
-
 
 @end
 

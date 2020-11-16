@@ -65,7 +65,7 @@ public class PushNotificationService: NSObject, Service {
         self.signInProvider = signInProvider
         self.deviceTokenSaver = deviceTokenSaver
         self.unlockProvider = unlockProvider
-        
+        self.latestDeviceToken = KeychainWrapper.keychain.string(forKey: PushNotificationDecryptor.Key.deviceToken)
         super.init()
         
         defer {
@@ -79,6 +79,14 @@ public class PushNotificationService: NSObject, Service {
     }
     
     fileprivate var latestDeviceToken: String? { // previous device tokens are not relevant for this class
+        willSet {
+            guard latestDeviceToken != newValue else { return }
+            // Reset state if new token is changed.
+            let settings = self.currentSubscriptions.settings()
+            for setting in settings {
+                self.currentSubscriptions.update(setting, toState: .notReported)
+            }
+        }
         didSet { self.deviceTokenSaver.set(newValue: latestDeviceToken)} // but we have to save one for PushNotificationDecryptor
     }
     fileprivate let currentSubscriptions: SubscriptionsPack

@@ -167,7 +167,7 @@ extension Message {
                 }
                 
                 if !label.labelID.preg_match ("(?!^\\d+$)^.+$") {
-                    if label.labelID != "1", label.labelID != "2", label.labelID != "10" {
+                    if label.labelID != "1", label.labelID != "2", label.labelID != "10", label.labelID != "5" {
                         return label.labelID
                     }
                 }
@@ -292,7 +292,7 @@ extension Message {
         return false
     }
     
-    class func delete(labelID : String) -> Bool {
+    class func delete(labelID : String) -> Bool { //TODO:: double check if user id matters
         let mContext = CoreDataService.shared.mainManagedObjectContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         

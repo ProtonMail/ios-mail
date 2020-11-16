@@ -25,6 +25,7 @@ public enum PasswordMode: Int, Codable {
 
 public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol>: NSObject {
     public typealias Completion = (Result<Status, Error>) -> Void
+    public typealias DohCheck = (String, Error) -> String? // this is temp
     
     public enum Status {
         case ask2FA(TwoFactorContext)
@@ -88,15 +89,26 @@ public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol
     /// Clear login, when preiously unauthenticated
     public func authenticate(username: String,
                              password: String,
-                             completion: @escaping Completion)
+                             completion: @escaping Completion,
+                             dohCheck: @escaping DohCheck)
     {
         // 1. auth info request
         let authInfoEndpoint = AuthService.InfoEndpoint(username: username)
         
         self.session.dataTask(with: authInfoEndpoint.request) { responseData, response, networkingError in
-            guard networkingError == nil else {
-                return completion(.failure(networkingError!))
+            if let error = networkingError {
+                if let newUrl = dohCheck(AuthService.hostUrl, error) {
+                    AuthService.hostUrl = newUrl
+                    // update the url here
+                    return self.authenticate(username: username,
+                                             password: password,
+                                             completion: completion,
+                                             dohCheck: dohCheck)
+                } else {
+                    return completion(.failure(networkingError!))
+                }
             }
+            
             guard let responseData = responseData else {
                 return completion(.failure(Errors.emptyAuthInfoResponse))
             }
@@ -132,52 +144,76 @@ public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol
                     throw Errors.emptyClientSrpAuth
                 }
                 
-                // 3. auth request
-                let authEndpoint = AuthService.AuthEndpoint(username: username,
-                                                     ephemeral: clientEphemeral,
-                                                     proof: clientProof,
-                                                     session: response.SRPSession,
-                                                     serverProof: expectedServerProof)
-                self.session.dataTask(with: authEndpoint.request) { responseData, response, networkingError in
-                    guard networkingError == nil else {
-                        return completion(.failure(networkingError!))
-                    }
-                    guard let responseData = responseData else {
-                        return completion(.failure(Errors.emptyAuthResponse))
-                    }
-                    
-                    do {
-                        // server error code
-                        if let error = try? decoder.decode(ErrorResponse.self, from: responseData) {
-                            throw Errors.serverError(NSError(error))
-                        }
-                        
-                        // relevant response
-                        let response = try decoder.decode(AuthService.AuthEndpoint.Response.self, from: responseData)
-                        guard let serverProof = Data(base64Encoded: response.serverProof),
-                            expectedServerProof == serverProof else
-                        {
-                            throw Errors.wrongServerProof
-                        }
-                        
-                        // are we done yet or need 2FA?
-                        switch response._2FA.enabled {
-                        case .off:
-                            let credential = Credential(res: response)
-                            completion(.success(.newCredential(credential, response.passwordMode)))
-                        case .on:
-                            let context = (Credential(res: response), response.passwordMode)
-                            completion(.success(.ask2FA(context)))
-                        
-                        case .u2f, .otp:
-                            throw Errors.notImplementedYet("U2F not implemented yet")
-                        }
-                        
-                    } catch let parsingError {
-                        completion(.failure(parsingError))
-                    }
-                }.resume()
                 
+                
+                func authReq(username: String, ephemeral: Data, proof: Data, session: String, serverProof: Data) throws -> Void {
+                    // 3. auth request
+                    let authEndpoint = AuthService.AuthEndpoint(username: username,
+                                                                ephemeral: ephemeral,
+                                                                proof: proof,
+                                                                session: session,
+                                                                serverProof: serverProof)
+                    self.session.dataTask(with: authEndpoint.request) { responseData, response, networkingError in
+                        if let error = networkingError {
+                            if let newUrl = dohCheck(AuthService.hostUrl, error) {
+                                AuthService.hostUrl = newUrl
+                                // update the url here
+                                do {
+                                    return try authReq(username: username,
+                                                       ephemeral: ephemeral,
+                                                       proof: proof,
+                                                       session: session,
+                                                       serverProof: serverProof)
+                                } catch let parsingError {
+                                    return  completion(.failure(parsingError))
+                                }
+                            } else {
+                                return completion(.failure(networkingError!))
+                            }
+                        }
+                        
+                        guard let responseData = responseData else {
+                            return completion(.failure(Errors.emptyAuthResponse))
+                        }
+                        
+                        do {
+                            // server error code
+                            if let error = try? decoder.decode(ErrorResponse.self, from: responseData) {
+                                throw Errors.serverError(NSError(error))
+                            }
+                            
+                            // relevant response
+                            let response = try decoder.decode(AuthService.AuthEndpoint.Response.self, from: responseData)
+                            guard let serverProof = Data(base64Encoded: response.serverProof),
+                                expectedServerProof == serverProof else
+                            {
+                                throw Errors.wrongServerProof
+                            }
+                            
+                            // are we done yet or need 2FA?
+                            switch response._2FA.enabled {
+                            case .off:
+                                let credential = Credential(res: response)
+                                completion(.success(.newCredential(credential, response.passwordMode)))
+                            case .on:
+                                let context = (Credential(res: response), response.passwordMode)
+                                completion(.success(.ask2FA(context)))
+                            
+                            case .u2f, .otp:
+                                throw Errors.notImplementedYet("U2F not implemented yet")
+                            }
+                            
+                        } catch let parsingError {
+                            completion(.failure(parsingError))
+                        }
+                    }.resume()
+                }
+                
+                try authReq(username: username,
+                            ephemeral: clientEphemeral,
+                            proof: clientProof,
+                            session: response.SRPSession,
+                            serverProof: expectedServerProof)
             } catch let parsingError {
                 return completion(.failure(parsingError))
             }
@@ -188,13 +224,24 @@ public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol
     /// Continue clear login flow with 2FA code
     public func confirm2FA(_ twoFactorCode: Int,
                            context: TwoFactorContext,
-                           completion: @escaping Completion)
+                           completion: @escaping Completion,
+                           dohCheck: @escaping DohCheck)
     {
         let twoFAEndpoint = AuthService.TwoFAEndpoint(code: twoFactorCode, token: context.credential.accessToken, UID: context.credential.UID)
         self.session.dataTask(with: twoFAEndpoint.request) { responseData, response, networkingError in
-            guard networkingError == nil else {
-                return completion(.failure(networkingError!))
+            if let error = networkingError {
+                if let newUrl = dohCheck(AuthService.hostUrl, error) {
+                    AuthService.hostUrl = newUrl
+                    // update the url here
+                    return self.confirm2FA(twoFactorCode,
+                                           context: context,
+                                           completion: completion,
+                                           dohCheck: dohCheck)
+                } else {
+                    return completion(.failure(networkingError!))
+                }
             }
+            
             guard let responseData = responseData else {
                 return completion(.failure(Errors.emptyAuthResponse))
             }
@@ -222,13 +269,23 @@ public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol
     
     // Refresh expired access token using refresh token
     public func refreshCredential(_ oldCredential: Credential,
-                                  completion: @escaping Completion)
+                                  completion: @escaping Completion,
+                                  dohCheck: @escaping DohCheck)
     {
         let refreshEndpoint = AuthService.RefreshEndpoint(refreshToken: oldCredential.refreshToken, UID: oldCredential.UID)
         self.session.dataTask(with: refreshEndpoint.request) { responseData, response, networkingError in
-            guard networkingError == nil else {
-                return completion(.failure(networkingError!))
+            if let error = networkingError {
+                if let newUrl = dohCheck(AuthService.hostUrl, error) {
+                    AuthService.hostUrl = newUrl
+                    // update the url here
+                    return self.refreshCredential(oldCredential,
+                                                  completion: completion,
+                                                  dohCheck: dohCheck)
+                } else {
+                    return completion(.failure(networkingError!))
+                }
             }
+            
             guard let responseData = responseData else {
                 return completion(.failure(Errors.emptyAuthResponse))
             }
@@ -267,7 +324,10 @@ class SessionDelegate: NSObject, URLSessionDelegate {
         if let trust = AuthService.trust {
             trust(session, challenge, completionHandler)
         } else {
-            completionHandler(.performDefaultHandling, nil)
+            //completionHandler(.performDefaultHandling, nil)
+            completionHandler(URLSession.AuthChallengeDisposition.useCredential,
+                              URLCredential(trust: challenge.protectionSpace.serverTrust!))
+            
         }
     }
 }

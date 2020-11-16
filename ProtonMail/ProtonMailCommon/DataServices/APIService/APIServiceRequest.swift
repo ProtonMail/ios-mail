@@ -274,6 +274,7 @@ class ApiRequestNew<T : ApiResponse> : Package {
                 //TODO check error
                 apiRes.ParseHttpError(error!)
                 deferred.resolver.reject(error!)
+                return
             }
             
             if res == nil {

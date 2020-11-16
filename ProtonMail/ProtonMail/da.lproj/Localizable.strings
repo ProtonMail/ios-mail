@@ -1,3 +1,24 @@
+/* Key size text when setup key */
+"(2048 bit)" = "(2.048 bit)";
+
+/* Key size text when setup key */
+"(4096 bit)" = "(4.096 bit)";
+
+/* Comment for disconnected account in Account Manager */
+"(logged out)" = "(logged out)";
+
+/* Service plan capability detail; like in '50 email addresses (total)' */
+"(total)" = "(i alt)";
+
+/* secret */
+"**********" = "**********";
+
+/* optional text field */
+"*OPTIONAL" = "* VALGFRIT";
+
+/* Service plan capability detail; like in '5 email addresses/user' */
+"/user" = "/bruger";
+
 /* Service plan capability */
 "%@ storage capacity" = "%@-lagerpladskapacitet";
 
@@ -22,32 +43,14 @@
 /* Service plan capability; i = 5 or 50 */
 "%i email addresses" = "%i e-mails";
 
-/* Key size text when setup key */
-"(2048 bit)" = "(2.048 bit)";
-
-/* Key size text when setup key */
-"(4096 bit)" = "(4.096 bit)";
-
-/* Service plan capability detail; like in '50 email addresses (total)' */
-"(total)" = "(i alt)";
-
-/* secret */
-"**********" = "**********";
-
-/* optional text field */
-"*OPTIONAL" = "* VALGFRIT";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Drop hér for at tilføje som vedhæftning";
 
-/* Service plan capability detail; like in '5 email addresses/user' */
-"/user" = "/bruger";
+/* default empty object */
+"<no object>" = "<no object>";
 
 /* 2fa verification failed */
 "2FA failed. Please try to login again." = "2FA mislykkedes, prøv at logge ind igen.";
-
-/* default empty object */
-"<no object>" = "<no object>";
 
 /* *
  *  LabelTableViewCell */
@@ -65,25 +68,23 @@
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "En PIN-kode er ikke opsat. Opæt én i Systemindstillinger";
 
-/* when server not reachable */
-"API Server not reachable..." = "API-server utilgængelig...";
-
-/* mail location title */
-"ARCHIVE" = "ARKIV";
-
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Adgang til denne konto er deaktiveret grundet manglende betaling. Log ind via protonmail.com for at betale din udestående faktura.";
 
-/* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Adgang til denne konte er deaktiveret grundet restance.
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Adgang til denne konte er deaktiveret grundet restance.\n\nBesøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vidensdatabasen</a> for yderligere information.";
 
-Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vidensdatabasen</a> for yderligere information.";
+/* Account manager title */
+"Account" = "Account";
 
 /* 
  & title */
 "Account password invalid" = "Ugyldig kontoadgangskode";
 
-/* None */
+/* section title in settings */
+"Account Settings" = "Account Settings";
+
+/* (No Comment) */
 "Add" = "Tilføj";
 
 /* new contacts add Anniversary */
@@ -110,11 +111,29 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* add label action */
 "Add Label" = "Tilføj etiket";
 
+/* add new address action */
+"Add new address" = "Tilføj ny adresse";
+
+/* new custom field action */
+"Add new custom field" = "Tilføj nyt tilpasset felt";
+
+/* new email action */
+"Add new email" = "Tilføj ny e-mail";
+
+/* new field action */
+"Add new field" = "Tilføj nyt felt";
+
 /* add a new folder */
 "Add New Folder" = "Tilføj ny mappe";
 
 /* add a new folder */
 "Add New Label" = "Tilføj ny etiket";
+
+/* new phone action */
+"Add new phone number" = "Tilføj nyt telefonnummer";
+
+/* action */
+"Add new URL" = "Add new URL";
 
 /* new contacts add Nickname */
 "Add Nickname" = "Tilføj kaldenavn";
@@ -131,40 +150,28 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* new contacts add Title */
 "Add Title" = "Tilføj titel";
 
-/* add new address action */
-"Add new address" = "Tilføj ny adresse";
-
-/* new custom field action */
-"Add new custom field" = "Tilføj nyt tilpasset felt";
-
-/* new email action */
-"Add new email" = "Tilføj ny e-mail";
-
-/* new field action */
-"Add new field" = "Tilføj nyt felt";
-
-/* new phone action */
-"Add new phone number" = "Tilføj nyt telefonnummer";
-
-/* action */
-"Add new url" = "Tilføj ny URL";
-
 /* Title */
 "Add to contacts" = "Føj til kontakter";
 
 /* default vcard types */
 "Address" = "Adresse";
 
+/* cell title in device settings */
+"Addresses" = "Addresses";
+
 /* Title */
 "Alert" = "Advarsel";
+
+/* Title */
+"All contacts are imported" = "Alle kontakter er importeret";
 
 /* mail location desc
    mail location title
    menu title */
 "All Mail" = "Alle e-mails";
 
-/* Title */
-"All contacts are imported" = "Alle kontakter er importeret";
+/* network troubleshot cell title */
+"Allow alternative routing" = "Allow alternative routing";
 
 /* archive when apply label */
 "Also Archive" = "Arkivér også";
@@ -172,11 +179,29 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Description */
 "Also used to reset a forgotten password." = "Benyt også til nulstilling af en glemt adgangskode.";
 
+/* agree check box middle word */
+"and" = "og";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Årsdag";
 
+/* network troubleshot cell title */
+"Antivirus interference" = "Antivirus interference";
+
+/* when server not reachable */
+"API Server not reachable..." = "API-server utilgængelig...";
+
+/* section title in settings */
+"APP INFORMATION" = "APP INFORMATION";
+
 /* Error */
 "App is locked" = "App er låst";
+
+/* cell title in device settings */
+"App Language" = "App Language";
+
+/* section title in settings */
+"App Settings" = "App Settings";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple In-app købspris";
@@ -188,7 +213,7 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple meddelte, at du har opgraderet tjenesteabonnementet, men oplyste ikke, hvilken af dine ProtonMail-konti, der skal opgraderes, hvis du har mere end én.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple meddelte, at du har opgraderet tjenesteabonementet, men at nogle tekniske data mangler. Udfyld fejlrapporten og kundesupportteamet vil kontakte dig.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple meddelte, at du har opgraderet tjenesteabonnementet, men du er siden da logget ud af kontoen.";
@@ -203,11 +228,23 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
    menu title */
 "Archive" = "Arkiv";
 
+/* mail location title */
+"ARCHIVE" = "ARKIV";
+
 /* Description */
 "Archived" = "Arkiveret";
 
-/* Alert to confirm logout */
-"Are you sure you want to logout?" = "Sikker på, at du vil logge ud?";
+/* Alert when logout non-primary account from account manager */
+"Are you sure you want to log out?" = "Are you sure you want to log out?";
+
+/* Alert to confirm logout when only one account logged in */
+"Are you sure you want to logout %@?" = "Are you sure you want to logout %@?";
+
+/* emptify folder/label confirmation alert */
+"Are you sure? This can't be undone." = "Are you sure? This can't be undone.";
+
+/* like at 10:00pm */
+"at" = "kl.";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Vedhæftning importeret";
@@ -215,14 +252,23 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* VoiceOver: email has attachments */
 "Attachments" = "Vedhæftninger";
 
+/* Error */
+"attempt remaining until secure data wipe!" = "forsøg tilbage, indtil sikker datarydning!";
+
+/* Description */
+"attempts remaining" = "forsøg tilbage";
+
+/* Error */
+"attempts remaining until secure data wipe!" = "forsøg tilbage, indtil sikker datarydning!";
+
 /* Title */
 "Authentication" = "Godkendelse";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "Godkendelse mislykkedes: Forkert brugernavn eller adgangskode";
+"Authentication failed" = "Godkendelse mislykkedes";
 
 /* Description */
-"Authentication failed" = "Godkendelse mislykkedes";
+"Authentication Failed Wrong username or password" = "Godkendelse mislykkedes: Forkert brugernavn eller adgangskode";
 
 /* Error */
 "Authentication failed. Please try to login again." = "Godkendelse mislykkedes, prøv at logge ind igen.";
@@ -238,6 +284,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* settings general section title */
 "Auto Show Images" = "Auto-vis billeder";
+
+/* section title in settings */
+"Auto-lock" = "Auto-lock";
 
 /* top left back button */
 "Back" = "Tilbage";
@@ -275,14 +324,14 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Link to More Credits screen */
 "Buy More Credits" = "Køb yderligere kredit";
 
+/* Alert for removing disconnected accounts */
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?";
+
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "Ved at benytte ProtonMail, accepterer du vores";
 
 /* No comment provided by engineer. */
 "By using protonmail, you agree to our %@ and %@." = "Ved at benytte ProtonMail accepterer du vores %1$@ og %2$@.";
-
-/* human check option button */
-"CAPTCHA" = "CAPTCHA";
 
 /* Call the contact (button title text) */
 "Call Contact" = "Ring til kontakt";
@@ -318,11 +367,14 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
 "Can't fetch contact groups" = "Kan ikke hente kontaktgrupper";
 
-/* None */
+/* (No Comment) */
 "Can't find the clicked message please try again!" = "Kan ikke finde beskeden, der blev klikket på. Forsøg igen!";
 
 /* Description */
 "Can't find the selected message. Please try again." = "Kan ikke finde valgte beskeden. Forsøg igen.";
+
+/* Description */
+"Can't find the value from the response body" = "Can't find the value from the response body";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Kan ikke finde vedhæftningen!";
@@ -342,9 +394,6 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Error */
 "Can't load the file" = "Kan ikke indlæse filen";
 
-/* Description */
-"Can't find the value from the response body" = "Kan ikke finde værdien fra svarindholdet";
-
 /* Error */
 "Can't open the file" = "Kan ikke åbne filen";
 
@@ -363,8 +412,11 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "Cancelling" = "Annullerer";
 
-/* None */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "Kan ikke dekryptere denne vedhæftning.";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCHA";
 
 /* Title */
 "Cc" = "Cc";
@@ -374,6 +426,12 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* place holder */
 "Cell phone number" = "Mobiltelefonnummer";
+
+/* Title */
+"Change default address to .." = "Skift standardadresse til..";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Skift venstre-stryg handling";
 
 /* change password input label */
 "Change Login Password" = "Skift Log ind-dgangskode";
@@ -387,23 +445,20 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* settings protection section title */
 "Change Pin" = "Skift Pin";
 
-/* Title */
-"Change Single Password" = "Skift enkelststående adgangskode";
-
-/* Title */
-"Change default address to .." = "Skift standardadresse til..";
-
-/* settings swipe actions section action description */
-"Change left swipe action" = "Skift venstre-stryg handling";
-
 /* settings swipe actions section action description */
 "Change right swipe action" = "Skift højre-stryg handling";
 
 /* Title */
 "Change sender address to .." = "Skift afsenderadresse til..";
 
+/* Title */
+"Change Single Password" = "Skift enkelststående adgangskode";
+
 /* Action */
 "Check Again" = "Tjek igen";
+
+/* network troubleshot cell title */
+"Check Proton Status for our system status." = "Check Proton Status for our system status.";
 
 /* loading message */
 "Checking ...." = "Tjekker....";
@@ -417,13 +472,23 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* settings general section title */
 "Clear Local Message Cache" = "Ryd Lokal Besked-cache";
 
+/* Menu action to remove text formatting */
+"Clear Style" = "Clear Style";
+
 /* general close action */
 "Close" = "Luk";
+
+/* Action */
+"close tour" = "luk rundvisning";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Lukker";
 
-/* Action */
+/* cell title in device settings */
+"Combined Contacts" = "Combined Contacts";
+
+/* Action
+   Springboard (3D Touch) shortcuts action */
 "Compose" = "Skriv";
 
 /* Title */
@@ -438,9 +503,6 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Bekræft postkasseadgangskode";
 
-/* Placeholder */
-"Confirm Password" = "Bekræft adgangskode";
-
 /* Title */
 "Confirm new login password" = "Bekræft ny log ind-adgangskode";
 
@@ -449,6 +511,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* Placeholder */
 "Confirm new password" = "Bekræft ny adgangskode";
+
+/* Placeholder */
+"Confirm Password" = "Bekræft adgangskode";
 
 /* alert title */
 "Confirm phishing report" = "Bekræft phishing-anmeldelse";
@@ -459,11 +524,17 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* view top title */
 "Congratulations!" = "Tillykke!";
 
+/* Account manager title */
+"Connect Account" = "Connect Account";
+
 /* contact section title */
 "Contact Details" = "Kundeoplysninger";
 
 /* Title */
 "Contact the ProtonMail team" = "Kontakt ProtonMail-teamet";
+
+/* network troubleshot cell title */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
 
 /* Action and title
    menu title */
@@ -490,23 +561,26 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* top right action text */
 "Create" = "Opret";
 
-/* Create account button */
-"Create Account" = "Opret konto";
-
-/* Error */
-"Create User failed. Please try again." = "Brugeroprettelse mislykkedes, forsøg igen.";
-
 /* Signup top title */
 "Create a new account" = "Opret en ny konto";
+
+/* Create account button */
+"Create Account" = "Opret konto";
 
 /* Description */
 "Create and add Labels to organize your inbox. Long press on a message for all options." = "Opret og tilføj Etiketter for at organisere din indbakke. Langt tryk på en besked for at se alle valgmuligheder.";
 
-/* None */
+/* (No Comment) */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Opret og tilføj tiletiketter for at organisere din indbakke. Tryk og hold på en besked for at se alle valgmuligheder.";
+
+/* title of button in account connect page */
+"Create new account" = "Create new account";
 
 /* error message title when create new user */
 "Create user failed" = "Brugeroprettelse mislykkedes";
+
+/* Error */
+"Create User failed. Please try again." = "Brugeroprettelse mislykkedes, forsøg igen.";
 
 /* Change language title */
 "Current Language is: " = "Nuværende sprog er: ";
@@ -521,12 +595,6 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
    contacts default label type */
 "Custom" = "Tilpasset";
 
-/* Title */
-"DECRYPT MAILBOX" = "DEKRYPTERE POSTKASSE";
-
-/* mail location title */
-"DRAFTS" = "KLADDER";
-
 /* message Date: text */
 "Date:" = "Dato:";
 
@@ -534,10 +602,16 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 "Date: %@" = "Dato: %@";
 
 /* Title */
+"days" = "dage";
+
+/* Title */
 "Debug" = "Fejlfsøgning";
 
 /* Action */
 "Decrypt" = "Dekryptér";
+
+/* Title */
+"DECRYPT MAILBOX" = "DEKRYPTERE POSTKASSE";
 
 /* Description */
 "Decrypt token failed. Please try again." = "Dekrypteringstoken fejlede, forsøg igen.";
@@ -550,6 +624,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* Title */
 "Default" = "Standard";
+
+/* Settings row */
+"Default browser" = "Default browser";
 
 /* error message when create new user */
 "Default error. Please try again." = "Standardfejl, forsøg igen.";
@@ -566,6 +643,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* general delete action */
 "Delete" = "Slet";
 
+/* emptify folder/label confirmation alert */
+"Delete all" = "Delete all";
+
 /* Title-Contacts */
 "Delete Contact" = "Slet kontakt";
 
@@ -578,20 +658,26 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "Details" = "Oplysninger";
 
+/* network troubleshot cell title */
+"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Disable Validation";
+
 /* Action */
 "Discard changes" = "Kassér ændringer";
 
 /* Action */
 "Discard draft" = "Kassér udkast";
 
+/* (No Comment) */
+"Display name" = "Vis navn";
+
 /* Title in settings */
 "Display Name" = "Visningsnavn";
 
 /* Title */
 "Display Name Updated" = "Visningsnavnet opdateret";
-
-/* None */
-"Display name" = "Vis navn";
 
 /* Title in display name settings */
 "DisplayName" = "Vis navn";
@@ -605,11 +691,11 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "Do you want to save the unsaved changes?" = "Gem ugemte ændringer?";
 
-/* Title */
-"Don't Show Again" = "Vis ikke igen";
-
 /* Action */
 "Don't remind me again" = "Påmind mig ikke igen";
+
+/* Title */
+"Don't Show Again" = "Vis ikke igen";
 
 /* Done action */
 "Done" = "Udført";
@@ -623,6 +709,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* menu title */
 "Drafts" = "Udkast";
+
+/* mail location title */
+"DRAFTS" = "KLADDER";
 
 /* Action */
 "Edit" = "Redigér";
@@ -640,32 +729,32 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "Edit Label" = "Redigér etiket";
 
+/* title */
+"Edit mobile signature" = "Redigér mobilsignatur";
+
 /* The button text for edit profile picture */
 "Edit Photo" = "Redigér foto";
 
 /* title */
-"Edit mobile signature" = "Redigér mobilsignatur";
-
-/* title */
 "Edit signature" = "Redigér signatur";
+
+/* network troubleshot cell title */
+"email" = "email";
 
 /* default vcard types */
 "Email" = "E-mail";
-
-/* contact detail view, email addresses section title */
-"Email Addresses" = "E-mailadresse";
-
-/* Send an email to the current contact (button title text) */
-"Email Contact" = "E-mailkontakt";
-
-/* human check option button */
-"Email Verification" = "E-mailbekræftelse";
 
 /* contact placeholder */
 "Email address" = "E-mailadresse";
 
 /* Title */
 "Email address invalid" = "E-mailadresse ugyldig";
+
+/* contact detail view, email addresses section title */
+"Email Addresses" = "E-mailadresse";
+
+/* Send an email to the current contact (button title text) */
+"Email Contact" = "E-mailkontakt";
 
 /* place holder */
 "Email default signature" = "E-mail standardsignatur";
@@ -674,8 +763,17 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
  & title */
 "Email domain invalid" = "Ugyldigt e-maildomæne";
 
-/* empty folder, for spam and trash */
+/* human check option button */
+"Email Verification" = "E-mailbekræftelse";
+
+/* cell title in device setting */
+"Empty Cache" = "Empty Cache";
+
+/* empty folder, for spam and trash and drafts */
 "Empty Folder" = "Tøm mappe";
+
+/* it is an option to empty the label */
+"Empty Label" = "Empty Label";
 
 /* Title */
 "Enable Default Signature" = "Aktivér standardsignatur";
@@ -689,8 +787,17 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "Enable Notification Email" = "Aktivér notifikations-e-mail";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Enable PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "Aktivere PIN-beskyttelse";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Enable PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Enable PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Aktivér TouchID";
@@ -722,9 +829,6 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* settings option (End Time: 8am) */
 "End Time" = "Sluttid";
 
-/* Title */
-"End-to-End Encryption" = "Ende-til-ende kryptering";
-
 /* encryption lock description */
 "End-to-end encrypted" = "Ende-til-ende krypteret";
 
@@ -737,23 +841,29 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Ende-til-ende krypteret for at bekræfte adresse";
 
+/* Title */
+"End-to-End Encryption" = "Ende-til-ende kryptering";
+
 /* Action in 2fa popup view */
 "Enter" = "Angiv";
 
 /* Title */
 "Enter Verification Code" = "Angiv bekræftelseskode";
 
-/* set pin title */
-"Enter your PIN" = "Angiv din PIN-kode";
-
-/* Title */
-"Enter your PIN to unlock your inbox." = "Angiv PIN-kode til oplåsning af din indbakke.";
-
 /* human verification top title */
 "Enter your cell phone number" = "Angiv dit mobilnummer";
 
 /* top title */
 "Enter your existing email address." = "Angiv din e-mail.";
+
+/* Account manager title */
+"Enter your mailbox password" = "Enter your mailbox password";
+
+/* set pin title */
+"Enter your PIN" = "Angiv din PIN-kode";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Angiv PIN-kode til oplåsning af din indbakke.";
 
 /* settings debug section title */
 "Error Logs" = "Fejllogger";
@@ -768,19 +878,13 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 "Expires" = "Udløber";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Udløber om %1$d dage %2$d, timer %3$d, minutter og %4$d sekunder";
+"Expires in %d days %d hours %d mins %d seconds" = "Expires in %1$d days %2$d hours %3$d mins %4$d seconds";
 
 /* Title */
 "Expiring Messages" = "Beskedudløb";
 
 /* Key size checkbox */
 "Extreme Security" = "Ekstrem sikkerhed";
-
-/* login page forgot pwd */
-"FORGOT PASSWORD?" = "GLEMT ADGANGSKODE?";
-
-/* abbreviation of forward: */
-"FW:" = "FW:";
 
 /* Error message */
 "Failed to determine type of file" = "Filtypebestemmelse mislykkedes";
@@ -816,11 +920,17 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Service Plan description */
 "For individuals that need more capacity, customization and advanced features" = "For enkeltpersoner, som behøver yderligere kapacitet, tilpasning og avancerede funktioner";
 
+/* Buy button second line */
+"for one year" = "for ét år";
+
 /* Service Plan description */
 "For organizations that need multi-user support and additional productivity features" = "For organisationer, som behøver flerbrugersupport og yderligere produktivitetsfunktioner";
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "For superbrugere og persongrupper, som værdsætter fuld anonymitet og privatliv";
+
+/* login page forgot pwd */
+"FORGOT PASSWORD?" = "GLEMT ADGANGSKODE?";
 
 /* forward action */
 "Forward" = "Videresend";
@@ -833,6 +943,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* message From: field text */
 "From:" = "Fra:";
+
+/* abbreviation of forward: */
+"FW:" = "FW:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Videresend:";
@@ -851,6 +964,15 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* Action */
 "Go to inbox" = "Gå til Indbakke";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to login" = "Go to login";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Go to settings";
+
+/* network troubleshot cell title */
+"Government block" = "Government block";
 
 /* The title for the contact group detail view */
 "Group Details" = "Gruppeoplysninger";
@@ -879,6 +1001,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Key size checkbox */
 "High Security" = "Høj sikkerhed";
 
+/* (No Comment) */
+"hours" = "Timer";
+
 /* Title */
 "Hours" = "Timer";
 
@@ -894,20 +1019,26 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "IMAP-/SMTP-understøttelse via ProtonMail Bridge";
 
-/* mail location title */
-"INBOX" = "INDBAKKE";
-
 /* Action */
 "Import Error" = "Importfejl";
 
 /* Title */
 "Import File From..." = "Importér fil fra...";
 
-/* import contact title */
-"Importing Contacts" = "Importerer kontakter";
+/* Downloading attachments from cloud */
+"Importing" = "Importing";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Importerer vedhæftning, dette kan tage et stykke tid";
+
+/* import contact title */
+"Importing Contacts" = "Importerer kontakter";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]";
+
+/* network troubleshot cell title */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "For at benytte vores tjenester skal du acceptere ProtonMail's Tjenestevilkår.";
@@ -916,17 +1047,26 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
    menu title */
 "Inbox" = "Indbakke";
 
+/* mail location title */
+"INBOX" = "INDBAKKE";
+
+/* Title */
+"Incorrect password" = "Forkert adgangskode";
+
 /* Error */
 "Incorrect PIN," = "Forkert PIN-kode.";
 
 /* Title */
-"Incorrect password" = "Forkert adgangskode";
+"inline attachments" = "integrerede vedhæftninger";
 
 /* place holder */
 "Input Display Name ..." = "Angiv visningsnavn...";
 
 /* place holder */
 "Input Notification Email ..." = "Angiv notifikations-e-mail...";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Insecure connection";
 
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Straks-oprettelse af ProtonMail-konti er midlertidigt inaktiv. Gå til https://protonmail.com/invite for at anmode om en invitation.";
@@ -936,6 +1076,21 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* default vcard types */
 "Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+
+/* (No Comment) */
+"Invalid access token please relogin" = "Ugyldig adgangstegn, log ind igen";
+
+/* Description */
+"Invalid access token. Please relogin." = "Ugyldigt adgangstoken, log ind igen.";
+
+/* Error */
+"Invalid credential" = "Ugyldig legitimationsoplysning";
+
+/* update password error */
+"Invalid hashed password!" = "Ugyldig hashet adgangskode!";
 
 /* Error */
 "Invalid Password" = "Ugyldig adgangskode";
@@ -948,18 +1103,6 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* Error message */
 "Invalid UserName!" = "Ugyldigt brugernavn!";
-
-/* None */
-"Invalid access token please relogin" = "Ugyldig adgangstegn, log ind igen";
-
-/* Description */
-"Invalid access token. Please relogin." = "Ugyldigt adgangstoken, log ind igen.";
-
-/* Error */
-"Invalid credential" = "Ugyldig legitimationsoplysning";
-
-/* update password error */
-"Invalid hashed password!" = "Ugyldig hashet adgangskode!";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Omhandler denne fejlanmeldelse In-app køb?";
@@ -982,8 +1125,8 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Error */
 "Key invalid. Please go back and try again." = "Nøgle ugyldig, gå tilbage og forsøg igen.";
 
-/* None */
-"LOGIN" = "Log ind";
+/* Title */
+"Label as..." = "Kategorisér som...";
 
 /* Title */
 "Label Management" = "Etikethåndtering";
@@ -991,11 +1134,11 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* createing lable input place holder */
 "Label Name" = "Etiketnavn";
 
-/* Title */
-"Label as..." = "Kategorisér som...";
-
 /* VoiceOver: email has lables */
 "Labels" = "Etiketter";
+
+/* cell title in device settings */
+"Labels & Folders" = "Labels & Folders";
 
 /* Title */
 "Labels have been applied." = "Etiketter anvendes.";
@@ -1009,11 +1152,17 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "Language" = "Sprog";
 
+/* network troubleshot cell title */
+"Learn more" = "Learn more";
+
 /* Action */
 "Learn More" = "Få mere at vide";
 
 /* learn more button */
 "Learn more here" = "Få mere at vide her";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "Limit reached";
 
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "Begrænset til 150 afsendte beskeder/dag";
@@ -1021,11 +1170,17 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Action */
 "Load remote content" = "Indlæs fjernindhold";
 
-/* None */
+/* (No Comment) */
 "Loading..." = "Indlæser...";
 
 /* Description */
 "Local cache can't find mailbox password" = "Postkasseadgangskodes findes ikke i den lokale cache";
+
+/* cell title in device settings */
+"Local Cache Management" = "Local Cache Management";
+
+/* cell title in device settings */
+"Local storage limit" = "Local storage limit";
 
 /* *
  *  file string type */
@@ -1034,8 +1189,23 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* menu title */
 "Lock The App" = "Lås app'en";
 
+/* Account manager title */
+"Log in to your ProtonMail account" = "Log in to your ProtonMail account";
+
+/* Alert title when logout non-primary account from account manager */
+"Log out %@?" = "Log out %@?";
+
+/* Action */
+"Log Out All" = "Log Out All";
+
+/* Alert when auth token is revoked and switch to another */
+"Logged out from %@ and signed in with %@" = "Logged out from %1$@ and signed in with %2$@";
+
 /* Title */
 "Login" = "Log ind";
+
+/* (No Comment) */
+"LOGIN" = "Log ind";
 
 /* settings general section title */
 "Login Password" = "Log ind-adgangskode";
@@ -1043,7 +1213,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Error */
 "Login password doesn't match" = "Log ind-adgangskode matcher ikke";
 
-/* menu title */
+/* Alert title to confirm logout
+   Alert title when logout primary account from account manager
+   menu title */
 "Logout" = "Log ud";
 
 /* error title */
@@ -1052,45 +1224,45 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Vil du sikre dine kontakters oplysninger?";
 
-/* *
- *  MailboxPasswordViewController */
-"MAILBOX PASSWORD" = "Postkasseadgangskode";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
+/* cell title in device settings */
+"MAILBOX" = "MAILBOX";
 
 /* settings general section title */
 "Mailbox Password" = "Postkasseadgangskode";
 
-/* None */
+/* *
+ *  MailboxPasswordViewController */
+"MAILBOX PASSWORD" = "Postkasseadgangskode";
+
+/* (No Comment) */
 "Mailbox password doesn't match" = "Postkasseadgangskode matcher ikke";
+
+/* cell title in device settings */
+"Mailbox size" = "Mailbox size";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Håndtere adresser";
 
+/* Settings row */
+"Manage in device Settings" = "Manage in device Settings";
+
 /* Title */
 "Manage Labels/Folders" = "Håndtér Etiketter/Mapper";
+
+/* Action */
+"Mark as unread" = "Markér som ulæst";
 
 /* mark message as read action */
 "Mark Read" = "Markér som Læst";
 
-/* Action */
-"Mark as unread" = "Markér som ulæst";
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Menu";
 
 /* Message with title */
 "Message %@" = "Besked %@";
-
-/* Placeholder */
-"Message Password" = "Beskedadgangskode";
-
-/* settings debug section title */
-"Message Queue" = "Beskedkø";
-
-/* Title */
-"Message Swipe Actions" = "Besked stryge-handlinger";
 
 /* *
  *  Expiration View */
@@ -1102,10 +1274,16 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "Message has been moved." = "Besked er flyttet.";
 
+/* Placeholder */
+"Message Password" = "Beskedadgangskode";
+
 /* Description */
 "Message password does not match." = "Beskedadgangskode matcher ikke.";
 
-/* None */
+/* settings debug section title */
+"Message Queue" = "Beskedkø";
+
+/* (No Comment) */
 "Message sending failed please try again" = "Beskedafsendelse mislykkedes, forsøg igen";
 
 /* Description */
@@ -1113,6 +1291,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* Description after message have been sent */
 "Message sent" = "Besked afsendt";
+
+/* Title */
+"Message Swipe Actions" = "Besked stryge-handlinger";
 
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Beskeder, du afsender, kan indstilles til auto-sletning efter et forudbestemt tidsinterval.";
@@ -1136,7 +1317,7 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 "More Credits" = "Yderligere kredit";
 
 /* move action */
-"Move to AllMail" = "Flyt til AlleMails";
+"Move to All Mail" = "Move to All Mail";
 
 /* move action */
 "Move to Archive" = "Flyt til Arkiv";
@@ -1165,11 +1346,14 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "Multiple Addresses" = "Flere adresser";
 
+/* title */
+"Name" = "Navn";
+
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "BEHOV FOR EN KONTO? TILMELD DIG.";
 
-/* title */
-"Name" = "Navn";
+/* section title */
+"Networking" = "Networking";
 
 /* Title */
 "New login password" = "Ny login-adgangskode";
@@ -1183,11 +1367,17 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* contacts talbe cell Nickname title */
 "Nickname" = "Kaldenavn";
 
+/* Title */
+"No connectivity detected..." = "Ingen tilgængelig konnektivitet...";
+
+/* network troubleshot cell title */
+"No internet connection" = "No internet connection";
+
 /* message when mailbox doesnt have emailsß */
 "No Messages" = "Ingen beskeder";
 
-/* Title */
-"No connectivity detected..." = "Ingen tilgængelig konnektivitet...";
+/* no object error, local only , this could be not translated! */
+"no object" = "no object";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "Nej, til en anden ProtonMail-konto";
@@ -1199,11 +1389,14 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
    Title */
 "None" = "Ingen";
 
-/* Action */
-"Not Now" = "Ikke nu";
+/* Title */
+"normal attachments" = "almindelige vedhæftninger";
 
 /* alert description */
 "Not all recipients support message expiration" = "Ikke alle modtagere understøtter beskedudløb";
+
+/* Action */
+"Not Now" = "Ikke nu";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Bemærk: Brugernavnet er også din ProtonMail-adresse.";
@@ -1238,9 +1431,6 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Action */
 "OK" = "OK";
 
-/* Section header */
-"OTHER PLANS" = "ANDRE ABONNEMENTER";
-
 /* Title */
 "On" = "Til";
 
@@ -1250,7 +1440,10 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "EE d MMM yyyy %1$@ skrev %2$@:";
 
-/* None */
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Only one free account can be added";
+
+/* (No Comment) */
 "OpenDraft" = " ";
 
 /* contacts talbe cell Organization title */
@@ -1259,11 +1452,35 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* default vcard types */
 "Other" = "Øvrige";
 
+/* Section header */
+"OTHER PLANS" = "ANDRE ABONNEMENTER";
+
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Kundesupportsteamet vil forsøge at aktivere din abonnementstjeneste manuelt, hvis du accepterer de vedhæftede tekniske data leveret af App Store til app'en på købstidspunktet. Disse data indeholder ikke oplysninger om din iTunes-konto, Apple-ID, tilknyttede betalingskort eller andre brugeroplysninger. Tekniske data tjener alene til kontrol og bekræftelse af, at transaktionen blev fuldført på App Stores servere.";
 
 /* mail location desc */
 "Outbox" = "Udbakke";
+
+/* title */
+"Password" = "Adgangskode";
+
+/* Description */
+"Password cannot be empty." = "Adgangskode er obligatorisk.";
+
+/* cell title in device settings */
+"Password management" = "Password management";
+
+/* Title */
+"Password Mismatch" = "Adgangskoder matcher ikke";
+
+/* update password error */
+"Password update failed" = "Adgangskodeopdatering mislykkedes";
+
+/* Title */
+"Password Updated" = "Adgangskode opdateret";
+
+/* default vcard types */
+"Personal" = "Personlig";
 
 /* encryption lock description */
 "PGP-encrypted" = "PGP-krypteret";
@@ -1280,32 +1497,8 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP-signeret besked fra bekræftet adresse";
 
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "** PREMINUM FUNKTION **";
-
-/* title */
-"Password" = "Adgangskode";
-
-/* Title */
-"Password Mismatch" = "Adgangskoder matcher ikke";
-
-/* Title */
-"Password Updated" = "Adgangskode opdateret";
-
-/* Description */
-"Password cannot be empty." = "Adgangskode er obligatorisk.";
-
-/* update password error */
-"Password update failed" = "Adgangskodeopdatering mislykkedes";
-
-/* default vcard types */
-"Personal" = "Personlig";
-
 /* default vcard types */
 "Phone" = "Telefon";
-
-/* human check option button */
-"Phone Verification" = "Telefonbekræftelse";
 
 /* contact placeholder */
 "Phone number" = "Telefonnummer";
@@ -1313,8 +1506,20 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "Phone number invalid" = "Ugyldigt telefonnummer";
 
+/* human check option button */
+"Phone Verification" = "Telefonbekræftelse";
+
 /* Title */
 "Photo Library" = "Fotomappe";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN & FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN & TouchID";
 
 /* Description */
 "Pin code can't be empty." = "PIN-kode er obligatorisk.";
@@ -1343,6 +1548,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Error message */
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Log ind på den ProtonMail-konto, hvortil abonnementet opgraderes, så aktiveringen kan effektueres.";
 
+/* network troubleshot cell title */
+"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
+
 /* Error */
 "Please pick a user name first!" = "Vælg først et brugernavn!";
 
@@ -1351,6 +1559,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* when switch sender but email has attachments */
 "Please remove all attachments before changing sender!" = "Fjern alle vedhæftninger inden ændring af afsenderen";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "Please select at least one email";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Vælg mindst én e-mail til kontaktgruppen";
@@ -1361,16 +1572,16 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Description */
 "Please set a password." = "Opsæt en adgangskode.";
 
-/* None */
+/* (No Comment) */
 "Please try a different domain." = "Forsøg med et andet domæne.";
 
-/* None */
+/* (No Comment) */
 "Please try a different email address." = "Forsøg med en anden e-mail.";
 
-/* None */
+/* (No Comment) */
 "Please try a different password." = "Forsøg med en anden adgangskode.";
 
-/* None */
+/* (No Comment) */
 "Please try a different user name." = "Forsøg med et andet brugernavn.";
 
 /* 
@@ -1387,7 +1598,7 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Alert */
 "Please use the web application to reset your password." = "Benyt webprogrammet til at nulstille din adgangskode.";
 
-/* None */
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Benyt webversionen af ProtonMail til at ændre din postkasseadgangskode!";
 
 /* Alert */
@@ -1403,8 +1614,20 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
  & alert title */
 "Please, manage it in your phone." = "Håndtér det på din mobil.";
 
+/* Upgrade warning title */
+"PREMIUM FEATURE" = "** PREMINUM FUNKTION **";
+
 /* Action */
 "Print" = "Udskriv";
+
+/* cell title in device settings */
+"Privacy" = "Privacy";
+
+/* agree check box privacy */
+"privacy policy." = "Fortrolighedspolitik.";
+
+/* Local notification title */
+"Problem sending message" = "Problem sending message";
 
 /* Title */
 "Protection" = "Beskyttelse";
@@ -1412,14 +1635,14 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* settings protection section title */
 "Protection Entire App" = "Beskyttelse af hele app'en";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton is down";
+
+/* network troubleshot cell title */
+"Proton Status" = "Proton Status";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
-
-/* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus kræves for at tilpasse din mobilsignatur";
-
-/* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary muliggør at tilføje og redigere kontaktoplysninger udover blot din kontaktpersons navn og e-mail. Vha. ProtonMail vil disse data være så sikre som din ende-til-ende krypteret e-mail.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail sælger ikke annoncer eller misbruger dit privatliv. Din støtte er afgørende for at holde ProtonMail kørende. Du kan opgradere til en betalt konto eller donere for at støtte ProtonMail.";
@@ -1430,14 +1653,29 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail er pt. offline. Tjek dens aktuelle status via Twitter: https://twitter.com/protonmail";
 
+/* Title */
+"ProtonMail is currently offline..." = "ProtonMail is currently offline...";
+
+/* Description */
+"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus kræves for at tilpasse din mobilsignatur";
+
+/* Upgrade warning message */
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary muliggør at tilføje og redigere kontaktoplysninger udover blot din kontaktpersons navn og e-mail. Vha. ProtonMail vil disse data være så sikre som din ende-til-ende krypteret e-mail.";
+
+/* network troubleshot cell title */
+"ProtonVPN" = "ProtonVPN";
+
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN inkluderet";
 
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Proxy/Firewall interference";
+
+/* cell title in device settings */
+"Push Notifications" = "Push Notifications";
+
 /* Title */
 "Quick swipe actions" = "Hurtig-stryg handlinger";
-
-/* Action */
-"RESET MAILBOX PASSWORD" = "NULSTIL POSTKASSEADGANGSKODE";
 
 /* Title */
 "Rate & Review" = "Bedøm og Anmeld";
@@ -1466,6 +1704,12 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* remove action */
 "Remove" = "Fjern";
 
+/* account right bar item title */
+"Remove All" = "Remove All";
+
+/* Settings row */
+"Remove image meta-data" = "Remove image meta-data";
+
 /* un star message */
 "Remove Star" = "Fjern stjerne";
 
@@ -1481,7 +1725,7 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* composer view model impl */
 "Reply message" = "Svar på besked";
 
-/* None */
+/* (No Comment) */
 "ReplyAll" = "Svar på alle";
 
 /* menu title */
@@ -1496,6 +1740,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* link opeining confirmation */
 "Request Link Confirmation" = "Anmod om linkbekræftelse";
 
+/* Action */
+"RESET MAILBOX PASSWORD" = "NULSTIL POSTKASSEADGANGSKODE";
+
 /* Title */
 "Resetting message cache ..." = "Nulstiller besked-cache...";
 
@@ -1504,21 +1751,6 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Forsøg igen efter %d sek";
-
-/* mail location title */
-"SENT" = "AFSENDT";
-
-/* mail location title */
-"SPAM" = "SPAM";
-
-/* Error */
-"SRP Client" = "SRP-klient";
-
-/* Error */
-"SRP Server" = "SRP-server";
-
-/* mail location title */
-"STARRED" = "STJERNEMARKERET";
 
 /* Title */
 "Save" = "Gem";
@@ -1532,7 +1764,8 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* action sheet option */
 "Scheduled" = "Planlagt";
 
-/* Title */
+/* Springboard (3D Touch) shortcuts action
+   Title */
 "Search" = "Søg";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1541,14 +1774,11 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* The title for the view where user can select the color for the group */
 "Select Color" = "Vælg farve";
 
-/* None */
+/* (No Comment) */
 "Select your language" = "Vælg dit sprog";
 
 /* Action */
 "Send" = "Afsend";
-
-/* Title */
-"Send Verification Code" = "Afsend bekræftelseskode";
 
 /* Action */
 "Send anyway" = "Afsend alligevel";
@@ -1559,14 +1789,17 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "Send plain but stored enc" = "Afsend som simpel, men gem krypt.";
 
+/* Title */
+"Send Verification Code" = "Afsend bekræftelseskode";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Afsenderbekræftelse mislykkedes";
 
-/* Description */
-"Sending Message" = "Afsender besked";
-
 /* Alert title */
 "Sending message" = "Sender besked";
+
+/* Description */
+"Sending Message" = "Afsender besked";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Afsendelse af beskeder fra en %1$@-adresse er en betalingsfunktion. Din besked afsendes via din standardadresse %2$@";
@@ -1574,8 +1807,8 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* menu title */
 "Sent" = "Afsendt";
 
-/* Description */
-"Sent Failed" = "Afsendelse mislykkedes";
+/* mail location title */
+"SENT" = "AFSENDT";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "Afsendt af ProtonMail med nuladgangskryptering";
@@ -1584,13 +1817,16 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 "Sent by you with end-to-end encryption" = "Afsendt af dig med ende-til-ende kryptering";
 
 /* Description */
-"Server proofs not valid!" = "Serverbeviser ugyldige!";
+"Sent Failed" = "Afsendelse mislykkedes";
 
-/* Title */
-"Set Password" = "Indstil adgangskode";
+/* Description */
+"Server proofs not valid!" = "Serverbeviser ugyldige!";
 
 /* Description */
 "Set a password to encrypt this message for non-ProtonMail users." = "Indstil en adgangskode for at kryptere denne besked til ikke-ProtonMail-btugere.";
+
+/* Title */
+"Set Password" = "Indstil adgangskode";
 
 /* Signup passwords top title */
 "Set passwords" = "Indstil adgangskoder";
@@ -1619,6 +1855,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* settings general section title */
 "Single Password" = "Enkelt adgangskode";
 
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Snooze";
+
 /* settings option */
 "Snooze Notifications" = "Udsættelsesnotifikationer";
 
@@ -1631,15 +1870,24 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Beklager, køb kan ikke behandles i beta-versionen af iOS-app'en. Tak fordi du deltog i vores offentlige beta!";
 
-/* None */
+/* (No Comment) */
 "Space Warning" = "Lagerpladsadvarsel";
 
 /* mail location desc
    menu title */
 "Spam" = "Spam";
 
+/* mail location title */
+"SPAM" = "SPAM";
+
 /* Description */
 "Spammed" = "Spammet";
+
+/* Error */
+"SRP Client" = "SRP-klient";
+
+/* Error */
+"SRP Server" = "SRP-server";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1649,14 +1897,21 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* mail location desc
    menu title
+   Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Stjernemarkeret";
+
+/* mail location title */
+"STARRED" = "STJERNEMARKERET";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Starttidspunkt";
 
 /* contact placeholder */
 "State" = "Stat/Region";
+
+/* network troubleshot cell title */
+"Still can't find a solution" = "Still can't find a solution";
 
 /* Title */
 "Storage" = "Lagerplads";
@@ -1679,11 +1934,14 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* menu title */
 "Subscription" = "Abonnement";
 
-/* Action */
-"Support ProtonMail" = "Støt ProtonMail";
-
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Understøttelse af %i tilpassede domæner (f.eks. hans@hansen.dk)";
+
+/* network troubleshot cell title */
+"support form" = "support form";
+
+/* Action */
+"Support ProtonMail" = "Støt ProtonMail";
 
 /* settings swipe actions section title */
 "Swipe Left to Right" = "Stryg fra venstre mod højre";
@@ -1691,11 +1949,15 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* settings swipe actions section title */
 "Swipe Right to Left" = "Stryg fra højre mod venstre";
 
+/* cell title in device settings
+   Swiping gestures */
+"Swiping gestures" = "Swiping gestures";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "Switched to account '%@'";
+
 /* Error */
 "System can't copy the file" = "Systemet kan ikke kopiere filen";
-
-/* mail location title */
-"TRASH" = "PAPIRKURV";
 
 /* Title */
 "Take a Photo" = "Tag et foto";
@@ -1703,18 +1965,14 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Tryk Afsend alligevel for at snde uden udløb til disse modtagere";
 
-/* None */
+/* network troubleshot cell title */
+"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+
+/* agree check box terms */
+"terms and conditions" = "Vilkår og Betingelser";
+
+/* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Tak for din indsendelse af en fejlrapport. Vi har føjet din rapport til vores fejlsporingssystem.";
-
-/* update password error */
-"The Password is wrong." = "Forkert adgangskode.";
-
-/* Title */
-"The ProtonMail current offline..." = "ProtonMail er pt. offline...";
-
-/* 
- */
-"The UserName have been taken." = "Brugernavnet findes allerede.";
 
 /* Description */
 "The authentication credentials are invalid." = "Legitimationsoplysningerne er ugyldige.";
@@ -1738,7 +1996,7 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* key size note part 1 */
 "The highest level of encryption available." = "Det kraftigste tilgængelige krypteringsniveau.";
 
-/* None */
+/* (No Comment) */
 "The label name is duplicate" = "Dublet etiketnavn";
 
 /* Error */
@@ -1751,20 +2009,23 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
  *  LabelsViewController */
 "The maximum number of labels is %d." = "Maks. antal af etiketter udgør %d.";
 
-/* None */
+/* update password error */
+"The new password can't be empty." = "The new password can't be empty.";
+
+/* (No Comment) */
 "The new password can't empty" = "Ny adgangskode er obligatorisk";
 
 /* update password error */
-"The new password can't empty." = "Ny adgangskode er obligatorisk.";
+"The new password does not match." = "The new password does not match.";
 
-/* None */
+/* (No Comment) */
 "The new password not match" = "Adgangskoder matcher ikke";
-
-/* update password error */
-"The new password not match." = "Ny adgangskode matcher ikke.";
 
 /* recovery email notes */
 "The optional recovery email address allows you to reset your login password if you forget it." = "Den valgfrie genoprettelses-e-mail muliggør at nulstille din loginadgangskode, hvis du glemmer den.";
+
+/* update password error */
+"The Password is wrong." = "Forkert adgangskode.";
 
 /* Description */
 "The password you entered does not match the current password." = "Den angivne adgangskode matcher ikke den aktuelle adgangskode.";
@@ -1778,11 +2039,18 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "The request timed out." = "Forespørgslen fik timeout.";
 
-/* None */
+/* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "Den samlede vedhæftningsstørrelse kan ikke overstige 25 MB";
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Samlede vedhæftningsstørrelse er maks. 25 MB";
+
+/* Alert when the account is already logged in */
+"The user is already logged in" = "The user is already logged in";
+
+/* 
+ */
+"The UserName have been taken." = "Brugernavnet findes allerede.";
 
 /* 
  & title */
@@ -1790,6 +2058,12 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* Error */
 "The verification failed!" = "Bekræftelsen mislykkedes!";
+
+/* alert when logout user if in queue still have tasks */
+"There are still some messages in queue. If you log out, the draft will be deleted." = "There are still some messages in queue. If you log out, the draft will be deleted.";
+
+/* Alert to confirm logout with pending message in the queue */
+"There are unsent messages that will be lost if you log out" = "There are unsent messages that will be lost if you log out";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "En fejl opstod under oprettelse eller indlæsning af app'ens gemte data.";
@@ -1813,18 +2087,25 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Denne besked kan være et phishing-forsøg. Tjek afsenderen og indholdet for at sikre, at de er legitime.";
 
+/* Title */
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "This preference will fallback to Safari if the browser of choice will be uninstalled.";
+
 /* contacts talbe cell Title title */
 "Title" = "Titel";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately";
 
 /* Title */
 "To" = "Til";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "For at forhindre misbrug af ProtonMail
- skal det brkræftes, at du er en person.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "For at forhindre misbrug af ProtonMail&#13;\n skal det brkræftes, at du er en person.";
 
-/* None */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Benyt webversionen af ProtonMail via protonmail.com for at nulstille din postkasseadgangskode";
 
 /* Description */
@@ -1840,6 +2121,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Alert title */
 "Too many recipients" = "For mange modtagere";
 
+/* network troubleshot cell title */
+"Tor" = "Tor";
+
 /* settings touchid error */
 "TouchID is not enrolled, enable it in the system Settings" = "Berørings-ID er ikke registreret, aktivér det i Systemindstillinger";
 
@@ -1851,8 +2135,20 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
    move action */
 "Trash" = "Papirkurv";
 
+/* mail location title */
+"TRASH" = "PAPIRKURV";
+
 /* Title */
 "Trouble shooting guide" = "Fejlfindingsguide";
+
+/* troubleshooting view button */
+"Troubleshoot" = "Troubleshoot";
+
+/* network troubleshot view title */
+"TroubleShooting" = "TroubleShooting";
+
+/* network troubleshot cell title */
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Try connecting to Proton from a different network (or use ProtonVPN or Tor).";
 
 /* action sheet option */
 "Turn Off" = "Slå Fra";
@@ -1860,17 +2156,14 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "Tweet about ProtonMail" = "Tweet om ProtonMail";
 
+/* network troubleshot cell title */
+"Twitter" = "Twitter";
+
 /* Placeholder */
 "Two Factor Code" = "To-faktorkode";
 
 /* Internal type casting error */
 "Type casting error" = "Type casting error";
-
-/* default vcard types */
-"URL" = "URL";
-
-/* Title */
-"USER LOGIN" = "BRUGERLOGIN";
 
 /* Description */
 "Unable to connect to the server" = "Kan ikke oprette forbindelse til serveren";
@@ -1907,9 +2200,7 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 "Unable to parse response" = "Kan ikke fortolke svar";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Kan ikke tolke svarobjektet:
-%@";
+"Unable to parse the response object:\n%@" = "Kan ikke tolke svarobjektet:\n%@";
 
 /* Error */
 "Unable to parse token" = "Kan ikke fortolke tegn";
@@ -1923,7 +2214,7 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Description */
 "Unknow Error" = "Ukendt fejl";
 
-/* None */
+/* (No Comment) */
 "Unknow file" = "Ukendt fil";
 
 /* title, default display name */
@@ -1932,11 +2223,14 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Error */
 "Unknown Error" = "Ukendt fejl";
 
-/* None */
+/* (No Comment) */
 "Unkonw Version" = "Ukendt version";
 
 /* Service plan capability; */
 "Unlimited messages sent/day" = "Ubegrænset beskedafsendelse/dag";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Unlock required";
 
 /* The verb for describing the unread action
    VoiceOver: email is not read yet */
@@ -1981,11 +2275,17 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* default vcard types */
 "Url" = "URL";
 
+/* default vcard types */
+"URL" = "URL";
+
 /* error when user already exist */
 "User already exist!" = "Bruger findes allerede!";
 
-/* None */
+/* (No Comment) */
 "User is available!" = "Brugernavn er ledigt";
+
+/* Title */
+"USER LOGIN" = "BRUGERLOGIN";
 
 /* 
  & title */
@@ -2010,11 +2310,14 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* error details */
 "Verification of this content’s signature failed" = "Bekræftelse af dette indholds signatur mislykkedes";
 
-/* None */
+/* (No Comment) */
 "Version %@ %@" = "Version %@ %@";
 
 /* message details-> more action-> view headers */
 "View Headers" = "Vis overskrifter";
+
+/* message details-> more action-> view raw html of message body */
+"View HTML" = "View HTML";
 
 /* Action */
 "View Plans" = "Vis abonnementer";
@@ -2027,6 +2330,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Advarsel: Du har ikke angivet en genoprettelses-e-mail, så kontogenoprettelse er umulig, hvis du skulle glemme din adgangskode. Fortsæt uden genoprettelses-e-mail?";
+
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app.";
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Dit abonnement er nu aktivt. Genstart app'en for at begynde at bruge dine nye abonnementskvoter.";
@@ -2056,6 +2362,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
  & title */
 "Wrong verification code" = "Forkert bekræftelseskode";
 
+/* Title */
+"wrote:" = "skrev:";
+
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Ja, aktivér det for ";
 
@@ -2065,6 +2374,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Du er ved at starte webbrowseren og navigere til";
 
+/* Alert of removing all accounts */
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?";
+
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Du kan tilpasse stryge-gestusser i ProtonMail App-indstillinger.";
 
@@ -2073,6 +2385,9 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Du kan ikke angive %@-adressen som standard, da dette er en betalingsfunktion.";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Beskedudløb er aktiveret, men ikke alle modtagerne understøtter denne funktion. Tilføj en adgangskode og/eller deaktivér PGP-afsendelse for at benytte udløb til alle modtagere.";
@@ -2087,7 +2402,7 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 "You have unsaved changes. Do you want to save it?" = "Du har ugemte ændringer. Vil du gemme nu?";
 
 /* Description */
-"You have used %d%% of your storage space (%@)." = "Du har forbrugt %1$d%% af din lagerplads (%2$@).";
+"You have used %d%% of your storage space (%@)." = "You have used %1$d%% of your storage space (%2$@).";
 
 /* Description */
 "You have used up all of your storage space (%@)." = "Du har opbrugt al din lagerplads (%@).";
@@ -2095,8 +2410,21 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Description */
 "You need at least one recipient to send" = "Minimum én adressat kræves for at kunne afsende";
 
+/* Alert to confirm logout
+   Alert when logout primary account from account manager */
+"You will be switched to %@" = "You will be switched to %@";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "You're going to delete the message irreversibly. Are you sure?";
+
 /* view top title */
 "Your Country Code" = "Landekode";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
+
+/* network troubleshot cell title */
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton.";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Din indbakke er nu beskyttet med ende-til-ende kryptering. For automatisk at sikre e-mails til venner, så få dem til at hente ProtonMail! Du kan også manuelt kryptere beskeder til dem, hvis de ikke benytter ProtonMail.";
@@ -2105,9 +2433,7 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Din nye krypterede e-mailkonto er opsat og er klar til at sende og modtage krypterede beskeder.";
 
 /* view top title */
-"Your new secure email
- account is ready." = "Din nye sikre e-mailkonto
- er klar.";
+"Your new secure email\r\n account is ready." = "Din nye sikre e-mailkonto&#13;\n er klar.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Din abonnementskvota er aktiv indtil";
@@ -2120,52 +2446,4 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 
 /* contact placeholder */
 "ZIP" = "Postnummer";
-
-/* agree check box middle word */
-"and" = "og";
-
-/* like at 10:00pm */
-"at" = "kl.";
-
-/* Error */
-"attempt remaining until secure data wipe!" = "forsøg tilbage, indtil sikker datarydning!";
-
-/* Description */
-"attempts remaining" = "forsøg tilbage";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "forsøg tilbage, indtil sikker datarydning!";
-
-/* Action */
-"close tour" = "luk rundvisning";
-
-/* Title */
-"days" = "dage";
-
-/* Buy button second line */
-"for one year" = "for ét år";
-
-/* contacts api error when fetch */
-"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() failed, peopleOrderedByUsersPreference return null!!";
-
-/* None */
-"hours" = "Timer";
-
-/* Title */
-"inline attachments" = "integrerede vedhæftninger";
-
-/* no object error, local only , this could be not translated! */
-"no object" = "no object";
-
-/* Title */
-"normal attachments" = "almindelige vedhæftninger";
-
-/* agree check box privacy */
-"privacy policy." = "Fortrolighedspolitik.";
-
-/* agree check box terms */
-"terms and conditions" = "Vilkår og Betingelser";
-
-/* Title */
-"wrote:" = "skrev:";
 
