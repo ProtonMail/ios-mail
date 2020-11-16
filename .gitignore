@@ -3,3 +3,5 @@ xcuserdata
 ProtonMail/DerivedData
 test_output
 .vscode/*
+builds
+ProtonMail/fastlane/report.xml
