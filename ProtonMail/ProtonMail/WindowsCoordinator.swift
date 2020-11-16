@@ -152,17 +152,13 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     @objc func unlock() {
+        self.lockWindow = nil
         let usersManager : UsersManager = self.services.get()
         
         guard usersManager.hasUsers() else {
             self.go(dest: .signInWindow)
             return
         }
-        //        if sharedUserDataService.isNewUser {
-        //            sharedUserDataService.isNewUser = false
-        //            self.appWindow = nil
-        //        }
-        
         if usersManager.count <= 0 {
             usersManager.clean()
             self.go(dest: .signInWindow)
