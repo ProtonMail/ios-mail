@@ -56,6 +56,7 @@ class MailboxViewModel: StorageLimit {
     private let pushService : PushNotificationService
     /// fetch controller
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    private(set) var labelFetchedResults: NSFetchedResultsController<NSFetchRequestResult>?
     /// local message for rating
     private var ratingMessage : Message?
     
@@ -162,17 +163,39 @@ class MailboxViewModel: StorageLimit {
         return fetchedResultsController
     }
     
+    private func makeLabelFetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
+        guard let controller = self.user.labelService.fetchedResultsController(.all) else {
+            return nil
+        }
+        
+        do {
+            try controller.performFetch()
+        } catch let ex as NSError {
+            PMLog.D(" error: \(ex)")
+        }
+        
+        return controller
+    }
+    
     /// setup fetch controller
     ///
     /// - Parameter delegate: delegate from viewcontroller
     func setupFetchController(_ delegate: NSFetchedResultsControllerDelegate?) {
         self.fetchedResultsController = self.makeFetchController()
         self.fetchedResultsController?.delegate = delegate
+        
+        self.labelFetchedResults = self.makeLabelFetchController()
+        self.labelFetchedResults?.delegate = delegate
     }
     
     /// reset delegate if fetch controller is valid
     func resetFetchedController() {
         if let controller = self.fetchedResultsController {
+            controller.delegate = nil
+            self.fetchedResultsController = nil
+        }
+        
+        if let controller = self.labelFetchedResults {
             controller.delegate = nil
             self.fetchedResultsController = nil
         }
