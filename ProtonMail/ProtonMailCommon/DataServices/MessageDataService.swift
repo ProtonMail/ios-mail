@@ -787,7 +787,7 @@ class MessageDataService : Service, HasLocalStorage {
         queue {
             let completionWrapper: CompletionBlock = { task, response, error in
                 let objectId = message.objectID
-                let context = self.coreDataService.backgroundManagedObjectContext
+                let context = self.coreDataService.mainManagedObjectContext
                 self.coreDataService.enqueue(context: context) { (context) in
                     var error: NSError?
                     if let newMessage = context.object(with: objectId) as? Message, response != nil {
@@ -1592,7 +1592,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         //TODO: needs to refractor
-        let context = self.coreDataService.backgroundManagedObjectContext
+        let context = self.coreDataService.mainManagedObjectContext
         self.coreDataService.enqueue(context: context) { (context) in
             guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(messageID),
                 let message = context.find(with: objectID) as? Message else
@@ -2224,7 +2224,7 @@ class MessageDataService : Service, HasLocalStorage {
         
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         self.incrementalUpdateQueue.sync {
-            let context = self.coreDataService.backgroundManagedObjectContext
+            let context = self.coreDataService.mainManagedObjectContext
             self.coreDataService.enqueue(context: context) { (context) in
                 var error: NSError?
                 var messagesNoCache : [String] = []
@@ -2267,7 +2267,33 @@ class MessageDataService : Service, HasLocalStorage {
                         }
                         
                         if let lo = msg.message?["Location"] as? Int {
-                            if lo == 1 { //if it is a draft
+                            if lo == 1 || lo == 8 { //if it is a draft
+                                if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
+                                    if exsitMes.messageStatus == 1 {
+                                        if let subject = msg.message?["Subject"] as? String {
+                                            exsitMes.title = subject
+                                        }
+                                        if let timeValue = msg.message?["Time"] {
+                                            if let timeString = timeValue as? NSString {
+                                                let time = timeString.doubleValue as TimeInterval
+                                                if time != 0 {
+                                                    exsitMes.time = time.asDate()
+                                                }
+                                            } else if let dateNumber = timeValue as? NSNumber {
+                                                let time = dateNumber.doubleValue as TimeInterval
+                                                if time != 0 {
+                                                    exsitMes.time = time.asDate()
+                                                }
+                                            }
+                                        }
+                                        continue
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if let labelIDs = msg.message?["LabelIDs"] as? NSArray {
+                            if labelIDs.contains("1") || labelIDs.contains("8") {
                                 if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
                                     if exsitMes.messageStatus == 1 {
                                         if let subject = msg.message?["Subject"] as? String {

@@ -915,46 +915,70 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel.move(IDs: self.selectedIDs, to: location.rawValue)
     }
     
+    var messageTapped = false
+    let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
+    func getTapped() -> Bool {
+        serialQueue.sync {
+            let ret = self.messageTapped
+            if ret == false {
+                self.messageTapped = true
+            }
+            return ret
+        }
+    }
+    func updateTapped(status: Bool) {
+        serialQueue.sync {
+            self.messageTapped = status
+        }
+    }
+    
     internal func tappedMassage(_ message: Message) {
-        guard viewModel.isDrafts() || message.draft else {
-            self.coordinator?.go(to: .details)
-            self.tableView.indexPathsForSelectedRows?.forEach {
-                self.tableView.deselectRow(at: $0, animated: true)
+        if getTapped() == false {
+            guard viewModel.isDrafts() || message.draft else {
+                self.coordinator?.go(to: .details)
+                self.tableView.indexPathsForSelectedRows?.forEach {
+                    self.tableView.deselectRow(at: $0, animated: true)
+                }
+                self.updateTapped(status: false)
+                return
             }
-            return
-        }
-
-        guard !message.messageID.isEmpty else {
-            if self.checkHuman() {
-                //TODO::QA
-                self.coordinator?.go(to: .composeShow)
+            guard !message.messageID.isEmpty else {
+                if self.checkHuman() {
+                    //TODO::QA
+                    self.coordinator?.go(to: .composeShow)
+                }
+                self.updateTapped(status: false)
+                return
             }
-            return
-        }
-        
-        self.viewModel.messageService.ForcefetchDetailForMessage(message) {_, _, msg, error in
-            guard let objectId = msg?.objectID,
-                let message = self.viewModel.object(by: objectId),
-                message.body.isEmpty == false else
-            {
-                if error != nil {
-                    PMLog.D("error: \(String(describing: error))")
-                    let alert = LocalString._unable_to_edit_offline.alertController()
-                    alert.addOKAction()
-                    self.present(alert, animated: true, completion: nil)
+            
+            self.viewModel.messageService.ForcefetchDetailForMessage(message) {_, _, msg, error in
+                guard let objectId = msg?.objectID,
+                    let message = self.viewModel.object(by: objectId),
+                    message.body.isEmpty == false else
+                {
+                    if error != nil {
+                        PMLog.D("error: \(String(describing: error))")
+                        let alert = LocalString._unable_to_edit_offline.alertController()
+                        alert.addOKAction()
+                        self.present(alert, animated: true, completion: nil)
+                        self.tableView.indexPathsForSelectedRows?.forEach {
+                            self.tableView.deselectRow(at: $0, animated: true)
+                        }
+                    }
+                    self.updateTapped(status: false)
+                    return
+                }
+                
+                if self.checkHuman() {
+                    self.coordinator?.go(to: .composeShow, sender: message)
                     self.tableView.indexPathsForSelectedRows?.forEach {
                         self.tableView.deselectRow(at: $0, animated: true)
                     }
                 }
-                return
-            }
-            if self.checkHuman() {
-                self.coordinator?.go(to: .composeShow, sender: message)
-                self.tableView.indexPathsForSelectedRows?.forEach {
-                    self.tableView.deselectRow(at: $0, animated: true)
-                }
+                self.updateTapped(status: false)
             }
         }
+        
     }
 
     fileprivate func setupLeftButtons(_ editingMode: Bool) {
