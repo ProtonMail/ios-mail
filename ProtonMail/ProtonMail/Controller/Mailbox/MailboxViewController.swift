@@ -1374,7 +1374,10 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        
+        if controller == self.viewModel.labelFetchedResults {
+            tableView.reloadData()
+            return
+        }
         self.tableView.endUpdates()
         if self.refreshControl.isRefreshing {
             self.refreshControl.endRefreshing()
@@ -1383,10 +1386,16 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        if controller == self.viewModel.labelFetchedResults {
+            return
+        }
         tableView.beginUpdates()
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        if controller == self.viewModel.labelFetchedResults {
+            return
+        }
         switch(type) {
         case .delete:
             tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
@@ -1398,6 +1407,9 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        if controller == self.viewModel.labelFetchedResults {
+            return
+        }
         switch(type) {
         case .delete:
             if let indexPath = indexPath {
