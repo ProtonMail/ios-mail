@@ -148,7 +148,8 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             let viewModel = ContainableComposeViewModel(msg: nil,
                                                         action: .newDraft,
                                                         msgService: user.messageService,
-                                                        user: user)
+                                                        user: user,
+                                                        coreDataService: self.viewModel.coreDataService)
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
@@ -191,7 +192,11 @@ extension ContactGroupDetailViewController: UpgradeAlertVCDelegate {
     }
     
     func learnMore() {
-        UIApplication.shared.openURL(.paidPlans)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(.paidPlans)
+        }
     }
     
     func cancel() {

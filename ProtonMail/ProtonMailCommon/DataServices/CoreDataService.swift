@@ -24,33 +24,36 @@
 import Foundation
 import CoreData
 
-/// TODO::migrate to NSPersistentContainer in ios 10 or mix when we have time.
-
 /// this class provide the context.
-class CoreDataService {
+class CoreDataService: Service {
     
     //TODO:: fix this in the future. for now we share all data in same persistent store
-    static let shared = CoreDataService(store: CoreDataStore.shared.defaultPersistentStore!)
+    static let shared = CoreDataService(container: CoreDataStore.shared.defaultContainer)
     
     
-    ///  store. pass in from outside or use the default
-    var persistentStore: NSPersistentStoreCoordinator
+    ///  container pass in from outside or use the default
+    var container: NSPersistentContainer
     
-    init(store: NSPersistentStoreCoordinator) {
-        self.persistentStore = store
+    private let serialQueue: OperationQueue = {
+        let persistentContainerQueue = OperationQueue()
+        persistentContainerQueue.maxConcurrentOperationCount = 1
+        return persistentContainerQueue
+    }()
+    
+    init(container: NSPersistentContainer) {
+        self.container = container
     }
     
     // MARK: - variables
-    lazy var mainManagedObjectContext: NSManagedObjectContext = {
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        managedObjectContext.persistentStoreCoordinator = self.persistentStore
-        return managedObjectContext
+    lazy var mainManagedObjectContext: NSManagedObjectContext = { [unowned self] in
+        return self.container.viewContext
     }()
     
     /// this case crashes when cleaning cache
-    lazy var backgroundManagedObjectContext: NSManagedObjectContext = {
-        return mainManagedObjectContext
+    lazy var backgroundManagedObjectContext: NSManagedObjectContext = { [unowned self] in
+        let context = self.container.newBackgroundContext()
+        context.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
+        return context
     }()
     
     func childBackgroundManagedObjectContext(forUseIn thread: Thread) -> NSManagedObjectContext  {
@@ -63,15 +66,14 @@ class CoreDataService {
     }
     
     func makeReadonlyBackgroundManagedObjectContext() -> NSManagedObjectContext {
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = self.persistentStore
-        return managedObjectContext
+        return self.container.newBackgroundContext()
     }
 
     // MARK: - methods
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
         if let url = URL(string: urlString), url.scheme == "x-coredata" {
-            return self.persistentStore.managedObjectID(forURIRepresentation: url)
+            let psc = self.container.persistentStoreCoordinator
+            return psc.managedObjectID(forURIRepresentation: url)
         }
         return nil
     }
@@ -87,28 +89,27 @@ class CoreDataService {
         }
     }
     
+    func enqueue(context: NSManagedObjectContext? = nil,
+                 block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        self.serialQueue.addOperation {
+            let context = context ?? self.container.newBackgroundContext()
+            context.performAndWait {
+                block(context)
+//                _ = context.saveUpstreamIfNeeded()
+            }
+        }
+    }
+    
     /// this do the auto sync
-    lazy var testChildContext: NSManagedObjectContext = {
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+    lazy var testChildContext: NSManagedObjectContext = { [unowned self] in
+        let managedObjectContext = self.container.newBackgroundContext()
         managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         managedObjectContext.parent = self.mainManagedObjectContext
         return managedObjectContext
     }()
     
-    lazy var testbackgroundManagedObjectContext: NSManagedObjectContext = {
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        managedObjectContext.persistentStoreCoordinator = self.persistentStore
-        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave,
-                                               object: managedObjectContext,
-                                               queue: nil)
-        { notification in
-            let context = self.mainManagedObjectContext
-            context.performAndWait {
-                context.mergeChanges(fromContextDidSave: notification)
-            }
-        }
-        return managedObjectContext
+    lazy var testbackgroundManagedObjectContext: NSManagedObjectContext = { [unowned self] in
+        return self.container.newBackgroundContext()
     }()
     
 }

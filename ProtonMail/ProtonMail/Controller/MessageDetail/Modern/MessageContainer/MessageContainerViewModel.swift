@@ -25,9 +25,15 @@ import Foundation
 import CoreData
 import PMNetworking
 
+extension MessageContainerViewModel {
+    struct StatesKey {
+        static let offsetKey = "ContentOffset"
+    }
+}
+
 /// ViewModel object of big MessaveViewController screen with a whole thread of messages inside. ViewModel objects of singular messages are nested in `thread` array.
 class MessageContainerViewModel: TableContainerViewModel {
-    internal lazy var userActivity: NSUserActivity = {
+    internal lazy var userActivity: NSUserActivity = { [unowned self] in
         let activity = NSUserActivity(activityType: "Handoff.Message")
         activity.isEligibleForHandoff = true
         activity.isEligibleForSearch = false
@@ -61,6 +67,9 @@ class MessageContainerViewModel: TableContainerViewModel {
     
     private let messageService : MessageDataService
     internal let user: UserManager
+    private let coreDataService: CoreDataService
+    /// States from deeplink
+    private let states: [String: Any]?
     
     // model - viewModel connections
     @objc private(set) dynamic var thread: [MessageViewModel]
@@ -76,12 +85,15 @@ class MessageContainerViewModel: TableContainerViewModel {
         return self.thread[section].divisionsCount
     }
     
-    init(conversation messages: [Message], msgService: MessageDataService, user: UserManager) {
+
+    init(conversation messages: [Message], msgService: MessageDataService, user: UserManager, coreDataService: CoreDataService, states: [String: Any]? = nil) {
+
         self.thread = []
         self.messageService = msgService
         self.messages = messages
         self.user = user
-        
+        self.coreDataService = coreDataService
+        self.states = states
         super.init()
         
         
@@ -115,8 +127,8 @@ class MessageContainerViewModel: TableContainerViewModel {
         }
     }
     
-    convenience init(message: Message, msgService: MessageDataService, user: UserManager) {
-        self.init(conversation: [message], msgService: msgService, user: user)
+    convenience init(message: Message, msgService: MessageDataService, user: UserManager, coreDataService: CoreDataService, states: [String: Any]? = nil) {
+        self.init(conversation: [message], msgService: msgService, user: user, coreDataService: coreDataService, states: states)
     }
     
     deinit {
@@ -280,7 +292,7 @@ class MessageContainerViewModel: TableContainerViewModel {
     internal func children() -> [ChildViewModelPack] {
         let children = self.thread.compactMap { standalone -> ChildViewModelPack? in
             guard let message = self.message(for: standalone) else { return nil }
-            let head = MessageHeaderViewModel(parentViewModel: standalone, message: message)
+            let head = MessageHeaderViewModel(parentViewModel: standalone, message: message, coreDataService: self.coreDataService)
             let attachments = MessageAttachmentsViewModel(parentViewModel: standalone)
             let body = MessageBodyViewModel(parentViewModel: standalone)
             return (head, body, attachments)
@@ -332,5 +344,13 @@ class MessageContainerViewModel: TableContainerViewModel {
                 self?.reload(message: message)
             }
         }
+    }
+    
+    func getContentOffset() -> CGPoint? {
+        guard let states = self.states,
+              let yOffset = states[MessageContainerViewModel.StatesKey.offsetKey] as? CGFloat else {
+            return nil
+        }
+        return CGPoint(x: 0, y: yOffset) 
     }
 }

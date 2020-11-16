@@ -26,7 +26,7 @@ import MBProgressHUD
 import PMKeymaker
 import MessageUI
 
-class NetworkTroubleShootViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
+class NetworkTroubleShootViewController: UITableViewController, ViewModelProtocol, CoordinatedNew, AccessibleView {
 
     public enum Item: Int, CustomStringConvertible {
         public var description: String {
@@ -252,6 +252,7 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
                                             target: self,
                                             action: #selector(NetworkTroubleShootViewController.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
+        generateAccessibilityIdentifiers()
     }
     
     @objc func back(sender: UIBarButtonItem) {

@@ -137,7 +137,7 @@ class SignInManager: Service {
         let labelService = user.labelService
         let userDataService = user.userService
         labelService.fetchLabels()
-        userDataService.fetchUserInfo().done(on: .main) { info in
+        userDataService.fetchUserInfo(auth: auth).done(on: .main) { info in
             guard let info = info else {
                 onError(NSError.unknowError())
                 return
@@ -145,8 +145,12 @@ class SignInManager: Service {
             self.usersManager.update(auth: auth, user: info)
             
             guard info.delinquent < 3 else {
-                self.usersManager.logout(user: user, shouldAlert: false)
-                onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
+                Analytics.shared.debug(message: .logout, extra: [
+                    Analytics.Reason.reason: Analytics.Reason.delinquent
+                ], user: user)
+                _ = self.usersManager.logout(user: user, shouldAlert: false).ensure {
+                    onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
+                }
                 return
             }
             

@@ -22,15 +22,17 @@
     
 
 import Foundation
+import PromiseKit
 
 class StorefrontViewModel: NSObject {
-    @objc dynamic private var storefront: Storefront
+    let currentUser: UserManager
+    @objc dynamic private var storefront: Storefront!
     private var storefrontObserver: NSKeyValueObservation!
     private var canPurchaseObserver: NSKeyValueObservation!
     private var storefrontSubscriptionObserver: NSKeyValueObservation!
     private var storefrontCreditsObserver: NSKeyValueObservation!
     
-    private var servicePlanService: ServicePlanDataService
+    private var servicePlanService: ServicePlanDataService!
     
     internal enum Sections: Int, CaseIterable {
         case logo = 0, detail, annotation, buyLinkHeader, buyLink, othersHeader, others, buyButton, credits, disclaimer
@@ -53,42 +55,34 @@ class StorefrontViewModel: NSObject {
     @objc dynamic var creditsItem: AnyStorefrontItem?
     @objc dynamic var disclaimerItem: AnyStorefrontItem?
     
-    init(storefront: Storefront, servicePlanService: ServicePlanDataService) {
+    init(currentUser: UserManager, storefront: Storefront?=nil) {
+        self.currentUser = currentUser
         self.storefront = storefront
-        self.servicePlanService = servicePlanService
-        
-        func setup(with storefront: Storefront) {
-            self.title = storefront.title
-            self.currentSubscription = storefront.subscription
-            
-            self.logoItem = self.extractLogo(from: storefront)
-            self.detailItems = self.extractDetails(from: storefront)
-            self.annotationItem = self.extractAnnotation(from: storefront)
-            self.othersItems = self.extractOthers(from: storefront)
-            self.othersHeaderItem = self.othersItems.isEmpty ? nil : SubsectionHeaderStorefrontItem(text: LocalString._other_plans)
-            self.buyLinkItem = self.extractBuyLink(from: storefront)
-            self.buyLinkHeaderItem = self.buyLinkItem == nil ? nil : SubsectionHeaderStorefrontItem(text: " ")
-            self.buyButtonItem = self.extractBuyButton(from: storefront)
-            self.creditsItem = self.buyButtonItem == nil ? nil : self.extractCredits(from: storefront)
-            self.disclaimerItem = self.extractDisclaimer(from: storefront)
-        }
-        
         super.init()
-        setup(with: storefront)
+    }
+    
+    func updateSubscription() -> Promise<Void> {
+        guard self.storefront == nil else {
+            // Check next plan data
+            self.initStoreFront()
+            self.servicePlanService = self.currentUser.sevicePlanService
+            self.setup(with: self.storefront)
+            self.setupObserve()
+            return Promise()
+        }
         
-        self.storefrontObserver = self.observe(\.storefront, options: [.new]) { viewModel, change in
-            setup(with: viewModel.storefront)
-        }
-        self.canPurchaseObserver = self.storefront.observe(\.isProductPurchasable, options: [.new]) { [unowned self] storefront, change in
-            self.buyButtonItem = self.extractBuyButton(from: storefront)
-        }
-        self.storefrontSubscriptionObserver = self.storefront.observe(\.subscription, options: [.new]) { [unowned self] storefront, change in
-            self.storefront = storefront
-        }
-        self.storefrontCreditsObserver = self.storefront.observe(\.credits, options: [.new]) { [unowned self] storefront, change in
-            self.annotationItem = self.extractAnnotation(from: storefront)
-            self.creditsItem = self.buyButtonItem == nil ? nil : self.extractCredits(from: storefront)
-        }
+        return self.currentUser.sevicePlanService.updateServicePlans()
+            .then { () -> Promise<Void> in
+                guard self.currentUser.sevicePlanService.isIAPAvailable else {
+                    throw NSError(domain: "", code: -1, localizedDescription: "IAP unavailable")
+                }
+                return self.currentUser.sevicePlanService.updateCurrentSubscription()
+            }.done {
+                self.initStoreFront()
+                self.servicePlanService = self.currentUser.sevicePlanService
+                self.setup(with: self.storefront)
+                self.setupObserve()
+            }
     }
     
     func numberOfSections() -> Int {
@@ -159,6 +153,48 @@ extension StorefrontViewModel {
 
 // almost exactly copied from previous version of IAP UI
 extension StorefrontViewModel {
+    private func setup(with storefront: Storefront) {
+        self.title = storefront.title
+        self.currentSubscription = storefront.subscription
+        
+        self.logoItem = self.extractLogo(from: storefront)
+        self.detailItems = self.extractDetails(from: storefront)
+        self.annotationItem = self.extractAnnotation(from: storefront)
+        self.othersItems = self.extractOthers(from: storefront)
+        self.othersHeaderItem = self.othersItems.isEmpty ? nil : SubsectionHeaderStorefrontItem(text: LocalString._other_plans)
+        self.buyLinkItem = self.extractBuyLink(from: storefront)
+        self.buyLinkHeaderItem = self.buyLinkItem == nil ? nil : SubsectionHeaderStorefrontItem(text: " ")
+        self.buyButtonItem = self.extractBuyButton(from: storefront)
+        self.creditsItem = self.buyButtonItem == nil ? nil : self.extractCredits(from: storefront)
+        self.disclaimerItem = self.extractDisclaimer(from: storefront)
+    }
+    
+    private func setupObserve() {
+        self.storefrontObserver = self.observe(\.storefront, options: [.new]) { viewModel, change in
+            self.setup(with: viewModel.storefront)
+        }
+        self.canPurchaseObserver = self.storefront.observe(\.isProductPurchasable, options: [.new]) { [unowned self] storefront, change in
+            self.buyButtonItem = self.extractBuyButton(from: storefront)
+        }
+        self.storefrontSubscriptionObserver = self.storefront.observe(\.subscription, options: [.new]) { [unowned self] storefront, change in
+            self.storefront = storefront
+        }
+        self.storefrontCreditsObserver = self.storefront.observe(\.credits, options: [.new]) { [unowned self] storefront, change in
+            self.annotationItem = self.extractAnnotation(from: storefront)
+            self.creditsItem = self.buyButtonItem == nil ? nil : self.extractCredits(from: storefront)
+        }
+    }
+    
+    private func initStoreFront() {
+        guard self.storefront == nil else {return}
+        
+        if let currentSubscription = self.currentUser.sevicePlanService.currentSubscription {
+            self.storefront = Storefront(subscription: currentSubscription, servicePlanService: self.currentUser.sevicePlanService, user: self.currentUser.userInfo)
+        } else {
+            self.storefront = Storefront(plan: .free, servicePlanService: self.currentUser.sevicePlanService, user: self.currentUser.userInfo)
+        }
+    }
+    
     private func extractLogo(from storefront: Storefront) -> AnyStorefrontItem? {
         guard let _ = storefront.details else { return nil }
         return LogoStorefrontItem(imageName: "Logo",

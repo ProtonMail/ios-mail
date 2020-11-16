@@ -116,7 +116,8 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
     }
     
     private func logout() {
-        self.delegate?.Cancel()
-        self.navigationController?.popViewController(animated: true)
+        _ = self.delegate?.Cancel().done {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }

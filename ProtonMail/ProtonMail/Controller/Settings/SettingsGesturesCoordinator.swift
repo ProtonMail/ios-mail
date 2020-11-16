@@ -36,7 +36,7 @@ class SettingsGesturesCoordinator : DefaultCoordinator {
 //    internal weak var swRevealVC: SWRevealViewController?
     internal weak var deepLink: DeepLink?
     
-    lazy internal var configuration: ((SettingsGesturesViewController) -> ())? = { vc in
+    lazy internal var configuration: ((SettingsGesturesViewController) -> ())? = { [unowned self] vc in
         vc.set(coordinator: self)
         vc.set(viewModel: self.viewModel)
     }

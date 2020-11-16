@@ -2103,7 +2103,7 @@
 "To" = "Til";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Til að koma í veg fyrir misnotkun á ProtonMail,&#13;\n þurfum við að ganga úr skugga um að þú sért mennskur.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Til að koma í veg fyrir misnotkun á ProtonMail,\r\n þurfum við að ganga úr skugga um að þú sért mennskur.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu, notaðu þá vefútgáfu ProtonMail á protonmail.com";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Það eru óvistaðar breytingar. Viltu vista þær?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Þú hefur notað %1$d%% af geymslurýminu þínu (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Þú hefur notað allt geymslurýmið þitt (%@).";
 
 /* Description */

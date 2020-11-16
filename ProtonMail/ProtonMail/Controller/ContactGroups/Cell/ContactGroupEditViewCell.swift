@@ -40,7 +40,7 @@ struct ContactGroupEditViewCellColor
                     background: UIColor.white)
 }
 
-class ContactGroupEditViewCell: UITableViewCell {
+class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var shortNameLabel: UILabel!
@@ -108,6 +108,7 @@ class ContactGroupEditViewCell: UITableViewCell {
                                                                                 font: .highlightSearchTextForSubtitle)
         
         prepareShortName()
+        generateCellAccessibilityIdentifiers(email)
     }
     
     private func prepareShortName() {

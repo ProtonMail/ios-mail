@@ -848,7 +848,7 @@
 "Enter" = "U redu";
 
 /* Title */
-"Enter Verification Code" = "Unesite kȏd za provjeru";
+"Enter Verification Code" = "Unesite kôd za provjeru";
 
 /* human verification top title */
 "Enter your cell phone number" = "Unesite broj svog mobilnog telefona";
@@ -1528,10 +1528,10 @@
 "Please add a password for the following recipients." = "Molimo dodajte lozinku za sljedeće primatelje.";
 
 /* Description */
-"Please check your cell phone for the verification code." = "Provjerite je li kȏd za provjeru došao na vaš mobilni uređaj.";
+"Please check your cell phone for the verification code." = "Provjerite je li kôd za provjeru došao na vaš mobilni uređaj.";
 
 /* error message */
-"Please check your email for the verification code." = "Provjerite je li kȏd za provjeru došao na vašu adresu e-pošte.";
+"Please check your email for the verification code." = "Provjerite je li kôd za provjeru došao na vašu adresu e-pošte.";
 
 /* alert description */
 "Please disable PGP Sending for following addresses." = "Molimo onemogućite PGP Slanja za sljedeće adrese.";
@@ -1690,7 +1690,7 @@
 "Reading device contacts data..." = "Čitanje podataka o kontaktima uređaja...";
 
 /* Title */
-"Recovery Code" = "Kȏd za oporavak";
+"Recovery Code" = "Kôd za oporavak";
 
 /* Title */
 "Recovery Email" = "Adresa e-pošte za oporavak";
@@ -1790,7 +1790,7 @@
 "Send plain but stored enc" = "Pošalji kao obično, ali pohranjeno šifriranje";
 
 /* Title */
-"Send Verification Code" = "Pošalji kȏd za provjeru";
+"Send Verification Code" = "Pošalji kôd za provjeru";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Neuspjela potvrda pošiljatelja";
@@ -1868,7 +1868,7 @@
 "Snoozed till" = "Odgođeno do";
 
 /* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Nažalost, ne možemo obrađivati kupnje u beta inačici aplikacije na iOS-u. Hvala što sudjelujete u našoj javnoj beta verziji!";
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Nažalost, ne možemo obrađivati kupnje u Beta verziji aplikacije na iOS-u. Hvala što sudjelujete u našoj javnoj Beta verziji!";
 
 /* (No Comment) */
 "Space Warning" = "Upozorenje o slobodnom prostoru";
@@ -2103,7 +2103,7 @@
 "To" = "Za";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMaila,&#13;\n morate potvrditi da ste čovjek.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMaila,\r\n morate potvrditi da ste čovjek.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na adresi protonmail.com";
@@ -2160,7 +2160,7 @@
 "Twitter" = "Twitter";
 
 /* Placeholder */
-"Two Factor Code" = "Kȏd dvofaktorske autentikacije";
+"Two Factor Code" = "Kôd dvofaktorske autentikacije";
 
 /* Internal type casting error */
 "Type casting error" = "Type casting error";
@@ -2302,7 +2302,7 @@
 "Verification code request failed" = "Zahtjev za kodom za potvrdu nije uspjeo";
 
 /* Title */
-"Verification code sent" = "Kȏd za potvrdu je poslan";
+"Verification code sent" = "Kôd za potvrdu je poslan";
 
 /* error title */
 "Verification error" = "Pogreška pri provjeri valjanosti";
@@ -2338,10 +2338,10 @@
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Uspješno smo aktivirali vašu pretplatu. Ponovno pokrenite aplikaciju da biste počeli koristiti novi plan usluge.";
 
 /* text field notes */
-"We will send a verification code to the cell phone above." = "Poslati ćemo kȏd za potvrdu na gore navedeni telefonski broj.";
+"We will send a verification code to the cell phone above." = "Poslati ćemo kôd za potvrdu na gore navedeni telefonski broj.";
 
 /* email field notes */
-"We will send a verification code to the email address above." = "Poslati ćemo kȏd za potvrdu na gore navedenu adresu e-pošte.";
+"We will send a verification code to the email address above." = "Poslati ćemo kôd za potvrdu na gore navedenu adresu e-pošte.";
 
 /* Title */
 "We would like to know what we can do better." = "Željeli bismo znati što možemo učiniti boljim.";
@@ -2360,7 +2360,7 @@
 
 /* 
  & title */
-"Wrong verification code" = "Netočan kȏd za provjeru";
+"Wrong verification code" = "Netočan kôd za provjeru";
 
 /* Title */
 "wrote:" = "je napisao/la:";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Imate nespremljene promjene. Želite li ih spremiti?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Iskoristili ste %1$d%% od vašeg prostora za pohranu (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Iskoristili ste sav prostor za pohranu (%@).";
 
 /* Description */
@@ -2433,7 +2433,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Vaš novi šifrirani račun e-pošte je postavljen i spreman za slanje i primanje šifriranih poruka.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Vaš novi, sigurni račun&#13;\n e-pošte je spreman.";
+"Your new secure email\r\n account is ready." = "Vaš novi, sigurni račun\r\n e-pošte je spreman.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Vaš plan je trenutno aktivan do";

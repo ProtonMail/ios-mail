@@ -24,7 +24,7 @@
 import UIKit
 
 @available(iOS 9.0, *)
-final class DurationPickerViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+final class DurationPickerViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, AccessibleView {
     typealias ChangeHandler = (SelectedComponents)->Void
     typealias SelectedComponents = (Int, Int)
     
@@ -42,6 +42,7 @@ final class DurationPickerViewController: UIViewController, UIPickerViewDataSour
         super.viewDidLoad()
         self.picker.selectRow(self.valueToSelect.0, inComponent: 0, animated: false)
         self.picker.selectRow(self.valueToSelect.1, inComponent: 1, animated: false)
+        generateAccessibilityIdentifiers()
     }
     
     @IBAction func cancel() {

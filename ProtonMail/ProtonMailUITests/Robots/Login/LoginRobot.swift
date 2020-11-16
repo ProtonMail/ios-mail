@@ -8,44 +8,42 @@
 
 import XCTest
 
-private let usernameIdentifier = "txtUsername"
-private let passwordIdentifier = "txtPassword"
-private let signinButtonIdentifier = "loginButton"
+private let usernameIdentifier = "SignInViewController.usernameTextField"
+private let passwordIdentifier = "SignInViewController.passwordTextField"
+private let signinButtonIdentifier = "SignInViewController.signInButton"
+private let twoFaCodeIdentifier = "TwoFACodeViewController.twoFactorCodeField"
+private let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
+private let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
 
 class LoginRobot {
     
     var verify: Verify! = nil
     init() { verify = Verify(parent: self) }
     
-    func loginUser(_ name: String, _ pwd: String) -> InboxRobot {
-        return username(name)
-            .password(pwd)
+    func loginUser(_ user: User) -> InboxRobot {
+        return username(user.email)
+            .password(user.password)
             .signIn()
     }
 
-    func loginUserWithTwoFA(user: String) -> LoginRobot {
-        return username(user)
-            .password(user)
-            .signInWithMailboxPasswordOrTwoFA()
-            .twoFACode(twoFACode: user)
-            .confirm2FA()
+    func loginUserWithTwoFA(_ user: User) -> InboxRobot {
+        return username(user.email)
+            .password(user.password)
+            .signInWithTwoFA()
+            .provideTwoFaCode(code: user.getTwoFaCode())
     }
 
-    func loginTwoPasswordUser(user: String) -> LoginRobot {
-        return username(user)
-            .password(user)
-            .signInWithMailboxPasswordOrTwoFA()
-            .mailboxPassword(password: user)
-            .decrypt()
+    func loginTwoPasswordUser(_ user: User) -> MailboxPasswordRobot {
+        return username(user.email)
+            .password(user.password)
+            .signInWithMailboxPassword()
     }
 
-    private func loginTwoPasswordUserWithTwoFA(user: String) -> LoginRobot {
-        return username(user)
-            .password(user)
-            .signInWithMailboxPasswordOrTwoFA()
-            .twoFACode(twoFACode: user)
-            .mailboxPassword(password: user)
-            .decrypt()
+    func loginTwoPasswordUserWithTwoFA(_ user: User) -> MailboxPasswordRobot {
+        return username(user.email)
+            .password(user.password)
+            .signInWithTwoFA()
+            .provideTwoFaCodeMailbox(code: user.getTwoFaCode())
     }
     
     private func username(_ username: String) -> LoginRobot {
@@ -63,34 +61,14 @@ class LoginRobot {
         return InboxRobot()
     }
     
-    private func signInWithMailboxPasswordOrTwoFA() -> LoginRobot {
+    private func signInWithMailboxPassword() -> MailboxPasswordRobot {
         Element.button.tapByIdentifier(signinButtonIdentifier)
-        return self
+        return MailboxPasswordRobot()
     }
     
-    private func loginUserWithTwoFA() -> InboxRobot {
+    private func signInWithTwoFA() -> TwoFaRobot {
         Element.button.tapByIdentifier(signinButtonIdentifier)
-        return InboxRobot()
-    }
-    
-    private func mailboxPassword(password: String?) -> LoginRobot {
-        //TODO:: add implementation
-        return self
-    }
-
-    private func decrypt() -> LoginRobot {
-        //TODO:: add implementation
-        return self
-    }
-
-    private func confirm2FA() -> LoginRobot {
-        //TODO:: add implementation
-        return self
-    }
-
-    private func twoFACode(twoFACode: String?) -> LoginRobot {
-        //TODO:: add implementation
-        return self
+        return TwoFaRobot()
     }
 
     private func secondPass(mailboxPassword: String) -> LoginRobot {
@@ -103,12 +81,36 @@ class LoginRobot {
         return self
     }
     
+    class TwoFaRobot {
+
+        func provideTwoFaCode(code: String) -> InboxRobot {
+            twoFACode(code: code)
+                .confirm2FA()
+            return InboxRobot()
+        }
+
+        func provideTwoFaCodeMailbox(code: String) -> MailboxPasswordRobot {
+            twoFACode(code: code)
+                .confirm2FA()
+            return MailboxPasswordRobot()
+        }
+
+        private func confirm2FA() {
+            Element.wait.forButtonWithIdentifier(twoFaEnterButtonIdentifier, file: #file, line: #line).tap()
+        }
+        
+        private func twoFACode(code: String) -> TwoFaRobot {
+            Element.wait.forTextFieldWithIdentifier(twoFaCodeIdentifier, file: #file, line: #line).typeText(code)
+            return self
+        }
+    }
+    
     class Verify {
         unowned let loginRobot: LoginRobot
         init(parent: LoginRobot) { loginRobot = parent }
 
-        func loginViewShown() {
-            Element.assert.buttonWithIdentifierExists(signinButtonIdentifier, file: #file, line: #line)
+        func loginScreenDisplayed() {
+            Element.wait.forButtonWithIdentifier(signinButtonIdentifier, file: #file, line: #line)
         }
     }
 }

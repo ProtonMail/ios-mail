@@ -62,6 +62,8 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
         self.navigationItem.leftBarButtonItem = cancelButton
         let removeAllButton = UIBarButtonItem(title: LocalString._remove_all, style: .plain, target: self, action: #selector(removeAction))
         self.navigationItem.rightBarButtonItem = removeAllButton
+        self.navigationItem.assignNavItemIndentifiers()
+        generateAccessibilityIdentifiers()
     }
     
     @objc internal func dismiss() {
@@ -107,10 +109,14 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         alertController.addAction(.init(title: LocalString._remove_all, style: .destructive, handler: { _ in
-            self.viewModel.signOut()
-            self.dismiss()
+            Analytics.shared.debug(message: .logout, extra: [
+                Analytics.Reason.reason: Analytics.Reason.logoutAll
+            ], user: self.viewModel.currentUser)
+            self.viewModel.signOut().ensure {
+                self.dismiss()
+            }.cauterize()
         }))
-        
+
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         present(alertController, animated: true, completion: nil)
@@ -143,6 +149,9 @@ extension AccountManagerViewController: UITableViewDataSource {
             return cell
         case .add:
             let cell = tableView.dequeueReusableCell(withIdentifier: "add_account_cell", for: indexPath)
+            if let userCell = cell as? MenuButtonViewCell {
+                userCell.configCell(LocalString._menu_add_account, containsStackView: true, hideSepartor: false)
+            }
             return cell
         }
         
@@ -190,8 +199,9 @@ extension AccountManagerViewController: UITableViewDataSource {
                         }
                     }
                     
-                    self.viewModel.remove(at: indexPath)
-                    self.tableView.reloadData()
+                    self.viewModel.remove(at: indexPath).done {
+                        self.tableView.reloadData()
+                    }.cauterize()
                 }))
                 self.present(alert, animated: true, completion: nil)
             }]
@@ -202,8 +212,9 @@ extension AccountManagerViewController: UITableViewDataSource {
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 alert.addAction(.init(title: LocalString._general_remove_button, style: .destructive, handler: { _ in
-                    self.viewModel.remove(at: indexPath)
-                    self.tableView.reloadData()
+                    self.viewModel.remove(at: indexPath).done {
+                        self.tableView.reloadData()
+                    }.cauterize()
                 }))
                 self.present(alert, animated: true, completion: nil)
             }]

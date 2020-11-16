@@ -40,6 +40,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private let contactGroupService: ContactGroupsDataService
     private let messageService: MessageDataService
     private(set) var user: UserManager
+    let coreDataService: CoreDataService
     /**
      Init the view model with state
      
@@ -47,12 +48,14 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
     init(user: UserManager,
+         coreDateService: CoreDataService,
          groupCountInformation: [(ID: String, name: String, color: String, count: Int)]? = nil,
          selectedGroupIDs: Set<String>? = nil,
          refreshHandler: ((Set<String>) -> Void)? = nil) {
         self.user = user
         self.contactGroupService = user.contactGroupService
         self.messageService = user.messageService
+        self.coreDataService = coreDateService
         
         if let groupCountInformation = groupCountInformation {
             self.groupCountInformation = groupCountInformation
@@ -171,7 +174,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         return Promise { seal in
             if self.isFetching == false {
                 self.isFetching = true
-                self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+                self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, context: self.coreDataService.mainManagedObjectContext, completion: { (task, res, error) in
                     self.isFetching = false
                     if let error = error {
                         seal.reject(error)
@@ -199,7 +202,10 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private func fetchContacts() {
         if isFetching == false {
             isFetching = true
-            self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+            self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue,
+                                            notificationMessageID: nil,
+                                            context: self.coreDataService.mainManagedObjectContext,
+                                            completion: { (task, res, error) in
                 self.isFetching = false
             })
         }

@@ -43,24 +43,79 @@ class CoreDataStore {
         return Bundle(url: Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!)!
     }
     
-    public lazy var defaultPersistentStore: NSPersistentStoreCoordinator! = {
+    static let name: String = "ProtonMail.sqlite"
+    
+    public lazy var defaultContainer: NSPersistentContainer = { [unowned self] in
+        return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.dbUrl)
+    }()
+    
+    public lazy var memoryPersistentContainer: NSPersistentContainer = { [unowned self] in
+        return self.newMemoryPersistentContainer(self.managedObjectModel, name: CoreDataStore.name)
+    }()
+    
+    public lazy var testPersistentContainer: NSPersistentContainer = { [unowned self] in
+        return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.tempUrl)
+    }()
+    
+    public lazy var defaultPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
         return self.newPersistentStoreCoordinator(self.managedObjectModel, url: CoreDataStore.dbUrl)
     }()
     
-    public lazy var memoryPersistentStore: NSPersistentStoreCoordinator! = {
-        return self.newMemeryStoreCoordinator(self.managedObjectModel)
+    public lazy var memoryPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
+        return self.newMemoryStoreCoordinator(self.managedObjectModel)
     }()
     
-    public lazy var testPersistentStore: NSPersistentStoreCoordinator! = {
+    public lazy var testPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
         return self.newPersistentStoreCoordinator(self.managedObjectModel, url: CoreDataStore.tempUrl)
     }()
     
-    private lazy var managedObjectModel: NSManagedObjectModel = {
+    private lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
         var modelURL = Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
     
-    private func newMemeryStoreCoordinator(_ objectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
+    private func newPersistentContainer(_ managedObjectModel: NSManagedObjectModel, name: String, url: URL) -> NSPersistentContainer {
+        var url = url
+        let container = NSPersistentContainer(name: name, managedObjectModel: managedObjectModel)
+        container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: url)]
+        container.loadPersistentStores { (persistentStoreDescription, error) in
+            if let ex = error as NSError? {
+                Analytics.shared.error(message: .coreDataError, error: ex)
+                PMLog.D(api: ex)
+                
+                do {
+                    try FileManager.default.removeItem(at: url)
+                    lastUpdatedStore.clear()
+                } catch let error as NSError{
+                    self.popError(error)
+                }
+                
+                self.popError(ex)
+                fatalError()
+            } else {
+                url.excludeFromBackup()
+                container.viewContext.automaticallyMergesChangesFromParent = true
+                container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            }
+        }
+        return container
+    }
+    
+    private func newMemoryPersistentContainer(_ managedObjectModel: NSManagedObjectModel, name: String) -> NSPersistentContainer {
+        let container = NSPersistentContainer(name: name, managedObjectModel: managedObjectModel)
+        let description = NSPersistentStoreDescription()
+        description.type = NSInMemoryStoreType
+        container.persistentStoreDescriptions = [description]
+        container.loadPersistentStores { (persistentStoreDescription, error) in
+            if let ex = error as NSError? {
+                PMLog.D(api: ex)
+            }
+//            fatalError()
+        }
+        return container
+    }
+    
+    private func newMemoryStoreCoordinator(_ objectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
         let coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
         // Coordinator with in-mem store type
         do {

@@ -23,6 +23,7 @@
 
 import Foundation
 import UserNotifications
+import PromiseKit
 
 class LocalNotificationService: Service, HasLocalStorage {
     enum Categories: String {
@@ -70,20 +71,33 @@ class LocalNotificationService: Service, HasLocalStorage {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [details.messageID])
     }
     
-    func cleanUp() {
+    func rescheduleMessage(oldID: String, details: MessageSendingDetails) {
         let center = UNUserNotificationCenter.current()
-        center.getPendingNotificationRequests { all in
-            let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID }.map { $0.identifier }
-            center.removePendingNotificationRequests(withIdentifiers: belongToUser)
-        }
-        center.getDeliveredNotifications() { all in
-            let belongToUser = all.filter { $0.request.content.userInfo["user_id"] as? String == self.userID }.map { $0.request.identifier }
-            center.removeDeliveredNotifications(withIdentifiers: belongToUser)
+        center.getPendingNotificationRequests { [weak self](requests) in
+            guard let _ = requests.first(where: {$0.identifier == oldID}) else {return}
+            self?.unscheduleMessageSendingFailedNotification(.init(messageID: oldID))
+            self?.scheduleMessageSendingFailedNotification(details)
         }
     }
     
-    static func cleanUpAll() {
+    func cleanUp() -> Promise<Void> {
+        return Promise { seal in
+            let center = UNUserNotificationCenter.current()
+            center.getPendingNotificationRequests { all in
+                let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID }.map { $0.identifier }
+                center.removePendingNotificationRequests(withIdentifiers: belongToUser)
+            }
+            center.getDeliveredNotifications() { all in
+                let belongToUser = all.filter { $0.request.content.userInfo["user_id"] as? String == self.userID }.map { $0.request.identifier }
+                center.removeDeliveredNotifications(withIdentifiers: belongToUser)
+            }
+            seal.fulfill_()
+        }
+    }
+    
+    static func cleanUpAll() -> Promise<Void> {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        return Promise()
     }
 }

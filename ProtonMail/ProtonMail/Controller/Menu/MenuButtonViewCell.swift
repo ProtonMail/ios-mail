@@ -23,11 +23,10 @@
 
 import Foundation
 
-class MenuButtonViewCell: UITableViewCell {
+class MenuButtonViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var separtor: UIView!
-    
-    fileprivate var item: MenuItem!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
@@ -38,10 +37,17 @@ class MenuButtonViewCell: UITableViewCell {
         
         self.selectedBackgroundView = selectedBackgroundView
     }
-    
-    func configCell (_ item : MenuItem!, hideSepartor: Bool) {
-        self.item = item;
-        self.separtor.isHidden = hideSepartor
+
+    func configCell (_ label: String, containsStackView: Bool, hideSepartor: Bool = false) {
+        if (containsStackView) {
+            let addAccountsLabel = stackView.arrangedSubviews[1] as? UILabel
+            addAccountsLabel!.text = label
+            self.separtor.isHidden = hideSepartor
+        } else {
+            self.label.text = label;
+            self.separtor.isHidden = hideSepartor
+        }
+        generateCellAccessibilityIdentifiers(label)
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {

@@ -52,7 +52,7 @@ class ContactGroupCoordinator : DefaultCoordinator {
     
     ///TODO::fixme. add warning or error when return false except the last one.
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
-        guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
+        guard let segueID = identifier, let _ = Destination(rawValue: segueID) else {
             return false //
         }
         

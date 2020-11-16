@@ -94,6 +94,7 @@ class TwoFACodeView : PMView {
         topTitleLabel.text = LocalString._authentication
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
         enterButton.setTitle(LocalString._enter, for: .normal)
+        generateAccessibilityIdentifiers()
     }
 
     @objc func doneButtonAction() {
@@ -112,9 +113,9 @@ class TwoFACodeView : PMView {
     
     func showKeyboard() {
         if mode!.check(.loginPassword) {
-            loginPasswordField.becomeFirstResponder()
+            _ = loginPasswordField.becomeFirstResponder()
         } else if mode!.check(.twoFactorCode) {
-            twoFactorCodeField.becomeFirstResponder()
+            _ = twoFactorCodeField.becomeFirstResponder()
         }
     }
     

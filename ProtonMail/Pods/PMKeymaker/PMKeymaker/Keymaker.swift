@@ -78,8 +78,8 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         if self.autolocker?.shouldAutolockNow() == true {
             self._mainKey = nil
         }
-        if self._mainKey == nil {
-            self._mainKey = self.provokeMainKeyObtention()
+        if self._mainKey == nil, let newKey = self.provokeMainKeyObtention() {
+            self._mainKey = newKey
         }
         return self._mainKey
     }

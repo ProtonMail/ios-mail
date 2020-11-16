@@ -24,6 +24,7 @@
 import Foundation
 import CoreData
 import UIKit
+import PromiseKit
 
 class MenuViewModelImpl : MenuViewModel {
     private let kMenuCellHeight: CGFloat = 44.0
@@ -79,6 +80,7 @@ class MenuViewModelImpl : MenuViewModel {
     func updateCurrent(row: Int) {
         self.currentUser = self.usersManager.user(at: row)
         self.usersManager.active(index: row)
+        _ = self.currentUser?.sevicePlanService.updateServicePlans()
     }
     
     func updateCurrent() {
@@ -103,7 +105,7 @@ class MenuViewModelImpl : MenuViewModel {
     let usersManager : UsersManager
     
     //
-    lazy var labelDataService : LabelsDataService? = {
+    lazy var labelDataService : LabelsDataService? = { [unowned self] in
         if let user = self.currentUser {
             return user.labelService
         } else {
@@ -116,7 +118,7 @@ class MenuViewModelImpl : MenuViewModel {
     }
     
     // user at the moment of creation of this MenuViewModel instance
-    lazy var currentUser: UserManager? = {
+    lazy var currentUser: UserManager? = { [unowned self] in
         return self.usersManager.firstUser
     }()
     
@@ -134,9 +136,6 @@ class MenuViewModelImpl : MenuViewModel {
         otherItems = [.contacts, .settings, .servicePlan, .bugs, .lockapp, .signout]
         if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
             otherItems = otherItems.filter { $0 != .lockapp }
-        }
-        if let user = self.currentUser, !user.sevicePlanService.isIAPAvailable {
-            otherItems = otherItems.filter { $0 != .servicePlan }
         }
     }
     
@@ -169,11 +168,11 @@ class MenuViewModelImpl : MenuViewModel {
         return .unknown
     }
     
-    func count(by labelID: String, userID: String? = nil) -> Int {
+    func count(by labelID: String, userID: String? = nil) -> Promise<Int> {
         if let service = self.labelDataService {
             return service.unreadCount(by: labelID, userID: userID)
         } else {
-            return 0
+            return Promise.value(0)
         }
     }
 
@@ -227,10 +226,11 @@ class MenuViewModelImpl : MenuViewModel {
         return IndexPath(row: r, section: s)
     }
     
-    func signOut() {
+    func signOut() -> Promise<Void> {
         if let currentUser = self.currentUser {
-            self.usersManager.logout(user: currentUser)
+            return self.usersManager.logout(user: currentUser)
         }
+        return Promise()
     }
     
     func isCurrentUserHasQueuedMessage() -> Bool {

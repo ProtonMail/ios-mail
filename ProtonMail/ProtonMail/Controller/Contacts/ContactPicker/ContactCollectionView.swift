@@ -381,6 +381,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             }
             cell.text = self.searchText
             cell.enabled = self.allowsTextInput
+            cell.textFieldIdentifier = "\(self.prompt)TextField"
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContactCell", for: indexPath) as! ContactCollectionViewContactCell

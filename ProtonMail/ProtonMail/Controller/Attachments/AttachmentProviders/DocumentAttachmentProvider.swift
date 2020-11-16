@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PromiseKit
 
 class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     internal weak var controller: AttachmentController!
@@ -64,43 +65,53 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     }
     
     
-    internal func process(fileAt url: URL) {
+    internal func process(fileAt url: URL) -> Promise<Void> {
         let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
         var error : NSError?
         
-        coordinator.coordinate(readingItemAt: url, options: [], error: &error) { [weak self] new_url in
-            guard let `self` = self else { return }
-            var fileData: FileData!
-            
-            #if APP_EXTENSION
-                do {
-                    let newUrl = try self.copyItemToTempDirectory(from: url)
-                    let ext = url.mimeType()
-                    let fileName = url.lastPathComponent
-                    fileData = ConcreteFileData<URL>(name: fileName, ext: ext, contents: newUrl)
-                } catch let error {
-                    PMLog.D("Error while importing attachment: \(error.localizedDescription)")
-                    self.controller.error(LocalString._cant_copy_the_file)
-                    return
-                }
-            #else
-            do {
-                url.startAccessingSecurityScopedResource()
-                let data = try Data(contentsOf: url)
-                url.stopAccessingSecurityScopedResource()
-                fileData = ConcreteFileData<Data>(name: url.lastPathComponent, ext: url.mimeType(), contents: data)
-            } catch let error {
-                PMLog.D("Error while importing attachment: \(error.localizedDescription)")
-                self.controller.error(LocalString._cant_load_the_file)
-                return
+        return Promise<FileData> { seal in
+            coordinator.coordinate(readingItemAt: url, options: [], error: &error) { [weak self] new_url in
+                guard let `self` = self else { return }
+                var fileData: FileData!
+                
+                #if APP_EXTENSION
+                    do {
+                        let newUrl = try self.copyItemToTempDirectory(from: url)
+                        let ext = url.mimeType()
+                        let fileName = url.lastPathComponent
+                        fileData = ConcreteFileData<URL>(name: fileName, ext: ext, contents: newUrl)
+                    } catch let error {
+                        PMLog.D("Error while importing attachment: \(error.localizedDescription)")
+                        seal.reject(error)
+                        return
+                    }
+                #else
+                    do {
+                        _ = url.startAccessingSecurityScopedResource()
+                        let data = try Data(contentsOf: url)
+                        url.stopAccessingSecurityScopedResource()
+                        fileData = ConcreteFileData<Data>(name: url.lastPathComponent, ext: url.mimeType(), contents: data)
+                    } catch let error {
+                        PMLog.D("Error while importing attachment: \(error.localizedDescription)")
+                        seal.reject(error)
+                        return
+                    }
+                #endif
+                
+                seal.fulfill(fileData)
             }
-            #endif
             
-            self.controller.fileSuccessfullyImported(as: fileData)
-        }
-        
-        if error != nil {
+            if let err = error {
+                seal.reject(err)
+            }
+        }.then { (file) -> Promise<Void> in
+            return self.controller.fileSuccessfullyImported(as: file)
+        }.recover { (error) in
+            #if APP_EXTENSION
             self.controller.error(LocalString._cant_copy_the_file)
+            #else
+            self.controller.error(LocalString._cant_load_the_file)
+            #endif
         }
     }
 

@@ -136,9 +136,10 @@ class MessageViewModel: NSObject {
         self.attachments = temp.attachments
         self.divisions = temp.divisions
         
-        DispatchQueue.global().async {
+        DispatchQueue.global().async { [weak self] in
             let hasImage = (temp.body ?? "").hasImage() // this method is slow
             DispatchQueue.main.async {
+                guard let self = self else { return }
                 if hasImage && !self.user.autoLoadRemoteImages { // we only care if there is remote content and loading is not allowed
                     self.remoteContentMode = .disallowed
                 }

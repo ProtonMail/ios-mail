@@ -35,7 +35,7 @@ class SettingsCoordinator: SWRevealCoordinator {
     internal weak var swRevealVC: SWRevealViewController?
     internal weak var deepLink: DeepLink?
     
-    lazy internal var configuration: ((SettingsTableViewController) -> ())? = { vc in
+    lazy internal var configuration: ((SettingsTableViewController) -> ())? = { [unowned self] vc in
         vc.set(coordinator: self)
         vc.set(viewModel: self.viewModel)
     }
@@ -118,7 +118,7 @@ class SettingsCoordinator: SWRevealCoordinator {
             }
             
             let user = services.get(by: UsersManager.self).firstUser!
-            next.viewModel = LabelManagerViewModelImpl(apiService: user.apiService, labelService: user.labelService)
+            next.viewModel = LabelManagerViewModelImpl(apiService: user.apiService, labelService: user.labelService, coreDataService: services.get())
         case .loginPwd:
             guard let next = destination as? ChangePasswordViewController else {
                 return false
@@ -130,10 +130,11 @@ class SettingsCoordinator: SWRevealCoordinator {
             }
             next.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
         case .singlePwd:
-            guard let next = destination as? ChangePasswordViewController else {
-                return false
-            }
+//            guard let next = destination as? ChangePasswordViewController else {
+//                return false
+//            }
 //            next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
+            return false
         case .snooze:
             break
         }

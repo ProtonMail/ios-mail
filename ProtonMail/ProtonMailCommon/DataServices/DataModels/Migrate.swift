@@ -61,7 +61,6 @@ protocol Migrate : AnyObject {
 extension Migrate {
 
     func run() {
-        let curr = self.currentVersion
         
         /// run rebuild if it is inital run
         guard initalRun == false else {

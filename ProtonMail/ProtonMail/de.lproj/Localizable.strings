@@ -2103,7 +2103,7 @@
 "To" = "An";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Um den Missbrauch von ProtonMail zu verhindern,&#13;\n müssen wir sicherstellen, dass Sie ein Mensch sind.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Um den Missbrauch von ProtonMail zu verhindern,\r\n müssen wir sicherstellen, dass Sie ein Mensch sind.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Um Ihr Mailbox-Passwort zurückzusetzen, verwenden Sie bitte die Web-Version von ProtonMail unter protonmail.com";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Sie haben noch nicht gespeicherte Änderungen. Möchten Sie diese speichern?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Sie nutzen bereits %1$d%% Ihres Speicherplatzes (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Sie haben Ihren gesamten Speicherplatz (%@) aufgebraucht.";
 
 /* Description */
@@ -2433,7 +2433,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ihr neues verschlüsseltes E-Mail-Konto wurde eingerichtet und ist bereit, um verschlüsselte Nachrichten zu empfangen und zu senden.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Ihr neues sicheres E-Mail-&#13;\nKonto ist eingerichtet.";
+"Your new secure email\r\n account is ready." = "Ihr neues sicheres E-Mail-\r\nKonto ist eingerichtet.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Ihr Abo ist derzeit aktiv bis";

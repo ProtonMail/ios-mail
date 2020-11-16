@@ -788,7 +788,7 @@
 "Enable Notification Email" = "Attiva le notifiche email";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Enable PIN";
+"Enable PIN" = "Attivare il PIN";
 
 /* settings protection section title */
 "Enable Pin Protection" = "Abilita protezione tramite PIN";
@@ -2103,7 +2103,7 @@
 "To" = "A";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Per prevenire abusi di ProtonMail,&#13;\n abbiamo bisogno di verificare che tu sia umano.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Per prevenire abusi di ProtonMail,\r\n abbiamo bisogno di verificare che tu sia umano.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Per resettare la password della tua casella email, utilizza la versione web di ProtonMail su protonmail.com";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Hai delle modifiche non salvate, vorresti salvarle?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Hai usato il %1$d%% del tuo spazio di archiviazione (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Hai usato tutto lo spazio di archiviazione (%@).";
 
 /* Description */
@@ -2433,7 +2433,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Il tuo nuovo account di posta elettronica crittografata è stato impostato ed è pronto per inviare e ricevere messaggi crittografati.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Il tuo nuovo account email&#13;\n sicuro è pronto.";
+"Your new secure email\r\n account is ready." = "Il tuo nuovo account email\r\n sicuro è pronto.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Il tuo piano è attualmente attivo fino al";

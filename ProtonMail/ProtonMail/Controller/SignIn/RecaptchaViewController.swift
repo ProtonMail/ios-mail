@@ -86,40 +86,41 @@ class RecaptchaViewController: UIViewController {
     }
     
     @IBAction private func createAccountAction(_ sender: UIButton) {
-        if viewModel.isTokenOk() {
-            self.finishChecking(true)
-            if doneClicked {
-                return
-            }
-            doneClicked = true;
-            MBProgressHUD.showAdded(to: view, animated: true)
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
-                    DispatchQueue.main.async(execute: { () -> Void in
-                        MBProgressHUD.hide(for: self.view, animated: true)
-                        self.doneClicked = false
-                        if !message.isEmpty {
-                            let title = LocalString._create_user_failed
-                            var message = LocalString._default_error_please_try_again
-                            if let error = error {
-                                message = error.localizedDescription
-                            }
-                            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                            alert.addOKAction()
-                            self.present(alert, animated: true, completion: nil)
-                        } else {
-                            if isOK || createDone {
-                                self.goNotificationEmail()
-                            }
-                        }
-                    })
-                }
-            })
-        } else {
+        guard viewModel.isTokenOk() else {
             self.finishChecking(false)
             let alert = LocalString._the_verification_failed.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        self.finishChecking(true)
+        if doneClicked {
+            return
+        }
+
+        doneClicked = true;
+        self.viewModel.humanVerificationFinish()
+        MBProgressHUD.showAdded(to: view, animated: true)
+        self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.doneClicked = false
+                if !message.isEmpty {
+                    let title = LocalString._create_user_failed
+                    var message = LocalString._default_error_please_try_again
+                    if let error = error {
+                        message = error.localizedDescription
+                    }
+                    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    alert.addOKAction()
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    if isOK || createDone {
+                        self.goNotificationEmail()
+                    }
+                }
+            })
         }
     }
 }
@@ -133,14 +134,8 @@ extension RecaptchaViewController {
     }
     
     private func setupWebView() {
-//        webView.scrollView.isScrollEnabled = false
-//        URLCache.shared.removeAllCachedResponses();
-//        MBProgressHUD.showAdded(to: webView, animated: true)
-        //let recptcha = NSURL(string: "https://secure.protonmail.com/mobile.html")!
-        
         let recptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=signup&client=ios&host=\(Server.live.hostUrl)")!
         let requestObj = URLRequest(url: recptcha)
-//        webView.loadRequest(requestObj)
         
         // remove cache
         let websiteDataTypes = NSSet(array: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache])
@@ -161,6 +156,7 @@ extension RecaptchaViewController {
         self.wkWebViewHeightConstraint = self.wkWebView.heightAnchor.constraint(equalToConstant: 85)
         self.wkWebViewHeightConstraint.isActive = true
         self.wkWebView.load(requestObj)
+        self.viewModel.requestHumanVerification()
     }
     
     private func configConstraint(_ show : Bool) -> Void {

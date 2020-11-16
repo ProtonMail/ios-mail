@@ -1,7 +1,7 @@
 
 
 
-source 'https://github.com/CocoaPods/Specs.git'
+source 'https://cdn.cocoapods.org/'
 
 platform :ios, '10.0'
 
@@ -44,7 +44,7 @@ def common_pods
     pod 'AwaitKit', '~> 5.0.0'
     #pod 'ReachabilitySwift' #use this later
     
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '5.2.0'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '5.2.2'
     pod 'MBProgressHUD' , '1.1.0'
     
     pod 'TrustKit', '1.6.2'
@@ -60,7 +60,8 @@ def pm_pods
     common_pods
     
     pod 'SWRevealViewController', '2.3.0'
-    pod 'DKImagePickerController/PhotoGallery', '~> 4.1.7'
+    pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
+    pod 'PMFingerprint', :git => 'git@gitlab.protontech.ch:apple/shared/pmfingerprint.git', :tag => '0.0.3'
 end
 
 # for extensions Share
@@ -85,9 +86,6 @@ end
 target 'ProtonMailDev' do
 	pm_pods
     
-    pod 'Fabric'
-    pod 'Crashlytics'
-    
     # Pods for PushServiceDev
     target 'PushServiceDev' do
         inherit! :search_paths
@@ -98,7 +96,7 @@ target 'ProtonMailTests' do
     inherit! :search_paths
     pod 'OpenPGP', :path => '../OpenPGP'
     pod 'AFNetworking', '4.0.1'
-    pod 'OHHTTPStubs/Swift'
+    pod 'OHHTTPStubs/Swift', '9.0.0'
     pod 'Groot', '3.0.1'
 end
 
@@ -131,7 +129,7 @@ post_install do | installer |
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
             config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
-            config.build_settings['SWIFT_VERSION'] = '4.2'
+            config.build_settings['SWIFT_VERSION'] = '5.0'
             if config.name == 'Release'
                 config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
                 else

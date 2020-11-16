@@ -57,7 +57,7 @@ protocol ComposeViewDataSource: class {
     func composeViewSelectedContactsForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol]
 }
 
-class ComposeHeaderViewController: UIViewController {
+class ComposeHeaderViewController: UIViewController, AccessibleView {
     private var height: NSLayoutConstraint!
     @objc internal dynamic var size: CGSize = .zero {
         didSet {
@@ -272,12 +272,13 @@ class ComposeHeaderViewController: UIViewController {
         
         // accessibility
         self.view.isAccessibilityElement = false
-        self.accessibilityElements = [ self.fromPickerButton,
-                                       self.toContactPicker,
-                                       self.ccContactPicker, self.bccContactPicker,
-                                       self.subject,
-                                       self.expirationView, self.buttonView, self.passwordView
+        self.accessibilityElements = [ self.fromPickerButton!,
+                                       self.toContactPicker!,
+                                       self.ccContactPicker!, self.bccContactPicker!,
+                                       self.subject!,
+                                       self.expirationView!, self.buttonView!, self.passwordView!
         ]
+        generateAccessibilityIdentifiers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -434,7 +435,7 @@ class ComposeHeaderViewController: UIViewController {
         self.subject.leftView = subjectLeftPaddingView
         self.subject.leftViewMode = UITextField.ViewMode.always
         self.subject.autocapitalizationType = .sentences
-        
+
     }
     
     internal func setShowingCcBccView(to show: Bool) {

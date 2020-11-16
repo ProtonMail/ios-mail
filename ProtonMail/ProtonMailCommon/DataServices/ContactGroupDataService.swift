@@ -29,27 +29,32 @@ import PromiseKit
 //let sharedContactGroupsDataService = ContactGroupsDataService(api: APIService.shared)
 
 class ContactGroupsDataService: Service, HasLocalStorage {
-    func cleanUp() {
-        let groups = self.labelDataService.getAllLabels(of: .contactGroup)
-        let context = CoreDataService.shared.mainManagedObjectContext
-        context.performAndWait {
-            groups.forEach {
-                context.delete($0)
+    func cleanUp() -> Promise<Void> {
+        return Promise { seal in
+            let context = self.coreDataService.backgroundManagedObjectContext
+            self.coreDataService.enqueue(context: context) { (context) in
+                let groups = self.labelDataService.getAllLabels(of: .contactGroup, context: context)
+                groups.forEach {
+                    context.delete($0)
+                }
+                seal.fulfill_()
             }
         }
     }
     
-    static func cleanUpAll() {
+    static func cleanUpAll() -> Promise<Void> {
         // FIXME: this will remove not only contactGroups but all other labels as well
-        LabelsDataService.cleanUpAll()
+        return LabelsDataService.cleanUpAll()
     }
     
     private let apiService : API
     private let labelDataService: LabelsDataService
+    private let coreDataService: CoreDataService
     
-    init(api: API, labelDataService: LabelsDataService) {
+    init(api: API, labelDataService: LabelsDataService, coreDataServie: CoreDataService) {
         self.apiService = api
         self.labelDataService = labelDataService
+        self.coreDataService = coreDataServie
     }
     
     /**
@@ -135,23 +140,21 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                         PMLog.D("[Contact Group deleteContactGroup API] result = \(String(describing: returnedCode))")
                         
                         // successfully deleted on the server
-                        let context = CoreDataService.shared.mainManagedObjectContext
-                        context.performAndWait {
-                            () -> Void in
+                        let context = self.coreDataService.mainManagedObjectContext
+                        self.coreDataService.enqueue(context: context) { (context) in
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                             if let label = label {
                                 context.delete(label)
                             }
-                        }
-                        
-                        do {
-                            try context.save()
-                            seal.fulfill(())
-                            return
-                        } catch {
-                            PMLog.D("deleteContactGroup updating error: \(error)")
-                            seal.reject(error)
-                            return
+                            do {
+                                try context.save()
+                                seal.fulfill(())
+                                return
+                            } catch {
+                                PMLog.D("deleteContactGroup updating error: \(error)")
+                                seal.reject(error)
+                                return
+                            }
                         }
                     } else {
                         PMLog.D("[Contact Group deleteContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
@@ -187,8 +190,8 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                         // save
                         PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
                         
-                        let context = CoreDataService.shared.mainManagedObjectContext
-                        context.performAndWait {
+                        let context = self.coreDataService.mainManagedObjectContext
+                        self.coreDataService.enqueue(context: context) { (context) in
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                             
                             if let label = label,
@@ -250,8 +253,8 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                         // save
                         PMLog.D("[Contact Group removeEmailsFromContactGroup API] result = \(String(describing: response))")
                         
-                        let context = CoreDataService.shared.mainManagedObjectContext
-                        context.performAndWait {
+                        let context = self.coreDataService.mainManagedObjectContext
+                        self.coreDataService.enqueue(context: context) { (context) in
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                             
                             // remove only the email objects in the response
@@ -288,7 +291,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
     }
     
     func getAllContactGroupVOs() -> [ContactGroupVO] {
-        let labels = self.labelDataService.getAllLabels(of: .contactGroup)
+        let labels = self.labelDataService.getAllLabels(of: .contactGroup, context: self.coreDataService.mainManagedObjectContext)
         
         var result: [ContactGroupVO] = []
         for label in labels {

@@ -377,7 +377,7 @@ final class ActivateKey : ApiRequestNew<ApiResponse> {
     }
     
     override func path() -> String {
-        return KeysAPI.path + "/address/" + addressID + Constants.App.DEBUG_OPTION
+        return KeysAPI.path + "/" + addressID + "/activate" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

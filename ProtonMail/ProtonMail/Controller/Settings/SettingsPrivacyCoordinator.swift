@@ -36,7 +36,7 @@ class SettingsPrivacyCoordinator : DefaultCoordinator {
 //    internal weak var swRevealVC: SWRevealViewController?
     internal weak var deepLink: DeepLink?
     
-    lazy internal var configuration: ((SettingsPrivacyViewController) -> ())? = { vc in
+    lazy internal var configuration: ((SettingsPrivacyViewController) -> ())? = { [unowned self] vc in
         vc.set(coordinator: self)
         vc.set(viewModel: self.viewModel)
     }

@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PromiseKit
 
 protocol AttachmentProvider {
     var alertAction: UIAlertAction { get }
@@ -32,7 +33,7 @@ protocol AttachmentProvider {
 protocol AttachmentController: class {
     func present(_ controller: UIViewController, animated: Bool, completion: (()->Void)?)
     func error(_ description: String)
-    func fileSuccessfullyImported(as fileData: FileData)
+    func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void>
     
     @available(iOS, deprecated: 11.0, message: "ios 10 and below required sourceView&sourceRect or barButtonItem")
     var barItem : UIBarButtonItem? {get}
@@ -49,30 +50,29 @@ extension AttachmentsTableViewController {
         self.delegate?.attachments(self, didReachedSizeLimitation: size)
     }
     
-    func fileSuccessfullyImported(as fileData: FileData) {
-        DispatchQueue.main.async { [weak self] in
-            guard let `self` = self else { return }
-            let size = fileData.contents.dataSize
-            guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
-                self.sizeError(0)
-                PMLog.D(" Size too big Orig: \(size) -- Limit: \(self.kDefaultAttachmentFileSize)")
-                return
-            }
+    func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
+        let size = fileData.contents.dataSize
+        guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
+            self.sizeError(0)
+            PMLog.D(" Size too big Orig: \(size) -- Limit: \(self.kDefaultAttachmentFileSize)")
+            return Promise()
+        }
+    
+        guard self.message.managedObjectContext != nil else {
+            PMLog.D(" Error during copying size incorrect")
+            self.error(LocalString._system_cant_copy_the_file)
+            return Promise()
+        }
+        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         
-            guard self.message.managedObjectContext != nil else {
-                PMLog.D(" Error during copying size incorrect")
-                self.error(LocalString._system_cant_copy_the_file)
-                return
-            }
-            let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-            guard let attachment = fileData.contents.toAttachment(self.message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata) else {
+        return fileData.contents.toAttachment(self.message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata).done { (attachment) in
+            guard let att = attachment else {
                 PMLog.D(" Error during copying size incorrect")
                 self.error(LocalString._cant_copy_the_file)
                 return
             }
-    
             self.updateAttachments()
-            self.delegate?.attachments(self, didPickedAttachment: attachment)
+            self.delegate?.attachments(self, didPickedAttachment: att)
         }
     }
 }

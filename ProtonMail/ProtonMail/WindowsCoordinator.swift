@@ -171,7 +171,10 @@ class WindowsCoordinator: CoordinatorNew {
         let usersManager: UsersManager = services.get()
         var foundUser = false
         if let user = usersManager.getUser(bySessionID: uid) {
-            usersManager.logout(user: user, shouldAlert: true)
+            Analytics.shared.debug(message: .logout, extra: [
+                Analytics.Reason.reason: Analytics.Reason.tokenRevoke
+            ], user: user)
+            usersManager.logout(user: user, shouldAlert: true).cauterize()
             foundUser = true
         }
         
@@ -245,18 +248,17 @@ class WindowsCoordinator: CoordinatorNew {
             let _ = source
             let _ = destination
             effectView.removeFromSuperview()
+            
+            // notify source's views they are disappearing
+            source?.topmostViewController()?.viewWillDisappear(false)
+
+            // notify destination views they are about to show up
+            if let topDestination = destination.topmostViewController(), topDestination.isViewLoaded {
+                topDestination.viewWillAppear(false)
+                topDestination.viewDidAppear(false)
+            }
         })
-        
-        // notify source's views they are disappearing
-        source?.topmostViewController()?.viewWillDisappear(false)
-        
         self.currentWindow = destination
-        
-        // notify destination views they are about to show up
-        if let topDestination = destination.topmostViewController(), topDestination.isViewLoaded {
-            topDestination.viewDidAppear(false)
-        }
-        
         return true
     }
     

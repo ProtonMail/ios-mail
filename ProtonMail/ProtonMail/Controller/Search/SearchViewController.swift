@@ -40,7 +40,7 @@ class SearchViewController: ProtonMailViewController {
     
     internal var user: UserManager!
     
-    private lazy var replacingEmails : [Email] = {
+    private lazy var replacingEmails : [Email] = { [unowned self] in
         return user.contactService.allEmails()
     }()
     
@@ -74,7 +74,11 @@ class SearchViewController: ProtonMailViewController {
     typealias LocalObjectsIndexRow = Dictionary<String, Any>
     private var dbContents: Array<LocalObjectsIndexRow> = []
     fileprivate var searchResult: [Message] = [] {
-        didSet { self.tableView.reloadData() }
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
     
     fileprivate var currentPage = 0;
@@ -336,7 +340,8 @@ class SearchViewController: ProtonMailViewController {
             let messageDetailViewController = segue.destination as! MessageContainerViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
-                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user))
+                //FIXME
+                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user, coreDataService: CoreDataService.shared))
                 messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
             } else {
                 PMLog.D("No selected row.")
@@ -391,7 +396,8 @@ extension SearchViewController: UITableViewDelegate {
         let viewModel = ContainableComposeViewModel(msg: message,
                                                     action: .openDraft,
                                                     msgService: user.messageService,
-                                                    user: user)
+                                                    user: user,
+                                                    coreDataService: CoreDataService.shared)//FIXME
         if let navigationController = self.navigationController
         {
             let composer = ComposeContainerViewCoordinator(nav: navigationController,

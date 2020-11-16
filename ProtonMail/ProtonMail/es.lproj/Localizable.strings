@@ -574,7 +574,7 @@
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Crea y añade etiquetas para organizar tu bandeja de entrada. Mantén pulsado un mensaje para ver todas las opciones.";
 
 /* title of button in account connect page */
-"Create new account" = "Cree una nueva cuenta";
+"Create new account" = "Create new account";
 
 /* error message title when create new user */
 "Create user failed" = "Error al crear el usuario";
@@ -788,16 +788,16 @@
 "Enable Notification Email" = "Habilitar correo electrónico de notificación";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Enable PIN";
+"Enable PIN" = "Habilitar PIN";
 
 /* settings protection section title */
 "Enable Pin Protection" = "Habilitar protección con PIN";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Enable PIN/FaceID";
+"Enable PIN/FaceID" = "Habilitar PIN/FaceID";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Enable PIN/TouchID";
+"Enable PIN/TouchID" = "Habilitar PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Habilitar TouchID";
@@ -1672,7 +1672,7 @@
 "Proxy/Firewall interference" = "Interferencia de Proxy/Firewall";
 
 /* cell title in device settings */
-"Push Notifications" = "Notificaciones push";
+"Push Notifications" = "Notificaciones Push";
 
 /* Title */
 "Quick swipe actions" = "Acciones de deslizamiento rápido";
@@ -2103,7 +2103,7 @@
 "To" = "Para";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Para prevenir abusos de ProtonMail,&#13;\n necesitamos verificar que es humano.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Para prevenir abusos de ProtonMail,\r\n necesitamos verificar que es humano.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Tiene cambios sin guardar. ¿Desea guardarlos?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Has utilizado %1$d%% de tu espacio de almacenamiento (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Ha usado todo su espacio de almacenamiento (%@).";
 
 /* Description */
@@ -2433,7 +2433,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Tu nueva cuenta de correo electrónico cifrado ha sido configurada y está lista para enviar y recibir mensajes cifrados.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Tu nueva cuenta de correo electrónico&#13;\n seguro está lista.";
+"Your new secure email\r\n account is ready." = "Tu nueva cuenta de correo electrónico\r\n seguro está lista.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Su plan está activo hasta";

@@ -28,9 +28,9 @@ final class MailboxViewModelImpl : MailboxViewModel {
 
     private let label : Message.Location
 
-    init(label : Message.Location, userManager: UserManager, usersManager: UsersManager, pushService: PushNotificationService) {
+    init(label : Message.Location, userManager: UserManager, usersManager: UsersManager, pushService: PushNotificationService, coreDataService: CoreDataService) {
         self.label = label
-        super.init(labelID: label.rawValue, userManager: userManager, usersManager: usersManager, pushService: pushService)
+        super.init(labelID: label.rawValue, userManager: userManager, usersManager: usersManager, pushService: pushService, coreDataService: coreDataService)
     }
     
     override var localizedNavigationTitle: String {
@@ -98,7 +98,7 @@ final class MailboxViewModelImpl : MailboxViewModel {
     
     override func showLocation() -> Bool {
         switch(self.label) {
-        case .allmail, .sent, .trash, .archive, .draft:
+        case .allmail, .draft:
             return true
         default:
             return false

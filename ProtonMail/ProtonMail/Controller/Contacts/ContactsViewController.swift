@@ -90,10 +90,11 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
         
         //get all contacts
-        self.viewModel.setupFetchedResults(delaget: self)
+        self.viewModel.setupFetchedResults(delegate: self)
         self.prepareSearchBar()
         
         prepareNavigationItemRightDefault(self.viewModel.user)
+        generateAccessibilityIdentifiers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -235,7 +236,11 @@ extension ContactsViewController: UpgradeAlertVCDelegate {
     }
     
     func learnMore() {
-        UIApplication.shared.openURL(.paidPlans)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(.paidPlans)
+        }
     }
     
     func cancel() {

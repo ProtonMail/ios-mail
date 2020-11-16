@@ -42,15 +42,17 @@ class CreateNewUser : ApiRequest<ApiResponse> {
     let verifer : String //base64_encoded_verifier
     
     let deviceToken : String
+    let fingerprint: [String: Any]
     
     init(token : String,
          type : String,
          username :String,
          email:String,
-         
          modulusID : String,
          salt : String,
-         verifer : String, deviceToken: String) {
+         verifer : String,
+         deviceToken: String,
+         fingerprint: [String: Any]) {
         self.recaptchaToken = token
         self.tokenType = type
         self.userName = username
@@ -60,6 +62,7 @@ class CreateNewUser : ApiRequest<ApiResponse> {
         self.salt = salt
         self.verifer = verifer
         self.deviceToken = deviceToken
+        self.fingerprint = fingerprint
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -71,6 +74,11 @@ class CreateNewUser : ApiRequest<ApiResponse> {
             "Verifier" : self.verifer
         ]
         
+        let payload: [String: Any] = [
+            "mail-ios-payload": deviceToken,
+            "mail-ios-fingerprint": self.fingerprint
+        ]
+        
         let out : [String : Any] = [
             "TokenType" : self.tokenType,
             "Username" : self.userName,
@@ -78,7 +86,7 @@ class CreateNewUser : ApiRequest<ApiResponse> {
             "Token" : self.recaptchaToken,
             "Auth" : auth,
             "Type" : 1,   //hard code to 1 for mail
-            "Payload": ["mail-ios-payload" :  deviceToken ]
+            "Payload": payload
         ]
         return out
     }
@@ -336,7 +344,7 @@ class VerificationCodeRequest : ApiRequest<ApiResponse> {
     override func toDictionary() -> [String : Any]? {
         let dest = type == .email ? ["Address" : destination] : ["Phone" : destination]
         let out : [String : Any] = [
-            "Username" : userName,
+            "Username" : userName!,
             "Type" : type.toString,
             "Platform" : platform,
             "Destination" : dest

@@ -553,7 +553,7 @@
 "Copy name" = "Kopiuj nazwę";
 
 /* Error message */
-"Could not connect to Store. Please try again later." = "Nie można połączyć się ze sklepem. Spróbuj później.";
+"Could not connect to Store. Please try again later." = "Nie można połączyć się ze sklepem. Spróbuj ponownie później.";
 
 /* contact placeholder */
 "Country" = "Kraj";
@@ -686,10 +686,10 @@
 "Do you want to activate the purchased service plan for " = "Czy chcesz aktywować zakupiony plan dla ";
 
 /* Description */
-"Do you want to cancel the process?" = "Chcesz przerwać operację?";
+"Do you want to cancel the process?" = "Czy chcesz anulować proces?";
 
 /* Title */
-"Do you want to save the unsaved changes?" = "Czy chcesz zapisać niezapisane zmiany?";
+"Do you want to save the unsaved changes?" = "Czy chcesz zapisać zmiany?";
 
 /* Action */
 "Don't remind me again" = "Nie przypominaj";
@@ -797,10 +797,10 @@
 "Enable PIN/FaceID" = "Włącz kod PIN/FaceID";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Włącz kod PIN/TouchID";
+"Enable PIN/TouchID" = "Włącz kod PIN / Touch ID";
 
 /* settings protection section title */
-"Enable TouchID" = "Włącz TouchID";
+"Enable TouchID" = "Włącz Touch ID";
 
 /* contact section title */
 "Encrypted Contact Details" = "Zaszyfrowane szczegóły kontaktu";
@@ -893,11 +893,11 @@
 "Failed to get list of available products from AppStore." = "Nie udało się uzyskać listy dostępnych produktów ze sklepu App Store.";
 
 /* Description */
-"Failed to initialize the app's saved data" = "Nie można zainicjować danych zapisanych przez aplikację";
+"Failed to initialize the app's saved data" = "Nie udało się zainicjować danych zapisanych przez aplikację";
 
 /* *
  *  Core Data Service & local error */
-"Failed to initialize the application's saved data" = "Nie można zainicjować zapisanych danych aplikacji";
+"Failed to initialize the application's saved data" = "Nie udało się zainicjować zapisanych danych aplikacji";
 
 /* default vcard types */
 "Fax" = "Fax";
@@ -1519,7 +1519,7 @@
 "PIN & FaceID" = "Kod PIN i FaceID";
 
 /* device settings auto lock type title */
-"PIN & TouchID" = "Kod PIN i TouchID";
+"PIN & TouchID" = "Kod PIN i Touch ID";
 
 /* Description */
 "Pin code can't be empty." = "Kod PIN nie może być pusty.";
@@ -2103,7 +2103,7 @@
 "To" = "Do";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Aby zapobiec nadużyciom poczty ProtonMail, &#13;\n musimy zweryfikować, czy jesteś człowiekiem.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Aby zapobiec nadużyciom poczty ProtonMail, \r\n musimy zweryfikować, czy jesteś człowiekiem.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Aby zresetować hasło skrzynki pocztowej, skorzystaj ze strony protonmail.com";
@@ -2125,10 +2125,10 @@
 "Tor" = "sieć Tor";
 
 /* settings touchid error */
-"TouchID is not enrolled, enable it in the system Settings" = "Funkcja TouchID nie jest włączona. Włącz funkcję w ustawieniach systemu";
+"TouchID is not enrolled, enable it in the system Settings" = "Funkcja Touch ID nie jest włączona. Włącz funkcję w ustawieniach systemu";
 
 /* settings touchid/faceid error */
-"TouchID not available" = "TouchID nie jest dostępne";
+"TouchID not available" = "Funkcja Touch ID nie jest dostępna";
 
 /* mail location desc
    menu title
@@ -2194,7 +2194,7 @@
 "Unable to parse authentication token!" = "Nie można przetworzyć tokena uwierzytelniania!";
 
 /* Description */
-"Unable to parse cached authentication token!" = "Nie można użyć tokena uwierzytelnienia z pamięci podręcznej!";
+"Unable to parse cached authentication token!" = "Nie można przetworzyć tokena uwierzytelniania z pamięci podręcznej!";
 
 /* Description */
 "Unable to parse response" = "Nie można przetworzyć odpowiedzi";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Masz niezapisane zmiany. Czy chcesz je zapisać?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Wykorzystujesz %1$d%% przestrzeni dyskowej (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Użyłeś całej przestrzeni dyskowej (%@).";
 
 /* Description */
@@ -2433,7 +2433,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Twoje nowe szyfrowane konto e-mail zostało utworzone i jest gotowe do wysyłania i odbierania szyfrowanych wiadomości.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Twoje nowe, bezpieczne&#13;\n konto e-mail jest gotowe.";
+"Your new secure email\r\n account is ready." = "Twoje nowe, bezpieczne\r\n konto e-mail jest gotowe.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Twój plan jest aktywny do";

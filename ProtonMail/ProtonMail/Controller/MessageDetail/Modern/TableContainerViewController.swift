@@ -31,7 +31,7 @@ protocol ScrollableContainer: class {
     func restoreOffset()
 }
 
-class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, ScrollableContainer, CoordinatedNew, ViewModelProtocol, BannerPresenting
+class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, ScrollableContainer, CoordinatedNew, ViewModelProtocol, BannerPresenting, AccessibleView
 {
 
     @IBOutlet weak var tableView: UITableView!
@@ -77,6 +77,7 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
             NotificationCenter.default.addObserver(self, selector: #selector(restoreOffset), name: UIApplication.willEnterForegroundNotification, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(saveOffset), name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
+        generateAccessibilityIdentifiers()
     }
     
     deinit {

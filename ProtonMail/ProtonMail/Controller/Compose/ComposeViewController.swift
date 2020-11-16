@@ -26,7 +26,7 @@ import PromiseKit
 import AwaitKit
 import MBProgressHUD
 
-class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew {
+class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew, AccessibleView, HtmlEditorBehaviourDelegate {
     typealias viewModelType = ComposeViewModel
     typealias coordinatorType = ComposeCoordinator
     
@@ -191,6 +191,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
 
         /// change message as read
         self.viewModel.markAsRead()
+        generateAccessibilityIdentifiers()
     }
 
     private func retrieveAllContacts() -> Promise<Void> {
@@ -505,7 +506,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     if orignal.contains(content_id) {
                         if !edited.contains(content_id) {
-                            self.viewModel.deleteAtt(att)
+                            self.viewModel.deleteAtt(att).cauterize()
                         }
                     }
                 }
@@ -521,14 +522,19 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             self.headerView.updateAttachmentButton(false)
         }
     }
-}
-extension ComposeViewController: HtmlEditorBehaviourDelegate {
-    @objc func addInlineAttachment(_ sid: String, data: Data) {
+    
+    //MARK: - HtmlEditorBehaviourDelegate
+    func addInlineAttachment(_ sid: String, data: Data) -> Promise<Void> {
         // Data.toAttachment will automatically increment number of attachments in the message
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-        guard let attachment = data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata) else { return }
-        attachment.headerInfo = "{ \"content-disposition\": \"inline\", \"content-id\": \"\(sid)\" }"
-        self.viewModel.uploadAtt(attachment)
+        
+        return data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata).done { (attachment) in
+            guard let att = attachment else {
+                return
+            }
+            att.headerInfo = "{ \"content-disposition\": \"inline\", \"content-id\": \"\(sid)\" }"
+            self.viewModel.uploadAtt(att)
+        }
     }
     
     func removeInlineAttachment(_ sid: String) {
@@ -541,7 +547,7 @@ extension ComposeViewController: HtmlEditorBehaviourDelegate {
             self.viewModel.message?.numAttachments = NSNumber(value: newNum)
         }
         
-        self.viewModel.deleteAtt(attachment)
+        self.viewModel.deleteAtt(attachment).cauterize()
     }
     
     func htmlEditorDidFinishLoadingContent() {
@@ -553,8 +559,7 @@ extension ComposeViewController: HtmlEditorBehaviourDelegate {
     }
 }
 
-
-// MARK : - view extensions
+//MARK: - view extensions
 extension ComposeViewController : ComposeViewDelegate {
     
     func composeViewWillPresentSubview() {
@@ -718,8 +723,9 @@ extension ComposeViewController : ComposeViewDelegate {
     func updateEO() {
         self.viewModel.updateEO(expir: self.headerView.expirationTimeInterval,
                                 pwd: self.encryptionPassword,
-                                pwdHit: self.encryptionPasswordHint)
-        self.headerView.reloadPicker()
+                                pwdHit: self.encryptionPasswordHint).done { (_) in
+                                    self.headerView.reloadPicker()
+        }
     }
 
     func composeView(_ composeView: ComposeHeaderViewController, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker) {
@@ -854,8 +860,9 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
                 self.viewModel.message?.numAttachments = NSNumber(value: newNum)
             }
             
-            self.viewModel.deleteAtt(attachment)
-            attViewController.updateAttachments()
+            self.viewModel.deleteAtt(attachment).ensure {
+                attViewController.updateAttachments()
+            }.cauterize()
         }
     }
 

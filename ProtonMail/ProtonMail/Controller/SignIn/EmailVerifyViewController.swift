@@ -209,6 +209,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         MBProgressHUD.showAdded(to: view, animated: true)
         dismissKeyboard()
         viewModel.setEmailVerifyCode(verifyCodeTextField.text!)
+        self.viewModel.humanVerificationFinish()
         DispatchQueue.main.async(execute: { () -> Void in
             self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
                 DispatchQueue.main.async(execute: { () -> Void in

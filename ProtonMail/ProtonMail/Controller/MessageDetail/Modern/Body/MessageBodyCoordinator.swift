@@ -29,20 +29,29 @@ class MessageBodyCoordinator {
     private let kToComposerSegue : String    = "toCompose"
     
     let user: UserManager
+    let coreDataService: CoreDataService
     
     init(controller: MessageBodyViewController,
          enclosingScroller: ScrollableContainer,
-         user: UserManager)
+         user: UserManager,
+         coreDataService: CoreDataService)
     {
         self.controller = controller
         self.controller.enclosingScroller = enclosingScroller
         self.user = user
+        self.coreDataService = coreDataService
     }
     
     internal func open(url originalURL: URL) {
         let browserSpecificUrl = userCachedStatus.browser.deeplink(to: originalURL) ?? originalURL
         switch userCachedStatus.browser {
         case .inAppSafari:
+            let supports = ["https", "http"]
+            let scheme = browserSpecificUrl.scheme ?? ""
+            guard supports.contains(scheme) else {
+                self.showUnsupportAlert(url: browserSpecificUrl)
+                return
+            }
             let safari = SFSafariViewController(url: browserSpecificUrl)
             self.controller.present(safari, animated: true, completion: nil)
             
@@ -63,7 +72,8 @@ class MessageBodyCoordinator {
             let viewModel = ContainableComposeViewModel(msg: nil,
                                                         action: .newDraft,
                                                         msgService: user.messageService,
-                                                        user: user)
+                                                        user: user,
+                                                        coreDataService: self.coreDataService)
             if let mailTo : NSURL = sender as? NSURL, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
                 let rawURLparts = resSpecifier.components(separatedBy: "?")
                 if (rawURLparts.count > 2) {
@@ -131,6 +141,17 @@ class MessageBodyCoordinator {
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
         }
+    }
+    
+    private func showUnsupportAlert(url: URL) {
+        let message = LocalString._unsupported_url
+        let open = LocalString._general_open_button
+        let alertController = UIAlertController(title: LocalString._general_alert_title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: open, style: .default, handler: { (action) in
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        self.controller.present(alertController, animated: true, completion: nil)
     }
 }
 

@@ -68,7 +68,7 @@ final class EventLatestIDResponse : ApiResponse {
 struct RefreshStatus : OptionSet {
     let rawValue: Int
     //255 means throw out client cache and reload everything from server, 1 is mail, 2 is contacts
-    static let ok       = RefreshStatus(rawValue: 0)
+    static let ok       = RefreshStatus([])
     static let mail     = RefreshStatus(rawValue: 1 << 0)
     static let contacts = RefreshStatus(rawValue: 1 << 1)
     static let all      = RefreshStatus(rawValue: 0xFF)
@@ -171,9 +171,9 @@ final class MessageEvent {
     var ID : String!
     var message : [String : Any]?
     init(event: [String : Any]) {
-        self.Action = event["Action"] as! Int
+        self.Action = (event["Action"] as! Int)
         self.message =  event["Message"] as? [String : Any]
-        self.ID =  event["ID"] as! String
+        self.ID =  (event["ID"] as! String)
         self.message?["ID"] = self.ID
         self.message?["needsUpdate"] = false
     }
@@ -196,7 +196,7 @@ final class ContactEvent {
         let actionInt = event["Action"] as? Int ?? 255
         self.action = UpdateType(rawValue: actionInt) ?? .unknown
         self.contact =  event["Contact"] as? [String : Any]
-        self.ID =  event["ID"] as! String
+        self.ID =  (event["ID"] as! String)
         
         guard let contact = self.contact else {
             return
@@ -250,9 +250,9 @@ final class LabelEvent {
     var label : [String : Any]?
     
     init(event: [String : Any]!) {
-        self.Action = event["Action"] as! Int
+        self.Action = (event["Action"] as! Int)
         self.label =  event["Label"] as? [String : Any]
-        self.ID =  event["ID"] as! String
+        self.ID =  (event["ID"] as! String)
     }
 }
 

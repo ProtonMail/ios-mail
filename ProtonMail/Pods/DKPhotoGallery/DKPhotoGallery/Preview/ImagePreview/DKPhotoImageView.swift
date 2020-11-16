@@ -6,13 +6,9 @@
 //  Copyright © 2017 ZhangAo. All rights reserved.
 //
 
-#if canImport(FLAnimatedImage)
-import FLAnimatedImage
-#elseif canImport(SDWebImage)
-import SDWebImage
-#endif
+import UIKit
 
-open class DKPhotoImageView: FLAnimatedImageView {
+open class DKPhotoImageView: UIImageView {
     
     public override init(image: UIImage? = nil, highlightedImage: UIImage? = nil) {
         super.init(image: image, highlightedImage: highlightedImage)

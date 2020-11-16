@@ -2103,7 +2103,7 @@
 "To" = "Til";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "For at forhindre misbrug af ProtonMail&#13;\n skal det brkræftes, at du er en person.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "For at forhindre misbrug af ProtonMail\r\n skal det brkræftes, at du er en person.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Benyt webversionen af ProtonMail via protonmail.com for at nulstille din postkasseadgangskode";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Du har ugemte ændringer. Vil du gemme nu?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "You have used %1$d%% of your storage space (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Du har opbrugt al din lagerplads (%@).";
 
 /* Description */
@@ -2433,7 +2433,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Din nye krypterede e-mailkonto er opsat og er klar til at sende og modtage krypterede beskeder.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Din nye sikre e-mailkonto&#13;\n er klar.";
+"Your new secure email\r\n account is ready." = "Din nye sikre e-mailkonto\r\n er klar.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Din abonnementskvota er aktiv indtil";

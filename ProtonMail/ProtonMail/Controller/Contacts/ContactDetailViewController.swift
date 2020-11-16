@@ -220,7 +220,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         if let phoneCallURL = URL(string: phoneUrl) {
             let application:UIApplication = UIApplication.shared
             if (application.canOpenURL(phoneCallURL)) {
-                application.openURL(phoneCallURL)
+                if #available(iOS 10.0, *) {
+                    application.open(phoneCallURL, options: [:], completionHandler: nil)
+                } else {
+                    application.openURL(phoneCallURL)
+                }
             }
         }
     }
@@ -282,7 +286,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             let user = self.viewModel.user
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft,
                                                         msgService: user.messageService,
-                                                        user: user)
+                                                        user: user,
+                                                        coreDataService: self.viewModel.coreDataService)
             if let contact = sender as? ContactVO {
                 viewModel.addToContacts(contact)
             }
@@ -603,7 +608,11 @@ extension ContactDetailViewController: UITableViewDelegate {
                 let fullUrl = "http://maps.apple.com/?q=\(fulladdr)"
                 if let strUrl = fullUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                     let url = URL(string: strUrl) {
-                    UIApplication.shared.openURL(url)
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    } else {
+                        UIApplication.shared.openURL(url)
+                    }
                 }
             }
         case .url:
@@ -618,7 +627,11 @@ extension ContactDetailViewController: UITableViewDelegate {
                 if let validUrl = comps.url {
                     let application:UIApplication = UIApplication.shared
                     if (application.canOpenURL(validUrl)) {
-                        application.openURL(validUrl)
+                        if #available(iOS 10.0, *) {
+                            application.open(validUrl, options: [:], completionHandler: nil)
+                        } else {
+                            application.openURL(validUrl)
+                        }
                         break
                     }
                 }

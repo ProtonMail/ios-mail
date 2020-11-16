@@ -773,7 +773,7 @@
 "Empty Folder" = "清空文件夹";
 
 /* it is an option to empty the label */
-"Empty Label" = "清空标签";
+"Empty Label" = "删除所有带此标签的邮件";
 
 /* Title */
 "Enable Default Signature" = "使用预置落款";
@@ -1108,7 +1108,7 @@
 "Is this bug report about an in-app purchase?" = "您的反馈是关于 App 内购买项目的吗？";
 
 /* It is not possible to switch to `plan` within our iOS app. */
-"It is not possible to switch to %@ within our iOS app." = "不支持在 iOS 程序中升级到 %@。";
+"It is not possible to switch to %@ within our iOS app." = "不支持在 iOS 程序中开通 %@。";
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我们的系统中查不到您在 App Store 上购买的项目。请提交一份问题反馈，我们的客服团队将联系您。";
@@ -2103,7 +2103,7 @@
 "To" = "收件人";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "为避免 ProtonMail 被滥用，&#13;我们需要验证您不是机器人。";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "为避免 ProtonMail 被滥用，\r\n我们需要验证您不是机器人。";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "请前往 protonmail.com 使用网页版 ProtonMail 重置邮箱密码";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "您的改动尚未保存，要保存吗？";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "您的存储空间（%2$@）已使用 %1$d%%。";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "您的存储空间（%@）已用尽。";
 
 /* Description */
@@ -2433,7 +2433,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "您的加密邮箱账户已经设置完毕，可以收发加密邮件了。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "您的安全邮箱&#13;现已就绪。";
+"Your new secure email\r\n account is ready." = "您的安全邮箱\r\n现已就绪。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "您的订阅有效期至";

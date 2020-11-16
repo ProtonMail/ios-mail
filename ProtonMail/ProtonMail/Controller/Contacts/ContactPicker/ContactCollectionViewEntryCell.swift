@@ -144,6 +144,17 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
         }
     }
     
+    var textFieldIdentifier: String {
+        get {
+            return self.contactEntryTextField?.accessibilityIdentifier ?? ""
+        }
+        set {
+            if let textField = self.contactEntryTextField {
+                textField.accessibilityIdentifier = newValue
+            }
+        }
+    }
+    
     func reset() {
          if let textfield = self.contactEntryTextField {
             textfield.text = " "

@@ -348,15 +348,15 @@ class EmailHeaderView: UIView {
         self.emailFromTable.accessibilityLabel = LocalString._general_from_label
         self.emailCcTable.accessibilityLabel = LocalString._general_cc_label
         self.emailBccTable.accessibilityLabel = LocalString._general_bcc_label
-        self.accessibilityElements = [self.emailTitle,
-                                      self.emailFrom, self.emailFromTable,
-                                      self.emailTo, self.emailToTable,
-                                      self.emailCc, self.emailCcTable,
-                                      self.emailBcc, self.emailBccTable,
-                                      self.emailShortTime,
-                                      self.date ,
-                                      self.emailFavoriteButton,
-                                      self.emailDetailButton]
+        self.accessibilityElements = [self.emailTitle!,
+                                      self.emailFrom!, self.emailFromTable!,
+                                      self.emailTo!, self.emailToTable!,
+                                      self.emailCc!, self.emailCcTable!,
+                                      self.emailBcc!, self.emailBccTable!,
+                                      self.emailShortTime!,
+                                      self.date!,
+                                      self.emailFavoriteButton!,
+                                      self.emailDetailButton!]
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -1297,15 +1297,15 @@ extension EmailHeaderView: UITableViewDelegate {
                         self.openLocalURL(localURL, fileName: fixedFilename, type: attachment.mimeType)
                     }
                 } else {
-                    if let att = attachment.att {
-                        att.localURL = nil
-                        if let context = att.managedObjectContext {
+                    if let att = attachment.att, let context = att.managedObjectContext {
+                        CoreDataService.shared.enqueue(context: context) { (context) in
+                            att.localURL = nil
                             let error = context.saveUpstreamIfNeeded()
                             if error != nil  {
                                 PMLog.D(" error: \(String(describing: error))")
                             }
+                            self.downloadAttachment(att, forIndexPath: indexPath)
                         }
-                        downloadAttachment(att, forIndexPath: indexPath)
                     }
                 }
             }

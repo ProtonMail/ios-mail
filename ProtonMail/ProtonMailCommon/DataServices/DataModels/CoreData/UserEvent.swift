@@ -56,4 +56,19 @@ extension UserEvent {
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
+    
+    class func remove(by userID: String, inManagedObjectContext context: NSManagedObjectContext) -> Bool {
+        if let toDeletes = context.managedObjectsWithEntityName(Attributes.entityName,
+                                                                matching: [Attributes.userID : userID]) as? [UserEvent] {
+            for update in toDeletes {
+                context.delete(update)
+            }
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
+            } else {
+                return true
+            }
+        }
+        return false
+    }
 }

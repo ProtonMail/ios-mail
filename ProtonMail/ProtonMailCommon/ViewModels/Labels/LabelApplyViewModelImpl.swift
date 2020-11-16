@@ -23,6 +23,7 @@
 
 import Foundation
 import CoreData
+import PromiseKit
 
 final class LabelApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!
@@ -30,10 +31,10 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     
     let messageService : MessageDataService
     
-    init(msg:[Message]!, labelService: LabelsDataService, messageService: MessageDataService, apiService: APIService) {
+    init(msg:[Message]!, labelService: LabelsDataService, messageService: MessageDataService, apiService: APIService, coreDataService: CoreDataService) {
         self.messageService = messageService
         
-        super.init(apiService: apiService, labelService: labelService)
+        super.init(apiService: apiService, labelService: labelService, coreDataService: coreDataService)
         self.messages = msg
         self.labelMessages = [String : LabelMessageModel]()
     }
@@ -104,52 +105,54 @@ final class LabelApplyViewModelImpl : LabelViewModel {
         }
     }
     
-    override func apply(archiveMessage : Bool) -> Bool {
-        let context = CoreDataService.shared.backgroundManagedObjectContext
-        for (key, value) in self.labelMessages {
-            if value.currentStatus != value.origStatus && value.currentStatus == 0 { //remove
-                let ids = self.messages.map { ($0).messageID }
-                let api = RemoveLabelFromMessages(labelID: key, messages: ids)
-                api.call(api: self.apiService, nil)
-                context.performAndWait { () -> Void in
-                    for mm in self.messages {
-                        if mm.remove(labelID: value.label.labelID) != nil && mm.unRead {
-                            messageService.updateCounter(plus: false, with: value.label.labelID)
+    override func apply(archiveMessage : Bool) -> Promise<Bool> {
+        return Promise { seal in
+            let context = self.coreDataService.mainManagedObjectContext
+            self.coreDataService.enqueue(context: context) { (context) in
+                for (key, value) in self.labelMessages {
+                    if value.currentStatus != value.origStatus && value.currentStatus == 0 { //remove
+                        let ids = self.messages.map { ($0).messageID }
+                        let api = RemoveLabelFromMessages(labelID: key, messages: ids)
+                        api.call(api: self.apiService, nil)
+                        context.performAndWait { () -> Void in
+                            for mm in self.messages {
+                                if mm.remove(labelID: value.label.labelID) != nil && mm.unRead {
+                                    self.messageService.updateCounter(plus: false, with: value.label.labelID)
+                                }
+                            }
                         }
+                    } else if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
+                        let ids = self.messages.map { ($0).messageID }
+                        let api = ApplyLabelToMessages(labelID: key, messages: ids)
+                        api.call(api: self.apiService, nil)
+                        context.performAndWait { () -> Void in
+                            for mm in self.messages {
+                                if mm.add(labelID: value.label.labelID) != nil && mm.unRead {
+                                    self.messageService.updateCounter(plus: true, with: value.label.labelID)
+                                }
+                            }
+                        }
+                    } else {
+                        
                     }
                 }
-            } else if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
-                let ids = self.messages.map { ($0).messageID }
-                let api = ApplyLabelToMessages(labelID: key, messages: ids)
-                api.call(api: self.apiService, nil)
-                context.performAndWait { () -> Void in
-                    for mm in self.messages {
-                        if mm.add(labelID: value.label.labelID) != nil && mm.unRead {
-                            messageService.updateCounter(plus: true, with: value.label.labelID)
-                        }
-                    }
-                }
-            } else {
                 
-            }
-            
-            context.performAndWait {
                 let error = context.saveUpstreamIfNeeded()
                 if let error = error {
                     PMLog.D("error: \(error)")
                 }
-            }
-        }
-        
-        if archiveMessage {
-            for message in self.messages {
-                if let flabel = message.firstValidFolder() {
-                    messageService.move(message: message, from: flabel, to: Message.Location.archive.rawValue)
+                
+                if archiveMessage {
+                    for message in self.messages {
+                        if let flabel = message.firstValidFolder() {
+                            self.messageService.move(message: message, from: flabel, to: Message.Location.archive.rawValue)
+                        }
+                    }
                 }
+                
+                seal.fulfill(true)
             }
         }
-        
-        return true
     }
     
     override func getTitle() -> String {

@@ -76,7 +76,8 @@ class ShareUnlockCoordinator : PushCoordinator {
         }
         // recent user active in the app
         let user = self.services.get(by: UsersManager.self).firstUser!
-        let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare, msgService: user.messageService, user: user)
+        let coreDataService = self.services.get(by: CoreDataService.self)
+        let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare, msgService: user.messageService, user: user, coreDataService: coreDataService)
         let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
         next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
         next.set(coordinator: ComposeContainerViewCoordinator(controller: next, services: self.services))

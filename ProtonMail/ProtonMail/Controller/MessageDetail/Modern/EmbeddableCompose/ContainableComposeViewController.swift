@@ -22,6 +22,7 @@
     
 
 import UIKit
+import PromiseKit
 
 
 /// The class hierarchy is following: ContainableComposeViewController > ComposeViewController > HorizontallyScrollableWebViewContainer > UIViewController
@@ -36,6 +37,8 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.webView.scrollView.clipsToBounds = false
+        self.webView.isAccessibilityElement = true
+        self.webView.accessibilityIdentifier = "ComposerBody"
         
         self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { [weak self] htmlEditor, change in
             guard let self = self, change.oldValue != change.newValue else { return }
@@ -60,6 +63,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             self?.step.insert(.sendingFinishedSuccessfully)
         }
         #endif
+        generateAccessibilityIdentifiers()
     }
     
     @objc func removeStyleFromSelection() {
@@ -117,7 +121,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         super.webView(webView, didFinish: navigation)
     }
     
-    override func addInlineAttachment(_ sid: String, data: Data) {
+    override func addInlineAttachment(_ sid: String, data: Data) -> Promise<Void> {
         guard (self.viewModel as? ContainableComposeViewModel)?.validateAttachmentsSize(withNew: data) == true else {
             DispatchQueue.main.async {
                 self.latestErrorBanner?.remove(animated: true)
@@ -131,9 +135,9 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             }
             
             self.htmlEditor.remove(embedImage: "cid:\(sid)")
-            return
+            return Promise()
         }
-        super.addInlineAttachment(sid, data: data)
+        return super.addInlineAttachment(sid, data: data)
     }
     
     func errorBannerToPresent() -> BannerView? {

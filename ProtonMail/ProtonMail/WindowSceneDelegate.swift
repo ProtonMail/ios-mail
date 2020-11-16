@@ -37,8 +37,8 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard case let app = UIApplication.shared, let delegate = app.delegate as? AppDelegate else { return }
-        _ = URLContexts.first { context in
-            delegate.application(app, open: context.url)
+        URLContexts.forEach { (context) in
+            _ = delegate.application(app, open: context.url)
         }
     }
     
@@ -87,6 +87,12 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         self.coordinator.start()
+        
+        //For default mail function
+        guard case let app = UIApplication.shared, let delegate = app.delegate as? AppDelegate else { return }
+        connectionOptions.urlContexts.forEach({ (context) in
+            _ = delegate.application(app, open: context.url)
+        })
     }
 
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {

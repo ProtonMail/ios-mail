@@ -30,6 +30,7 @@ public class DKImageGroupDataManagerConfiguration: NSObject, NSCopying {
     /// The types of PHAssetCollection to display in the picker.
     public var assetGroupTypes: [PHAssetCollectionSubtype] = [
         .smartAlbumUserLibrary,
+        .smartAlbumVideos,
         .smartAlbumFavorites,
         .albumRegular
     ]

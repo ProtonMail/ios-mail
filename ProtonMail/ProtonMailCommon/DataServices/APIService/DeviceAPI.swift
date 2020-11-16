@@ -82,10 +82,10 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
             let env = 21
         #endif
         
-        var ver = "1.0.0"
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            ver = version
-        }
+//        var ver = "1.0.0"
+//        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+//            ver = version
+//        }
         let parameters : [String : Any] = [
 //            "DeviceUID" : DeviceUtil.deviceID,
             "DeviceToken" : tokenString,

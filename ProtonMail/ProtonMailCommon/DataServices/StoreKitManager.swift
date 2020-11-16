@@ -60,7 +60,7 @@ class StoreKitManager: NSObject {
             UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
         }
     }
-    private lazy var confirmUserValidationBypass: (Error, @escaping ()->Void)->Void = { error, completion in
+    private lazy var confirmUserValidationBypass: (Error, @escaping ()->Void)->Void = { [unowned self] error, completion in
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
             guard let currentUsername = self.user?.defaultEmail else {
                 self.errorCompletion(Errors.noActiveUsernameInUserDataService)
@@ -290,6 +290,8 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             self.deferredCompletion?()
         case .restored:
             break // never happens in our flow
+        @unknown default:
+            break
         }
     }
     

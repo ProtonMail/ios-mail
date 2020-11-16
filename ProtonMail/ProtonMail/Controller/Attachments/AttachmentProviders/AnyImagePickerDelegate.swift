@@ -39,19 +39,22 @@ class AnyImagePickerDelegate: NSObject, AttachmentProvider, ImageProcessor {
 
 extension AnyImagePickerDelegate: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-// Local variable inserted by Swift 4.2 migrator.
-let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
-
+        // Local variable inserted by Swift 4.2 migrator.
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+        
         if let url = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.referenceURL)] as? NSURL,
-            let asset = PHAsset.fetchAssets(withALAssetURLs: [url as URL], options: nil).firstObject
+           let asset = PHAsset.fetchAssets(withALAssetURLs: [url as URL], options: nil).firstObject
         {
             self.process(asset: asset)
+            picker.dismiss(animated: true, completion: nil)
         } else if let originalImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage {
-            self.process(original: originalImage)
+            self.process(original: originalImage).done { (_) in
+                picker.dismiss(animated: true, completion: nil)
+            }.cauterize()
         } else {
             self.controller.error(LocalString._cant_copy_the_file)
+            picker.dismiss(animated: true, completion: nil)
         }
-        picker.dismiss(animated: true, completion: nil)
     }
     
     @objc func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

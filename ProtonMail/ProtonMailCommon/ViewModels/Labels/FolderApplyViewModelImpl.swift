@@ -23,6 +23,7 @@
 
 import Foundation
 import CoreData
+import PromiseKit
 
 final class FolderApplyViewModelImpl : LabelViewModel {
     private var messages : [Message]!
@@ -30,10 +31,10 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     
     private let messageService : MessageDataService
     
-    init(msg:[Message], folderService: LabelsDataService, messageService: MessageDataService, apiService: APIService) {
+    init(msg:[Message], folderService: LabelsDataService, messageService: MessageDataService, apiService: APIService, coreDataService: CoreDataService) {
         self.messageService = messageService
         
-        super.init(apiService: apiService, labelService: folderService)
+        super.init(apiService: apiService, labelService: folderService, coreDataService: coreDataService)
         self.messages = msg
         self.labelMessages = [String : LabelMessageModel]()
     }
@@ -103,23 +104,25 @@ final class FolderApplyViewModelImpl : LabelViewModel {
         }
     }
     
-    override func apply(archiveMessage : Bool) -> Bool {
-        let context = CoreDataService.shared.backgroundManagedObjectContext
-        for (key, value) in self.labelMessages {
-            if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
-                let ids = self.messages.map { ($0).messageID }
-                let api = ApplyLabelToMessages(labelID: key, messages: ids)
-                api.call(api: self.apiService, nil)
-                context.performAndWait { () -> Void in
-                    for mm in self.messages {
-                        let flable = mm.firstValidFolder() ?? Message.Location.inbox.rawValue
-                        let id = mm.selfSent(labelID: flable)
-                        messageService.move(message: mm, from: id ?? flable, to: key, queue: false)
+    override func apply(archiveMessage : Bool) -> Promise<Bool> {
+        return Promise { seal in
+            let context = self.coreDataService.mainManagedObjectContext
+            self.coreDataService.enqueue(context: context) { (context) in
+                for (key, value) in self.labelMessages {
+                    if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
+                        let ids = self.messages.map { ($0).messageID }
+                        let api = ApplyLabelToMessages(labelID: key, messages: ids)
+                        api.call(api: self.apiService, nil)
+                        for mm in self.messages {
+                            let flable = mm.firstValidFolder() ?? Message.Location.inbox.rawValue
+                            let id = mm.selfSent(labelID: flable)
+                            self.messageService.move(message: mm, from: id ?? flable, to: key, queue: false)
+                        }
                     }
                 }
+                seal.fulfill(true)
             }
         }
-        return true
     }
     
     override func getTitle() -> String {

@@ -22,7 +22,17 @@
 
 
 import Foundation
+import PMFingerprint
 
+protocol FingerprintProtocol {
+    func observeTextField(textField: UITextField, type: PMFingerprint.TextFieldType)
+    
+    func requestHumanVerification()
+    
+    func humanVerificationFinish()
+    
+    func fingerprintExport() -> PMFingerprint.Fingerprint
+}
 
 protocol SignupViewModelDelegate{
     func verificationCodeChanged(_ viewModel : SignupViewModel, code : String!)
@@ -31,7 +41,7 @@ protocol SignupViewModelDelegate{
 
 typealias AvailableDomainsComplete = ([String]) -> Void
 
-class SignupViewModel : NSObject {
+class SignupViewModel : NSObject, FingerprintProtocol {
     func setDelegate (_ delegate: SignupViewModelDelegate?) {
         fatalError("This method must be overridden")
     }
@@ -119,5 +129,21 @@ class SignupViewModel : NSObject {
     
     func isAccountManager() -> Bool {
         return false
+    }
+    
+    func observeTextField(textField: UITextField, type: PMFingerprint.TextFieldType) {
+        fatalError("This method must be overridden")
+    }
+    
+    func requestHumanVerification() {
+        fatalError("This method must be overridden")
+    }
+    
+    func fingerprintExport() -> PMFingerprint.Fingerprint {
+        fatalError("This method must be overridden")
+    }
+    
+    func humanVerificationFinish() {
+        fatalError("This method must be overridden")
     }
 }

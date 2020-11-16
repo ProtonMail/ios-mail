@@ -22,6 +22,8 @@
     
 
 import UIKit
+import MBProgressHUD
+import PromiseKit
 
 final class StorefrontCollectionViewController: UICollectionViewController {
     typealias Sections = StorefrontViewModel.Sections
@@ -34,38 +36,18 @@ final class StorefrontCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         
         self.collectionView.setCollectionViewLayout(CollectionViewTableLayout(), animated: true, completion: nil)
-        self.viewModelObservers = [
-            self.viewModel.observe(\.title, options: [.new, .initial], changeHandler: { [unowned self] viewModel, change in
-                self.title = viewModel.title
-            }),
-            self.viewModel.observe(\.logoItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
-                self.collectionView.reloadSections(Sections.logo.indexSet)
-            }),
-            self.viewModel.observe(\.detailItems, options: [.new], changeHandler: { [unowned self] viewModel, change in
-                self.collectionView.reloadSections(Sections.detail.indexSet)
-            }),
-            self.viewModel.observe(\.annotationItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
-                self.collectionView.reloadSections(Sections.annotation.indexSet)
-            }),
-            self.viewModel.observe(\.buyLinkItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
-                self.collectionView.performBatchUpdates({
-                    self.collectionView.reloadSections(Sections.buyLinkHeader.indexSet)
-                    self.collectionView.reloadSections(Sections.buyLink.indexSet)
-                }, completion: nil)
-            }),
-            self.viewModel.observe(\.othersItems, options: [.new], changeHandler: { [unowned self] viewModel, change in
-                self.collectionView.performBatchUpdates({
-                    self.collectionView.reloadSections(Sections.others.indexSet)
-                    self.collectionView.reloadSections(Sections.othersHeader.indexSet)
-                }, completion: nil)
-            }),
-            self.viewModel.observe(\.buyButtonItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
-                self.collectionView.reloadSections(Sections.buyButton.indexSet)
-            }),
-            self.viewModel.observe(\.creditsItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
-                self.collectionView.reloadSections(Sections.credits.indexSet)
-            })
-        ]
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        _ = firstly {
+            self.viewModel.updateSubscription()
+        }.done {
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.setupObserve()
+            self.collectionView.reloadData()
+        }.catch({ (error) in
+            MBProgressHUD.hide(for: self.view, animated: true)
+            Analytics.shared.error(message: .fetchSubscriptionData, error: error, user: self.viewModel.currentUser)
+            self.showErrorAlert()
+        })
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -121,6 +103,51 @@ final class StorefrontCollectionViewController: UICollectionViewController {
             assert(false, "Unknown cell type requested")
             return ""
         }
+    }
+    
+    private func showErrorAlert() {
+        let alertController = UIAlertController(title: LocalString._general_alert_title, message: LocalString._iap_unavailable, preferredStyle: .alert)
+        alertController.addOKAction { [weak self](_) in
+            self?.coordinator.goToInbox()
+        }
+        self.present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension StorefrontCollectionViewController {
+    private func setupObserve() {
+        self.viewModelObservers = [
+            self.viewModel.observe(\.title, options: [.new, .initial], changeHandler: { [unowned self] viewModel, change in
+                self.title = viewModel.title
+            }),
+            self.viewModel.observe(\.logoItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.reloadSections(Sections.logo.indexSet)
+            }),
+            self.viewModel.observe(\.detailItems, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.reloadSections(Sections.detail.indexSet)
+            }),
+            self.viewModel.observe(\.annotationItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.reloadSections(Sections.annotation.indexSet)
+            }),
+            self.viewModel.observe(\.buyLinkItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.performBatchUpdates({
+                    self.collectionView.reloadSections(Sections.buyLinkHeader.indexSet)
+                    self.collectionView.reloadSections(Sections.buyLink.indexSet)
+                }, completion: nil)
+            }),
+            self.viewModel.observe(\.othersItems, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.performBatchUpdates({
+                    self.collectionView.reloadSections(Sections.others.indexSet)
+                    self.collectionView.reloadSections(Sections.othersHeader.indexSet)
+                }, completion: nil)
+            }),
+            self.viewModel.observe(\.buyButtonItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.reloadSections(Sections.buyButton.indexSet)
+            }),
+            self.viewModel.observe(\.creditsItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.reloadSections(Sections.credits.indexSet)
+            })
+        ]
     }
 }
 

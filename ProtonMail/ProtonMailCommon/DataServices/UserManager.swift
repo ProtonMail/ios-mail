@@ -23,6 +23,7 @@
 
 import Foundation
 import PMAuthentication
+import PromiseKit
 
 /// TODO:: this is temp
 protocol UserDataSource : class {
@@ -50,32 +51,58 @@ protocol UserManagerSave : class {
 
 ///
 class UserManager : Service, HasLocalStorage {
-    func cleanUp() {
-        self.messageService.cleanUp()
-        self.labelService.cleanUp()
-        self.contactService.cleanUp()
-        self.contactGroupService.cleanUp()
-        self.localNotificationService.cleanUp()
-        self.userService.cleanUp()
-        userCachedStatus.removeMobileSignature(uid: userInfo.userId)
-        userCachedStatus.removeMobileSignatureSwitchStatus(uid: userInfo.userId)
-        userCachedStatus.removeDefaultSignatureSwitchStatus(uid: userInfo.userId)
-        #if !APP_EXTENSION
-        self.sevicePlanService.cleanUp()
-        #endif
+    func cleanUp() -> Promise<Void> {
+        return Promise { seal in
+            var wait = Promise<Void>()
+            var promises = [
+                self.messageService.cleanUp(),
+                self.labelService.cleanUp(),
+                self.contactService.cleanUp(),
+                self.contactGroupService.cleanUp(),
+                self.localNotificationService.cleanUp(),
+                self.userService.cleanUp(),
+                lastUpdatedStore.cleanUp(userId: self.userinfo.userId)
+            ]
+            #if !APP_EXTENSION
+            promises.append(self.sevicePlanService.cleanUp())
+            #endif
+            for p in promises {
+                wait = wait.then({ (_) -> Promise<Void> in
+                    return p
+                })
+            }
+            wait.done {
+                userCachedStatus.removeMobileSignature(uid: self.userInfo.userId)
+                userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userInfo.userId)
+                userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userInfo.userId)
+                userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userInfo.userId)
+                seal.fulfill_()
+            }.catch { (_) in
+                seal.fulfill_()
+            }
+        }
     }
     
-    static func cleanUpAll() {
-        MessageDataService.cleanUpAll()
-        LabelsDataService.cleanUpAll()
-        ContactDataService.cleanUpAll()
-        ContactGroupsDataService.cleanUpAll()
-        LocalNotificationService.cleanUpAll()
-        UserDataService.cleanUpAll()
-        LastUpdatedStore.cleanUpAll()
+    static func cleanUpAll() -> Promise<Void> {
+        var wait = Promise<Void>()
+        var promises = [
+            MessageDataService.cleanUpAll(),
+            LabelsDataService.cleanUpAll(),
+            ContactDataService.cleanUpAll(),
+            ContactGroupsDataService.cleanUpAll(),
+            LocalNotificationService.cleanUpAll(),
+            UserDataService.cleanUpAll(),
+            LastUpdatedStore.cleanUpAll()
+        ]
         #if !APP_EXTENSION
-        ServicePlanDataService.cleanUpAll()
+        promises.append(ServicePlanDataService.cleanUpAll())
         #endif
+        for p in promises {
+            wait = wait.then({ (_) -> Promise<Void> in
+                return p
+            })
+        }
+        return wait
     }
     
     func launchCleanUpIfNeeded() {
@@ -94,55 +121,58 @@ class UserManager : Service, HasLocalStorage {
     //TODO:: add a user status. logging in, expired, no key etc...
 
     //public let user
-    public lazy var reportService: BugDataService = {
+    public lazy var reportService: BugDataService = { [unowned self] in
         let service = BugDataService(api: self.apiService)
         return service
     }()
-    public lazy var contactService: ContactDataService = {
+    public lazy var contactService: ContactDataService = { [unowned self] in
         let service = ContactDataService(api: self.apiService,
                                          labelDataService: self.labelService,
-                                         userID: self.userinfo.userId)
+                                         userID: self.userinfo.userId,
+                                         coreDataService: sharedServices.get(by: CoreDataService.self))
         return service
     }()
     
-    public lazy var contactGroupService: ContactGroupsDataService = {
+    public lazy var contactGroupService: ContactGroupsDataService = { [unowned self] in
         let service = ContactGroupsDataService(api: self.apiService,
-                                               labelDataService: self.labelService)
+                                               labelDataService: self.labelService,
+                                               coreDataServie: sharedServices.get(by: CoreDataService.self))
         return service
     }()
     
     weak var parentManager: UsersManager?
     
-    public lazy var messageService: MessageDataService = {
+    public lazy var messageService: MessageDataService = { [unowned self] in
         let service = MessageDataService(api: self.apiService,
                                          userID: self.userinfo.userId,
                                          labelDataService: self.labelService,
                                          contactDataService: self.contactService,
                                          localNotificationService: self.localNotificationService,
-                                         usersManager: self.parentManager)
+                                         usersManager: self.parentManager,
+                                         coreDataService: sharedServices.get(by: CoreDataService.self))
         service.userDataSource = self
         return service
     }()
     
-    public lazy var labelService: LabelsDataService = {
-        let service = LabelsDataService(api: self.apiService, userID: self.userinfo.userId)
+    public lazy var labelService: LabelsDataService = { [unowned self] in
+        let service = LabelsDataService(api: self.apiService, userID: self.userinfo.userId, coreDataService: sharedServices.get(by: CoreDataService.self))
         return service
     }()
     
-    public lazy var userService: UserDataService = {
+    public lazy var userService: UserDataService = { [unowned self] in
         let service = UserDataService(check: false, api: self.apiService)
         return service
     }()
     
     
-    public lazy var localNotificationService: LocalNotificationService = {
+    public lazy var localNotificationService: LocalNotificationService = { [unowned self] in
         let service = LocalNotificationService(userID: self.userinfo.userId)
         return service
     }()
    
     
     #if !APP_EXTENSION
-    public lazy var sevicePlanService: ServicePlanDataService = {
+    public lazy var sevicePlanService: ServicePlanDataService = { [unowned self] in
         let service = ServicePlanDataService(localStorage: userCachedStatus, apiService: self.apiService) // FIXME: SHOULD NOT BE ONE STORAGE FOR ALL
         return service
     }()
@@ -316,8 +346,8 @@ extension UserManager : UserDataSource {
         }
     }
     
-    func getUnReadCount(by labelID: String) -> Int {
-        self.labelService.unreadCount(by: labelID)
+    func getUnReadCount(by labelID: String) -> Promise<Int> {
+        return self.labelService.unreadCount(by: labelID)
     }
 }
 

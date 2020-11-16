@@ -34,7 +34,7 @@ class SettingsLockCoordinator : DefaultCoordinator {
     internal weak var viewController: SettingsLockViewController?
     internal weak var deepLink: DeepLink?
     
-    lazy internal var configuration: ((SettingsLockViewController) -> ())? = { vc in
+    lazy internal var configuration: ((SettingsLockViewController) -> ())? = { [unowned self] vc in
         vc.set(coordinator: self)
         vc.set(viewModel: self.viewModel)
     }

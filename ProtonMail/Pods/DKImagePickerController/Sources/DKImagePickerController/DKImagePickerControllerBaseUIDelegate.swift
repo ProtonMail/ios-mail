@@ -117,14 +117,22 @@ open class DKImagePickerControllerBaseUIDelegate: NSObject, DKImagePickerControl
             let button = UIButton()
 
             #if swift(>=4.0)
-            let globalTitleColor = UINavigationBar.appearance().titleTextAttributes?[NSAttributedString.Key.foregroundColor] as? UIColor
-            let globalTitleFont = UINavigationBar.appearance().titleTextAttributes?[NSAttributedString.Key.font] as? UIFont
+            let globalTitleColor = UINavigationBar.appearance()
+                .titleTextAttributes?[NSAttributedString.Key.foregroundColor] as? UIColor
+            let globalTitleFont = UINavigationBar.appearance()
+                .titleTextAttributes?[NSAttributedString.Key.font] as? UIFont
             #else
-            let globalTitleColor = UINavigationBar.appearance().titleTextAttributes?[NSForegroundColorAttributeName] as? UIColor
-            let globalTitleFont = UINavigationBar.appearance().titleTextAttributes?[NSFontAttributeName] as? UIFont
+            let globalTitleColor = UINavigationBar.appearance()
+                .titleTextAttributes?[NSForegroundColorAttributeName] as? UIColor
+            let globalTitleFont = UINavigationBar.appearance()
+                .titleTextAttributes?[NSFontAttributeName] as? UIFont
             #endif
 
-            button.setTitleColor(globalTitleColor ?? UIColor.black, for: .normal)
+            var defaultColor = UIColor.black
+            if #available(iOS 13, *) {
+                defaultColor = UIColor.label
+            }
+            button.setTitleColor(globalTitleColor ?? defaultColor, for: .normal)
             button.titleLabel!.font = globalTitleFont ?? UIFont.boldSystemFont(ofSize: 18.0)
 
             self.selectGroupButton = button

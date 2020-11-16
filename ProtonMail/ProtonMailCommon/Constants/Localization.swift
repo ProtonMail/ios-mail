@@ -138,6 +138,10 @@ class LocalizedString {
     lazy var _menu_lockapp_title  =  NSLocalizedString("Lock The App", comment: "menu title")
     /// "Subscription"
     lazy var _menu_service_plan_title  =  NSLocalizedString("Subscription", comment: "menu title")
+    /// "Manage accounts"
+    lazy var _menu_manage_accounts  =  NSLocalizedString("Manage accounts", comment: "menu title")
+    /// "Add accounts"
+    lazy var _menu_add_account  =  NSLocalizedString("Add accounts", comment: "menu title")
 
 
     // Mark Message localtion
@@ -461,6 +465,8 @@ class LocalizedString {
     lazy var _general_done_button     = NSLocalizedString("Done", comment: "Done action")
     /// "Cancel"
     lazy var _general_cancel_button   = NSLocalizedString("Cancel", comment: "Cancel action")
+    /// "Open"
+    lazy var _general_open_button     = NSLocalizedString("Open", comment: "Open action")
     /// "Remove"
     lazy var _general_remove_button   = NSLocalizedString("Remove", comment: "remove action")
     /// "Apply"
@@ -671,6 +677,8 @@ class LocalizedString {
 
     /// "This preference will fallback to Safari if the browser of choice will be uninstalled."
     lazy var _settings_browser_disclaimer = NSLocalizedString("This preference will fallback to Safari if the browser of choice will be uninstalled.", comment: "Title")
+    
+    lazy var _unsupported_url = NSLocalizedString("The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?", comment: "Unsupported url alert message")
     
     /// "Auto Lock Time"
     lazy var _settings_auto_lock_time = NSLocalizedString("Auto Lock Time", comment: "Title")
@@ -1081,6 +1089,8 @@ class LocalizedString {
 
     /// "Storage Warning"
     lazy var _space_warning = NSLocalizedString("Storage Warning", comment: "Title")
+    lazy var _space_all_used_warning = NSLocalizedString("You have used up all of your storage space (%@).", comment: "Content of space warning")
+    lazy var _space_partial_used_warning = NSLocalizedString("You have used %d%% of your storage space (%@).", comment: "Content of space warning")
 
     /// "Warning"
     lazy var _warning = NSLocalizedString("Warning", comment: "Title")
@@ -1579,6 +1589,8 @@ class LocalizedString {
 
 
     // Mark: - IAP
+    
+    lazy var _iap_unavailable = NSLocalizedString("Subscription information temporarily unavailable. Please try again later.", comment: "Fetch subscription data failed")
 
     lazy var _unlimited_messages_sent = NSLocalizedString("Unlimited messages sent/day", comment: "Service plan capability;")
 

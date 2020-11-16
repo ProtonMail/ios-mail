@@ -141,8 +141,8 @@ extension MessageDataService {
     
     
     
-    func copyMessage (message: Message, copyAtts : Bool) -> Message {
-        let newMessage = Message(context: CoreDataService.shared.mainManagedObjectContext)
+    func copyMessage (message: Message, copyAtts : Bool, context: NSManagedObjectContext) -> Message {
+        let newMessage = Message(context: context)
         newMessage.toList = message.toList
         newMessage.bccList = message.bccList
         newMessage.ccList = message.ccList

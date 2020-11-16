@@ -23,15 +23,15 @@
 
 import Foundation
 
-let storageLimit = StorageLimit()
+protocol StorageLimit {}
 
-class StorageLimit {
+extension StorageLimit {
     
     // MARK: - Public methods
     
-    func checkSpace(_ usedSpace: Int64, maxSpace: Int64) {
+    func checkSpace(_ usedSpace: Int64, maxSpace: Int64, user: UserManager) {
         
-        if userCachedStatus.isCheckSpaceDisabled {
+        if let isSpaceDisable = userCachedStatus.getIsCheckSpaceDisabledStatus(by: user.userInfo.userId), isSpaceDisable {
             return
         }
         
@@ -44,18 +44,18 @@ class StorageLimit {
             return
         }
         
-        let formattedMaxSpace : String = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.file)
+        let formattedMaxSpace : String = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.binary)
         var message = ""
         
         if usedSpace >= maxSpace {
-            let localized = NSLocalizedString("You have used up all of your storage space (%@).", comment: "Description")
+            let localized = LocalString._space_all_used_warning
             if localized.count <= 0 || !localized.contains(check: "%@") {
-                message = String(format: "You have used up all of your storage space (%@).", formattedMaxSpace);
+                message = String(format: localized, formattedMaxSpace);
             } else {
                 message = String(format: localized, formattedMaxSpace);
             }
         } else {
-            message = String(format: NSLocalizedString("You have used %d%% of your storage space (%@).", comment: "Description"), Constants.App.SpaceWarningThreshold, formattedMaxSpace);
+            message = String(format: LocalString._space_partial_used_warning, Constants.App.SpaceWarningThreshold, formattedMaxSpace);
         }
         
         let alertController = UIAlertController(title: LocalString._space_warning,
@@ -63,7 +63,7 @@ class StorageLimit {
                                                 preferredStyle: .alert)
         alertController.addOKAction()
         alertController.addAction(UIAlertAction(title: LocalString._hide, style: .destructive, handler: { action in
-            userCachedStatus.isCheckSpaceDisabled = true
+            userCachedStatus.setIsCheckSpaceDisabledStatus(uid: user.userInfo.userId, value: true)
         }))
 
         UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)

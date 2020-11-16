@@ -23,6 +23,7 @@
 
 import Foundation
 import CoreData
+import PromiseKit
 
 
 // labels and folders manager
@@ -74,20 +75,22 @@ final class LabelManagerViewModelImpl : LabelViewModel {
         }
     }
     
-    override func apply(archiveMessage : Bool) -> Bool {
-        let context = CoreDataService.shared.mainManagedObjectContext
-        for (key, value) in self.labelMessages {
-            if value.currentStatus == 2 { //delete
-                if value.label.managedObjectContext != nil && key == value.label.labelID {
-                    let api = DeleteLabelRequest(lable_id: key)
-                    api.call(api: self.labelService.api, nil) // TODO:: fix me
-                    context.performAndWait { () -> Void in
-                        context.delete(value.label)
+    override func apply(archiveMessage : Bool) -> Promise<Bool> {
+        return Promise { seal in
+            let context = self.coreDataService.mainManagedObjectContext
+            self.coreDataService.enqueue(context: context) { (context) in
+                for (key, value) in self.labelMessages {
+                    if value.currentStatus == 2 { //delete
+                        if value.label.managedObjectContext != nil && key == value.label.labelID {
+                            let api = DeleteLabelRequest(lable_id: key)
+                            api.call(api: self.labelService.api, nil) // TODO:: fix me
+                            context.delete(value.label)
+                        }
                     }
                 }
+                seal.fulfill(true)
             }
         }
-        return true
     }
     
     override func cancel() {

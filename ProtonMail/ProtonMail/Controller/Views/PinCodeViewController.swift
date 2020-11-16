@@ -23,13 +23,14 @@
 
 import Foundation
 import UIKit
+import PromiseKit
 
 protocol PinCodeViewControllerDelegate: class {
-    func Cancel()
+    func Cancel() -> Promise<Void>
     func Next()
 }
 
-class PinCodeViewController : UIViewController, BioAuthenticating {
+class PinCodeViewController : UIViewController, BioAuthenticating, AccessibleView {
     var viewModel : PinCodeViewModel!
     weak var delegate : PinCodeViewControllerDelegate?
     
@@ -45,6 +46,7 @@ class PinCodeViewController : UIViewController, BioAuthenticating {
         NotificationCenter.default.addObserver(forName:  UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] notification in
             self?.pinCodeView.resetPin()
         }
+        generateAccessibilityIdentifiers()
     }
     
     deinit {
@@ -122,8 +124,9 @@ extension PinCodeViewController : PinCodeViewDelegate {
     }
     
     private func proceedCancel(_ sender: Any? = nil) {
-        self.delegate?.Cancel()
-        let _ = self.navigationController?.popViewController(animated: true)
+        _ = self.delegate?.Cancel().done {
+            let _ = self.navigationController?.popViewController(animated: true)
+        }
     }
     
     func Next(_ code : String) {

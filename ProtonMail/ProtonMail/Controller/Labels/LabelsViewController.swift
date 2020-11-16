@@ -30,7 +30,7 @@ protocol LablesViewControllerDelegate {
 }
 
 //TODO::fixme coordinator
-class LablesViewController : UIViewController {
+class LablesViewController : UIViewController, AccessibleView {
     
     var viewModel : LabelViewModel!
     
@@ -126,6 +126,7 @@ class LablesViewController : UIViewController {
         cancelButton.setTitle(viewModel.getCancelButtonText(), for: UIControl.State())
         
         tableView.noSeparatorsBelowFooter()
+        generateAccessibilityIdentifiers()
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -149,10 +150,11 @@ class LablesViewController : UIViewController {
     }
     
     @IBAction func applyAction(_ sender: AnyObject) {
-        let _ = self.viewModel.apply(archiveMessage: archiveMessage)
-        self.dismiss(animated: true, completion: nil)
-        delegate?.dismissed()
-        delegate?.apply(type: viewModel.getFetchType())
+        _ = self.viewModel.apply(archiveMessage: archiveMessage).ensure {
+            self.dismiss(animated: true, completion: nil)
+            self.delegate?.dismissed()
+            self.delegate?.apply(type: self.viewModel.getFetchType())
+        }
     }
     
     @IBAction func cancelAction(_ sender: AnyObject) {
@@ -182,16 +184,16 @@ class LablesViewController : UIViewController {
         
         if segue.identifier == kToCreateFolder {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = FolderCreatingViewModelImple(apiService: apiService, labelService: labelService)
+            popup.viewModel = FolderCreatingViewModelImple(apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
         } else if segue.identifier == kToCreateLabel {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = LabelCreatingViewModelImple(apiService: apiService, labelService: labelService)
+            popup.viewModel = LabelCreatingViewModelImple(apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
         } else if segue.identifier == kToEditingLabel {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = LabelEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService)
+            popup.viewModel = LabelEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
         } else if segue.identifier == kToEditingFolder {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = FolderEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService)
+            popup.viewModel = FolderEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
         }
     }
 }
@@ -301,8 +303,13 @@ extension LablesViewController : NSFetchedResultsControllerDelegate {
                 tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .update:
-            if let index = indexPath {
-                tableView.reloadRows(at: [index], with: UITableView.RowAnimation.automatic)
+            if let indexPath = indexPath {
+                tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+            }
+        case .move:
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         default:
             return

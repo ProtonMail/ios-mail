@@ -27,7 +27,7 @@ import Crypto
 struct ShowImages : OptionSet {
     let rawValue: Int
     // 0 for none, 1 for remote, 2 for embedded, 3 for remote and embedded (
-    static let none     = ShowImages(rawValue: 0)
+    static let none     = ShowImages([])
     static let remote   = ShowImages(rawValue: 1 << 0) // auto load remote images
     static let embedded = ShowImages(rawValue: 1 << 1) // auto load embedded images
 }

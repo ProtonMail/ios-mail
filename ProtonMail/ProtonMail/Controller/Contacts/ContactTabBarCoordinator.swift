@@ -46,13 +46,13 @@ class ContactTabBarCoordinator: DefaultCoordinator {
         /// setup contacts vc
         if let viewController = viewController?.contactsViewController {
             let vmService = services.get() as ViewModelService
-            
-            sharedVMService.contactsViewModel(viewController, user: self.user)
+            vmService.contactsViewModel(viewController, user: self.user)
         }
         
         /// setup contact groups view controller
         if let viewController = viewController?.groupsViewController {
-            sharedVMService.contactGroupsViewModel(viewController, user: self.user)
+            let vmService = services.get() as ViewModelService
+            vmService.contactGroupsViewModel(viewController, user: self.user)
         }
         
         self.swRevealVC?.pushFrontViewController(self.viewController, animated: true)

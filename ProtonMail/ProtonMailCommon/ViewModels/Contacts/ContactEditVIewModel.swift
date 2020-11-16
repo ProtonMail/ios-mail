@@ -121,8 +121,10 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
     
     typealias ContactEditSaveComplete = ((_ error: NSError?) -> Void)
     private(set) var user: UserManager
-    public init(user: UserManager) {
+    let coreDataService: CoreDataService
+    public init(user: UserManager, coreDataService: CoreDataService) {
         self.user = user
+        self.coreDataService = coreDataService
     }
     
     func paidUser() -> Bool {

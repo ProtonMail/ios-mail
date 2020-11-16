@@ -29,12 +29,15 @@ final class ContactsViewModelImpl : ContactsViewModel {
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     fileprivate var isSearching: Bool = false
     
-    lazy var contactService : ContactDataService = self.user.contactService
+    lazy var contactService : ContactDataService = { [unowned self] in
+        return self.user.contactService
+    }()
     
-    override func setupFetchedResults(delaget: NSFetchedResultsControllerDelegate?) {
+    override func setupFetchedResults(delegate: NSFetchedResultsControllerDelegate?) {
         self.fetchedResultsController = self.getFetchedResultsController()
-        self.correctCachedData()
-        self.fetchedResultsController?.delegate = delaget
+        self.correctCachedData() {
+            self.fetchedResultsController?.delegate = delegate
+        }
     }
     
     override func resetFetchedController() {
@@ -44,21 +47,26 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
     }
     
-    func correctCachedData() {
+    func correctCachedData(completion: (() -> Void)?) {
         if let objects = fetchedResultsController?.fetchedObjects as? [Contact] {
             if let context = self.fetchedResultsController?.managedObjectContext {
-                var needsSave = false
-                for obj in objects {
-                    if obj.fixName() {
-                        needsSave = true
+                self.coreDataService.enqueue(context: context) { (context) in
+                    var needsSave = false
+                    for obj in objects {
+                        if obj.fixName() {
+                            needsSave = true
+                        }
                     }
-                }
-                if needsSave {
-                    let _ = context.saveUpstreamIfNeeded()
-                    self.fetchedResultsController = self.getFetchedResultsController()
+                    if needsSave {
+                        let _ = context.saveUpstreamIfNeeded()
+                        self.fetchedResultsController = self.getFetchedResultsController()
+                    }
+                    completion?()
+                    return
                 }
             }
         }
+        completion?()
     }
     
     private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
@@ -160,6 +168,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
             
             self.user.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue,
                                                  notificationMessageID: nil,
+                                                 context: self.coreDataService.mainManagedObjectContext,
                                                  completion: { (task, res, error) in
                 self.isFetching = false
                 self.fetchComplete?(nil, nil)

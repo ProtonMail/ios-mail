@@ -23,10 +23,11 @@
 
 import Foundation
 import CoreData
+import PromiseKit
 
 
 //TODO::cache this only need to load after login/authed
-let lastUpdatedStore = LastUpdatedStore()
+let lastUpdatedStore = LastUpdatedStore(coreDataService: sharedServices.get(by: CoreDataService.self))
 
 final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
 
@@ -70,6 +71,12 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
             getShared().synchronize()
         }
     }
+    
+    let coreDataService: CoreDataService
+    init(coreDataService: CoreDataService) {
+        self.coreDataService = coreDataService
+        super.init()
+    }
 
     
     /**
@@ -96,15 +103,31 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
         UIApplication.setBadge(badge: 0)
     }
     
-    func cleanUp() {
+    func cleanUp() -> Promise<Void> {
         // TODO: clean only one specific user
+        return Promise()
     }
     
-    static func cleanUpAll() {
-        let context = CoreDataService.shared.backgroundManagedObjectContext
-        context.perform {
-            UserEvent.deleteAll(inContext: context)
-            LabelUpdate.deleteAll(inContext: context)
+    func cleanUp(userId: String) -> Promise<Void> {
+        return Promise { seal in
+            let context = self.coreDataService.backgroundManagedObjectContext
+            coreDataService.enqueue(context: context) { (context) in
+                _ = UserEvent.remove(by: userId, inManagedObjectContext: context)
+                _ = LabelUpdate.remove(by: userId, inManagedObjectContext: context)
+                seal.fulfill_()
+            }
+        }
+    }
+    
+    static func cleanUpAll() -> Promise<Void> {
+        return Promise { seal in
+            let coreDataService = sharedServices.get(by: CoreDataService.self)
+            let context = coreDataService.backgroundManagedObjectContext
+            coreDataService.enqueue(context: context) { (context) in
+                UserEvent.deleteAll(inContext: context)
+                LabelUpdate.deleteAll(inContext: context)
+                seal.fulfill_()
+            }
         }
     }
     
@@ -120,63 +143,94 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
     
     //Mark - new 1.12.0
     
-    func lastUpdate(by labelID : String, userID: String, context: NSManagedObjectContext? = nil) -> LabelUpdate? {
+    func lastUpdate(by labelID : String, userID: String, context: NSManagedObjectContext) -> LabelUpdate? {
         //TODO:: fix me fetch everytime is expensive
-        return LabelUpdate.lastUpdate(by: labelID, userID: userID, inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext)
+        return LabelUpdate.lastUpdate(by: labelID, userID: userID, inManagedObjectContext: context)
     }
     
-    func lastUpdateDefault(by labelID : String, userID: String, context: NSManagedObjectContext? = nil) -> LabelUpdate {
-        if let update = LabelUpdate.lastUpdate(by: labelID, userID: userID, inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext) {
+    func lastUpdateDefault(by labelID : String, userID: String, context: NSManagedObjectContext) -> LabelUpdate {
+        if let update = LabelUpdate.lastUpdate(by: labelID, userID: userID, inManagedObjectContext: context) {
             return update
         }
-        return LabelUpdate.newLabelUpdate(by: labelID, userID: userID, inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext)
+        return LabelUpdate.newLabelUpdate(by: labelID, userID: userID, inManagedObjectContext: context)
     }
     
     // location & label: message unread count
-    func unreadCount(by labelID : String, userID: String, context: NSManagedObjectContext? = nil) -> Int {
-        guard let update = lastUpdate(by: labelID, userID: userID, context: context ?? CoreDataService.shared.mainManagedObjectContext) else {
+    func unreadCount(by labelID : String, userID: String, context: NSManagedObjectContext) -> Promise<Int> {
+        return Promise { seal in
+            var unreadCount: Int32?
+            self.coreDataService.enqueue(context: context) { (context) in
+                let update = self.lastUpdate(by: labelID, userID: userID, context: context)
+                unreadCount = update?.unread
+                
+                guard let result = unreadCount else {
+                    seal.fulfill(0)
+                    return
+                }
+                seal.fulfill(Int(result))
+            }
+        }
+    }
+    
+    func unreadCount(by labelID : String, userID: String, context: NSManagedObjectContext) -> Int {
+        var unreadCount: Int32?
+        let update = self.lastUpdate(by: labelID, userID: userID, context: context)
+        unreadCount = update?.unread
+        
+        guard let result = unreadCount else {
             return 0
         }
-        return Int(update.unread)
+        return Int(result)
     }
+    
 
     // update unread count
-    func updateUnreadCount(by labelID : String, userID: String, count: Int, context: NSManagedObjectContext? = nil) {
-        let update = lastUpdateDefault(by: labelID, userID: userID, context: context ?? CoreDataService.shared.mainManagedObjectContext)
+    func updateUnreadCount(by labelID : String, userID: String, count: Int, context: NSManagedObjectContext, shouldSave: Bool = true) {
+        let update = self.lastUpdateDefault(by: labelID, userID: userID, context: context)
         update.unread = Int32(count)
         
-        context?.perform {
-            let _ = context?.saveUpstreamIfNeeded()
+        if shouldSave {
+            let _ = context.saveUpstreamIfNeeded()
         }
+        
         if labelID == Message.Location.inbox.rawValue {
-            UIApplication.setBadge(badge: count)
+            DispatchQueue.main.async {
+                UIApplication.setBadge(badge: count)
+            }
         }
     }
     
     //remove all updates for a user
-    func removeUpdateTime(by userID: String, context: NSManagedObjectContext? = nil) {
-        let _ = LabelUpdate.remove(by: userID, inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext)
+    func removeUpdateTime(by userID: String, context: NSManagedObjectContext) {
+        self.coreDataService.enqueue(context: context) { (context) in
+            let _ = LabelUpdate.remove(by: userID, inManagedObjectContext: context)
+        }
     }
     
     
     // update event id
-    func updateEventID(by userID : String, eventID: String, context: NSManagedObjectContext? = nil) {
-        let event = eventIDDefault(by: userID, context: context ?? CoreDataService.shared.mainManagedObjectContext)
-        event.eventID = eventID;
-        let _ = context?.saveUpstreamIfNeeded()
+    func updateEventID(by userID : String, eventID: String, context: NSManagedObjectContext) -> Promise<Void> {
+        return Promise { seal in
+            self.coreDataService.enqueue(context: context) { (context) in
+                let event = self.eventIDDefault(by: userID, context: context)
+                event.eventID = eventID
+                let _ = context.saveUpstreamIfNeeded()
+                seal.fulfill_()
+            }
+        }
     }
     
-    private func eventIDDefault(by userID : String, context: NSManagedObjectContext? = nil) -> UserEvent {
+    private func eventIDDefault(by userID : String, context: NSManagedObjectContext) -> UserEvent {
         if let update = UserEvent.userEvent(by: userID,
-                                            inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext) {
+                                            inManagedObjectContext: context) {
             return update
         }
         return UserEvent.newUserEvent(userID: userID,
-                                      inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext)
+                                      inManagedObjectContext: context)
     }
     
-    func lastEventID(userID: String) -> String {
-        let event = eventIDDefault(by: userID, context: CoreDataService.shared.mainManagedObjectContext)
+    func lastEventID(userID: String, context: NSManagedObjectContext) -> String {
+        let event = eventIDDefault(by: userID, context: context)
         return event.eventID
     }
 }

@@ -13,7 +13,7 @@
 #import "NSData+SentryCompression.h"
 #import "NSDate+SentryExtras.h"
 #import "NSDictionary+SentrySanitize.h"
-#import "NSString+SentryNSUIntegerValue.h"
+#import "NSString+SentryUnsignedLongLongValue.h"
 #import "Sentry.h"
 #import "SentryAsynchronousOperation.h"
 #import "SentryAutoBreadcrumbTrackingIntegration.h"

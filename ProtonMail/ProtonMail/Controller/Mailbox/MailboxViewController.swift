@@ -70,7 +70,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private weak var topMessageView: BannerView?
     
     // MARK: - Private attributes
-    private lazy var replacingEmails = viewModel.allEmails()
+    private lazy var replacingEmails: [Email] = { [unowned self] in
+        viewModel.allEmails()
+    }()
     private var listEditing: Bool = false
     private var timer : Timer!
     private var timerAutoDismiss : Timer?
@@ -123,10 +125,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     ///
     func inactiveViewModel() {
-        /*
-         We've been invalidating FetchedResultsController here, but that does not make sense in multiwindow env on iOS 13
-         Revert if there will be strange bugs with FetchedResultsController
-        */
+        guard self.viewModel != nil else {
+            return
+        }
+        self.viewModel.resetFetchedController()
     }
     
     deinit {
@@ -176,6 +178,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.undoView.isHidden = true
         
         self.viewModel.cleanReviewItems()
+        generateAccessibilityIdentifiers()
+        
+        //Do not fetch message when first logged in
+        if viewModel.isEventIDValid() {
+            self.fetchNewMessage()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -197,8 +205,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                                     name: UIApplication.willEnterForegroundNotification,
                                                     object: nil)
         }
-        self.tableView.reloadData()
-        self.refreshControl.endRefreshing()
     }
     
     @IBAction func undoAction(_ sender: UIButton) {
@@ -225,11 +231,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         
         self.viewModel.processCachedPush()
-        
-        //TODO:: fix me
-//        let usedStorageSpace = sharedUserDataService.usedSpace
-//        let maxStorageSpace = sharedUserDataService.maxSpace
-//        StorageLimit().checkSpace(usedStorageSpace, maxSpace: maxStorageSpace)
+        self.viewModel.checkStorageIsCloseLimit()
         
         self.updateInterfaceWithReachability(sharedInternetReachability)
         
@@ -729,10 +731,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard self.viewModel.sectionCount() > 0 else {
             return
         }
-        let rowCount = self.viewModel.rowCount(section: 0)
-        guard rowCount == 0 else {
-            return
-        }
+        
         self.pullDown()
         //TODO:: fix me
 //        let updateTime = viewModel.lastUpdateTime()
@@ -781,7 +780,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 //        }
         self.getLatestMessages()
         //temperay to fix the new messages are not loaded
-        viewModel.fetchMessages(time: 0, foucsClean: false, completion: nil)
+        self.fetchNewMessage()
+    }
+    
+    private func fetchNewMessage() {
+        viewModel.fetchMessages(time: 0, foucsClean: false) { (task, res, error) in
+            self.showNoResultLabel()
+        }
     }
     
     @objc internal func goTroubleshoot() {
@@ -795,6 +800,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if !fetchingMessage {
             fetchingMessage = true
             self.beginRefreshingManually(animated: self.viewModel.rowCount(section: 0) < 1 ? true : false)
+            var handleNoResultLabel: Bool = true
             let complete : CompletionBlock = { (task, res, error) -> Void in
                 self.needToShowNewMessage = false
                 self.newMessageCount = 0
@@ -837,15 +843,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                         self.retryCounter += 1
                     }
                 } else {
-                    // artificial delay to make refreshControl animation roll longer when Internet is too fast
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) { [weak self] in
-                        self?.refreshControl?.endRefreshing()
-                    }
+                    self.refreshControl.endRefreshing()
                     self.retryCounter = 0
                     if self.fetchingStopped! == true {
                         return
                     }
-                    self.showNoResultLabel()
+                    if handleNoResultLabel {
+                        self.showNoResultLabel()
+                    }
                     let _ = self.checkHuman()
                     
                     //temperay to check message status and fetch metadata
@@ -857,13 +862,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     }
                 }
             }
+            self.showRefreshController()
             if let updateTime = viewModel.lastUpdateTime(), updateTime.isNew == false, viewModel.isEventIDValid() {
+                // let response of checkEmptyMailbox decide show label or not.
+                handleNoResultLabel = false
                 //fetch
                 self.needToShowNewMessage = true
                 viewModel.fetchEvents(time: Int(updateTime.startTime.timeIntervalSince1970),
                                       notificationMessageID: self.viewModel.notificationMessageID,
                                       completion: complete)
-                self.checkEmptyMailbox()
             } else {// this new
                 if !viewModel.isEventIDValid() { //if event id is not valid reset
                     viewModel.fetchMessageWithReset(time: 0, completion: complete)
@@ -888,6 +895,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.noResultLabel.isHidden = true
             }
         } ~> .main
+    }
+    
+    private func showRefreshController() {
+        let height = tableView.tableFooterView?.frame.height ?? 0
+        let count = tableView.visibleCells.count
+        guard height == 0 && count == 0 else {return}
+        
+        // Show refreshControl if there is no bottom loading view
+        refreshControl.beginRefreshing()
+        self.tableView.setContentOffset(CGPoint(x: 0, y: -refreshControl.frame.size.height), animated: true)
     }
 
     internal func moveMessages(to location: Message.Location) {
@@ -1262,7 +1279,11 @@ extension MailboxViewController {
     }
     
     func retry() {
-        self.getLatestMessages()
+        // When network reconnect, the DNS data seems will miss at a short time
+        // Delay 5 seconds to retry can prevent some relative error
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.getLatestMessages()
+        }
     }
 }
 
@@ -1303,7 +1324,8 @@ extension MailboxViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sectionCount()
     }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {        return self.viewModel.rowCount(section: section)
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.viewModel.rowCount(section: section)
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let rIndex = self.viewModel.ratingIndex {
@@ -1326,7 +1348,7 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+        self.tableView.endUpdates()
         self.showNewMessageCount(self.newMessageCount)
     }
     
@@ -1349,11 +1371,11 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         switch(type) {
         case .delete:
             if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+                tableView.deleteRows(at: [indexPath], with: .fade)
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
+                tableView.insertRows(at: [newIndexPath], with: .fade)
                 if self.needToShowNewMessage == true {
                     if let newMsg = anObject as? Message {
                         if let msgTime = newMsg.time, newMsg.unRead {
@@ -1369,9 +1391,10 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         case .update:
             //#3 is active
             /// # 1
-//            if let indexPath = indexPath {
-//                self.tableView.reloadRows(at: [indexPath], with: .fade)
-//            }
+            if let indexPath = indexPath {
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+            
 //            if let newIndexPath = newIndexPath {
 //                self.tableView.reloadRows(at: [newIndexPath], with: .fade)
 //            }
@@ -1381,18 +1404,22 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 //                let cell = tableView.cellForRow(at: indexPath)
 //                self.configure(cell: cell, indexPath: indexPath)
 //            }
-//
+
 //            if let newIndexPath = newIndexPath {
 //                let cell = tableView.cellForRow(at: newIndexPath)
 //                self.configure(cell: cell, indexPath: newIndexPath)
 //            }
 
             /// #3
-            if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                let cell = tableView.cellForRow(at: indexPath)
-                self.configure(cell: cell, indexPath: newIndexPath)
-            }
+//            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+//                let cell = tableView.cellForRow(at: indexPath)
+//                self.configure(cell: cell, indexPath: newIndexPath)
+//            }/
         case .move:
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.insertRows(at: [newIndexPath], with: .fade)
+            }
             break
         default:
             return
@@ -1423,7 +1450,9 @@ extension MailboxViewController: UITableViewDelegate {
                 //here need add a counter to check if tried too many times make one real call in case count not right
                 if updateTime.isNew || recordedCount > sectionCount {
                     self.fetchingOlder = true
-                    self.tableView.showLoadingFooter()
+                    if !refreshControl.isRefreshing {
+                        self.tableView.showLoadingFooter()
+                    }
 //                    let updateTime = self.viewModel.lastUpdateTime()
                     let unixTimt: Int = (updateTime.endTime == Date.distantPast ) ? 0 : Int(updateTime.endTime.timeIntervalSince1970)
                     self.viewModel.fetchMessages(time: unixTimt, foucsClean: false, completion: { (task, response, error) -> Void in

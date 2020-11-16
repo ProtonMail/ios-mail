@@ -50,16 +50,19 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     let messageService : MessageDataService
+    let coreDataService: CoreDataService
     let user : UserManager
     
     // for the share target to init composer VM
     init(subject: String, body: String, files: [FileData],
          action : ComposeMessageAction,
          msgService: MessageDataService,
-         user: UserManager) {
+         user: UserManager,
+         coreDataService: CoreDataService) {
 
         self.messageService = msgService
         self.user = user
+        self.coreDataService = coreDataService
         
         super.init()
         self.message = nil
@@ -76,7 +79,11 @@ class ComposeViewModelImpl : ComposeViewModel {
         
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         for f in files {
-            self.uploadAtt(f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata))
+            f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata).done { (attachment) in
+                if let att = attachment {
+                    self.uploadAtt(att)
+                }
+            }.cauterize()
         }
         
     }
@@ -99,8 +106,8 @@ class ComposeViewModelImpl : ComposeViewModel {
     ///   - msg: optional value
     ///   - action: tell is the draft new / open exsiting / reply etc
     ///   - orignalLocation: if reply sent messages. need to to use the last to addresses fill the new to address
-    init(msg: Message?, action : ComposeMessageAction, msgService: MessageDataService, user: UserManager) {
-        
+    init(msg: Message?, action : ComposeMessageAction, msgService: MessageDataService, user: UserManager, coreDataService: CoreDataService) {
+        self.coreDataService = coreDataService
         self.messageService = msgService
         self.user = user
         
@@ -112,7 +119,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             if msg?.managedObjectContext == nil {
                 self.message = nil
             } else {
-                self.message = messageService.copyMessage(message: msg!, copyAtts: action == ComposeMessageAction.forward)
+                self.message = messageService.copyMessage(message: msg!, copyAtts: action == ComposeMessageAction.forward, context: self.coreDataService.mainManagedObjectContext)
                 self.message?.action = action.rawValue as NSNumber?
                 if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
                     if let title = self.message?.title {
@@ -133,9 +140,11 @@ class ComposeViewModelImpl : ComposeViewModel {
                     if let mimeAtts = msg?.tempAtts {
                         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
                         for mimeAtt in mimeAtts {
-                            if let att = mimeAtt.toAttachment(message: self.message, stripMetadata: stripMetadata) {
-                                attachments.append(att)
-                            }
+                            mimeAtt.toAttachment(message: self.message, stripMetadata: stripMetadata).done { (attachment) in
+                                if let att = attachment {
+                                    self.attachments.append(att)
+                                }
+                            }.cauterize()
                         }
                     }
                 } else {
@@ -185,9 +194,10 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
     }
     
-    override func deleteAtt(_ att: Attachment!) {
-        messageService.delete(att: att)
-        self.updateDraft()
+    override func deleteAtt(_ att: Attachment!) -> Promise<Void> {
+        return messageService.delete(att: att).done { (_) in
+            self.updateDraft()
+        }
     }
     
     override func getAttachments() -> [Attachment]? {
@@ -236,7 +246,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                             att.keyChanged = true
                         }
                     } catch let err as NSError{
-                        err.upload(toAnalytics: "updateAddressID atts")
+                        Analytics.shared.error(message: .updateAddressIDError, error: err, user: self.user)
                     }
                 }
                 
@@ -276,7 +286,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         
         progress()
         
-        let context = CoreDataService.shared.backgroundManagedObjectContext // VALIDATE
+        let context = self.coreDataService.mainManagedObjectContext // VALIDATE
         guard let c = model as? ContactVO else {
             complete?(nil, -1)
             return
@@ -493,51 +503,55 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func sendMessage() {
-        //check if has extenral emails and if need attach key
-        let userinfo = self.user.userInfo
-        if userinfo.attachPublicKey == 1,
-            let msg = message,
-            let addr = self.messageService.defaultAddress(msg),
-            let key = addr.keys.first,
-            let data = key.publicKey.data(using: String.Encoding.utf8) {
-            
-            let filename = "publicKey - " + addr.email + " - " + key.shortFingerpritn + ".asc"
-            var attached: Bool = false
-            // check if key already attahced
-            if let atts = self.getAttachments() {
-                for att in atts {
-                    if att.fileName == filename {
-                        attached = true
-                        break
+        async {
+            //check if has extenral emails and if need attach key
+            let userinfo = self.user.userInfo
+            if userinfo.attachPublicKey == 1,
+               let msg = self.message,
+               let addr = self.messageService.defaultAddress(msg),
+               let key = addr.keys.first,
+               let data = key.publicKey.data(using: String.Encoding.utf8) {
+                
+                let filename = "publicKey - " + addr.email + " - " + key.shortFingerpritn + ".asc"
+                var attached: Bool = false
+                // check if key already attahced
+                if let atts = self.getAttachments() {
+                    for att in atts {
+                        if att.fileName == filename {
+                            attached = true
+                            break
+                        }
                     }
                 }
+                
+                // attach key
+                if attached == false, let context = msg.managedObjectContext {
+                    let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+                    let attachment = try? await(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
+                    var error: NSError? = nil
+                    error = context.saveUpstreamIfNeeded()
+                    if error != nil {
+                        PMLog.D("toAttachment () with error: \(String(describing: error))")
+                    }
+                    self.uploadPubkey(attachment)
+                }
             }
             
-            // attach key
-            if attached == false, let context = msg.managedObjectContext {
-                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                let attachment = data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata)
-                var error: NSError? = nil
-                error = context.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D("toAttachment () with error: \(String(describing: error))")
-                }
-                self.uploadPubkey(attachment)
-            }
+            self.updateDraft()
+            self.messageService.send(inQueue: self.message, completion: nil)
         }
-        
-        self.updateDraft()
-        messageService.send(inQueue: self.message?.messageID)  { _, _, _ in }
     }
     
     override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
         let mailboxPassword = self.user.mailboxPassword
         self.setSubject(title)
         
-        if message == nil || message?.managedObjectContext == nil {
-            self.message = self.messageService.messageWithLocation(recipientList: toJsonString(self.toSelectedContacts),
-                                                                   bccList: toJsonString(self.bccSelectedContacts),
-                                                                   ccList: toJsonString(self.ccSelectedContacts),
+//        let objectId = self.message?.objectID
+        let context = self.coreDataService.mainManagedObjectContext
+        if self.message == nil || self.message?.managedObjectContext == nil {
+            self.message = self.messageService.messageWithLocation(recipientList: self.toJsonString(self.toSelectedContacts),
+                                                                   bccList: self.toJsonString(self.bccSelectedContacts),
+                                                                   ccList: self.toJsonString(self.ccSelectedContacts),
                                                                    title: self.getSubject(),
                                                                    encryptionPassword: "",
                                                                    passwordHint: "",
@@ -545,53 +559,78 @@ class ComposeViewModelImpl : ComposeViewModel {
                                                                    body: body,
                                                                    attachments: nil,
                                                                    mailbox_pwd: mailboxPassword,
-                                                                   inManagedObjectContext: CoreDataService.shared.mainManagedObjectContext)
+                                                                   inManagedObjectContext: context)
             self.message?.password = pwd
             self.message?.unRead = false
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
             
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
+            }
         } else {
-            self.message?.toList = toJsonString(self.toSelectedContacts)
-            self.message?.ccList = toJsonString(self.ccSelectedContacts)
-            self.message?.bccList = toJsonString(self.bccSelectedContacts)
+            self.message?.toList = self.toJsonString(self.toSelectedContacts)
+            self.message?.ccList = self.toJsonString(self.ccSelectedContacts)
+            self.message?.bccList = self.toJsonString(self.bccSelectedContacts)
             self.message?.title = self.getSubject()
             self.message?.time = Date()
             self.message?.password = pwd
             self.message?.unRead = false
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
-            self.messageService.updateMessage(self.message!,
-                                              expirationTimeInterval: expir,
-                                              body: body,
-                                              attachments: nil,
-                                              mailbox_pwd: mailboxPassword)
             
-            if let context = message?.managedObjectContext {
-                context.performAndWait {
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    }
+//            if let objId = objectId, let msg = context.object(with: objId) as? Message {
+//                msg.toList = self.toJsonString(self.toSelectedContacts)
+//                msg.ccList = self.toJsonString(self.ccSelectedContacts)
+//                msg.bccList = self.toJsonString(self.bccSelectedContacts)
+//                msg.title = self.getSubject()
+//                msg.time = Date()
+//                msg.password = pwd
+//                msg.unRead = false
+//                msg.passwordHint = pwdHit
+//                msg.expirationOffset = Int32(expir)
+//
+//            }
+            if let msg = self.message {
+                self.messageService.updateMessage(msg,
+                                                  expirationTimeInterval: expir,
+                                                  body: body,
+                                                  attachments: nil,
+                                                  mailbox_pwd: mailboxPassword)
+            }
+            
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
+            }
+            
+            if let msg = self.message, msg.objectID.isTemporaryID {
+                do {
+                    try context.obtainPermanentIDs(for: [msg])
+                } catch {
+                    PMLog.D("error: \(error)")
                 }
             }
         }
     }
     
-    override func updateEO(expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
-        if message != nil {
-            self.message?.time = Date()
-            self.message?.password = pwd
-            self.message?.passwordHint = pwdHit
-            self.message?.expirationOffset = Int32(expir)
-            if expir > 0 {
-                self.message?.expirationTime = Date(timeIntervalSinceNow: expir)
-            }
-            if let context = message?.managedObjectContext {
-                context.perform {
+    override func updateEO(expir:TimeInterval, pwd:String, pwdHit:String) -> Promise<Void> {
+        return Promise { seal in
+            if message != nil {
+                self.coreDataService.enqueue(context: message?.managedObjectContext) { (context) in
+                    self.message?.time = Date()
+                    self.message?.password = pwd
+                    self.message?.passwordHint = pwdHit
+                    self.message?.expirationOffset = Int32(expir)
+                    if expir > 0 {
+                        self.message?.expirationTime = Date(timeIntervalSinceNow: expir)
+                    }
                     if let error = context.saveUpstreamIfNeeded() {
                         PMLog.D(" error: \(error)")
                     }
+                    seal.fulfill_()
                 }
+            } else {
+                seal.fulfill_()
             }
         }
     }
@@ -607,12 +646,10 @@ class ComposeViewModelImpl : ComposeViewModel {
     
     override func markAsRead() {
         if message != nil {
-            message?.unRead = false
-            if let context = message!.managedObjectContext {
-                context.perform {
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    }
+            self.coreDataService.enqueue(context: message?.managedObjectContext) { (context) in
+                self.message?.unRead = false
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
                 }
             }
         }

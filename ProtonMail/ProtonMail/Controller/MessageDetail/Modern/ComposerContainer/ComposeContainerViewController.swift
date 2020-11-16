@@ -30,6 +30,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     @IBOutlet private var sendButton: UIBarButtonItem! //cancel button.
     private var bottomPadding: NSLayoutConstraint!
     private var dropLandingZone: UIView? // drag and drop session items dropped on this view will be added as attachments
+    private let timerInterval : TimeInterval = 30
+    private var syncTimer: Timer?
     
     deinit {
         self.childrenHeightObservations = []
@@ -39,12 +41,14 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        self.startAutoSync()
         #if !APP_EXTENSION
         if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = LocalString._general_draft_action
         }
         #endif
+        
+        generateAccessibilityIdentifiers()
     }
     
     override func viewDidLoad() {
@@ -92,8 +96,12 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         
         // accessibility
         self.sendButton.accessibilityLabel = LocalString._general_send_action
-        self.cancelButton.accessibilityIdentifier = "cancelButton"
-        self.sendButton.accessibilityIdentifier = "sendButton"
+        generateAccessibilityIdentifiers()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.stopAutoSync()
     }
     
     @objc func cancelAction(_ sender: UIBarButtonItem) {
@@ -227,6 +235,21 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
                 LocalString._drop_finished.alertToastBottom()
             }
         }
+    }
+}
+
+// MARK: Sync mail settings
+extension ComposeContainerViewController {
+    func startAutoSync() {
+        self.stopAutoSync()
+        self.syncTimer = Timer.scheduledTimer(withTimeInterval: self.timerInterval, repeats: true, block: { [weak self](_) in
+            self?.viewModel.syncMailSetting()
+        })
+    }
+    
+    func stopAutoSync() {
+        self.syncTimer?.invalidate()
+        self.syncTimer = nil
     }
 }
 

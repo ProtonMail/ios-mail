@@ -38,6 +38,7 @@ extension LabelUpdate {
     
     class func newLabelUpdate(by labelID: String, userID: String, inManagedObjectContext context: NSManagedObjectContext) -> LabelUpdate {
         let update = LabelUpdate(context: context)
+        
         update.start = Date.distantPast
         update.end = Date.distantPast
         update.update = Date.distantPast
@@ -48,10 +49,11 @@ extension LabelUpdate {
         update.total = 0
         update.unread = 0
         
-        if let error = update.managedObjectContext?.saveUpstreamIfNeeded() {
-             PMLog.D("error: \(error)")
-         }
-         return update
+        if let error = context.saveUpstreamIfNeeded() {
+            PMLog.D("error: \(error)")
+        }
+        
+        return update
     }
     
     class func remove(by userID: String, inManagedObjectContext context: NSManagedObjectContext) -> Bool {

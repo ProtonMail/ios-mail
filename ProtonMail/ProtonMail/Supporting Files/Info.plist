@@ -67,9 +67,9 @@
 		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>Mailto</string>
 			<key>CFBundleURLName</key>
-			<string>mailto</string>
+			<string>ch.protonmail.protonmail.mailto</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>mailto</string>

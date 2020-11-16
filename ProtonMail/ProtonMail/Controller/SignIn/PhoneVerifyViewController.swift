@@ -230,6 +230,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         MBProgressHUD.showAdded(to: view, animated: true)
         dismissKeyboard()
         viewModel.setPhoneVerifyCode(verifyCodeTextField.text!)
+        self.viewModel.humanVerificationFinish()
         DispatchQueue.main.async(execute: { () -> Void in
             self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
                 MBProgressHUD.hide(for: self.view, animated: true)

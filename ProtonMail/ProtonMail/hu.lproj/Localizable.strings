@@ -788,16 +788,16 @@
 "Enable Notification Email" = "Értesítési e-mail engedélyezése";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Enable PIN";
+"Enable PIN" = "PIN-kód engedélyezése";
 
 /* settings protection section title */
 "Enable Pin Protection" = "PIN kódos védelem engedélyezése";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Enable PIN/FaceID";
+"Enable PIN/FaceID" = "PIN/FaceID engedélyezése";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Enable PIN/TouchID";
+"Enable PIN/TouchID" = "PIN/TouchID engedélyezése";
 
 /* settings protection section title */
 "Enable TouchID" = "TouchID engedélyezése";
@@ -2103,7 +2103,7 @@
 "To" = "Címzett";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "A ProtonMaillel való visszaélések elkerülése érdekében &#13;\n ellenőriznünk kell, hogy nem robot.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "A ProtonMaillel való visszaélések elkerülése érdekében \r\n ellenőriznünk kell, hogy nem robot.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Az e-mail fiók jelszavának helyreállításához, kérjük, használja a ProtonMail webes felületét, a protonmail.com címen";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "A változtatások nincsenek elmentve. Szeretné megtartani őket?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Eddig %1$d%%-ot használt fel a rendelkezésre álló helyből (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Az összes rendelkezésre álló tárhelyet elhasználta (%@).";
 
 /* Description */
@@ -2433,7 +2433,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Az új e-mail fiókja készen áll a titkosított üzenetek fogadására és küldésére.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Az új biztonságos e-mail&#13;\n fiókja készen áll.";
+"Your new secure email\r\n account is ready." = "Az új biztonságos e-mail\r\n fiókja készen áll.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "A jelenlegi csomagja aktív:";

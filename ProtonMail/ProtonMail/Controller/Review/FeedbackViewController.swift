@@ -140,7 +140,11 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate, UI
     
     func openRating () {
         let url :URL = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=979659905")!
-        UIApplication.shared.openURL(url)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
     }
     
     func shareFacebook () {

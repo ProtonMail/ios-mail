@@ -295,7 +295,7 @@ extension Attachment {
 
 protocol AttachmentConvertible {
     var dataSize: Int { get }
-    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool) -> Attachment?
+    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool) -> Promise<Attachment?>
 }
 
 // THIS IS CALLED FOR CAMERA
@@ -306,35 +306,40 @@ extension UIImage: AttachmentConvertible {
     private func toData() -> Data! {
         return self.jpegData(compressionQuality: 0)
     }
-    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool) -> Attachment? {
-        if let fileData = self.toData() {
-            if let context = message.managedObjectContext {
-                let attachment = Attachment(context: context)
-                attachment.attachmentID = "0"
-                attachment.fileName = fileName
-                attachment.mimeType = "image/jpg"
-                attachment.fileData = stripMetadata ? fileData.strippingExif() : fileData
-                attachment.fileSize = fileData.count as NSNumber
-                attachment.isTemp = false
-                attachment.keyPacket = ""
-                attachment.localURL = nil
-            
-                attachment.message = message
+    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool) -> Promise<Attachment?> {
+        return Promise { seal in
+            guard let context = message.managedObjectContext else {
+                assert(false, "Context improperly destroyed")
+                seal.fulfill(nil)
+                return
+            }
+            CoreDataService.shared.enqueue(context: context) { (context) in
+                if let fileData = self.toData() {
+                    let attachment = Attachment(context: context)
+                    attachment.attachmentID = "0"
+                    attachment.fileName = fileName
+                    attachment.mimeType = "image/jpg"
+                    attachment.fileData = stripMetadata ? fileData.strippingExif() : fileData
+                    attachment.fileSize = fileData.count as NSNumber
+                    attachment.isTemp = false
+                    attachment.keyPacket = ""
+                    attachment.localURL = nil
                 
-                let number = message.numAttachments.int32Value
-                let newNum = number > 0 ? number + 1 : 1
-                message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
-                
-                var error: NSError? = nil
-                error = context.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D("toAttachment () with error: \(String(describing: error))")
+                    attachment.message = message
+                    
+                    let number = message.numAttachments.int32Value
+                    let newNum = number > 0 ? number + 1 : 1
+                    message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
+                    
+                    var error: NSError? = nil
+                    error = context.saveUpstreamIfNeeded()
+                    if error != nil {
+                        PMLog.D("toAttachment () with error: \(String(describing: error))")
+                    }
+                    seal.fulfill(attachment)
                 }
-                return attachment
             }
         }
-        
-        return nil
     }
 }
 
@@ -343,70 +348,79 @@ extension Data: AttachmentConvertible {
     var dataSize: Int {
         return self.count
     }
-    func toAttachment (_ message:Message, fileName : String, stripMetadata: Bool) -> Attachment? {
+    func toAttachment (_ message:Message, fileName : String, stripMetadata: Bool) -> Promise<Attachment?> {
         return self.toAttachment(message, fileName: fileName, type: "image/jpg", stripMetadata: stripMetadata)
     }
     
-    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool) -> Attachment? {
-        guard let context = message.managedObjectContext else {
-            assert(false, "Context improperly destroyed")
-            return nil
+    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool) -> Promise<Attachment?> {
+        return Promise { seal in
+            guard let context = message.managedObjectContext else {
+                assert(false, "Context improperly destroyed")
+                seal.fulfill(nil)
+                return
+            }
+            CoreDataService.shared.enqueue(context: context) { (context) in
+                let attachment = Attachment(context: context)//TODO:: need check context nil or not instead of !
+                attachment.attachmentID = "0"
+                attachment.fileName = fileName
+                attachment.mimeType = type
+                attachment.fileData = stripMetadata ? self.strippingExif() : self
+                attachment.fileSize = self.count as NSNumber
+                attachment.isTemp = false
+                attachment.keyPacket = ""
+                attachment.localURL = nil
+                
+                attachment.message = message
+                
+                let number = message.numAttachments.int32Value
+                let newNum = number > 0 ? number + 1 : 1
+                message.numAttachments = NSNumber(value: Swift.max(newNum, Int32(message.attachments.count)))
+                
+                var error: NSError? = nil
+                error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                if error != nil {
+                    PMLog.D(" toAttachment () with error: \(String(describing: error))")
+                }
+                seal.fulfill(attachment)
+            }
         }
-        let attachment = Attachment(context: context)//TODO:: need check context nil or not instead of !
-        attachment.attachmentID = "0"
-        attachment.fileName = fileName
-        attachment.mimeType = type
-        attachment.fileData = stripMetadata ? self.strippingExif() : self
-        attachment.fileSize = self.count as NSNumber
-        attachment.isTemp = false
-        attachment.keyPacket = ""
-        attachment.localURL = nil
-        
-        attachment.message = message
-        
-        let number = message.numAttachments.int32Value
-        let newNum = number > 0 ? number + 1 : 1
-        message.numAttachments = NSNumber(value: Swift.max(newNum, Int32(message.attachments.count)))
-        
-        var error: NSError? = nil
-        error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-        if error != nil {
-            PMLog.D(" toAttachment () with error: \(String(describing: error))")
-        }
-        return attachment
-        
     }
 }
 
 // THIS IS CALLED FROM SHARE EXTENSION
 extension URL: AttachmentConvertible {
-    func toAttachment(_ message: Message, fileName: String, type: String, stripMetadata: Bool) -> Attachment? {
-        guard let context = message.managedObjectContext else {
-            assert(false, "Context improperly destroyed")
-            return nil
+    func toAttachment(_ message: Message, fileName: String, type: String, stripMetadata: Bool) -> Promise<Attachment?> {
+        return Promise { seal in
+            guard let context = message.managedObjectContext else {
+                assert(false, "Context improperly destroyed")
+                seal.fulfill(nil)
+                return
+            }
+            CoreDataService.shared.enqueue(context: context) { (context) in
+                let attachment = Attachment(context: context)
+                attachment.attachmentID = "0"
+                attachment.fileName = fileName
+                attachment.mimeType = type
+                attachment.fileData = nil
+                attachment.fileSize = NSNumber(value: self.dataSize)
+                attachment.isTemp = false
+                attachment.keyPacket = ""
+                attachment.localURL = stripMetadata ? self.strippingExif() : self
+                
+                attachment.message = message
+                
+                let number = message.numAttachments.int32Value
+                let newNum = number > 0 ? number + 1 : 1
+                message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
+                
+                var error: NSError? = nil
+                error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                if error != nil {
+                    PMLog.D(" toAttachment () with error: \(String(describing: error))")
+                }
+                seal.fulfill(attachment)
+            }
         }
-        let attachment = Attachment(context: context)
-        attachment.attachmentID = "0"
-        attachment.fileName = fileName
-        attachment.mimeType = type
-        attachment.fileData = nil
-        attachment.fileSize = NSNumber(value: self.dataSize)
-        attachment.isTemp = false
-        attachment.keyPacket = ""
-        attachment.localURL = stripMetadata ? self.strippingExif() : self
-        
-        attachment.message = message
-        
-        let number = message.numAttachments.int32Value
-        let newNum = number > 0 ? number + 1 : 1
-        message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
-        
-        var error: NSError? = nil
-        error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-        if error != nil {
-            PMLog.D(" toAttachment () with error: \(String(describing: error))")
-        }
-        return attachment
     }
     
     var dataSize: Int {

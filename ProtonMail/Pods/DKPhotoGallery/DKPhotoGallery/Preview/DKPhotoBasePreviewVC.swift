@@ -35,7 +35,6 @@ public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     
     func enableIndicatorView() -> Bool
         
-    @available(iOS 9.0, *)
     func defaultPreviewActions() -> [UIPreviewActionItem]
     
     func defaultLongPressActions() -> [UIAlertAction]
@@ -95,7 +94,6 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     private var thumbnailView = UIImageView()
     
-    @available(iOS 9.0, *)
     private var _customPreviewActions: [UIPreviewActionItem]? {
         return self.customPreviewActions as! [UIPreviewActionItem]?
     }
@@ -234,7 +232,9 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
                 self.updateContentView(with: data)
                 self.centerContentView()
                 self.hidesError()
-                self.thumbnailView.isHidden = true
+                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                    self.thumbnailView.isHidden = true
+                }
             } else {
                 self.showError()
             }
@@ -363,7 +363,6 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     // MARK: - Touch 3D
     
-    @available(iOS 9.0, *)
     open override var previewActionItems: [UIPreviewActionItem] {
         let defaultPreviewActions = self.defaultPreviewActions()
         
@@ -436,7 +435,6 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         return true
     }
     
-    @available(iOS 9.0, *)
     public func defaultPreviewActions() -> [UIPreviewActionItem] {
         return []
     }

@@ -69,7 +69,7 @@ class SignUpPasswordViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.viewModel.observeTextField(textField: loginPasswordField, type: .password)
         loginPasswordField.attributedPlaceholder = NSAttributedString(string: LocalString._signup_choose_password,
                                                                       attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: LocalString._composer_eo_confirm_pwd_placeholder,
@@ -180,7 +180,7 @@ extension SignUpPasswordViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         updateButtonStatus()
         if textField == loginPasswordField {
-            confirmLoginPasswordField.becomeFirstResponder()
+            _ = confirmLoginPasswordField.becomeFirstResponder()
         } else if textField == confirmLoginPasswordField {
             dismissKeyboard()
         }

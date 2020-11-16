@@ -28,11 +28,6 @@ import PMKeymaker
 import UserNotifications
 import Intents
 
-#if Enterprise
-import Fabric
-import Crashlytics
-#endif
-
 let sharedUserDataService = UserDataService(api: APIService.unauthorized)
 
 @UIApplicationMain
@@ -63,7 +58,8 @@ extension SWRevealViewController {
                     let viewModel = MailboxViewModelImpl(label: .inbox,
                                                          userManager: user,
                                                          usersManager: usersManager,
-                                                         pushService: sharedServices.get())
+                                                         pushService: sharedServices.get(),
+                                                         coreDataService: sharedServices.get())
                     let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
                     mailbox.start()
                 }
@@ -141,9 +137,6 @@ extension AppDelegate: UIApplicationDelegate {
         PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
         #endif
 
-        #if Enterprise
-        Fabric.with([Crashlytics.self])
-        #endif
         TrustKitWrapper.start(delegate: self)
         Analytics.shared.setup()
         
@@ -155,8 +148,6 @@ extension AppDelegate: UIApplicationDelegate {
         
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
         
-        //get build mode if debug mode enable network logging
-        let mode = UIApplication.shared.releaseMode()
         //start network notifier
         sharedInternetReachability.startNotifier()
         
@@ -259,6 +250,7 @@ extension AppDelegate: UIApplicationDelegate {
             }
             
             let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
+            deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
             deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
             self.coordinator.followDeeplink(deeplink)
             return true
@@ -289,11 +281,16 @@ extension AppDelegate: UIApplicationDelegate {
         keymaker.updateAutolockCountdownStart()
         
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
-        taskID = application.beginBackgroundTask { PMLog.D("Background Task Timed Out") }
+        taskID = application.beginBackgroundTask {
+            PMLog.D("Background Task Timed Out")
+            application.endBackgroundTask(taskID)
+            taskID = .invalid
+        }
         let delayedCompletion: ()->Void = {
             delay(3) {
                 PMLog.D("End Background Task")
-                application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: taskID.rawValue))
+                application.endBackgroundTask(taskID)
+                taskID = .invalid
             }
         }
         
@@ -325,12 +322,13 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         //TODO::here need change to notify composer to save editing draft
-        let mainContext = CoreDataService.shared.mainManagedObjectContext
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
+        let mainContext = coreDataService.mainManagedObjectContext
         mainContext.performAndWait {
             let _ = mainContext.saveUpstreamIfNeeded()
         }
         
-        let backgroundContext = CoreDataService.shared.mainManagedObjectContext
+        let backgroundContext = coreDataService.backgroundManagedObjectContext
         backgroundContext.performAndWait {
             let _ = backgroundContext.saveUpstreamIfNeeded()
         }
@@ -357,7 +355,7 @@ extension AppDelegate: UIApplicationDelegate {
     
     // MARK: Notification methods
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        Analytics.shared.logCustomEvent(customAttributes:[ "LogTitle": "NotificationError", "error" : "\(error)"])
+        Analytics.shared.error(message: .notificationError, error: error)
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

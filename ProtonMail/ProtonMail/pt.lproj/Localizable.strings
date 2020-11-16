@@ -168,7 +168,7 @@
 /* mail location desc
    mail location title
    menu title */
-"All Mail" = "Todos os emails";
+"All Mail" = "Todo o correio";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Permitir redireccionamento alternativo";
@@ -1317,7 +1317,7 @@
 "More Credits" = "Mais créditos";
 
 /* move action */
-"Move to All Mail" = "Mover para Todos os emails";
+"Move to All Mail" = "Mover para Todo o correio";
 
 /* move action */
 "Move to Archive" = "Mover para Arquivo";
@@ -2103,7 +2103,7 @@
 "To" = "Para";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Para evitar abusos do ProtonMail,&#13;\n temos de verificar se é um ser humano.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Para evitar abusos do ProtonMail,\r\n temos de verificar se é um ser humano.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Para repor a senha da sua caixa de entrada, por favor utilize a versão web do ProtonMail em protonmail.com";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Tem alterações por gravar. Quer gravá-las?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Usou %1$d%% do seu espaço de armazenamento (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Usou todo o seu espaço de armazenamento (%@).";
 
 /* Description */
@@ -2433,7 +2433,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "A sua nova conta de email encriptado foi criada e está pronta para enviar e receber mensagens encriptadas.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "A sua nova conta segura&#13;\n está pronta.";
+"Your new secure email\r\n account is ready." = "A sua nova conta segura\r\n está pronta.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "O seu plano está activo até";

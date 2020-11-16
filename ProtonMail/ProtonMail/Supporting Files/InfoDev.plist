@@ -67,7 +67,7 @@
 		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>Mailto</string>
 			<key>CFBundleURLName</key>
 			<string>mailto</string>
 			<key>CFBundleURLSchemes</key>
@@ -78,20 +78,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>Debug</string>
-	<key>Fabric</key>
-	<dict>
-		<key>APIKey</key>
-		<string>982063ac8b41a8754cf79640ebab8b392ebe7e86</string>
-		<key>Kits</key>
-		<array>
-			<dict>
-				<key>KitInfo</key>
-				<dict/>
-				<key>KitName</key>
-				<string>Crashlytics</string>
-			</dict>
-		</array>
-	</dict>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>org-appextension-feature-password-management</string>

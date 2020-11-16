@@ -93,6 +93,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             prepareNavigationItemRightDefault(self.viewModel.user)
             updateNavigationBar()
         }
+        generateAccessibilityIdentifiers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -376,7 +377,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                 return
             }
             let user = self.viewModel.user
-            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user)
+            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user, coreDataService: self.viewModel.coreDataService)
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
@@ -590,7 +591,11 @@ extension ContactGroupsViewController: UpgradeAlertVCDelegate {
     }
     
     func learnMore() {
-        UIApplication.shared.openURL(.paidPlans)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(.paidPlans)
+        }
     }
     
     func cancel() {
@@ -648,6 +653,8 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
             if let newIndexPath = newIndexPath {
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
+            return
+        @unknown default:
             return
         }
     }

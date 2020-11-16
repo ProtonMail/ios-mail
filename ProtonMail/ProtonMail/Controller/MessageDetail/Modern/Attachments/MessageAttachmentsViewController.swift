@@ -53,14 +53,18 @@ class MessageAttachmentsViewController: UIViewController {
         self.height.isActive = true
         
         self.headerViewFrameObservation = self.tableView.observe(\.contentSize) { [weak self] tableView, change in
-            guard self?.viewModel.contentsHeight != tableView.contentSize.height else {
-                return
+            DispatchQueue.main.async {
+                guard self?.viewModel.contentsHeight != tableView.contentSize.height else {
+                    return
+                }
+                self?.updateHeight()
             }
-            self?.updateHeight()
         }
         
         self.attachmentsObservation = self.viewModel.observe(\.attachments) { [weak self] viewModel, _ in
-            self?.tableView.reloadData()
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
         }
     }
     

@@ -509,9 +509,13 @@ extension SignInViewController : TwoFACodeViewControllerDelegate {
 
 extension SignInViewController : PinCodeViewControllerDelegate {
     
-    func Cancel() {
-        UserTempCachedStatus.backup()
-        self.coordinator?.services.get(by: UsersManager.self).clean()
+    func Cancel() -> Promise<Void> {
+        return Promise { seal in
+            UserTempCachedStatus.backup()
+            self.coordinator?.services.get(by: UsersManager.self).clean().done {
+                seal.fulfill_()
+            }
+        }
     }
     
     func Next() {
@@ -572,7 +576,7 @@ extension SignInViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == usernameTextField {
-            passwordTextField.becomeFirstResponder()
+            _ = passwordTextField.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
         }
