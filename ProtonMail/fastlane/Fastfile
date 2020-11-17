@@ -170,7 +170,8 @@ platform :ios do
     upload_to_testflight(
       api_key: api_key,
       team_name: "Proton Technologies AG",
-      skip_waiting_for_build_processing: true
+      skip_waiting_for_build_processing: true,
+      changelog: ""
     )
 
     # Disable this since archive is too large.
