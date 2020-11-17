@@ -72,8 +72,8 @@ class MessageDataService : Service, HasLocalStorage {
     ///
     /// - Parameter selected: MessageIDs
     /// - Returns: fetched message obj
-    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext? = nil) -> [Message] {
-        let context = context ?? self.managedObjectContext
+    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message] {
+        let context = context
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selected)
         do {
@@ -455,7 +455,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 let completionWrapper: CompletionBlock = { task, responseDict, error in
                                     if error == nil {
                                         lastUpdatedStore.clear()
-                                        _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID, context: self.managedObjectContext).ensure {
+                                        _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID, context: context).ensure {
                                             completion?(task, responseDict, error)
                                         }
                                         return
@@ -482,7 +482,7 @@ class MessageDataService : Service, HasLocalStorage {
                         DispatchQueue.global().async {
                             self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID, task: task) { task, res, error in
                                 if error == nil {
-                                    _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.managedObjectContext).then { (_) -> Promise<Void> in
+                                    _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.coreDataService.mainManagedObjectContext).then { (_) -> Promise<Void> in
                                         return self.processEvents(contacts: eventsRes.contacts)
                                     }.then { (_) -> Promise<Void> in
                                         return self.processEvents(contactEmails: eventsRes.contactEmails)
@@ -515,7 +515,7 @@ class MessageDataService : Service, HasLocalStorage {
                         }
                     } else {
                         if eventsRes.code == 1000 {
-                            _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.managedObjectContext).then { (_) -> Promise<Void> in
+                            _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.coreDataService.mainManagedObjectContext).then { (_) -> Promise<Void> in
                                 return self.processEvents(contacts: eventsRes.contacts)
                             }.then { (_) -> Promise<Void> in
                                 return self.processEvents(contactEmails: eventsRes.contactEmails)

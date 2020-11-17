@@ -440,7 +440,7 @@ class MailboxViewModel: StorageLimit {
     }
 
     func mark(IDs messageIDs : NSMutableSet, unread: Bool) {
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs)
+        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainManagedObjectContext)
         for msg in messages {
             messageService.mark(message : msg, unRead: unread)
         }
@@ -451,7 +451,7 @@ class MailboxViewModel: StorageLimit {
     }
 
     func label(IDs messageIDs : NSMutableSet, with labelID: String, apply: Bool) {
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs)
+        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainManagedObjectContext)
         for msg in messages {
             messageService.label(message: msg, label: labelID, apply: apply)
         }
@@ -466,7 +466,7 @@ class MailboxViewModel: StorageLimit {
     }
     
     func move(IDs messageIDs : NSMutableSet, from fLabel: String, to tLabel: String) {
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs)
+        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainManagedObjectContext)
         for msg in messages {
             messageService.move(message: msg, from: fLabel, to: tLabel)
         }
@@ -480,7 +480,7 @@ class MailboxViewModel: StorageLimit {
     }
     
     final func delete(IDs: NSMutableSet) {
-        let messages = self.messageService.fetchMessages(withIDs: IDs)
+        let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataService.mainManagedObjectContext)
         for msg in messages {
             let _ = self.delete(message: msg)
         }
