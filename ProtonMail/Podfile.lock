@@ -73,7 +73,7 @@ PODS:
   - OpenSSL (1.0.210)
   - PMAuthentication (1.0.0):
     - PMCrypto
-  - PMCrypto (1.0.0)
+  - PMCrypto (2.1.1)
   - PMFingerprint (0.0.3)
   - PMKeymaker (1.1.0):
     - EllipticCurveKeyPair
@@ -115,7 +115,7 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift (= 9.0.0)
   - OpenPGP (from `../OpenPGP`)
   - PMAuthentication (from `https://gitlab.protontech.ch/apple/shared/pmauthentication.git`, tag `1.0.0`)
-  - PMCrypto (from `https://gitlab.protontech.ch/apple/shared/pmcrypto.git`, tag `1.0.0`)
+  - "PMCrypto (from `git@gitlab.protontech.ch:apple/shared/pmcrypto.git`, tag `2.1.1`)"
   - "PMFingerprint (from `git@gitlab.protontech.ch:apple/shared/pmfingerprint.git`, tag `0.0.3`)"
   - PMKeymaker (from `https://gitlab.protontech.ch/apple/shared/pmkeymaker.git`, tag `1.1.0`)
   - PMNetworking (from `../Networking`)
@@ -157,8 +157,8 @@ EXTERNAL SOURCES:
     :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
     :tag: 1.0.0
   PMCrypto:
-    :git: https://gitlab.protontech.ch/apple/shared/pmcrypto.git
-    :tag: 1.0.0
+    :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
+    :tag: 2.1.1
   PMFingerprint:
     :git: "git@gitlab.protontech.ch:apple/shared/pmfingerprint.git"
     :tag: 0.0.3
@@ -182,8 +182,8 @@ CHECKOUT OPTIONS:
     :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
     :tag: 1.0.0
   PMCrypto:
-    :git: https://gitlab.protontech.ch/apple/shared/pmcrypto.git
-    :tag: 1.0.0
+    :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
+    :tag: 2.1.1
   PMFingerprint:
     :git: "git@gitlab.protontech.ch:apple/shared/pmfingerprint.git"
     :tag: 0.0.3
@@ -209,7 +209,7 @@ SPEC CHECKSUMS:
   OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PMAuthentication: 7e217178684e2ec8e1b593bc95ed1c59c2959ac3
-  PMCrypto: e348d868870240d63305609cf06c9dfce423a702
+  PMCrypto: 921fa892741d9430342298ee48bca56bda1f053b
   PMFingerprint: f771d2e43461b5f422fcbf4e99da31f021174481
   PMKeymaker: 6a485e8e71457722b83ddd01f671a5334a0d6b04
   PMNetworking: 54696647ab1a6cac500bab624733d5e08b7e7098
@@ -221,6 +221,6 @@ SPEC CHECKSUMS:
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 3ce7430efce6aaa98db9ad9e7c3ab84fbe1b771e
+PODFILE CHECKSUM: d436b2570714605e351ea0444edba1e33c3ad082
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0

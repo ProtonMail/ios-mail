@@ -737,7 +737,7 @@ class Crypto {
             throw err
         }
         
-        let processor = try keyRing!.newLowMemoryAttachmentProcessor(totalSize, fileName: fileName)
+        let processor = try keyRing!.newLowMemoryAttachmentProcessor(totalSize, filename: fileName)
         return processor
     }
 
