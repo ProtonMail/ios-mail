@@ -72,8 +72,8 @@ class MessageDataService : Service, HasLocalStorage {
     ///
     /// - Parameter selected: MessageIDs
     /// - Returns: fetched message obj
-    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext? = nil) -> [Message] {
-        let context = context ?? self.managedObjectContext
+    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message] {
+        let context = context
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selected)
         do {
@@ -2640,7 +2640,7 @@ class MessageDataService : Service, HasLocalStorage {
             return Promise { seal in
                 // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
                 self.incrementalUpdateQueue.sync {
-                    let context = self.coreDataService.backgroundManagedObjectContext
+                    let context = self.coreDataService.mainManagedObjectContext
                     self.coreDataService.enqueue(context: context) { (context) in
                         defer {
                             seal.fulfill_()
