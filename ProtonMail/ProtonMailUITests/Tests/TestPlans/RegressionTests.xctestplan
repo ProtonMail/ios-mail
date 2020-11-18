@@ -25,7 +25,11 @@
         "MultiuserManagementTests\/testCancelLoginOnTwoFaPrompt()",
         "MultiuserManagementTests\/testConnectOnePassAccountWithTwoFa()",
         "MultiuserManagementTests\/testConnectTwoPassAccountWithTwoFa()",
-        "SendNewMessageTests"
+        "SendNewMessageTests\/testSendMessageEOAndExpiryTimeWithAttachment()",
+        "SendNewMessageTests\/testSendMessageToExternalContactWithOneAttachment()",
+        "SendNewMessageTests\/testSendMessageToExternalContactWithTwoAttachments()",
+        "SendNewMessageTests\/testSendMessageToInternalContactWithTwoAttachments()",
+        "SendNewMessageTests\/testSendMessageToInternalNotTrustedContactChooseAttachment()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",

@@ -31,7 +31,7 @@ class AccountSettingsTests : BaseTestCase {
         accountSettingsRobot
             .recoveryEmail()
             .changeRecoveryEmail(testData.twoPassUser)
-            .verify.recoveryEmailChangedTo(testData.twoPassUser.email)
+            .verify.recoveryEmailChangedTo(testData.onePassUser.email)
     }
 
     func testNavigateToDefaultEmailAddress() {
@@ -47,6 +47,35 @@ class AccountSettingsTests : BaseTestCase {
             .setDisplayNameTextTo(newDisplayName)
             .save()
             .verify.displayNameShownWithText(newDisplayName)
+    }
+    
+    func testSaveSpecialCharacterDisplayNameWith() {
+        let emoji = "😀"
+        let randomString = StringUtils().randomAlphanumericString()
+        let newDisplayName = "\(emoji)\(testData.onePassUser.name)\(randomString)"
+        accountSettingsRobot
+            .displayName()
+            .setDisplayNameTextTo(newDisplayName)
+            .save()
+            .navigateBackToSettings()
+            .menuDrawer()
+            .accountsList()
+            .verify.accountShortNameIsCorrect(testData.onePassUser, emoji)
+    }
+    
+    func testSaveTwoWordsDisplayName() {
+        let randomString = StringUtils().randomAlphanumericString()
+        let newDisplayName = "\(testData.onePassUser.name) \(randomString)"
+        let shortName = "\(newDisplayName.prefix(1))\(randomString.prefix(1))"
+        
+        accountSettingsRobot
+            .displayName()
+            .setDisplayNameTextTo(newDisplayName)
+            .save()
+            .navigateBackToSettings()
+            .menuDrawer()
+            .accountsList()
+            .verify.accountShortNameIsCorrect(testData.onePassUser, shortName)
     }
 
     func testSwitchSignatureToggleOn() {

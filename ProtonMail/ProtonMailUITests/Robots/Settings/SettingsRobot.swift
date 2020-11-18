@@ -8,6 +8,7 @@
 
 fileprivate func accountCellIdentifier(_ name: String) -> String { return "SettingsTwoLinesCell.\(name)" }
 fileprivate let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
+fileprivate let menuButton = "Menu"
 
 /**
  * [SettingsRobot] class contains actions and verifications for Settings view.
@@ -18,7 +19,7 @@ class SettingsRobot {
     init() { verify = Verify() }
 
     func menuDrawer() -> MenuRobot {
-        Element.button.tapByIdentifier(menuNavBarButtonIdentifier)
+        Element.wait.forHittableButton(menuButton).tap()
         return MenuRobot()
     }
 

@@ -104,6 +104,11 @@ class MenuRobot {
                 Element.wait.forStaticTextFieldWithIdentifier(displayNameStaticTextdentifier(user.email), file: #file, line: #line)
                 Element.wait.forStaticTextFieldWithIdentifier(displayNameStaticTextdentifier(user.email), file: #file, line: #line)
             }
+            
+            func accountShortNameIsCorrect(_ user: User, _ shortName: String) {
+                Element.wait.forStaticTextFieldWithIdentifier(shortNameStaticTextdentifier(user.email), file: #file, line: #line)
+                    .assertWithLabel(shortName)
+            }
         }
     }
 }
