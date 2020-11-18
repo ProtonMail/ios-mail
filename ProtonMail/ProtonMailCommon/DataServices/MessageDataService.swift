@@ -259,12 +259,15 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     private func remove(labels: [String], on message: Message, cleanUnread: Bool) {
+        guard let context = message.managedObjectContext else {
+            return
+        }
         let unread = cleanUnread ? message.unRead : cleanUnread
         for label in labels {
             if let lid = message.remove(labelID: label), unread {
-                self.updateCounter(plus: false, with: lid)
+                self.updateCounterSync(plus: false, with: lid, context: context)
                 if let id = message.selfSent(labelID: lid) {
-                    self.updateCounter(plus: false, with: id)
+                    self.updateCounterSync(plus: false, with: id, context: context)
                 }
             }
         }
