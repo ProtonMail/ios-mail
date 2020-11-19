@@ -108,9 +108,7 @@ class SignInViewModel : NSObject {
         //check ios version
         if #available(iOS 11, *) {
             return false
-        } else if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
-                  version == "1.12.6",
-                  !userCachedStatus.iOS10AlertIsShown {
+        } else if !userCachedStatus.iOS10AlertIsShown {
             return true
         }
         
