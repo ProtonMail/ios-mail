@@ -95,6 +95,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         guard !self.isProtectorActive(GenericBioProtection<SUBTLE>.self),
             !self.isProtectorActive(GenericPinProtection<SUBTLE>.self) else
         {
+            NoneProtection.removeCyphertext(from: self.keychain)
             NotificationCenter.default.post(.init(name: Const.requestMainKey))
             return nil
         }
