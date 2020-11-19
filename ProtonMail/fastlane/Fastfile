@@ -94,7 +94,7 @@ def set_up_changelog(latest_build_number)
   changelog_from_git_commits(
     between: [hash.strip, "HEAD"],  # Optional, lets you specify a revision/tag range between which to collect commit info
     path: "../",
-    pretty: "%ad - %an: %s",
+    pretty: "%ad: %s",
     date_format: "short",# Optional, lets you provide an additional date format to dates within the pretty-formatted string
     match_lightweight_tag: false,  # Optional, lets you ignore lightweight (non-annotated) tags when searching for the last tag
     merge_commit_filtering: "exclude_merges" # Optional, lets you filter out merge commits
@@ -171,7 +171,7 @@ platform :ios do
       api_key: api_key,
       team_name: "Proton Technologies AG",
       skip_waiting_for_build_processing: true,
-      changelog: ""
+      changelog: changelog
     )
 
     # Disable this since archive is too large.
