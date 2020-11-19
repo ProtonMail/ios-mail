@@ -347,8 +347,7 @@ class SendBuilder {
                         let attName = QuotedPrintable.encode(string: att.fileName)
                         signbody.append(contentsOf: "Content-Type: \(att.mimeType); name=\"\(attName)\"" + "\r\n")
                         signbody.append(contentsOf: "Content-Transfer-Encoding: base64" + "\r\n")
-                        let disposition = att.inline() ? "inline": "attachment"
-                        signbody.append(contentsOf: "Content-Disposition: \(disposition); filename=\"\(attName)\"" + "\r\n")
+                        signbody.append(contentsOf: "Content-Disposition: attachment; filename=\"\(attName)\"" + "\r\n")
                         let contentID = att.contentID() ?? ""
                         signbody.append(contentsOf: "Content-ID: <\(contentID)>\r\n")
 
