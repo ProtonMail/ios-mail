@@ -67,6 +67,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         let unreadButton = UIBarButtonItem(image: UIImage.Top.unread, style: .plain, target: self, action: #selector(topUnreadButtonTapped))
         unreadButton.accessibilityLabel = LocalString._mark_as_unread
         self.navigationItem.setRightBarButtonItems([moreButton, trashButton, folderButton, labelButton, unreadButton], animated: true)
+        self.navigationItem.assignNavItemIndentifiers()
         
         // others
         self.bottomView.delegate = self

@@ -28,9 +28,9 @@ class AccountSettingsRobot {
     var verify: Verify! = nil
     init() { verify = Verify() }
     
-    func foldersAndLabels() -> LabelsAndFoldersRobot {
+    func foldersAndLabels() -> AccountSettingsLabelsAndFoldersRobot {
         Element.wait.forStaticTextFieldWithIdentifier(labelsAndFoldersLabel).tap()
-        return LabelsAndFoldersRobot()
+        return AccountSettingsLabelsAndFoldersRobot()
     }
     
     func defaultEmailAddress() -> DefaultEmailAddressRobot {
