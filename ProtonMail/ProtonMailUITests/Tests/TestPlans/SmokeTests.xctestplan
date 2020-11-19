@@ -23,9 +23,11 @@
         "LoginTests\/testLoginWithOnePass()",
         "LoginTests\/testLoginWithTwoPass()",
         "LogoutTests\/testLogoutOnePassUser()",
+        "MenuTests\/testSaveTwoWordsDisplayName()",
         "MultiuserManagementTests\/testLogoutPrimaryAccount()",
         "MultiuserManagementTests\/testRemovePrimaryAccount()",
-        "MultiuserManagementTests\/testSwitchAccount()"
+        "MultiuserManagementTests\/testSwitchAccount()",
+        "SendNewMessageTests\/testSendMessageToInternalContact()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",
