@@ -572,12 +572,6 @@ extension UsersManager {
         
         let authKeychainStore = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore)
         
-        Analytics.shared.debug(message: .checkUser, extra: [
-            "hasUserName": users.hasUserName(),
-            "hasMailboxPassword": isMailboxPasswordStored,
-            "authKeychainStore": authKeychainStore != nil,
-            "hasUserInfo": hasUsersInfo
-        ])
         return  authKeychainStore != nil && (hasUsersInfo || isSignIn)
     }
     
