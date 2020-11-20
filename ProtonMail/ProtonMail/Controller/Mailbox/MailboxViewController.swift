@@ -181,9 +181,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         generateAccessibilityIdentifiers()
         
         //Do not fetch message when first logged in
-        if viewModel.isEventIDValid() {
-            self.fetchNewMessage()
-        }
+        //if viewModel.isEventIDValid() {
+        //  self.fetchNewMessage()
+        //}
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -764,10 +764,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard !tableView.isDragging else {
             return
         }
-        
-        self.getLatestMessages()
-        //temperay to fix the new messages are not loaded
-        self.fetchNewMessage()
+
+        self.getLatestMessagesRaw { (fetch) in
+            if fetch {
+                //temperay to fix the new messages are not loaded
+                self.fetchNewMessage()
+            }
+        }
     }
     
     private func fetchNewMessage() {
@@ -783,6 +786,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     var retryCounter = 0
     @objc internal func getLatestMessages() {
+        self.getLatestMessagesRaw(nil)
+    }
+    internal func getLatestMessagesRaw(_ CompleteIsFetch: ((_ fetch: Bool) -> Void)?) {
         self.hideTopMessage()
         if !fetchingMessage {
             fetchingMessage = true
@@ -851,6 +857,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     if userCachedStatus.hasMessageFromNotification {
                         userCachedStatus.hasMessageFromNotification = false
                         self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: nil)
+                    } else {
+                        CompleteIsFetch?(true)
                     }
                 }
             }
