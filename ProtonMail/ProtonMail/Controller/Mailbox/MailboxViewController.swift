@@ -1294,7 +1294,7 @@ extension MailboxViewController {
         }
         
         if status == .ReachableViaWWAN || status == .ReachableViaWiFi {
-            self.retry()
+            self.retry(delay: 5)
         }
     }
     
@@ -1302,10 +1302,10 @@ extension MailboxViewController {
         self.topMessageView?.remove(animated: true)
     }
     
-    func retry() {
+    func retry(delay: Double = 0) {
         // When network reconnect, the DNS data seems will miss at a short time
         // Delay 5 seconds to retry can prevent some relative error
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             self.getLatestMessages()
         }
     }
