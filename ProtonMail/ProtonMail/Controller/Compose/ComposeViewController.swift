@@ -494,7 +494,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 
                 self.viewModel.collectDraft (
                     self.headerView.subject.text ?? "(No Subject)",
-                    body: html.isEmpty ? body : html,
+                    body: body,
                     expir: self.headerView.expirationTimeInterval,
                     pwd:self.encryptionPassword,
                     pwdHit:self.encryptionPasswordHint
