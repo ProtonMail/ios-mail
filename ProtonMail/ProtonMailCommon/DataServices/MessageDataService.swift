@@ -1543,6 +1543,15 @@ class MessageDataService : Service, HasLocalStorage {
             }
             
             let messageIds = messages.map { $0.messageID }
+            guard messageIds.count > 0 else {
+                Analytics.shared.debug(message: .coredataIssue,
+                                       extra: [
+                                        "API": "Message action",
+                                        "ObjectCounts": managedObjectIds.count
+                                       ])
+                completion!(nil, nil, nil)
+                return
+            }
             let api = MessageActionRequest(action: action, ids: messageIds)
             api.call(api: userManager.apiService) { (task, response, hasError) in
                 completion!(task, nil, nil)
