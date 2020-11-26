@@ -483,12 +483,6 @@ class APIService : Service {
                         }
                         
                         if authenticated && httpCode == 401 && authRetry {
-                            if token == nil {
-                                Analytics.shared.debug(message: .logout, extra: [
-                                    "EmptyToken": true,
-                                    "Path": path
-                                ])
-                            }
                             self.expireCredential()
                             if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                                 completion?(nil, nil, error)
@@ -544,12 +538,6 @@ class APIService : Service {
                             }
                             
                             if authenticated && responseCode == 401 {
-                                if token == nil {
-                                    Analytics.shared.debug(message: .logout, extra: [
-                                        "EmptyToken": true,
-                                        "Path": path
-                                    ])
-                                }
                                 self.expireCredential()
                                 if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                                     completion?(nil, nil, error)

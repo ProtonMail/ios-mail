@@ -145,9 +145,6 @@ class SignInManager: Service {
             self.usersManager.update(auth: auth, user: info)
             
             guard info.delinquent < 3 else {
-                Analytics.shared.debug(message: .logout, extra: [
-                    Analytics.Reason.reason: Analytics.Reason.delinquent
-                ], user: user)
                 _ = self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false).ensure {
                     onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
                 }
