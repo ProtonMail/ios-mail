@@ -46,7 +46,7 @@ class BaseTestCase: XCTestCase {
         addUIInterruptionMonitor(withDescription: "Handle system alerts") { (alert) -> Bool in
             let buttonLabels = ["Allow Access to All Photos", "Don’t Allow", "OK"]
             for (_, label) in buttonLabels.enumerated() {
-                let element = alert.buttons[label]
+                let element = alert.buttons[label].firstMatch
                 if element.exists {
                     element.tap()
                     break

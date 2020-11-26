@@ -14,6 +14,7 @@ private func selectButtonIdentifier(_ selectionAmount: Int) -> String { return "
 class ImageGalleryRobot {
     
     func pickImages(_ attachmentsAmount: Int) -> MessageAttachmentsRobot {
+        Element.wait.forOtherFieldWithIdentifier(imageOtherIdentifier)
         return pickImageAtPositions(attachmentsAmount)
             .confirmSelection(attachmentsAmount)
     }
