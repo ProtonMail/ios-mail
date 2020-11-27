@@ -546,7 +546,7 @@ class LocalizedString {
     /// "iOS 10 update error title"
     lazy var _ios10_update_title = NSLocalizedString("OS compatibility", comment: "The title of the iOS 10 upgrate alert")
     /// "iOS 10 update error body"
-    lazy var _ios10_update_body = NSLocalizedString("This version of the app will be the last one compatible with iOS10. Please update your device's operating system to continue receiving updates in the future.", comment: "The body of the iOS 10 upgrate alert")
+    lazy var _ios10_update_body = NSLocalizedString("We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future.", comment: "The body of the iOS 10 upgrate alert")
 
 
     /// Mark Error
