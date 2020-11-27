@@ -36,7 +36,7 @@ class DraftsTests: BaseTestCase {
         loginRobot
             .loginUser(testData.onePassUser)
             .compose()
-            .draftSubjectBody(subject, body)
+            .draftToSubjectBodyAttachment(to,subject, body)
             .tapCancel()
             .confirmDraftSaving()
             .menuDrawer()

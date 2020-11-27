@@ -15,7 +15,7 @@ fileprivate let contactsTabBarButtonIdentifier = "UITabBar.\(LocalString._contac
 fileprivate let groupsTabBarButtonIdentifier = "UITabBar.\(LocalString._menu_contact_group_title)"
 fileprivate func contactCellIdentifier(_ email: String) -> String { return "ContactsTableViewCell.\(email)" }
 fileprivate func groupCellIdentifier(_ name: String) -> String { return "ContactGroupsViewCell.\(name)" }
-fileprivate func groupCellSendImailImageIdentifier(_ name: String) -> String { return "\(name).sendButtonImage" }
+fileprivate func groupCellSendImailButtonIdentifier(_ name: String) -> String { return "\(name).sendButton" }
 fileprivate let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
 fileprivate let addContactNavBarButtonIdentifier = "UINavigationItem.addButton"
 fileprivate let importContactNavBarButtonIdentifier = "UINavigationItem.importButton"
@@ -127,7 +127,9 @@ class ContactsRobot {
         }
         
         func sendGroupEmail(_ name: String) -> ComposerRobot {
-            Element.wait.forImageWithIdentifier(groupCellSendImailImageIdentifier(name), file: #file, line: #line).tap()
+            Element.wait.forButtonWithIdentifier(groupCellSendImailButtonIdentifier(name), file: #file, line: #line)
+                .swipeDownUntilVisible()
+                .tap()
             return ComposerRobot()
         }
         

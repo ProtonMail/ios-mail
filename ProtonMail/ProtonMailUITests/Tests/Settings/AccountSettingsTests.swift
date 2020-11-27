@@ -49,7 +49,7 @@ class AccountSettingsTests : BaseTestCase {
             .verify.displayNameShownWithText(newDisplayName)
     }
     
-    func testSaveSpecialCharacterDisplayNameWith() {
+    func testSaveSpecialCharacterDisplayName() {
         let emoji = "😀"
         let randomString = StringUtils().randomAlphanumericString()
         let newDisplayName = "\(emoji)\(testData.onePassUser.name)\(randomString)"

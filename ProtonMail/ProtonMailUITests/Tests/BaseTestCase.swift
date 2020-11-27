@@ -44,7 +44,7 @@ class BaseTestCase: XCTestCase {
     
     func handleInterruption() -> Bool {
         addUIInterruptionMonitor(withDescription: "Handle system alerts") { (alert) -> Bool in
-            let buttonLabels = ["Allow Access to All Photos", "Don’t Allow", "OK"]
+            let buttonLabels = ["Allow Access to All Photos", "Select More Photos...", "Select Photos...", "Don’t Allow", "OK"]
             for (_, label) in buttonLabels.enumerated() {
                 let element = alert.buttons[label]
                 if element.exists {
