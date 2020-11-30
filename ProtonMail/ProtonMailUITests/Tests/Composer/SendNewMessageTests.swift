@@ -183,6 +183,32 @@ class SendNewMessageTests: BaseTestCase {
             .verify.messageWithSubjectExists(subject)
     }
     
+    func testSendMessageFromPmMe() {
+        let onePassUserPmMeAddress = testData.onePassUser.pmMeEmail
+        let to = testData.internalEmailNotTrustedKeys.email
+        LoginRobot()
+            .loginUser(testData.onePassUser)
+            .compose()
+            .changeFromAddressTo(onePassUserPmMeAddress)
+            .sendMessage(to, subject)
+            .menuDrawer()
+            .sent()
+            .verify.messageExists(subject)
+    }
+
+    func testSendMessageWithAttachmentFromPmMe() {
+        let onePassUserPmMeAddress = testData.onePassUser.pmMeEmail
+        let to = testData.internalEmailNotTrustedKeys.email
+        LoginRobot()
+            .loginUser(testData.onePassUser)
+            .compose()
+            .changeFromAddressTo(onePassUserPmMeAddress)
+            .sendMessageWithAttachments(to, subject)
+            .menuDrawer()
+            .sent()
+            .verify.messageExists(subject)
+    }
+    
 /// Disabled due to issue with CC and BCC fields location
 //    func testSendMessageTOandCC() {
 //        let to = testData.internalEmailTrustedKeys.email
