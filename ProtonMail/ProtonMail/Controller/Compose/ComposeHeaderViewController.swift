@@ -281,12 +281,22 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
         generateAccessibilityIdentifiers()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: NSNotification.Name.reachabilityChanged, object: nil)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let showCcBcc = self.datasource?.ccBccIsShownInitially(), showCcBcc {
             self.setShowingCcBccView(to: showCcBcc)
         }
         self.notifyViewSize( false )
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -676,6 +686,21 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
                                                  color: UIColor.ProtonMail.Gray_C9CED4,
                                                  borderWidth: 1.0,
                                                  at: newHeight)
+    }
+    
+    @objc private func reachabilityChanged(_ note : Notification) {
+        guard let curReach = note.object as? Reachability else {return}
+        let netStatus = curReach.currentReachabilityStatus()
+        guard netStatus == .ReachableViaWWAN ||
+                netStatus == .ReachableViaWiFi else {return}
+        
+        self.checkEmails()
+    }
+    
+    private func checkEmails() {
+        self.ccContactPicker.contactCollectionView.reloadData()
+        self.bccContactPicker.contactCollectionView.reloadData()
+        self.toContactPicker.contactCollectionView.reloadData()
     }
 }
 

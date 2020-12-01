@@ -134,6 +134,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     
     private func checkLock(caller: ContactPickerModelProtocol) {
         self.delegate?.collectionContactCell(lockCheck: self.model, progress: {
+            self.leftConstant.constant = 4
+            self.widthConstant.constant = 14
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
         }, complete: { image, type in
