@@ -320,7 +320,11 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(c.lock, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { (error) in
             PMLog.D(error.localizedDescription)
-            complete?(nil, -1)
+            if let err = error as? NSError {
+                complete?(nil, err.code)
+            } else {
+                complete?(nil, -1)
+            }
         }
     }
     
