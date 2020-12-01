@@ -550,9 +550,11 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
     
     func textFieldDidChange(textField: UITextField) {
         self.searchText = textField.text
+        self.searchText = self.searchText.preg_replace_none_regex("mailto:", replaceto: "")
+        textField.text = self.searchText
         let left = self.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         if !left.isEmpty,
-            (left.contains(check: ";") || left.contains(check: ",")) {
+           (left.contains(check: ";") || left.contains(check: ",")) {
             self.contactDelegate?.collectionView(at: self, pasted: self.searchText, needFocus: true)
             return
         }

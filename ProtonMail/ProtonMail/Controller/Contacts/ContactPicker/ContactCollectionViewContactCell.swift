@@ -134,37 +134,42 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     
     private func checkLock(caller: ContactPickerModelProtocol) {
         self.delegate?.collectionContactCell(lockCheck: self.model, progress: {
+            self.leftConstant.constant = 4
+            self.widthConstant.constant = 14
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
         }, complete: { image, type in
-            if caller.equals(self.model) {
-                self._model.setType(type: type)
-                self.lockImage.backgroundColor = nil
-                self.lockImage.tintColor = nil
-                if let img = image {
-                    self.lockImage.image = img
-                    self.lockImage.isHidden = false
-                    self.leftConstant.constant = 4
-                    self.widthConstant.constant = 14
-                    
-                    self.contactTitleLabel.textAlignment = .left
-                } else if let lock = self.model.lock {
-                    self.lockImage.image = lock
-                    self.lockImage.isHidden = false
-                    self.leftConstant.constant = 4
-                    self.widthConstant.constant = 14
-                    
-                    self.contactTitleLabel.textAlignment = .left
-                } else {
-                    self.lockImage.image = nil
-                    self.lockImage.isHidden = true
-                    self.leftConstant.constant = 0
-                    self.widthConstant.constant = 0
-                    
-                    self.contactTitleLabel.textAlignment = .center
-                }
-                self.activityView.stopAnimating()
+            guard caller.equals(self.model) else {
+                return
             }
+            
+            self._model.setType(type: type)
+            self.isEmailVerified(type: type)
+            self.lockImage.backgroundColor = nil
+            self.lockImage.tintColor = nil
+            if let img = image {
+                self.lockImage.image = img
+                self.lockImage.isHidden = false
+                self.leftConstant.constant = 4
+                self.widthConstant.constant = 14
+                
+                self.contactTitleLabel.textAlignment = .left
+            } else if let lock = self.model.lock {
+                self.lockImage.image = lock
+                self.lockImage.isHidden = false
+                self.leftConstant.constant = 4
+                self.widthConstant.constant = 14
+                
+                self.contactTitleLabel.textAlignment = .left
+            } else {
+                self.lockImage.image = nil
+                self.lockImage.isHidden = true
+                self.leftConstant.constant = 0
+                self.widthConstant.constant = 0
+                
+                self.contactTitleLabel.textAlignment = .center
+            }
+            self.activityView.stopAnimating()
         })
     }
     
@@ -190,5 +195,13 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         
         let size = model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
         return size.width.rounded(.up) + 20 + 14 //34 //20 + self.contactTitleLabel.frame.height + 6
+    }
+    
+    private func isEmailVerified(type: Int) {
+        // Code=33101 "Email address failed validation"
+        let isBadMail = type == 33101
+        let color = isBadMail ? UIColor.red.cgColor: UIColor.clear.cgColor
+        self.bgView.layer.borderColor = color
+        self.bgView.layer.borderWidth = 1
     }
 }
