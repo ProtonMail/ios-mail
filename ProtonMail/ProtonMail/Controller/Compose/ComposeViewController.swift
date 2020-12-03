@@ -356,6 +356,17 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             return
         }
         
+        let allMails = self.viewModel.toSelectedContacts + self.viewModel.ccSelectedContacts + self.viewModel.bccSelectedContacts
+        let invalidEmails = allMails.filter{ $0.modelType == .contact && !($0.displayEmail?.isValidEmail() ?? true) }
+        if !invalidEmails.isEmpty {
+            let alert = UIAlertController(title: LocalString._address_invalid_error_title,
+                                          message: LocalString._address_invalid_error_content,
+                                          preferredStyle: .alert)
+            alert.addAction((UIAlertAction.okAction()))
+            present(alert, animated: true, completion: nil)
+            return
+        }
+        
         stopAutoSave()
         self.collectDraftData().done {
             if #available(iOS 11.0, *) {

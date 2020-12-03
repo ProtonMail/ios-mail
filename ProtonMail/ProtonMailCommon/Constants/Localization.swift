@@ -1914,4 +1914,10 @@ class LocalizedString {
     lazy var _pin_and_face_id = NSLocalizedString("PIN & FaceID", comment: "device settings auto lock type title")
     lazy var _enable_pin_or_face_id = NSLocalizedString("Enable PIN/FaceID", comment: "device settings auto lock type title toggle text")
     lazy var _recipient_not_found = NSLocalizedString("Recipient not found", comment: "The error message is shown in composer")
+    lazy var _address_invalid_error_content = NSLocalizedString("At least one recipient email address is improperly formatted, please double check them.", comment: "incorrect email format error in composer")
+    lazy var _address_invalid_error_title = NSLocalizedString("Error sending", comment: "incorrect email format error in composer")
+    
+    lazy var _address_invalid_error_sending = NSLocalizedString("At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.", comment: "incorrect email format error while sending")
+    lazy var _address_invalid_error_sending_title = NSLocalizedString("Sending failed", comment: "title of incorrect email format error while sending")
+    lazy var _address_invalid_error_to_draft_action_title = NSLocalizedString("Go to drafts", comment: "title of alert acton of incorrect email format error")
 }
