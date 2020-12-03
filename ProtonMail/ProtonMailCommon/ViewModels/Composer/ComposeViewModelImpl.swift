@@ -290,7 +290,6 @@ class ComposeViewModelImpl : ComposeViewModel {
         let contactService = self.user.contactService
         let getContact = contactService.fetch(byEmails: [email], context: context)
         when(fulfilled: getEmail, getContact).done { keyRes, contacts in
-            c.pgpType = .none
             //internal emails
             if keyRes.recipientType == 1 {
                 if let contact = contacts.first, contact.firstPgpKey != nil {
@@ -321,8 +320,13 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(c.lock, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { (error) in
             PMLog.D(error.localizedDescription)
+            
             let err = error as NSError
             complete?(nil, err.code)
+            
+            if err.code == 33101 {
+                c.pgpType = .failed_server_validation
+            }
             
             // Code=33102 "Recipient could not be found"
             if err.code == 33102 {
