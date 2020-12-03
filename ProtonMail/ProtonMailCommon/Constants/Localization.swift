@@ -1913,4 +1913,5 @@ class LocalizedString {
     
     lazy var _pin_and_face_id = NSLocalizedString("PIN & FaceID", comment: "device settings auto lock type title")
     lazy var _enable_pin_or_face_id = NSLocalizedString("Enable PIN/FaceID", comment: "device settings auto lock type title toggle text")
+    lazy var _recipient_not_found = NSLocalizedString("Recipient not found", comment: "The error message is shown in composer")
 }
