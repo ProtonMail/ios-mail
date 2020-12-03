@@ -1981,7 +1981,18 @@ class MessageDataService : Service, HasLocalStorage {
                     NSError.alertMessageSentToast()
                     completion?(nil, nil, nil)
                     return
-                }  else {
+                } else if err.code == 33101 {
+                    //Email address validation failed
+                    NSError.alertMessageSentError(details: err.localizedDescription)
+                    
+                    #if !APP_EXTENSION
+                    let toDraftAction = UIAlertAction(title: LocalString._address_invalid_error_to_draft_action_title, style: .default) { (_) in
+                        NotificationCenter.default.post(name: .switchView,
+                                                        object: DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue, sender: Message.Location.draft.rawValue))
+                    }
+                    LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
+                    #endif
+                } else {
                     NSError.alertMessageSentError(details: err.localizedDescription)
                 }
                 
@@ -2495,9 +2506,23 @@ class MessageDataService : Service, HasLocalStorage {
                             if let messageid = msg.message?["ID"] as? String {
                                 messagesNoCache.append(messageid)
                             }
+                            var status = ""
+                            switch msg.Action {
+                            case IncrementalUpdateType.update1:
+                                status = "Update1"
+                            case IncrementalUpdateType.update2:
+                                status = "Update2"
+                            case IncrementalUpdateType.insert:
+                                status = "Insert"
+                            case IncrementalUpdateType.delete:
+                                status = "Delete"
+                            default:
+                                status = "Other: \(String(describing: msg.Action))"
+                                break
+                            }
                             Analytics.shared.error(message: .grtJSONSerialization,
                                                    error: err,
-                                                   extra: [Analytics.Reason.status: "Insert"],
+                                                   extra: [Analytics.Reason.status: status],
                                                    user: self.usersManager?.getUser(byUserId: self.userID))
                             PMLog.D(" error: \(err)")
                         }
