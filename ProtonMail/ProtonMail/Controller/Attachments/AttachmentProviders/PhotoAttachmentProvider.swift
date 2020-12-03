@@ -28,7 +28,7 @@ class PhotoAttachmentProvider: AnyImagePickerDelegate {
         return UIAlertAction(title: LocalString._photo_library, style: .default) { action in
             let picker = PMImagePickerController()
             picker.setup(withDelegate: self)
-            self.controller.present(picker, animated: true, completion: nil)
+            self.controller?.present(picker, animated: true, completion: nil)
         }
     }
 }
