@@ -26,20 +26,40 @@ import MBProgressHUD
 
 extension String {
     
-    public func alertToast() -> Void {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+    public func alertToast(withTitle: Bool=true) -> Void {
+        var application: UIApplication?
+
+        #if APP_EXTENSION
+        let obj = UIApplication.perform(Selector("sharedApplication"))
+        application = obj?.takeRetainedValue() as? UIApplication
+        #else
+        application = UIApplication.shared
+        #endif
+        
+        guard let window : UIWindow = application?.keyWindow else {
             return
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.label.text = LocalString._general_alert_title
+        if withTitle {
+            hud.label.text = LocalString._general_alert_title
+        }
         hud.detailsLabel.text = self
         hud.removeFromSuperViewOnHide = true
         hud.hide(animated: true, afterDelay: 3)
     }
     
     public func alertToastBottom() ->Void {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+        var application: UIApplication?
+
+        #if APP_EXTENSION
+        let obj = UIApplication.perform(Selector("sharedApplication"))
+        application = obj?.takeRetainedValue() as? UIApplication
+        #else
+        application = UIApplication.shared
+        #endif
+        
+        guard let window : UIWindow = application?.keyWindow else {
             return
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)

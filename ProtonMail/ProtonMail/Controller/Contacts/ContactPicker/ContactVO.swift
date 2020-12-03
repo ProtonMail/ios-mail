@@ -35,6 +35,7 @@ enum SignStatus : Int {
 }
 
  enum PGPType : Int {
+    case unknown = -1 // not pass BE validation or hasn't called api to check
     case none = 0 /// default none
     case pgp_signed = 1 /// external pgp signed only
     case pgp_encrypt_trusted_key = 2 /// external encrypted and signed with trusted key
@@ -107,7 +108,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         }
     }
     
-    var pgpType: PGPType = .none
+    var pgpType: PGPType = .unknown
     
     func setType(type: Int) {
         if let pgp_type = PGPType(rawValue: type) {
@@ -146,7 +147,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                 return UIImage(named: "internal_sign_failed")
             case .pgp_encrypted:
                 return UIImage(named: "pgp_encrypted")
-            case .none:
+            case .none, .unknown:
                 return nil
             case .sent_sender_out_side,
                  .zero_access_store:
@@ -218,7 +219,8 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                  .zero_access_store,
                  .sent_sender_server,
                  .pgp_signed_verified,
-                 .none:
+                 .none,
+                 .unknown:
                 return ""
             }
         }
@@ -227,7 +229,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     var sentNotes: String {
         get {
             switch self.pgpType {
-            case .none:
+            case .none, .unknown:
                 return LocalString._stored_with_zero_access_encryption
             case .eo:
                 return LocalString._end_to_end_encrypted
@@ -263,7 +265,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     var inboxNotes: String {
         get {
             switch self.pgpType {
-            case .none:
+            case .none, .unknown:
                 return LocalString._stored_with_zero_access_encryption
             case .eo, .internal_normal: //PM --> PM (encrypted+signed)
                 return LocalString._end_to_end_encrypted_message

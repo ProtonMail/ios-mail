@@ -199,7 +199,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     
     private func isEmailVerified(type: Int) {
         // Code=33101 "Email address failed validation"
-        let isBadMail = type == 33101
+        // Code=33102 "Recipient could not be found"
+        let isBadMail = [33101, 33102].contains(type)
         let color = isBadMail ? UIColor.red.cgColor: UIColor.clear.cgColor
         self.bgView.layer.borderColor = color
         self.bgView.layer.borderWidth = 1
