@@ -29,7 +29,8 @@
         "SendNewMessageTests\/testSendMessageToExternalContactWithOneAttachment()",
         "SendNewMessageTests\/testSendMessageToExternalContactWithTwoAttachments()",
         "SendNewMessageTests\/testSendMessageToInternalContactWithTwoAttachments()",
-        "SendNewMessageTests\/testSendMessageToInternalNotTrustedContactChooseAttachment()"
+        "SendNewMessageTests\/testSendMessageToInternalNotTrustedContactChooseAttachment()",
+        "SendNewMessageTests\/testSendMessageWithAttachmentFromPmMe()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",
