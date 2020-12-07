@@ -25,7 +25,7 @@ import Foundation
 import PromiseKit
 
 class DocumentAttachmentProvider: NSObject, AttachmentProvider {
-    internal weak var controller: AttachmentController!
+    internal weak var controller: AttachmentController?
     
     init(for controller: AttachmentController) {
         self.controller = controller
@@ -51,15 +51,15 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                 let picker = PMDocumentPickerViewController(documentTypes: types, in: .import)
                 picker.delegate = self
                 picker.allowsMultipleSelection = true
-                self.controller.present(picker, animated: true, completion: nil)
+                self.controller?.present(picker, animated: true, completion: nil)
             } else {
                 // iOS 9 and 10 also allow access to document providers from UIDocumentPickerViewController, but let's keep Menu as it's still useful (until iOS 11)
                 let importMenu = UIDocumentMenuViewController(documentTypes: types, in: .import)
                 if let presentationPopover = importMenu.popoverPresentationController {
-                    presentationPopover.barButtonItem = self.controller.barItem
+                    presentationPopover.barButtonItem = self.controller?.barItem
                 }
                 importMenu.delegate = self
-                self.controller.present(importMenu, animated: true, completion: nil)
+                self.controller?.present(importMenu, animated: true, completion: nil)
             }
         })
     }
@@ -105,12 +105,16 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                 seal.reject(err)
             }
         }.then { (file) -> Promise<Void> in
-            return self.controller.fileSuccessfullyImported(as: file)
+            guard let controller = self.controller else {
+                //End process
+                return Promise()
+            }
+            return controller.fileSuccessfullyImported(as: file)
         }.recover { (error) in
             #if APP_EXTENSION
-            self.controller.error(LocalString._cant_copy_the_file)
+            self.controller?.error(LocalString._cant_copy_the_file)
             #else
-            self.controller.error(LocalString._cant_load_the_file)
+            self.controller?.error(LocalString._cant_load_the_file)
             #endif
         }
     }
@@ -128,7 +132,7 @@ extension DocumentAttachmentProvider: UIDocumentMenuDelegate {
     func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         documentPicker.delegate = self
         documentPicker.modalPresentationStyle = UIModalPresentationStyle.formSheet
-        self.controller.present(documentPicker, animated: true, completion: nil)
+        self.controller?.present(documentPicker, animated: true, completion: nil)
     }
 }
 

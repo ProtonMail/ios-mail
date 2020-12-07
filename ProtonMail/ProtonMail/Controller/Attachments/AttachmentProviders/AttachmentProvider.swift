@@ -27,7 +27,7 @@ import AwaitKit
 
 protocol AttachmentProvider {
     var alertAction: UIAlertAction { get }
-    var controller: AttachmentController! { get }
+    var controller: AttachmentController? { get }
 }
 
 

@@ -45,7 +45,7 @@ extension ImageProcessor where Self: AttachmentProvider {
             guard let data = originalImage.pngData(),
                 let newUrl = try? self.writeItemToTempDirectory(data, filename: fileName) else
             {
-                self.controller.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
+                self.controller?.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
                 return Promise()
             }
             fileData = ConcreteFileData<URL>(name: fileName, ext: ext, contents: newUrl)
@@ -53,7 +53,7 @@ extension ImageProcessor where Self: AttachmentProvider {
             fileData = ConcreteFileData<UIImage>(name: fileName, ext: ext, contents: originalImage)
         #endif
         
-        return self.controller.fileSuccessfullyImported(as: fileData)
+        return self.controller?.fileSuccessfullyImported(as: fileData) ?? Promise()
     }
     
     internal func process(asset: PHAsset) {
@@ -114,7 +114,7 @@ extension ImageProcessor where Self: AttachmentProvider {
             }
             
         default:
-            self.controller.error(LocalString._cant_open_the_file)
+            self.controller?.error(LocalString._cant_open_the_file)
         }
     }
 }
