@@ -320,17 +320,27 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(c.lock, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { (error) in
             PMLog.D(error.localizedDescription)
+            defer {
+                complete?(nil, errCode)
+            }
             
             let err = error as NSError
-            complete?(nil, err.code)
+            var errCode = err.code
             
-            if err.code == 33101 {
+            if errCode == 33101 {
                 c.pgpType = .failed_server_validation
+                return
             }
             
             // Code=33102 "Recipient could not be found"
-            if err.code == 33102 {
+            if errCode == 33102 {
                 LocalString._recipient_not_found.alertToast(withTitle: false)
+                return
+            }
+            
+            if !c.email.isValidEmail() {
+                errCode = 33102
+                c.pgpType = .failed_validation
             }
         }
     }
