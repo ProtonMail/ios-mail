@@ -77,8 +77,7 @@
 /* Account manager title */
 "Account" = "Λογαριασμός";
 
-/* 
- & title */
+/* title */
 "Account password invalid" = "Μη έγκυρος κωδικός πρόσβασης λογαριασμού";
 
 /* section title in settings */
@@ -88,7 +87,7 @@
 "Add" = "Προσθήκη";
 
 /* menu title */
-"Add accounts" = "Add accounts";
+"Add accounts" = "Προσθήκη Λογαριασμών";
 
 /* new contacts add Anniversary */
 "Add Anniversary" = "Προσθήκη Επετείου";
@@ -162,7 +161,7 @@
 /* cell title in device settings */
 "Addresses" = "Διευθύνσεις";
 
-/* Title */
+/* alert title */
 "Alert" = "Προειδοποίηση";
 
 /* Title */
@@ -243,6 +242,9 @@
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε %@;";
 
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε;";
+
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Είστε βέβαιοι? Αυτό δεν μπορεί να αναιρεθεί.";
 
@@ -297,7 +299,7 @@
 /* Error */
 "Bad auth cache" = "Bad auth cache";
 
-/* Error title */
+/* title */
 "Bad parameter" = "Κακή παράμετρος";
 
 /* Error Description */
@@ -306,7 +308,7 @@
 /* title */
 "Bad path" = "Κακή διαδρομή";
 
-/* Error Description */
+/* title */
 "Bad response" = "Κακή ανταπόκριση";
 
 /* Title */
@@ -382,7 +384,8 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Δεν μπορεί να βρεθεί αυτό το συνημμένο!";
 
-/* update password error = typo:Modulus */
+/* sign up user error when can't get moduls id
+ update password error */
 "Can't get a Moduls ID!" = "Δεν είναι δυνατή η λήψη αναγνωριστικού Modulus!";
 
 /* update password error = typo:Modulus */
@@ -427,7 +430,8 @@
 /* message Cc: feild */
 "Cc:" = "Κοιν:";
 
-/* place holder */
+/* *
+ *  PhoneVerifyViewController */
 "Cell phone number" = "Αριθμό κινητού τηλεφώνου";
 
 /* Title */
@@ -442,7 +446,7 @@
 /* Title */
 "Change Mailbox Password" = "Αλλαγή Κωδικού Θυρίδας";
 
-/* update password error title */
+/* title */
 "Change Password" = "Αλλαγή κωδικού πρόσβασης";
 
 /* settings protection section title */
@@ -463,7 +467,7 @@
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "Ελέγξτε την κατάσταση Proton για την κατάσταση του συστήματός μας.";
 
-/* loading message */
+/* "Username" */
 "Checking ...." = "Έλεγχος...";
 
 /* place holder */
@@ -490,14 +494,15 @@
 /* cell title in device settings */
 "Combined Contacts" = "Συνδυασμένες Επαφές";
 
-/* Action
-   Springboard (3D Touch) shortcuts action */
+/* *
+ *  Composer Email view controller */
 "Compose" = "Σύνταξη";
 
 /* Title */
 "Compose to" = "Σύνθεση σε";
 
-/* Action */
+/* *
+ *  MenuViewController */
 "Confirm" = "Επιβεβαίωση";
 
 /* "Login Password" */
@@ -579,7 +584,7 @@
 /* title of button in account connect page */
 "Create new account" = "Δημιουργία νέου λογαριασμού";
 
-/* error message title when create new user */
+/* error part & alert title */
 "Create user failed" = "Η δημιουργία χρήστη απέτυχε";
 
 /* Error */
@@ -643,7 +648,8 @@
 /* place holder */
 "Define Password" = "Ορίστε τον κωδικό πρόσβασης";
 
-/* general delete action */
+/* *
+ *  Contacts View Controller */
 "Delete" = "Διαγραφή";
 
 /* emptify folder/label confirmation alert */
@@ -658,7 +664,8 @@
 /* mail location desc */
 "Deleted" = "Διαγράφηκαν";
 
-/* Title */
+/* *
+ *  Email Header View */
 "Details" = "Λεπτομέρειες";
 
 /* network troubleshot cell title */
@@ -679,7 +686,8 @@
 /* Title in settings */
 "Display Name" = "Εμφανιζόμενο Όνομα";
 
-/* Title */
+/* *
+ *  SettingsViewController & alert title */
 "Display Name Updated" = "Το Εμφανιζόμενο Όνομα Ενημερώθηκε";
 
 /* Title in display name settings */
@@ -747,10 +755,11 @@
 /* default vcard types */
 "Email" = "E-mail";
 
-/* contact placeholder */
+/* *
+ *  Email Verify View Controller */
 "Email address" = "Διεύθυνση E-mail";
 
-/* Title */
+/* alert title */
 "Email address invalid" = "Η διεύθυνση E-mail δεν είναι έγκυρη";
 
 /* contact detail view, email addresses section title */
@@ -762,8 +771,7 @@
 /* place holder */
 "Email default signature" = "Προεπιλεγμένη υπογραφή E-mail";
 
-/* 
- & title */
+/* title */
 "Email domain invalid" = "Μη έγκυρο domain ηλεκτρονικού ταχυδρομείου";
 
 /* human check option button */
@@ -772,7 +780,7 @@
 /* cell title in device setting */
 "Empty Cache" = "Εκκαθάριση Cache";
 
-/* empty folder, for spam and trash and drafts */
+/* "Cancel" */
 "Empty Folder" = "Άδειος φάκελος";
 
 /* it is an option to empty the label */
@@ -881,7 +889,7 @@
 "Expires" = "Λήγει";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Λήγει σε %1$d μέρες %2$d ώρες %3$d λεπτά %4$d δευτερόλεπτα";
+"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
 
 /* Title */
 "Expiring Messages" = "Μηνύματα που λήγουν";
@@ -1046,11 +1054,11 @@
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Για να χρησιμοποιήσετε τις υπηρεσίες μας, πρέπει να συμφωνήσετε με τους Όρους Παροχής Υπηρεσιών του ProtonMail.";
 
-/* mail location desc
-   menu title */
+/* "Deleted" */
 "Inbox" = "Εισερχόμενα";
 
-/* mail location title */
+/* *
+ *  MailboxViewController */
 "INBOX" = "Εισερχόμενα";
 
 /* Title */
@@ -1086,10 +1094,7 @@
 /* (No Comment) */
 "Invalid access token please relogin" = "Μη έγκυρο αναγνωριστικό πρόσβασης παρακαλώ επανασυνδεθείτε";
 
-/* Description */
-"Invalid access token. Please relogin." = "Μη έγκυρο αναγνωριστικό πρόσβασης παρακαλώ επανασυνδεθείτε.";
-
-/* Error */
+/* alert title */
 "Invalid credential" = "Μη έγκυρο διαπιστευτήριο";
 
 /* update password error */
@@ -1128,7 +1133,8 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Το κλειδί δεν είναι έγκυρο. Επιστρέψτε και δοκιμάστε ξανά.";
 
-/* Title */
+/* *
+ *  MoreOptionsView */
 "Label as..." = "Ορίστε ετικέτα...";
 
 /* Title */
@@ -1196,7 +1202,7 @@
 "Log in to your ProtonMail account" = "Συνδεθείτε στον ProtonMail λογαριασμό σας";
 
 /* comment */
-"Log out" = "Log out";
+"Log out" = "Αποσύνδεση";
 
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Αποσύνδεση %@;";
@@ -1247,7 +1253,7 @@
 "Mailbox size" = "Μέγεθος θυρίδας";
 
 /* menu title */
-"Manage accounts" = "Manage accounts";
+"Manage accounts" = "Διαχείριση λογαριασμών";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Διαχείριση Διευθύνσεων";
@@ -1286,10 +1292,10 @@
 /* Placeholder */
 "Message Password" = "Κωδικός πρόσβασης μηνύματος";
 
-/* Description */
+/* composer view */
 "Message password does not match." = "Ο κωδικός πρόσβασης μηνύματος δεν ταιριάζει.";
 
-/* settings debug section title */
+/* "Cancel" */
 "Message Queue" = "Σειρά μηνυμάτων";
 
 /* (No Comment) */
@@ -1313,7 +1319,8 @@
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Υπογραφή κινητού";
 
-/* Description */
+/* *
+ *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Οι εγγραφές μέσω κινητού είναι προσωρινά απενεργοποιημένες. Δοκιμάστε ξανά αργότερα ή δοκιμάστε να εγγραφείτε στο protonmail.com χρησιμοποιώντας έναν σταθερό ή έναν φορητό υπολογιστή.";
 
 /* Description */
@@ -1337,7 +1344,7 @@
 /* folder apply - title */
 "Move to Folder" = "Μετακίνηση σε Φάκελο";
 
-/* move action */
+/* "Trash" */
 "Move to Inbox" = "Μετακίνηση στα Εισερχόμενα";
 
 /* move action */
@@ -1437,7 +1444,8 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "Ειδοποιήσεις Αναβολής Off";
 
-/* Action */
+/* *
+ *  ReportBugsViewController */
 "OK" = "ΟΚ";
 
 /* Title */
@@ -1453,7 +1461,7 @@
 "Only one free account can be added" = "Μόνο ένας δωρεάν λογαριασμός μπορεί να προστεθεί";
 
 /* Open action */
-"Open" = "Open";
+"Open" = "Άνοιγμα";
 
 /* (No Comment) */
 "OpenDraft" = "Open draft";
@@ -1470,7 +1478,7 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Η ομάδα υποστήριξης πελατών θα προσπαθήσει να ενεργοποιήσει το πακέτο/plan σας με μη αυτόματο τρόπο, εφόσον συμφωνείτε να επισυνάψετε τα τεχνικά δεδομένα που παρέσχε η AppStore στην εφαρμογή τη στιγμή της αγοράς. Αυτά τα δεδομένα δεν περιλαμβάνουν λεπτομέρειες σχετικά με το λογαριασμό σας στο iTunes, το αναγνωριστικό της Apple, τις συνδεδεμένες πιστωτικές κάρτες ή οποιεσδήποτε άλλες πληροφορίες χρήστη. Τα τεχνικά δεδομένα, μας βοηθούν να ελέγξουμε και να επαληθεύσουμε ότι η συναλλαγή ολοκληρώθηκε στους διακομιστές του AppStore.";
 
-/* mail location desc */
+/* "Draft" = "Draft"; */
 "Outbox" = "Εξερχόμενα";
 
 /* title */
@@ -1515,13 +1523,14 @@
 /* contact placeholder */
 "Phone number" = "Αριθμός τηλεφώνου";
 
-/* Title */
+/* "Verification code request failed" */
 "Phone number invalid" = "Ο αριθμός τηλεφώνου δεν είναι έγκυρος";
 
 /* human check option button */
 "Phone Verification" = "Επαλήθευση Τηλεφώνου";
 
-/* Title */
+/* *
+ *  Attachment table ViewController */
 "Photo Library" = "Βιβλιοθήκη φωτογραφιών";
 
 /* device settings auto lock type title */
@@ -1596,9 +1605,7 @@
 /* (No Comment) */
 "Please try a different user name." = "Παρακαλώ δοκιμάστε ένα διαφορετικό όνομα χρήστη.";
 
-/* 
-
- */
+/* (No Comment) */
 "Please try again." = "Παρακαλούμε δοκιμάστε ξανά";
 
 /* Error message */
@@ -1622,8 +1629,7 @@
 /* The */
 "Please wait until the email downloaded!" = "Περιμένετε μέχρι να γίνει η λήψη του E-mail!";
 
-/* 
- & alert title */
+/* alert title */
 "Please, manage it in your phone." = "Please, manage it in your phone.";
 
 /* Upgrade warning title */
@@ -1704,7 +1710,8 @@
 /* Title */
 "Recovery Code" = "Κωδικός Ανάκτησης";
 
-/* Title */
+/* *
+ *  SignUpEmailViewController */
 "Recovery Email" = "Email ανάκτησης";
 
 /* Title */
@@ -1728,7 +1735,8 @@
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Επανάληψη";
 
-/* reply action */
+/* *
+ *  Controller Defined */
 "Reply" = "Απάντηση";
 
 /* reply all action */
@@ -1776,8 +1784,8 @@
 /* action sheet option */
 "Scheduled" = "Προγραμματισμένο";
 
-/* Springboard (3D Touch) shortcuts action
-   Title */
+/* *
+ *  SearchViewController */
 "Search" = "Αναζήτηση";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1795,7 +1803,7 @@
 /* Action */
 "Send anyway" = "Αποστολή ούτως ή άλλως";
 
-/* Description */
+/* when subject not empty */
 "Send message without subject?" = "Αποστολή μηνύματος χωρίς θέμα;";
 
 /* Title */
@@ -1907,13 +1915,10 @@
 /* Title */
 "Star" = "Προσθήκη αστεριού";
 
-/* mail location desc
-   menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
+/* "Spam" */
 "Starred" = "Με αστέρι";
 
-/* mail location title */
+/* "INBOX" */
 "STARRED" = "Με αστέρι";
 
 /* settings option (Start Time: 8am) */
@@ -1947,7 +1952,7 @@
 "Subscription" = "Συνδρομή";
 
 /* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Subscription information temporarily unavailable. Please try again later.";
+"Subscription information temporarily unavailable. Please try again later." = "Τα στοιχεία συνδρομής δεν είναι προσωρινά διαθέσιμα. Παρακαλώ προσπαθήστε ξανά αργότερα.";
 
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Υποστήριξη για %i προσαρμοσμένους domains (πχ. user@yourdomain.com)";
@@ -1992,8 +1997,7 @@
 /* Description */
 "The authentication credentials are invalid." = "Τα στοιχεία επαλήθευσης δεν είναι έγκυρα.";
 
-/* 
- */
+/* (No Comment) */
 "The authentication token has expired." = "Το διακριτικό ελέγχου ταυτότητας έχει λήξει.";
 
 /* key size notes */
@@ -2061,20 +2065,19 @@
 "The total attachment size cannot exceed 25MB" = "Το συνολικό μέγεθος του συννημένου δεν μπορεί να υπερβαίνει τα 25MB";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Η διεύθυνση URL στην οποία προσπαθείτε να αποκτήσετε πρόσβαση δεν είναι τυπική και ενδέχεται να μην φορτώσει σωστά. Θέλετε να το ανοίξετε χρησιμοποιώντας το προεπιλεγμένο πρόγραμμα περιήγησης της συσκευής σας;";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Ο χρήστης έχει συνδεθεί ήδη";
 
-/* 
- */
+/* (No Comment) */
 "The UserName have been taken." = "Το όνομα χρήστη έχει ήδη δεσμευτεί.";
 
-/* 
- & title */
+/* title */
 "The verification email invalid" = "Μη έγκυρο email επαλήθευσης";
 
-/* Error */
+/* *
+ *  RecaptchaViewController */
 "The verification failed!" = "Η επαλήθευση απέτυχε!";
 
 /* alert when logout user if in queue still have tasks */
@@ -2086,8 +2089,7 @@
 /* Description */
 "There was an error creating or loading the app's saved data." = "Παρουσιάστηκε σφάλμα κατά τη δημιουργία ή τη φόρτωση των αποθηκευμένων δεδομένων της εφαρμογής.";
 
-/* 
- & local error */
+/* local error */
 "There was an error creating or loading the application's saved data." = "Παρουσιάστηκε ένα σφάλμα κατά τη δημιουργία ή τη φόρτωση των αποθηκευμένων δεδομένων της εφαρμογής.";
 
 /* Alert message */
@@ -2142,15 +2144,15 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
-/* settings touchid error */
+/* *
+ *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "Το TouchID δεν είναι εγγεγραμμένο, ενεργοποιήστε το από τις ρυθμίσεις συστήματος";
 
 /* settings touchid/faceid error */
 "TouchID not available" = "Το TouchID δεν είναι διαθέσιμο";
 
-/* mail location desc
-   menu title
-   move action */
+/* *
+ *  MessageAction */
 "Trash" = "Κάδος Απορριμμάτων";
 
 /* mail location title */
@@ -2186,8 +2188,7 @@
 /* Description */
 "Unable to connect to the server" = "Αδυναμία σύνδεσης στο διακομιστή";
 
-/* 
- */
+/* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "Δεν είναι δυνατή η δημιουργία έγκυρης διεύθυνσης URL με την ακόλουθη διαδρομή: %@";
 
 /* Description */
@@ -2220,10 +2221,11 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "Δεν είναι δυνατή η ανάλυση του αντικειμένου απόκρισης:\n%@";
 
-/* Error */
+/* alert title */
 "Unable to parse token" = "Δεν είναι δυνατή η ανάλυση του διακριτικού";
 
-/* error when sending the message */
+/* *
+ *  MessageDataService */
 "Unable to send the email" = "Δεν είναι δυνατή η αποστολή του E-mail.";
 
 /* Action */
@@ -2305,21 +2307,20 @@
 /* Title */
 "USER LOGIN" = "Είσοδος Χρήστη";
 
-/* 
- & title */
+/* title */
 "User name exist" = "Υπάρχει όνομα χρήστη";
 
-/* 
- & alert title */
+/* alert title */
 "User name invalid" = "Μη έγκυρο όνομα χρήστη";
 
-/* Title */
+/* *
+ *  Login View */
 "Username" = "Όνομα χρήστη";
 
-/* Title */
+/* alert title */
 "Verification code request failed" = "Η αίτηση του κωδικού επαλήθευσης απέτυχε";
 
-/* Title */
+/* alert title */
 "Verification code sent" = "Ο κωδικός επαλήθευσης στάλθηκε";
 
 /* error title */
@@ -2376,8 +2377,7 @@
 /* default vcard types */
 "Work" = "Εργασία";
 
-/* 
- & title */
+/* title */
 "Wrong verification code" = "Λάθος κωδικός επαλήθευσης";
 
 /* Title */
@@ -2420,12 +2420,13 @@
 "You have unsaved changes. Do you want to save it?" = "Έχετε μη αποθηκευμένες αλλαγές. Θέλετε να τις αποθηκεύσετε;";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "Έχετε χρησιμοποιήσει το %1$d%% του χώρου αποθήκευσης σας (%2$@).";
+"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
 
-/* Content of space warning */
+/* *
+ *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Έχετε εξαντλήσει όλο το χώρο αποθήκευσης σας (%@).";
 
-/* Description */
+/* "Alert" */
 "You need at least one recipient to send" = "Χρειάζεστε τουλάχιστον έναν παραλήπτη για αποστολή";
 
 /* Alert to confirm logout
@@ -2447,7 +2448,8 @@
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Τα εισερχόμενά σας προστατεύονται πλέον με κρυπτογράφηση από άκρο σε άκρο. Για να στέλνετε ασφαλή μηνύματα ηλεκτρονικού ταχυδρομείου αυτόματα στους φίλους σας, προσκαλέστε τους φίλους σας να χρησιμοποιήσουν το ProtonMail! Μπορείτε επίσης να κρυπτογραφήσετε χειροκίνητα τα μηνύματα αυτά, εφόσον δεν χρησιμοποιούν ProtonMail.";
 
-/* Description */
+/* *
+ *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ο νέος σας κρυπτογραφημένος λογαριασμός email έχει ρυθμιστεί και είναι έτοιμος να στέλνει και να λαμβάνει κρυπτογραφημένα μηνύματα.";
 
 /* view top title */
@@ -2458,6 +2460,9 @@
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "Η συνδρομή σας θα ανανεωθεί αυτόματα στις";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Η περίοδος λειτουργίας σας έχει λήξει επειδή δεν έχετε κάνει κάποια ενέργεια για λίγο ή επειδή έχει ανακληθεί. Συνδεθείτε ξανά.";
 
 /* Description */
 "Your signature has been updated." = "Η υπογραφή σας έχει ενημερωθεί.";
