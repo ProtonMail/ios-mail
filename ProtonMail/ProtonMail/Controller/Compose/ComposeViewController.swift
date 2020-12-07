@@ -357,7 +357,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
         
         let allMails = self.viewModel.toSelectedContacts + self.viewModel.ccSelectedContacts + self.viewModel.bccSelectedContacts
-        let invalidEmails = allMails.filter{ $0.modelType == .contact}.compactMap{ $0 as? ContactVO}.filter{ $0.pgpType == .failed_server_validation }
+        let invalidEmails = allMails.filter{ $0.modelType == .contact}.compactMap{ $0 as? ContactVO}.filter{ $0.pgpType == .failed_server_validation || $0.pgpType == .failed_validation }
         if !invalidEmails.isEmpty {
             let alert = UIAlertController(title: LocalString._address_invalid_error_title,
                                           message: LocalString._address_invalid_error_content,
