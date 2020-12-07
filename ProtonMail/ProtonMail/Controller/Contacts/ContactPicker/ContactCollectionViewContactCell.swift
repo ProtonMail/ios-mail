@@ -58,6 +58,10 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.setup()
     }
     
+    override func prepareForReuse() {
+        self.bgView.layer.borderColor = UIColor.clear.cgColor
+    }
+    
     func setup() {
         self.backgroundColor = UIColor(hexColorCode: "#FCFEFF")
         
