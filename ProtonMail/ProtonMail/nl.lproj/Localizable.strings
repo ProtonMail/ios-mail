@@ -2123,7 +2123,7 @@
 "To" = "Aan";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Om misbruik van ProtonMail te voorkomen, moeten we&#13;\n controleren of u een natuurlijk persoon bent.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Om misbruik van ProtonMail te voorkomen, moeten we\r\n controleren of u een natuurlijk persoon bent.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van ProtonMail te gebruiken via ProtonMail.com";
@@ -2453,7 +2453,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Uw nieuwe versleutelde e-mailaccount is aangemaakt, u kunt nu versleutelde berichten verzenden en ontvangen.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Uw nieuwe beveiligde e-mail&#13;\n account is klaar.";
+"Your new secure email\r\n account is ready." = "Uw nieuwe beveiligde e-mail\r\n account is klaar.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Uw plan is momenteel actief tot";
