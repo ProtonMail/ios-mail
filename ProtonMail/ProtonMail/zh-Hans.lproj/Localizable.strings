@@ -77,8 +77,7 @@
 /* Account manager title */
 "Account" = "账户";
 
-/* 
- & title */
+/* title */
 "Account password invalid" = "密码无效";
 
 /* section title in settings */
@@ -162,7 +161,7 @@
 /* cell title in device settings */
 "Addresses" = "地址";
 
-/* Title */
+/* alert title */
 "Alert" = "注意";
 
 /* Title */
@@ -243,6 +242,9 @@
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "确定要退出 %@ 吗？";
 
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "确定要退出账户吗？";
+
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "您确定吗？此操作不能撤销。";
 
@@ -297,7 +299,7 @@
 /* Error */
 "Bad auth cache" = "缓存损坏";
 
-/* Error title */
+/* title */
 "Bad parameter" = "参数错误";
 
 /* Error Description */
@@ -306,7 +308,7 @@
 /* title */
 "Bad path" = "路径错误";
 
-/* Error Description */
+/* title */
 "Bad response" = "响应错误";
 
 /* Title */
@@ -382,7 +384,8 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "找不到此附件！";
 
-/* update password error = typo:Modulus */
+/* sign up user error when can't get moduls id
+ update password error */
 "Can't get a Moduls ID!" = "无法获取模块ID！";
 
 /* update password error = typo:Modulus */
@@ -427,7 +430,8 @@
 /* message Cc: feild */
 "Cc:" = "抄送：";
 
-/* place holder */
+/* *
+ *  PhoneVerifyViewController */
 "Cell phone number" = "手机号码";
 
 /* Title */
@@ -442,7 +446,7 @@
 /* Title */
 "Change Mailbox Password" = "更改邮箱密码";
 
-/* update password error title */
+/* title */
 "Change Password" = "更改密码";
 
 /* settings protection section title */
@@ -463,7 +467,7 @@
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "查看 Proton 系统运行状态。";
 
-/* loading message */
+/* "Username" */
 "Checking ...." = "正在检查 ....";
 
 /* place holder */
@@ -490,14 +494,15 @@
 /* cell title in device settings */
 "Combined Contacts" = "共用通讯录";
 
-/* Action
-   Springboard (3D Touch) shortcuts action */
+/* *
+ *  Composer Email view controller */
 "Compose" = "写邮件";
 
 /* Title */
 "Compose to" = "写邮件";
 
-/* Action */
+/* *
+ *  MenuViewController */
 "Confirm" = "确认";
 
 /* "Login Password" */
@@ -579,7 +584,7 @@
 /* title of button in account connect page */
 "Create new account" = "创建账户";
 
-/* error message title when create new user */
+/* error part & alert title */
 "Create user failed" = "创建用户失败";
 
 /* Error */
@@ -643,7 +648,8 @@
 /* place holder */
 "Define Password" = "设置密码";
 
-/* general delete action */
+/* *
+ *  Contacts View Controller */
 "Delete" = "删除";
 
 /* emptify folder/label confirmation alert */
@@ -658,7 +664,8 @@
 /* mail location desc */
 "Deleted" = "已删除";
 
-/* Title */
+/* *
+ *  Email Header View */
 "Details" = "详情";
 
 /* network troubleshot cell title */
@@ -679,7 +686,8 @@
 /* Title in settings */
 "Display Name" = "对外名称";
 
-/* Title */
+/* *
+ *  SettingsViewController & alert title */
 "Display Name Updated" = "对外名称已保存";
 
 /* Title in display name settings */
@@ -747,10 +755,11 @@
 /* default vcard types */
 "Email" = "邮箱";
 
-/* contact placeholder */
+/* *
+ *  Email Verify View Controller */
 "Email address" = "电子邮箱地址";
 
-/* Title */
+/* alert title */
 "Email address invalid" = "电子邮箱地址无效";
 
 /* contact detail view, email addresses section title */
@@ -762,8 +771,7 @@
 /* place holder */
 "Email default signature" = "预置邮件落款";
 
-/* 
- & title */
+/* title */
 "Email domain invalid" = "邮箱域名无效";
 
 /* human check option button */
@@ -772,7 +780,7 @@
 /* cell title in device setting */
 "Empty Cache" = "清除缓存";
 
-/* empty folder, for spam and trash and drafts */
+/* "Cancel" */
 "Empty Folder" = "清空文件夹";
 
 /* it is an option to empty the label */
@@ -881,7 +889,7 @@
 "Expires" = "过期时间";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "%1$d 天 %2$d 小时 %3$d 分钟 %4$d 秒后过期";
+"Expires in %d days %d hours %d mins %d seconds" = "%d 天 %d 小时 %d 分钟 %d 秒后过期";
 
 /* Title */
 "Expiring Messages" = "邮件有效期";
@@ -1046,11 +1054,11 @@
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "要使用我们的服务，您必须同意 ProtonMail 的服务条款。";
 
-/* mail location desc
-   menu title */
+/* "Deleted" */
 "Inbox" = "收件箱";
 
-/* mail location title */
+/* *
+ *  MailboxViewController */
 "INBOX" = "收件箱";
 
 /* Title */
@@ -1086,10 +1094,7 @@
 /* (No Comment) */
 "Invalid access token please relogin" = "无效的访问令牌请重新登录";
 
-/* Description */
-"Invalid access token. Please relogin." = "登录凭证无效，请重新登录。";
-
-/* Error */
+/* alert title */
 "Invalid credential" = "无效的凭据";
 
 /* update password error */
@@ -1128,7 +1133,8 @@
 /* Error */
 "Key invalid. Please go back and try again." = "密钥无效。请重试。";
 
-/* Title */
+/* *
+ *  MoreOptionsView */
 "Label as..." = "标记为";
 
 /* Title */
@@ -1286,10 +1292,10 @@
 /* Placeholder */
 "Message Password" = "邮件密码";
 
-/* Description */
+/* composer view */
 "Message password does not match." = "邮件解密密码不匹配";
 
-/* settings debug section title */
+/* "Cancel" */
 "Message Queue" = "消息队列";
 
 /* (No Comment) */
@@ -1313,7 +1319,8 @@
 /* Mobile Signature title in settings */
 "Mobile Signature" = "移动设备落款";
 
-/* Description */
+/* *
+ *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "移动端注册已暂停，请稍后再试，或使用电脑前往 protonmail.com 尝试注册。";
 
 /* Description */
@@ -1337,7 +1344,7 @@
 /* folder apply - title */
 "Move to Folder" = "移动到文件夹";
 
-/* move action */
+/* "Trash" */
 "Move to Inbox" = "移动到收件箱";
 
 /* move action */
@@ -1437,7 +1444,8 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "免打扰已关闭";
 
-/* Action */
+/* *
+ *  ReportBugsViewController */
 "OK" = "确定";
 
 /* Title */
@@ -1470,7 +1478,7 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "如果您愿意上传付款时 App Store 提供给客户端的数据，我们的客服团队会尝试为您人工激活服务。此数据不包含您的任何个人信息，如 iTunes 账户、Apple ID 及其关联的信用卡，我们只是用它验证 App Store 服务器上的交易是否已完成。";
 
-/* mail location desc */
+/* "Draft" = "Draft"; */
 "Outbox" = "发件箱";
 
 /* title */
@@ -1515,13 +1523,14 @@
 /* contact placeholder */
 "Phone number" = "电话号码";
 
-/* Title */
+/* "Verification code request failed" */
 "Phone number invalid" = "电话号码无效";
 
 /* human check option button */
 "Phone Verification" = "电话验证";
 
-/* Title */
+/* *
+ *  Attachment table ViewController */
 "Photo Library" = "照片库";
 
 /* device settings auto lock type title */
@@ -1596,9 +1605,7 @@
 /* (No Comment) */
 "Please try a different user name." = "请换一个用户名。";
 
-/* 
-
- */
+/* (No Comment) */
 "Please try again." = "请重试";
 
 /* Error message */
@@ -1622,8 +1629,7 @@
 /* The */
 "Please wait until the email downloaded!" = "请耐心等待，邮件下载中 ！";
 
-/* 
- & alert title */
+/* alert title */
 "Please, manage it in your phone." = "请在移动设备中设置。";
 
 /* Upgrade warning title */
@@ -1704,7 +1710,8 @@
 /* Title */
 "Recovery Code" = "恢复码";
 
-/* Title */
+/* *
+ *  SignUpEmailViewController */
 "Recovery Email" = "密保邮箱";
 
 /* Title */
@@ -1728,7 +1735,8 @@
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Herhalen";
 
-/* reply action */
+/* *
+ *  Controller Defined */
 "Reply" = "回复";
 
 /* reply all action */
@@ -1776,8 +1784,8 @@
 /* action sheet option */
 "Scheduled" = "已加入日程";
 
-/* Springboard (3D Touch) shortcuts action
-   Title */
+/* *
+ *  SearchViewController */
 "Search" = "搜索";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1795,7 +1803,7 @@
 /* Action */
 "Send anyway" = "仍然发送";
 
-/* Description */
+/* when subject not empty */
 "Send message without subject?" = "发送没有主题的邮件吗？";
 
 /* Title */
@@ -1907,13 +1915,10 @@
 /* Title */
 "Star" = "星标";
 
-/* mail location desc
-   menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
+/* "Spam" */
 "Starred" = "星标邮件";
 
-/* mail location title */
+/* "INBOX" */
 "STARRED" = "星标邮件";
 
 /* settings option (Start Time: 8am) */
@@ -1992,8 +1997,7 @@
 /* Description */
 "The authentication credentials are invalid." = "身份验证失败。";
 
-/* 
- */
+/* (No Comment) */
 "The authentication token has expired." = "认证信息已过期。";
 
 /* key size notes */
@@ -2066,15 +2070,14 @@
 /* Alert when the account is already logged in */
 "The user is already logged in" = "用户已登录";
 
-/* 
- */
+/* (No Comment) */
 "The UserName have been taken." = "用户名已被占用。";
 
-/* 
- & title */
+/* title */
 "The verification email invalid" = "验证邮箱无效";
 
-/* Error */
+/* *
+ *  RecaptchaViewController */
 "The verification failed!" = "验证失败 ！";
 
 /* alert when logout user if in queue still have tasks */
@@ -2086,8 +2089,7 @@
 /* Description */
 "There was an error creating or loading the app's saved data." = "读写程序数据时出错。";
 
-/* 
- & local error */
+/* local error */
 "There was an error creating or loading the application's saved data." = "读写程序数据时出错。";
 
 /* Alert message */
@@ -2121,7 +2123,7 @@
 "To" = "收件人";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "为避免 ProtonMail 被滥用，\r我们需要验证您不是机器人。";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "为避免 ProtonMail 被滥用，&#13;我们需要验证您不是机器人。";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "请前往 protonmail.com 使用网页版 ProtonMail 重置邮箱密码";
@@ -2142,15 +2144,15 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
-/* settings touchid error */
+/* *
+ *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID 未设置，请在系统设置中开启";
 
 /* settings touchid/faceid error */
 "TouchID not available" = "TouchID 不可用";
 
-/* mail location desc
-   menu title
-   move action */
+/* *
+ *  MessageAction */
 "Trash" = "废件箱";
 
 /* mail location title */
@@ -2186,8 +2188,7 @@
 /* Description */
 "Unable to connect to the server" = "无法连接服务器";
 
-/* 
- */
+/* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "无法通过此路径构造 URL：%@";
 
 /* Description */
@@ -2220,10 +2221,11 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "无法解析响应对象：\n%@";
 
-/* Error */
+/* alert title */
 "Unable to parse token" = "无法解析验证令牌 ！";
 
-/* error when sending the message */
+/* *
+ *  MessageDataService */
 "Unable to send the email" = "无法发送电子邮件。";
 
 /* Action */
@@ -2305,21 +2307,20 @@
 /* Title */
 "USER LOGIN" = "用户登录";
 
-/* 
- & title */
+/* title */
 "User name exist" = "用户名已被占用";
 
-/* 
- & alert title */
+/* alert title */
 "User name invalid" = "用户名无效";
 
-/* Title */
+/* *
+ *  Login View */
 "Username" = "用户名";
 
-/* Title */
+/* alert title */
 "Verification code request failed" = "验证码发送失败";
 
-/* Title */
+/* alert title */
 "Verification code sent" = "验证码已发送";
 
 /* error title */
@@ -2376,8 +2377,7 @@
 /* default vcard types */
 "Work" = "工作";
 
-/* 
- & title */
+/* title */
 "Wrong verification code" = "验证码错误";
 
 /* Title */
@@ -2420,12 +2420,13 @@
 "You have unsaved changes. Do you want to save it?" = "您的改动尚未保存，要保存吗？";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "您的存储空间（%2$@）已使用 %1$d%%。";
+"You have used %d%% of your storage space (%@)." = "您的存储空间（%@）已使用 %d%%。";
 
-/* Content of space warning */
+/* *
+ *  StorageLimit */
 "You have used up all of your storage space (%@)." = "您的存储空间（%@）已用尽。";
 
-/* Description */
+/* "Alert" */
 "You need at least one recipient to send" = "需要至少一位收件人";
 
 /* Alert to confirm logout
@@ -2447,17 +2448,21 @@
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "您的邮箱已受端对端加密技术保护。要和朋友们轻松使用加密邮件交流，快介绍他们使用 ProtonMail 吧！即使他们不用 ProtonMail，您也可以手动加密邮件。";
 
-/* Description */
+/* *
+ *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "您的加密邮箱账户已经设置完毕，可以收发加密邮件了。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "您的安全邮箱\r现已就绪。";
+"Your new secure email\r\n account is ready." = "您的安全邮箱&#13;现已就绪。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "您的订阅有效期至";
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "下次自动续费日期为";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "您的账户因长时间未操作已自动退出，或已被其他设备下线。请重新登录。";
 
 /* Description */
 "Your signature has been updated." = "您的落款已更改。";

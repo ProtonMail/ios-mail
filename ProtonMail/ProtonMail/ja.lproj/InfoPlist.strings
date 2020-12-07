@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "メールに写真を添付するために必要です。";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
+"NSContactsUsageDescription" = "メッセージを作成する際や、連絡先をアカウントに手動でアップロードする際に、端末に保存された連絡先のメールアドレスにアクセスします。 明示的な操作がない限り、当社のサーバーに連絡先情報はアップロードされません。";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "アプリの安全なロック解除を許可します。";

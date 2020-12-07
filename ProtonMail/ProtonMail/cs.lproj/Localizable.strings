@@ -77,8 +77,7 @@
 /* Account manager title */
 "Account" = "Účet";
 
-/* 
- & title */
+/* title */
 "Account password invalid" = "Neplatné heslo účtu";
 
 /* section title in settings */
@@ -162,7 +161,7 @@
 /* cell title in device settings */
 "Addresses" = "Adresy";
 
-/* Title */
+/* alert title */
 "Alert" = "Upozornění";
 
 /* Title */
@@ -243,6 +242,9 @@
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "Opravdu se chcete odhlásit z účtu %@?";
 
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Are you sure you want to logout?";
+
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Are you sure? This can't be undone.";
 
@@ -297,7 +299,7 @@
 /* Error */
 "Bad auth cache" = "Chyba mezipaměti ověření";
 
-/* Error title */
+/* title */
 "Bad parameter" = "Chybný parametr";
 
 /* Error Description */
@@ -306,7 +308,7 @@
 /* title */
 "Bad path" = "Chybná cesta";
 
-/* Error Description */
+/* title */
 "Bad response" = "Chybná odpověď";
 
 /* Title */
@@ -382,7 +384,8 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Nelze najít tuto přílohu!";
 
-/* update password error = typo:Modulus */
+/* sign up user error when can't get moduls id
+ update password error */
 "Can't get a Moduls ID!" = "Nelze získat ID modulu!";
 
 /* update password error = typo:Modulus */
@@ -427,7 +430,8 @@
 /* message Cc: feild */
 "Cc:" = "Kopie:";
 
-/* place holder */
+/* *
+ *  PhoneVerifyViewController */
 "Cell phone number" = "Telefonní číslo mobilu";
 
 /* Title */
@@ -442,7 +446,7 @@
 /* Title */
 "Change Mailbox Password" = "Změnit heslo poštovní schránky";
 
-/* update password error title */
+/* title */
 "Change Password" = "Změnit heslo";
 
 /* settings protection section title */
@@ -463,7 +467,7 @@
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "Check Proton Status for our system status.";
 
-/* loading message */
+/* "Username" */
 "Checking ...." = "Kontrola ....";
 
 /* place holder */
@@ -490,14 +494,15 @@
 /* cell title in device settings */
 "Combined Contacts" = "Combined Contacts";
 
-/* Action
-   Springboard (3D Touch) shortcuts action */
+/* *
+ *  Composer Email view controller */
 "Compose" = "Nová zpráva";
 
 /* Title */
 "Compose to" = "Napsat zprávu";
 
-/* Action */
+/* *
+ *  MenuViewController */
 "Confirm" = "Potvrdit";
 
 /* "Login Password" */
@@ -579,7 +584,7 @@
 /* title of button in account connect page */
 "Create new account" = "Create new account";
 
-/* error message title when create new user */
+/* error part & alert title */
 "Create user failed" = "Vytváření uživatele selhalo";
 
 /* Error */
@@ -643,7 +648,8 @@
 /* place holder */
 "Define Password" = "Nastavte heslo";
 
-/* general delete action */
+/* *
+ *  Contacts View Controller */
 "Delete" = "Smazat";
 
 /* emptify folder/label confirmation alert */
@@ -658,7 +664,8 @@
 /* mail location desc */
 "Deleted" = "Odstraněno";
 
-/* Title */
+/* *
+ *  Email Header View */
 "Details" = "Detaily";
 
 /* network troubleshot cell title */
@@ -679,7 +686,8 @@
 /* Title in settings */
 "Display Name" = "Zobrazované jméno";
 
-/* Title */
+/* *
+ *  SettingsViewController & alert title */
 "Display Name Updated" = "Zobrazované jméno aktualizováno";
 
 /* Title in display name settings */
@@ -747,10 +755,11 @@
 /* default vcard types */
 "Email" = "E-mail";
 
-/* contact placeholder */
+/* *
+ *  Email Verify View Controller */
 "Email address" = "E-mailová adresa";
 
-/* Title */
+/* alert title */
 "Email address invalid" = "E-mailová adresa je neplatná";
 
 /* contact detail view, email addresses section title */
@@ -762,8 +771,7 @@
 /* place holder */
 "Email default signature" = "Výchozí podpis e-mailu";
 
-/* 
- & title */
+/* title */
 "Email domain invalid" = "Neplatná e-mailová doména";
 
 /* human check option button */
@@ -772,7 +780,7 @@
 /* cell title in device setting */
 "Empty Cache" = "Empty Cache";
 
-/* empty folder, for spam and trash and drafts */
+/* "Cancel" */
 "Empty Folder" = "Vyprázdnit složku";
 
 /* it is an option to empty the label */
@@ -881,7 +889,7 @@
 "Expires" = "Vyprší";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Vyprší za %1$d dnů %2$d hodin %3$d minut %4$d vteřin";
+"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
 
 /* Title */
 "Expiring Messages" = "Platnost zpráv";
@@ -1046,11 +1054,11 @@
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Chcete-li využívat našich služeb, musíte souhlasit s podmínkami užívání služby ProtonMail.";
 
-/* mail location desc
-   menu title */
+/* "Deleted" */
 "Inbox" = "Doručená pošta";
 
-/* mail location title */
+/* *
+ *  MailboxViewController */
 "INBOX" = "DORUČENÁ POŠTA";
 
 /* Title */
@@ -1086,10 +1094,7 @@
 /* (No Comment) */
 "Invalid access token please relogin" = "Neplatný token pro přístup. Přihlašte se prosím znovu";
 
-/* Description */
-"Invalid access token. Please relogin." = "Neplatný token pro přístup. Přihlašte se prosím znovu.";
-
-/* Error */
+/* alert title */
 "Invalid credential" = "Neplatné přihlašovací údaje";
 
 /* update password error */
@@ -1111,7 +1116,7 @@
 "Is this bug report about an in-app purchase?" = "Týká se tato zpráva o chybě nákupu v aplikaci?";
 
 /* It is not possible to switch to `plan` within our iOS app. */
-"It is not possible to switch to %@ within our iOS app." = "Není možné přejít na %@ v naší aplikaci iOS.";
+"It is not possible to switch to %@ within our iOS app." = "It is not possible to switch to %@ within our iOS app.";
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nepodařilo se nám spojit produkt z AppStore, který jste si zakoupili s produkty na našem serveru. Prosím vyplňte zprávu o chybě a náš tým podpory Vás bude kontaktovat.";
@@ -1128,7 +1133,8 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Neplatný klíč. Přejděte prosím zpět a zkuste to znova.";
 
-/* Title */
+/* *
+ *  MoreOptionsView */
 "Label as..." = "Označit jako...";
 
 /* Title */
@@ -1286,10 +1292,10 @@
 /* Placeholder */
 "Message Password" = "Heslo zprávy";
 
-/* Description */
+/* composer view */
 "Message password does not match." = "Heslo zprávy se neshoduje.";
 
-/* settings debug section title */
+/* "Cancel" */
 "Message Queue" = "Fronta zpráv";
 
 /* (No Comment) */
@@ -1313,11 +1319,12 @@
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Podpis v mobilní aplikaci";
 
-/* Description */
+/* *
+ *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobilní registrace jsou dočasně vypnuty. Opakujte akci později nebo se zkuste zaregistrovat na protonmail.com pomocí stolního nebo přenosného počítače.";
 
 /* Description */
-"Modifying or turning off the default mobile signature is a paid feature." = "Modifikace nebo vypnutí výchozího mobilního podpisu je placenou vlastností.";
+"Modifying or turning off the default mobile signature is a paid feature." = "Modifying or turning off the default mobile signature is a paid feature.";
 
 /* More actions button */
 "More" = "Více";
@@ -1326,7 +1333,7 @@
 "More Credits" = "Víc kreditů";
 
 /* move action */
-"Move to All Mail" = "Přesunout do šložky Všechny zprávy";
+"Move to All Mail" = "Move to All Mail";
 
 /* move action */
 "Move to Archive" = "Přesunout do archivu";
@@ -1337,7 +1344,7 @@
 /* folder apply - title */
 "Move to Folder" = "Přesunout do složky";
 
-/* move action */
+/* "Trash" */
 "Move to Inbox" = "Přesunout do složky Doručené";
 
 /* move action */
@@ -1437,17 +1444,18 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "Oznámení odložení vypnuto";
 
-/* Action */
+/* *
+ *  ReportBugsViewController */
 "OK" = "OK";
 
 /* Title */
 "On" = "Zapnuto";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On EE, MMM d, yyyy at %@" = "V EE, d. MMM. yyyy ve %@";
+"On EE, MMM d, yyyy at %@" = "On EE, MMM d, yyyy at %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "V EE, d. MMM. yyyy ve %1$@, %2$@, napsal/a:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@, wrote:";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Only one free account can be added";
@@ -1470,7 +1478,7 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Náš tým pro podporu zákazníků se pokusí aktivovat Váš plán poskytovaných služeb ručně, pokud souhlasíte s přiložením technických údajů, které AppStore poskytl v okamžiku nákupu. Tyto údaje neobsahují žádné informace o Vašem iTunes účtu, Apple ID, připojených kreditních kartách, nebo jakékoli jiné informace o uživateli. Technická data nám jenom pomůžou ověřit, že transakce byla provedena na serverech AppStore.";
 
-/* mail location desc */
+/* "Draft" = "Draft"; */
 "Outbox" = "K odeslání";
 
 /* title */
@@ -1515,13 +1523,14 @@
 /* contact placeholder */
 "Phone number" = "Telefonní číslo";
 
-/* Title */
+/* "Verification code request failed" */
 "Phone number invalid" = "Neplatné telefonní číslo";
 
 /* human check option button */
 "Phone Verification" = "Ověření pomocí telefonu";
 
-/* Title */
+/* *
+ *  Attachment table ViewController */
 "Photo Library" = "Knihovna fotografií";
 
 /* device settings auto lock type title */
@@ -1596,9 +1605,7 @@
 /* (No Comment) */
 "Please try a different user name." = "Zkuste jiné uživatelské jméno.";
 
-/* 
-
- */
+/* (No Comment) */
 "Please try again." = "Zkuste to prosím znovu";
 
 /* Error message */
@@ -1622,8 +1629,7 @@
 /* The */
 "Please wait until the email downloaded!" = "Prosim počkejte na stažení e-mailu!";
 
-/* 
- & alert title */
+/* alert title */
 "Please, manage it in your phone." = "Prosím, upravte to ve vašem telefonu.";
 
 /* Upgrade warning title */
@@ -1666,7 +1672,7 @@
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail je nyní v režimu offline, zkontrolujte náš twitter pro aktuální stav: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline..." = "ProtonMail je v režimu offline...";
+"ProtonMail is currently offline..." = "ProtonMail is currently offline...";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus je nutný k úpravě vašeho mobilního podpisu";
@@ -1704,7 +1710,8 @@
 /* Title */
 "Recovery Code" = "Kód pro obnovení";
 
-/* Title */
+/* *
+ *  SignUpEmailViewController */
 "Recovery Email" = "E-mail pro obnovení";
 
 /* Title */
@@ -1728,7 +1735,8 @@
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Opakovat";
 
-/* reply action */
+/* *
+ *  Controller Defined */
 "Reply" = "Odpovědět";
 
 /* reply all action */
@@ -1776,8 +1784,8 @@
 /* action sheet option */
 "Scheduled" = "Naplánováno";
 
-/* Springboard (3D Touch) shortcuts action
-   Title */
+/* *
+ *  SearchViewController */
 "Search" = "Vyhledat";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1795,7 +1803,7 @@
 /* Action */
 "Send anyway" = "Přesto odeslat";
 
-/* Description */
+/* when subject not empty */
 "Send message without subject?" = "Odeslat zprávu bez předmětu?";
 
 /* Title */
@@ -1907,13 +1915,10 @@
 /* Title */
 "Star" = "Hvězdička";
 
-/* mail location desc
-   menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
+/* "Spam" */
 "Starred" = "S hvězdičkou";
 
-/* mail location title */
+/* "INBOX" */
 "STARRED" = "S HVĚZDIČKOU";
 
 /* settings option (Start Time: 8am) */
@@ -1992,8 +1997,7 @@
 /* Description */
 "The authentication credentials are invalid." = "Přihlašovací údaje jsou neplatné.";
 
-/* 
- */
+/* (No Comment) */
 "The authentication token has expired." = "Ověřovací token vypršel.";
 
 /* key size notes */
@@ -2066,15 +2070,14 @@
 /* Alert when the account is already logged in */
 "The user is already logged in" = "The user is already logged in";
 
-/* 
- */
+/* (No Comment) */
 "The UserName have been taken." = "Uživatelské jméno už bylo použito.";
 
-/* 
- & title */
+/* title */
 "The verification email invalid" = "Neplatný ověřovací e-mail";
 
-/* Error */
+/* *
+ *  RecaptchaViewController */
 "The verification failed!" = "Ověření selhalo!";
 
 /* alert when logout user if in queue still have tasks */
@@ -2086,8 +2089,7 @@
 /* Description */
 "There was an error creating or loading the app's saved data." = "Došlo k chybě při vytváření nebo načítání uložených dat aplikace.";
 
-/* 
- & local error */
+/* local error */
 "There was an error creating or loading the application's saved data." = "Došlo k chybě při vytváření nebo načítání uložených dat aplikace.";
 
 /* Alert message */
@@ -2121,7 +2123,7 @@
 "To" = "Komu";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Pro ochranu proti zneužití služby ProtonMail,\r\n potřebujeme ověřit, že jste člověk.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Pro ochranu proti zneužití služby ProtonMail,&#13;\n potřebujeme ověřit, že jste člověk.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Chcete-li nastavit nové heslo poštovní schránky, použijte prosím webovou verzi ProtonMail na protonmail.com";
@@ -2142,15 +2144,15 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
-/* settings touchid error */
+/* *
+ *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID není povoleno, povolte jej prosím v Nastavení systému";
 
 /* settings touchid/faceid error */
 "TouchID not available" = "TouchID není k dispozici";
 
-/* mail location desc
-   menu title
-   move action */
+/* *
+ *  MessageAction */
 "Trash" = "Koš";
 
 /* mail location title */
@@ -2186,8 +2188,7 @@
 /* Description */
 "Unable to connect to the server" = "Nelze se připojit k serveru";
 
-/* 
- */
+/* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "Nepodařilo se vytvořit platnou adresu URL s následující cestou: %@";
 
 /* Description */
@@ -2220,10 +2221,11 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "Nelze zpracovat objekt odpovědi:\n%@";
 
-/* Error */
+/* alert title */
 "Unable to parse token" = "Nelze zpracovat token";
 
-/* error when sending the message */
+/* *
+ *  MessageDataService */
 "Unable to send the email" = "Nelze odeslat e-mail";
 
 /* Action */
@@ -2305,21 +2307,20 @@
 /* Title */
 "USER LOGIN" = "PŘIHLÁŠENÍ UŽIVATELE";
 
-/* 
- & title */
+/* title */
 "User name exist" = "Uživatelské jméno již existuje";
 
-/* 
- & alert title */
+/* alert title */
 "User name invalid" = "Neplatné uživatelské jméno";
 
-/* Title */
+/* *
+ *  Login View */
 "Username" = "Uživatelské jméno";
 
-/* Title */
+/* alert title */
 "Verification code request failed" = "Nepodařilo se ověřit požadavek na ověřovací kód";
 
-/* Title */
+/* alert title */
 "Verification code sent" = "Ověřovací kód odeslán";
 
 /* error title */
@@ -2376,8 +2377,7 @@
 /* default vcard types */
 "Work" = "Pracovní";
 
-/* 
- & title */
+/* title */
 "Wrong verification code" = "Neplatný ověřovací kód";
 
 /* Title */
@@ -2420,12 +2420,13 @@
 "You have unsaved changes. Do you want to save it?" = "Máte neuložené změny, chcete je uložit?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %1$d%% of your storage space (%2$@).";
+"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
 
-/* Content of space warning */
+/* *
+ *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Vyčerpali jste celý váš úložný prostor (%@).";
 
-/* Description */
+/* "Alert" */
 "You need at least one recipient to send" = "Potřebujete alespoň jednoho příjemce k odeslání";
 
 /* Alert to confirm logout
@@ -2447,17 +2448,21 @@
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Vaše doručená pošta je nyní chráněna pomocí přímého šifrování. Pro automatické odesílání zabezpečených e-mailů Vašim kontaktům je vyzvěte k použití ProtonMail! Pokud jej nepoužívají, zprávy můžete taky zašifrovat manuálně.";
 
-/* Description */
+/* *
+ *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Váš nový šifrovaný e-mailový účet byl nastaven a je připraven k odesílání a přijímání šifrovaných zpráv.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Váš nový zabezpečený e-mail\r\n je připraven.";
+"Your new secure email\r\n account is ready." = "Váš nový zabezpečený e-mail&#13;\n je připraven.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Váš plán je v současné době aktivní do";
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "Váš plán se automaticky obnoví dne";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in.";
 
 /* Description */
 "Your signature has been updated." = "Váš podpis byl aktualizován.";
