@@ -329,6 +329,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             
             if errCode == 33101 {
                 c.pgpType = .failed_server_validation
+                LocalString._signle_address_invalid_error_content.alertToast(withTitle: false)
                 return
             }
             
@@ -341,6 +342,37 @@ class ComposeViewModelImpl : ComposeViewModel {
             if !c.email.isValidEmail() {
                 errCode = 33102
                 c.pgpType = .failed_validation
+            }
+        }
+    }
+    
+    override func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
+        progress()
+        let mails = contactGroup.getSelectedEmailData().map{$0.email}
+        let reqs = mails.map {UserEmailPubKeys(email: $0, api: self.user.apiService).run()}
+        when(fulfilled: reqs).done { (_) in
+            complete?(nil, 0)
+        }.catch(policy: .allErrors) { (error) in
+            PMLog.D(error.localizedDescription)
+            defer {
+                complete?(nil, errCode)
+            }
+            
+            let err = error as NSError
+            var errCode = err.code
+
+            // Code=33102 "Recipient could not be found"
+            if errCode == 33102 {                LocalString._address_in_group_not_found_error.alertToast(withTitle: false)
+                return
+            }
+            
+            for mail in mails {
+                if mail.isValidEmail() {
+                    continue
+                }
+                errCode = 33102
+                LocalString._address_in_group_not_found_error.alertToast(withTitle: false)
+                break
             }
         }
     }

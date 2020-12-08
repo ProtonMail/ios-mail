@@ -49,6 +49,7 @@ protocol ComposeViewDelegate: class {
     func composeViewPickFrom(_ composeView: ComposeHeaderViewController)
 
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
+    func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?)
 }
 
 protocol ComposeViewDataSource: class {
@@ -844,6 +845,10 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     
     func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
+    }
+    
+    func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
+        self.delegate?.checkMails(in: contactGroup, progress: progress, complete: complete)
     }
     
     // MARK: Private delegate helper methods

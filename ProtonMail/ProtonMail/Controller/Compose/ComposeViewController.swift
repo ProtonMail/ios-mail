@@ -357,8 +357,13 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
         
         let allMails = self.viewModel.toSelectedContacts + self.viewModel.ccSelectedContacts + self.viewModel.bccSelectedContacts
-        let invalidEmails = allMails.filter{ $0.modelType == .contact}.compactMap{ $0 as? ContactVO}.filter{ $0.pgpType == .failed_server_validation || $0.pgpType == .failed_validation }
-        if !invalidEmails.isEmpty {
+        
+        let invalidEmails = allMails
+            .filter{ $0.modelType == .contact}
+            .compactMap{ $0 as? ContactVO}
+            .filter{ $0.pgpType == .failed_server_validation ||
+                $0.pgpType == .failed_validation }
+        guard invalidEmails.isEmpty else {
             let alert = UIAlertController(title: LocalString._address_invalid_error_title,
                                           message: LocalString._address_invalid_error_content,
                                           preferredStyle: .alert)
@@ -589,6 +594,10 @@ extension ComposeViewController : ComposeViewDelegate {
     
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)
+    }
+    
+    func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
+        self.viewModel.checkMails(in: contactGroup, progress: progress, complete: complete)
     }
     
     func composeViewPickFrom(_ composeView: ComposeHeaderViewController) {

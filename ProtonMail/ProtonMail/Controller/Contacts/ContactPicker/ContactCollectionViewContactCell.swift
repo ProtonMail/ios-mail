@@ -26,6 +26,7 @@ import UIKit
 
 protocol ContactCollectionViewContactCellDelegate: class {
     func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
+    func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?)
 }
 
 class ContactCollectionViewContactCell: UICollectionViewCell {
@@ -121,10 +122,6 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     
     func prepareTitleForContactGroup() {
         if let contactGroup = self._model as? ContactGroupVO {
-            self.lockImage.isHidden = false
-            self.activityView.isHidden = true
-            self.leftConstant.constant = 4
-            self.widthConstant.constant = 14
             
             let (selectedCount, totalCount, color) = contactGroup.getGroupInformation()
             self.contactTitleLabel.text = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
@@ -133,6 +130,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             self.lockImage.setupImage(scale: 0.8,
                                       tintColor: UIColor.white,
                                       backgroundColor: UIColor.init(hexString: color, alpha: 1))
+            self.checkMails(in: contactGroup)
         }
     }
     
@@ -173,6 +171,21 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 
                 self.contactTitleLabel.textAlignment = .center
             }
+            self.activityView.stopAnimating()
+        })
+    }
+    
+    private func checkMails(in group: ContactGroupVO) {
+        self.delegate?.checkMails(in: group, progress: {
+            self.leftConstant.constant = 4
+            self.widthConstant.constant = 14
+            self.lockImage.isHidden = true
+            self.activityView.isHidden = false
+            self.activityView.startAnimating()
+        }, complete: { (_, type) in
+            self.isEmailVerified(type: type)
+            self.lockImage.isHidden = false
+            self.activityView.isHidden = true
             self.activityView.stopAnimating()
         })
     }
