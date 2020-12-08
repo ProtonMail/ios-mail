@@ -225,6 +225,10 @@ class ComposeViewModel: NSObject {
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
         fatalError("This method must be overridden")
     }
+    
+    func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
+        fatalError("This method must be overridden")
+    }
 }
 
 

@@ -424,6 +424,17 @@ extension ContactPicker : ContactCollectionViewDelegate {
         }        
     }
     
+    func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
+        self.delegate?.checkMails(in: contactGroup, progress: progress, complete: { (image, type) in
+            complete?(image, type)
+            self.contactCollectionView.performBatchUpdates({
+                self.layoutIfNeeded()
+            }) { (finished) in
+                self.delegate?.finishLockCheck()
+            }
+        })
+    }
+    
     internal func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
         if !__CGSizeEqualToSize(self.contactCollectionViewContentSize, newSize) {
             self.contactCollectionViewContentSize = newSize
