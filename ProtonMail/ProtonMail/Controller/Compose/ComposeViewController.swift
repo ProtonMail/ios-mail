@@ -538,7 +538,12 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     private func updateAttachmentButton () {
-        let count = attachments?.count ?? 0
+        guard let atts = self.viewModel.message?.attachments.allObjects as? [Attachment] else {
+            self.headerView.updateAttachmentButton(false)
+            return
+        }
+        
+        let count = atts.filter({$0.isSoftDeleted == false}).count
         if count > 0 {
             self.headerView.updateAttachmentButton(true)
         } else {
@@ -885,8 +890,9 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
                 self.viewModel.message?.numAttachments = NSNumber(value: newNum)
             }
             
-            self.viewModel.deleteAtt(attachment).ensure {
+            self.viewModel.deleteAtt(attachment).ensure {[weak self]  in
                 attViewController.updateAttachments()
+                self?.updateAttachmentButton()
             }.cauterize()
         }
     }
