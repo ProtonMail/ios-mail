@@ -2827,7 +2827,7 @@ class MessageDataService : Service, HasLocalStorage {
     //  noVerifier = 2
     //  failed     = 3
     //  )
-    func verifyBody(_ message: Message, verifier : Data, passphrase: String) -> SignStatus {
+    func verifyBody(_ message: Message, verifier : [Data], passphrase: String) -> SignStatus {
         let keys = self.userDataSource!.addressKeys
         guard let passphrase = self.userDataSource?.mailboxPassword else {
             return .failed
@@ -2849,6 +2849,7 @@ class MessageDataService : Service, HasLocalStorage {
                 return SignStatus(rawValue: verification.status) ?? .notSigned
             }
         } catch {
+            PMLog.D("error: \(error.localizedDescription)")
         }
         return .failed
     }

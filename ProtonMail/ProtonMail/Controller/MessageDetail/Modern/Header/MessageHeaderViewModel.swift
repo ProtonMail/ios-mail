@@ -105,8 +105,8 @@ extension MessageHeaderViewModel {
                             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                                 //internal emails
                                 if keyRes.recipientType == 1 {
-                                    if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
-                                        let status = self.messageService.verifyBody(self.message, verifier: pgpKeys, passphrase: self.user.mailboxPassword)
+                                    if let contact = contacts.first {
+                                        let status = self.messageService.verifyBody(self.message, verifier: contact.pgpKeys, passphrase: self.user.mailboxPassword)
                                         switch status {
                                         case .ok:
                                             c.pgpType = .internal_trusted_key
@@ -119,8 +119,8 @@ extension MessageHeaderViewModel {
                                         }
                                     }
                                 } else {
-                                    if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
-                                        let status = self.messageService.verifyBody(self.message, verifier: pgpKeys, passphrase: self.user.mailboxPassword)
+                                    if let contact = contacts.first {
+                                        let status = self.messageService.verifyBody(self.message, verifier: contact.pgpKeys, passphrase: self.user.mailboxPassword)
                                         switch status {
                                         case .ok:
                                             if c.pgpType == .zero_access_store {
