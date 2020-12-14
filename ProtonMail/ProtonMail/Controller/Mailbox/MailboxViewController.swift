@@ -959,6 +959,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.updateTapped(status: false)
                 return
             }
+            guard !message.isSending else {
+                //TODO: Change to formal message
+                "Message is being sent now.".alertToast()
+                self.updateTapped(status: false)
+                return
+            }
             
             self.viewModel.messageService.ForcefetchDetailForMessage(message) {_, _, msg, error in
                 guard let objectId = msg?.objectID,

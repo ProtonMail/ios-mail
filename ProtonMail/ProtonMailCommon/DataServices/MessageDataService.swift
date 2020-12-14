@@ -336,6 +336,16 @@ class MessageDataService : Service, HasLocalStorage {
                     let context = self.coreDataService.mainManagedObjectContext
                     self.coreDataService.enqueue(context: context) { (context) in
                         do {
+                            //Prevent the draft is overriden while sending
+                            if labelID == Message.Location.draft.rawValue, let sendingMessageIDs = Message.getIDsofSendingMessage(managedObjectContext: context) {
+                                let idsSet = Set(sendingMessageIDs)
+                                for (index, _) in messagesArray.enumerated() {
+                                    if let msgID = messagesArray[index]["ID"] as? String, idsSet.contains(msgID) {
+                                        messagesArray.remove(at: index)
+                                    }
+                                }
+                            }
+                            
                             if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                                 for message in messages {
                                     // the matedata set, mark the status
@@ -656,6 +666,10 @@ class MessageDataService : Service, HasLocalStorage {
     // MARK : Send message
     func send(inQueue message : Message!, completion: CompletionBlock?) {
         self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID, subtitle: message.title))
+        message.managedObjectContext?.performAndWait {
+            message.isSending = true
+            _ = message.managedObjectContext?.saveUpstreamIfNeeded()
+        }
         self.queue(message, action: .send)
         DispatchQueue.main.async {
             completion?(nil, nil, nil)
@@ -2052,6 +2066,10 @@ class MessageDataService : Service, HasLocalStorage {
                     "attCount": attachments.count
                 ], user: self.usersManager?.getUser(byUserId: self.userID))
                 completion?(nil, nil, err)
+            }.finally {
+                context.performAndWait {
+                    message.isSending = false
+                }
             }
             return
         }

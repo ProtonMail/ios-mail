@@ -45,6 +45,9 @@ extension Message {
         
         // 1.12.0
         static let userID = "userID"
+        
+        // 1.12.9
+        static let isSending = "isSending"
     }
     
     // MARK: - variables
@@ -346,6 +349,10 @@ extension Message {
     
     class func messagesForObjectIDs(_ objectIDs: [NSManagedObjectID], inManagedObjectContext context: NSManagedObjectContext, error: NSErrorPointer) -> [Message]? {
         return context.managedObjectsWithEntityName(Attributes.entityName, forManagedObjectIDs: objectIDs, error: error) as? [Message]
+    }
+    
+    class func getIDsofSendingMessage(managedObjectContext: NSManagedObjectContext) -> [String]? {
+        return (managedObjectContext.managedObjectsWithEntityName(Attributes.entityName, forKey: Attributes.isSending, matchingValue: NSNumber(value: true)) as? [Message])?.compactMap{ $0.messageID }
     }
     
     override public func awakeFromInsert() {
