@@ -570,7 +570,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         guard let attachment = self.viewModel.getAttachments()?.first(where: { $0.fileName.hasPrefix(sid) }) else { return}
         
         // decrement number of attachments in message manually
-        if let number = self.viewModel.message?.attachments.count {
+        if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted }).count {
             let newNum = number > 0 ? number - 1 : 0
             self.viewModel.message?.numAttachments = NSNumber(value: newNum)
         }
@@ -883,18 +883,17 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
             if let content_id = attachment.contentID(), !content_id.isEmpty && attachment.inline() {
                 self.htmlEditor.remove(embedImage: "cid:\(content_id)")
             }
-            
+        }.then { (_) -> Promise<Void> in
+            return self.viewModel.deleteAtt(attachment)
+        }.ensure {
             // decrement number of attachments in message manually
-            if let number = self.viewModel.message?.attachments.count {
-                let newNum = number > 0 ? number - 1 : 0
-                self.viewModel.message?.numAttachments = NSNumber(value: newNum)
+            if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted }).count {
+                self.viewModel.message?.numAttachments = NSNumber(value: number)
             }
             
-            self.viewModel.deleteAtt(attachment).ensure {[weak self]  in
-                attViewController.updateAttachments()
-                self?.updateAttachmentButton()
-            }.cauterize()
-        }
+            attViewController.updateAttachments()
+            self.updateAttachmentButton()
+        }.cauterize()
     }
 
     func attachments(_ attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {
