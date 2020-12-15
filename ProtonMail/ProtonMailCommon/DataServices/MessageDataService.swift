@@ -860,8 +860,6 @@ class MessageDataService : Service, HasLocalStorage {
                                     }
                                 }
                                 
-                                print("xxx -- result: \(newMessage.attachments.count)")
-                                
                                 newMessage.numAttachments = NSNumber(value: localAttachmentCount)
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
