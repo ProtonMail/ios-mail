@@ -150,6 +150,17 @@ struct Element {
             element.tap()
             return element
         }
+        class func swipeLeftByIdentifier(_ identifier: String) -> XCUIElement {
+            let element = app.staticTexts[identifier]
+            element.swipeLeft()
+            return element
+        }
+        class func swipeRightByIdentifier(_ identifier: String) -> XCUIElement {
+            let element = app.staticTexts[identifier]
+            element.swipeRight()
+            return element
+        }
+        
     }
     
     /// As "switch" is reserved swift word use "swittch" instead.

@@ -12,6 +12,8 @@ fileprivate let folderNavBarButtonIdentifier = "UINavigationItem.topFolderButton
 fileprivate let trashNavBarButtonIdentifier = "UINavigationItem.topTrashButton"
 fileprivate let moreNavBarButtonIdentifier = "UINavigationItem.topMoreButton"
 fileprivate let backToInboxNavBarButtonIdentifier = LocalString._menu_inbox_title
+fileprivate let moveToSpamButtonIdentifier = LocalString._locations_move_spam_action
+fileprivate let moveToArchiveButtonIdentifier = LocalString._locations_move_archive_action
 
 /// Reply/Forward buttons
 fileprivate let replyButtonIdentifier = "MessageContainerViewController.replyButton"
@@ -50,7 +52,13 @@ class MessageRobot {
             .tapKeyboardDoneButton()
             .clickCreateFolderButton()
     }
-
+    func clickMoveToSpam() -> MailboxRobotInterface {
+        moreOptions().moveToSpam()
+    }
+    
+    func clickMoveToArchive() -> MailboxRobotInterface {
+        moreOptions().moveToArchive()
+    }
     func moveToTrash() -> InboxRobot {
         Element.wait.forButtonWithIdentifier(trashNavBarButtonIdentifier, file: #file, line: #line).tap()
         return InboxRobot()
@@ -95,6 +103,14 @@ class MessageRobot {
 
         func viewHeaders() {
             
+        }
+        func moveToSpam() -> MailboxRobotInterface {
+            Element.wait.forButtonWithIdentifier(moveToSpamButtonIdentifier, file: #file, line: #line).tap()
+            return MailboxRobotInterface()
+        }
+        func moveToArchive() -> MailboxRobotInterface {
+            Element.wait.forButtonWithIdentifier(moveToArchiveButtonIdentifier, file: #file, line: #line).tap()
+            return MailboxRobotInterface()
         }
     }
     

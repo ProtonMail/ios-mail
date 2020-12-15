@@ -10,6 +10,7 @@ fileprivate let menuButton = "Menu"
 let composeButtonLabel = "Compose"
 fileprivate let mailboxTableViewIdentifier = "MailboxViewController.tableView"
 fileprivate let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
+fileprivate let mailboxNoResultIdentifier = "MailboxViewController.noResultLabel"
 fileprivate func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)" }
 
 /**
@@ -37,7 +38,13 @@ class MailboxRobotInterface {
     func swipeLeftMessageAtPosition(_ position: Int) -> MailboxRobotInterface {
         return self
     }
-
+    
+    @discardableResult
+    func spamMessageBySubject(_ subject: String) -> MailboxRobotInterface {
+        Element.staticText.swipeLeftByIdentifier(subject)
+        return self
+    }
+    
     @discardableResult
     func longClickMessageOnPosition(_ position: Int) -> MailboxRobotInterface {
         return self
@@ -81,6 +88,10 @@ class MailboxRobotVerifyInterface {
     
     func messageExists(_ subject: String) {
         Element.wait.forCellWithIdentifier(messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_")))
+    }
+    
+    func messageIsEmpty() {
+        Element.wait.forStaticTextFieldWithIdentifier(mailboxNoResultIdentifier).assertWithLabel("No Messages")
     }
 
     func draftWithAttachmentSaved(draftSubject: String) {
