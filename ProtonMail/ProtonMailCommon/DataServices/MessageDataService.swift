@@ -847,7 +847,23 @@ class MessageDataService : Service, HasLocalStorage {
                                     }
                                 }
                                 
+                                let localAttachments = newMessage.attachments.allObjects.compactMap{ $0 as? Attachment}.filter{ !$0.isSoftDeleted }
+                                let localAttachmentCount = localAttachments.count
+                                
+                                //This will remove all attachments that are still not uploaded to BE
                                 try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context)
+                                
+                                //Adds back the attachments that are still uploading
+                                for att in localAttachments {
+                                    if !newMessage.attachments.contains(att) {
+                                        newMessage.attachments.adding(att)
+                                        att.message = newMessage
+                                    }
+                                }
+                                
+                                print("xxx -- result: \(newMessage.attachments.count)")
+                                
+                                newMessage.numAttachments = NSNumber(value: localAttachmentCount)
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
                                 self.queue(newMessage, action: .read)
