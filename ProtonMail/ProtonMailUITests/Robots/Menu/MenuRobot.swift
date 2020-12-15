@@ -14,6 +14,8 @@ private let sentStaticText = "MenuTableViewCell.\(LocalString._menu_sent_title)"
 private let contactsStaticText = "MenuTableViewCell.\(LocalString._menu_contacts_title)"
 private let draftsStaticText = "MenuTableViewCell.\(LocalString._menu_drafts_title)"
 private let settingsStaticText = "MenuTableViewCell.\(LocalString._menu_settings_title)"
+private let spamStaticText = "MenuTableViewCell.\(LocalString._menu_spam_title)"
+private let trashStaticText = "MenuTableViewCell.\(LocalString._menu_trash_title)"
 private let sidebarHeaderViewOtherIdentifier = "MenuViewController.headerView"
 private let manageAccountsStaticTextIdentifier = "MenuButtonViewCell.\(LocalString._menu_manage_accounts.replaceSpaces())"
 private func userAccountCellIdentifier(_ email: String) -> String { return "MenuUserViewCell.\(email)" }
@@ -46,6 +48,11 @@ class MenuRobot {
     func drafts() -> DraftsRobot {
         Element.wait.forCellWithIdentifier(draftsStaticText, file: #file, line: #line).tap()
         return DraftsRobot()
+    }
+    
+    func spams() -> SpamRobot {
+        Element.wait.forCellWithIdentifier(spamStaticText, file: #file, line: #line).tap()
+        return SpamRobot()
     }
     
     func accountsList() -> MenuAccountListRobot {
