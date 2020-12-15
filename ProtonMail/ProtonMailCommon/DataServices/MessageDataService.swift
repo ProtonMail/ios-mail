@@ -460,17 +460,16 @@ class MessageDataService : Service, HasLocalStorage {
                                             completion?(task, responseDict, error)
                                         }
                                         return
-//                                        lastUpdatedStore.lastEventID = IDRes.eventID
                                     }
                                     completion?(task, responseDict, error)
                                 }
-                                //TODO:: fix me
-                                //self.cleanMessage()
-                                _ = self.contactDataService.cleanUp().ensure {
+                                self.cleanMessage().then {
+                                    return self.contactDataService.cleanUp()
+                                }.ensure {
                                     self.fetchMessages(byLable: labelID, time: 0, forceClean: false, completion: completionWrapper)
                                     self.contactDataService.fetchContacts(completion: nil)
                                     self.labelDataService.fetchLabels()
-                                }
+                                }.cauterize()
                             } else {
                                 completion?(task, nil, nil)
                             }
