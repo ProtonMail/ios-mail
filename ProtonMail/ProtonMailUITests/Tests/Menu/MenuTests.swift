@@ -32,7 +32,7 @@ class MenuTests : BaseTestCase {
     func testSaveTwoWordsDisplayName() {
         let randomString = StringUtils().randomAlphanumericString()
         let newDisplayName = "\(testData.onePassUser.name) \(randomString)"
-        let shortName = "\(newDisplayName.prefix(1).uppercased())\(randomString.prefix(1).uppercased())"
+        let shortName = "\(newDisplayName.prefix(1))\(randomString.prefix(1))".uppercased()
         
         loginRobot
             .loginUser(testData.onePassUser)
@@ -45,6 +45,6 @@ class MenuTests : BaseTestCase {
             .navigateBackToSettings()
             .menuDrawer()
             .accountsList()
-            .verify.accountShortNameIsCorrect(testData.onePassUser, shortName)
+            .verify.accountShortNameIsCorrect(testData.onePassUser, shortName.uppercased())
     }
 }
