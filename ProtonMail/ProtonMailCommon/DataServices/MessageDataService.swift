@@ -860,7 +860,9 @@ class MessageDataService : Service, HasLocalStorage {
                                     }
                                 }
                                 
+                                //Use local attachment count since the not-uploaded attachment is not counted
                                 newMessage.numAttachments = NSNumber(value: localAttachmentCount)
+                                
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
                                 self.queue(newMessage, action: .read)
