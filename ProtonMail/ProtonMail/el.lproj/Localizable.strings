@@ -2123,7 +2123,7 @@
 "To" = "Προς";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Για να αποτρέψουμε την κατάχρηση του ProtonMail,&#13;\n πρέπει να επαληθεύσουμε ότι είστε άνθρωπος.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Για να αποτρέψουμε την κατάχρηση του ProtonMail,\r\n πρέπει να επαληθεύσουμε ότι είστε άνθρωπος.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Για να επαναφέρετε τον κωδικό θυρίδας σας, παρακαλώ χρησιμοποιήστε την έκδοση web του ProtonMail στο protonmail.com";
@@ -2453,7 +2453,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ο νέος σας κρυπτογραφημένος λογαριασμός email έχει ρυθμιστεί και είναι έτοιμος να στέλνει και να λαμβάνει κρυπτογραφημένα μηνύματα.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Ο νέος σας ασφαλής λογαριασμός E-mail&#13;\n είναι έτοιμος.";
+"Your new secure email\r\n account is ready." = "Ο νέος σας ασφαλής λογαριασμός E-mail\r\n είναι έτοιμος.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Το πακέτο/πλάνο σας είναι ενεργό μέχρι";

@@ -2123,7 +2123,7 @@
 "To" = "Către";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Pentru a preveni abuzarea ProtonMail,&#13;\n verificăm dacă sunteți persoană.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Pentru a preveni abuzarea ProtonMail,\r\n verificăm dacă sunteți persoană.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pentru a reseta parola mesajelor, vă rugăm să folosiți versiunea web a ProtonMail de la protonmail.com";
@@ -2453,7 +2453,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Noul dvs. cont de e-mail criptat a fost setat și este pregătit pentru trimiterea și primirea mesajelor criptate.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Noul cont de e-mail&#13;\n securizat este gata.";
+"Your new secure email\r\n account is ready." = "Noul cont de e-mail\r\n securizat este gata.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Abonamentul este activ până la";
