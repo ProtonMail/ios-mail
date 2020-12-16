@@ -889,7 +889,7 @@
 "Expires" = "Verloopt";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "Verloopt over %d dagen %d uur %d minuten %d seconden";
 
 /* Title */
 "Expiring Messages" = "Verlooptijd";
@@ -2420,7 +2420,7 @@
 "You have unsaved changes. Do you want to save it?" = "U heeft nog niet-opgeslagen wijzigingen. Wilt u deze opslaan?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "U heeft %d%% van uw opslagruimte gebruikt (%@).";
 
 /* *
  *  StorageLimit */

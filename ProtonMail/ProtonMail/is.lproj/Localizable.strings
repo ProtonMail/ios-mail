@@ -889,7 +889,7 @@
 "Expires" = "Rennur út";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "Rennur út eftir %d daga %d klst %d mín %d sek";
 
 /* Title */
 "Expiring Messages" = "Skilaboð sem renna út";
@@ -1455,7 +1455,7 @@
 "On EE, MMM d, yyyy at %@" = "EE, d. MMM, yyyy klukkan %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "%2$@ skrifaði EE, d. MMM, yyyy klukkan %1$@:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d. MMM, yyyy kl. %1$@, skrifaði %2$@:";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Aðeins er hægt að bæta við einum ókeypis aðgangi";
@@ -2420,7 +2420,7 @@
 "You have unsaved changes. Do you want to save it?" = "Það eru óvistaðar breytingar. Viltu vista þær?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "Þú hefur notað %d%% af geymslurýminu þínu (%@).";
 
 /* *
  *  StorageLimit */
@@ -2462,7 +2462,7 @@
 "Your plan will automatically renew on" = "Áskriftin þín mun endurnýjast sjálfkrafa þann";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Setan þín er útrunnin því þú varst aðgerðalaus um tíma eða þá að hún hefur verið afturkölluð. Skráðu þig aftur inn.";
 
 /* Description */
 "Your signature has been updated." = "Undirskriftin þín hefur verið uppfærð.";

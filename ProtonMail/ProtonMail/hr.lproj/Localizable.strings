@@ -889,7 +889,7 @@
 "Expires" = "Ističe";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "Ističe za %d dana %d sati %d minuta %d sekundi";
 
 /* Title */
 "Expiring Messages" = "Poruke s vremenskim istekom";
@@ -2420,7 +2420,7 @@
 "You have unsaved changes. Do you want to save it?" = "Imate nespremljene promjene. Želite li ih spremiti?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "Iskoristili ste %d%% od vašeg prostora za pohranu (%@).";
 
 /* *
  *  StorageLimit */

@@ -889,7 +889,7 @@
 "Expires" = "Expira";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "Caduca en %d dies %d hores %d minuts %d segons";
 
 /* Title */
 "Expiring Messages" = "Expiració de missatges";
@@ -2420,7 +2420,7 @@
 "You have unsaved changes. Do you want to save it?" = "Hi ha canvis no desats. Vols desar-los?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "Heu utilitzat %d%% del vostre espai d'emmagatzematge (%@).";
 
 /* *
  *  StorageLimit */

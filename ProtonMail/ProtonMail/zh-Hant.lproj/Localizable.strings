@@ -889,7 +889,7 @@
 "Expires" = "有效期限";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "於 %d 天又 %d 小時 %d 分鐘 %d 秒後失效";
 
 /* Title */
 "Expiring Messages" = "有限期限信件";
@@ -2420,7 +2420,7 @@
 "You have unsaved changes. Do you want to save it?" = "您有尚未儲存的更動，是否要存檔？";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "您已經使用了 %d%% 的儲存空間 (%@)。";
 
 /* *
  *  StorageLimit */

@@ -889,7 +889,7 @@
 "Expires" = "Expira";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "Expira em %d dias %d horas %d minutos %d segundos";
 
 /* Title */
 "Expiring Messages" = "Mensagens expirando";
@@ -2420,7 +2420,7 @@
 "You have unsaved changes. Do you want to save it?" = "Você tem alterações não salvas. Você deseja salvá-las?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "Você usou %d%% do seu espaço de armazenamento (%@).";
 
 /* *
  *  StorageLimit */
@@ -2462,7 +2462,7 @@
 "Your plan will automatically renew on" = "Seu plano será renovado automaticamente em";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sua sessão expirou porque você está inativo por um tempo ou porque foi revogada. Por favor, faça o login novamente.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "A sua sessão expirou por ter estado inativa durante algum tempo ou por ter sido revogada. Por favor, inicie novamente a sessão.";
 
 /* Description */
 "Your signature has been updated." = "Sua assinatura foi atualizada.";
