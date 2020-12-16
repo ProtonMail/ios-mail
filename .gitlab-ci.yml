@@ -120,7 +120,7 @@ build-app-and-upload:
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - fastlane ios build
   tags:
-    - iOS
+    - iOS-deploy
 
 # --- Translation related tasks ---
 i18n-sync-crowdin:
