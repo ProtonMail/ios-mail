@@ -2123,7 +2123,7 @@
 "To" = "I";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Akken ad seḥbiber mgal yir aseqdec n ProtonMail,\r\n Nesra ad nsenqed d akken d amdan i telliḍ.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Akken ad seḥbiber mgal yir aseqdec n ProtonMail,&#13;\n Nesra ad nsenqed d akken d amdan i telliḍ.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffi, seqdec lqem web n ProtonMail di protonmail.com";
@@ -2453,7 +2453,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Amiḍan-ik amaynut n yimaylen iwgelhanen yers, udiɣ ihegga i tuzna d urmas i yiznan iwgelhanen.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Amiḍan-ik amaynut n yimayl\r\n aɣelsan ihegga.";
+"Your new secure email\r\n account is ready." = "Amiḍan-ik amaynut n yimayl&#13;\n aɣelsan ihegga.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Aɣawas-ik/m yermed armi";

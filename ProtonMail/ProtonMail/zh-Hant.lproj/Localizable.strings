@@ -889,7 +889,7 @@
 "Expires" = "有效期限";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "於 %d 天又 %d 小時 %d 分鐘 %d 秒後失效";
 
 /* Title */
 "Expiring Messages" = "有限期限信件";
@@ -2123,7 +2123,7 @@
 "To" = "收件人";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "為了避免ProtonMail的服務被濫用,\r\n 我們需要驗證您是人類。";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "為了避免ProtonMail的服務被濫用,&#13;\n 我們需要驗證您是人類。";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "要重設您的郵箱密碼，請到 protonmail.com 使用網頁版ProtonMail";
@@ -2420,7 +2420,7 @@
 "You have unsaved changes. Do you want to save it?" = "您有尚未儲存的更動，是否要存檔？";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "您已經使用了 %d%% 的儲存空間 (%@)。";
 
 /* *
  *  StorageLimit */
@@ -2453,7 +2453,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "新的加密電子郵件帳戶已經設置完成，您可以開始收發加密訊息。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "您新的安全電子郵件\r\n 帳戶已準備就緒。";
+"Your new secure email\r\n account is ready." = "您新的安全電子郵件&#13;\n 帳戶已準備就緒。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "您的計畫當前處於啟用狀態直到";

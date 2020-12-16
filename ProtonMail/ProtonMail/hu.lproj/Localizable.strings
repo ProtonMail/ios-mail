@@ -243,7 +243,7 @@
 "Are you sure you want to logout %@?" = "Biztos, hogy ki szeretne jelentkezni, %@?";
 
 /* Alert to confirm logout */
-"Are you sure you want to logout?" = "Are you sure you want to logout?";
+"Are you sure you want to logout?" = "Biztos, hogy ki szeretne jelentkezni?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Biztos benne? Ezt nem lehet visszavonni.";
@@ -889,7 +889,7 @@
 "Expires" = "Lejár";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "Érvényes %d nap %d óra %d perc %d másodpercig";
 
 /* Title */
 "Expiring Messages" = "Időkorlátos üzenetek";
@@ -2123,7 +2123,7 @@
 "To" = "Címzett";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "A ProtonMaillel való visszaélések elkerülése érdekében \r\n ellenőriznünk kell, hogy nem robot.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "A ProtonMaillel való visszaélések elkerülése érdekében &#13;\n ellenőriznünk kell, hogy nem robot.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Az e-mail fiók jelszavának helyreállításához, kérjük, használja a ProtonMail webes felületét, a protonmail.com címen";
@@ -2420,7 +2420,7 @@
 "You have unsaved changes. Do you want to save it?" = "A változtatások nincsenek elmentve. Szeretné megtartani őket?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "A tárhelye %d%%-ban felhasznált (%@).";
 
 /* *
  *  StorageLimit */
@@ -2453,7 +2453,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Az új e-mail fiókja készen áll a titkosított üzenetek fogadására és küldésére.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Az új biztonságos e-mail\r\n fiókja készen áll.";
+"Your new secure email\r\n account is ready." = "Az új biztonságos e-mail&#13;\n fiókja készen áll.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "A jelenlegi csomagja aktív:";
@@ -2462,7 +2462,7 @@
 "Your plan will automatically renew on" = "A jelenlegi csomagja automatikusan megújításra kerül:";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "A munkamenet lejárt, mert egy ideje inkatív volt, vagy visszavonták. Kérjük jelentkezzen be ismét.";
 
 /* Description */
 "Your signature has been updated." = "Az aláírás frissítve.";
