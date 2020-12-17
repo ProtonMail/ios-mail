@@ -176,17 +176,22 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     }
     
     private func checkMails(in group: ContactGroupVO) {
-        self.delegate?.checkMails(in: group, progress: {
-            self.leftConstant.constant = 4
-            self.widthConstant.constant = 14
-            self.lockImage.isHidden = true
-            self.activityView.isHidden = false
-            self.activityView.startAnimating()
-        }, complete: { (_, type) in
-            self.isEmailVerified(type: type)
-            self.lockImage.isHidden = false
-            self.activityView.isHidden = true
-            self.activityView.stopAnimating()
+        self.delegate?.checkMails(in: group, progress: { [weak self] in
+            self?.leftConstant.constant = 4
+            self?.widthConstant.constant = 14
+            self?.lockImage.isHidden = true
+            self?.activityView.isHidden = false
+            self?.activityView.startAnimating()
+        }, complete: { [weak self](_, type) in
+            let (_, _, color) = group.getGroupInformation()
+            self?.isEmailVerified(type: type)
+            self?.lockImage.image = UIImage.init(named: "contact_groups_icon")
+            self?.lockImage.setupImage(scale: 0.8,
+                                      tintColor: UIColor.white,
+                                      backgroundColor: UIColor.init(hexString: color, alpha: 1))
+            self?.lockImage.isHidden = false
+            self?.activityView.isHidden = true
+            self?.activityView.stopAnimating()
         })
     }
     
