@@ -48,35 +48,6 @@ class AccountSettingsTests : BaseTestCase {
             .save()
             .verify.displayNameShownWithText(newDisplayName)
     }
-    
-    func testSaveSpecialCharacterDisplayName() {
-        let emoji = "😀"
-        let randomString = StringUtils().randomAlphanumericString()
-        let newDisplayName = "\(emoji)\(testData.onePassUser.name)\(randomString)"
-        accountSettingsRobot
-            .displayName()
-            .setDisplayNameTextTo(newDisplayName)
-            .save()
-            .navigateBackToSettings()
-            .menuDrawer()
-            .accountsList()
-            .verify.accountShortNameIsCorrect(testData.onePassUser, emoji)
-    }
-    
-    func testSaveTwoWordsDisplayName() {
-        let randomString = StringUtils().randomAlphanumericString()
-        let newDisplayName = "\(testData.onePassUser.name) \(randomString)"
-        let shortName = "\(newDisplayName.prefix(1))\(randomString.prefix(1))"
-        
-        accountSettingsRobot
-            .displayName()
-            .setDisplayNameTextTo(newDisplayName)
-            .save()
-            .navigateBackToSettings()
-            .menuDrawer()
-            .accountsList()
-            .verify.accountShortNameIsCorrect(testData.onePassUser, shortName)
-    }
 
     func testSwitchSignatureToggleOn() {
         let signature = "\(StringUtils().randomAlphanumericString())</br>\(StringUtils().randomAlphanumericString())"
