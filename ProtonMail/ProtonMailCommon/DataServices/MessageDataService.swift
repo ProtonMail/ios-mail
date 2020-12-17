@@ -854,13 +854,24 @@ class MessageDataService : Service, HasLocalStorage {
                                 
                                 //Adds back the attachments that are still uploading
                                 for att in localAttachments {
-                                    if !newMessage.attachments.contains(att) {
-                                        newMessage.attachments.adding(att)
-                                        att.message = newMessage
+                                    if att.managedObjectContext != nil {
+                                        if !newMessage.attachments.contains(att) {
+                                            newMessage.attachments.adding(att)
+                                            att.message = newMessage
+                                        }
+                                    } else {
+                                        if let newAtt = context.object(with: att.objectID) as? Attachment {
+                                            if !newMessage.attachments.contains(newAtt) {
+                                                newMessage.attachments.adding(newAtt)
+                                                newAtt.message = newMessage
+                                            }
+                                        }
                                     }
                                 }
                                 
+                                //Use local attachment count since the not-uploaded attachment is not counted
                                 newMessage.numAttachments = NSNumber(value: localAttachmentCount)
+                                
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
                                 self.queue(newMessage, action: .read)
