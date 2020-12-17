@@ -321,6 +321,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.coordinator?.go(to: .search)
     }
     @objc internal func labelButtonTapped() {
+        self.removePresentedViewController()
         guard !self.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._apply_labels)
             return
@@ -329,6 +330,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     @objc internal func folderButtonTapped() {
+        self.removePresentedViewController()
         guard !self.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._labels_move_to_folder)
             return
@@ -338,12 +340,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     /// unread tapped, this is the button in navigation bar 
     @objc internal func unreadTapped() {
+        self.removePresentedViewController()
         self.viewModel.mark(IDs: self.selectedIDs, unread: true)
         cancelButtonTapped()
     }
     
     /// remove button tapped. in the navigation bar
     @objc internal func removeButtonTapped() {
+        self.removePresentedViewController()
         guard !self.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._warning)
             return

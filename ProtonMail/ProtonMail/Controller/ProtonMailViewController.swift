@@ -110,6 +110,11 @@ extension UIViewController {
             NSAttributedString.Key.font: navigationBarTitleFont
         ]
     }
+    
+    func removePresentedViewController() {
+        guard let vc = self.presentedViewController else {return}
+        vc.dismiss(animated: true, completion: nil)
+    }
 }
 
 
