@@ -77,8 +77,7 @@
 /* Account manager title */
 "Account" = "Amiḍan";
 
-/* 
- & title */
+/* title */
 "Account password invalid" = "Yir awal uffir n umidan";
 
 /* section title in settings */
@@ -162,7 +161,7 @@
 /* cell title in device settings */
 "Addresses" = "Tansiwin";
 
-/* Title */
+/* alert title */
 "Alert" = "Alɣu";
 
 /* Title */
@@ -243,6 +242,9 @@
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "Tebɣiḍ s tidet ad teffɣeḍ %@?";
 
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Tebɣiḍ s tidet ad tefɣeḍ?";
+
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "S tidet? Ulac tuɣalin ar deffir.";
 
@@ -297,7 +299,7 @@
 /* Error */
 "Bad auth cache" = "Yir tuffirt n usesteb";
 
-/* Error title */
+/* title */
 "Bad parameter" = "Yir asebdad";
 
 /* Error Description */
@@ -306,7 +308,7 @@
 /* title */
 "Bad path" = "Yir abrid";
 
-/* Error Description */
+/* title */
 "Bad response" = "Yir tiririt";
 
 /* Title */
@@ -382,7 +384,8 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Ur izmir ara ad yaf afaylu-agi yeddan!";
 
-/* update password error = typo:Modulus */
+/* sign up user error when can't get moduls id
+ update password error */
 "Can't get a Moduls ID!" = "Ur izmir ara ad d-yawi asulay Moduls!";
 
 /* update password error = typo:Modulus */
@@ -427,7 +430,8 @@
 /* message Cc: feild */
 "Cc:" = "Anɣ. I:";
 
-/* place holder */
+/* *
+ *  PhoneVerifyViewController */
 "Cell phone number" = "Uṭṭun n tiliɣri n ufus";
 
 /* Title */
@@ -442,7 +446,7 @@
 /* Title */
 "Change Mailbox Password" = "Snifel awal uffir n tnaka n yimayl";
 
-/* update password error title */
+/* title */
 "Change Password" = "Snifel awal uffir";
 
 /* settings protection section title */
@@ -463,7 +467,7 @@
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "Senqed addad n Proton i waddad n unagraw-nneɣ";
 
-/* loading message */
+/* "Username" */
 "Checking ...." = "Asenqed....";
 
 /* place holder */
@@ -490,14 +494,15 @@
 /* cell title in device settings */
 "Combined Contacts" = "Combined Contacts";
 
-/* Action
-   Springboard (3D Touch) shortcuts action */
+/* *
+ *  Composer Email view controller */
 "Compose" = "Aru";
 
 /* Title */
 "Compose to" = "Aru i";
 
-/* Action */
+/* *
+ *  MenuViewController */
 "Confirm" = "Sentem";
 
 /* "Login Password" */
@@ -579,7 +584,7 @@
 /* title of button in account connect page */
 "Create new account" = "Snulfu-d amiḍan amaynut";
 
-/* error message title when create new user */
+/* error part & alert title */
 "Create user failed" = "Timerna n useqdac tecceḍ";
 
 /* Error */
@@ -643,7 +648,8 @@
 /* place holder */
 "Define Password" = "Sbadu awal uffir";
 
-/* general delete action */
+/* *
+ *  Contacts View Controller */
 "Delete" = "Kkes";
 
 /* emptify folder/label confirmation alert */
@@ -658,7 +664,8 @@
 /* mail location desc */
 "Deleted" = "Ittwakkes";
 
-/* Title */
+/* *
+ *  Email Header View */
 "Details" = "Talqayt";
 
 /* network troubleshot cell title */
@@ -679,7 +686,8 @@
 /* Title in settings */
 "Display Name" = "Isem ittwasken-d";
 
-/* Title */
+/* *
+ *  SettingsViewController & alert title */
 "Display Name Updated" = "Isem n uskan yettwalqem";
 
 /* Title in display name settings */
@@ -747,10 +755,11 @@
 /* default vcard types */
 "Email" = "Imayl";
 
-/* contact placeholder */
+/* *
+ *  Email Verify View Controller */
 "Email address" = "Tansa imayl";
 
-/* Title */
+/* alert title */
 "Email address invalid" = "Tansa imayl mači d tameɣtut";
 
 /* contact detail view, email addresses section title */
@@ -762,8 +771,7 @@
 /* place holder */
 "Email default signature" = "Azmul imayl s lexsaṣ";
 
-/* 
- & title */
+/* title */
 "Email domain invalid" = "Yir taɣult n yimayl";
 
 /* human check option button */
@@ -772,7 +780,7 @@
 /* cell title in device setting */
 "Empty Cache" = "Empty Cache";
 
-/* empty folder, for spam and trash and drafts */
+/* "Cancel" */
 "Empty Folder" = "Silem akaram";
 
 /* it is an option to empty the label */
@@ -881,7 +889,7 @@
 "Expires" = "Ad yemmet";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Ad yemmet deg %1$d wussan %2$d n isragen %3$d n tesdatin %4$d n tasinin";
+"Expires in %d days %d hours %d mins %d seconds" = "Ad yemmet di %d n wussan %d n yisragen %d tisdatin %d n tasinin";
 
 /* Title */
 "Expiring Messages" = "Iznan ara yemten";
@@ -1046,11 +1054,11 @@
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Akken ad tesqedceḍ imezla-nneq, yessefk ad tqebleḍ tiwtilin timatutin n useqdec n ProtonMail.";
 
-/* mail location desc
-   menu title */
+/* "Deleted" */
 "Inbox" = "Tanaka n urmas";
 
-/* mail location title */
+/* *
+ *  MailboxViewController */
 "INBOX" = "TANAKA N URMAS";
 
 /* Title */
@@ -1086,10 +1094,7 @@
 /* (No Comment) */
 "Invalid access token please relogin" = "Ajiṭun n unekcum mačči d ameɣtu, ɛreḍ tulsa n tuqqna";
 
-/* Description */
-"Invalid access token. Please relogin." = "Ajiṭun n unekcum mačči d ameɣtu. Ttxil-k eɛreḍ ad teqneḍ tikkelt-nniḍen.";
-
-/* Error */
+/* alert title */
 "Invalid credential" = "Yir anekcum";
 
 /* update password error */
@@ -1128,7 +1133,8 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Tasarut mačči d tameɣtut. Ma ulac aɣilif uɣal ar deffir sakin ɛreḍ tikkelt nniḍen.";
 
-/* Title */
+/* *
+ *  MoreOptionsView */
 "Label as..." = "Tibzimin am...";
 
 /* Title */
@@ -1286,10 +1292,10 @@
 /* Placeholder */
 "Message Password" = "Awal uffir n yizen";
 
-/* Description */
+/* composer view */
 "Message password does not match." = "Awalen uffiren n yizen ur menṭaḍen ara.";
 
-/* settings debug section title */
+/* "Cancel" */
 "Message Queue" = "Tabdert n uraǧu n yiznan";
 
 /* (No Comment) */
@@ -1313,7 +1319,8 @@
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Azmul n uziraz";
 
-/* Description */
+/* *
+ *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Ijerriden ɣef tiliɣriyin nsan akka tura. Ma ulac aɣilif ɛreḍ ticki neɣ ɛreḍ s ujerred di protonmail.com s useqdec n uselkim n tnarit neɣ n ufus.";
 
 /* Description */
@@ -1337,7 +1344,7 @@
 /* folder apply - title */
 "Move to Folder" = "Awi ar ukaram";
 
-/* move action */
+/* "Trash" */
 "Move to Inbox" = "Awi ar tanaka n urmas";
 
 /* move action */
@@ -1437,7 +1444,8 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "Asgen n ilɣa yexsi";
 
-/* Action */
+/* *
+ *  ReportBugsViewController */
 "OK" = "IH";
 
 /* Title */
@@ -1470,7 +1478,7 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Tarbaɛt-nneɣ n tallelt n yimsaɣen ad teɛreḍ ad termed aɣawas-ik•im n useqdec s ufus ma tqebleḍ ad d-tessedduḍ isefka itikniken i d-yettunefken i usnas sɣur AppStore deg wakud n tmesɣiwt. Isefka-a ur gebbren ara ifatusen ɣef umiḍan-ik•im iTunes, asulay ID n Apple, tikarḍiwin n usmad i icudden ɣur-s, neɣ isallen-nniḍen ɣef useqdac. Isefka itikniken ad aɣ-ɛawnen kan ad nsenqed dakken tanigawt teḍra-d deg yiqeddacen n AppStore.";
 
-/* mail location desc */
+/* "Draft" = "Draft"; */
 "Outbox" = "Tanaka n tuzna";
 
 /* title */
@@ -1515,13 +1523,14 @@
 /* contact placeholder */
 "Phone number" = "Uṭṭun n tiliɣri";
 
-/* Title */
+/* "Verification code request failed" */
 "Phone number invalid" = "Yir uṭṭun n tiliɣri";
 
 /* human check option button */
 "Phone Verification" = "Asenqed n tiliɣri";
 
-/* Title */
+/* *
+ *  Attachment table ViewController */
 "Photo Library" = "Tanedlist n tewlaft";
 
 /* device settings auto lock type title */
@@ -1596,9 +1605,7 @@
 /* (No Comment) */
 "Please try a different user name." = "Ma ulac aɣilif, ɛreḍ isem-nniḍen n useqdac.";
 
-/* 
-
- */
+/* (No Comment) */
 "Please try again." = "Ɛreḍ tikelt nniḍen";
 
 /* Error message */
@@ -1622,8 +1629,7 @@
 /* The */
 "Please wait until the email downloaded!" = "Rǧu imayl ar d-yader!";
 
-/* 
- & alert title */
+/* alert title */
 "Please, manage it in your phone." = "Please, manage it in your phone.";
 
 /* Upgrade warning title */
@@ -1704,7 +1710,8 @@
 /* Title */
 "Recovery Code" = "Tangalt n tririt";
 
-/* Title */
+/* *
+ *  SignUpEmailViewController */
 "Recovery Email" = "Imayl n tririt";
 
 /* Title */
@@ -1728,7 +1735,8 @@
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Ales";
 
-/* reply action */
+/* *
+ *  Controller Defined */
 "Reply" = "Err";
 
 /* reply all action */
@@ -1776,8 +1784,8 @@
 /* action sheet option */
 "Scheduled" = "Yettusɣiwes";
 
-/* Springboard (3D Touch) shortcuts action
-   Title */
+/* *
+ *  SearchViewController */
 "Search" = "Nadi";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1795,7 +1803,7 @@
 /* Action */
 "Send anyway" = "Azen akken ibɣu yilli";
 
-/* Description */
+/* when subject not empty */
 "Send message without subject?" = "Azen izen s war asentel?";
 
 /* Title */
@@ -1907,13 +1915,10 @@
 /* Title */
 "Star" = "Itri";
 
-/* mail location desc
-   menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
+/* "Spam" */
 "Starred" = "S yitran";
 
-/* mail location title */
+/* "INBOX" */
 "STARRED" = "INURIFEN";
 
 /* settings option (Start Time: 8am) */
@@ -1992,8 +1997,7 @@
 /* Description */
 "The authentication credentials are invalid." = "Talɣut n usesteb n yizen awgelhan d tarmeɣtut.";
 
-/* 
- */
+/* (No Comment) */
 "The authentication token has expired." = "Ajuṭun n usesteb yemmut.";
 
 /* key size notes */
@@ -2066,15 +2070,14 @@
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Aseqdac yeqqen yakan";
 
-/* 
- */
+/* (No Comment) */
 "The UserName have been taken." = "Isem n useqdac yettwaṭṭef yakan.";
 
-/* 
- & title */
+/* title */
 "The verification email invalid" = "Imayl n usenqed mačči d ameɣtu";
 
-/* Error */
+/* *
+ *  RecaptchaViewController */
 "The verification failed!" = "Icceḍ usenqed!";
 
 /* alert when logout user if in queue still have tasks */
@@ -2086,8 +2089,7 @@
 /* Description */
 "There was an error creating or loading the app's saved data." = "Tella tuccḍa di tmerna neɣ asali n usali n isefka yettwaskelsen n usnas.";
 
-/* 
- & local error */
+/* local error */
 "There was an error creating or loading the application's saved data." = "Tella tuccḍa di tmerna neɣ asali n usali n isefka yettwaskelsen n usnas.";
 
 /* Alert message */
@@ -2142,15 +2144,15 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
-/* settings touchid error */
+/* *
+ *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID ur yermid ara, sermed-it deg iɣewwaṛen n unagraw";
 
 /* settings touchid/faceid error */
 "TouchID not available" = "TouchID ulac-it";
 
-/* mail location desc
-   menu title
-   move action */
+/* *
+ *  MessageAction */
 "Trash" = "Taqecwalt";
 
 /* mail location title */
@@ -2186,8 +2188,7 @@
 /* Description */
 "Unable to connect to the server" = "Ur izmir ara ad yeqqen ɣer uqeddac";
 
-/* 
- */
+/* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "UR izmir ara ad yebnu URL tameɣtut s ubrid-agi: %@";
 
 /* Description */
@@ -2220,10 +2221,11 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "Ur izmir ara ad yesleḍ asentel n tririt:\n%@";
 
-/* Error */
+/* alert title */
 "Unable to parse token" = "Ur izmir ara ad yesleḍ ajiṭun";
 
-/* error when sending the message */
+/* *
+ *  MessageDataService */
 "Unable to send the email" = "Ur izmir ara ad yazen imayl.";
 
 /* Action */
@@ -2305,21 +2307,20 @@
 /* Title */
 "USER LOGIN" = "TUQQNA N USEQDAC";
 
-/* 
- & title */
+/* title */
 "User name exist" = "Isem n useqdac yella";
 
-/* 
- & alert title */
+/* alert title */
 "User name invalid" = "Yir aseqdac";
 
-/* Title */
+/* *
+ *  Login View */
 "Username" = "Isem n useqdac";
 
-/* Title */
+/* alert title */
 "Verification code request failed" = "Asuter n tengalt n usenqed yecceḍ";
 
-/* Title */
+/* alert title */
 "Verification code sent" = "Tangalt n usenqed tettwazen";
 
 /* error title */
@@ -2376,8 +2377,7 @@
 /* default vcard types */
 "Work" = "Amahil";
 
-/* 
- & title */
+/* title */
 "Wrong verification code" = "Yir tangalt n usenqed";
 
 /* Title */
@@ -2420,12 +2420,13 @@
 "You have unsaved changes. Do you want to save it?" = "Ɣur-k ibeddilen ur nettwasekles ara. Tebɣiḍ ad ten-teskelseḍ?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "Tesqedceḍ %1$d%% seg umḍiq-ik n usekles (%2$@).";
+"You have used %d%% of your storage space (%@)." = "Tesqedceḍ %d%% seg umḍiq-ik n usekles (%@).";
 
-/* Content of space warning */
+/* *
+ *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Tesqedceḍ akk amḍiq-ik n usekles (%@).";
 
-/* Description */
+/* "Alert" */
 "You need at least one recipient to send" = "Tesriḍ xarsum yiwen n uɣerwaḍ akken ad tazneḍ";
 
 /* Alert to confirm logout
@@ -2447,7 +2448,8 @@
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Tanaka-ik n urmas tettwammesten tura s uwgelhen si ṭerf ar ṭerf. Akken ad tazneḍ s wudem awurman imaylen iɣelsanen i yimduka-ik, suter-asen ad ddun ar ProtonMail. Tzemreḍ daɣen ad terreḍ iznan-ik d iwgelhanen s ufus ma yella ur seqdacen ara ProtonMail.";
 
-/* Description */
+/* *
+ *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Amiḍan-ik amaynut n yimaylen iwgelhanen yers, udiɣ ihegga i tuzna d urmas i yiznan iwgelhanen.";
 
 /* view top title */
@@ -2458,6 +2460,9 @@
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "Aɣawas-ik·im ad yettuɛawed s wudem awurman deg";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Tiɣimit-inek tfuk acku ulac-ik.kem taswiɛt aya neɣ ahat tettwafsex. Ttxil-k.m qqen tikelt-nniḍen.";
 
 /* Description */
 "Your signature has been updated." = "Azmul-ik yettwalqem.";

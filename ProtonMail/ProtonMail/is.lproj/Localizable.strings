@@ -77,8 +77,7 @@
 /* Account manager title */
 "Account" = "Notandaaðgangur";
 
-/* 
- & title */
+/* title */
 "Account password invalid" = "Ógilt aðgangslykilorð";
 
 /* section title in settings */
@@ -162,7 +161,7 @@
 /* cell title in device settings */
 "Addresses" = "Tölvupóstföng";
 
-/* Title */
+/* alert title */
 "Alert" = "Aðvörun";
 
 /* Title */
@@ -243,6 +242,9 @@
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "Ertu viss um að þú viljir skrá %@ út?";
 
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Ertu viss um að þú viljir skrá þig út?";
+
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Ertu viss? Það er ekki hægt að taka þetta aftur.";
 
@@ -297,7 +299,7 @@
 /* Error */
 "Bad auth cache" = "Rangt skyndiminni auðkenningar";
 
-/* Error title */
+/* title */
 "Bad parameter" = "Röng færibreyta";
 
 /* Error Description */
@@ -306,7 +308,7 @@
 /* title */
 "Bad path" = "Gölluð slóð";
 
-/* Error Description */
+/* title */
 "Bad response" = "Rangt svar";
 
 /* Title */
@@ -382,7 +384,8 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Gat ekki fundið þetta viðhengi!";
 
-/* update password error = typo:Modulus */
+/* sign up user error when can't get moduls id
+ update password error */
 "Can't get a Moduls ID!" = "Ekki hægt að fá Moduls-auðkenni!";
 
 /* update password error = typo:Modulus */
@@ -427,7 +430,8 @@
 /* message Cc: feild */
 "Cc:" = "Afrit:";
 
-/* place holder */
+/* *
+ *  PhoneVerifyViewController */
 "Cell phone number" = "Farsímanúmer";
 
 /* Title */
@@ -442,7 +446,7 @@
 /* Title */
 "Change Mailbox Password" = "Breyta lykilorði á pósthólfi";
 
-/* update password error title */
+/* title */
 "Change Password" = "Breyta lykilorði";
 
 /* settings protection section title */
@@ -463,7 +467,7 @@
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "Athugaðu stöðu Proton til að sjá ástandið á kerfinu okkar.";
 
-/* loading message */
+/* "Username" */
 "Checking ...." = "Athuga ....";
 
 /* place holder */
@@ -490,14 +494,15 @@
 /* cell title in device settings */
 "Combined Contacts" = "Sameinaðir tengiliðir";
 
-/* Action
-   Springboard (3D Touch) shortcuts action */
+/* *
+ *  Composer Email view controller */
 "Compose" = "Semja skilaboð";
 
 /* Title */
 "Compose to" = "Semja til";
 
-/* Action */
+/* *
+ *  MenuViewController */
 "Confirm" = "Staðfesta";
 
 /* "Login Password" */
@@ -579,7 +584,7 @@
 /* title of button in account connect page */
 "Create new account" = "Búa til nýjan notandaaðgang";
 
-/* error message title when create new user */
+/* error part & alert title */
 "Create user failed" = "Mistókst að búa til notandaaðgang";
 
 /* Error */
@@ -643,7 +648,8 @@
 /* place holder */
 "Define Password" = "Skilgreindu lykilorð";
 
-/* general delete action */
+/* *
+ *  Contacts View Controller */
 "Delete" = "Eyða";
 
 /* emptify folder/label confirmation alert */
@@ -658,7 +664,8 @@
 /* mail location desc */
 "Deleted" = "Eytt";
 
-/* Title */
+/* *
+ *  Email Header View */
 "Details" = "Nánar";
 
 /* network troubleshot cell title */
@@ -679,7 +686,8 @@
 /* Title in settings */
 "Display Name" = "Birtingarnafn";
 
-/* Title */
+/* *
+ *  SettingsViewController & alert title */
 "Display Name Updated" = "Birtingarnafn uppfært";
 
 /* Title in display name settings */
@@ -747,10 +755,11 @@
 /* default vcard types */
 "Email" = "Tölvupóstur";
 
-/* contact placeholder */
+/* *
+ *  Email Verify View Controller */
 "Email address" = "Tölvupóstfang";
 
-/* Title */
+/* alert title */
 "Email address invalid" = "Tölvupóstfang er ógilt";
 
 /* contact detail view, email addresses section title */
@@ -762,8 +771,7 @@
 /* place holder */
 "Email default signature" = "Sjálfgefin undirritun tölvupósts";
 
-/* 
- & title */
+/* title */
 "Email domain invalid" = "Ógilt tölvupóstlén";
 
 /* human check option button */
@@ -772,7 +780,7 @@
 /* cell title in device setting */
 "Empty Cache" = "Tæma skyndiminni";
 
-/* empty folder, for spam and trash and drafts */
+/* "Cancel" */
 "Empty Folder" = "Tóm mappa";
 
 /* it is an option to empty the label */
@@ -881,7 +889,7 @@
 "Expires" = "Rennur út";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Rennur út eftir %1$d daga %2$d klst %3$d mín %4$d sek";
+"Expires in %d days %d hours %d mins %d seconds" = "Rennur út eftir %d daga %d klst %d mín %d sek";
 
 /* Title */
 "Expiring Messages" = "Skilaboð sem renna út";
@@ -1046,11 +1054,11 @@
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Til þess að geta notað þjónustuna okkar, verðurðu að samþykkja skilmála og kvaðir ProtonMail.";
 
-/* mail location desc
-   menu title */
+/* "Deleted" */
 "Inbox" = "Innhólf";
 
-/* mail location title */
+/* *
+ *  MailboxViewController */
 "INBOX" = "Innhólf";
 
 /* Title */
@@ -1086,10 +1094,7 @@
 /* (No Comment) */
 "Invalid access token please relogin" = "Ógilt auðkennisteikn, skráðu þig inn aftur";
 
-/* Description */
-"Invalid access token. Please relogin." = "Ógilt aðgangsteikn, skráðu inn aftur.";
-
-/* Error */
+/* alert title */
 "Invalid credential" = "Ógilt auðkenni";
 
 /* update password error */
@@ -1128,7 +1133,8 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Ógildur lykill, farðu til baka og reyndu aftur.";
 
-/* Title */
+/* *
+ *  MoreOptionsView */
 "Label as..." = "Merkja sem...";
 
 /* Title */
@@ -1196,7 +1202,7 @@
 "Log in to your ProtonMail account" = "Skrá inn á  ProtonMail-aðganginn þinn";
 
 /* comment */
-"Log out" = "Log out";
+"Log out" = "Skrá út";
 
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Skrá út %@?";
@@ -1286,10 +1292,10 @@
 /* Placeholder */
 "Message Password" = "Lykilorð skilaboða";
 
-/* Description */
+/* composer view */
 "Message password does not match." = "Lykilorð skilaboða samsvarar ekki.";
 
-/* settings debug section title */
+/* "Cancel" */
 "Message Queue" = "Skilaboð í biðröð";
 
 /* (No Comment) */
@@ -1313,7 +1319,8 @@
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Farsímaundirskrift";
 
-/* Description */
+/* *
+ *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Nýskráningar á snjalltækjum eru óvirkar í augnablikinu Prófaðu aftur síðar, eða reyndu að skrá þig á protonmail.com með hjálp borð- eða fartölvu.";
 
 /* Description */
@@ -1337,7 +1344,7 @@
 /* folder apply - title */
 "Move to Folder" = "Flytja í möppu";
 
-/* move action */
+/* "Trash" */
 "Move to Inbox" = "Flytja í innhólf";
 
 /* move action */
@@ -1437,7 +1444,8 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "Frestun tilkynninga óvirk";
 
-/* Action */
+/* *
+ *  ReportBugsViewController */
 "OK" = "Í lagi";
 
 /* Title */
@@ -1447,7 +1455,7 @@
 "On EE, MMM d, yyyy at %@" = "EE, d. MMM, yyyy klukkan %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "%2$@ skrifaði EE, d. MMM, yyyy klukkan %1$@:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d. MMM, yyyy kl. %1$@, skrifaði %2$@:";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Aðeins er hægt að bæta við einum ókeypis aðgangi";
@@ -1470,7 +1478,7 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Notendaaðstoðarteymið okkar mun reyna að virkja þjónustuáskriftina þína handvirkt ef þú fellst á að láta fylgja með þau tæknilegu gögn sem AppStore-verslunin gaf forritinu þegar viðskiptin fóru fram. Þessi gögn innihalda eingar viðkvæmar upplýsingar um about your iTunes aðganginn þinn, Apple ID auðkenni, tengd greiðslukort eða aðrar notandaupplýsingar. Tæknilegu upplýsingarnar hjálpa einungis til við að sannreyna að viðskiptin hafi átt sér stað á vefþjónum AppStore.";
 
-/* mail location desc */
+/* "Draft" = "Draft"; */
 "Outbox" = "Úthólf";
 
 /* title */
@@ -1515,13 +1523,14 @@
 /* contact placeholder */
 "Phone number" = "Símanúmer";
 
-/* Title */
+/* "Verification code request failed" */
 "Phone number invalid" = "Símanúmer er ógilt";
 
 /* human check option button */
 "Phone Verification" = "Sannprófun símanúmers";
 
-/* Title */
+/* *
+ *  Attachment table ViewController */
 "Photo Library" = "Myndasafn";
 
 /* device settings auto lock type title */
@@ -1596,9 +1605,7 @@
 /* (No Comment) */
 "Please try a different user name." = "Prófaðu eitthvað annað notandanafn.";
 
-/* 
-
- */
+/* (No Comment) */
 "Please try again." = "Endilega reyndu aftur";
 
 /* Error message */
@@ -1622,8 +1629,7 @@
 /* The */
 "Please wait until the email downloaded!" = "Bíddu þar til búið er að ná í tölvupóstinn!";
 
-/* 
- & alert title */
+/* alert title */
 "Please, manage it in your phone." = "Stjórnaðu því í símanum þínum.";
 
 /* Upgrade warning title */
@@ -1704,7 +1710,8 @@
 /* Title */
 "Recovery Code" = "Endurheimtukóði";
 
-/* Title */
+/* *
+ *  SignUpEmailViewController */
 "Recovery Email" = "Endurheimtupóstur";
 
 /* Title */
@@ -1728,7 +1735,8 @@
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Endurtaka";
 
-/* reply action */
+/* *
+ *  Controller Defined */
 "Reply" = "Svara";
 
 /* reply all action */
@@ -1776,8 +1784,8 @@
 /* action sheet option */
 "Scheduled" = "Áætlað";
 
-/* Springboard (3D Touch) shortcuts action
-   Title */
+/* *
+ *  SearchViewController */
 "Search" = "Leita";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1795,7 +1803,7 @@
 /* Action */
 "Send anyway" = "Senda samt";
 
-/* Description */
+/* when subject not empty */
 "Send message without subject?" = "Senda skilaboðin án efnislínu?";
 
 /* Title */
@@ -1907,13 +1915,10 @@
 /* Title */
 "Star" = "Stjarna";
 
-/* mail location desc
-   menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
+/* "Spam" */
 "Starred" = "Stjörnumerkt";
 
-/* mail location title */
+/* "INBOX" */
 "STARRED" = "Stjörnumerkt";
 
 /* settings option (Start Time: 8am) */
@@ -1992,8 +1997,7 @@
 /* Description */
 "The authentication credentials are invalid." = "Auðkenni sannvottunar eru ógild.";
 
-/* 
- */
+/* (No Comment) */
 "The authentication token has expired." = "Auðkenningarteiknið er útrunnið.";
 
 /* key size notes */
@@ -2066,15 +2070,14 @@
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Notandinn er þegar skráður inn";
 
-/* 
- */
+/* (No Comment) */
 "The UserName have been taken." = "Notandanafnið er þegar í notkun.";
 
-/* 
- & title */
+/* title */
 "The verification email invalid" = "Ógildur sannvottunarpóstur";
 
-/* Error */
+/* *
+ *  RecaptchaViewController */
 "The verification failed!" = "Sannvottunin mistókst!";
 
 /* alert when logout user if in queue still have tasks */
@@ -2086,8 +2089,7 @@
 /* Description */
 "There was an error creating or loading the app's saved data." = "Villa kom upp þegar búa átti til eða hlaða inn vistuðum gögnum forritsins.";
 
-/* 
- & local error */
+/* local error */
 "There was an error creating or loading the application's saved data." = "Villa kom upp við að útbúa eða hlaða inn vistuðum gögnum forritsins.";
 
 /* Alert message */
@@ -2142,15 +2144,15 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
-/* settings touchid error */
+/* *
+ *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID hefur ekki verið stillt, virkjaðu það í kerfisstillingunum";
 
 /* settings touchid/faceid error */
 "TouchID not available" = "TouchID ekki tiltækt";
 
-/* mail location desc
-   menu title
-   move action */
+/* *
+ *  MessageAction */
 "Trash" = "Rusl";
 
 /* mail location title */
@@ -2186,8 +2188,7 @@
 /* Description */
 "Unable to connect to the server" = "Get ekki tengst við netþjón";
 
-/* 
- */
+/* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "Tókst ekki að búa til gilda URL-vísun með eftirfarandi slóð: %@";
 
 /* Description */
@@ -2220,10 +2221,11 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "Tókst ekki að þátta svarhlutann:\n%@";
 
-/* Error */
+/* alert title */
 "Unable to parse token" = "Ekki tókst að þátta teiknið";
 
-/* error when sending the message */
+/* *
+ *  MessageDataService */
 "Unable to send the email" = "Tókst ekki að senda tölvupóstinn";
 
 /* Action */
@@ -2305,21 +2307,20 @@
 /* Title */
 "USER LOGIN" = "Innskráning notanda";
 
-/* 
- & title */
+/* title */
 "User name exist" = "Notandanafn er þegar til";
 
-/* 
- & alert title */
+/* alert title */
 "User name invalid" = "Ógilt notandanafn";
 
-/* Title */
+/* *
+ *  Login View */
 "Username" = "Notandanafn";
 
-/* Title */
+/* alert title */
 "Verification code request failed" = "Beiðni um sannvottunarkóða mistókst";
 
-/* Title */
+/* alert title */
 "Verification code sent" = "Sannvottunarkóði sendur";
 
 /* error title */
@@ -2376,8 +2377,7 @@
 /* default vcard types */
 "Work" = "Vinna";
 
-/* 
- & title */
+/* title */
 "Wrong verification code" = "Rangur sannvottunarkóði";
 
 /* Title */
@@ -2420,12 +2420,13 @@
 "You have unsaved changes. Do you want to save it?" = "Það eru óvistaðar breytingar. Viltu vista þær?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "Þú hefur notað %1$d%% af geymslurýminu þínu (%2$@).";
+"You have used %d%% of your storage space (%@)." = "Þú hefur notað %d%% af geymslurýminu þínu (%@).";
 
-/* Content of space warning */
+/* *
+ *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Þú hefur notað allt geymslurýmið þitt (%@).";
 
-/* Description */
+/* "Alert" */
 "You need at least one recipient to send" = "Bættu við a.m.k. einum viðtakanda til að geta sent";
 
 /* Alert to confirm logout
@@ -2447,7 +2448,8 @@
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Pósthólfið þitt er núna varið með enda-í-enda dulritun. Til að senda sjálfvirkt örugga tölvupósta á tengiliðina þína, skaltu bjóða þeim að nota ProtonMail!  Þú getur líka dulritað handvirkt skilaboð til þeirra, ef þeir eru ekki að nota ProtonMail.";
 
-/* Description */
+/* *
+ *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Nýi dulritaði tölvupóstaðgangurinn þinn er uppsettur og tilbúinn til að senda og taka á móti dulrituðum skilaboðum.";
 
 /* view top title */
@@ -2458,6 +2460,9 @@
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "Áskriftin þín mun endurnýjast sjálfkrafa þann";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Setan þín er útrunnin því þú varst aðgerðalaus um tíma eða þá að hún hefur verið afturkölluð. Skráðu þig aftur inn.";
 
 /* Description */
 "Your signature has been updated." = "Undirskriftin þín hefur verið uppfærð.";

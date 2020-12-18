@@ -77,8 +77,7 @@
 /* Account manager title */
 "Account" = "Account";
 
-/* 
- & title */
+/* title */
 "Account password invalid" = "Ongeldig accountwachtwoord";
 
 /* section title in settings */
@@ -162,7 +161,7 @@
 /* cell title in device settings */
 "Addresses" = "Adressen";
 
-/* Title */
+/* alert title */
 "Alert" = "Waarschuwing";
 
 /* Title */
@@ -243,6 +242,9 @@
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "Weet u zeker dat u zich wilt afmelden %@?";
 
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Weet u zeker dat u zich wilt afmelden?";
+
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Weet u het zeker? Dit kan niet ongedaan worden gemaakt.";
 
@@ -297,7 +299,7 @@
 /* Error */
 "Bad auth cache" = "Foutieve authenticatiecache";
 
-/* Error title */
+/* title */
 "Bad parameter" = "Foutieve parameter";
 
 /* Error Description */
@@ -306,7 +308,7 @@
 /* title */
 "Bad path" = "Foutief pad";
 
-/* Error Description */
+/* title */
 "Bad response" = "Foutieve reactie";
 
 /* Title */
@@ -382,7 +384,8 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Kan deze bijlage niet vinden!";
 
-/* update password error = typo:Modulus */
+/* sign up user error when can't get moduls id
+ update password error */
 "Can't get a Moduls ID!" = "Kan geen Moduls ID verkrijgen!";
 
 /* update password error = typo:Modulus */
@@ -427,7 +430,8 @@
 /* message Cc: feild */
 "Cc:" = "Cc:";
 
-/* place holder */
+/* *
+ *  PhoneVerifyViewController */
 "Cell phone number" = "Telefoonnummer";
 
 /* Title */
@@ -442,7 +446,7 @@
 /* Title */
 "Change Mailbox Password" = "Wijzig mailboxwachtwoord";
 
-/* update password error title */
+/* title */
 "Change Password" = "Wachtwoord wijzigen";
 
 /* settings protection section title */
@@ -463,7 +467,7 @@
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "Controleer Proton Status voor onze systeemstatus.";
 
-/* loading message */
+/* "Username" */
 "Checking ...." = "Controleren...";
 
 /* place holder */
@@ -490,14 +494,15 @@
 /* cell title in device settings */
 "Combined Contacts" = "Gecombineerde contacten";
 
-/* Action
-   Springboard (3D Touch) shortcuts action */
+/* *
+ *  Composer Email view controller */
 "Compose" = "Opstellen";
 
 /* Title */
 "Compose to" = "Opstellen aan";
 
-/* Action */
+/* *
+ *  MenuViewController */
 "Confirm" = "Bevestigen";
 
 /* "Login Password" */
@@ -579,7 +584,7 @@
 /* title of button in account connect page */
 "Create new account" = "Nieuw account aanmaken";
 
-/* error message title when create new user */
+/* error part & alert title */
 "Create user failed" = "Gebruiker aanmaken mislukt";
 
 /* Error */
@@ -643,7 +648,8 @@
 /* place holder */
 "Define Password" = "Definieer wachtwoord";
 
-/* general delete action */
+/* *
+ *  Contacts View Controller */
 "Delete" = "Verwijderen";
 
 /* emptify folder/label confirmation alert */
@@ -658,7 +664,8 @@
 /* mail location desc */
 "Deleted" = "Verwijderd";
 
-/* Title */
+/* *
+ *  Email Header View */
 "Details" = "Details";
 
 /* network troubleshot cell title */
@@ -679,7 +686,8 @@
 /* Title in settings */
 "Display Name" = "Weergavenaam";
 
-/* Title */
+/* *
+ *  SettingsViewController & alert title */
 "Display Name Updated" = "Weergavenaam bijgewerkt";
 
 /* Title in display name settings */
@@ -747,10 +755,11 @@
 /* default vcard types */
 "Email" = "E-mail";
 
-/* contact placeholder */
+/* *
+ *  Email Verify View Controller */
 "Email address" = "E-mailadres";
 
-/* Title */
+/* alert title */
 "Email address invalid" = "Ongeldig e-mailadres";
 
 /* contact detail view, email addresses section title */
@@ -762,8 +771,7 @@
 /* place holder */
 "Email default signature" = "Standaard e-mailhandtekening";
 
-/* 
- & title */
+/* title */
 "Email domain invalid" = "Ongeldig e-maildomein";
 
 /* human check option button */
@@ -772,7 +780,7 @@
 /* cell title in device setting */
 "Empty Cache" = "Cache legen";
 
-/* empty folder, for spam and trash and drafts */
+/* "Cancel" */
 "Empty Folder" = "Map leegmaken";
 
 /* it is an option to empty the label */
@@ -881,7 +889,7 @@
 "Expires" = "Verloopt";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Verloopt in %1$d dagen %2$d uur %3$d minuten %4$d seconden";
+"Expires in %d days %d hours %d mins %d seconds" = "Verloopt over %d dagen %d uur %d minuten %d seconden";
 
 /* Title */
 "Expiring Messages" = "Verlooptijd";
@@ -1046,11 +1054,11 @@
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Om onze diensten te gebruiken, moet u akkoord gaan met de ProtonMail gebruiksvoorwaarden.";
 
-/* mail location desc
-   menu title */
+/* "Deleted" */
 "Inbox" = "Inbox";
 
-/* mail location title */
+/* *
+ *  MailboxViewController */
 "INBOX" = "INBOX";
 
 /* Title */
@@ -1086,10 +1094,7 @@
 /* (No Comment) */
 "Invalid access token please relogin" = "Ongeldige toegangstoken, log opnieuw in";
 
-/* Description */
-"Invalid access token. Please relogin." = "Ongeldige toegangstoken. Log opnieuw in.";
-
-/* Error */
+/* alert title */
 "Invalid credential" = "Inloggegevens ongeldig";
 
 /* update password error */
@@ -1128,7 +1133,8 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Sleutel ongeldig. Ga terug en probeer het opnieuw.";
 
-/* Title */
+/* *
+ *  MoreOptionsView */
 "Label as..." = "Labelen als...";
 
 /* Title */
@@ -1286,10 +1292,10 @@
 /* Placeholder */
 "Message Password" = "Wachtwoord van bericht";
 
-/* Description */
+/* composer view */
 "Message password does not match." = "Wachtwoord van bericht komt niet overeen.";
 
-/* settings debug section title */
+/* "Cancel" */
 "Message Queue" = "Berichtenwachtrij";
 
 /* (No Comment) */
@@ -1313,7 +1319,8 @@
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Mobiele handtekening";
 
-/* Description */
+/* *
+ *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobiele aanmeldingen zijn tijdelijk uitgeschakeld. Probeer het later opnieuw of meld u aan via ProtonMail.com op een PC of laptop.";
 
 /* Description */
@@ -1337,7 +1344,7 @@
 /* folder apply - title */
 "Move to Folder" = "Naar map verplaatsen";
 
-/* move action */
+/* "Trash" */
 "Move to Inbox" = "Verplaats naar inbox";
 
 /* move action */
@@ -1437,7 +1444,8 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "Notificaties uitstellen uitzetten";
 
-/* Action */
+/* *
+ *  ReportBugsViewController */
 "OK" = "OK";
 
 /* Title */
@@ -1470,7 +1478,7 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Ons klantenservice team zal proberen uw serviceplan handmatig te activeren als u ermee instemt technische gegevens te koppelen die AppStore op het moment van aankoop heeft verstrekt. Deze gegevens bevatten geen details over uw iTunes-account, Apple ID, gekoppelde creditcards of andere gebruikersgegevens. Technische data helpt ons alleen te verifiëren of de transactie is uitgevoerd op de servers van de AppStore.";
 
-/* mail location desc */
+/* "Draft" = "Draft"; */
 "Outbox" = "Postvak uit";
 
 /* title */
@@ -1515,14 +1523,15 @@
 /* contact placeholder */
 "Phone number" = "Telefoonnummer";
 
-/* Title */
+/* "Verification code request failed" */
 "Phone number invalid" = "Telefoonnummer is ongeldig";
 
 /* human check option button */
 "Phone Verification" = "Telefonische verificatie";
 
-/* Title */
-"Photo Library" = "Galerij";
+/* *
+ *  Attachment table ViewController */
+"Photo Library" = "Fotobibliotheek";
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
@@ -1596,9 +1605,7 @@
 /* (No Comment) */
 "Please try a different user name." = "Probeer een andere gebruikersnaam.";
 
-/* 
-
- */
+/* (No Comment) */
 "Please try again." = "Probeer opnieuw";
 
 /* Error message */
@@ -1622,8 +1629,7 @@
 /* The */
 "Please wait until the email downloaded!" = "Wacht totdat de e-mail gedownload is!";
 
-/* 
- & alert title */
+/* alert title */
 "Please, manage it in your phone." = "Beheer dit vanaf uw telefoon.";
 
 /* Upgrade warning title */
@@ -1704,7 +1710,8 @@
 /* Title */
 "Recovery Code" = "Herstelcode";
 
-/* Title */
+/* *
+ *  SignUpEmailViewController */
 "Recovery Email" = "Herstel-e-mailadres";
 
 /* Title */
@@ -1728,7 +1735,8 @@
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Herhaal";
 
-/* reply action */
+/* *
+ *  Controller Defined */
 "Reply" = "Beantwoorden";
 
 /* reply all action */
@@ -1776,8 +1784,8 @@
 /* action sheet option */
 "Scheduled" = "Gepland";
 
-/* Springboard (3D Touch) shortcuts action
-   Title */
+/* *
+ *  SearchViewController */
 "Search" = "Zoeken";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1795,7 +1803,7 @@
 /* Action */
 "Send anyway" = "Toch verzenden";
 
-/* Description */
+/* when subject not empty */
 "Send message without subject?" = "Bericht versturen zonder onderwerp?";
 
 /* Title */
@@ -1907,13 +1915,10 @@
 /* Title */
 "Star" = "Ster";
 
-/* mail location desc
-   menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
+/* "Spam" */
 "Starred" = "Met ster";
 
-/* mail location title */
+/* "INBOX" */
 "STARRED" = "MET STER";
 
 /* settings option (Start Time: 8am) */
@@ -1992,8 +1997,7 @@
 /* Description */
 "The authentication credentials are invalid." = "De inloggegevens zijn ongeldig.";
 
-/* 
- */
+/* (No Comment) */
 "The authentication token has expired." = "De authenticatietoken is verlopen.";
 
 /* key size notes */
@@ -2066,15 +2070,14 @@
 /* Alert when the account is already logged in */
 "The user is already logged in" = "De gebruiker is al ingelogd";
 
-/* 
- */
+/* (No Comment) */
 "The UserName have been taken." = "De gebruikersnaam is reeds in gebruik.";
 
-/* 
- & title */
+/* title */
 "The verification email invalid" = "Ongeldig verificatie e-mailadres";
 
-/* Error */
+/* *
+ *  RecaptchaViewController */
 "The verification failed!" = "De verificatie is mislukt!";
 
 /* alert when logout user if in queue still have tasks */
@@ -2086,8 +2089,7 @@
 /* Description */
 "There was an error creating or loading the app's saved data." = "Er is een fout opgetreden tijdens het maken of laden van de opgeslagen data van de app.";
 
-/* 
- & local error */
+/* local error */
 "There was an error creating or loading the application's saved data." = "Er is een fout opgetreden tijdens het aanmaken of laden van de applicatiegegevens.";
 
 /* Alert message */
@@ -2142,15 +2144,15 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
-/* settings touchid error */
+/* *
+ *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID is niet actief, activeer het in de systeeminstellingen";
 
 /* settings touchid/faceid error */
 "TouchID not available" = "TouchID is niet beschikbaar";
 
-/* mail location desc
-   menu title
-   move action */
+/* *
+ *  MessageAction */
 "Trash" = "Prullenbak";
 
 /* mail location title */
@@ -2186,8 +2188,7 @@
 /* Description */
 "Unable to connect to the server" = "Niet in staat om met de server te verbinden";
 
-/* 
- */
+/* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "Niet mogelijk om een geldige URL met het volgende pad te maken: %@";
 
 /* Description */
@@ -2220,10 +2221,11 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "Niet in staat om het antwoord object te verwerken:\n%@";
 
-/* Error */
+/* alert title */
 "Unable to parse token" = "Niet in staat om de token te verwerken";
 
-/* error when sending the message */
+/* *
+ *  MessageDataService */
 "Unable to send the email" = "E-mail kon niet worden verzonden";
 
 /* Action */
@@ -2305,21 +2307,20 @@
 /* Title */
 "USER LOGIN" = "GEBRUIKERSLOGIN";
 
-/* 
- & title */
+/* title */
 "User name exist" = "Gebruikersnaam bestaat al";
 
-/* 
- & alert title */
+/* alert title */
 "User name invalid" = "Ongeldige gebruikersnaam";
 
-/* Title */
+/* *
+ *  Login View */
 "Username" = "Gebruikersnaam";
 
-/* Title */
+/* alert title */
 "Verification code request failed" = "Aanvraag van verificatiecode is mislukt";
 
-/* Title */
+/* alert title */
 "Verification code sent" = "Verificatiecode is verzonden";
 
 /* error title */
@@ -2376,8 +2377,7 @@
 /* default vcard types */
 "Work" = "Werk";
 
-/* 
- & title */
+/* title */
 "Wrong verification code" = "Onjuiste verificatiecode";
 
 /* Title */
@@ -2420,12 +2420,13 @@
 "You have unsaved changes. Do you want to save it?" = "U heeft nog niet-opgeslagen wijzigingen. Wilt u deze opslaan?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "U heeft %1$d%% van uw opslagruimte gebruikt (%2$@).";
+"You have used %d%% of your storage space (%@)." = "U heeft %d%% van uw opslagruimte gebruikt (%@).";
 
-/* Content of space warning */
+/* *
+ *  StorageLimit */
 "You have used up all of your storage space (%@)." = "U heeft al uw opslagruimte gebruikt (%@).";
 
-/* Description */
+/* "Alert" */
 "You need at least one recipient to send" = "U moet minstens één ontvanger invoeren om het bericht te verzenden";
 
 /* Alert to confirm logout
@@ -2447,7 +2448,8 @@
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Uw inbox is nu met end-to-end versleuteling beveiligd. Om automatisch veilig met uw vrienden te e-mailen moeten zij ook ProtonMail gebruiken! U kunt ook handmatig berichten versleutelen als zij geen ProtonMail gebruiken.";
 
-/* Description */
+/* *
+ *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Uw nieuwe versleutelde e-mailaccount is aangemaakt, u kunt nu versleutelde berichten verzenden en ontvangen.";
 
 /* view top title */
@@ -2458,6 +2460,9 @@
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "Uw plan zal automatisch vernieuwen op";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Uw sessie is verlopen omdat u al een tijdje inactief bent of omdat deze is ingetrokken. Log opnieuw in.";
 
 /* Description */
 "Your signature has been updated." = "Uw handtekening is bijgewerkt.";
