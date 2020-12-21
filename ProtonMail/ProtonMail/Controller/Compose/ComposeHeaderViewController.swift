@@ -427,9 +427,9 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
     
     fileprivate func configureContactPickerTemplate() {
         ContactCollectionViewContactCell.appearance().tintColor = UIColor.ProtonMail.Blue_6789AB
-        ContactCollectionViewContactCell.appearance().font = Fonts.h6.light
-        ContactCollectionViewPromptCell.appearance().font = Fonts.h6.light
-        ContactCollectionViewEntryCell.appearance().font = Fonts.h6.light
+        ContactCollectionViewContactCell.appearance().font = Fonts.h5.regular
+        ContactCollectionViewPromptCell.appearance().font = Fonts.h5.regular
+        ContactCollectionViewEntryCell.appearance().font = Fonts.h5.regular
     }
     
     ///

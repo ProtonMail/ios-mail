@@ -150,7 +150,7 @@ class ContactPicker: UIView, AccessibleView {
         
         self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        self.contactCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        self.contactCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 4).isActive = true
         self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         
         self.maxVisibleRows = ContactPickerDefined.kMaxVisibleRows

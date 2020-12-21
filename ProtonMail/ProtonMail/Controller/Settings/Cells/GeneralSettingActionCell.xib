@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,12 +18,12 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Right Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DGg-8e-hyJ">
-                        <rect key="frame" x="27" y="6" width="158" height="32"/>
+                        <rect key="frame" x="23" y="6" width="162" height="32"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0Q-4n-Gtk">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0Q-4n-Gtk">
                         <rect key="frame" x="193" y="6" width="120" height="32"/>
                         <color key="backgroundColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -42,7 +42,7 @@
                     <constraint firstAttribute="bottom" secondItem="DGg-8e-hyJ" secondAttribute="bottom" constant="6" id="3So-sZ-Uaf"/>
                     <constraint firstItem="G0Q-4n-Gtk" firstAttribute="leading" secondItem="DGg-8e-hyJ" secondAttribute="trailing" constant="8" id="8Yu-zq-ty8"/>
                     <constraint firstAttribute="trailing" secondItem="G0Q-4n-Gtk" secondAttribute="trailing" constant="7" id="AkO-Jw-007"/>
-                    <constraint firstItem="DGg-8e-hyJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="27" id="DEZ-iS-u4E"/>
+                    <constraint firstItem="DGg-8e-hyJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="23" id="DEZ-iS-u4E"/>
                     <constraint firstItem="DGg-8e-hyJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="Hy6-yG-IlJ"/>
                     <constraint firstItem="G0Q-4n-Gtk" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="fo1-aQ-QpX"/>
                     <constraint firstAttribute="bottom" secondItem="G0Q-4n-Gtk" secondAttribute="bottom" constant="6" id="hiy-08-EfL"/>

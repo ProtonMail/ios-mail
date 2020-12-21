@@ -75,7 +75,7 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
         
         label.textAlignment = .left
         label.text = self.prompt
-        label.textColor = UIColor.black
+        label.textColor = UIColor(RRGGBB: UInt(0x4f4f61))
         
         self.promptLabel = label
     }
