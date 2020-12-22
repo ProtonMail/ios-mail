@@ -1,7 +1,4 @@
-# Fingerprint
-
-Collect fingerprint during user signup so that the anti-abuse team can analytic.
-For more detail about collected fingerprint please read [iOS fingerprints](https://confluence.protontech.ch/pages/viewpage.action?spaceKey=PRODUCT&title=iOS+fingerprints)
+# Challenge
 
 ## Dependency
 * `UIKit`
@@ -11,37 +8,37 @@ For more detail about collected fingerprint please read [iOS fingerprints](https
 ## Install
 ### CocoaPods
 ```
-pod 'PMFingerprint', :git => 'https://gitlab.protontech.ch/apple/shared/pmfingerprint.git', :tag => '{TAG}'
+pod 'PMFChallenge', :git => 'https://gitlab.protontech.ch/apple/shared/pmchallenge.git', :tag => '{TAG}'
 ```
 ### Swift Package Manager
 1. Using Xcode 11 go to File > Swift Packages > Add Package Dependency
-2. Paste the project URL: `https://gitlab.protontech.ch/apple/shared/pmfingerprint`
+2. Paste the project URL: `https://gitlab.protontech.ch/apple/shared/pmchallenge`
 3. Click on next and select the project target
 
 ## How to use
 ### Initialize
-There are two ways to initialize `PMFingerprint`
+There are two ways to initialize `PMChallenge`
 1. Singleton
 ```swift
 /// Get shared instance, thread safe
-public static func shared() -> PMFingerprint
+public static func shared() -> PMChallenge
 
 /// Release shared instance if you don't need it anymore.
 public static func release()
 ```
 2. Common initialize
 ```swift
-let fingerprint = PMFingerprint()
+let challenge = PMChallenge()
 ```
 
 ### Public functions
-1. Reset collected fingerprint data
+1. Reset collected challenge data
 ```swift
 public func reset()
 ```
-2. Export collected fingerprint data
+2. Export collected challenge data
 ```swift
-public func export() -> PMFingerprint.Fingerprint
+public func export() -> PMChallenge.Challenge
 ```
 3. Start to observe given textfield so that we can monitor copy/paste/characters changed...etc
 

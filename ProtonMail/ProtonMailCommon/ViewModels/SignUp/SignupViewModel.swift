@@ -22,16 +22,16 @@
 
 
 import Foundation
-import PMFingerprint
+import PMChallenge
 
 protocol FingerprintProtocol {
-    func observeTextField(textField: UITextField, type: PMFingerprint.TextFieldType)
+    func observeTextField(textField: UITextField, type: PMChallenge.TextFieldType)
     
     func requestHumanVerification()
     
     func humanVerificationFinish()
     
-    func fingerprintExport() -> PMFingerprint.Fingerprint
+    func challengeExport() -> PMChallenge.Challenge
 }
 
 protocol SignupViewModelDelegate{
@@ -131,7 +131,7 @@ class SignupViewModel : NSObject, FingerprintProtocol {
         return false
     }
     
-    func observeTextField(textField: UITextField, type: PMFingerprint.TextFieldType) {
+    func observeTextField(textField: UITextField, type: PMChallenge.TextFieldType) {
         fatalError("This method must be overridden")
     }
     
@@ -139,7 +139,7 @@ class SignupViewModel : NSObject, FingerprintProtocol {
         fatalError("This method must be overridden")
     }
     
-    func fingerprintExport() -> PMFingerprint.Fingerprint {
+    func challengeExport() -> PMChallenge.Challenge {
         fatalError("This method must be overridden")
     }
     

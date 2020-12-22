@@ -23,7 +23,7 @@
 
 import Foundation
 import Crypto
-import PMFingerprint
+import PMChallenge
 
 final class AccountSignupViewModelImpl : SignupViewModelImpl {
     override func isAccountManager() -> Bool {
@@ -52,7 +52,7 @@ class SignupViewModelImpl : SignupViewModel {
     
     fileprivate var delegate : SignupViewModelDelegate?
     fileprivate var verifyType : VerifyCodeType = .email
-    fileprivate var fingerprint = PMFingerprint()
+    fileprivate var challenge = PMChallenge()
     
     fileprivate var direct : [String] = []
     
@@ -96,7 +96,7 @@ class SignupViewModelImpl : SignupViewModel {
     
     override func checkUserName(_ username: String, complete: CheckUserNameBlock!) {
         
-        self.fingerprint.appendCheckedUsername(username)
+        self.challenge.appendCheckedUsername(username)
         
         // need valide user name format
         let api = CheckUserExist(userName: username)
@@ -202,7 +202,7 @@ class SignupViewModelImpl : SignupViewModel {
                         throw SignUpCreateUserError.cantHashPassword.error
                     }
                     let verifier = try auth.generateVerifier(2048)
-                    let fingerprintDict = try? self.fingerprint.export().asDictionary()
+                    let challenge = self.challenge.export().toDictionary()
                     let api = CreateNewUser(token: self.token,
                                             type: self.verifyType.toString, username: self.userName,
                                             email: self.recoverEmail,
@@ -210,7 +210,7 @@ class SignupViewModelImpl : SignupViewModel {
                                             salt: new_salt.encodeBase64(),
                                             verifer: verifier.encodeBase64(),
                                             deviceToken: self.deviceCheckToken,
-                                            fingerprint: fingerprintDict ?? [:])
+                                            challenge: challenge)
                     api.call(api: self.apiService) { (task, response, hasError) -> Void in
                         if !hasError {
                             //need clean the cache without ui flow change then signin with a fresh user
@@ -389,7 +389,7 @@ class SignupViewModelImpl : SignupViewModel {
     
     override func sendVerifyCode(_ type: VerifyCodeType, complete: SendVerificationCodeBlock!) {
         
-        self.fingerprint.requestVerify()
+        self.challenge.requestVerify()
         
         let api = VerificationCodeRequest(userName: self.userName, destination: destination, type: type)
         api.call(api: self.apiService) { (task, response, hasError) -> Void in
@@ -501,19 +501,19 @@ class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func observeTextField(textField: UITextField, type: PMFingerprint.TextFieldType) {
-        try! self.fingerprint.observeTextField(textField, type: type)
+    override func observeTextField(textField: UITextField, type: PMChallenge.TextFieldType) {
+        try! self.challenge.observeTextField(textField, type: type)
     }
     
     override func requestHumanVerification() {
-        self.fingerprint.requestVerify()
+        self.challenge.requestVerify()
     }
     
     override func humanVerificationFinish() {
-        try! self.fingerprint.verificationFinsih()
+        try? self.challenge.verificationFinsih()
     }
     
-    override func fingerprintExport() -> PMFingerprint.Fingerprint {
-        return self.fingerprint.export()
+    override func challengeExport() -> PMChallenge.Challenge {
+        return self.challenge.export()
     }
 }

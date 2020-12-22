@@ -27,14 +27,14 @@ extension String {
         let base = Int64(base)
         var ans = 0
         var coefficient: Int64 = 0
-        for c in self {
-            for code in c.utf8 {
+        for str in self {
+            for code in str.utf8 {
                 if coefficient == 0 {
                     coefficient = 1
                 } else {
                     coefficient = coefficient * base % mod
                 }
-                ans = ans + Int(code) * Int(coefficient)
+                ans += Int(code) * Int(coefficient)
             }
         }
         return ans

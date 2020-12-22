@@ -20,14 +20,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+// swiftlint:disable force_try
+
 import UIKit
 
 protocol TextFieldInterceptorDelegate: class {
-    func beginEditing(type: PMFingerprint.TextFieldType)
-    func endEditing(type: PMFingerprint.TextFieldType)
-    func charactersTyped(chars: String, type: PMFingerprint.TextFieldType) throws
-    func charactersDeleted(chars: String, type: PMFingerprint.TextFieldType)
-    func tap(textField: UITextField, type: PMFingerprint.TextFieldType)
+    func beginEditing(type: PMChallenge.TextFieldType)
+    func endEditing(type: PMChallenge.TextFieldType)
+    func charactersTyped(chars: String, type: PMChallenge.TextFieldType) throws
+    func charactersDeleted(chars: String, type: PMChallenge.TextFieldType)
+    func tap(textField: UITextField, type: PMChallenge.TextFieldType)
 }
 
 final class TextFieldDelegateInterceptor: NSObject {
@@ -35,27 +37,27 @@ final class TextFieldDelegateInterceptor: NSObject {
     private weak var originalDelegate: UITextFieldDelegate?
     private(set) weak var textField: UITextField?
     private var touchDown: UILongPressGestureRecognizer?
-    let type: PMFingerprint.TextFieldType
+    let type: PMChallenge.TextFieldType
     private var observe: NSKeyValueObservation?
-    
-    init(textField: UITextField, type: PMFingerprint.TextFieldType, delegate: TextFieldInterceptorDelegate, ignoreDelegate: Bool=false) throws {
+
+    init(textField: UITextField, type: PMChallenge.TextFieldType, delegate: TextFieldInterceptorDelegate, ignoreDelegate: Bool=false) throws {
         self.delegate = delegate
         guard textField.delegate != nil || ignoreDelegate else {
-            throw PMFingerprint.TextFieldInterceptError.delegateMissing
+            throw PMChallenge.TextFieldInterceptError.delegateMissing
         }
         self.originalDelegate = textField.delegate
-        
+
         self.type = type
         self.textField = textField
-        
+
         super.init()
         textField.delegate = self
-        self.touchDown = UILongPressGestureRecognizer(target:self, action: #selector(tapTextField))
+        self.touchDown = UILongPressGestureRecognizer(target: self, action: #selector(tapTextField))
         self.touchDown!.minimumPressDuration = 0
         self.touchDown!.delegate = self
         self.textField?.addGestureRecognizer(self.touchDown!)
     }
-    
+
     func destroy() {
         self.textField?.delegate = self.originalDelegate
         self.textField = nil
@@ -66,10 +68,10 @@ final class TextFieldDelegateInterceptor: NSObject {
 
 extension TextFieldDelegateInterceptor: UIGestureRecognizerDelegate {
     @objc private func tapTextField() {
-        guard let _delegate = self.delegate, let _textField = self.textField else {return}
-        _delegate.tap(textField: _textField, type: self.type)
+        guard let del = self.delegate, let field = self.textField else {return}
+        del.tap(textField: field, type: self.type)
     }
-    
+
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         self.tapTextField()
         return false
@@ -78,7 +80,7 @@ extension TextFieldDelegateInterceptor: UIGestureRecognizerDelegate {
 
 extension TextFieldDelegateInterceptor: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        
+
         return self.originalDelegate?.textFieldShouldBeginEditing?(textField) ?? true
     }
 
@@ -88,7 +90,7 @@ extension TextFieldDelegateInterceptor: UITextFieldDelegate {
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        
+
         return self.originalDelegate?.textFieldShouldEndEditing?(textField) ?? true
     }
 
@@ -103,7 +105,7 @@ extension TextFieldDelegateInterceptor: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
+
         if range.length == 0 {
             // Add new characters
             try! self.delegate?.charactersTyped(chars: string, type: self.type)
@@ -118,20 +120,20 @@ extension TextFieldDelegateInterceptor: UITextFieldDelegate {
         }
         return self.originalDelegate?.textField?(textField, shouldChangeCharactersIn: range, replacementString: string) ?? true
     }
-    
+
     @available(iOS 13.0, *)
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        
+
         self.originalDelegate?.textFieldDidChangeSelection?(textField)
     }
 
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        
+
         return self.originalDelegate?.textFieldShouldClear?(textField) ?? true
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
+
         return self.originalDelegate?.textFieldShouldReturn?(textField) ?? true
     }
 }

@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double PMFingerprintVersionNumber;
-FOUNDATION_EXPORT const unsigned char PMFingerprintVersionString[];
+FOUNDATION_EXPORT double PMChallengeVersionNumber;
+FOUNDATION_EXPORT const unsigned char PMChallengeVersionString[];
 

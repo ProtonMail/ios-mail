@@ -1,0 +1,6 @@
+framework module PMChallenge {
+  umbrella header "PMChallenge-umbrella.h"
+
+  export *
+  module * { export * }
+}
