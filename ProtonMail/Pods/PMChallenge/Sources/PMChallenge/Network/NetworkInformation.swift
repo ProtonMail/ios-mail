@@ -23,24 +23,22 @@
 import CoreTelephony
 
 struct NetworkInformation {
-    typealias Cellular = PMFingerprint.Cellular
-    
-    static func getCellularInfo() -> [PMFingerprint.Cellular] {
+    typealias Cellular = PMChallenge.Cellular
+
+    static func getCellularInfo() -> [PMChallenge.Cellular] {
         guard TARGET_IPHONE_SIMULATOR != 1 else {return []}
-        
+
         let networkInfo = CTTelephonyNetworkInfo()
-        
+
         if #available(iOS 12.0, *) {
             let carriers = networkInfo.serviceSubscriberCellularProviders?.values
             let infos = carriers?.map { Cellular(networkCode: $0.mobileNetworkCode,
-                                                 countryCode: $0.mobileCountryCode,
-                                                 carrierName: $0.carrierName) }
+                                                 countryCode: $0.mobileCountryCode) }
             return infos ?? []
         } else {
             let carrier = networkInfo.subscriberCellularProvider
-            let info = PMFingerprint.Cellular(networkCode: carrier?.mobileNetworkCode,
-                                              countryCode:carrier?.mobileCountryCode,
-                                              carrierName: carrier?.carrierName)
+            let info = PMChallenge.Cellular(networkCode: carrier?.mobileNetworkCode,
+                                              countryCode: carrier?.mobileCountryCode)
             return [info]
         }
     }

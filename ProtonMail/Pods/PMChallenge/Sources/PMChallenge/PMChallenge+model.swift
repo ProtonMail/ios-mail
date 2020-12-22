@@ -1,5 +1,5 @@
 //
-//  PMFingerPrint+model.swift
+//  PMChallenge+model.swift
 //  ProtonMail - Created on 6/19/20.
 //
 //
@@ -20,11 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+// swiftlint:disable identifier_name
+
 import UIKit
 import Foundation
 
 // MARK: Enum
-extension PMFingerprint {
+extension PMChallenge {
     public enum TextFieldType {
         /// TextField for username
         case username
@@ -37,10 +39,10 @@ extension PMFingerprint {
         /// TextField for verification
         case verification
     }
-    
+
     public enum TextFieldInterceptError: Error, LocalizedError {
         case delegateMissing
-        
+
         var localizedDescription: String {
             switch self {
             case .delegateMissing:
@@ -48,10 +50,10 @@ extension PMFingerprint {
             }
         }
     }
-    
+
     public enum TimerError: Error, LocalizedError {
         case verificationTimerError
-        
+
         var localizedDescription: String {
             switch self {
             case .verificationTimerError:
@@ -62,19 +64,17 @@ extension PMFingerprint {
 }
 
 // MARK: struct/ class
-extension PMFingerprint {
+extension PMChallenge {
     public struct Cellular: Codable {
         private(set) var mobileNetworkCode: String
         private(set) var mobileCountryCode: String
-        private(set) var carrierName: String
-        init(networkCode: String?, countryCode: String?, carrierName: String?) {
+        init(networkCode: String?, countryCode: String?) {
             self.mobileNetworkCode = networkCode ?? ""
             self.mobileCountryCode = countryCode ?? ""
-            self.carrierName = carrierName ?? ""
         }
     }
-    
-    public struct Fingerprint: Codable {
+
+    public struct Challenge: Codable {
         // MARK: Signup data
         public internal(set) var usernameChecks: [String] = []
         /// Number of seconds it took to verify sms/email/catpcha/payment
@@ -99,7 +99,7 @@ extension PMFingerprint {
         public internal(set) var paste_username: [String] = []
         /// Phrases pasted during recovery inputs
         public internal(set) var paste_recovery: [String] = []
-        
+
         // MARK: Device relative setting
         /// Timezone of Operating System, e.g. `Asia/Taipei`
         public private(set) var timezone: String = ""
@@ -125,7 +125,7 @@ extension PMFingerprint {
         public private(set) var preferredContentSize: String = ""
         /// UUID for this app, will change after reinstall
         public private(set) var uuid = UIDevice.current.identifierForVendor?.uuidString ?? "unknow"
-        
+
         mutating func reset() {
             self.usernameChecks = []
             self.time_human = 0
@@ -141,20 +141,6 @@ extension PMFingerprint {
             self.paste_recovery = []
         }
         
-        public func asDictionary() throws -> [String: Any] {
-            let data = try JSONEncoder().encode(self)
-            guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
-                throw NSError()
-            }
-            return dictionary
-        }
-        
-        public func asString() throws -> String {
-            let data = try JSONEncoder().encode(self)
-            let str = String(data: data, encoding: .utf8)
-            return str ?? ""
-        }
- 
         mutating func fetchValues() {
             self.deviceName = UIDevice.current.name.rollingHash()
             self.appLang = Locale.current.languageCode ?? "unknow"
@@ -162,16 +148,75 @@ extension PMFingerprint {
             let currentTimezone = TimeZone.current
             self.timezone = currentTimezone.identifier
             self.timezoneOffset = -1 * (currentTimezone.secondsFromGMT()/60)
-            if var keyboards = UserDefaults.standard.object(forKey: "AppleKeyboards") as? [String] {
-                let emoji = UserDefaults.recentlyEmoji().joined().rollingHash()
-                keyboards = keyboards.map {$0.contains("emoji") ? "\($0)-\(emoji)": $0}
-                self.keyboards = keyboards
-            }
+            self.keyboards = self.collectKeyboardData()
             self.cellulars = NetworkInformation.getCellularInfo()
             if #available(iOS 13.0, *) {
                 self.isDarkmodeOn = UITraitCollection.current.userInterfaceStyle == .dark
             }
             self.preferredContentSize = UIApplication.shared.preferredContentSizeCategory.rawValue
+        }
+        
+        
+        /// Transfer `PMChallenge` object to json dictionary
+        ///
+        /// This function is the combination of `asDictionary()` and `asString()`. Recommend use this function to export challenge data
+        ///
+        /// There are 3 possible situations
+        /// 1. Object transfer to json dictionary successful, return this json dictionary
+        /// 2. If object transfer to json dictionary failed, will try to transfer to string value, return this string value if successful
+        /// 3. If object can't be transferred to json dictionary nor json string, will return error message
+        
+        public func toDictionary() -> [String: Any] {
+            do {
+                let challenge = try self.asDictionary()
+                return challenge
+            } catch {
+                let err1 = error.localizedDescription
+                do {
+                    let challengeStr = try self.asString()
+                    return ["StringValue": challengeStr]
+                } catch {
+                    return ["Challenge-parse-dic-error": err1,
+                            "Challenge-parse-string-error": error.localizedDescription]
+                }
+            }
+        }
+        
+        
+        /// Transfer `PMChallenge` object to json dictionary
+        /// - Throws: JSONSerialization exception
+        /// - Returns: Challenge data in json dictionary type
+        public func asDictionary() throws -> [String: Any] {
+            let data = try JSONEncoder().encode(self)
+            guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+                throw NSError()
+            }
+            return dictionary
+        }
+
+        
+        /// Transfer `PMChallenge` object to json string
+        /// - Throws: JSONEncoder exception
+        /// - Returns: Challenge data in json string type
+        public func asString() throws -> String {
+            let data = try JSONEncoder().encode(self)
+            let str = String(data: data, encoding: .utf8)
+            return str ?? ""
+        }
+        
+        private func collectKeyboardData() -> [String] {
+            let keyboards = UITextInputMode.activeInputModes
+            
+            let names = keyboards.map { info -> String in
+                let id: String = (info.value(forKey: "identifier") as? String) ?? ""
+                if id.contains("emoji") {
+                    let emoji = UserDefaults.recentlyEmoji().joined().rollingHash()
+                    return "\(id)-\(emoji)"
+                } else {
+                    return id
+                }
+            }
+            return names
         }
     }
 }

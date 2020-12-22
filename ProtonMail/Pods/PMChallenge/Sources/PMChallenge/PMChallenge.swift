@@ -1,5 +1,5 @@
 //
-//  PMFingerprint.swift
+//  PMChallenge.swift
 //  ProtonMail - Created on 6/19/20.
 //
 //
@@ -23,11 +23,11 @@
 import UIKit
 import Foundation
 
-final public class PMFingerprint {
-    static private let queue = DispatchQueue(label: "com.protonmail.fingerprint")
-    static private var shareInstance: PMFingerprint?
-    /// Collected fingerprint data
-    private var fingerprint = PMFingerprint.Fingerprint()
+final public class PMChallenge {
+    static private let queue = DispatchQueue(label: "com.protonmail.challenge")
+    static private var shareInstance: PMChallenge?
+    /// Collected challenge data
+    private var challenge = PMChallenge.Challenge()
     /// Interceptor of `UITextField`
     private var interceptors: [TextFieldDelegateInterceptor] = []
     /// To calculate number of second that user editing username
@@ -38,62 +38,62 @@ final public class PMFingerprint {
     private var requestVerifyTime: TimeInterval = 0
     /// Copy event debounce
     private var copyDebounce: TimeInterval = 0
-    
+
     public init() {
         self.subscribeNotification()
     }
-    
+
     deinit {
         self.unsubscribeNotification()
         self.reset()
     }
-    
+
     /// Get shared instance, thread safe
-    public static func shared() -> PMFingerprint {
+    public static func shared() -> PMChallenge {
         queue.sync {
-            if let _shared = PMFingerprint.shareInstance {
-                _shared.subscribeNotification()
-                return _shared
+            if let shareInstance = PMChallenge.shareInstance {
+                shareInstance.subscribeNotification()
+                return shareInstance
             }
-            PMFingerprint.shareInstance = PMFingerprint()
-            return PMFingerprint.shareInstance!
+            PMChallenge.shareInstance = PMChallenge()
+            return PMChallenge.shareInstance!
         }
     }
-    
+
     /// Release shared instance
     public static func release() {
         queue.sync {
-            PMFingerprint.shareInstance?.unsubscribeNotification()
-            PMFingerprint.shareInstance?.reset()
-            PMFingerprint.shareInstance = nil
+            PMChallenge.shareInstance?.unsubscribeNotification()
+            PMChallenge.shareInstance?.reset()
+            PMChallenge.shareInstance = nil
         }
     }
 }
 
 // MARK: Public function
-extension PMFingerprint {
+extension PMChallenge {
     /// Reset collected data, should called this function before collect data
     public func reset() {
-        self.fingerprint.reset()
-        
+        self.challenge.reset()
+
         self.interceptors.forEach({$0.destroy()})
         self.interceptors = []
         self.usernameEditingTime = 0
         self.passwordEditingTime = 0
         self.requestVerifyTime = 0
     }
-    
-    /// Export collected fingerprint data
-    public func export() -> PMFingerprint.Fingerprint {
+
+    /// Export collected challenge data
+    public func export() -> PMChallenge.Challenge {
         let semaphore = DispatchSemaphore(value: 0)
         runInMainThread {
-            self.fingerprint.fetchValues()
+            self.challenge.fetchValues()
             semaphore.signal()
         }
         semaphore.wait()
-        return self.fingerprint
+        return self.challenge
     }
-    
+
     /**
      Start to observe given textfield
      
@@ -114,28 +114,28 @@ extension PMFingerprint {
                 break
             }
         }
-        
+
         do {
             let interceptor = try TextFieldDelegateInterceptor(textField: textField,
                                                                type: type, delegate: self,
                                                                ignoreDelegate: ignoreDelegate)
             self.interceptors.append(interceptor)
-        } catch  {
+        } catch {
             throw error
         }
-        
+
         switch type {
         case .username:
             self.usernameEditingTime = 0
-            self.fingerprint.time_user = []
+            self.challenge.time_user = []
         case .password:
             self.passwordEditingTime = 0
-            self.fingerprint.time_pass = 0
+            self.challenge.time_pass = 0
         default:
             break
         }
     }
-    
+
     /// Record username that checks availability
     public func appendCheckedUsername(_ username: String) {
         guard self.usernameEditingTime > 0 else {
@@ -143,11 +143,11 @@ extension PMFingerprint {
             // Sometimes app will check the same username in very short time.
             return
         }
-        
+
         let time = Int(Date().timeIntervalSince1970 - self.usernameEditingTime)
-        self.fingerprint.time_user.append(time)
-        self.fingerprint.usernameChecks.append(username)
-        
+        self.challenge.time_user.append(time)
+        self.challenge.usernameChecks.append(username)
+
         self.usernameEditingTime = 0
         guard let interceptor = self.interceptors.first(where: {$0.type == .username}) else {
             return
@@ -155,23 +155,23 @@ extension PMFingerprint {
         // make sure the textField is not focused after check username.
         interceptor.textField?.resignFirstResponder()
     }
-    
+
     /// Declare user start request verification so that timer starts.
     public func requestVerify() {
         self.requestVerifyTime = Date().timeIntervalSince1970
     }
-    
+
     /// Count verification time
     public func verificationFinsih() throws {
         if self.requestVerifyTime == 0 {
-            throw PMFingerprint.TimerError.verificationTimerError
+            throw PMChallenge.TimerError.verificationTimerError
         }
-        self.fingerprint.time_human = Int(Date().timeIntervalSince1970 - self.requestVerifyTime)
+        self.challenge.time_human = Int(Date().timeIntervalSince1970 - self.requestVerifyTime)
     }
 }
 
 // MARK: Private function
-extension PMFingerprint {
+extension PMChallenge {
     private func runInMainThread(closure: @escaping () -> Void) {
         if Thread.isMainThread {
             closure()
@@ -184,36 +184,36 @@ extension PMFingerprint {
 }
 
 // MARK: Notification
-extension PMFingerprint {
+extension PMChallenge {
     private func subscribeNotification() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(PMFingerprint.copyEvent),
+                                               selector: #selector(PMChallenge.copyEvent),
                                                name: UIPasteboard.changedNotification,
                                                object: nil)
     }
-    
+
     private func unsubscribeNotification() {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc private func copyEvent() {
         guard let interceptor = self.interceptors.first(where: {$0.textField?.isFirstResponder ?? false}) else {
             return
         }
-        
+
         let now = Date().timeIntervalSince1970
         if now - self.copyDebounce < 1 {
             return
         }
         self.copyDebounce = now
-        
+
         guard let copyText = UIPasteboard.general.string else {return}
         switch interceptor.type {
         case .username:
-            self.fingerprint.copy_username.append(copyText)
-            self.fingerprint.usernameTypedChars.append("Copy")
+            self.challenge.copy_username.append(copyText)
+            self.challenge.usernameTypedChars.append("Copy")
         case .recovery:
-            self.fingerprint.copy_recovery.append(copyText)
+            self.challenge.copy_recovery.append(copyText)
         default:
             break
         }
@@ -221,7 +221,7 @@ extension PMFingerprint {
 }
 
 // MARK: TextFieldInterceptorDelegate, internal usage
-extension PMFingerprint: TextFieldInterceptorDelegate {
+extension PMChallenge: TextFieldInterceptorDelegate {
     func beginEditing(type: TextFieldType) {
         switch type {
         case .username:
@@ -236,52 +236,52 @@ extension PMFingerprint: TextFieldInterceptorDelegate {
             break
         }
     }
-    
+
     func endEditing(type: TextFieldType) {
         switch type {
         case .password:
-            self.fingerprint.time_pass += Int(Date().timeIntervalSince1970 - self.passwordEditingTime)
+            self.challenge.time_pass += Int(Date().timeIntervalSince1970 - self.passwordEditingTime)
             self.passwordEditingTime = 0
         default:
             break
         }
     }
-    
+
     func charactersTyped(chars: String, type: TextFieldType) throws {
         let value: String = chars.count > 1 ? "Paste": chars
         switch type {
         case .username:
-            self.fingerprint.usernameTypedChars.append(value)
+            self.challenge.usernameTypedChars.append(value)
             if chars.count > 1 {
-                self.fingerprint.paste_username.append(chars)
+                self.challenge.paste_username.append(chars)
             }
         case .recovery:
-            self.fingerprint.recoverTypedChars.append(value)
+            self.challenge.recoverTypedChars.append(value)
             if chars.count > 1 {
-                self.fingerprint.paste_recovery.append(chars)
+                self.challenge.paste_recovery.append(chars)
             }
         default:
             break
         }
     }
-    
+
     func charactersDeleted(chars: String, type: TextFieldType) {
         switch type {
         case .username:
-            self.fingerprint.usernameTypedChars.append("Backspace")
+            self.challenge.usernameTypedChars.append("Backspace")
         case .recovery:
-            self.fingerprint.recoverTypedChars.append("Backspace")
+            self.challenge.recoverTypedChars.append("Backspace")
         default:
             break
         }
     }
-    
+
     func tap(textField: UITextField, type: TextFieldType) {
         switch type {
         case .username:
-            self.fingerprint.click_user += 1
+            self.challenge.click_user += 1
         case .recovery:
-            self.fingerprint.click_recovery += 1
+            self.challenge.click_recovery += 1
         default:
             break
         }

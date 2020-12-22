@@ -42,7 +42,7 @@ class CreateNewUser : ApiRequest<ApiResponse> {
     let verifer : String //base64_encoded_verifier
     
     let deviceToken : String
-    let fingerprint: [String: Any]
+    let challenge: [String: Any]
     
     init(token : String,
          type : String,
@@ -52,7 +52,7 @@ class CreateNewUser : ApiRequest<ApiResponse> {
          salt : String,
          verifer : String,
          deviceToken: String,
-         fingerprint: [String: Any]) {
+         challenge: [String: Any]) {
         self.recaptchaToken = token
         self.tokenType = type
         self.userName = username
@@ -62,7 +62,7 @@ class CreateNewUser : ApiRequest<ApiResponse> {
         self.salt = salt
         self.verifer = verifer
         self.deviceToken = deviceToken
-        self.fingerprint = fingerprint
+        self.challenge = challenge
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -76,7 +76,7 @@ class CreateNewUser : ApiRequest<ApiResponse> {
         
         let payload: [String: Any] = [
             "mail-ios-payload": deviceToken,
-            "mail-ios-fingerprint": self.fingerprint
+            "mail-ios-challenge": self.challenge
         ]
         
         let out : [String : Any] = [

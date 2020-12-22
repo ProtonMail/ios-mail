@@ -73,8 +73,8 @@ PODS:
   - OpenSSL (1.0.210)
   - PMAuthentication (1.0.0):
     - PMCrypto
+  - PMChallenge (0.0.1)
   - PMCrypto (2.1.1)
-  - PMFingerprint (0.0.3)
   - PMKeymaker (1.1.0):
     - EllipticCurveKeyPair
     - PMCrypto
@@ -115,8 +115,8 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift (= 9.0.0)
   - OpenPGP (from `../OpenPGP`)
   - PMAuthentication (from `https://gitlab.protontech.ch/apple/shared/pmauthentication.git`, tag `1.0.0`)
+  - "PMChallenge (from `git@gitlab.protontech.ch:apple/shared/pmchallenge.git`, tag `0.0.1`)"
   - "PMCrypto (from `git@gitlab.protontech.ch:apple/shared/pmcrypto.git`, tag `2.1.1`)"
-  - "PMFingerprint (from `git@gitlab.protontech.ch:apple/shared/pmfingerprint.git`, tag `0.0.3`)"
   - PMKeymaker (from `https://gitlab.protontech.ch/apple/shared/pmkeymaker.git`, tag `1.1.0`)
   - PMNetworking (from `../Networking`)
   - PromiseKit (~> 6.0)
@@ -156,12 +156,12 @@ EXTERNAL SOURCES:
   PMAuthentication:
     :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
     :tag: 1.0.0
+  PMChallenge:
+    :git: "git@gitlab.protontech.ch:apple/shared/pmchallenge.git"
+    :tag: 0.0.1
   PMCrypto:
     :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
     :tag: 2.1.1
-  PMFingerprint:
-    :git: "git@gitlab.protontech.ch:apple/shared/pmfingerprint.git"
-    :tag: 0.0.3
   PMKeymaker:
     :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
     :tag: 1.1.0
@@ -181,12 +181,12 @@ CHECKOUT OPTIONS:
   PMAuthentication:
     :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
     :tag: 1.0.0
+  PMChallenge:
+    :git: "git@gitlab.protontech.ch:apple/shared/pmchallenge.git"
+    :tag: 0.0.1
   PMCrypto:
     :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
     :tag: 2.1.1
-  PMFingerprint:
-    :git: "git@gitlab.protontech.ch:apple/shared/pmfingerprint.git"
-    :tag: 0.0.3
   PMKeymaker:
     :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
     :tag: 1.1.0
@@ -209,8 +209,8 @@ SPEC CHECKSUMS:
   OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PMAuthentication: 7e217178684e2ec8e1b593bc95ed1c59c2959ac3
+  PMChallenge: b15f8382d52b5d1fbd205b7fccddcba0ec9554d5
   PMCrypto: 921fa892741d9430342298ee48bca56bda1f053b
-  PMFingerprint: f771d2e43461b5f422fcbf4e99da31f021174481
   PMKeymaker: 6a485e8e71457722b83ddd01f671a5334a0d6b04
   PMNetworking: 54696647ab1a6cac500bab624733d5e08b7e7098
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
@@ -221,6 +221,6 @@ SPEC CHECKSUMS:
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: d436b2570714605e351ea0444edba1e33c3ad082
+PODFILE CHECKSUM: 4572b2d43de143b2233e04a8c148fdcea5233d21
 
 COCOAPODS: 1.10.0

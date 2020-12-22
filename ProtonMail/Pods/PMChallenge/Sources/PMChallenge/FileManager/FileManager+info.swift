@@ -24,12 +24,12 @@ import Foundation
 
 // Storage
 extension FileManager {
-    
+
     /**
      Get device storage size
      - Returns: Storage size in gigabyte, reture `nil` if failed
      */
-    static func deviceCapacity()-> Double? {
+    static func deviceCapacity() -> Double? {
         let fileManager = FileManager.default
         guard let path = fileManager.urls(for: .libraryDirectory, in: .systemDomainMask).last?.path else {
             return nil
@@ -47,7 +47,7 @@ extension FileManager {
 extension FileManager {
     static func isJailbreak() -> Bool {
         guard TARGET_IPHONE_SIMULATOR != 1 else {return false}
-        
+
         // Check 1 : existence of files that are common for jailbroken devices
         let checkList = [
             "/Applications/Cydia.app",
@@ -66,7 +66,7 @@ extension FileManager {
                 return true
             }
         }
-        
+
         let path = "/private/" + UUID().uuidString
         do {
             try "anyString".write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
@@ -77,7 +77,7 @@ extension FileManager {
             return false
         }
     }
-    
+
     private static func canOpen(path: String) -> Bool {
         let file = fopen(path, "r")
         guard file != nil else { return false }
