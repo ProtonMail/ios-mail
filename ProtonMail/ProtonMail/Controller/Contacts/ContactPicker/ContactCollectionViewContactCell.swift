@@ -196,9 +196,9 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     }
     
     func widthForCell() -> CGFloat {
-        var size = self._model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
+        var size = self._model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h5.light])
         if let _ = self._model as? ContactGroupVO {
-            if let estimation = self.contactTitleLabel.text?.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light]) {
+            if let estimation = self.contactTitleLabel.text?.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h5.light]) {
                 size = estimation
             }
         }
@@ -211,11 +211,11 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         if let contactGroup = model as? ContactGroupVO {
             let (selectedCount, totalCount, _) = contactGroup.getGroupInformation()
             let title = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
-            let size = title.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
+            let size = title.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h5.light])
             return size.width.rounded(.up) + 20 + 14 //
         }
         
-        let size = model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
+        let size = model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h5.light])
         return size.width.rounded(.up) + 20 + 14 //34 //20 + self.contactTitleLabel.frame.height + 6
     }
     
