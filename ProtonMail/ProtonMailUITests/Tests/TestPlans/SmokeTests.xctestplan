@@ -15,19 +15,24 @@
     {
       "selectedTests" : [
         "AccountSettingsTests\/testCreateAndDeleteFolder()",
+        "AccountSettingsTests\/testCreateAndDeleteFolderFromAccountSettings()",
         "AccountSettingsTests\/testCreateAndDeleteLabel()",
+        "AccountSettingsTests\/testCreateAndDeleteLabelFromAccountSettings()",
+        "AccountSettingsTests\/testNavigateToDefaultEmailAddress()",
         "ContactsTests\/testEditContact()",
         "ContactsTests\/testEditGroup()",
         "LabelsFoldersTests\/testCreateAndDeleteCustomFolder()",
-        "LabelsFoldersTests\/testEditCustomLabelNameAndColor()",
+        "LabelsFoldersTests\/testCreateAndDeleteCustomLabel()",
         "LoginTests\/testLoginWithOnePass()",
         "LoginTests\/testLoginWithTwoPass()",
         "LogoutTests\/testLogoutOnePassUser()",
+        "MenuTests\/testSaveSpecialCharacterDisplayName()",
         "MenuTests\/testSaveTwoWordsDisplayName()",
         "MultiuserManagementTests\/testLogoutPrimaryAccount()",
         "MultiuserManagementTests\/testRemovePrimaryAccount()",
         "MultiuserManagementTests\/testSwitchAccount()",
-        "SendNewMessageTests\/testSendMessageToInternalContact()"
+        "SendNewMessageTests\/testSendMessageToInternalContact()",
+        "SpamTests\/testSwipeToSpamMessage()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",

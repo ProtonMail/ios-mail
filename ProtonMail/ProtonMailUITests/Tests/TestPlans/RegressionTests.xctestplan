@@ -18,7 +18,11 @@
         "BaseTestCase",
         "ContactsTests\/testContactDetailSendMessage()",
         "ContactsTests\/testContactGroupSendMessage()",
-        "DraftsTests",
+        "DraftsTests\/testAddRecipientsToDraft()",
+        "DraftsTests\/testChangeDraftSender()",
+        "DraftsTests\/testChangeDraftSubjectAndSendMessage()",
+        "DraftsTests\/testSaveDraftWithAttachment()",
+        "DraftsTests\/testSendDraftWithAttachment()",
         "LoginTests\/testLoginWithOnePassAnd2FA()",
         "LoginTests\/testLoginWithTwoPassAnd2FA()",
         "MultiuserManagementTests\/testAddTwoFreeAccounts()",
@@ -30,8 +34,7 @@
         "SendNewMessageTests\/testSendMessageToExternalContactWithTwoAttachments()",
         "SendNewMessageTests\/testSendMessageToInternalContactWithTwoAttachments()",
         "SendNewMessageTests\/testSendMessageToInternalNotTrustedContactChooseAttachment()",
-        "SendNewMessageTests\/testSendMessageWithAttachmentFromPmMe()",
-        "SpamTests"
+        "SendNewMessageTests\/testSendMessageWithAttachmentFromPmMe()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",
