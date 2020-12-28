@@ -230,6 +230,13 @@ struct Element {
             element.tap()
             return element
         }
+        
+        @discardableResult
+        class func typeTextByIdentifier(_ identifier: String, _ text: String) -> XCUIElement {
+            let element = app.textViews[identifier]
+            element.typeText(text)
+            return element
+        }
     }
     
     class wait {

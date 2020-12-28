@@ -14,6 +14,7 @@ private let sentStaticText = "MenuTableViewCell.\(LocalString._menu_sent_title)"
 private let contactsStaticText = "MenuTableViewCell.\(LocalString._menu_contacts_title)"
 private let draftsStaticText = "MenuTableViewCell.\(LocalString._menu_drafts_title)"
 private let settingsStaticText = "MenuTableViewCell.\(LocalString._menu_settings_title)"
+private let reportBugStaticText = "MenuTableViewCell.Report_Bugs"
 private let spamStaticText = "MenuTableViewCell.\(LocalString._menu_spam_title)"
 private let trashStaticText = "MenuTableViewCell.\(LocalString._menu_trash_title)"
 private let sidebarHeaderViewOtherIdentifier = "MenuViewController.headerView"
@@ -63,6 +64,12 @@ class MenuRobot {
     func folderOrLabel(_ name: String) -> LabelFolderRobot {
         Element.wait.forCellWithIdentifier(folderLabelCellIdentifier(name.replacingOccurrences(of: " ", with: "_")), file: #file, line: #line).tap()
         return LabelFolderRobot()
+    }
+    
+    @discardableResult
+    func reports() -> ReportRobot {
+        Element.wait.forCellWithIdentifier(reportBugStaticText, file: #file, line: #line).tap()
+        return ReportRobot()
     }
     
     func settings() -> SettingsRobot {
