@@ -150,11 +150,15 @@ struct Element {
             element.tap()
             return element
         }
+        
+        @discardableResult
         class func swipeLeftByIdentifier(_ identifier: String) -> XCUIElement {
             let element = app.staticTexts[identifier]
             element.swipeLeft()
             return element
         }
+        
+        @discardableResult
         class func swipeRightByIdentifier(_ identifier: String) -> XCUIElement {
             let element = app.staticTexts[identifier]
             element.swipeRight()
@@ -170,9 +174,21 @@ struct Element {
             return 1 == Int(switchValue!)
         }
         
+        class func isEnabledByIdentifier(_ identifier: String) -> Bool {
+            let switchValue = app.switches[identifier].value as? String
+            return 1 == Int(switchValue!)
+        }
+        
         @discardableResult
         class func tapByIndex(_ index: Int) -> XCUIElement {
             let element = app.switches.element(boundBy: index)
+            element.tap()
+            return element
+        }
+        
+        @discardableResult
+        class func tapByIdentifier(_ identifier: String) -> XCUIElement {
+            let element = app.switches[identifier]
             element.tap()
             return element
         }
