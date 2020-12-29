@@ -233,7 +233,7 @@ class ComposerRobot {
         Element.textField(subjectTextFieldIdentifier).perform.typeText(subjectText)
         return self
     }
-    
+    @discardableResult
     private func body(_ text: String) -> ComposerRobot {
         ///TODO: add body update when WebView field will be accessible.
         return self
