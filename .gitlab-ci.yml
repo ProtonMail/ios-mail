@@ -1,4 +1,5 @@
 stages:
+  - i18n
   - test
   - test_flight
   - bot # comes from translations/generator job
@@ -132,3 +133,16 @@ i18n-commit-locales:
   variables:
     I18N_COMMIT_CROWDIN_PROJECT: "apple-mail"
   extends: .i18n-commit-locales-shared-apple2
+
+commit-locales-release:
+  stage: i18n
+  extends: .i18n-commit-locales-shared-apple2
+  when: manual
+  variables:
+    I18N_COMMIT_BRANCH_PUSH: $CI_COMMIT_REF_NAME
+    I18N_COMMIT_CROWDIN_PROJECT: "apple-mail"
+  only:
+    refs:
+      - branches
+    variables:
+      - $CI_COMMIT_REF_NAME =~ /^release/
