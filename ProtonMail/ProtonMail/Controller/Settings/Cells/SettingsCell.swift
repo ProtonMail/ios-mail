@@ -24,7 +24,7 @@
 import Foundation
 
 
-class SettingsCell : UITableViewCell {
+class SettingsCell : UITableViewCell, AccessibleCell {
     
     @IBOutlet weak var LeftText: UILabel!
     @IBOutlet weak var RightText: UILabel!
@@ -44,6 +44,7 @@ class SettingsCell : UITableViewCell {
         self.LeftText.text = leftText
         self.RightText.text = rightText
         self.accessibilityLabel = leftText
+        generateCellAccessibilityIdentifiers(leftText)
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

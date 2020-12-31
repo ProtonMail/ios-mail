@@ -73,6 +73,7 @@
 		077415E09D78238CB7D8C16C65D9902C /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4A5F1C9B9B429AB005131084CC1554 /* KeychainWrapper.swift */; };
 		078742527D800434C38E54EB48602A75 /* AccountManagerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4F07D733569C6EA6A8183961F81DB /* AccountManagerCoordinator.swift */; };
 		079820C378B20013072796A9BAC58158 /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77669C3C0F15ACBCAC5071A59F5E57F0 /* Threading.swift */; };
+		079D526E1B9BB31FCBA6A0F441CCF94D /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE7FDAAD86D92DCBC19CC95E76B0EBC /* SettingsTests.swift */; };
 		07BEBB3803FBB5A0627A1C375384AF1D /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B220E1C9F1C225BFD6FE2E75455144 /* SettingDetailsViewModel.swift */; };
 		07F0EFBAD7E57473BBD39558EEC1AFB7 /* MessageBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1529D2B86F3F2BDF78B10DF4FC15D2C /* MessageBodyViewController.swift */; };
 		084DD97647FCA8DAFF1FD1DBB01B3A53 /* MessageContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0BEEB1B5405BB6AC205ABA989BA6E0 /* MessageContainerViewController.swift */; };
@@ -2341,6 +2342,7 @@
 		1E1D2C6642E07C8BB129A67146BE1541 /* SignupViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModelImpl.swift; sourceTree = "<group>"; };
 		1F2A28C85A4CFD1E37A659CFE55DBE2D /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		1F37FA268CD248ACD827C2188DAB3F5F /* SettingsNotificationsSnoozeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsSnoozeTableViewController.swift; sourceTree = "<group>"; };
+		1FE7FDAAD86D92DCBC19CC95E76B0EBC /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		1FFA17DEB32E13FA0D4754550343FD80 /* FolderCreatingViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderCreatingViewModelImpl.swift; sourceTree = "<group>"; };
 		20457356B822B4AA92822E628FF5B525 /* ServicePlanHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServicePlanHeader.xib; sourceTree = "<group>"; };
 		2054DF907C94718EB30D6C37DB13A5A9 /* ServicePlanDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlanDetails.swift; sourceTree = "<group>"; };
@@ -2993,6 +2995,7 @@
 		C0ED0222F585298654890FE8BF6620AC /* SignInViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModelImpl.swift; sourceTree = "<group>"; };
 		C1FDBCF03AA95437DF3AF45AAE686114 /* OnePasswordExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnePasswordExtension.h; sourceTree = "<group>"; };
 		C22586B9539C2397FDCCEE1DD459918B /* Test EMLs.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "Test EMLs.bundle"; sourceTree = "<group>"; };
+		C23DCA9A5904465133DACD9580B40372 /* SettingsTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SettingsTests.xctestplan; sourceTree = "<group>"; };
 		C28C90DB74837B0B5D7315CB68751D34 /* ContactGroupSubSelectionEmailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSubSelectionEmailCell.swift; sourceTree = "<group>"; };
 		C29317A6BB406175EC4E38250EE69C77 /* OnboardingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingView.xib; sourceTree = "<group>"; };
 		C2E4737A8650F3E078AAFB927E722E7F /* CryptoTests+Signature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoTests+Signature.swift"; sourceTree = "<group>"; };
@@ -4689,6 +4692,7 @@
 			isa = PBXGroup;
 			children = (
 				ABC1C0BA1C5E2E6343CF4512A318E8B8 /* AccountSettingsTests.swift */,
+				1FE7FDAAD86D92DCBC19CC95E76B0EBC /* SettingsTests.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -4907,6 +4911,7 @@
 				3A24C8D0DA7457C763A7C81964127C69 /* MultiuserManagementTests.xctestplan */,
 				E185699F7608929C988FFE9B4E096393 /* RegressionTests.xctestplan */,
 				8249479B52CC370EE6021401D9714F6F /* SendNewMessageTests.xctestplan */,
+				C23DCA9A5904465133DACD9580B40372 /* SettingsTests.xctestplan */,
 				EF7A5A2BF0FD6ADA8445147AFC9C0C02 /* SmokeTests.xctestplan */,
 			);
 			path = TestPlans;
@@ -8494,6 +8499,7 @@
 				0D3741C2FE12ECB6A90C74444FF11152 /* SendNewMessageTests.swift in Sources */,
 				7D03892CEB3648710D441D97493FDF9E /* SentRobot.swift in Sources */,
 				2261FD68733AFD33ED2FFEAD6C08AFA5 /* SettingsRobot.swift in Sources */,
+				079D526E1B9BB31FCBA6A0F441CCF94D /* SettingsTests.swift in Sources */,
 				E9805F1D13A93E482236F0106D1E2693 /* SignatureRobot.swift in Sources */,
 				9C60B47F8ED05F657C6F3104D2E25293 /* SinglePasswordRobot.swift in Sources */,
 				08564C94F066C8E1F3747DFE2E466E20 /* SpamRobot.swift in Sources */,

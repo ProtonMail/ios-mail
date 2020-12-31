@@ -26,7 +26,7 @@ import MBProgressHUD
 import PMKeymaker
 import Masonry
 
-class SettingsLockViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
+class SettingsLockViewController: UITableViewController, ViewModelProtocol, CoordinatedNew, AccessibleView {
     internal var viewModel : SettingsLockViewModel!
     internal var coordinator : SettingsLockCoordinator?
     
@@ -67,6 +67,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
+        generateAccessibilityIdentifiers()
     }
     
     private func updateTitle() {
