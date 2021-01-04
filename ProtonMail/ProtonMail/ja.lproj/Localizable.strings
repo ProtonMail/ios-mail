@@ -2453,7 +2453,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "暗号化された電子メールの新しいアカウントが設定され、暗号メッセージを送受信する準備ができました。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "新しい安全なメールアドレス\r  アカウントが準備できました。";
+"Your new secure email\r\n account is ready." = "新しい安全なメールアドレス\r\n  アカウントが準備できました。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "ご契約のプランは以下の日付まで有効です";

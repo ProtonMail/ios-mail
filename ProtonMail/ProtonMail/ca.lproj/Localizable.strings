@@ -898,7 +898,7 @@
 "Extreme Security" = "Seguretat extrema";
 
 /* Error message */
-"Failed to determine type of file" = "Impossible determinar el tipus de fitxer";
+"Failed to determine type of file" = "No s'ha pogut determinar el tipus de fitxer";
 
 /* Error message */
 "Failed to get list of available products from AppStore." = "Impossible recuperar la llista de productes disponibles a l'AppStore.";

@@ -237,7 +237,7 @@
 "Archived" = "Gearchiveerd";
 
 /* Alert when logout non-primary account from account manager */
-"Are you sure you want to log out?" = "Weet je zeker dat je wilt uitloggen?";
+"Are you sure you want to log out?" = "Weet u zeker dat u wilt uitloggen?";
 
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "Weet u zeker dat u zich wilt afmelden %@?";
@@ -983,7 +983,7 @@
 "Go to settings" = "Ga naar instellingen";
 
 /* network troubleshot cell title */
-"Government block" = "Overheid blokkage";
+"Government block" = "Blokkade door overheid";
 
 /* The title for the contact group detail view */
 "Group Details" = "Groepsinformatie";
@@ -1049,7 +1049,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid. [Meer informatie]";
 
 /* network troubleshot cell title */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid.%1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid. %1$@";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Om onze diensten te gebruiken, moet u akkoord gaan met de ProtonMail gebruiksvoorwaarden.";
