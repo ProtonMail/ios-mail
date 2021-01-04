@@ -215,7 +215,7 @@
 "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple nos ha informado de que has actualizado el plan de servicio, pero no ha dicho cuál de tus cuentas de ProtonMail actualizar en caso de que tengas más de una.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nos ha informado de que ha mejorado el plan de servicio, pero faltan algunos datos técnicos. Por favor, rellene el informe de error y nuestro equipo de atención al cliente se pondrá en contacto con usted.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nos ha informado de que has mejorado el plan de servicio, pero faltan algunos datos técnicos. Envíanos una informe de errores y nuestro equipo se pondrá en contacto contigo.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Nos informó Apple que ha actualizado el plan de servicio, pero detectamos que cerró sesión desde entonces.";
@@ -509,13 +509,13 @@
 "Confirm Login Password" = "Confirmar la contraseña de inicio de sesión";
 
 /* "Mailbox Password" */
-"Confirm Mailbox Password" = "Confirmar la contraseña del buzón";
+"Confirm Mailbox Password" = "Confirmar contraseña del buzón";
 
 /* Title */
 "Confirm new login password" = "Confirmar nueva contraseña de inicio de sesión";
 
 /* Title */
-"Confirm new mailbox password" = "Confirmar nueva contraseña de buzón";
+"Confirm new mailbox password" = "Confirmar nueva contraseña del buzón";
 
 /* Placeholder */
 "Confirm new password" = "Confirmar nueva contraseña";
@@ -542,7 +542,7 @@
 "Contact the ProtonMail team" = "Contactar con el equipo de ProtonMail";
 
 /* network troubleshot cell title */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Pongase directamente en contacto con nosotros a través de nuestro formulario de soporte, correo electrónico (support@protonmail.com), o Twitter.";
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contáctanos directamente a través de nuestro formulario de soporte, correo electrónico (support@protonmail.com), o Twitter.";
 
 /* Action and title
    menu title */
@@ -561,7 +561,7 @@
 "Copy name" = "Copiar nombre";
 
 /* Error message */
-"Could not connect to Store. Please try again later." = "No se pudo conectar con la tienda. Intente de nuevo más tarde.";
+"Could not connect to Store. Please try again later." = "No se ha podido conectar con la tienda. Inténtalo de nuevo más tarde.";
 
 /* contact placeholder */
 "Country" = "País";
@@ -669,7 +669,7 @@
 "Details" = "Detalles";
 
 /* network troubleshot cell title */
-"Disable any proxies or firewalls, or contact your network administrator." = "Deshabilite cualquier proxy o cortafuegos, o contacte con el administrador de red. ";
+"Disable any proxies or firewalls, or contact your network administrator." = "Deshabilita cualquier proxy o cortafuegos, o contacta con el administrador de tu red.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Desactivar validación";
@@ -784,7 +784,7 @@
 "Empty Folder" = "Vaciar carpeta";
 
 /* it is an option to empty the label */
-"Empty Label" = "Vaciar etiqueta";
+"Empty Label" = "Vaciar la etiqueta";
 
 /* Title */
 "Enable Default Signature" = "Habilitar la firma predeterminada";
@@ -889,7 +889,7 @@
 "Expires" = "Expira";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "Expira en %d días %d horas %d minutos %d segundos";
 
 /* Title */
 "Expiring Messages" = "Expiración de mensajes";
@@ -898,17 +898,17 @@
 "Extreme Security" = "Máxima seguridad";
 
 /* Error message */
-"Failed to determine type of file" = "Falló al determinar el tipo de archivo";
+"Failed to determine type of file" = "No se ha podido determinar el tipo de archivo";
 
 /* Error message */
-"Failed to get list of available products from AppStore." = "Falló al obtener la lista de productos disponibles desde AppStore.";
+"Failed to get list of available products from AppStore." = "No se ha podido obtener la lista de productos disponibles desde la AppStore.";
 
 /* Description */
-"Failed to initialize the app's saved data" = "Error al inicializar los datos guardados de la aplicación";
+"Failed to initialize the app's saved data" = "No se han podido inicializar los datos guardados de la aplicación";
 
 /* *
  *  Core Data Service & local error */
-"Failed to initialize the application's saved data" = "Error al inicializar los datos guardados de la aplicación";
+"Failed to initialize the application's saved data" = "No se han podido inicializar los datos guardados de la aplicación";
 
 /* default vcard types */
 "Fax" = "Fax";
@@ -1570,7 +1570,7 @@
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Inicie sesión en la cuenta de ProtonMail que quiere actualizar para completar la activación del plan de servicio.";
 
 /* network troubleshot cell title */
-"Please make sure that your internet connection is working." = "Por favor, asegurese de que su conexión a internet funcione. ";
+"Please make sure that your internet connection is working." = "Por favor, asegúrate de que tu conexión a internet funciona.";
 
 /* Error */
 "Please pick a user name first!" = "¡Por favor elija un nombre de usuario primero!";
@@ -1633,7 +1633,7 @@
 "Please, manage it in your phone." = "Por favor, hágalo en su teléfono.";
 
 /* Upgrade warning title */
-"PREMIUM FEATURE" = "CARACTERÍSTICA PREMIUM";
+"PREMIUM FEATURE" = "FUNCIÓN PREMIUM";
 
 /* Action */
 "Print" = "Imprimir";
@@ -1645,7 +1645,7 @@
 "privacy policy." = "política de privacidad.";
 
 /* Local notification title */
-"Problem sending message" = "Error al enviar el mensaje";
+"Problem sending message" = "Ha ocurrido un problema al enviar el mensaje";
 
 /* Title */
 "Protection" = "Protección";
@@ -1986,7 +1986,7 @@
 "Tap send anyway to send without expiration to these recipients" = "Pulse enviar para enviar sin expiración para estos destinatarios";
 
 /* network troubleshot cell title */
-"Temporarily disable or remove your antivirus software." = "Elimine o deshabilite temporalmente su antivirus.";
+"Temporarily disable or remove your antivirus software." = "Deshabilita temporalmente o elimina tu software de antivirus.";
 
 /* agree check box terms */
 "terms and conditions" = "términos y condiciones";
@@ -2065,7 +2065,7 @@
 "The total attachment size cannot exceed 25MB" = "El tamaño total del archivo adjunto no puede exceder los 25MB";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "La URL a la que intentas acceder no es estándar y puede que no se cargue correctamente. ¿Quieres abrirla usando el navegador predeterminado de tu dispositivo?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "La URL a la que intentas acceder no es estándar y es posible que no se cargue correctamente. ¿Quieres abrirla utilizando el navegador predeterminado de tu dispositivo?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "El usuario ya ha iniciado sesión";
@@ -2081,10 +2081,10 @@
 "The verification failed!" = "¡La verificación ha fallado!";
 
 /* alert when logout user if in queue still have tasks */
-"There are still some messages in queue. If you log out, the draft will be deleted." = "Todavia hay algunos mensajes en cola. Si cierra sesión, se perdera el borrador.\n ";
+"There are still some messages in queue. If you log out, the draft will be deleted." = "Todavía hay algunos mensajes en la cola. Si cierras la sesión, se eliminarán los borradores.";
 
 /* Alert to confirm logout with pending message in the queue */
-"There are unsent messages that will be lost if you log out" = "Si cierra sesión, se perderan los mensajes no enviados";
+"There are unsent messages that will be lost if you log out" = "Hay mensajes sin enviar que se perderán si cierras la sesión";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "Se produjo un error al crear o cargar los datos guardados de la aplicación.";
@@ -2108,16 +2108,16 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Este mensaje puede ser un intento de suplantación. Verifique el remitente y el contenido y asegúrese que sean legítimos.";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Esta preferencia volverá a utilizarse en Safari en caso de que el navegador elegido se desinstale.";
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Esta preferencia se revertirá a Safari si el navegador elegido se desinstala.";
 
 /* contacts talbe cell Title title */
 "Title" = "Título";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Ha fallado la validación del certificado TLS. Puede que su conexión a Internet este siendo monitorizada. Por su seguridad, la aplicación esta temporalmente bloqueada. \n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "La validación del certificado TLS ha fallado. Tu conexión a Internet puede ser monitorizada. Por tu seguridad, la aplicación esta temporalmente bloqueada.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Ha fallado la validación del certificado TLS. Puede que su conexión a Internet este siendo monitorizada. Por su seguridad, la aplicación esta temporalmente bloqueada.\n\ncambie de red inmediatamente ";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "La validación del certificado TLS ha fallado. Tu conexión a Internet puede ser monitorizada. Por tu seguridad, la aplicación esta temporalmente bloqueada.\n\ncambiar de red inmediatamente";
 
 /* Title */
 "To" = "Para";
@@ -2168,7 +2168,7 @@
 "TroubleShooting" = "Resolución de problemas";
 
 /* network troubleshot cell title */
-"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Intente conectarse a Proton desde una red diferente (o use ProtonVPN o Tor). ";
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Intenta conectarte a Proton desde una red diferente (o utilizando ProtonVPN o Tor).";
 
 /* action sheet option */
 "Turn Off" = "Desactivar";
@@ -2351,7 +2351,7 @@
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Advertencia: No has establecido un correo electrónico de recuperación, por lo que la recuperación de la cuenta no será posible si olvidas tu contraseña. ¿Quieres continuar sin un correo electrónico de recuperación?";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No se pudo enviar su mensaje, posiblemente debido a una mala conexión de red. El mensaje fue guardado en Borradores y será enviado automáticamente la próxima vez que abra la aplicación.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No hemos podido enviar tu mensaje, posiblemente debido a una mala conexión de red. Tu mensaje ha sido guardado en Borradores y será enviado automáticamente la próxima vez que abras la aplicación.";
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Hemos activado su suscripción exitosamente. Reinicie la aplicación para empezar a utilizar su plan de servicio nuevo.";
@@ -2393,7 +2393,7 @@
 "You are about to launch the web browser and navigate to" = "Está a punto de abrir el navegador web y navegar hacia";
 
 /* Alert of removing all accounts */
-"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Está a punto de eliminar todas las cuentas. No podrá acceder a ellas desde este dispositivo a menos que las añada de nuevo.\n\n¿Quiere eliminar todas sus cuentas de todos modos?";
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Estás a punto de eliminar todas las cuentas. No podrás acceder a ellas desde este dispositivo a menos que las añadas de nuevo.\n\n¿Quieres eliminar todas las cuentas de todos modos?";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Puedes personalizar gestos de deslizamiento en los ajustes de la aplicación de ProtonMail.";
@@ -2405,7 +2405,7 @@
 "You can't set %@ address as default because it is a paid feature." = "No puede establecer la dirección %@ como predeterminada porque es una característica de pago.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Ha desactivado FaceID en la configuración del sistema. La función de FaceID es la de proteger información importante de la cuenta. Para acceder a su cuenta, vaya a configuración y reactive FaceID, o vuelva a iniciar sesión.";
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Has deshabilitado FaceID en la configuración del sistema. FaceID se ha utilizado para proteger la información importante de la cuenta. Para acceder a tu cuenta, ves a la configuración y reactiva FaceID, o vuelve a iniciar sesión.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Has habilitado la expiración de mensajes, pero no todos los destinatarios lo admiten. Por favor, añade una contraseña y/o deshabilita el envío PGP para utilizar la expiración con todos los destinatarios.";
@@ -2420,7 +2420,7 @@
 "You have unsaved changes. Do you want to save it?" = "Tiene cambios sin guardar. ¿Desea guardarlos?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "Has utilizado %d%% de tu espacio de almacenamiento (%@).";
 
 /* *
  *  StorageLimit */
@@ -2434,16 +2434,16 @@
 "You will be switched to %@" = "Serás cambiado a %@";
 
 /* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "Este mensaje se borrará de forma irreversible. ¿Está usted seguro?";
+"You're going to delete the message irreversibly. Are you sure?" = "Vas a eliminar el mensaje de manera irreversible. ¿Estás seguro?";
 
 /* view top title */
 "Your Country Code" = "Su código de país";
 
 /* network troubleshot cell title */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Puede que su país esté bloqueando el acceso a Proton. Pruebe a usar %1$@ (o cualquier otro servicion VPN) o %2$@ para acceder a Proton. ";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Tu país puede estar bloqueando el acceso a Proton. Prueba utilizando %1$@ (u otra VPN) o %2$@ para acceder a Proton.";
 
 /* network troubleshot cell title */
-"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Tu país puede estar bloqueando el acceso a Proton. Prueba a usar ProtonVPN (o cualquier otra VPN) o Tor para acceder a Proton.";
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Tu país puede estar bloqueando el acceso a Proton. Prueba utilizando ProtonVPN (u otra VPN) o Tor para acceder a Proton.";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Su bandeja de entrada está ahora protegida con cifrado de extremo a extremo. Para enviar mensajes de email de forma automática y segura a sus amigos, pídales que se unan a ProtonMail. También puede cifrar los mensajes manualmente si no utilizan ProtonMail.";
@@ -2462,7 +2462,7 @@
 "Your plan will automatically renew on" = "Su suscripción se renovará automáticamente en";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Su sesión ha caducado porque ha estado inactivo durante un rato o porque ha sido revocada. Por favor, inicie sesión de nuevo.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Tu sesión ha expirado porque has estado inactivo durante un tiempo o porque ha sido revocada. Por favor, vuelve a iniciar sesión.";
 
 /* Description */
 "Your signature has been updated." = "Su firma ha sido actualizada.";
