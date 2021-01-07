@@ -339,9 +339,20 @@ class MessageDataService : Service, HasLocalStorage {
                             //Prevent the draft is overriden while sending
                             if labelID == Message.Location.draft.rawValue, let sendingMessageIDs = Message.getIDsofSendingMessage(managedObjectContext: context) {
                                 let idsSet = Set(sendingMessageIDs)
-                                for (index, _) in messagesArray.enumerated() {
-                                    if let msgID = messagesArray[index]["ID"] as? String, idsSet.contains(msgID) {
-                                        messagesArray.remove(at: index)
+                                var msgIDsOfMessageToRemove: [String] = []
+                                
+                                messagesArray.forEach { (messageDict) in
+                                    if let msgID = messageDict["ID"] as? String, idsSet.contains(msgID) {
+                                        msgIDsOfMessageToRemove.append(msgID)
+                                    }
+                                }
+                                
+                                msgIDsOfMessageToRemove.forEach { (msgID) in
+                                    messagesArray.removeAll { (msgDict) -> Bool in
+                                        if let id = msgDict["ID"] as? String {
+                                            return id == msgID
+                                        }
+                                        return false
                                     }
                                 }
                             }

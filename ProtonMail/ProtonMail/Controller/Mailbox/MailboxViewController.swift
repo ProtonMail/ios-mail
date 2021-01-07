@@ -960,8 +960,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 return
             }
             guard !message.isSending else {
-                //TODO: Change to formal message
-                "Message is being sent now.".alertToast()
+                LocalString._mailbox_draft_is_uploading.alertToast()
+                self.tableView.indexPathsForSelectedRows?.forEach {
+                    self.tableView.deselectRow(at: $0, animated: true)
+                }
                 self.updateTapped(status: false)
                 return
             }
