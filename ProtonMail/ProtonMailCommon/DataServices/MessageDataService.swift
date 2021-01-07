@@ -2041,8 +2041,9 @@ class MessageDataService : Service, HasLocalStorage {
                 }
                 
                 // show message now
+                let errorMsg = err.code == 33101 ? LocalString._messages_validation_failed_try_again : "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)"
                 self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
-                                                                                             error: "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)",
+                                                                                             error: errorMsg,
                                                                                              timeInterval: 1,
                                                                                             subtitle: message.title))
                 Analytics.shared.error(message: .sendMessageError, error: err, extra: [
