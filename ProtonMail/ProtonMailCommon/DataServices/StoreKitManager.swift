@@ -60,22 +60,41 @@ class StoreKitManager: NSObject {
             UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
         }
     }
-    private lazy var confirmUserValidationBypass: (Error, @escaping ()->Void)->Void = { [unowned self] error, completion in
+
+    private func showIgnoreAlert(onIgnore: @escaping ()->Void) {
+        let alert = UIAlertController(title: LocalString._warning, message: LocalString._ignore_IAP_error_descrption, preferredStyle: .alert)
+        alert.addAction(.init(title: LocalString._general_ignore_action, style: .destructive, handler: { (_) in
+            onIgnore()
+        }))
+        alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+    
+    private func confirmUserValidationbyPass(error: Error, completion: @escaping ()->Void, ignoreCompletion: @escaping ()->Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
             guard let currentUsername = self.user?.defaultEmail else {
                 self.errorCompletion(Errors.noActiveUsernameInUserDataService)
                 return
             }
+            
+            let activateMsg = String.init(format: LocalString._do_you_want_to_bypass_validation,
+                                          currentUsername)
 
             let message = """
             \(error.localizedDescription)
-            \(LocalString._do_you_want_to_bypass_validation)\(currentUsername)?
+
+            \(activateMsg)?
             """
             let alert = UIAlertController(title: LocalString._warning, message: message, preferredStyle: .alert)
-            alert.addAction(.init(title: LocalString._yes_bypass_validation + currentUsername,
-                                  style: .destructive,
+
+            alert.addAction(.init(title: LocalString._general_yes_action,
+                                  style: .default,
                                   handler: { _ in completion()} ))
-            alert.addAction(.init(title: LocalString._no_dont_bypass_validation, style: .cancel, handler: nil))
+            alert.addAction(.init(title: LocalString._remind_me_later, style: .default, handler: nil))
+            alert.addAction(.init(title: LocalString._general_ignore_action, style: .destructive, handler: { (_) in
+                ignoreCompletion()
+            }))
+            
             UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
         }
     }
@@ -263,14 +282,24 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 try self.proceed(withPurchased: transaction, shouldVerifyPurchaseWasForSameAccount: shouldVerify)
                 
             } catch Errors.noHashedUsernameArrivedInTransaction { // storekit bug
-                self.confirmUserValidationBypass(Errors.noHashedUsernameArrivedInTransaction) {
-                    self.transactionsQueue.addOperation { self.process(transaction, shouldVerifyPurchaseWasForSameAccount: false) }
+                self.confirmUserValidationbyPass(error: Errors.noHashedUsernameArrivedInTransaction) {[weak self] in
+                    self?.transactionsQueue.addOperation { self?.process(transaction, shouldVerifyPurchaseWasForSameAccount: false)
+                    }
+                } ignoreCompletion: { [weak self] in
+                    self?.showIgnoreAlert(onIgnore: {
+                        SKPaymentQueue.default().finishTransaction(transaction)
+                    })
                 }
-                
+
             } catch Errors.haveTransactionOfAnotherUser { // user login error
-                self.confirmUserValidationBypass(Errors.haveTransactionOfAnotherUser) {
-                    self.transactionsQueue.addOperation { self.process(transaction, shouldVerifyPurchaseWasForSameAccount: false) }
+                self.confirmUserValidationbyPass(error: Errors.haveTransactionOfAnotherUser) { [weak self] in
+                    self?.transactionsQueue.addOperation { self?.process(transaction, shouldVerifyPurchaseWasForSameAccount: false) }
+                } ignoreCompletion: { [weak self] in
+                    self?.showIgnoreAlert(onIgnore: {
+                        SKPaymentQueue.default().finishTransaction(transaction)
+                    })
                 }
+
             } catch Errors.sandboxReceipt {  // receipt error
                 self.errorCompletion(Errors.sandboxReceipt)
                 SKPaymentQueue.default().finishTransaction(transaction)
