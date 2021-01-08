@@ -294,10 +294,11 @@ extension AppDelegate: UIApplicationDelegate {
             
             if let user = users.firstUser {
                 user.messageService.pauseQueueAction {
-                    application.endBackgroundTask(taskID)
-                    taskID = .invalid
                 }
             }
+            
+            application.endBackgroundTask(taskID)
+            taskID = .invalid
         }
         let delayedCompletion: ()->Void = {
             delay(3) {
