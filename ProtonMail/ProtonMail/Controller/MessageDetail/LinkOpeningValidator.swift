@@ -51,14 +51,10 @@ extension LinkOpeningValidator {
         let proceed = UIAlertAction(title: LocalString._genernal_continue, style: .destructive) { _ in
             handler(true)
         }
-        let doNotShowAgain = UIAlertAction(title: LocalString._genernal_continue_and_dont_ask_again, style: .destructive) { _ in
-            userDataService.updateLinkConfirmation(auth: self.user.auth, user: self.user.userInfo, .openAtWill) { _, _, _ in /* nothing */ }
-            handler(true)
-        }
         let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in
             handler(false)
         }
-        [proceed, doNotShowAgain, cancel].forEach(alert.addAction)
+        [proceed, cancel].forEach(alert.addAction)
 
         // will deliver to the topmost view controller in responder chain
         UIApplication.shared.sendAction(#selector(UIViewController.present(_:animated:completion:)), to: nil, from: alert, for: nil)
