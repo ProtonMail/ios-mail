@@ -28,8 +28,11 @@ extension String {
     /// Used when passing a string into JavaScript, so the string is not completed too soon
     /// Performance is not good for large string - Notes from Feng
     var escaped: String {
-        let mutableString = NSMutableString(string: self)
-        CFStringTransform(mutableString, nil, "Any-Hex/Java" as NSString, false)
-        return mutableString as String
+        let arr = self.unicodeScalars.map { unicode -> String in
+            let value = unicode.value
+            return "\\u\(String(format: "%04X", value))"
+        }
+        let str = arr.joined()
+        return str
     }
 }
