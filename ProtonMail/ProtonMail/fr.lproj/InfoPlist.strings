@@ -2,13 +2,13 @@
 "CFBundleDisplayName" = "ProtonMail";
 
 /* Privacy - Media Library Usage Description */
-"NSAppleMusicUsageDescription" = "Nécessaire pour joindre des fichiers multimédia à l’email.";
+"NSAppleMusicUsageDescription" = "Nécessaire pour joindre des fichiers multimédia au courriel.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Nécessaire pour joindre des photos à l’email.";
+"NSCameraUsageDescription" = "Nécessaire pour joindre des photos au courriel.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Utilisé pour accéder aux adresses email des contacts enregistrés sur l'appareil afin qu'ils puissent être utilisés lors de la rédaction d'un message ou lors du téléchargement manuel des contacts de l'appareil sur votre compte. Les informations de contact ne sont pas téléchargées sur nos serveurs sans une action explicite de votre part.";
+"NSContactsUsageDescription" = "Utilisé pour accéder aux adresses électroniques des contacts enregistrés sur l'appareil afin qu'elles puissent être utilisées lors de la rédaction d'un message ou lors du téléchargement manuel des contacts de l'appareil sur votre compte. Les informations de contact ne sont pas téléchargées sur nos serveurs sans une action explicite de votre part.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Vous permet de déverrouiller votre application rapidement et de façon sécurisée.";
@@ -17,5 +17,5 @@
 "NSPhotoLibraryAddUsageDescription" = "Requis pour l’enregistrement des pièces jointes dans la Galerie.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Nécessaire pour joindre des photos à l’email.";
+"NSPhotoLibraryUsageDescription" = "Nécessaire pour joindre des photos au courriel.";
 

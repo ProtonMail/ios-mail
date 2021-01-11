@@ -212,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Apple nás informoval, že nemohli zpracovat nákup.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple nás informoval, že jste navýšil/a plán služby, ale neřekl, který z vašich ProtonMail účtů má být navýšen v případě, že jich máte více než jeden.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nás informoval, že jste navýšil/a plán služby, ale některé technické údaje chyběly. Prosím vyplňte zprávu o chybě a náš tým podpory zákazníků vás bude kontaktovat.";
 
 /* Error message */
@@ -693,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Zobrazované jméno";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Chcete aktivovat zakoupený plán služby ";
-
 /* Description */
 "Do you want to cancel the process?" = "Přejete si přerušit tento proces?";
 
@@ -889,7 +883,7 @@
 "Expires" = "Vyprší";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Vyprší za %d dnů %d hodin %d minut %d vteřin";
+"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
 
 /* Title */
 "Expiring Messages" = "Platnost zpráv";
@@ -1116,7 +1110,7 @@
 "Is this bug report about an in-app purchase?" = "Týká se tato zpráva o chybě nákupu v aplikaci?";
 
 /* It is not possible to switch to `plan` within our iOS app. */
-"It is not possible to switch to %@ within our iOS app." = "Není možné přejít na %@ v naší aplikaci iOS.";
+"It is not possible to switch to %@ within our iOS app." = "It is not possible to switch to %@ within our iOS app.";
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nepodařilo se nám spojit produkt z AppStore, který jste si zakoupili s produkty na našem serveru. Prosím vyplňte zprávu o chybě a náš tým podpory Vás bude kontaktovat.";
@@ -1324,7 +1318,7 @@
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobilní registrace jsou dočasně vypnuty. Opakujte akci později nebo se zkuste zaregistrovat na protonmail.com pomocí stolního nebo přenosného počítače.";
 
 /* Description */
-"Modifying or turning off the default mobile signature is a paid feature." = "Modifikace nebo vypnutí výchozího mobilního podpisu je placenou vlastností.";
+"Modifying or turning off the default mobile signature is a paid feature." = "Modifying or turning off the default mobile signature is a paid feature.";
 
 /* More actions button */
 "More" = "Více";
@@ -1333,7 +1327,7 @@
 "More Credits" = "Víc kreditů";
 
 /* move action */
-"Move to All Mail" = "Přesunout do šložky Všechny zprávy";
+"Move to All Mail" = "Move to All Mail";
 
 /* move action */
 "Move to Archive" = "Přesunout do archivu";
@@ -1672,7 +1666,7 @@
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail je nyní v režimu offline, zkontrolujte náš twitter pro aktuální stav: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline..." = "ProtonMail je v režimu offline...";
+"ProtonMail is currently offline..." = "ProtonMail is currently offline...";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus je nutný k úpravě vašeho mobilního podpisu";

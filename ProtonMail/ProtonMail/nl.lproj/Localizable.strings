@@ -212,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Apple heeft ons geïnformeerd dat ze de aankoop niet konden verwerken.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple heeft ons geïnformeerd dat u het serviceplan geüpgraded heeft, maar gaf niet door welk van uw ProtonMail-accounts geüpgrade dient te worden indien u meer dan één bezit.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple heeft ons geïnformeerd dat u het serviceplan geüpgraded heeft maar er missen technische gegevens. Dien een bugrapport in en ons ondersteuningsteam neemt contact op met u.";
 
 /* Error message */
@@ -237,7 +234,7 @@
 "Archived" = "Gearchiveerd";
 
 /* Alert when logout non-primary account from account manager */
-"Are you sure you want to log out?" = "Weet je zeker dat je wilt uitloggen?";
+"Are you sure you want to log out?" = "Weet u zeker dat u wilt uitloggen?";
 
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "Weet u zeker dat u zich wilt afmelden %@?";
@@ -693,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Weergavenaam";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Wilt u het gekochte abonnement activeren voor ";
-
 /* Description */
 "Do you want to cancel the process?" = "Wilt u het proces annuleren?";
 
@@ -983,7 +977,7 @@
 "Go to settings" = "Ga naar instellingen";
 
 /* network troubleshot cell title */
-"Government block" = "Overheid blokkage";
+"Government block" = "Blokkade door overheid";
 
 /* The title for the contact group detail view */
 "Group Details" = "Groepsinformatie";
@@ -1049,7 +1043,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid. [Meer informatie]";
 
 /* network troubleshot cell title */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid.%1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid. %1$@";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Om onze diensten te gebruiken, moet u akkoord gaan met de ProtonMail gebruiksvoorwaarden.";

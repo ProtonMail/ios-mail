@@ -212,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Apple hefur tilkynnt okkur að þeir geti ekki meðhöndlað þessi kaup.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en tiltóku ekki hvaða notandaaðgang ProtonMail eigi að uppfæra, sértu með fleiri en einn notandaaðgang.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en einhverjar tæknilegar upplýsingar vantaði. Gefðu þær upp í villuskýrslunni og mun notendaaðstoðarteymið okkar síðan hafa samband við þig.";
 
 /* Error message */
@@ -692,9 +689,6 @@
 
 /* Title in display name settings */
 "DisplayName" = "Birtingarnafn";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Viltu virkja greidda þjónustuáskrift fyrir ";
 
 /* Description */
 "Do you want to cancel the process?" = "Viltu hætta við ferlið?";
