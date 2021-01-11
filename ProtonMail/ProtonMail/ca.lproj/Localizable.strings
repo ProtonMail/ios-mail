@@ -212,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Apple ens ha informat que no han pogut processar la compra.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple ens ha informat que heu subscrit un nou abonament, però en cas que tingueu més d'un compte ProtonMail no ens ha indicat de quin es tracta.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ens ha informat que heu subscrit un nou abonament, però falten algunes dades tècniques. Envieu-nos un informe d'errors i el nostre equip es posarà en contacte amb vosté.";
 
 /* Error message */
@@ -693,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Nom a mostrar";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Voleu activar l'abonament comprat per ";
-
 /* Description */
 "Do you want to cancel the process?" = "Voleu cancel·lar el procés?";
 
@@ -898,7 +892,7 @@
 "Extreme Security" = "Seguretat extrema";
 
 /* Error message */
-"Failed to determine type of file" = "Impossible determinar el tipus de fitxer";
+"Failed to determine type of file" = "No s'ha pogut determinar el tipus de fitxer";
 
 /* Error message */
 "Failed to get list of available products from AppStore." = "Impossible recuperar la llista de productes disponibles a l'AppStore.";

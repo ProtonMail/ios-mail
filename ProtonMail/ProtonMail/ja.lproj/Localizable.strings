@@ -212,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Appleが購入の手続きを進める事ができませんでした。";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Appleからサブスクリプションプランのアップグレードの通知を受けましたが、いくつかの技術情報が見当たりません。顧客サポートチームがご連絡しますので、バグ報告をお願いします。";
 
 /* Error message */
@@ -693,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "表示名";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "購読したサービスプランを有効化しますか？： ";
-
 /* Description */
 "Do you want to cancel the process?" = "手続きをキャンセルしますか？";
 
@@ -889,7 +883,7 @@
 "Expires" = "有効期限";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "%d 日 %d 時間 %d 分 %d 秒で期限切れ";
 
 /* Title */
 "Expiring Messages" = "有効期限付きメッセージ";

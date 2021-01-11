@@ -212,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Az Apple azt jelezte vissza, hogy nem tudták feldolgozni a vásárlást.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de nem adta meg, hogy melyik ProtonMail fiókját kívánja frissíteni, amennyiben több is van.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de bizonyos technikai adatok hiányoznak. Kérjük, töltsön ki egy hiba jelentést és a támogatási csoportunk felveszi önnel a kapcsolatot.";
 
 /* Error message */
@@ -692,9 +689,6 @@
 
 /* Title in display name settings */
 "DisplayName" = "Megjelenítendő név";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Aktiválja a megvásárolt csomagot a következőhöz: ";
 
 /* Description */
 "Do you want to cancel the process?" = "Megszakítja a folyamatot?";
