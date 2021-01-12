@@ -468,6 +468,13 @@ class MailboxViewModel: StorageLimit {
     func move(IDs messageIDs : NSMutableSet, from fLabel: String, to tLabel: String) {
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainManagedObjectContext)
         for msg in messages {
+            var fLabel = fLabel
+            if Message.Location.allmail.rawValue == fLabel {
+                let labels = msg.labels.allObjects as! [Label]
+                if let nonAll = labels.first(where: {$0.labelID != Message.Location.allmail.rawValue}) {
+                    fLabel = nonAll.labelID
+                }
+            }
             messageService.move(message: msg, from: fLabel, to: tLabel)
         }
     }
