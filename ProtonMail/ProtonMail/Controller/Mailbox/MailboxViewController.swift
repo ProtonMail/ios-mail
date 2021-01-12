@@ -451,11 +451,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.selectedIDs.removeAllObjects()
         self.hideCheckOptions()
         self.updateNavigationController(false)
+        if !self.timer.isValid {
+            self.startAutoFetch(false)
+        }
     }
     
     @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         self.showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(listEditing)
+        // invalidate tiemr in multi-selected mode to prevent ui refresh issue
+        self.timer.invalidate()
     }
 
     internal func beginRefreshingManually(animated: Bool) {
