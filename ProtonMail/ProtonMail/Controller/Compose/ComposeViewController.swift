@@ -428,6 +428,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             }
             let delete = UIAlertAction(title: LocalString._composer_discard_draft_action,
                                        style: .destructive) { _ in
+                //Ignore the contact validation when user choose to discard the draft
+                self.headerView.shouldValidateTheEmail = false
                 self.stopAutoSave()
                 self.viewModel.deleteDraft()
                 dismiss()

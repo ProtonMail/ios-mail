@@ -238,6 +238,9 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
     fileprivate var isShowingCcBccView: Bool = false
     fileprivate var hasExpirationSchedule: Bool = false
     
+    ///Use this flag to control the email validation action
+    var shouldValidateTheEmail = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -756,8 +759,10 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     }
     
     func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool) {
-        let customContact = ContactVO(id: "", name: text, email: text)
-        contactPicker.addToSelectedContacts(model: customContact, needFocus: focus)
+        if self.shouldValidateTheEmail {
+            let customContact = ContactVO(id: "", name: text, email: text)
+            contactPicker.addToSelectedContacts(model: customContact, needFocus: focus)
+        }
     }
     
     func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool) {
