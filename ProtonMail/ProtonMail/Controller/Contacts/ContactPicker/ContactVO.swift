@@ -35,8 +35,9 @@ enum SignStatus : Int {
 }
 
  enum PGPType : Int {
-    case failed_validation = -2 // not pass FE validation
-    case failed_server_validation = -1 // not pass BE validation
+    //Do not use -1, this value will break the locker check function
+    case failed_validation = -3 // not pass FE validation
+    case failed_server_validation = -2 // not pass BE validation
     case none = 0 /// default none
     case pgp_signed = 1 /// external pgp signed only
     case pgp_encrypt_trusted_key = 2 /// external encrypted and signed with trusted key
