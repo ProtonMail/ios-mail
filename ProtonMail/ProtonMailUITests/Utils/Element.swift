@@ -68,8 +68,25 @@ struct Element {
             app.cells[identifier].tap()
         }
         
-        class func swipeLeftByIdentifier(_ identifier: String) {
+        class func tapByPosition(_ index: Int) {
+            let cell = app.cells.element(boundBy: index)
+            cell.tap()
+        }
+        
+        class func swipeLefyByIdentifier(_ identifier: String) {
             app.cells[identifier].swipeLeft()
+        }
+        
+        class func longClickByPosition(_ index: Int) {
+            let cell = app.cells.element(boundBy: index)
+            cell.press(forDuration: 3)
+        }
+        
+        class func getNameByIndex(_ index: Int) -> String {
+            let cell = app.cells.element(boundBy: index)
+            let name = cell.identifier.components(separatedBy: ".")
+            let subject: String = name[1]
+            return subject
         }
         
         class func swipeSwipeUpUntilVisibleByIdentifier(_ identifier: String) -> XCUIElement {
@@ -165,6 +182,19 @@ struct Element {
             return element
         }
         
+        @discardableResult
+        class func longClickByIdentifier(_ identifier: String) -> XCUIElement {
+            let element = app.staticTexts[identifier]
+            element.press(forDuration: 3)
+            return element
+        }
+        
+        @discardableResult
+        class func longClickByIndex(_ index: Int) -> XCUIElement {
+            let element = app.staticTexts.element(boundBy: index)
+            element.press(forDuration: 5)
+            return element
+        }
     }
     
     /// As "switch" is reserved swift word use "swittch" instead.

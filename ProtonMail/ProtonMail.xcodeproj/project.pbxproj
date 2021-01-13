@@ -673,6 +673,7 @@
 		513EF348B08DF5C3AFFF9DD1B5C44F88 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6576E6B2E5753D73F5405E8DA8E1137 /* NSManagedObjectContextExtension.swift */; };
 		5143ACCC7F0C8ABD67C0AF12713BB02D /* WebContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8668BBC5EBD231D99F6FCA87C19655E0 /* WebContents.swift */; };
 		5146A3E1423616DFE009A87DE9F35F92 /* SectionHeaderCustomizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB67D0E36EB0934CB5F24BD0B26483F /* SectionHeaderCustomizing.swift */; };
+		5164A63F0EE5222FE9341EA2A050B59C /* TrashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC1F30321BB26517EFFFE3CF2C2E2FF /* TrashTests.swift */; };
 		51654B47CBBDC60528D78049548C973C /* NSError+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6212048241C8B5D38449A43140A027 /* NSError+Extension.swift */; };
 		516946A680E740E885D12CFA3FCF15E9 /* SettingsGeneralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F67B62A4099F73D6D1B1A58B0C6B9326 /* SettingsGeneralCell.xib */; };
 		518F628AB0E49AB2621D4DA61A069B42 /* MailboxCaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49BCB4318BCFFCE099F79DE542209BE /* MailboxCaptchaViewController.swift */; };
@@ -2101,6 +2102,7 @@
 		FEC08DB44B517A212D160200C9BA5B43 /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B698B7E32E1425A4A64AC8322B47EE27 /* ContactsAPI.swift */; };
 		FEDF1EBAA909B9DB90CFA996E7586414 /* MessageAPI+SendType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79805F58CE1B891A44279FF30CBE677A /* MessageAPI+SendType.swift */; };
 		FEFEFE67385EE1D22A004FA4D8771A71 /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2930B0243ED3454ECF3146222630E063 /* SignInManager.swift */; };
+		FF0426815F525E50781BDAE08764A76B /* TrashRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0B8CFE24FBB615437F2DF42A78449E /* TrashRobot.swift */; };
 		FF2BEC129AA995F5D763F77BF42882C3 /* WebContentsSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E01F07FD13CAE5F518AE5CDE79CE3F4 /* WebContentsSecureLoader.swift */; };
 		FF574EBFF74DBAF15846CDB94D3AB365 /* ViewModelBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B47C3DCD77DFACE40B083CBEB41E9C /* ViewModelBase.swift */; };
 		FF71F8D04B2D795219315A312AF00251 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267162BA635F2F55FE71248A41115376 /* MenuTableViewCell.swift */; };
@@ -2455,6 +2457,7 @@
 		3A24C8D0DA7457C763A7C81964127C69 /* MultiuserManagementTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = MultiuserManagementTests.xctestplan; sourceTree = "<group>"; };
 		3A73309C33F5F5C80FA75D6D03008FBC /* TableCellLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCellLabelView.swift; sourceTree = "<group>"; };
 		3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushData.swift; sourceTree = "<group>"; };
+		3AC1F30321BB26517EFFFE3CF2C2E2FF /* TrashTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTests.swift; sourceTree = "<group>"; };
 		3AFB641BB83CFC2DBF6FA0479D66BCB7 /* ContactsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsTableViewCell.xib; sourceTree = "<group>"; };
 		3B0710E745C620F31E16F5C433500FB9 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3B0742E240B9FDE75FE62CBCAA2789AF /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
@@ -2517,6 +2520,7 @@
 		499999580B77BFB0F2290C522EBB8A46 /* Data+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
 		49A37A189CF3635B4901952ED0A25703 /* MailboxCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxCoordinator.swift; sourceTree = "<group>"; };
 		49C16D33EE4F6C03C5887A1EF07F1711 /* ContactGroupsViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactGroupsViewCell.xib; sourceTree = "<group>"; };
+		4A0B8CFE24FBB615437F2DF42A78449E /* TrashRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashRobot.swift; sourceTree = "<group>"; };
 		4A529A90A21829721EC4612BAD0E567C /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4A62FD03FD5D88780684CB8BD675A1D3 /* Pods-ProtonMailDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		4A7DF3E3EC0C6D1E955782E2B9F0AE44 /* UISearchBar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extension.swift"; sourceTree = "<group>"; };
@@ -3419,6 +3423,7 @@
 				AB944347EBA1019C8A58EEEA13C51F08 /* Settings */,
 				F308939835E69BCA0A1867FFF3D0B56D /* Spam */,
 				BD55102274F6587A08710E8CF4AC0036 /* TestPlans */,
+				A89C63C30F17DE5A636ECD27E5CB1907 /* Trash */,
 				B23C0EC1863E6D644F42BEE3865758C5 /* BaseTestCase.swift */,
 			);
 			path = Tests;
@@ -3811,6 +3816,55 @@
 				E10F0CE0F7B6837D9EE20FBD2E3E83C7 /* SRPClient.swift */,
 			);
 			path = SRP;
+			sourceTree = "<group>";
+		};
+		AEDF8E68AA8389B4EC56F14EF0611419 /* Trash */ = {
+			isa = PBXGroup;
+			children = (
+				4A0B8CFE24FBB615437F2DF42A78449E /* TrashRobot.swift */,
+			);
+			path = Trash;
+			sourceTree = "<group>";
+		};
+		A89C63C30F17DE5A636ECD27E5CB1907 /* Trash */ = {
+			isa = PBXGroup;
+			children = (
+				3AC1F30321BB26517EFFFE3CF2C2E2FF /* TrashTests.swift */,
+			);
+			path = Trash;
+            sourceTree = "<group>";
+        };
+		6CDE0C3CD2CA56CDA36757CC7535570C /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				FD6E0A2A83DCF9AC3DB1856DC0448723 /* ReportRobot.swift */,
+			);
+			path = Report;
+			sourceTree = "<group>";
+		};
+		F6E0F3606706C97F68FAEC81B2CEE525 /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				52D2B5A00C34FA3E59A308528198FA26 /* ReportTests.swift */,
+			);
+			path = Report;
+			sourceTree = "<group>";
+		};
+		63131881B4F81FB90AD15E39C832B776 /* Pin */ = {
+			isa = PBXGroup;
+			children = (
+				3F98695781C9B227192D866962D090AC /* PinInputRobot.swift */,
+				6266C9ECD576B42AD2D1A296DEF345B3 /* PinRobot.swift */,
+			);
+			path = Pin;
+			sourceTree = "<group>";
+		};
+		89D26162B1B27D2E082EBEA5533E7EF0 /* Pin */ = {
+			isa = PBXGroup;
+			children = (
+				BC1A1C56A18E1E238AE40666473A37F2 /* PinTests.swift */,
+			);
+			path = Pin;
 			sourceTree = "<group>";
 		};
 		3666ED49D06EFC49683AB77224CDAC53 /* ContactGroup */ = {
@@ -4562,6 +4616,7 @@
 				959780339333CEE0D90C4972954D8D7E /* Search */,
 				79A8BEF00A74215E5000DF170099604A /* Sent */,
 				4E46D716678A0853772A3F47AD5493ED /* Spam */,
+				AEDF8E68AA8389B4EC56F14EF0611419 /* Trash */,
 				9B242B2493B97D20D155664257D31D33 /* ApplyLabelRobotInterface.swift */,
 				2505EE5BD202C17D48FE1EB508A5F447 /* MailboxRobotInterface.swift */,
 				18FF1154F52F79C4A09B508E85C2CF09 /* MoveToFolderRobotInterface.swift */,
@@ -8461,6 +8516,8 @@
 				586A9F257EBA391935997EDA19CA603A /* SpamTests.swift in Sources */,
 				400426555CFA13848300895913BE6DFC /* StringUtils.swift in Sources */,
 				E5E5E57B22DC50D3410BA0CB0697E412 /* TestData.swift in Sources */,
+				FF0426815F525E50781BDAE08764A76B /* TrashRobot.swift in Sources */,
+				5164A63F0EE5222FE9341EA2A050B59C /* TrashTests.swift in Sources */,
 				E53D72796133AE043B1964AC624BF070 /* User.swift in Sources */,
 				19DC6D51C10AA421BA9651B12C206A72 /* Wait.swift in Sources */,
 			);

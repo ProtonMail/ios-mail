@@ -12,6 +12,8 @@ fileprivate let mailboxTableViewIdentifier = "MailboxViewController.tableView"
 fileprivate let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
 fileprivate let mailboxNoResultIdentifier = "MailboxViewController.noResultLabel"
 fileprivate func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)" }
+fileprivate let trashButtonIdentifier = LocalString._menu_trash_title
+var subjects = [String]()
 
 /**
  Parent class for all the Mailbox Robot classes like Inbox, Sent, Trash, etc.
@@ -69,15 +71,55 @@ class MailboxRobotInterface {
         Element.wait.forHittableButton(menuButton).tap()
         return MenuRobot()
     }
-
+    
+    @discardableResult
     func selectMessage(position: Int) -> MailboxRobotInterface {
-       return self
+        Element.cell.tapByPosition(position)
+        return self
     }
     
     @discardableResult
     func refreshMailbox() -> MailboxRobotInterface {
         Element.tableView.swipeDownByIdentifier(mailboxTableViewIdentifier)
         return self
+    }
+    
+    func deleteMessageWithLongClick(_ subject: String) -> MailboxRobotInterface {
+        longClickMessageBySubject(subject)
+            .trash()
+        return self
+    }
+    
+    func deleteMultipleMessages(_ positions: [Int]) -> MailboxRobotInterface {
+        multiSelectionMessagesOnPositions(positions)
+            .trash()
+    }
+    
+    @discardableResult
+    func trash() -> MailboxRobotInterface {
+        Element.button.tapByIdentifier(trashButtonIdentifier)
+        return MailboxRobotInterface()
+    }
+    
+    @discardableResult
+    func longClickMessageBySubject(_ subject: String) -> MailboxRobotInterface {
+        Element.staticText.longClickByIdentifier(subject)
+        return MailboxRobotInterface()
+    }
+    
+    @discardableResult
+    func longClickMessageOnPositions(_ position: Int) -> MailboxRobotInterface {
+        Element.cell.longClickByPosition(position)
+        subjects.append(Element.cell.getNameByIndex(position).replacingOccurrences(of: "_", with: " "))
+        return MailboxRobotInterface()
+    }
+    
+    func multiSelectionMessagesOnPositions(_ positions: [Int]) -> MailboxRobotInterface {
+        longClickMessageOnPositions(positions[0])
+        for position in positions.dropFirst() {
+            selectMessage(position: position)
+        }
+        return MailboxRobotInterface()
     }
 }
 
@@ -94,6 +136,12 @@ class MailboxRobotVerifyInterface {
         Element.wait.forStaticTextFieldWithIdentifier(mailboxNoResultIdentifier).assertWithLabel("No Messages")
     }
 
+    func messageSubjectsExist() {
+        for subject in subjects {
+            Element.wait.forStaticTextFieldWithIdentifier(subject)
+        }
+    }
+    
     func draftWithAttachmentSaved(draftSubject: String) {
         
     }

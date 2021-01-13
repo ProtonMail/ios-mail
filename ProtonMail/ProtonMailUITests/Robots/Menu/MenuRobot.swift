@@ -56,6 +56,11 @@ class MenuRobot {
         return SpamRobot()
     }
     
+    func trash() -> TrashRobot {
+        Element.wait.forCellWithIdentifier(trashStaticText, file: #file, line: #line).tap()
+        return TrashRobot()
+    }
+    
     func accountsList() -> MenuAccountListRobot {
         Element.wait.forOtherFieldWithIdentifier(sidebarHeaderViewOtherIdentifier, file: #file, line: #line).tap()
         return MenuAccountListRobot()
