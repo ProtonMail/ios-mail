@@ -470,9 +470,9 @@ class MailboxViewModel: StorageLimit {
         for msg in messages {
             var fLabel = fLabel
             if Message.Location.allmail.rawValue == fLabel {
-                let labels = msg.labels.allObjects as! [Label]
-                if let nonAll = labels.first(where: {$0.labelID != Message.Location.allmail.rawValue}) {
-                    fLabel = nonAll.labelID
+                let labels = msg.getShowLocationLabelID()
+                if let notAll = labels.first(where: {$0 != Message.Location.allmail.rawValue}) {
+                    fLabel = notAll
                 }
             }
             messageService.move(message: msg, from: fLabel, to: tLabel)
