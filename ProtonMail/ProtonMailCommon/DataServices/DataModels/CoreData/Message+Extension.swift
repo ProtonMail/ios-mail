@@ -270,20 +270,6 @@ extension Message {
         }
         return nil
     }
-    
-    func getShowLocationLabelID() -> [String] {
-        let labels = self.labels.allObjects as! [Label]
-        let folders = labels
-            .filter({ label in
-                if let _ = Int(label.labelID) {
-                    // Default folder
-                    return true
-                }
-                return label.exclusive == true
-            })
-        let ids = folders.map {$0.labelID}
-        return ids
-    }
 
     var subject : String {
         return title
