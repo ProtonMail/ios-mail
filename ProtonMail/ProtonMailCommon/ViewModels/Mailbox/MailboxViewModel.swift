@@ -468,13 +468,8 @@ class MailboxViewModel: StorageLimit {
     func move(IDs messageIDs : NSMutableSet, from fLabel: String, to tLabel: String) {
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainManagedObjectContext)
         for msg in messages {
-            var fLabel = fLabel
-            if Message.Location.allmail.rawValue == fLabel {
-                let labels = msg.getShowLocationLabelID()
-                if let notAll = labels.first(where: {$0 != Message.Location.allmail.rawValue}) {
-                    fLabel = notAll
-                }
-            }
+            // the label that is not draft, sent, starred, allmail
+            var fLabel = msg.firstValidFolder() ?? fLabel
             messageService.move(message: msg, from: fLabel, to: tLabel)
         }
     }
