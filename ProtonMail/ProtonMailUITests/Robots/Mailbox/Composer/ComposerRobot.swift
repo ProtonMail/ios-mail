@@ -166,6 +166,12 @@ class ComposerRobot {
         return InboxRobot()
     }
     
+    @discardableResult
+    func sendReplyMessage() -> MessageRobot {
+        Element.wait.forHittableButton(sendButtonIdentifier, file: #file, line: #line).tap()
+        return MessageRobot()
+    }
+
     func recipients(_ email: String) -> ComposerRobot {
         Element.wait.forTextFieldWithIdentifier(toTextFieldIdentifier, file: #file, line: #line)
             .click()

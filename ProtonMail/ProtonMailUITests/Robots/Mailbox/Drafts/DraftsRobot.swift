@@ -6,7 +6,7 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)".replacingOccurrences(of: " ", with: "_") }
+fileprivate func messageCellIdentifier(_ subject: String) -> String { return subject.replacingOccurrences(of: " ", with: "_") }
 
 /**
  * [DraftsRobot] implements [MailboxRobotInterface],

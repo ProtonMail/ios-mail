@@ -14,6 +14,7 @@ fileprivate let moreNavBarButtonIdentifier = "UINavigationItem.topMoreButton"
 fileprivate let backToInboxNavBarButtonIdentifier = LocalString._menu_inbox_title
 fileprivate let moveToSpamButtonIdentifier = LocalString._locations_move_spam_action
 fileprivate let moveToArchiveButtonIdentifier = LocalString._locations_move_archive_action
+fileprivate let backToSearchResultButtonIdentifier = LocalString._general_back_action
 
 /// Reply/Forward buttons
 fileprivate let replyButtonIdentifier = "MessageContainerViewController.replyButton"
@@ -68,7 +69,12 @@ class MessageRobot {
         Element.wait.forButtonWithIdentifier(backToInboxNavBarButtonIdentifier, file: #file, line: #line).tap()
         return InboxRobot()
     }
-
+    
+    func navigateBackToSearchResult() -> SearchRobot {
+        Element.wait.forButtonWithIdentifier(backToSearchResultButtonIdentifier, file: #file, line: #line).tap()
+        return SearchRobot()
+    }
+    
     func openFoldersModal() -> MoveToFolderRobot {
         Element.wait.forButtonWithIdentifier(folderNavBarButtonIdentifier, file: #file, line: #line).tap()
         return MoveToFolderRobot()
