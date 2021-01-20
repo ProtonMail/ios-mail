@@ -89,6 +89,13 @@ struct Element {
             return subject
         }
         
+        class func getAddressByIndex(_ index: Int) -> String {
+            let cell = app.cells.element(boundBy: index)
+            let name = cell.label.components(separatedBy: ",")
+            let address: String = name[1]
+            return address
+        }
+        
         class func swipeSwipeUpUntilVisibleByIdentifier(_ identifier: String) -> XCUIElement {
             return app.cells[identifier].swipeUpUntilVisible()
         }
