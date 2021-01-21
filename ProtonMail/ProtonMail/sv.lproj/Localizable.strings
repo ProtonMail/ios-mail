@@ -47,7 +47,7 @@
 "+ Drop here to add as attachment" = "+ Släpp här för att lägga till som bilaga";
 
 /* default empty object */
-"<no object>" = "<no object>";
+"<no object>" = "<inget ämne>";
 
 /* 2fa verification failed */
 "2FA failed. Please try to login again." = "Autentisering misslyckades. Försök att logga in igen.";
@@ -210,9 +210,6 @@
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple meddelade oss att köpet ej kunde genomföras.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple meddelade oss att du har uppgraderat serviceplanen, men sa inte vilket av dina ProtonMail-konton som skulle uppgraderas om du har mer än ett.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informerade oss att du har uppgraderat paketet för tjänster, men vissa tekniska data saknades. Fyll i felrapporten så kommer vårt kundtjänstteam att kontakta dig.";
@@ -692,9 +689,6 @@
 
 /* Title in display name settings */
 "DisplayName" = "Visningsnamn";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Vill du aktivera den köpta serviceplanen för ";
 
 /* Description */
 "Do you want to cancel the process?" = "Vill du avbryta processen?";
@@ -1193,7 +1187,7 @@
 
 /* *
  *  file string type */
-"Localizable.strings" = "Base";
+"Localizable.strings" = "Bas";
 
 /* menu title */
 "Lock The App" = "Lås Appen";
@@ -1393,7 +1387,7 @@
 "No Messages" = "Inga Meddelanden";
 
 /* no object error, local only , this could be not translated! */
-"no object" = "no object";
+"no object" = "inget objekt";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "Nej, för ett annat ProtonMail-konto";
@@ -1630,7 +1624,7 @@
 "Please wait until the email downloaded!" = "Vänligen vänta till epostmeddelandet laddats ner!";
 
 /* alert title */
-"Please, manage it in your phone." = "Please, manage it in your phone.";
+"Please, manage it in your phone." = "Var snäll och hantera det i telefonen.";
 
 /* Upgrade warning title */
 "PREMIUM FEATURE" = "PREMIUMFUNKTION";

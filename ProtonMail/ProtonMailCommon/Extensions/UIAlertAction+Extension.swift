@@ -29,4 +29,10 @@ extension UIAlertAction {
                              style: .default,
                              handler: handler)
     }
+    
+    class func closeAction(_ handler : ((UIAlertAction?) -> Void)? = nil) -> UIAlertAction {
+        return UIAlertAction(title: LocalString._general_close_action,
+                             style: .default,
+                             handler: handler)
+    }
 }

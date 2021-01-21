@@ -212,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Η Apple μας ενημέρωσε ότι δεν μπόρεσαν να επεξεργαστούν την αγορά.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το πακέτο συνδρομής/πλάνο, αλλά δεν είπε ποιός από τους λογαριασμούς σας ProtonMail θα αναβαθμιστεί σε περίπτωση που έχετε περισσότερους από έναν.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το πακέτο/πλάνο σας, αλλά λείπουν ορισμένα τεχνικά δεδομένα. Συμπληρώστε την φόρμα αναφοράς σφαλμάτων και η ομάδα υποστήριξης πελατών μας, θα επικοινωνήσει μαζί σας.";
 
 /* Error message */
@@ -693,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Εμφανιζόμενο Όνομα";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Θέλετε να ενεργοποιήσετε το πακέτο/πλάνο υπηρεσίας που έχετε αγοράσει για ";
-
 /* Description */
 "Do you want to cancel the process?" = "Θέλετε να ακυρώσετε την διαδικασία;";
 
@@ -889,7 +883,7 @@
 "Expires" = "Λήγει";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "Ληγει σε %d ημέρες %d ώρες %d λεπτά %d δευτερόλεπτα";
 
 /* Title */
 "Expiring Messages" = "Μηνύματα που λήγουν";
@@ -2420,7 +2414,7 @@
 "You have unsaved changes. Do you want to save it?" = "Έχετε μη αποθηκευμένες αλλαγές. Θέλετε να τις αποθηκεύσετε;";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "Έχετε χρησιμοποιήσει %d%% του χώρου αποθήκευσης σας (%@).";
 
 /* *
  *  StorageLimit */

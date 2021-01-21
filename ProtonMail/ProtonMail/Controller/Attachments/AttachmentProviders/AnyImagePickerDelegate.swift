@@ -26,7 +26,7 @@ import Photos
 
 // abstract
 class AnyImagePickerDelegate: NSObject, AttachmentProvider, ImageProcessor {
-    weak var controller: AttachmentController!
+    weak var controller: AttachmentController?
     
     init(for controller: AttachmentController) {
         self.controller = controller
@@ -52,7 +52,7 @@ extension AnyImagePickerDelegate: UIImagePickerControllerDelegate, UINavigationC
                 picker.dismiss(animated: true, completion: nil)
             }.cauterize()
         } else {
-            self.controller.error(LocalString._cant_copy_the_file)
+            self.controller?.error(LocalString._cant_copy_the_file)
             picker.dismiss(animated: true, completion: nil)
         }
     }

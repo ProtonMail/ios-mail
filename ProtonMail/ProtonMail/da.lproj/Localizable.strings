@@ -212,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Apple meddelte, at de ikke kunne behandle købet.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple meddelte, at du har opgraderet tjenesteabonnementet, men oplyste ikke, hvilken af dine ProtonMail-konti, der skal opgraderes, hvis du har mere end én.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";
 
 /* Error message */
@@ -692,9 +689,6 @@
 
 /* Title in display name settings */
 "DisplayName" = "Vis navn";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Vil du aktivere det købte abonnement for ";
 
 /* Description */
 "Do you want to cancel the process?" = "Annullér processen?";

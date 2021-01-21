@@ -457,17 +457,14 @@ class ContactDataService: Service, HasLocalStorage {
                                     let plainText = pt ?? "text/html" == "text/html" ? false : true
                                     
                                     var firstKey : Data?
-                                    var pubKeys : Data?
+                                    var pubKeys : [Data] = []
                                     for key in keys {
                                         let kg = key.getGroup()
                                         if kg == group {
                                             let kp = key.getPref()
                                             let value = key.getBinary() //based 64 key
-                                            if pubKeys == nil {
-                                                pubKeys = Data()
-                                            }
                                             if let isExpired = value.isPublicKeyExpired(), !isExpired {
-                                                pubKeys?.append(value)
+                                                pubKeys.append(value)
                                                 if kp == 1 || kp == Int32.min {
                                                     firstKey = value
                                                 }

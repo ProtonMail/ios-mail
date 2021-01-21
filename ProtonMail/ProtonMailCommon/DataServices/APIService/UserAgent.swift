@@ -25,11 +25,12 @@ import Foundation
 
 final class UserAgent {
     public static let `default` : UserAgent = UserAgent()
-    private var mutex = pthread_mutex_t()
+    private var mutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
     private var cachedUS : String?
     private init () {
         // init lock
-        pthread_mutex_init(&mutex, nil)
+        mutex.initialize(to: pthread_mutex_t())
+        pthread_mutex_init(mutex, nil)
     }
     
     //eg. Darwin/16.3.0
@@ -79,11 +80,11 @@ final class UserAgent {
     
     var ua : String? {
         get {
-            pthread_mutex_lock(&self.mutex)
+            pthread_mutex_lock(self.mutex)
             if cachedUS == nil {
                 cachedUS = self.UAString()
             }
-            pthread_mutex_unlock(&self.mutex)
+            pthread_mutex_unlock(self.mutex)
             return cachedUS
         }
     }

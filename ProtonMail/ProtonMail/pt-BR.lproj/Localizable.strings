@@ -212,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "A Apple nos informou que não foi possível processar a compra.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "A Apple nos informou que você atualizou seu plano, mas não informou quais de suas contas do ProtonMail devem ser atualizadas no caso de você ter mais de uma.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "A Apple nos informou que você atualizou o plano de serviço, mas faltaram alguns dados técnicos. Por favor, preencha o relatório de erros e nossa equipe de suporte ao cliente entrará em contato com você.";
 
 /* Error message */
@@ -692,9 +689,6 @@
 
 /* Title in display name settings */
 "DisplayName" = "Nome de exibição";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Deseja ativar o plano adquirido para ";
 
 /* Description */
 "Do you want to cancel the process?" = "Você deseja cancelar o processo de sincronização?";

@@ -77,7 +77,7 @@ extension APIService {
     }
     
     
-    func confirm2FA(_ code: Int, password: String, context: TwoFactorContext, completion: @escaping AuthCompleteBlockNew) {
+    func confirm2FA(_ code: String, password: String, context: TwoFactorContext, completion: @escaping AuthCompleteBlockNew) {
         self.authApi.confirm2FA(code, context: context, completion: { (result ) in
             switch result {
             case .failure(Authenticator.Errors.serverError(let error)): // error response returned by server

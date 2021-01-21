@@ -69,7 +69,7 @@
 "A passcode has not been set, enable it in the system Settings" = "Ein Passwort wurde nicht festgelegt. Dies kann in den Systemeinstellungen aktiviert werden";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Der Zugriff auf dieses Konto ist aufgrund der Nichtzahlung deaktiviert. Bitte melden Sie sich bei protonmail.com an, um Ihre ausstehende Rechnung zu begleichen.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Der Zugriff auf dieses Konto ist aufgrund eines Zahlungsverzugs deaktiviert. Bitte melden Sie sich bei protonmail.com an, um Ihre ausstehende Rechnung zu begleichen.";
 
 /* (No Comment) */
 "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Der Zugang zu diesem Konto ist aufgrund des Zahlungsverzugs gesperrt.\n\nBitte besuchen Sie <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">unsere Wissensdatenbank</a> für weitere Informationen.";
@@ -210,9 +210,6 @@
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple informierte uns, dass sie den Kauf nicht verarbeiten konnten.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple informierte uns, dass Sie den Serviceplan aktualisiert haben, sagte aber nicht, welches Ihrer ProtonMail-Konten aktualisiert werden soll, falls Sie mehr als eines verwenden.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple hat uns mitgeteilt, dass Sie den Serviceplan aktualisiert haben, aber es fehlen einige technische Daten. Bitte füllen Sie den Fehlerbericht aus und unser Kundendienstteam wird sich mit Ihnen in Verbindung setzen.";
@@ -692,9 +689,6 @@
 
 /* Title in display name settings */
 "DisplayName" = "Angezeigter Name";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Möchten Sie den gekauften Servicetarif aktivieren für ";
 
 /* Description */
 "Do you want to cancel the process?" = "Möchten Sie den Vorgang abbrechen?";
@@ -1321,7 +1315,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile Anmeldungen sind vorübergehend deaktiviert. Bitte versuchen Sie es später erneut, oder melden Sie sich bei protonmail.com mit einem Desktop oder Laptop-Rechner an.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobiles Registrieren sind vorübergehend deaktiviert. Bitte versuchen Sie es später noch einmal, oder registrieren Sie sich bei protonmail.com mit einem Desktop- oder Laptop-Rechner an.";
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Das Ändern oder Deaktivieren der standardmäßigen mobilen Signatur ist eine Funktion der kostenpflichtige Version.";
@@ -1366,7 +1360,7 @@
 "Name" = "Name";
 
 /* Action */
-"NEED AN ACCOUNT? SIGN UP." = "Sie benötigen ein Konto? Hier anmelden.";
+"NEED AN ACCOUNT? SIGN UP." = "Kostenlos registrieren";
 
 /* section title */
 "Networking" = "Vernetzung";

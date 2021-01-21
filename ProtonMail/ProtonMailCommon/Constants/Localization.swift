@@ -465,6 +465,8 @@ class LocalizedString {
     lazy var _general_done_button     = NSLocalizedString("Done", comment: "Done action")
     /// "Cancel"
     lazy var _general_cancel_button   = NSLocalizedString("Cancel", comment: "Cancel action")
+    
+    lazy var _general_yes_action = NSLocalizedString("Yes", comment: "Yes action")
     /// "Open"
     lazy var _general_open_button     = NSLocalizedString("Open", comment: "Open action")
     /// "Remove"
@@ -542,7 +544,13 @@ class LocalizedString {
     lazy var _general_edit_action = NSLocalizedString("Edit", comment: "Action")
     /// "Create"
     lazy var _general_create_action = NSLocalizedString("Create", comment: "top right action text")
-
+    
+    lazy var _general_ignore_action = NSLocalizedString("Ignore", comment: "Alarm action")
+    
+    /// "iOS 10 update error title"
+    lazy var _ios10_update_title = NSLocalizedString("OS compatibility", comment: "The title of the iOS 10 upgrate alert")
+    /// "iOS 10 update error body"
+    lazy var _ios10_update_body = NSLocalizedString("We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future.", comment: "The body of the iOS 10 upgrate alert")
 
 
     /// Mark Error
@@ -1663,7 +1671,7 @@ class LocalizedString {
     
     lazy var _another_user_transaction = NSLocalizedString("Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." , comment: "Error message")
     
-    lazy var _no_hashed_username_arrived_in_transaction = NSLocalizedString("Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.", comment: "Error message")
+    lazy var _no_hashed_username_arrived_in_transaction = NSLocalizedString("We have been notified of an App Store purchase but cannot match the purchase with an account of yours.", comment: "Error message")
     
     lazy var _no_active_username_in_user_data_service = NSLocalizedString("Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.", comment: "Error message")
     
@@ -1671,7 +1679,7 @@ class LocalizedString {
     
     lazy var _no_new_subscription_in_response = NSLocalizedString("We have successfully activated your subscription. Please relaunch the app to start using your new service plan.", comment: "Error message")
     
-    lazy var _do_you_want_to_bypass_validation = NSLocalizedString("Do you want to activate the purchased service plan for ", comment: "Question is user wants to bypass username validation and activate plan for current username")
+    lazy var _do_you_want_to_bypass_validation = NSLocalizedString("Do you want to activate the purchase for %@ address?", comment: "Question is user wants to bypass username validation and activate plan for current username")
     
     lazy var _yes_bypass_validation = NSLocalizedString("Yes, activate it for ", comment: "Warning message option to bypass validation and activate plan for current username")
     
@@ -1909,4 +1917,15 @@ class LocalizedString {
     
     lazy var _pin_and_face_id = NSLocalizedString("PIN & FaceID", comment: "device settings auto lock type title")
     lazy var _enable_pin_or_face_id = NSLocalizedString("Enable PIN/FaceID", comment: "device settings auto lock type title toggle text")
+    lazy var _recipient_not_found = NSLocalizedString("Recipient not found", comment: "The error message is shown in composer")
+    lazy var _signle_address_invalid_error_content = NSLocalizedString("Email address is invalid", comment: "The error message is shown in composer")
+    lazy var _address_invalid_error_content = NSLocalizedString("At least one recipient email address is improperly formatted, please double check them.", comment: "incorrect email format error in composer")
+    lazy var _address_invalid_error_title = NSLocalizedString("Error sending", comment: "incorrect email format error in composer")
+    
+    lazy var _address_in_group_not_found_error = NSLocalizedString("At least one email address in the group could not be found", comment: "incorrect email format error while sending")
+    lazy var _address_invalid_error_sending = NSLocalizedString("At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.", comment: "incorrect email format error while sending")
+    lazy var _address_invalid_error_sending_title = NSLocalizedString("Sending failed", comment: "title of incorrect email format error while sending")
+    lazy var _address_invalid_error_to_draft_action_title = NSLocalizedString("Go to drafts", comment: "title of alert acton of incorrect email format error")
+    
+    lazy var _ignore_IAP_error_descrption = NSLocalizedString("Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?", comment: "Alert message")
 }

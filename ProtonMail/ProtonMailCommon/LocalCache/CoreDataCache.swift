@@ -40,7 +40,8 @@ class CoreDataCache : Migrate {
         static let coreDataVersion = "latest_core_data_cache"
     }
     enum Version : Int {
-        static let CacheVersion : Int = 4 // this is core data cache
+        // Change this value to rebuild coredata
+        static let CacheVersion : Int = 5 // this is core data cache
         
         case v1 = 1
         case v2 = 2

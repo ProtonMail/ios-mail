@@ -49,6 +49,7 @@ protocol ComposeViewDelegate: class {
     func composeViewPickFrom(_ composeView: ComposeHeaderViewController)
 
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
+    func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?)
 }
 
 protocol ComposeViewDataSource: class {
@@ -237,6 +238,9 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
     fileprivate var isShowingCcBccView: Bool = false
     fileprivate var hasExpirationSchedule: Bool = false
     
+    ///Use this flag to control the email validation action
+    var shouldValidateTheEmail = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -281,12 +285,22 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
         generateAccessibilityIdentifiers()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: NSNotification.Name.reachabilityChanged, object: nil)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let showCcBcc = self.datasource?.ccBccIsShownInitially(), showCcBcc {
             self.setShowingCcBccView(to: showCcBcc)
         }
         self.notifyViewSize( false )
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -416,9 +430,9 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
     
     fileprivate func configureContactPickerTemplate() {
         ContactCollectionViewContactCell.appearance().tintColor = UIColor.ProtonMail.Blue_6789AB
-        ContactCollectionViewContactCell.appearance().font = Fonts.h6.light
-        ContactCollectionViewPromptCell.appearance().font = Fonts.h6.light
-        ContactCollectionViewEntryCell.appearance().font = Fonts.h6.light
+        ContactCollectionViewContactCell.appearance().font = Fonts.h5.regular
+        ContactCollectionViewPromptCell.appearance().font = Fonts.h5.regular
+        ContactCollectionViewEntryCell.appearance().font = Fonts.h5.regular
     }
     
     ///
@@ -677,6 +691,21 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
                                                  borderWidth: 1.0,
                                                  at: newHeight)
     }
+    
+    @objc private func reachabilityChanged(_ note : Notification) {
+        guard let curReach = note.object as? Reachability else {return}
+        let netStatus = curReach.currentReachabilityStatus()
+        guard netStatus == .ReachableViaWWAN ||
+                netStatus == .ReachableViaWiFi else {return}
+        
+        self.checkEmails()
+    }
+    
+    private func checkEmails() {
+        self.ccContactPicker.contactCollectionView.reloadData()
+        self.bccContactPicker.contactCollectionView.reloadData()
+        self.toContactPicker.contactCollectionView.reloadData()
+    }
 }
 
 
@@ -730,8 +759,10 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     }
     
     func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool) {
-        let customContact = ContactVO(id: "", name: text, email: text)
-        contactPicker.addToSelectedContacts(model: customContact, needFocus: focus)
+        if self.shouldValidateTheEmail {
+            let customContact = ContactVO(id: "", name: text, email: text)
+            contactPicker.addToSelectedContacts(model: customContact, needFocus: focus)
+        }
     }
     
     func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool) {
@@ -819,6 +850,10 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     
     func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
+    }
+    
+    func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
+        self.delegate?.checkMails(in: contactGroup, progress: progress, complete: complete)
     }
     
     // MARK: Private delegate helper methods

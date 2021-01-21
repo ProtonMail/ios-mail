@@ -25,6 +25,10 @@ import Foundation
 import UIKit
 
 extension UIAlertController {
+    func addCloseAction() {
+        addAction(UIAlertAction.closeAction())
+    }
+    
     func addOKAction() {
         addAction(UIAlertAction.okAction())
     }

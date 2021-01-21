@@ -212,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Apple 告诉我们此交易未能完成。";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple 告诉我们您已完成升级，但没有指明升级的是哪一个 ProtonMail 账户。";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple 告知我们您已完成升级，但有部分技术数据缺失。请提交一份问题反馈，我们的客服团队将联系您。";
 
 /* Error message */
@@ -692,9 +689,6 @@
 
 /* Title in display name settings */
 "DisplayName" = "对外名称";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "是否要激活 ";
 
 /* Description */
 "Do you want to cancel the process?" = "是否取消该进程？";

@@ -32,11 +32,11 @@ extension String {
         return try Crypto().decrypt(encrytped: self, privateKey: binKeys, passphrase: passphrase)
     }
     
-    func verifyMessage(verifier: Data, binKeys: [Data], passphrase: String, time : Int64) throws -> ExplicitVerifyMessage? {
+    func verifyMessage(verifier: [Data], binKeys: [Data], passphrase: String, time : Int64) throws -> ExplicitVerifyMessage? {
         return try Crypto().decryptVerify(encrytped: self, publicKey: verifier, privateKey: binKeys, passphrase: passphrase, verifyTime: time)
     }
     
-    func verifyMessage(verifier: Data, userKeys: [Data], keys: [Key], passphrase: String, time : Int64) throws -> ExplicitVerifyMessage? {
+    func verifyMessage(verifier: [Data], userKeys: [Data], keys: [Key], passphrase: String, time : Int64) throws -> ExplicitVerifyMessage? {
         var firstError : Error?
         for key in keys {
             do {

@@ -235,7 +235,7 @@ public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol
     }
     
     /// Continue clear login flow with 2FA code
-    public func confirm2FA(_ twoFactorCode: Int,
+    public func confirm2FA(_ twoFactorCode: String,
                            context: TwoFactorContext,
                            completion: @escaping Completion,
                            dohCheck: @escaping DohCheck)

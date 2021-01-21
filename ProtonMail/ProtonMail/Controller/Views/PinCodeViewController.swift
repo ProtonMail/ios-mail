@@ -124,7 +124,13 @@ extension PinCodeViewController : PinCodeViewDelegate {
     }
     
     private func proceedCancel(_ sender: Any? = nil) {
-        _ = self.delegate?.Cancel().done {
+        guard let _delegate = self.delegate else {
+            // Pin code settings
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
+        // unlock when app launch
+        _ = _delegate.Cancel().done {
             let _ = self.navigationController?.popViewController(animated: true)
         }
     }

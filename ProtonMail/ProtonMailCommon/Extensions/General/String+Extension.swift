@@ -425,6 +425,22 @@ extension String {
         }
         return nil
     }
+    
+    func batchAddingPercentEncoding(withAllowedCharacters allowedCharacters: CharacterSet) -> String? {
+        let batchSize = 100
+        var batchPosition = startIndex
+        var escaped = ""
+        while batchPosition != endIndex {
+            let range = batchPosition ..< (index(batchPosition, offsetBy: batchSize, limitedBy: endIndex) ?? endIndex)
+            
+            guard let percentEncodedSubstring = String(self[range]).addingPercentEncoding(withAllowedCharacters: allowedCharacters) else {
+                return nil
+            }
+            escaped.append(percentEncodedSubstring)
+            batchPosition = range.upperBound
+        }
+        return escaped
+    }
 }
 
 

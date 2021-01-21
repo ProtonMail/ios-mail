@@ -215,6 +215,7 @@ extension CryptoTests {
         let crypto = Crypto()
         let binaryPublicKey = ArmorUnarmor(mimePublicKey, &error)!
         XCTAssertNil(error)
+        let publicKeyArray: [Data] = ["WrongKey".data(using: .utf8)!, binaryPublicKey]
         
         let binaryPrivateKey = ArmorUnarmor(keyringPrivateKey, &error)!
         XCTAssertNil(error)
@@ -225,7 +226,7 @@ extension CryptoTests {
         
         var decrypted: ExplicitVerifyMessage?
         do {//with binary public key
-            decrypted = try crypto.decryptVerify(encrytped: messageSigned, publicKey: binaryPublicKey, privateKey: privateKeyArray, passphrase: self.testMailboxPassword, verifyTime: 0)
+            decrypted = try crypto.decryptVerify(encrytped: messageSigned, publicKey: publicKeyArray, privateKey: privateKeyArray, passphrase: self.testMailboxPassword, verifyTime: 0)
         } catch {
             XCTFail("Should not throw error")
         }
@@ -267,10 +268,11 @@ extension CryptoTests {
         let crypto = Crypto()
         let binaryPublicKey = ArmorUnarmor(mimePublicKey, &error)!
         XCTAssertNil(error)
+        let publicKeyArray: [Data] = ["WrongKey".data(using: .utf8)!, binaryPublicKey]
         
         var decrypted: ExplicitVerifyMessage?
         do {//with binary public key
-            decrypted = try crypto.decryptVerify(encrytped: messageSigned, publicKey: binaryPublicKey, privateKey: keyringPrivateKey, passphrase: self.testMailboxPassword, verifyTime: 0)
+            decrypted = try crypto.decryptVerify(encrytped: messageSigned, publicKey: publicKeyArray, privateKey: keyringPrivateKey, passphrase: self.testMailboxPassword, verifyTime: 0)
         } catch {
             XCTFail("Should not throw error")
         }

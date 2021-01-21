@@ -56,6 +56,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     private var isShowpwd      = false
     private var isRemembered   = false
     private var twoFAErrorFailed = false
+    private var isPrepareSignup = false
     
     //define
     private let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0)
@@ -230,6 +231,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addKeyboardObserver(self)
         
+        self.isPrepareSignup = false
         let uName = (usernameTextField.text ?? "").trim()
         let pwd = (passwordTextField.text ?? "")
         
@@ -290,6 +292,8 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         if UIDevice.current.isLargeScreen() && !isRemembered {
             usernameTextField.becomeFirstResponder()
         }
+        
+        self.handleUpdateAlert()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -326,6 +330,16 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     }
     
     // MARK: - Private methods
+    
+    private func handleUpdateAlert() {
+        if self.viewModel.shouldShowUpdateAlert() {
+            let alertVC = UIAlertController(title: LocalString._ios10_update_title, message: LocalString._ios10_update_body, preferredStyle: .alert)
+            alertVC.addOKAction { (_) in
+                self.viewModel.setiOS10AlertIsShown()
+            }
+            self.present(alertVC, animated: true, completion: nil)
+        }
+    }
     
     internal func hideLoginViews() {
         self.usernameView.alpha      = 0.0
@@ -407,6 +421,10 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     
     @IBAction func signUpAction(_ sender: UIButton) {
         dismissKeyboard()
+        
+        if self.isPrepareSignup {return}
+        self.isPrepareSignup = true
+        
         firstly {
             self.viewModel.generateToken()
         }.done { (token) in
@@ -415,6 +433,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
             let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
+            self.isPrepareSignup = false
         }
     }
     

@@ -189,7 +189,9 @@ class MessageViewModel: NSObject {
             if checkCount == strings.count {
                 var updatedBody = body
                 for (cid, base64) in strings {
-                    updatedBody = updatedBody.stringBySetupInlineImage(cid, to: base64)
+                    if let token = updatedBody.range(of: cid) {
+                        updatedBody.replaceSubrange(token, with: base64)
+                    }
                 }
                 
                 self.body = updatedBody

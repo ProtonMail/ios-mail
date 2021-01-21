@@ -38,10 +38,10 @@
 "%d Selected" = "%d sélectionné(s)";
 
 /* Service plan capability; i = 1 */
-"%i email address" = "%i adresse email";
+"%i email address" = "%i adresse électronique";
 
 /* Service plan capability; i = 5 or 50 */
-"%i email addresses" = "%i adresses email";
+"%i email addresses" = "%i adresses électroniques";
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Déposez ici pour ajouter comme pièce jointe";
@@ -120,7 +120,7 @@
 "Add new custom field" = "Ajouter un nouveau champ personnalisé";
 
 /* new email action */
-"Add new email" = "Ajouter un nouvel email";
+"Add new email" = "Ajouter une nouvelle adresse électronique";
 
 /* new field action */
 "Add new field" = "Ajouter un nouveau champ";
@@ -210,9 +210,6 @@
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple nous a informé qu'ils ne pouvaient pas traiter l'achat.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple nous a informé que vous avez souscrit à une offre, mais ne nous a pas indiqué le compte ProtonMail concerné dans le cas où vous en ayez plusieurs.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nous a informé que vous avez souscrit à une offre mais il manque quelques données techniques. Veuillez renseigner un rapport de bug et notre support client vous contactera.";
@@ -542,7 +539,7 @@
 "Contact the ProtonMail team" = "Contacter l'équipe ProtonMail";
 
 /* network troubleshot cell title */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contactez-nous directement via notre formulaire d’assistance, par email (support@protonmail.com), ou via Twitter.";
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contactez-nous directement via notre formulaire d’assistance, par courriel (support@protonmail.com) ou via Twitter.";
 
 /* Action and title
    menu title */
@@ -693,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Nom d'affichage";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Voulez-vous activer l'offre achetée pour ";
-
 /* Description */
 "Do you want to cancel the process?" = "Voulez-vous annuler le processus ?";
 
@@ -750,32 +744,32 @@
 "Edit signature" = "Modifier la signature";
 
 /* network troubleshot cell title */
-"email" = "email";
+"email" = "courriel";
 
 /* default vcard types */
-"Email" = "Email";
+"Email" = "Adresse électronique";
 
 /* *
  *  Email Verify View Controller */
-"Email address" = "Adresse email";
+"Email address" = "Adresse électronique";
 
 /* alert title */
-"Email address invalid" = "Adresse email invalide";
+"Email address invalid" = "Adresse électronique invalide";
 
 /* contact detail view, email addresses section title */
-"Email Addresses" = "Adresses email";
+"Email Addresses" = "Adresses électroniques";
 
 /* Send an email to the current contact (button title text) */
-"Email Contact" = "Envoyer un email";
+"Email Contact" = "Envoyer un courriel";
 
 /* place holder */
-"Email default signature" = "Signature d'email par défaut";
+"Email default signature" = "Signature de courriel par défaut";
 
 /* title */
-"Email domain invalid" = "Nom de domaine d'email invalide";
+"Email domain invalid" = "Nom de domaine d'adresse électronique invalide";
 
 /* human check option button */
-"Email Verification" = "Vérification par email";
+"Email Verification" = "Vérification par courriel";
 
 /* cell title in device setting */
 "Empty Cache" = "Vider le cache";
@@ -796,7 +790,7 @@
 "Enable Mobile Signature" = "Activer la signature mobile";
 
 /* Title */
-"Enable Notification Email" = "Activer l'adresse email de secours";
+"Enable Notification Email" = "Activer l'adresse électronique de secours";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "Activer le code PIN";
@@ -865,7 +859,7 @@
 "Enter your cell phone number" = "Entrez votre numéro de téléphone mobile";
 
 /* top title */
-"Enter your existing email address." = "Entrez votre adresse email existante.";
+"Enter your existing email address." = "Entrez votre adresse électronique existante.";
 
 /* Account manager title */
 "Enter your mailbox password" = "Entrez le mot de passe de votre boîte mail";
@@ -1074,7 +1068,7 @@
 "Input Display Name ..." = "Saisir un nom ...";
 
 /* place holder */
-"Input Notification Email ..." = "Entrez l'adresse email de secours ...";
+"Input Notification Email ..." = "Entrez l'adresse électronique de secours...";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Connexion non sécurisée";
@@ -1430,10 +1424,10 @@
 "Notice" = "Notice";
 
 /* Title */
-"Notification / Recovery Email" = "Adresse email de secours";
+"Notification / Recovery Email" = "Adresse électronique de secours";
 
 /* Title */
-"Notification Email" = "Adresse email de secours";
+"Notification Email" = "Adresse électronique de secours";
 
 /* title of action sheet */
 "Notification Snooze" = "Ne pas déranger";
@@ -1552,7 +1546,7 @@
 "Please check your cell phone for the verification code." = "Consultez votre téléphone portable pour le code de vérification.";
 
 /* error message */
-"Please check your email for the verification code." = "Consultez vos emails pour le code de vérification.";
+"Please check your email for the verification code." = "Consultez vos courriels pour le code de vérification.";
 
 /* alert description */
 "Please disable PGP Sending for following addresses." = "Veuillez désactiver l’envoi PGP pour les adresses suivantes.";
@@ -1561,7 +1555,7 @@
 "Please input a valid cell phone number." = "Veuillez entrer un numéro de téléphone valide.";
 
 /* error message */
-"Please input a valid email address." = "Veuillez entrer une adresse email valide.";
+"Please input a valid email address." = "Veuillez saisir une adresse électronique valide.";
 
 /* Error message */
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Veuillez vous connecter au compte ProtonMail pour lequel vous souscrivez à une offre afin que nous puissions finaliser l'achat.";
@@ -1582,10 +1576,10 @@
 "Please remove all attachments before changing sender!" = "Veuillez supprimer toutes les pièces jointes avant de changer l’expéditeur";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Veuillez sélectionner au moins un email";
+"Please select at least one email" = "Veuillez sélectionner au moins un message";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Veuillez sélectionner au moins un email pour le groupe de contacts";
+"Please select at least one email for the contact group" = "Veuillez sélectionner au moins un message pour le groupe de contacts";
 
 /* human check select option title */
 "Please select one of the following options:" = "Veuillez sélectionner l'une des options suivantes :";
@@ -1597,7 +1591,7 @@
 "Please try a different domain." = "Veuillez essayer un autre nom de domaine.";
 
 /* (No Comment) */
-"Please try a different email address." = "Veuillez essayer une autre adresse email.";
+"Please try a different email address." = "Veuillez essayer une autre adresse électronique.";
 
 /* (No Comment) */
 "Please try a different password." = "Veuillez essayer un mot de passe différent.";
@@ -1627,7 +1621,7 @@
 "Please use your new password when signing in." = "Veuillez utiliser votre nouveau mot de passe lorsque vous vous connectez.";
 
 /* The */
-"Please wait until the email downloaded!" = "Veuillez attendre que l'email soit téléchargé !";
+"Please wait until the email downloaded!" = "Veuillez attendre que le courriel soit téléchargé !";
 
 /* alert title */
 "Please, manage it in your phone." = "Veuillez le gérer sur votre téléphone.";
@@ -1666,7 +1660,7 @@
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail n'a pas recours à la publicité et ne viole pas votre vie privée. Votre soutien est indispensable pour continuer à faire tourner ProtonMail. Vous pouvez soutenir ProtonMail en souscrivant à une offre payante ou en faisant un don.";
 
 /* Title */
-"ProtonMail encrypted emails" = "Emails chiffrés de ProtonMail";
+"ProtonMail encrypted emails" = "Courriels chiffrés de ProtonMail";
 
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail est actuellement hors ligne, visitez notre Twitter pour voir l'état actuel : https://twitter.com/protonmail";
@@ -1678,7 +1672,7 @@
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus est requis pour personnaliser votre signature mobile";
 
 /* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary vous permet d’ajouter et de modifier les coordonnées au-delà du nom et de l'email. En utilisant ProtonMail, ces données seront aussi sécurisées que vos emails chiffrés en bout en bout.";
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary vous permet d’ajouter et de modifier les coordonnées au-delà du nom et de l'adresse électronique. En utilisant ProtonMail, ces données seront aussi sécurisées que vos courriels chiffrés en bout en bout.";
 
 /* network troubleshot cell title */
 "ProtonVPN" = "ProtonVPN";
@@ -1712,10 +1706,10 @@
 
 /* *
  *  SignUpEmailViewController */
-"Recovery Email" = "Adresse email de secours";
+"Recovery Email" = "Adresse électronique de secours";
 
 /* Title */
-"Recovery Email Warning" = "Alerte Email de récupération";
+"Recovery Email Warning" = "Alerte adresse électronique de récupération";
 
 /* Title */
 "Remind Me Later" = "Me le rappeler plus tard";
@@ -2041,7 +2035,7 @@
 "The new password not match" = "Les mots de passe ne correspondent pas";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your login password if you forget it." = "L'adresse email de secours optionnelle vous permet de réinitialiser votre mot de passe si vous l'oubliez.";
+"The optional recovery email address allows you to reset your login password if you forget it." = "L'adresse électronique de secours optionnelle vous permet de réinitialiser votre mot de passe si vous l'oubliez.";
 
 /* update password error */
 "The Password is wrong." = "Le mot de passe est incorrect.";
@@ -2074,7 +2068,7 @@
 "The UserName have been taken." = "Le nom d'utilisateur est déjà pris.";
 
 /* title */
-"The verification email invalid" = "Email de vérification invalide";
+"The verification email invalid" = "Adresse électronique de vérification invalide";
 
 /* *
  *  RecaptchaViewController */
@@ -2099,10 +2093,10 @@
 "This contact belongs to your Address Book." = "Ce contact appartient à votre carnet d’adresses.";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Cet email a échoué aux exigences d'authentification de son domaine. Il a peut être été falsifié ou transmis de manière incorrecte !";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Ce courriel a échoué aux exigences d'authentification de son domaine. Il a peut être été falsifié ou transmis de manière incorrecte !";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Cet email semble provenir d'une adresse ProtonMail mais ne provient pas de notre système et a échoué aux exigences d'authentification. Il a peut-être été falsifié ou transmis de manière incorrecte !";
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ce courriel semble provenir d'une adresse ProtonMail mais ne provient pas de notre système et a échoué aux exigences d'authentification. Il a peut-être été falsifié ou transmis de manière incorrecte !";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ce message peut être une tentative d'hameçonnage. Veuillez vérifier l'expéditeur et le contenu pour vous assurer qu'ils sont légitimes.";
@@ -2226,7 +2220,7 @@
 
 /* *
  *  MessageDataService */
-"Unable to send the email" = "Impossible d'envoyer l'email";
+"Unable to send the email" = "Impossible d'envoyer le courriel.";
 
 /* Action */
 "Undo" = "Annuler";
@@ -2269,7 +2263,7 @@
 "Update Contact" = "Mettre à jour le contact";
 
 /* update notification email error title */
-"Update Notification Email" = "Mettre à jour l'adresse email de secours";
+"Update Notification Email" = "Mettre à jour l'adresse électronique de secours";
 
 /* title */
 "Update Now" = "Mettre à jour maintenant";
@@ -2345,10 +2339,10 @@
 "Warning" = "Avertissement";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Attention : vous ne pouvez pas envoyer d'email avant d'avoir passé la vérification humaine !!!";
+"Warning: Before you pass the human check you can't sent email!!!" = "Attention : vous ne pouvez pas envoyer de courriels avant d'avoir passé la vérification humaine !!!";
 
 /* Description */
-"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Avertissement : Vous n’avez pas défini d'email de secours, la récupération du compte est donc impossible si vous oubliez votre mot de passe. Voulez-vous poursuivre sans email de récupération ?";
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Avertissement : vous n’avez pas défini d'adresse électronique de secours, la récupération du compte est donc impossible si vous oubliez votre mot de passe. Voulez-vous poursuivre sans adresse de récupération ?";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nous n'avons pas pu envoyer votre message, peut-être à cause d'une mauvaise connexion réseau. Votre message a été enregistré dans les brouillons et sera envoyé automatiquement la prochaine fois que vous ouvrirez l'application.";
@@ -2360,7 +2354,7 @@
 "We will send a verification code to the cell phone above." = "Nous enverrons un code de vérification au numéro de téléphone ci-dessus.";
 
 /* email field notes */
-"We will send a verification code to the email address above." = "Nous enverrons un code de vérification à l’adresse email ci-dessus.";
+"We will send a verification code to the email address above." = "Nous enverrons un code de vérification à l’adresse électronique ci-dessus.";
 
 /* Title */
 "We would like to know what we can do better." = "Nous aimerions savoir ce que nous pouvons améliorer.";
@@ -2372,7 +2366,7 @@
 "What people see in the \"From\" field." = "Ce que les gens voient dans le champ « De ».";
 
 /* display name notes */
-"When you send an email, this is the name that appears in the sender field." = "Lorsque vous envoyez un email, c'est le nom qui apparaît dans le champ expéditeur.";
+"When you send an email, this is the name that appears in the sender field." = "Lorsque vous envoyez un courriel, c'est le nom qui apparaît dans le champ expéditeur.";
 
 /* default vcard types */
 "Work" = "Travail";
@@ -2446,7 +2440,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Votre pays bloque peut-être l'accès à Proton. Essayez d'utiliser ProtonVPN (ou n'importe quel autre VPN) ou Tor pour accéder à Proton.";
 
 /* Description */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Votre boîte de réception est maintenant protégée par le chiffrement de bout en bout. Pour envoyer automatiquement des emails sécurisés à vos contacts, invitez-les à rejoindre ProtonMail ! Vous pouvez aussi chiffrer vos messages manuellement s'ils n'utilisent pas ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Votre boîte de réception est maintenant protégée par le chiffrement de bout en bout. Pour envoyer automatiquement des courriels sécurisés à vos contacts, invitez-les à rejoindre ProtonMail ! Vous pouvez aussi chiffrer vos messages manuellement s'ils n'utilisent pas ProtonMail.";
 
 /* *
  *  Onboarding */

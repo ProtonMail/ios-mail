@@ -263,7 +263,10 @@ class HtmlEditorBehaviour: NSObject {
     ///   - cid: embed image content id
     ///   - blob: based64 encoded. don't need run escape
     func update(embedImage cid : String, encoded blob : String) {
-        let escapedBlob: String = blob.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
+        
+        //Use batch process to add the percent encoding to solve the memory issue
+        let escapedBlob: String = blob.batchAddingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
+        
         self.run(with: "html_editor.updateEncodedEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { (error) in
             PMLog.D("Error is \(error.localizedDescription)")
         }

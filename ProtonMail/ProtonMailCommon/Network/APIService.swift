@@ -64,7 +64,7 @@ class APIService : Service {
     internal var refreshTokenFailedCount = 0
     
     // synchronize lock
-    internal var mutex = pthread_mutex_t()
+    internal var mutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
     
     // api session manager
     fileprivate var sessionManager: AFHTTPSessionManager
@@ -115,7 +115,8 @@ class APIService : Service {
     // MARK: - Internal methods
     required init(config: APIServerConfig, sessionUID: String, userID: String) {
         // init lock
-        pthread_mutex_init(&mutex, nil)
+        mutex.initialize(to: pthread_mutex_t())
+        pthread_mutex_init(mutex, nil)
 
         doh.status = userCachedStatus.isDohOn ? .on : .off
         
@@ -195,12 +196,12 @@ class APIService : Service {
     internal func fetchAuthCredential(_ completion: @escaping AuthTokenBlock) {
         //TODO:: fix me. this is wrong. concurruncy 
         DispatchQueue.global(qos: .default).async {
-            pthread_mutex_lock(&self.mutex)
+            pthread_mutex_lock(self.mutex)
             let authCredential = self.sessionDeleaget?.getToken(bySessionUID: self.sessionUID)
             guard let credential = authCredential else {
                 PMLog.D("token is empty")
 
-                pthread_mutex_unlock(&self.mutex)
+                pthread_mutex_unlock(self.mutex)
                 completion(nil, nil, NSError(domain: "empty token", code: 0, userInfo: nil))
                 return
             }
@@ -210,7 +211,7 @@ class APIService : Service {
                 self.authRefresh(credential) { _, newCredential, error in
                     self.debugError(error)
                     if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
-                        pthread_mutex_unlock(&self.mutex)
+                        pthread_mutex_unlock(self.mutex)
                         DispatchQueue.main.async {
                             //NSError.alertBadToken()
                             completion(newCredential?.accessToken, self.sessionUID, error)
@@ -219,7 +220,7 @@ class APIService : Service {
                                                             userInfo: ["uid": self.sessionUID ])
                         }
                     } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                        pthread_mutex_unlock(&self.mutex)
+                        pthread_mutex_unlock(self.mutex)
                         DispatchQueue.main.async {
                             //NSError.alertBadToken()
                             self.fetchAuthCredential(completion)
@@ -228,7 +229,7 @@ class APIService : Service {
                         if let credential = newCredential {
                             self.sessionDeleaget?.updateAuthCredential(credential)
                         }
-                        pthread_mutex_unlock(&self.mutex)
+                        pthread_mutex_unlock(self.mutex)
                         DispatchQueue.main.async {
                             completion(newCredential?.accessToken, self.sessionUID, error)
                         }
@@ -237,16 +238,16 @@ class APIService : Service {
                 return
             }
 
-            pthread_mutex_unlock(&self.mutex)
+            pthread_mutex_unlock(self.mutex)
             // renew
             completion(credential.accessToken, self.sessionUID, nil)
         }
     }
     
     internal func expireCredential() {
-        pthread_mutex_lock(&self.mutex)
+        pthread_mutex_lock(self.mutex)
         defer {
-            pthread_mutex_unlock(&self.mutex)
+            pthread_mutex_unlock(self.mutex)
         }
         let authCredential = self.sessionDeleaget?.getToken(bySessionUID: self.sessionUID)
         guard let credential = authCredential else {
@@ -482,12 +483,6 @@ class APIService : Service {
                         }
                         
                         if authenticated && httpCode == 401 && authRetry {
-                            if token == nil {
-                                Analytics.shared.debug(message: .logout, extra: [
-                                    "EmptyToken": true,
-                                    "Path": path
-                                ])
-                            }
                             self.expireCredential()
                             if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                                 completion?(nil, nil, error)
@@ -543,12 +538,6 @@ class APIService : Service {
                             }
                             
                             if authenticated && responseCode == 401 {
-                                if token == nil {
-                                    Analytics.shared.debug(message: .logout, extra: [
-                                        "EmptyToken": true,
-                                        "Path": path
-                                    ])
-                                }
                                 self.expireCredential()
                                 if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                                     completion?(nil, nil, error)

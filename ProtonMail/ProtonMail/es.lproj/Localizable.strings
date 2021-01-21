@@ -693,9 +693,6 @@
 /* Title in display name settings */
 "DisplayName" = "Nombre a mostrar";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "¿Desea activar el plan de servicio comprado para ";
-
 /* Description */
 "Do you want to cancel the process?" = "¿Desea cancelar el proceso?";
 

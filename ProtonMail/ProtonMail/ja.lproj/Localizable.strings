@@ -212,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Appleが購入の手続きを進める事ができませんでした。";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Appleからサブスクリプションプランのアップグレードの通知を受けましたが、いくつかの技術情報が見当たりません。顧客サポートチームがご連絡しますので、バグ報告をお願いします。";
 
 /* Error message */
@@ -692,9 +689,6 @@
 
 /* Title in display name settings */
 "DisplayName" = "表示名";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "購読したサービスプランを有効化しますか？： ";
 
 /* Description */
 "Do you want to cancel the process?" = "手続きをキャンセルしますか？";
@@ -2453,7 +2447,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "暗号化された電子メールの新しいアカウントが設定され、暗号メッセージを送受信する準備ができました。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "新しい安全なメールアドレス\r\n  アカウントが準備できました。";
+"Your new secure email\r\n account is ready." = "新しい安全なメールアドレス\r  アカウントが準備できました。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "ご契約のプランは以下の日付まで有効です";

@@ -48,7 +48,7 @@ protocol UnlockManagerDelegate : class {
 
 class UnlockManager: Service {
     var cacheStatus : CacheStatusInject
-    private var mutex = pthread_mutex_t()
+    private var mutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
     weak var delegate : UnlockManagerDelegate?
     
     static var shared: UnlockManager {
@@ -58,7 +58,9 @@ class UnlockManager: Service {
     init(cacheStatus: CacheStatusInject, delegate: UnlockManagerDelegate?) {
         self.cacheStatus = cacheStatus
         self.delegate = delegate
-        pthread_mutex_init(&mutex, nil)
+        
+        mutex.initialize(to: pthread_mutex_t())
+        pthread_mutex_init(mutex, nil)
     }
     
     internal func isUnlocked() -> Bool {

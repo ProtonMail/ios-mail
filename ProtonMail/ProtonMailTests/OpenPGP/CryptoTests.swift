@@ -260,6 +260,9 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
 
     func testAttachmentDecrypt() {
         let testAttachmentCleartext = "cc,\ndille."
+        
+        //The function CryptoNewPlainMessageFromString will normalize the text input of "\n" into "\r\n".
+        let textAttachmentClearTestAfterNormalization = "cc,\r\ndille."
         do {
             let crypto = Crypto()
             // encrypt
@@ -275,7 +278,7 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
             }
             let clearText = NSString(data: clearData, encoding: String.Encoding.utf8.rawValue)! as String
             //match
-            XCTAssertEqual(testAttachmentCleartext, clearText)
+            XCTAssertEqual(textAttachmentClearTestAfterNormalization, clearText)
         } catch let error {
             XCTFail("thrown" + "\(error.localizedDescription)")
         }

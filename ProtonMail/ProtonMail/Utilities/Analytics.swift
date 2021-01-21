@@ -128,8 +128,6 @@ class Analytics {
 extension Analytics {
     
     enum Events: String {
-        case logout = "Logout"
-        case checkUser = "Check User"
         case keychainError = "Keychain Error"
         case notificationError = "Notification Error"
         case sendMessageError = "Send Message Error"
@@ -148,6 +146,7 @@ extension Analytics {
         case coreDataError = "Core Data Error"
         case menuSetupFailed = "Menu Failed to setup"
         case usersRestoreFailed = "Users Restore Failed"
+        case coredataIssue = "CoreData Issue"
     }
     
     struct Reason {

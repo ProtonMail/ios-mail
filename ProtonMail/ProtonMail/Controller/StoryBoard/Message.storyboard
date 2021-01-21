@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Yk-oc-NjC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Yk-oc-NjC">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -89,6 +89,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="e2l-Wy-KkI"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="y1J-7c-viZ" firstAttribute="leading" secondItem="e2l-Wy-KkI" secondAttribute="leading" id="1cd-qD-K8Q"/>
@@ -100,7 +101,6 @@
                             <constraint firstItem="MGP-Ug-3HL" firstAttribute="leading" secondItem="e2l-Wy-KkI" secondAttribute="leading" id="gJM-P4-IYD"/>
                             <constraint firstItem="e2l-Wy-KkI" firstAttribute="trailing" secondItem="MGP-Ug-3HL" secondAttribute="trailing" id="rAT-ZO-LF0"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="e2l-Wy-KkI"/>
                     </view>
                     <connections>
                         <outlet property="backButton" destination="arx-Gv-Wg6" id="Hvn-1D-th3"/>
@@ -133,6 +133,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="J5S-Or-huP"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="J5S-Or-huP" firstAttribute="bottom" secondItem="L62-ce-pTq" secondAttribute="bottom" id="47S-9Y-fG8"/>
@@ -140,11 +141,10 @@
                             <constraint firstItem="L62-ce-pTq" firstAttribute="leading" secondItem="J5S-Or-huP" secondAttribute="leading" id="jmB-i7-KBM"/>
                             <constraint firstItem="L62-ce-pTq" firstAttribute="top" secondItem="J5S-Or-huP" secondAttribute="top" id="k3c-eM-v7Q"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="J5S-Or-huP"/>
                     </view>
                     <connections>
                         <outlet property="emailHeaderView" destination="L62-ce-pTq" id="HOy-a7-EmD"/>
-                        <segue destination="W5K-yA-by7" kind="show" identifier="toCompose" id="P28-ul-dIc"/>
+                        <segue destination="W5K-yA-by7" kind="presentation" identifier="toCompose" modalPresentationStyle="fullScreen" id="P28-ul-dIc"/>
                         <segue destination="Uat-2a-auI" kind="show" identifier="toAddContact" id="ct4-9j-xhR"/>
                     </connections>
                 </viewController>
@@ -159,8 +159,8 @@
                     <view key="view" contentMode="scaleToFill" id="yQo-2F-pao">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="519-MJ-E4m"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <connections>
                         <segue destination="W5K-yA-by7" kind="show" identifier="toCompose" id="iUb-3s-iQk"/>
@@ -197,6 +197,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Wf5-eJ-eFE"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="iEg-CX-DLB" firstAttribute="top" secondItem="Wf5-eJ-eFE" secondAttribute="top" id="HpQ-Fu-XBl"/>
@@ -204,7 +205,6 @@
                             <constraint firstItem="Wf5-eJ-eFE" firstAttribute="bottom" secondItem="iEg-CX-DLB" secondAttribute="bottom" id="Zeg-gE-Veg"/>
                             <constraint firstItem="Wf5-eJ-eFE" firstAttribute="trailing" secondItem="iEg-CX-DLB" secondAttribute="trailing" id="xga-RN-roQ"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Wf5-eJ-eFE"/>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="iEg-CX-DLB" id="UOT-mM-s7d"/>
@@ -252,7 +252,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="lQf-C0-JMc"/>
+        <segue reference="P28-ul-dIc"/>
         <segue reference="bvG-si-qmN"/>
     </inferredMetricsTieBreakers>
 </document>

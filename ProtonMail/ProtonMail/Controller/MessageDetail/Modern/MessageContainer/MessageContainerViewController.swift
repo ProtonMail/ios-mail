@@ -291,7 +291,8 @@ extension MessageContainerViewController: MessageDetailBottomViewDelegate {
 
 extension MessageContainerViewController: Deeplinkable {
     var deeplinkNode: DeepLink.Node {
-        let states: [String: Any] = [MessageContainerViewModel.StatesKey.offsetKey: self.tableView.contentOffset.y]
+        let offset = self.tableView?.contentOffset.y ?? 0
+        let states: [String: Any] = [MessageContainerViewModel.StatesKey.offsetKey: offset]
         return DeepLink.Node(name: String(describing: MessageContainerViewController.self),
                              value: self.viewModel.thread.first?.messageID,
                              states: states)

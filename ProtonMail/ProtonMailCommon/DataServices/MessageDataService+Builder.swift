@@ -53,13 +53,13 @@ extension String {
 final class PreContact {
     let email : String
     let firstPgpKey : Data?
-    let pgpKeys : Data?
+    let pgpKeys : [Data]
     let sign : Bool
     let encrypt : Bool
     let mime : Bool
     let plainText : Bool
     
-    init(email: String, pubKey: Data?, pubKeys: Data?, sign : Bool, encrypt: Bool, mime : Bool, plainText : Bool) {
+    init(email: String, pubKey: Data?, pubKeys: [Data], sign : Bool, encrypt: Bool, mime : Bool, plainText : Bool) {
         self.email = email
         self.firstPgpKey = pubKey
         self.pgpKeys = pubKeys
@@ -347,8 +347,7 @@ class SendBuilder {
                         let attName = QuotedPrintable.encode(string: att.fileName)
                         signbody.append(contentsOf: "Content-Type: \(att.mimeType); name=\"\(attName)\"" + "\r\n")
                         signbody.append(contentsOf: "Content-Transfer-Encoding: base64" + "\r\n")
-                        let disposition = att.inline() ? "inline": "attachment"
-                        signbody.append(contentsOf: "Content-Disposition: \(disposition); filename=\"\(attName)\"" + "\r\n")
+                        signbody.append(contentsOf: "Content-Disposition: attachment; filename=\"\(attName)\"" + "\r\n")
                         let contentID = att.contentID() ?? ""
                         signbody.append(contentsOf: "Content-ID: <\(contentID)>\r\n")
 

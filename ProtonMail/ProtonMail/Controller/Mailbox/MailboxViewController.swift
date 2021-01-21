@@ -181,9 +181,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         generateAccessibilityIdentifiers()
         
         //Do not fetch message when first logged in
-        if viewModel.isEventIDValid() {
-            self.fetchNewMessage()
-        }
+        //if viewModel.isEventIDValid() {
+        //  self.fetchNewMessage()
+        //}
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -253,8 +253,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         if self.viewModel.notificationMessageID != nil {
             self.coordinator?.go(to: .detailsFromNotify)
-        } else {
-            checkHuman()
+        } else if checkHuman() {
+            self.handleUpdateAlert()
         }
     }
     
@@ -321,6 +321,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.coordinator?.go(to: .search)
     }
     @objc internal func labelButtonTapped() {
+        self.removePresentedViewController()
         guard !self.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._apply_labels)
             return
@@ -329,6 +330,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     @objc internal func folderButtonTapped() {
+        self.removePresentedViewController()
         guard !self.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._labels_move_to_folder)
             return
@@ -338,12 +340,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     /// unread tapped, this is the button in navigation bar 
     @objc internal func unreadTapped() {
+        self.removePresentedViewController()
         self.viewModel.mark(IDs: self.selectedIDs, unread: true)
         cancelButtonTapped()
     }
     
     /// remove button tapped. in the navigation bar
     @objc internal func removeButtonTapped() {
+        self.removePresentedViewController()
         guard !self.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._warning)
             return
@@ -447,11 +451,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.selectedIDs.removeAllObjects()
         self.hideCheckOptions()
         self.updateNavigationController(false)
+        if !self.timer.isValid {
+            self.startAutoFetch(false)
+        }
     }
     
     @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         self.showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(listEditing)
+        // invalidate tiemr in multi-selected mode to prevent ui refresh issue
+        self.timer.invalidate()
     }
 
     internal func beginRefreshingManually(animated: Bool) {
@@ -764,10 +773,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard !tableView.isDragging else {
             return
         }
-        
-        self.getLatestMessages()
-        //temperay to fix the new messages are not loaded
-        self.fetchNewMessage()
+
+        self.getLatestMessagesRaw { (fetch) in
+            if fetch {
+                //temperay to fix the new messages are not loaded
+                self.fetchNewMessage()
+            }
+        }
     }
     
     private func fetchNewMessage() {
@@ -783,6 +795,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     var retryCounter = 0
     @objc internal func getLatestMessages() {
+        self.getLatestMessagesRaw(nil)
+    }
+    internal func getLatestMessagesRaw(_ CompleteIsFetch: ((_ fetch: Bool) -> Void)?) {
         self.hideTopMessage()
         if !fetchingMessage {
             fetchingMessage = true
@@ -851,6 +866,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     if userCachedStatus.hasMessageFromNotification {
                         userCachedStatus.hasMessageFromNotification = false
                         self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: nil)
+                    } else {
+                        CompleteIsFetch?(true)
                     }
                 }
             }
@@ -907,46 +924,70 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel.move(IDs: self.selectedIDs, to: location.rawValue)
     }
     
+    var messageTapped = false
+    let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
+    func getTapped() -> Bool {
+        serialQueue.sync {
+            let ret = self.messageTapped
+            if ret == false {
+                self.messageTapped = true
+            }
+            return ret
+        }
+    }
+    func updateTapped(status: Bool) {
+        serialQueue.sync {
+            self.messageTapped = status
+        }
+    }
+    
     internal func tappedMassage(_ message: Message) {
-        guard viewModel.isDrafts() || message.draft else {
-            self.coordinator?.go(to: .details)
-            self.tableView.indexPathsForSelectedRows?.forEach {
-                self.tableView.deselectRow(at: $0, animated: true)
+        if getTapped() == false {
+            guard viewModel.isDrafts() || message.draft else {
+                self.coordinator?.go(to: .details)
+                self.tableView.indexPathsForSelectedRows?.forEach {
+                    self.tableView.deselectRow(at: $0, animated: true)
+                }
+                self.updateTapped(status: false)
+                return
             }
-            return
-        }
-
-        guard !message.messageID.isEmpty else {
-            if self.checkHuman() {
-                //TODO::QA
-                self.coordinator?.go(to: .composeShow)
+            guard !message.messageID.isEmpty else {
+                if self.checkHuman() {
+                    //TODO::QA
+                    self.coordinator?.go(to: .composeShow)
+                }
+                self.updateTapped(status: false)
+                return
             }
-            return
-        }
-        
-        self.viewModel.messageService.ForcefetchDetailForMessage(message) {_, _, msg, error in
-            guard let objectId = msg?.objectID,
-                let message = self.viewModel.object(by: objectId),
-                message.body.isEmpty == false else
-            {
-                if error != nil {
-                    PMLog.D("error: \(String(describing: error))")
-                    let alert = LocalString._unable_to_edit_offline.alertController()
-                    alert.addOKAction()
-                    self.present(alert, animated: true, completion: nil)
+            
+            self.viewModel.messageService.ForcefetchDetailForMessage(message) {_, _, msg, error in
+                guard let objectId = msg?.objectID,
+                    let message = self.viewModel.object(by: objectId),
+                    message.body.isEmpty == false else
+                {
+                    if error != nil {
+                        PMLog.D("error: \(String(describing: error))")
+                        let alert = LocalString._unable_to_edit_offline.alertController()
+                        alert.addOKAction()
+                        self.present(alert, animated: true, completion: nil)
+                        self.tableView.indexPathsForSelectedRows?.forEach {
+                            self.tableView.deselectRow(at: $0, animated: true)
+                        }
+                    }
+                    self.updateTapped(status: false)
+                    return
+                }
+                
+                if self.checkHuman() {
+                    self.coordinator?.go(to: .composeShow, sender: message)
                     self.tableView.indexPathsForSelectedRows?.forEach {
                         self.tableView.deselectRow(at: $0, animated: true)
                     }
                 }
-                return
-            }
-            if self.checkHuman() {
-                self.coordinator?.go(to: .composeShow, sender: message)
-                self.tableView.indexPathsForSelectedRows?.forEach {
-                    self.tableView.deselectRow(at: $0, animated: true)
-                }
+                self.updateTapped(status: false)
             }
         }
+        
     }
 
     fileprivate func setupLeftButtons(_ editingMode: Bool) {
@@ -1102,6 +1143,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             search.user = self.viewModel.user
         }
         super.prepare(for: segue, sender: sender)
+    }
+    
+    private func handleUpdateAlert() {
+        if self.viewModel.shouldShowUpdateAlert() {
+            let alertVC = UIAlertController(title: LocalString._ios10_update_title, message: LocalString._ios10_update_body, preferredStyle: .alert)
+            alertVC.addOKAction { (_) in
+                self.viewModel.setiOS10AlertIsShown()
+            }
+            self.present(alertVC, animated: true, completion: nil)
+        }
     }
 }
 
@@ -1262,7 +1313,7 @@ extension MailboxViewController {
         }
         
         if status == .ReachableViaWWAN || status == .ReachableViaWiFi {
-            self.retry()
+            self.retry(delay: 5)
         }
     }
     
@@ -1270,10 +1321,10 @@ extension MailboxViewController {
         self.topMessageView?.remove(animated: true)
     }
     
-    func retry() {
+    func retry(delay: Double = 0) {
         // When network reconnect, the DNS data seems will miss at a short time
         // Delay 5 seconds to retry can prevent some relative error
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             self.getLatestMessages()
         }
     }
@@ -1340,7 +1391,10 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        
+        if controller == self.viewModel.labelFetchedResults {
+            tableView.reloadData()
+            return
+        }
         self.tableView.endUpdates()
         if self.refreshControl.isRefreshing {
             self.refreshControl.endRefreshing()
@@ -1349,10 +1403,16 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        if controller == self.viewModel.labelFetchedResults {
+            return
+        }
         tableView.beginUpdates()
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        if controller == self.viewModel.labelFetchedResults {
+            return
+        }
         switch(type) {
         case .delete:
             tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
@@ -1364,6 +1424,9 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        if controller == self.viewModel.labelFetchedResults {
+            return
+        }
         switch(type) {
         case .delete:
             if let indexPath = indexPath {

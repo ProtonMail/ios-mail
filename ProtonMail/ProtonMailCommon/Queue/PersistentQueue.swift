@@ -33,7 +33,7 @@ import Foundation
     fileprivate var queueURL: URL
     fileprivate let queueName: String
     
-    internal var mutex = pthread_mutex_t()
+    internal var mutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
     
     dynamic fileprivate(set) var queue: [Any] {
         didSet {
@@ -73,14 +73,15 @@ import Foundation
         else {
             self.queue = []
         }
-        pthread_mutex_init(&mutex, nil)
+        mutex.initialize(to: pthread_mutex_t())
+        pthread_mutex_init(mutex, nil)
         super.init()
     }
     
     func add (_ uuid: UUID, object: NSCoding) -> UUID {
-        pthread_mutex_lock(&self.mutex)
+        pthread_mutex_lock(self.mutex)
         defer {
-            pthread_mutex_unlock(&self.mutex)
+            pthread_mutex_unlock(self.mutex)
         }
         let element = [Key.elementID : uuid, Key.object : object] as [String : Any]
         self.queue.append(element)
@@ -108,9 +109,9 @@ import Foundation
     
     /// Removes an element from the persistent queue
     func remove(_ elementID: UUID) -> Bool {
-        pthread_mutex_lock(&self.mutex)
+        pthread_mutex_lock(self.mutex)
         defer {
-            pthread_mutex_unlock(&self.mutex)
+            pthread_mutex_unlock(self.mutex)
         }
         for (index, element) in queue.enumerated() {
             if let elementDict = element as? [String : Any], let kID = elementDict[Key.elementID] as? UUID{
@@ -125,9 +126,9 @@ import Foundation
     
     
     func removeDuplicated(_ messageID: String, key: String, actionKey: String, actions : [String]) {
-        pthread_mutex_lock(&self.mutex)
+        pthread_mutex_lock(self.mutex)
         defer {
-            pthread_mutex_unlock(&self.mutex)
+            pthread_mutex_unlock(self.mutex)
         }
         self.queue.removeAll { (element) -> Bool in
             if let elementDict = element as? [String : Any],
@@ -143,9 +144,9 @@ import Foundation
     }
     
     func remove<T>(key: String, value: T) where T: Equatable {
-        pthread_mutex_lock(&self.mutex)
+        pthread_mutex_lock(self.mutex)
         defer {
-            pthread_mutex_unlock(&self.mutex)
+            pthread_mutex_unlock(self.mutex)
         }
         self.queue.removeAll { (element) -> Bool in
             if let elementDict = element as? [String : Any],
