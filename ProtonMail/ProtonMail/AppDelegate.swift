@@ -350,6 +350,10 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.currentState = .active
+        let users: UsersManager = sharedServices.get()
+        if let user = users.firstUser {
+            user.messageService.unBlockQueueAction()
+        }
     }
     
     // MARK: Background methods

@@ -373,6 +373,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 DispatchQueue.main.async {
                                     completion?(task, responseDict, error)
                                 }
+                                return
                             }
                             DispatchQueue.main.async {
                                 completion?(task, responseDict, error)
@@ -449,6 +450,13 @@ class MessageDataService : Service, HasLocalStorage {
             let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID(userID: self.userID, context: context))
             eventAPI.call(api: self.apiService) { task, response, hasError in
                 if let eventsRes = response {
+                    
+                    if eventsRes.refresh.contains(.contacts) {
+                        _ = self.contactDataService.cleanUp().ensure {
+                            self.contactDataService.fetchContacts(completion: nil)
+                        }
+                    }
+                    
                     if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (hasError && eventsRes.code == 18001) {
                         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                         getLatestEventID.call(api: self.apiService) { task, _IDRes, hasIDError in
@@ -474,18 +482,22 @@ class MessageDataService : Service, HasLocalStorage {
                                 completion?(task, nil, nil)
                             }
                         }
-                    } else if eventsRes.refresh.contains(.contacts) {
-                        _ = self.contactDataService.cleanUp().ensure {
-                            self.contactDataService.fetchContacts(completion: nil)
-                        }
                     } else if let messageEvents = eventsRes.messages {
                         DispatchQueue.global().async {
                             self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID, task: task) { task, res, error in
                                 if error == nil {
                                     _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.coreDataService.mainManagedObjectContext).then { (_) -> Promise<Void> in
-                                        return self.processEvents(contacts: eventsRes.contacts)
+                                        if eventsRes.refresh.contains(.contacts) {
+                                            return Promise()
+                                        } else {
+                                            return self.processEvents(contacts: eventsRes.contacts)
+                                        }
                                     }.then { (_) -> Promise<Void> in
-                                        return self.processEvents(contactEmails: eventsRes.contactEmails)
+                                        if eventsRes.refresh.contains(.contacts) {
+                                            return Promise()
+                                        } else {
+                                            return self.processEvents(contactEmails: eventsRes.contactEmails)
+                                        }
                                     }.then { (_) -> Promise<Void> in
                                         self.processEvents(labels: eventsRes.labels)
                                     }.then({ (_) -> Promise<Void> in
@@ -516,9 +528,17 @@ class MessageDataService : Service, HasLocalStorage {
                     } else {
                         if eventsRes.code == 1000 {
                             _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.coreDataService.mainManagedObjectContext).then { (_) -> Promise<Void> in
-                                return self.processEvents(contacts: eventsRes.contacts)
+                                if eventsRes.refresh.contains(.contacts) {
+                                    return Promise()
+                                } else {
+                                    return self.processEvents(contacts: eventsRes.contacts)
+                                }
                             }.then { (_) -> Promise<Void> in
-                                return self.processEvents(contactEmails: eventsRes.contactEmails)
+                                if eventsRes.refresh.contains(.contacts) {
+                                    return Promise()
+                                } else {
+                                    return self.processEvents(contactEmails: eventsRes.contactEmails)
+                                }
                             }.then { (_) -> Promise<Void> in
                                 self.processEvents(labels: eventsRes.labels)
                             }.then({ (_) -> Promise<Void> in
@@ -2198,6 +2218,10 @@ class MessageDataService : Service, HasLocalStorage {
     func pauseQueueAction(didStop: (() -> Void)?) {
         self.pauseNotify = didStop
         sharedMessageQueue.isBlocked = true
+    }
+    
+    func unBlockQueueAction() {
+        sharedMessageQueue.isBlocked = false
     }
     
     private func dequeueIfNeeded(notify : (() -> Void)? = nil) {
