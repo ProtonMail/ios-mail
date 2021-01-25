@@ -74,7 +74,7 @@ class MailboxRobotInterface {
     
     @discardableResult
     func selectMessage(position: Int) -> MailboxRobotInterface {
-        Element.cell.tapByPosition(position)
+        Element.wait.forCellByIndex(position).tap()
         return self
     }
     
