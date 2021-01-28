@@ -233,8 +233,12 @@ extension String {
         var result = self.replacingOccurrences(of: "&", with: "&amp;", options: .caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "\"", with: "&quot;", options: .caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "'", with: "&#039;", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: "<br />", with: "\r\n", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: "<br/>", with: "\r\n", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: "<br>", with: "\r\n", options: .caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "<", with: "&lt;", options: .caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: ">", with: "&gt;", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: "\r\n", with: "<br />", options: .caseInsensitive, range: nil)
         return result
     }
     
