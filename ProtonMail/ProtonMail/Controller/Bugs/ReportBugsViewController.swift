@@ -126,7 +126,7 @@ class ReportBugsViewController: ProtonMailViewController {
         MBProgressHUD.showAdded(to: v, animated: true)
         sendButton.isEnabled = false
         _ = self.user.reportService.reportBug(text,
-                                              username: self.user.displayName,
+                                              username: self.user.defaultDisplayName,
                                               email: self.user.defaultEmail, completion: { error in
             MBProgressHUD.hide(for: v, animated: true)
             self.sendButton.isEnabled = true
