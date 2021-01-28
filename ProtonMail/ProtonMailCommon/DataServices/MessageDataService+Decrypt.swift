@@ -85,7 +85,7 @@ extension MessageDataService {
                 }
             } else if message.isPgpInline {
                 if message.isPlainText {
-//                    body = body.encodeHtml()
+                    body = body.encodeHtml()
                     body = body.ln2br()
                     return body
                 } else if message.isMultipartMixed {
