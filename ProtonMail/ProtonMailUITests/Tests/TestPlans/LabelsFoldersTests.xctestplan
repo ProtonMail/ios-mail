@@ -13,6 +13,7 @@
   },
   "testTargets" : [
     {
+      "parallelizable" : true,
       "selectedTests" : [
         "LabelsFoldersTests\/testAddMessageToCustomFolderFromInbox()",
         "LabelsFoldersTests\/testAddMessageToCustomLabelFromInbox()",

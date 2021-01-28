@@ -40,7 +40,7 @@ class SignatureRobot {
     }
     
     func save() -> AccountSettingsRobot {
-        Element.button.tapByIdentifier(saveNavBarButtonLabel)
+        Element.wait.forButtonWithIdentifier(saveNavBarButtonLabel).tap()
         return AccountSettingsRobot()
     }
     

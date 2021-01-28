@@ -17,27 +17,27 @@ struct Element {
     
     class assert {
         static func buttonWithIdentifierExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
-            let element = app.buttons[identifier]
+            let element = app.buttons[identifier].firstMatch
             XCTAssertTrue(element.exists, "Button element \(element.debugDescription) does not exist.", file: file, line: line)
         }
         
         static func textFieldWithIdentifierExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
-            let element = app.textFields[identifier]
+            let element = app.textFields[identifier].firstMatch
             XCTAssertTrue(element.exists, "TextField element \(element.debugDescription) does not exist.", file: file, line: line)
         }
         
         static func staticTextWithIdentifierExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
-            let element = app.staticTexts[identifier]
+            let element = app.staticTexts[identifier].firstMatch
             XCTAssertTrue(element.exists, "StaticText element \(element.debugDescription) does not exist.", file: file, line: line)
         }
         
         static func cellWithIdentifierExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
-            let element = app.cells[identifier]
+            let element = app.cells[identifier].firstMatch
             XCTAssertTrue(element.exists, "Cell element \(element.debugDescription) does not exist but it should.", file: file, line: line)
         }
         
         static func cellWithIdentifierDoesNotExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
-            let element = app.cells[identifier]
+            let element = app.cells[identifier].firstMatch
             XCTAssertFalse(element.exists, "Cell element \(element.debugDescription) exists but it should not.", file: file, line: line)
         }
         
@@ -50,7 +50,7 @@ struct Element {
     class button {
         @discardableResult
         class func tapByIdentifier(_ identifier: String) -> XCUIElement {
-            let element = app.buttons[identifier]
+            let element = app.buttons[identifier].firstMatch
             element.tap()
             return element
         }
@@ -65,16 +65,16 @@ struct Element {
     
     class cell {
         class func tapByIdentifier(_ identifier: String) {
-            app.cells[identifier].tap()
+            app.cells[identifier].firstMatch.tap()
         }
         
         class func tapByPosition(_ index: Int) {
-            let cell = app.cells.element(boundBy: index)
+            let cell = app.cells.element(boundBy: index).firstMatch
             cell.tap()
         }
         
         class func swipeLefyByIdentifier(_ identifier: String) {
-            app.cells[identifier].swipeLeft()
+            app.cells[identifier].firstMatch.swipeLeft()
         }
         
         class func longClickByPosition(_ index: Int) {
@@ -90,25 +90,25 @@ struct Element {
         }
         
         class func getAddressByIndex(_ index: Int) -> String {
-            let cell = app.cells.element(boundBy: index)
+            let cell = app.cells.element(boundBy: index).firstMatch
             let name = cell.label.components(separatedBy: ",")
             let address: String = name[1]
             return address
         }
         
         class func swipeSwipeUpUntilVisibleByIdentifier(_ identifier: String) -> XCUIElement {
-            return app.cells[identifier].swipeUpUntilVisible()
+            return app.cells[identifier].firstMatch.swipeUpUntilVisible()
         }
         
         class func swipeDownUpUntilVisibleByIdentifier(_ identifier: String) -> XCUIElement {
-            return app.cells[identifier].swipeUpUntilVisible()
+            return app.cells[identifier].firstMatch.swipeUpUntilVisible()
         }
     }
     
     class menuItem {
         @discardableResult
         class func tapByIdentifier(_ identifier: String) -> XCUIElement {
-            let element = app.menuItems[identifier]
+            let element = app.menuItems[identifier].firstMatch
             element.tap()
             return element
         }
@@ -117,7 +117,7 @@ struct Element {
     class other {
         @discardableResult
         class func tapByIdentifier(_ identifier: String) -> XCUIElement {
-            let element = app.otherElements[identifier]
+            let element = app.otherElements[identifier].firstMatch
             element.tap()
             return element
         }
@@ -130,7 +130,7 @@ struct Element {
         }
         
         class func tapIfExists(_ identifier: String) {
-            let element = app.otherElements[identifier]
+            let element = app.otherElements[identifier].firstMatch
             if (Wait().forElement(element, #file, #line, 2)) {
                 element.tap()
             }
@@ -145,13 +145,13 @@ struct Element {
     
     class secureTextField {
         class func tapByIdentifier(_ identifier: String) -> XCUIElement {
-            let element = app.secureTextFields[identifier]
+            let element = app.secureTextFields[identifier].firstMatch
             element.tap()
             return element
         }
         
         class func typeTextByIdentifier(_ identifier: String, _ text: String) {
-            app.textFields[identifier].typeText(text)
+            app.textFields[identifier].firstMatch.typeText(text)
         }
         
         class func tapByIndex(_ index: Int) -> XCUIElement {
@@ -164,7 +164,7 @@ struct Element {
     class staticText {
         @discardableResult
         class func tapByIdentifier(_ identifier: String) -> XCUIElement {
-            let element = app.staticTexts[identifier]
+            let element = app.staticTexts[identifier].firstMatch
             element.tap()
             return element
         }
@@ -177,21 +177,21 @@ struct Element {
         
         @discardableResult
         class func swipeLeftByIdentifier(_ identifier: String) -> XCUIElement {
-            let element = app.staticTexts[identifier]
+            let element = app.staticTexts[identifier].firstMatch
             element.swipeLeft()
             return element
         }
         
         @discardableResult
         class func swipeRightByIdentifier(_ identifier: String) -> XCUIElement {
-            let element = app.staticTexts[identifier]
+            let element = app.staticTexts[identifier].firstMatch
             element.swipeRight()
             return element
         }
         
         @discardableResult
         class func longClickByIdentifier(_ identifier: String) -> XCUIElement {
-            let element = app.staticTexts[identifier]
+            let element = app.staticTexts[identifier].firstMatch
             element.press(forDuration: 3)
             return element
         }
@@ -212,7 +212,7 @@ struct Element {
         }
         
         class func isEnabledByIdentifier(_ identifier: String) -> Bool {
-            let switchValue = app.switches[identifier].value as? String
+            let switchValue = app.switches[identifier].firstMatch.value as? String
             return 1 == Int(switchValue!)
         }
         
@@ -225,7 +225,7 @@ struct Element {
         
         @discardableResult
         class func tapByIdentifier(_ identifier: String) -> XCUIElement {
-            let element = app.switches[identifier]
+            let element = app.switches[identifier].firstMatch
             element.tap()
             return element
         }
@@ -249,23 +249,23 @@ struct Element {
         
         var perform: XCUIElement
         init(_ identifier: String) {
-            self.perform = app.textFields[identifier]
+            self.perform = app.textFields[identifier].firstMatch
         }
         
         class func tapByIdentifier(_ identifier: String) -> XCUIElement {
-            let element = app.textFields[identifier]
+            let element = app.textFields[identifier].firstMatch
             element.tap()
             return element
         }
         
         class func tapByIndex(_ index: Int) -> XCUIElement {
-            let element = app.textFields.element(boundBy: index)
+            let element = app.textFields.element(boundBy: index).firstMatch
             element.tap()
             return element
         }
         
         class func typeTextByIdentifier(_ identifier: String, _ text: String) -> XCUIElement {
-            let element = app.textFields[identifier]
+            let element = app.textFields[identifier].firstMatch
             element.typeText(text)
             return element
         }
@@ -286,7 +286,7 @@ struct Element {
         
         @discardableResult
         class func typeTextByIdentifier(_ identifier: String, _ text: String) -> XCUIElement {
-            let element = app.textViews[identifier]
+            let element = app.textViews[identifier].firstMatch
             element.typeText(text)
             return element
         }
@@ -296,14 +296,14 @@ struct Element {
         
         @discardableResult
         static func forButtonWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.buttons[identifier]
+            let element = app.buttons[identifier].firstMatch
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
         }
         
         @discardableResult
         static func forCellWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.cells[identifier]
+            let element = app.cells[identifier].firstMatch
             XCUIApplication().scrollViews.textFields.element(boundBy: 1)
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
@@ -315,7 +315,7 @@ struct Element {
         
         @discardableResult
         static func forCollectionViewWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.collectionViews[identifier]
+            let element = app.collectionViews[identifier].firstMatch
             XCUIApplication().scrollViews.textFields.element(boundBy: 1)
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
@@ -323,54 +323,54 @@ struct Element {
         
         @discardableResult
         static func forHittableButton(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.buttons[identifier]
+            let element = app.buttons[identifier].firstMatch
             Wait().forElementToBeHittable(element, file, line)
             return element
         }
         
         @discardableResult
         static func forCellWithIdentifierToDisappear(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.buttons[identifier]
+            let element = app.buttons[identifier].firstMatch
             Wait().forElementToDisappear(element, file, line)
             return element
         }
         
         @discardableResult
         static func forOtherFieldWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.otherElements[identifier]
+            let element = app.otherElements[identifier].firstMatch
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
         }
         
         @discardableResult
         static func forStaticTextFieldWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.staticTexts[identifier]
+            let element = app.staticTexts[identifier].firstMatch
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
         }
         
         @discardableResult
         static func forSecureTextFieldWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.secureTextFields[identifier]
+            let element = app.secureTextFields[identifier].firstMatch
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
         }
         
         @discardableResult
         static func forTextFieldWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.textFields[identifier]
+            let element = app.textFields[identifier].firstMatch
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
         }
         
         static func forTableViewWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) {
-            let element = app.tables[identifier]
+            let element = app.tables[identifier].firstMatch
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
         }
         
         @discardableResult
         static func forImageWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.images[identifier]
+            let element = app.images[identifier].firstMatch
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
         }
@@ -382,7 +382,7 @@ extension XCUIElement {
     @discardableResult
     func swipeUpUntilVisible(maxAttempts: Int = 5) -> XCUIElement {
         var eventCount = 0
-        let table = app.tables.element
+        let table = app.tables.element.firstMatch
 
         while eventCount <= maxAttempts, !self.isVisible {
             table.swipeUp()
@@ -394,7 +394,7 @@ extension XCUIElement {
     @discardableResult
     func swipeDownUntilVisible(maxAttempts: Int = 5) -> XCUIElement {
         var eventCount = 0
-        let table = app.tables.element
+        let table = app.tables.element.firstMatch
 
         while eventCount <= maxAttempts, !self.isVisible {
             table.swipeDown()
