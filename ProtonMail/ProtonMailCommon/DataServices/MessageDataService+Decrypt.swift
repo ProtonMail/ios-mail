@@ -131,8 +131,12 @@ extension MessageDataService {
                 }
             }
             if message.isPlainText {
-//                body = body.encodeHtml()
-                return body.ln2br()
+                if message.draft {
+                    return body
+                } else {
+                    body = body.encodeHtml()
+                    return body.ln2br()
+                }
             }
             return body
         }
