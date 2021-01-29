@@ -40,7 +40,7 @@ public class BugDataService: Service {
     
     public func reportBug(_ bug: String, username : String, email: String, completion: ((NSError?) -> Void)?) {
         let systemVersion = UIDevice.current.systemVersion;
-        let model = UIDevice.current.model
+        let model = "iOS - \(UIDevice.current.model)"
         let mainBundle = Bundle.main
         let username = username
         let useremail = email
