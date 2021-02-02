@@ -53,4 +53,33 @@ class LoginTests: BaseTestCase {
             .decryptMailbox(user.mailboxPassword)
             .verify.loginSuccessful()
     }
+    
+    func testLoginWithInvalidPassword() {
+        let user = testData.onePassUser
+        loginRobot
+            .loginWithInvalidPassword(user)
+            .verify.invalidCredentialDialogDisplay()
+    }
+    
+    func testLoginWithInvalidUserAndPassword() {
+        let user = testData.onePassUser
+        loginRobot
+            .loginWithInvalidUserAndPassword(user)
+            .verify.invalidCredentialDialogDisplay()
+    }
+    
+    func testLoginWithInvalidUser() {
+        let user = testData.onePassUser
+        loginRobot
+            .loginWithInvalidUser(user)
+            .verify.invalidCredentialDialogDisplay()
+    }
+    
+    func testLoginWithInvalid2Pass() {
+        let user = testData.twoPassUser
+        loginRobot
+            .loginTwoPasswordUser(user)
+            .decryptMailboxWithInvalidPassword(user.mailboxPassword)
+            .verify.verifyDecryptFailedErrorDisplayed()
+    }
 }

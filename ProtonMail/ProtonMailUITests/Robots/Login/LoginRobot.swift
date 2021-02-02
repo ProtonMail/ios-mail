@@ -14,6 +14,7 @@ private let signinButtonIdentifier = "SignInViewController.signInButton"
 private let twoFaCodeIdentifier = "TwoFACodeViewController.twoFactorCodeField"
 private let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
 private let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
+private let invalidCredentialStaticTextIdentifier = "Incorrect login credentials. Please try again"
 
 class LoginRobot {
     
@@ -46,6 +47,28 @@ class LoginRobot {
             .provideTwoFaCodeMailbox(code: user.getTwoFaCode())
     }
     
+    func loginWithInvalidUser(_ user: User) -> ErrorDialogRobot {
+        let incorrectEmail = "invalid" + user.email
+        return username(incorrectEmail)
+            .password(user.password)
+            .singInWithInvalidCreadential()
+    }
+    
+    func loginWithInvalidUserAndPassword(_ user: User) -> ErrorDialogRobot {
+        let email = "invalid" + user.email
+        let password = "invalid" + user.password
+        return username(email)
+            .password(password)
+            .singInWithInvalidCreadential()
+    }
+    
+    func loginWithInvalidPassword(_ user: User) -> ErrorDialogRobot {
+        let invalidPassword = "invalid" + user.password
+        return username(user.email)
+            .password(invalidPassword)
+            .singInWithInvalidCreadential()
+    }
+    
     private func username(_ username: String) -> LoginRobot {
         Element.wait.forTextFieldWithIdentifier(usernameIdentifier).typeText(username)
         return self
@@ -70,7 +93,12 @@ class LoginRobot {
         Element.wait.forButtonWithIdentifier(signinButtonIdentifier).tap()
         return TwoFaRobot()
     }
-
+    
+    private func singInWithInvalidCreadential() -> ErrorDialogRobot {
+        Element.button.tapByIdentifier(signinButtonIdentifier)
+        return ErrorDialogRobot()
+    }
+    
     private func secondPass(mailboxPassword: String) -> LoginRobot {
         //TODO:: add implementation
         return self
@@ -79,6 +107,18 @@ class LoginRobot {
     private func confirmSecondPass() -> LoginRobot {
         //TODO:: add implementation
         return self
+    }
+    
+    class ErrorDialogRobot {
+        
+        var verify: Verify! = nil
+        init() { verify = Verify() }
+        
+        class Verify {
+            func invalidCredentialDialogDisplay() {
+                Element.wait.forStaticTextFieldWithIdentifier(invalidCredentialStaticTextIdentifier, file: #file, line: #line)
+            }
+        }
     }
     
     class TwoFaRobot {
