@@ -26,10 +26,9 @@ class ContactsTests : BaseTestCase {
             .addContact()
             .setNameEmailAndSave(name, email)
             .contactsView()
-            .deleteContact(email)
-            .verify.contactDoesNotExists(email)
+            .deleteContact(name)
+            .verify.contactDoesNotExists(name)
     }
-
 
     func testEditContact() {
         let name = testData.alphaNumericString
@@ -40,13 +39,13 @@ class ContactsTests : BaseTestCase {
             .addContact()
             .setNameEmailAndSave(name, email)
             .contactsView()
-            .clickContact(email)
+            .clickContact(name)
             .editContact()
             .editNameEmailAndSave(editedName, editedEmail)
             .goBackToContacts()
             .contactsView()
-            .deleteContact(editedEmail)
-            .verify.contactDoesNotExists(editedEmail)
+            .deleteContact(editedName)
+            .verify.contactDoesNotExists(editedName)
     }
 
     func testDeleteContact() {
@@ -56,8 +55,8 @@ class ContactsTests : BaseTestCase {
             .addContact()
             .setNameEmailAndSave(name, email)
             .contactsView()
-            .deleteContact(email)
-            .verify.contactDoesNotExists(email)
+            .deleteContact(name)
+            .verify.contactDoesNotExists(name)
     }
 
     func testCreateGroup() {
@@ -110,10 +109,10 @@ class ContactsTests : BaseTestCase {
 
     func testContactDetailSendMessage() {
         let subject = testData.messageSubject
-        let contactEmail = testData.internalEmailTrustedKeys.email
+        let contactName = testData.internalEmailTrustedKeys.email
         contactsRobot
             .contactsView()
-            .clickContact(contactEmail)
+            .clickContact(contactName)
             .emailContact()
             .sendMessageToContact(subject)
             .goBackToContacts()

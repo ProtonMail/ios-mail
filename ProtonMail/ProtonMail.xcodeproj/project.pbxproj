@@ -1456,6 +1456,7 @@
 		B1E66D0F1C55A9A6B85C39459B04AEB4 /* ShareUnlockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D63E722A24AF52CA417EEC2F60DD5FE /* ShareUnlockViewModel.swift */; };
 		B20678226003B70E67ABD157E01ADA30 /* ContactGroupSubSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533DF06F3F17CCCDC18F209E8859A0C /* ContactGroupSubSelectionViewModel.swift */; };
 		B22959D2565B4C5A4B64B405C3C8586A /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE81D376E0F8F347F32607EFABE1337 /* LoadingView.swift */; };
+		B233509E528F2C9A3A8D1626C904F3B0 /* RecepientAddressesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7946F9DA8FA0E1A661472CBAACC8A2C /* RecepientAddressesTests.swift */; };
 		B2448D5CBC7B34D66386A165CBB2C63E /* MailboxPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C5DF4CC15B93997F4042666C7EAED /* MailboxPasswordViewController.swift */; };
 		B250BBE5318E416226D4D1144303F630 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9158F589E1E0F02DE1CD6F6D51CB8C3 /* Crypto.swift */; };
 		B256B60DF97ACB072D49C2E68375E46B /* LinkOpeningValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4EFAD3914CECAEACD64A81A54B0C40 /* LinkOpeningValidator.swift */; };
@@ -3070,6 +3071,7 @@
 		D70AACBA47699589938F99674AD992CA /* Blocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blocks.swift; sourceTree = "<group>"; };
 		D736053B8C3AFD58DD1A72FF7D49DBCC /* phone_country_code.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = phone_country_code.geojson; sourceTree = "<group>"; };
 		D786690A2F8C5FDB6CE85ED1253D4DF5 /* ProtonMailUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtonMailUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7946F9DA8FA0E1A661472CBAACC8A2C /* RecepientAddressesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecepientAddressesTests.swift; sourceTree = "<group>"; };
 		D7E2026FD8272DE625504A4CB2374E85 /* Pods-Share.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.distribution.xcconfig"; sourceTree = "<group>"; };
 		D8396D4F077F593F8E96ABB96990C418 /* BannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 		D8A51ECEB173169390A074BC71D38A1C /* ContactAddViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactAddViewModelImpl.swift; sourceTree = "<group>"; };
@@ -3824,14 +3826,6 @@
 				E10F0CE0F7B6837D9EE20FBD2E3E83C7 /* SRPClient.swift */,
 			);
 			path = SRP;
-			sourceTree = "<group>";
-		};
-		ABE753E8B4310A33AAFC147E01EA5676 /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				47B7D68E1C492EE1DCA9F4C4DEA4A79F /* SearchTests.swift */,
-			);
-			path = Search;
 			sourceTree = "<group>";
 		};
 		3666ED49D06EFC49683AB77224CDAC53 /* ContactGroup */ = {
@@ -4640,6 +4634,7 @@
 			isa = PBXGroup;
 			children = (
 				3A14F715EA857976BE37946657856CC9 /* ForwardMessageTests.swift */,
+				D7946F9DA8FA0E1A661472CBAACC8A2C /* RecepientAddressesTests.swift */,
 				0ECAB64D2CA1AB2B51678DB3F24A3ADD /* ReplyToMessageTests.swift */,
 				72A3DBC07A3413571BFC98A7E0ECDE06 /* SendNewMessageTests.swift */,
 			);
@@ -4695,6 +4690,14 @@
 				1FE7FDAAD86D92DCBC19CC95E76B0EBC /* SettingsTests.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		ABE753E8B4310A33AAFC147E01EA5676 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				47B7D68E1C492EE1DCA9F4C4DEA4A79F /* SearchTests.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		ABF92807800349CCF2D23F1407BD145B /* Controller */ = {
@@ -8488,6 +8491,7 @@
 				D0928086A7392A23180510E7F5882B92 /* PinRobot.swift in Sources */,
 				AA1D644EF57D828E97DBCB4B6C0DEEBC /* PinTests.swift in Sources */,
 				1E952CC2E4C2B9DA22AECED7CDE3B7C8 /* PrivacyRobot.swift in Sources */,
+				B233509E528F2C9A3A8D1626C904F3B0 /* RecepientAddressesTests.swift in Sources */,
 				E18AEE6C8E70452BA423A2AA3D172BBC /* RecoveryEmailRobot.swift in Sources */,
 				7720FFA0FBF5F55974793EDE8E7F94E2 /* ReplyToMessageTests.swift in Sources */,
 				A63E635CFF6296A59A1DBFCFDF954DC8 /* ReportRobot.swift in Sources */,
