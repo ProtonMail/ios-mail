@@ -20,6 +20,7 @@ class LoginRobot {
     var verify: Verify! = nil
     init() { verify = Verify(parent: self) }
     
+    @discardableResult
     func loginUser(_ user: User) -> InboxRobot {
         return username(user.email)
             .password(user.password)

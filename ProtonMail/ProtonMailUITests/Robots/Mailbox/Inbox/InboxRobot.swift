@@ -41,7 +41,7 @@ class InboxRobot : MailboxRobotInterface {
         init(parent: InboxRobot) { inboxRobot = parent }
         
         @discardableResult
-        func loginSuccessful() -> InboxRobot {
+        func inboxShown() -> InboxRobot {
             Element.wait.forButtonWithIdentifier(composeButtonLabel, file: #file, line: #line)
             return InboxRobot()
         }

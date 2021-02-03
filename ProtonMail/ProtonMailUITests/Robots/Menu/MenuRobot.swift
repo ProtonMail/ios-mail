@@ -13,6 +13,7 @@ private let logoutConfirmButton = NSLocalizedString("Log out", comment: "comment
 private let sentStaticText = "MenuTableViewCell.\(LocalString._menu_sent_title)"
 private let contactsStaticText = "MenuTableViewCell.\(LocalString._menu_contacts_title)"
 private let draftsStaticText = "MenuTableViewCell.\(LocalString._menu_drafts_title)"
+private let inboxStaticText = "MenuTableViewCell.\(LocalString._menu_inbox_title)"
 private let settingsStaticText = "MenuTableViewCell.\(LocalString._menu_settings_title)"
 private let reportBugStaticText = "MenuTableViewCell.Report_Bugs"
 private let spamStaticText = "MenuTableViewCell.\(LocalString._menu_spam_title)"
@@ -48,6 +49,11 @@ class MenuRobot {
     
     func drafts() -> DraftsRobot {
         Element.wait.forCellWithIdentifier(draftsStaticText, file: #file, line: #line).tap()
+        return DraftsRobot()
+    }
+    
+    func inbox() -> DraftsRobot {
+        Element.wait.forCellWithIdentifier(inboxStaticText, file: #file, line: #line).tap()
         return DraftsRobot()
     }
     

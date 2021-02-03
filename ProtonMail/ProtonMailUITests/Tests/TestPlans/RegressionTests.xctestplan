@@ -35,7 +35,8 @@
         "SendNewMessageTests\/testSendMessageToExternalContactWithTwoAttachments()",
         "SendNewMessageTests\/testSendMessageToInternalContactWithTwoAttachments()",
         "SendNewMessageTests\/testSendMessageToInternalNotTrustedContactChooseAttachment()",
-        "SendNewMessageTests\/testSendMessageWithAttachmentFromPmMe()"
+        "SendNewMessageTests\/testSendMessageWithAttachmentFromPmMe()",
+        "SettingsTests\/testEnableAndDisablePinForMultipleAccounts()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",
