@@ -128,7 +128,8 @@ class Analytics {
 extension Analytics {
     
     enum Events: String {
-        case keychainError = "Keychain Error"
+        case keychainWipeError = "Keychain Wipe Error"
+        case keychainAccessError = "Keychain Access Error"
         case notificationError = "Notification Error"
         case sendMessageError = "Send Message Error"
         case saveDraftError = "Save Draft Error"
