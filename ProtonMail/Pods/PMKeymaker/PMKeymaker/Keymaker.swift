@@ -196,6 +196,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
     
     // completion says whether protector was activated or not
     public func activate(_ protector: ProtectionStrategy,
+                         logErrorForDeactivate: ((OSStatus) -> Void)? = nil,
                          completion: @escaping (Bool) -> Void)
     {
         let isMainThread = Thread.current.isMainThread
@@ -211,19 +212,23 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
             
             // we want to remove unprotected value from storage if the new Protector is significant
             if !(protector is NoneProtection) {
-                self.deactivate(NoneProtection(keychain: self.keychain))
+                let status = self.deactivate(NoneProtection(keychain: self.keychain))
+                if status != noErr {
+                    //Log error here
+                    logErrorForDeactivate?(status)
+                }
             }
             
             isMainThread ? DispatchQueue.main.async{ completion(true) } : completion(true)
         }
     }
     
-    public func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type) -> Bool {
-        return protectionType.getCypherBits(from: self.keychain) != nil
+    public func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type, logError: ((OSStatus) -> Void)? = nil) -> Bool {
+        return protectionType.getCypherBits(from: self.keychain, logError: logError) != nil
     }
     
-    @discardableResult public func deactivate(_ protector: ProtectionStrategy) -> Bool {
-        protector.removeCyphertextFromKeychain()
+    @discardableResult public func deactivate(_ protector: ProtectionStrategy) -> OSStatus {
+        let status = protector.removeCyphertextFromKeychain()
         
         // need to keep mainKey in keychain in case user switches off all the significant Protectors
         if !self.isProtectorActive(GenericBioProtection<SUBTLE>.self),
@@ -232,7 +237,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
             self.activate(NoneProtection(keychain: self.keychain), completion: { _ in })
         }
         
-        return true
+        return status
     }
     
     private func generateNewMainKeyWithDefaultProtection() -> Key {

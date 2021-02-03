@@ -70,8 +70,8 @@ open class Keychain {
         self.add(data: string.data(using: .utf8)!, forKey: key)
     }
     
-    public func data(forKey key: String) -> Data? {
-        return self.getData(forKey: key)
+    public func data(forKey key: String, logError: ((OSStatus) -> Void)? = nil) -> Data? {
+        return self.getData(forKey: key, logError: logError)
     }
     
     public func string(forKey key: String) -> String? {
@@ -81,13 +81,13 @@ open class Keychain {
         return String(data: data, encoding: .utf8)
     }
 
-    public func remove(forKey key: String) {
-        _ = self.remove(key)
+    public func remove(forKey key: String) -> OSStatus {
+        return self.remove(key)
     }
         
     // Private - internal for unit tests
     
-    internal func getData(forKey key: String) -> Data? {
+    internal func getData(forKey key: String, logError: ((OSStatus) -> Void)? = nil) -> Data? {
         var query: [String: AnyObject] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: self.service as AnyObject,
@@ -110,6 +110,9 @@ open class Keychain {
         }
         
         guard code == noErr, let data = result as? Data else {
+            if code != errSecItemNotFound {
+                logError?(code)
+            }
             return nil
         }
         
@@ -117,7 +120,7 @@ open class Keychain {
     }
     
     @discardableResult
-    internal func remove(_ key: String) -> Bool {
+    internal func remove(_ key: String) -> OSStatus {
         let query: [String: AnyObject] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: self.service as AnyObject,
@@ -126,13 +129,7 @@ open class Keychain {
             kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
         ]
         
-        let code = SecItemDelete(query as CFDictionary)
-        
-        guard code == noErr else {
-            return false
-        }
-        
-        return true
+        return SecItemDelete(query as CFDictionary)
     }
     
     @discardableResult

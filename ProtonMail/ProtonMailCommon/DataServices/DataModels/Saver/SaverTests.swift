@@ -32,7 +32,7 @@ class SaverTests: XCTestCase {
             log = ""
         }
         var cachedData : [String: Any] = [:]
-        func data(forKey key: String) -> Data? {
+        func data(forKey key: String, logError: ((OSStatus) -> Void)? = nil) -> Data? {
             log += "g-key"
             return cachedData[key] as? Data
         }
@@ -52,9 +52,10 @@ class SaverTests: XCTestCase {
             cachedData[key] = data
         }
         
-        func remove(forKey key: String) {
+        func remove(forKey key: String) -> OSStatus {
             log += "r-key"
             cachedData.removeValue(forKey: key)
+            return noErr
         }
     }
     

@@ -288,11 +288,17 @@ extension PushNotificationServiceTests {
     }
     
     class StoreMock: KeyValueStoreProvider {
+        func data(forKey key: String, logError: ((OSStatus) -> Void)? = nil) -> Data? {
+            return nil
+        }
+        
+        func remove(forKey key: String) -> OSStatus {
+            return noErr
+        }
+        
         func int(forKey key: String) -> Int? { return nil }
         func set(_ intValue: Int, forKey key: String) { }
         func set(_ data: Data, forKey key: String) { }
-        func data(forKey key: String) -> Data? { return nil }
-        func remove(forKey key: String) { }
     }
     
     private struct SessionIDMock: SessionIdProvider {
