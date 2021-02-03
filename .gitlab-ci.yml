@@ -54,13 +54,15 @@ ui_tests:
     - /^release\/.*$/
     - merge_requests
   artifacts:
+    when: always
     name: "test-report"
     paths:
-      - ./test_output/report.html
-      - ./test_output/report.junit
+      - ./index.html
+      - ./TestResults/report.junit
+      - ./TestResults.xcresult
     expire_in: 20 days
     reports:
-      junit: ./test_output/report.junit
+      junit: ./TestResults/report.junit
   before_script:
     - *before_script_mac
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
@@ -68,7 +70,7 @@ ui_tests:
     - git submodule update --init --recursive
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-    - fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMailUITests" --testplan "SmokeTests"  --device "iPhone 11" --clean
+    - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=14.2" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
   tags:
     - iOS
     
