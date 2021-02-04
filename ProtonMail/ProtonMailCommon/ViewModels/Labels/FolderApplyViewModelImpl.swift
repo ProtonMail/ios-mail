@@ -110,13 +110,10 @@ final class FolderApplyViewModelImpl : LabelViewModel {
             self.coreDataService.enqueue(context: context) { (context) in
                 for (key, value) in self.labelMessages {
                     if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
-                        let ids = self.messages.map { ($0).messageID }
-                        let api = ApplyLabelToMessages(labelID: key, messages: ids)
-                        api.call(api: self.apiService, nil)
                         for mm in self.messages {
                             let flable = mm.firstValidFolder() ?? Message.Location.inbox.rawValue
                             let id = mm.selfSent(labelID: flable)
-                            self.messageService.move(message: mm, from: id ?? flable, to: key, queue: false)
+                            self.messageService.move(message: mm, from: id ?? flable, to: key)
                         }
                     }
                 }
