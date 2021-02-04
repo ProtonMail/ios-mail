@@ -735,6 +735,10 @@ class ComposeViewModelImpl : ComposeViewModel {
                 body = self.message!.bodyToHtml()
             }
             
+            if self.message?.isPlainText == true {
+                body = body.encodeHtml()
+                body = body.ln2br()
+            }
             let on = LocalString._composer_on
             let at = LocalString._general_at_label
             let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -782,6 +786,12 @@ class ComposeViewModelImpl : ComposeViewModel {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
             }
+            
+            if self.message?.isPlainText == true {
+                body = body.encodeHtml()
+                body = body.ln2br()
+            }
+            
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
             return .init(body: result, remoteContentMode: globalRemoteContentMode)

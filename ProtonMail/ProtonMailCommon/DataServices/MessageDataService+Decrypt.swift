@@ -85,8 +85,14 @@ extension MessageDataService {
                 }
             } else if message.isPgpInline {
                 if message.isPlainText {
-//                    body = body.encodeHtml()
-                    body = body.ln2br()
+                    let head = "<html><head></head><body>"
+                    // The plain text draft from android and web doesn't have
+                    // the head, so if the draft contains head
+                    // It means the draft already encoded
+                    if !body.hasPrefix(head) {
+                        body = body.encodeHtml()
+                        body = body.ln2br()
+                    }
                     return body
                 } else if message.isMultipartMixed {
                     ///TODO:: clean up later
@@ -131,8 +137,12 @@ extension MessageDataService {
                 }
             }
             if message.isPlainText {
-//                body = body.encodeHtml()
-                return body.ln2br()
+                if message.draft {
+                    return body
+                } else {
+                    body = body.encodeHtml()
+                    return body.ln2br()
+                }
             }
             return body
         }

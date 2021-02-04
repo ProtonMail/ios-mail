@@ -291,12 +291,6 @@ extension AppDelegate: UIApplicationDelegate {
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask {
             PMLog.D("Background Task Timed Out")
-            
-            if let user = users.firstUser {
-                user.messageService.pauseQueueAction {
-                }
-            }
-            
             application.endBackgroundTask(taskID)
             taskID = .invalid
         }
@@ -350,6 +344,10 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.currentState = .active
+        let users: UsersManager = sharedServices.get()
+        if let user = users.firstUser {
+            user.messageService.unBlockQueueAction()
+        }
     }
     
     // MARK: Background methods
@@ -367,9 +365,7 @@ extension AppDelegate: UIApplicationDelegate {
         })
         //HACK: Call this after n seconds to prevent app got killed.
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
-            usersManager.firstUser?.messageService.pauseQueueAction(didStop: {
-                completionHandler(.newData)
-            })
+            completionHandler(.newData)
         }
     }
     
