@@ -132,10 +132,20 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
     }
     
     func search(query rawQuery: String?) {
+        let usersManager : UsersManager = sharedServices.get()
+        if let currentUser = usersManager.firstUser {
+            self.emailsForDisplay = self.allEmails
+                .filter({$0.userID == currentUser.userinfo.userId})
+                .sorted(by: {$1.name.localizedCaseInsensitiveCompare($0.name) == .orderedDescending})
+        } else {
+            self.emailsForDisplay = self.allEmails.sorted(by: {$1.name.localizedCaseInsensitiveCompare($0.name) == .orderedDescending})
+        }
+        
         if let query = rawQuery,
             query.count > 0 {
             let lowercaseQuery = query.lowercased()
-            emailsForDisplay = allEmails.filter({
+            
+            emailsForDisplay = emailsForDisplay.filter({
                 if $0.email.lowercased().contains(check: lowercaseQuery) ||
                     $0.name.lowercased().contains(check: lowercaseQuery) {
                     return true
@@ -143,8 +153,6 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
                     return false
                 }
             })
-        } else {
-            emailsForDisplay = allEmails
         }
     }
 }
