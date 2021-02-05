@@ -31,6 +31,11 @@ struct Element {
             XCTAssertTrue(element.exists, "StaticText element \(element.debugDescription) does not exist.", file: file, line: line)
         }
         
+        static func staticTextWithIdentifierDoesNotExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
+            let element = app.staticTexts[identifier].firstMatch
+            XCTAssertFalse(element.exists, "StaticText element \(element.debugDescription) exists.", file: file, line: line)
+        }
+        
         static func cellWithIdentifierExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
             let element = app.cells[identifier].firstMatch
             XCTAssertTrue(element.exists, "Cell element \(element.debugDescription) does not exist but it should.", file: file, line: line)
