@@ -3899,7 +3899,6 @@
 				F2A7D24FA8F6707B1C7D64DCA0DA8589 /* LocalCache */,
 				3BFF63785E21165B8803FF5FE8CBDB13 /* Network */,
 				4768FD238A29BBC4CCDA9E5E4B9DD6A1 /* Queue */,
-				593E4D9895800BB28E049A3464DD5E50 /* Storage */,
 				1D479C3A1D75F915DCBB97B887464DDB /* Utilities */,
 				B6FD76AB266683499B9986D35CAD0B10 /* ViewModels */,
 			);
@@ -4041,13 +4040,6 @@
 				4D4320F0C77F1BEF53B46B2B363DC563 /* OnboardingViewController.swift */,
 			);
 			path = Onboarding;
-			sourceTree = "<group>";
-		};
-		593E4D9895800BB28E049A3464DD5E50 /* Storage */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Storage;
 			sourceTree = "<group>";
 		};
 		5FAF94FB0527C3A0AE08C96B1BA59D3A /* StoryBoard */ = {
