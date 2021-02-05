@@ -8,6 +8,7 @@
 
 private let mailboxPasswordTextField = "MailboxPasswordViewController.passwordTextField"
 private let decryptButton = "MailboxPasswordViewController.decryptButton"
+private let decryptFailedStaticTextIdentifier = LocalString._the_mailbox_password_is_incorrect
 
 class MailboxPasswordRobot {
     
@@ -20,9 +21,34 @@ class MailboxPasswordRobot {
         Element.wait.forSecureTextFieldWithIdentifier(mailboxPasswordTextField, file: #file, line: #line).typeText(mailboxPwd)
         return self
     }
-
+    
     private func decrypt() -> InboxRobot {
         Element.button.tapByIdentifier(decryptButton)
         return InboxRobot()
+    }
+    
+    func decryptMailboxWithInvalidPassword(_ mailboxPwd: String) -> ErrorDialogRobot {
+        let incorrectPwd = "wrong" + mailboxPwd
+        return mailboxPassword(incorrectPwd)
+            .decryptWithWrongPassword()
+    }
+    
+    private func decryptWithWrongPassword() -> ErrorDialogRobot {
+        Element.button.tapByIdentifier(decryptButton)
+        return ErrorDialogRobot()
+    }
+    
+    class ErrorDialogRobot {
+        
+        var verify: Verify! = nil
+        init() { verify = Verify() }
+        
+        class Verify {
+            
+            func verifyDecryptFailedErrorDisplayed() {
+                Element.wait.forStaticTextFieldWithIdentifier(decryptFailedStaticTextIdentifier, file: #file, line: #line)
+            }
+            
+        }
     }
 }
