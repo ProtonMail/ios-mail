@@ -27,25 +27,24 @@ import AwaitKit
 import Crypto
 import PMCommon
 
-
 class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
-    var contact : Contact!
-    var origEmails : [ContactEditEmail] = []
-    var origAddresses : [ContactEditAddress] = []
-    var origTelephons : [ContactEditPhone] = []
-    var origInformations : [ContactEditInformation] = []
-    var origFields : [ContactEditField] = []
-    var origNotes: [ContactEditNote] = []
-    var origUrls: [ContactEditUrl] = []
-    var profilePicture: UIImage? = nil
+    private let contact: Contact
+    private let contactService: ContactDataService
+
+    private var origEmails: [ContactEditEmail] = []
+    private var origAddresses: [ContactEditAddress] = []
+    private var origTelephons: [ContactEditPhone] = []
+    private var origInformations: [ContactEditInformation] = []
+    private var origFields: [ContactEditField] = []
+    private var origNotes: [ContactEditNote] = []
+    private var origUrls: [ContactEditUrl] = []
+    private var profilePicture: UIImage? = nil
     
-    var verifyType2 : Bool = true
-    var verifyType3 : Bool = true
+    private var verifyType2: Bool = true
+    private var verifyType3: Bool = true
     
-    var decryptError : Bool = false
-    
-    var contactService: ContactDataService
+    private var decryptError: Bool = false
     
     //default
     var typeSection: [ContactEditSectionType] = [.email_header,
@@ -57,10 +56,10 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                  .information,
                                                  .custom_field,
                                                  .notes]
-    init(c : Contact, user: UserManager, coreDateService: CoreDataService) {
+    init(c: Contact, user: UserManager, coreDateService: CoreDataService) {
         self.contactService = user.contactService
-        super.init(user: user, coreDataService: coreDateService)
         self.contact = c
+        super.init(user: user, coreDataService: coreDateService)
         //        if paidUser() {
         typeSection = [.email_header,
                        .type2_warning,
@@ -301,6 +300,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                             let types = a.getTypes()
                                             let typeRaw = types.count > 0 ? types.first! : ""
                                             let type = ContactFieldType.get(raw: typeRaw)
+
                                             let pobox = a.getPoBoxes().joined(separator: ",")
                                             let street = a.getStreetAddress()
                                             let extention = a.getExtendedAddress()
