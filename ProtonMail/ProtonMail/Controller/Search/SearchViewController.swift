@@ -454,6 +454,7 @@ extension SearchViewController: UITableViewDelegate {
         
         // open messages in MessaveContainerViewController
         guard case let message = self.searchResult[indexPath.row], message.contains(label: .draft) else {
+            self.updateTapped(status: false)
             self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
             return
         }
