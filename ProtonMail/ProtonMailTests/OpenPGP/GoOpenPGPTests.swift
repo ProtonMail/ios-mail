@@ -27,16 +27,7 @@ import Crypto
 @testable import ProtonMail
 
 class GoOpenPGPTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
+
     func testEccDecrypt() {
         
         let ecdh_msg_bad_2 = """
@@ -134,7 +125,6 @@ EQr2Mx42THr260IFYp5E/rIA
         } catch let error {
             XCTFail("thrown" + "\(error.localizedDescription)")
         }
-        
     }
     
     
@@ -234,8 +224,6 @@ EQr2Mx42THr260IFYp5E/rIA
                                                        passphrase: OpenPGPDefines.passphrase, verifyTime: 0)
             XCTAssertNotNil(verifyOut)
             XCTAssertEqual("test", verifyOut!.message?.getString())
-            //            print(verifyOut!.signatureVerificationError)
-            //            XCTAssertEqual(0, verifyOut!.signatureVerificationError?.status)
             
             var error : NSError? = nil
             let modulus = PMNOpenPgp.createInstance()?.readClearsignedMessage(OpenPGPDefines.modulus)
@@ -249,51 +237,8 @@ EQr2Mx42THr260IFYp5E/rIA
         } catch let error {
             XCTFail("thrown" + "\(error.localizedDescription)")
         }
-        
     }
-//    
-//    func testSign() {
-//        do {
-//            let pgp = CryptoGetGopenPGP()!
-//            let encrypted = try Crypto().encrypt(plainText: "test", publicKey: OpenPGPDefines.publicKey,
-//                                                 privateKey: OpenPGPDefines.feng100_private_key_1,
-//                                                 passphrase: OpenPGPDefines.feng100_passphrase_1)
-//            XCTAssertNotNil(encrypted)
-//            let tempPubKey = OpenPGPDefines.feng100_private_key_1.publicKey
-//            XCTAssertNotNil(tempPubKey)
-//            
-//            let verifyOut = try Crypto().decryptVerify(encrytped: encrypted!,
-//                                                   publicKey: tempPubKey,
-//                                                   privateKey: OpenPGPDefines.privateKey,
-//                                                   passphrase: "123", verifyTime: pgp.getUnixTime())
-////            let verifyOut = PmDecryptMessageVerify(encrypted!, tempPubKey!, OpenPGPDefines.privateKey, "123", &error)
-//            XCTAssertNotNil(verifyOut)
-//            XCTAssertNotNil(verifyOut!.message)
-//            XCTAssertNotNil(verifyOut!.signatureVerificationError)
-//            XCTAssertEqual("test", verifyOut!.message!.getString())
-//            XCTAssertEqual(0, verifyOut!.signatureVerificationError!.status)
-//            
-//            
-////            let verifyOut1 = PmDecryptMessageVerify(encrypted!, "", OpenPGPDefines.privateKey, "123", &error)
-////            XCTAssertNil(error)
-////            XCTAssertNotNil(verifyOut1)
-////            XCTAssertEqual("test", verifyOut1?.plaintext()!)
-////            XCTAssertEqual(false, verifyOut1?.verify())
-////            error = nil
-////
-////            let verifyOut2 = PmDecryptMessageVerify(encrypted!, OpenPGPDefines.publicKey, OpenPGPDefines.privateKey, "123", &error)
-////            XCTAssertNil(error)
-////            XCTAssertNotNil(verifyOut2)
-////            XCTAssertEqual("test", verifyOut1?.plaintext()!)
-////            XCTAssertEqual(false, verifyOut1?.verify())
-////            error = nil
-//        } catch let error {
-//            XCTFail("thrown" + "\(error.localizedDescription)")
-//        }
-//        
-//        
-//    }
-//    
+
     func testPrivatekey2Publickey () {
         do {
             let pubkey = OpenPGPDefines.feng100_private_key_1.publicKey
@@ -313,16 +258,4 @@ EQr2Mx42THr260IFYp5E/rIA
         }
     }
 
-//    func testTimeCache () {
-//        let openPgp = CryptoGetGopenPGP()!
-//        let time = Date().timeIntervalSince1970
-//        let time1 = openPgp.getUnixTime()
-//        XCTAssertEqual(time1 , Int64(time))
-//        let openPgp1 = CryptoGetGopenPGP()!
-//        openPgp1.updateTime(100)
-//        let openPgp2 = CryptoGetGopenPGP()!
-//        let time2 = openPgp2.getUnixTime()
-//        XCTAssertEqual(100 , time2)
-//    }
-    
 }

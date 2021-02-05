@@ -27,16 +27,6 @@ import XCTest
 
 class StringConversionTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
     func testConvertURL() {
         let raw = "https://www.quora.com/qemail/track_click?al_imp=eyJ0eXBlIjogMzMsICJoYXNoIjogIjE1MjI1MzI4OTM5MDU4MjA4MDB8NHwxfDU2NTgwOTc2In0%3D&al_pri=ItemContentClickthrough&aoid=MSFwwm5jZyH&aoty=1&aty=4&click_pos=4&ct=1507640404515657&et=2&id=1RLMyqrDISFqYDPGrr4tig%3D%3D&request_id=1522532893905820800&source=1&src=1&st=1507640404515657&stories=1_oQ0lBwKygi%7C1_4ODPXU3BCDP%7C1_9UUAynodhIy%7C1_MSFwwm5jZyH%7C1_ybVBfQHtWa%7C1_boWwxcdMIPx%7C1_z5RIDmcFY3i%7C1_4qsZIBCeQAA%7C1_Yy9rtKCvwf6%7C1_IHalzIudoDm&ty=1&ty_data=MSFwwm5jZyH&uid=8Vt33HsJOFH&v=0&ref=inbox"
         let data = raw.data(using: .ascii)!

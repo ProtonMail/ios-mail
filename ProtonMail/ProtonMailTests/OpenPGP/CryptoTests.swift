@@ -132,15 +132,6 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
 
 """
     let testEncodedSessionKey = "ExXmnSiQ2QCey20YLH6qlLhkY3xnIBC1AwlIXwK/HvY="
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
     
     func testAttachmentGetKey() {
         let keyPacket = "wcBMA0fcZ7XLgmf2AQgAiRsOlnm1kSB4/lr7tYe6pBsRGn10GqwUhrwU5PMKOHdCgnO12jO3y3CzP0Yl/jGhAYja9wLDqH8X0sk3tY32u4Sb1Qe5IuzggAiCa4dwOJj5gEFMTHMzjIMPHR7A70XqUxMhmILye8V4KRm/j4c1sxbzA1rM3lYBumQuB5l/ck0Kgt4ZqxHVXHK5Q1l65FHhSXRj8qnunasHa30TYNzP8nmBA8BinnJxpiQ7FGc2umnUhgkFtjm5ixu9vyjr9ukwDTbwAXXfmY+o7tK7kqIXJcmTL6k2UeC6Mz1AagQtRCRtU+bv/3zGojq/trZo9lom3naIeQYa36Ketmcpj2Qwjg=="
@@ -344,22 +335,6 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
         } catch {
             XCTFail("Should not throw error")
         }
-    }
-
-    func testExample() {
-        XCTAssert(true, "Pass")
-    }
-
-//    func testPerformanceExample() {
-//        // This is an example of a performance test case.
-//        self.measure() {
-//            // Put the code you want to measure the time of here.
-//        }
-//    }
-    
-    func testAuth() {
-
-
     }
 
 }

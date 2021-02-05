@@ -22,19 +22,14 @@
 
 
 import XCTest
-
 import OHHTTPStubs
 import AFNetworking
 
 class NetworkTests: XCTestCase {
 
     override func setUp() {
-        
         HTTPStubs.setEnabled(true)
-        
-        HTTPStubs.onStubActivation() { request, descriptor, response in
-            // ...
-        }
+        HTTPStubs.onStubActivation() { _, _, _ in }
     }
 
     override func tearDown() {
@@ -42,7 +37,7 @@ class NetworkTests: XCTestCase {
     }
 
     func testExample() {
-        /*let sub = */stub(condition: isHost("www.example.com") && isPath("/1")) { request in
+        stub(condition: isHost("www.example.com") && isPath("/1")) { request in
             let body = "{ \"data\": 1 }".data(using: String.Encoding.utf8)!
             let headers = [ "Content-Type" : "application/json"]
             return HTTPStubsResponse(data: body, statusCode: 200, headers: headers)
@@ -53,7 +48,6 @@ class NetworkTests: XCTestCase {
         let manager = AFHTTPSessionManager()
         manager.get(url.absoluteString, parameters: nil, headers: nil, progress: nil, success: { (task, response) -> Void in
             XCTAssertEqual(response as? NSDictionary, [ "data": 1 ])
-            //OHHTTPStubs.removeStub(sub)
             expectation1.fulfill()
         }) { (task, error) -> Void in
             XCTFail("This shouldn't return an error")
@@ -68,13 +62,6 @@ class NetworkTests: XCTestCase {
         
         self.waitForExpectations(timeout: 1) { (expectationError) -> Void in
             XCTAssertNil(expectationError)
-        }
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
         }
     }
 
