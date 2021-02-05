@@ -51,7 +51,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var origvCard2 : PMNIVCard?
     var origvCard3 : PMNIVCard?
     
-    init(c : Contact?, user: UserManager, coreDataService: CoreDataService) {
+    init(c: Contact?, user: UserManager, coreDataService: CoreDataService) {
         super.init(user: user, coreDataService: coreDataService)
         self.contact = c
         self.prepareContactData()
