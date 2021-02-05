@@ -1231,7 +1231,7 @@
 		97FEA651880A7FAB26C1A6790BB3A75F /* General2FAViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A119F33FDD97C0A2B5F13B026D8E7135 /* General2FAViewModelImpl.swift */; };
 		980FEC4701AF821A1FB25C6CCFCFC417 /* WebContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8668BBC5EBD231D99F6FCA87C19655E0 /* WebContents.swift */; };
 		98140CA52DADACF09A66644095F94E59 /* DataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7172825915E9D32EB8B24F78F70667 /* DataService+Error.swift */; };
-		9829B266A80AF788258DC120521C2EEE /* StringConversionTests+Marcel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDE99642ECF8100FF4804856C4E4378 /* StringConversionTests+Marcel.swift */; };
+		9829B266A80AF788258DC120521C2EEE /* Data+MimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDE99642ECF8100FF4804856C4E4378 /* Data+MimeTests.swift */; };
 		98525D5A950A089C7A3D297F533EB076 /* ExternalURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EFC10F4C4155F6A047011CE0654648 /* ExternalURL.swift */; };
 		9875F65D73809848593CB0B0D5667CDE /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD961DC114743EC95EAE9E6B7F90274C /* UserAPI.swift */; };
 		988CCA13A99E964B53176E7ED1ECF0B7 /* CoordinatorNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */; };
@@ -3175,7 +3175,7 @@
 		EEDE82B760D18CD3FF2202AD2E74F6CC /* BugReportCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportCache.swift; sourceTree = "<group>"; };
 		EEEF896D062A19500CE5B86F95D20CFE /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EF7A5A2BF0FD6ADA8445147AFC9C0C02 /* SmokeTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SmokeTests.xctestplan; sourceTree = "<group>"; };
-		EFDE99642ECF8100FF4804856C4E4378 /* StringConversionTests+Marcel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringConversionTests+Marcel.swift"; sourceTree = "<group>"; };
+		EFDE99642ECF8100FF4804856C4E4378 /* Data+MimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+MimeTests.swift"; sourceTree = "<group>"; };
 		EFDFB1E8E98A4D9DDE74D08672B33D7D /* SignatureAlertViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureAlertViewModelImpl.swift; sourceTree = "<group>"; };
 		F0299D313A7A1544B29AD839C2DA2F9E /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAPI.swift; sourceTree = "<group>"; };
@@ -3642,17 +3642,6 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		1D80FC6A4DA5BE8BC1D22DAD63EAC31D /* MimeParser */ = {
-			isa = PBXGroup;
-			children = (
-				EFDE99642ECF8100FF4804856C4E4378 /* StringConversionTests+Marcel.swift */,
-				C22586B9539C2397FDCCEE1DD459918B /* Test EMLs.bundle */,
-				A13A32AF7BD96A9F3A2A25AA87F4C40C /* Test Failed Htmls.bundle */,
-				3D862595AAE0D77A38550B7D182DA51F /* Test Second Encoding.bundle */,
-			);
-			path = MimeParser;
-			sourceTree = "<group>";
-		};
 		1E4E9DBD44FC6E90427BA7C6D62FC7F5 /* IAP */ = {
 			isa = PBXGroup;
 			children = (
@@ -3935,6 +3924,65 @@
 				106ACB7A2B59C01D914676933A23FEFC /* QueueManager.swift */,
 			);
 			path = Queue;
+			sourceTree = "<group>";
+		};
+		47E4BCBD25CD653700AC3C4D /* ProtonMail */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ProtonMail;
+			sourceTree = "<group>";
+		};
+		47E4BCBE25CD654200AC3C4D /* ProtonMailCommon */ = {
+			isa = PBXGroup;
+			children = (
+				47E4BCED25CD664A00AC3C4D /* DataServices */,
+				47E4BCBF25CD656A00AC3C4D /* Utilities */,
+			);
+			path = ProtonMailCommon;
+			sourceTree = "<group>";
+		};
+		47E4BCBF25CD656A00AC3C4D /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				47E4BCC025CD657100AC3C4D /* MimeParser */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		47E4BCC025CD657100AC3C4D /* MimeParser */ = {
+			isa = PBXGroup;
+			children = (
+				EFDE99642ECF8100FF4804856C4E4378 /* Data+MimeTests.swift */,
+				C22586B9539C2397FDCCEE1DD459918B /* Test EMLs.bundle */,
+				A13A32AF7BD96A9F3A2A25AA87F4C40C /* Test Failed Htmls.bundle */,
+				3D862595AAE0D77A38550B7D182DA51F /* Test Second Encoding.bundle */,
+			);
+			path = MimeParser;
+			sourceTree = "<group>";
+		};
+		47E4BCEB25CD65FD00AC3C4D /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F0E85330949877FF9689176BEB6E9DF2 /* OpenPGP */,
+			);
+			path = "Development Pods";
+			sourceTree = "<group>";
+		};
+		47E4BCED25CD664A00AC3C4D /* DataServices */ = {
+			isa = PBXGroup;
+			children = (
+				47E4BCEE25CD665100AC3C4D /* DataModels */,
+			);
+			path = DataServices;
+			sourceTree = "<group>";
+		};
+		47E4BCEE25CD665100AC3C4D /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				010626773F86444E682C621F12E317AE /* CalendarIntervalRuleTests.swift */,
+			);
+			path = DataModels;
 			sourceTree = "<group>";
 		};
 		48195C9A0621329E228559EB634CEF1C /* IAP */ = {
@@ -5187,10 +5235,10 @@
 		EF2811F183DBF5359A54D63483C8C456 /* ProtonMailTests */ = {
 			isa = PBXGroup;
 			children = (
-				1D80FC6A4DA5BE8BC1D22DAD63EAC31D /* MimeParser */,
-				F0E85330949877FF9689176BEB6E9DF2 /* OpenPGP */,
+				47E4BCEB25CD65FD00AC3C4D /* Development Pods */,
+				47E4BCBD25CD653700AC3C4D /* ProtonMail */,
+				47E4BCBE25CD654200AC3C4D /* ProtonMailCommon */,
 				5622290E33BA0E2F4A08E0D499FC8DD5 /* Supporting Files */,
-				010626773F86444E682C621F12E317AE /* CalendarIntervalRuleTests.swift */,
 				8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */,
 				1460CFFE42A162E682E668A9B983E083 /* ResourceLoader.swift */,
 			);
@@ -5200,9 +5248,9 @@
 		F0E85330949877FF9689176BEB6E9DF2 /* OpenPGP */ = {
 			isa = PBXGroup;
 			children = (
+				469C635002089579368D74AA1EC9F5D6 /* CryptoTests.swift */,
 				DF0F0B76838418BD89BFE862C70EF004 /* CryptoTests+Message.swift */,
 				C2E4737A8650F3E078AAFB927E722E7F /* CryptoTests+Signature.swift */,
-				469C635002089579368D74AA1EC9F5D6 /* CryptoTests.swift */,
 				2132F4F08985F51D14B566D6D3B78AF1 /* GoOpenPGPTests.swift */,
 				F0620A1AA83DC794A9CF69ABF040BBD3 /* OpenPGP+ExtensionTests.swift */,
 				450D2530B2F47C55FBEABC6AC343D094 /* OpenPGPDefines.swift */,
@@ -6588,7 +6636,7 @@
 				97609BE67F6BF74B98CDF7D0D3110D20 /* ServicePlanDataServiceTests.swift in Sources */,
 				696512BEA9B4EC0443C7F148156B3EC3 /* ServicePlanDetailsTests.swift in Sources */,
 				06B46E22C06D6B5445D59C61F2B1A711 /* String+ExtensionTests.swift in Sources */,
-				9829B266A80AF788258DC120521C2EEE /* StringConversionTests+Marcel.swift in Sources */,
+				9829B266A80AF788258DC120521C2EEE /* Data+MimeTests.swift in Sources */,
 				8D736AA84AE2B9974174DC758D856BC6 /* URL_ExtensionTests.swift in Sources */,
 				E81D504EC61F804FB54B1B8E9D534BE1 /* UserAgentTest.swift in Sources */,
 				1EB7641F18E90182D192C09DF06E0355 /* UserDefaultsSaverTests.swift in Sources */,
