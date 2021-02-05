@@ -45,8 +45,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     private var verifyType3: Bool = true
     
     private var decryptError: Bool = false
-    
-    //default
+
     private var typeSection: [ContactEditSectionType] = [
         .email_header,
         .type2_warning,
@@ -63,9 +62,9 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         .share
     ]
 
-    init(c: Contact, user: UserManager, coreDateService: CoreDataService) {
+    init(contact: Contact, user: UserManager, coreDateService: CoreDataService) {
         self.contactService = user.contactService
-        self.contact = c
+        self.contact = contact
         super.init(user: user, coreDataService: coreDateService)
     }
     
