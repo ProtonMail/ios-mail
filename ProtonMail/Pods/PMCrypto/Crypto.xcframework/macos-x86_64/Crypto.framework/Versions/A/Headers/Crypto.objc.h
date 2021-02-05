@@ -754,6 +754,11 @@ FOUNDATION_EXPORT CryptoSessionKey* _Nullable CryptoNewSessionKeyFromToken(NSDat
 FOUNDATION_EXPORT NSData* _Nullable CryptoRandomToken(long size, NSError* _Nullable* _Nullable error);
 
 /**
+ * SetKeyGenerationOffset updates the offset when generating keys.
+ */
+FOUNDATION_EXPORT void CryptoSetKeyGenerationOffset(int64_t offset);
+
+/**
  * UpdateTime updates cached time.
  */
 FOUNDATION_EXPORT void CryptoUpdateTime(int64_t newTime);

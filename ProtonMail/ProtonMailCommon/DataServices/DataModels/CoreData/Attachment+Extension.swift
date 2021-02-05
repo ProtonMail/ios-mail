@@ -93,6 +93,7 @@ extension Attachment {
             }
             fileHandle.closeFile()
             
+            defer { HelperFreeOSMemory() }
             return try encryptor.finish()
         } catch {
             return nil
