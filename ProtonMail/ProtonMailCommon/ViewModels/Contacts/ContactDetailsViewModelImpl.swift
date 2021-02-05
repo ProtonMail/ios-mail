@@ -60,7 +60,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         self.contactService = user.contactService
         self.contact = c
         super.init(user: user, coreDataService: coreDateService)
-        //        if paidUser() {
         typeSection = [.email_header,
                        .type2_warning,
                        .emails,
@@ -74,14 +73,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                        .custom_field,
                        .notes,
                        .share]
-        //        } else {
-        //            typeSection = [.email_header,
-        //                           .type2_warning,
-        //                           .emails,
-        //                           .encrypted_header,
-        //                           .upgrade,
-        //                           .share]
-        //        }
     }
     
     override func sections() -> [ContactEditSectionType] {
