@@ -47,32 +47,26 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     private var decryptError: Bool = false
     
     //default
-    var typeSection: [ContactEditSectionType] = [.email_header,
-                                                 .emails,
-                                                 .encrypted_header,
-                                                 .cellphone,
-                                                 .home_address,
-                                                 .url,
-                                                 .information,
-                                                 .custom_field,
-                                                 .notes]
+    private var typeSection: [ContactEditSectionType] = [
+        .email_header,
+        .type2_warning,
+        .emails,
+        .encrypted_header,
+        .type3_error,
+        .type3_warning,
+        .cellphone,
+        .home_address,
+        .url,
+        .information,
+        .custom_field,
+        .notes,
+        .share
+    ]
+
     init(c: Contact, user: UserManager, coreDateService: CoreDataService) {
         self.contactService = user.contactService
         self.contact = c
         super.init(user: user, coreDataService: coreDateService)
-        typeSection = [.email_header,
-                       .type2_warning,
-                       .emails,
-                       .encrypted_header,
-                       .type3_error,
-                       .type3_warning,
-                       .cellphone,
-                       .home_address,
-                       .url,
-                       .information,
-                       .custom_field,
-                       .notes,
-                       .share]
     }
     
     override func sections() -> [ContactEditSectionType] {
