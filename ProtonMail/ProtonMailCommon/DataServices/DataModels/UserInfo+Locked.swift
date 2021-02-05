@@ -23,6 +23,7 @@
 
 import Foundation
 import PMKeymaker
+import PMCommon
 
 extension Locked where T == UserInfo {
     internal init(clearValue: T, with key: PMKeymaker.Key) throws {
@@ -50,6 +51,7 @@ extension Locked where T == UserInfo {
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ShareDev.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PushService.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UserInfo")
+        NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PMCommon.UserInfo")
         
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ProtonMail.Address")
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.Address")
@@ -57,6 +59,8 @@ extension Locked where T == UserInfo {
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ShareDev.Address")
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PushService.Address")
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PushServiceDev.Address")
+        NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PMAuthentication.Address")
+        NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PMCommon.Address")
         
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonMail.Key")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.Key")
@@ -64,6 +68,8 @@ extension Locked where T == UserInfo {
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ShareDev.Key")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PushService.Key")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PushServiceDev.Key")
+        NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PMAuthentication.Key")
+        NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PMCommon.Key")
 
         guard let value = NSKeyedUnarchiver.unarchiveObject(with: data) as? T else {
             throw LockedErrors.keyDoesNotMatch
@@ -99,6 +105,7 @@ extension Locked where T == [UserInfo] {
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ShareDev.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PushService.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UserInfo")
+        NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PMCommon.UserInfo")
         
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ProtonMail.Address")
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.Address")
@@ -106,6 +113,9 @@ extension Locked where T == [UserInfo] {
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ShareDev.Address")
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PushService.Address")
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PushServiceDev.Address")
+        NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PMAuthentication.Address")
+        NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PMCommon.Address")
+        
         
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonMail.Key")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.Key")
@@ -113,6 +123,9 @@ extension Locked where T == [UserInfo] {
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ShareDev.Key")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PushService.Key")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PushServiceDev.Key")
+        NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PMAuthentication.Key")
+        NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PMCommon.Key")
+        
         
         //        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ProtonMail.UpdateTime")
         //        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.UpdateTime")

@@ -24,6 +24,7 @@
 import UIKit
 import CoreData
 import MCSwipeTableViewCell
+import PMCommon
 
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
     typealias viewModelType = MailboxViewModel

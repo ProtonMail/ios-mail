@@ -10,11 +10,10 @@ use_frameworks!
 
 def pm_shared_pods
     pod 'PMCrypto', :git => 'git@gitlab.protontech.ch:apple/shared/pmcrypto.git', :tag => '2.1.1'
-    pod 'PMAuthentication', :git => 'https://gitlab.protontech.ch/apple/shared/pmauthentication.git', :tag => '1.0.0'
-    pod 'PMKeymaker', :git => 'https://gitlab.protontech.ch/apple/shared/pmkeymaker.git', :tag => '1.1.0'
-    
     # this is needed by PMKeymaker, otherwise will fetch outdated version from cocoapods
     pod 'EllipticCurveKeyPair', :git => 'https://github.com/abjurato/EllipticCurveKeyPair.git', :tag => '1.0.4'
+    pod 'PMAuthentication', :git => 'git@gitlab.protontech.ch:apple/shared/pmauthentication.git', :branch => 'develop', :testspecs => ['Tests']
+    pod 'PMKeymaker', :git => 'git@gitlab.protontech.ch:apple/shared/pmkeymaker.git', :branch => 'develop'
 end
 
 def common_pods
@@ -47,9 +46,10 @@ def common_pods
     pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '5.2.2'
     pod 'MBProgressHUD' , '1.1.0'
     
-    pod 'TrustKit', '1.6.2'
+    pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'  ##was'1.6.2'
     
-    pod 'PMNetworking', :path => '../Networking'
+    ##Core Networking
+    pod 'PMCommon', :path => '../Networking', :testspecs => ['Tests']
 
     pm_shared_pods
 end
@@ -61,7 +61,7 @@ def pm_pods
     
     pod 'SWRevealViewController', '2.3.0'
     pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
-    pod 'PMChallenge', :git => 'git@gitlab.protontech.ch:apple/shared/pmchallenge.git', :tag => '0.0.1'
+    pod 'PMChallenge', :git => 'git@gitlab.protontech.ch:apple/shared/pmchallenge.git', :branch => 'master' ##was 0.0.1
 end
 
 # for extensions Share

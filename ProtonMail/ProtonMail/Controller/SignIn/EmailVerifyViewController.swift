@@ -125,7 +125,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     }
     
     
-    func verificationCodeChanged(_ viewModel: SignupViewModel, code: String!) {
+    func verificationCodeChanged(_ viewModel: SignupViewModel, code: String) {
         verifyCodeTextField.text = code
     }
     
@@ -173,17 +173,17 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         let emailaddress = emailTextField.text
         MBProgressHUD.showAdded(to: view, animated: true)
         viewModel.setCodeEmail(emailaddress!)
-        self.viewModel.sendVerifyCode (.email) { (isOK, error) -> Void in
+        self.viewModel.sendVerifyCode (.email) { (error) -> Void in
             MBProgressHUD.hide(for: self.view, animated: true)
-            if !isOK {
+            if let err = error {
                 var alert :  UIAlertController!
                 var title = LocalString._verification_code_request_failed
                 var message = ""
-                if error?.code == 12201 { //USER_CODE_EMAIL_INVALID = 12201
+                if err.code == 12201 { //USER_CODE_EMAIL_INVALID = 12201
                     title = LocalString._email_address_invalid
                     message = LocalString._please_input_a_valid_email_address
                 } else {
-                    message = error!.localizedDescription
+                    message = err.localizedDescription
                 }
                 alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addOKAction()
@@ -195,7 +195,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             }
-            PMLog.D("\(isOK),   \(String(describing: error))")
+            PMLog.D("\(String(describing: error))")
         }
     }
     

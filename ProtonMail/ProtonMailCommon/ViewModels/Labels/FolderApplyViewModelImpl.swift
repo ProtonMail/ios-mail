@@ -23,6 +23,7 @@
 
 import Foundation
 import CoreData
+import PMCommon
 import PromiseKit
 
 final class FolderApplyViewModelImpl : LabelViewModel {
@@ -127,6 +128,7 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override func cancel() {
+        //TODO:: cleanup
 //        let context = sharedCoreDataService.newMainManagedObjectContext()
 //        for (_, value) in self.labelMessages {
 //            

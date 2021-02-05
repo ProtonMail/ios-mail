@@ -25,6 +25,7 @@ import UIKit
 import PromiseKit
 import AwaitKit
 import MBProgressHUD
+import PMCommon
 
 class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew, AccessibleView, HtmlEditorBehaviourDelegate {
     typealias viewModelType = ComposeViewModel

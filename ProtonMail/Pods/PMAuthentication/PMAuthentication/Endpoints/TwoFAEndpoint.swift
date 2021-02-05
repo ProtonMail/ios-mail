@@ -1,46 +1,67 @@
 //
-//  AuthInfoResponse.swift
-//  PMAuthentication
+//  TwoFAEndpoint.swift
 //
-//  Created by Anatoly Rosencrantz on 20/02/2020.
+//  PMAuthentication - Created on 20/02/2020.
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
+//
+//  Copyright (c) 2019 Proton Technologies AG
+//
+//  This file is part of ProtonMail.
+//
+//  ProtonMail is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  ProtonMail is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import PMCommon
 
 extension AuthService {
-    struct TwoFAEndpoint: Endpoint {
-        struct Response: Codable {
-            var code: Int
-            var scope: CredentialConvertible.Scope
+    
+    struct TwoFAResponse: Codable {
+        var code: Int
+        var scope: CredentialConvertible.Scope
+    }
+    
+    struct TwoFAEndpoint: Request {
+        var path: String {
+            return "/auth/2fa"
         }
         
-        var request: URLRequest
+        var method: HTTPMethod {
+            return .post
+        }
         
-        init(code: String,
-             token: String,
-             UID: String)
-        {
-            // url
-            let authInfoUrl = AuthService.url(of: "/auth/2fa")
-            
-            // request
-            var request = URLRequest(url: authInfoUrl)
-            request.httpMethod = "POST"
-            
-            // headers
-            var headers = AuthService.baseHeaders
-            headers["Authorization"] = "Bearer " + token
-            headers["x-pm-uid"] = UID
-            headers.forEach { request.setValue($1, forHTTPHeaderField: $0) }
-            
-            // body
-            let body = [
-            "TwoFactorCode": code
+        var parameters: [String: Any]? {
+            return  [
+                "TwoFactorCode": code
             ]
-            request.httpBody = try? JSONEncoder().encode(body)
-            
-            self.request = request
+        }
+        var isAuth: Bool {
+            return true
+        }
+        
+        let code: String
+        init(code: String)  {
+            self.code = code
+        }
+        
+        var auth: AuthCredential?
+        var authCredential: AuthCredential? {
+            return self.auth
+        }
+        
+        var autoRetry: Bool {
+            return false
         }
     }
 }

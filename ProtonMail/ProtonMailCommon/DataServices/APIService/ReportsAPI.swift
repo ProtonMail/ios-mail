@@ -22,9 +22,26 @@
 
 
 import Foundation
+import PMCommon
 
-// MARK : Get messages part
-final class ReportPhishing : ApiRequest<ApiResponse> {
+
+
+/**
+ [ProtonMail Reports API]:
+ https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md "Report bugs"
+ 
+ Reports API
+ - Doc: [ProtonMail Reports API]
+ */
+struct ReportsAPI {
+    static let path :String = "/reports"
+}
+
+
+
+// MARK : Get messages part -- Response
+/// Report a bug [POST]
+final class ReportPhishing : Request {
     let msgID : String
     let mimeType : String
     let body : String
@@ -35,7 +52,7 @@ final class ReportPhishing : ApiRequest<ApiResponse> {
         self.body = body
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         let out : [String : Any] = [
             "MessageID": self.msgID,
             "MIMEType" : self.mimeType,
@@ -44,22 +61,20 @@ final class ReportPhishing : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .post
     }
     
-    override func path() -> String {
-        return ReportsAPI.path + "/phishing" + Constants.App.DEBUG_OPTION
-    }
     
-    override func apiVersion() -> Int {
-        return ReportsAPI.v_reports_phishing
+    var path: String {
+        return ReportsAPI.path + "/phishing"
     }
 }
 
 
-// MARK : Report a bug
-final class BugReportRequest : ApiRequest<ApiResponse> {
+// MARK : Report a bug  -- Response
+/// Report a bug [POST]
+final class BugReportRequest : Request {
     let os : String
     let osVersion : String
     let clientVersion : String
@@ -79,7 +94,7 @@ final class BugReportRequest : ApiRequest<ApiResponse> {
         self.email = email
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         let out : [String : Any] = [
             "OS": self.os,
             "OSVersion" : self.osVersion,
@@ -93,16 +108,12 @@ final class BugReportRequest : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .post
     }
     
-    override func path() -> String {
-        return ReportsAPI.path + "/bug" + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return ReportsAPI.v_reports_bug
+    var path: String {
+        return ReportsAPI.path + "/bug"
     }
 }
 

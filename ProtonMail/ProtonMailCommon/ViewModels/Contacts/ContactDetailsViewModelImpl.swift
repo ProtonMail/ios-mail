@@ -25,6 +25,7 @@ import Foundation
 import PromiseKit
 import AwaitKit
 import Crypto
+import PMCommon
 
 
 class ContactDetailsViewModelImpl : ContactDetailsViewModel {

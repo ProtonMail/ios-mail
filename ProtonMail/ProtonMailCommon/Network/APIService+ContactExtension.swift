@@ -22,35 +22,36 @@
 
 
 import Foundation
+import PMCommon
 
 /// Contact extension
 extension APIService {
     
-    fileprivate struct ContactPath {
-        static let base = "/contacts"
-    }
-    
-    func contactDelete(contactID: String, completion: CompletionBlock?) {
-        let path = ContactPath.base + "/delete"
-        let parameters = ["IDs": [ contactID ] ]
-        request(method: .put, path: path, parameters: parameters, headers: [HTTPHeader.apiVersion: 3], completion: completion)
-    }
-    
-    func contactList(_ completion: CompletionBlock?) {
-        let path = ContactPath.base
-        request(method: .get, path: path, parameters: nil, headers: [HTTPHeader.apiVersion: 3], completion: completion)
-    }
-    
-     func contactUpdate(contactID: String, name: String, email: String, completion: CompletionBlock?) {
-         let path = ContactPath.base + "/\(contactID)"
-         let parameters = parametersForName(name, email: email)
-         request(method: .put, path: path, parameters: parameters, headers: [HTTPHeader.apiVersion: 3], completion: completion)
-    }
-    
-    // MARK: - Private methods
-    fileprivate func parametersForName(_ name: String, email: String) -> NSDictionary {
-        return [
-            "Name" : name,
-            "Email" :email]
-    }
+//    fileprivate struct ContactPath {
+//        static let base = "/contacts"
+//    }
+//
+//    func contactDelete(contactID: String, completion: CompletionBlock?) {
+//        let path = ContactPath.base + "/delete"
+//        let parameters = ["IDs": [ contactID ] ]
+//        request(method: .put, path: path, parameters: parameters, headers: [HTTPHeader.apiVersion: 3], completion: completion)
+//    }
+//
+//    func contactList(_ completion: CompletionBlock?) {
+//        let path = ContactPath.base
+//        request(method: .get, path: path, parameters: nil, headers: [HTTPHeader.apiVersion: 3], completion: completion)
+//    }
+//
+//     func contactUpdate(contactID: String, name: String, email: String, completion: CompletionBlock?) {
+//         let path = ContactPath.base + "/\(contactID)"
+//         let parameters = parametersForName(name, email: email)
+//         request(method: .put, path: path, parameters: parameters, headers: [HTTPHeader.apiVersion: 3], completion: completion)
+//    }
+//
+//    // MARK: - Private methods
+//    fileprivate func parametersForName(_ name: String, email: String) -> NSDictionary {
+//        return [
+//            "Name" : name,
+//            "Email" :email]
+//    }
 }

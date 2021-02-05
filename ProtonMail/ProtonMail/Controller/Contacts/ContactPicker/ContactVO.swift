@@ -22,7 +22,7 @@
 
 
 import Foundation
-
+import PMCommon
 import PromiseKit
 import AwaitKit
 
@@ -311,7 +311,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     func lockCheck(api: APIService, contactService: ContactDataService, progress: () -> Void, complete: LockCheckComplete?) {
         progress()
         async {
-            let getEmail = UserEmailPubKeys(email: self.email, api: api).run()
+            let getEmail: Promise<KeysResponse> = api.run(route: UserEmailPubKeys(email: self.email))
             let getContact = contactService.fetch(byEmails: [self.email], context: nil)
             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                 //internal emails

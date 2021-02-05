@@ -26,6 +26,8 @@ import CoreData
 import PromiseKit
 import AwaitKit
 import Crypto
+import PMCommon
+
 
 //TODO::fixme import header
 extension Attachment {

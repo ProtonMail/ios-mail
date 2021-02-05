@@ -22,17 +22,21 @@
 
 
 import Foundation
+import PMCommon
 
 //TODO::fixme. keep it in message
-class EventDataService {
+class EventDataService : Service {
+
+    let apiService : APIService
     
-    let apiService = APIService.shared
-    
+    init(api: APIService) {
+        self.apiService = api
+    }
     typealias FetchEventComplete = CompletionBlock
     func fetchEvents(completion: FetchEventComplete?) {
-//        let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID)
-//        eventAPI.call(api: self.apiService) { task, _eventsRes, _hasEventsError in
-//            
+//        let api = EventCheckRequest(eventID: lastUpdatedStore.lastEventID)
+//        self.apiService.exec(route: api) { (task, response: EventLatestIDResponse) in
+//            //TODO:: TBA
 //        }
     }    
 }

@@ -338,13 +338,7 @@ public enum EllipticCurveKeyPair {
         public func decrypt(_ encrypted: Data, privateKey: PrivateKey, hash: Hash) throws -> Data {
             Helper.logToConsoleIfExecutingOnMainThread()
             var error : Unmanaged<CFError>?
-            var result: CFData?
-            let semaphore = DispatchSemaphore(value: 0)
-            DispatchQueue.main.async {
-                result = SecKeyCreateDecryptedData(privateKey.underlying, hash.encryptionEciesEcdh, encrypted as CFData, &error)
-                semaphore.signal()
-            }
-            semaphore.wait()
+            let result = SecKeyCreateDecryptedData(privateKey.underlying, hash.encryptionEciesEcdh, encrypted as CFData, &error)
             guard let data = result else {
                 throw Error.fromError(error?.takeRetainedValue(), message: "Could not decrypt.")
             }

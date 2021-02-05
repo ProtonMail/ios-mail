@@ -23,6 +23,7 @@
 
 import Foundation
 import PromiseKit
+import PMCommon
 
 protocol Service: AnyObject {}
 protocol HasLocalStorage {
@@ -45,7 +46,7 @@ let sharedServices: ServiceFactory = {
     
     // from old ServiceFactory.default
     helper.add(AddressBookService.self, for: AddressBookService())
-    helper.add(BugDataService.self, for: BugDataService(api: APIService.unauthorized))
+    helper.add(BugDataService.self, for: BugDataService(api: PMAPIService.unauthorized))
     #endif
     
     return helper

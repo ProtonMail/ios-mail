@@ -382,7 +382,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 
-## PMNetworking
+## PMCommon
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
@@ -1086,7 +1086,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ## SDWebImage
 
-Copyright (c) 2009-2018 Olivier Poitrey rs@dailymotion.com
+Copyright (c) 2009-2020 Olivier Poitrey rs@dailymotion.com
  
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

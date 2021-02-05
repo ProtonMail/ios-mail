@@ -24,6 +24,7 @@
 import Foundation
 import PromiseKit
 import AwaitKit
+import PMCommon
 
 class ComposeViewModelImpl : ComposeViewModel {
     
@@ -91,13 +92,6 @@ class ComposeViewModelImpl : ComposeViewModel {
    override func getUser() -> UserManager {
          return user
     }
-    
-    //TODO:: fix me
-//    convenience init?(msgId: String, action: ComposeMessageAction) {
-//        let msgService = MessageDataService(api: APIService.shared, userID: "") //TODO:: fix me
-//        guard let message = msgService.fetchMessages(withIDs: [msgId]).first, message.contains(label: .draft) else { return nil }
-//        self.init(msg: message, action: action, msgService: msgService, user: UserManager())
-//    }
     
     var attachments : [Attachment] = []
     /// inital composer viewmodel
@@ -286,7 +280,8 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(nil, -1)
             return
         }
-        let getEmail = UserEmailPubKeys(email: email, api: self.user.apiService).run()
+
+        let getEmail: Promise<KeysResponse> = self.user.apiService.run(route: UserEmailPubKeys(email: email))
         let contactService = self.user.contactService
         let getContact = contactService.fetch(byEmails: [email], context: context)
         when(fulfilled: getEmail, getContact).done { keyRes, contacts in
@@ -349,7 +344,9 @@ class ComposeViewModelImpl : ComposeViewModel {
     override func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
         progress()
         let mails = contactGroup.getSelectedEmailData().map{$0.email}
-        let reqs = mails.map {UserEmailPubKeys(email: $0, api: self.user.apiService).run()}
+        let reqs = mails.map {
+            self.user.apiService.run(route: UserEmailPubKeys(email: $0))
+        }
         when(fulfilled: reqs).done { (_) in
             complete?(nil, 0)
         }.catch(policy: .allErrors) { (error) in

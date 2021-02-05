@@ -23,8 +23,6 @@ public struct CryptoSubtle: SubtleProtocol {
     public static func DecryptWithoutIntegrity(_ one: Data, _ two: Data, _ three: Data, _ four: inout NSError?) -> Data? {
         return SubtleDecryptWithoutIntegrity(one, two, three, &four)
     }
-    
-     
 }
 
 public typealias LockedErrors = Errors

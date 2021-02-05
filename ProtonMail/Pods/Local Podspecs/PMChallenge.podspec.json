@@ -3,12 +3,13 @@
   "version": "0.0.1",
   "summary": "Collect challenge data during user signup",
   "description": "Collect challenge data during user signup so that the anti-abuse team can analytic.",
-  "homepage": "https://gitlab.protontech.ch/apple/shared/pmchallenge",
+  "homepage": "https://protonmail.com",
   "license": "ProtonMail",
   "authors": "Anson Chen",
   "swift_versions": "5.2",
   "platforms": {
-    "ios": "10.0"
+    "ios": "10.0",
+    "osx": "10.12"
   },
   "source": {
     "git": ".",

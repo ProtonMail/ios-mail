@@ -24,6 +24,7 @@
 import UIKit
 import MBProgressHUD
 import PMKeymaker
+import PMCommon
 
 class SettingsAccountViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
     internal var viewModel : SettingsAccountViewModel!

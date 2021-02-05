@@ -19,5 +19,27 @@
     "ios": "9.0",
     "osx": "10.10"
   },
-  "source_files": "PMNetworking/Classes/**/*"
+  "source_files": "PMNetworking/Sources/**/*",
+  "swift_versions": [
+    "5.0"
+  ],
+  "dependencies": {
+    "AFNetworking": [
+      "~> 4.0"
+    ]
+  },
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "PMNetworking/Tests/**/*",
+      "requires_app_host": true,
+      "dependencies": {
+        "OHHTTPStubs/Swift": [
+
+        ]
+      }
+    }
+  ],
+  "swift_version": "5.0"
 }

@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PMCommon
 
 // contact group sub-selection
 struct DraftEmailData: Hashable

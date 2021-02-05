@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PMCommon
 
 extension APIService {
     
@@ -33,19 +34,21 @@ extension APIService {
                             completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
         
         let filepath = destinationDirectoryURL.appendingPathComponent(attachmentID)
-        
-        // download(byUrl: self.doh.getHostUrl() + pathForAttachmentID(attachmentID),
-        download(byUrl: self.doh.getHostUrl() + pathForAttachmentID(attachmentID),
-                 destinationDirectoryURL: filepath,
-                 headers: [HTTPHeader.apiVersion: 3],
-                 customAuthCredential: customAuthCredential,
-                 downloadTask: downloadTask,
-                 completion: completion)
+        self.download(byUrl: self.doh.getHostUrl() + pathForAttachmentID(attachmentID),
+                      destinationDirectoryURL: filepath,
+                      headers: [HTTPHeader.apiVersion: 3],
+                      authenticated: true,
+                      customAuthCredential: customAuthCredential,
+                      downloadTask: downloadTask,
+                      completion: completion)
     }
-    
+
     func attachmentDeleteForAttachmentID(_ attachmentID: String, completion: CompletionBlock?) {
-        //setApiVesion(1, appVersion: 1)
-        request(method: .delete, path: pathForAttachmentID(attachmentID), parameters: nil, headers: [HTTPHeader.apiVersion: 3], completion: completion)
+        self.request(method: .delete, path: pathForAttachmentID(attachmentID),
+                     parameters: nil,
+                     headers: [HTTPHeader.apiVersion: 3],
+                     authenticated: true, autoRetry: true,
+                     customAuthCredential: nil, completion: completion)
     }
     
     // MARK: - Private methods

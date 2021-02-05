@@ -28,6 +28,7 @@ public class GenericStringCryptoTransformer<SUBTLE: SubtleProtocol>: CryptoTrans
         guard let string = value as? String else {
             return nil
         }
+        
         do {
             let locked = try GenericLocked<String, SUBTLE>(clearValue: string, with: self.key)
             let result = locked.encryptedValue as NSData
@@ -44,6 +45,7 @@ public class GenericStringCryptoTransformer<SUBTLE: SubtleProtocol>: CryptoTrans
         guard let data = value as? Data else {
             return nil
         }
+        
         let locked = GenericLocked<String, SUBTLE>(encryptedValue: data)
         do {
             let string = try locked.unlock(with: self.key)

@@ -2,6 +2,8 @@
 //  UIImage+SwiftyGif.swift
 //
 
+#if !os(macOS)
+
 import ImageIO
 import UIKit
 
@@ -207,10 +209,21 @@ public extension UIImage {
     private func calculateFrameDelay(_ delaysArray: [Float], levelOfIntegrity: GifLevelOfIntegrity) {
         let levelOfIntegrity = max(0, min(1, levelOfIntegrity))
         var delays = delaysArray
-        
-        // Factors send to CADisplayLink.frameInterval
-        let displayRefreshFactors = [60, 30, 20, 15, 12, 10, 6, 5, 4, 3, 2, 1]
-        
+
+        var displayRefreshFactors = [Int]()
+
+        if #available(iOS 10.3, *) {
+          // Will be 120 on devices with ProMotion display, 60 otherwise.
+          displayRefreshFactors.append(UIScreen.main.maximumFramesPerSecond)
+        }
+
+        if displayRefreshFactors[0] != 60 {
+          // Append 60 if needed.
+          displayRefreshFactors.append(60)
+        }
+
+        displayRefreshFactors.append(contentsOf: [30, 20, 15, 12, 10, 6, 5, 4, 3, 2, 1])
+
         // maxFramePerSecond,default is 60
         let maxFramePerSecond = displayRefreshFactors[0]
         
@@ -330,3 +343,5 @@ extension String {
         return (self as NSString).pathExtension
     }
 }
+
+#endif

@@ -26,6 +26,7 @@ import AwaitKit
 import PromiseKit
 import PMKeymaker
 import Crypto
+import PMCommon
 
 protocol UsersManagerDelegate: class {
     func migrating()
@@ -120,7 +121,7 @@ class UsersManager : Service, Migrate {
     }
    
     /// Server's config like url port path etc..
-    var serverConfig : APIServerConfig
+    var doh : DoH
     /// the interface for talking to UI
     weak var delegate : UsersManagerDelegate?
     
@@ -142,14 +143,17 @@ class UsersManager : Service, Migrate {
     
     /// signIn manager application level
     
-    init(server: APIServerConfig, delegate : UsersManagerDelegate?) {
-        self.serverConfig = server
+    init(doh: DoH, delegate : UsersManagerDelegate?) {
+        self.doh = doh
         self.delegate = delegate
         
         /// for migrate
         self.latestVersion = Version.version
         
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
+        
+        
+        setupValueTransforms()
     }
     
     /**
@@ -160,10 +164,9 @@ class UsersManager : Service, Migrate {
      **/
     func add(auth: AuthCredential, user: UserInfo) {
         let session = auth.sessionID
-        let userID = user.userId
-//        auth.userID = userID
-        let apiConfig = serverConfig
-        let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
+        //let userID = user.userId
+        //let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
+        let apiService = PMAPIService(doh: self.doh, sessionUID: session)
         let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
         newUser.delegate = self
         self.removeDisconnectedUser(.init(defaultDisplayName: newUser.defaultDisplayName,
@@ -357,8 +360,8 @@ class UsersManager : Service, Migrate {
         if let oldAuth = oldAuthFetch(),  let user = oldUserInfo() {
             let session = oldAuth.sessionID
             let userID = user.userId
-            let apiConfig = serverConfig
-            let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
+            
+            let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
@@ -414,8 +417,7 @@ class UsersManager : Service, Migrate {
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
                 let userID = user.userId
-                let apiConfig = serverConfig
-                let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
+                let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
                 newUser.delegate = self
                 users.append(newUser)
@@ -682,8 +684,7 @@ extension UsersManager {
         if let oldAuth = oldAuthFetchLagcy(),  let user = oldUserInfoLagcy() {
             let session = oldAuth.sessionID
             let userID = user.userId
-            let apiConfig = serverConfig
-            let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
+            let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
@@ -728,8 +729,7 @@ extension UsersManager {
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
                 let userID = user.userId
-                let apiConfig = serverConfig
-                let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
+                let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
                 newUser.delegate = self
                 users.append(newUser)

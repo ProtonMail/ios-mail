@@ -21,8 +21,11 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import UIKit
 import EllipticCurveKeyPair
+
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public enum Constants {
     public static let removedMainKeyFromMemory: NSNotification.Name = .init("Keymaker" + ".removedMainKeyFromMemory")
@@ -43,7 +46,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         self.keychain = keychain
         
         super.init()
-        
+        #if canImport(UIKit)
         if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
                                                    name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -55,6 +58,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
             NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
                                                    name: UIApplication.didBecomeActiveNotification, object: nil)
         }
+        #endif
     }
     
     deinit {

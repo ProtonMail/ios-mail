@@ -149,5 +149,5 @@ install_xcframework() {
   echo "Copied $source to $destination"
 }
 
-install_xcframework "${PODS_ROOT}/PMCrypto/Crypto.xcframework" "Crypto" "framework" "ios-x86_64-maccatalyst" "ios-arm64_armv7" "ios-x86_64-simulator"
+install_xcframework "${PODS_ROOT}/PMCrypto/Crypto.xcframework" "Crypto" "framework" "ios-x86_64-simulator" "ios-x86_64-maccatalyst" "ios-arm64_armv7"
 

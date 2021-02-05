@@ -23,7 +23,7 @@
 
 import Foundation
 import CoreData
-import PMNetworking
+import PMCommon
 
 extension MessageContainerViewModel {
     struct StatesKey {

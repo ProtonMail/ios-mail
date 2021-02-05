@@ -4,3 +4,6 @@
 [submodule "Networking"]
 	path = Networking
 	url = git@gitlab.protontech.ch:apple/shared/pmnetworking
+[submodule "Authentication"]
+	path = Authentication
+	url = git@gitlab.protontech.ch:apple/shared/pmauthentication

@@ -23,6 +23,7 @@
 
 import Foundation
 import PMKeymaker
+import PMCommon
 
 extension Locked where T == [AuthCredential] {
     internal init(clearValue: T, with key: PMKeymaker.Key) throws {

@@ -26,6 +26,7 @@ import UIKit
 import SWRevealViewController
 import PMKeymaker
 import UserNotifications
+import PMCommon
 
 public class PushNotificationService: NSObject, Service {
 
@@ -55,7 +56,7 @@ public class PushNotificationService: NSObject, Service {
          encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
          outdatedSaver: Saver<Set<SubscriptionSettings>> = PushNotificationDecryptor.outdater,
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
-         deviceRegistrator: DeviceRegistrator = APIService.unauthorized, // unregister call is unauthorized; register call is authorized one, we will inject auth credentials into the call itself
+         deviceRegistrator: DeviceRegistrator = PMAPIService.unauthorized, // unregister call is unauthorized; register call is authorized one, we will inject auth credentials into the call itself
          signInProvider: SignInProvider = SignInManagerProvider(),
          deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
          unlockProvider: UnlockProvider = UnlockManagerProvider())
@@ -342,5 +343,5 @@ protocol DeviceRegistrator {
     func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping CompletionBlock)
 }
 
-extension APIService: DeviceRegistrator {}
+extension PMAPIService: DeviceRegistrator {}
 

@@ -24,6 +24,7 @@
 import Foundation
 import CoreData
 import Crypto
+import PMCommon
 
 extension Message {
     

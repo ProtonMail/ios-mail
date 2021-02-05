@@ -24,6 +24,7 @@
 import Foundation
 import PMAuthentication
 import PromiseKit
+import PMCommon
 
 /// TODO:: this is temp
 protocol UserDataSource : class {
@@ -41,7 +42,7 @@ protocol UserDataSource : class {
     func updateFromEvents(userSettingsRes: [String : Any]?)
     func updateFromEvents(mailSettingsRes: [String : Any]?)
     func update(usedSpace: Int64)
-    func setFromEvents(addressRes: Address)
+    func setFromEvents(addressRes: PMCommon.Address)
     func deleteFromEvents(addressIDRes: String)
 }
 
@@ -114,7 +115,7 @@ class UserManager : Service, HasLocalStorage {
     
     //weak var delegate : UsersManagerDelegate?
     
-    public let apiService : APIService
+    public var apiService : APIService
     public var userinfo : UserInfo
     public var auth : AuthCredential
     
@@ -169,7 +170,6 @@ class UserManager : Service, HasLocalStorage {
         let service = LocalNotificationService(userID: self.userinfo.userId)
         return service
     }()
-   
     
     #if !APP_EXTENSION
     public lazy var sevicePlanService: ServicePlanDataService = { [unowned self] in
@@ -182,7 +182,7 @@ class UserManager : Service, HasLocalStorage {
         self.userinfo = userinfo
         self.auth = auth
         self.apiService = api
-        self.apiService.sessionDeleaget = self
+        self.apiService.authDelegate = self
         self.parentManager = parent
     }
 
@@ -190,7 +190,7 @@ class UserManager : Service, HasLocalStorage {
         self.userinfo = UserInfo.getDefault()
         self.auth = AuthCredential.none
         self.apiService = api
-        self.apiService.sessionDeleaget = self
+        self.apiService.authDelegate = self
     }
     
     public func isMatch(sessionID uid : String) -> Bool {
@@ -216,7 +216,7 @@ class UserManager : Service, HasLocalStorage {
     }
 }
 
-extension UserManager : SessionDelegate {
+extension UserManager : AuthDelegate {
     func getToken(bySessionUID uid: String) -> AuthCredential? {
         guard auth.sessionID == uid else {
             assert(false, "Inadequate crerential requested")
@@ -225,15 +225,46 @@ extension UserManager : SessionDelegate {
         return auth
     }
     
-    func updateAuthCredential(_ credential: PMAuthentication.Credential) {
-        self.auth.udpate(sessionID: credential.UID, accessToken: credential.accessToken, refreshToken: credential.refreshToken, expiration: credential.expiration)
+    func onLogout(sessionUID uid: String) {
+        
+    }
+    
+    func onUpdate(auth: Credential) {
+        self.auth.udpate(sessionID: auth.UID, accessToken: auth.accessToken, refreshToken: auth.refreshToken, expiration: auth.expiration)
         self.save()
     }
     
-    func updateAuth(_ credential: AuthCredential) {
-        self.auth.udpate(sessionID: credential.sessionID, accessToken: credential.accessToken, refreshToken: credential.refreshToken, expiration: credential.expiration)
-        self.save()
+    func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
+        
     }
+    
+    func onForceUpgrade() {
+        
+    }
+    
+//    func onLogout(sessionUID uid: String) {
+//
+//    }
+//    func onUpdate(auth: Credential) {
+//
+//    }
+//
+//    func onRefresh(bySessionUID uid: String, complete:  @escaping AuthRefreshComplete) {
+//
+//    }
+//
+//    func onForceUpgrade() {
+//
+//    }
+//    func updateAuthCredential(_ credential: Credential) {
+//        self.auth.udpate(sessionID: credential.UID, accessToken: credential.accessToken, refreshToken: credential.refreshToken, expiration: credential.expiration)
+//        self.save()
+//    }
+//
+//    func updateAuth(_ credential: AuthCredential) {
+//        self.auth.udpate(sessionID: credential.sessionID, accessToken: credential.accessToken, refreshToken: credential.refreshToken, expiration: credential.expiration)
+//        self.save()
+//    }
 }
 
 
@@ -328,7 +359,7 @@ extension UserManager : UserDataSource {
         self.save()
     }
 
-    func setFromEvents(addressRes address: Address) {
+    func setFromEvents(addressRes address: PMCommon.Address) {
         if let index = self.userInfo.userAddresses.firstIndex(where: { $0.address_id == address.address_id }) {
             self.userInfo.userAddresses.remove(at: index)
         }
@@ -372,7 +403,7 @@ extension UserManager {
         return userinfo.displayName.decodeHtml()
     }
     
-    var addresses : [Address] {
+    var addresses : [PMCommon.Address] {
         return userinfo.userAddresses
     }
     

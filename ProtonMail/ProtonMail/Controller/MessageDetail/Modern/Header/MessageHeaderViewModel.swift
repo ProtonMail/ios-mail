@@ -23,6 +23,7 @@
 
 import Foundation
 import PromiseKit
+import PMCommon
 
 class MessageHeaderViewModel: NSObject {
     @objc dynamic var headerData: HeaderData
@@ -99,7 +100,7 @@ extension MessageHeaderViewModel {
                             }
                             
                             let context = self.coreDataService.mainManagedObjectContext
-                            let getEmail = UserEmailPubKeys(email: emial, api: user.apiService).run()
+                            let getEmail: Promise<KeysResponse> = user.apiService.run(route: UserEmailPubKeys(email: emial))
                             let contactService = self.user.contactService
                             let getContact = contactService.fetch(byEmails: [emial], context: context)
                             when(fulfilled: getEmail, getContact).done { keyRes, contacts in

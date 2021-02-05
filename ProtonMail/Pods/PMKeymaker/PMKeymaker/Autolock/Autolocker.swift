@@ -21,7 +21,10 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+
+#if canImport(UIKit)
 import UIKit
+#endif
 
 public protocol SettingsProvider {
     var lockTime: AutolockTimeout { get }
@@ -36,7 +39,12 @@ public class Autolocker {
         self.userSettingsProvider = lockTimeProvider
         
         NotificationCenter.default.addObserver(self, selector: #selector(systemClockCompromised), name: NSNotification.Name.NSSystemClockDidChange, object: nil)
+        
+        #if canImport(UIKit)
         NotificationCenter.default.addObserver(self, selector: #selector(systemClockCompromised), name: UIApplication.significantTimeChangeNotification, object: nil)
+        #elseif canImport(AppKit)
+        NotificationCenter.default.addObserver(self, selector: #selector(systemClockCompromised), name: Notification.Name.NSSystemClockDidChange, object: nil)
+        #endif
     }
     
     deinit {
