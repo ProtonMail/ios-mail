@@ -17,8 +17,11 @@
       "selectedTests" : [
         "DraftsTests\/testAddRecipientsToDraft()",
         "DraftsTests\/testChangeDraftSender()",
+        "DraftsTests\/testChangeDraftSubjectAndSendMessage()",
         "DraftsTests\/testOpenDraftFromSearch()",
-        "DraftsTests\/testSaveDraft()"
+        "DraftsTests\/testSaveDraft()",
+        "DraftsTests\/testSaveDraftWithAttachment()",
+        "DraftsTests\/testSendDraftWithAttachment()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",
