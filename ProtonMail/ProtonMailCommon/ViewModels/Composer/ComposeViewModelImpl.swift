@@ -281,7 +281,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             return
         }
 
-        let getEmail: Promise<KeysResponse> = self.user.apiService.run(route: UserEmailPubKeys(email: email))
+        let getEmail: Promise<KeysResponse> = self.user.apiService.run(route: UserEmailPubKeys.init(email: email))
         let contactService = self.user.contactService
         let getContact = contactService.fetch(byEmails: [email], context: context)
         when(fulfilled: getEmail, getContact).done { keyRes, contacts in
