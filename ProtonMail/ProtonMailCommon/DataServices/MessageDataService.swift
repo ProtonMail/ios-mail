@@ -2227,7 +2227,11 @@ class MessageDataService : Service, HasLocalStorage {
                     } else if errorCode == -1004 {
                         /// this error means NSURLErrorCannotConnectToHost
                         isInternetIssue = true
-                    } else {
+                    } else if errorCode == -1003 {
+                        /// kCFURLErrorCannotFindHost
+                        isInternetIssue = true
+                    }
+                    else {
                         let status = Reachability.forInternetConnection()?.currentReachabilityStatus()
                         switch status {
                         case .NotReachable:
