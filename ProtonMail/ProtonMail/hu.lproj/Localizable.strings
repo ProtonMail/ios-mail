@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = ".";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "A csoportból egy vagy több e-mail nem található";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Egy vagy több e-mail formátuma hibás, kérjük ellenőrizze a címeket.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Egy vagy több e-mail cím vagy domain név nem létezik vagy hibás formátumú. Az üzenet a piszkozatokba került.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "A melléklet importálva";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "Megjelenítendő név";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Aktiválja a vásárlást a %@ címhez?";
+
 /* Description */
 "Do you want to cancel the process?" = "Megszakítja a folyamatot?";
 
@@ -755,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "Érvénytelen e-mail cím";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "Az e-mail cím érvénytelen";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "E-mail cím";
@@ -876,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "Hiba történt";
 
+/* incorrect email format error in composer */
+"Error sending" = "Hiba a küldés közben";
+
 /* lock app option */
 "Every time enter app" = "Az alkalmazás minden megnyitásakor";
 
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "További információk";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Ugrás a piszkozatokhoz";
+
 /* Action */
 "Go to inbox" = "Ugrás a beérkezett üzenetekhez";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Bizonyítsa, hogy nem robot";
+
+/* Alarm action */
+"Ignore" = "Mellőzés";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP támogatás a ProtonMail Bridge segítségével";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy. MMM d., EE, keltezéssel, %1$@, %2$@ írta:";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Csak akkor hagyja figyelmen kívül az aktiválást, ha biztos benne, hogy minden előfizetése aktualizálva van. További segítségért lépjen kapcsolatba velünk. \r\n\r\n Biztos, hogy figyelmen kívül hagyja az aktiválást?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Csak egy ingyenes fiók adható hozzá";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Szervezet";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "Operációs rendszer kompatibilitás";
 
 /* default vcard types */
 "Other" = "Egyéb";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Az eszköz névjegyeinek olvasása...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Címzett nem található";
+
 /* Title */
 "Recovery Code" = "Helyreállító kód";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "A küldő ellenőrzése sikertelen volt";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "A küldés sikertelen";
 
 /* Alert title */
 "Sending message" = "Üzenet küldése";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Az üzenet elküldése nem sikerült, valószínűleg akadozó internet kapcsolat miatt. Az üzenet a Piszkozatok közé került mentésre és az alkalmazás következő indításakor automatikusan elküldésre kerül.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Értesítést kaptunk egy App Store-beli vásárlásról, de nem tudjuk összeegyeztetni az ön egyik fiókjával sem.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Új előfizetését sikeresen aktiváltuk. Indítsa újra az alkalmazást, az új csomag funkcióinak eléréséhez.";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Egy ellenőrző kódot küldünk a fenti e-mail címre.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "Az iOS 10 támogatását hamarosan megszüntetjük. Kérjük, frissítse az operációs rendszerét, hogy továbbra is telepíthesse a frissítéseket.";
 
 /* Title */
 "We would like to know what we can do better." = "Szeretnénk tudni, hogy mit tudnánk jobbá tenni.";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "írta:";
+
+/* Yes action */
+"Yes" = "Igen";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Igen, aktiváljuk ehhez: ";
