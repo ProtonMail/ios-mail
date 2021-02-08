@@ -2218,8 +2218,10 @@ class MessageDataService : Service, HasLocalStorage {
                 if let errorUserInfo = error?.userInfo {
                     if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
                         statusCode = detail.statusCode
-                    }
-                    else {
+                    } else if errorCode == -1004 {
+                        /// this error means NSURLErrorCannotConnectToHost
+                        isInternetIssue = true
+                    } else {
                         let status = Reachability.forInternetConnection()?.currentReachabilityStatus()
                         switch status {
                         case .NotReachable:
