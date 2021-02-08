@@ -9,21 +9,21 @@ class DateFormatter_VCardBirthdayTextFormatterTests: XCTestCase {
         super.setUp()
 
         sut = .vCardBirthdayTextFormatter
-        sut.locale = Locale(identifier: "en_US")
-        sut.timeZone = TimeZone(secondsFromGMT: 0)
+        Environment.locale = .enUS
     }
 
     override func tearDown() {
         super.tearDown()
 
         sut = nil
+        Environment.locale = .current
     }
 
     func testVCardBirthdayTextFormatter() {
         let vCardBirthdayText = "20210201T23:00:00.000Z"
         let date = sut.date(from: vCardBirthdayText) ?? Date()
 
-        XCTAssertEqual(date, Date.fixture("2021-02-01 23:00:00"))
+        XCTAssertEqual(date, Date.fixture("2021-02-02 00:00:00"))
     }
 
 }

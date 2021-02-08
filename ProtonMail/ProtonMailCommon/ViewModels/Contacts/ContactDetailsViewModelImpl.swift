@@ -335,14 +335,14 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                         self.origInformations.append(contactEditInformation)
                                     case "Birthday":
                                         let birthdays = vcard.getBirthdays()
-                                        for birthday in birthdays {
-                                            let contactEditInformation = ContactEditInformation(
+                                        let contactEditInformations = birthdays.map { birthday in
+                                            ContactEditInformation(
                                                 type: .birthday,
-                                                value: birthday.getText(),
+                                                value: birthday.formattedBirthday,
                                                 isNew: false
                                             )
-                                            self.origInformations.append(contactEditInformation)
                                         }
+                                        self.origInformations.append(contentsOf: contactEditInformations)
                                     case "Anniversary":
                                         break
                                     case "Gender":

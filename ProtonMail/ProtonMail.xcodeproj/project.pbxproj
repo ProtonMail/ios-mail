@@ -574,11 +574,18 @@
 		473CE4E031CD90ABC6E1A65CDB95EFD3 /* AccountPasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF3700001B61F5A475D70A7578E1744 /* AccountPasswordCoordinator.swift */; };
 		4753252F5074898873E83AA964AAD071 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AADE7B350D23DF3CDCB751753F0C22 /* AuthCredential.swift */; };
 		476B7F67668E1BC87D7585F6D2CA3B81 /* Notification+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DC8A3502A5F9890337FE2FBB9B2EA8 /* Notification+KeyboardExtension.swift */; };
+		4773763A25D07356003FD6AB /* PMNIBirthday+FormattedBirthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4773763925D07356003FD6AB /* PMNIBirthday+FormattedBirthday.swift */; };
+		4773765C25D07374003FD6AB /* PMNIBirthday+FormattedBirthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4773763925D07356003FD6AB /* PMNIBirthday+FormattedBirthday.swift */; };
+		4773766725D073B7003FD6AB /* DateFormatter+ContactBirthdayFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477DB5A425D0290D004A3EF4 /* DateFormatter+ContactBirthdayFormatter.swift */; };
+		4773767225D073BA003FD6AB /* DateFormatter+VCardBirthdayTextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477DB55625D02288004A3EF4 /* DateFormatter+VCardBirthdayTextFormatter.swift */; };
+		4773767F25D0740D003FD6AB /* PMNIBirthday+FormattedBirthdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4773767E25D0740D003FD6AB /* PMNIBirthday+FormattedBirthdayTests.swift */; };
+		4773769625D07783003FD6AB /* Locale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4773769525D07783003FD6AB /* Locale.swift */; };
+		477376AC25D07893003FD6AB /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477376AB25D07893003FD6AB /* Environment.swift */; };
 		477DB55725D02288004A3EF4 /* DateFormatter+VCardBirthdayTextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477DB55625D02288004A3EF4 /* DateFormatter+VCardBirthdayTextFormatter.swift */; };
 		477DB56E25D023AF004A3EF4 /* DateFormatter+VCardBirthdayTextFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477DB56D25D023AF004A3EF4 /* DateFormatter+VCardBirthdayTextFormatterTests.swift */; };
 		477DB58F25D0289E004A3EF4 /* Date+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477DB58E25D0289E004A3EF4 /* Date+Fixture.swift */; };
-		477DB5A525D0290D004A3EF4 /* DateFormatter+ContactBirthdayFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477DB5A425D0290D004A3EF4 /* DateFormatter+ContactBirthdayFormatter.swift */; };
 		477DB5B125D029CD004A3EF4 /* DateFormatter+ContactBirthdayFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477DB5B025D029CD004A3EF4 /* DateFormatter+ContactBirthdayFormatterTests.swift */; };
+		477DB5D025D02BD4004A3EF4 /* DateFormatter+ContactBirthdayFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477DB5A425D0290D004A3EF4 /* DateFormatter+ContactBirthdayFormatter.swift */; };
 		47957826A5C571F6246EA6DA1B66EE54 /* String+Parse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3E9EA0CE4352CBFBB3A341A5B1D784 /* String+Parse+Extension.swift */; };
 		47965230D29D78C91E4A627974C4C0E5 /* MenuLabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DE7858BA56DBC87D4AF3B339EADD91 /* MenuLabelViewCell.swift */; };
 		47C9545B3BBB156B983DCD9858C6EBF5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2125977F28202546D7525E9847C704 /* User.swift */; };
@@ -2506,6 +2513,10 @@
 		46511E284393F2C9530ED66B13614B12 /* RecipientCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecipientCell.xib; sourceTree = "<group>"; };
 		465F22DF36B7379C871248ECFC3EFAF4 /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		469C635002089579368D74AA1EC9F5D6 /* CryptoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
+		4773763925D07356003FD6AB /* PMNIBirthday+FormattedBirthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PMNIBirthday+FormattedBirthday.swift"; sourceTree = "<group>"; };
+		4773767E25D0740D003FD6AB /* PMNIBirthday+FormattedBirthdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PMNIBirthday+FormattedBirthdayTests.swift"; sourceTree = "<group>"; };
+		4773769525D07783003FD6AB /* Locale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locale.swift; sourceTree = "<group>"; };
+		477376AB25D07893003FD6AB /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		477DB55625D02288004A3EF4 /* DateFormatter+VCardBirthdayTextFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+VCardBirthdayTextFormatter.swift"; sourceTree = "<group>"; };
 		477DB56D25D023AF004A3EF4 /* DateFormatter+VCardBirthdayTextFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+VCardBirthdayTextFormatterTests.swift"; sourceTree = "<group>"; };
 		477DB58E25D0289E004A3EF4 /* Date+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Fixture.swift"; sourceTree = "<group>"; };
@@ -3741,6 +3752,7 @@
 				5D177BAB644338B3576C9A2FEE1934BF /* UIWindow+Extension.swift */,
 				680AA287FBEF2802C1CC7D4471321EF3 /* URL+Extension.swift */,
 				325B84027809DA6DB073D1D84C4DBBB2 /* UserDefaults+Extension.swift */,
+				4773763925D07356003FD6AB /* PMNIBirthday+FormattedBirthday.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3937,6 +3949,22 @@
 			path = Queue;
 			sourceTree = "<group>";
 		};
+		4773767D25D073FC003FD6AB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4773767E25D0740D003FD6AB /* PMNIBirthday+FormattedBirthdayTests.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		4773769425D07771003FD6AB /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				4773769525D07783003FD6AB /* Locale.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		477DB53525D021BB004A3EF4 /* Formatters */ = {
 			isa = PBXGroup;
 			children = (
@@ -3981,6 +4009,7 @@
 		47E4BCBE25CD654200AC3C4D /* ProtonMailCommon */ = {
 			isa = PBXGroup;
 			children = (
+				4773767D25D073FC003FD6AB /* Extensions */,
 				47E4BCED25CD664A00AC3C4D /* DataServices */,
 				47E4BCBF25CD656A00AC3C4D /* Utilities */,
 			);
@@ -5060,6 +5089,7 @@
 				DCAB5DB98BC9590C78EF30CF1746F200 /* AppDelegate.swift */,
 				3D4B4D0DE99C074D5FD55E074884F7CD /* WindowSceneDelegate.swift */,
 				29BCF9A240B28AE531F0FE2AF1DBFDCA /* WindowsCoordinator.swift */,
+				477376AB25D07893003FD6AB /* Environment.swift */,
 			);
 			path = ProtonMail;
 			sourceTree = "<group>";
@@ -5281,6 +5311,7 @@
 		EF2811F183DBF5359A54D63483C8C456 /* ProtonMailTests */ = {
 			isa = PBXGroup;
 			children = (
+				4773769425D07771003FD6AB /* Helpers */,
 				477DB58C25D0288A004A3EF4 /* Doubles */,
 				47E4BCEB25CD65FD00AC3C4D /* Development Pods */,
 				47E4BCBD25CD653700AC3C4D /* ProtonMail */,
@@ -6681,16 +6712,17 @@
 				85EF0EAC287F2007DD442A3AD0FF6027 /* PushNotificationServiceTests.swift in Sources */,
 				681C8F7FE23D00D5345842F061D69238 /* ResourceLoader.swift in Sources */,
 				97B7FAE9D4AA44A1EB7716CAB7B4994A /* SaverTests.swift in Sources */,
+				4773767F25D0740D003FD6AB /* PMNIBirthday+FormattedBirthdayTests.swift in Sources */,
 				477DB56E25D023AF004A3EF4 /* DateFormatter+VCardBirthdayTextFormatterTests.swift in Sources */,
 				97609BE67F6BF74B98CDF7D0D3110D20 /* ServicePlanDataServiceTests.swift in Sources */,
 				696512BEA9B4EC0443C7F148156B3EC3 /* ServicePlanDetailsTests.swift in Sources */,
 				06B46E22C06D6B5445D59C61F2B1A711 /* String+ExtensionTests.swift in Sources */,
-				477DB5A525D0290D004A3EF4 /* DateFormatter+ContactBirthdayFormatter.swift in Sources */,
 				9829B266A80AF788258DC120521C2EEE /* Data+MimeTests.swift in Sources */,
 				8D736AA84AE2B9974174DC758D856BC6 /* URL_ExtensionTests.swift in Sources */,
 				E81D504EC61F804FB54B1B8E9D534BE1 /* UserAgentTest.swift in Sources */,
 				477DB5B125D029CD004A3EF4 /* DateFormatter+ContactBirthdayFormatterTests.swift in Sources */,
 				1EB7641F18E90182D192C09DF06E0355 /* UserDefaultsSaverTests.swift in Sources */,
+				4773769625D07783003FD6AB /* Locale.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6836,11 +6868,13 @@
 				37388B6B6676993FBDB9C4105FCF5A33 /* ContactDetailsViewModel.swift in Sources */,
 				230E590C47402B8EF7B58F7691BAB41A /* ContactDetailsViewModelImpl.swift in Sources */,
 				F5758A935F5898404DB9D18913A7A75A /* ContactEditAddCell.swift in Sources */,
+				4773763A25D07356003FD6AB /* PMNIBirthday+FormattedBirthday.swift in Sources */,
 				9E516FAACFA7BCC1FD1878B6439B7517 /* ContactEditAddressCell.swift in Sources */,
 				8DA15F347F51106B671F17EBB3EA92B1 /* ContactEditCell+Delegates.swift in Sources */,
 				0C79B8F2B058ECE327587ACA418FAAFA /* ContactEditEmailCell.swift in Sources */,
 				99025D7EF5A1FA69ACB4A079BE84C585 /* ContactEditFieldCell.swift in Sources */,
 				4D52393BF773190CA0DA74283E3AB0DD /* ContactEditInformationCell.swift in Sources */,
+				477DB5D025D02BD4004A3EF4 /* DateFormatter+ContactBirthdayFormatter.swift in Sources */,
 				CBEAA70C5F5707909B5CC2A5FEA29D68 /* ContactEditPhoneCell.swift in Sources */,
 				4E9BF75778F70D4F1F372C93F914DCCE /* ContactEditTextViewCell.swift in Sources */,
 				E262B52EF4BE6F01FE5544DC06EE5670 /* ContactEditUpgradeCell.swift in Sources */,
@@ -7051,6 +7085,7 @@
 				9F66C8E5A2D4AF25DDC5431FCD6F251D /* MessageAPI+Response.swift in Sources */,
 				4E9B13A6B01327DF61973144A147E122 /* MessageAPI+SendType.swift in Sources */,
 				13C7DC28728D738A4A44B81151FDA2F3 /* MessageAPI.swift in Sources */,
+				477376AC25D07893003FD6AB /* Environment.swift in Sources */,
 				F9E4518AD9C857A79681DA373D6C6508 /* MessageAction.swift in Sources */,
 				6A4E96B40AEA073453C285E358C25D71 /* MessageAttachmentsCoordinator.swift in Sources */,
 				D2591189552C9B4B3F89AD718F4B622D /* MessageAttachmentsViewController.swift in Sources */,
@@ -7351,6 +7386,7 @@
 				02B5904D049F6EC59AC0B3A96F01FDFD /* Array+Extension.swift in Sources */,
 				3EA9BE501A613DA294BEED8B5F74D86E /* Attachment+Extension.swift in Sources */,
 				1CF54FB5158C1C706999F0AE6E6DA0BE /* Attachment+Info.swift in Sources */,
+				4773765C25D07374003FD6AB /* PMNIBirthday+FormattedBirthday.swift in Sources */,
 				5B9D1CDBAF945B4445602EEB7A4E6C6C /* Attachment+StrippingExif.swift in Sources */,
 				D0BA1EC3CE0DCB2FE56023639331C1A3 /* Attachment.swift in Sources */,
 				040BC1756816F0C4AA4AF34117FAC798 /* AttachmentAPI.swift in Sources */,
@@ -7520,6 +7556,7 @@
 				71CE82DC9F2233C60CD9FD6B2FCE3109 /* ExpirationWarningViewController.swift in Sources */,
 				98525D5A950A089C7A3D297F533EB076 /* ExternalURL.swift in Sources */,
 				12A7ED0C1170A82BBE7D1703E5C3F18F /* FeedbackHeadCell.swift in Sources */,
+				4773767225D073BA003FD6AB /* DateFormatter+VCardBirthdayTextFormatter.swift in Sources */,
 				42B173A3AAFB3EFACB93D56E84093A41 /* FeedbackItem.swift in Sources */,
 				4BCAF052AAFFC7E231DF458D36BC1560 /* FeedbackPopViewController.swift in Sources */,
 				5BE96214CBB0B914408CFE9ED120C54A /* FeedbackTableViewCell.swift in Sources */,
@@ -7864,6 +7901,7 @@
 				756C8DE3D03A99F6D7B08F28F0BC88F4 /* ViewModelFactory.swift in Sources */,
 				ED1066357FF807C1ACB0E3926F01D9EA /* ViewModelProtocol.swift in Sources */,
 				1B60FB04CD700B45C05FA3DECFF1385A /* ViewModelService.swift in Sources */,
+				4773766725D073B7003FD6AB /* DateFormatter+ContactBirthdayFormatter.swift in Sources */,
 				D69F402C749630AAE0CC17B1267330A0 /* ViewModelServiceImpl.swift in Sources */,
 				A2F388AE5C22FA0F4A94A7FD64EB7225 /* ViewModelTimer.swift in Sources */,
 				980FEC4701AF821A1FB25C6CCFCFC417 /* WebContents.swift in Sources */,

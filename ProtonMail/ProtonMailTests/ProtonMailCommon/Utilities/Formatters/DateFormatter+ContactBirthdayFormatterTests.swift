@@ -9,20 +9,20 @@ class DateFormatter_ContactBirthdayFormatterTests: XCTestCase {
         super.setUp()
 
         sut = .contactBirthdayFormatter
-
-        sut.locale = Locale(identifier: "en_US")
-        sut.timeZone = TimeZone(secondsFromGMT: 0)
+        Environment.locale = .enUS
     }
 
     override func tearDown() {
         super.tearDown()
 
         sut = nil
+        Environment.locale = .current
     }
 
     func testContactBirthdayFormatter() {
-        let date = Date.fixture("2021-02-01 23:00:00")
-        XCTAssertEqual(sut.string(from: date), "Feb 1, 2021")
+        XCTAssertEqual(sut.string(from: .fixture("2021-02-02 00:00:00")), "Feb 2, 2021")
+        XCTAssertEqual(sut.string(from: .fixture("2021-02-01 00:00:00")), "Feb 1, 2021")
+        XCTAssertEqual(sut.string(from: .fixture("2021-01-02 01:00:00")), "Jan 2, 2021")
     }
 
 }
