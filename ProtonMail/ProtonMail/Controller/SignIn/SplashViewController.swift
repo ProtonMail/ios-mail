@@ -57,21 +57,19 @@ class SplashViewController: UIViewController {
     }
     
     func generateToken() -> Promise<String> {
-        if #available(iOS 11.0, *) {
-            let currentDevice = DCDevice.current
-            if currentDevice.isSupported {
-                let deferred = Promise<String>.pending()
-                currentDevice.generateToken(completionHandler: { (data, error) in
-                    if let tokenData = data {
-                        deferred.resolver.fulfill(tokenData.base64EncodedString())
-                    } else if let error = error {
-                        deferred.resolver.reject(error)
-                    } else {
-                        deferred.resolver.reject(TokenError.empty)
-                    }
-                })
-                return deferred.promise
-            }
+        let currentDevice = DCDevice.current
+        if currentDevice.isSupported {
+            let deferred = Promise<String>.pending()
+            currentDevice.generateToken(completionHandler: { (data, error) in
+                if let tokenData = data {
+                    deferred.resolver.fulfill(tokenData.base64EncodedString())
+                } else if let error = error {
+                    deferred.resolver.reject(error)
+                } else {
+                    deferred.resolver.reject(TokenError.empty)
+                }
+            })
+            return deferred.promise
         }
         return Promise<String>.init(error: TokenError.unsupport)
     }

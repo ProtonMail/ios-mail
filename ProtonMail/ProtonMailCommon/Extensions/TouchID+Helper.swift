@@ -40,21 +40,16 @@ extension UIDevice {
                 PMLog.D(error?.localizedDescription ?? "")
                 return .none
             }
-            if #available(iOS 11.0, *) {
-                switch context.biometryType {
-                case .none:
-                    return .none
-                case .touchID:
-                    return .touchID
-                case .faceID:
-                    return .faceID
-                @unknown default:
-                    return .touchID // TODO: will iPhones have both TouchID and FaceID some day?
-                }
-            } else {
-                return  .touchID
+            switch context.biometryType {
+            case .none:
+                return .none
+            case .touchID:
+                return .touchID
+            case .faceID:
+                return .faceID
+            @unknown default:
+                return .touchID // TODO: will iPhones have both TouchID and FaceID some day?
             }
-            
         }
     }
 }

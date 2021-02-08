@@ -94,11 +94,11 @@ class SearchViewController: ProtonMailViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.noSeparatorsBelowFooter()
-        self.tableView!.RegisterCell(MailboxMessageCell.Constant.identifier)
+        self.tableView.RegisterCell(MailboxMessageCell.Constant.identifier)
+        self.tableView.contentInsetAdjustmentBehavior = .automatic
         
         self.edgesForExtendedLayout = UIRectEdge()
-        self.extendedLayoutIncludesOpaqueBars=false;
-        automaticallyAdjustsScrollViewInsets = true
+        self.extendedLayoutIncludesOpaqueBars = false;
         self.navigationController?.navigationBar.isTranslucent = false;
         
         searchTextField.autocapitalizationType = UITextAutocapitalizationType.none

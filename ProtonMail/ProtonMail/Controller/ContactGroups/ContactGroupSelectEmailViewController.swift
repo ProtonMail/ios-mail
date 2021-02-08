@@ -100,20 +100,12 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         self.searchController.searchBar.tintColor = .white
         self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         self.searchController.searchBar.backgroundColor = .clear
-        
-        if #available(iOS 11.0, *) {
-            self.searchViewConstraint.constant = 0.0
-            self.searchView.isHidden = true
-            self.navigationItem.largeTitleDisplayMode = .never
-            self.navigationItem.hidesSearchBarWhenScrolling = false
-            self.navigationItem.searchController = self.searchController
-        } else {
-            self.searchViewConstraint.constant = self.searchController.searchBar.frame.height
-            self.searchView.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
-            self.searchView.addSubview(self.searchController.searchBar)
-            self.searchController.searchBar.contactSearchSetup(textfieldBG: UIColor.init(hexColorCode: "#82829C"),
-                                                               placeholderColor: UIColor.init(hexColorCode: "#BBBBC9"), textColor: .white)
-        }
+
+        self.searchViewConstraint.constant = 0.0
+        self.searchView.isHidden = true
+        self.navigationItem.largeTitleDisplayMode = .never
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        self.navigationItem.searchController = self.searchController
     }
 }
 

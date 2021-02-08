@@ -34,11 +34,7 @@ class MessageBodyViewController: HorizontallyScrollableWebViewContainer {
     }
 
     private lazy var loader: WebContentsSecureLoader = {
-        if #available(iOS 11.0, *) {
-            return HTTPRequestSecureLoader(addSpacerIfNeeded: false)
-        } else {
-            return HTMLStringSecureLoader(addSpacerIfNeeded: false)
-        }
+        return HTTPRequestSecureLoader(addSpacerIfNeeded: false)
     }()
     
     deinit {

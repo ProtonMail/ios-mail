@@ -102,10 +102,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 60.0
         tableView.noSeparatorsBelowFooter()
-        
-        if #available(iOS 11.0, *) {
-            self.navigationItem.largeTitleDisplayMode = .never
-        }
+
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     /// config header style only need once
@@ -671,10 +669,8 @@ extension ContactDetailViewController: UITableViewDelegate {
                                                              .postToVimeo,
                                                              .postToTencentWeibo,
                                                              .assignToContact]
-            if #available(iOS 11.0, *) {
-                activityViewController.excludedActivityTypes?.append(.markupAsPDF)
-                activityViewController.excludedActivityTypes?.append(.openInIBooks)
-            }
+            activityViewController.excludedActivityTypes?.append(.markupAsPDF)
+            activityViewController.excludedActivityTypes?.append(.openInIBooks)
             self.present(activityViewController, animated: true, completion: nil)
         }
     }
