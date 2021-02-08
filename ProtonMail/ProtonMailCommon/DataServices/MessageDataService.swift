@@ -2092,7 +2092,7 @@ class MessageDataService : Service, HasLocalStorage {
                     NSError.alertMessageSentError(details: err.localizedDescription)
                 } else if err.code == 15198 {
                     NSError.alertMessageSentError(details: err.localizedDescription)
-                } else if err.code == 15004 || err.code == 2500 {
+                } else if err.code == 15004 {
                     // this error means the message has already been sent
                     // so don't need to show this error to user
                     self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
@@ -2110,6 +2110,12 @@ class MessageDataService : Service, HasLocalStorage {
                     }
                     LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
                     #endif
+                } else if err.code == 2500 {
+                    // The error means "Message has already been sent"
+                    // Since the message is sent, this alert is useless to user
+                    self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
+                    completion?(nil, nil, nil)
+                    return
                 } else {
                     NSError.alertMessageSentError(details: err.localizedDescription)
                 }
@@ -2218,15 +2224,26 @@ class MessageDataService : Service, HasLocalStorage {
                 if let errorUserInfo = error?.userInfo {
                     if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
                         statusCode = detail.statusCode
+                    } else if errorCode == -1004 {
+                        /// this error means NSURLErrorCannotConnectToHost
+                        isInternetIssue = true
+                    } else if errorCode == -1003 {
+                        /// kCFURLErrorCannotFindHost
+                        isInternetIssue = true
                     }
                     else {
-                        if errorCode == -1009 || errorCode == -1004 || errorCode == -1001 { //internet issue
-                            if errorCode == -1001 {
-                                NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 0, userInfo: nil))
-                            } else {
-                                NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 1, userInfo: nil))
-                            }
+                        let status = Reachability.forInternetConnection()?.currentReachabilityStatus()
+                        switch status {
+                        case .NotReachable:
                             isInternetIssue = true
+                        default: break
+                        }
+                        
+                        // Show timeout error banner or not reachable banner in mailbox
+                        if errorCode == -1001 {
+                            NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 0, userInfo: nil))
+                        } else {
+                            NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 1, userInfo: nil))
                         }
                     }
                 }

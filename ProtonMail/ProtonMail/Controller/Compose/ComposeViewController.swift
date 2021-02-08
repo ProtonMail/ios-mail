@@ -375,13 +375,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         
         stopAutoSave()
         self.collectDraftData().done {
-            if #available(iOS 11.0, *) {
-                self.sendMessageStepThree()
-            } else {
-                delay(0.5) {
-                    self.sendMessageStepThree()
-                }
-            }
+            self.sendMessageStepThree()
         }
     }
     
@@ -871,12 +865,8 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
     }
 
     func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {
-        
-        if #available(iOS 11.0, *) {
-            self.collectDraftData().done { // this will trigger WebCore to use more memrory iphone 5 devices could case a crashing
-                self.viewModel.uploadAtt(attachment)
-            }
-        } else {
+
+        self.collectDraftData().done {
             self.viewModel.uploadAtt(attachment)
         }
     }

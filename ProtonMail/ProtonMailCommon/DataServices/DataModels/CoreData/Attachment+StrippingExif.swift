@@ -129,10 +129,8 @@ extension Attachment {
             kCGImagePropertyMakerOlympusDictionary: nil,
             kCGImagePropertyMakerPentaxDictionary: nil
         ]
-        
-        if #available(iOS 11.0, *) {
-            dict[kCGImagePropertyFileContentsDictionary] = nil
-        }
+
+        dict[kCGImagePropertyFileContentsDictionary] = nil
 
         return dict as CFDictionary
     }

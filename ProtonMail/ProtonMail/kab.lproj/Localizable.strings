@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = "ar";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "At least one email address in the group could not be found";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "At least one recipient email address is improperly formatted, please double check them.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Afaylu yeddan ittwaktren";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "Isem n uskan";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
+
 /* Description */
 "Do you want to cancel the process?" = "Tebɣiḍ ad tesfesxeḍ akala?";
 
@@ -755,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "Tansa imayl mači d tameɣtut";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "Email address is invalid";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "Tansiwin imayl";
@@ -876,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "Tella-d tuccḍa";
 
+/* incorrect email format error in composer */
+"Error sending" = "Tuzna n Tuccḍa";
+
 /* lock app option */
 "Every time enter app" = "Tal tulya n usnas";
 
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "Issin ugar";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Ddu ɣer irewwayen";
+
 /* Action */
 "Go to inbox" = "Ddu ar tnaka n urmas";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Asenqed b-umdan";
+
+/* Alarm action */
+"Ignore" = "Anef";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Tallelt IMAP/SMTP seg ProtonMail Bridge";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Deg EE, MMM d, yyyy ɣef %1$@, %2$@, y/tura:";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Yiwen kan n umiḍan n baṭṭel i izemren ad yettwarnu";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Tuddsa";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "OS compatibility";
 
 /* default vcard types */
 "Other" = "Wayeḍ";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Taɣuri n isefka n inermisen n ibenk...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Recipient not found";
+
 /* Title */
 "Recovery Code" = "Tangalt n tririt";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "Asenqed n umesgal yecceḍ";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Sending failed";
 
 /* Alert title */
 "Sending message" = "Tuzna n yizen";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Ur nessaweḍ ara ad nazen -izen-inek·inem, ahat d tuqqna i ixuṣṣen ɣer uzeṭṭa. Izen-inek·inem yettusekles deg urewway, ad yettwazen s wudem awurman mi ara teldiḍ asnas-inek·inem.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We have been notified of an App Store purchase but cannot match the purchase with an account of yours.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Tremded akken iwata amulteɣ-inek·inem. Ttxil-k·m ales asenker n usnas i wakken ad tebduḍ aɣawas-inek·inem amaynut n umeẓlu.";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Ad yzen tangalt n usenqed ar tansa n yimayl ddaw-a.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future.";
 
 /* Title */
 "We would like to know what we can do better." = "Nebɣa ad nẓer ayen nezmer ad nesnerni.";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "yura:";
+
+/* Yes action */
+"Yes" = "Yes";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Ih, rmed-it i ";

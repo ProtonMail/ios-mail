@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = "a";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Almenys una adreça de correu del grup no s'ha pogut trobar";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Almenys una adreça de correu de destinatari té un format incorrecte, comproveu-la.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Almenys una adreça de correu o domini de destinatari no existeix o té un format incorrecte. Missatge mogut a esborranys.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Fitxer adjunt importat";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "Nom a mostrar";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Vol activar la compra de l'adreça %@?";
+
 /* Description */
 "Do you want to cancel the process?" = "Voleu cancel·lar el procés?";
 
@@ -755,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "L'adreça de correu electrònic no és vàlida";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "Adreça de correu invàlida";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "Adreces de correu electrònic";
@@ -876,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "S'ha produït un error";
 
+/* incorrect email format error in composer */
+"Error sending" = "Error a l'enviar";
+
 /* lock app option */
 "Every time enter app" = "Cada vegada que ingresseu a l'aplicació";
 
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "Rebre més informació";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Ves a esborranys";
+
 /* Action */
 "Go to inbox" = "Vés a la safata d'entrada";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Verificació humana";
+
+/* Alarm action */
+"Ignore" = "Ignorar";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Suport IMAP/SMTP mitjançant ProtonMail Bridge";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "El EE, MMM d, yyyy a les %1$@, %2$@, va escriure:";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignori l'activació de la compra només si està segur de que totes les seves subscripcions estan actualitzades. Per obtenir més ajuda, contacti amb atenció al client. \r\n\r\nEstà segur de voler ignorar l'activació?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Només es pot afegir un compte gratuït";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Organització";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "Compatibilitat de SO";
 
 /* default vcard types */
 "Other" = "Altres";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Dades de contacte del dispositiu de lectura...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Destinatari no trobat";
+
 /* Title */
 "Recovery Code" = "Codi de recuperació";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "La verificació del remitent ha fallat";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Enviament fallit";
 
 /* Alert title */
 "Sending message" = "S'està enviant el missatge";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No hem pogut enviar el vostre missatge, possiblement a causa d'una mala connexió de xarxa. El vostre missatge s'ha desat a Esborranys i s'enviarà automàticament la propera vegada que obriu l'aplicació.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Hem estat notificats d'una compra a l'App Store però no podem relacionar-la amb un dels seus comptes.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Heu activat l’abonament correctament. Si us plau, reinicieu l'app per començar a utilitzar els nous serveis.";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Enviarem un codi de verificació a l'adreça electrònica de dalt.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "Aviat deixarem de donar suport als dispositius amb iOS 10. Si us plau, actualitzi el sistema operatiu del seu dispositiu per continuar rebent actualitzacions en el futur.";
 
 /* Title */
 "We would like to know what we can do better." = "Ens agradaria saber què podem fer millor.";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "va escriure:";
+
+/* Yes action */
+"Yes" = "Sí";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Sí, activeu-lo ara ";

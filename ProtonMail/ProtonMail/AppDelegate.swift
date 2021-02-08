@@ -97,18 +97,18 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
     }
     
     func onUpdate(serverTime: Int64) {
-        //update the crypto time seed
+        Crypto.updateTime(serverTime)
     }
 
     var appVersion: String {
         get {
-            return ""//TODO:: fix me TBA
+            return "iOS_\(Bundle.main.majorVersion)"
         }
     }
 
     var userAgent: String? {
         get {
-            return ""//TODO:: fix me TBA
+            return nil
         }
     }
 

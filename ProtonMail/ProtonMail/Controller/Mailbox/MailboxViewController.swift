@@ -838,12 +838,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if loadMore > 0 {
                     if self.retryCounter >= 10 {
                         delay(1.0) {
-                            self.retry()
-                            self.retryCounter += 1
+                            self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (_, _, _) in
+                                self.retry()
+                                self.retryCounter += 1
+                            })
                         }
                     } else {
-                        self.retry()
-                        self.retryCounter += 1
+                        self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (_, _, _) in
+                            self.retry()
+                            self.retryCounter += 1
+                        })
                     }
                 } else {
                     DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
