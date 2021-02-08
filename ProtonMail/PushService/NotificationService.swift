@@ -71,14 +71,13 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         do {
-//            let plaintext = try Crypto().decrypt(encrytped: encrypted,
-//                                                 privateKey: encryptionKit.privateKey,
-//                                                 passphrase: encryptionKit.passphrase)
-//            
-            let pgp = PMNOpenPgp.createInstance()!
-            let plaintext = pgp.decryptMessageSingleKey(encrypted, privateKey:
-                                                                    encryptionKit.privateKey,
-                                                                 passphras: encryptionKit.passphrase)
+            let plaintext = try Crypto().decrypt(encrytped: encrypted,
+                                                 privateKey: encryptionKit.privateKey,
+                                                 passphrase: encryptionKit.passphrase)
+//            let pgp = PMNOpenPgp.createInstance()!
+//            let plaintext = pgp.decryptMessageSingleKey(encrypted, privateKey:
+//                                                                    encryptionKit.privateKey,
+//                                                                 passphras: encryptionKit.passphrase)
             
             guard let push = PushData.parse(with: plaintext) else {
                 #if Enterprise
