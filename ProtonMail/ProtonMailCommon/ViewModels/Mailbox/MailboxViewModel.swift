@@ -528,13 +528,6 @@ class MailboxViewModel: StorageLimit {
     }
     
     func shouldShowUpdateAlert() -> Bool {
-        //check ios version
-        if #available(iOS 11, *) {
-            return false
-        } else if !userCachedStatus.iOS10AlertIsShown {
-            return true
-        }
-        
         return false
     }
     
