@@ -2224,15 +2224,22 @@ class MessageDataService : Service, HasLocalStorage {
                 if let errorUserInfo = error?.userInfo {
                     if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
                         statusCode = detail.statusCode
-                    }
-                    else {
-                        if errorCode == -1009 || errorCode == -1004 || errorCode == -1001 { //internet issue
-                            if errorCode == -1001 {
-                                NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 0, userInfo: nil))
-                            } else {
-                                NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 1, userInfo: nil))
-                            }
+                    } else if errorCode == -1004 {
+                        /// this error means NSURLErrorCannotConnectToHost
+                        isInternetIssue = true
+                    } else {
+                        let status = Reachability.forInternetConnection()?.currentReachabilityStatus()
+                        switch status {
+                        case .NotReachable:
                             isInternetIssue = true
+                        default: break
+                        }
+                        
+                        // Show timeout error banner or not reachable banner in mailbox
+                        if errorCode == -1001 {
+                            NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 0, userInfo: nil))
+                        } else {
+                            NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 1, userInfo: nil))
                         }
                     }
                 }
