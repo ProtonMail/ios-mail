@@ -1032,7 +1032,6 @@
 		7B2961D1063882B8F5AB1F1E7D0EC717 /* Contact+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D7F020AAC2AEBEFF6879F9FA893803 /* Contact+Extension.swift */; };
 		7B3BF97DCC94A82DBF3364A02E6162B1 /* Message+EncryptType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA3EDD47D591D28907C504F3FF5CBE /* Message+EncryptType.swift */; };
 		7B4A90FB4B06506A99CCB29E07611458 /* KeychainSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE89BA7AA59E01F098B12A7C1D81FE /* KeychainSaver.swift */; };
-		7B71395AE1592D80A1CFC2A0B3C7307B /* NetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */; };
 		7B9AC57F18FFCBCEFFA902AE398CD8FC /* String+Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8401423E8FE838D3E637E3CAB0244D4 /* String+Alert+Extension.swift */; };
 		7B9ACACA5757B5E06DA5D10EE1163462 /* GeneralSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA7289C7A00897216DF37D848BDD1EE /* GeneralSettingViewCell.swift */; };
 		7BEB27AE7378DB2746F3AC5615475070 /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB397285117812BF94A2953E4B56D9C /* CustomHeaderView.swift */; };
@@ -2802,7 +2801,6 @@
 		8A6F6CDA2C92F4D433891E3BE204344A /* UserAgentTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserAgentTest.swift; path = ProtonMailTests/UserAgentTest.swift; sourceTree = SOURCE_ROOT; };
 		8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
 		8AFD327F9665CD8F972A0FDF58A1E1AB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
 		8B7F1E2698842DF474D535ECC28EBA76 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
 		8B812CAA39BC5A4D26E257A555C70F71 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		8BFE4DA4069E188AF860795FB7CABF21 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
@@ -5317,7 +5315,6 @@
 				47E4BCBD25CD653700AC3C4D /* ProtonMail */,
 				47E4BCBE25CD654200AC3C4D /* ProtonMailCommon */,
 				5622290E33BA0E2F4A08E0D499FC8DD5 /* Supporting Files */,
-				8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */,
 				1460CFFE42A162E682E668A9B983E083 /* ResourceLoader.swift */,
 			);
 			path = ProtonMailTests;
@@ -6702,7 +6699,6 @@
 				477DB58F25D0289E004A3EF4 /* Date+Fixture.swift in Sources */,
 				D101EF0D5DEB2C8654CA0A1D13956021 /* MigrateTests.swift in Sources */,
 				380AEB9683E863E7403569C665F2080C /* MimeTypesTests.swift in Sources */,
-				7B71395AE1592D80A1CFC2A0B3C7307B /* NetworkTests.swift in Sources */,
 				2F290F0E21D23FDF6F4489E81FF30A84 /* OpenPGP+ExtensionTests.swift in Sources */,
 				CEA3E8BC7CCB2588E48BBD76FF2513EA /* OpenPGPDefines.swift in Sources */,
 				CCA051B6A323A02C4591B0F4D5D28A29 /* OpenPGPTests.swift in Sources */,
