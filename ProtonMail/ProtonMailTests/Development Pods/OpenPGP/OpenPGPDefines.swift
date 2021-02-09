@@ -23,7 +23,6 @@
 
 import XCTest
 
-
 enum OpenPGPTestsDefine : Resource, CaseIterable {
     case keyring_privateKey
     case keyring_publicKey
@@ -32,8 +31,6 @@ enum OpenPGPTestsDefine : Resource, CaseIterable {
     case message_plaintext
     case attachment_keypacket
 }
-
-
 
 class OpenPGPDefines {
     
