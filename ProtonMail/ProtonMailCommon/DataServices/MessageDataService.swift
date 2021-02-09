@@ -2252,13 +2252,13 @@ class MessageDataService : Service, HasLocalStorage {
                                 isInternetIssue = true
                             default: break
                             }
-                            
-                            // Show timeout error banner or not reachable banner in mailbox
-                            if errorCode == -1001 {
-                                NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 0, userInfo: nil))
-                            } else {
-                                NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 1, userInfo: nil))
-                            }
+                        }
+                        
+                        // Show timeout error banner or not reachable banner in mailbox
+                        if errorCode == NSURLErrorTimedOut {
+                            NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 0, userInfo: nil))
+                        } else if isInternetIssue {
+                            NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 1, userInfo: nil))
                         }
                     }
                 }
