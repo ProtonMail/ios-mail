@@ -215,6 +215,37 @@ extension Message {
         return outLabel
     }
     
+    func checkLabels() {
+        guard let labels = self.labels.allObjects as? [Label] else {return}
+        let labelIDs = labels.map {$0.labelID}
+        guard labelIDs.contains(Message.Location.draft.rawValue) else {
+            return
+        }
+        
+        // This is the basic labes for draft
+        let basic = [Message.Location.draft.rawValue,
+                     Message.Location.allmail.rawValue,
+                     Message.HidenLocation.draft.rawValue]
+        for label in labels {
+            let id = label.labelID
+            if basic.contains(id) {continue}
+            
+            if let _ = Int(id) {
+                // default folder
+                // The draft can't in the draft folder and another folder at the same time
+                // the draft folder label should be removed
+                self.remove(labelID: Message.Location.draft.rawValue)
+                break
+            }
+            
+            // In v3 api, exclusive == true means folder
+            guard label.exclusive else {continue}
+            
+            self.remove(labelID: Message.Location.draft.rawValue)
+            break
+        }
+    }
+    
     
     func selfSent(labelID: String) -> String? {
         if let _ = self.managedObjectContext {

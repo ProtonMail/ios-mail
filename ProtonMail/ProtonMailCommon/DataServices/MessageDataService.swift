@@ -2619,6 +2619,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 
                                 if let labels = msg.message?["LabelIDs"] as? NSArray {
                                     PMLog.D("\(labels)")
+                                    messageObject.checkLabels()
                                     //TODO : add later need to know whne it is happending
                                 }
                                 
