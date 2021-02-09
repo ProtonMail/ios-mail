@@ -2221,28 +2221,43 @@ class MessageDataService : Service, HasLocalStorage {
                 var statusCode = 200
                 let errorCode = error?.code ?? 200
                 var isInternetIssue = false
-                if let errorUserInfo = error?.userInfo {
+                
+                if let err = error {
+                    let errorUserInfo = err.userInfo
+                    
                     if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
                         statusCode = detail.statusCode
-                    } else if errorCode == -1004 {
-                        /// this error means NSURLErrorCannotConnectToHost
-                        isInternetIssue = true
-                    } else if errorCode == -1003 {
-                        /// kCFURLErrorCannotFindHost
-                        isInternetIssue = true
-                    }
-                    else {
-                        let status = Reachability.forInternetConnection()?.currentReachabilityStatus()
-                        switch status {
-                        case .NotReachable:
+                    } else {
+                        if err.domain == NSURLErrorDomain {
+                            switch err.code {
+                            case NSURLErrorTimedOut,
+                                 NSURLErrorCannotConnectToHost,
+                                 NSURLErrorCannotFindHost,
+                                 NSURLErrorDNSLookupFailed,
+                                 NSURLErrorNotConnectedToInternet,
+                                 NSURLErrorSecureConnectionFailed,
+                                 NSURLErrorDataNotAllowed,
+                                 NSURLErrorCannotFindHost:
+                                isInternetIssue = true
+                            default:
+                                break
+                            }
+                        } else if err.domain == NSPOSIXErrorDomain && err.code == 100 {
+                            //Network protocol error
                             isInternetIssue = true
-                        default: break
+                        } else {
+                            let status = Reachability.forInternetConnection()?.currentReachabilityStatus()
+                            switch status {
+                            case .NotReachable:
+                                isInternetIssue = true
+                            default: break
+                            }
                         }
                         
                         // Show timeout error banner or not reachable banner in mailbox
-                        if errorCode == -1001 {
+                        if errorCode == NSURLErrorTimedOut {
                             NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 0, userInfo: nil))
-                        } else {
+                        } else if isInternetIssue {
                             NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 1, userInfo: nil))
                         }
                     }
