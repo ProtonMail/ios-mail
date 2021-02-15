@@ -1225,9 +1225,14 @@ class MessageDataService : Service, HasLocalStorage {
                 let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
                 fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
                 let request = NSBatchDeleteRequest(fetchRequest: fetch)
-                if let _ = try? context.execute(request) {
-                    _ = context.saveUpstreamIfNeeded()
+                request.resultType = .resultTypeObjectIDs
+
+                if let result = try? context.execute(request) as? NSBatchDeleteResult,
+                   let objectIdArray = result.result as? [NSManagedObjectID] {
+                    let changes = [NSDeletedObjectsKey: objectIdArray]
+                    NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
                 }
+
                 UIApplication.setBadge(badge: 0)
                 seal.fulfill_()
             }
