@@ -635,6 +635,15 @@ class MessageDataService : Service, HasLocalStorage {
             }
         }
     }
+
+    private func fetchEvents(labelID: String) {
+        fetchEvents(
+            byLable: labelID,
+            notificationMessageID: nil,
+            context: coreDataService.mainManagedObjectContext,
+            completion: nil
+        )
+    }
     
     /// Sync mail setting when user in composer
     /// workaround
@@ -1737,7 +1746,8 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         let api = ApplyLabelToMessages(labelID: labelID, messages: [messageID])
-        userManager.apiService.exec(route: api) { (task, response) in
+        userManager.apiService.exec(route: api) { [weak self] (task, response) in
+            self?.fetchEvents(labelID: labelID)
             completion?(task, nil, response.error)
         }
     }
@@ -1749,7 +1759,8 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         let api = RemoveLabelFromMessages(labelID: labelID, messages: [messageID])
-        userManager.apiService.exec(route: api) { (task, response) in
+        userManager.apiService.exec(route: api) { [weak self] (task, response) in
+            self?.fetchEvents(labelID: labelID)
             completion?(task, nil, response.error)
         }
     }
