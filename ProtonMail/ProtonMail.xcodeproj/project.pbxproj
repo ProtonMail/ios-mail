@@ -591,6 +591,9 @@
 		47C9545B3BBB156B983DCD9858C6EBF5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2125977F28202546D7525E9847C704 /* User.swift */; };
 		47CAC71E8CC3E0CE82662935B2A39739 /* ContactSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030C21C9C16C7CA8E12A9016B7208942 /* ContactSearchTableViewController.swift */; };
 		47E48E1025DAC58A00BDEC95 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E48E0F25DAC58A00BDEC95 /* String+Empty.swift */; };
+		47E48E2F25DAC69D00BDEC95 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E48E0F25DAC58A00BDEC95 /* String+Empty.swift */; };
+		47E48E3A25DAC69E00BDEC95 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E48E0F25DAC58A00BDEC95 /* String+Empty.swift */; };
+		47E48E3B25DAC6A100BDEC95 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E48E0F25DAC58A00BDEC95 /* String+Empty.swift */; };
 		47F14D91DB0057E46BD1FA62B07C8BB1 /* PhoneVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129EAE49CF30DA51D6A88E2C1769E673 /* PhoneVerifyViewController.swift */; };
 		48257881811E757CF5288C3D6B2A6682 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F63E64A2521F20E5630AC0AC144F79 /* UIImage+Extension.swift */; };
 		48379735EB564D570E8C60D8748A48A0 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A4E2CA6BE5D035D9A1C16A8416EE75 /* UserManager.swift */; };
@@ -7501,6 +7504,7 @@
 				77E772C942F911D73376408B0656851D /* ContactTypeViewModelImpl.swift in Sources */,
 				B2FC14632CE10220D59C22E10A137B6A /* ContactUpgradeCellDelegate.swift in Sources */,
 				4A62C1D3D12DD55081EC7DDC38EAB20D /* ContactVO+Extension.swift in Sources */,
+				47E48E3A25DAC69E00BDEC95 /* String+Empty.swift in Sources */,
 				71271CE749D48B3913631C5A087860C3 /* ContactVO.swift in Sources */,
 				8DB8DE3272D109E6AAA722080DAAFA4F /* ContactsAPI.swift in Sources */,
 				28CB42000B4AF5759B2DBB4A84FB9508 /* ContactsAndGroupsSharedCode.swift in Sources */,
@@ -8238,6 +8242,7 @@
 				5EB160FC490AD34FF908ABF03EDD654E /* WebContents.swift in Sources */,
 				F78CA68DD1989B3F0DD6294E24B23D10 /* WebContentsSecureLoader.swift in Sources */,
 				22F2071BDDD6F5E1B7763F2D40110F2B /* WebViewController.swift in Sources */,
+				47E48E2F25DAC69D00BDEC95 /* String+Empty.swift in Sources */,
 				4F6D0AE51755D2062999910127767F99 /* WebViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8527,6 +8532,7 @@
 				5143ACCC7F0C8ABD67C0AF12713BB02D /* WebContents.swift in Sources */,
 				F292801D946FAD4757D61FFB17C64904 /* WebContentsSecureLoader.swift in Sources */,
 				90AEEB6118F66430B81960AB5FDACCF8 /* WebViewController.swift in Sources */,
+				47E48E3B25DAC6A100BDEC95 /* String+Empty.swift in Sources */,
 				F53FC0B0FDD74245E5D948E63268C229 /* WebViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
