@@ -711,7 +711,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
         let signatureHtml = "\(defaultSignature) \(mobileSignature)"
-        
+
         switch messageAction {
         case .openDraft:
             var body = ""
@@ -797,13 +797,9 @@ class ComposeViewModelImpl : ComposeViewModel {
                 let newhtmlString = "\(head) \(self.body!) \(signatureHtml) \(foot)"
                 self.body = ""
                 return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
-            } else {
-                if signatureHtml.trim().isEmpty {
-                    let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>" //add some space
-                    return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
-                }
             }
-            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode)
+            let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
+            return .init(body: body, remoteContentMode: globalRemoteContentMode)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newhtmlString = """
@@ -930,6 +926,3 @@ extension ComposeViewModelImpl {
         return ["":""]
     }
 }
-
-
-
