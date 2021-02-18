@@ -177,7 +177,10 @@ html_editor.getCaretYPosition = function() {
 
 //this is for update protonmail email signature
 html_editor.updateSignature = function(html, sanitizeConfig) {
-    var signature = document.getElementById('protonmail_signature_block');
+    var signature = document.querySelector('div.protonmail_signature_block');
+    if (!signature) {
+        return
+    }
     var cleanByConfig = DOMPurify.sanitize(html, sanitizeConfig);
     signature.innerHTML = DOMPurify.sanitize(cleanByConfig);
 }
