@@ -375,7 +375,8 @@ class SignupViewModelImpl : SignupViewModel {
                     
                 })
             } else {
-                user.userService.updateDisplayName(auth: user.auth, user: user.userInfo,
+                user.userService.updateDisplayName(auth: user.auth,
+                                                   user: user.userInfo,
                                                    displayName: displayName) { _, _, error in
                     
                 }
@@ -391,9 +392,9 @@ class SignupViewModelImpl : SignupViewModel {
             }
         }
         
-        let api = UpdateNewsRequest(news: self.news)
+        let api = UpdateNewsRequest(news: self.news, auth: user.auth)
         self.apiService.exec(route: api) { (_, _) in
-            
+            //Ignroe the response event this failed it houldn't block the process
         }
     }
     

@@ -107,9 +107,7 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
     }
 
     var userAgent: String? {
-        get {
-            return nil
-        }
+        UserAgent.default.ua
     }
 
     func onDohTroubleshot() {

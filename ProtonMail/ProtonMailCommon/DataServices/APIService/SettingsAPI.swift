@@ -252,8 +252,9 @@ final class UpdateNotificationEmail : Request {
 // MARK : update notification email -- Response
 final class UpdateNewsRequest : Request {
     let news : Bool
-    init(news : Bool) {
+    init(news : Bool, auth: AuthCredential? = nil) {
         self.news = news
+        self.auth = auth
     }
     var parameters: [String : Any]? {
         let receiveNews = self.news == true ? 255 : 0
@@ -266,6 +267,14 @@ final class UpdateNewsRequest : Request {
     
     var path: String {
         return SettingsAPI.path + "/news"
+    }
+    
+    //custom auth credentical
+    let auth: AuthCredential?
+    var authCredential : AuthCredential? {
+        get {
+            return self.auth
+        }
     }
 }
 

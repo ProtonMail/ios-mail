@@ -145,6 +145,11 @@ class UsersManager : Service, Migrate {
     
     init(doh: DoH, delegate : UsersManagerDelegate?) {
         self.doh = doh
+        
+        //init doh defalt on/off
+        self.doh.status = userCachedStatus.isDohOn ? .on : .off
+
+        
         self.delegate = delegate
         
         /// for migrate
