@@ -226,7 +226,8 @@ extension UserManager : AuthDelegate {
     }
     
     func onLogout(sessionUID uid: String) {
-        
+        //TODO:: Since the user manager can directly catch the onLogOut event. we can improve this logic to not use the NotificationCenter.
+        NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": uid])
     }
     
     func onUpdate(auth: Credential) {
@@ -235,36 +236,24 @@ extension UserManager : AuthDelegate {
     }
     
     func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
-        
+        let authenticator = Authenticator(api: apiService)
+        let auth = authCredential
+        authenticator.refreshCredential(Credential(auth)) { result in
+            switch result {
+            case .success(let stage):
+                guard case Authenticator.Status.updatedCredential(let updatedCredential) = stage else {
+                    return complete(nil, nil)
+                }
+                complete(updatedCredential, nil)
+            case .failure(let error):
+                complete(nil, error as NSError)
+            }
+        }
     }
     
     func onForceUpgrade() {
-        
+        //TODO::
     }
-    
-//    func onLogout(sessionUID uid: String) {
-//
-//    }
-//    func onUpdate(auth: Credential) {
-//
-//    }
-//
-//    func onRefresh(bySessionUID uid: String, complete:  @escaping AuthRefreshComplete) {
-//
-//    }
-//
-//    func onForceUpgrade() {
-//
-//    }
-//    func updateAuthCredential(_ credential: Credential) {
-//        self.auth.udpate(sessionID: credential.UID, accessToken: credential.accessToken, refreshToken: credential.refreshToken, expiration: credential.expiration)
-//        self.save()
-//    }
-//
-//    func updateAuth(_ credential: AuthCredential) {
-//        self.auth.udpate(sessionID: credential.sessionID, accessToken: credential.accessToken, refreshToken: credential.refreshToken, expiration: credential.expiration)
-//        self.save()
-//    }
 }
 
 

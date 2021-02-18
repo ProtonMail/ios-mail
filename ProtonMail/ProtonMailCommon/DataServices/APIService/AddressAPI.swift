@@ -119,7 +119,7 @@ final class UpdateAddressOrder : Request {  //Response
     }
     
     var path: String {
-        return AddressesAPI.path
+        return AddressesAPI.path + "/order"
     }
     
     var parameters: [String : Any]? {
@@ -177,8 +177,7 @@ final class SetupAddressRequest : Request { //AddressesResponse
     let domain: String
     init(domain_name: String, auth: AuthCredential?) {
         self.domain = domain_name
-        //TODO:: fixme
-        //self.authCredential = auth
+        self.auth = auth
     }
     
     var parameters: [String : Any]? {
@@ -190,6 +189,14 @@ final class SetupAddressRequest : Request { //AddressesResponse
     }
     var path: String {
         return AddressesAPI.path + "/setup"
+    }
+    
+    //custom auth credentical
+    let auth: AuthCredential?
+    var authCredential : AuthCredential? {
+        get {
+            return self.auth
+        }
     }
 }
 
