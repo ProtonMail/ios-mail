@@ -667,6 +667,7 @@
 		505DC82E54FC1F329CDB9743C00A26F5 /* ContactCollectionViewContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 161647CD3D12CAF522C1683DBD2046F6 /* ContactCollectionViewContactCell.xib */; };
 		507D815E93D7203E26DD69BBCE948D8D /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2739C41175E76D599CA99E3B01482F23 /* TimePickerViewController.swift */; };
 		5091F7FA0F8D52D8013CCF0449D055D4 /* ForwardMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A14F715EA857976BE37946657856CC9 /* ForwardMessageTests.swift */; };
+		50CBC7F14E6C0F78193B2AC334E4758A /* HTTPRequestSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82923963C21B47DB5174A561F923FCB /* HTTPRequestSecureLoader.swift */; };
 		50D9AAAFE930F37C5A7D262B27D313A8 /* UpgradeAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642BAB85BF31A87E9AE6400AB84E65CF /* UpgradeAlertViewModel.swift */; };
 		50F23AB0F7DB1EDD4CD5EE6F3210A9C7 /* APIService+MessagesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A9D3A4B83ACC4D934A2E630B505AF5 /* APIService+MessagesExtension.swift */; };
 		50F82785664ACB122D3D262F30E24F5A /* AppCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175BF8CBA30FAFFA1B1BBCF6B2A4079A /* AppCache.swift */; };
@@ -1788,6 +1789,7 @@
 		D8C4930FF84691366C04D5C9C075BB05 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA6547BB92EFBFF9D78045E47FD613 /* InfoPlist.strings */; };
 		D8D8C5DD6C6B2D48CEBA1784A45E6094 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
 		D8F737DCC11AC0F6F47231E95E17AB94 /* Message+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2342422724509A168047AB7CC97F8CC0 /* Message+Constants.swift */; };
+		D92F7A7F768A78D0681A3874AAEB0B04 /* HTTPRequestSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82923963C21B47DB5174A561F923FCB /* HTTPRequestSecureLoader.swift */; };
 		D938CBE8ACB1D06AD17D6A6CA17785CF /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614D2272BFBD1D2F8E751E112D142E6D /* UIAlertController+Extension.swift */; };
 		D9E9E6AD719E15FFB94955ABF452F308 /* RecipientCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46511E284393F2C9530ED66B13614B12 /* RecipientCell.xib */; };
 		DA17BF8C926357204AC2D951BE51BEEF /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFE3868B0060D33182C2D17832CAF5F /* APIService.swift */; };
@@ -3556,6 +3558,16 @@
 			path = ManageAccounts;
 			sourceTree = "<group>";
 		};
+		0EEC50454733836EA83CEA02FE5B90A6 /* ProtonMailCommon */ = {
+			isa = PBXGroup;
+			children = (
+				888A167E5929CB7803DC633A643EE085 /* DataServices */,
+				7C4F31E089E602A35AF787B3B5F8E7D6 /* Extensions */,
+				480F273763648FD7698B2501262450D4 /* Utilities */,
+			);
+			path = ProtonMailCommon;
+			sourceTree = "<group>";
+		};
 		0F7FCB458980D1F585FE26BF9E4838CC /* EmbeddableCompose */ = {
 			isa = PBXGroup;
 			children = (
@@ -3665,6 +3677,14 @@
 				77669C3C0F15ACBCAC5071A59F5E57F0 /* Threading.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		1DDFCA66DEFEBE37F0182F5B7068B66A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F43024EF08BDFF50854961057184F509 /* Locale.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		1E4E9DBD44FC6E90427BA7C6D62FC7F5 /* IAP */ = {
@@ -3832,6 +3852,22 @@
 			path = SRP;
 			sourceTree = "<group>";
 		};
+		332CE1F42EE057C94E66F93A364A3424 /* OpenPGP */ = {
+			isa = PBXGroup;
+			children = (
+				B340B1CD8FCA59F88D63C82478A3AF8F /* CryptoTests+Message.swift */,
+				89FF81C7877846ED3BFEAE525C8470DE /* CryptoTests+Signature.swift */,
+				9FD74B485179D074463EE1A4D22B25EB /* CryptoTests.swift */,
+				EF1689FEA4DCBEAA9588C05672A8773F /* GoOpenPGPTests.swift */,
+				C3880932FE2E8B1B094ED8547F9500C4 /* OpenPGP+ExtensionTests.swift */,
+				7367FEA62FD3BC6409047F164033C09E /* OpenPGPDefines.swift */,
+				EA7FD349803F8BF6D4FA1C289CA44699 /* OpenPGPTests.swift */,
+				4FE06896ED2E4F0A50FAC94C872D3C93 /* OpenPGPTestsDefine.bundle */,
+				40E48F92B6DFEC5D4B9B0D16CE537D45 /* UserAgentTest.swift */,
+			);
+			path = OpenPGP;
+			sourceTree = "<group>";
+		};
 		3666ED49D06EFC49683AB77224CDAC53 /* ContactGroup */ = {
 			isa = PBXGroup;
 			children = (
@@ -3865,6 +3901,14 @@
 			path = PushService;
 			sourceTree = "<group>";
 		};
+		3BCF9954E684ADB4B99405491893D127 /* Doubles */ = {
+			isa = PBXGroup;
+			children = (
+				E5264895ED4EB92217F72573F9B31A70 /* Fixtures */,
+			);
+			path = Doubles;
+			sourceTree = "<group>";
+		};
 		3BFF63785E21165B8803FF5FE8CBDB13 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -3884,6 +3928,15 @@
 				5FBB1DF2E92DB1E862ED28D2B2D1C837 /* DoHMail.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		43C66F5502602EC00CAE01A4AA17B325 /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				2A7D3F1A16FA87056164F7774EAD4A36 /* DateFormatter+ContactBirthdayFormatterTests.swift */,
+				77470A28987E8BF0D25380DCA11EE454 /* DateFormatter+VCardBirthdayTextFormatterTests.swift */,
+			);
+			path = Formatters;
 			sourceTree = "<group>";
 		};
 		440851B2CA86F7B9878E9510D3C33933 /* ProtonMailCommon */ = {
@@ -4128,6 +4181,13 @@
 				DA5381880B0C6A39960C43331E92C147 /* SignUp+Error.swift */,
 			);
 			path = Errors;
+			sourceTree = "<group>";
+		};
+		51F0AACED138C3ECF2BC8E119479AC61 /* ProtonMail */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ProtonMail;
 			sourceTree = "<group>";
 		};
 		5622290E33BA0E2F4A08E0D499FC8DD5 /* Supporting Files */ = {
@@ -4414,6 +4474,14 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		7C4F31E089E602A35AF787B3B5F8E7D6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D71826FEF4EC3359E5ED191276B90D16 /* PMNIBirthday+FormattedBirthdayTests.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		7D0C45058F4035554C03ED6695E80A86 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -4473,6 +4541,14 @@
 				03B667127BCF3FD74EC8B166FB8B49A5 /* DurationPickerViewController.xib */,
 			);
 			path = DurationPickerViewController;
+			sourceTree = "<group>";
+		};
+		888A167E5929CB7803DC633A643EE085 /* DataServices */ = {
+			isa = PBXGroup;
+			children = (
+				D2038F203AD2770E390E55955DEDBEF2 /* DataModels */,
+			);
+			path = DataServices;
 			sourceTree = "<group>";
 		};
 		88FAC49610F18B88E303DE0175164664 /* Composer */ = {
@@ -5046,6 +5122,15 @@
 			);
 			sourceTree = "<group>";
 		};
+		C1EC0822CDB8C869F2A52D9555051376 /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				3045F5D173D01B261D3C040A09382CF7 /* DateFormatter+ContactBirthdayFormatter.swift */,
+				2F9181DDC8FF1AB2969CEF4E6F8EE391 /* DateFormatter+VCardBirthdayTextFormatter.swift */,
+			);
+			path = Formatters;
+			sourceTree = "<group>";
+		};
 		C46D29EA89FB808C6AD9B7BA6CD6BDCC /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -5129,6 +5214,14 @@
 				03341659B0BBA12D8FF7BDBEF9C7CEB7 /* VCard+Extension.swift */,
 			);
 			path = Encryption;
+			sourceTree = "<group>";
+		};
+		D2038F203AD2770E390E55955DEDBEF2 /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				C08A187F9FB053026A6B33AE54034EEF /* CalendarIntervalRuleTests.swift */,
+			);
+			path = DataModels;
 			sourceTree = "<group>";
 		};
 		D2549859F21136211C934171A46EEEDC /* CoreData */ = {
@@ -5217,6 +5310,14 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		DEBED767AFA632BFA3D1335D3054F1B7 /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				332CE1F42EE057C94E66F93A364A3424 /* OpenPGP */,
+			);
+			path = "Development Pods";
+			sourceTree = "<group>";
+		};
 		E303E8BB5DAE4353E54FFF9BDC3481F3 /* MimeParser */ = {
 			isa = PBXGroup;
 			children = (
@@ -5229,6 +5330,25 @@
 				88611299B9671FB8C9EC5B915B8DD4CC /* UInt8+Mime.swift */,
 			);
 			path = MimeParser;
+			sourceTree = "<group>";
+		};
+		E518270ED150E12FA0CF85A6A6AEEFC2 /* MimeParser */ = {
+			isa = PBXGroup;
+			children = (
+				9E1F86328BC73AD788E5EBDA051747D3 /* Data+MimeTests.swift */,
+				5C4FFB2A2CE12AD3B5843946192A8953 /* Test EMLs.bundle */,
+				07B056EBF53B06599D9AFD58EFF16608 /* Test Failed Htmls.bundle */,
+				4E4C0C20AA4E9E6F3D808B07AFBBFE67 /* Test Second Encoding.bundle */,
+			);
+			path = MimeParser;
+			sourceTree = "<group>";
+		};
+		E5264895ED4EB92217F72573F9B31A70 /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				5DF6C44607338A7DF2D618279E0B7E59 /* Date+Fixture.swift */,
+			);
+			path = Fixtures;
 			sourceTree = "<group>";
 		};
 		E72F9E240C7E68B7C43073F12182A053 /* Mailbox */ = {
@@ -8083,6 +8203,7 @@
 				E8F6B9AF7759ECEB68575F460C757C0C /* Fonts.swift in Sources */,
 				F74CBE3D9072883E9F79D7187340C5E2 /* Foundation+Extension.swift in Sources */,
 				D6263DA368D749BC56BEEB116574E550 /* HTMLStringSecureLoader.swift in Sources */,
+				D92F7A7F768A78D0681A3874AAEB0B04 /* HTTPRequestSecureLoader.swift in Sources */,
 				83AC9CDDEB53A628F84069140B334B01 /* Hash.swift in Sources */,
 				3BDF40DB15067F31901DE8AF1B4C2C93 /* Header.swift in Sources */,
 				E9CF42C30C75A57258C88321B1C7B5E1 /* HeaderedPrintRenderer.swift in Sources */,
@@ -8373,6 +8494,7 @@
 				A953B17F097ED7CA04515D817654036B /* Fonts.swift in Sources */,
 				9A6D30A29F517856961DEFAF4A2DCC5D /* Foundation+Extension.swift in Sources */,
 				12D06F10A5FE6566CA3094B56479D4F9 /* HTMLStringSecureLoader.swift in Sources */,
+				50CBC7F14E6C0F78193B2AC334E4758A /* HTTPRequestSecureLoader.swift in Sources */,
 				42C9442F2633EBE5FE3FA705C54CDEC0 /* Hash.swift in Sources */,
 				03D536EB5E269CF090DF0C39BD9158B0 /* Header.swift in Sources */,
 				6DC51CEB23B367DB7CBC6EBA9A85CA5E /* HeaderedPrintRenderer.swift in Sources */,

@@ -104,7 +104,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         let sanitizeRaw = """
         var dirty = document.documentElement.outerHTML.toString();
         var clean0 = DOMPurify.sanitize(dirty);
-        var clean1 = DOMPurify.sanitize(clean0, \(HTMLStringSecureLoader.domPurifyConfiguration));
+        var clean1 = DOMPurify.sanitize(clean0, \(HTTPRequestSecureLoader.domPurifyConfiguration));
         var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
         document.documentElement.replaceWith(clean2);
         
