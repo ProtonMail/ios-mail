@@ -26,7 +26,7 @@ class MailboxRobotInterface {
     
     @discardableResult
     func clickMessageBySubject(_ subject: String) -> MessageRobot {
-        Element.wait.forCellWithIdentifier(messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).tap()
+        Element.wait.forCellWithIdentifier(messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).forceTap()
         return MessageRobot()
     }
     
