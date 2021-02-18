@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "4176A7D2-7491-439F-8C15-70582A72CE2D",
+      "id" : "4830B447-375E-4826-88C1-008F8FEE6B21",
       "name" : "Configuration 1",
       "options" : {
 
@@ -15,11 +15,9 @@
     {
       "parallelizable" : true,
       "selectedTests" : [
-        "DraftsTests\/testAddRecipientsToDraft()",
-        "DraftsTests\/testChangeDraftSender()",
-        "DraftsTests\/testChangeDraftSubjectAndSendMessage()",
-        "DraftsTests\/testOpenDraftFromSearch()",
-        "DraftsTests\/testSaveDraft()"
+        "SearchTests\/testSearchDraft()",
+        "SearchTests\/testSearchFromInboxByAddress()",
+        "SearchTests\/testSearchFromInboxBySubject()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",

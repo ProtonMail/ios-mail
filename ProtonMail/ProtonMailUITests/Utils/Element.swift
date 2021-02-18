@@ -31,6 +31,11 @@ struct Element {
             XCTAssertTrue(element.exists, "StaticText element \(element.debugDescription) does not exist.", file: file, line: line)
         }
         
+        static func staticTextWithIdentifierDoesNotExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
+            let element = app.staticTexts[identifier].firstMatch
+            XCTAssertFalse(element.exists, "StaticText element \(element.debugDescription) exists.", file: file, line: line)
+        }
+        
         static func cellWithIdentifierExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
             let element = app.cells[identifier].firstMatch
             XCTAssertTrue(element.exists, "Cell element \(element.debugDescription) does not exist but it should.", file: file, line: line)
@@ -66,6 +71,10 @@ struct Element {
     class cell {
         class func tapByIdentifier(_ identifier: String) {
             app.cells[identifier].firstMatch.tap()
+        }
+        
+        class func forceTapByIdentifier(_ identifier: String) {
+            app.cells[identifier].firstMatch.forceTap()
         }
         
         class func tapByPosition(_ index: Int) {
@@ -453,5 +462,9 @@ extension XCUIElement {
     
     func clickCellByIndex(_ index: Int) {
         self.cells.element(boundBy: index)
+    }
+    
+    func forceTap() {
+        coordinate(withNormalizedOffset: .zero).tap()
     }
 }

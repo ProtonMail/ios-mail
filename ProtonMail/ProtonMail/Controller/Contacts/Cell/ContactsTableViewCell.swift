@@ -93,7 +93,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
             shortn = String(email[..<index])
         }
         shortName.text = shortn.uppercased()
-        generateCellAccessibilityIdentifiers(email)
+        generateCellAccessibilityIdentifiers(name)
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {

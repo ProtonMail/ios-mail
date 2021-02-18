@@ -6,6 +6,7 @@ stages:
 
 .before_script_mac: &before_script_mac
   - cd ProtonMail/ProtonMailUITests/ && sh Tests/TestPlans/scripts/prepare_users.sh && cd .. && cd ..
+  - gem install xcpretty
 
 # --- includes ---
 include:
@@ -100,7 +101,7 @@ feature_tests:
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-    - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=14.2" -testPlan "$TEST_PLAN" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "$NUMBER_OF_DEVICES" -quiet test
+    - sh ProtonMail/ProtonMailUITests/Tests/TestPlans/scripts/run_ui_tests.sh $TEST_PLAN $NUMBER_OF_DEVICES $CI_COMMIT_BRANCH $CI_JOB_URL $SLACK_UI_TESTS_URL
   after_script:
     - xchtmlreport -r ./TestResults -j
   tags:
@@ -155,5 +156,7 @@ commit-locales-release:
   only:
     refs:
       - branches
+    variables:
+      - $CI_COMMIT_REF_NAME =~ /^release/
     variables:
       - $CI_COMMIT_REF_NAME =~ /^release/
