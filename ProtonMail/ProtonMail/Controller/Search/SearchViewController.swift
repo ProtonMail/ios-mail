@@ -174,6 +174,7 @@ class SearchViewController: ProtonMailViewController {
             do {
                 let overallCountRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: Message.Attributes.entityName)
                 overallCountRequest.resultType = .countResultType
+                overallCountRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
                 let result = try context.fetch(overallCountRequest)
                 count = (result.first as? Int) ?? 1
             } catch let error {
@@ -183,6 +184,7 @@ class SearchViewController: ProtonMailViewController {
         }
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
         fetchRequest.resultType = .dictionaryResultType
 
