@@ -73,6 +73,10 @@ struct Element {
             app.cells[identifier].firstMatch.tap()
         }
         
+        class func forceTapByIdentifier(_ identifier: String) {
+            app.cells[identifier].firstMatch.forceTap()
+        }
+        
         class func tapByPosition(_ index: Int) {
             let cell = app.cells.element(boundBy: index).firstMatch
             cell.tap()
@@ -458,5 +462,9 @@ extension XCUIElement {
     
     func clickCellByIndex(_ index: Int) {
         self.cells.element(boundBy: index)
+    }
+    
+    func forceTap() {
+        coordinate(withNormalizedOffset: .zero).tap()
     }
 }
