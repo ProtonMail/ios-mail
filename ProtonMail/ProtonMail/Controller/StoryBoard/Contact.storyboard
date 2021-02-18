@@ -363,7 +363,7 @@
                         <segue destination="HW2-St-HGr" kind="presentation" identifier="toAddContactGroup" id="cjF-6k-L7o"/>
                         <segue destination="d3P-H0-xNt" kind="presentation" identifier="toAddContact" id="HIr-Zm-YHr"/>
                         <segue destination="iCl-CV-gT2" kind="presentation" identifier="toImportContacts" id="7yS-kj-Eid"/>
-                        <segue destination="1jS-uV-TRv" kind="presentation" identifier="toComposer" id="m8Q-wN-q8j"/>
+                        <segue destination="1jS-uV-TRv" kind="presentation" identifier="toComposer" modalPresentationStyle="fullScreen" id="m8Q-wN-q8j"/>
                         <segue destination="plX-Lv-x6C" kind="presentation" identifier="toUpgradeAlertSegue" id="Hva-pu-Vsz"/>
                     </connections>
                 </viewController>
@@ -472,7 +472,7 @@
                         <outlet property="sendButton" destination="Zke-2D-wWe" id="YT8-nQ-DdH"/>
                         <outlet property="tableView" destination="KRC-sl-Cdx" id="Yhy-A6-85s"/>
                         <segue destination="HW2-St-HGr" kind="presentation" identifier="toContactGroupEditSegue" id="Rzd-pg-PEg"/>
-                        <segue destination="1jS-uV-TRv" kind="presentation" identifier="toComposer" id="6yh-h8-btl"/>
+                        <segue destination="1jS-uV-TRv" kind="presentation" identifier="toComposer" modalPresentationStyle="fullScreen" id="6yh-h8-btl"/>
                         <segue destination="plX-Lv-x6C" kind="presentation" identifier="toUpgradeAlertSegue" id="2p9-E1-lOg"/>
                     </connections>
                 </viewController>
