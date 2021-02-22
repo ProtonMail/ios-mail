@@ -129,7 +129,6 @@ extension Analytics {
     
     enum Events: String {
         case logout = "Logout"
-        case checkUser = "Check User"
         case keychainError = "Keychain Error"
         case notificationError = "Notification Error"
         case sendMessageError = "Send Message Error"
