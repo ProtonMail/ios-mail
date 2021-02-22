@@ -19,4 +19,13 @@ class TestData {
     var internalEmailNotTrustedKeys = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
     var externalEmailPGPEncrypted = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
     var externalEmailPGPSigned = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
+        
+    var messageSubject: String { return "Random Subject \(Date().millisecondsSince1970)" }
+    var messageBody: String { return "Hello ProtonMail!Random body: \(Date().millisecondsSince1970)" }
+    
+    var alphaNumericString: String { return "_\(StringUtils().randomAlphanumericString())\(Date().millisecondsSince1970)" }
+    var newEmailAddress: String { return "\(StringUtils().randomEmail())@pm.me" }
+    
+    let editedPassword = "P@ssw0rd!"
+    let editedPasswordHint = "ProtonMail"
 }

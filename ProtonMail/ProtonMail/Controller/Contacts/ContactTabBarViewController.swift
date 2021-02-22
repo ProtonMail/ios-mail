@@ -23,7 +23,7 @@
 
 import UIKit
 
-class ContactTabBarViewController: UITabBarController, CoordinatedNew, AccessibleView {
+class ContactTabBarViewController: UITabBarController, CoordinatedNew {
     typealias coordinatorType = ContactTabBarCoordinator
     private var coordinator : ContactTabBarCoordinator?
     func set(coordinator: ContactTabBarCoordinator) {
@@ -71,7 +71,7 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew, Accessibl
         self.tabBar.items?[0].image = UIImage.init(named: "contact_groups_contacts_tabbar")
         self.tabBar.items?[1].title = LocalString._menu_contact_group_title
         self.tabBar.items?[1].image = UIImage.init(named: "contact_groups_groups_tabbar")
-        generateAccessibilityIdentifiers()
+        self.tabBar.assignItemsAccessibilityIdentifiers()
     }
 }
 

@@ -48,6 +48,10 @@ extension NSError {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._general_invalid_access_token])
     }
     
+    public class func alertBadToken() {
+        NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._general_invalid_access_token])
+    }
+    
     public class func alertUpdatedToast() ->Void {
 
     }

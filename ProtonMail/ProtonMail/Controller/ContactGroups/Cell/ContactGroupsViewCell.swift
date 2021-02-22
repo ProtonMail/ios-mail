@@ -28,7 +28,7 @@ protocol ContactGroupsViewCellDelegate : AnyObject {
     func sendEmailToGroup(ID: String, name: String)
 }
 
-class ContactGroupsViewCell: UITableViewCell {
+class ContactGroupsViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var groupImage: UIImageView!
@@ -116,6 +116,7 @@ class ContactGroupsViewCell: UITableViewCell {
                               backgroundColor: UIColor.init(hexString: color, alpha: 1),
                               borderWidth: 0,
                               borderColor: UIColor.white.cgColor)
+        generateCellAccessibilityIdentifiers(name)
     }
     
     private func reset() {

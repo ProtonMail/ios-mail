@@ -30,9 +30,9 @@ protocol UserDataSource : class {
     var mailboxPassword : String { get }
     var newSchema : Bool {get}
     var addressKeys : [Key] { get }
-    var userPrivateKeys : Data { get }
+    var userPrivateKeys : [Data] { get }
     var userInfo : UserInfo { get }
-    var addressPrivateKeys : Data { get }
+    var addressPrivateKeys : [Data] { get }
     var authCredential : AuthCredential { get }
     func getAddressKey(address_id : String) -> Key?
     func getAddressPrivKey(address_id : String) -> String
@@ -246,9 +246,9 @@ extension UserManager : UserDataSource {
         return self.userInfo.getAddressKey(address_id: address_id)
     }
     
-    var userPrivateKeys: Data {
+    var userPrivateKeys: [Data] {
         get {
-            self.userinfo.userPrivateKeys
+            self.userinfo.userPrivateKeysArray
         }
     }
     
@@ -278,9 +278,9 @@ extension UserManager : UserDataSource {
         
     }
     
-    var addressPrivateKeys : Data {
+    var addressPrivateKeys : [Data] {
         get {
-            return self.userinfo.addressPrivateKeys
+            return self.userinfo.addressPrivateKeysArray
         }        
     }
     

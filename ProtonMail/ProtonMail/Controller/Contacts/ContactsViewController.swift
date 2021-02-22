@@ -153,6 +153,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
             self.navigationItem.largeTitleDisplayMode = .never
             self.navigationItem.hidesSearchBarWhenScrolling = false
             self.navigationItem.searchController = self.searchController
+            self.navigationItem.assignNavItemIndentifiers()
         } else {
             self.searchViewConstraint.constant = self.searchController.searchBar.frame.height
             self.searchView.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
@@ -323,6 +324,7 @@ extension ContactsViewController: UITableViewDelegate {
                 
                 alertController.popoverPresentationController?.sourceView = self.tableView
                 alertController.popoverPresentationController?.sourceRect = CGRect(x: self.tableView.bounds.midX, y: self.tableView.bounds.maxY - 100, width: 0, height: 0)
+                alertController.assignActionsAccessibilityIdentifiers()
                 
                 self.present(alertController, animated: true, completion: nil)
             }
@@ -452,6 +454,11 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
                                     highlight: self.searchString)
                     }
                 }
+            }
+        case .move:
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.insertRows(at: [newIndexPath], with: .fade)
             }
         default:
             break

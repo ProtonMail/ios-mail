@@ -23,6 +23,7 @@
 
 import Foundation
 import PMKeymaker
+import Sentry
 
 let userCachedStatus = UserCachedStatus()
 
@@ -88,6 +89,9 @@ final class UserCachedStatus : SharedCacheBase {
         
         //new value to check new messages
         static let newMessageFromNotification = "new_message_from_notification"
+        
+        //check if the iOS 10 alert is shown
+        static let iOS10AlertIsShown = "ios_10_alert_is_shown"
     }
     
     var primaryUserSessionId: String? {
@@ -135,6 +139,18 @@ final class UserCachedStatus : SharedCacheBase {
         }
         set {
             setValue(newValue, forKey: Key.combineContactFlag)
+        }
+    }
+    
+    var iOS10AlertIsShown: Bool {
+        get {
+            if getShared().object(forKey: Key.iOS10AlertIsShown) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.iOS10AlertIsShown)
+        }
+        set {
+            setValue(newValue, forKey: Key.iOS10AlertIsShown)
         }
     }
 //    var neverShowDohWarning: Bool {
@@ -435,6 +451,7 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.lastAuthCacheVersion)
         getShared().removeObject(forKey: Key.isPM_MEWarningDisabled)
         getShared().removeObject(forKey: Key.combineContactFlag)
+        getShared().removeObject(forKey: Key.browser)
         
         //pin code
         getShared().removeObject(forKey: Key.lastPinFailedTimes)
@@ -493,11 +510,33 @@ extension UserCachedStatus : CacheStatusInject {
     }
     
     var isTouchIDEnabled: Bool {
-        return keymaker.isProtectorActive(BioProtection.self)
+        return keymaker.isProtectorActive(BioProtection.self) { (status) in
+            // TODO: Remove log once it is not needed
+            var msg: String?
+            if #available(iOS 11.3, *) {
+                msg = SecCopyErrorMessageString(status, nil) as String?
+            }
+            if let m = msg {
+                self.logKeyChainError(error: "status code: \(m)")
+            } else {
+                self.logKeyChainError(error: "status code: \(status)")
+            }
+        }
     }
     
     var isPinCodeEnabled : Bool {
-        return keymaker.isProtectorActive(PinProtection.self)
+        return keymaker.isProtectorActive(PinProtection.self) { (status) in
+            // TODO: Remove log once it is not needed
+            var msg: String?
+            if #available(iOS 11.3, *) {
+                msg = SecCopyErrorMessageString(status, nil) as String?
+            }
+            if let m = msg {
+                self.logKeyChainError(error: "status code: \(m)")
+            } else {
+                self.logKeyChainError(error: "status code: \(status)")
+            }
+        }
     }
     
     var pinFailedCount : Int {
@@ -545,6 +584,41 @@ extension UserCachedStatus : CacheStatusInject {
     func resetAskedEnableTouchID() {
         setValue(Constants.App.AskTouchID, forKey: Key.askEnableTouchID)
     }
+    
+    private func logKeyChainError(error: String,
+                          file: String = #file,
+                          function: String = #function,
+                          line: Int = #line,
+                          column: Int = #column) {
+        let dic: [String: Any] = [
+            "error": error
+        ]
+        let appendDic = self.getAppendInfo(file, function, line, column)
+        
+        let event = Sentry.Event(level: .error)
+        event.message = "Keychain Access Error"
+        event.extra = appendDic + dic
+        SentrySDK.capture(event: event)
+    }
+    
+    private func getAppendInfo(_ file: String, _ function: String, _ line: Int, _ column: Int) -> [String: Any] {
+        var ver = "1.0.0"
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            ver = version
+        }
+        
+        let appendDic: [String: Any] = [
+            "file": file,
+            "function": function,
+            "line": line,
+            "column": column,
+            "uuid": UIDevice.current.identifierForVendor?.uuidString ?? "UnknowUUID",
+            "DeviceModel" : UIDevice.current.model,
+            "DeviceVersion" : UIDevice.current.systemVersion,
+            "AppVersion" : "iOS_\(ver)",
+        ]
+        return appendDic
+    }
 }
 
 extension UserCachedStatus {
@@ -567,14 +641,13 @@ extension UserCachedStatus {
 extension UserCachedStatus {
     var browser: LinkOpener {
         get {
-            guard let string = KeychainWrapper.keychain.string(forKey: Key.browser),
-                let mode = LinkOpener(rawValue: string) else
-            {
+            guard let raw = KeychainWrapper.keychain.string(forKey: Key.browser) ?? getShared().string(forKey: Key.browser) else {
                 return .safari
             }
-            return mode
+            return LinkOpener(rawValue: raw) ?? .safari
         }
         set {
+            getShared().setValue(newValue.rawValue, forKey: Key.browser)
             KeychainWrapper.keychain.set(newValue.rawValue, forKey: Key.browser)
         }
     }

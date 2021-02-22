@@ -29,7 +29,7 @@
 "%d Members" = "%d medlemmar";
 
 /* auto lock time format */
-"%d Minute" = "%d Minut";
+"%d Minute" = "%d minut";
 
 /* auto lock time format */
 "%d Minutes" = "%d minuter";
@@ -47,7 +47,7 @@
 "+ Drop here to add as attachment" = "+ Släpp här för att lägga till som bilaga";
 
 /* default empty object */
-"<no object>" = "<no object>";
+"<no object>" = "<inget ämne>";
 
 /* 2fa verification failed */
 "2FA failed. Please try to login again." = "Autentisering misslyckades. Försök att logga in igen.";
@@ -77,8 +77,7 @@
 /* Account manager title */
 "Account" = "Konto";
 
-/* 
- & title */
+/* title */
 "Account password invalid" = "Felaktigt konto-lösenord";
 
 /* section title in settings */
@@ -86,6 +85,9 @@
 
 /* (No Comment) */
 "Add" = "Lägg till";
+
+/* menu title */
+"Add accounts" = "Lägg till konton";
 
 /* new contacts add Anniversary */
 "Add Anniversary" = "Lägg till årsdag";
@@ -159,7 +161,7 @@
 /* cell title in device settings */
 "Addresses" = "Adresser";
 
-/* Title */
+/* alert title */
 "Alert" = "Varning";
 
 /* Title */
@@ -210,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Apple meddelade oss att köpet ej kunde genomföras.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple meddelade oss att du har uppgraderat serviceplanen, men sa inte vilket av dina ProtonMail-konton som skulle uppgraderas om du har mer än ett.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informerade oss att du har uppgraderat paketet för tjänster, men vissa tekniska data saknades. Fyll i felrapporten så kommer vårt kundtjänstteam att kontakta dig.";
 
 /* Error message */
@@ -239,6 +238,9 @@
 
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "Är du säker på att du vill logga ut %@?";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Är du säker på att du vill logga ut?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Är du säker? Detta kan inte ångras.";
@@ -294,7 +296,7 @@
 /* Error */
 "Bad auth cache" = "Ogiltig autentiseringscache";
 
-/* Error title */
+/* title */
 "Bad parameter" = "Ogiltig parameter";
 
 /* Error Description */
@@ -303,7 +305,7 @@
 /* title */
 "Bad path" = "Felaktig sökväg";
 
-/* Error Description */
+/* title */
 "Bad response" = "Ogiltigt svar";
 
 /* Title */
@@ -379,7 +381,8 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Kan inte hitta den bifogade filen!";
 
-/* update password error = typo:Modulus */
+/* sign up user error when can't get moduls id
+ update password error */
 "Can't get a Moduls ID!" = "Kan inte hämta Moduls ID!";
 
 /* update password error = typo:Modulus */
@@ -424,7 +427,8 @@
 /* message Cc: feild */
 "Cc:" = "Kopia:";
 
-/* place holder */
+/* *
+ *  PhoneVerifyViewController */
 "Cell phone number" = "Mobilnummer";
 
 /* Title */
@@ -439,7 +443,7 @@
 /* Title */
 "Change Mailbox Password" = "Ändra lösenord för brevlådan";
 
-/* update password error title */
+/* title */
 "Change Password" = "Ändra lösenord";
 
 /* settings protection section title */
@@ -460,7 +464,7 @@
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "Kontrollera Proton Status för vår systemstatus.";
 
-/* loading message */
+/* "Username" */
 "Checking ...." = "Kontrollerar....";
 
 /* place holder */
@@ -487,14 +491,15 @@
 /* cell title in device settings */
 "Combined Contacts" = "Kombinerade kontakter";
 
-/* Action
-   Springboard (3D Touch) shortcuts action */
+/* *
+ *  Composer Email view controller */
 "Compose" = "Skriv nytt";
 
 /* Title */
 "Compose to" = "Skriv nytt till";
 
-/* Action */
+/* *
+ *  MenuViewController */
 "Confirm" = "Bekräfta";
 
 /* "Login Password" */
@@ -576,14 +581,14 @@
 /* title of button in account connect page */
 "Create new account" = "Skapa nytt konto";
 
-/* error message title when create new user */
+/* error part & alert title */
 "Create user failed" = "Skapa användare misslyckades";
 
 /* Error */
 "Create User failed. Please try again." = "Kunde inte skapa användare. Försök igen.";
 
 /* Change language title */
-"Current Language is: " = "Nuvarande Språk är: ";
+"Current Language is: " = "Nuvarande språk är: ";
 
 /* Title */
 "Current login password" = "Nuvarande lösenord för inloggning";
@@ -640,7 +645,8 @@
 /* place holder */
 "Define Password" = "Ange Lösenord";
 
-/* general delete action */
+/* *
+ *  Contacts View Controller */
 "Delete" = "Radera";
 
 /* emptify folder/label confirmation alert */
@@ -655,7 +661,8 @@
 /* mail location desc */
 "Deleted" = "Raderad";
 
-/* Title */
+/* *
+ *  Email Header View */
 "Details" = "Detaljer";
 
 /* network troubleshot cell title */
@@ -674,16 +681,14 @@
 "Display name" = "Visningsnamn";
 
 /* Title in settings */
-"Display Name" = "Visnings Namn";
+"Display Name" = "Visningsnamn";
 
-/* Title */
-"Display Name Updated" = "Visnings Namn Uppdaterat";
+/* *
+ *  SettingsViewController & alert title */
+"Display Name Updated" = "Visningsnamn uppdaterat";
 
 /* Title in display name settings */
 "DisplayName" = "Visningsnamn";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Vill du aktivera den köpta serviceplanen för ";
 
 /* Description */
 "Do you want to cancel the process?" = "Vill du avbryta processen?";
@@ -744,10 +749,11 @@
 /* default vcard types */
 "Email" = "E-post";
 
-/* contact placeholder */
+/* *
+ *  Email Verify View Controller */
 "Email address" = "Epostadress";
 
-/* Title */
+/* alert title */
 "Email address invalid" = "Ogiltig epostadress";
 
 /* contact detail view, email addresses section title */
@@ -759,8 +765,7 @@
 /* place holder */
 "Email default signature" = "Standardsignatur";
 
-/* 
- & title */
+/* title */
 "Email domain invalid" = "Ogiltig e-postdomän";
 
 /* human check option button */
@@ -769,7 +774,7 @@
 /* cell title in device setting */
 "Empty Cache" = "Tom cache";
 
-/* empty folder, for spam and trash and drafts */
+/* "Cancel" */
 "Empty Folder" = "Töm mapp";
 
 /* it is an option to empty the label */
@@ -878,7 +883,7 @@
 "Expires" = "Utgår";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Löper ut om %1$d dagar %2$d timmar %3$d minuter %4$d sekunder";
+"Expires in %d days %d hours %d mins %d seconds" = "Löper ut om %d dagar %d timmar %d min %d sekunder";
 
 /* Title */
 "Expiring Messages" = "Förfallande meddelanden";
@@ -1043,11 +1048,11 @@
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "För att använda våra tjänster måste du godkänna ProtonMail's användarvillkor.";
 
-/* mail location desc
-   menu title */
+/* "Deleted" */
 "Inbox" = "Inkorg";
 
-/* mail location title */
+/* *
+ *  MailboxViewController */
 "INBOX" = "Inkorg";
 
 /* Title */
@@ -1083,10 +1088,7 @@
 /* (No Comment) */
 "Invalid access token please relogin" = "Ogiltigt åtkomstbevis, var god logga in igen";
 
-/* Description */
-"Invalid access token. Please relogin." = "Ogiltig access token. Vänligen logga in igen.";
-
-/* Error */
+/* alert title */
 "Invalid credential" = "Ogiltig autentiseringsuppgift";
 
 /* update password error */
@@ -1125,7 +1127,8 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Ogiltig nyckel. Gå tillbaka och försök igen.";
 
-/* Title */
+/* *
+ *  MoreOptionsView */
 "Label as..." = "Märk som...";
 
 /* Title */
@@ -1184,13 +1187,16 @@
 
 /* *
  *  file string type */
-"Localizable.strings" = "Base";
+"Localizable.strings" = "Bas";
 
 /* menu title */
 "Lock The App" = "Lås Appen";
 
 /* Account manager title */
 "Log in to your ProtonMail account" = "Logga in på ditt ProtonMail-konto";
+
+/* comment */
+"Log out" = "Logga ut";
 
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Logga ut %@?";
@@ -1240,6 +1246,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Brevlåda storlek";
 
+/* menu title */
+"Manage accounts" = "Hantera konton";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Hantera adresser";
 
@@ -1277,10 +1286,10 @@
 /* Placeholder */
 "Message Password" = "Meddelandelösenord";
 
-/* Description */
+/* composer view */
 "Message password does not match." = "Lösenordet för meddelandet är felaktigt.";
 
-/* settings debug section title */
+/* "Cancel" */
 "Message Queue" = "Meddelandekö";
 
 /* (No Comment) */
@@ -1304,7 +1313,8 @@
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Mobilsignatur";
 
-/* Description */
+/* *
+ *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobilregistrering är för tillfället inaktiverat. Försök igen senare, eller prova att registrera dig på protonmail.com via en dator.";
 
 /* Description */
@@ -1328,7 +1338,7 @@
 /* folder apply - title */
 "Move to Folder" = "Flytta till Mapp";
 
-/* move action */
+/* "Trash" */
 "Move to Inbox" = "Flytta till Inkorgen";
 
 /* move action */
@@ -1377,7 +1387,7 @@
 "No Messages" = "Inga Meddelanden";
 
 /* no object error, local only , this could be not translated! */
-"no object" = "no object";
+"no object" = "inget objekt";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "Nej, för ett annat ProtonMail-konto";
@@ -1428,7 +1438,8 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "Snooze för Aviseringar Off";
 
-/* Action */
+/* *
+ *  ReportBugsViewController */
 "OK" = "OK";
 
 /* Title */
@@ -1442,6 +1453,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Endast ett gratiskonto kan läggas till";
+
+/* Open action */
+"Open" = "Öppna";
 
 /* (No Comment) */
 "OpenDraft" = "Öppna utkast";
@@ -1458,7 +1472,7 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Vår kundtjänst kommer att försöka aktivera din serviceplan manuellt om du samtycker till att bifoga tekniska data som AppStore lämnat till appen vid köptillfället. Denna data innehåller inte några detaljer om ditt iTunes-konto, Apple-ID, länkade kreditkort eller någon annan användarinformation. Det hjälper bara oss att verifiera att transaktionen var uppfylld på Appstores servrar.";
 
-/* mail location desc */
+/* "Draft" = "Draft"; */
 "Outbox" = "Utkorg";
 
 /* title */
@@ -1503,13 +1517,14 @@
 /* contact placeholder */
 "Phone number" = "Telefonnummer";
 
-/* Title */
+/* "Verification code request failed" */
 "Phone number invalid" = "Telefonnumret är ogiltigt";
 
 /* human check option button */
 "Phone Verification" = "Telefonverifiering";
 
-/* Title */
+/* *
+ *  Attachment table ViewController */
 "Photo Library" = "Fotobibliotek";
 
 /* device settings auto lock type title */
@@ -1584,9 +1599,7 @@
 /* (No Comment) */
 "Please try a different user name." = "Försök med ett annat användarnamn.";
 
-/* 
-
- */
+/* (No Comment) */
 "Please try again." = "Försök igen";
 
 /* Error message */
@@ -1610,9 +1623,8 @@
 /* The */
 "Please wait until the email downloaded!" = "Vänligen vänta till epostmeddelandet laddats ner!";
 
-/* 
- & alert title */
-"Please, manage it in your phone." = "Please, manage it in your phone.";
+/* alert title */
+"Please, manage it in your phone." = "Var snäll och hantera det i telefonen.";
 
 /* Upgrade warning title */
 "PREMIUM FEATURE" = "PREMIUMFUNKTION";
@@ -1692,7 +1704,8 @@
 /* Title */
 "Recovery Code" = "Återställningskod";
 
-/* Title */
+/* *
+ *  SignUpEmailViewController */
 "Recovery Email" = "Återställningsadress";
 
 /* Title */
@@ -1716,7 +1729,8 @@
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Upprepa";
 
-/* reply action */
+/* *
+ *  Controller Defined */
 "Reply" = "Svara";
 
 /* reply all action */
@@ -1764,8 +1778,8 @@
 /* action sheet option */
 "Scheduled" = "Schemalagd";
 
-/* Springboard (3D Touch) shortcuts action
-   Title */
+/* *
+ *  SearchViewController */
 "Search" = "Sök";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1783,7 +1797,7 @@
 /* Action */
 "Send anyway" = "Skicka ändå";
 
-/* Description */
+/* when subject not empty */
 "Send message without subject?" = "Skicka meddelande utan ämne?";
 
 /* Title */
@@ -1895,13 +1909,10 @@
 /* Title */
 "Star" = "Stjärnmärk";
 
-/* mail location desc
-   menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
+/* "Spam" */
 "Starred" = "Stjärnmärkt";
 
-/* mail location title */
+/* "INBOX" */
 "STARRED" = "STJÄRNMÄRKTA";
 
 /* settings option (Start Time: 8am) */
@@ -1933,6 +1944,9 @@
 
 /* menu title */
 "Subscription" = "Prenumeration";
+
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Abonnemangsinformation är inte tillgänglig för tillfället. Försök igen.";
 
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Stöd för %i anpassade domäner (t.ex. user@yourdomain.com)";
@@ -1977,8 +1991,7 @@
 /* Description */
 "The authentication credentials are invalid." = "Autentiseringsuppgifterna är ogiltiga.";
 
-/* 
- */
+/* (No Comment) */
 "The authentication token has expired." = "Autentiseringstoken har löpt ut.";
 
 /* key size notes */
@@ -2045,18 +2058,20 @@
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Bilagans totala storlek får inte överstiga 25 MB";
 
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Webbadressen du försöker komma åt är inte standard och kanske inte laddar korrekt. Vill du öppna den med enhetens standardwebbläsare?";
+
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Användaren är redan inloggad";
 
-/* 
- */
+/* (No Comment) */
 "The UserName have been taken." = "Användarnamnet är upptaget.";
 
-/* 
- & title */
+/* title */
 "The verification email invalid" = "Ogiltig typ av verifieringskod";
 
-/* Error */
+/* *
+ *  RecaptchaViewController */
 "The verification failed!" = "Verifieringen misslyckades!";
 
 /* alert when logout user if in queue still have tasks */
@@ -2068,8 +2083,7 @@
 /* Description */
 "There was an error creating or loading the app's saved data." = "Det gick inte att skapa eller läsa appens sparade data.";
 
-/* 
- & local error */
+/* local error */
 "There was an error creating or loading the application's saved data." = "Det gick inte att skapa eller ladda programmets sparade data.";
 
 /* Alert message */
@@ -2103,7 +2117,7 @@
 "To" = "Till";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "För att förhindra missbruk av ProtonMail,\r\n behöver vi verifiera att du inte är en robot.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "För att förhindra missbruk av ProtonMail\r behöver vi verifiera att du inte är en robot.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "För att återställa lösenordet för din e-postlåda, vänligen använd ProtonMail:s webbversion på protonmail.com";
@@ -2124,15 +2138,15 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
-/* settings touchid error */
+/* *
+ *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID är inte aktiverat, aktivera det under Inställningar";
 
 /* settings touchid/faceid error */
 "TouchID not available" = "TouchID är inte tillgängligt";
 
-/* mail location desc
-   menu title
-   move action */
+/* *
+ *  MessageAction */
 "Trash" = "Papperskorg";
 
 /* mail location title */
@@ -2168,8 +2182,7 @@
 /* Description */
 "Unable to connect to the server" = "Kunde inte ansluta till servern";
 
-/* 
- */
+/* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "Det gick inte att skapa en URL med följande sökväg: %@";
 
 /* Description */
@@ -2202,10 +2215,11 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "Det gick inte att parsa svarsobjekt: %@";
 
-/* Error */
+/* alert title */
 "Unable to parse token" = "Det gick inte att parsa token";
 
-/* error when sending the message */
+/* *
+ *  MessageDataService */
 "Unable to send the email" = "Det gick inte att skicka e-postmeddelandet.";
 
 /* Action */
@@ -2287,21 +2301,20 @@
 /* Title */
 "USER LOGIN" = "Användarinloggning";
 
-/* 
- & title */
+/* title */
 "User name exist" = "Användarnamnet existerar";
 
-/* 
- & alert title */
+/* alert title */
 "User name invalid" = "Ogiltigt användarnamn";
 
-/* Title */
+/* *
+ *  Login View */
 "Username" = "Användarnamn";
 
-/* Title */
+/* alert title */
 "Verification code request failed" = "Det gick inte att skicka verifieringskoden";
 
-/* Title */
+/* alert title */
 "Verification code sent" = "Verifieringskod har skickats";
 
 /* error title */
@@ -2358,8 +2371,7 @@
 /* default vcard types */
 "Work" = "Arbete";
 
-/* 
- & title */
+/* title */
 "Wrong verification code" = "Fel verifikationskod";
 
 /* Title */
@@ -2402,12 +2414,13 @@
 "You have unsaved changes. Do you want to save it?" = "Du har osparade ändringar. Vill du spara?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "Du har använt %1$d%% av ditt lagringsutrymme (%2$@).";
+"You have used %d%% of your storage space (%@)." = "Du har använt %d%% av ditt lagringsutrymme (%@).";
 
-/* Content of space warning */
+/* *
+ *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Du har använt allt ditt lagringsutrymme (%@).";
 
-/* Description */
+/* "Alert" */
 "You need at least one recipient to send" = "Du behöver minst en mottagare för att skicka";
 
 /* Alert to confirm logout
@@ -2429,7 +2442,8 @@
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Din inkorg skyddas nu av end-to-end-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda ProtonMail! Du kan också manuellt kryptera meddelanden till dem om de inte använder ProtonMail.";
 
-/* Description */
+/* *
+ *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ditt nya krypterade e-postkonto har skapats och är redo att skicka och ta emot krypterade meddelanden.";
 
 /* view top title */
@@ -2440,6 +2454,9 @@
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "Din plan förnyas automatiskt på";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session har löpt ut eftersom du har varit inaktiv ett tag eller för att den har återkallats. Logga in igen.";
 
 /* Description */
 "Your signature has been updated." = "Din signatur har uppdaterats.";

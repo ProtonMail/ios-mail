@@ -34,7 +34,7 @@ protocol AttachmentsTableViewControllerDelegate : AnyObject {
     func attachments(_ attViewController: AttachmentsTableViewController, error: String) -> Void
 }
 
-class AttachmentsTableViewController: UITableViewController, AttachmentController {
+class AttachmentsTableViewController: UITableViewController, AttachmentController, AccessibleView {
     
     enum AttachmentSection: Int {
         case normal = 1, inline
@@ -68,10 +68,15 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     var normalAttachments: [Attachment] = []
     var inlineAttachments: [Attachment] = []
     var attachmentSections : [AttachmentSection] = []
+    lazy var processQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
 
     var attachments: [Attachment] {
         if let atts = self.message.attachments.allObjects as? [Attachment] {
-            return atts
+            return atts.filter{ !$0.isSoftDeleted }
         }
         return []
     }
@@ -89,9 +94,11 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }()
     
     func updateAttachments() {
-        self.buildAttachments()
-        self.updateAttachmentSize()
-        self.tableView?.reloadData()
+            self.buildAttachments()
+            self.updateAttachmentSize()
+        DispatchQueue.main.async {
+            self.tableView?.reloadData()
+        }
     }
     
     func buildAttachments() {
@@ -126,6 +133,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         self.clearsSelectionOnViewWillAppear = false
         
         updateAttachments()
+        generateAccessibilityIdentifiers()
     }
     
     func configureNavigationBar(_ navigationController: UINavigationController) {
@@ -190,7 +198,9 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }
     
     func showSizeErrorAlert( _ didReachedSizeLimitation: Int) {
-        self.showErrorAlert(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+        DispatchQueue.main.async {
+            self.showErrorAlert(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+        }
     }
     
     func showErrorAlert( _ error: String) {

@@ -197,6 +197,6 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .verify.switchedToAccount(onePassUser.name)
+            .verify.switchedToAccount(onePassUser)
     }
 }

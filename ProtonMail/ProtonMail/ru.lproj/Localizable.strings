@@ -77,8 +77,7 @@
 /* Account manager title */
 "Account" = "Учётная запись";
 
-/* 
- & title */
+/* title */
 "Account password invalid" = "Неправильный пароль учётной записи";
 
 /* section title in settings */
@@ -86,6 +85,9 @@
 
 /* (No Comment) */
 "Add" = "Добавить";
+
+/* menu title */
+"Add accounts" = "Добавить учётные записи";
 
 /* new contacts add Anniversary */
 "Add Anniversary" = "Добавить годовщину";
@@ -159,7 +161,7 @@
 /* cell title in device settings */
 "Addresses" = "Адреса";
 
-/* Title */
+/* alert title */
 "Alert" = "Предупреждение";
 
 /* Title */
@@ -210,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Из компании Apple нам сообщили, что не смогли обработать покупку.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Из компании Apple нам сообщили, что вы улучшили тарифный план, но не указали, какую именно из ваших учётных записей ProtonMail расширять (в случае если у вас более одной).";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Из компании Apple нам сообщили, что вы улучшили тарифный план, но нам не хватает некоторых технических данных. Пожалуйста, заполните отчёт об ошибке, и наша команда поддержки клиентов свяжется с вами.";
 
 /* Error message */
@@ -239,6 +238,9 @@
 
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "Вы уверены, что хотите выйти из %@?";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Вы уверены, что хотите выйти из системы?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Вы уверены? Это действие не может быть отменено.";
@@ -294,7 +296,7 @@
 /* Error */
 "Bad auth cache" = "Неверный кэш аутентификации";
 
-/* Error title */
+/* title */
 "Bad parameter" = "Неверный параметр";
 
 /* Error Description */
@@ -303,7 +305,7 @@
 /* title */
 "Bad path" = "Неверный путь";
 
-/* Error Description */
+/* title */
 "Bad response" = "Неверный ответ";
 
 /* Title */
@@ -379,7 +381,8 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Невозможно найти это вложение!";
 
-/* update password error = typo:Modulus */
+/* sign up user error when can't get moduls id
+ update password error */
 "Can't get a Moduls ID!" = "Невозможно получить Modulus ID!";
 
 /* update password error = typo:Modulus */
@@ -424,7 +427,8 @@
 /* message Cc: feild */
 "Cc:" = "Копия:";
 
-/* place holder */
+/* *
+ *  PhoneVerifyViewController */
 "Cell phone number" = "Номер мобильного телефона";
 
 /* Title */
@@ -439,7 +443,7 @@
 /* Title */
 "Change Mailbox Password" = "Изменение пароля почтового ящика";
 
-/* update password error title */
+/* title */
 "Change Password" = "Изменение пароля";
 
 /* settings protection section title */
@@ -460,7 +464,7 @@
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "Проверьте статус Proton, чтобы узнать статус нашей системы.";
 
-/* loading message */
+/* "Username" */
 "Checking ...." = "Проверка...";
 
 /* place holder */
@@ -487,14 +491,15 @@
 /* cell title in device settings */
 "Combined Contacts" = "Совмещённые контакты";
 
-/* Action
-   Springboard (3D Touch) shortcuts action */
+/* *
+ *  Composer Email view controller */
 "Compose" = "Новое письмо";
 
 /* Title */
 "Compose to" = "Написать письмо";
 
-/* Action */
+/* *
+ *  MenuViewController */
 "Confirm" = "Подтвердить";
 
 /* "Login Password" */
@@ -576,7 +581,7 @@
 /* title of button in account connect page */
 "Create new account" = "Создать новую учётную запись";
 
-/* error message title when create new user */
+/* error part & alert title */
 "Create user failed" = "Сбой при создании пользователя";
 
 /* Error */
@@ -640,7 +645,8 @@
 /* place holder */
 "Define Password" = "Укажите пароль";
 
-/* general delete action */
+/* *
+ *  Contacts View Controller */
 "Delete" = "Удалить";
 
 /* emptify folder/label confirmation alert */
@@ -655,7 +661,8 @@
 /* mail location desc */
 "Deleted" = "Удалённые";
 
-/* Title */
+/* *
+ *  Email Header View */
 "Details" = "Подробности";
 
 /* network troubleshot cell title */
@@ -676,14 +683,12 @@
 /* Title in settings */
 "Display Name" = "Отображаемое имя";
 
-/* Title */
+/* *
+ *  SettingsViewController & alert title */
 "Display Name Updated" = "Отображаемое имя обновлено";
 
 /* Title in display name settings */
 "DisplayName" = "Отображаемое имя";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Вы хотите активировать заказанный тариф на ";
 
 /* Description */
 "Do you want to cancel the process?" = "Вы хотите отменить процесс?";
@@ -744,10 +749,11 @@
 /* default vcard types */
 "Email" = "Эл. почта";
 
-/* contact placeholder */
+/* *
+ *  Email Verify View Controller */
 "Email address" = "Адрес эл. почты";
 
-/* Title */
+/* alert title */
 "Email address invalid" = "Адрес электронной почты некорректен";
 
 /* contact detail view, email addresses section title */
@@ -759,8 +765,7 @@
 /* place holder */
 "Email default signature" = "Подпись электронной почты по умолчанию";
 
-/* 
- & title */
+/* title */
 "Email domain invalid" = "Неправильный домен эл. почты";
 
 /* human check option button */
@@ -769,7 +774,7 @@
 /* cell title in device setting */
 "Empty Cache" = "Очистить кэш";
 
-/* empty folder, for spam and trash and drafts */
+/* "Cancel" */
 "Empty Folder" = "Очистить папку";
 
 /* it is an option to empty the label */
@@ -878,7 +883,7 @@
 "Expires" = "Истекает";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Исчезнет через %1$d д. %2$d ч. %3$d мин. %4$d сек.";
+"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
 
 /* Title */
 "Expiring Messages" = "Исчезающие сообщения";
@@ -1043,11 +1048,11 @@
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Чтобы пользоваться нашими услугами, вам необходимо принять условия и положения ProtonMail.";
 
-/* mail location desc
-   menu title */
+/* "Deleted" */
 "Inbox" = "Входящие";
 
-/* mail location title */
+/* *
+ *  MailboxViewController */
 "INBOX" = "Входящие";
 
 /* Title */
@@ -1083,10 +1088,7 @@
 /* (No Comment) */
 "Invalid access token please relogin" = "Некорректный токен доступа. Пожалуйста, войдите повторно";
 
-/* Description */
-"Invalid access token. Please relogin." = "Некорректный токен доступа. Пожалуйста, войдите повторно.";
-
-/* Error */
+/* alert title */
 "Invalid credential" = "Часть учётных данных неверна";
 
 /* update password error */
@@ -1125,7 +1127,8 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Ключ некорректен. Пожалуйста, вернитесь и повторите попытку.";
 
-/* Title */
+/* *
+ *  MoreOptionsView */
 "Label as..." = "Отметить ярлыком...";
 
 /* Title */
@@ -1192,6 +1195,9 @@
 /* Account manager title */
 "Log in to your ProtonMail account" = "Вход в вашу учётную запись ProtonMail";
 
+/* comment */
+"Log out" = "Bыйти";
+
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Выйти из %@?";
 
@@ -1240,6 +1246,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Объём почтового ящика";
 
+/* menu title */
+"Manage accounts" = "Управление учётными записями";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Управление адресами";
 
@@ -1277,10 +1286,10 @@
 /* Placeholder */
 "Message Password" = "Пароль сообщения";
 
-/* Description */
+/* composer view */
 "Message password does not match." = "Пароль сообщения не совпадает.";
 
-/* settings debug section title */
+/* "Cancel" */
 "Message Queue" = "Очередь сообщений";
 
 /* (No Comment) */
@@ -1304,7 +1313,8 @@
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Подпись для мобильного клиента";
 
-/* Description */
+/* *
+ *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Регистрация с мобильных устройств временно отключена. Пожалуйста, повторите попытку позднее, либо попробуйте зарегистрироваться на protonmail.com, используя настольный компьютер или ноутбук.";
 
 /* Description */
@@ -1328,7 +1338,7 @@
 /* folder apply - title */
 "Move to Folder" = "Переместить в папку";
 
-/* move action */
+/* "Trash" */
 "Move to Inbox" = "Переместить во Входящие";
 
 /* move action */
@@ -1428,7 +1438,8 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "Приглушение уведомлений отключено";
 
-/* Action */
+/* *
+ *  ReportBugsViewController */
 "OK" = "OK";
 
 /* Title */
@@ -1442,6 +1453,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Можно добавить только одну бесплатную учётную запись";
+
+/* Open action */
+"Open" = "Открыть";
 
 /* (No Comment) */
 "OpenDraft" = "Открыть черновик";
@@ -1458,7 +1472,7 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Наша команда поддержки клиентов попробует активировать ваш тариф вручную, если вы согласитесь добавить технические данные, предоставленные магазином AppStore приложению в момент заказа. Среди этих данных нет никаких подробностей о вашей учётной записи iTunes, Apple ID, связанных банковских картах или какой-либо другой пользовательской информации. Технические данные всего лишь помогут нам проверить и убедиться, полностью ли совершилась транзакция на серверах AppStore.";
 
-/* mail location desc */
+/* "Draft" = "Draft"; */
 "Outbox" = "Исходящие";
 
 /* title */
@@ -1503,13 +1517,14 @@
 /* contact placeholder */
 "Phone number" = "Hомер телефона";
 
-/* Title */
+/* "Verification code request failed" */
 "Phone number invalid" = "Некорректный номер телефона";
 
 /* human check option button */
 "Phone Verification" = "Подтверждение номера телефона";
 
-/* Title */
+/* *
+ *  Attachment table ViewController */
 "Photo Library" = "Фотоальбом / Медиатека";
 
 /* device settings auto lock type title */
@@ -1584,9 +1599,7 @@
 /* (No Comment) */
 "Please try a different user name." = "Пожалуйста, попробуйте другое имя пользователя.";
 
-/* 
-
- */
+/* (No Comment) */
 "Please try again." = "Пожалуйста, попробуйте ещё раз";
 
 /* Error message */
@@ -1610,8 +1623,7 @@
 /* The */
 "Please wait until the email downloaded!" = "Пожалуйста, дождитесь загрузки электронной почты!";
 
-/* 
- & alert title */
+/* alert title */
 "Please, manage it in your phone." = "Пожалуйста, управляйте этим с помощью вашего телефона.";
 
 /* Upgrade warning title */
@@ -1692,7 +1704,8 @@
 /* Title */
 "Recovery Code" = "Код восстановления";
 
-/* Title */
+/* *
+ *  SignUpEmailViewController */
 "Recovery Email" = "Адрес резервной эл. почты";
 
 /* Title */
@@ -1716,7 +1729,8 @@
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Повтор";
 
-/* reply action */
+/* *
+ *  Controller Defined */
 "Reply" = "Ответить";
 
 /* reply all action */
@@ -1764,8 +1778,8 @@
 /* action sheet option */
 "Scheduled" = "Расписание";
 
-/* Springboard (3D Touch) shortcuts action
-   Title */
+/* *
+ *  SearchViewController */
 "Search" = "Поиск";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1783,7 +1797,7 @@
 /* Action */
 "Send anyway" = "Всё равно отправить";
 
-/* Description */
+/* when subject not empty */
 "Send message without subject?" = "Отправить сообщение без указания темы?";
 
 /* Title */
@@ -1895,13 +1909,10 @@
 /* Title */
 "Star" = "Отметить звездой";
 
-/* mail location desc
-   menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
+/* "Spam" */
 "Starred" = "Со звёздами";
 
-/* mail location title */
+/* "INBOX" */
 "STARRED" = "Со звёздами";
 
 /* settings option (Start Time: 8am) */
@@ -1933,6 +1944,9 @@
 
 /* menu title */
 "Subscription" = "Подписка";
+
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Информация о подписке временно недоступна. Повторите попытку позже.";
 
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Поддержка %i своих доменов (пример: user@yourdomain.com)";
@@ -1977,8 +1991,7 @@
 /* Description */
 "The authentication credentials are invalid." = "Аутентификационные учётные данные неверны.";
 
-/* 
- */
+/* (No Comment) */
 "The authentication token has expired." = "Срок действия аутентификационного токена истёк.";
 
 /* key size notes */
@@ -2045,18 +2058,20 @@
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Общий объём вложений не может превышать 25МБ";
 
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL, к которому вы пытаетесь получить доступ, не стандартный и может быть загружен некорректно. Открыть его браузером по умолчанию вашего устройства?";
+
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Этот пользователь уже вошёл";
 
-/* 
- */
+/* (No Comment) */
 "The UserName have been taken." = "Имя пользователя занято.";
 
-/* 
- & title */
+/* title */
 "The verification email invalid" = "Неправильный адрес эл. почты для проверки";
 
-/* Error */
+/* *
+ *  RecaptchaViewController */
 "The verification failed!" = "Проверка не прошла!";
 
 /* alert when logout user if in queue still have tasks */
@@ -2068,8 +2083,7 @@
 /* Description */
 "There was an error creating or loading the app's saved data." = "Произошла ошибка при создании или загрузке сохранённых данных приложения.";
 
-/* 
- & local error */
+/* local error */
 "There was an error creating or loading the application's saved data." = "Произошла ошибка при создании или загрузке сохранённых данных приложения.";
 
 /* Alert message */
@@ -2124,15 +2138,15 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
-/* settings touchid error */
+/* *
+ *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "Невозможно использовать TouchID, включите его в настройках телефона";
 
 /* settings touchid/faceid error */
 "TouchID not available" = "TouchID недоступен";
 
-/* mail location desc
-   menu title
-   move action */
+/* *
+ *  MessageAction */
 "Trash" = "Корзина";
 
 /* mail location title */
@@ -2168,8 +2182,7 @@
 /* Description */
 "Unable to connect to the server" = "Невозможно соединиться с сервером";
 
-/* 
- */
+/* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "Невозможно составить исправный URL-адрес с указанным путём: %@";
 
 /* Description */
@@ -2202,10 +2215,11 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "Невозможно разобрать ответный объект:\n%@";
 
-/* Error */
+/* alert title */
 "Unable to parse token" = "Невозможно разобрать токен";
 
-/* error when sending the message */
+/* *
+ *  MessageDataService */
 "Unable to send the email" = "Невозможно отправить письмо";
 
 /* Action */
@@ -2287,21 +2301,20 @@
 /* Title */
 "USER LOGIN" = "Имя пользователя";
 
-/* 
- & title */
+/* title */
 "User name exist" = "Имя пользователя существует";
 
-/* 
- & alert title */
+/* alert title */
 "User name invalid" = "Недопустимое имя пользователя";
 
-/* Title */
+/* *
+ *  Login View */
 "Username" = "Имя пользователя";
 
-/* Title */
+/* alert title */
 "Verification code request failed" = "Сбой запроса кода подтверждения";
 
-/* Title */
+/* alert title */
 "Verification code sent" = "Код подтверждения отправлен";
 
 /* error title */
@@ -2358,8 +2371,7 @@
 /* default vcard types */
 "Work" = "Рабочий";
 
-/* 
- & title */
+/* title */
 "Wrong verification code" = "Неверный проверочный код";
 
 /* Title */
@@ -2402,12 +2414,13 @@
 "You have unsaved changes. Do you want to save it?" = "У вас есть несохранённые изменения. Вы хотите сохранить их?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "Вы используете %1$d%% объёма своего хранилища (%2$@).";
+"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
 
-/* Content of space warning */
+/* *
+ *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Вы исчерпали весь объём хранилища (%@).";
 
-/* Description */
+/* "Alert" */
 "You need at least one recipient to send" = "Для отправки необходим хотя бы один получатель";
 
 /* Alert to confirm logout
@@ -2429,7 +2442,8 @@
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Теперь ваш почтовый ящик защищён сквозным шифрованием. Чтобы переписка с друзьями стала безопасной автоматически, пусть и они воспользуются ProtonMail! Также вы сможете по желанию шифровать сообщения для них, если они не пользуются ProtonMail.";
 
-/* Description */
+/* *
+ *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ваша новая учётная запись зашифрованной электронной почты уже настроена и готова отправлять и принимать шифрованные сообщения.";
 
 /* view top title */
@@ -2440,6 +2454,9 @@
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "Ваш тариф автоматически обновится";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Ваша сессия закончилась, потому что вы были неактивны некоторое время или она была отозвана. Пожалуйста, войдите снова.";
 
 /* Description */
 "Your signature has been updated." = "Ваша подпись обновлена.";

@@ -279,6 +279,19 @@ final class UserInfo : NSObject {
         return out
     }
     
+    var addressPrivateKeysArray: [Data] {
+        var out: [Data] = []
+        var error: NSError?
+        for addr in userAddresses {
+            for key in addr.keys {
+                if let privK = ArmorUnarmor(key.private_key, &error) {
+                    out.append(privK)
+                }
+            }
+        }
+        return out
+    }
+    
     
     var firstUserPublicKey: String? {
         if userKeys.count > 0 {

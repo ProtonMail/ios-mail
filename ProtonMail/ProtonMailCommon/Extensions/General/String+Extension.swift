@@ -233,8 +233,12 @@ extension String {
         var result = self.replacingOccurrences(of: "&", with: "&amp;", options: .caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "\"", with: "&quot;", options: .caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "'", with: "&#039;", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: "<br />", with: "\r\n", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: "<br/>", with: "\r\n", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: "<br>", with: "\r\n", options: .caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "<", with: "&lt;", options: .caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: ">", with: "&gt;", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: "\r\n", with: "<br />", options: .caseInsensitive, range: nil)
         return result
     }
     
@@ -424,6 +428,22 @@ extension String {
             return try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
         }
         return nil
+    }
+    
+    func batchAddingPercentEncoding(withAllowedCharacters allowedCharacters: CharacterSet) -> String? {
+        let batchSize = 100
+        var batchPosition = startIndex
+        var escaped = ""
+        while batchPosition != endIndex {
+            let range = batchPosition ..< (index(batchPosition, offsetBy: batchSize, limitedBy: endIndex) ?? endIndex)
+            
+            guard let percentEncodedSubstring = String(self[range]).addingPercentEncoding(withAllowedCharacters: allowedCharacters) else {
+                return nil
+            }
+            escaped.append(percentEncodedSubstring)
+            batchPosition = range.upperBound
+        }
+        return escaped
     }
 }
 

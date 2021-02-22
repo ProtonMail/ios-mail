@@ -114,22 +114,18 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                         let ids = self.messages.map { ($0).messageID }
                         let api = RemoveLabelFromMessages(labelID: key, messages: ids)
                         api.call(api: self.apiService, nil)
-                        context.performAndWait { () -> Void in
-                            for mm in self.messages {
-                                if mm.remove(labelID: value.label.labelID) != nil && mm.unRead {
-                                    self.messageService.updateCounter(plus: false, with: value.label.labelID)
-                                }
+                        for mm in self.messages {
+                            if mm.remove(labelID: value.label.labelID) != nil && mm.unRead {
+                                self.messageService.updateCounterSync(plus: false, with: value.label.labelID, context: context)
                             }
                         }
                     } else if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
                         let ids = self.messages.map { ($0).messageID }
                         let api = ApplyLabelToMessages(labelID: key, messages: ids)
                         api.call(api: self.apiService, nil)
-                        context.performAndWait { () -> Void in
-                            for mm in self.messages {
-                                if mm.add(labelID: value.label.labelID) != nil && mm.unRead {
-                                    self.messageService.updateCounter(plus: true, with: value.label.labelID)
-                                }
+                        for mm in self.messages {
+                            if mm.add(labelID: value.label.labelID) != nil && mm.unRead {
+                                self.messageService.updateCounterSync(plus: true, with: value.label.labelID, context: context)
                             }
                         }
                     } else {

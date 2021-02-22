@@ -253,8 +253,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         if self.viewModel.notificationMessageID != nil {
             self.coordinator?.go(to: .detailsFromNotify)
-        } else {
-            checkHuman()
+        } else if checkHuman() {
+            self.handleUpdateAlert()
         }
     }
     
@@ -273,7 +273,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.navigationItem.titleView = navigationTitleLabel
         
         self.refreshControl = UIRefreshControl()
-        self.refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
+        self.refreshControl.backgroundColor = .clear
         self.refreshControl.addTarget(self, action: #selector(pullDown), for: UIControl.Event.valueChanged)
         self.refreshControl.tintColor = UIColor.gray
         self.refreshControl.tintColorDidChange()
@@ -321,6 +321,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.coordinator?.go(to: .search)
     }
     @objc internal func labelButtonTapped() {
+        self.removePresentedViewController()
         guard !self.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._apply_labels)
             return
@@ -329,6 +330,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     @objc internal func folderButtonTapped() {
+        self.removePresentedViewController()
         guard !self.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._labels_move_to_folder)
             return
@@ -338,12 +340,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     /// unread tapped, this is the button in navigation bar 
     @objc internal func unreadTapped() {
+        self.removePresentedViewController()
         self.viewModel.mark(IDs: self.selectedIDs, unread: true)
         cancelButtonTapped()
     }
     
     /// remove button tapped. in the navigation bar
     @objc internal func removeButtonTapped() {
+        self.removePresentedViewController()
         guard !self.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._warning)
             return
@@ -447,11 +451,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.selectedIDs.removeAllObjects()
         self.hideCheckOptions()
         self.updateNavigationController(false)
+        if !self.timer.isValid {
+            self.startAutoFetch(false)
+        }
     }
     
     @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         self.showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(listEditing)
+        // invalidate tiemr in multi-selected mode to prevent ui refresh issue
+        self.timer.invalidate()
     }
 
     internal func beginRefreshingManually(animated: Bool) {
@@ -733,19 +742,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         
         self.pullDown()
-        //TODO:: fix me
-//        let updateTime = viewModel.lastUpdateTime()
-//        let recordedCount = Int(updateTime.total)
-//        if updateTime.isNew || recordedCount > rowCount {
-//            self.fetchingOlder = true
-//            viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (task, messages, error) -> Void in
-//                self.fetchingOlder = false
-//                if error != nil {
-//                    PMLog.D("search error: \(String(describing: error))")
-//                }
-//                self.checkHuman()
-//            })
-//        }
     }
     
     func handleRequestError (_ error : NSError) {
@@ -774,18 +770,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     
     @objc internal func pullDown() {
-//        guard refreshControl.isRefreshing == false else {
-//            self.refreshControl?.endRefreshing()
-//            return
-//        }
-        
+        guard !tableView.isDragging else {
+            return
+        }
+
         self.getLatestMessagesRaw { (fetch) in
             if fetch {
                 //temperay to fix the new messages are not loaded
                 self.fetchNewMessage()
             }
         }
-        
     }
     
     private func fetchNewMessage() {
@@ -851,7 +845,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                         self.retryCounter += 1
                     }
                 } else {
-                    self.refreshControl.endRefreshing()
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                        if self.refreshControl.isRefreshing {
+                            self.refreshControl.endRefreshing()
+                        }
+                    }
+                    
                     self.retryCounter = 0
                     if self.fetchingStopped! == true {
                         return
@@ -1145,6 +1144,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         super.prepare(for: segue, sender: sender)
     }
+    
+    private func handleUpdateAlert() {
+        if self.viewModel.shouldShowUpdateAlert() {
+            let alertVC = UIAlertController(title: LocalString._ios10_update_title, message: LocalString._ios10_update_body, preferredStyle: .alert)
+            alertVC.addOKAction { (_) in
+                self.viewModel.setiOS10AlertIsShown()
+            }
+            self.present(alertVC, animated: true, completion: nil)
+        }
+    }
 }
 
 extension MailboxViewController : LablesViewControllerDelegate {
@@ -1382,15 +1391,28 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        if controller == self.viewModel.labelFetchedResults {
+            tableView.reloadData()
+            return
+        }
         self.tableView.endUpdates()
+        if self.refreshControl.isRefreshing {
+            self.refreshControl.endRefreshing()
+        }
         self.showNewMessageCount(self.newMessageCount)
     }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        if controller == self.viewModel.labelFetchedResults {
+            return
+        }
         tableView.beginUpdates()
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        if controller == self.viewModel.labelFetchedResults {
+            return
+        }
         switch(type) {
         case .delete:
             tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
@@ -1402,6 +1424,9 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        if controller == self.viewModel.labelFetchedResults {
+            return
+        }
         switch(type) {
         case .delete:
             if let indexPath = indexPath {
@@ -1545,6 +1570,14 @@ extension MailboxViewController: UITableViewDelegate {
             self.noResultLabel.frame = CGRect(x: frame.origin.x, y: -scrollView.contentOffset.y, width: frame.width, height: frame.height)
         } else {
             self.noResultLabel.frame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height)
+        }
+    }
+}
+
+extension MailboxViewController {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if refreshControl.isRefreshing {
+            self.pullDown()
         }
     }
 }

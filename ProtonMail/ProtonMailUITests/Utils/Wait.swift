@@ -25,12 +25,18 @@ import XCTest
 
 struct Wait {
     
-    private let timeout = 10.00
+    private let defaultTimeout = 10.00
     
     struct Condition {
         static let enabled = "isEnabled == true"
         static let hittable = "hittable == true"
         static let doesNotExist = "exists == false"
+        static let exist = "exists == true"
+    }
+    
+    @discardableResult
+    func forElement(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line, _ timeout: TimeInterval) -> Bool {
+        return waitSoftForCondition(element, Condition.exist, file, line, timeout)
     }
     
     @discardableResult
@@ -51,11 +57,22 @@ struct Wait {
     private func waitForCondition(_ element: XCUIElement, _ expression: String, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
         let condition = NSPredicate(format: expression)
         let expectation = XCTNSPredicateExpectation(predicate: condition, object: element)
-        let result = XCTWaiter().wait(for: [expectation], timeout: timeout)
+        let result = XCTWaiter().wait(for: [expectation], timeout: defaultTimeout)
         if result != .completed {
-            let message = "Condition: \(expression) was not met for Element: \(element) after \(timeout) seconds timeout."
+            let message = "Condition: \(expression) was not met for Element: \(element) after \(defaultTimeout) seconds timeout."
             XCTFail(message, file: file, line: line)
         }
         return element
+    }
+    
+    private func waitSoftForCondition(_ element: XCUIElement, _ expression: String, _ file: StaticString = #file, _ line: UInt = #line, _ timeout: TimeInterval = 5) -> Bool {
+        let condition = NSPredicate(format: expression)
+        let expectation = XCTNSPredicateExpectation(predicate: condition, object: element)
+        let result = XCTWaiter().wait(for: [expectation], timeout: timeout)
+        if result == .completed {
+            return true
+        } else {
+            return false
+        }
     }
 }

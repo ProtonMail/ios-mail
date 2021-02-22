@@ -66,20 +66,20 @@ struct AdminVPNAPI {
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_attachments.md
 struct AttachmentAPI {
     /// base message api path
-    static let path :String = "/attachments"
+    static let path :String = "/\(Constants.App.API_PREFIXED)/attachments"
 
     
     /// get attachment by id
-    static let v_get_att_by_id : Int = 3
+    static let v_get_att_by_id : Int = -1
     
     /// upload attachment
-    static let v_upload_attach : Int = 3
+    static let v_upload_attach : Int = -1
     
     /// update draft attachment signature
-    static let v_update_att_sign : Int = 3
+    static let v_update_att_sign : Int = -1
     
     /// delete attachment from draft
-    static let v_del_attachment : Int = 3
+    static let v_del_attachment : Int = -1
 }
 
 //Auth API
@@ -236,44 +236,44 @@ struct LabelAPI {
 //Doc: V3 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages_v3.md
 struct MessageAPI {
     /// base message api path
-    static let path :String = "/messages"
+    static let path :String = "/\(Constants.App.API_PREFIXED)/messages"
     
     //Get a list of message metadata [GET]
-    static let v_fetch_messages : Int = 3
+    static let v_fetch_messages : Int = -1
     
     //Get grouped message count [GET]
-    static let v_message_count : Int = 3
+    static let v_message_count : Int = -1
     
-    static let v_create_draft : Int = 3
+    static let v_create_draft : Int = -1
     
-    static let v_update_draft : Int = 3
+    static let v_update_draft : Int = -1
     
     // inlcude read/unread
-    static let V_MessageActionRequest : Int = 3
+    static let V_MessageActionRequest : Int = -1
     
     //Send a message [POST]
-    static let v_send_message : Int = 3
+    static let v_send_message : Int = -1
     
     //Label/move an array of messages [PUT]
-    static let v_label_move_msgs : Int = 3
+    static let v_label_move_msgs : Int = -1
     
     //Unlabel an array of messages [PUT]
-    static let v_unlabel_msgs : Int = 3
+    static let v_unlabel_msgs : Int = -1
     
     //Delete all messages with a label/folder [DELETE]
-    static let v_empty_label_folder : Int = 3
+    static let v_empty_label_folder : Int = -1
     
     //Delete an array of messages [PUT]
-    static let v_delete_msgs : Int = 3
+    static let v_delete_msgs : Int = -1
     
     //Undelete Messages [/messages/undelete]
-    static let v_undelete_msgs : Int = 3
+    static let v_undelete_msgs : Int = -1
     
     //Label/Move Messages [/messages/label] [PUT]
-    static let v_apply_label_to_messages : Int = 3
+    static let v_apply_label_to_messages : Int = -1
     
     //Unlabel Messages [/messages/unlabel] [PUT]
-    static let v_remove_label_from_message : Int = 3
+    static let v_remove_label_from_message : Int = -1
 }
 
 //Organization API
@@ -313,7 +313,9 @@ struct ReportsAPI {
  */
 struct SettingsAPI {
     /// base settings api path
-    static let path :String = "/settings"
+    static let path :String = "/\(Constants.App.API_PREFIXED)/settings"
+    
+    static let settingsPath: String = "/settings"
     
     /// Get general settings [GET]
     static let v_get_general_settings : Int = 3
@@ -325,28 +327,28 @@ struct SettingsAPI {
     static let v_update_email : Int = 3
     
     /// Update swipe left flag [PUT]
-    static let v_update_swipe_left_right : Int = 3
+    static let v_update_swipe_left_right : Int = -1
     
     /// Update swipe right flag [PUT]
-    static let v_update_swipe_right_left : Int = 3
+    static let v_update_swipe_right_left : Int = -1
     
     /// Update newsletter subscription [PUT]
-    static let v_update_sub_news : Int = 3
+    static let v_update_sub_news : Int = -1
     
     /// Update display name [PUT]
-    static let v_update_display_name : Int = 3
+    static let v_update_display_name : Int = -1
     
     /// Update images bits [PUT]
-    static let v_update_shwo_images : Int = 3
+    static let v_update_shwo_images : Int = -1
     
     /// Update login password [PUT]
     static let v_update_login_password : Int = 3
     
     /// Update login password [PUT]
-    static let v_update_link_confirmation : Int = 3
+    static let v_update_link_confirmation : Int = -1
     
     /// Update email signature [PUT]
-    static let v_update_email_signature: Int = 3
+    static let v_update_email_signature: Int = -1
 }
 
 //Users API

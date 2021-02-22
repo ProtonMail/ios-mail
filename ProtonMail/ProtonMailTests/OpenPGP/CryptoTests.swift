@@ -145,10 +145,33 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
     func testAttachmentGetKey() {
         let keyPacket = "wcBMA0fcZ7XLgmf2AQgAiRsOlnm1kSB4/lr7tYe6pBsRGn10GqwUhrwU5PMKOHdCgnO12jO3y3CzP0Yl/jGhAYja9wLDqH8X0sk3tY32u4Sb1Qe5IuzggAiCa4dwOJj5gEFMTHMzjIMPHR7A70XqUxMhmILye8V4KRm/j4c1sxbzA1rM3lYBumQuB5l/ck0Kgt4ZqxHVXHK5Q1l65FHhSXRj8qnunasHa30TYNzP8nmBA8BinnJxpiQ7FGc2umnUhgkFtjm5ixu9vyjr9ukwDTbwAXXfmY+o7tK7kqIXJcmTL6k2UeC6Mz1AagQtRCRtU+bv/3zGojq/trZo9lom3naIeQYa36Ketmcpj2Qwjg=="
         do {
-            let pgp = Crypto()
+            let crypto = Crypto()
             let keyPacketData: Data = keyPacket.decodeBase64()
             
-            guard let symetricKey = try pgp.getSession(keyPacket: keyPacketData, privateKey: self.testPrivateKey, passphrase: testMailboxPassword) else {
+            guard let symetricKey = try crypto.getSession(keyPacket: keyPacketData, privateKey: self.testPrivateKey, passphrase: testMailboxPassword) else {
+                XCTFail("symetricKey can't be nil")
+                return
+            }
+            XCTAssertEqual(symetricKey.algo, "aes256")
+            XCTAssertEqual(symetricKey.key?.base64EncodedString(), self.testEncodedSessionKey)
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
+        }
+    }
+    
+    func testAttachmentGetKeyWithBinaryPrivateKey() {
+        let keyPacket = "wcBMA0fcZ7XLgmf2AQgAiRsOlnm1kSB4/lr7tYe6pBsRGn10GqwUhrwU5PMKOHdCgnO12jO3y3CzP0Yl/jGhAYja9wLDqH8X0sk3tY32u4Sb1Qe5IuzggAiCa4dwOJj5gEFMTHMzjIMPHR7A70XqUxMhmILye8V4KRm/j4c1sxbzA1rM3lYBumQuB5l/ck0Kgt4ZqxHVXHK5Q1l65FHhSXRj8qnunasHa30TYNzP8nmBA8BinnJxpiQ7FGc2umnUhgkFtjm5ixu9vyjr9ukwDTbwAXXfmY+o7tK7kqIXJcmTL6k2UeC6Mz1AagQtRCRtU+bv/3zGojq/trZo9lom3naIeQYa36Ketmcpj2Qwjg=="
+        do {
+            var error: NSError?
+            let crypto = Crypto()
+            let keyPacketData: Data = keyPacket.decodeBase64()
+            
+            let binaryPrivateKey = ArmorUnarmor(self.testPrivateKey, &error)
+            XCTAssertNil(error)
+            
+            let privateKeys: [Data] = ["WrongKey".data(using: .utf8)!, binaryPrivateKey!]
+            
+            guard let symetricKey = try crypto.getSession(keyPacket: keyPacketData, privateKeys: privateKeys, passphrase: testMailboxPassword) else {
                 XCTFail("symetricKey can't be nil")
                 return
             }
@@ -184,10 +207,10 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
     func testAttachmentEncryptDecrypt() {
         let testAttachmentCleartext = "cc,\ndille."
         do {
-            let pgp = Crypto()
+            let crypto = Crypto()
             let plainData = testAttachmentCleartext.data(using: String.Encoding.utf8)!
             // encrypt
-            let encrypted = try pgp.encryptAttachment(plainData: plainData, fileName: "s.txt", publicKey: self.testPrivateKey)
+            let encrypted = try crypto.encryptAttachment(plainData: plainData, fileName: "s.txt", publicKey: self.testPublicKey)
             XCTAssertNotNil(encrypted)
             guard let key = encrypted?.keyPacket,
                 let data = encrypted?.dataPacket else {
@@ -195,7 +218,7 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
                     return
             }
             // decrypt
-            let decrypted = try pgp.decryptAttachment(keyPacket: key,
+            let decrypted = try crypto.decryptAttachment(keyPacket: key,
                                                       dataPacket: data,
                                                       privateKey: self.testPrivateKey,
                                                       passphrase: self.testMailboxPassword)
@@ -214,10 +237,10 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
     func testAttachmentEncrypt() {
         let testAttachmentCleartext = "cc,\ndille."
         do {
-            let pgp = Crypto()
+            let crypto = Crypto()
             let plainData = testAttachmentCleartext.data(using: String.Encoding.utf8)!
             // encrypt
-            guard let encrypted = try pgp.encryptAttachment(plainData: plainData, fileName: "s.txt", publicKey: self.testPrivateKey) else {
+            guard let encrypted = try crypto.encryptAttachment(plainData: plainData, fileName: "s.txt", publicKey: self.testPublicKey) else {
                 return XCTFail("can't be null")
             }
             guard let _ = encrypted.keyPacket, let _ = encrypted.dataPacket else {
@@ -227,7 +250,7 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
                 return XCTFail("can't be null")
             }
             // decrypt
-            let decrypted = try pgp.decrypt(encrytped: encryptedData, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+            let decrypted = try crypto.decrypt(encrytped: encryptedData, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
             //match
             XCTAssertEqual(testAttachmentCleartext, decrypted)
         } catch let error {
@@ -237,15 +260,53 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
 
     func testAttachmentDecrypt() {
         let testAttachmentCleartext = "cc,\ndille."
+        
+        //The function CryptoNewPlainMessageFromString will normalize the text input of "\n" into "\r\n".
+        let textAttachmentClearTestAfterNormalization = "cc,\r\ndille."
         do {
-            let pgp = Crypto()
+            let crypto = Crypto()
             // encrypt
-            guard let encrypted = try pgp.encrypt(plainText: testAttachmentCleartext, publicKey: self.testPublicKey) else {
+            guard let encrypted = try crypto.encrypt(plainText: testAttachmentCleartext, publicKey: self.testPublicKey) else {
                 return XCTFail("can't be null")
             }
 
             // decrypt
-            let decrypted = try pgp.decryptAttachment(encrypted: encrypted, privateKey:  self.testPrivateKey, passphrase: self.testMailboxPassword)
+            let decrypted = try crypto.decryptAttachment(encrypted: encrypted, privateKey:  self.testPrivateKey, passphrase: self.testMailboxPassword)
+            guard let clearData = decrypted else {
+                XCTFail("can't be null")
+                return
+            }
+            let clearText = NSString(data: clearData, encoding: String.Encoding.utf8.rawValue)! as String
+            //match
+            XCTAssertEqual(textAttachmentClearTestAfterNormalization, clearText)
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
+        }
+    }
+    
+    func testAttachmentDecryptionWithBinaryKey() {
+        let testAttachmentCleartext = "cc,\ndille."
+        do {
+            var error: NSError?
+            let crypto = Crypto()
+            // encrypt
+            let plainData = testAttachmentCleartext.data(using: String.Encoding.utf8)!
+            guard let encrypted = try crypto.encryptAttachment(plainData: plainData, fileName: "s.txt", publicKey: self.testPublicKey) else {
+                return XCTFail("can't be null")
+            }
+            
+            XCTAssertNotNil(encrypted.keyPacket)
+            XCTAssertNotNil(encrypted.dataPacket)
+            
+            let binaryPrivateKey = ArmorUnarmor(self.testPrivateKey, &error)
+            XCTAssertNil(error)
+            
+            let wrongPrivateKey = ArmorUnarmor(OpenPGPDefines.feng100_private_key_1, &error)
+            XCTAssertNil(error)
+            let privateKeyArray: [Data] = ["WrongKey".data(using: .utf8)!, wrongPrivateKey!, binaryPrivateKey!]
+
+            // decrypt
+            let decrypted = try crypto.decryptAttachment(keyPacket: encrypted.keyPacket!, dataPacket: encrypted.dataPacket!, privateKey: privateKeyArray, passphrase: self.testMailboxPassword)
             guard let clearData = decrypted else {
                 XCTFail("can't be null")
                 return
@@ -257,7 +318,33 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
             XCTFail("thrown" + "\(error.localizedDescription)")
         }
     }
-
+    
+    func testUpdatePassphrase() {
+        let newPassphrase = "NewPassphrase"
+        do {
+            let keyWithNewPassphrase = try Crypto.updatePassphrase(privateKey: self.testPrivateKey, oldPassphrase: self.testMailboxPassword, newPassphrase: newPassphrase)
+            XCTAssertNotNil(keyWithNewPassphrase)
+            
+            var error: NSError?
+            let key = CryptoNewKeyFromArmored(keyWithNewPassphrase, &error)
+            XCTAssertNil(error)
+            XCTAssertNotNil(key)
+            
+            let passSlic = newPassphrase.data(using: .utf8)!
+            let unlocked = try key?.unlock(passSlic)
+            
+            XCTAssertNotNil(unlocked)
+            
+            var result: ObjCBool = true
+            try unlocked?.isLocked(&result)
+            let isUnlock = !result.boolValue
+            
+            XCTAssertTrue(isUnlock)
+            
+        } catch {
+            XCTFail("Should not throw error")
+        }
+    }
 
     func testExample() {
         XCTAssert(true, "Pass")

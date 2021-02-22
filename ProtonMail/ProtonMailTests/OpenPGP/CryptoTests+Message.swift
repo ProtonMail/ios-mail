@@ -38,9 +38,9 @@ extension CryptoTests {
                 XCTFail("can't be nil")
                 return
         }
-        let pgp = Crypto()
+        let crypto = Crypto()
         do {
-            let decrypted = try pgp.decryptVerify(encrytped: messageSigned,
+            let decrypted = try crypto.decryptVerify(encrytped: messageSigned,
                                                   publicKey: mimePublicKey,
                                                   privateKey: keyringPrivateKey,
                                                   passphrase: self.testMailboxPassword, verifyTime: 0)
@@ -52,7 +52,7 @@ extension CryptoTests {
             let status = decrypted!.signatureVerificationError!.status
             XCTAssertEqual(2, status)
             
-            guard let pgpMessage = try pgp.encrypt(plainText: clearMessage,
+            guard let pgpMessage = try crypto.encrypt(plainText: clearMessage,
                                                    publicKey: keyringPublicKey,
                                                    privateKey: keyringPrivateKey,
                                                    passphrase: self.testMailboxPassword) else {
@@ -60,7 +60,7 @@ extension CryptoTests {
                                                     return
             }
             
-            let decrypted1 = try pgp.decryptVerify(encrytped: pgpMessage,
+            let decrypted1 = try crypto.decryptVerify(encrytped: pgpMessage,
                                                    publicKey: keyringPublicKey,
                                                    privateKey: keyringPrivateKey,
                                                    passphrase: self.testMailboxPassword, verifyTime: 0)
@@ -72,7 +72,7 @@ extension CryptoTests {
             
             
             do {
-                _ = try pgp.decryptVerify(encrytped: pgpMessage,
+                _ = try crypto.decryptVerify(encrytped: pgpMessage,
                                           publicKey: keyringPublicKey,
                                           privateKey: keyringPublicKey,
                                           passphrase: self.testMailboxPassword, verifyTime: 0)
@@ -89,8 +89,9 @@ extension CryptoTests {
     func testTextMessageEncryptionWithSymmetricKey() {
         let encodedKey: String = "ExXmnSiQ2QCey20YLH6qlLhkY3xnIBC1AwlIXwK/HvY="
         let decodedSymmetricKey : Data = encodedKey.decodeBase64()
-        let testSymmetricKey = CryptoCreateSymmetricKey(decodedSymmetricKey.mutable as Data, "aes256")
-        let testWrongSymmetricKey = CryptoNewSymmetricKeyFromToken("WrongPass", "aes256")
+        
+        let testSymmetricKey = CryptoNewSessionKeyFromToken(decodedSymmetricKey.mutable as Data, "aes256")
+        let testWrongSymmetricKey = CryptoNewSessionKeyFromToken("WrongPass".data(using: .utf8), "aes256")
         let message = CryptoNewPlainMessageFromString("The secret code is... 1, 2, 3, 4, 5")
         XCTAssertNotNil(testSymmetricKey)
         XCTAssertNotNil(testWrongSymmetricKey)
@@ -109,6 +110,252 @@ extension CryptoTests {
         } catch let error {
             XCTFail("thrown" + "\(error.localizedDescription)")
         }
+    }
+    
+    func testTextMessageEncryptionAndDecryptionWithPassword() {
+        let message = "The secret code is... 1, 2, 3, 4, 5"
+        
+        let crypto = Crypto()
+        var encrypted: String?
+        do {
+            encrypted = try crypto.encrypt(plainText: message, token: self.testEncodedSessionKey)
+        } catch {
+            XCTFail("Should not throw error")
+            return
+        }
+        
+        XCTAssertNotNil(encrypted)
+        
+        //Try decrypt with wrong password
+        let wrongPassword = "WrongPass"
+        XCTAssertThrowsError(try crypto.decrypt(encrypted: encrypted!, token: wrongPassword))
+        
+        //Decrypt with correct password
+        var decrypted: String?
+        do {
+            decrypted = try crypto.decrypt(encrypted: encrypted!, token: self.testEncodedSessionKey)
+        } catch {
+            XCTFail("Should not throw error")
+            return
+        }
+        
+        XCTAssertEqual(decrypted, message)
+    }
+    
+    func testTextMessageEncryptionWithStringPublicKeyAndDecryptionWithStringPrivateKey() {
+        let message = "The secret code is... 1, 2, 3, 4, 5"
+        
+        let crypto = Crypto()
+        var encrypted: String?
+
+        do {
+            encrypted = try crypto.encrypt(plainText: message, publicKey: self.testPublicKey)
+        } catch {
+            XCTFail("Should not throw error")
+            return
+        }
+        
+        XCTAssertNotNil(encrypted)
+        
+        var decrypted: String?
+        do {
+            decrypted = try crypto.decrypt(encrytped: encrypted!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+        } catch {
+            XCTFail("Should not throw error")
+            return
+        }
+        XCTAssertNotNil(decrypted)
+        
+        XCTAssertEqual(decrypted, message)
+    }
+    
+    func testTextMessageEncryptionWithBinaryPublicKeyAndDecryptionWithBinaryPrivateKey() {
+        var error: NSError?
+        let message = "The secret code is... 1, 2, 3, 4, 5"
+        
+        let crypto = Crypto()
+        var encrypted: String?
+        
+        let binaryPublicKey = ArmorUnarmor(self.testPublicKey, &error)!
+        XCTAssertNil(error)
+        
+        do {
+            encrypted = try crypto.encrypt(plainText: message, publicKey: binaryPublicKey)
+        } catch {
+            XCTFail("Should not throw error")
+            return
+        }
+        
+        XCTAssertNotNil(encrypted)
+        
+        var decrypted: String?
+        let binaryPrivateKey = ArmorUnarmor(self.testPrivateKey, &error)!
+        XCTAssertNil(error)
+        
+        do {
+            decrypted = try crypto.decrypt(encrytped: encrypted!, privateKey: [binaryPrivateKey], passphrase: self.testMailboxPassword)
+        } catch {
+            XCTFail("Should not throw error")
+            return
+        }
+        XCTAssertNotNil(decrypted)
+        
+        XCTAssertEqual(decrypted, message)
+    }
+    
+    func testSignedMessageDecryptWithBinaryPrivateKeys() {
+        var error: NSError?
+        guard let keyringPrivateKey = OpenPGPTestsDefine.keyring_privateKey.rawValue,
+            let mimePublicKey = OpenPGPTestsDefine.mime_publicKey.rawValue,
+            let messageSigned = OpenPGPTestsDefine.message_signed.rawValue,
+            let messagePlaintext = OpenPGPTestsDefine.message_plaintext.rawValue else {
+                XCTFail("can't be nil")
+                return
+        }
+        let crypto = Crypto()
+        let binaryPublicKey = ArmorUnarmor(mimePublicKey, &error)!
+        XCTAssertNil(error)
+        let publicKeyArray: [Data] = ["WrongKey".data(using: .utf8)!, binaryPublicKey]
+        
+        let binaryPrivateKey = ArmorUnarmor(keyringPrivateKey, &error)!
+        XCTAssertNil(error)
+        
+        let wrongPrivateKey = ArmorUnarmor(OpenPGPDefines.feng100_private_key_1, &error)
+        XCTAssertNil(error)
+        let privateKeyArray: [Data] = ["WrongKey".data(using: .utf8)!, wrongPrivateKey!, binaryPrivateKey]
+        
+        var decrypted: ExplicitVerifyMessage?
+        do {//with binary public key
+            decrypted = try crypto.decryptVerify(encrytped: messageSigned, publicKey: publicKeyArray, privateKey: privateKeyArray, passphrase: self.testMailboxPassword, verifyTime: 0)
+        } catch {
+            XCTFail("Should not throw error")
+        }
+        
+        XCTAssertNotNil(decrypted)
+        XCTAssertNotNil(decrypted!.message)
+        let clearMessage = decrypted!.message!.getString()
+        XCTAssertEqual(messagePlaintext, clearMessage)
+        XCTAssertNotNil(decrypted!.signatureVerificationError)
+        let status = decrypted!.signatureVerificationError!.status
+        XCTAssertEqual(2, status)
+        
+        
+        var decrypted2: ExplicitVerifyMessage?
+        do {//with string public key
+            decrypted2 = try crypto.decryptVerify(encrytped: messageSigned, publicKey: mimePublicKey, privateKey: privateKeyArray, passphrase: self.testMailboxPassword, verifyTime: 0)
+        } catch {
+            XCTFail("Should not throw error")
+        }
+        
+        XCTAssertNotNil(decrypted2)
+        XCTAssertNotNil(decrypted2!.message)
+        let clearMessage2 = decrypted2!.message!.getString()
+        XCTAssertEqual(messagePlaintext, clearMessage2)
+        XCTAssertNotNil(decrypted2!.signatureVerificationError)
+        let status2 = decrypted2!.signatureVerificationError!.status
+        XCTAssertEqual(2, status2)
+    }
+    
+    func testSignedMessageDecryptWithStringPrivateKeys() {
+        var error: NSError?
+        guard let keyringPrivateKey = OpenPGPTestsDefine.keyring_privateKey.rawValue,
+            let mimePublicKey = OpenPGPTestsDefine.mime_publicKey.rawValue,
+            let messageSigned = OpenPGPTestsDefine.message_signed.rawValue,
+            let messagePlaintext = OpenPGPTestsDefine.message_plaintext.rawValue else {
+                XCTFail("can't be nil")
+                return
+        }
+        let crypto = Crypto()
+        let binaryPublicKey = ArmorUnarmor(mimePublicKey, &error)!
+        XCTAssertNil(error)
+        let publicKeyArray: [Data] = ["WrongKey".data(using: .utf8)!, binaryPublicKey]
+        
+        var decrypted: ExplicitVerifyMessage?
+        do {//with binary public key
+            decrypted = try crypto.decryptVerify(encrytped: messageSigned, publicKey: publicKeyArray, privateKey: keyringPrivateKey, passphrase: self.testMailboxPassword, verifyTime: 0)
+        } catch {
+            XCTFail("Should not throw error")
+        }
+        
+        XCTAssertNotNil(decrypted)
+        XCTAssertNotNil(decrypted!.message)
+        let clearMessage = decrypted!.message!.getString()
+        XCTAssertEqual(messagePlaintext, clearMessage)
+        XCTAssertNotNil(decrypted!.signatureVerificationError)
+        let status = decrypted!.signatureVerificationError!.status
+        XCTAssertEqual(2, status)
+    }
+    
+    func testEncryptionWithPrivateKey() {
+        let message = "The secret code is... 1, 2, 3, 4, 5"
+        
+        let crypto = Crypto()
+        var encrypted: String?
+
+        do {
+            encrypted = try crypto.encrypt(plainText: message, publicKey: self.testPublicKey, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+        } catch {
+            XCTFail("Should not throw error")
+            return
+        }
+        
+        XCTAssertNotNil(encrypted)
+        
+        var encrypted2: String?
+        do {
+            encrypted2 = try crypto.encrypt(plainText: message, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+        } catch {
+            XCTFail("Should not throw error")
+            return
+        }
+        
+        XCTAssertNotNil(encrypted2)
+        
+        var decrypt: String?
+        var decrypt2: String?
+        do {
+            decrypt = try crypto.decrypt(encrytped: encrypted!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+            decrypt2 = try crypto.decrypt(encrytped: encrypted2!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+        } catch {
+            XCTFail("Should not throw error")
+            return
+        }
+        
+        XCTAssertNotNil(decrypt)
+        XCTAssertNotNil(decrypt2)
+        XCTAssertEqual(decrypt2, decrypt)
+    }
+    
+    func testEncryptionWithBinaryPublicKeyAndDecryption() {
+        let message = "The secret code is... 1, 2, 3, 4, 5"
+        
+        var error: NSError?
+        let crypto = Crypto()
+        var encrypted: String?
+        
+        let binaryPublicKey = ArmorUnarmor(self.testPublicKey, &error)
+        XCTAssertNil(error)
+        
+        do {
+            encrypted = try crypto.encrypt(plainText: message, publicKey: binaryPublicKey!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+        } catch {
+            XCTFail("Should not throw error")
+            return
+        }
+        
+        XCTAssertNotNil(encrypted)
+        
+        var decrypted: String?
+        
+        do {
+            decrypted = try crypto.decrypt(encrytped: encrypted!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+        } catch {
+            XCTFail("Should not throw error")
+            return
+        }
+        
+        XCTAssertNotNil(decrypted)
+        XCTAssertEqual(decrypted, message)
     }
     //
     //    func TestBinaryMessageEncryptionWithSymmetricKey(t *testing.T) {

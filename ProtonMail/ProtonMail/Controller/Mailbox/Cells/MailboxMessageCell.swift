@@ -24,7 +24,7 @@
 import UIKit
 import MCSwipeTableViewCell
 
-class MailboxMessageCell: MCSwipeTableViewCell {
+class MailboxMessageCell: MCSwipeTableViewCell, AccessibleCell {
     /**
     *  Constants
     */
@@ -250,6 +250,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         
         self.updateAccessibilityLabel()
         self.setNeedsUpdateConstraints()
+        generateCellAccessibilityIdentifiers(message.subject)
     }
     fileprivate func updateLables (_ labelView : LabelDisplayView, label:Label?) {
         if let label = label {

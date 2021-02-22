@@ -118,6 +118,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneWillEnterForeground(_ scene: UIScene) {
+        UIApplication.shared.delegate?.applicationWillEnterForeground?(UIApplication.shared)
         self.coordinator.willEnterForeground()
     }
     
@@ -130,16 +131,6 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         {
             UIApplication.shared.delegate?.applicationDidEnterBackground?(UIApplication.shared)
         }
-    }
-    
-    func sceneWillResignActive(_ scene: UIScene) {
-        let application = UIApplication.shared
-        application.delegate?.applicationWillResignActive?(application)
-    }
-    
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        let application = UIApplication.shared
-        application.delegate?.applicationDidBecomeActive?(application)
     }
     
     private func handleUrlOpen(_ url: URL) -> Bool {

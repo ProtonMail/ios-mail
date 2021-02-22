@@ -1,0 +1,187 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+# Variable
+DEVELOPER_KEYCHAIN_NAME = "MAIL_IOS_CERTIFICATE_KEYCHAIN"
+DEVELOPER_KEYCHAIN_PASSWORD = "TUFJTF9JT1NfQ0VSVElGSUNBVEVfS0VZQ0hBSU4="
+CERTIFICATE_PATH = "Certificates.p12"
+API_KEY_DURATION = 30 * 60 # 30 mins * 60 seconds
+APP_IDENTIFIER = "ch.protonmail.protonmail"
+
+
+def clean_data
+  xcode_select("/Applications/Xcode.app")
+  clear_derived_data
+end
+
+def set_up_keychain
+  create_keychain(
+      name: DEVELOPER_KEYCHAIN_NAME,
+      password: DEVELOPER_KEYCHAIN_PASSWORD,
+      default_keychain: false,
+      add_to_search_list: true,
+      unlock: true
+  )
+  import_certificate(
+      keychain_name: DEVELOPER_KEYCHAIN_NAME,
+      keychain_password: DEVELOPER_KEYCHAIN_PASSWORD,
+      certificate_path: CERTIFICATE_PATH,
+      certificate_password: ENV["DISTRIBUTION_CERTIFICATE_PASSWORD"]
+  )
+end
+
+def tear_down_keychain
+  delete_keychain(
+      name: DEVELOPER_KEYCHAIN_NAME
+  )
+end
+
+def set_up_app_store_api_key
+  app_store_key_id = ENV["APPSTORE_API_KEY_ID"]
+  app_store_issuer_id = ENV["APPSTORE_API_KEY_ISSUER"]
+  app_store_key = ENV["APPSTORE_API_KEY"]
+
+  app_store_connect_api_key(
+    key_id: app_store_key_id,
+    issuer_id: app_store_issuer_id,
+    key_content: app_store_key,
+    duration: API_KEY_DURATION,
+    in_house: false
+  )
+end
+
+def get_xcode_profile(api_key)
+  ids = [
+    "ch.protonmail.protonmail",
+    "ch.protonmail.protonmail.Share",
+    "ch.protonmail.protonmail.PushService",
+    "ch.protonmail.protonmail.Siri",
+    APP_IDENTIFIER
+  ]
+
+  ids.each do |id|
+    get_provisioning_profile(
+      app_identifier: id,
+      api_key: api_key,
+      readonly: true,
+    )
+  end
+end
+
+def get_latest_build_number(api_key)
+  latest_testflight_build_number(
+    api_key: api_key, 
+    app_identifier: APP_IDENTIFIER
+  )
+end 
+
+def set_up_changelog(latest_build_number)
+  hash = sh("./get_commit_hash.sh #{latest_build_number}")
+  changelog_from_git_commits(
+    between: [hash.strip, "HEAD"],  # Optional, lets you specify a revision/tag range between which to collect commit info
+    path: "../",
+    pretty: "%ad: %s",
+    date_format: "short",# Optional, lets you provide an additional date format to dates within the pretty-formatted string
+    match_lightweight_tag: false,  # Optional, lets you ignore lightweight (non-annotated) tags when searching for the last tag
+    merge_commit_filtering: "exclude_merges" # Optional, lets you filter out merge commits
+  )
+end
+
+def build_release_app
+  build_app(
+    scheme: "ProtonMail",
+    clean: true,
+    output_directory: "outputs/",
+    export_method: "app-store",
+    export_options: {
+        provisioningProfiles: {
+            "ch.protonmail.protonmail" => "ProtonMail Release",
+            "ch.protonmail.protonmail.Share" => "Protonmail share release",
+            "ch.protonmail.protonmail.PushService" => "protonmail push service release",
+            "ch.protonmail.protonmail.Siri" => "Protonmail Siri kit release"
+        }
+    }
+  )
+end
+
+def copy_archive_to_builds
+  ENV["XCODEBUILD_ARCHIVE"] = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+  sh("./copy_archive_to_builds.sh")
+end
+
+def send_to_slack(success, changelog, exception, bundle_version)
+  version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail")
+  
+  pipeline = "https://gitlab.protontech.ch/ProtonMail/protonmail-ios/-/pipelines/#{ENV["CI_PIPELINE_ID"]}"
+  payload = success ? {"Changelog" => changelog} : {"Error" => exception}
+  payload.store("pipeline", pipeline)
+
+  message = ""
+  if success
+    message = "CI BOT: iOS mail app v#{version}(#{bundle_version})"
+  else
+    message = "CI BOT: iOS mail app build failed"
+  end
+
+  slack(
+    message: message,
+    channel: "@Anson Chen",
+    use_webhook_configured_username_and_icon: true,
+    slack_url: ENV["SLACK_CI_BOT_URL"],
+    payload: payload,
+    success: success
+  )
+end
+
+platform :ios do 
+  desc "Build app"
+  lane :build do |options|
+    clean_data
+    set_up_keychain
+
+    api_key = set_up_app_store_api_key
+
+    # Download profile
+    get_xcode_profile(api_key)
+
+    # Collect change logs
+    latest_build_number = get_latest_build_number(api_key)
+    changelog = set_up_changelog(latest_build_number)
+    
+    # Set build version by git log numbers
+    bundle_version = sh("./setup_bundle_version.sh")
+
+    build_release_app
+
+    upload_to_testflight(
+      api_key: api_key,
+      team_name: "Proton Technologies AG",
+      skip_waiting_for_build_processing: true,
+      changelog: changelog
+    )
+
+    # Disable this since archive is too large.
+    # copy_archive_to_builds
+    tear_down_keychain
+    
+    send_to_slack(true, changelog, "", bundle_version.strip)
+  end
+
+  error do |lane, exception|
+    send_to_slack(false, "", exception, "")
+  end
+end

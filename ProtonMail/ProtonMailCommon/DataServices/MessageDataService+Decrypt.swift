@@ -85,8 +85,14 @@ extension MessageDataService {
                 }
             } else if message.isPgpInline {
                 if message.isPlainText {
-                    body = body.encodeHtml()
-                    body = body.ln2br()
+                    let head = "<html><head></head><body>"
+                    // The plain text draft from android and web doesn't have
+                    // the head, so if the draft contains head
+                    // It means the draft already encoded
+                    if !body.hasPrefix(head) {
+                        body = body.encodeHtml()
+                        body = body.ln2br()
+                    }
                     return body
                 } else if message.isMultipartMixed {
                     ///TODO:: clean up later
@@ -131,8 +137,12 @@ extension MessageDataService {
                 }
             }
             if message.isPlainText {
-                body = body.encodeHtml()
-                return body.ln2br()
+                if message.draft {
+                    return body
+                } else {
+                    body = body.encodeHtml()
+                    return body.ln2br()
+                }
             }
             return body
         }
@@ -142,104 +152,109 @@ extension MessageDataService {
     
     
     func copyMessage (message: Message, copyAtts : Bool, context: NSManagedObjectContext) -> Message {
-        let newMessage = Message(context: context)
-        newMessage.toList = message.toList
-        newMessage.bccList = message.bccList
-        newMessage.ccList = message.ccList
-        newMessage.title = message.title
-        newMessage.time = Date()
-        newMessage.body = message.body
+        var newMessage: Message!
         
-        //newMessage.flag = message.flag
-        newMessage.sender = message.sender
-        newMessage.replyTos = message.replyTos
-        
-        newMessage.orginalTime = message.time
-        newMessage.orginalMessageID = message.messageID
-        newMessage.expirationOffset = 0
-        
-        newMessage.addressID = message.addressID
-        newMessage.messageStatus = message.messageStatus
-        newMessage.mimeType = message.mimeType
-        newMessage.setAsDraft()
-        
-        newMessage.userID = self.userID
-        
-        if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
-        }
-        
-        var key: Key?
-        if let address_id = message.addressID,
-            let userinfo = self.userDataSource?.userInfo,
-            let addr = userinfo.userAddresses.indexOfAddress(address_id) {
-            key = addr.keys.first
-        }
-        
-        var body : String?
-        do {
-            body = try self.decryptBodyIfNeeded(message: newMessage)
-        } catch _ {
-            //ignore it
-        }
-        
-        var newAttachmentCount : Int = 0
-        for (index, attachment) in message.attachments.enumerated() {
-            PMLog.D("index: \(index)")
-            if let att = attachment as? Attachment {
-                if att.inline() || copyAtts {
-                    /// this logic to filter out the inline messages without cid in the message body
-                    if let b = body { //if body is nil. copy att by default
-                        if let cid = att.contentID(), b.contains(check: cid) { //if cid is nil that means this att is not inline don't copy. and if b doesn't contain cid don't copy
-                            
-                        } else {
-                            if !copyAtts {
-                                continue
+        context.performAndWait {
+            newMessage = Message(context: context)
+            newMessage.toList = message.toList
+            newMessage.bccList = message.bccList
+            newMessage.ccList = message.ccList
+            newMessage.title = message.title
+            newMessage.time = Date()
+            newMessage.body = message.body
+            
+            //newMessage.flag = message.flag
+            newMessage.sender = message.sender
+            newMessage.replyTos = message.replyTos
+            
+            newMessage.orginalTime = message.time
+            newMessage.orginalMessageID = message.messageID
+            newMessage.expirationOffset = 0
+            
+            newMessage.addressID = message.addressID
+            newMessage.messageStatus = message.messageStatus
+            newMessage.mimeType = message.mimeType
+            newMessage.setAsDraft()
+            
+            newMessage.userID = self.userID
+            
+            if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(error)")
+            }
+            
+            var key: Key?
+            if let address_id = message.addressID,
+                let userinfo = self.userDataSource?.userInfo,
+                let addr = userinfo.userAddresses.indexOfAddress(address_id) {
+                key = addr.keys.first
+            }
+            
+            var body : String?
+            do {
+                body = try self.decryptBodyIfNeeded(message: newMessage)
+            } catch _ {
+                //ignore it
+            }
+            
+            var newAttachmentCount : Int = 0
+            for (index, attachment) in message.attachments.enumerated() {
+                PMLog.D("index: \(index)")
+                if let att = attachment as? Attachment {
+                    if att.inline() || copyAtts {
+                        /// this logic to filter out the inline messages without cid in the message body
+                        if let b = body { //if body is nil. copy att by default
+                            if let cid = att.contentID(), b.contains(check: cid) { //if cid is nil that means this att is not inline don't copy. and if b doesn't contain cid don't copy
+                                
+                            } else {
+                                if !copyAtts {
+                                    continue
+                                }
                             }
                         }
-                    }
-                    
-                    let attachment = Attachment(context: newMessage.managedObjectContext!)
-                    attachment.attachmentID = att.attachmentID
-                    attachment.message = newMessage
-                    attachment.fileName = att.fileName
-                    attachment.mimeType = "image/jpg"
-                    attachment.fileData = att.fileData
-                    attachment.fileSize = att.fileSize
-                    attachment.headerInfo = att.headerInfo
-                    attachment.localURL = att.localURL
-                    attachment.keyPacket = att.keyPacket
-                    attachment.isTemp = true
-                    attachment.userID = self.userID
-                    do {
-                        if let k = key,
-                            let sessionPack = self.userDataSource!.newSchema ?
-                                try att.getSession(userKey: self.userDataSource!.userPrivateKeys,
-                                                   keys: self.userDataSource!.addressKeys,
-                                                   mailboxPassword: self.userDataSource!.mailboxPassword) :
-                                try att.getSession(keys:  self.userDataSource!.addressPrivateKeys,
-                                                   mailboxPassword: self.userDataSource!.mailboxPassword),//DONE
-                            let session = sessionPack.key,
-                            let newkp = try session.getKeyPackage(publicKey: k.publicKey, algo:  sessionPack.algo) {
-                            let encodedkp = newkp.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-                            attachment.keyPacket = encodedkp
-                            attachment.keyChanged = true
-                        }
-                    } catch {
                         
+                        let attachment = Attachment(context: newMessage.managedObjectContext!)
+                        attachment.attachmentID = att.attachmentID
+                        attachment.message = newMessage
+                        attachment.fileName = att.fileName
+                        attachment.mimeType = "image/jpg"
+                        attachment.fileData = att.fileData
+                        attachment.fileSize = att.fileSize
+                        attachment.headerInfo = att.headerInfo
+                        attachment.localURL = att.localURL
+                        attachment.keyPacket = att.keyPacket
+                        attachment.isTemp = true
+                        attachment.userID = self.userID
+                        do {
+                            if let k = key,
+                                let sessionPack = self.userDataSource!.newSchema ?
+                                    try att.getSession(userKey: self.userDataSource!.userPrivateKeys,
+                                                       keys: self.userDataSource!.addressKeys,
+                                                       mailboxPassword: self.userDataSource!.mailboxPassword) :
+                                    try att.getSession(keys:  self.userDataSource!.addressPrivateKeys,
+                                                       mailboxPassword: self.userDataSource!.mailboxPassword),//DONE
+                                let session = sessionPack.key,
+                                let newkp = try session.getKeyPackage(publicKey: k.publicKey, algo:  sessionPack.algo) {
+                                let encodedkp = newkp.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+                                attachment.keyPacket = encodedkp
+                                attachment.keyChanged = true
+                            }
+                        } catch {
+                            
+                        }
+                        
+                        if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
+                            PMLog.D("error: \(error)")
+                        } else {
+                            newAttachmentCount += 1
+                        }
                     }
                     
-                    if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    } else {
-                        newAttachmentCount += 1
-                    }
                 }
-                
             }
+    //        newMessage.numAttachments = NSNumber(value: message.attachments.count)
+            newMessage.numAttachments = NSNumber(value: newAttachmentCount)
         }
-//        newMessage.numAttachments = NSNumber(value: message.attachments.count)
-        newMessage.numAttachments = NSNumber(value: newAttachmentCount)
+        
         return newMessage
     }
 }

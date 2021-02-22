@@ -2,7 +2,7 @@
 "CFBundleDisplayName" = "ProtonMail";
 
 /* Privacy - Media Library Usage Description */
-"NSAppleMusicUsageDescription" = "用于向邮件中添加多媒体。";
+"NSAppleMusicUsageDescription" = "用于向邮件中添加多媒体内容。";
 
 /* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "用于向邮件中添加图片。";

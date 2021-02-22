@@ -28,7 +28,7 @@ import Foundation
 extension APIService {
     
     fileprivate struct MessagePath {
-        static let base = "/messages"
+        static let base = "/\(Constants.App.API_PREFIXED)/messages"
     }
    
     enum Filter: Int {
@@ -62,7 +62,7 @@ extension APIService {
         request(method: .post,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
-                headers: [HTTPHeader.apiVersion: apiRequest.apiVersion()],
+                headers: self.getHeader(apiRequest),
                 customAuthCredential: authCredential,
                 completion: completion)
     }
@@ -72,7 +72,7 @@ extension APIService {
         request(method: .put,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
-                headers: [HTTPHeader.apiVersion: apiRequest.apiVersion()],
+                headers: self.getHeader(apiRequest),
                 customAuthCredential: authCredential,
                 completion: completion)
     }
@@ -82,7 +82,7 @@ extension APIService {
         request(method: .get,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
-                headers: [HTTPHeader.apiVersion: apiRequest.apiVersion()],
+                headers: self.getHeader(apiRequest),
                 customAuthCredential: authCredential,
                 completion: completion)
     }
@@ -92,9 +92,16 @@ extension APIService {
         request(method: .delete,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
-                headers: [HTTPHeader.apiVersion: apiRequest.apiVersion()],
+                headers: self.getHeader(apiRequest),
                 customAuthCredential: authCredential,
                 completion: completion)
+    }
+    
+    private func getHeader<T>(_ apiRequest : ApiRequest<T>) -> [String: Int] {
+        if apiRequest.apiVersion() == -1 {
+            return [:]
+        }
+        return [HTTPHeader.apiVersion: apiRequest.apiVersion()]
     }
     
     // MARK : Need change soon tempry for no outside incoming emails
@@ -103,30 +110,30 @@ extension APIService {
         request(method: .get,
                 path: path,
                 parameters: nil,
-                headers: [HTTPHeader.apiVersion: 3],
+                headers: [:],
                 completion: completion)
     }
     
     
     // MARK: - Public methods
     func messageCheck(timestamp: TimeInterval, completion: CompletionBlock?) {
-        let path = "/messages/check"
+        let path = MessagePath.base + "/check"
         let parameters = ["t" : timestamp]
         request(method: .get,
                 path: path,
                 parameters: parameters,
-                headers: [HTTPHeader.apiVersion: 3],
+                headers: [:],
                 completion: completion)
     }
     
     func messageCountForLocation(_ location: Int, completion: CompletionBlock?) {
-        let path = "/messages"
+        let path = MessagePath.base
         let parameters = ["Location" : location]
         let completionWrapper = completionWrapperParseCompletion(completion, forKey: "MessageCount")
         request(method: .get,
                 path: path,
                 parameters: parameters,
-                headers: [HTTPHeader.apiVersion: 3],
+                headers: [:],
                 completion: completionWrapper)
     }
     
@@ -137,7 +144,7 @@ extension APIService {
         request(method: .get,
                 path: path,
                 parameters: nil,
-                headers: [HTTPHeader.apiVersion: 3],
+                headers: [:],
                 completion: completion)
     }
     
@@ -151,7 +158,7 @@ extension APIService {
         request(method: .get,
                 path: path,
                 parameters: parameters,
-                headers: [HTTPHeader.apiVersion: 3],
+                headers: [:],
                 completion: completion)
     }
     

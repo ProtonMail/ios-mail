@@ -26,15 +26,15 @@ class BaseTestCase: XCTestCase {
         app.launch()
         _ = handleInterruption()
         
-        testData.onePassUser = User(user: String(Environment.variable(named: "TEST_USER1")!))
-        testData.twoPassUser = User(user: String(Environment.variable(named: "TEST_USER2")!))
-        testData.onePassUserWith2Fa = User(user: String(Environment.variable(named: "TEST_USER3")!))
-        testData.twoPassUserWith2Fa = User(user: String(Environment.variable(named: "TEST_USER4")!))
+        testData.onePassUser = User(user: loadUser(userKey: "TEST_USER1"))
+        testData.twoPassUser = User(user: loadUser(userKey: "TEST_USER2"))
+        testData.onePassUserWith2Fa = User(user: loadUser(userKey: "TEST_USER3"))
+        testData.twoPassUserWith2Fa = User(user: loadUser(userKey: "TEST_USER4"))
         
-        testData.internalEmailTrustedKeys = User(user: String(Environment.variable(named: "TEST_RECIPIENT1")!))
-        testData.internalEmailNotTrustedKeys = User(user: String(Environment.variable(named: "TEST_RECIPIENT2")!))
-        testData.externalEmailPGPEncrypted = User(user: String(Environment.variable(named: "TEST_RECIPIENT3")!))
-        testData.externalEmailPGPSigned = User(user: String(Environment.variable(named: "TEST_RECIPIENT4")!))
+        testData.internalEmailTrustedKeys = User(user: loadUser(userKey: "TEST_RECIPIENT1"))
+        testData.internalEmailNotTrustedKeys = User(user: loadUser(userKey: "TEST_RECIPIENT2"))
+        testData.externalEmailPGPEncrypted = User(user: loadUser(userKey: "TEST_RECIPIENT3"))
+        testData.externalEmailPGPSigned = User(user: loadUser(userKey: "TEST_RECIPIENT4"))
     }
     
     override func tearDown() {
@@ -43,14 +43,33 @@ class BaseTestCase: XCTestCase {
     }
     
     func handleInterruption() -> Bool {
-        addUIInterruptionMonitor(withDescription: "Allow Notifications") { (alert) -> Bool in
-            let allowButton = alert.buttons["Don’t Allow"]
-            if allowButton.exists {
-                allowButton.tap()
+        addUIInterruptionMonitor(withDescription: "Handle system alerts") { (alert) -> Bool in
+            let buttonLabels = ["Allow Access to All Photos", "Don’t Allow", "OK"]
+            for (_, label) in buttonLabels.enumerated() {
+                let element = alert.buttons[label]
+                if element.exists {
+                    element.tap()
+                    break
+                }
             }
             return true
         }
         return false
+    }
+    
+    private func loadUser(userKey: String) -> String {
+        var data = Data()
+        var users = Dictionary<String, String>()
+        guard let fileURL = Bundle(for: type(of: self)).url(forResource: "credentials", withExtension:"plist") else {
+            fatalError("Users credentials.plist file not found.")
+        }
+        do {
+            data = try Data(contentsOf: fileURL)
+            users = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! Dictionary<String, String>
+        } catch {
+            fatalError("Unable to parse credentials.plist file while running UI tests.")
+        }
+        return users[userKey] ?? "stub,stub,stub,stub"
     }
     
     struct Environment {

@@ -77,8 +77,7 @@
 /* Account manager title */
 "Account" = "Amiḍan";
 
-/* 
- & title */
+/* title */
 "Account password invalid" = "Yir awal uffir n umidan";
 
 /* section title in settings */
@@ -86,6 +85,9 @@
 
 /* (No Comment) */
 "Add" = "Rnu";
+
+/* menu title */
+"Add accounts" = "Rnu imiḍanen";
 
 /* new contacts add Anniversary */
 "Add Anniversary" = "Rnu amulli";
@@ -159,7 +161,7 @@
 /* cell title in device settings */
 "Addresses" = "Tansiwin";
 
-/* Title */
+/* alert title */
 "Alert" = "Alɣu";
 
 /* Title */
@@ -186,7 +188,7 @@
 "Anniversary" = "Amulli";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Antivirus interference";
+"Antivirus interference" = "Iguren akked umgal-avirus";
 
 /* when server not reachable */
 "API Server not reachable..." = "API n uqeddac ur yettwawaḍ ara...";
@@ -210,13 +212,10 @@
 "Apple informed us they could not process the purchase." = "Apple yenna-yaɣ-d d akken ur yezmir ara ad yessesfer tiɣint-agi.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple yuzen-aɣ-d ulɣu belli tleqqmeḍ aɣawas n umeẓlu, maca kra n yisefka itiknikanen xuṣṣen. Ttxil-k·m ɛemmeṛ aneqqis n wabug syen tarbaɛt-nneɣ n tallalt n umsaɣ ad ak·akem-id-nermes.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.";
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple yuzen-aɣ-d ulɣu belli tleqqmeḍ aɣawas n umeẓlu, maca nufa-d teffɣeḍ seg umiḍan seg wass-nni.";
 
 /* Apply action */
 "Apply" = "Snes";
@@ -239,6 +238,9 @@
 
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "Tebɣiḍ s tidet ad teffɣeḍ %@?";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Tebɣiḍ s tidet ad tefɣeḍ?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "S tidet? Ulac tuɣalin ar deffir.";
@@ -294,7 +296,7 @@
 /* Error */
 "Bad auth cache" = "Yir tuffirt n usesteb";
 
-/* Error title */
+/* title */
 "Bad parameter" = "Yir asebdad";
 
 /* Error Description */
@@ -303,7 +305,7 @@
 /* title */
 "Bad path" = "Yir abrid";
 
-/* Error Description */
+/* title */
 "Bad response" = "Yir tiririt";
 
 /* Title */
@@ -379,7 +381,8 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Ur izmir ara ad yaf afaylu-agi yeddan!";
 
-/* update password error = typo:Modulus */
+/* sign up user error when can't get moduls id
+ update password error */
 "Can't get a Moduls ID!" = "Ur izmir ara ad d-yawi asulay Moduls!";
 
 /* update password error = typo:Modulus */
@@ -424,7 +427,8 @@
 /* message Cc: feild */
 "Cc:" = "Anɣ. I:";
 
-/* place holder */
+/* *
+ *  PhoneVerifyViewController */
 "Cell phone number" = "Uṭṭun n tiliɣri n ufus";
 
 /* Title */
@@ -439,7 +443,7 @@
 /* Title */
 "Change Mailbox Password" = "Snifel awal uffir n tnaka n yimayl";
 
-/* update password error title */
+/* title */
 "Change Password" = "Snifel awal uffir";
 
 /* settings protection section title */
@@ -458,9 +462,9 @@
 "Check Again" = "Senqed tikelt nniḍen";
 
 /* network troubleshot cell title */
-"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+"Check Proton Status for our system status." = "Senqed addad n Proton i waddad n unagraw-nneɣ";
 
-/* loading message */
+/* "Username" */
 "Checking ...." = "Asenqed....";
 
 /* place holder */
@@ -487,14 +491,15 @@
 /* cell title in device settings */
 "Combined Contacts" = "Combined Contacts";
 
-/* Action
-   Springboard (3D Touch) shortcuts action */
+/* *
+ *  Composer Email view controller */
 "Compose" = "Aru";
 
 /* Title */
 "Compose to" = "Aru i";
 
-/* Action */
+/* *
+ *  MenuViewController */
 "Confirm" = "Sentem";
 
 /* "Login Password" */
@@ -534,7 +539,7 @@
 "Contact the ProtonMail team" = "Nermes tarbaɛt n ProtonMail";
 
 /* network troubleshot cell title */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Nermes-aɣ-d srid s tferkit-nneɣ n tallalt seg, yimayl (support@protonmail.com), neɣ Twitter.";
 
 /* Action and title
    menu title */
@@ -576,7 +581,7 @@
 /* title of button in account connect page */
 "Create new account" = "Snulfu-d amiḍan amaynut";
 
-/* error message title when create new user */
+/* error part & alert title */
 "Create user failed" = "Timerna n useqdac tecceḍ";
 
 /* Error */
@@ -640,7 +645,8 @@
 /* place holder */
 "Define Password" = "Sbadu awal uffir";
 
-/* general delete action */
+/* *
+ *  Contacts View Controller */
 "Delete" = "Kkes";
 
 /* emptify folder/label confirmation alert */
@@ -655,7 +661,8 @@
 /* mail location desc */
 "Deleted" = "Ittwakkes";
 
-/* Title */
+/* *
+ *  Email Header View */
 "Details" = "Talqayt";
 
 /* network troubleshot cell title */
@@ -676,14 +683,12 @@
 /* Title in settings */
 "Display Name" = "Isem ittwasken-d";
 
-/* Title */
+/* *
+ *  SettingsViewController & alert title */
 "Display Name Updated" = "Isem n uskan yettwalqem";
 
 /* Title in display name settings */
 "DisplayName" = "Isem n uskan";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Tebɣiḍ ad tremdeḍ imeẓla n uɣawas i tuɣeḍ i ";
 
 /* Description */
 "Do you want to cancel the process?" = "Tebɣiḍ ad tesfesxeḍ akala?";
@@ -744,10 +749,11 @@
 /* default vcard types */
 "Email" = "Imayl";
 
-/* contact placeholder */
+/* *
+ *  Email Verify View Controller */
 "Email address" = "Tansa imayl";
 
-/* Title */
+/* alert title */
 "Email address invalid" = "Tansa imayl mači d tameɣtut";
 
 /* contact detail view, email addresses section title */
@@ -759,8 +765,7 @@
 /* place holder */
 "Email default signature" = "Azmul imayl s lexsaṣ";
 
-/* 
- & title */
+/* title */
 "Email domain invalid" = "Yir taɣult n yimayl";
 
 /* human check option button */
@@ -769,7 +774,7 @@
 /* cell title in device setting */
 "Empty Cache" = "Empty Cache";
 
-/* empty folder, for spam and trash and drafts */
+/* "Cancel" */
 "Empty Folder" = "Silem akaram";
 
 /* it is an option to empty the label */
@@ -878,7 +883,7 @@
 "Expires" = "Ad yemmet";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Ad yemmet deg %1$d wussan %2$d n isragen %3$d n tesdatin %4$d n tasinin";
+"Expires in %d days %d hours %d mins %d seconds" = "Ad yemmet di %d n wussan %d n yisragen %d tisdatin %d n tasinin";
 
 /* Title */
 "Expiring Messages" = "Iznan ara yemten";
@@ -927,7 +932,7 @@
 "For organizations that need multi-user support and additional productivity features" = "I tuddsiwin yesran tallelt n ddeqs n iseqdacen akked ugar n tmahilin n tffursa";
 
 /* Service Plan description */
-"For power users and groups of people that value full anonymity and privacy" = "For power users and groups of people that value full anonymity and privacy";
+"For power users and groups of people that value full anonymity and privacy" = "I yiseqdacen yesɛan tirmit d yigrawen n yimdanen i iḥemmlen asedreg d tbaḍnit s wudem yemmden";
 
 /* login page forgot pwd */
 "FORGOT PASSWORD?" = "TETTUḌ AWAL UFFIR?";
@@ -1043,11 +1048,11 @@
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Akken ad tesqedceḍ imezla-nneq, yessefk ad tqebleḍ tiwtilin timatutin n useqdec n ProtonMail.";
 
-/* mail location desc
-   menu title */
+/* "Deleted" */
 "Inbox" = "Tanaka n urmas";
 
-/* mail location title */
+/* *
+ *  MailboxViewController */
 "INBOX" = "TANAKA N URMAS";
 
 /* Title */
@@ -1078,15 +1083,12 @@
 "Internet" = "Internet";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+"Internet Service Provider (ISP) problem" = "Ugur n usaǧǧaw n umeẓlu n internet (ISP)";
 
 /* (No Comment) */
 "Invalid access token please relogin" = "Ajiṭun n unekcum mačči d ameɣtu, ɛreḍ tulsa n tuqqna";
 
-/* Description */
-"Invalid access token. Please relogin." = "Ajiṭun n unekcum mačči d ameɣtu. Ttxil-k eɛreḍ ad teqneḍ tikkelt-nniḍen.";
-
-/* Error */
+/* alert title */
 "Invalid credential" = "Yir anekcum";
 
 /* update password error */
@@ -1111,7 +1113,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Ur tezmireḍ ara ad tɛeddiḍ ɣer %@ seg usnas-nneɣ iOS.";
 
 /* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.";
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "D awezɣi umeɣru n ufaris i d-tesɣiḍ seg App Store akked d yifuras i yellan deg uqeddac-nneɣ. Ttxil ččar aneqqis n ubug akken tarbaɛt-nneɣ n tallelt n yimsaɣen ad ak-kem-d-tnermes.";
 
 /* Title */
 "Keep me updated about new features" = "Lɣu-yi-d ɣef timahilin timaynutin";
@@ -1125,7 +1127,8 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Tasarut mačči d tameɣtut. Ma ulac aɣilif uɣal ar deffir sakin ɛreḍ tikkelt nniḍen.";
 
-/* Title */
+/* *
+ *  MoreOptionsView */
 "Label as..." = "Tibzimin am...";
 
 /* Title */
@@ -1192,6 +1195,9 @@
 /* Account manager title */
 "Log in to your ProtonMail account" = "Qqen ɣer umiḍan-inek/m ProtonMail";
 
+/* comment */
+"Log out" = "Asenser";
+
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Ffeɣ %@?";
 
@@ -1240,6 +1246,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Mailbox size";
 
+/* menu title */
+"Manage accounts" = "Sefrek imiḍanen";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Sefrek Tansiwin";
 
@@ -1277,10 +1286,10 @@
 /* Placeholder */
 "Message Password" = "Awal uffir n yizen";
 
-/* Description */
+/* composer view */
 "Message password does not match." = "Awalen uffiren n yizen ur menṭaḍen ara.";
 
-/* settings debug section title */
+/* "Cancel" */
 "Message Queue" = "Tabdert n uraǧu n yiznan";
 
 /* (No Comment) */
@@ -1304,11 +1313,12 @@
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Azmul n uziraz";
 
-/* Description */
+/* *
+ *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Ijerriden ɣef tiliɣriyin nsan akka tura. Ma ulac aɣilif ɛreḍ ticki neɣ ɛreḍ s ujerred di protonmail.com s useqdec n uselkim n tnarit neɣ n ufus.";
 
 /* Description */
-"Modifying or turning off the default mobile signature is a paid feature." = "Modifying or turning off the default mobile signature is a paid feature.";
+"Modifying or turning off the default mobile signature is a paid feature." = "Asenfel neɣ asensi n uzmul amezwer n uzirar d tamahilt s lexlaṣ.";
 
 /* More actions button */
 "More" = "Ugar";
@@ -1328,7 +1338,7 @@
 /* folder apply - title */
 "Move to Folder" = "Awi ar ukaram";
 
-/* move action */
+/* "Trash" */
 "Move to Inbox" = "Awi ar tanaka n urmas";
 
 /* move action */
@@ -1428,7 +1438,8 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "Asgen n ilɣa yexsi";
 
-/* Action */
+/* *
+ *  ReportBugsViewController */
 "OK" = "IH";
 
 /* Title */
@@ -1443,6 +1454,9 @@
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Yiwen kan n umiḍan n baṭṭel i izemren ad yettwarnu";
 
+/* Open action */
+"Open" = "Ldi";
+
 /* (No Comment) */
 "OpenDraft" = "LdiTamerkast";
 
@@ -1456,9 +1470,9 @@
 "OTHER PLANS" = "IƔAWASEN NNIḌEN";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Tarbaɛt-nneɣ n tallelt n yimsaɣen ad teɛreḍ ad termed aɣawas-ik•im n useqdec s ufus ma tqebleḍ ad d-tessedduḍ isefka itikniken i d-yettunefken i usnas sɣur AppStore deg wakud n tmesɣiwt. Isefka-a ur gebbren ara ifatusen ɣef umiḍan-ik•im iTunes, asulay ID n Apple, tikarḍiwin n usmad i icudden ɣur-s, neɣ isallen-nniḍen ɣef useqdac. Isefka itikniken ad aɣ-ɛawnen kan ad nsenqed dakken tanigawt teḍra-d deg yiqeddacen n AppStore.";
 
-/* mail location desc */
+/* "Draft" = "Draft"; */
 "Outbox" = "Tanaka n tuzna";
 
 /* title */
@@ -1503,13 +1517,14 @@
 /* contact placeholder */
 "Phone number" = "Uṭṭun n tiliɣri";
 
-/* Title */
+/* "Verification code request failed" */
 "Phone number invalid" = "Yir uṭṭun n tiliɣri";
 
 /* human check option button */
 "Phone Verification" = "Asenqed n tiliɣri";
 
-/* Title */
+/* *
+ *  Attachment table ViewController */
 "Photo Library" = "Tanedlist n tewlaft";
 
 /* device settings auto lock type title */
@@ -1543,10 +1558,10 @@
 "Please input a valid email address." = "Ttxil-k sekcem imayl ameɣtu.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Ttxil qqen ɣer umiḍan-ik•im ProtoMail iwumi tleqqmeḍ aɣawas n useqdec akken ad nesmed timseɣiwt.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Ttxil qqen ɣer umiḍan-ik•im ProtoMail iwumi tleqqmeḍ aɣawas n useqdec akken ad nesmed armad n uɣawas n useqdec.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Ttxil-k/m senqed d akken tuqqna-inek/m internet tetteddu akken iwata.";
@@ -1564,7 +1579,7 @@
 "Please select at least one email" = "Ma ulac aɣilif fren ma ulac yiwen n yimayl";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Please select at least one email for the contact group";
+"Please select at least one email for the contact group" = "Ma ulac aɣilif fren xerṣum yiwen yimayl i ugraw n yinermisen";
 
 /* human check select option title */
 "Please select one of the following options:" = "Ma ulac aɣilif, fren yiwen seg iɣewwaṛen-agi:";
@@ -1584,9 +1599,7 @@
 /* (No Comment) */
 "Please try a different user name." = "Ma ulac aɣilif, ɛreḍ isem-nniḍen n useqdac.";
 
-/* 
-
- */
+/* (No Comment) */
 "Please try again." = "Ɛreḍ tikelt nniḍen";
 
 /* Error message */
@@ -1610,8 +1623,7 @@
 /* The */
 "Please wait until the email downloaded!" = "Rǧu imayl ar d-yader!";
 
-/* 
- & alert title */
+/* alert title */
 "Please, manage it in your phone." = "Please, manage it in your phone.";
 
 /* Upgrade warning title */
@@ -1669,7 +1681,7 @@
 "ProtonVPN included" = "Yedda ProtonVPN";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Proxy/Firewall interference";
+"Proxy/Firewall interference" = "Uguren akked Apriksi/Aɣrab n tmes";
 
 /* cell title in device settings */
 "Push Notifications" = "Push Notifications";
@@ -1692,7 +1704,8 @@
 /* Title */
 "Recovery Code" = "Tangalt n tririt";
 
-/* Title */
+/* *
+ *  SignUpEmailViewController */
 "Recovery Email" = "Imayl n tririt";
 
 /* Title */
@@ -1708,7 +1721,7 @@
 "Remove All" = "Kkes meṛṛa";
 
 /* Settings row */
-"Remove image meta-data" = "Remove image meta-data";
+"Remove image meta-data" = "Kkes idferisefka n tugna";
 
 /* un star message */
 "Remove Star" = "Kkes seg inurifen";
@@ -1716,7 +1729,8 @@
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Ales";
 
-/* reply action */
+/* *
+ *  Controller Defined */
 "Reply" = "Err";
 
 /* reply all action */
@@ -1764,8 +1778,8 @@
 /* action sheet option */
 "Scheduled" = "Yettusɣiwes";
 
-/* Springboard (3D Touch) shortcuts action
-   Title */
+/* *
+ *  SearchViewController */
 "Search" = "Nadi";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1783,7 +1797,7 @@
 /* Action */
 "Send anyway" = "Azen akken ibɣu yilli";
 
-/* Description */
+/* when subject not empty */
 "Send message without subject?" = "Azen izen s war asentel?";
 
 /* Title */
@@ -1868,7 +1882,7 @@
 "Snoozed till" = "Smezger alama";
 
 /* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!";
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Suref-aɣ, ur nezmir ara ad nermed timahilin n tmesɣiwt deg lqem beta n usnas iOS. Tanemmirt imi tettekkaḍ deg lqem-nneɣ beta azayez!";
 
 /* (No Comment) */
 "Space Warning" = "Alɣu n talɣut";
@@ -1895,13 +1909,10 @@
 /* Title */
 "Star" = "Itri";
 
-/* mail location desc
-   menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
+/* "Spam" */
 "Starred" = "S yitran";
 
-/* mail location title */
+/* "INBOX" */
 "STARRED" = "INURIFEN";
 
 /* settings option (Start Time: 8am) */
@@ -1934,11 +1945,14 @@
 /* menu title */
 "Subscription" = "Ajerred";
 
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Talɣut n umulteɣ ulac-itt akka tura. Ttxil-k·m ɛreḍ tikkelt-nniḍen ticki.";
+
 /* Service plan capability; i = 2 */
-"Support for %i custom domains (e.g. user@yourdomain.com)" = "Support for %i custom domains (e.g. user@yourdomain.com)";
+"Support for %i custom domains (e.g. user@yourdomain.com)" = "Tallalt i talɣutin tudmawanin %i (e.g. user@yourdomain.com)";
 
 /* network troubleshot cell title */
-"support form" = "support form";
+"support form" = "talɣa n tallalt";
 
 /* Action */
 "Support ProtonMail" = "Mudd afus i ProntonMail";
@@ -1977,8 +1991,7 @@
 /* Description */
 "The authentication credentials are invalid." = "Talɣut n usesteb n yizen awgelhan d tarmeɣtut.";
 
-/* 
- */
+/* (No Comment) */
 "The authentication token has expired." = "Ajuṭun n usesteb yemmut.";
 
 /* key size notes */
@@ -2003,7 +2016,7 @@
 "The mailbox password is incorrect." = "Awal uffir n tnaka n yimayl mačči d ameɣtu.";
 
 /* Alert message */
-"The maximum number of distinct recipients is %d" = "The maximum number of distinct recipients is %d";
+"The maximum number of distinct recipients is %d" = "Amḍan afellay n yimɣerwaḍen i d-yufraren d %d";
 
 /* *
  *  LabelsViewController */
@@ -2045,31 +2058,32 @@
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Teɣzi tamatut n ufaylu yeddan ur tezmir ara ad d-tekk nnig n 25 Maṭ";
 
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL i tettaɛraḍeḍ ad tkecmeḍ ɣer-s mačči d alugen rnu ur yezmir ara ad d-yali akken ilaq. Tabeɣiḍ ad t-teldiḍ s useqedc n yiming amezwer n yibenk-inek·inem?";
+
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Aseqdac yeqqen yakan";
 
-/* 
- */
+/* (No Comment) */
 "The UserName have been taken." = "Isem n useqdac yettwaṭṭef yakan.";
 
-/* 
- & title */
+/* title */
 "The verification email invalid" = "Imayl n usenqed mačči d ameɣtu";
 
-/* Error */
+/* *
+ *  RecaptchaViewController */
 "The verification failed!" = "Icceḍ usenqed!";
 
 /* alert when logout user if in queue still have tasks */
-"There are still some messages in queue. If you log out, the draft will be deleted." = "There are still some messages in queue. If you log out, the draft will be deleted.";
+"There are still some messages in queue. If you log out, the draft will be deleted." = "Mazal llan yiznan i yettraǧun. Ma yella teffɣeḍ, arewway ad yettwakkes.";
 
 /* Alert to confirm logout with pending message in the queue */
-"There are unsent messages that will be lost if you log out" = "There are unsent messages that will be lost if you log out";
+"There are unsent messages that will be lost if you log out" = "Llan yiznan ur nettwazen ara iṛuḥen ma yella teffɣeḍ seg tuqqna";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "Tella tuccḍa di tmerna neɣ asali n usali n isefka yettwaskelsen n usnas.";
 
-/* 
- & local error */
+/* local error */
 "There was an error creating or loading the application's saved data." = "Tella tuccḍa di tmerna neɣ asali n usali n isefka yettwaskelsen n usnas.";
 
 /* Alert message */
@@ -2088,16 +2102,16 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Izen-agi yezmer ad yili d aneɛruḍ n ukellex. Ttxil-k senqed amazan akked ugbur iwakken ad tḥeqqqeḍ belli d izerfanen.";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice will be uninstalled." = "This preference will fallback to Safari if the browser of choice will be uninstalled.";
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Asmenyif-a ad yuɣal ɣer Safari ma yella yettusefsex usebded n yiminig ufrin.";
 
 /* contacts talbe cell Title title */
 "Title" = "Azwel";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Aseɣbel n uselkin TLS ur yeddi ara. Tuqqna-inek·inem ahat ad tettuɛass, ɣef waya asnas ad yettusewḥel i kra n wakud i uḍman n tɣellist-inek·inem.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Aseɣbel n uselkin TLS ur yeddi ara. Tuqqna-inek·inem ahat ad tettuɛass, ɣef waya asnas ad yettusewḥel i kra n wakud i uḍman n tɣellist-inek·inem.\n\nbeddel  tura tura azeṭṭa";
 
 /* Title */
 "To" = "I";
@@ -2119,20 +2133,20 @@
 "Token expired" = "Ajiṭun yemmut";
 
 /* Alert title */
-"Too many recipients" = "Too many recipients";
+"Too many recipients" = "Atas n yiɣerwaḍen";
 
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
-/* settings touchid error */
+/* *
+ *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID ur yermid ara, sermed-it deg iɣewwaṛen n unagraw";
 
 /* settings touchid/faceid error */
 "TouchID not available" = "TouchID ulac-it";
 
-/* mail location desc
-   menu title
-   move action */
+/* *
+ *  MessageAction */
 "Trash" = "Taqecwalt";
 
 /* mail location title */
@@ -2148,7 +2162,7 @@
 "TroubleShooting" = "Tifrat i wuguren";
 
 /* network troubleshot cell title */
-"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Try connecting to Proton from a different network (or use ProtonVPN or Tor).";
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Ɛreḍ tuqqna ɣer Proton seg uzeṭṭa-nniḍen (neɣ seqdec ProtonVPN neɣ Tor).";
 
 /* action sheet option */
 "Turn Off" = "Sens";
@@ -2168,8 +2182,7 @@
 /* Description */
 "Unable to connect to the server" = "Ur izmir ara ad yeqqen ɣer uqeddac";
 
-/* 
- */
+/* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "UR izmir ara ad yebnu URL tameɣtut s ubrid-agi: %@";
 
 /* Description */
@@ -2202,10 +2215,11 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "Ur izmir ara ad yesleḍ asentel n tririt:\n%@";
 
-/* Error */
+/* alert title */
 "Unable to parse token" = "Ur izmir ara ad yesleḍ ajiṭun";
 
-/* error when sending the message */
+/* *
+ *  MessageDataService */
 "Unable to send the email" = "Ur izmir ara ad yazen imayl.";
 
 /* Action */
@@ -2230,7 +2244,7 @@
 "Unlimited messages sent/day" = "Iznan war talast yettwaznen/ass";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Unlock required" = "Unlock required";
+"Unlock required" = "Tukksa n usekkeṛ tettusra";
 
 /* The verb for describing the unread action
    VoiceOver: email is not read yet */
@@ -2287,21 +2301,20 @@
 /* Title */
 "USER LOGIN" = "TUQQNA N USEQDAC";
 
-/* 
- & title */
+/* title */
 "User name exist" = "Isem n useqdac yella";
 
-/* 
- & alert title */
+/* alert title */
 "User name invalid" = "Yir aseqdac";
 
-/* Title */
+/* *
+ *  Login View */
 "Username" = "Isem n useqdac";
 
-/* Title */
+/* alert title */
 "Verification code request failed" = "Asuter n tengalt n usenqed yecceḍ";
 
-/* Title */
+/* alert title */
 "Verification code sent" = "Tangalt n usenqed tettwazen";
 
 /* error title */
@@ -2332,10 +2345,10 @@
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Ɣur-k: Ur d-muddeḍ ara imayl n tririt, tiririt ur tezmir ara ad d-ḍru ma yella tettuḍ awal-ik uffir. Tebɣiḍ ad tkemmleḍ s war imayl n tririt?";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Ur nessaweḍ ara ad nazen -izen-inek·inem, ahat d tuqqna i ixuṣṣen ɣer uzeṭṭa. Izen-inek·inem yettusekles deg urewway, ad yettwazen s wudem awurman mi ara teldiḍ asnas-inek·inem.";
 
 /* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "We have successfully activated your subscription. Please relaunch the app to start using your new service plan.";
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Tremded akken iwata amulteɣ-inek·inem. Ttxil-k·m ales asenker n usnas i wakken ad tebduḍ aɣawas-inek·inem amaynut n umeẓlu.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Ad nazen tangalt n usenqed ar tiliɣri ddaw-a.";
@@ -2358,8 +2371,7 @@
 /* default vcard types */
 "Work" = "Amahil";
 
-/* 
- & title */
+/* title */
 "Wrong verification code" = "Yir tangalt n usenqed";
 
 /* Title */
@@ -2375,7 +2387,7 @@
 "You are about to launch the web browser and navigate to" = "Aqli-k ad tsekreḍ iminig web akken ad tinigeḍ ɣer";
 
 /* Alert of removing all accounts */
-"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?";
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Aql-ak·akem tettedduḍ ad tekkseḍ meṛṛa imiḍanen. Ur tettizmireḍ ara ad tkecmeḍ ɣer-sen seg yibenk-a, ala ma yella terniḍ-ten daɣen.\n\nTebɣiḍ ɣas akken ad tekkseḍ meṛṛa imiḍanen-inek·inem?";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Tzemreḍ ad terreɣ imussuten n uḍummu d idmawanen, deg uɣewwaṛen n usnas ProtonMail.";
@@ -2387,7 +2399,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Ur tezmireḍ ara ad tesbaduḍ tansa %@ am tansa tamezwert acku d tawuri n lexlaṣ.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in.";
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Tessenseḍ FaceID deg yiɣewwaren n unagraw-inek·inem. FaceId yettuseqdec i ummesten n telɣut n umiḍan yesɛan azal. I unekcum ɣer umiḍan-ik·im, rzu ɣer yiɣewwaren syen ales armad n FaceID neɣ ales tuqqna.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Tesremdeḍ afati n yizen, acu kan ur iteddu ara ɣer merra iɣerwaḍen. Ttxil-k rnu awal n uɛeddi yerna/neɣ sexsi tuzzna n PGP iwakken ad tesqedceḍ afati i iɣerwaḍen merra.";
@@ -2402,12 +2414,13 @@
 "You have unsaved changes. Do you want to save it?" = "Ɣur-k ibeddilen ur nettwasekles ara. Tebɣiḍ ad ten-teskelseḍ?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "Tesqedceḍ %1$d%% seg umḍiq-ik n usekles (%2$@).";
+"You have used %d%% of your storage space (%@)." = "Tesqedceḍ %d%% seg umḍiq-ik n usekles (%@).";
 
-/* Content of space warning */
+/* *
+ *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Tesqedceḍ akk amḍiq-ik n usekles (%@).";
 
-/* Description */
+/* "Alert" */
 "You need at least one recipient to send" = "Tesriḍ xarsum yiwen n uɣerwaḍ akken ad tazneḍ";
 
 /* Alert to confirm logout
@@ -2415,7 +2428,7 @@
 "You will be switched to %@" = "Ad tɛeddiḍ ɣer %@";
 
 /* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "You're going to delete the message irreversibly. Are you sure?";
+"You're going to delete the message irreversibly. Are you sure?" = "Aql-ak·akem tettedduḍ ad tekkseḍ izen ideg ulac tuɣalin ɣer deffir. Tebɣiḍ?";
 
 /* view top title */
 "Your Country Code" = "Tangalt n tmurt-ik";
@@ -2429,7 +2442,8 @@
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Tanaka-ik n urmas tettwammesten tura s uwgelhen si ṭerf ar ṭerf. Akken ad tazneḍ s wudem awurman imaylen iɣelsanen i yimduka-ik, suter-asen ad ddun ar ProtonMail. Tzemreḍ daɣen ad terreḍ iznan-ik d iwgelhanen s ufus ma yella ur seqdacen ara ProtonMail.";
 
-/* Description */
+/* *
+ *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Amiḍan-ik amaynut n yimaylen iwgelhanen yers, udiɣ ihegga i tuzna d urmas i yiznan iwgelhanen.";
 
 /* view top title */
@@ -2439,7 +2453,10 @@
 "Your plan is currently active until" = "Aɣawas-ik/m yermed armi";
 
 /* Service plan description footer */
-"Your plan will automatically renew on" = "Your plan will automatically renew on";
+"Your plan will automatically renew on" = "Aɣawas-ik·im ad yettuɛawed s wudem awurman deg";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Tiɣimit-inek tfuk acku ulac-ik.kem taswiɛt aya neɣ ahat tettwafsex. Ttxil-k.m qqen tikelt-nniḍen.";
 
 /* Description */
 "Your signature has been updated." = "Azmul-ik yettwalqem.";

@@ -77,21 +77,33 @@ class CoreDataStore {
     private func newPersistentContainer(_ managedObjectModel: NSManagedObjectModel, name: String, url: URL) -> NSPersistentContainer {
         var url = url
         let container = NSPersistentContainer(name: name, managedObjectModel: managedObjectModel)
-        container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: url)]
+        
+        let description = NSPersistentStoreDescription(url: url)
+        description.shouldMigrateStoreAutomatically = true
+        description.shouldInferMappingModelAutomatically = true
+        
+        container.persistentStoreDescriptions = [description]
         container.loadPersistentStores { (persistentStoreDescription, error) in
             if let ex = error as NSError? {
                 Analytics.shared.error(message: .coreDataError, error: ex)
                 PMLog.D(api: ex)
                 
-                do {
-                    try FileManager.default.removeItem(at: url)
-                    lastUpdatedStore.clear()
-                } catch let error as NSError{
-                    self.popError(error)
+                container.loadPersistentStores { (persistentStoreDescription, error) in
+                    if let ex = error as NSError? {
+                        Analytics.shared.error(message: .coreDataError, error: ex)
+                        PMLog.D(api: ex)
+                            
+                        do {
+                            try FileManager.default.removeItem(at: url)
+                            LastUpdatedStore.clear()
+                        } catch let error as NSError{
+                            self.popError(error)
+                        }
+                        
+                        self.popError(ex)
+                        fatalError()
+                    }
                 }
-                
-                self.popError(ex)
-                fatalError()
             } else {
                 url.excludeFromBackup()
                 container.viewContext.automaticallyMergesChangesFromParent = true

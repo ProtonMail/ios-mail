@@ -293,27 +293,30 @@ extension Message {
     }
     
     class func delete(labelID : String) -> Bool { //TODO:: double check if user id matters
+        var result = false
         let mContext = CoreDataService.shared.mainManagedObjectContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         
         fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@)", "\(labelID)")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-        do {
-            if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
-                for message in oldMessages {
-                    mContext.delete(message)
+        mContext.performAndWait {
+            do {
+                if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
+                    for message in oldMessages {
+                        mContext.delete(message)
+                    }
+                    if let error = mContext.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                    } else {
+                        result = true
+                    }
                 }
-                if let error = mContext.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                } else {
-                    return true
-                }
+            } catch {
+                PMLog.D(" error: \(error)")
             }
-        } catch {
-            PMLog.D(" error: \(error)")
         }
         
-        return false
+        return result
     }
     
     
@@ -375,7 +378,7 @@ extension Message {
         return nil
     }
     
-    func decryptBody(keys: [Key], userKeys: Data, passphrase: String) throws -> String? {
+    func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
         var firstError : Error?
         for key in keys {
             do {
@@ -392,7 +395,7 @@ extension Message {
                         return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
                     }
                 } else {//normal key old schema
-                    return try body.decryptMessage(binKeys: keys.binPrivKeys, passphrase: passphrase)
+                    return try body.decryptMessage(binKeys: keys.binPrivKeysArray, passphrase: passphrase)
                 }
             } catch let error {
                 if firstError == nil {
@@ -412,7 +415,7 @@ extension Message {
         return try body.split()
     }
     
-    func getSessionKey(keys: Data, passphrase: String) throws -> SymmetricKey? {
+    func getSessionKey(keys: [Data], passphrase: String) throws -> SymmetricKey? {
         return try split()?.keyPacket?.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
     }
     

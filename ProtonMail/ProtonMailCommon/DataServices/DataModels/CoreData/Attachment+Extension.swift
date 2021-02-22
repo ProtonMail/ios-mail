@@ -33,6 +33,8 @@ extension Attachment {
     struct Attributes {
         static let entityName   = "Attachment"
         static let attachmentID = "attachmentID"
+        static let isSoftDelete = "isSoftDeleted"
+        static let message = "message"
     }
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
@@ -95,17 +97,17 @@ extension Attachment {
         }
     }
     
-    func sign(byKey key: Key, userKeys: Data?, passphrase: String) -> Data? {
+    func sign(byKey key: Key, userKeys: [Data], passphrase: String) -> Data? {
         do {
             var pwd : String = passphrase
-            if let token = key.token, let signature = key.signature, let userKey = userKeys { //have both means new schema. key is
-                if let plainToken = try token.decryptMessage(binKeys: userKey, passphrase: passphrase) {
+            if let token = key.token, let signature = key.signature { //have both means new schema. key is
+                if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
                     PMLog.D(signature)
                     pwd = plainToken
                     
                 }
-            } else if let token = key.token, let userKey = userKeys { //old schema with token - subuser. key is embed singed
-                if let plainToken = try token.decryptMessage(binKeys: userKey, passphrase: passphrase) {
+            } else if let token = key.token { //old schema with token - subuser. key is embed singed
+                if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
                     //TODO:: try to verify signature here embeded signature
                     pwd = plainToken
                 }
@@ -126,7 +128,7 @@ extension Attachment {
         }
     }
     
-    func getSession(keys: Data, mailboxPassword: String) throws -> SymmetricKey? {
+    func getSession(keys: [Data], mailboxPassword: String) throws -> SymmetricKey? {
         guard let keyPacket = self.keyPacket else {
             return nil //TODO:: error throw
         }
@@ -139,7 +141,7 @@ extension Attachment {
         return sessionKey
     }
     
-    func getSession(userKey: Data, keys: [Key], mailboxPassword: String) throws -> SymmetricKey? {
+    func getSession(userKey: [Data], keys: [Key], mailboxPassword: String) throws -> SymmetricKey? {
         guard let keyPacket = self.keyPacket else {
             return nil
         }
@@ -203,7 +205,7 @@ extension Attachment {
     
     func base64DecryptAttachment(userInfo: UserInfo, passphrase: String) -> String {
 //        let userInfo = self.message.cachedUser ?? user.userInfo
-        let userPrivKeys = userInfo.userPrivateKeys
+        let userPrivKeys = userInfo.userPrivateKeysArray
         let addrPrivKeys = userInfo.addressKeys
 //        let passphrase = self.message.cachedPassphrase ?? user.mailboxPassword
 
@@ -220,7 +222,7 @@ extension Attachment {
                                                                keys: addrPrivKeys) :
                                     try data.decryptAttachment(keydata,
                                                                passphrase: passphrase,
-                                                               privKeys: addrPrivKeys.binPrivKeys) {
+                                                               privKeys: addrPrivKeys.binPrivKeysArray) {
                                 let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }
@@ -241,7 +243,7 @@ extension Attachment {
                                                                keys: addrPrivKeys) :
                                     try data.decryptAttachment(keydata,
                                                                passphrase: passphrase,
-                                                               privKeys: addrPrivKeys.binPrivKeys) {
+                                                               privKeys: addrPrivKeys.binPrivKeysArray) {
                                 let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }

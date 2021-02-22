@@ -41,14 +41,12 @@ struct Constants {
         static let AskTouchID : Int              = 1
         static var AppVersion : Int              = 1
         
-//               //
-//         //
-         static let URL_Protocol : String = "https://"
-//         //static let URL_Protocol : String = "http://"
+        static let URL_Protocol : String = "https://"
+        // static let URL_Protocol : String = "http://"
         
-//         //live api
-         static let URL_HOST : String = "api.protonmail.ch"
-         static let API_PATH : String = ""
+        // live api
+        static let URL_HOST : String = "api.protonmail.ch"
+        static let API_PATH : String = ""
         
 //         ///
          static let rediectURL = "https://protonmail.ch"
@@ -71,6 +69,8 @@ struct Constants {
         
 //         //api options
 //         //static let API_PATH : String = "/api"
+        
+        static let API_PREFIXED: String = "mail/v4"
         
          static var API_HOST_URL : String {
                get {

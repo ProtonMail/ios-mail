@@ -55,6 +55,8 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     
     private var isShowpwd      = false
     private var isRemembered   = false
+    private var twoFAErrorFailed = false
+    private var isPrepareSignup = false
     
     //define
     private let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0)
@@ -229,6 +231,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addKeyboardObserver(self)
         
+        self.isPrepareSignup = false
         let uName = (usernameTextField.text ?? "").trim()
         let pwd = (passwordTextField.text ?? "")
         
@@ -289,6 +292,8 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         if UIDevice.current.isLargeScreen() && !isRemembered {
             usernameTextField.becomeFirstResponder()
         }
+        
+        self.handleUpdateAlert()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -325,6 +330,16 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     }
     
     // MARK: - Private methods
+    
+    private func handleUpdateAlert() {
+        if self.viewModel.shouldShowUpdateAlert() {
+            let alertVC = UIAlertController(title: LocalString._ios10_update_title, message: LocalString._ios10_update_body, preferredStyle: .alert)
+            alertVC.addOKAction { (_) in
+                self.viewModel.setiOS10AlertIsShown()
+            }
+            self.present(alertVC, animated: true, completion: nil)
+        }
+    }
     
     internal func hideLoginViews() {
         self.usernameView.alpha      = 0.0
@@ -406,6 +421,10 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     
     @IBAction func signUpAction(_ sender: UIButton) {
         dismissKeyboard()
+        
+        if self.isPrepareSignup {return}
+        self.isPrepareSignup = true
+        
         firstly {
             self.viewModel.generateToken()
         }.done { (token) in
@@ -414,6 +433,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
             let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
+            self.isPrepareSignup = false
         }
     }
     
@@ -435,10 +455,18 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
             case .error(let error):
                 PMLog.D("error: \(error)")
                 self.showLoginViews()
-                if let _ = cachedTwoCode {
+                guard cachedTwoCode != nil else {
+                    self.handleRequestError(error)
+                    return
+                }
+                // When user input twoFA too quick, it may failed in first time
+                // auto retry once to prevent this situation
+                if self.twoFAErrorFailed {
+                    self.twoFAErrorFailed = false
                     self.performSegue(withIdentifier: self.kSegueTo2FACodeSegue, sender: self)
                 } else {
-                    self.handleRequestError(error)
+                    self.twoFAErrorFailed = true
+                    self.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode)
                 }
             case .ok:
                 break

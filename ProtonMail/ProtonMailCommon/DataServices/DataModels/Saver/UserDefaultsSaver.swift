@@ -34,10 +34,9 @@ extension UserDefaults: KeyValueStoreProvider {
         return self.object(forKey: key) as? Int
     }
     
-    func data(forKey key: String) -> Data? {
+    func data(forKey key: String, logError: ((OSStatus) -> Void)? = nil) -> Data? {
         return self.object(forKey: key) as? Data
     }
-    
     
     func set(_ data: Int, forKey key: String) {
         self.setValue(data, forKey: key)
@@ -47,8 +46,9 @@ extension UserDefaults: KeyValueStoreProvider {
         self.setValue(data, forKey: key)
     }
     
-    func remove(forKey key: String) {
+    func remove(forKey key: String) -> OSStatus {
         self.removeObject(forKey: key)
+        return noErr
     }
 
 }

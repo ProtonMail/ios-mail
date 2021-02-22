@@ -43,7 +43,13 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
         }
         
         UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
-            self.delegate?.Next()
+            if Thread.isMainThread {
+                self.delegate?.Next()
+            } else {
+                DispatchQueue.main.async {
+                    self.delegate?.Next()
+                }
+            }
         })
     }
     
@@ -106,7 +112,8 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
     }
     
     @objc func logoutButtonTapped() {
-        let alert = UIAlertController(title: nil, message: LocalString._logout_confirmation, preferredStyle: .alert)
+        
+        let alert = UIAlertController(title: nil, message: LocalString._logout_confirmation_in_bio, preferredStyle: .alert)
         let logout = UIAlertAction(title: LocalString._sign_out, style: .destructive) { _ in
             self.logout()
         }

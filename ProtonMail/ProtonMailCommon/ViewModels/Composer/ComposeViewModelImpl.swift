@@ -218,44 +218,34 @@ class ComposeViewModelImpl : ComposeViewModel {
         return Promise { seal in
             let userinfo = self.user.userInfo
             guard let addr = userinfo.userAddresses.indexOfAddress(address_id),
-                let key = addr.keys.first else {
-                    throw RuntimeError.no_address.error
+                  let key = addr.keys.first else {
+                throw RuntimeError.no_address.error
             }
             
-            if let atts = self.getAttachments() {
-                for att in atts {
-                    do {
-                        //TODO: work around to wait attachment upload completed, need a better way
-                        while att.keyPacket == nil || att.keyPacket == "" {
-                            Thread.sleep(forTimeInterval: 1.0)
-                        }
-                        
-                        guard let sessionPack = self.user.newSchema ?
+            for att in self.getAttachments() ?? [] {
+                do {
+                    //TODO: work around to wait attachment upload completed, need a better way
+                    while att.keyPacket == nil || att.keyPacket == "" {
+                        Thread.sleep(forTimeInterval: 1.0)
+                    }
+                    
+                    guard let sessionPack = self.user.newSchema ?
                             try att.getSession(userKey: self.user.userPrivateKeys,
                                                keys: self.user.addressKeys,
                                                mailboxPassword: self.user.mailboxPassword) :
                             try att.getSession(keys: self.user.addressPrivateKeys,
                                                mailboxPassword: self.user.mailboxPassword) else { //DONE
-                            continue
-                        }
-                        guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
-                            continue
-                        }
-                        att.managedObjectContext?.performAndWait {
-                            att.keyPacket = newKeyPack
-                            att.keyChanged = true
-                        }
-                    } catch let err as NSError{
-                        Analytics.shared.error(message: .updateAddressIDError, error: err, user: self.user)
+                        continue
                     }
-                }
-                
-                if let context = self.message?.managedObjectContext {
-                    context.performAndWait {
-                        if let error = context.saveUpstreamIfNeeded() {
-                            PMLog.D("error: \(error)")
-                        }
+                    guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                        continue
                     }
+                    att.managedObjectContext?.performAndWait {
+                        att.keyPacket = newKeyPack
+                        att.keyChanged = true
+                    }
+                } catch let err as NSError{
+                    Analytics.shared.error(message: .updateAddressIDError, error: err, user: self.user)
                 }
             }
             
@@ -330,7 +320,60 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(c.lock, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { (error) in
             PMLog.D(error.localizedDescription)
-            complete?(nil, -1)
+            defer {
+                complete?(nil, errCode)
+            }
+            
+            let err = error as NSError
+            var errCode = err.code
+            
+            if errCode == 33101 {
+                c.pgpType = .failed_server_validation
+                LocalString._signle_address_invalid_error_content.alertToast(withTitle: false)
+                return
+            }
+            
+            // Code=33102 "Recipient could not be found"
+            if errCode == 33102 {
+                LocalString._recipient_not_found.alertToast(withTitle: false)
+                return
+            }
+            
+            if !c.email.isValidEmail() {
+                errCode = 33102
+                c.pgpType = .failed_validation
+            }
+        }
+    }
+    
+    override func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
+        progress()
+        let mails = contactGroup.getSelectedEmailData().map{$0.email}
+        let reqs = mails.map {UserEmailPubKeys(email: $0, api: self.user.apiService).run()}
+        when(fulfilled: reqs).done { (_) in
+            complete?(nil, 0)
+        }.catch(policy: .allErrors) { (error) in
+            PMLog.D(error.localizedDescription)
+            defer {
+                complete?(nil, errCode)
+            }
+            
+            let err = error as NSError
+            var errCode = err.code
+
+            // Code=33102 "Recipient could not be found"
+            if errCode == 33102 {                LocalString._address_in_group_not_found_error.alertToast(withTitle: false)
+                return
+            }
+            
+            for mail in mails {
+                if mail.isValidEmail() {
+                    continue
+                }
+                errCode = 33102
+                LocalString._address_in_group_not_found_error.alertToast(withTitle: false)
+                break
+            }
         }
     }
     
@@ -548,66 +591,68 @@ class ComposeViewModelImpl : ComposeViewModel {
         
 //        let objectId = self.message?.objectID
         let context = self.coreDataService.mainManagedObjectContext
-        if self.message == nil || self.message?.managedObjectContext == nil {
-            self.message = self.messageService.messageWithLocation(recipientList: self.toJsonString(self.toSelectedContacts),
-                                                                   bccList: self.toJsonString(self.bccSelectedContacts),
-                                                                   ccList: self.toJsonString(self.ccSelectedContacts),
-                                                                   title: self.getSubject(),
-                                                                   encryptionPassword: "",
-                                                                   passwordHint: "",
-                                                                   expirationTimeInterval: expir,
-                                                                   body: body,
-                                                                   attachments: nil,
-                                                                   mailbox_pwd: mailboxPassword,
-                                                                   inManagedObjectContext: context)
-            self.message?.password = pwd
-            self.message?.unRead = false
-            self.message?.passwordHint = pwdHit
-            self.message?.expirationOffset = Int32(expir)
-            
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            }
-        } else {
-            self.message?.toList = self.toJsonString(self.toSelectedContacts)
-            self.message?.ccList = self.toJsonString(self.ccSelectedContacts)
-            self.message?.bccList = self.toJsonString(self.bccSelectedContacts)
-            self.message?.title = self.getSubject()
-            self.message?.time = Date()
-            self.message?.password = pwd
-            self.message?.unRead = false
-            self.message?.passwordHint = pwdHit
-            self.message?.expirationOffset = Int32(expir)
-            
-//            if let objId = objectId, let msg = context.object(with: objId) as? Message {
-//                msg.toList = self.toJsonString(self.toSelectedContacts)
-//                msg.ccList = self.toJsonString(self.ccSelectedContacts)
-//                msg.bccList = self.toJsonString(self.bccSelectedContacts)
-//                msg.title = self.getSubject()
-//                msg.time = Date()
-//                msg.password = pwd
-//                msg.unRead = false
-//                msg.passwordHint = pwdHit
-//                msg.expirationOffset = Int32(expir)
-//
-//            }
-            if let msg = self.message {
-                self.messageService.updateMessage(msg,
-                                                  expirationTimeInterval: expir,
-                                                  body: body,
-                                                  attachments: nil,
-                                                  mailbox_pwd: mailboxPassword)
-            }
-            
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            }
-            
-            if let msg = self.message, msg.objectID.isTemporaryID {
-                do {
-                    try context.obtainPermanentIDs(for: [msg])
-                } catch {
-                    PMLog.D("error: \(error)")
+        context.performAndWait {
+            if self.message == nil || self.message?.managedObjectContext == nil {
+                self.message = self.messageService.messageWithLocation(recipientList: self.toJsonString(self.toSelectedContacts),
+                                                                       bccList: self.toJsonString(self.bccSelectedContacts),
+                                                                       ccList: self.toJsonString(self.ccSelectedContacts),
+                                                                       title: self.getSubject(),
+                                                                       encryptionPassword: "",
+                                                                       passwordHint: "",
+                                                                       expirationTimeInterval: expir,
+                                                                       body: body,
+                                                                       attachments: nil,
+                                                                       mailbox_pwd: mailboxPassword,
+                                                                       inManagedObjectContext: context)
+                self.message?.password = pwd
+                self.message?.unRead = false
+                self.message?.passwordHint = pwdHit
+                self.message?.expirationOffset = Int32(expir)
+                
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                }
+            } else {
+                self.message?.toList = self.toJsonString(self.toSelectedContacts)
+                self.message?.ccList = self.toJsonString(self.ccSelectedContacts)
+                self.message?.bccList = self.toJsonString(self.bccSelectedContacts)
+                self.message?.title = self.getSubject()
+                self.message?.time = Date()
+                self.message?.password = pwd
+                self.message?.unRead = false
+                self.message?.passwordHint = pwdHit
+                self.message?.expirationOffset = Int32(expir)
+                
+    //            if let objId = objectId, let msg = context.object(with: objId) as? Message {
+    //                msg.toList = self.toJsonString(self.toSelectedContacts)
+    //                msg.ccList = self.toJsonString(self.ccSelectedContacts)
+    //                msg.bccList = self.toJsonString(self.bccSelectedContacts)
+    //                msg.title = self.getSubject()
+    //                msg.time = Date()
+    //                msg.password = pwd
+    //                msg.unRead = false
+    //                msg.passwordHint = pwdHit
+    //                msg.expirationOffset = Int32(expir)
+    //
+    //            }
+                if let msg = self.message {
+                    self.messageService.updateMessage(msg,
+                                                      expirationTimeInterval: expir,
+                                                      body: body,
+                                                      attachments: nil,
+                                                      mailbox_pwd: mailboxPassword)
+                }
+                
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                }
+                
+                if let msg = self.message, msg.objectID.isTemporaryID {
+                    do {
+                        try context.obtainPermanentIDs(for: [msg])
+                    } catch {
+                        PMLog.D("error: \(error)")
+                    }
                 }
             }
         }
@@ -690,6 +735,10 @@ class ComposeViewModelImpl : ComposeViewModel {
                 body = self.message!.bodyToHtml()
             }
             
+            if self.message?.isPlainText == true {
+                body = body.encodeHtml()
+                body = body.ln2br()
+            }
             let on = LocalString._composer_on
             let at = LocalString._general_at_label
             let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -737,6 +786,12 @@ class ComposeViewModelImpl : ComposeViewModel {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
             }
+            
+            if self.message?.isPlainText == true {
+                body = body.encodeHtml()
+                body = body.ln2br()
+            }
+            
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
             return .init(body: result, remoteContentMode: globalRemoteContentMode)

@@ -67,10 +67,9 @@ final public class LabelEditingViewModelImple : LabelEditViewModel {
                 self.coreDataService.enqueue(context: self.currentLabel.managedObjectContext) { (context) in
                     self.currentLabel.name = name
                     self.currentLabel.color = color
-                    if let context = self.currentLabel.managedObjectContext {
-                        context.perform() {
-                            let _ = context.saveUpstreamIfNeeded()
-                        }
+                    let error = context.saveUpstreamIfNeeded()
+                    if let error = error {
+                        PMLog.D("error: \(error)")
                     }
                     complete()
                 }

@@ -56,6 +56,7 @@ class MailboxViewModel: StorageLimit {
     private let pushService : PushNotificationService
     /// fetch controller
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    private(set) var labelFetchedResults: NSFetchedResultsController<NSFetchRequestResult>?
     /// local message for rating
     private var ratingMessage : Message?
     
@@ -162,17 +163,39 @@ class MailboxViewModel: StorageLimit {
         return fetchedResultsController
     }
     
+    private func makeLabelFetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
+        guard let controller = self.user.labelService.fetchedResultsController(.all) else {
+            return nil
+        }
+        
+        do {
+            try controller.performFetch()
+        } catch let ex as NSError {
+            PMLog.D(" error: \(ex)")
+        }
+        
+        return controller
+    }
+    
     /// setup fetch controller
     ///
     /// - Parameter delegate: delegate from viewcontroller
     func setupFetchController(_ delegate: NSFetchedResultsControllerDelegate?) {
         self.fetchedResultsController = self.makeFetchController()
         self.fetchedResultsController?.delegate = delegate
+        
+        self.labelFetchedResults = self.makeLabelFetchController()
+        self.labelFetchedResults?.delegate = delegate
     }
     
     /// reset delegate if fetch controller is valid
     func resetFetchedController() {
         if let controller = self.fetchedResultsController {
+            controller.delegate = nil
+            self.fetchedResultsController = nil
+        }
+        
+        if let controller = self.labelFetchedResults {
             controller.delegate = nil
             self.fetchedResultsController = nil
         }
@@ -445,6 +468,8 @@ class MailboxViewModel: StorageLimit {
     func move(IDs messageIDs : NSMutableSet, from fLabel: String, to tLabel: String) {
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainManagedObjectContext)
         for msg in messages {
+            // the label that is not draft, sent, starred, allmail
+            var fLabel = msg.firstValidFolder() ?? fLabel
             messageService.move(message: msg, from: fLabel, to: tLabel)
         }
     }
@@ -499,5 +524,20 @@ class MailboxViewModel: StorageLimit {
         let usedStorageSpace = self.user.userInfo.usedSpace
         let maxStorageSpace = self.user.userInfo.maxSpace
         checkSpace(usedStorageSpace, maxSpace: maxStorageSpace, user: self.user)
+    }
+    
+    func shouldShowUpdateAlert() -> Bool {
+        //check ios version
+        if #available(iOS 11, *) {
+            return false
+        } else if !userCachedStatus.iOS10AlertIsShown {
+            return true
+        }
+        
+        return false
+    }
+    
+    func setiOS10AlertIsShown() {
+        userCachedStatus.iOS10AlertIsShown = true
     }
 }

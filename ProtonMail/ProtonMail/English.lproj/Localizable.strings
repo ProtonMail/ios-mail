@@ -1,0 +1,494 @@
+/*
+ localization.strings
+ ProtonMail
+ 
+ Created on 4/20/16.
+ Copyright (c) 2016 ProtonMail. All rights reserved.
+ */
+
+/**
+ *  file string type
+ */
+"Localizable.strings" = "Base";
+
+
+
+
+/* sign up user error when can't get moduls id
+ update password error */
+"Can't get a Moduls ID!" = "Can't get a Modulus ID!";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
+
+
+/**
+ *  Login View
+ */
+"Username" = "Username";
+"Password" = "Password";
+
+"USER LOGIN" = "User log in";
+"LOGIN" = "Login";
+"NEED AN ACCOUNT? SIGN UP." = "Sign up for free";
+"FORGOT PASSWORD?" = "Forgot password?";
+
+
+/**
+ *  MailboxPasswordViewController
+ */
+"MAILBOX PASSWORD" = "Mailbox password";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Access to this account is disabled due to non-payment.\n Please visit <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">our knowledge base</a> for more information.";
+
+"Incorrect password" = "Incorrect password";
+"The mailbox password is incorrect." = "The mailbox password is incorrect.";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com";
+
+
+
+/**
+ *  MailboxViewController
+ */
+
+"INBOX" = "Inbox";
+"Can't find the clicked message please try again!" = "Can't find the clicked message please try again!";
+//"Cancel"
+"Empty Folder" = "Empty folder";
+"Mark Read" = "Mark as read";
+"Archived" = "Archived";
+"Deleted" = "Deleted";
+"Spammed" = "Spammed";
+
+
+
+/**
+ *  MenuViewController
+ */
+"Confirm" = "Confirm";
+"Sign Out" = "Log out";
+//"Cancel"
+
+
+
+/**
+ *  MessageAction
+ */
+"Trash" = "Trash";
+"Spam" = "Spam";
+"Star" = "Star";
+"Archive" = "Archive";
+
+
+/**
+ *  MessageLocation
+ */
+//"Trash"
+"Move to Inbox" = "Move to Inbox";
+"Move to Draft" = "Move to Draft";
+"Move to Outbox" = "Move to Outbox";
+"Move to Spam" = "Move to Spam";
+"Add Star" = "Add Star";
+"Move to Archive" = "Move to Archive";
+"Move to Trash" = "Move to Trash";
+//"Deleted"
+"Inbox" = "Inbox";
+//"Draft" = "Draft";
+"Outbox" = "Outbox";
+//"Spam"
+"Starred" = "Starred";
+//"Archive"
+//"Trash"
+//"INBOX"
+"STARRED" = "Starred";
+"DRAFTS" = "Drafts";
+"SENT" = "Sent";
+"TRASH" = "Trash";
+"ARCHIVE" = "Archive";
+"SPAM" = "Spam";
+
+
+/**
+ *  MessageViewController
+ */
+"Can't download message body, please try again." = "Can't download message body, please try again.";
+"Unable to decrypt message." = "Unable to decrypt message.";
+"Loading..." = "Loading...";
+
+
+/**
+ *  MessageDataService
+ */
+"Unable to send the email" = "Unable to send the email.";
+"The draft format incorrectly sending failed!" = "Sending failed. There was an error with the draft format.";
+"Cant' decrypt this attachment!" = "Unable to decrypt this attachment.";
+
+
+/**
+ *  MoreOptionsView
+ */
+"Label as..." = "Label as...";
+"Move to..." = "Move to...";
+"Mark as unread" = "Mark as unread";
+
+
+/**
+ *  Onboarding
+ */
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Your new encrypted email account has been set up and is ready to send and receive encrypted messages.";
+"You can customize swipe gestures in the ProtonMail App Settings." = "You can customize swipe gestures in the ProtonMail App Settings.";
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Create and add labels to organize your inbox. Press and hold down on a message for all options.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.";
+"Messages you send can be set to auto delete after a certain time period." = "Messages you send can be set to auto delete after a certain time period.";
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "You can get help and support at protonmail.com/support. Bugs can also be reported with the app.";
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.";
+"Welcome to ProtonMail!" = "Welcome to ProtonMail";
+"Quick swipe actions" = "Quick Swipe actions";
+"Label Management" = "Label management";
+"End-to-End Encryption" = "End-to-end encryption";
+"Expiring Messages" = "Expiring messages";
+"Help & Support" = "Help & Support";
+"Support ProtonMail" = "Support ProtonMail";
+
+
+
+/**
+ *  SignUpEmailViewController
+ */
+"Recovery Email" = "Recovery Email";
+//"Display Name"
+//"Please input a valid email address."
+
+
+/**
+ *  SignUpPasswordViewController
+ */
+//"Login Password"
+"Confirm Login Password" = "Confirm login password";
+//"Mailbox Password"
+"Confirm Mailbox Password" = "Confirm mailbox password";
+"Mailbox password doesn't match" = "Mailbox password doesn't match";
+"Login password doesn't match" = "Login password doesn't match";
+
+
+/**
+ *  SignUpUserNameViewController
+ */
+//"Username"
+"Checking ...." = "Checking...";
+"User is available!" = "Username is available";
+"User already exist!" = "Username already taken";
+"Please pick a user name first!" = "Please pick a username first!";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "In order to use our services, you must agree to ProtonMail's Terms of Service.";
+//"Done"
+
+
+
+/**
+ *  PhoneVerifyViewController
+ */
+"Cell phone number" = "Cell phone number";
+//"Enter Verification Code"
+//"Retry after %d seconds";
+//"Send Verification Code";
+//"Verification code request failed"
+"Phone number invalid" = "Phone number invalid";
+"Please input a valid cell phone number." = "Please input a valid cell phone number.";
+"Please check your cell phone for the verification code." = "Please check your cell phone for the verification code.";
+
+
+
+/**
+ *  Email Verify View Controller
+ */
+"Email address" = "Email address";
+"Enter Verification Code" = "Enter verification code";
+"Retry after %d seconds" = "Retry after %d seconds";
+"Send Verification Code" = "Send verification code";
+"Verification code request failed" = "Verification code request failed"; //alert title
+"Email address invalid" = "Email address invalid"; // alert title
+"Please input a valid email address." = "Please input a valid email address.";
+"Verification code sent" = "Verification code sent"; //alert title
+"Please check your email for the verification code." = "Please check your email for the verification code.";
+
+//error part
+"Create user failed" = "Create user failed"; //alert title
+"User name invalid" = "Invalid username"; //alert title
+"Account password invalid" = "Invalid account password"; //title
+"The verification email invalid" = "Invalid verification email"; //title
+"User name exist" = "Username exist"; //title
+"Email domain invalid" = "Invalid email domain"; //title
+"Wrong verification code" = "Wrong verification code";//title
+
+"Please try again." = "Please try again";
+"Please try a different domain." = "Please try a different domain.";
+"Please try a different user name." = "Please try a different username.";
+"Please try a different email address." = "Please try a different email address.";
+"Please try a different password." = "Please try a different password.";
+
+
+/**
+ *  RecaptchaViewController
+ */
+"The verification failed!" = "The verification failed!";
+
+
+/**
+ *  ReportBugsViewController
+ */
+"OK" = "OK";
+"Bug Report Received" = "Bug report received";
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Thank you for submitting a bug report.  We have added your report to our bug tracking system.";
+
+
+/**
+ *  SearchViewController
+ */
+"Search" = "Search";
+
+
+/**
+ *  SettingsViewController
+ */
+"Display Name Updated" = "Display name updated"; //alert title
+"The display name is now %@." = "The display name is now %@.";
+"Input Display Name ..." = "Input display name ...";
+"Signature Updated" = "Signature Updated";
+"Your signature has been updated." = "Your signature has been updated.";
+"Password Mismatch" = "Passwords do not match";
+"The password you entered does not match the current password." = "The password you entered does not match the current password.";
+"Password Updated" = "Password updated";
+"Please use your new password when signing in." = "Please use your new password when signing in.";
+
+
+
+/**
+ *  SettingTableViewController
+ */
+"TouchID is not enrolled, enable it in the system Settings" = "TouchID is not enrolled, enable it in the system Settings";
+"A passcode has not been set, enable it in the system Settings" = "A passcode has not been set, enable it in the system Settings";
+"TouchID not available" = "TouchID not available";
+"%d Minutes" = "%d minutes";
+"%d Minute" = "%d minute";
+"None" = "None";
+"Every time enter app" = "Every time enter app";
+"Unknown" = "Unknown";
+"Default" = "Default";
+"Unkonw Version" = "Unknown version";
+"Version %@ %@" = "Version %@ %@";
+"Please use the web version of ProtonMail to change your mailbox password!" = "Please use the web version of ProtonMail to change your mailbox password!";
+"Done" = "Done";
+"Auto Lock Time" = "Auto lock time";
+"Change default address to .." = "Change default address to...";
+//"Cancel"
+"Message Queue" = "Message queue";
+"Error Logs" = "Error logs";
+"Clear Local Message Cache" = "Clear local message cache";
+"Notification Email" = "Notification email";
+"Display Name" = "Display name";
+"DisplayName" = "Display name";
+"Display name" = "Display name";
+"Signature" = "Signature";
+"Login Password" = "Login password";
+"Mailbox Password" = "Mailbox password";
+"Clear Local Message Cache" = "Clear local message cache";
+"Mobile Signature" = "Mobile signature";
+"Auto Show Images" = "Auto show images";
+
+"Swipe Left to Right" = "Swipe Left to Right";
+"Swipe Right to Left" = "Swipe Right to Left";
+"Change left swipe action" = "Change left swipe action";
+"Change right swipe action" = "Change right swipe action";
+
+"Enable TouchID" = "Enable TouchID";
+"Enable Pin Protection" = "Enable PIN protection";
+"Change Pin" = "Change PIN";
+"Protection Entire App" = "Protection entire app";
+
+"Debug" = "Debug";
+"General Settings" = "General settings";
+"Multiple Addresses" = "Multiple addresses";
+"Storage" = "Storage";
+"Message Swipe Actions" = "Message Swipe Actions";
+"Protection" = "Protection";
+"Language" = "Language";
+"Select your language" = "Select your language";
+
+
+/**
+ *  API Error
+ */
+"Token expired" = "Token expired"; //alert title
+"The authentication token has expired." = "The authentication token has expired.";
+"Invalid credential" = "Invalid credential"; //alert title
+"The authentication credentials are invalid." = "The authentication credentials are invalid.";
+"Alert" = "Alert"; //alert title
+"Authentication Failed Wrong username or password" = "Authentication failed: wrong username or password.";
+"Unable to connect to the server" = "Unable to connect to the server";
+"Unable to parse token" = "Unable to parse token"; //alert title
+"Unable to parse authentication token!" = "Unable to parse authentication token!";
+
+"Invalid UserName" = "Invalid username"; //title
+"The UserName have been taken." = "The username have been taken.";
+"Change Password" = "Change password"; //title
+"The Password is wrong." = "The password is wrong.";
+"The new password not match" = "Passwords do not match";
+"The new password can't empty" = "The new password can't be empty";
+
+"Bad parameter" = "Bad parameter"; //title
+"Bad parameter: %@" = "Bad parameter: %@";
+"Bad path" = "Bad path"; //title
+"Unable to construct a valid URL with the following path: %@" = "Unable to construct a valid URL with the following path: %@";
+"Bad response" = "Bad response"; //title
+"Can't find the value from the response body" = "Can't find the value from the response body";
+"<no object>" = "<no object>"; //default empty object
+"Unable to parse response" = "Unable to parse response";
+"Unable to parse the response object:
+%@" = "Unable to parse the response object:
+%@";
+
+
+/**
+ *  NSErrorExtension
+ */
+//"Alert" = "Alert";
+"A new version of ProtonMail app is available, please update to latest version." = "A new version of ProtonMail app is available, please update to latest version.";
+"Invalid access token please relogin" = "Invalid access token please relogin";
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
+"Sending Message" = "Sending message";
+"Message sending failed please try again" = "Message sending failed please try again";
+"Unknow Error" = "Unknown error";
+
+
+
+/**
+ *  Attachment table ViewController
+ */
+"Photo Library" = "Photo Library";
+"Take a Photo" = "Take photo";
+"Import File From..." = "Import file from...";
+"Cancel" = "Cancel";
+"The total attachment size can't be bigger than 25MB" = "The total attachment size can't be bigger than 25MB";
+"Remove" = "Remove";
+"Unknow file" = "Unknown file";
+
+
+/**
+ *  Composer Email view controller
+ */
+"Compose" = "Compose";
+"Send message without subject?" = "Send message without subject?";  //when subject not empty
+"Send" = "Send";
+//"Cancel"
+//"Alert"
+"You need at least one recipient to send" = "You need at least one recipient to send";
+"Confirmation" = "Confirmation";
+"Save draft" = "Save draft";
+"Discard draft" = "Discard draft";
+"Please remove all attachments before changing sender!" = "Please remove all attachments before changing the sender"; // when switch sender but email has attachments
+"Change sender address to .." = "Change sender address to...";
+"days" = "Days";
+"hours" = "Hours";
+
+// composer view
+"Message password does not match." = "Message password does not match.";
+"Password cannot be empty." = "Password cannot be empty.";
+"Please set a password." = "Please set a password.";
+"Define Password" = "Define password";
+"Confirm Password" = "Confirm password";
+"Define Hint (Optional)" = "Define hint (Optional)";
+"To" = "To";
+"Cc" = "CC";
+"Bcc" = "BCC";
+
+// composer view model impl
+"Reply message" = "Reply message";
+
+
+/**
+ *  Contacts View Controller
+ */
+"Delete" = "Delete";
+"Edit" = "Edit";
+"This contact belongs to your Address Book." = "This contact belongs to your address book."; //alert desc
+"Please, manage it in your phone." = "Please, manage it in your phone."; //alert title
+
+/**
+ *  Edit Contact view controller
+ */
+"Edit Contact" = "Edit contact";
+
+
+/**
+ *  Controller Defined
+ */
+"Reply" = "Reply";
+"ReplyAll" = "Reply all";
+"Forward" = "Forward";
+"Draft" = "Draft";
+"OpenDraft" = "Open draft";
+
+
+
+/**
+ *  Core Data Service
+ */
+"Failed to initialize the application's saved data" = "Failed to initialize the application's saved data"; //local error
+"There was an error creating or loading the application's saved data." = "There was an error creating or loading the application's saved data."; //local error
+"Close" = "Close";
+
+
+/**
+ *  Email Header View
+ */
+
+"Details" = "Details";
+"Hide Details" = "Hide details";
+"Date: %@" = "Date: %@";
+
+
+/**
+ *  Encryption Setup View Controller
+ */
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.";
+"Key generation failed" = "Key generation failed";
+
+
+/**
+ *  Expiration View
+ */
+"Message expired" = "Message expired";
+"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+
+
+/**
+ *  Human Check Menu View Controller
+ */
+//"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer."
+
+
+
+
+/**
+ *  LabelsViewController
+ */
+
+"The maximum number of labels is %d." = "The maximum number of labels is %d.";
+"The label name is duplicate" = "The label name is duplicate";
+"Apply" = "Apply";
+"Add" = "Add";
+
+
+/**
+ *  LabelTableViewCell
+ */
+"A message cannot have more than 5 labels" = "A message cannot have more than 5 labels";
+
+
+
+/**
+ *  StorageLimit
+ */
+"You have used up all of your storage space (%@)." = "You have used up all of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"Space Warning" = "Space warning";
+"Hide" = "Hide";

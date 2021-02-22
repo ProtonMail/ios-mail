@@ -26,6 +26,8 @@ import MBProgressHUD
 
 extension NSError {
     
+    static var isAlertShown = false
+    
     public class func alertMessageSentToast() ->Void {
         guard let window : UIWindow = UIApplication.shared.keyWindow else {
             return
@@ -81,7 +83,22 @@ extension NSError {
         hud.hide(animated: true, afterDelay: 3)
     }
     
-    
+    public class func alertBadToken() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+            guard let window = UIApplication.shared.keyWindow, !NSError.isAlertShown else {
+                return
+            }
+            NSError.isAlertShown = true
+            
+            let message = LocalString._general_invalid_access_token
+            let title = LocalString._general_alert_title
+            let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alertVC.addOKAction { (_) in
+                NSError.isAlertShown = false
+            }
+            window.topmostViewController()?.present(alertVC, animated: true, completion: nil)
+        }
+    }
     
     public class func alertUpdatedToast() ->Void {
         guard let window : UIWindow = UIApplication.shared.keyWindow else {

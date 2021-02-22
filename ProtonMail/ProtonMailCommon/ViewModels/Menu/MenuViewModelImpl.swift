@@ -141,6 +141,7 @@ class MenuViewModelImpl : MenuViewModel {
     
     func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
         guard let labelService = self.currentUser?.labelService else {
+            Analytics.shared.debug(message: .menuSetupFailed, extra: ["IsUserNil": self.currentUser == nil], user: self.currentUser)
             return
         }
         self.labelDataService = labelService

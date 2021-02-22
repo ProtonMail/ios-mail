@@ -8,14 +8,14 @@
 "NSCameraUsageDescription" = "Ilaq i ucuddu n tewlafin ar yimayl.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Used for accessing email addresses for contacts saved on the device so they can be used when composing a message or when manually uploading the device contacts to your account. Contact information is not uploaded to our servers without an explicit action to do so.";
+"NSContactsUsageDescription" = "Yettuseqdec i unekcum ɣer tansiwin n yimayl i yinermisen yettwaskelsen ɣef yibenk i wakken ad izmiren ad ttusqedcen deg tira n yizen neɣ deg usali n yinermisen n yibenk s ufus ɣer umiḍan-inek·inem. Talɣut n unermas ur d-tettwasuli ara ɣer yimeẓla-nneɣ war tigawt yettwafernen i tigin n wayen.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Allows you quick and secure to unlock your application.";
+"NSFaceIDUsageDescription" = "Ad ak·am-issireg tukksa n usekkeṛ s zzerb d tɣellist n usnas-inek·inem.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Required for saving image attachments to photo library.";
+"NSPhotoLibraryAddUsageDescription" = "Yettusra i usekles n yimeddayen n tugna deg temkerḍit n tewlafin.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Ilaq i ucuddu n tewlafin ar yimayl.";
+"NSPhotoLibraryUsageDescription" = "Ilaq i ucuddu n tewlafin ɣer yimayl.";
 

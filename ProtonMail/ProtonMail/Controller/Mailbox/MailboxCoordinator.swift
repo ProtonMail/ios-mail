@@ -245,10 +245,12 @@ class MailboxCoordinator : DefaultCoordinator {
             
         switch dest {
         case .details:
+            let coreDataService = self.services.get(by: CoreDataService.self)
+            
             if let messageID = path.value,
                 case let user = self.viewModel.user,
                 case let msgService = user.messageService,
-                let message = msgService.fetchMessages(withIDs: [messageID]).first,
+                let message = msgService.fetchMessages(withIDs: [messageID], in: coreDataService.mainManagedObjectContext).first,
                 let nav = self.navigation
             {
                 let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message, msgService: msgService, user: user, coreDataService: self.services.get(by: CoreDataService.self), states: path.states), services: services)
@@ -256,13 +258,15 @@ class MailboxCoordinator : DefaultCoordinator {
                 details.follow(deeplink)
             }
         case .composeShow where path.value != nil:
+            let coreDataService = self.services.get(by: CoreDataService.self)
+            
             if let messageID = path.value,
                 let nav = self.navigation,
                 case let user = self.viewModel.user,
                 case let msgService = user.messageService,
-                let message = msgService.fetchMessages(withIDs: [messageID]).first
+                let message = msgService.fetchMessages(withIDs: [messageID], in: coreDataService.mainManagedObjectContext).first
             {
-                let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: msgService, user: user, coreDataService: self.services.get(by: CoreDataService.self))
+                let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: msgService, user: user, coreDataService: coreDataService)
                 let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
                 composer.start()
                 composer.follow(deeplink)

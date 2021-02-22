@@ -1,0 +1,38 @@
+{
+  "configurations" : [
+    {
+      "id" : "A484B2B7-DE21-4136-8EB6-EC29362804FA",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "AccountSettingsTests\/testChangeSignlePassword()",
+        "BaseTestCase",
+        "ContactsTests\/testContactDetailSendMessage()",
+        "ContactsTests\/testContactGroupSendMessage()",
+        "DraftsTests",
+        "LoginTests\/testLoginWithOnePassAnd2FA()",
+        "LoginTests\/testLoginWithTwoPassAnd2FA()",
+        "MultiuserManagementTests\/testAddTwoFreeAccounts()",
+        "MultiuserManagementTests\/testCancelLoginOnTwoFaPrompt()",
+        "MultiuserManagementTests\/testConnectOnePassAccountWithTwoFa()",
+        "MultiuserManagementTests\/testConnectTwoPassAccountWithTwoFa()",
+        "SendNewMessageTests"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -28,15 +28,15 @@ import Crypto
 
 extension String {
 
-    func decryptMessage(binKeys: Data, passphrase: String) throws -> String? {
+    func decryptMessage(binKeys: [Data], passphrase: String) throws -> String? {
         return try Crypto().decrypt(encrytped: self, privateKey: binKeys, passphrase: passphrase)
     }
     
-    func verifyMessage(verifier: Data, binKeys: Data, passphrase: String, time : Int64) throws -> ExplicitVerifyMessage? {
+    func verifyMessage(verifier: [Data], binKeys: [Data], passphrase: String, time : Int64) throws -> ExplicitVerifyMessage? {
         return try Crypto().decryptVerify(encrytped: self, publicKey: verifier, privateKey: binKeys, passphrase: passphrase, verifyTime: time)
     }
     
-    func verifyMessage(verifier: Data, userKeys: Data, keys: [Key], passphrase: String, time : Int64) throws -> ExplicitVerifyMessage? {
+    func verifyMessage(verifier: [Data], userKeys: [Data], keys: [Key], passphrase: String, time : Int64) throws -> ExplicitVerifyMessage? {
         var firstError : Error?
         for key in keys {
             do {
@@ -80,15 +80,15 @@ extension String {
     }
     
     func encrypt(withPrivKey key: String, mailbox_pwd: String) throws -> String? {
-        return try Crypto().encrypt(plainText: self, publicKey: key, privateKey: key, passphrase: mailbox_pwd)
+        return try Crypto().encrypt(plainText: self, privateKey: key, passphrase: mailbox_pwd)
     }
     
-    func encrypt(withKey key: Key, userKeys: Data, mailbox_pwd: String) throws -> String? {
+    func encrypt(withKey key: Key, userKeys: [Data], mailbox_pwd: String) throws -> String? {
         if let token = key.token, let signature = key.signature { //have both means new schema. key is
             if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: mailbox_pwd) {
                 PMLog.D(signature)
                 return try Crypto().encrypt(plainText: self,
-                                            publicKey: key.private_key,
+                                            publicKey: key.publicKey,
                                             privateKey: key.private_key,
                                             passphrase: plaitToken)
             }
@@ -96,13 +96,13 @@ extension String {
             if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: mailbox_pwd) {
                 //TODO:: try to verify signature here embeded signature
                 return try Crypto().encrypt(plainText: self,
-                                            publicKey: key.private_key,
+                                            publicKey: key.publicKey,
                                             privateKey: key.private_key,
                                             passphrase: plaitToken)
             }
         }
         return try Crypto().encrypt(plainText: self,
-                                    publicKey:  key.private_key,
+                                    publicKey:  key.publicKey,
                                     privateKey: key.private_key,
                                     passphrase: mailbox_pwd)
     }

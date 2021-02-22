@@ -1,5 +1,9 @@
 .DS_Store
 xcuserdata
 ProtonMail/DerivedData
+ProtonMail/Certificates.p12
+ProtonMail/*.mobileprovision
 test_output
 .vscode/*
+builds
+ProtonMail/fastlane/report.xml

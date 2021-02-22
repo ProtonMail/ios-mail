@@ -14,7 +14,7 @@
 "NSFaceIDUsageDescription" = "Hiermee kunt u de applicatie snel en veilig ontgrendelen.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Vereist voor het opslaan van afbeeldingsbijlagen naar uw galerij.";
+"NSPhotoLibraryAddUsageDescription" = "Vereist voor het opslaan van afbeeldingsbijlagen naar de fotobibliotheek.";
 
 /* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "Vereist voor het toevoegen van foto's aan de e-mails.";

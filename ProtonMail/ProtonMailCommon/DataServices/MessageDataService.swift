@@ -72,8 +72,8 @@ class MessageDataService : Service, HasLocalStorage {
     ///
     /// - Parameter selected: MessageIDs
     /// - Returns: fetched message obj
-    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext? = nil) -> [Message] {
-        let context = context ?? self.managedObjectContext
+    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message] {
+        let context = context
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selected)
         do {
@@ -99,20 +99,28 @@ class MessageDataService : Service, HasLocalStorage {
         guard message.unRead != unRead else {
             return false
         }
-        message.unRead = unRead
-        let error = context.saveUpstreamIfNeeded()
-        if let error = error {
-            PMLog.D(" error: \(error)")
+        var hasError = false
+        context.performAndWait {
+            message.unRead = unRead
+            let error = context.saveUpstreamIfNeeded()
+            if let error = error {
+                PMLog.D(" error: \(error)")
+                hasError = true
+            }
+        }
+        
+        if hasError {
             return false
         }
-        self.updateCounter(markUnRead: unRead, on: message)
+        
+        self.updateCounter(markUnRead: unRead, on: message, context: context)
         return true
     }
     
-    private func updateCounter(markUnRead: Bool, on message: Message) {
+    private func updateCounter(markUnRead: Bool, on message: Message, context: NSManagedObjectContext) {
         let offset = markUnRead ? 1 : -1
         let labelIDs: [String] = message.getLableIDs()
-        self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
+        self.coreDataService.enqueue(context: context) { (context) in
             for lID in labelIDs {
                 let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context)
                 var count = unreadCount + offset
@@ -126,25 +134,48 @@ class MessageDataService : Service, HasLocalStorage {
             }
         }
     }
+    
+    private func updateCounterSync(markUnRead: Bool, on message: Message, context: NSManagedObjectContext) {
+        let offset = markUnRead ? 1 : -1
+        let labelIDs: [String] = message.getLableIDs()
+        for lID in labelIDs {
+            let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context)
+            var count = unreadCount + offset
+            if count < 0 {
+                count = 0
+            }
+            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, context: context, shouldSave: false)
+        }
+    }
+    
     @discardableResult
     func label(message: Message, label: String, apply: Bool) -> Bool {
         guard let context = message.managedObjectContext else {
             return false
         }
-        if apply {
-            if message.add(labelID: label) != nil && message.unRead {
-                self.updateCounter(plus: true, with: label)
+
+        var hasError = false
+        context.performAndWait {
+            if apply {
+                if message.add(labelID: label) != nil && message.unRead {
+                    self.updateCounterSync(plus: true, with: label, context: context)
+                }
+            } else {
+                if message.remove(labelID: label) != nil && message.unRead {
+                    self.updateCounterSync(plus: false, with: label, context: context)
+                }
             }
-        } else {
-            if message.remove(labelID: label) != nil && message.unRead {
-                self.updateCounter(plus: false, with: label)
+            let error = context.saveUpstreamIfNeeded()
+            if let error = error {
+                PMLog.D(" error: \(error)")
+                hasError = true
             }
         }
-        let error = context.saveUpstreamIfNeeded()
-        if let error = error {
-            PMLog.D(" error: \(error)")
+        
+        if hasError {
             return false
         }
+        
         self.queue(message, action: apply ? .label : .unlabel, data1: label)
         return true
     }
@@ -157,8 +188,22 @@ class MessageDataService : Service, HasLocalStorage {
             if count < 0 {
                 count = 0
             }
-            lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, context: context)
+            lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, context: context, shouldSave: false)
+            
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(error.localizedDescription)
+            }
         }
+    }
+    
+    func updateCounterSync(plus: Bool, with labelID: String, context: NSManagedObjectContext) {
+        let offset = plus ? 1 : -1
+        let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, context: context)
+        var count = unreadCount + offset
+        if count < 0 {
+            count = 0
+        }
+        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, context: context)
     }
 
     @discardableResult
@@ -166,35 +211,36 @@ class MessageDataService : Service, HasLocalStorage {
         guard let context = message.managedObjectContext else {
             return false
         }
-        if let lid = message.remove(labelID: fLabel), message.unRead {
-            self.updateCounter(plus: false, with: lid)
-            if let id = message.selfSent(labelID: lid) {
-                self.updateCounter(plus: false, with: id)
-            }
-        }
-        if let lid = message.add(labelID: tLabel) {
-            //if move to trash. clean lables.
-            var labelsFound = message.getNormalLableIDs()
-            labelsFound.append(Message.Location.starred.rawValue)
-            labelsFound.append(Message.Location.allmail.rawValue)
-            if lid == Message.Location.trash.rawValue {
-                self.remove(labels: labelsFound, on: message, cleanUnread: true)
-                message.unRead = false
-            }
-            if lid == Message.Location.spam.rawValue {
-                self.remove(labels: labelsFound, on: message, cleanUnread: false)
-            }
-            
-            if message.unRead {
-                self.updateCounter(plus: true, with: lid)
-                if let id = message.selfSent(labelID: lid) {
-                    self.updateCounter(plus: true, with: id)
-                }
-            }
-        }
-        
+
         var hasError = false
         context.performAndWait {
+            if let lid = message.remove(labelID: fLabel), message.unRead {
+                self.updateCounterSync(plus: false, with: lid, context: context)
+                if let id = message.selfSent(labelID: lid) {
+                    self.updateCounterSync(plus: false, with: id, context: context)
+                }
+            }
+            if let lid = message.add(labelID: tLabel) {
+                //if move to trash. clean lables.
+                var labelsFound = message.getNormalLableIDs()
+                labelsFound.append(Message.Location.starred.rawValue)
+                labelsFound.append(Message.Location.allmail.rawValue)
+                if lid == Message.Location.trash.rawValue {
+                    self.remove(labels: labelsFound, on: message, cleanUnread: true)
+                    message.unRead = false
+                }
+                if lid == Message.Location.spam.rawValue {
+                    self.remove(labels: labelsFound, on: message, cleanUnread: false)
+                }
+                
+                if message.unRead {
+                    self.updateCounterSync(plus: true, with: lid, context: context)
+                    if let id = message.selfSent(labelID: lid) {
+                        self.updateCounterSync(plus: true, with: id, context: context)
+                    }
+                }
+            }
+            
             let error = context.saveUpstreamIfNeeded()
             if let error = error {
                 PMLog.D(" error: \(error)")
@@ -213,12 +259,15 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     private func remove(labels: [String], on message: Message, cleanUnread: Bool) {
+        guard let context = message.managedObjectContext else {
+            return
+        }
         let unread = cleanUnread ? message.unRead : cleanUnread
         for label in labels {
             if let lid = message.remove(labelID: label), unread {
-                self.updateCounter(plus: false, with: lid)
+                self.updateCounterSync(plus: false, with: lid, context: context)
                 if let id = message.selfSent(labelID: lid) {
-                    self.updateCounter(plus: false, with: id)
+                    self.updateCounterSync(plus: false, with: id, context: context)
                 }
             }
         }
@@ -229,29 +278,36 @@ class MessageDataService : Service, HasLocalStorage {
         guard let context = message.managedObjectContext else {
             return false
         }
-        
-        self.queue(message, action: .delete)
-        
-        if let lid = message.remove(labelID: label), message.unRead {
-            self.updateCounter(plus: false, with: lid)
-            if let id = message.selfSent(labelID: lid) {
-                self.updateCounter(plus: false, with: id)
+        var hasError = false
+        context.performAndWait {
+            self.queue(message, action: .delete)
+            
+            if let lid = message.remove(labelID: label), message.unRead {
+                self.updateCounterSync(plus: false, with: lid, context: context)
+                if let id = message.selfSent(labelID: lid) {
+                    self.updateCounterSync(plus: false, with: id, context: context)
+                }
+            }
+            var labelsFound = message.getNormalLableIDs()
+            labelsFound.append(Message.Location.starred.rawValue)
+            labelsFound.append(Message.Location.allmail.rawValue)
+            self.remove(labels: labelsFound, on: message, cleanUnread: true)
+            let labelObjs = message.mutableSetValue(forKey: "labels")
+            labelObjs.removeAllObjects()
+            message.setValue(labelObjs, forKey: "labels")
+            context.delete(message)
+            
+            let error = context.saveUpstreamIfNeeded()
+            if let error = error {
+                PMLog.D(" error: \(error)")
+                hasError = true
             }
         }
-        var labelsFound = message.getNormalLableIDs()
-        labelsFound.append(Message.Location.starred.rawValue)
-        labelsFound.append(Message.Location.allmail.rawValue)
-        self.remove(labels: labelsFound, on: message, cleanUnread: true)
-        let labelObjs = message.mutableSetValue(forKey: "labels")
-        labelObjs.removeAllObjects()
-        message.setValue(labelObjs, forKey: "labels")
-        context.delete(message)
         
-        let error = context.saveUpstreamIfNeeded()
-        if let error = error {
-            PMLog.D(" error: \(error)")
+        if hasError {
             return false
         }
+        
         return true
     }
     
@@ -291,7 +347,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 if let lastMsg = messages.last, let firstMsg = messages.first {
                                     let updateTime = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: self.userID, context: context)
                                     if (updateTime.isNew) {
-                                        updateTime.start = firstMsg.time!
+                                        updateTime.start = firstMsg.time ?? Date()
                                         updateTime.total = Int32(messcount)
                                     }
                                     if let time = lastMsg.time,
@@ -317,6 +373,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 DispatchQueue.main.async {
                                     completion?(task, responseDict, error)
                                 }
+                                return
                             }
                             DispatchQueue.main.async {
                                 completion?(task, responseDict, error)
@@ -393,6 +450,13 @@ class MessageDataService : Service, HasLocalStorage {
             let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID(userID: self.userID, context: context))
             eventAPI.call(api: self.apiService) { task, response, hasError in
                 if let eventsRes = response {
+                    
+                    if eventsRes.refresh.contains(.contacts) {
+                        _ = self.contactDataService.cleanUp().ensure {
+                            self.contactDataService.fetchContacts(completion: nil)
+                        }
+                    }
+                    
                     if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (hasError && eventsRes.code == 18001) {
                         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                         getLatestEventID.call(api: self.apiService) { task, _IDRes, hasIDError in
@@ -400,37 +464,40 @@ class MessageDataService : Service, HasLocalStorage {
                                 let completionWrapper: CompletionBlock = { task, responseDict, error in
                                     if error == nil {
                                         lastUpdatedStore.clear()
-                                        _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID, context: self.managedObjectContext).ensure {
+                                        _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID, context: context).ensure {
                                             completion?(task, responseDict, error)
                                         }
                                         return
-//                                        lastUpdatedStore.lastEventID = IDRes.eventID
                                     }
                                     completion?(task, responseDict, error)
                                 }
-                                //TODO:: fix me
-                                //self.cleanMessage()
-                                _ = self.contactDataService.cleanUp().ensure {
+                                self.cleanMessage().then {
+                                    return self.contactDataService.cleanUp()
+                                }.ensure {
                                     self.fetchMessages(byLable: labelID, time: 0, forceClean: false, completion: completionWrapper)
                                     self.contactDataService.fetchContacts(completion: nil)
                                     self.labelDataService.fetchLabels()
-                                }
+                                }.cauterize()
                             } else {
                                 completion?(task, nil, nil)
                             }
-                        }
-                    } else if eventsRes.refresh.contains(.contacts) {
-                        _ = self.contactDataService.cleanUp().ensure {
-                            self.contactDataService.fetchContacts(completion: nil)
                         }
                     } else if let messageEvents = eventsRes.messages {
                         DispatchQueue.global().async {
                             self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID, task: task) { task, res, error in
                                 if error == nil {
-                                    _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.managedObjectContext).then { (_) -> Promise<Void> in
-                                        return self.processEvents(contacts: eventsRes.contacts)
+                                    _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.coreDataService.mainManagedObjectContext).then { (_) -> Promise<Void> in
+                                        if eventsRes.refresh.contains(.contacts) {
+                                            return Promise()
+                                        } else {
+                                            return self.processEvents(contacts: eventsRes.contacts)
+                                        }
                                     }.then { (_) -> Promise<Void> in
-                                        return self.processEvents(contactEmails: eventsRes.contactEmails)
+                                        if eventsRes.refresh.contains(.contacts) {
+                                            return Promise()
+                                        } else {
+                                            return self.processEvents(contactEmails: eventsRes.contactEmails)
+                                        }
                                     }.then { (_) -> Promise<Void> in
                                         self.processEvents(labels: eventsRes.labels)
                                     }.then({ (_) -> Promise<Void> in
@@ -460,10 +527,18 @@ class MessageDataService : Service, HasLocalStorage {
                         }
                     } else {
                         if eventsRes.code == 1000 {
-                            _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.managedObjectContext).then { (_) -> Promise<Void> in
-                                return self.processEvents(contacts: eventsRes.contacts)
+                            _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.coreDataService.mainManagedObjectContext).then { (_) -> Promise<Void> in
+                                if eventsRes.refresh.contains(.contacts) {
+                                    return Promise()
+                                } else {
+                                    return self.processEvents(contacts: eventsRes.contacts)
+                                }
                             }.then { (_) -> Promise<Void> in
-                                return self.processEvents(contactEmails: eventsRes.contactEmails)
+                                if eventsRes.refresh.contains(.contacts) {
+                                    return Promise()
+                                } else {
+                                    return self.processEvents(contactEmails: eventsRes.contactEmails)
+                                }
                             }.then { (_) -> Promise<Void> in
                                 self.processEvents(labels: eventsRes.labels)
                             }.then({ (_) -> Promise<Void> in
@@ -516,26 +591,14 @@ class MessageDataService : Service, HasLocalStorage {
     ///
     /// - Parameter att: Attachment
     func upload( att : Attachment) {
-        let context = self.coreDataService.mainManagedObjectContext
-        if let error = context.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
-            self.dequeueIfNeeded()
-        } else {
-            self.queue(att, action: .uploadAtt)
-        }
+        self.queue(att, action: .uploadAtt)
     }
     
     /// upload attachment to server
     ///
     /// - Parameter att: Attachment
     func upload( pubKey : Attachment) {
-        let context = self.coreDataService.mainManagedObjectContext
-        if let error = context.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
-            self.dequeueIfNeeded()
-        } else {
-            self.queue(pubKey, action: .uploadPubkey)
-        }
+        self.queue(pubKey, action: .uploadPubkey)
     }
     
     /// delete attachment from server
@@ -543,17 +606,18 @@ class MessageDataService : Service, HasLocalStorage {
     /// - Parameter att: Attachment
     func delete(att: Attachment!) -> Promise<Void> {
         return Promise { seal in
-            let attachmentID = att.attachmentID
+            let objetcID = att.objectID.uriRepresentation().absoluteString
             let context = att.managedObjectContext
+            let _ = sharedMessageQueue.addMessage(objetcID, action: .deleteAtt, userId: self.userID)
+            dequeueIfNeeded()
+            
             self.coreDataService.enqueue(context: context) { (context) in
-                context.delete(att)
+                att.isSoftDeleted = true
                 if let error = context.saveUpstreamIfNeeded() {
                     PMLog.D(" error: \(error)")
                 }
                 seal.fulfill_()
             }
-            let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt, userId: self.userID)
-            dequeueIfNeeded()
         }
     }
     
@@ -578,7 +642,6 @@ class MessageDataService : Service, HasLocalStorage {
             att.localURL = nil
             self.fetchAttachmentForAttachment(att, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
                 context.perform {
-                    att.localURL = url
                     complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
                     if error != nil {
                         PMLog.D("\(String(describing: error))")
@@ -745,30 +808,26 @@ class MessageDataService : Service, HasLocalStorage {
         
         // TODO: check for existing download tasks and return that task rather than start a new download
         queue { () -> Void in
-            if attachment.managedObjectContext != nil {
+            if let context = attachment.managedObjectContext {
                 self.apiService.downloadAttachment(byID: attachment.attachmentID,
                                                     destinationDirectoryURL: FileManager.default.attachmentDirectory,
                                                     customAuthCredential: customAuthCredential,
                                                     downloadTask: downloadTask,
                                                     completion: { task, fileURL, error in
                                                         var error = error
-                                                        let context = self.coreDataService.backgroundManagedObjectContext
-                                                        let objectId = attachment.objectID
                                                         self.coreDataService.enqueue(context: context) { (context) in
-                                                            if let att = context.object(with: objectId) as? Attachment {
-                                                                if let fileURL = fileURL {
-                                                                    att.localURL = fileURL
-                                                                    if #available(iOS 12, *) {
-                                                                        if !self.isFirstTimeSaveAttData {
-                                                                            att.fileData = try? Data(contentsOf: fileURL)
-                                                                        }
-                                                                    } else {
-                                                                        att.fileData = try? Data(contentsOf: fileURL)
+                                                            if let fileURL = fileURL {
+                                                                attachment.localURL = fileURL
+                                                                if #available(iOS 12, *) {
+                                                                    if !self.isFirstTimeSaveAttData {
+                                                                        attachment.fileData = try? Data(contentsOf: fileURL)
                                                                     }
-                                                                    error = context.saveUpstreamIfNeeded()
-                                                                    if error != nil  {
-                                                                        PMLog.D(" error: \(String(describing: error))")
-                                                                    }
+                                                                } else {
+                                                                    attachment.fileData = try? Data(contentsOf: fileURL)
+                                                                }
+                                                                error = context.saveUpstreamIfNeeded()
+                                                                if error != nil  {
+                                                                    PMLog.D(" error: \(String(describing: error))")
                                                                 }
                                                             }
                                                             completion?(task, fileURL, error)
@@ -807,12 +866,37 @@ class MessageDataService : Service, HasLocalStorage {
                                     }
                                 }
                                 
+                                let localAttachments = newMessage.attachments.allObjects.compactMap{ $0 as? Attachment}.filter{ !$0.isSoftDeleted }
+                                let localAttachmentCount = localAttachments.count
+                                
+                                //This will remove all attachments that are still not uploaded to BE
                                 try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context)
+                                
+                                //Adds back the attachments that are still uploading
+                                for att in localAttachments {
+                                    if att.managedObjectContext != nil {
+                                        if !newMessage.attachments.contains(att) {
+                                            newMessage.attachments.adding(att)
+                                            att.message = newMessage
+                                        }
+                                    } else {
+                                        if let newAtt = context.object(with: att.objectID) as? Attachment {
+                                            if !newMessage.attachments.contains(newAtt) {
+                                                newMessage.attachments.adding(newAtt)
+                                                newAtt.message = newMessage
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                //Use local attachment count since the not-uploaded attachment is not counted
+                                newMessage.numAttachments = NSNumber(value: localAttachmentCount)
+                                
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
                                 self.queue(newMessage, action: .read)
                                 if newMessage.unRead {
-                                    self.updateCounter(markUnRead: false, on: newMessage)
+                                    self.updateCounterSync(markUnRead: false, on: newMessage, context: context)
                                 }
                                 newMessage.unRead = false
                                 error = context.saveUpstreamIfNeeded()
@@ -864,7 +948,7 @@ class MessageDataService : Service, HasLocalStorage {
                                         message_n.isDetailDownloaded = true
                                         self.queue(message, action: .read)
                                         if message_n.unRead {
-                                            self.updateCounter(markUnRead: false, on: message)
+                                            self.updateCounterSync(markUnRead: false, on: message, context: context)
                                         }
                                         message_n.unRead = false
                                         
@@ -924,7 +1008,7 @@ class MessageDataService : Service, HasLocalStorage {
                                     self.queue(message_out, action: .read)
                                     if message_out.unRead == true {
                                         message_out.unRead = false
-                                        self.updateCounter(markUnRead: false, on: message_out)
+                                        self.updateCounterSync(markUnRead: false, on: message_out, context: context)
                                     }
                                     let tmpError = context.saveUpstreamIfNeeded()
                                     
@@ -1118,20 +1202,12 @@ class MessageDataService : Service, HasLocalStorage {
     
     func saveDraft(_ message : Message?) {
         if let message = message, let context = message.managedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            } else {
-                self.queue(message, action: .saveDraft)
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                }
             }
-        }
-    }
-    
-    func deleteDraft (_ message : Message!) {
-        let context = CoreDataService.shared.mainManagedObjectContext
-        if let error = context.saveUpstreamIfNeeded() {
-            PMLog.D(" error: \(error)")
-        } else {
-            self.queue(message, action: .delete)
+            self.queue(message, action: .saveDraft)
         }
     }
     
@@ -1161,8 +1237,24 @@ class MessageDataService : Service, HasLocalStorage {
                     if !temp.isEmpty {
                         self.fetchMetadata(with: temp)
                     }
-                    
                 }
+            } catch let ex as NSError {
+                Analytics.shared.error(message: .purgeOldMessages,
+                                       error: ex,
+                                       user: self.usersManager?.getUser(byUserId: self.userID))
+                PMLog.D("error : \(ex)")
+            }
+        }
+    }
+    
+    func cleanOldAttachment() {
+        let context = self.coreDataService.backgroundManagedObjectContext
+        self.coreDataService.enqueue(context: context) { (context) in
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attachment.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "(%K == 1) AND %K == NULL", Attachment.Attributes.isSoftDelete, Attachment.Attributes.message)
+            let request = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            do {
+                try context.execute(request)
             } catch let ex as NSError {
                 Analytics.shared.error(message: .purgeOldMessages,
                                        error: ex,
@@ -1176,7 +1268,7 @@ class MessageDataService : Service, HasLocalStorage {
     
     fileprivate func attachmentsForMessage(_ message: Message) -> [Attachment] {
         if let all = message.attachments.allObjects as? [Attachment] {
-            return all
+            return all.filter{ !$0.isSoftDeleted }
         }
         return []
     }
@@ -1209,8 +1301,9 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 let completionWrapper: CompletionBlock = { task, response, error in
                     guard let mess = response else {
-                        if let errmsg = error?.localizedDescription {
-                            NSError.alertSavingDraftError(details: errmsg)
+                        if let err = error {
+                            Analytics.shared.error(message: .saveDraftError, error: err, user: self.usersManager?.firstUser)
+                            NSError.alertSavingDraftError(details: err.localizedDescription)
                         }
                         // error: response nil
                         completion?(task, nil, error)
@@ -1276,6 +1369,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 PMLog.D(" error: \(save_error)")
                             }
                         } catch let exc as NSError {
+                            Analytics.shared.error(message: .grtJSONSerialization, error: exc, user: self.usersManager?.firstUser)
                             completion?(task, response, exc)
                             return
                         }
@@ -1320,6 +1414,7 @@ class MessageDataService : Service, HasLocalStorage {
                 }
             } catch let ex as NSError {
                 // error: context thrown trying to get Message
+                Analytics.shared.error(message: .saveDraftError, error: ex, user: self.usersManager?.firstUser)
                 let _ = sharedMessageQueue.remove(writeQueueUUID)
                 self.dequeueIfNeeded()
                 completion?(nil, nil, ex)
@@ -1397,7 +1492,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         let signed = attachment.sign(byKey: key,
-                                     userKeys: attachment.message.cachedUser?.userPrivateKeys ?? userManager.userPrivateKeys,
+                                     userKeys: attachment.message.cachedUser?.userPrivateKeysArray ?? userManager.userPrivateKeys,
                                      passphrase: passphrase)
         let completionWrapper: CompletionBlock = { task, response, error in
             PMLog.D("SendAttachmentDebug == finish upload att!")
@@ -1427,6 +1522,9 @@ class MessageDataService : Service, HasLocalStorage {
                     completion?(task, response, error)
                 }
             } else {
+                if let err = error {
+                    Analytics.shared.error(message: .uploadAttachmentError, error: err, user: self.usersManager?.firstUser)
+                }
                 completion?(task, response, error)
             }
         }
@@ -1446,13 +1544,15 @@ class MessageDataService : Service, HasLocalStorage {
     
     private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.mainManagedObjectContext
-        context.performAndWait {
+        self.coreDataService.enqueue(context: context) { (context) in
             var authCredential: AuthCredential?
+            var att: Attachment?
             if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(deleteObject),
                 let managedObject = try? context.existingObject(with: objectID),
                 let attachment = managedObject as? Attachment
             {
                 authCredential = attachment.message.cachedAuthCredential
+                att = attachment
             }
             
             guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
@@ -1460,11 +1560,10 @@ class MessageDataService : Service, HasLocalStorage {
                 return
             }
             
-            let api = DeleteAttachment(attID: deleteObject, authCredential: authCredential)
+            let api = DeleteAttachment(attID: att?.attachmentID ?? "0", authCredential: authCredential)
             api.call(api: userManager.apiService) { (task, response, hasError) -> Void in
                 completion?(task, nil, nil)
             }
-            return
         }
     }
     
@@ -1486,6 +1585,15 @@ class MessageDataService : Service, HasLocalStorage {
             }
             
             let messageIds = messages.map { $0.messageID }
+            guard messageIds.count > 0 else {
+                Analytics.shared.debug(message: .coredataIssue,
+                                       extra: [
+                                        "API": "Message action",
+                                        "ObjectCounts": managedObjectIds.count
+                                       ])
+                completion!(nil, nil, nil)
+                return
+            }
             let api = MessageActionRequest(action: action, ids: messageIds)
             api.call(api: userManager.apiService) { (task, response, hasError) in
                 completion!(task, nil, nil)
@@ -1635,7 +1743,10 @@ class MessageDataService : Service, HasLocalStorage {
             var status = SendStatus.justStart
             
             let userInfo = message.cachedUser ?? userManager.userInfo
+            
             let userPrivKeys = userInfo.userPrivateKeys
+            
+            let userPrivKeysArray = userInfo.userPrivateKeysArray
             let addrPrivKeys = userInfo.addressKeys
             let newSchema = addrPrivKeys.newSchema
             
@@ -1680,10 +1791,10 @@ class MessageDataService : Service, HasLocalStorage {
                     let bodyData = splited.dataPacket,
                     let keyData = splited.keyPacket,
                     let session = newSchema ?
-                        try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeys,
+                        try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
                                                                 passphrase: passphrase,
                                                                 keys: addrPrivKeys) :
-                        try message.getSessionKey(keys: addrPrivKeys.binPrivKeys,
+                        try message.getSessionKey(keys: addrPrivKeys.binPrivKeysArray,
                                                   passphrase: passphrase) else {
                             throw RuntimeError.cant_decrypt.error
                 }
@@ -1727,7 +1838,7 @@ class MessageDataService : Service, HasLocalStorage {
                 if sendBuilder.hasMime || sendBuilder.hasPlainText {
                     guard let clearbody = newSchema ?
                         try message.decryptBody(keys: addrPrivKeys,
-                                                userKeys: userPrivKeys,
+                                                userKeys: userPrivKeysArray,
                                                 passphrase: passphrase) :
                         try message.decryptBody(keys: addrPrivKeys,
                                                 passphrase: passphrase) else {
@@ -1741,10 +1852,10 @@ class MessageDataService : Service, HasLocalStorage {
                 for att in attachments {
                     if att.managedObjectContext != nil {
                         if let sessionPack = newSchema ?
-                            try att.getSession(userKey: userPrivKeys,
+                            try att.getSession(userKey: userPrivKeysArray,
                                                keys: addrPrivKeys,
                                                mailboxPassword: userManager.mailboxPassword) :
-                            try att.getSession(keys: addrPrivKeys.binPrivKeys,
+                            try att.getSession(keys: addrPrivKeys.binPrivKeysArray,
                                                mailboxPassword: userManager.mailboxPassword) {
                             guard let key = sessionPack.key else {
                                 continue
@@ -1773,7 +1884,7 @@ class MessageDataService : Service, HasLocalStorage {
                 //build pgp sending mime body
                 return sendBuilder.buildMime(senderKey: addressKey,
                                              passphrase: passphrase,
-                                             userKeys: userPrivKeys,
+                                             userKeys: userPrivKeysArray,
                                              keys: addrPrivKeys,
                                              newSchema: newSchema,
                                              msgService: self,
@@ -1792,7 +1903,7 @@ class MessageDataService : Service, HasLocalStorage {
                 //build pgp sending mime body
                 return sendBuilder.buildPlainText(senderKey: addressKey,
                                                   passphrase: passphrase,
-                                                  userKeys: userPrivKeys,
+                                                  userKeys: userPrivKeysArray,
                                                   keys: addrPrivKeys,
                                                   newSchema: newSchema)
             } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
@@ -1914,7 +2025,18 @@ class MessageDataService : Service, HasLocalStorage {
                     NSError.alertMessageSentToast()
                     completion?(nil, nil, nil)
                     return
-                }  else {
+                } else if err.code == 33101 {
+                    //Email address validation failed
+                    NSError.alertMessageSentError(details: err.localizedDescription)
+                    
+                    #if !APP_EXTENSION
+                    let toDraftAction = UIAlertAction(title: LocalString._address_invalid_error_to_draft_action_title, style: .default) { (_) in
+                        NotificationCenter.default.post(name: .switchView,
+                                                        object: DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue, sender: Message.Location.draft.rawValue))
+                    }
+                    LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
+                    #endif
+                } else {
                     NSError.alertMessageSentError(details: err.localizedDescription)
                 }
                 
@@ -2007,6 +2129,10 @@ class MessageDataService : Service, HasLocalStorage {
                 self.dequeueIfNeeded()
             } else {
                 PMLog.D(" error: \(String(describing: error))")
+                if let err = error {
+                    Analytics.shared.error(message: .queueError, error: err, user: self.usersManager?.firstUser)
+                }
+                
                 var statusCode = 200
                 let errorCode = error?.code ?? 200
                 var isInternetIssue = false
@@ -2067,21 +2193,35 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 if !isInternetIssue && (errorCode != NSError.authCacheLocked().code) {
                     self.dequeueIfNeeded()
-                } else {
-                    if !sharedMessageQueue.isBlocked && self.readQueue.count > 0 {
-                        PMLog.D("left redaQueue count : \(self.readQueue.count)")
-                        self.readQueue.remove(at: 0)()
-                        self.dequeueIfNeeded()
-                    }
+                } else if sharedMessageQueue.isBlocked {
+                    self.pauseNotify?()
+                    self.pauseNotify = nil
+                    self.dequieNotify = nil
+                    sharedMessageQueue.isBlocked = false
+                    
+                } else if !sharedMessageQueue.isBlocked && self.readQueue.count > 0 {
+                    PMLog.D("left redaQueue count : \(self.readQueue.count)")
+                    self.readQueue.remove(at: 0)()
+                    self.dequeueIfNeeded()
                 }
             }
         }
     }
     
     var dequieNotify : (() -> Void)?
+    var pauseNotify: (() -> Void)?
     
     func backgroundFetch(notify : (() -> Void)?) {
         self.dequeueIfNeeded(notify: notify)
+    }
+    
+    func pauseQueueAction(didStop: (() -> Void)?) {
+        self.pauseNotify = didStop
+        sharedMessageQueue.isBlocked = true
+    }
+    
+    func unBlockQueueAction() {
+        sharedMessageQueue.isBlocked = false
     }
     
     private func dequeueIfNeeded(notify : (() -> Void)? = nil) {
@@ -2142,6 +2282,11 @@ class MessageDataService : Service, HasLocalStorage {
         } else if !sharedMessageQueue.isBlocked && readQueue.count > 0 { //sharedMessageQueue.count == 0 &&
             readQueue.remove(at: 0)()
             dequeueIfNeeded()
+        } else if sharedMessageQueue.isBlocked {
+            self.pauseNotify?()
+            self.pauseNotify = nil
+            self.dequieNotify = nil
+            sharedMessageQueue.isBlocked = false
         }
     }
     
@@ -2409,9 +2554,23 @@ class MessageDataService : Service, HasLocalStorage {
                             if let messageid = msg.message?["ID"] as? String {
                                 messagesNoCache.append(messageid)
                             }
+                            var status = ""
+                            switch msg.Action {
+                            case IncrementalUpdateType.update1:
+                                status = "Update1"
+                            case IncrementalUpdateType.update2:
+                                status = "Update2"
+                            case IncrementalUpdateType.insert:
+                                status = "Insert"
+                            case IncrementalUpdateType.delete:
+                                status = "Delete"
+                            default:
+                                status = "Other: \(String(describing: msg.Action))"
+                                break
+                            }
                             Analytics.shared.error(message: .grtJSONSerialization,
                                                    error: err,
-                                                   extra: [Analytics.Reason.status: "Insert"],
+                                                   extra: [Analytics.Reason.status: status],
                                                    user: self.usersManager?.getUser(byUserId: self.userID))
                             PMLog.D(" error: \(err)")
                         }
@@ -2693,13 +2852,12 @@ class MessageDataService : Service, HasLocalStorage {
                 PMLog.D(error.localizedDescription)
             }
             
-            _ = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userID, context: context).done { (unreadCount) in
-                var badgeNumber = unreadCount
-                if  badgeNumber < 0 {
-                    badgeNumber = 0
-                }
-                UIApplication.setBadge(badge: badgeNumber)
+            let unreadCount: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userID, context: context)
+            var badgeNumber = unreadCount
+            if  badgeNumber < 0 {
+                badgeNumber = 0
             }
+            UIApplication.setBadge(badge: badgeNumber)
         }
     }
     
@@ -2717,7 +2875,7 @@ class MessageDataService : Service, HasLocalStorage {
     //  noVerifier = 2
     //  failed     = 3
     //  )
-    func verifyBody(_ message: Message, verifier : Data, passphrase: String) -> SignStatus {
+    func verifyBody(_ message: Message, verifier : [Data], passphrase: String) -> SignStatus {
         let keys = self.userDataSource!.addressKeys
         guard let passphrase = self.userDataSource?.mailboxPassword else {
             return .failed
@@ -2730,7 +2888,7 @@ class MessageDataService : Service, HasLocalStorage {
                                        userKeys: self.userDataSource!.userPrivateKeys,
                                        keys: keys, passphrase: passphrase, time: time) :
                 try message.body.verifyMessage(verifier: verifier,
-                                       binKeys: keys.binPrivKeys,
+                                       binKeys: keys.binPrivKeysArray,
                                        passphrase: passphrase,
                                        time: time) {
                 guard let verification = verify.signatureVerificationError else {
@@ -2739,6 +2897,7 @@ class MessageDataService : Service, HasLocalStorage {
                 return SignStatus(rawValue: verification.status) ?? .notSigned
             }
         } catch {
+            PMLog.D("error: \(error.localizedDescription)")
         }
         return .failed
     }

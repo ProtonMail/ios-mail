@@ -122,6 +122,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(ContactEditViewController.doneAction))
         self.navigationItem.rightBarButtonItem = doneItem
+        self.navigationItem.assignNavItemIndentifiers()
         
         if viewModel.isNew() {
             self.title = LocalString._contacts_add_contact

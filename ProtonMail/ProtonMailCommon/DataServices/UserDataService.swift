@@ -280,7 +280,7 @@ class UserDataService : Service, HasLocalStorage {
                 for index in 0 ..< addr.keys.count {
                     let key = addr.keys[index]
                     if let activtion = key.activation {
-                        guard let token = try activtion.decryptMessage(binKeys: user.userPrivateKeys, passphrase: pwd) else {
+                        guard let token = try activtion.decryptMessage(binKeys: user.userPrivateKeysArray, passphrase: pwd) else {
                             continue
                         }
                         let new_private_key = try Crypto.updatePassphrase(privateKey: key.private_key, oldPassphrase: token, newPassphrase: pwd)
@@ -408,8 +408,7 @@ class UserDataService : Service, HasLocalStorage {
         }
         
         if let authRes = UserDataService.authResponse {
-            let code = Int(twoFACode ?? "0") ?? 0
-            apiService.confirm2FA(code, password: password, context: authRes, completion: completionWrapper)
+            apiService.confirm2FA(twoFACode ?? "", password: password, context: authRes, completion: completionWrapper)
         } else {
             apiService.authenticate(username: username, password: password, noKey: noKeyUser, completion: completionWrapper)
         }
@@ -1055,6 +1054,17 @@ extension UserInfo {
     var userPrivateKeys : Data {
         var out = Data()
         var error : NSError?
+        for key in userKeys {
+            if let privK = ArmorUnarmor(key.private_key, &error) {
+                out.append(privK)
+            }
+        }
+        return out
+    }
+    
+    var userPrivateKeysArray: [Data] {
+        var out: [Data] = []
+        var error: NSError?
         for key in userKeys {
             if let privK = ArmorUnarmor(key.private_key, &error) {
                 out.append(privK)

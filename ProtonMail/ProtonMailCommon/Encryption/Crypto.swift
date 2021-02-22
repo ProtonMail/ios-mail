@@ -30,7 +30,7 @@ typealias PlainMessage        = CryptoPlainMessage
 typealias PGPMessage          = CryptoPGPMessage
 typealias PGPSignature        = CryptoPGPSignature
 typealias AttachmentProcessor = CryptoAttachmentProcessor
-typealias SymmetricKey        = CryptoSymmetricKey
+typealias SymmetricKey        = CryptoSessionKey
 
 typealias ExplicitVerifyMessage = HelperExplicitVerifyMessage
 typealias SignatureVerification = CryptoSignatureVerificationError
@@ -70,59 +70,141 @@ class Crypto {
 //        SIGNATURE_FAILED      int = 3
 //    }
     
-    /// Mark -- Message
+    // MARK: - Message
     
     // no verify
     public func decrypt(encrytped message: String, privateKey: String, passphrase: String) throws -> String {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(privateKey)
-        try keyRing.unlock(withPassphrase: passphrase)
         var error: NSError?
+        let newKey = CryptoNewKeyFromArmored(privateKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        guard let key = newKey else {
+            return ""
+        }
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try key.unlock(passSlic)
+        
+        let privateKeyRing = CryptoNewKeyRing(unlockedKey, &error)
+        if let err = error {
+            throw err
+        }
+        
         let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
         if let err = error {
             throw err
         }
-        let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0)
-        return plainMessage.getString()
+        
+        let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0).getString() ?? ""
+        return plainMessageString
     }
     
-    public func decrypt(encrytped message: String, privateKey binKeys: Data, passphrase: String) throws -> String {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
-        try keyRing.unlock(withPassphrase: passphrase)
-        var error: NSError?
-        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
-        if let err = error {
-            throw err
+    public func decrypt(encrytped message: String, privateKey binKeys: [Data], passphrase: String) throws -> String {
+        for binKey in binKeys {
+            do {
+                var error: NSError?
+                let newKey = CryptoNewKey(binKey.mutable as Data, &error)
+                if error != nil {
+                    continue
+                }
+
+                guard let key = newKey else {
+                    continue
+                }
+
+                let passSlic = passphrase.data(using: .utf8)
+                let unlockedKey = try key.unlock(passSlic)
+
+                let privateKeyRing = CryptoNewKeyRing(unlockedKey, &error)
+                if error != nil {
+                    continue
+                }
+
+                let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
+                if error != nil {
+                    continue
+                }
+
+                let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0).getString() ?? ""
+                return plainMessageString
+            } catch {
+                continue
+            }
         }
-        let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0)
-        return plainMessage.getString()
+        return ""
     }
     
     public func decrypt(encrytped binMessage: Data, privateKey: String, passphrase: String) throws -> String {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(privateKey)
-        try keyRing.unlock(withPassphrase: passphrase)
+        var error: NSError?
+        let newKey = CryptoNewKeyFromArmored(privateKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        guard let key = newKey else {
+            return ""
+        }
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try key.unlock(passSlic)
+        
+        let privateKeyRing = CryptoNewKeyRing(unlockedKey, &error)
+        if let err = error {
+            throw err
+        }
+        
         let pgpMsg = CryptoNewPGPMessage(binMessage.mutable as Data)
-        let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0)
-        return plainMessage.getString()
+        
+        let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0).getString() ?? ""
+        return plainMessageString
     }
     
     public func decrypt(encrytped message: String,
                         publicKey verifierBinKey: Data,
-                        privateKey binKeys: Data,
+                        privateKey binKeys: [Data],
                         passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
-        try keyRing.unlock(withPassphrase: passphrase)
-        var error: NSError?
-        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
-        if let err = error {
-            throw err
+        
+        for binKey in binKeys {
+            do {
+                var error: NSError?
+                let newKey = CryptoNewKey(binKey.mutable as Data, &error)
+                if error != nil {
+                    continue
+                }
+
+                guard let key = newKey else {
+                    continue
+                }
+
+                let passSlic = passphrase.data(using: .utf8)
+                let unlockedKey = try key.unlock(passSlic)
+
+                let privateKeyRing = CryptoNewKeyRing(unlockedKey, &error)
+                if error != nil {
+                    continue
+                }
+
+                let verifierKey = CryptoNewKey(verifierBinKey.mutable as Data, &error)
+                if error != nil {
+                    continue
+                }
+
+                let verifierKeyRing = CryptoNewKeyRing(verifierKey, &error)
+                if error != nil {
+                    continue
+                }
+
+                let pgpMsg = CryptoPGPMessage(fromArmored: message)
+
+                let plainMessage = try privateKeyRing?.decrypt(pgpMsg, verifyKey: verifierKeyRing, verifyTime: verifyTime)
+                return plainMessage
+            } catch {
+                continue
+            }
         }
-        let verifier = try pgp.buildKeyRing(verifierBinKey.mutable as Data)
-        let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: verifier, verifyTime: verifyTime)
-        return plainMessage
+        return nil
     }
     
     
@@ -130,53 +212,88 @@ class Crypto {
                         publicKey verifierBinKey: Data,
                         privateKey armorKey: String,
                         passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(armorKey)
-        try keyRing.unlock(withPassphrase: passphrase)
         var error: NSError?
-        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
+        let newKey = CryptoNewKeyFromArmored(armorKey, &error)
         if let err = error {
             throw err
         }
-        let verifier = try pgp.buildKeyRing(verifierBinKey.mutable as Data)
-        let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: verifier, verifyTime: verifyTime)
+        
+        guard let key = newKey else {
+            return nil
+        }
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try key.unlock(passSlic)
+        
+        let privateKeyRing = CryptoNewKeyRing(unlockedKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let verifierKey = CryptoNewKey(verifierBinKey.mutable as Data, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let verifierKeyRing = CryptoNewKeyRing(verifierKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let pgpMsg = CryptoPGPMessage(fromArmored: message)
+        
+        let plainMessage = try privateKeyRing?.decrypt(pgpMsg, verifyKey: verifierKeyRing, verifyTime: verifyTime)
         return plainMessage
     }
     
     public func decryptVerify(encrytped message: String,
-                        publicKey verifierBinKey: Data,
+                        publicKey verifierBinKeys: [Data],
                         privateKey armorKey: String,
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(armorKey)
-        try keyRing.unlock(withPassphrase: passphrase)
         var error: NSError?
-        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
+        
+        let newKey = CryptoNewKeyFromArmored(armorKey, &error)
         if let err = error {
             throw err
         }
-        let verifier = try pgp.buildKeyRing(verifierBinKey.mutable as Data)
-        let verified = HelperDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
+        
+        guard let key = newKey else {
+            return nil
+        }
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try key.unlock(passSlic)
+        
+        let privateKeyRing = CryptoNewKeyRing(unlockedKey, &error)
         if let err = error {
             throw err
         }
+        
+        let verifierKeyRing = buildKeyRing(keys: verifierBinKeys)
+        
+        let pgpMsg = CryptoPGPMessage(fromArmored: message)
+        
+        let verified = HelperDecryptExplicitVerify(pgpMsg, privateKeyRing, verifierKeyRing, verifyTime, &error)
+        if let err = error {
+            throw err
+        }
+        
         return verified
     }
     
     public func decryptVerify(encrytped message: String,
-                        publicKey verifierBinKey: Data,
-                        privateKey binKeys: Data,
+                        publicKey verifierBinKeys: [Data],
+                        privateKey binKeys: [Data],
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
-        try keyRing.unlock(withPassphrase: passphrase)
+        
         var error: NSError?
-        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
-        if let err = error {
-            throw err
-        }
-        let verifier = try pgp.buildKeyRing(verifierBinKey.mutable as Data)
-        let verified = HelperDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
+        
+        let privateKeyRing = buildPrivateKeyRing(keys: binKeys, passphrase: passphrase)
+        let verifierKeyRing = buildKeyRing(keys: verifierBinKeys)
+        
+        let pgpMsg = CryptoPGPMessage(fromArmored: message)
+
+        let verified = HelperDecryptExplicitVerify(pgpMsg, privateKeyRing, verifierKeyRing, verifyTime, &error)
         if let err = error {
             throw err
         }
@@ -188,100 +305,259 @@ class Crypto {
                         publicKey: String,
                         privateKey armorKey: String,
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(armorKey)
-        try keyRing.unlock(withPassphrase: passphrase)
         var error: NSError?
-        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
+        
+        let newKey = CryptoNewKeyFromArmored(armorKey, &error)
         if let err = error {
             throw err
         }
-        let verifier = try pgp.buildKeyRingArmored(publicKey)
-        let verified = HelperDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
+        
+        guard let key = newKey else {
+            return nil
+        }
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try key.unlock(passSlic)
+        
+        let privateKeyRing = CryptoNewKeyRing(unlockedKey, &error)
         if let err = error {
             throw err
         }
+        
+        //FIXME - Needs to double check
+        let verifierKey = CryptoNewKeyFromArmored(publicKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let verifierKeyRing = CryptoNewKeyRing(verifierKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let pgpMsg = CryptoPGPMessage(fromArmored: message)
+        
+        let verified = HelperDecryptExplicitVerify(pgpMsg, privateKeyRing, verifierKeyRing, verifyTime, &error)
+        if let err = error {
+            throw err
+        }
+        
         return verified
     }
     
     public func decryptVerify(encrytped message: String,
                         publicKey: String,
-                        privateKey binKeys: Data,
+                        privateKey binKeys: [Data],
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
-        try keyRing.unlock(withPassphrase: passphrase)
-        var error: NSError?
-        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
-        if let err = error {
-            throw err
+        for binKey in binKeys {
+            do {
+                var error: NSError?
+
+                let newKey = CryptoNewKey(binKey.mutable as Data, &error)
+                if error != nil {
+                    continue
+                }
+
+                guard let key = newKey else {
+                    continue
+                }
+
+                let passSlic = passphrase.data(using: .utf8)
+                let unlockedKey = try key.unlock(passSlic)
+
+                let privateKeyRing = CryptoNewKeyRing(unlockedKey, &error)
+                if error != nil {
+                    continue
+                }
+
+                //FIXME - Needs to double check
+                let verifierKey = CryptoNewKeyFromArmored(publicKey, &error)
+                if error != nil {
+                    continue
+                }
+
+                let verifierKeyRing = CryptoNewKeyRing(verifierKey, &error)
+                if error != nil {
+                    continue
+                }
+
+                let pgpMsg = CryptoPGPMessage(fromArmored: message)
+
+                let verified = HelperDecryptExplicitVerify(pgpMsg, privateKeyRing, verifierKeyRing, verifyTime, &error)
+                if error != nil {
+                    continue
+                }
+
+                return verified
+            } catch {
+                continue
+            }
         }
-        let verifier = try pgp.buildKeyRingArmored(publicKey)
-        let verified = HelperDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
-        if let err = error {
-            throw err
-        }
-        return verified
+        return nil
     }
     
+    public func encrypt(plainText: String, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
+        var error: NSError?
+        let privateKey = CryptoNewKeyFromArmored(signerPrivateKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try privateKey?.unlock(passSlic)
+        
+        let publicKeyData = try unlockedKey?.getPublicKey()
+        let publicKey = CryptoNewKey(publicKeyData, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let publicKeyRing = CryptoNewKeyRing(publicKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        let signerKeyRing = CryptoNewKeyRing(unlockedKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let cryptedMessage = try publicKeyRing?.encrypt(plainMessage, privateKey: signerKeyRing)
+        let armoredMessage = cryptedMessage?.getArmored(&error)
+        if let err = error {
+            throw err
+        }
+        
+        return armoredMessage
+    }
     
     public func encrypt(plainText: String, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String? {
-        let pgp = CryptoGetGopenPGP()!
-        let publicKeyRing = try pgp.buildKeyRingArmored(publicKey)
-        let plainTextMessage = CryptoNewPlainMessageFromString(plainText)
-        var signerKeyRing : KeyRing?
-        if !signerPrivateKey.isEmpty {
-            signerKeyRing = try pgp.buildKeyRingArmored(signerPrivateKey)
-            try signerKeyRing?.unlock(withPassphrase: passphrase)
-        }
-        let cryptedMessage : PGPMessage = try publicKeyRing.encrypt(plainTextMessage, privateKey: signerKeyRing)
         var error: NSError?
-        let armoredMessage = cryptedMessage.getArmored(&error)
-        
+        let newKey = CryptoNewKeyFromArmored(publicKey, &error)
         if let err = error {
             throw err
         }
+        
+        guard let key = newKey else {
+            return nil
+        }
+        
+        let publicKeyRing = CryptoNewKeyRing(key, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        
+        var signerKeyRing: KeyRing?
+        if !signerPrivateKey.isEmpty {
+            let signerKey = CryptoNewKeyFromArmored(signerPrivateKey, &error)
+            if let err = error {
+                throw err
+            }
+            
+            let passSlic = passphrase.data(using: .utf8)
+            let unlockedSignerKey = try signerKey?.unlock(passSlic)
+            
+            signerKeyRing = CryptoNewKeyRing(unlockedSignerKey, &error)
+            if let err = error {
+                throw err
+            }
+        }
+        
+        let cryptedMessage = try publicKeyRing?.encrypt(plainMessage, privateKey: signerKeyRing)
+        let armoredMessage = cryptedMessage?.getArmored(&error)
+        if let err = error {
+            throw err
+        }
+        
         return armoredMessage
     }
     
     public func encrypt(plainText: String, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
-        let pgp = CryptoGetGopenPGP()!
-        let publicKeyRing = try pgp.buildKeyRing(binKey.mutable as Data)
-        let plainTextMessage = CryptoNewPlainMessageFromString(plainText)
-        let signerKeyRain = try pgp.buildKeyRingArmored(signerPrivateKey)
-        
-        try signerKeyRain.unlock(withPassphrase: passphrase)
-        let cryptedMessage : PGPMessage = try publicKeyRing.encrypt(plainTextMessage, privateKey: signerKeyRain)
         var error: NSError?
-        let armoredMessage = cryptedMessage.getArmored(&error)
         
+        let newKey = CryptoNewKey(binKey.mutable as Data, &error)
         if let err = error {
             throw err
         }
+        
+        guard let key = newKey else {
+            return nil
+        }
+        
+        let publicKeyRing = CryptoNewKeyRing(key, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        
+        var signerKeyRing: KeyRing?
+        if !signerPrivateKey.isEmpty {
+            let signerKey = CryptoNewKeyFromArmored(signerPrivateKey, &error)
+            if let err = error {
+                throw err
+            }
+            
+            let passSlic = passphrase.data(using: .utf8)
+            let unlockedSignerKey = try signerKey?.unlock(passSlic)
+            
+            signerKeyRing = CryptoNewKeyRing(unlockedSignerKey, &error)
+            if let err = error {
+                throw err
+            }
+        }
+        
+        let cryptedMessage = try publicKeyRing?.encrypt(plainMessage, privateKey: signerKeyRing)
+        let armoredMessage = cryptedMessage?.getArmored(&error)
+        if let err = error {
+            throw err
+        }
+        
         return armoredMessage
     }
     
     public func encrypt(plainText: String, publicKey binKey: Data) throws -> String? {
-        let pgp = CryptoGetGopenPGP()!
-        let publicKeyRing = try pgp.buildKeyRing(binKey.mutable as Data)
-        let plainTextMessage = CryptoNewPlainMessageFromString(plainText)
-        let cryptedMessage : PGPMessage = try publicKeyRing.encrypt(plainTextMessage, privateKey: nil)
         var error: NSError?
-        let armoredMessage = cryptedMessage.getArmored(&error)
         
+        let newKey = CryptoNewKey(binKey.mutable as Data, &error)
         if let err = error {
             throw err
         }
+        
+        guard let key = newKey else {
+            return nil
+        }
+        
+        let publicKeyRing = CryptoNewKeyRing(key, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        
+        let cryptedMessage = try publicKeyRing?.encrypt(plainMessage, privateKey: nil)
+        let armoredMessage = cryptedMessage?.getArmored(&error)
+        if let err = error {
+            throw err
+        }
+        
         return armoredMessage
     }
     
-    /// Mark -- encrypt with password
+    // MARK: - encrypt with password
     public func encrypt(plainText: String, token: String) throws -> String? {
         let plainTextMessage = CryptoNewPlainMessageFromString(plainText)
-        let key = CryptoNewSymmetricKeyFromToken(token, Algo.AES256.value)
-        let pgpMessage = try key?.encrypt(plainTextMessage)
+        let tokenBytes = token.data(using: .utf8)
         var error: NSError?
-        let armoredMessage = pgpMessage?.getArmored(&error)
+        let encryptedMessage = CryptoEncryptMessageWithPassword(plainTextMessage, tokenBytes, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let armoredMessage = encryptedMessage?.getArmored(&error)
         if let err = error {
             throw err
         }
@@ -289,62 +565,120 @@ class Crypto {
     }
     
     public func decrypt(encrypted: String, token: String) throws -> String? {
-        let key = CryptoNewSymmetricKeyFromToken(token, "")
+        let tokenBytes = token.data(using: .utf8)
         var error: NSError?
         let pgpMsg = CryptoNewPGPMessageFromArmored(encrypted, &error)
         if let err = error {
             throw err
         }
-        let message = try key?.decrypt(pgpMsg)
+        let message = CryptoDecryptMessageWithPassword(pgpMsg, tokenBytes, &error)
+        if let err = error {
+            throw err
+        }
         return message?.getString()
     }
 
-    ///Mark -- Attachment
+    //MARK: - Attachment
     
      // no verify
     public func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey: String, passphrase: String) throws -> Data? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(privateKey)
-        try keyRing.unlock(withPassphrase: passphrase)
+        var error: NSError?
+        let key = CryptoNewKeyFromArmored(privateKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try key?.unlock(passSlic)
+        let keyRing = CryptoNewKeyRing(unlockedKey, &error)
+        if let err = error {
+            throw err
+        }
+        
         let splitMessage = CryptoNewPGPSplitMessage(keyPacket.mutable as Data, dataPacket.mutable as Data)
-        let plainMessage = try keyRing.decryptAttachment(splitMessage)
-        return plainMessage.getBinary()
+        let plainMessage = try keyRing?.decryptAttachment(splitMessage)
+        return plainMessage?.getBinary()
     }
     
     public func decryptAttachment1(splitMessage: SplitMessage, privateKey: String, passphrase: String) throws -> Data? {
-       let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(privateKey)
-        try keyRing.unlock(withPassphrase: passphrase)
-        let plainMessage = try keyRing.decryptAttachment(splitMessage)
-        return plainMessage.getBinary()
+        var error: NSError?
+        let key = CryptoNewKeyFromArmored(privateKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try key?.unlock(passSlic)
+        let keyRing = CryptoNewKeyRing(unlockedKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let plainMessage = try keyRing?.decryptAttachment(splitMessage)
+        return plainMessage?.getBinary()
     }
     
-    public func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey binKeys: Data, passphrase: String) throws -> Data? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
-        try keyRing.unlock(withPassphrase: passphrase)
-        let splitMessage = CryptoNewPGPSplitMessage(keyPacket.mutable as Data, dataPacket.mutable as Data)
-        let plainMessage = try keyRing.decryptAttachment(splitMessage)
-        return plainMessage.getBinary()
+    public func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey binKeys: [Data], passphrase: String) throws -> Data? {
+        for binKey in binKeys {
+            do {
+                var error: NSError?
+                let key = CryptoNewKey(binKey.mutable as Data, &error)
+                if error != nil {
+                    continue
+                }
+
+                let passSlic = passphrase.data(using: .utf8)
+                let unlockedKey = try key?.unlock(passSlic)
+                let keyRing = CryptoNewKeyRing(unlockedKey, &error)
+                if error != nil {
+                    continue
+                }
+
+                let splitMessage = CryptoNewPGPSplitMessage(keyPacket.mutable as Data, dataPacket.mutable as Data)
+                let plainMessage = try keyRing?.decryptAttachment(splitMessage)
+                return plainMessage?.getBinary()
+            } catch {
+                continue
+            }
+        }
+        return nil
     }
     
     public func decryptAttachment(encrypted: String, privateKey: String, passphrase: String) throws -> Data? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(privateKey)
-        try keyRing.unlock(withPassphrase: passphrase)
         var error: NSError?
+        let key = CryptoNewKeyFromArmored(privateKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try key?.unlock(passSlic)
+        let keyRing = CryptoNewKeyRing(unlockedKey, &error)
+        if let err = error {
+            throw err
+        }
+        
         let splitMessage = CryptoNewPGPSplitMessageFromArmored(encrypted, &error)
         if let err = error {
             throw err
         }
-        let plainMessage = try keyRing.decryptAttachment(splitMessage)
-        return plainMessage.getBinary()
+        
+        let plainMessage = try keyRing?.decryptAttachment(splitMessage)
+        return plainMessage?.getBinary()
     }
 
     public func encryptAttachment(plainData: Data, fileName: String, publicKey: String) throws -> SplitMessage? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(publicKey)
         var error: NSError?
+        let key = CryptoNewKeyFromArmored(publicKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let keyRing = CryptoNewKeyRing(key, &error)
+        if let err = error {
+            throw err
+        }
+        
         let splitMessage = HelperEncryptAttachment(plainData, fileName, keyRing, &error)//without mutable
         if let err = error {
             throw err
@@ -353,91 +687,122 @@ class Crypto {
     }
 
     public func encryptAttachmentLowMemory(fileName:String, totalSize: Int, publicKey: String) throws -> AttachmentProcessor {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(publicKey)
-        let processor = try keyRing.newLowMemoryAttachmentProcessor(totalSize, fileName: fileName)
+        var error: NSError?
+        let key = CryptoNewKeyFromArmored(publicKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let keyRing = CryptoNewKeyRing(key, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let processor = try keyRing!.newLowMemoryAttachmentProcessor(totalSize, filename: fileName)
         return processor
     }
 
     
-    /// Mark -- sign
+    // MARK - sign
     
     public func signDetached(plainData: Data, privateKey: String, passphrase: String) throws -> String? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(privateKey)
-        try keyRing.unlock(withPassphrase: passphrase)
-        let plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
-        let pgpSignature = try keyRing.signDetached(plainMessage)
         var error: NSError?
-        let signaure = pgpSignature.getArmored(&error)
+        let key = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
             throw err
         }
-        return signaure
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try key?.unlock(passSlic)
+        let keyRing = CryptoNewKeyRing(unlockedKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
+        let pgpSignature = try keyRing?.signDetached(plainMessage)
+        let signature = pgpSignature?.getArmored(&error)
+        if let err = error {
+            throw err
+        }
+        
+        return signature
     }
     
     public func signDetached(plainData: String, privateKey: String, passphrase: String) throws -> String {
-         let pgp = CryptoGetGopenPGP()!
-         let keyRing = try pgp.buildKeyRingArmored(privateKey)
-         try keyRing.unlock(withPassphrase: passphrase)
-         let plainMessage = CryptoNewPlainMessageFromString(plainData)
-         let pgpSignature = try keyRing.signDetached(plainMessage)
-         var error: NSError?
-         let signaure = pgpSignature.getArmored(&error)
-         if let err = error {
-             throw err
-         }
-         return signaure
+        var error: NSError?
+        let key = CryptoNewKeyFromArmored(privateKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try key?.unlock(passSlic)
+        let keyRing = CryptoNewKeyRing(unlockedKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let plainMessage = CryptoNewPlainMessageFromString(plainData)
+        let pgpSignature = try keyRing!.signDetached(plainMessage)
+        let signature = pgpSignature.getArmored(&error)
+        if let err = error {
+            throw err
+        }
+        
+        return signature
      }
     
     public func verifyDetached(signature: String, plainData: Data, publicKey: String, verifyTime: Int64) throws -> Bool {
-        let pgp = CryptoGetGopenPGP()!
-        let pubKeyRing = try pgp.buildKeyRingArmored(publicKey)
-        let plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
         var error: NSError?
+        let key = CryptoNewKeyFromArmored(publicKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let publicKeyRing = CryptoNewKeyRing(key, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
         let signature = CryptoNewPGPSignatureFromArmored(signature, &error)
         if let err = error {
             throw err
         }
+        
         do {
-            try pubKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
+            try publicKeyRing?.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
             return true
         } catch {
             return false
         }
-//        let verified = MobileVerifyDetached(pubKeyRing, plainMessage, signature, verifyTime, &error)
-//        if let err = error {
-//            throw err
-//        }
-//        guard let v = verified, v.status == 0 else {
-//            return false
-//        }
     }
     
     public func verifyDetached(signature: String, plainText: String, publicKey: String, verifyTime: Int64) throws -> Bool {
-        let pgp = CryptoGetGopenPGP()!
-        let pubKeyRing = try pgp.buildKeyRingArmored(publicKey)
-        let plainMessage = CryptoNewPlainMessageFromString(plainText)
         var error: NSError?
+        let key = CryptoNewKeyFromArmored(publicKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let publicKeyRing = CryptoNewKeyRing(key, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let plainMessage = CryptoNewPlainMessageFromString(plainText)
         let signature = CryptoNewPGPSignatureFromArmored(signature, &error)
         if let err = error {
             throw err
         }
+        
         do {
-            try pubKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
+            try publicKeyRing?.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
             return true
         } catch {
             return false
         }
-        
-        
-        //        let verified = MobileVerifyDetached(pubKeyRing, plainMessage, signature, verifyTime, &error)
-        //        if let err = error {
-        //            throw err
-        //        }
-        //        guard let v = verified, v.status == 0 else {
-        //            return false
-        //        }
     }
     
 //    let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
@@ -449,72 +814,147 @@ class Crypto {
 //    * (to verify) (keyRing *KeyRing) VerifyDetached(message *PlainMessage, signature *PGPSignature, verifyTime int64) (error)
 //
 //
-    /// Mark -- session
+    
+    // MARK: - Session
     
     //key packet part
-    public func getSession(keyPacket: Data, privateKeys binKeys: Data, passphrase: String) throws -> SymmetricKey? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
-        try keyRing.unlock(withPassphrase: passphrase)
-        let key = try keyRing.decryptSessionKey(keyPacket.mutable as Data)
-        return key
+    public func getSession(keyPacket: Data, privateKeys binKeys: [Data], passphrase: String) throws -> SymmetricKey? {
+        for binKey in binKeys {
+            do {
+                var error: NSError?
+                let key = CryptoNewKey(binKey.mutable as Data, &error)
+                if error != nil {
+                    continue
+                }
+                
+                let passSlic = passphrase.data(using: .utf8)
+                let unlockedKey = try key?.unlock(passSlic)
+                
+                let keyRing = CryptoNewKeyRing(unlockedKey, &error)
+                if error != nil {
+                    continue
+                }
+                
+                let sessionKey = try keyRing?.decryptSessionKey(keyPacket.mutable as Data)
+                return sessionKey
+            } catch {
+                continue
+            }
+        }
+        return nil
     }
     
     public func getSession(keyPacket: Data, privateKey: String, passphrase: String) throws -> SymmetricKey? {
-        let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRingArmored(privateKey)
-        try keyRing.unlock(withPassphrase: passphrase)
-        let key = try keyRing.decryptSessionKey(keyPacket.mutable as Data)
-        return key
-    }
-    
-    
-    
-    /// Mark -- static
-    
-    static func updateTime( _ time : Int64) {
-        let pgp = CryptoGetGopenPGP()!
-        pgp.updateTime(time)
-    }
-    
-    static func updatePassphrase(privateKey: String, oldPassphrase: String, newPassphrase: String) throws -> String {
-        let pgp = CryptoGetGopenPGP()!
         var error: NSError?
-        let newKey = pgp.updatePrivateKeyPassphrase(privateKey, oldPassphrase: oldPassphrase, newPassphrase: newPassphrase, error: &error)
+        let key = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
             throw err
         }
+        
+        let passSlic = passphrase.data(using: .utf8)
+        let unlockedKey = try key?.unlock(passSlic)
+        
+        let keyRing = CryptoNewKeyRing(unlockedKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let sessionKey = try keyRing?.decryptSessionKey(keyPacket.mutable as Data)
+        return sessionKey
+    }
+    
+    
+    
+    // MARK: - static
+    
+    static func updateTime( _ time : Int64) {
+        CryptoUpdateTime(time)
+    }
+    
+    static func updatePassphrase(privateKey: String, oldPassphrase: String, newPassphrase: String) throws -> String {
+        var error: NSError?
+        let oldPassSlic = oldPassphrase.data(using: .utf8)
+        let newPassSlic = newPassphrase.data(using: .utf8)
+        let newKey = HelperUpdatePrivateKeyPassphrase(privateKey, oldPassSlic, newPassSlic, &error)
+        if let err = error {
+            throw err
+        }
+        
         return newKey
     }
     
     static func random(byte: Int) throws -> Data {
-        let pgp = CryptoGetGopenPGP()!
-        return try pgp.randomTokenSize(byte)
+        var error: NSError?
+        let data = CryptoRandomToken(byte, &error)
+        if let err = error {
+            throw err
+        }
+        guard let randomData = data else {
+            fatalError()
+        }
+        return randomData
     }
 
+    func buildKeyRing(keys: [Data]) -> CryptoKeyRing? {
+        var error: NSError?
+        let newKeyRing = CryptoNewKeyRing(nil, &error)
+        guard let keyRing = newKeyRing else {
+            return nil
+        }
+        for key in keys {
+            do {
+                if let keyToAdd = CryptoNewKey(key, &error) {
+                    try keyRing.add(keyToAdd)
+                }
+            } catch {
+                continue
+            }
+        }
+        return keyRing
+    }
+    
+    func buildPrivateKeyRing(keys: [Data], passphrase: String) -> CryptoKeyRing? {
+        var error: NSError?
+        let newKeyRing = CryptoNewKeyRing(nil, &error)
+        guard let keyRing = newKeyRing else {
+            return nil
+        }
+        let passSlic = passphrase.data(using: .utf8)
+        
+        for key in keys {
+            do {
+                if let unlockedKey = try CryptoNewKey(key, &error)?.unlock(passSlic) {
+                    try keyRing.add(unlockedKey)
+                }
+            } catch {
+                continue
+            }
+        }
+        return keyRing
+    }
 }
 
 
 extension String {
     //TODO:: add test
     var publicKey : String  {
-        let crypto = CryptoGetGopenPGP()!
-        do {
-            let keyring = try crypto.buildKeyRingArmored(self)
-             return keyring.getArmoredPublicKey(nil)
-        } catch {
+        var error: NSError?
+        let key = CryptoNewKeyFromArmored(self, &error)
+        if error != nil {
             return ""
         }
+        
+        return key?.getArmoredPublicKey(nil) ?? ""
     }
     
     var fingerprint : String {
-        let crypto = CryptoGetGopenPGP()!
-        do {
-            let keyring = try crypto.buildKeyRingArmored(self)
-            return keyring.getFingerprint(nil)
-        } catch {
+        var error: NSError?
+        let key = CryptoNewKeyFromArmored(self, &error)
+        if error != nil {
             return ""
         }
+        
+        return key?.getFingerprint() ?? ""
     }
     
     var unArmor : Data? {
@@ -545,10 +985,19 @@ extension String {
     
     //self is private key
     func check(passphrase: String) -> Bool {
-        let crypto = CryptoGetGopenPGP()!
+        var error: NSError?
+        let key = CryptoNewKeyFromArmored(self, &error)
+        if error != nil {
+            return false
+        }
+        
+        let passSlic = passphrase.data(using: .utf8)
         do {
-            let keyring = try crypto.buildKeyRingArmored(self)
-            return keyring.checkPassphrase(passphrase)
+            let unlockedKey = try key?.unlock(passSlic)
+            var result: ObjCBool = true
+            try unlockedKey?.isLocked(&result)
+            let isUnlock = !result.boolValue
+            return isUnlock
         } catch {
             return false
         }
@@ -559,28 +1008,58 @@ extension String {
 extension Data {
     
     func getKeyPackage(publicKey: String,  algo : String) throws -> Data? {
-        let crypto = CryptoGetGopenPGP()!
-        let symKey = CryptoCreateSymmetricKey(self.mutable as Data, algo)
-        let keyRing = try crypto.buildKeyRingArmored(publicKey)
-        return try keyRing.encryptSessionKey(symKey)
+        var error: NSError?
+        //FIXME: Needs double check
+        let symKey = CryptoNewSessionKeyFromToken(self.mutable as Data, algo)
+        let key = CryptoNewKeyFromArmored(publicKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let keyRing = CryptoNewKeyRing(key, &error)
+        if let err = error {
+            throw err
+        }
+        
+        return try keyRing?.encryptSessionKey(symKey)
     }
     
     func getKeyPackage(publicKey binKey: Data, algo : String) throws -> Data? {
-        let crypto = CryptoGetGopenPGP()!
-        let symKey = CryptoCreateSymmetricKey(self.mutable as Data, algo)
-        let keyRing = try crypto.buildKeyRing(binKey.mutable as Data)
-        return try keyRing.encryptSessionKey(symKey)
+        var error: NSError?
+        //FIXME: Needs double check
+        let symKey = CryptoNewSessionKeyFromToken(self.mutable as Data, algo)
+        let key = CryptoNewKey(binKey, &error)
+        if let err = error {
+            throw err
+        }
+        
+        let keyRing = CryptoNewKeyRing(key, &error)
+        if let err = error {
+            throw err
+        }
+        
+        return try keyRing?.encryptSessionKey(symKey)
     }
     
     func getSymmetricPacket(withPwd pwd: String, algo : String) throws -> Data? {
-        let symKey = CryptoCreateSymmetricKey(self.mutable as Data, algo)
-        return try symKey?.encrypt(toKeyPacket: pwd)
+        var error: NSError?
+        //FIXME: Needs double check
+        let symKey = CryptoNewSessionKeyFromToken(self.mutable as Data, algo)
+        let passSlic = pwd.data(using: .utf8)
+        let packet = CryptoEncryptSessionKeyWithPassword(symKey, passSlic, &error)
+        if let err = error {
+            throw err
+        }
+        return packet
     }
     
     //self is public key
     func isPublicKeyExpired() -> Bool? {
-        var result: ObjCBool = false
-        try? CryptoGetGopenPGP()!.isKeyExpired(self, ret0_: &result)
-        return result.boolValue
+        var error: NSError?
+        let key = CryptoNewKey(self, &error)
+        if error != nil {
+            return false
+        }
+        return key?.isExpired()
     }
 }

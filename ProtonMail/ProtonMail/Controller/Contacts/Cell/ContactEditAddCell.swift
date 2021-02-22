@@ -24,12 +24,13 @@
 import Foundation
 
 
-final class ContactEditAddCell: UITableViewCell {
+final class ContactEditAddCell: UITableViewCell, AccessibleCell {
     
     @IBOutlet weak var valueLabel: UILabel!
 
     func configCell(value : String) {
         self.valueLabel.text = value
+        generateCellAccessibilityIdentifiers(value)
     }
     
 }

@@ -356,6 +356,22 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             return
         }
         
+        let allMails = self.viewModel.toSelectedContacts + self.viewModel.ccSelectedContacts + self.viewModel.bccSelectedContacts
+        
+        let invalidEmails = allMails
+            .filter{ $0.modelType == .contact}
+            .compactMap{ $0 as? ContactVO}
+            .filter{ $0.pgpType == .failed_server_validation ||
+                $0.pgpType == .failed_validation }
+        guard invalidEmails.isEmpty else {
+            let alert = UIAlertController(title: LocalString._address_invalid_error_title,
+                                          message: LocalString._address_invalid_error_content,
+                                          preferredStyle: .alert)
+            alert.addAction((UIAlertAction.okAction()))
+            present(alert, animated: true, completion: nil)
+            return
+        }
+        
         stopAutoSave()
         self.collectDraftData().done {
             if #available(iOS 11.0, *) {
@@ -412,6 +428,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             }
             let delete = UIAlertAction(title: LocalString._composer_discard_draft_action,
                                        style: .destructive) { _ in
+                //Ignore the contact validation when user choose to discard the draft
+                self.headerView.shouldValidateTheEmail = false
                 self.stopAutoSave()
                 self.viewModel.deleteDraft()
                 dismiss()
@@ -474,20 +492,27 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     
     private func collectDraftData()  -> Guarantee<Void>  {
         return Guarantee { ret in
-            self.htmlEditor.getHtml().done { body in
+            self.htmlEditor.getHtml().done { bodyString in
                 
-                var html = body.replacingOccurrences(of: "\\", with: "&#92;", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "\"", with: "\\\"", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "“", with: "&quot;", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "”", with: "&quot;", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "\r", with: "\\r", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "\n", with: "\\n", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "<br>", with: "<br />", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "<hr>", with: "<hr />", options: .caseInsensitive, range: nil)
+                let head = "<html><head></head><body>"
+                let foot = "</body></html>"
+                
+                let mutableString = NSMutableString(string: bodyString)
+                CFStringTransform(mutableString, nil, "Any-Hex/Java" as NSString, true)
+                let resultString = mutableString as String
+                
+                var body = resultString.isEmpty ? bodyString : resultString
+                if !body.hasPrefix(head) {
+                    body = head + body
+                }
+                
+                if !body.hasSuffix(foot) {
+                    body = body + foot
+                }
                 
                 self.viewModel.collectDraft (
-                    self.headerView.subject.text!,
-                    body: html.isEmpty ? body : html,
+                    self.headerView.subject.text ?? "(No Subject)",
+                    body: body,
                     expir: self.headerView.expirationTimeInterval,
                     pwd:self.encryptionPassword,
                     pwdHit:self.encryptionPasswordHint
@@ -515,7 +540,12 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     private func updateAttachmentButton () {
-        let count = attachments?.count ?? 0
+        guard let atts = self.viewModel.message?.attachments.allObjects as? [Attachment] else {
+            self.headerView.updateAttachmentButton(false)
+            return
+        }
+        
+        let count = atts.filter({$0.isSoftDeleted == false}).count
         if count > 0 {
             self.headerView.updateAttachmentButton(true)
         } else {
@@ -542,7 +572,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         guard let attachment = self.viewModel.getAttachments()?.first(where: { $0.fileName.hasPrefix(sid) }) else { return}
         
         // decrement number of attachments in message manually
-        if let number = self.viewModel.message?.attachments.count {
+        if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted }).count {
             let newNum = number > 0 ? number - 1 : 0
             self.viewModel.message?.numAttachments = NSNumber(value: newNum)
         }
@@ -573,6 +603,10 @@ extension ComposeViewController : ComposeViewDelegate {
         self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)
     }
     
+    func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
+        self.viewModel.checkMails(in: contactGroup, progress: progress, complete: complete)
+    }
+    
     func composeViewPickFrom(_ composeView: ComposeHeaderViewController) {
         var needsShow : Bool = false
         let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to,
@@ -597,7 +631,7 @@ extension ComposeViewController : ComposeViewDelegate {
                         if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
                             self.htmlEditor.update(signature: signature)
                         }
-                        MBProgressHUD.showAdded(to: self.view, animated: true)
+                        MBProgressHUD.showAdded(to: self.parent!.navigationController!.view, animated: true)
                         self.updateSenderMail(addr: addr)
                     }
                 }
@@ -624,18 +658,16 @@ extension ComposeViewController : ComposeViewDelegate {
             }
         }
         
-        _ = self.queue.sync {
+        self.queue.sync {
             self.viewModel.updateAddressID(addr.address_id).catch { (error ) in
-                {
-                    let alertController = error.localizedDescription.alertController()
-                    alertController.addOKAction()
-                    self.present(alertController, animated: true, completion: nil)
-                } ~> .main
+                let alertController = error.localizedDescription.alertController()
+                alertController.addOKAction()
+                self.present(alertController, animated: true, completion: nil)
+            }.finally {
+                self.headerView.updateFromValue(addr.email, pickerEnabled: true)
+                MBProgressHUD.hide(for: self.parent!.navigationController!.view, animated: true)
             }
         }
-        
-        self.headerView.updateFromValue(addr.email, pickerEnabled: true)
-        MBProgressHUD.hide(for: self.view, animated: true)
     }
     
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
@@ -853,17 +885,17 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
             if let content_id = attachment.contentID(), !content_id.isEmpty && attachment.inline() {
                 self.htmlEditor.remove(embedImage: "cid:\(content_id)")
             }
-            
+        }.then { (_) -> Promise<Void> in
+            return self.viewModel.deleteAtt(attachment)
+        }.ensure {
             // decrement number of attachments in message manually
-            if let number = self.viewModel.message?.attachments.count {
-                let newNum = number > 0 ? number - 1 : 0
-                self.viewModel.message?.numAttachments = NSNumber(value: newNum)
+            if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted }).count {
+                self.viewModel.message?.numAttachments = NSNumber(value: number)
             }
             
-            self.viewModel.deleteAtt(attachment).ensure {
-                attViewController.updateAttachments()
-            }.cauterize()
-        }
+            attViewController.updateAttachments()
+            self.updateAttachmentButton()
+        }.cauterize()
     }
 
     func attachments(_ attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {

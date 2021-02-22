@@ -30,7 +30,7 @@ final class CameraAttachmentProvider: AnyImagePickerDelegate {
                 let picker = UIImagePickerController()
                 picker.delegate = self
                 picker.sourceType = UIImagePickerController.SourceType.camera
-                self.controller.present(picker, animated: true, completion: nil)
+                self.controller?.present(picker, animated: true, completion: nil)
             }
         }
     }

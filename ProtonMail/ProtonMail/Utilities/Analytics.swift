@@ -128,10 +128,12 @@ class Analytics {
 extension Analytics {
     
     enum Events: String {
-        case logout = "Logout"
-        case keychainError = "Keychain Error"
+        case keychainWipeError = "Keychain Wipe Error"
+        case keychainAccessError = "Keychain Access Error"
         case notificationError = "Notification Error"
         case sendMessageError = "Send Message Error"
+        case saveDraftError = "Save Draft Error"
+        case uploadAttachmentError = "Upload Att Error"
         case fetchMetadata = "FetchMetadata"
         case grtJSONSerialization = "GRTJSONSerialization"
         case vcard = "vcard"
@@ -143,6 +145,9 @@ extension Analytics {
         case updateMailBoxPassword = "Update MailBox Password"
         case fetchSubscriptionData = "Fetch Subscription Data"
         case coreDataError = "Core Data Error"
+        case menuSetupFailed = "Menu Failed to setup"
+        case usersRestoreFailed = "Users Restore Failed"
+        case coredataIssue = "CoreData Issue"
     }
     
     struct Reason {

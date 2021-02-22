@@ -73,11 +73,13 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         
         switch destination {
         case .composerDraft:
+            let coreDataService = services.get(by: CoreDataService.self)
+            
             if let messageID = path.value,
                 let nav = self.navigationController,
-                let message = user.messageService.fetchMessages(withIDs: [messageID]).first
+                let message = user.messageService.fetchMessages(withIDs: [messageID], in: coreDataService.mainManagedObjectContext).first
             {
-                let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataService: services.get(by: CoreDataService.self))
+                let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataService: coreDataService)
                 let composer = ComposeContainerViewCoordinator(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
                 composer.start()
                 composer.follow(deeplink)

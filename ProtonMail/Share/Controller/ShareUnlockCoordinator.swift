@@ -70,12 +70,11 @@ class ShareUnlockCoordinator : PushCoordinator {
     
     private func gotoComposer() {
         guard let vc = self.viewController,
-            let navigationController = self.navigationController else
-        {
+              let navigationController = self.navigationController,
+              let user = self.services.get(by: UsersManager.self).firstUser else {
             return
         }
-        // recent user active in the app
-        let user = self.services.get(by: UsersManager.self).firstUser!
+        
         let coreDataService = self.services.get(by: CoreDataService.self)
         let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare, msgService: user.messageService, user: user, coreDataService: coreDataService)
         let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)

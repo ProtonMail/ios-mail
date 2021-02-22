@@ -95,6 +95,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         guard !self.isProtectorActive(GenericBioProtection<SUBTLE>.self),
             !self.isProtectorActive(GenericPinProtection<SUBTLE>.self) else
         {
+            NoneProtection.removeCyphertext(from: self.keychain)
             NotificationCenter.default.post(.init(name: Const.requestMainKey))
             return nil
         }
@@ -113,7 +114,11 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         return newKey
     }
     
-    private let controlThread = DispatchQueue.global(qos: .userInteractive)
+    private let controlThread: OperationQueue = {
+        let operation = OperationQueue()
+        operation.maxConcurrentOperationCount = 1
+        return operation
+    }()
     
     public func wipeMainKey() {
         NoneProtection.removeCyphertext(from: self.keychain)
@@ -152,7 +157,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         // we'll return to main thread explicitly here
         let isMainThread = Thread.current.isMainThread
         
-        self.controlThread.async {
+        self.controlThread.addOperation {
             guard self._mainKey == nil else {
                 isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
                 return
@@ -162,7 +167,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
                 isMainThread ? DispatchQueue.main.async { handler(nil) } : handler(nil)
                 return
             }
-
+            
             do {
                 let mainKeyBytes = try protector.unlock(cypherBits: cypherBits)
                 self._mainKey = mainKeyBytes
@@ -174,8 +179,8 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
                 // it happens less if auth prompt is invoked with 1 sec delay after app gone foreground but still happens
                 // description: "Could not decrypt. Failed to get externalizedContext from LAContext"
                 if #available(iOS 13.0, *),
-                    case EllipticCurveKeyPair.Error.underlying(message: _, error: let underlyingError) = error,
-                    underlyingError.code == -2
+                   case EllipticCurveKeyPair.Error.underlying(message: _, error: let underlyingError) = error,
+                   underlyingError.code == -2
                 {
                     isMainThread
                         ? DispatchQueue.main.async { self.obtainMainKey(with: protector, handler: handler) }
@@ -191,10 +196,11 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
     
     // completion says whether protector was activated or not
     public func activate(_ protector: ProtectionStrategy,
+                         logErrorForDeactivate: ((OSStatus) -> Void)? = nil,
                          completion: @escaping (Bool) -> Void)
     {
         let isMainThread = Thread.current.isMainThread
-        self.controlThread.async {
+        self.controlThread.addOperation {
             guard let mainKey = self.mainKey,
                 //swiftlint:disable unused_optional_binding
                 let _ = try? protector.lock(value: mainKey) else
@@ -206,19 +212,23 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
             
             // we want to remove unprotected value from storage if the new Protector is significant
             if !(protector is NoneProtection) {
-                self.deactivate(NoneProtection(keychain: self.keychain))
+                let status = self.deactivate(NoneProtection(keychain: self.keychain))
+                if status != noErr {
+                    //Log error here
+                    logErrorForDeactivate?(status)
+                }
             }
             
             isMainThread ? DispatchQueue.main.async{ completion(true) } : completion(true)
         }
     }
     
-    public func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type) -> Bool {
-        return protectionType.getCypherBits(from: self.keychain) != nil
+    public func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type, logError: ((OSStatus) -> Void)? = nil) -> Bool {
+        return protectionType.getCypherBits(from: self.keychain, logError: logError) != nil
     }
     
-    @discardableResult public func deactivate(_ protector: ProtectionStrategy) -> Bool {
-        protector.removeCyphertextFromKeychain()
+    @discardableResult public func deactivate(_ protector: ProtectionStrategy) -> OSStatus {
+        let status = protector.removeCyphertextFromKeychain()
         
         // need to keep mainKey in keychain in case user switches off all the significant Protectors
         if !self.isProtectorActive(GenericBioProtection<SUBTLE>.self),
@@ -227,7 +237,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
             self.activate(NoneProtection(keychain: self.keychain), completion: { _ in })
         }
         
-        return true
+        return status
     }
     
     private func generateNewMainKeyWithDefaultProtection() -> Key {

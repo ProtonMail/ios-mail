@@ -36,6 +36,7 @@ class AppDelegate: UIResponder {
         return self.coordinator.currentWindow
     }
     lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices)
+    private var currentState: UIApplication.State = .active
 }
 
 // MARK: - this is workaround to track when the SWRevealViewController first time load
@@ -43,7 +44,7 @@ extension SWRevealViewController {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "sw_rear") {
             if let menuViewController =  segue.destination as? MenuViewController {
-                let usersManager : UsersManager = sharedServices.get()
+                let usersManager = sharedServices.get(by: UsersManager.self)
                 let viewModel = MenuViewModelImpl(usersManager: usersManager)
                 let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel, services: sharedServices)
                 menu.start()
@@ -53,7 +54,7 @@ extension SWRevealViewController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
                     ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
                     sharedVMService.mailbox(fromMenu: mailboxViewController)
-                    let usersManager : UsersManager = sharedServices.get()
+                    let usersManager = sharedServices.get(by: UsersManager.self)
                     let user = usersManager.firstUser!
                     let viewModel = MailboxViewModelImpl(label: .inbox,
                                                          userManager: user,
@@ -175,14 +176,19 @@ extension AppDelegate: UIApplicationDelegate {
         NotificationCenter.default.addObserver(forName: Keymaker.Const.errorObtainingMainKey, object: nil, queue: .main) { notification in
             (notification.userInfo?["error"] as? Error)?.localizedDescription.alertToast()
         }
-        NotificationCenter.default.addObserver(forName: Keymaker.Const.obtainedMainKey, object: nil, queue: .main) { notification in
-            "Obtained main key".alertToastBottom()
-        }
         NotificationCenter.default.addObserver(forName: Keymaker.Const.removedMainKeyFromMemory, object: nil, queue: .main) { notification in
             "Removed main key from memory".alertToastBottom()
         }
         #endif
-        
+        NotificationCenter.default.addObserver(forName: Keymaker.Const.obtainedMainKey, object: nil, queue: .main) { notification in
+            #if DEBUG
+                "Obtained main key".alertToastBottom()
+            #endif
+            
+            if self.currentState != .active {
+                keymaker.updateAutolockCountdownStart()
+            }
+        }
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didSignOutNotification(_:)),
                                                name: NSNotification.Name.didSignOut,
@@ -277,7 +283,10 @@ extension AppDelegate: UIApplicationDelegate {
     
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
+        self.currentState = .background
         keymaker.updateAutolockCountdownStart()
+        
+        let users: UsersManager = sharedServices.get()
         
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask {
@@ -293,9 +302,9 @@ extension AppDelegate: UIApplicationDelegate {
             }
         }
         
-        let users: UsersManager = sharedServices.get()
         if let user = users.firstUser {
             user.messageService.purgeOldMessages()
+            user.messageService.cleanOldAttachment()
             user.messageService.updateMessageCount()
             user.messageService.backgroundFetch {
                 delayedCompletion()
@@ -330,6 +339,14 @@ extension AppDelegate: UIApplicationDelegate {
         let backgroundContext = coreDataService.backgroundManagedObjectContext
         backgroundContext.performAndWait {
             let _ = backgroundContext.saveUpstreamIfNeeded()
+        }
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        self.currentState = .active
+        let users: UsersManager = sharedServices.get()
+        if let user = users.firstUser {
+            user.messageService.unBlockQueueAction()
         }
     }
     

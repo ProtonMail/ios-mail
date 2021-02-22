@@ -1,0 +1,36 @@
+{
+  "configurations" : [
+    {
+      "id" : "16E6F902-A8D7-4213-90E9-F3F2690C5FD6",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "selectedTests" : [
+        "AccountSettingsTests\/testCreateAndDeleteFolder()",
+        "AccountSettingsTests\/testCreateAndDeleteLabel()",
+        "ContactsTests\/testEditContact()",
+        "ContactsTests\/testEditGroup()",
+        "LoginTests\/testLoginWithOnePass()",
+        "LoginTests\/testLoginWithTwoPass()",
+        "LogoutTests\/testLogoutOnePassUser()",
+        "MultiuserManagementTests\/testLogoutPrimaryAccount()",
+        "MultiuserManagementTests\/testRemovePrimaryAccount()",
+        "MultiuserManagementTests\/testSwitchAccount()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -77,8 +77,7 @@
 /* Account manager title */
 "Account" = "Konto";
 
-/* 
- & title */
+/* title */
 "Account password invalid" = "Hasło logowania jest nieprawidłowe";
 
 /* section title in settings */
@@ -86,6 +85,9 @@
 
 /* (No Comment) */
 "Add" = "Dodaj";
+
+/* menu title */
+"Add accounts" = "Dodaj konta";
 
 /* new contacts add Anniversary */
 "Add Anniversary" = "Dodaj rocznicę";
@@ -159,7 +161,7 @@
 /* cell title in device settings */
 "Addresses" = "Adresy";
 
-/* Title */
+/* alert title */
 "Alert" = "Ostrzeżenie";
 
 /* Title */
@@ -210,9 +212,6 @@
 "Apple informed us they could not process the purchase." = "Firma Apple poinformowała nas, że nie może przetworzyć zakupu.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Firma Apple poinformowała nas, że ulepszyłeś plan, ale nie przekazała, które z kont ProtonMail uaktualnić w przypadku, gdy masz więcej niż jedno.";
-
-/* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Firma Apple poinformowała nas, że ulepszyłeś plan, ale brakuje niektórych danych technicznych. Wypełnij zgłoszenie błędu, a nasz zespół wsparcia klienta skontaktuje się z Tobą.";
 
 /* Error message */
@@ -239,6 +238,9 @@
 
 /* Alert to confirm logout when only one account logged in */
 "Are you sure you want to logout %@?" = "Czy na pewno chcesz się wylogować z konta %@?";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Czy na pewno chcesz się wylogować?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Czy na pewno? Tej akcji nie można cofnąć.";
@@ -294,7 +296,7 @@
 /* Error */
 "Bad auth cache" = "Błąd pamięci podręcznej uwierzytelniania";
 
-/* Error title */
+/* title */
 "Bad parameter" = "Nieprawidłowy parametr";
 
 /* Error Description */
@@ -303,7 +305,7 @@
 /* title */
 "Bad path" = "Błędna ścieżka";
 
-/* Error Description */
+/* title */
 "Bad response" = "Błędna odpowiedź";
 
 /* Title */
@@ -379,7 +381,8 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Nie można odnaleźć tego załącznika!";
 
-/* update password error = typo:Modulus */
+/* sign up user error when can't get moduls id
+ update password error */
 "Can't get a Moduls ID!" = "Nie można uzyskać identyfikatora modułu!";
 
 /* update password error = typo:Modulus */
@@ -424,7 +427,8 @@
 /* message Cc: feild */
 "Cc:" = "Dw:";
 
-/* place holder */
+/* *
+ *  PhoneVerifyViewController */
 "Cell phone number" = "Numer telefonu komórkowego";
 
 /* Title */
@@ -439,7 +443,7 @@
 /* Title */
 "Change Mailbox Password" = "Zmień hasło skrzynki pocztowej";
 
-/* update password error title */
+/* title */
 "Change Password" = "Zmień hasło";
 
 /* settings protection section title */
@@ -460,7 +464,7 @@
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "Sprawdź status usług Proton na naszej stronie.";
 
-/* loading message */
+/* "Username" */
 "Checking ...." = "Sprawdzanie...";
 
 /* place holder */
@@ -487,14 +491,15 @@
 /* cell title in device settings */
 "Combined Contacts" = "Połączone kontakty";
 
-/* Action
-   Springboard (3D Touch) shortcuts action */
+/* *
+ *  Composer Email view controller */
 "Compose" = "Napisz";
 
 /* Title */
 "Compose to" = "Napisz do";
 
-/* Action */
+/* *
+ *  MenuViewController */
 "Confirm" = "Potwierdź";
 
 /* "Login Password" */
@@ -576,7 +581,7 @@
 /* title of button in account connect page */
 "Create new account" = "Utwórz nowe konto";
 
-/* error message title when create new user */
+/* error part & alert title */
 "Create user failed" = "Tworzenie użytkownika nie powiodło się";
 
 /* Error */
@@ -640,7 +645,8 @@
 /* place holder */
 "Define Password" = "Ustaw hasło";
 
-/* general delete action */
+/* *
+ *  Contacts View Controller */
 "Delete" = "Usuń";
 
 /* emptify folder/label confirmation alert */
@@ -655,7 +661,8 @@
 /* mail location desc */
 "Deleted" = "została usunięta";
 
-/* Title */
+/* *
+ *  Email Header View */
 "Details" = "Szczegóły";
 
 /* network troubleshot cell title */
@@ -676,14 +683,12 @@
 /* Title in settings */
 "Display Name" = "Nazwa wyświetlana";
 
-/* Title */
+/* *
+ *  SettingsViewController & alert title */
 "Display Name Updated" = "Nazwa wyświetlana została zaktualizowana";
 
 /* Title in display name settings */
 "DisplayName" = "Nazwa wyświetlana";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Czy chcesz aktywować zakupiony plan dla ";
 
 /* Description */
 "Do you want to cancel the process?" = "Czy chcesz anulować proces?";
@@ -744,10 +749,11 @@
 /* default vcard types */
 "Email" = "E-mail";
 
-/* contact placeholder */
+/* *
+ *  Email Verify View Controller */
 "Email address" = "Adres e-mail";
 
-/* Title */
+/* alert title */
 "Email address invalid" = "Adres e-mail jest nieprawidłowy";
 
 /* contact detail view, email addresses section title */
@@ -759,8 +765,7 @@
 /* place holder */
 "Email default signature" = "Domyślny podpis e-mail";
 
-/* 
- & title */
+/* title */
 "Email domain invalid" = "Domena e-mail jest nieprawidłowa";
 
 /* human check option button */
@@ -769,7 +774,7 @@
 /* cell title in device setting */
 "Empty Cache" = "Wyczyść pamięć podręczną";
 
-/* empty folder, for spam and trash and drafts */
+/* "Cancel" */
 "Empty Folder" = "Opróżnij folder";
 
 /* it is an option to empty the label */
@@ -878,7 +883,7 @@
 "Expires" = "Wygasa";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %1$d days %2$d hours %3$d mins %4$d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
 
 /* Title */
 "Expiring Messages" = "Wygasające wiadomości";
@@ -1043,11 +1048,11 @@
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "W celu korzystania z naszych usług musisz zaakceptować regulamin ProtonMaila.";
 
-/* mail location desc
-   menu title */
+/* "Deleted" */
 "Inbox" = "Odebrane";
 
-/* mail location title */
+/* *
+ *  MailboxViewController */
 "INBOX" = "Odebrane";
 
 /* Title */
@@ -1083,10 +1088,7 @@
 /* (No Comment) */
 "Invalid access token please relogin" = "Token dostępowy jest nieprawidłowy. Zaloguj się ponownie";
 
-/* Description */
-"Invalid access token. Please relogin." = "Token dostępowy jest nieprawidłowy. Zaloguj się ponownie.";
-
-/* Error */
+/* alert title */
 "Invalid credential" = "Dane logowania są nieprawidłowe";
 
 /* update password error */
@@ -1125,7 +1127,8 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Klucz jest nieprawidłowy. Spróbuj ponownie.";
 
-/* Title */
+/* *
+ *  MoreOptionsView */
 "Label as..." = "Oznacz jako...";
 
 /* Title */
@@ -1192,6 +1195,9 @@
 /* Account manager title */
 "Log in to your ProtonMail account" = "Zaloguj się do konta ProtonMail";
 
+/* comment */
+"Log out" = "Wyloguj";
+
 /* Alert title when logout non-primary account from account manager */
 "Log out %@?" = "Wylogować się z konta %@?";
 
@@ -1240,6 +1246,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Rozmiar skrzynki pocztowej";
 
+/* menu title */
+"Manage accounts" = "Zarządzaj kontami";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Zarządzaj adresami";
 
@@ -1277,10 +1286,10 @@
 /* Placeholder */
 "Message Password" = "Hasło wiadomości";
 
-/* Description */
+/* composer view */
 "Message password does not match." = "Hasła wiadomości nie pasują do siebie.";
 
-/* settings debug section title */
+/* "Cancel" */
 "Message Queue" = "Kolejka wiadomości";
 
 /* (No Comment) */
@@ -1304,7 +1313,8 @@
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Podpis mobilny";
 
-/* Description */
+/* *
+ *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Rejestracja na urządzeniach mobilnych jest tymczasowo wyłączona. Spróbuj ponownie później lub zarejestruj się na stronie protonmail.com przy pomocy komputera.";
 
 /* Description */
@@ -1328,7 +1338,7 @@
 /* folder apply - title */
 "Move to Folder" = "Przenieś do folderu";
 
-/* move action */
+/* "Trash" */
 "Move to Inbox" = "Przenieś do Odebranych";
 
 /* move action */
@@ -1414,7 +1424,7 @@
 "Notice" = "Uwaga";
 
 /* Title */
-"Notification / Recovery Email" = "Adres odzyskiwania/powiadomień";
+"Notification / Recovery Email" = "Adres pomocniczy/powiadomień";
 
 /* Title */
 "Notification Email" = "Powiadomienia e-mail";
@@ -1428,7 +1438,8 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "Usypianie powiadomień wyłączone";
 
-/* Action */
+/* *
+ *  ReportBugsViewController */
 "OK" = "OK";
 
 /* Title */
@@ -1442,6 +1453,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Możesz dodać tylko jedno darmowe konto";
+
+/* Open action */
+"Open" = "Otwórz";
 
 /* (No Comment) */
 "OpenDraft" = "Otwórz szkic";
@@ -1458,7 +1472,7 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Jeśli zgodzisz się dołączyć dane techniczne, które sklep App Store dostarczył aplikacji w momencie zakupu, nasz zespół wsparcia klienta spróbuje ręcznie aktywować plan. Te dane nie zawierają żadnych szczegółów dotyczących Twojego konta iTunes, identyfikatora Apple ID, powiązanych kart płatniczych ani żadnych innych informacji o użytkowniku. Pomaga nam to jedynie sprawdzić i zweryfikować, czy transakcja została wykonana na serwerach sklepu App Store.";
 
-/* mail location desc */
+/* "Draft" = "Draft"; */
 "Outbox" = "Skrzynka nadawcza";
 
 /* title */
@@ -1503,13 +1517,14 @@
 /* contact placeholder */
 "Phone number" = "Numer telefonu";
 
-/* Title */
+/* "Verification code request failed" */
 "Phone number invalid" = "Numer telefonu jest nieprawidłowy";
 
 /* human check option button */
 "Phone Verification" = "Weryfikacja przez telefon";
 
-/* Title */
+/* *
+ *  Attachment table ViewController */
 "Photo Library" = "Biblioteka zdjęć";
 
 /* device settings auto lock type title */
@@ -1540,7 +1555,7 @@
 "Please input a valid cell phone number." = "Wpisz prawidłowy numer telefonu komórkowego.";
 
 /* error message */
-"Please input a valid email address." = "Wpisz poprawny adres e-mail.";
+"Please input a valid email address." = "Wpisz prawidłowy adres e-mail.";
 
 /* Error message */
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Zaloguj się do konta ProtonMail, w którym ulepszasz plan, aby zakończyć zakup.";
@@ -1584,9 +1599,7 @@
 /* (No Comment) */
 "Please try a different user name." = "Spróbuj użyć innej nazwy użytkownika.";
 
-/* 
-
- */
+/* (No Comment) */
 "Please try again." = "Spróbuj ponownie";
 
 /* Error message */
@@ -1610,8 +1623,7 @@
 /* The */
 "Please wait until the email downloaded!" = "Poczekaj na pobranie całej wiadomości!";
 
-/* 
- & alert title */
+/* alert title */
 "Please, manage it in your phone." = "Zarządzaj tym w swoim telefonie.";
 
 /* Upgrade warning title */
@@ -1692,11 +1704,12 @@
 /* Title */
 "Recovery Code" = "Kod odzyskiwania";
 
-/* Title */
-"Recovery Email" = "Adres odzyskiwania";
+/* *
+ *  SignUpEmailViewController */
+"Recovery Email" = "Adres pomocniczy";
 
 /* Title */
-"Recovery Email Warning" = "Ostrzeżenie dotyczące adresu odzyskiwania";
+"Recovery Email Warning" = "Ostrzeżenie dotyczące adresu pomocniczego";
 
 /* Title */
 "Remind Me Later" = "Przypomnij później";
@@ -1716,7 +1729,8 @@
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Powtórz";
 
-/* reply action */
+/* *
+ *  Controller Defined */
 "Reply" = "Odpowiedz";
 
 /* reply all action */
@@ -1747,10 +1761,10 @@
 "Resetting message cache ..." = "Resetowanie pamięci podręcznej wiadomości...";
 
 /* Action */
-"Retry" = "Ponów próbę";
+"Retry" = "Spróbuj ponownie";
 
 /* email verify code resend count down */
-"Retry after %d seconds" = "Ponów próbę po %d sekundach";
+"Retry after %d seconds" = "Spróbuj ponownie po %d sekundach";
 
 /* Title */
 "Save" = "Zapisz";
@@ -1764,8 +1778,8 @@
 /* action sheet option */
 "Scheduled" = "Zaplanowane";
 
-/* Springboard (3D Touch) shortcuts action
-   Title */
+/* *
+ *  SearchViewController */
 "Search" = "Wyszukiwanie";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
@@ -1783,7 +1797,7 @@
 /* Action */
 "Send anyway" = "Wyślij mimo to";
 
-/* Description */
+/* when subject not empty */
 "Send message without subject?" = "Wysłać wiadomość bez tematu?";
 
 /* Title */
@@ -1895,13 +1909,10 @@
 /* Title */
 "Star" = "Oznacz gwiazdką";
 
-/* mail location desc
-   menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
+/* "Spam" */
 "Starred" = "Wyróżnione";
 
-/* mail location title */
+/* "INBOX" */
 "STARRED" = "Wyróżnione";
 
 /* settings option (Start Time: 8am) */
@@ -1933,6 +1944,9 @@
 
 /* menu title */
 "Subscription" = "Subskrypcja";
+
+/* Fetch subscription data failed */
+"Subscription information temporarily unavailable. Please try again later." = "Informacja o subskrypcji jest chwilowo niedostępna. Spróbuj ponownie później.";
 
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Wsparcie dla %i niestandardowych domen (np. użytkownik@twojadomena.pl)";
@@ -1977,8 +1991,7 @@
 /* Description */
 "The authentication credentials are invalid." = "Dane logowania są nieprawidłowe.";
 
-/* 
- */
+/* (No Comment) */
 "The authentication token has expired." = "Token uwierzytelniania wygasł.";
 
 /* key size notes */
@@ -2022,7 +2035,7 @@
 "The new password not match" = "Hasła nie pasują do siebie";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your login password if you forget it." = "Opcjonalny adres odzyskiwania pozwoli Ci zresetować hasło logowania, jeśli je zapomnisz.";
+"The optional recovery email address allows you to reset your login password if you forget it." = "Opcjonalny adres pomocniczy pozwoli Ci zresetować hasło logowania, jeśli je zapomnisz.";
 
 /* update password error */
 "The Password is wrong." = "Hasło jest nieprawidłowe.";
@@ -2045,18 +2058,20 @@
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Rozmiar załącznika nie może przekroczyć 25MB";
 
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adres URL, do którego próbujesz uzyskać dostęp, nie jest standardowy i może nie wczytać się poprawnie. Czy chcesz otworzyć go przy użyciu domyślnej przeglądarki urządzenia?";
+
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Użytkownik jest już zalogowany";
 
-/* 
- */
+/* (No Comment) */
 "The UserName have been taken." = "Nazwa użytkownika jest już zajęta.";
 
-/* 
- & title */
+/* title */
 "The verification email invalid" = "E-mail weryfikacyjny jest nieprawidłowy";
 
-/* Error */
+/* *
+ *  RecaptchaViewController */
 "The verification failed!" = "Weryfikacja nie powiodła się!";
 
 /* alert when logout user if in queue still have tasks */
@@ -2068,8 +2083,7 @@
 /* Description */
 "There was an error creating or loading the app's saved data." = "Wystąpił błąd w tworzeniu lub wyświetlaniu danych zapisanych przez aplikację.";
 
-/* 
- & local error */
+/* local error */
 "There was an error creating or loading the application's saved data." = "Wystąpił błąd w tworzeniu lub wyświetlaniu danych zachowanych przez aplikację.";
 
 /* Alert message */
@@ -2124,15 +2138,15 @@
 /* network troubleshot cell title */
 "Tor" = "sieć Tor";
 
-/* settings touchid error */
+/* *
+ *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "Funkcja Touch ID nie jest włączona. Włącz funkcję w ustawieniach systemu";
 
 /* settings touchid/faceid error */
 "TouchID not available" = "Funkcja Touch ID nie jest dostępna";
 
-/* mail location desc
-   menu title
-   move action */
+/* *
+ *  MessageAction */
 "Trash" = "Kosz";
 
 /* mail location title */
@@ -2168,8 +2182,7 @@
 /* Description */
 "Unable to connect to the server" = "Nie można połączyć się z serwerem";
 
-/* 
- */
+/* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "Nie można wygenerować prawidłowego adresu URL z następującą ścieżką: %@";
 
 /* Description */
@@ -2202,10 +2215,11 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "Nie można przetworzyć tego obiektu odpowiedzi:\n%@";
 
-/* Error */
+/* alert title */
 "Unable to parse token" = "Nie można przetworzyć tokena";
 
-/* error when sending the message */
+/* *
+ *  MessageDataService */
 "Unable to send the email" = "Nie można wysłać wiadomości e-mail";
 
 /* Action */
@@ -2287,21 +2301,20 @@
 /* Title */
 "USER LOGIN" = "Logowanie użytkownika";
 
-/* 
- & title */
+/* title */
 "User name exist" = "Nazwa użytkownika już istnieje";
 
-/* 
- & alert title */
+/* alert title */
 "User name invalid" = "Nazwa użytkownika jest nieprawidłowa";
 
-/* Title */
+/* *
+ *  Login View */
 "Username" = "Nazwa użytkownika";
 
-/* Title */
+/* alert title */
 "Verification code request failed" = "Żądanie kodu weryfikującego nie powiodło się";
 
-/* Title */
+/* alert title */
 "Verification code sent" = "Kod weryfikacyjny został wysłany";
 
 /* error title */
@@ -2329,7 +2342,7 @@
 "Warning: Before you pass the human check you can't sent email!!!" = "Ostrzeżenie: dopóki nie sprawdzimy, że jesteś człowiekiem, nie możesz wysyłać wiadomości!!!";
 
 /* Description */
-"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Ostrzeżenie: Nie dodałeś adresu odzyskiwania. Jeśli zapomnisz hasła, to nie odzyskasz już swojego konta. Czy chcesz przejść dalej bez wpisywania tego adresu?";
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Ostrzeżenie: Nie dodałeś adresu pomocniczego. Jeśli zapomnisz hasła, to nie odzyskasz już swojego konta. Czy chcesz przejść dalej bez wpisywania tego adresu?";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nie mogliśmy wysłać wiadomości, prawdopodobnie ze względu na słabe połączenie internetowe. Wiadomość została zapisana w folderze Szkice i zostanie wysłana automatycznie przy następnym uruchomieniu aplikacji.";
@@ -2358,8 +2371,7 @@
 /* default vcard types */
 "Work" = "Służbowy";
 
-/* 
- & title */
+/* title */
 "Wrong verification code" = "Kod weryfikacyjny jest nieprawidłowy";
 
 /* Title */
@@ -2402,12 +2414,13 @@
 "You have unsaved changes. Do you want to save it?" = "Masz niezapisane zmiany. Czy chcesz je zapisać?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "Wykorzystujesz %1$d%% przestrzeni dyskowej (%2$@).";
+"You have used %d%% of your storage space (%@)." = "Wykorzystujesz %d%% przestrzeni dyskowej (%@).";
 
-/* Content of space warning */
+/* *
+ *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Użyłeś całej przestrzeni dyskowej (%@).";
 
-/* Description */
+/* "Alert" */
 "You need at least one recipient to send" = "Wpisz co najmniej jednego odbiorcę, aby wysłać wiadomość";
 
 /* Alert to confirm logout
@@ -2429,7 +2442,8 @@
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Twoja skrzynka jest chroniona szyfrowaniem end-to-end. Twoje wiadomości do przyjaciół używających poczty ProtonMail są zabezpieczone automatycznie. Możesz także ręcznie zaszyfrować wiadomości do tych, którzy nie mają skrzynki ProtonMail.";
 
-/* Description */
+/* *
+ *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Twoje nowe szyfrowane konto e-mail zostało utworzone i jest gotowe do wysyłania i odbierania szyfrowanych wiadomości.";
 
 /* view top title */
@@ -2440,6 +2454,9 @@
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "Twój plan odnowi się automatycznie";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesja wygasła ponieważ byłeś nieaktywny lub została unieważniona. Zaloguj się ponownie.";
 
 /* Description */
 "Your signature has been updated." = "Podpis został zaktualizowany.";

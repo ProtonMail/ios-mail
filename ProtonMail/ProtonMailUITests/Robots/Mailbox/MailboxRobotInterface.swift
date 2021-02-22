@@ -11,6 +11,7 @@ import XCTest
 fileprivate let menuButton = "Menu"
 let composeButtonLabel = "Compose"
 fileprivate let mailboxTableViewIdentifier = "MailboxViewController.tableView"
+fileprivate let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
 
 /**
  Parent class for all the Mailbox Robot classes like Inbox, Sent, Trash, etc.
@@ -18,7 +19,13 @@ fileprivate let mailboxTableViewIdentifier = "MailboxViewController.tableView"
 class MailboxRobotInterface {
     
     init() {
-        Element.wait.forTableViewWithIdentifier(mailboxTableViewIdentifier, file: #file, line: #line)
+        Element.wait.forTableViewWithIdentifier(mailboxTableViewIdentifier, file: #file, line: #line, timeout: 15)
+    }
+    
+    @discardableResult
+    func clickMessageBySubject(_ identifier: String) -> MailboxRobotInterface {
+        Element.wait.forCellWithIdentifier(identifier).tap()
+        return self
     }
     
     @discardableResult
@@ -26,6 +33,7 @@ class MailboxRobotInterface {
         return self
     }
 
+    @discardableResult
     func longClickMessageOnPosition(_ position: Int) -> MailboxRobotInterface {
         return self
     }
@@ -34,10 +42,12 @@ class MailboxRobotInterface {
         return self
     }
 
-    func searchBar() -> MailboxRobotInterface {
-        return self
+    func searchBar() -> SearchRobot {
+        Element.wait.forHittableButton(searchNavBarButtonIdentifier).tap()
+        return SearchRobot()
     }
 
+    @discardableResult
     func compose() -> ComposerRobot {
         Element.wait.forButtonWithIdentifier(composeButtonLabel, file: #file, line: #line).tap()
         return ComposerRobot()
@@ -50,6 +60,12 @@ class MailboxRobotInterface {
 
     func selectMessage(position: Int) -> MailboxRobotInterface {
        return self
+    }
+    
+    @discardableResult
+    func refreshMailbox() -> MailboxRobotInterface {
+        Element.tableView.swipeDownByIdentifier(mailboxTableViewIdentifier)
+        return self
     }
 }
 

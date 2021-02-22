@@ -25,7 +25,7 @@ import UIKit
 
 internal typealias EditAction = (_ sender: LabelTableViewCell) -> Void
 
-class LabelTableViewCell: UITableViewCell {
+class LabelTableViewCell: UITableViewCell, AccessibleCell {
     var model : LabelMessageModel!
     let maxLabelCount : Int = 100
 
@@ -129,7 +129,9 @@ class LabelTableViewCell: UITableViewCell {
             let check = self.frame.width - offset
             
             labelWidth.constant = w > check ? check : w
+            generateCellAccessibilityIdentifiers(name)
         }
+        
         self.updateStatusButton()
     }
 }
