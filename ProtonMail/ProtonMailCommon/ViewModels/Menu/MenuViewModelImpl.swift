@@ -140,7 +140,7 @@ class MenuViewModelImpl : MenuViewModel {
         }
     }
 
-    func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
+    func setupLabels(delegate: NSFetchedResultsControllerDelegate?, shouldFetchLabels: Bool) {
         self.fetchedLabels = self.labelDataService?.fetchedResultsController(.all)
         self.fetchedLabels?.delegate = delegate
         if let fetchedResultsController = fetchedLabels {
@@ -151,6 +151,7 @@ class MenuViewModelImpl : MenuViewModel {
             }
         }
         ///TODO::fixme not necessary
+        guard shouldFetchLabels else { return }
         self.labelDataService?.fetchLabels()
     }
     

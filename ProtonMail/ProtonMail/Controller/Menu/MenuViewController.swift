@@ -111,6 +111,7 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, A
         
         updateEmailLabel()
         updateDisplayNameLabel()
+        setupLabelsIfViewIsLoaded(shouldFetchLabels: false)
         self.tableView.reloadData()
         
         if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
@@ -331,9 +332,9 @@ extension MenuViewController: UITableViewDelegate {
         self.coordinator?.go(to: .mailbox, sender: MenuItem.inbox.menuToLabel)
     }
 
-    func setupLabelsIfViewIsLoaded() {
+    func setupLabelsIfViewIsLoaded(shouldFetchLabels: Bool = true) {
         guard isViewLoaded else { return }
-        viewModel.setupLabels(delegate: self)
+        viewModel.setupLabels(delegate: self, shouldFetchLabels: shouldFetchLabels)
     }
     
     func updateUser() {

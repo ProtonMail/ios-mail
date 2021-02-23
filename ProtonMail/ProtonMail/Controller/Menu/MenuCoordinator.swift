@@ -186,8 +186,6 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 users.active(uid: setup.value!)
                 let isSameUser = self.viewModel.currentUser?.userinfo.userId ?? "" == user.userinfo.userId 
                 self.viewModel.currentUser = user
-
-                viewController?.setupLabelsIfViewIsLoaded()
                 
                 if !isSameUser {
                     String(format: LocalString._switch_account_by_click_notification,

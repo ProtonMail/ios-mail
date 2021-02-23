@@ -49,7 +49,7 @@ protocol MenuViewModel : AnyObject {
     
     
     func updateMenuItems()
-    func setupLabels(delegate: NSFetchedResultsControllerDelegate?)
+    func setupLabels(delegate: NSFetchedResultsControllerDelegate?, shouldFetchLabels: Bool)
     func sectionCount() -> Int
     func section(at: Int) -> MenuSection
     
