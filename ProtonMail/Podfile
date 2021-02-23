@@ -33,7 +33,7 @@ def pm_pods
 
   pod 'SWRevealViewController', '2.3.0'
   pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
-  pod 'PMChallenge', :git => 'git@gitlab.protontech.ch:apple/shared/pmchallenge.git', :branch => 'master' ##was 0.0.1
+  pod 'PMChallenge', :git => 'git@gitlab.protontech.ch:apple/shared/pmchallenge.git', :tag => '0.0.3'
 end
 
 def pm_share

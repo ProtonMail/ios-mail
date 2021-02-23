@@ -467,7 +467,7 @@ class SignupViewModelImpl : SignupViewModel {
     }
     
     override func humanVerificationFinish() {
-        try? self.challenge.verificationFinsih()
+        try? self.challenge.verificationFinish()
     }
     
     override func challengeExport() -> PMChallenge.Challenge {

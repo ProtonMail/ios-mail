@@ -22,17 +22,18 @@
 
 
 import TrustKit
+import PMCommon
 
 protocol TrustKitUIDelegate: class {
     func onTrustKitValidationError(_ alert: UIAlertController)
 }
 
+//TODO:: in the future move this to core NetworkingUI
 final class TrustKitWrapper {
     typealias Delegate = TrustKitUIDelegate
     typealias Configuration = [String: Any]
     
     static private weak var delegate: Delegate?
-    static private(set) var current: TrustKit?
     
     private static func configuration(hardfail: Bool = true) -> Configuration {
         return [
@@ -85,11 +86,8 @@ final class TrustKitWrapper {
         ]
     }
     
-    //    static func update(config : Configuration) {
-    //        self.current.config
-    //    }
-    
     static func start(delegate: Delegate, customConfiguration: Configuration? = nil) {
+        
         let config = customConfiguration ?? self.configuration()
         
         let instance: TrustKit = {
@@ -120,6 +118,6 @@ final class TrustKitWrapper {
         }
         
         self.delegate = delegate
-        self.current = instance
+        PMAPIService.trustKit = instance
     }
 }

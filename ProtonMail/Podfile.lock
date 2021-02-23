@@ -78,24 +78,25 @@ PODS:
     - OHHTTPStubs/Swift
     - PMCommon (>= 1.1.2)
     - PMCrypto
-  - PMChallenge (0.0.1)
-  - PMCommon (1.1.2):
-    - PMCommon/Default (= 1.1.2)
-  - PMCommon/APIClient (1.1.2):
+  - PMChallenge (0.0.2)
+  - PMCommon (1.2.0):
+    - PMCommon/Default (= 1.2.0)
+  - PMCommon/APIClient (1.2.0):
     - PMCommon/Networking
-  - PMCommon/Default (1.1.2):
+  - PMCommon/Default (1.2.0):
     - PMCommon/APIClient
     - PMCommon/Networking
     - PMCommon/Services
     - PMCommon/SRP
-  - PMCommon/Networking (1.1.2):
+  - PMCommon/Networking (1.2.0):
     - AFNetworking (~> 4.0)
     - AwaitKit (~> 5.0.0)
     - PromiseKit (~> 6.0)
-  - PMCommon/Services (1.1.2):
+  - PMCommon/Services (1.2.0):
     - PMCommon/APIClient
-  - PMCommon/SRP (1.1.2)
-  - PMCommon/Tests (1.1.2):
+    - TrustKit
+  - PMCommon/SRP (1.2.0)
+  - PMCommon/Tests (1.2.0):
     - OHHTTPStubs/Swift
   - PMCrypto (2.1.5)
   - PMKeymaker (1.2.3):
@@ -138,7 +139,7 @@ DEPENDENCIES:
   - OpenPGP (from `../OpenPGP`)
   - "PMAuthentication (from `git@gitlab.protontech.ch:apple/shared/pmauthentication.git`, branch `develop`)"
   - "PMAuthentication/Tests (from `git@gitlab.protontech.ch:apple/shared/pmauthentication.git`, branch `develop`)"
-  - "PMChallenge (from `git@gitlab.protontech.ch:apple/shared/pmchallenge.git`, branch `master`)"
+  - "PMChallenge (from `git@gitlab.protontech.ch:apple/shared/pmchallenge.git`, tag `0.0.3`)"
   - PMCommon (from `../Networking`)
   - PMCommon/Tests (from `../Networking`)
   - "PMCrypto (from `git@gitlab.protontech.ch:apple/shared/pmcrypto.git`, tag `2.1.5`)"
@@ -180,8 +181,8 @@ EXTERNAL SOURCES:
     :branch: develop
     :git: "git@gitlab.protontech.ch:apple/shared/pmauthentication.git"
   PMChallenge:
-    :branch: master
     :git: "git@gitlab.protontech.ch:apple/shared/pmchallenge.git"
+    :tag: 0.0.3
   PMCommon:
     :path: "../Networking"
   PMCrypto:
@@ -205,11 +206,11 @@ CHECKOUT OPTIONS:
     :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
     :git: https://github.com/ProtonMail/nsdate-helper.git
   PMAuthentication:
-    :commit: 1029378360924672d0caa13fdecee52b1e7d7d65
+    :commit: 16949e15b45da02a74972dbda6370372037f51c6
     :git: "git@gitlab.protontech.ch:apple/shared/pmauthentication.git"
   PMChallenge:
-    :commit: a7adde9abc5e1b8751f51883757f717b19d745df
     :git: "git@gitlab.protontech.ch:apple/shared/pmchallenge.git"
+    :tag: 0.0.3
   PMCrypto:
     :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
     :tag: 2.1.5
@@ -238,8 +239,8 @@ SPEC CHECKSUMS:
   OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PMAuthentication: 4e1a422232304311f34a7651a5b348a7782c99bf
-  PMChallenge: 6a84d04e7592ebae580ca3769a8052b9c097e181
-  PMCommon: 293fabb461efffdcaa8f99d68f195484abfdaa53
+  PMChallenge: e1545bb99e3b668f7b4af62aea193d11f1039d3b
+  PMCommon: 144fb3aba220fb65ee769c69486b226d2dd73a37
   PMCrypto: cfdfe88ea29e3c35788beab63b18f0c111b72617
   PMKeymaker: 41484527ae0683d08361a0c09023bed5dc8c367b
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
@@ -250,6 +251,6 @@ SPEC CHECKSUMS:
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: d273221d299fc7a201d69f809b4d6fa87b92715f
+PODFILE CHECKSUM: d6e2474071c0c71a280b613141ec3c977aec2cec
 
 COCOAPODS: 1.10.0
