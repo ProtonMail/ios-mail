@@ -97,7 +97,7 @@ PODS:
   - PMCommon/SRP (1.1.2)
   - PMCommon/Tests (1.1.2):
     - OHHTTPStubs/Swift
-  - PMCrypto (2.1.3)
+  - PMCrypto (2.1.5)
   - PMKeymaker (1.2.3):
     - EllipticCurveKeyPair
     - PMCrypto
@@ -141,7 +141,7 @@ DEPENDENCIES:
   - "PMChallenge (from `git@gitlab.protontech.ch:apple/shared/pmchallenge.git`, branch `master`)"
   - PMCommon (from `../Networking`)
   - PMCommon/Tests (from `../Networking`)
-  - "PMCrypto (from `git@gitlab.protontech.ch:apple/shared/pmcrypto.git`, tag `2.1.3`)"
+  - "PMCrypto (from `git@gitlab.protontech.ch:apple/shared/pmcrypto.git`, tag `2.1.5`)"
   - "PMKeymaker (from `git@gitlab.protontech.ch:apple/shared/pmkeymaker.git`, branch `develop`)"
   - PromiseKit (~> 6.0)
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `5.2.2`)
@@ -186,7 +186,7 @@ EXTERNAL SOURCES:
     :path: "../Networking"
   PMCrypto:
     :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
-    :tag: 2.1.3
+    :tag: 2.1.5
   PMKeymaker:
     :branch: develop
     :git: "git@gitlab.protontech.ch:apple/shared/pmkeymaker.git"
@@ -212,7 +212,7 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/pmchallenge.git"
   PMCrypto:
     :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
-    :tag: 2.1.3
+    :tag: 2.1.5
   PMKeymaker:
     :commit: 97defd9cd70e83c67e7f9ad2b0c9ee93c55a8416
     :git: "git@gitlab.protontech.ch:apple/shared/pmkeymaker.git"
@@ -240,7 +240,7 @@ SPEC CHECKSUMS:
   PMAuthentication: 4e1a422232304311f34a7651a5b348a7782c99bf
   PMChallenge: 6a84d04e7592ebae580ca3769a8052b9c097e181
   PMCommon: 293fabb461efffdcaa8f99d68f195484abfdaa53
-  PMCrypto: d5b645c61f6247125000838efe4419ec47915f14
+  PMCrypto: cfdfe88ea29e3c35788beab63b18f0c111b72617
   PMKeymaker: 41484527ae0683d08361a0c09023bed5dc8c367b
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
@@ -250,6 +250,6 @@ SPEC CHECKSUMS:
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: cad9cf757867269ad93b1731a0c7e820dd3dfb4a
+PODFILE CHECKSUM: d273221d299fc7a201d69f809b4d6fa87b92715f
 
 COCOAPODS: 1.10.0

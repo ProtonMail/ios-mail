@@ -89,10 +89,10 @@ extension Attachment {
                     offset += currentChunkSize
                     fileHandle.seek(toFileOffset: UInt64(offset))
                     encryptor.process(currentChunk)
+                    HelperFreeOSMemory()
                 }
             }
             fileHandle.closeFile()
-            
             defer { HelperFreeOSMemory() }
             return try encryptor.finish()
         } catch {
