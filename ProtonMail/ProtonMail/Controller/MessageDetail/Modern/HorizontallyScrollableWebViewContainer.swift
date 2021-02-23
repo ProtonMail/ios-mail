@@ -23,6 +23,7 @@
 
 import UIKit
 import TrustKit
+import PMCommon
 
 class HorizontallyScrollableWebViewContainer: UIViewController {
     internal var webView: PMWebView!
@@ -179,7 +180,7 @@ extension HorizontallyScrollableWebViewContainer: WKNavigationDelegate, WKUIDele
     }
     
     func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        if let validator = TrustKitWrapper.current?.pinningValidator {
+        if let validator = PMAPIService.trustKit?.pinningValidator {
             if !validator.handle(challenge, completionHandler: completionHandler) {
                 completionHandler(.performDefaultHandling, challenge.proposedCredential)
             }

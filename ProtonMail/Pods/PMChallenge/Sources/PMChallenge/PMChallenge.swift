@@ -162,7 +162,7 @@ extension PMChallenge {
     }
 
     /// Count verification time
-    public func verificationFinsih() throws {
+    public func verificationFinish() throws {
         if self.requestVerifyTime == 0 {
             throw PMChallenge.TimerError.verificationTimerError
         }

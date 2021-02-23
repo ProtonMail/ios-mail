@@ -243,13 +243,13 @@ public class Authenticator: NSObject {
         self.apiService.exec(route: route, complete: completion)
     }
 
-    public func createAddressKey(_ credential: Credential? = nil, address: Address, password: String, primary: Bool, completion: @escaping (Result<AddressKey, Error>) -> Void) {
+    public func createAddressKey(_ credential: Credential? = nil, address: Address, password: String, salt: Data, primary: Bool, completion: @escaping (Result<AddressKey, Error>) -> Void) {
         getRandomSRPModulus { result in
             switch result {
             case let .success(data):
                 let keySetup = AddressKeySetup()
                 do {
-                    let key = try keySetup.generateAddressKey(keyName: address.email, email: address.email, password: password)
+                    let key = try keySetup.generateAddressKey(keyName: address.email, email: address.email, password: password, salt: salt)
                     var route = try keySetup.setupCreateAddressKeyRoute(key: key, modulus: data.modulus, modulusId: data.modulusID, addressId: address.ID, primary: primary)
                     if let auth = credential {
                         route.auth = AuthCredential(auth)

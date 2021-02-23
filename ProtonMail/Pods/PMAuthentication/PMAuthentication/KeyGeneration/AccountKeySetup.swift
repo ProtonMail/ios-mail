@@ -10,12 +10,6 @@ import Crypto
 import Foundation
 
 final class AccountKeySetup {
-    private enum PasswordError: Error {
-        case hashEmpty
-        case hashEmptyEncode
-        case hashSizeWrong
-    }
-
     struct AddressKey {
         let cryptoKey: CryptoKey
         let armoredKey: String
@@ -38,7 +32,7 @@ final class AccountKeySetup {
         }
 
         //generate key hashed password.
-        let newHashedPassword = hashPassword(password, salt: newPasswordSalt)
+        let newHashedPassword = PasswordHash.hashPassword(password, salt: newPasswordSalt)
 
         let addressKeys = try addresses.map { address -> AddressKey in
             guard let passwordLessKey = CryptoGenerateKey(address.email, address.email, "rsa", 2048, &error) else {
@@ -110,41 +104,5 @@ final class AccountKeySetup {
         }
 
         return AuthService.SetupKeysEndpoint(addresses: addressData, privateKey: key.addressKeys[0].armoredKey, keySalt: key.passwordSalt.encodeBase64(), passwordAuth: pwd_auth)
-    }
-
-    func hashPassword(_ password: String, salt: Data) -> String {
-        let byteArray = NSMutableData()
-        byteArray.append(salt)
-        let source = NSData(data: byteArray as Data) as Data
-        let encodedSalt = JKBCrypt.based64DotSlash(source)
-        do {
-            let out = try bcrypt(password, salt: encodedSalt)
-            let index = out.index(out.startIndex, offsetBy: 29)
-            let outStr = String(out[index...])
-            return outStr
-        } catch PasswordError.hashEmpty {
-            // check error
-        } catch PasswordError.hashSizeWrong {
-            // check error
-        } catch {
-            // check error
-        }
-        return ""
-    }
-
-    func bcrypt(_ password: String, salt: String) throws -> String {
-        let real_salt = "$2a$10$" + salt
-
-        //backup plan when native bcrypt return empty string
-        if let out = JKBCrypt.hashPassword(password, withSalt: real_salt), !out.isEmpty {
-            let size = out.count
-            if size > 4 {
-                let index = out.index(out.startIndex, offsetBy: 4)
-                return "$2y$" + String(out[index...])
-            } else {
-                throw PasswordError.hashSizeWrong
-            }
-        }
-        throw PasswordError.hashEmpty
-    }
+    }    
 }

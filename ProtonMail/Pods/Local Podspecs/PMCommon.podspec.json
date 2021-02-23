@@ -1,6 +1,6 @@
 {
   "name": "PMCommon",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "summary": "A short description of PMNetworking.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/ProtonMail/ios-networking",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/pmnetworking.git",
-    "tag": "1.1.2"
+    "tag": "1.2.0"
   },
   "platforms": {
     "ios": "10.0",
@@ -81,6 +81,9 @@
       "name": "Services",
       "dependencies": {
         "PMCommon/APIClient": [
+
+        ],
+        "TrustKit": [
 
         ]
       },

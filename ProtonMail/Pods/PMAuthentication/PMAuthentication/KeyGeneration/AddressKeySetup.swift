@@ -16,14 +16,17 @@ final class AddressKeySetup {
         let armoredKey: String
     }
 
-    func generateAddressKey(keyName: String, email: String, password: String) throws -> GeneratedAddressKey {
+    func generateAddressKey(keyName: String, email: String, password: String, salt: Data) throws -> GeneratedAddressKey {
         var error: NSError?
+
+        let hashedPassword = PasswordHash.hashPassword(password, salt: salt)
+
         guard let passwordLessKey = CryptoGenerateKey(keyName, email, "rsa", 2048, &error) else {
             throw KeySetupError.keyGenerationFailed
         }
-        let key = try passwordLessKey.lock(password.data(using: .utf8))
+        let key = try passwordLessKey.lock(hashedPassword.data(using: .utf8))
         let armoredKey = key.armor(&error)
-        return GeneratedAddressKey(cryptoKey: key, password: password, armoredKey: armoredKey)
+        return GeneratedAddressKey(cryptoKey: key, password: hashedPassword, armoredKey: armoredKey)
     }
 
     func setupCreateAddressKeyRoute(key: GeneratedAddressKey, modulus: String, modulusId: String, addressId: String, primary: Bool) throws -> AuthService.CreateAddressKeyEndpoint {

@@ -21,9 +21,8 @@ class KeySetupTests: XCTestCase {
     func testAddressKeyGeneration() {
         let keySetup = AddressKeySetup()
         do {
-            let key = try keySetup.generateAddressKey(keyName: "Test key", email: "\(TestUser.liveTestUser.username)@\(LiveDoHMail.default.signupDomain)", password: TestUser.liveTestUser.password)
+            let key = try keySetup.generateAddressKey(keyName: "Test key", email: "\(TestUser.liveTestUser.username)@\(LiveDoHMail.default.signupDomain)", password: TestUser.liveTestUser.password, salt: Data())
             XCTAssertFalse(key.armoredKey.isEmpty)
-            XCTAssertEqual(key.password, TestUser.liveTestUser.password)
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -33,7 +32,7 @@ class KeySetupTests: XCTestCase {
         let keySetup = AddressKeySetup()
 
         do {
-            let key = try keySetup.generateAddressKey(keyName: "Test key", email: "\(TestUser.liveTestUser.username)@\(LiveDoHMail.default.signupDomain)", password: TestUser.liveTestUser.password)
+            let key = try keySetup.generateAddressKey(keyName: "Test key", email: "\(TestUser.liveTestUser.username)@\(LiveDoHMail.default.signupDomain)", password: TestUser.liveTestUser.password, salt: Data())
             let route = try keySetup.setupCreateAddressKeyRoute(key: key, modulus: ObfuscatedConstants.modulus, modulusId: ObfuscatedConstants.modulusId, addressId: TestUser.liveTestUser.username, primary: true)
             XCTAssertFalse(route.addressID.isEmpty)
             XCTAssertFalse(route.privateKey.isEmpty)
