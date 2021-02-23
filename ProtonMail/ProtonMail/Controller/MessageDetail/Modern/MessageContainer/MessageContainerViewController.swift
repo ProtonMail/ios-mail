@@ -30,6 +30,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     private var threadObservation: NSKeyValueObservation!
     private var standalonesObservation: [NSKeyValueObservation] = []
     private var isFirstInit: Bool = true
+    private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -75,6 +76,17 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         self.subscribeToThread()
         self.viewModel.downloadThreadDetails()
         generateAccessibilityIdentifiers()
+        setUpBottomButtonsStateUpdates()
+    }
+
+    private func setUpBottomButtonsStateUpdates() {
+        let areDetailsDownloaded  = viewModel.messages.allSatisfy(\.isDetailDownloaded)
+        internetConnectionStatusProvider.getConnectionStatuses { [weak self] status in
+            let isEnabled = status.isConnected || areDetailsDownloaded
+            self?.bottomView.replyButton.isEnabled = isEnabled
+            self?.bottomView.forwardButton.isEnabled = isEnabled
+            self?.bottomView.replyAllButton.isEnabled = isEnabled
+        }
     }
     
     @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 

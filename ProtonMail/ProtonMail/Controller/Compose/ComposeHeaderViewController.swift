@@ -240,6 +240,8 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
     
     ///Use this flag to control the email validation action
     var shouldValidateTheEmail = true
+
+    private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -287,7 +289,8 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: NSNotification.Name.reachabilityChanged, object: nil)
+
+        observeInternetConnectionStatus()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -300,7 +303,8 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+
+        internetConnectionStatusProvider.stopInternetConnectionStatusObservation()
     }
     
     override func didReceiveMemoryWarning() {
@@ -691,21 +695,20 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
                                                  borderWidth: 1.0,
                                                  at: newHeight)
     }
-    
-    @objc private func reachabilityChanged(_ note : Notification) {
-        guard let curReach = note.object as? Reachability else {return}
-        let netStatus = curReach.currentReachabilityStatus()
-        guard netStatus == .ReachableViaWWAN ||
-                netStatus == .ReachableViaWiFi else {return}
-        
-        self.checkEmails()
+
+    private func observeInternetConnectionStatus() {
+        internetConnectionStatusProvider.getConnectionStatuses { [weak self] status in
+            guard status.isConnected else { return }
+            self?.checkEmails()
+        }
     }
-    
+
     private func checkEmails() {
         self.ccContactPicker.contactCollectionView.reloadData()
         self.bccContactPicker.contactCollectionView.reloadData()
         self.toContactPicker.contactCollectionView.reloadData()
     }
+
 }
 
 
