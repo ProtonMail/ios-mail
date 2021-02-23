@@ -315,10 +315,21 @@ publicKey and returns a binary public-key encrypted session key packet.
  */
 - (CryptoPGPSignature* _Nullable)signDetached:(CryptoPlainMessage* _Nullable)message error:(NSError* _Nullable* _Nullable)error;
 /**
- * VerifyDetached verifies a PlainMessage with embedded a PGPSignature
+ * SignDetachedEncrypted generates and returns a PGPMessage
+containing an encrypted detached signature for a given PlainMessage.
+ */
+- (CryptoPGPMessage* _Nullable)signDetachedEncrypted:(CryptoPlainMessage* _Nullable)message encryptionKeyRing:(CryptoKeyRing* _Nullable)encryptionKeyRing error:(NSError* _Nullable* _Nullable)error;
+/**
+ * VerifyDetached verifies a PlainMessage with a detached PGPSignature
 and returns a SignatureVerificationError if fails.
  */
 - (BOOL)verifyDetached:(CryptoPlainMessage* _Nullable)message signature:(CryptoPGPSignature* _Nullable)signature verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
+/**
+ * VerifyDetachedEncrypted verifies a PlainMessage
+with a PGPMessage containing an encrypted detached signature
+and returns a SignatureVerificationError if fails.
+ */
+- (BOOL)verifyDetachedEncrypted:(CryptoPlainMessage* _Nullable)message encryptedSignature:(CryptoPGPMessage* _Nullable)encryptedSignature decryptionKeyRing:(CryptoKeyRing* _Nullable)decryptionKeyRing verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**
