@@ -556,13 +556,13 @@ class MessageDataService : Service, HasLocalStorage {
                                         if eventsRes.refresh.contains(.contacts) {
                                             return Promise()
                                         } else {
-                                            return self.processEvents(contacts: eventsRes.contacts)
+                                            return self.processEvents(contactEmails: eventsRes.contactEmails)
                                         }
                                     }.then { (_) -> Promise<Void> in
                                         if eventsRes.refresh.contains(.contacts) {
                                             return Promise()
                                         } else {
-                                            return self.processEvents(contactEmails: eventsRes.contactEmails)
+                                            return self.processEvents(contacts: eventsRes.contacts)
                                         }
                                     }.then { (_) -> Promise<Void> in
                                         self.processEvents(labels: eventsRes.labels)
@@ -597,13 +597,13 @@ class MessageDataService : Service, HasLocalStorage {
                                 if eventsRes.refresh.contains(.contacts) {
                                     return Promise()
                                 } else {
-                                    return self.processEvents(contacts: eventsRes.contacts)
+                                    return self.processEvents(contactEmails: eventsRes.contactEmails)
                                 }
                             }.then { (_) -> Promise<Void> in
                                 if eventsRes.refresh.contains(.contacts) {
                                     return Promise()
                                 } else {
-                                    return self.processEvents(contactEmails: eventsRes.contactEmails)
+                                    return self.processEvents(contacts: eventsRes.contacts)
                                 }
                             }.then { (_) -> Promise<Void> in
                                 self.processEvents(labels: eventsRes.labels)
