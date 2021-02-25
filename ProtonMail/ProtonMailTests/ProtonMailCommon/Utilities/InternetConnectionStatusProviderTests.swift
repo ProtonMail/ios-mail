@@ -59,4 +59,12 @@ class InternetConnectionStatusProviderTests: XCTestCase {
         XCTAssertEqual(emitedStatuses, [.NotReachable])
     }
 
+    func testCurrentStatus() {
+        XCTAssertEqual(sut.currentStatus, .NotReachable)
+
+        reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
+
+        XCTAssertEqual(sut.currentStatus, .ReachableViaWiFi)
+    }
+
 }

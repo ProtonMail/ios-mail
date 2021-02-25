@@ -31,6 +31,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     private var standalonesObservation: [NSKeyValueObservation] = []
     private var isFirstInit: Bool = true
     private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
+    private var isWebBodyLoaded = false
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -80,13 +81,26 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     }
 
     private func setUpBottomButtonsStateUpdates() {
-        let areDetailsDownloaded  = viewModel.messages.allSatisfy(\.isDetailDownloaded)
-        internetConnectionStatusProvider.getConnectionStatuses { [weak self] status in
-            let isEnabled = status.isConnected || areDetailsDownloaded
-            self?.bottomView.replyButton.isEnabled = isEnabled
-            self?.bottomView.forwardButton.isEnabled = isEnabled
-            self?.bottomView.replyAllButton.isEnabled = isEnabled
+        internetConnectionStatusProvider.getConnectionStatuses { [weak self] _ in
+            self?.setUpBottomButtonsState()
         }
+
+        self.viewModel.isWebViewBodyLoadedNotifier = { [weak self] isLoaded in
+            self?.isWebBodyLoaded = isLoaded
+            self?.setUpBottomButtonsState()
+        }
+    }
+
+    private var areBottomButtonEnabled: Bool {
+        let isConnected = internetConnectionStatusProvider.currentStatus.isConnected
+        let areDetailsDownloaded = viewModel.messages.allSatisfy(\.isDetailDownloaded)
+        return (isConnected || areDetailsDownloaded) && isWebBodyLoaded
+    }
+
+    private func setUpBottomButtonsState() {
+        bottomView.replyButton.isEnabled = areBottomButtonEnabled
+        bottomView.forwardButton.isEnabled = areBottomButtonEnabled
+        bottomView.replyAllButton.isEnabled = areBottomButtonEnabled
     }
     
     @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 
