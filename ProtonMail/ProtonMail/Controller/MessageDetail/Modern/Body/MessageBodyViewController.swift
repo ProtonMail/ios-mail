@@ -160,3 +160,18 @@ extension MessageBodyViewController: CoordinatedNew {
         return self.coordinator
     }
 }
+
+extension MessageBodyViewController {
+
+    override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        super.webView(webView, didFinish: navigation)
+        let isLoadingFinished = Int(webView.estimatedProgress) == 1
+        guard isLoadingFinished else { return }
+        self.viewModel.isWebViewBodyLoaded = loader.renderedContents.isValid
+    }
+
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        self.viewModel.isWebViewBodyLoaded = false
+    }
+
+}

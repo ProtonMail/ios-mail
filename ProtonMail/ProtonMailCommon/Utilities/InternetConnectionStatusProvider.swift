@@ -20,6 +20,10 @@ class InternetConnectionStatusProvider {
         notificationCenter.removeObserver(self)
     }
 
+    var currentStatus: NetworkStatus {
+        reachability.currentReachabilityStatus()
+    }
+
     // MARK: - Private
 
     private func startReachabilityStatusObservation() {
