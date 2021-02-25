@@ -23,8 +23,7 @@
 
 import Foundation
 
-
-
+//TODO:: localizedFailureReason -  don't need to use this. all errors from backend and local all need to use localizedDescryiption for displaying on UI.
 extension NSError {
     
     class func authCredentialInvalid() -> NSError {

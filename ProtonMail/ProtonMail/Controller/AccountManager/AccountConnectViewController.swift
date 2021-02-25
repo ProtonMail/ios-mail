@@ -327,7 +327,8 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
             return false
         }
         
-        let message = error.localizedFailureReason
+        //TODO:: don't use FailureReason in the future. also need clean up
+        let message = error.localizedFailureReason ?? error.localizedDescription
         let alertController = UIAlertController(title: LocalString._protonmail,
                                                 message: message,
                                                 preferredStyle: .alert)

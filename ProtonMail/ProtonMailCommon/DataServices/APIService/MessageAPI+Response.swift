@@ -54,7 +54,7 @@ final class UpdateDraftResponse: Response {
     override func ParseResponse(_ response: [String : Any]) -> Bool {
         let result = super.ParseResponse(response)
         if result {
-            self.responseDict = response["Message"] as! [String : Any]
+            self.responseDict = response["Message"] as? [String : Any] ?? [:]
         }
         
         return result
