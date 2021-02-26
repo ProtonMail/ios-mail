@@ -119,7 +119,5 @@ final class TrustKitWrapper {
         
         self.delegate = delegate
         PMAPIService.trustKit = instance
-        //Disable trust kit
-        PMAPIService.noTrustKit = true
     }
 }
