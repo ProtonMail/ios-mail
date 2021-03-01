@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = "hjá";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Að minnsta kosti eitt tölvupóstfang í hópnum fannst ekki";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Að minnsta kosti eitt tölvupóstfang viðtakanda er rangt sniðið, yfirfarðu þetta.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Að minnsta kosti eitt tölvupóstfang viðtakanda er ekki til eða er rangt sniðið. Skilaboð voru færð í drög.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Viðhengi flutt inn";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "Birtingarnafn";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Viltu virkja kaupin fyrir %@ póstfangið?";
+
 /* Description */
 "Do you want to cancel the process?" = "Viltu hætta við ferlið?";
 
@@ -755,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "Tölvupóstfang er ógilt";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "Tölvupóstfangið er ógilt";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "Tölvupóstföng";
@@ -876,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "Villa kom upp";
 
+/* incorrect email format error in composer */
+"Error sending" = "Villa við að senda";
+
 /* lock app option */
 "Every time enter app" = "Í hvert sinn sem forritið ræsist";
 
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "Fá ítarlegri upplýsingar";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Fara í drög";
+
 /* Action */
 "Go to inbox" = "Fara í innhólf";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Mennskupróf";
+
+/* Alarm action */
+"Ignore" = "Hunsa";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP stuðningur í gegnum ProtonMail-brú";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d. MMM, yyyy kl. %1$@, skrifaði %2$@:";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Hunsaðu virkjun kaupanna einungis ef þú ert viss um að allar áskriftirnar þína séu uppfærðar. Til að fá frekari aðstoð geturðu haft samband við viðskiptavinaþjónustuna. &#13;\n&#13;\n Ertu viss um að þú viljir hunsa virkjunina?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Aðeins er hægt að bæta við einum ókeypis aðgangi";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Fyrirtæki/Stofnun/Samtök/Félag";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "Samhæfni við stýrikerfi";
 
 /* default vcard types */
 "Other" = "Annað";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Les gögn tengiliða á tækinu...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Gat ekki fundið viðtakanda";
+
 /* Title */
 "Recovery Code" = "Endurheimtukóði";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "Sannvottun sendanda mistókst";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Sending mistókst";
 
 /* Alert title */
 "Sending message" = "Sendi skilaboð";
@@ -2117,7 +2153,7 @@
 "To" = "Til";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Til að koma í veg fyrir misnotkun á ProtonMail,\r\n þurfum við að ganga úr skugga um að þú sért mennskur.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Til að koma í veg fyrir misnotkun á ProtonMail,&#13;\n þurfum við að ganga úr skugga um að þú sért mennskur.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu, notaðu þá vefútgáfu ProtonMail á protonmail.com";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Ekki var hægt að senda skilaboðin þín, mögulega vegna lélegrar nettengingar. Skilaboðin þín voru vistuð í Drög og verða sjálfkrafa send næst þegar þú opnar forritið.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Okkur hefur verið gert viðvart um kaup í AppStore, en tókst ekki að tengja vöruna við neinn notandaaðgang á þínu nafni.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Okkur tókst að virkja áskriftina þína. Endurræstu forritið til að fara að nota nýju þjónustuáskriftina.";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Við munum senda sannvottunarkóða á tölvupóstfangið hér fyrir ofan.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "Við munum fljótlega hætta stuðningi við iOS 10 tæki. Uppfærðu stýrikerfi tækisins til að fá áfram uppfærslur á hugbúnaðinum.";
 
 /* Title */
 "We would like to know what we can do better." = "Við viljum vita hvað við getum gert betur.";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "skrifaði:";
+
+/* Yes action */
+"Yes" = "Já";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Já, virkja það fyrir ";

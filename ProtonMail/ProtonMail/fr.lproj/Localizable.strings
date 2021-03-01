@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = "à";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Au moins une adresse électronique du groupe est introuvable";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Au moins une adresse électronique d’un destinataire est mal formatée, veuillez les vérifier.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Au moins une adresse/domaine de destinataire n'existe pas ou est mal formaté. Le message a été déplacé vers les brouillons.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Pièce jointe importée";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "Nom d'affichage";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Voulez-vous activer l'achat pour l'adresse %@ ?";
+
 /* Description */
 "Do you want to cancel the process?" = "Voulez-vous annuler le processus ?";
 
@@ -755,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "Adresse électronique invalide";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "L'adresse électronique est invalide";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "Adresses électroniques";
@@ -876,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "Une erreur s'est produite";
 
+/* incorrect email format error in composer */
+"Error sending" = "Erreur lors de l'envoi";
+
 /* lock app option */
 "Every time enter app" = "À chaque ouverture de l'application";
 
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "En savoir plus";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Aller aux brouillons";
+
 /* Action */
 "Go to inbox" = "Accéder à la boîte de réception";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Vérification humaine";
+
+/* Alarm action */
+"Ignore" = "Ignorer";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Prise en charge IMAP/SMTP via ProtonMail Bridge";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Le EEEE d MMMM yyyyy à %1$@, %2$@ a écrit :";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorez l'activation de l'achat uniquement si vous êtes sûr que tous vos abonnements sont à jour. Pour plus d'assistance, veuillez contacter le support client. &#13;\n&#13;\n Êtes-vous sûr de vouloir ignorer l'activation ?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Un seul compte gratuit peut être ajouté";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Organisation";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "Compatibilité avec l’OS";
 
 /* default vcard types */
 "Other" = "Autre";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Lecture des données des contacts de l'appareil...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Destinataire introuvable";
+
 /* Title */
 "Recovery Code" = "Code de récupération";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "Échec de la vérification de l'expéditeur";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "L'envoi a échoué";
 
 /* Alert title */
 "Sending message" = "Envoi du message";
@@ -2117,7 +2153,7 @@
 "To" = "À";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Afin de prévenir les abus sur ProtonMail,\r\n nous devons vérifier que vous êtes bien humain.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Afin de prévenir les abus sur ProtonMail,&#13;\n nous devons vérifier que vous êtes bien humain.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pour réinitialiser votre mot de passe de messagerie, veuillez utiliser la version web de ProtonMail via protonmail.com";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nous n'avons pas pu envoyer votre message, peut-être à cause d'une mauvaise connexion réseau. Votre message a été enregistré dans les brouillons et sera envoyé automatiquement la prochaine fois que vous ouvrirez l'application.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Nous avons été informés d'un achat sur l'App Store, mais nous ne pouvons pas faire correspondre cet achat avec un compte vous appartenant.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Nous avons activé votre abonnement avec succès. Veuillez relancer l'application pour commencer à utiliser les nouveaux fonctionnalités de votre offre.";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Nous enverrons un code de vérification à l’adresse électronique ci-dessus.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "Nous allons bientôt arrêter la prise en charge des appareils sous iOS 10. Veuillez mettre à jour le système d'exploitation de votre appareil pour continuer à recevoir les futures mises à jour.";
 
 /* Title */
 "We would like to know what we can do better." = "Nous aimerions savoir ce que nous pouvons améliorer.";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "a écrit :";
+
+/* Yes action */
+"Yes" = "Oui";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Oui, l'activer pour ";
@@ -2447,7 +2492,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Votre nouveau compte de messagerie chiffrée a été mis en place, et est prêt à envoyer et recevoir des messages chiffrés.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Votre nouveau compte\r\n de messagerie sécurisée est prêt.";
+"Your new secure email\r\n account is ready." = "Votre nouveau compte&#13;\n de messagerie sécurisée est prêt.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Votre abonnement est actuellement actif jusqu'au";

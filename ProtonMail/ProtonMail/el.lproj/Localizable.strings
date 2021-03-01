@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = "στις";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Τουλάχιστον μία διεύθυνση email στην ομάδα δεν βρέθηκε";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Τουλάχιστον μία διεύθυνση email παραλήπτη δεν έχει μορφοποιηθεί σωστά, παρακαλώ ελέγξτε τους.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Τουλάχιστον μία διεύθυνση email παραλήπτη/τομέα δεν υπάρχει ή έχει κακή μορφοποίηση. Το μήνυμα μετακινήθηκε στα πρόχειρα.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Το συνημμένο έχει εισαχθεί";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "Εμφανιζόμενο Όνομα";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Θέλετε να ενεργοποιήσετε την αγορά για %@ διεύθυνση;";
+
 /* Description */
 "Do you want to cancel the process?" = "Θέλετε να ακυρώσετε την διαδικασία;";
 
@@ -755,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "Η διεύθυνση E-mail δεν είναι έγκυρη";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "Η διεύθυνση email δεν είναι έγκυρη";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "Διευθύνσεις Email";
@@ -876,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "Παρουσιάστηκε σφάλμα";
 
+/* incorrect email format error in composer */
+"Error sending" = "Σφάλμα στην αποστολή";
+
 /* lock app option */
 "Every time enter app" = "Κάθε φορά που ανοίγω την εφαρμογή";
 
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "Λάβετε περισσότερες πληροφορίες";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Μετάβαση στα πρόχειρα";
+
 /* Action */
 "Go to inbox" = "Μετάβαση στα Εισερχόμενα";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Ανθρώπινη Επαλήθευση";
+
+/* Alarm action */
+"Ignore" = "Αγνόηση";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Υποστήριξη IMAP/SMTP μέσω ProtonMail Bridge";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Στις ΗΜ, ΜΗΝ η, χχχχ στις %1$@, %2$@, έγραψε:";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Αγνοήστε την ενεργοποίηση αγοράς μόνο αν είστε σίγουροι ότι όλες οι συνδρομές σας είναι ενημερωμένες. Για περαιτέρω βοήθεια, παρακαλούμε επικοινωνήστε με την υποστήριξη πελατών. &#13;\n&#13;\n Είστε βέβαιοι ότι θέλετε να αγνοήσετε την ενεργοποίηση;";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Μόνο ένας δωρεάν λογαριασμός μπορεί να προστεθεί";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Οργανισμός";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "Συμβατότητα λειτουργικού";
 
 /* default vcard types */
 "Other" = "Άλλο";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Ανάγνωση δεδομένων επαφών συσκευής...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Ο παραλήπτης δεν βρέθηκε";
+
 /* Title */
 "Recovery Code" = "Κωδικός Ανάκτησης";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "Η επαλήθευση του αποστολέα απέτυχε";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Η αποστολή απέτυχε";
 
 /* Alert title */
 "Sending message" = "Γίνεται αποστολή μηνύματος";
@@ -2117,7 +2153,7 @@
 "To" = "Προς";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Για να αποτρέψουμε την κατάχρηση του ProtonMail,\r\n πρέπει να επαληθεύσουμε ότι είστε άνθρωπος.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Για να αποτρέψουμε την κατάχρηση του ProtonMail,&#13;\n πρέπει να επαληθεύσουμε ότι είστε άνθρωπος.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Για να επαναφέρετε τον κωδικό θυρίδας σας, παρακαλώ χρησιμοποιήστε την έκδοση web του ProtonMail στο protonmail.com";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Δεν ήταν δυνατή η αποστολή του μηνύματος σας, πιθανώς λόγω κακής σύνδεσης δικτύου. Το μήνυμα σας αποθηκεύτηκε στα Πρόχειρα και θα σταλεί αυτόματα την επόμενη φορά που θα ανοίξετε την εφαρμογή.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Έχουμε ενημερωθεί για μια αγορά από το App Store, αλλά δεν μπορούμε να ταιριάξουμε την αγορά με το λογαριασμό σας.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Ενεργοποιήσαμε επιτυχώς τη συνδρομή σας. Κάντε επανεκκίνηση της εφαρμογής για να ξεκινήσετε να χρησιμοποιείτε το νέο σας πρόγραμμα υπηρεσιών.";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Θα στείλουμε έναν κωδικό επαλήθευσης στην παραπάνω διεύθυνση E-Mail.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "Σύντομα θα σταματήσουμε την υποστήριξη για συσκευές iOS 10. Παρακαλούμε ενημερώστε το λειτουργικό σύστημα της συσκευής σας για να συνεχίσετε να λαμβάνετε ενημερώσεις στο μέλλον.";
 
 /* Title */
 "We would like to know what we can do better." = "Θα θέλαμε να μάθουμε τι μπορούμε να βελτιώσουμε.";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "έγραψε:";
+
+/* Yes action */
+"Yes" = "Ναι";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Ναι, ενεργοποιήστε το για ";
@@ -2447,7 +2492,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ο νέος σας κρυπτογραφημένος λογαριασμός email έχει ρυθμιστεί και είναι έτοιμος να στέλνει και να λαμβάνει κρυπτογραφημένα μηνύματα.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Ο νέος σας ασφαλής λογαριασμός E-mail\r\n είναι έτοιμος.";
+"Your new secure email\r\n account is ready." = "Ο νέος σας ασφαλής λογαριασμός E-mail&#13;\n είναι έτοιμος.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Το πακέτο/πλάνο σας είναι ενεργό μέχρι";

@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = "в";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Не найден по меньшей мере один адрес электронной почты в группе";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "По меньшей мере один адрес электронной почты получателя отформатирован неправильно, пожалуйста, проверьте их.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "По крайней мере один адрес электронной почты/домен получателя не существует или отформатирован неправильно. Сообщение перемещено в черновики.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Вложение импортировано";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "Отображаемое имя";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Вы хотите активировать покупку для %@ адреса?";
+
 /* Description */
 "Do you want to cancel the process?" = "Вы хотите отменить процесс?";
 
@@ -755,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "Адрес электронной почты некорректен";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "Недопустимый адрес электронной почты";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "Адреса электронной почты";
@@ -876,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "Произошла ошибка";
 
+/* incorrect email format error in composer */
+"Error sending" = "Ошибка отправки";
+
 /* lock app option */
 "Every time enter app" = "При каждом входе в приложение";
 
@@ -883,7 +901,7 @@
 "Expires" = "Истекает";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "Истекает через %d д. %d час. %d мин. %d сек.";
 
 /* Title */
 "Expiring Messages" = "Исчезающие сообщения";
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "Получить больше информации";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Перейти к черновикам";
+
 /* Action */
 "Go to inbox" = "Перейти во Входящие";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Проверка \"Я не робот\"";
+
+/* Alarm action */
+"Ignore" = "Игнорировать";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Поддержка IMAP/SMTP через ProtonMail Bridge";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "В EE, MMM d, yyyy в %1$@, %2$@ написано:";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Проигнорируйте активацию покупки, только если вы уверены, что все ваши подписки актуальны. Для получения дополнительной помощи обратитесь в службу поддержки. &#13;\n&#13;\n Вы уверены, что хотите игнорировать активацию?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Можно добавить только одну бесплатную учётную запись";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Организация";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "Совместимость с ОС";
 
 /* default vcard types */
 "Other" = "Другое";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Чтение данных о контактах в устройстве...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Получатель не найден";
+
 /* Title */
 "Recovery Code" = "Код восстановления";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "Проверка отправителя не удалась";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Отправка не удалась";
 
 /* Alert title */
 "Sending message" = "Отправка сообщения";
@@ -2117,7 +2153,7 @@
 "To" = "Кому";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Для предотвращения злоупотребления ProtonMail\r\n нам необходимо убедиться, что вы – человек.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Для предотвращения злоупотребления ProtonMail&#13;\n нам необходимо убедиться, что вы – человек.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Для сброса пароля почтового ящика, пожалуйста, используйте веб-версию ProtonMail по адресу protonmail.com";
@@ -2168,7 +2204,7 @@
 "Turn Off" = "Отключить";
 
 /* Title */
-"Tweet about ProtonMail" = "Твит о ProtonMail";
+"Tweet about ProtonMail" = "Твитнуть о ProtonMail";
 
 /* network troubleshot cell title */
 "Twitter" = "Twitter";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Мы не смогли отправить ваше сообщение, возможно из-за плохого сетевого соединения. Ваше сообщение было сохранено в Черновики и будет отправлено автоматически при следующем запуске приложения.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Мы были уведомлены о покупке App Store, но не можем определить ее связь с вашей учетной записью.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Мы успешно активировали вашу подписку. Пожалуйста, перезапустите приложение, чтобы начать использование своего нового тарифа.";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Мы вышлем код подтверждения на адрес электронной почты, указанный выше.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "Мы планируем прекратить поддержку устройств с iOS 10. Пожалуйста, обновите операционную систему вашего устройства, чтобы получать обновления в будущем.";
 
 /* Title */
 "We would like to know what we can do better." = "Мы хотели бы знать, что мы можем сделать лучше.";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "пишет:";
+
+/* Yes action */
+"Yes" = "Да";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Да, активировать его для ";
@@ -2414,7 +2459,7 @@
 "You have unsaved changes. Do you want to save it?" = "У вас есть несохранённые изменения. Вы хотите сохранить их?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "Вы используете %d%% объёма своего хранилища (%@).";
 
 /* *
  *  StorageLimit */
@@ -2447,7 +2492,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ваша новая учётная запись зашифрованной электронной почты уже настроена и готова отправлять и принимать шифрованные сообщения.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Ваша новая учётная запись\r\n защищённой эл. почты готова.";
+"Your new secure email\r\n account is ready." = "Ваша новая учётная запись&#13;\n защищённой эл. почты готова.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Ваш тариф сейчас активен до";

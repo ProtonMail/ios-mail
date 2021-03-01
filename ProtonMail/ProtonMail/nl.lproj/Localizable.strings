@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = "om";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Tenminste één e-mailadres in de groep kon niet worden gevonden";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Ten minste één ontvanger e-mailadres is onjuist opgemaakt, gelieve deze te controleren.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Tenminste één ontvanger e-mailadres/domein bestaat niet of is slecht opgemaakt. Bericht verplaatst naar concepten.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Bijlage geïmporteerd";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "Weergavenaam";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Wilt u de aankoop voor %@ adres activeren?";
+
 /* Description */
 "Do you want to cancel the process?" = "Wilt u het proces annuleren?";
 
@@ -755,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "Ongeldig e-mailadres";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "E-mailadres is ongeldig";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "E-mailadressen";
@@ -876,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "Er is iets fout gegaan";
 
+/* incorrect email format error in composer */
+"Error sending" = "Fout bij verzenden";
+
 /* lock app option */
 "Every time enter app" = "Elke keer als u de app opent";
 
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "Meer informatie";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Ga naar concepten";
+
 /* Action */
 "Go to inbox" = "Ga naar inbox";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Persoonsverificatie";
+
+/* Alarm action */
+"Ignore" = "Negeren";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP-ondersteuning via ProtonMail Bridge";
@@ -1199,10 +1223,10 @@
 "Log out" = "Afmelden";
 
 /* Alert title when logout non-primary account from account manager */
-"Log out %@?" = "%@ uitloggen?";
+"Log out %@?" = "%@ afmelden?";
 
 /* Action */
-"Log Out All" = "Uitloggen overal";
+"Log Out All" = "Alles afmelden";
 
 /* Alert when auth token is revoked and switch to another */
 "Logged out from %@ and signed in with %@" = "Uitgelogd van %1$@ en ingelogd met %2$@";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Op EE d MMM yyyy om %1$@, schreef %2$@:";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Negeer alleen de aankoopactivatie als je zeker weet dat al je abonnementen up-to-date zijn. Voor verdere hulp, neem contact op met klantenservice. &#13;\n&#13;\n Weet u zeker dat u de activering wilt negeren?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Er kan slechts één gratis account worden toegevoegd";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Organisatie";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "Compatibiliteit OS";
 
 /* default vcard types */
 "Other" = "Overig";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Bezig met lezen van de contactpersonen op uw apparaat...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Geadresseerde niet gevonden";
+
 /* Title */
 "Recovery Code" = "Herstelcode";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verificatie van afzender is mislukt";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Verzenden mislukt";
 
 /* Alert title */
 "Sending message" = "Bericht wordt verzonden";
@@ -2117,7 +2153,7 @@
 "To" = "Aan";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Om misbruik van ProtonMail te voorkomen, moeten we\r\n controleren of u een natuurlijk persoon bent.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Om misbruik van ProtonMail te voorkomen, moeten we&#13;\n controleren of u een natuurlijk persoon bent.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van ProtonMail te gebruiken via ProtonMail.com";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "We konden uw bericht niet versturen, mogelijk vanwege een slechte netwerkverbinding. Uw bericht is opgeslagen in Concepten en wordt de volgende keer dat u de app opent automatisch verzonden.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We zijn op de hoogte gesteld van een aankoop in de App Store, maar kunnen de aankoop niet koppelen aan een account van jou.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "We hebben uw abonnement succesvol geactiveerd. Start de app opnieuw om gebruik te maken van uw nieuwe abonnement.";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Wij zullen een verificatiecode sturen naar bovenstaand e-mailadres.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "We zullen binnenkort de ondersteuning voor iOS 10 apparaten stopzetten. Update het besturingssysteem van je apparaat om in de toekomst updates te blijven ontvangen.";
 
 /* Title */
 "We would like to know what we can do better." = "Wij horen graag wat wij kunnen verbeteren.";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "schreef:";
+
+/* Yes action */
+"Yes" = "Ja";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Ja, activeer het voor ";
@@ -2447,7 +2492,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Uw nieuwe versleutelde e-mailaccount is aangemaakt, u kunt nu versleutelde berichten verzenden en ontvangen.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Uw nieuwe beveiligde e-mail\r\n account is klaar.";
+"Your new secure email\r\n account is ready." = "Uw nieuwe beveiligde e-mail&#13;\n account is klaar.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Uw plan is momenteel actief tot";
