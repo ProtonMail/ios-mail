@@ -1476,7 +1476,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d MMM yyyy o %1$@, %2$@ napisał(a):";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Zignoruj aktywację zakupu, jeśli wszystkie Twoje subskrypcje są aktualne. Skontaktuj się ze wsparciem klienta, aby otrzymać dalsze wsparcie. &#13;\n&#13;\n Czy na pewno chcesz zignorować aktywację?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Zignoruj aktywację zakupu, jeśli wszystkie Twoje subskrypcje są aktualne. Skontaktuj się ze wsparciem klienta, aby otrzymać dalsze wsparcie. \r\n\r\n Czy na pewno chcesz zignorować aktywację?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Możesz dodać tylko jedno darmowe konto";
@@ -2153,7 +2153,7 @@
 "To" = "Do";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Aby zapobiec nadużyciom poczty ProtonMail, &#13;\n musimy zweryfikować, czy jesteś człowiekiem.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Aby zapobiec nadużyciom poczty ProtonMail, \r\n musimy zweryfikować, czy jesteś człowiekiem.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Aby zresetować hasło skrzynki pocztowej, skorzystaj ze strony protonmail.com";
@@ -2492,7 +2492,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Twoje nowe szyfrowane konto e-mail zostało utworzone i jest gotowe do wysyłania i odbierania szyfrowanych wiadomości.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Twoje nowe, bezpieczne&#13;\n konto e-mail jest gotowe.";
+"Your new secure email\r\n account is ready." = "Twoje nowe, bezpieczne\r\n konto e-mail jest gotowe.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Twój plan jest aktywny do";

@@ -1476,7 +1476,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d. MMM, yyyy kl. %1$@, skrifaði %2$@:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Hunsaðu virkjun kaupanna einungis ef þú ert viss um að allar áskriftirnar þína séu uppfærðar. Til að fá frekari aðstoð geturðu haft samband við viðskiptavinaþjónustuna. &#13;\n&#13;\n Ertu viss um að þú viljir hunsa virkjunina?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Hunsaðu virkjun kaupanna einungis ef þú ert viss um að allar áskriftirnar þína séu uppfærðar. Til að fá frekari aðstoð geturðu haft samband við viðskiptavinaþjónustuna. \r\n\r\n Ertu viss um að þú viljir hunsa virkjunina?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Aðeins er hægt að bæta við einum ókeypis aðgangi";
@@ -2153,7 +2153,7 @@
 "To" = "Til";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Til að koma í veg fyrir misnotkun á ProtonMail,&#13;\n þurfum við að ganga úr skugga um að þú sért mennskur.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Til að koma í veg fyrir misnotkun á ProtonMail,\r\n þurfum við að ganga úr skugga um að þú sért mennskur.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu, notaðu þá vefútgáfu ProtonMail á protonmail.com";

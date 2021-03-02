@@ -1476,7 +1476,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Op EE d MMM yyyy om %1$@, schreef %2$@:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Negeer alleen de aankoopactivatie als je zeker weet dat al je abonnementen up-to-date zijn. Voor verdere hulp, neem contact op met klantenservice. &#13;\n&#13;\n Weet u zeker dat u de activering wilt negeren?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Negeer alleen de aankoopactivatie als je zeker weet dat al je abonnementen up-to-date zijn. Voor verdere hulp, neem contact op met klantenservice. \r\n\r\n Weet u zeker dat u de activering wilt negeren?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Er kan slechts één gratis account worden toegevoegd";
@@ -2153,7 +2153,7 @@
 "To" = "Aan";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Om misbruik van ProtonMail te voorkomen, moeten we&#13;\n controleren of u een natuurlijk persoon bent.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Om misbruik van ProtonMail te voorkomen, moeten we\r\n controleren of u een natuurlijk persoon bent.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van ProtonMail te gebruiken via ProtonMail.com";
@@ -2492,7 +2492,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Uw nieuwe versleutelde e-mailaccount is aangemaakt, u kunt nu versleutelde berichten verzenden en ontvangen.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Uw nieuwe beveiligde e-mail&#13;\n account is klaar.";
+"Your new secure email\r\n account is ready." = "Uw nieuwe beveiligde e-mail\r\n account is klaar.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Uw plan is momenteel actief tot";

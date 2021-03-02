@@ -1476,7 +1476,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy年MMMd日 (EE)  %1$@に%2$@が送信:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. &#13;\n&#13;\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "無料アカウントは１つのみ追加できます";
@@ -2153,7 +2153,7 @@
 "To" = "宛先　";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "ProtonMailの悪用を防ぐため、&#13;\n人間の操作であることを検証しなければなりません。";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "ProtonMailの悪用を防ぐため、\r\n人間の操作であることを検証しなければなりません。";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "メールボックスのパスワードをリセットするには、ProtonMailのWeb(www.protonmail.com)から手続きしてください。";
@@ -2492,7 +2492,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "暗号化された電子メールの新しいアカウントが設定され、暗号メッセージを送受信する準備ができました。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "新しい安全なメールアドレス&#13;  アカウントが準備できました。";
+"Your new secure email\r\n account is ready." = "新しい安全なメールアドレス\r  アカウントが準備できました。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "ご契約のプランは以下の日付まで有効です";
