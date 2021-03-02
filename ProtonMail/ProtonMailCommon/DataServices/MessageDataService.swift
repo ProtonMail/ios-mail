@@ -2151,6 +2151,7 @@ class MessageDataService : Service, HasLocalStorage {
             }.finally {
                 context.performAndWait {
                     message.isSending = false
+                    _ = context.saveUpstreamIfNeeded()
                 }
             }
             return
