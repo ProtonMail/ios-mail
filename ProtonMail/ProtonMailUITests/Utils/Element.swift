@@ -319,7 +319,7 @@ struct Element {
         }
         
         class func forCellByIndex(_ index: Int) -> XCUIElement {
-            return app.cells.element(boundBy: index)
+            return app.cells.element(boundBy: index).firstMatch
         }
         
         @discardableResult

@@ -32,7 +32,7 @@ class MailboxRobotInterface {
     
     @discardableResult
     func clickMessageByIndex(_ index: Int) -> MessageRobot {
-        Element.wait.forCellByIndex(index).tap()
+        Element.wait.forCellByIndex(index).forceTap()
         return MessageRobot()
     }
     

@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import XCTest
+
 fileprivate func messageCellIdentifier(_ subject: String) -> String { return subject.replacingOccurrences(of: " ", with: "_") }
 
 /**
@@ -53,6 +55,11 @@ class DraftsRobot : MailboxRobotInterface {
 
     func clickDraftBySubject(_ subject: String) -> ComposerRobot {
         super.clickMessageBySubject(messageCellIdentifier(subject))
+        return ComposerRobot()
+    }
+    
+    func clickDraftByIndex(_ index: Int) -> ComposerRobot {
+        super.clickMessageByIndex(index)
         return ComposerRobot()
     }
 

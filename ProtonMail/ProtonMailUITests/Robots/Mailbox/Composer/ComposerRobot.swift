@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import XCTest
+
 /// Composer identifiers.
 fileprivate let sendButtonIdentifier = "ComposeContainerViewController.sendButton"
 fileprivate let toTextFieldIdentifier = "ToTextField"
@@ -47,7 +49,7 @@ class ComposerRobot {
     init() { verify = Verify() }
     
     func tapCancel() -> DraftConfirmationRobot {
-        Element.button.tapByIdentifier(cancelNavBarButtonIdentifier)
+        Element.wait.forButtonWithIdentifier(cancelNavBarButtonIdentifier).tap()
         return DraftConfirmationRobot()
     }
     
@@ -60,6 +62,13 @@ class ComposerRobot {
     func draftToSubjectBody(_ to: String, _ subjectText: String, _ body: String) -> ComposerRobot {
         recipients(to)
             .subject(subjectText)
+            .body(body)
+        return self
+    }
+    
+    func draftToBody(_ to: String, _ body: String) -> ComposerRobot {
+        recipients(to)
+            .subject("")
             .body(body)
         return self
     }
@@ -193,7 +202,6 @@ class ComposerRobot {
     func editRecipients(_ email: String) -> ComposerRobot {
         Element.wait.forTextFieldWithIdentifier(toTextFieldIdentifier, file: #file, line: #line)
             .click()
-            .clear()
             .typeText(email)
         Element.other.tapIfExists(popoverDismissRegionOtherIdentifier)
         return self
@@ -278,6 +286,16 @@ class ComposerRobot {
         Element.wait.forTextFieldWithIdentifier(subjectTextFieldIdentifier, file: #file, line: #line).press(forDuration: 3)
         pasteMenuItem.tap()
         return self
+    }
+    
+    func backgroundApp() -> ComposerRobot {
+        XCUIDevice.shared.press(.home)
+        return ComposerRobot()
+    }
+    
+    func foregroundApp() -> ComposerRobot {
+        XCUIApplication().activate()
+        return ComposerRobot()
     }
     
     private func composeMessage(_ to: String, _ subject: String, _ body: String) -> ComposerRobot {
