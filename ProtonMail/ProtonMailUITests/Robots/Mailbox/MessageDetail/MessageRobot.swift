@@ -105,6 +105,11 @@ class MessageRobot {
         return ComposerRobot()
     }
 
+    func navigateBackToLabelOrFolder(_ folder: String) -> LabelFolderRobot {
+        Element.wait.forButtonWithIdentifier(folder, file: #file, line: #line).tap()
+        return LabelFolderRobot()
+    }
+    
     class MessageMoreOptions {
 
         func viewHeaders() {
