@@ -43,6 +43,7 @@ class ReplyToMessageTests: BaseTestCase {
         let subject = "Text message"
         let replySubject = String(format: "Re: %@ \(Date().millisecondsSince1970)", subject)
         let folder = "ForwardReplyFolder"
+        
         LoginRobot()
             .loginTwoPasswordUser(user)
             .decryptMailbox(user.mailboxPassword)
