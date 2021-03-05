@@ -5,7 +5,7 @@
 "(4096 bit)" = "(4096 bit)";
 
 /* Comment for disconnected account in Account Manager */
-"(logged out)" = "(cerró sesión)";
+"(logged out)" = "(Desconectado)";
 
 /* Service plan capability detail; like in '50 email addresses (total)' */
 "(total)" = "(total)";
@@ -60,7 +60,7 @@
 "A new version of ProtonMail app is available, please update to latest version." = "Una nueva versión de la aplicación ProtonMail está disponible, por favor actualice a la última versión.";
 
 /* Description */
-"A new version of ProtonMail app is available. Please update to the latest version." = "Una nueva versión de la aplicación ProtonMail está disponible. Actualice a la última versión.";
+"A new version of ProtonMail app is available. Please update to the latest version." = "Una nueva versión de la aplicación ProtonMail está disponible. Por favor, actualice a la última versión.";
 
 /* alert description */
 "A paid ProtonMail plan is required to use this feature" = "Se necesita un plan de ProtonMail para utilizar esta característica";
@@ -191,7 +191,7 @@
 "Antivirus interference" = "Interferencia del antivirus";
 
 /* when server not reachable */
-"API Server not reachable..." = "Servidor API no accesible...";
+"API Server not reachable..." = "No se puede acceder al servidor API...";
 
 /* section title in settings */
 "APP INFORMATION" = "INFORMACIÓN DE LA APLICACIÓN";
@@ -210,9 +210,6 @@
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Nos informó Apple que no se pudo procesar la compra.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple nos ha informado de que has actualizado el plan de servicio, pero no ha dicho cuál de tus cuentas de ProtonMail actualizar en caso de que tengas más de una.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nos ha informado de que has mejorado el plan de servicio, pero faltan algunos datos técnicos. Envíanos una informe de errores y nuestro equipo se pondrá en contacto contigo.";
@@ -250,6 +247,15 @@
 
 /* like at 10:00pm */
 "at" = "a las";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "No se ha podido encontrar al menos una dirección de correo electrónico del grupo";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Al menos una dirección de correo electrónico del destinatario tiene un formato incorrecto, compruébalo.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Al menos una dirección de correo electrónico/dominio del destinatario no existe o tiene un formato incorrecto. Mensaje movido a borradores.";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Adjunto importado";
@@ -628,7 +634,7 @@
 "Decryption error" = "Error de descifrado";
 
 /* error details */
-"Decryption of this content failed" = "Falló el descifrado de este contenido";
+"Decryption of this content failed" = "El descifrado de este contenido ha fallado";
 
 /* Title */
 "Default" = "Por defecto";
@@ -692,6 +698,9 @@
 
 /* Title in display name settings */
 "DisplayName" = "Nombre a mostrar";
+
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "¿Quieres activar la compra para la dirección %@?";
 
 /* Description */
 "Do you want to cancel the process?" = "¿Desea cancelar el proceso?";
@@ -758,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "La dirección de correo electrónico no es válida";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "La dirección de correo electrónico no es válida";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "Direcciones de correo electrónico";
@@ -879,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "Ocurrió un error";
 
+/* incorrect email format error in composer */
+"Error sending" = "Error al enviar";
+
 /* lock app option */
 "Every time enter app" = "Cada vez al abrir la aplicación";
 
@@ -970,6 +985,9 @@
 /* Action */
 "Get more information" = "Obtener más información";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Ir a borradores";
+
 /* Action */
 "Go to inbox" = "Ir al buzón";
 
@@ -1023,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Captcha";
+
+/* Alarm action */
+"Ignore" = "Ignorar";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Soporte IMAP/SMTP mediante ProtonMail Bridge";
@@ -1454,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "El EE, d MMM, yyyy a las %1$@, %2$@ escribió:";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Solo ignora la activación de la compra si estás seguro de que todas tus suscripciones están actualizadas. Para obtener más ayuda, comunícate con el servicio de atención al cliente. \r\n\r\n ¿Estás seguro de que quieres ignorar la activación?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Solo se puede añadir una cuenta gratuita";
 
@@ -1465,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Organización";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "Compatibilidad del SO";
 
 /* default vcard types */
 "Other" = "Otro";
@@ -1704,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Leyendo datos de contactos del dispositivo...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Destinatario no encontrado";
+
 /* Title */
 "Recovery Code" = "Código de recuperación";
 
@@ -1812,6 +1842,9 @@
 /* encryption lock description */
 "Sender Verification Failed" = "La verificación del remitente ha fallado";
 
+/* title of incorrect email format error while sending */
+"Sending failed" = "Envío fallido";
+
 /* Alert title */
 "Sending message" = "Enviando mensaje";
 
@@ -1885,7 +1918,7 @@
 "Snoozed till" = "Silenciado hasta";
 
 /* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "No podemos procesar compras en la versión beta de la aplicación para iOS. ¡Gracias por participar en la beta pública!";
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Lo sentimos, no podemos procesar compras en la versión beta de la aplicación para iOS. ¡Gracias por participar en nuestra beta pública!";
 
 /* (No Comment) */
 "Space Warning" = "Advertencia de espacio";
@@ -2351,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No hemos podido enviar tu mensaje, posiblemente debido a una mala conexión de red. Tu mensaje ha sido guardado en Borradores y será enviado automáticamente la próxima vez que abras la aplicación.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Hemos sido notificados de una compra en la App Store, pero no podemos relacionar la compra con ninguna de tus cuentas.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Hemos activado su suscripción exitosamente. Reinicie la aplicación para empezar a utilizar su plan de servicio nuevo.";
 
 /* text field notes */
@@ -2358,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Enviaremos un código de verificación a la dirección de correo indicada.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "Pronto dejaremos de dar soporte a los dispositivos con iOS 10. Por favor, actualiza el sistema operativo de tu dispositivo para continuar recibiendo actualizaciones en el futuro.";
 
 /* Title */
 "We would like to know what we can do better." = "Nos gustaría saber qué podemos hacer mejor.";
@@ -2379,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "escribió:";
+
+/* Yes action */
+"Yes" = "Sí";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Sí, activarlo para ";

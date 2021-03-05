@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = "la";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Cel puțin o adresă de e-mail din grup nu a putut fi găsită";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Cel puțin o adresă de e-mail a destinatarului nu este în format corespunzător, reverificați-o.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Cel puțin o adresă de e-mail/domeniu pentru destinatar nu există sau nu este în format corespunzător. Mesajul a fost mutat în ciorne.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Atașament importat";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "Nume afișat";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Doriți să activați achiziția pentru adresa %@?";
+
 /* Description */
 "Do you want to cancel the process?" = "Doriți anularea procesului?";
 
@@ -755,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "Adresa de e-mail nu este validă";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "Adresa de e-mail nu este validă";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "Adrese de e-mail";
@@ -876,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "A apărut o eroare";
 
+/* incorrect email format error in composer */
+"Error sending" = "Eroare la trimitere";
+
 /* lock app option */
 "Every time enter app" = "La fiecare intrare în aplicație";
 
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "Aflați mai multe";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Accesare folder «Ciorne»";
+
 /* Action */
 "Go to inbox" = "Salt la «Primite»";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Verificare persoană";
+
+/* Alarm action */
+"Ignore" = "Ignorare";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Suport IMAP/SMTP prin ProtonMail Bridge";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d MMM yyyy la %1$@, %2$@, a scris:";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorați activarea achiziției doar dacă sunteți sigur că toate abonamentele sunt actualizate. Pentru asistență suplimentară, contactați echipa de asistență a clienților. \r\n\r\n Sigur doriți să ignorați activarea?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Doar un singur cont gratuit poate fi adăugat";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Organizație";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "Compatibilitate SO";
 
 /* default vcard types */
 "Other" = "Altele";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Citire date contacte din dispozitiv...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Destinatarul nu a fost găsit";
+
 /* Title */
 "Recovery Code" = "Cod de recuperare";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verificare eșuată expeditor";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Trimiterea nu a reușit";
 
 /* Alert title */
 "Sending message" = "Expediere mesaj";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nu am putut trimite mesajul, probabil din cauza unei conexiuni slabe la rețea. Mesajul a fost salvat în «Ciorne» și va fi trimis automat data viitoare la deschiderea aplicației.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Am fost notificați despre o achiziție din „App Store”, dar nu vă putem atribui achiziția cu un cont deținut.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "V-am activat cu succes abonamentul. Reporniți aplicația pentru a începe să utilizați noul tip de abonament.";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Vom trimite un cod de verificare la adresa de e-mail de mai sus.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "În curând vom opri suportul pentru dispozitivele cu iOS 10. Actualizați sistemul de operare al dispozitivului pentru a continua să primiți actualizări în viitor.";
 
 /* Title */
 "We would like to know what we can do better." = "Am dori să știm ce putem face mai bine.";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "a scris:";
+
+/* Yes action */
+"Yes" = "Da";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Da, activare pentru ";
