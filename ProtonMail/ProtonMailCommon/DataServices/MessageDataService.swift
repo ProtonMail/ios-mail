@@ -286,7 +286,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
         var hasError = false
         context.performAndWait {
-            self.queue(message, action: .delete)
+            self.queue(message, action: .delete, data1: label)
             
             if let lid = message.remove(labelID: label), message.unRead {
                 self.updateCounterSync(plus: false, with: lid, context: context)
@@ -1698,13 +1698,13 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - writeQueueUUID: queue UID
     ///   - action: action type. should .delete here
     ///   - completion: call back
-    private func messageDelete(_ messageIDs: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
+    private func messageDelete(_ messageIDs: [String], labelID: String, writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
         guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
             completion!(nil, nil, NSError.userLoggedOut())
             return
         }
         
-        let api = MessageActionRequest(action: action, ids: messageIDs)
+        let api = MessageActionRequest(action: action, ids: messageIDs, labelID: labelID)
         userManager.apiService.exec(route: api) { (task, response) in
             completion?(task, nil, nil)
         }
@@ -2393,7 +2393,7 @@ class MessageDataService : Service, HasLocalStorage {
                 case .read, .unread:
                     self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
                 case .delete:
-                    self.messageDelete([messageID], writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
+                    self.messageDelete([messageID], labelID: data1, writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
                 case .label:
                     self.labelMessage(data1, messageID: messageID, UID: UID, completion: completeHandler)
                 case .unlabel:

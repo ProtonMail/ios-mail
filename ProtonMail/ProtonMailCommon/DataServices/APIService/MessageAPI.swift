@@ -342,6 +342,7 @@ final class MessageActionRequest : Request {
     let messages : [Message]
     let action : String
     var ids : [String] = [String] ()
+    private var currentLabelID: Int? = nil
     
     init(action: String, messages: [Message]) {
         self.messages = messages
@@ -353,14 +354,21 @@ final class MessageActionRequest : Request {
         }
     }
     
-    init(action: String, ids: [String]) {
+    init(action: String, ids: [String], labelID: String? = nil) {
         self.action = action
         self.ids = ids
         self.messages = [Message]()
+        
+        if let num = Int(labelID ?? "") {
+            self.currentLabelID = num
+        }
     }
     
     var parameters: [String : Any]? {
-        let out = ["IDs" : self.ids]
+        var out: [String: Any] = ["IDs" : self.ids]
+        if let id = self.currentLabelID {
+            out["CurrentLabelID"] = id
+        }
         return out
     }
     
