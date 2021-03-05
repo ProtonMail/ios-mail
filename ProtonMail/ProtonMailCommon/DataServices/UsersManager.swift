@@ -387,8 +387,11 @@ class UsersManager : Service, Migrate {
                 return
             }
             let authlocked = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
-            guard let auths = try? authlocked.unlock(with: mainKey) else {
-                Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsUnlockFail": true])
+            let auths: [AuthCredential]
+            do {
+                auths = try authlocked.unlock(with: mainKey)
+            } catch {
+                Analytics.shared.error(message: .usersRestoreFailed, error: error, extra: ["IsUnlockFail": true])
                 return
             }
             
