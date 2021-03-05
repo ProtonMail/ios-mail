@@ -36,12 +36,21 @@ import PMCommon
 extension MessageDataService {
     func decryptBodyIfNeeded(message: Message) throws -> String? {
         PMLog.D("Flags: \(message.flag.description)")
+        var keys: [Key] = self.userDataSource!.addressKeys
+        if let toAddress = message.toList.toContacts().first,
+           let address = self.userDataSource?.addresses.first(where: {$0.email == toAddress.email}),
+           let _keys = self.userDataSource?.getAllAddressKey(address_id: address.address_id) {
+            
+            keys = _keys
+        }
+        
+        
         if let passphrase = self.userDataSource?.mailboxPassword ?? message.cachedPassphrase,
             var body = self.userDataSource!.newSchema ?
-                try message.decryptBody(keys: self.userDataSource!.addressKeys,
+                try message.decryptBody(keys: keys,
                                 userKeys: self.userDataSource!.userPrivateKeys,
                                 passphrase: passphrase) :
-                try message.decryptBody(keys: self.userDataSource!.addressKeys,
+                try message.decryptBody(keys: keys,
                                 passphrase: passphrase) { //DONE
             //PMLog.D(body)
             if message.isPgpMime || message.isSignedMime {
