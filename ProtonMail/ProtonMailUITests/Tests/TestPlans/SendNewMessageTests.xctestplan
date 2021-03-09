@@ -17,10 +17,15 @@
       "selectedTests" : [
         "SendNewMessageTests\/testSendMessageEO()",
         "SendNewMessageTests\/testSendMessageEOAndExpiryTime()",
+        "SendNewMessageTests\/testSendMessageEOAndExpiryTimeWithAttachment()",
         "SendNewMessageTests\/testSendMessageExpiryTime()",
         "SendNewMessageTests\/testSendMessageFromPmMe()",
+        "SendNewMessageTests\/testSendMessageToExternalContactWithOneAttachment()",
+        "SendNewMessageTests\/testSendMessageToExternalContactWithTwoAttachments()",
         "SendNewMessageTests\/testSendMessageToInternalContact()",
+        "SendNewMessageTests\/testSendMessageToInternalContactWithTwoAttachments()",
         "SendNewMessageTests\/testSendMessageToInternalNotTrustedContact()",
+        "SendNewMessageTests\/testSendMessageToInternalNotTrustedContactChooseAttachment()",
         "SendNewMessageTests\/testSendMessageToInternalTrustedContact()",
         "SendNewMessageTests\/testSendMessageToPGPEncryptedContact()",
         "SendNewMessageTests\/testSendMessageToPGPSignedContact()"
