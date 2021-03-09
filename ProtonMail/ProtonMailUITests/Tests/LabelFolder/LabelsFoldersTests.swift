@@ -17,6 +17,7 @@ class LabelsFoldersTests: BaseTestCase {
         
         loginRobot
             .loginUser(user)
+            .refreshMailbox()
             .clickMessageByIndex(1)
             .createFolder(folderName)
             .clickApplyButtonAndReturnToInbox()
@@ -35,6 +36,7 @@ class LabelsFoldersTests: BaseTestCase {
         
         loginRobot
             .loginUser(user)
+            .refreshMailbox()
             .clickMessageByIndex(1)
             .createLabel(labelName)
             .clickLabelApplyButton()
@@ -102,6 +104,7 @@ class LabelsFoldersTests: BaseTestCase {
         
         loginRobot
             .loginUser(user)
+            .refreshMailbox()
             .clickMessageByIndex(1)
             .createFolder(folderName)
             .clickApplyButtonAndReturnToInbox()
@@ -126,6 +129,7 @@ class LabelsFoldersTests: BaseTestCase {
         
         loginRobot
             .loginUser(user)
+            .refreshMailbox()
             .clickMessageByIndex(1)
             .createLabel(folderName)
             .clickLabelApplyButton()

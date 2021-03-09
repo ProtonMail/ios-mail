@@ -14,7 +14,7 @@ private func selectButtonIdentifier(_ selectionAmount: Int) -> String { return "
 class ImageGalleryRobot {
     
     func pickImages(_ attachmentsAmount: Int) -> MessageAttachmentsRobot {
-        Element.wait.forOtherFieldWithIdentifier(imageOtherIdentifier)
+        app.tap() /// Workaround to trigger handleInterruption() on Photos permission alert
         return pickImageAtPositions(attachmentsAmount)
             .confirmSelection(attachmentsAmount)
     }
