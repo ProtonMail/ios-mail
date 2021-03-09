@@ -9,6 +9,7 @@
 import XCTest
 
 fileprivate let mailboxTableView = "mailboxTableView"
+fileprivate var wasTourClosed = false
 
 /**
  Represents Inbox view.
@@ -19,6 +20,7 @@ class InboxRobot : MailboxRobotInterface {
     
     override init() {
         super.init()
+        closeTourIfShown()
         verify = Verify(parent: self)
     }
 
@@ -30,6 +32,19 @@ class InboxRobot : MailboxRobotInterface {
     override func swipeLeftMessageAtPosition(_ position: Int) -> InboxRobot {
         super.swipeLeftMessageAtPosition(position)
         return self
+    }
+    
+    override func refreshMailbox() -> InboxRobot {
+        super.refreshMailbox()
+        return self
+    }
+    
+    private func closeTourIfShown() {
+        let elem = app.buttons["closeTour"].firstMatch
+        if !wasTourClosed && elem.exists {
+            elem.tap()
+            wasTourClosed = true
+        }
     }
     
     /**

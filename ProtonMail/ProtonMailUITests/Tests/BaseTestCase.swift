@@ -24,7 +24,7 @@ class BaseTestCase: XCTestCase {
         continueAfterFailure = false
         app.launchArguments = launchArguments
         app.launch()
-        _ = handleInterruption()
+        handleInterruption()
         
         testData.onePassUser = User(user: loadUser(userKey: "TEST_USER1"))
         testData.twoPassUser = User(user: loadUser(userKey: "TEST_USER2"))
@@ -42,19 +42,20 @@ class BaseTestCase: XCTestCase {
         super.tearDown()
     }
     
-    func handleInterruption() -> Bool {
+    func handleInterruption() {
+        var flag = false
         addUIInterruptionMonitor(withDescription: "Handle system alerts") { (alert) -> Bool in
-            let buttonLabels = ["Allow Access to All Photos", "Select More Photos...", "Select Photos...", "Don’t Allow", "OK"]
+            let buttonLabels = ["Allow Access to All Photos", "Don’t Allow", "OK"]
             for (_, label) in buttonLabels.enumerated() {
                 let element = alert.buttons[label].firstMatch
                 if element.exists {
                     element.tap()
+                    flag = true
                     break
                 }
             }
-            return true
+            return flag
         }
-        return false
     }
     
     private func loadUser(userKey: String) -> String {
