@@ -24,6 +24,9 @@
 import Foundation
 import Crypto
 import PMChallenge
+import PMCommon
+import PromiseKit
+import AwaitKit
 
 final class AccountSignupViewModelImpl : SignupViewModelImpl {
     override func isAccountManager() -> Bool {
@@ -57,7 +60,7 @@ class SignupViewModelImpl : SignupViewModel {
     fileprivate var direct : [String] = []
     
     let deviceCheckToken: String
-    let apiService = APIService.shared
+    let apiService = PMAPIService.shared
     
     let usersManager: UsersManager
     
@@ -100,10 +103,10 @@ class SignupViewModelImpl : SignupViewModel {
         
         // need valide user name format
         let api = CheckUserExist(userName: username)
-        api.call(api: self.apiService) { (task, response, hasError) -> Void in
-            if let error = response?.error {
+        self.apiService.exec(route: api) { (task, response: CheckUserExistResponse) in
+            if let error = response.error {
                 complete(.rejected(error))
-            } else if let status = response?.availabilityStatus {
+            } else if let status = response.availabilityStatus {
                 complete(.fulfilled(status))
             } else {
                 complete(.rejected(NSError.init(domain: "", code: 0, localizedDescription: "Failed to determine status")))
@@ -188,16 +191,16 @@ class SignupViewModelImpl : SignupViewModel {
         if let key = self.newPrivateKey {
             {
                 do {
-                    let authModuls = try AuthModulusRequest(authCredential: nil).syncCall(api: self.apiService)
-                    guard let moduls_id = authModuls?.ModulusID else {
+                    let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: nil)))
+                    guard let moduls_id = authModuls.ModulusID else {
                         throw SignUpCreateUserError.invalidModulsID.error
                     }
-                    guard let new_moduls = authModuls?.Modulus else {
+                    guard let new_moduls = authModuls.Modulus else {
                         throw SignUpCreateUserError.invalidModuls.error
                     }
                     //generat new verifier
                     let new_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
-                    
+
                     guard let auth = try SrpAuthForVerifier(self.plaintext_password, new_moduls, new_salt) else {
                         throw SignUpCreateUserError.cantHashPassword.error
                     }
@@ -211,8 +214,14 @@ class SignupViewModelImpl : SignupViewModel {
                                             verifer: verifier.encodeBase64(),
                                             deviceToken: self.deviceCheckToken,
                                             challenge: challenge)
-                    api.call(api: self.apiService) { (task, response, hasError) -> Void in
-                        if !hasError {
+                    self.apiService.exec(route: api) { (task, response) -> Void in
+                        if let error = response.error {
+                            if error.code == 7002 {
+                                complete(false, true, LocalString._account_creation_has_been_disabled_pls_go_to_https, response.error);
+                            } else {
+                                complete(false, false, LocalString._create_user_failed_please_try_again, response.error);
+                            }
+                        } else {
                             //need clean the cache without ui flow change then signin with a fresh user
                             //sharedUserDataService.signOutAfterSignUp()
                             //userCachedStatus.signOut()
@@ -222,7 +231,7 @@ class SignupViewModelImpl : SignupViewModel {
                             }) { (pwd, auth, userInfo) in
                                 {
                                     do {
-                                        
+
                                         //
                                         //            self.auth = auth
                                         //            self.userInfo = user
@@ -233,16 +242,15 @@ class SignupViewModelImpl : SignupViewModel {
                                         //            }
                                         auth?.udpate(password: self.keypwd_with_keysalt)
 //                                        try AuthCredential.setupToken(self.keypwd_with_keysalt)
-                                        
+
                                         //need setup address
-                                        let setupAddrApi = try SetupAddressRequest(domain_name: self.domain, auth: auth).syncCall(api: self.apiService)
-                                        
+                                        let setupAddrApi: AddressesResponse = try await(self.apiService.run( route: SetupAddressRequest(domain_name: self.domain, auth: auth)))
                                         //need setup keys
-                                        let authModuls_for_key = try AuthModulusRequest(authCredential: auth).syncCall(api: self.apiService)
-                                        guard let moduls_id_for_key = authModuls_for_key?.ModulusID else {
+                                        let authModuls_for_key: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: auth)))
+                                        guard let moduls_id_for_key = authModuls_for_key.ModulusID else {
                                             throw SignUpCreateUserError.invalidModulsID.error
                                         }
-                                        guard let new_moduls_for_key = authModuls_for_key?.Modulus else {
+                                        guard let new_moduls_for_key = authModuls_for_key.Modulus else {
                                             throw SignUpCreateUserError.invalidModuls.error
                                         }
                                         //generat new verifier
@@ -252,13 +260,13 @@ class SignupViewModelImpl : SignupViewModel {
                                                                                             throw SignUpCreateUserError.cantHashPassword.error
                                         }
                                         let verifier_for_key = try auth_for_key.generateVerifier(2048)
-                                        
-                                        let addr_id = setupAddrApi?.addresses.first?.address_id
+
+                                        let addr_id = setupAddrApi.addresses.first?.address_id
                                         let pwd_auth = PasswordAuth(modulus_id: moduls_id_for_key,
                                                                     salt: new_salt_for_key.encodeBase64(),
                                                                     verifer: verifier_for_key.encodeBase64())
-                                        
-                                        
+
+
                                         guard !key.fingerprint.isEmpty else {
                                             //TODO:: change to a key error
                                             throw SignUpCreateUserError.cantHashPassword.error
@@ -268,7 +276,7 @@ class SignupViewModelImpl : SignupViewModel {
                                             "Primary" : 1,
                                             "Flags" : 3
                                             ]]
-                                        
+
                                         let jsonKeylist = keylist.json()
                                         let signed = try! Crypto().signDetached(plainData: jsonKeylist,
                                                                                 privateKey: key,
@@ -278,29 +286,32 @@ class SignupViewModelImpl : SignupViewModel {
                                             "Signature" : signed
                                         ]
                                         
-                                        let setupKeyApi = try SetupKeyRequest(address_id: addr_id!,
-                                                                              private_key: key,
-                                                                              keysalt: self.keysalt!.encodeBase64(),
-                                                                              signedKL: signedKeyList,
-                                                                              auth: pwd_auth, authCredential: auth).syncCall(api: self.apiService)
-                                        if setupKeyApi?.error != nil {
+                                        let setupKeyApi = try await(self.apiService.run(route: SetupKeyRequest(address_id: addr_id!,
+                                                                                                               private_key: key,
+                                                                                                               keysalt: self.keysalt!.encodeBase64(),
+                                                                                                               signedKL: signedKeyList,
+                                                                                                               auth: pwd_auth, authCredential: auth)))
+                                        
+                                        if setupKeyApi.error != nil {
                                             PMLog.D("signup seupt key error")
                                         }
                                         auth?.update(salt: self.keysalt!.encodeBase64(), privateKey: self.newPrivateKey)
-                                        
+
                                         //setup swipe function, will use default auth credential
-                                        let _ = try UpdateSwiftLeftAction(action: MessageSwipeAction.archive, authCredential: auth).syncCall(api: self.apiService)
-                                        let _ = try UpdateSwiftRightAction(action: MessageSwipeAction.trash, authCredential: auth).syncCall(api: self.apiService)
-                                        
+                                        let _ = try await(self.apiService.run(route: UpdateSwiftLeftAction(action: MessageSwipeAction.archive,
+                                                                                                           authCredential: auth)))
+                                        let _ = try await(self.apiService.run(route: UpdateSwiftRightAction(action: MessageSwipeAction.trash,
+                                                                                                            authCredential: auth)))
                                         //sharedLabelsDataService.fetchLabels()
                                         //ServicePlanDataService.shared.updateCurrentSubscription()
-                                        UserDataService(api: APIService.unauthorized).fetchUserInfo(auth: auth).done(on: .main) { info in
+                                        //TODO:: this part looks strange.
+                                        UserDataService(api: PMAPIService.unauthorized).fetchUserInfo(auth: auth).done(on: .main) { info in
                                             if info != nil {
                                                 sharedUserDataService.isNewUser = true
                                                 //sharedUserDataService.setMailboxPassword(self.keypwd_with_keysalt, keysalt: nil)
                                                 //alway signle password mode when signup
                                                 sharedUserDataService.passwordMode = 1
-                                                
+
                                                 self.usersManager.add(auth: auth!, user: info!)
                                                 let user = self.usersManager.getUser(bySessionID: auth!.sessionID)!
                                                 self.userManager = user
@@ -312,53 +323,6 @@ class SignupViewModelImpl : SignupViewModel {
                                             } else {
                                                 complete(false, true, LocalString._unknown_error, nil)
                                             }
-                                            
-
-                                                                                    
-                                                                                    
-                                            //                                        guard let auth = auth,
-                                            //                                            let privateKey = auth.privateKey,
-                                            //                                            privateKey.check(passphrase: self.keypwd_with_keysalt) else {
-                                            //                                            onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
-                                            //                                            return
-                                            //                                        }
-                                            //                                        auth.udpate(password: mailboxPassword)
-//                                                                                    self.usersManager.add(auth: auth, user: userInfo)
-//                                                                                    self.auth = nil
-//                                                                                    self.userInfo = nil
-                                            //
-                                            //                                        let user = self.usersManager.getUser(bySessionID: auth.sessionID)!
-                                            //                                        let labelService = user.labelService
-                                            //                                        let userDataService = user.userService
-                                            //                                        labelService.fetchLabels()
-                                            //                                        userDataService.fetchUserInfo().done(on: .main) { info in
-                                            //                                            guard let info = info else {
-                                            //                                                onError(NSError.unknowError())
-                                            //                                                return
-                                            //                                            }
-                                            //                                            guard info.delinquent < 3 else {
-                                            //                                                onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
-                                            //                                                return
-                                            //                                            }
-                                            //
-                                            //                                            self.usersManager.loggedIn()
-                                            //
-                                            //                                            self.usersManager.update(auth: auth, user: info )
-                                            //                                            self.usersManager.active(uid: auth.sessionID)
-                                            //
-                                            //                                            UserTempCachedStatus.restore()
-                                            //                                            NotificationCenter.default.post(name: .didSignIn, object: nil)
-                                            //
-                                            //                                            tryUnlock()
-                                            //                                        }.catch(on: .main) { (error) in
-                                            //                                            onError(error as NSError)
-                                            //                                            self.usersManager.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
-                                            //                                        }
-                                                                                    
-                                                                                    
-                                                                                    
-                                            
-                                            
                                         }.catch(on: .main) { error in
                                             complete(false, true, LocalString._fetch_user_info_failed, error)
                                         }
@@ -368,20 +332,14 @@ class SignupViewModelImpl : SignupViewModel {
                                     }
                                 } ~> .async
                             }
-                        } else {
-                            if response?.error?.code == 7002 {
-                                complete(false, true, LocalString._account_creation_has_been_disabled_pls_go_to_https, response!.error);
-                            } else {
-                                complete(false, false, LocalString._create_user_failed_please_try_again, response!.error);
-                            }
                         }
                     }
                 } catch {
                     complete(false, false, LocalString._create_user_failed_please_try_again, nil);
                 }
-                
+
             } ~> .async
-            
+
         } else {
             complete(false, false, LocalString._key_invalid_please_go_back_try_again, nil);
         }
@@ -392,11 +350,11 @@ class SignupViewModelImpl : SignupViewModel {
         self.challenge.requestVerify()
         
         let api = VerificationCodeRequest(userName: self.userName, destination: destination, type: type)
-        api.call(api: self.apiService) { (task, response, hasError) -> Void in
-            if !hasError {
+        self.apiService.exec(route: api) { (task, response) in
+            if response.error == nil {
                 self.lastSendTime = Date()
             }
-            complete(!hasError, response?.error)
+            complete(response.error)
         }
     }
     
@@ -417,7 +375,8 @@ class SignupViewModelImpl : SignupViewModel {
                     
                 })
             } else {
-                user.userService.updateDisplayName(auth: user.auth, user: user.userInfo,
+                user.userService.updateDisplayName(auth: user.auth,
+                                                   user: user.userInfo,
                                                    displayName: displayName) { _, _, error in
                     
                 }
@@ -433,20 +392,20 @@ class SignupViewModelImpl : SignupViewModel {
             }
         }
         
-        let newsApi = UpdateNewsRequest(news: self.news)
-        newsApi.call (api: self.apiService) { (task, response, hasError) -> Void in
-            
+        let api = UpdateNewsRequest(news: self.news, auth: user.auth)
+        self.apiService.exec(route: api) { (_, _) in
+            //Ignroe the response event this failed it houldn't block the process
         }
     }
     
     override func fetchDirect(_ res : @escaping (_ directs:[String]) -> Void) {
         if direct.count <= 0 {
             let api = DirectRequest()
-            api.call(api: self.apiService) { (task, response, hasError) -> Void in
-                if hasError {
+            self.apiService.exec(route: api) { (task, response: DirectResponse) in
+                if let error = response.error {
                     res([])
                 } else {
-                    self.direct = response?.signupFunctions ?? []
+                    self.direct = response.signupFunctions ?? []
                     res(self.direct)
                 }
             }
@@ -490,10 +449,8 @@ class SignupViewModelImpl : SignupViewModel {
     override func getDomains(_ complete : @escaping AvailableDomainsComplete) -> Void {
         let defaultDomains = ["protonmail.com", "protonmail.ch"]
         let api = GetAvailableDomainsRequest()
-        api.call(api: self.apiService) { (task, response, hasError) -> Void in
-            if hasError {
-                complete(defaultDomains)
-            } else if let domains = response?.domains {
+        self.apiService.exec(route: api) { (task, response: AvailableDomainsResponse) in
+            if let domains = response.domains {
                 complete(domains)
             } else {
                 complete(defaultDomains)
@@ -510,7 +467,7 @@ class SignupViewModelImpl : SignupViewModel {
     }
     
     override func humanVerificationFinish() {
-        try? self.challenge.verificationFinsih()
+        try? self.challenge.verificationFinish()
     }
     
     override func challengeExport() -> PMChallenge.Challenge {

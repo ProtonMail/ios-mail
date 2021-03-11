@@ -24,6 +24,7 @@
 import UIKit
 import CoreData
 import MCSwipeTableViewCell
+import PMCommon
 
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
     typealias viewModelType = MailboxViewModel
@@ -837,12 +838,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if loadMore > 0 {
                     if self.retryCounter >= 10 {
                         delay(1.0) {
-                            self.retry()
-                            self.retryCounter += 1
+                            self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (_, _, _) in
+                                self.retry()
+                                self.retryCounter += 1
+                            })
                         }
                     } else {
-                        self.retry()
-                        self.retryCounter += 1
+                        self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (_, _, _) in
+                            self.retry()
+                            self.retryCounter += 1
+                        })
                     }
                 } else {
                     DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
@@ -955,6 +960,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if self.checkHuman() {
                     //TODO::QA
                     self.coordinator?.go(to: .composeShow)
+                }
+                self.updateTapped(status: false)
+                return
+            }
+            guard !message.isSending else {
+                LocalString._mailbox_draft_is_uploading.alertToast()
+                self.tableView.indexPathsForSelectedRows?.forEach {
+                    self.tableView.deselectRow(at: $0, animated: true)
                 }
                 self.updateTapped(status: false)
                 return

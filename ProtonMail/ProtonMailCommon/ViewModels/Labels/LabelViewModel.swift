@@ -23,6 +23,7 @@
 
 import Foundation
 import CoreData
+import PMCommon
 import PromiseKit
 
 

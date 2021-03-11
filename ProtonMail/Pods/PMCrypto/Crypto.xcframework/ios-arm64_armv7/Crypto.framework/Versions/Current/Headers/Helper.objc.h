@@ -180,6 +180,13 @@ plaintext and an armored public key a private key and its passphrase.
 FOUNDATION_EXPORT NSString* _Nonnull HelperEncryptSignMessageArmored(NSString* _Nullable publicKey, NSString* _Nullable privateKey, NSData* _Nullable passphrase, NSString* _Nullable plaintext, NSError* _Nullable* _Nullable error);
 
 /**
+ * FreeOSMemory can be used to explicitly
+call the garbage collector and
+return the unused memory to the OS.
+ */
+FOUNDATION_EXPORT void HelperFreeOSMemory(void);
+
+/**
  * GenerateKey generates a key of the given keyType ("rsa" or "x25519"), encrypts it, and returns an armored string.
 If keyType is "rsa", bits is the RSA bitsize of the key.
 If keyType is "x25519" bits is unused.

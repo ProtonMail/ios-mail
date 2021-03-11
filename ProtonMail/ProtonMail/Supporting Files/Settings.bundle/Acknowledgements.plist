@@ -1139,7 +1139,7 @@ Public License instead of this License.  But first, please read
 			<key>License</key>
 			<string>GPLv3</string>
 			<key>Title</key>
-			<string>PMNetworking</string>
+			<string>PMCommon</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
@@ -1175,7 +1175,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>Copyright (c) 2009-2018 Olivier Poitrey rs@dailymotion.com
+			<string>Copyright (c) 2009-2020 Olivier Poitrey rs@dailymotion.com
  
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

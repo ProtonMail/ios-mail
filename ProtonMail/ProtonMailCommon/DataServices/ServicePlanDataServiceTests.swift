@@ -22,6 +22,7 @@
 
 
 import XCTest
+import PMCommon
 @testable import ProtonMail
 
 class ServicePlanDataServiceTests: XCTestCase {
@@ -41,17 +42,17 @@ class ServicePlanDataServiceTests: XCTestCase {
     }
     
     func testDetailsOfServicePlan() {
-        let dataStorage = MockDataStorage(servicePlansDetails: [visPlanDetails, proPlanDetails, nonamePlanDetails],
-                                          isIAPAvailableOnBE: true,
-                                          defaultPlanDetails: freePlanDetails,
-                                          currentSubscription: nil)
-        let service = ServicePlanDataService(localStorage: dataStorage, apiService: APIService.shared)
-        
-        let proDetails = service.detailsOfServicePlan(named: proName)
-        XCTAssertEqual(proDetails, proPlanDetails)
-        
-        let defaultDetails = service.detailsOfServicePlan(named: freeName)
-        XCTAssertEqual(defaultDetails, freePlanDetails)
+//        let dataStorage = MockDataStorage(servicePlansDetails: [visPlanDetails, proPlanDetails, nonamePlanDetails],
+//                                          isIAPAvailableOnBE: true,
+//                                          defaultPlanDetails: freePlanDetails,
+//                                          currentSubscription: nil)
+//        let service = ServicePlanDataService(localStorage: dataStorage, apiService: PMAPIService.shared)
+//
+//        let proDetails = service.detailsOfServicePlan(named: proName)
+//        XCTAssertEqual(proDetails, proPlanDetails)
+//
+//        let defaultDetails = service.detailsOfServicePlan(named: freeName)
+//        XCTAssertEqual(defaultDetails, freePlanDetails)
     }
     
     // Mock data

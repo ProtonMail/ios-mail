@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PMCommon
 
 extension ContactVO {
     

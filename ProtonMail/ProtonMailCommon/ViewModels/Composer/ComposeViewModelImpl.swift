@@ -24,6 +24,7 @@
 import Foundation
 import PromiseKit
 import AwaitKit
+import PMCommon
 
 class ComposeViewModelImpl : ComposeViewModel {
     
@@ -91,13 +92,6 @@ class ComposeViewModelImpl : ComposeViewModel {
    override func getUser() -> UserManager {
          return user
     }
-    
-    //TODO:: fix me
-//    convenience init?(msgId: String, action: ComposeMessageAction) {
-//        let msgService = MessageDataService(api: APIService.shared, userID: "") //TODO:: fix me
-//        guard let message = msgService.fetchMessages(withIDs: [msgId]).first, message.contains(label: .draft) else { return nil }
-//        self.init(msg: message, action: action, msgService: msgService, user: UserManager())
-//    }
     
     var attachments : [Attachment] = []
     /// inital composer viewmodel
@@ -286,7 +280,8 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(nil, -1)
             return
         }
-        let getEmail = UserEmailPubKeys(email: email, api: self.user.apiService).run()
+
+        let getEmail: Promise<KeysResponse> = self.user.apiService.run(route: UserEmailPubKeys(email: email))
         let contactService = self.user.contactService
         let getContact = contactService.fetch(byEmails: [email], context: context)
         when(fulfilled: getEmail, getContact).done { keyRes, contacts in
@@ -349,7 +344,9 @@ class ComposeViewModelImpl : ComposeViewModel {
     override func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
         progress()
         let mails = contactGroup.getSelectedEmailData().map{$0.email}
-        let reqs = mails.map {UserEmailPubKeys(email: $0, api: self.user.apiService).run()}
+        let reqs = mails.map {
+            self.user.apiService.run(route: UserEmailPubKeys(email: $0))
+        }
         when(fulfilled: reqs).done { (_) in
             complete?(nil, 0)
         }.catch(policy: .allErrors) { (error) in
@@ -714,7 +711,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
         let signatureHtml = "\(defaultSignature) \(mobileSignature)"
-        
+
         switch messageAction {
         case .openDraft:
             var body = ""
@@ -800,13 +797,9 @@ class ComposeViewModelImpl : ComposeViewModel {
                 let newhtmlString = "\(head) \(self.body!) \(signatureHtml) \(foot)"
                 self.body = ""
                 return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
-            } else {
-                if signatureHtml.trim().isEmpty {
-                    let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>" //add some space
-                    return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
-                }
             }
-            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode)
+            let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
+            return .init(body: body, remoteContentMode: globalRemoteContentMode)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newhtmlString = """
@@ -933,6 +926,3 @@ extension ComposeViewModelImpl {
         return ["":""]
     }
 }
-
-
-

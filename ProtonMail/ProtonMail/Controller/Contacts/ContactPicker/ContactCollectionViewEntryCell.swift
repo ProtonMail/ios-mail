@@ -88,7 +88,7 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
                                                            metrics: nil,
                                                            views: ["textField": textField]))
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[textField]|",
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[textField]-(40)-|",
                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["textField": textField]))
@@ -175,20 +175,16 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
     }
     
     func widthForText(text: String) -> CGFloat {
-        //        guard let font = self.contactEntryTextField?.font else {
-        //            return 0.0
-        //        }
-        //
-        //        let font = Fonts.h6.light
-        //
-        //        let s = CGSize(width: Double.greatestFiniteMagnitude, height: Double.greatestFiniteMagnitude)
-        //        let size = NSString(string: text).boundingRect(with: s,
-        //                                                       options: NSStringDrawingOptions.usesLineFragmentOrigin,
-        //                                                       attributes: [NSAttributedStringKey.font : font],
-        //                                                       context: nil).size
-        //        return size.width.rounded(.up)
+        guard (self.contactEntryTextField?.font) != nil else {
+            return 0.0
+        }
         
-        return 40  //this will avoid the text input disapeared
+        let s = CGSize(width: Double.greatestFiniteMagnitude, height: Double.greatestFiniteMagnitude)
+        let size = NSString(string: text).boundingRect(with: s,
+                                                       options: NSStringDrawingOptions.usesLineFragmentOrigin,
+                                                       attributes: [NSAttributedString.Key.font : Fonts.h6.light],
+                                                       context: nil).size
+        return size.width.rounded(.up)
     }
     
 }

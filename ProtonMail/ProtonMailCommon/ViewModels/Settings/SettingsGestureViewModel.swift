@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import PMCommon
 
 protocol SettingsGestureViewModel: AnyObject {
     var setting_swipe_action_items : [SSwipeActionItems] { get set}

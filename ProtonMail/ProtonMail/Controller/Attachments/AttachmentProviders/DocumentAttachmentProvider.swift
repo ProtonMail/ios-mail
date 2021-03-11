@@ -45,22 +45,11 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                 kUTTypeData as String,
                 kUTTypeVCard as String
             ]
-            
-            if #available(iOS 11.0, *) {
-                // UIDocumentMenuViewController  will be deprecated in iOS 12 and since iOS 11 contains only one `Browse...` option which opens UIDocumentPickerViewController. We can avoid useless middle step.
-                let picker = PMDocumentPickerViewController(documentTypes: types, in: .import)
-                picker.delegate = self
-                picker.allowsMultipleSelection = true
-                self.controller?.present(picker, animated: true, completion: nil)
-            } else {
-                // iOS 9 and 10 also allow access to document providers from UIDocumentPickerViewController, but let's keep Menu as it's still useful (until iOS 11)
-                let importMenu = UIDocumentMenuViewController(documentTypes: types, in: .import)
-                if let presentationPopover = importMenu.popoverPresentationController {
-                    presentationPopover.barButtonItem = self.controller?.barItem
-                }
-                importMenu.delegate = self
-                self.controller?.present(importMenu, animated: true, completion: nil)
-            }
+
+            let picker = PMDocumentPickerViewController(documentTypes: types, in: .import)
+            picker.delegate = self
+            picker.allowsMultipleSelection = true
+            self.controller?.present(picker, animated: true, completion: nil)
         })
     }
     

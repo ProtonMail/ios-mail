@@ -21,7 +21,7 @@ var subjects = [String]()
 class MailboxRobotInterface {
     
     init() {
-        Element.wait.forTableViewWithIdentifier(mailboxTableViewIdentifier, file: #file, line: #line, timeout: 15)
+        Element.wait.forTableViewWithIdentifier(mailboxTableViewIdentifier, file: #file, line: #line, timeout: 20)
     }
     
     @discardableResult

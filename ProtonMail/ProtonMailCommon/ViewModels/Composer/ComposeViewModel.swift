@@ -24,6 +24,7 @@
 import Foundation
 import PromiseKit
 import AwaitKit
+import PMCommon
 
 //TODO:: change to enum
 struct EncryptionStep {

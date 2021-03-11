@@ -39,6 +39,8 @@ class SearchViewController: ProtonMailViewController {
     fileprivate let kSegueToMessageDetailController: String = "toMessageDetailViewController"
     
     internal var user: UserManager!
+    private let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
+    private var messageTapped = false
     
     private lazy var replacingEmails : [Email] = { [unowned self] in
         return user.contactService.allEmails()
@@ -92,11 +94,11 @@ class SearchViewController: ProtonMailViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.noSeparatorsBelowFooter()
-        self.tableView!.RegisterCell(MailboxMessageCell.Constant.identifier)
+        self.tableView.RegisterCell(MailboxMessageCell.Constant.identifier)
+        self.tableView.contentInsetAdjustmentBehavior = .automatic
         
         self.edgesForExtendedLayout = UIRectEdge()
-        self.extendedLayoutIncludesOpaqueBars=false;
-        automaticallyAdjustsScrollViewInsets = true
+        self.extendedLayoutIncludesOpaqueBars = false;
         self.navigationController?.navigationBar.isTranslucent = false;
         
         searchTextField.autocapitalizationType = UITextAutocapitalizationType.none
@@ -172,6 +174,7 @@ class SearchViewController: ProtonMailViewController {
             do {
                 let overallCountRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: Message.Attributes.entityName)
                 overallCountRequest.resultType = .countResultType
+                overallCountRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
                 let result = try context.fetch(overallCountRequest)
                 count = (result.first as? Int) ?? 1
             } catch let error {
@@ -181,6 +184,7 @@ class SearchViewController: ProtonMailViewController {
         }
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
         fetchRequest.resultType = .dictionaryResultType
 
@@ -323,6 +327,22 @@ class SearchViewController: ProtonMailViewController {
             self.fetchRemoteObjects(query, page: self.currentPage + 1)
         }
     }
+    
+    private func updateTapped(status: Bool) {
+        serialQueue.sync {
+            self.messageTapped = status
+        }
+    }
+    
+    private func getTapped() -> Bool {
+        serialQueue.sync {
+            let ret = self.messageTapped
+            if ret == false {
+                self.messageTapped = true
+            }
+            return ret
+        }
+    }
 
     @IBAction func tapAction(_ sender: AnyObject) {
         searchTextField.resignFirstResponder()
@@ -334,6 +354,47 @@ class SearchViewController: ProtonMailViewController {
     }
     
     // MARK: - Prepare for segue
+    
+    private func prepareForDraft(_ message: Message) {
+        self.updateTapped(status: true)
+        let service = self.user.messageService
+        service.ForcefetchDetailForMessage(message) { [weak self] (_, _, msg, error) in
+            guard let _self = self else {
+                self?.updateTapped(status: false)
+                return
+            }
+            guard error == nil else {
+                let alert = LocalString._unable_to_edit_offline.alertController()
+                alert.addOKAction()
+                _self.present(alert, animated: true, completion: nil)
+                _self.tableView.indexPathsForSelectedRows?.forEach {
+                    _self.tableView.deselectRow(at: $0, animated: true)
+                }
+                _self.updateTapped(status: false)
+                return
+            }
+            _self.updateTapped(status: false)
+            _self.showComposer(message: message)
+        }
+    }
+    
+    private func showComposer(message: Message) {
+        // open drafts in Composer
+        let viewModel = ContainableComposeViewModel(msg: message,
+                                                    action: .openDraft,
+                                                    msgService: user.messageService,
+                                                    user: user,
+                                                    coreDataService: CoreDataService.shared)//FIXME
+        if let navigationController = self.navigationController
+        {
+            let composer = ComposeContainerViewCoordinator(nav: navigationController,
+                                                           viewModel: ComposeContainerViewModel(editorViewModel: viewModel),
+                                                           services: ServiceFactory.default)
+            // this will present composer in a modal which is discouraged
+            // TODO: refactor when implementing enc search
+            composer.start()
+        }
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == kSegueToMessageDetailController) {
@@ -386,27 +447,20 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController: UITableViewDelegate {
     
     @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // open messages in MessaveContainerViewController
-        guard case let message = self.searchResult[indexPath.row], message.contains(label: .draft) else {
-            self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
+        
+        if self.getTapped() {
+            // Fetching other draft data
+            tableView.deselectRow(at: indexPath, animated: true)
             return
         }
         
-        // open drafts in Composer
-        let viewModel = ContainableComposeViewModel(msg: message,
-                                                    action: .openDraft,
-                                                    msgService: user.messageService,
-                                                    user: user,
-                                                    coreDataService: CoreDataService.shared)//FIXME
-        if let navigationController = self.navigationController
-        {
-            let composer = ComposeContainerViewCoordinator(nav: navigationController,
-                                                           viewModel: ComposeContainerViewModel(editorViewModel: viewModel),
-                                                           services: ServiceFactory.default)
-            // this will present composer in a modal which is discouraged
-            // TODO: refactor when implementing enc search
-            composer.start()
+        // open messages in MessaveContainerViewController
+        guard case let message = self.searchResult[indexPath.row], message.contains(label: .draft) else {
+            self.updateTapped(status: false)
+            self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
+            return
         }
+        self.prepareForDraft(message)
     }
     
     @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

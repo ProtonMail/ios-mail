@@ -243,7 +243,7 @@ final class UserCachedStatus : SharedCacheBase {
                 let customSignature = try? locked.unlock(with: mainKey) else
             {
                 SharedCacheBase.getDefault()?.removeObject(forKey: Key.lastLocalMobileSignature)
-                return "Sent from ProtonMail Mobile"
+                return "Sent from ProtonMail for iOS"
             }
 
             return customSignature
@@ -375,7 +375,7 @@ final class UserCachedStatus : SharedCacheBase {
             
             SharedCacheBase.getDefault()?.removeObject(forKey: Key.lastLocalMobileSignature)
             removeMobileSignature(uid: uid)
-            return "Sent from ProtonMail Mobile"
+            return "Sent from ProtonMail for iOS"
         }
         return customSignature
     }

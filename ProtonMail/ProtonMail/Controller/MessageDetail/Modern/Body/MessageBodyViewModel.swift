@@ -29,6 +29,7 @@ class MessageBodyViewModel: NSObject {
     private var bodyObservation: NSKeyValueObservation!
     private var remoteContentModeObservation: NSKeyValueObservation!
     @objc internal dynamic var contentHeight: CGFloat = 0.0
+    @objc internal dynamic var isWebViewBodyLoaded = false
     
     internal lazy var placeholderContent: String = {
         let meta = "<meta name=\"viewport\" content=\"width=device-width\">"

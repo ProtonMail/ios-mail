@@ -22,6 +22,7 @@
     
 
 import Foundation
+import PMCommon
 
 public enum SettingPrivacyItem : Int, CustomStringConvertible {
     case autoLoadImage = 0

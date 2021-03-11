@@ -240,8 +240,10 @@ class MailboxMessageCell: MCSwipeTableViewCell, AccessibleCell {
             hideForward()
         }
         
-        if let t : Date = message.time, let displayString = NSDate.stringForDisplay(from: t) {
+        if !message.isSending, let t : Date = message.time, let displayString = NSDate.stringForDisplay(from: t) {
             self.time.text = " \(displayString)"
+        } else if message.isSending {
+            self.time.text = " \(LocalString._mailbox_draft_is_sending)"
         } else {
             self.time.text = " "
         }

@@ -22,30 +22,48 @@
 
 
 import Foundation
+import PMCommon
 
+//Labels API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_labels.md
+struct LabelAPI {
+    static let path :String = "/labels"
+    
+    /// Get user's labels [GET]
+    static let v_get_user_labels : Int = 3
+    
+    /// Create new label [POST]
+    static let v_create_label : Int = 3
+    
+    /// Update existing label [PUT]
+    static let v_update_label : Int = 3
+    
+    /// Delete a label [DELETE]
+    static let v_delete_label : Int = 3
+    
+    //doesn't impl yet
+    /// Change label priority [PUT]
+    static let v_order_labels : Int = 3
+}
 
 /// Get user's labels/contact groups in the order to be displayed from the server
-final class GetLabelsRequest : ApiRequest<GetLabelsResponse> {
+final class GetLabelsRequest : Request { //GetLabelsResponse> {
     var type: Int = 1
     init(type: Int = 1) {
         self.type = type
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var path: String {
+        return LabelAPI.path
+    }
+        
+    var parameters: [String : Any]? {
         return ["Type" : type]
-    }
-    
-    override func path() -> String {
-        return LabelAPI.path + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return LabelAPI.v_get_user_labels
     }
 }
 
 /// Parse the response from the server of the GetLabelsRequest() call
-final class GetLabelsResponse : ApiResponse {
+final class GetLabelsResponse : Response {
     var labels : [[String : Any]]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.labels =  response["Labels"] as? [[String : Any]]
@@ -53,8 +71,8 @@ final class GetLabelsResponse : ApiResponse {
     }
 }
 
-/// Create a label/contact group on the server
-final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
+/// Create a label/contact group on the server -- CreateLabelRequestResponse
+final class CreateLabelRequest : Request {
     var labelName: String
     var color: String
     var exclusive: Bool = false
@@ -67,7 +85,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         self.type = type
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         
         var out : [String : Any] = [
             "Name": self.labelName,
@@ -83,21 +101,17 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .post
     }
     
-    override func path() -> String {
-        return LabelAPI.path + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return LabelAPI.v_create_label
+    var path: String {
+        return LabelAPI.path
     }
 }
 
 /// Parse the response from the server of the GetLabelsRequest() call
-final class CreateLabelRequestResponse : ApiResponse {
+final class CreateLabelRequestResponse : Response {
     var label:[String : Any]?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
@@ -111,7 +125,7 @@ final class CreateLabelRequestResponse : ApiResponse {
  
  Type don't need to be specified here since we have the exact labelID to work with
 */
-final class UpdateLabelRequest : ApiRequest<CreateLabelRequestResponse> {
+final class UpdateLabelRequest : Request {  //CreateLabelRequestResponse
     var labelID : String
     var labelName: String
     var color:String
@@ -122,7 +136,7 @@ final class UpdateLabelRequest : ApiRequest<CreateLabelRequestResponse> {
         self.color = color
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         let out : [String : Any] = [
             "Name": self.labelName,
             "Color": self.color,
@@ -131,21 +145,17 @@ final class UpdateLabelRequest : ApiRequest<CreateLabelRequestResponse> {
         return out
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .put
     }
     
-    override func path() -> String {
-        return LabelAPI.path + "/\(labelID)" + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return LabelAPI.v_update_label
+    var path: String {
+        return LabelAPI.path + "/\(labelID)"
     }
 }
 
 /// Parse the response from the server of the UpdateLabelRequest() call
-final class UpdateLabelRequestResponse: ApiResponse {
+final class UpdateLabelRequestResponse: Response {
     var label: [String : Any]?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
@@ -159,28 +169,23 @@ final class UpdateLabelRequestResponse: ApiResponse {
  
  Type don't need to be specified here since we have the exact labelID to work with
 */
-final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
+final class DeleteLabelRequest : Request { //DeleteLabelRequestResponse
     var labelID: String
-    
     init(lable_id: String) {
         labelID = lable_id
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .delete
     }
     
-    override func path() -> String {
-        return LabelAPI.path + "/\(labelID)" + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return LabelAPI.v_delete_label
+    var path: String {
+        return LabelAPI.path + "/\(labelID)"
     }
 }
 
 /// Parse the response from the server of the DeleteLabelRequest() call
-final class DeleteLabelRequestResponse: ApiResponse {
+final class DeleteLabelRequestResponse: Response {
     var returnedCode: Int?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {

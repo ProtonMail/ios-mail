@@ -25,6 +25,7 @@ import Foundation
 import CoreData
 import Groot
 import PromiseKit
+import PMCommon
 
 enum LabelFetchType : Int {
     case all = 0
@@ -37,12 +38,12 @@ enum LabelFetchType : Int {
 
 class LabelsDataService: Service, HasLocalStorage {
     
-    public let api: API
+    public let apiService: APIService
     private let userID : String
     private let coreDataService: CoreDataService
     
-    init(api: API, userID: String, coreDataService: CoreDataService) {
-        self.api = api
+    init(api: APIService, userID: String, coreDataService: CoreDataService) {
+        self.apiService = api
         self.userID = userID
         self.coreDataService = coreDataService
     }
@@ -81,20 +82,14 @@ class LabelsDataService: Service, HasLocalStorage {
      ````
      - Parameter type: type 1 is for message labels, type 2 is for contact groups
      */
-    func fetchLabels(type: Int = 1, completion: (() -> Void)? = nil) {
-        let eventAPI = GetLabelsRequest(type: type)
-        eventAPI.call(api: self.api) {
-            task, response, hasError in
-            
-            if response == nil {
-                //TODO:: error
-                completion?()
-            } else if var labels = response?.labels {
+    func fetchLabels(type: Int = 1, completion: (() -> Void)? = nil) { //TODO:: fix the completion in case of error
+        let labelsRoute = GetLabelsRequest(type: type)
+        self.apiService.exec(route: labelsRoute) { (response: GetLabelsResponse) in
+            if var labels = response.labels {
                 // add prebuild inbox label
                 for (index, _) in labels.enumerated() {
                     labels[index]["UserID"] = self.userID
                 }
-                
                 // these labels should be created without UserID because they are "native" and shared across all users
                 if type == 1 {
                     labels.append(["ID": "0"]) //case inbox   = "0"

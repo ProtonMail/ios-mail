@@ -22,45 +22,48 @@
 
 
 import Foundation
+import PMCommon
 
+
+//Events API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_events_v3.md
+struct EventAPI {
+    /// base event api path
+    static let path :String = "/events"
     
-// MARK : Get messages part
-final class EventCheckRequest: ApiRequest<EventCheckResponse>{
+    /// get latest event id
+    static let v_get_latest_event_id : Int = 3
+    
+    /// get updated events based on latest event id
+    static let v_get_events : Int = 3
+    
+}
+    
+// MARK : Get messages part -- EventCheckResponse
+final class EventCheckRequest: Request {
     let eventID : String
     
     init(eventID : String) {
         self.eventID = eventID
     }
     
-    override func path() -> String {
-        return EventAPI.path + "/\(self.eventID)" + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return EventAPI.v_get_events
+    var path: String {
+        return EventAPI.path + "/\(self.eventID)"
     }
 }
 
-
-final class EventLatestIDRequest<T : ApiResponse> : ApiRequest<T>{
-
-    override func path() -> String {
-        return EventAPI.path + "/latest" + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return EventAPI.v_get_latest_event_id
+// -- EventLatestIDResponse
+final class EventLatestIDRequest : Request{
+    var path: String {
+        return EventAPI.path + "/latest"
     }
 }
 
-final class EventLatestIDResponse : ApiResponse {
+final class EventLatestIDResponse : Response {
     var eventID : String = ""
-
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        
         PMLog.D(response.json(prettyPrinted: true))
         self.eventID = response["EventID"] as? String ?? ""
-
         return true
     }
 }
@@ -74,7 +77,7 @@ struct RefreshStatus : OptionSet {
     static let all      = RefreshStatus(rawValue: 0xFF)
 }
 
-final class EventCheckResponse : ApiResponse {
+final class EventCheckResponse : Response {
     var eventID : String = ""
     var refresh : RefreshStatus = .ok
     var more : Int = 0

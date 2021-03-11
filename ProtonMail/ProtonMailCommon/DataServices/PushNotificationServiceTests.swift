@@ -23,6 +23,7 @@
 
 import XCTest
 @testable import ProtonMail
+import PMCommon
 
 class PushNotificationServiceTests: XCTestCase {
     typealias SubscriptionWithSettings = PushNotificationService.SubscriptionWithSettings

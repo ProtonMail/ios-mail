@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PMCommon
 
 public class APIErrorCode {
     static public let responseOK = 1000

@@ -22,110 +22,25 @@
 
 
 import Foundation
+import PMCommon
 
 
-// Mark : get addresses
-final class GetAddressesRequest : ApiRequestNew<AddressesResponse> {
-    override func path() -> String {
-        return AddressesAPI.path + Constants.App.DEBUG_OPTION
-    }
+
+//Addresses API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_addresses.md
+struct AddressesAPI {
+    /// base message api path
+    static let path :String = "/addresses"
     
-    override func apiVersion() -> Int {
-        return AddressesAPI.v_get_addresses
-    }
+    //Create new address [POST /addresses] locked
+    
+    //Update address [PUT]
+    //static let v_update_address : Int = 3
+    
 }
-
-// MARK : update addresses order
-final class UpdateAddressOrder : ApiRequest<ApiResponse> {
-    let newOrder : [String]
-    
-    init(adds : [String], authCredential: AuthCredential?) {
-        self.newOrder = adds
-        super.init()
-        self.authCredential = authCredential
-    }
-    
-    override func toDictionary() -> [String : Any]? {
-        let out : [String : Any] = ["AddressIDs" : self.newOrder]
-        return out
-    }
-    
-    override func method() -> HTTPMethod {
-        return .put
-    }
-    
-    override func path() -> String {
-        return AddressesAPI.path + "/order" + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return AddressesAPI.v_update_order
-    }
-}
-
-//MARK : update display name
-final class UpdateAddressRequest : ApiRequest<ApiResponse> {
-    let addressid : String
-    let displayName : String
-    let signature : String
-    init(id : String, displayName: String, signature: String, authCredential: AuthCredential?) {
-        self.addressid = id
-        self.displayName = displayName
-        self.signature = signature;
-        super.init()
-        self.authCredential = authCredential
-    }
-    
-    override func toDictionary() -> [String : Any]? {
-        let out : [String : Any] = ["DisplayName" : displayName,
-                                    "Signature":signature]
-        return out
-    }
-    
-    override func method() -> HTTPMethod {
-        return .put
-    }
-    
-    override func path() -> String {
-        return AddressesAPI.path + "/" + addressid + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return AddressesAPI.v_update_address
-    }
-}
-
-
-//Mark setup address when signup after create the user
-final class SetupAddressRequest : ApiRequest<AddressesResponse> {
-    let domain: String
-    init(domain_name: String, auth: AuthCredential?) {
-        self.domain = domain_name
-        super.init()
-        self.authCredential = auth
-    }
-    
-    override func toDictionary() -> [String : Any]? {
-        let out : [String : Any] = ["Domain": self.domain]
-        return out
-    }
-    
-    override func method() -> HTTPMethod {
-        return .post
-    }
-    
-    override func path() -> String {
-        return AddressesAPI.path + "/setup" + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return AddressesAPI.v_setup
-    }
-}
-
 
 //Responses
-final class AddressesResponse : ApiResponse {
+final class AddressesResponse : Response {
     var addresses: [Address] = [Address]()
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         if let addresses = response["Addresses"] as? [[String : Any]] {
@@ -143,12 +58,12 @@ final class AddressesResponse : ApiResponse {
         if let address_keys = res["Keys"] as? [[String : Any]] {
             for key_res in address_keys {
                 keys.append(Key(
-                    key_id: key_res["ID"] as? String,
-                    private_key: key_res["PrivateKey"] as? String,
-                    token: key_res["Token"] as? String,
-                    signature: key_res["Signature"] as? String,
-                    activation: key_res["Activation"] as? String,
-                    isupdated: false))
+                                key_id: key_res["ID"] as? String,
+                                private_key: key_res["PrivateKey"] as? String,
+                                token: key_res["Token"] as? String,
+                                signature: key_res["Signature"] as? String,
+                                activation: key_res["Activation"] as? String,
+                                isupdated: false))
             }
         }
         
@@ -166,4 +81,123 @@ final class AddressesResponse : ApiResponse {
         ))
     }
 }
+
+// Mark : get addresses
+//Get Addresses [GET /addresses]
+//Get Address [GET /addresses/{address_id}]
+//response : AddressesResponse
+final class GetAddressesRequest : Request {
+    var path: String {
+        return AddressesAPI.path
+    }
+    
+    //custom auth credentical
+    var auth: AuthCredential?
+    var authCredential : AuthCredential? {
+        get {
+            return self.auth
+        }
+    }
+}
+
+// MARK : update addresses order
+// Order Addresses [/addresses/order]
+final class UpdateAddressOrder : Request {  //Response
+    
+    let newOrder : [String]
+    init(adds : [String], authCredential: AuthCredential?) {
+        self.newOrder = adds
+        self.auth = authCredential
+    }
+    
+    //custom auth credentical
+    let auth: AuthCredential?
+    var authCredential : AuthCredential? {
+        get {
+            return self.auth
+        }
+    }
+    
+    var path: String {
+        return AddressesAPI.path + "/order"
+    }
+    
+    var parameters: [String : Any]? {
+        let out : [String : Any] = ["AddressIDs" : self.newOrder]
+        return out
+    }
+    
+    var method: HTTPMethod {
+        return .put
+    }
+}
+
+
+//MARK : update display name
+
+final class UpdateAddressRequest : Request { //Response
+    let addressid : String
+    let displayName : String
+    let signature : String
+    init(id : String, displayName: String, signature: String, authCredential: AuthCredential?) {
+        self.addressid = id
+        self.displayName = displayName
+        self.signature = signature;
+        self.auth = authCredential
+    }
+    
+    //custom auth credentical
+    let auth: AuthCredential?
+    var authCredential : AuthCredential? {
+        get {
+            return self.auth
+        }
+    }
+    
+    var path: String {
+        return AddressesAPI.path + "/" + addressid
+    }
+    
+    var parameters: [String : Any]? {
+        let out : [String : Any] = ["DisplayName" : displayName,
+                                    "Signature":signature]
+        return out
+    }
+    
+    var method: HTTPMethod {
+        return .put
+    }
+}
+
+
+//Mark setup address when signup after create the user
+//Setup new non-subuser address [POST /addresses/setup]
+
+final class SetupAddressRequest : Request { //AddressesResponse
+    let domain: String
+    init(domain_name: String, auth: AuthCredential?) {
+        self.domain = domain_name
+        self.auth = auth
+    }
+    
+    var parameters: [String : Any]? {
+        let out : [String : Any] = ["Domain": self.domain]
+        return out
+    }
+    var method: HTTPMethod {
+        return .post
+    }
+    var path: String {
+        return AddressesAPI.path + "/setup"
+    }
+    
+    //custom auth credentical
+    let auth: AuthCredential?
+    var authCredential : AuthCredential? {
+        get {
+            return self.auth
+        }
+    }
+}
+
 

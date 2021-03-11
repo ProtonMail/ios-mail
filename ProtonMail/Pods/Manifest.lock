@@ -71,14 +71,37 @@ PODS:
   - OpenPGP (1.0.5):
     - OpenSSL
   - OpenSSL (1.0.210)
-  - PMAuthentication (1.0.0):
+  - PMAuthentication (1.3.2):
+    - PMCommon (>= 1.1.2)
     - PMCrypto
-  - PMChallenge (0.0.1)
-  - PMCrypto (2.1.1)
-  - PMKeymaker (1.1.0):
+  - PMAuthentication/Tests (1.3.2):
+    - OHHTTPStubs/Swift
+    - PMCommon (>= 1.1.2)
+    - PMCrypto
+  - PMChallenge (0.0.2)
+  - PMCommon (1.2.0):
+    - PMCommon/Default (= 1.2.0)
+  - PMCommon/APIClient (1.2.0):
+    - PMCommon/Networking
+  - PMCommon/Default (1.2.0):
+    - PMCommon/APIClient
+    - PMCommon/Networking
+    - PMCommon/Services
+    - PMCommon/SRP
+  - PMCommon/Networking (1.2.0):
+    - AFNetworking (~> 4.0)
+    - AwaitKit (~> 5.0.0)
+    - PromiseKit (~> 6.0)
+  - PMCommon/Services (1.2.0):
+    - PMCommon/APIClient
+    - TrustKit
+  - PMCommon/SRP (1.2.0)
+  - PMCommon/Tests (1.2.0):
+    - OHHTTPStubs/Swift
+  - PMCrypto (2.1.5)
+  - PMKeymaker (1.2.3):
     - EllipticCurveKeyPair
     - PMCrypto
-  - PMNetworking (1.0.0)
   - PromiseKit (6.13.1):
     - PromiseKit/CorePromise (= 6.13.1)
     - PromiseKit/Foundation (= 6.13.1)
@@ -88,15 +111,15 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.13.1):
     - PromiseKit/CorePromise
-  - SDWebImage (5.8.3):
-    - SDWebImage/Core (= 5.8.3)
-  - SDWebImage/Core (5.8.3)
+  - SDWebImage (5.10.4):
+    - SDWebImage/Core (= 5.10.4)
+  - SDWebImage/Core (5.10.4)
   - Sentry (5.2.2):
     - Sentry/Core (= 5.2.2)
   - Sentry/Core (5.2.2)
-  - SwiftyGif (5.3.0)
+  - SwiftyGif (5.4.0)
   - SWRevealViewController (2.3.0)
-  - TrustKit (1.6.2)
+  - TrustKit (1.7.0)
   - "UIColor+Hex (1.0.1)":
     - "UIColor+Hex/NSColor (= 1.0.1)"
     - "UIColor+Hex/UIColor (= 1.0.1)"
@@ -114,19 +137,21 @@ DEPENDENCIES:
   - "NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)"
   - OHHTTPStubs/Swift (= 9.0.0)
   - OpenPGP (from `../OpenPGP`)
-  - PMAuthentication (from `https://gitlab.protontech.ch/apple/shared/pmauthentication.git`, tag `1.0.0`)
-  - "PMChallenge (from `git@gitlab.protontech.ch:apple/shared/pmchallenge.git`, tag `0.0.1`)"
-  - "PMCrypto (from `git@gitlab.protontech.ch:apple/shared/pmcrypto.git`, tag `2.1.1`)"
-  - PMKeymaker (from `https://gitlab.protontech.ch/apple/shared/pmkeymaker.git`, tag `1.1.0`)
-  - PMNetworking (from `../Networking`)
+  - "PMAuthentication (from `git@gitlab.protontech.ch:apple/shared/pmauthentication.git`, branch `develop`)"
+  - "PMAuthentication/Tests (from `git@gitlab.protontech.ch:apple/shared/pmauthentication.git`, branch `develop`)"
+  - "PMChallenge (from `git@gitlab.protontech.ch:apple/shared/pmchallenge.git`, tag `0.0.3`)"
+  - PMCommon (from `../Networking`)
+  - PMCommon/Tests (from `../Networking`)
+  - "PMCrypto (from `git@gitlab.protontech.ch:apple/shared/pmcrypto.git`, tag `2.1.5`)"
+  - "PMKeymaker (from `git@gitlab.protontech.ch:apple/shared/pmkeymaker.git`, branch `develop`)"
   - PromiseKit (~> 6.0)
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `5.2.2`)
   - SWRevealViewController (= 2.3.0)
-  - TrustKit (= 1.6.2)
+  - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `master`)
   - "UIColor+Hex (= 1.0.1)"
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - AFNetworking
     - AwaitKit
     - DKImagePickerController
@@ -141,7 +166,6 @@ SPEC REPOS:
     - SDWebImage
     - SwiftyGif
     - SWRevealViewController
-    - TrustKit
     - "UIColor+Hex"
 
 EXTERNAL SOURCES:
@@ -154,22 +178,25 @@ EXTERNAL SOURCES:
   OpenPGP:
     :path: "../OpenPGP"
   PMAuthentication:
-    :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
-    :tag: 1.0.0
+    :branch: develop
+    :git: "git@gitlab.protontech.ch:apple/shared/pmauthentication.git"
   PMChallenge:
     :git: "git@gitlab.protontech.ch:apple/shared/pmchallenge.git"
-    :tag: 0.0.1
+    :tag: 0.0.3
+  PMCommon:
+    :path: "../Networking"
   PMCrypto:
     :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
-    :tag: 2.1.1
+    :tag: 2.1.5
   PMKeymaker:
-    :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
-    :tag: 1.1.0
-  PMNetworking:
-    :path: "../Networking"
+    :branch: develop
+    :git: "git@gitlab.protontech.ch:apple/shared/pmkeymaker.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 5.2.2
+  TrustKit:
+    :branch: master
+    :git: https://github.com/ProtonMail/TrustKit.git
 
 CHECKOUT OPTIONS:
   EllipticCurveKeyPair:
@@ -179,20 +206,23 @@ CHECKOUT OPTIONS:
     :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
     :git: https://github.com/ProtonMail/nsdate-helper.git
   PMAuthentication:
-    :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
-    :tag: 1.0.0
+    :commit: 16949e15b45da02a74972dbda6370372037f51c6
+    :git: "git@gitlab.protontech.ch:apple/shared/pmauthentication.git"
   PMChallenge:
     :git: "git@gitlab.protontech.ch:apple/shared/pmchallenge.git"
-    :tag: 0.0.1
+    :tag: 0.0.3
   PMCrypto:
     :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
-    :tag: 2.1.1
+    :tag: 2.1.5
   PMKeymaker:
-    :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
-    :tag: 1.1.0
+    :commit: 97defd9cd70e83c67e7f9ad2b0c9ee93c55a8416
+    :git: "git@gitlab.protontech.ch:apple/shared/pmkeymaker.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 5.2.2
+  TrustKit:
+    :commit: 838fba789e01c9cabff77acea3fb7135f71a220f
+    :git: https://github.com/ProtonMail/TrustKit.git
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
@@ -208,19 +238,19 @@ SPEC CHECKSUMS:
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
   OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
-  PMAuthentication: 7e217178684e2ec8e1b593bc95ed1c59c2959ac3
-  PMChallenge: b15f8382d52b5d1fbd205b7fccddcba0ec9554d5
-  PMCrypto: 921fa892741d9430342298ee48bca56bda1f053b
-  PMKeymaker: 6a485e8e71457722b83ddd01f671a5334a0d6b04
-  PMNetworking: 54696647ab1a6cac500bab624733d5e08b7e7098
+  PMAuthentication: 4e1a422232304311f34a7651a5b348a7782c99bf
+  PMChallenge: e1545bb99e3b668f7b4af62aea193d11f1039d3b
+  PMCommon: 144fb3aba220fb65ee769c69486b226d2dd73a37
+  PMCrypto: cfdfe88ea29e3c35788beab63b18f0c111b72617
+  PMKeymaker: 41484527ae0683d08361a0c09023bed5dc8c367b
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
-  SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
+  SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
   Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
-  SwiftyGif: e466e86c660d343357ab944a819a101c4127cb40
+  SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
-  TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
+  TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 4572b2d43de143b2233e04a8c148fdcea5233d21
+PODFILE CHECKSUM: d6e2474071c0c71a280b613141ec3c977aec2cec
 
 COCOAPODS: 1.10.0

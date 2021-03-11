@@ -23,6 +23,7 @@
 
 import Foundation
 import PMKeymaker
+import PMCommon
 
 class SignInManager: Service {
     let usersManager: UsersManager
@@ -65,7 +66,7 @@ class SignInManager: Service {
         self.auth = nil
         self.userInfo = nil
         // one time api and service
-        let service = APIService(config: usersManager.serverConfig, sessionUID: "", userID: "")
+        let service = PMAPIService(doh: usersManager.doh, sessionUID: "")
         let userService = UserDataService(check: false, api: service)
         userService.sign(in: username,
                          password: password,
@@ -85,7 +86,7 @@ class SignInManager: Service {
         self.auth = nil
         self.userInfo = nil
         // one time api and service
-        let service = APIService(config: usersManager.serverConfig, sessionUID: "", userID: "")
+        let service = PMAPIService(doh: usersManager.doh, sessionUID: "")
         let userService = UserDataService(check: false, api: service)
         userService.sign(in: username,
                          password: password,

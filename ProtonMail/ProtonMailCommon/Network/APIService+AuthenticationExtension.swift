@@ -24,6 +24,10 @@
 import Foundation
 import PromiseKit
 import PMAuthentication
+import PMCommon
+
+
+var refreshTokenFailedCount = 0
 
 /// Auth extension
 extension APIService {
@@ -44,13 +48,10 @@ extension APIService {
             }
         }
         
-        let saltapi = GetKeysSalts(api: self)
-        saltapi.authCredential = credential
-        let userApi = GetUserInfoRequest(api: self)
-        userApi.authCredential = credential
-        
+        let saltapi : Promise<KeySaltResponse> = self.run(route: GetKeysSalts(authCredential: credential))
+        let userApi : Promise<GetUserInfoResponse> = self.run(route: GetUserInfoRequest(authCredential: credential))
         firstly {
-            when(fulfilled: saltapi.run(), userApi.run())
+            when(fulfilled: saltapi, userApi)
         }.done { (saltRes, userRes)  in
             if noKey {
                 let salt = saltRes.keySalt
@@ -78,11 +79,12 @@ extension APIService {
     
     
     func confirm2FA(_ code: String, password: String, context: TwoFactorContext, completion: @escaping AuthCompleteBlockNew) {
-        self.authApi.confirm2FA(code, context: context, completion: { (result ) in
+        let manager = Authenticator(api: self)
+        manager.confirm2FA(code, context: context, completion: { (result ) in
             switch result {
             case .failure(Authenticator.Errors.serverError(let error)): // error response returned by server
                 return completion(nil, .resCheck, nil, nil, nil, error)
-            
+                
             case .failure(let error as NSError): // network or parsing error
                 return completion(nil, .resCheck, nil, nil, nil, error.isInternetError() ? NSError.internetError() : NSError.authInvalidGrant())
                 
@@ -93,17 +95,12 @@ extension APIService {
             case .success(.updatedCredential), .success(.ask2FA):
                 assert(false, "Should never happen in this flow")
             }
-        }) { (url, error) -> String? in
-            if self.doh.handleError(host: url, error: error) {
-                return self.doh.getHostUrl()
-            }
-            return nil
-        }
+        })
     }
     
     func authenticate(username: String, password: String, noKey: Bool, completion: @escaping AuthCompleteBlockNew) {
-        
-        self.authApi.authenticate(username: username, password: password, completion: { (result ) in
+        let manager = Authenticator(api: self)
+        manager.authenticate(username: username, password: password, completion: { (result ) in
             switch result {
             case .failure(Authenticator.Errors.serverError(let error)): // error response returned by server
                 return completion(nil, .resCheck, nil, nil, nil, error)
@@ -136,26 +133,22 @@ extension APIService {
             case .success(.updatedCredential):
                 assert(false, "Should never happen in this flow")
             }
-        }) { (url, error) -> String? in
-            if self.doh.handleError(host: url, error: error) {
-                return self.doh.getHostUrl()
-            }
-            return nil
-        }
+        })
     }
     
     func authRefresh(_ authCredential: AuthCredential, completion: AuthRefreshComplete?) {
-        let oldCredential = PMAuthentication.Credential(authCredential)
-        self.authApi.refreshCredential(oldCredential, completion: { (result ) in
+        let oldCredential = Credential(authCredential)
+        let manager = Authenticator(api: self)
+        manager.refreshCredential(oldCredential, completion: { (result ) in
             switch result {
             case .success(.updatedCredential(let newCredential)):
-                self.refreshTokenFailedCount = 0
-                completion?(nil, newCredential, nil)
-            
+                refreshTokenFailedCount = 0
+                completion?(newCredential, nil)
+                
             case .success(.ask2FA), .success(.newCredential):
                 assert(false, "Was trying to refresh credential but got something else instead")
                 PMLog.D("Was trying to refresh credential but got something else instead")
-                completion?(nil, nil, NSError.authInvalidGrant())
+                completion?(nil, NSError.authInvalidGrant())
                 
             case .failure(let error):
                 var err: NSError = error as NSError
@@ -172,41 +165,36 @@ extension APIService {
                     err.code == APIErrorCode.HTTP503 {
                     needsRetry = true
                 } else {
-                    self.refreshTokenFailedCount += 1
+                    refreshTokenFailedCount += 1
                 }
                 
-                if self.refreshTokenFailedCount > 5 || !needsRetry {
+                if refreshTokenFailedCount > 5 || !needsRetry {
                     PMLog.D("self.refreshTokenFailedCount == 5")
-                    completion?(nil, nil, NSError.authInvalidGrant())
+                    completion?(nil, NSError.authInvalidGrant())
                 } else {
-                    completion?(nil, nil, NSError.internetError())
+                    completion?(nil, NSError.internetError())
                 }
             }
-        }) { (url, error) -> String? in
-            if self.doh.handleError(host: url, error: error) {
-                return self.doh.getHostUrl()
-            }
-            return nil
-        }
+        })
     }
 }
 
-extension PMAuthentication.Credential {
-    init(_ authCredential: AuthCredential) {
-        self.init(UID: authCredential.sessionID,
-                  accessToken: authCredential.accessToken,
-                  refreshToken: authCredential.refreshToken,
-                  expiration: authCredential.expiration,
-                  scope: [])
-    }
-}
-extension AuthCredential {
-    convenience init(_ credential: PMAuthentication.Credential) {
-        self.init(sessionID: credential.UID,
-                  accessToken: credential.accessToken,
-                  refreshToken: credential.refreshToken,
-                  expiration: credential.expiration,
-                  privateKey: nil,
-                  passwordKeySalt: nil)
-    }
-}
+//extension Credential {
+//    init(_ authCredential: AuthCredential) {
+//        self.init(UID: authCredential.sessionID,
+//                  accessToken: authCredential.accessToken,
+//                  refreshToken: authCredential.refreshToken,
+//                  expiration: authCredential.expiration,
+//                  scope: [])
+//    }
+//}
+//extension AuthCredential {
+//    convenience init(_ credential: Credential) {
+//        self.init(sessionID: credential.UID,
+//                  accessToken: credential.accessToken,
+//                  refreshToken: credential.refreshToken,
+//                  expiration: credential.expiration,
+//                  privateKey: nil,
+//                  passwordKeySalt: nil)
+//    }
+//}

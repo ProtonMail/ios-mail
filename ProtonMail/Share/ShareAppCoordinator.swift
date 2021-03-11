@@ -22,7 +22,7 @@
 
 
 import Foundation
-
+import PMCommon
 
 /// Main entry point to the app
 class ShareAppCoordinator: CoordinatorNew {
@@ -33,7 +33,7 @@ class ShareAppCoordinator: CoordinatorNew {
     func start() {
         self.loadUnlockCheckView()
         
-        let usersManager = UsersManager(server: Server.live, delegate: self)
+        let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
     }

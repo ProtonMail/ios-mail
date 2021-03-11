@@ -23,6 +23,7 @@
 
 import Foundation
 import Crypto
+import PMCommon
 
 // MARK: - OpenPGP String extension
 

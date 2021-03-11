@@ -26,6 +26,8 @@ import CoreData
 import PromiseKit
 import AwaitKit
 import Crypto
+import PMCommon
+
 
 //TODO::fixme import header
 extension Attachment {
@@ -87,10 +89,11 @@ extension Attachment {
                     offset += currentChunkSize
                     fileHandle.seek(toFileOffset: UInt64(offset))
                     encryptor.process(currentChunk)
+                    HelperFreeOSMemory()
                 }
             }
             fileHandle.closeFile()
-            
+            defer { HelperFreeOSMemory() }
             return try encryptor.finish()
         } catch {
             return nil

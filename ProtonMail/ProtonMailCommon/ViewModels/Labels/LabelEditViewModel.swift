@@ -22,7 +22,7 @@
 
 
 import Foundation
-
+import PMCommon
 
 public class LabelEditViewModel {
     internal let apiService: APIService
@@ -73,35 +73,4 @@ public class LabelEditViewModel {
     public func apply(withName name : String, color : String, error:@escaping ErrorBlock, complete:@escaping OkBlock) {
         fatalError("This method must be overridden")
     }
-
-    
-//    public func apply (archiveMessage : Bool) {
-//        fatalError("This method must be overridden")
-//    }
-//    
-//    public func cancel () {
-//        fatalError("This method must be overridden")
-//    }
-
-//    
-//    public func getLabelMessage(label : Label!) -> LabelMessageModel! {
-//        fatalError("This method must be overridden")
-//    }
-
-//    
-//    public func showArchiveOption() -> Bool {
-//        fatalError("This method must be overridden")
-//    }
-//    
-//    public func getApplyButtonText() -> String {
-//        fatalError("This method must be overridden")
-//    }
-//    
-//    public func getCancelButtonText() -> String {
-//        fatalError("This method must be overridden")
-//    }
-//    
-//    public func fetchController() -> NSFetchedResultsController? {
-//        fatalError("This method must be overridden")
-//    }
 }

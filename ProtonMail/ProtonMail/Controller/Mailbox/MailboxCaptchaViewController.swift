@@ -23,6 +23,7 @@
 
 import Foundation
 import MBProgressHUD
+import PMCommon
 
 protocol MailboxCaptchaVCDelegate : AnyObject {
     func cancel()

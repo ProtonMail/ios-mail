@@ -62,7 +62,7 @@ extension FileImporter {
                 }.cauterize()
             } else if (type as CFString == kUTTypeVCard), let data = item as? Data {
                 var fileName = "\(NSUUID().uuidString).vcf"
-                if #available(iOS 11.0, *), let name = itemProvider.suggestedName {
+                if let name = itemProvider.suggestedName {
                     fileName = name
                 }
                 let fileData = ConcreteFileData<Data>(name: fileName, ext: "text/vcard", contents: data)
@@ -71,7 +71,7 @@ extension FileImporter {
                 }.cauterize()
             } else if let data = item as? Data {
                 var fileName = NSUUID().uuidString
-                if #available(iOS 11.0, *), let name = itemProvider.suggestedName {
+                if let name = itemProvider.suggestedName {
                     fileName = name
                 }
                 

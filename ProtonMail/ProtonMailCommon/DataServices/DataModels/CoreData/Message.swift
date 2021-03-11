@@ -107,6 +107,9 @@ final public class Message: NSManagedObject {
     
     @NSManaged public var userID: String
     
+    //Check if the message is being sent now
+    @NSManaged public var isSending: Bool
+    
     /// Mark -- relationship
     
     //"Attachments":[ { }, {} ]

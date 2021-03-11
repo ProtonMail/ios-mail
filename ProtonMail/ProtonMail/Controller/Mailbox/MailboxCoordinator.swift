@@ -192,7 +192,8 @@ class MailboxCoordinator : DefaultCoordinator {
             guard let next = destination as? MailboxCaptchaViewController else {
                 return false
             }
-            next.viewModel = CaptchaViewModelImpl()
+            let user = self.viewModel.user
+            next.viewModel = CaptchaViewModelImpl(api: user.apiService)
             next.delegate = self.viewController
         case .folder:
             guard let next = destination as? LablesViewController else {

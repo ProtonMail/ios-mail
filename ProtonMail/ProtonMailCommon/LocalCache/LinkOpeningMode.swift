@@ -23,9 +23,9 @@
 
 import Foundation
 
-enum LinkOpeningMode: String {
-    case confirmationAlert, openAtWill
-}
+//enum LinkOpeningMode: String {
+//    case confirmationAlert, openAtWill
+//}
 
 enum AttachmentMetadataStripping: String {
     case sendAsIs, stripMetadata

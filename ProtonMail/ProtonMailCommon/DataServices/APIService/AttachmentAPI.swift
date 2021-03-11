@@ -22,29 +22,33 @@
 
 
 import Foundation
+import PMCommon
 
-// MARK : delete attachment from a draft
-final class DeleteAttachment : ApiRequest<ApiResponse> {
-    let attachmentID : String!
+// MARK : delete attachment from a draft -- Response
+final class DeleteAttachment : Request {
+    let attachmentID : String
     init(attID : String) {
         self.attachmentID = attID
     }
     
     convenience init(attID: String, authCredential: AuthCredential?) {
         self.init(attID: attID)
-        self.authCredential = authCredential
+        self.auth = authCredential
     }
     
-    override func path() -> String {
-        //return AttachmentAPI.path + "/remove" + AppConstants.DEBUG_OPTION
-        return AttachmentAPI.path + "/" + self.attachmentID + Constants.App.DEBUG_OPTION
+    //custom auth credentical
+    var auth: AuthCredential?
+    var authCredential : AuthCredential? {
+        get {
+            return self.auth
+        }
     }
     
-    override func apiVersion() -> Int {
-        return AttachmentAPI.v_del_attachment
+    var path: String {
+        return AttachmentAPI.path + "/" + self.attachmentID
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .delete
     }
 }

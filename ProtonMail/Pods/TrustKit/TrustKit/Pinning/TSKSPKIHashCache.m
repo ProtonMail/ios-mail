@@ -44,6 +44,27 @@ static const unsigned char ecDsaSecp384r1Asn1Header[] =
 };
 
 
+static BOOL isKeySupported(NSString *publicKeyType, NSNumber *publicKeySize)
+{
+    if (([publicKeyType isEqualToString:(NSString *)kSecAttrKeyTypeRSA]) && ([publicKeySize integerValue] == 2048))
+    {
+        return YES;
+    }
+    else if (([publicKeyType isEqualToString:(NSString *)kSecAttrKeyTypeRSA]) && ([publicKeySize integerValue] == 4096))
+    {
+        return YES;
+    }
+    else if (([publicKeyType isEqualToString:(NSString *)kSecAttrKeyTypeECSECPrimeRandom]) && ([publicKeySize integerValue] == 256))
+    {
+        return YES;
+    }
+    else if (([publicKeyType isEqualToString:(NSString *)kSecAttrKeyTypeECSECPrimeRandom]) && ([publicKeySize integerValue] == 384))
+    {
+        return YES;
+    }
+    return NO;
+}
+
 
 static char *getAsn1HeaderBytes(NSString *publicKeyType, NSNumber *publicKeySize)
 {
@@ -168,6 +189,13 @@ static unsigned int getAsn1HeaderSize(NSString *publicKeyType, NSNumber *publicK
     NSNumber *publicKeysize = CFDictionaryGetValue(publicKeyAttributes, kSecAttrKeySizeInBits);
     CFRelease(publicKeyAttributes);
     
+    if (!isKeySupported(publicKeyType, publicKeysize))
+    {
+        TSKLog(@"Error - public key algorithm or length is not supported");
+        CFRelease(publicKey);
+        return nil;
+    }
+    
     char *asn1HeaderBytes = getAsn1HeaderBytes(publicKeyType, publicKeysize);
     unsigned int asn1HeaderSize = getAsn1HeaderSize(publicKeyType, publicKeysize);
     
@@ -193,8 +221,9 @@ static unsigned int getAsn1HeaderSize(NSString *publicKeyType, NSNumber *publicK
     });
     
     // Update the cache on the filesystem
-    if (self.spkiCacheFilename.length > 0) {
-        NSData *serializedSpkiCache = [NSKeyedArchiver archivedDataWithRootObject:_spkiCache];
+    if (self.spkiCacheFilename.length > 0)
+    {
+        NSData *serializedSpkiCache = [NSKeyedArchiver archivedDataWithRootObject:_spkiCache requiringSecureCoding:YES error:nil];
         if ([serializedSpkiCache writeToURL:[self SPKICachePath] atomically:YES] == NO)
         {
             NSAssert(false, @"Failed to write cache");
@@ -210,7 +239,12 @@ static unsigned int getAsn1HeaderSize(NSString *publicKeyType, NSNumber *publicK
     NSMutableDictionary *spkiCache = nil;
     NSData *serializedSpkiCache = [NSData dataWithContentsOfURL:[self SPKICachePath]];
     if (serializedSpkiCache) {
-        spkiCache = [NSKeyedUnarchiver unarchiveObjectWithData:serializedSpkiCache];
+        NSError *decodingError = nil;
+        spkiCache = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithArray:@[[SPKICacheDictionnary class], [NSData class]]] fromData:serializedSpkiCache error:&decodingError];
+        if (decodingError)
+        {
+            TSKLog(@"Could not retrieve SPKI cache from the filesystem: %@", decodingError);
+        }
     }
     return spkiCache;
 }

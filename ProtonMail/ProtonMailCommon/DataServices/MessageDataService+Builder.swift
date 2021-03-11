@@ -25,6 +25,7 @@ import Foundation
 import PromiseKit
 import AwaitKit
 import Crypto
+import PMCommon
 
 extension Data {
     var html2AttributedString: NSAttributedString? {
@@ -557,13 +558,12 @@ class EOAddressBuilder : PackageBuilder {
             let based64Token = token.encodeBase64() as String
             let encryptedToken = try based64Token.encrypt(withPwd: self.password) ?? ""
             
-            
             //start build auth package
-            let authModuls = try AuthModulusRequest(authCredential: nil).syncCall(api: APIService.shared) // will use standard auth credential
-            guard let moduls_id = authModuls?.ModulusID else {
+            let authModuls: AuthModulusResponse = try await(PMAPIService.shared.run(route: AuthModulusRequest(authCredential: nil)))// will use standard auth credential
+            guard let moduls_id = authModuls.ModulusID else {
                 throw UpdatePasswordError.invalidModulusID.error
             }
-            guard let new_moduls = authModuls?.Modulus else {
+            guard let new_moduls = authModuls.Modulus else {
                 throw UpdatePasswordError.invalidModulus.error
             }
             

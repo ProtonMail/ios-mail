@@ -23,7 +23,7 @@
 
 import Foundation
 import CoreData
-import PMNetworking
+import PMCommon
 
 extension MessageContainerViewModel {
     struct StatesKey {
@@ -68,6 +68,9 @@ class MessageContainerViewModel: TableContainerViewModel {
     private let messageService : MessageDataService
     internal let user: UserManager
     private let coreDataService: CoreDataService
+
+    var isWebViewBodyLoadedNotifier: ((Bool) -> Void)?
+
     /// States from deeplink
     private let states: [String: Any]?
     
@@ -84,7 +87,6 @@ class MessageContainerViewModel: TableContainerViewModel {
     override func numberOfRows(in section: Int) -> Int {
         return self.thread[section].divisionsCount
     }
-    
 
     init(conversation messages: [Message], msgService: MessageDataService, user: UserManager, coreDataService: CoreDataService, states: [String: Any]? = nil) {
 
@@ -324,7 +326,16 @@ class MessageContainerViewModel: TableContainerViewModel {
                     singleton.heightOfBody = body.contentHeight
                 }
             }
+
             self.observationsBody.append(bodyObservation)
+
+            let isWebViewLoadingBodyObservation = child.body.observe(\.isWebViewBodyLoaded, options: [.new])
+            { [weak self] _, observation in
+                guard let isWebViewLoadingBody = observation.newValue else { return }
+                self?.isWebViewBodyLoadedNotifier?(isWebViewLoadingBody)
+            }
+
+            self.observationsBody.append(isWebViewLoadingBodyObservation)
         }
     }
     

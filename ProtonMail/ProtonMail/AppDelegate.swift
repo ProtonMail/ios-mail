@@ -27,8 +27,9 @@ import AFNetworking
 import PMKeymaker
 import UserNotifications
 import Intents
+import PMCommon
 
-let sharedUserDataService = UserDataService(api: APIService.unauthorized)
+let sharedUserDataService = UserDataService(api: PMAPIService.unauthorized)
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
@@ -94,6 +95,30 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
     func onError(error: NSError) {
         error.alertToast()
     }
+    
+    func onUpdate(serverTime: Int64) {
+        Crypto.updateTime(serverTime)
+    }
+
+    var appVersion: String {
+        get {
+            return "iOS_\(Bundle.main.majorVersion)"
+        }
+    }
+
+    var userAgent: String? {
+        UserAgent.default.ua
+    }
+
+    func onDohTroubleshot() {
+        //TODO:: fix me TBA
+    }
+
+    func onChallenge(challenge: URLAuthenticationChallenge,
+                     credential: AutoreleasingUnsafeMutablePointer<URLCredential?>?) -> URLSession.AuthChallengeDisposition {
+        //TODO:: fix me TBA
+        return .useCredential
+    }
 }
 
 extension AppDelegate: TrustKitUIDelegate {
@@ -123,7 +148,7 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
 
-        let usersManager = UsersManager(server: Server.live, delegate: self)
+        let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager))
@@ -151,10 +176,6 @@ extension AppDelegate: UIApplicationDelegate {
         
         //start network notifier
         sharedInternetReachability.startNotifier()
-        
-        // moved to coordinator
-        //sharedMessageDataService.launchCleanUpIfNeeded()
-        //sharedUserDataService.delegate = self
         
         // setup language: iOS 13 allows setting language per-app in Settings.app, so we trust that value
         // we still use LanguageManager because Bundle.main of Share extension will take the value from host application :(

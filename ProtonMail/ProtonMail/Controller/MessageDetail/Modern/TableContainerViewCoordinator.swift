@@ -62,16 +62,11 @@ class TableContainerViewCoordinator: NSObject, CoordinatorNew {
             specialLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
             specialLayoutGuide.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
             specialLayoutGuide.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
-        } else if #available(iOS 11.0, *) {
+        } else {
             view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
             view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
             view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
-        } else {
-            view.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
-            view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
-            view.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
-            view.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
         }
     }
 }

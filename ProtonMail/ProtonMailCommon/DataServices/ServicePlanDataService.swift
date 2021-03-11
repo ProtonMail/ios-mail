@@ -24,6 +24,7 @@
 import Foundation
 import AwaitKit
 import PromiseKit
+import PMCommon
 
 protocol ServicePlanDataStorage: class {
     var servicePlansDetails: [ServicePlanDetails]? { get set }
@@ -101,16 +102,16 @@ extension ServicePlanDataService {
     internal func updateServicePlans() -> Promise<Void> {
         return Promise {seal in
             async {
-                let statusApi = GetIAPStatusRequest(api: self.apiService)
-                let statusRes = try await(statusApi.run())
+                let statusApi = GetIAPStatusRequest()
+                let statusRes: GetIAPStatusResponse = try await(self.apiService.run(route: statusApi))
                 self.isIAPAvailableOnBE = statusRes.isAvailable ?? false
-                
-                let servicePlanApi = GetServicePlansRequest(api: self.apiService)
-                let servicePlanRes = try await(servicePlanApi.run())
+
+                let servicePlanApi = GetServicePlansRequest()
+                let servicePlanRes: GetServicePlansResponse = try await(self.apiService.run(route: servicePlanApi))
                 self.allPlanDetails = servicePlanRes.availableServicePlans ?? []
-                
-                let defaultServicePlanApi = GetDefaultServicePlanRequest(api: self.apiService)
-                let defaultServicePlanRes = try await(defaultServicePlanApi.run())
+
+                let defaultServicePlanApi = GetDefaultServicePlanRequest()
+                let defaultServicePlanRes: GetDefaultServicePlanResponse = try await(self.apiService.run(route: defaultServicePlanApi))
                 self.defaultPlanDetails = defaultServicePlanRes.defaultMailPlan
                 seal.fulfill_()
             }.catch { error in
@@ -121,8 +122,8 @@ extension ServicePlanDataService {
     
     internal func updatePaymentMethods(completion: CompletionHandler? = nil) {
         async {
-            let paymentMethodsApi = GetPaymentMethodsRequest(api: self.apiService)
-            let paymentMethodsRes = try await(paymentMethodsApi.run())
+            let paymentMethodsApi = GetPaymentMethodsRequest()
+            let paymentMethodsRes: GetPaymentMethodsResponse = try await(self.apiService.run(route: paymentMethodsApi))
             self.currentSubscription?.paymentMethods = paymentMethodsRes.methods
             completion?()
         }.catch { _ in
@@ -137,8 +138,8 @@ extension ServicePlanDataService {
                 let price = StoreKitManager.default.priceLabelForProduct(id: productId),
                 let currency = price.1.currencyCode,
                 let countryCode = (price.1 as NSLocale).object(forKey: .countryCode) as? String {
-                let proceedRequest = GetAppleTier(api: self.apiService, currency: currency, country: countryCode)
-                let proceed = try await(proceedRequest.run())
+                let proceedRequest = GetAppleTier(currency: currency, country: countryCode)
+                let proceed : AppleTier = try await(self.apiService.run(route: proceedRequest))
                 self.proceedTier54 = proceed.proceed
             }
         }.catch { _ in
@@ -146,11 +147,12 @@ extension ServicePlanDataService {
         }
     }
     
+    
     internal func updateCurrentSubscription() -> Promise<Void> {
         return Promise {seal in
             async {
-                let subscriptionApi = GetSubscriptionRequest(api: self.apiService)
-                let subscriptionRes = try await(subscriptionApi.run())
+                let subscriptionApi = GetSubscriptionRequest()
+                let subscriptionRes: GetSubscriptionResponse = try await(self.apiService.run(route: subscriptionApi))
                 self.currentSubscription = subscriptionRes.subscription
                 self.updatePaymentMethods()
                 seal.fulfill_()

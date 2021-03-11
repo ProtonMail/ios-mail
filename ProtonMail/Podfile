@@ -1,143 +1,104 @@
-
-
-
-source 'https://cdn.cocoapods.org/'
-
-platform :ios, '10.0'
-
+platform :ios, '11.0'
 inhibit_all_warnings!
 use_frameworks!
 
 def pm_shared_pods
-    pod 'PMCrypto', :git => 'git@gitlab.protontech.ch:apple/shared/pmcrypto.git', :tag => '2.1.1'
-    pod 'PMAuthentication', :git => 'https://gitlab.protontech.ch/apple/shared/pmauthentication.git', :tag => '1.0.0'
-    pod 'PMKeymaker', :git => 'https://gitlab.protontech.ch/apple/shared/pmkeymaker.git', :tag => '1.1.0'
-    
-    # this is needed by PMKeymaker, otherwise will fetch outdated version from cocoapods
-    pod 'EllipticCurveKeyPair', :git => 'https://github.com/abjurato/EllipticCurveKeyPair.git', :tag => '1.0.4'
+  pod 'PMCrypto', :git => 'git@gitlab.protontech.ch:apple/shared/pmcrypto.git', :tag => '2.1.5'
+  # this is needed by PMKeymaker, otherwise will fetch outdated version from cocoapods
+  pod 'EllipticCurveKeyPair', :git => 'https://github.com/abjurato/EllipticCurveKeyPair.git', :tag => '1.0.4'
+  pod 'PMAuthentication', :git => 'git@gitlab.protontech.ch:apple/shared/pmauthentication.git', :branch => 'develop', :testspecs => ['Tests']
+  pod 'PMKeymaker', :git => 'git@gitlab.protontech.ch:apple/shared/pmkeymaker.git', :branch => 'develop'
 end
 
 def common_pods
-    ##custom
-    #going to remove this soon
-    pod 'OpenPGP', :path => '../OpenPGP'
-    
-    ##
-    #parse respons to core data
-    pod 'Groot', '3.0.1'
-    #networking
-    pod 'AFNetworking', '4.0.1'
-    
-    #based on 1.0.4
-    pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
-    #key chain
-#    pod 'UICKeyChainStore', '2.1.1'
-    
-    #auto layou lib. need to find a replacement
-    pod 'Masonry', '1.1.0'
-    #too old need to find a replacement
-#    pod 'RHAddressBook', '1.1.1'
-    pod 'UIColor+Hex', '1.0.1'
-    pod 'MCSwipeTableViewCell', '~> 2.1.4'
-    
-    pod 'PromiseKit', '~> 6.0'
-    pod 'AwaitKit', '~> 5.0.0'
-    #pod 'ReachabilitySwift' #use this later
-    
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '5.2.2'
-    pod 'MBProgressHUD' , '1.1.0'
-    
-    pod 'TrustKit', '1.6.2'
-    
-    pod 'PMNetworking', :path => '../Networking'
+  pm_shared_pods
 
-    pm_shared_pods
+  pod 'OpenPGP', :path => '../OpenPGP'
+  pod 'Groot', '3.0.1'
+  pod 'AFNetworking', '4.0.1'
+  pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
+  pod 'Masonry', '1.1.0'
+  pod 'UIColor+Hex', '1.0.1'
+  pod 'MCSwipeTableViewCell', '~> 2.1.4'
+  pod 'PromiseKit', '~> 6.0'
+  pod 'AwaitKit', '~> 5.0.0'
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '5.2.2'
+  pod 'MBProgressHUD' , '1.1.0'
+  pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
+  pod 'PMCommon', :path => '../Networking', :testspecs => ['Tests']
 end
 
-#target 'ProtonMail','ProtonMailDev','ProtonMailTests'
 def pm_pods
-    
-    common_pods
-    
-    pod 'SWRevealViewController', '2.3.0'
-    pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
-    pod 'PMChallenge', :git => 'git@gitlab.protontech.ch:apple/shared/pmchallenge.git', :tag => '0.0.1'
+  common_pods
+
+  pod 'SWRevealViewController', '2.3.0'
+  pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
+  pod 'PMChallenge', :git => 'git@gitlab.protontech.ch:apple/shared/pmchallenge.git', :tag => '0.0.3'
 end
 
-# for extensions Share
 def pm_share
-    common_pods
+  common_pods
 end
 
 def pm_siri
-    pm_shared_pods
-#    pod 'UICKeyChainStore', '2.1.1'
+  pm_shared_pods
 end
 
-#targets
 target 'ProtonMail' do
-	pm_pods
-    # Pods for PushService
-    target 'PushService' do
-        inherit! :search_paths
-    end
+  pm_pods
+end
+
+target 'PushService' do
+  pm_shared_pods
 end
 
 target 'ProtonMailDev' do
-	pm_pods
-    
-    # Pods for PushServiceDev
-    target 'PushServiceDev' do
-        inherit! :search_paths
-    end
+  pm_pods
+
+  target 'PushServiceDev' do
+    inherit! :search_paths
+  end
 end
 
 target 'ProtonMailTests' do
-    inherit! :search_paths
-    pod 'OpenPGP', :path => '../OpenPGP'
-    pod 'AFNetworking', '4.0.1'
-    pod 'OHHTTPStubs/Swift', '9.0.0'
-    pod 'Groot', '3.0.1'
+  inherit! :search_paths
+  pod 'OpenPGP', :path => '../OpenPGP'
+  pod 'AFNetworking', '4.0.1'
+  pod 'OHHTTPStubs/Swift', '9.0.0'
+  pod 'Groot', '3.0.1'
 end
 
 target 'ProtonMailUITests' do
-    inherit! :search_paths
-#    pod 'OpenPGP', :path => '../OpenPGP'
-#    pod 'AFNetworking', '3.2.1'
-#    pod 'OHHTTPStubs/Swift'
-#    pod 'Groot', '3.0.1'
+  inherit! :search_paths
 end
 
 target 'Share' do
-    pm_share
+  pm_share
 end
 target 'ShareDev' do
-    pm_share
+  pm_share
 end
 
 target 'Siri' do
-    pm_siri
+  pm_siri
 end
 target 'SiriDev' do
-    pm_siri
+  pm_siri
 end
 
 post_install do | installer |
-    require 'fileutils'
-    FileUtils.cp_r('Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-Acknowledgements.plist', 'ProtonMail/Supporting Files/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
-    
-    installer.pods_project.targets.each do |target|
-        target.build_configurations.each do |config|
-            config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
-            config.build_settings['SWIFT_VERSION'] = '5.0'
-            if config.name == 'Release'
-                config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
-                else
-                config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Onone'
-            end
-        end
+  require 'fileutils'
+  FileUtils.cp_r('Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-Acknowledgements.plist', 'ProtonMail/Supporting Files/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
+
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+      config.build_settings['SWIFT_VERSION'] = '5.0'
+      if config.name == 'Release'
+        config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
+        else
+        config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Onone'
+      end
     end
+  end
 end
-
-
-

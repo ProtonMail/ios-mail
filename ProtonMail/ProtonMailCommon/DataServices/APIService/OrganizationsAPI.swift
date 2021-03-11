@@ -22,28 +22,30 @@
 
 
 import Foundation
+import PMCommon
 
-//MARK : get keys salt
-final class GetOrgKeys : ApiRequest<OrgKeyResponse> {
-    
-    override func method() -> HTTPMethod {
-        return .get
-    }
-    
-    override func path() -> String {
-        return OrganizationsAPI.Path + "/keys" + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return OrganizationsAPI.v_get_org_keys
-    }
+//Organization API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_organizations.md
+struct OrganizationsAPI {
+    static let Path : String = "/organizations"
 }
 
-final class OrgKeyResponse : ApiResponse {
+final class OrgKeyResponse : Response {
     var privKey : String?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.privKey = response["PrivateKey"] as? String
         return true
+    }
+}
+
+//MARK : get keys salt -- OrgKeyResponse
+/// Get organization keys [GET]
+final class GetOrgKeys : Request {
+    var path: String {
+        return OrganizationsAPI.Path + "/keys"
+    }
+    var parameters: [String : Any]? {
+        return nil
     }
 }

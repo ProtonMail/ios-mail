@@ -24,84 +24,146 @@
 import Foundation
 import PromiseKit
 import AwaitKit
+import PMCommon
 
 
-// MARK : apply label to message
-final class ApplyLabelToMessages : ApiRequest<ApiResponse> {
-    var labelID: String!
-    var messages:[String]!
+
+//Message API
+//Doc: V1 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages.md
+//Doc: V3 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages_v3.md
+struct MessageAPI {
+    /// base message api path
+    static let path :String = "/\(Constants.App.API_PREFIXED)/messages"
     
-    init(labelID: String!, messages: [String]!) {
+    //Get a list of message metadata [GET]
+    static let v_fetch_messages : Int = -1
+    
+    //Get grouped message count [GET]
+    static let v_message_count : Int = -1
+    
+    static let v_create_draft : Int = -1
+    
+    static let v_update_draft : Int = -1
+    
+    // inlcude read/unread
+    static let V_MessageActionRequest : Int = -1
+    
+    //Send a message [POST]
+    static let v_send_message : Int = -1
+    
+    //Label/move an array of messages [PUT]
+    static let v_label_move_msgs : Int = -1
+    
+    //Unlabel an array of messages [PUT]
+    static let v_unlabel_msgs : Int = -1
+    
+    //Delete all messages with a label/folder [DELETE]
+    static let v_empty_label_folder : Int = -1
+    
+    //Delete an array of messages [PUT]
+    static let v_delete_msgs : Int = -1
+    
+    //Undelete Messages [/messages/undelete]
+    static let v_undelete_msgs : Int = -1
+    
+    //Label/Move Messages [/messages/label] [PUT]
+    static let v_apply_label_to_messages : Int = -1
+    
+    //Unlabel Messages [/messages/unlabel] [PUT]
+    static let v_remove_label_from_message : Int = -1
+}
+
+
+ 
+// MARK : apply label to message  -- Response
+final class ApplyLabelToMessages : Request {
+    var labelID: String
+    var messages:[String]
+    
+    init(labelID: String, messages: [String]) {
         self.labelID = labelID
         self.messages = messages
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         var out : [String : Any] = [String : Any]()
         out["LabelID"] = self.labelID
         out["IDs"] = messages
         return out
     }
     
-    
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .put
     }
     
-    override func path() -> String {
-        return MessageAPI.path + "/label" + Constants.App.DEBUG_OPTION
+    var path: String {
+        return MessageAPI.path + "/label"
+    }
+}
+
+final class SearchMessage: Request {
+    var keyword: String
+    var page: Int
+    
+    init(keyword: String, page: Int) {
+        self.keyword = keyword
+        self.page = page
     }
     
-    override func apiVersion() -> Int {
-        return MessageAPI.v_apply_label_to_messages
+    var parameters: [String : Any]? {
+        var out : [String : Any] = [String : Any]()
+        out["Keyword"] = self.keyword
+        out["Page"] = self.page
+        return out
+    }
+    
+    var method: HTTPMethod {
+        return .get
+    }
+    
+    var path: String {
+        return MessageAPI.path
     }
 }
 
 
-// MARK : remove label from message
-final class RemoveLabelFromMessages : ApiRequest<ApiResponse> {
+// MARK : remove label from message -- Response
+final class RemoveLabelFromMessages : Request {
     
-    var labelID: String!
-    var messages:[String]!
+    var labelID: String
+    var messages:[String]
     
-    init(labelID:String!, messages: [String]!) {
+    init(labelID:String, messages: [String]) {
         self.labelID = labelID
         self.messages = messages
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         var out : [String : Any] = [String : Any]()
         out["LabelID"] = self.labelID
         out["IDs"] = messages
         return out
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .put
     }
     
-    override func path() -> String {
-        return MessageAPI.path + "/unlabel" + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return MessageAPI.v_remove_label_from_message
+    var path: String {
+        return MessageAPI.path + "/unlabel"
     }
 }
 
 
-// MARK : Get messages part
-final class MessageCount : ApiRequest<MessageCountResponse> {
-    override func path() -> String {
-        return MessageAPI.path + "/count" + Constants.App.DEBUG_OPTION
-    }
-    override func apiVersion() -> Int {
-        return MessageAPI.v_message_count
+// MARK : Get messages part --- MessageCountResponse
+final class MessageCount : Request {
+    var path: String {
+        return MessageAPI.path + "/count"
     }
 }
 
-// MARK : Get messages part
-final class FetchMessages : ApiRequest<ApiResponse> {
+// MARK : Get messages part --- Response
+final class FetchMessages : Request {
     let labelID : String
     let startTime : Int?
     let endTime : Int
@@ -112,7 +174,7 @@ final class FetchMessages : ApiRequest<ApiResponse> {
         self.startTime = 0
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         var out : [String : Any] = ["Sort" : "Time"]
         out["LabelID"] = self.labelID
         if self.endTime > 0 {
@@ -123,17 +185,15 @@ final class FetchMessages : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func path() -> String {
-        return MessageAPI.path + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return MessageAPI.v_fetch_messages
+    var path: String {
+        return MessageAPI.path
     }
 }
 
-final class FetchMessagesByID : ApiRequest<ApiResponse> {
+/// Response
+final class FetchMessagesByID : Request {
     let msgIDs : [String]
+    
     init(msgIDs: [String]) {
         self.msgIDs = msgIDs
     }
@@ -151,18 +211,15 @@ final class FetchMessagesByID : ApiRequest<ApiResponse> {
         }
         return out
     }
-    
-    override func path() -> String {
+    var path: String {
         return MessageAPI.path + self.buildURL()
-    }
-    
-    override func apiVersion() -> Int {
-        return MessageAPI.v_fetch_messages
     }
 }
 
-final class FetchMessagesByLabel : ApiRequest<ApiResponse> {
-    let labelID : String!
+
+///Response
+final class FetchMessagesByLabel : Request {
+    let labelID : String
     let startTime : Int?
     let endTime : Int
     
@@ -172,7 +229,7 @@ final class FetchMessagesByLabel : ApiRequest<ApiResponse> {
         self.startTime = 0
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         var out : [String : Any] = ["Sort" : "Time"]
         out["LabelID"] = self.labelID
         if self.endTime > 0 {
@@ -183,31 +240,27 @@ final class FetchMessagesByLabel : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func path() -> String {
-        return MessageAPI.path + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return MessageAPI.v_fetch_messages
+    var path: String {
+        return MessageAPI.path
     }
 }
 
 // MARK : Create/Update Draft Part
-/// create draft message request class
-class CreateDraft : ApiRequest<MessageResponse> {
+/// create draft message request class -- MessageResponse
+class CreateDraft : Request {
     
-    let message : Message!
+    let message : Message
     let fromAddress: Address?
     
     /// TODO:: here need remove refrence of Message should create a Draft builder and a seperate package
     ///
     /// - Parameter message: Message
-    init(message: Message!, fromAddr: Address?) {
+    init(message: Message, fromAddr: Address?) {
         self.message = message
         self.fromAddress = fromAddr
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         var messsageDict : [String : Any] = [
             "Body" : message.body,
             "Subject" : message.title,
@@ -234,7 +287,7 @@ class CreateDraft : ApiRequest<MessageResponse> {
             }
         }
         
-        if let attachments = self.message?.attachments.allObjects as? [Attachment] {
+        if let attachments = self.message.attachments.allObjects as? [Attachment] {
             var atts : [String : String] = [:]
             for att in attachments {
                 if att.keyChanged {
@@ -248,15 +301,19 @@ class CreateDraft : ApiRequest<MessageResponse> {
         return out
     }
     
-    override func path() -> String {
+    //custom auth credentical
+    var auth: AuthCredential?
+    var authCredential : AuthCredential? {
+        get {
+            return self.auth
+        }
+    }
+    
+    var path: String {
         return MessageAPI.path
     }
     
-    override func apiVersion() -> Int {
-        return MessageAPI.v_create_draft
-    }
-    
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .post
     }
 }
@@ -264,33 +321,30 @@ class CreateDraft : ApiRequest<MessageResponse> {
 /// message update draft api request
 final class UpdateDraft : CreateDraft {
     
-    convenience init(message: Message!, fromAddr: Address?, authCredential: AuthCredential? = nil) {
+    convenience init(message: Message, fromAddr: Address?, authCredential: AuthCredential? = nil) {
         self.init(message: message, fromAddr: fromAddr)
-        self.authCredential = authCredential
+        self.auth = authCredential
     }
     
-    override func path() -> String {
-        return MessageAPI.path + "/" + message.messageID + Constants.App.DEBUG_OPTION
+    override var path: String {
+        return MessageAPI.path + "/" + message.messageID
     }
-    
-    override func apiVersion() -> Int {
-        return MessageAPI.v_update_draft
-    }
-    
-    override func method() -> HTTPMethod {
+
+    override var method: HTTPMethod {
         return .put
     }
 }
 
 // MARK : Message actions part
 
-/// mesaage action request PUT method
-final class MessageActionRequest : ApiRequest<ApiResponse> {
-    let messages : [Message]!
-    let action : String!
+/// mesaage action request PUT method   --- Response
+final class MessageActionRequest : Request {
+    let messages : [Message]
+    let action : String
     var ids : [String] = [String] ()
+    private var currentLabelID: Int? = nil
     
-    init(action:String, messages: [Message]!) {
+    init(action: String, messages: [Message]) {
         self.messages = messages
         self.action = action
         for message in messages {
@@ -300,73 +354,68 @@ final class MessageActionRequest : ApiRequest<ApiResponse> {
         }
     }
     
-    init(action:String, ids : [String]!) {
+    init(action: String, ids: [String], labelID: String? = nil) {
         self.action = action
         self.ids = ids
         self.messages = [Message]()
+        
+        if let num = Int(labelID ?? "") {
+            self.currentLabelID = num
+        }
     }
     
-    override func toDictionary() -> [String : Any]? {
-        let out = ["IDs" : self.ids]
+    var parameters: [String : Any]? {
+        var out: [String: Any] = ["IDs" : self.ids]
+        if let id = self.currentLabelID {
+            out["CurrentLabelID"] = id
+        }
         return out
     }
     
-    override func path() -> String {
-        return MessageAPI.path + "/" + self.action + Constants.App.DEBUG_OPTION
+    var path: String {
+        return MessageAPI.path + "/" + self.action
     }
     
-    override func apiVersion() -> Int {
-        return MessageAPI.V_MessageActionRequest
-    }
-    
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .put
     }
 }
 
-/// empty trash or spam
-final class EmptyMessage : ApiRequest <ApiResponse> {
-    let labelID : String
+/// empty trash or spam -- Response
+final class EmptyMessage : Request {
     
+    let labelID : String
     init(labelID: String) {
         self.labelID = labelID
     }
     
-    override func toDictionary() -> [String : Any]? {
-        return nil
+    var path: String {
+        return MessageAPI.path + "/empty?LabelID=" + self.labelID
     }
     
-    override func path() -> String {
-        return MessageAPI.path + "/empty?LabelID=" + self.labelID + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return MessageAPI.v_empty_label_folder
-    }
-    
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .delete
     }
 }
 
 // MARK : Message Send part
-/// send message reuqest
-final class SendMessage : ApiRequestNew<SendResponse> {
-    var messagePackage : [AddressPackageBase]!  // message package
-    var body : String!
-    let messageID : String!
-    let expirationTime : Int32!
+/// send message reuqest -- SendResponse
+final class SendMessage : Request {
+    var messagePackage : [AddressPackageBase]  // message package
+    var body : String
+    let messageID : String
+    let expirationTime : Int32
     
     var clearBody : ClearBodyPackage?
     var clearAtts : [ClearAttachmentPackage]?
     
-    var mimeDataPacket : String!
+    var mimeDataPacket : String
     var clearMimeBody : ClearBodyPackage?
     
-    var plainTextDataPacket : String!
+    var plainTextDataPacket : String
     var clearPlainTextBody : ClearBodyPackage?
     
-    init(api:API, messageID : String, expirationTime: Int32?,
+    init(messageID : String, expirationTime: Int32?,
          messagePackage: [AddressPackageBase]!, body : String,
          clearBody : ClearBodyPackage?, clearAtts: [ClearAttachmentPackage]?,
          mimeDataPacket : String, clearMimeBody : ClearBodyPackage?,
@@ -385,12 +434,15 @@ final class SendMessage : ApiRequestNew<SendResponse> {
         self.plainTextDataPacket = plainTextDataPacket
         self.clearPlainTextBody = clearPlainTextBody
         
-        super.init(api:api)
-        
-        self.authCredential = authCredential
+        self.auth = authCredential
     }
     
-    override func toDictionary() -> [String : Any]? {
+    let auth: AuthCredential?
+    var authCredential: AuthCredential? {
+        return self.auth
+    }
+    
+    var parameters: [String : Any]? {
         var out : [String : Any] = [String : Any]()
         
         if self.expirationTime > 0 {
@@ -416,7 +468,7 @@ final class SendMessage : ApiRequestNew<SendResponse> {
             var addrs = [String: Any]()
             var type = SendType()
             for mp in plainTextPackage {
-                addrs[mp.email] = mp.toDictionary()!
+                addrs[mp.email] = mp.parameters!
                 type.insert(mp.type)
             }
             plainTextAddress["Addresses"] = addrs
@@ -455,7 +507,7 @@ final class SendMessage : ApiRequestNew<SendResponse> {
             var addrs = [String: Any]()
             var type = SendType()
             for mp in htmlPackage {
-                addrs[mp.email] = mp.toDictionary()!
+                addrs[mp.email] = mp.parameters!
                 type.insert(mp.type)
             }
             htmlAddress["Addresses"] = addrs
@@ -493,7 +545,7 @@ final class SendMessage : ApiRequestNew<SendResponse> {
             var addrs = [String: Any]()
             var mimeType = SendType()
             for mp in mimePackage {
-                addrs[mp.email] = mp.toDictionary()!
+                addrs[mp.email] = mp.parameters!
                 mimeType.insert(mp.type)
             }
             mimeAddress["Addresses"] = addrs
@@ -516,20 +568,16 @@ final class SendMessage : ApiRequestNew<SendResponse> {
         return out
     }
     
-    override func path() -> String {
-        return MessageAPI.path + "/" + self.messageID + Constants.App.DEBUG_OPTION
+    var path: String {
+        return MessageAPI.path + "/" + self.messageID
     }
     
-    override func apiVersion() -> Int {
-        return MessageAPI.v_send_message
-    }
-    
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .post
     }
 }
 
-final class SendResponse: ApiResponse {
+final class SendResponse: Response {
     var responseDict: [String: Any] = [:]
     
     override func ParseResponse(_ response: [String : Any]) -> Bool {

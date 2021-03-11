@@ -1,0 +1,113 @@
+{
+  "name": "PMCommon",
+  "version": "1.2.0",
+  "summary": "A short description of PMNetworking.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/ProtonMail/ios-networking",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/pmnetworking.git",
+    "tag": "1.2.0"
+  },
+  "platforms": {
+    "ios": "10.0",
+    "osx": "10.12"
+  },
+  "swift_versions": [
+    "5.0"
+  ],
+  "default_subspecs": "Default",
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "PMNetworking/Tests/**/*",
+      "dependencies": {
+        "OHHTTPStubs/Swift": [
+
+        ]
+      }
+    }
+  ],
+  "subspecs": [
+    {
+      "name": "Default",
+      "dependencies": {
+        "PMCommon/Networking": [
+
+        ],
+        "PMCommon/APIClient": [
+
+        ],
+        "PMCommon/Services": [
+
+        ],
+        "PMCommon/SRP": [
+
+        ]
+      }
+    },
+    {
+      "name": "Networking",
+      "source_files": "PMNetworking/Sources/Networking/**/*",
+      "dependencies": {
+        "AFNetworking": [
+          "~> 4.0"
+        ],
+        "PromiseKit": [
+          "~> 6.0"
+        ],
+        "AwaitKit": [
+          "~> 5.0.0"
+        ]
+      }
+    },
+    {
+      "name": "APIClient",
+      "dependencies": {
+        "PMCommon/Networking": [
+
+        ]
+      },
+      "source_files": "PMNetworking/Sources/APIClient/**/*"
+    },
+    {
+      "name": "Services",
+      "dependencies": {
+        "PMCommon/APIClient": [
+
+        ],
+        "TrustKit": [
+
+        ]
+      },
+      "source_files": "PMNetworking/Sources/Services/**/*"
+    },
+    {
+      "name": "Authentication",
+      "dependencies": {
+        "PMCrypto": [
+
+        ],
+        "PMCommon/Services": [
+
+        ],
+        "PMCommon/APIClient": [
+
+        ]
+      },
+      "source_files": "PMNetworking/Sources/Authentication/**/*"
+    },
+    {
+      "name": "SRP",
+      "source_files": "PMNetworking/Sources/SRP/**/*"
+    }
+  ],
+  "swift_version": "5.0"
+}

@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import UIKit
+import PMCommon
 
 typealias LockCheckProgress = (() -> Void)
 typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType : Int) -> Void)

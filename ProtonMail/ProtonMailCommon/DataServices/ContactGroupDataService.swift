@@ -25,6 +25,7 @@ import Foundation
 import CoreData
 import Groot
 import PromiseKit
+import PMCommon
 
 //let sharedContactGroupsDataService = ContactGroupsDataService(api: APIService.shared)
 
@@ -47,11 +48,11 @@ class ContactGroupsDataService: Service, HasLocalStorage {
         return LabelsDataService.cleanUpAll()
     }
     
-    private let apiService : API
+    private let apiService : APIService
     private let labelDataService: LabelsDataService
     private let coreDataService: CoreDataService
     
-    init(api: API, labelDataService: LabelsDataService, coreDataServie: CoreDataService) {
+    init(api: APIService , labelDataService: LabelsDataService, coreDataServie: CoreDataService) {
         self.apiService = api
         self.labelDataService = labelDataService
         self.coreDataService = coreDataServie
@@ -67,15 +68,13 @@ class ContactGroupsDataService: Service, HasLocalStorage {
     func createContactGroup(name: String, color: String) -> Promise<String> {
         return Promise {
             seal in
-            
-            let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false, type: 2)
-            api.call(api: self.apiService) {
-                task, response, hasError in
-                if hasError, let error = response?.error {
+            let route = CreateLabelRequest(name: name, color: color, exclusive: false, type: 2)
+            self.apiService.exec(route: route) { (response: CreateLabelRequestResponse) in
+                if let error = response.error {
                     seal.reject(error)
                 } else {
-                    if let newContactGroup = response?.label,
-                        let ID = newContactGroup["ID"] as? String {
+                    if let newContactGroup = response.label,
+                       let ID = newContactGroup["ID"] as? String {
                         // save
                         PMLog.D("[Contact Group addContactGroup API] result = \(newContactGroup)")
                         self.labelDataService.addNewLabel(newContactGroup)
@@ -96,17 +95,13 @@ class ContactGroupsDataService: Service, HasLocalStorage {
      - color: The color of the contact group
      */
     func editContactGroup(groupID: String, name: String, color: String) -> Promise<Void> {
-        return Promise {
-            seal in
-            
-            let eventAPI = UpdateLabelRequest(id: groupID, name: name, color: color)
-            
-            eventAPI.call(api: self.apiService) {
-                task, response, hasError in
-                if hasError, let error = response?.error {
+        return Promise { seal in
+            let route = UpdateLabelRequest(id: groupID, name: name, color: color)
+            self.apiService.exec(route: route) { (response: CreateLabelRequestResponse) in
+                if let error = response.error {
                     seal.reject(error)
                 } else {
-                    if let updatedContactGroup = response?.label {
+                    if let updatedContactGroup = response.label {
                         PMLog.D("[Contact Group editContactGroup API] result = \(String(describing: updatedContactGroup))")
                         self.labelDataService.addNewLabel(updatedContactGroup)
                         seal.fulfill(())
@@ -125,20 +120,14 @@ class ContactGroupsDataService: Service, HasLocalStorage {
      - name: The name of the contact group
      */
     func deleteContactGroup(groupID: String) -> Promise<Void> {
-        return Promise {
-            seal in
-            
-            let eventAPI = DeleteLabelRequest<DeleteLabelRequestResponse>(lable_id: groupID)
-            
-            eventAPI.call(api: self.apiService) {
-                task, response, hasError in
-                
-                if hasError, let error = response?.error {
+        return Promise { seal in
+            let eventAPI = DeleteLabelRequest(lable_id: groupID)
+            self.apiService.exec(route: eventAPI) { (response: DeleteLabelRequestResponse) in
+                if let error = response.error {
                     seal.reject(error)
                 } else {
-                    if let returnedCode = response?.returnedCode {
+                    if let returnedCode = response.returnedCode {
                         PMLog.D("[Contact Group deleteContactGroup API] result = \(String(describing: returnedCode))")
-                        
                         // successfully deleted on the server
                         let context = self.coreDataService.mainManagedObjectContext
                         self.coreDataService.enqueue(context: context) { (context) in
@@ -157,7 +146,6 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                             }
                         }
                     } else {
-                        PMLog.D("[Contact Group deleteContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
                         seal.reject(NSError.unableToParseResponse(response))
                     }
                 }
@@ -166,9 +154,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
     }
     
     func addEmailsToContactGroup(groupID: String, emailList: [Email]) -> Promise<Void> {
-        return Promise {
-            seal in
-            
+        return Promise { seal in
             // check
             if emailList.count == 0 {
                 seal.fulfill(())
@@ -180,16 +166,14 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                 return email.emailID
             })
             
-            let eventAPI = ContactLabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
-            eventAPI.call(api: self.apiService) {
-                task, response, hasError in
-                if hasError, let error = response?.error {
+            let route = ContactLabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
+            self.apiService.exec(route: route) { (response: ContactLabelAnArrayOfContactEmailsResponse) in
+                if let error = response.error {
                     seal.reject(error)
                 } else {
-                    if let emailIDs = response?.emailIDs {
+                    if !response.emailIDs.isEmpty {
                         // save
                         PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
-                        
                         let context = self.coreDataService.mainManagedObjectContext
                         self.coreDataService.enqueue(context: context) { (context) in
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
@@ -197,7 +181,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                             if let label = label,
                                 var newSet = label.emails as? Set<Email> {
                                 // insert those email objects that is in the response only
-                                for emailID in emailIDs {
+                                for emailID in response.emailIDs {
                                     for email in emailList {
                                         if email.emailID == emailID {
                                             newSet.insert(email)
@@ -241,15 +225,12 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                 (email: Email) -> String in
                 return email.emailID
             })
-            let eventAPI = ContactUnlabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
-            
-            eventAPI.call(api: self.apiService) {
-                task, response, hasError in
-                
-                if hasError, let error = response?.error {
+            let route = ContactUnlabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
+            self.apiService.exec(route: route) { (response: ContactUnlabelAnArrayOfContactEmailsResponse) in
+                if let error = response.error {
                     seal.reject(error)
                 } else {
-                    if let emailIDs = response?.emailIDs {
+                    if !response.emailIDs.isEmpty {
                         // save
                         PMLog.D("[Contact Group removeEmailsFromContactGroup API] result = \(String(describing: response))")
                         
@@ -259,7 +240,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                             
                             // remove only the email objects in the response
                             if let label = label, var newSet = label.emails as? Set<Email> {
-                                for emailID in emailIDs {
+                                for emailID in response.emailIDs {
                                     for email in emailList {
                                         if email.emailID == emailID {
                                             newSet.remove(email)
