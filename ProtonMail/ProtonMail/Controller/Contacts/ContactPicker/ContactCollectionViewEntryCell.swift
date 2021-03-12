@@ -81,7 +81,7 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
         textField.layer.borderWidth = 2.0
 #endif
 
-        self.addSubview(textField)
+        self.contentView.addSubview(textField)
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[textField]|",
                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
