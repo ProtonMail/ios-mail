@@ -750,25 +750,23 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard checkDoh(error) == false else {
             return
         }
-        let code = error.code
-        if code == NSURLErrorTimedOut {
-            self.showTimeOutErrorMessage()
-        } else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
-            self.showNoInternetErrorMessage()
-        } else if code == APIErrorCode.API_offline {
-            self.showOfflineErrorMessage(error)
+        switch error.code {
+        case NSURLErrorTimedOut, APIErrorCode.HTTP504, APIErrorCode.HTTP404:
+            showTimeOutErrorMessage()
+        case NSURLErrorNotConnectedToInternet, NSURLErrorCannotConnectToHost:
+            showNoInternetErrorMessage()
+        case APIErrorCode.API_offline:
+            showOfflineErrorMessage(error)
             offlineTimerReset()
-        } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
-            self.show503ErrorMessage(error)
+        case APIErrorCode.HTTP503, NSURLErrorBadServerResponse:
+            show503ErrorMessage(error)
             offlineTimerReset()
-        } else if code == APIErrorCode.HTTP504 {
-            self.showTimeOutErrorMessage()
-        } else if code == APIErrorCode.HTTP404 {
-            self.showTimeOutErrorMessage()
+        case APIErrorCode.forcePasswordChange:
+            showErrorMessage(error)
+        default:
+            showTimeOutErrorMessage()
         }
-        self.showTimeOutErrorMessage()
     }
-    
     
     @objc internal func pullDown() {
         guard !tableView.isDragging else {

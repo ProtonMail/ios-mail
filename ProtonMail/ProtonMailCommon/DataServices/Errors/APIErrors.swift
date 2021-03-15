@@ -35,6 +35,8 @@ public class APIErrorCode {
     static public let badPath = 2
     static public let unableToParseResponse = 3
     static public let badResponse = 4
+
+    static public let forcePasswordChange = 2011
     
     public struct AuthErrorCode {
         static public let credentialExpired = 10
