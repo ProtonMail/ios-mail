@@ -61,7 +61,7 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(label)
+        self.contentView.addSubview(label)
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label]|",
                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
