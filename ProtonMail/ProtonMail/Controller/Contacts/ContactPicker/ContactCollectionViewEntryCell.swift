@@ -80,7 +80,8 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
         textField.layer.borderColor = UIColor.green.cgColor
         textField.layer.borderWidth = 2.0
 #endif
-
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
         self.contentView.addSubview(textField)
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[textField]|",
@@ -92,8 +93,6 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["textField": textField]))
-        
-        textField.translatesAutoresizingMaskIntoConstraints = false
     
         self.contactEntryTextField = textField
         
