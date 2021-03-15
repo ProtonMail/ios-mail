@@ -43,7 +43,7 @@ unit_tests:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
     - fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "Tests" --device "iPhone 8" --clean
   tags:
-    - iOS
+    - iOS_ARM_TAIPEI
 
 ui_tests:
   dependencies: []
@@ -75,7 +75,7 @@ ui_tests:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
     - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=14.4" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
   tags:
-    - iOS
+    - iOS_ARM_TAIPEI
     
 feature_tests:
   dependencies: []
@@ -105,7 +105,7 @@ feature_tests:
   after_script:
     - xchtmlreport -r ./TestResults -j
   tags:
-    - iOS
+    - iOS_ARM_TAIPEI
 
 # --- Build app and send to testflight
 build-app-and-upload:
@@ -132,7 +132,7 @@ build-app-and-upload:
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - fastlane ios build
   tags:
-    - iOS
+    - iOS_ARM_TAIPEI
 
 nightly-build-and-upload:
   dependencies: []
@@ -159,7 +159,7 @@ nightly-build-and-upload:
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - fastlane ios build
   tags:
-    - iOS
+    - iOS_ARM_TAIPEI
 
 # --- Translation related tasks ---
 i18n-sync-crowdin:

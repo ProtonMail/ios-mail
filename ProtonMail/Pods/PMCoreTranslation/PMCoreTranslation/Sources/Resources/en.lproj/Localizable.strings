@@ -66,6 +66,7 @@
 "Email or username" = "Email or username";
 "Password" = "Password";
 "Need help?" = "Need help?";
+"Create an account" = "Create an account";
 
 /**
  *  Login help
@@ -186,3 +187,50 @@
 "You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
 "Remove" = "Remove";
 "Are you sure you want to sign out %@?" = "Are you sure you want to sign out %@?";
+
+/**
+ * Signup
+ */
+"Create your\nProton Account" = "Create your\nProton Account";
+"One account for all Proton services." = "One account for all Proton services.";
+"Next" = "Next";
+"Sign in" = "Sign in";
+"Use your current email instead" = "Use your current email instead";
+"Create a secure ProtonMail address instead" = "Create a secure ProtonMail address instead";
+"Username" = "Username";
+"Email" = "Email";
+"Creates your password" = "Creates your password";
+"Create a Proton account with your current email" = "Create a Proton account with your current email";
+"Password" = "Password";
+"Repeat password" = "Repeat password";
+"Set recovery method" = "Set recovery method";
+"This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
+"Email" = "Email";
+"Phone" = "Phone";
+"Recovery email" = "Recovery email";
+"Recovery phone number" = "Recovery phone number";
+"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
+"Terms and Conditions" = "Terms and Conditions";
+"Skip" = "Skip";
+"Skip recovery method?" = "Skip recovery method?";
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
+"Set recovery method" = "Set recovery method";
+"Just a second…\nYour account is being created" = "Just a second…\nYour account is being created";
+"It usually takes no more than a minute." = "It usually takes no more than a minute.";
+"Account verification" = "Account verification";
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
+"Verification code" = "Verification code";
+"Enter the 6-digit code." = "Enter the 6-digit code.";
+"Did not receive a code?" = "Did not receive a code?";
+"Terms and Conditions" = "Terms and Conditions";
+"Device token error" = "Device token error";
+"Device token unsupported" = "Device token unsupported";
+"Invalid token request" = "Invalid token request";
+"Invalid token error" = "Invalid token error";
+"Create user failed" = "Create user failed";
+"Invalid hashed password" = "Invalid hashed password";
+"Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
+"Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
+"Email address already used." = "Email address already used.";
+"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
+"Change email address" = "Change email address";

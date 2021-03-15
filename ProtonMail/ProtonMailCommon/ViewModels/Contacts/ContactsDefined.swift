@@ -22,8 +22,7 @@
 
 
 import Foundation
-
-
+import OpenPGP
 
 protocol ContactEditTypeInterface {
     func getCurrentType() -> ContactFieldType

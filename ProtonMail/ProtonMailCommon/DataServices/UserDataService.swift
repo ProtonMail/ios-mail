@@ -28,6 +28,7 @@ import PMKeymaker
 import Crypto
 import PMAuthentication
 import PMCommon
+import OpenPGP
 
 
 typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void

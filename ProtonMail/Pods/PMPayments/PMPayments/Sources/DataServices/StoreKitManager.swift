@@ -45,6 +45,8 @@ public class StoreKitManager: NSObject, StoreKitManagerProtocol {
     internal var alertViewDelay: Double = 1.0
     internal var receiptError: Error?
     internal var availableProducts: [SKProduct] = []
+    internal var validationManager = ValidationManager()
+    internal var paymentInternalCompletionStarted: (() -> Void)?
 
     // MARK: Private properties
     private let processAuthenticated: ProcessProtocol = ProcessAuthenticated()
@@ -87,6 +89,7 @@ public class StoreKitManager: NSObject, StoreKitManagerProtocol {
         processAuthenticated.delegate = self
         processUnathenticated.delegate = self
         processAddCredits.delegate = self
+        validationManager.delegate = self
     }
 
     deinit {
@@ -118,27 +121,42 @@ public class StoreKitManager: NSObject, StoreKitManagerProtocol {
         return paymentQueue.transactions.filter { $0.transactionState != .failed }.first
     }
 
+    public func isValidPurchase(identifier: String, completion: @escaping (Bool) -> Void) {
+        updateServicePlanDataService { result in
+            switch result {
+            case .success:
+                completion(self.validationManager.isValidPurchase(identifier: identifier))
+            case .failure:
+                completion(false)
+            }
+        }
+    }
+
     public func purchaseProduct(identifier: String,
                                 successCompletion: @escaping SuccessCallback,
                                 errorCompletion: @escaping ErrorCallback,
                                 deferredCompletion: (() -> Void)? = nil) {
 
-        let result = canPurchaseProduct(identifier: identifier)
-        switch result {
-        case .failure(let error):
-            errorCompletion(error)
-        case .success(let product):
-            self.successCompletion = successCompletion
-            self.errorCompletion = errorCompletion
-            self.deferredCompletion = deferredCompletion
-
-            let payment = SKMutablePayment(product: product)
-            payment.quantity = 1
-            if let userId = self.applicationUserId() {
-                payment.applicationUsername = self.hash(userId: userId)
+        if delegate?.userId != nil {
+            updateServicePlanDataService { result in
+                switch result {
+                case .failure(let error):
+                    errorCompletion(error)
+                case .success:
+                    let result = self.validationManager.canPurchaseProduct(identifier: identifier)
+                    switch result {
+                    case .failure(let error):
+                        errorCompletion(error)
+                    case .success(let product):
+                        self.purchaseProduct(product: product, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
+                    }
+                }
             }
-            paymentQueue.add(payment)
-            PMLog.debug("StoreKit: Purchase started")
+        } else {
+            guard let product = self.availableProducts.first(where: { $0.productIdentifier == identifier }) else {
+                return errorCompletion(Errors.unavailableProduct)
+            }
+            self.purchaseProduct(product: product, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
         }
     }
 
@@ -181,8 +199,42 @@ public class StoreKitManager: NSObject, StoreKitManagerProtocol {
         return .registration
     }
 
+    private func purchaseProduct(product: SKProduct,
+                                 successCompletion: @escaping SuccessCallback,
+                                 errorCompletion: @escaping ErrorCallback,
+                                 deferredCompletion: (() -> Void)? = nil) {
+        self.successCompletion = successCompletion
+        self.errorCompletion = errorCompletion
+        self.deferredCompletion = deferredCompletion
+
+        let payment = SKMutablePayment(product: product)
+        payment.quantity = 1
+        if let userId = self.applicationUserId() {
+            payment.applicationUsername = self.hash(userId: userId)
+        }
+        self.paymentQueue.add(payment)
+        self.paymentInternalCompletionStarted?()
+        PMLog.debug("StoreKit: Purchase started")
+    }
+
     private func networkReachable() {
         processAllTransactions(finishHandler: transactionsFinishHandler)
+    }
+
+    private func updateServicePlanDataService(completion: @escaping (Result<(), Error>) -> Void) {
+        delegate?.servicePlanDataService?.updateServicePlans {
+            if let servicePlan = self.delegate?.servicePlanDataService, servicePlan.isIAPAvailable {
+                self.delegate?.servicePlanDataService?.updateCurrentSubscription {
+                    completion(.success(()))
+                } failure: { error in
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(Errors.transactionFailedByUnknownReason))
+            }
+        } failure: { error in
+            completion(.failure(error))
+        }
     }
 }
 
@@ -396,4 +448,14 @@ extension StoreKitManager: ProcessDelegateProtocol {
     var pendingRetry: Double { return pendingRetryIn }
     var errorRetry: Double { return errorRetryIn }
     func getReceipt() throws -> String { return try readReceipt() }
+}
+
+extension StoreKitManager: ValidationManagerDelegate {
+    var servicePlanDataService: ServicePlanDataService? {
+        return delegate?.servicePlanDataService
+    }
+
+    var products: [SKProduct]? {
+        return availableProducts
+    }
 }

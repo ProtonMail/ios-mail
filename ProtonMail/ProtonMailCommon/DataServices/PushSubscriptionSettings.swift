@@ -23,6 +23,10 @@
 
 import Foundation
 
+#if !APP_EXTENSION
+import OpenPGP
+#endif
+
 struct PushSubscriptionSettings: Hashable, Codable {
     let token, UID: String
     var encryptionKit: EncryptionKit!

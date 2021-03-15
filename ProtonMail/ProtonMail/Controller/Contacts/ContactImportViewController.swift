@@ -24,6 +24,7 @@
 import UIKit
 import Contacts
 import CoreData
+import OpenPGP
 
 protocol ContactImportVCDelegate {
     func cancel()

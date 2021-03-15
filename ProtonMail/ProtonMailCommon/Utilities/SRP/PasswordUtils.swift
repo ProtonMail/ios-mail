@@ -22,6 +22,7 @@
 
 
 import Foundation
+import OpenPGP
 
 enum PasswordError: Error {
     case hashEmpty
