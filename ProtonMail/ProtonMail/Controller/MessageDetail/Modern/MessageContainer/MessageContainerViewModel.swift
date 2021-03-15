@@ -244,6 +244,10 @@ class MessageContainerViewModel: TableContainerViewModel {
     private func showErrorBanner(_ title: String, secondConfig: BannerView.ButtonConfiguration? = nil) {
         self.showErrorBanner(title, action: self.downloadThreadDetails, secondConfig: secondButtonConfig)
     }
+
+    private func showErrorBannerWithText(_ title: String) {
+        self.showErrorBanner(title, action: nil, secondConfig: nil)
+    }
     
     private func errorWhileReloading(message: Message, error: NSError) {
         guard !checkDoh(message, error) else {
@@ -266,6 +270,10 @@ class MessageContainerViewModel: TableContainerViewModel {
         case APIErrorCode.HTTP503, NSURLErrorBadServerResponse:
             self.showErrorBanner(LocalString._general_api_server_not_reachable)
             self.reload(message: message, with: LocalString._general_api_server_not_reachable)
+
+        case APIErrorCode.forcePasswordChange:
+            self.showErrorBannerWithText(error.localizedDescription)
+            self.reload(message: message, with: error.localizedDescription)
 
         default:
             self.showErrorBanner(LocalString._cant_download_message_body_please_try_again)
