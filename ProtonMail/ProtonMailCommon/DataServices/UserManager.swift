@@ -25,6 +25,9 @@ import Foundation
 import PMAuthentication
 import PromiseKit
 import PMCommon
+#if !APP_EXTENSION
+import PMPayments
+#endif
 
 /// TODO:: this is temp
 protocol UserDataSource : class {

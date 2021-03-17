@@ -23,6 +23,7 @@
 
 import UIKit
 import SWRevealViewController
+import PMPayments
 
 class StorefrontCoordinator: PushCoordinator {
     var configuration: ((StorefrontCollectionViewController) -> ())?
@@ -50,7 +51,7 @@ class StorefrontCoordinator: PushCoordinator {
         self.navigationController = UINavigationController(rootViewController: vc)
     }
     
-    func go(to nextPlan: ServicePlan) {
+    func go(to nextPlan: AccountPlan) {
         guard let navigationController = self.navigationController else { return }
         let nextCoordinator = StorefrontCoordinator(navigation: navigationController, user: self.user)
         let storefront = Storefront(plan: nextPlan, servicePlanService: user.sevicePlanService, user: user.userInfo)
