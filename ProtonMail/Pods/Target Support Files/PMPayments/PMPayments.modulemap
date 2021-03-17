@@ -1,0 +1,6 @@
+framework module PMPayments {
+  umbrella header "PMPayments-umbrella.h"
+
+  export *
+  module * { export * }
+}

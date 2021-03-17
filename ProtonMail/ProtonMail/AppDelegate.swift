@@ -28,6 +28,7 @@ import PMKeymaker
 import UserNotifications
 import Intents
 import PMCommon
+import PMPayments
 
 let sharedUserDataService = UserDataService(api: PMAPIService.unauthorized)
 
@@ -153,6 +154,7 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(UsersManager.self, for: usersManager)
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager))
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
+        sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         return true
     }
     
@@ -190,6 +192,7 @@ extension AppDelegate: UIApplicationDelegate {
         pushService.registerForRemoteNotifications()
         pushService.setLaunchOptions(launchOptions)
         
+        StoreKitManager.default.delegate = sharedServices.get(by: StoreKitManagerImpl.self)
         StoreKitManager.default.subscribeToPaymentQueue()
         StoreKitManager.default.updateAvailableProductsList()
         
