@@ -6242,6 +6242,24 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n";
 		};
+		08D8F8B905057ED3C82192476BF66E6A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PMPayments/Resources-Payments.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Resources-Payments.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		0DD55C25AF691272A64605F0C0621E49 /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6290,24 +6308,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		08D8F8B905057ED3C82192476BF66E6A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PMPayments/Resources-Payments.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Resources-Payments.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3955F031BAA2D8708CB8AB79F5C10AD7 /* [CP] Check Pods Manifest.lock */ = {
@@ -6384,6 +6384,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nxcrun simctl privacy grant photos ch.protonmail.protonmail\n";
+		};
+		6D5C828D5F1C05690725F3B5335631C3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PMPayments/Resources-Payments.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Resources-Payments.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		9AA3453632AC0DF31B07A4B30A970202 /* Run Proton Sentry script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6671,24 +6689,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6D5C828D5F1C05690725F3B5335631C3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PMPayments/Resources-Payments.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Resources-Payments.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F00EFEC03D5478819F38AF0E5CB9C21F /* [CP] Check Pods Manifest.lock */ = {
@@ -8944,7 +8944,7 @@
 				INFOPLIST_FILE = Siri/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
@@ -9008,7 +9008,7 @@
 				INFOPLIST_FILE = Siri/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Siri;
@@ -9038,7 +9038,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.mail.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9072,7 +9072,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9107,7 +9107,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9140,7 +9140,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Siri/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
@@ -9176,7 +9176,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Siri/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.SiriDev;
@@ -9215,7 +9215,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;
@@ -9317,7 +9317,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;
@@ -9357,7 +9357,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -9450,7 +9450,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9480,7 +9480,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = Push/InfoDev.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9507,7 +9507,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.mail.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9539,7 +9539,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Siri/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.SiriDev;
@@ -9582,7 +9582,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9643,7 +9643,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
@@ -9684,7 +9684,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9727,7 +9727,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9792,7 +9792,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
@@ -9828,7 +9828,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9861,7 +9861,7 @@
 				INFOPLIST_FILE = Siri/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Siri;
@@ -9891,7 +9891,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = Push/InfoDev.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9955,7 +9955,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -9989,7 +9989,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
@@ -10032,7 +10032,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -10072,7 +10072,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -10102,7 +10102,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.mail.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -10222,7 +10222,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -10253,7 +10253,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = Push/InfoDev.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -10290,7 +10290,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;
