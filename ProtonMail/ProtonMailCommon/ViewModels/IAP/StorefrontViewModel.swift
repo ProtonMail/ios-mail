@@ -23,6 +23,7 @@
 
 import Foundation
 import PromiseKit
+import PMPayments
 
 class StorefrontViewModel: NSObject {
     let currentUser: UserManager
@@ -130,7 +131,7 @@ class StorefrontViewModel: NSObject {
         }
     }
     
-    func plan(at indexPath: IndexPath) -> ServicePlan? {
+    func plan(at indexPath: IndexPath) -> AccountPlan? {
         guard let section = Sections(rawValue: indexPath.section) else {
             assert(false, "Attempt to get incorrect section")
             return nil
@@ -216,7 +217,7 @@ extension StorefrontViewModel {
                 DetailStorefrontItem(imageName: "iap_hdd", text: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
                 DetailStorefrontItem(imageName: "iap_lock", text: LocalString._limited_to_150_messages)
             ]
-        case .plus:
+        case .mailPlus:
             return [
                 DetailStorefrontItem(imageName: "iap_email", text: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses)),
                 DetailStorefrontItem(imageName: "iap_hdd", text: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
@@ -242,11 +243,17 @@ extension StorefrontViewModel {
                 DetailStorefrontItem(imageName: "iap_lifering", text: String(format: LocalString._support_n_domains, details.maxDomains)),
                 DetailStorefrontItem(imageName: "iap_vpn", text: LocalString._vpn_included)
             ]
+        default:
+            return [
+                DetailStorefrontItem(imageName: "iap_email", text: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses)),
+                DetailStorefrontItem(imageName: "iap_hdd", text: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
+                DetailStorefrontItem(imageName: "iap_lock", text: LocalString._limited_to_150_messages)
+            ]
         }
     }
     
     private func extractAnnotation(from storefront: Storefront) -> AnyStorefrontItem? {
-        func makeUnavailablePlanText(plan: ServicePlan) -> NSAttributedString {
+        func makeUnavailablePlanText(plan: AccountPlan) -> NSAttributedString {
             var regularAttributes = [NSAttributedString.Key: Any]()
             regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
             var coloredAttributes = regularAttributes
@@ -272,7 +279,7 @@ extension StorefrontViewModel {
             switch subscription.plan {
             case .free:
                 message = NSAttributedString(string: LocalString._upgrade_to_paid, attributes: regularAttributes)
-            case .plus, .pro, .visionary:
+            case .mailPlus, .pro, .visionary:
                 let formatter = DateFormatter()
                 formatter.timeStyle = .none
                 formatter.dateStyle = .short
@@ -284,6 +291,8 @@ extension StorefrontViewModel {
                     title1.append(title2)
                     message = title1
                 }
+            default: message = NSAttributedString(string: LocalString._upgrade_to_paid, attributes: regularAttributes)
+
             }
             return message ?? NSAttributedString()
         }
@@ -315,8 +324,8 @@ extension StorefrontViewModel {
     
     private func extractBuyButton(from storefront: Storefront) -> AnyStorefrontItem? {
         guard storefront.isProductPurchasable,
-            let productId = ServicePlan.plus.storeKitProductId,
-            let price = StoreKitManager.default.priceLabelForProduct(id: productId) else
+            let productId = AccountPlan.mailPlus.storeKitProductId,
+            let price = StoreKitManager.default.priceLabelForProduct(identifier: productId) else
         {
             return nil
         }

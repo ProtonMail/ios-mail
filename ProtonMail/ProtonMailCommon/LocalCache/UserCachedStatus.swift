@@ -23,6 +23,9 @@
 
 import Foundation
 import PMKeymaker
+#if !APP_EXTENSION
+import PMPayments
+#endif
 
 let userCachedStatus = UserCachedStatus()
 
@@ -634,7 +637,7 @@ extension UserCachedStatus: ServicePlanDataStorage {
         }
     }
     
-    var isIAPAvailableOnBE: Bool {
+    var isIAPUpgradePlanAvailable: Bool {
         get {
             return self.getShared().bool(forKey: Key.isIAPAvailableOnBE)
         }

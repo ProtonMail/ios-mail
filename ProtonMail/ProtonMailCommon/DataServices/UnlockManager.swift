@@ -24,7 +24,9 @@
 import Foundation
 import PMKeymaker
 import LocalAuthentication
-
+#if !APP_EXTENSION
+import PMPayments
+#endif
 
 enum SignInUIFlow : Int {
     case requirePin = 0
@@ -171,7 +173,7 @@ class UnlockManager: Service {
             $0.messageService.injectTransientValuesIntoMessages()
         }
         self.updateCommonUserData()
-        StoreKitManager.default.processAllTransactions()
+        StoreKitManager.default.continueRegistrationPurchase()
         #endif
         
         NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock

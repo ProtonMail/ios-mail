@@ -25,17 +25,22 @@ import Foundation
 import PMAuthentication
 import PromiseKit
 import PMCommon
+#if !APP_EXTENSION
+import PMPayments
+#endif
 
 /// TODO:: this is temp
 protocol UserDataSource : class {
     var mailboxPassword : String { get }
-    var newSchema : Bool {get}
+    var newSchema : Bool { get }
+    var addresses: [PMCommon.Address] { get }
     var addressKeys : [Key] { get }
     var userPrivateKeys : [Data] { get }
     var userInfo : UserInfo { get }
     var addressPrivateKeys : [Data] { get }
     var authCredential : AuthCredential { get }
     func getAddressKey(address_id : String) -> Key?
+    func getAllAddressKey(address_id: String) -> [Key]?
     func getAddressPrivKey(address_id : String) -> String
     
     func updateFromEvents(userInfoRes: [String : Any]?)
@@ -264,6 +269,10 @@ extension UserManager : UserDataSource {
     
     func getAddressKey(address_id: String) -> Key? {
         return self.userInfo.getAddressKey(address_id: address_id)
+    }
+    
+    func getAllAddressKey(address_id: String) -> [Key]? {
+        return self.userinfo.getAllAddressKey(address_id: address_id)
     }
     
     var userPrivateKeys: [Data] {

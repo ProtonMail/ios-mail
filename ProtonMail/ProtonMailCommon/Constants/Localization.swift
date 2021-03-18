@@ -1660,27 +1660,6 @@ class LocalizedString {
     
     lazy var _vis_header = NSLocalizedString("For power users and groups of people that value full anonymity and privacy", comment: "Service Plan description")
 
-    lazy var _unavailable_product = NSLocalizedString("Failed to get list of available products from AppStore.", comment: "Error message")
-    
-    lazy var _backend_mismatch = NSLocalizedString("It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.", comment: "Error message")
-    
-    lazy var _sandbox_receipt = NSLocalizedString("Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!", comment: "Error message for beta users")
-    
-    
-    lazy var _reciept_lost = NSLocalizedString("Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.", comment: "Error message")
-    
-    lazy var _another_user_transaction = NSLocalizedString("Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." , comment: "Error message")
-    
-    lazy var _no_hashed_username_arrived_in_transaction = NSLocalizedString("We have been notified of an App Store purchase but cannot match the purchase with an account of yours.", comment: "Error message")
-    
-    lazy var _no_active_username_in_user_data_service = NSLocalizedString("Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.", comment: "Error message")
-    
-    lazy var _transaction_failed_by_unknown_reason = NSLocalizedString("Apple informed us they could not process the purchase.", comment: "Error message")
-    
-    lazy var _no_new_subscription_in_response = NSLocalizedString("We have successfully activated your subscription. Please relaunch the app to start using your new service plan.", comment: "Error message")
-    
-    lazy var _do_you_want_to_bypass_validation = NSLocalizedString("Do you want to activate the purchase for %@ address?", comment: "Question is user wants to bypass username validation and activate plan for current username")
-    
     lazy var _yes_bypass_validation = NSLocalizedString("Yes, activate it for ", comment: "Warning message option to bypass validation and activate plan for current username")
     
     lazy var _no_dont_bypass_validation = NSLocalizedString("No, for another ProtonMail account", comment: "Warning message option when user want to relogin to another account")
@@ -1692,11 +1671,6 @@ class LocalizedString {
     lazy var _iap_bugreport_yes = NSLocalizedString("Yes, attach details of payment", comment: "Error message")
     
     lazy var _iap_bugreport_no = NSLocalizedString("No, not related to in-app purchase", comment: "Error message")
-
-    lazy var _unlock_to_proceed_with_iap = NSLocalizedString("Please unlock the app to proceed with your service plan activation", comment: "Error message")
-
-    lazy var _please_sign_in_iap = NSLocalizedString("Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.", comment: "Error message")
-
 
     // Mark : Force Upgrade
 
