@@ -114,10 +114,6 @@ build-app-and-upload:
   when: manual
   except:
     - schedules
-  only:
-    - master
-    - develop
-    - /^release\/.*$/
   artifacts:
     name: "iOS mail app builds"
     paths:
