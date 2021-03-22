@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Αγορές εντός εφαρμογής της Apple";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Η Apple μας ενημέρωσε ότι δεν μπόρεσαν να επεξεργαστούν την αγορά.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το πακέτο/πλάνο σας, αλλά λείπουν ορισμένα τεχνικά δεδομένα. Συμπληρώστε την φόρμα αναφοράς σφαλμάτων και η ομάδα υποστήριξης πελατών μας, θα επικοινωνήσει μαζί σας.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το λογαριασμό σας / πλάνο, αλλά εντοπίσαμε ότι έχετε αποσυνδεθεί από το λογαριασμό σας, από τότε.";
-
 /* Apply action */
 "Apply" = "Εφαρμογή";
 
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Εμφανιζόμενο Όνομα";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Θέλετε να ενεργοποιήσετε την αγορά για %@ διεύθυνση;";
-
 /* Description */
 "Do you want to cancel the process?" = "Θέλετε να ακυρώσετε την διαδικασία;";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Πρόχειρο";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "Το πρόχειρο εξακολουθεί να μεταφορτώνεται...";
 
 /* menu title */
 "Drafts" = "Πρόχειρα";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Αποτυχία προσδιορισμού του τύπου αρχείου";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "Αποτυχία λήψης της λίστας διαθέσιμων προϊόντων από το AppStore.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Δεν ήταν δυνατή η εκκίνηση των αποθηκευμένων δεδομένων εφαρμογής";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Δεν είναι δυνατό να μεταβείτε στο %@ μέσα στην εφαρμογή iOS.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Δεν κατέστει εφικτό να ταιριάξει το προϊόν του App Store που αγοράσατε σε οποιοδήποτε προϊόν του διακομιστή μας. Συμπληρώστε την αναφορά σφάλματος και η ομάδα υποστήριξης πελατών μας θα επικοινωνήσει μαζί σας.";
-
 /* Title */
 "Keep me updated about new features" = "Κρατήστε με ενημερωμένο σχετικά με τις νέες λειτουργίες";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Μήνυμα %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Δεν ήταν δυνατή η αποστολή μηνύματος. Τουλάχιστον μία διεύθυνση email παραλήπτη/domain δεν υπάρχει ή δεν έχει μορφοποιηθεί σωστά.";
 
 /* *
  *  Expiration View */
@@ -1476,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Στις ΗΜ, ΜΗΝ η, χχχχ στις %1$@, %2$@, έγραψε:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Αγνοήστε την ενεργοποίηση αγοράς μόνο αν είστε σίγουροι ότι όλες οι συνδρομές σας είναι ενημερωμένες. Για περαιτέρω βοήθεια, παρακαλούμε επικοινωνήστε με την υποστήριξη πελατών. \r\n\r\n Είστε βέβαιοι ότι θέλετε να αγνοήσετε την ενεργοποίηση;";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Αγνοήστε την ενεργοποίηση αγοράς μόνο αν είστε σίγουροι ότι όλες οι συνδρομές σας είναι ενημερωμένες. Για περαιτέρω βοήθεια, παρακαλούμε επικοινωνήστε με την υποστήριξη πελατών. &#13;\n&#13;\n Είστε βέβαιοι ότι θέλετε να αγνοήσετε την ενεργοποίηση;";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Μόνο ένας δωρεάν λογαριασμός μπορεί να προστεθεί";
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση E-mail.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Παρακαλώ συνδεθείτε στο λογαριασμό ProtonMail που αναβαθμίζετε το πακέτο/πλάνο υπηρεσίας έτσι ώστε να μπορέσουμε να ολοκληρώσουμε την αγορά.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Παρακαλώ συνδεθείτε στο λογαριασμό ProtonMail που αναβαθμίζετε το πακέτο/πλάνο υπηρεσίας έτσι ώστε να μπορέσουμε να ολοκληρώσουμε την ενεργοποίηση του πακέτου υπηρεσίας.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Βεβαιωθείτε ότι η σύνδεση σας στο διαδίκτυο λειτουργεί.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Παρακαλούμε δοκιμάστε ξανά";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Παρακαλώ ξεκλειδώστε την εφαρμογή για να προχωρήσετε στην ενεργοποίηση του πακέτου/πλάνου υπηρεσίας σας";
 
 /* Description */
 "Please use ProtonMail App login first." = "Παρακαλούμε χρησιμοποιήστε πρώτα την εφαρμογή σύνδεσης του ProtonMail.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "Γίνεται αποστολή μηνύματος";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "Αποστολή μηνύματος...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Η αποστολή μηνυμάτων από τη διεύθυνση %1$@ είναι μια λειτουργία επί πληρωμής. Το μήνυμα σας θα σταλεί από την προεπιλεγμένη σας διεύθυνση %2$@";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Αναβλήθηκε μέχρι";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Δυστυχώς, δεν μπορούμε να επεξεργαστούμε τις αγορές στην έκδοση beta της εφαρμογής iOS. Σας ευχαριστούμε για τη συμμετοχή σας στο pubic beta!";
 
 /* (No Comment) */
 "Space Warning" = "Προειδοποίηση χώρου";
@@ -2153,7 +2132,7 @@
 "To" = "Προς";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Για να αποτρέψουμε την κατάχρηση του ProtonMail,\r\n πρέπει να επαληθεύσουμε ότι είστε άνθρωπος.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Για να αποτρέψουμε την κατάχρηση του ProtonMail,&#13;\n πρέπει να επαληθεύσουμε ότι είστε άνθρωπος.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Για να επαναφέρετε τον κωδικό θυρίδας σας, παρακαλώ χρησιμοποιήστε την έκδοση web του ProtonMail στο protonmail.com";
@@ -2383,12 +2362,6 @@
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Δεν ήταν δυνατή η αποστολή του μηνύματος σας, πιθανώς λόγω κακής σύνδεσης δικτύου. Το μήνυμα σας αποθηκεύτηκε στα Πρόχειρα και θα σταλεί αυτόματα την επόμενη φορά που θα ανοίξετε την εφαρμογή.";
 
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Έχουμε ενημερωθεί για μια αγορά από το App Store, αλλά δεν μπορούμε να ταιριάξουμε την αγορά με το λογαριασμό σας.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Ενεργοποιήσαμε επιτυχώς τη συνδρομή σας. Κάντε επανεκκίνηση της εφαρμογής για να ξεκινήσετε να χρησιμοποιείτε το νέο σας πρόγραμμα υπηρεσιών.";
-
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Θα στείλουμε έναν κωδικό επαλήθευσης στο παραπάνω κινητό τηλέφωνο.";
 
@@ -2492,7 +2465,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ο νέος σας κρυπτογραφημένος λογαριασμός email έχει ρυθμιστεί και είναι έτοιμος να στέλνει και να λαμβάνει κρυπτογραφημένα μηνύματα.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Ο νέος σας ασφαλής λογαριασμός E-mail\r\n είναι έτοιμος.";
+"Your new secure email\r\n account is ready." = "Ο νέος σας ασφαλής λογαριασμός E-mail&#13;\n είναι έτοιμος.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Το πακέτο/πλάνο σας είναι ενεργό μέχρι";

@@ -14,7 +14,7 @@
 "**********" = "**********";
 
 /* optional text field */
-"*OPTIONAL" = "* 選擇性的";
+"*OPTIONAL" = "* 選用";
 
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/使用者";
@@ -38,10 +38,10 @@
 "%d Selected" = "已選擇 %d 個";
 
 /* Service plan capability; i = 1 */
-"%i email address" = "%i電子郵件地址";
+"%i email address" = "%i 個電子郵件地址";
 
 /* Service plan capability; i = 5 or 50 */
-"%i email addresses" = "%i電子郵件地址";
+"%i email addresses" = "%i 個電子郵件地址";
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 拖放到這裡來新增附件";
@@ -57,10 +57,10 @@
 "A message cannot have more than 5 labels" = "郵件的標籤不能超過5個";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "新版的Protonmail已經在App Store上架，請更新到最新版本。";
+"A new version of ProtonMail app is available, please update to latest version." = "ProtonMail 應用程式的新版本已可供使用，請更新至最新版本。";
 
 /* Description */
-"A new version of ProtonMail app is available. Please update to the latest version." = "新版的 ProtonMail 應用程式已經發布，請更新到最新版本。";
+"A new version of ProtonMail app is available. Please update to the latest version." = "ProtonMail 應用程式的新版本已可供使用。請更新至最新版本。";
 
 /* alert description */
 "A paid ProtonMail plan is required to use this feature" = "使用此功能需要付費的 ProtonMail 計畫";
@@ -78,7 +78,7 @@
 "Account" = "帳號";
 
 /* title */
-"Account password invalid" = "無效的郵箱密碼";
+"Account password invalid" = "帳號密碼無效";
 
 /* section title in settings */
 "Account Settings" = "帳號設定";
@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple應用內購費用";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Apple通知我們, 他們無法處理購買事宜。";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple 通知我們您已經升級服務方案，但是缺少一些技術資料。請填寫錯誤回報，我們的客戶支援團隊將與您聯絡。";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "苹果告诉我们你已经升级了服务计划，但我们检测到您自那时以来退出登陆了该帐户。";
-
 /* Apply action */
 "Apply" = "套用";
 
@@ -249,13 +240,13 @@
 "at" = "在";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "At least one email address in the group could not be found";
+"At least one email address in the group could not be found" = "該群組之中至少有一個電子郵件地址找不到";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "At least one recipient email address is improperly formatted, please double check them.";
+"At least one recipient email address is improperly formatted, please double check them." = "至少有一個收件人電子郵件地址格式不正確，請仔細檢查。";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "至少一個收件人的電子郵件地址/網域不存在或格式錯誤。 郵件已移至草稿。";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "附件已匯入";
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "顯示名稱";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "是否要啟動購買 %@ 的郵件地址？";
-
 /* Description */
 "Do you want to cancel the process?" = "您是否要取消此程序？";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "草稿";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "仍在上傳草稿……";
 
 /* menu title */
 "Drafts" = "草稿";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "無法確定檔案類型";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "無法從 AppStore 取得可用產品的清單。";
 
 /* Description */
 "Failed to initialize the app's saved data" = "應用程式的儲存資料初始化失敗";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "在我們的 iOS 程式中是不可能去切換成 %@ 的。";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我們無法將您購買的 AppStore 產品與我們伺服器上的產品相配合。請填寫錯誤回報表, 我們的客戶支援小組將與您聯繫。";
-
 /* Title */
 "Keep me updated about new features" = "讓我收到有關新功能的通知";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "郵件訊息 %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "無法傳送郵件。至少一個收件人的電子郵件地址/網域不存在或格式不良。";
 
 /* *
  *  Expiration View */
@@ -1476,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "在 EE, MMM d, yyyy 的 %1$@, %2$@, 寫下:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "如果您確定所有訂閱都是最新的，則請忽略購買啟用。 如需進一步的幫助，連絡客戶支援部門。 &#13;\n&#13;\n 您確定要忽略啟用嗎？";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "僅可新增一個免費帳號";
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "請輸入有效的電子郵件地址。";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "請登錄您正在升級服務方案的 protonmail 帳戶, 以便我們完成購買。";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "請登錄您正在升級服務方案的 protonmail 帳戶, 以便我們完成服務方案啟動。";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "請確定網際網路連線是否正常。";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "請再試一次";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "請解鎖應用程式, 繼續您的服務方案啟動";
 
 /* Description */
 "Please use ProtonMail App login first." = "請先使用 protonmail 應用程式登錄。";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "訊息傳送中";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "正在傳送郵件……";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "從 %1$@ 寄送郵件是付費功能，您的郵件將會從預設地址 %2$@ 寄出。";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "延遲提醒至";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "对不起，我们不接受公测版 iOS 程序的购买请求。感谢您参与公测！";
 
 /* (No Comment) */
 "Space Warning" = "儲存空間不足";
@@ -2153,7 +2132,7 @@
 "To" = "收件人";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "為了避免ProtonMail的服務被濫用,\r\n 我們需要驗證您是人類。";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "為了避免ProtonMail的服務被濫用,&#13;\n 我們需要驗證您是人類。";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "要重設您的郵箱密碼，請到 protonmail.com 使用網頁版ProtonMail";
@@ -2383,12 +2362,6 @@
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "我們無法傳送您的郵件，可能是因為網路連接不良的關係。您的郵件會儲存為草稿，並將在您下次開啟應用程式時自動傳送。";
 
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We have been notified of an App Store purchase but cannot match the purchase with an account of yours.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "我們已成功啟動您的訂閱。請重新啟動應用程式以開始使用新的服務方案。";
-
 /* text field notes */
 "We will send a verification code to the cell phone above." = "我們會傳送驗證碼至上述的手機號碼。";
 
@@ -2396,7 +2369,7 @@
 "We will send a verification code to the email address above." = "我們會傳送驗證碼至上述的電子郵件地址。";
 
 /* The body of the iOS 10 upgrate alert */
-"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future.";
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "我們將很快停止對iOS 10設備的支援。 請更新您設備的操作系統，以便將來繼續接收更新。";
 
 /* Title */
 "We would like to know what we can do better." = "請讓我們知道我們如何能做得更好。";
@@ -2492,7 +2465,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "新的加密電子郵件帳戶已經設置完成，您可以開始收發加密訊息。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "您新的安全電子郵件\r\n 帳戶已準備就緒。";
+"Your new secure email\r\n account is ready." = "您新的安全電子郵件&#13;\n 帳戶已準備就緒。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "您的計畫當前處於啟用狀態直到";

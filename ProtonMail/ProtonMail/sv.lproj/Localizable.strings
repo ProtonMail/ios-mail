@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple avgift för köp inuti app";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Apple meddelade oss att köpet ej kunde genomföras.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informerade oss att du har uppgraderat paketet för tjänster, men vissa tekniska data saknades. Fyll i felrapporten så kommer vårt kundtjänstteam att kontakta dig.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple meddelade oss att du har uppgraderat serviceplanen, men vi upptäckte att du har loggat ut från kontot sedan dess.";
-
 /* Apply action */
 "Apply" = "Verkställ";
 
@@ -330,7 +321,7 @@
 "Bug Description" = "Bugg-beskrivning";
 
 /* Title */
-"Bug Report Received" = "Rapport mottagen";
+"Bug Report Received" = "Rapporten är mottagen.";
 
 /* Link to More Credits screen */
 "Buy More Credits" = "Köp mer Credits";
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Visningsnamn";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
-
 /* Description */
 "Do you want to cancel the process?" = "Vill du avbryta processen?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Utkast";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "Draft is still uploading...";
 
 /* menu title */
 "Drafts" = "Utkast";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Kunde inte bestämma typen av fil";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "Kunde inte hämta listan över tillgängliga produkter från AppStore.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Misslyckades med att initiera applikationens sparade data";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Det går inte att växla till %@ inom vår iOS-app.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Vi kunde inte matcha AppStore-produkten du köpt med någon produkt på vår server. Fyll i buggrapporten så kommer vår kundtjänst att kontakta dig.";
-
 /* Title */
 "Keep me updated about new features" = "Håll mig uppdaterad om nya funktioner";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Meddelande %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.";
 
 /* *
  *  Expiration View */
@@ -1476,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Den d MMM. yyyy kl %1$@ skrev %2$@:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. &#13;\n&#13;\n Are you sure you want to ignore the activation?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Endast ett gratiskonto kan läggas till";
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Ange en giltig e-postadress.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Logga in på ditt ProtonMail konto som du vill uppgradera med våra tjänster till så vi kan fullfölja betalningen.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Logga in på det ProtonMail-konto som du uppgraderar serviceplanen för, så att vi kan genomföra aktiveringen av serviceplanen.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Se till att din internetanslutning fungerar.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Försök igen";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Lås upp appen för att fortsätta med aktiveringen av din serviceplan";
 
 /* Description */
 "Please use ProtonMail App login first." = "Vänligen använd ProtonMail App inlogg först.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "Skickar meddelande";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "Skickar meddelande...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Att skicka meddelanden från en %1$@. me adress är en betalfunktion. Ditt meddelande kommer att skickas från din standardadress %2$@";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Snoozad till";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Tyvärr, kan inte vi behandla inköp i betaversionen av iOS-appen. Tack för deltagandet i vår offentliga beta!";
 
 /* (No Comment) */
 "Space Warning" = "Utrymmesvarning";
@@ -2022,7 +2001,7 @@
 "terms and conditions" = "användarvillkor";
 
 /* (No Comment) */
-"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Tack för att du skickar en felrapport.  Rapporten har vi lagt till vår felrapporteringssystemet.";
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Tack för att du skickar en felrapport. Vi har lagt till din rapport i vårt felrapporteringssystem.";
 
 /* Description */
 "The authentication credentials are invalid." = "Autentiseringsuppgifterna är ogiltiga.";
@@ -2153,7 +2132,7 @@
 "To" = "Till";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "För att förhindra missbruk av ProtonMail\r behöver vi verifiera att du inte är en robot.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "För att förhindra missbruk av ProtonMail&#13; behöver vi verifiera att du inte är en robot.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "För att återställa lösenordet för din e-postlåda, vänligen använd ProtonMail:s webbversion på protonmail.com";
@@ -2382,12 +2361,6 @@
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Vi kunde inte skicka ditt meddelande, möjligen på grund av en dålig nätverksanslutning. Ditt meddelande sparades i ”Utkast” och skickas automatiskt nästa gång du öppnar appen.";
-
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We have been notified of an App Store purchase but cannot match the purchase with an account of yours.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Vi har aktiverat ditt abonnemang. Vänligen starta om appen för att börja använda din nya serviceplan.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Vi kommer att skicka en verifieringskod till ovanstående telefonnummer.";

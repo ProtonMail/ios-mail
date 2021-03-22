@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Taxa de compra dentro da aplicação Apple";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "A Apple informou-nos que não puderam processar a compra.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "A Apple informou-nos de que actualizou o seu plano, mas faltaram alguns dados técnicos. Por favor, reporte como erro e a nossa equipa de apoio ao cliente entrará em contacto consigo.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "A Apple informou-nos que actualizou o seu plano, mas detectámos que entretanto terminou a sessão na conta.";
-
 /* Apply action */
 "Apply" = "Aplicar";
 
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Nome a mostrar";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Deseja activar a compra para o endereço %@?";
-
 /* Description */
 "Do you want to cancel the process?" = "Quer cancelar o processo?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Rascunho";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "O rascunho ainda está a ser enviado...";
 
 /* menu title */
 "Drafts" = "Rascunhos";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Falha ao determinar o tipo de ficheiro";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "Falha ao obter a lista de produtos disponíveis na AppStore.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Falha ao inicializar os dados gravados da aplicação";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Não é possível mudar para %@ dentro da nossa aplicação iOS.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Não foi possível comparar o produto que comprou na App Store com qualquer produto no nosso servidor. Por favor, reporte um erro e a nossa equipa de apoio ao cliente entrará em contacto consigo.";
-
 /* Title */
 "Keep me updated about new features" = "Informem-me sobre novas funcionalidades";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Mensagem %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "A mensagem não pôde ser enviada. Pelo menos um endereço/domínio do destinatário não existe ou está mal formatado.";
 
 /* *
  *  Expiration View */
@@ -1476,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Em EE, d de MMM de yyyy às %1$@, %2$@, escreveu:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignore a activação da compra só se tiver a certeza de que todas as suas subscrições estão actualizadas. Para mais assistência, por favor contacte o apoio ao cliente. \r\n\r\nDeseja realmente ignorar a activação?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignore a activação da compra só se tiver a certeza de que todas as suas subscrições estão actualizadas. Para mais assistência, por favor contacte o apoio ao cliente. &#13;\n&#13;\nDeseja realmente ignorar a activação?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Apenas uma conta gratuita pode ser adicionada";
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Por favor insira um endereço de email válido.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Por favor, inicie a sessão na conta ProtonMail em que está a actualizar o plano para que possamos concluir a compra.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Por favor, inicie a sessão na conta ProtonMail em que está a actualizar o plano para que possamos concluir a activação.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Por favor, certifique-se de que a sua ligação à Internet está a funcionar.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Por favor, tente novamente";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Por favor, desbloqueie a aplicação para prosseguir com a activação do seu plano";
 
 /* Description */
 "Please use ProtonMail App login first." = "Por favor, primeiro inicie a sessão na aplicação ProtonMail.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "A enviar a mensagem";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "A enviar a mensagem...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Enviar mensagens do endereço %1$@ é uma funcionalidade paga. A sua mensagem será enviada do seu endereço predefinido %2$@";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Adiadas até";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Desculpe, não podemos processar compras na versão beta da aplicação iOS. Obrigado por participar na nossa versão beta pública!";
 
 /* (No Comment) */
 "Space Warning" = "Aviso de espaço";
@@ -2153,7 +2132,7 @@
 "To" = "Para";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Para evitar abusos do ProtonMail,\r\n temos de verificar se é um ser humano.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Para evitar abusos do ProtonMail,&#13;\n temos de verificar se é um ser humano.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Para repor a senha da sua caixa de entrada, por favor utilize a versão web do ProtonMail em protonmail.com";
@@ -2383,12 +2362,6 @@
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Não foi possível enviar a mensagem, possivelmente por causa de uma rede fraca. A sua mensagem está nos rascunhos e será enviada automaticamente quando reiniciar a aplicação.";
 
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Fomos notificados de uma compra na App Store, mas não podemos encontrar a compra numa conta sua.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Activámos a sua subscrição com sucesso. Por favor, reinicie a aplicação para começar a usar o seu novo plano.";
-
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Enviaremos um código de verificação para o telemóvel indicado acima.";
 
@@ -2492,7 +2465,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "A sua nova conta de email encriptado foi criada e está pronta para enviar e receber mensagens encriptadas.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "A sua nova conta segura\r\n está pronta.";
+"Your new secure email\r\n account is ready." = "A sua nova conta segura&#13;\n está pronta.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "O seu plano está activo até";

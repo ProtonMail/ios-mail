@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Tasqamt n tiɣin deg usnas Apple";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Apple yenna-yaɣ-d d akken ur yezmir ara ad yessesfer tiɣint-agi.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple yuzen-aɣ-d ulɣu belli tleqqmeḍ aɣawas n umeẓlu, maca kra n yisefka itiknikanen xuṣṣen. Ttxil-k·m ɛemmeṛ aneqqis n wabug syen tarbaɛt-nneɣ n tallalt n umsaɣ ad ak·akem-id-nermes.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple yuzen-aɣ-d ulɣu belli tleqqmeḍ aɣawas n umeẓlu, maca nufa-d teffɣeḍ seg umiḍan seg wass-nni.";
-
 /* Apply action */
 "Apply" = "Snes";
 
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Isem n uskan";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Tebɣiḍ ad tremdeḍ tiɣin i tansa %@ address?";
-
 /* Description */
 "Do you want to cancel the process?" = "Tebɣiḍ ad tesfesxeḍ akala?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Arewway";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "Irewwayen ad ttadren akka tura...";
 
 /* menu title */
 "Drafts" = "Irewwayen";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Yecceḍ deg tifin n tewsit n ufaylu";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "Tella-d tuccḍa deg tiffin n tebdart n ifarisen deg AppStore.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Awennez n isefka yettwaskelsen n usnas ur yeddi ara";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Ur tezmireḍ ara ad tɛeddiḍ ɣer %@ seg usnas-nneɣ iOS.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "D awezɣi umeɣru n ufaris i d-tesɣiḍ seg App Store akked d yifuras i yellan deg uqeddac-nneɣ. Ttxil ččar aneqqis n ubug akken tarbaɛt-nneɣ n tallelt n yimsaɣen ad ak-kem-d-tnermes.";
-
 /* Title */
 "Keep me updated about new features" = "Lɣu-yi-d ɣef timahilin timaynutin";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Izen %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Imayl ur yettwazen ara. Xersum yiwet n tansa/taɣult n unermas ur telli ara neɣ ur temsil ara akken ilaq.";
 
 /* *
  *  Expiration View */
@@ -1476,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Deg EE, MMM d, yyyy ɣef %1$@, %2$@, y/tura:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ttu asermed n tiɣin ma yella kan tetḥeqqeḍ belli akk iltaɣen-inek•m ttweleqqemen. I wugar n tallelt, ttxil-k•m nermes tadhelt n umsaɣ.\r\n\r\n Tetḥeqqeḍ belli tebɣiḍ ad tettuḍ asermed?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ttu asermed n tiɣin ma yella kan tetḥeqqeḍ belli akk iltaɣen-inek•m ttweleqqemen. I wugar n tallelt, ttxil-k•m nermes tadhelt n umsaɣ.&#13;\n&#13;\n Tetḥeqqeḍ belli tebɣiḍ ad tettuḍ asermed?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Yiwen kan n umiḍan n baṭṭel i izemren ad yettwarnu";
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Ttxil-k sekcem imayl ameɣtu.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Ttxil qqen ɣer umiḍan-ik•im ProtoMail iwumi tleqqmeḍ aɣawas n useqdec akken ad nesmed timseɣiwt.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Ttxil qqen ɣer umiḍan-ik•im ProtoMail iwumi tleqqmeḍ aɣawas n useqdec akken ad nesmed armad n uɣawas n useqdec.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Ttxil-k/m senqed d akken tuqqna-inek/m internet tetteddu akken iwata.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Ɛreḍ tikelt nniḍen";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Ma ulac aɣilif kkes aseḍru i usnas akken ad tkemmleḍ deg urmad n uɣawas n umeẓlu";
 
 /* Description */
 "Please use ProtonMail App login first." = "Ma ulac aɣilif, zwir deg tuqqna ar usnas ProtonMail.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "Tuzna n yizen";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "Tuzna n yizen...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Tuzna n iznan seg tansa %1$@ d tamahilt s uxeles. Izen-inek ad itwazen seg tansa-inek tamezwart %2$@";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Smezger alama";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Suref-aɣ, ur nezmir ara ad nermed timahilin n tmesɣiwt deg lqem beta n usnas iOS. Tanemmirt imi tettekkaḍ deg lqem-nneɣ beta azayez!";
 
 /* (No Comment) */
 "Space Warning" = "Alɣu n talɣut";
@@ -2153,7 +2132,7 @@
 "To" = "I";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Akken ad seḥbiber mgal yir aseqdec n ProtonMail,\r\n Nesra ad nsenqed d akken d amdan i telliḍ.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Akken ad seḥbiber mgal yir aseqdec n ProtonMail,&#13;\n Nesra ad nsenqed d akken d amdan i telliḍ.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffi, seqdec lqem web n ProtonMail di protonmail.com";
@@ -2383,12 +2362,6 @@
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Ur nessaweḍ ara ad nazen -izen-inek·inem, ahat d tuqqna i ixuṣṣen ɣer uzeṭṭa. Izen-inek·inem yettusekles deg urewway, ad yettwazen s wudem awurman mi ara teldiḍ asnas-inek·inem.";
 
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Neṭṭf-d talɣut n tiɣin ɣef App Store maca ur nezmir ara ad neg assaɣ gar tiɣin-agi akked umiḍan yellan d ayla-k•m.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Tremded akken iwata amulteɣ-inek·inem. Ttxil-k·m ales asenker n usnas i wakken ad tebduḍ aɣawas-inek·inem amaynut n umeẓlu.";
-
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Ad nazen tangalt n usenqed ar tiliɣri ddaw-a.";
 
@@ -2492,7 +2465,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Amiḍan-ik amaynut n yimaylen iwgelhanen yers, udiɣ ihegga i tuzna d urmas i yiznan iwgelhanen.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Amiḍan-ik amaynut n yimayl\r\n aɣelsan ihegga.";
+"Your new secure email\r\n account is ready." = "Amiḍan-ik amaynut n yimayl&#13;\n aɣelsan ihegga.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Aɣawas-ik/m yermed armi";

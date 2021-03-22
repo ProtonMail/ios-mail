@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple 应用内购分成";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Apple 告诉我们此交易未能完成。";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple 告知我们您已完成升级，但有部分技术数据缺失。请提交一份问题反馈，我们的客服团队将联系您。";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple 告诉我们您已完成升级，但我们发现您那时已退出账户。";
-
 /* Apply action */
 "Apply" = "应用";
 
@@ -249,13 +240,13 @@
 "at" = "在";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "At least one email address in the group could not be found";
+"At least one email address in the group could not be found" = "在群组中至少有一个邮件地址无法被找到";
 
 /* incorrect email format error in composer */
 "At least one recipient email address is improperly formatted, please double check them." = "至少有一个收件人的电子邮件地址格式不正确，请重新检查。";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "至少有一个收件人电子邮件地址/域不存在或格式不正确。信件已移动到草稿箱。";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "附件已导入";
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "对外名称";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
-
 /* Description */
 "Do you want to cancel the process?" = "是否取消该进程？";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "草稿";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "草稿仍在上传中...";
 
 /* menu title */
 "Drafts" = "草稿箱";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "无法确定文件类型";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "无法从 App Store 读取可购买的项目。";
 
 /* Description */
 "Failed to initialize the app's saved data" = "程序数据初始化失败";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "不支持在 iOS 程序中开通 %@。";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我们的系统中查不到您在 App Store 上购买的项目。请提交一份问题反馈，我们的客服团队将联系您。";
-
 /* Title */
 "Keep me updated about new features" = "有新功能时通知我";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "邮件 %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "无法发送信件。至少有一个收件人电子邮件地址/域不存在或格式不正确。";
 
 /* *
  *  Expiration View */
@@ -1476,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy 年 MMM d 日EE %1$@, %2$@ 来信：";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "只有在您确信您所有的订阅都是最新时，您才应忽略购买激活。如需进一步的协助，请联系客服。&#13;\n&#13;\n您确认要忽略激活吗？";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "只能同时登录一个免费账户";
@@ -1491,7 +1479,7 @@
 "Organization" = "单位";
 
 /* The title of the iOS 10 upgrate alert */
-"OS compatibility" = "OS compatibility";
+"OS compatibility" = "操作系统兼容性";
 
 /* default vcard types */
 "Other" = "其他";
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "请输入有效的的邮件地址。";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "请登录要升级的 ProtonMail 账户以便完成交易。";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "请登录要升级的 ProtonMail 账户以便完成激活。";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "请确认您已连接网络。";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "请重试";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "请解锁应用程序完成激活";
 
 /* Description */
 "Please use ProtonMail App login first." = "请先使用 ProtonMail App 登录。";
@@ -1732,7 +1711,7 @@
 "Reading device contacts data..." = "正在读取设备上的联系人数据...";
 
 /* The error message is shown in composer */
-"Recipient not found" = "Recipient not found";
+"Recipient not found" = "未找到收件人";
 
 /* Title */
 "Recovery Code" = "恢复码";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "发送消息";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "正在发送邮件...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "通过 %1$@ 地址发送邮件需要付费，因此您的邮件仍将从首选地址 %2$@ 发出。";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "免打扰直到";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "对不起，我们不接受公测版 iOS 程序的购买请求。感谢您参与公测！";
 
 /* (No Comment) */
 "Space Warning" = "存储空间提示";
@@ -2153,7 +2132,7 @@
 "To" = "收件人";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "为避免 ProtonMail 被滥用，\r我们需要验证您不是机器人。";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "为避免 ProtonMail 被滥用，&#13;我们需要验证您不是机器人。";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "请前往 protonmail.com 使用网页版 ProtonMail 重置邮箱密码";
@@ -2383,12 +2362,6 @@
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "邮件发送失败，网络可能存在问题。邮件已存为草稿，下次启动程序时将自动发送。";
 
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "我们已经收到了App Store的购买通知，但是无法将这笔购买与您的帐户匹配。";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "激活已完成。请重启此程序开始体验。";
-
 /* text field notes */
 "We will send a verification code to the cell phone above." = "我们将向该号码发送验证码。";
 
@@ -2420,7 +2393,7 @@
 "wrote:" = "来信：";
 
 /* Yes action */
-"Yes" = "Yes";
+"Yes" = "确定";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "是的，用于 ";
@@ -2492,7 +2465,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "您的加密邮箱账户已经设置完毕，可以收发加密邮件了。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "您的安全邮箱\r\n现已就绪。";
+"Your new secure email\r\n account is ready." = "您的安全邮箱&#13;现已就绪。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "您的订阅有效期至";

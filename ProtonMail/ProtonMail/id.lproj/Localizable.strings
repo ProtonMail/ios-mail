@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Tarif transaksi internal Apple";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Apple menginformasikan, mereka tidak dapat memproses pembayaran.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple menginformasikan, Anda sudah meningkatkan paket layanan, tapi beberapa data teknis hilang. Mohon isi laporan bug dan tim dukungan pelanggan kami akan menghubungi Anda.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple menginformasikan, Anda sudah meningkatkan paket layanan, tapi kami mendeteksi sejak itu Anda telah keluar dari akun tersebut.";
-
 /* Apply action */
 "Apply" = "Terapkan";
 
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Nama tampilan";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Anda ingin mengaktifkan pembayaran untuk alamat %@?";
-
 /* Description */
 "Do you want to cancel the process?" = "Anda ingin membatalkan proses?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Draf";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "Draf masih mengunggah...";
 
 /* menu title */
 "Drafts" = "Draf";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Gagal menentukan tipe berkas";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "Gagal mendapatkan daftar ketersediaan produk dari AppStore.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Gagal menginisialisasi data yang disimpan aplikasi";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Tidak mungkin pindah ke %@ lewat aplikasi iOS kami.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Tidak mungkin mencocokkan produk App Store yang Anda beli dengan produk apapun di server kami. Silakan isi laporan bug dan tim dukungan pelanggan akan menghubungi Anda.";
-
 /* Title */
 "Keep me updated about new features" = "Beri saya kabar tentang fitur-fitur baru";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Pesan %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Pesan tidak dapat dikirim. Setidaknya satu domain/alamat surel penerima yang tidak ada atau diformat buruk.";
 
 /* *
  *  Expiration View */
@@ -1476,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Pada EE, d MMM yyyy pukul %1$@, %2$@, menulis:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Abaikan aktivasi pembayaran saja jika Anda yakin semua langganan Anda terus diperbarui. Untuk bantuan lebih lanjut, silakan hubungi layanan konsumen. \r\n\r\n Anda yakin ingin mengabaikan aktivasi?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Abaikan aktivasi pembayaran saja jika Anda yakin semua langganan Anda terus diperbarui. Untuk bantuan lebih lanjut, silakan hubungi layanan konsumen. &#13;\n&#13;\n Anda yakin ingin mengabaikan aktivasi?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Hanya satu akun gratis yang bisa ditambahkan";
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Silakan masukkan alamat surel yang valid.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Mohon masuk ke akun ProtonMail yang paket layanannya ingin Anda tingkatkan agar kami dapat menyelesaikan pembayaran.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Mohon masuk ke akun ProtonMail yang paket layanannya ingin Anda tingkatkan agar kami dapat menyelesaikan aktivasi paket layanan.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Pastikan koneksi internet anda berfungsi.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Silakan coba lagi";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Mohon buka kunci aplikasi untuk melanjutkan aktivasi paket layanan Anda";
 
 /* Description */
 "Please use ProtonMail App login first." = "Mohon masuk lewat aplikasi ProtonMail lebih dahulu.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "Mengirim pesan";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "Mengirim pesan...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Mengirim pesan dari alamat %1$@ adalah fitur berbayar. Pesan Anda akan dikirim dari alamat bawaan %2$@";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Tunda sampai";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Maaf, kami tidak dapat memproses pembayaran di aplikasi iOS versi beta. Terima kasih telah berpartisipasi dalam program beta publik kami!";
 
 /* (No Comment) */
 "Space Warning" = "Peringatan ruang";
@@ -2153,7 +2132,7 @@
 "To" = "Untuk";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Untuk mencegah penyalahgunaan ProtonMail,\r\n kami perlu memverifikasi bahwa Anda manusia.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Untuk mencegah penyalahgunaan ProtonMail,&#13;\n kami perlu memverifikasi bahwa Anda manusia.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Untuk mengatur ulang kata sandi kotak surat Anda, mohon gunakan ProtonMail versi web di protonmail.com";
@@ -2383,12 +2362,6 @@
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Kami tidak dapat mengirim pesan anda, mungkin karena koneksi jaringan yang buruk. Pesan anda telah disimpan di Draf dan akan dikirim secara otomatis saat anda membuka aplikasi berikutnya.";
 
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Kami sudah diberitahu pembayaran App Store tetapi tidak dapat mencocokkan pembayaran dengan akun Anda.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Kami berhasil mengaktifkan langganan Anda. Silakan luncurkan ulang aplikasi untuk menggunakan paket layanan baru.";
-
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Kami akan mengirimkan kode verifikasi ke ponsel di atas.";
 
@@ -2492,7 +2465,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Akun surel terenkripsi baru Anda sudah diatur dan siap untuk mengirim dan menerima pesan terenkripsi.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Akun surel aman Anda\r\n telah siap digunakan.";
+"Your new secure email\r\n account is ready." = "Akun surel aman Anda&#13;\n telah siap digunakan.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Paket Anda aktif sampai";

@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Kosten Apple in-app aankoop";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Apple heeft ons geïnformeerd dat ze de aankoop niet konden verwerken.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple heeft ons geïnformeerd dat u het serviceplan geüpgraded heeft maar er missen technische gegevens. Dien een bugrapport in en ons ondersteuningsteam neemt contact op met u.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple heeft ons geïnformeerd dat u het serviceplan geüpgraded heeft maar wij hebben geconstateerd dat u sinsdien uitgelogd bent.";
-
 /* Apply action */
 "Apply" = "Toepassen";
 
@@ -228,7 +219,7 @@
 "Archive" = "Archief";
 
 /* mail location title */
-"ARCHIVE" = "ARCHIEF";
+"ARCHIVE" = "Archief";
 
 /* Description */
 "Archived" = "Gearchiveerd";
@@ -252,10 +243,10 @@
 "At least one email address in the group could not be found" = "Tenminste één e-mailadres in de groep kon niet worden gevonden";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "Ten minste één ontvanger e-mailadres is onjuist opgemaakt, gelieve deze te controleren.";
+"At least one recipient email address is improperly formatted, please double check them." = "Ten minste één e-mailadres van de ontvangers is onjuist opgemaakt, gelieve deze te controleren.";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Tenminste één ontvanger e-mailadres/domein bestaat niet of is slecht opgemaakt. Bericht verplaatst naar concepten.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Tenminste één e-mailadres/domeinnaam van de ontvangers bestaat niet of is onjuist opgemaakt. Bericht is verplaatst naar concepten.";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Bijlage geïmporteerd";
@@ -385,7 +376,7 @@
 "Can't find the selected message. Please try again." = "Kan het geselecteerde bericht niet vinden. Probeer het opnieuw.";
 
 /* Description */
-"Can't find the value from the response body" = "Kan de waarde in de reactietekst niet vinden";
+"Can't find the value from the response body" = "Kan de waarde niet vinden in de reactie van de server";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Kan deze bijlage niet vinden!";
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Weergavenaam";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Wilt u de aankoop voor %@ adres activeren?";
-
 /* Description */
 "Do you want to cancel the process?" = "Wilt u het proces annuleren?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Concept";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "Concept wordt nog steeds geüpload...";
 
 /* menu title */
 "Drafts" = "Concepten";
@@ -912,9 +903,6 @@
 /* Error message */
 "Failed to determine type of file" = "Kon bestandstype niet bepalen";
 
-/* Error message */
-"Failed to get list of available products from AppStore." = "Fout bij het ophalen van lijst met beschikbare producten uit de AppStore.";
-
 /* Description */
 "Failed to initialize the app's saved data" = "Het initialiseren van de opgeslagen data van de app is mislukt";
 
@@ -1077,7 +1065,7 @@
 
 /* *
  *  MailboxViewController */
-"INBOX" = "INBOX";
+"INBOX" = "Inbox";
 
 /* Title */
 "Incorrect password" = "Onjuist wachtwoord";
@@ -1135,9 +1123,6 @@
 
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Het is niet mogelijk om over te schakelen naar %@ binnen onze iOS app.";
-
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Het was niet mogelijk om het het aangekochte AppStore-product op onze server te vinden. Rapporteer deze fout en onze klantensupportteam zal contact met u opnemen.";
 
 /* Title */
 "Keep me updated about new features" = "Houd mij op de hoogte van nieuwe functionaliteiten";
@@ -1226,7 +1211,7 @@
 "Log out %@?" = "%@ afmelden?";
 
 /* Action */
-"Log Out All" = "Alles afmelden";
+"Log Out All" = "Overal uitloggen";
 
 /* Alert when auth token is revoked and switch to another */
 "Logged out from %@ and signed in with %@" = "Uitgelogd van %1$@ en ingelogd met %2$@";
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Bericht %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Het bericht kon niet worden verzonden. Ten minste één e-mailadres/domein van de ontvanger bestaat niet of is slecht opgemaakt.";
 
 /* *
  *  Expiration View */
@@ -1476,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Op EE d MMM yyyy om %1$@, schreef %2$@:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Negeer alleen de aankoopactivatie als je zeker weet dat al je abonnementen up-to-date zijn. Voor verdere hulp, neem contact op met klantenservice. \r\n\r\n Weet u zeker dat u de activering wilt negeren?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Negeer alleen de aankoopactivatie als je zeker weet dat al je abonnementen up-to-date zijn. Voor verdere hulp, neem contact op met klantenondersteuning. &#13;\n&#13;\n Weet u zeker dat u de activering wilt negeren?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Er kan slechts één gratis account worden toegevoegd";
@@ -1500,7 +1488,7 @@
 "OTHER PLANS" = "ANDERE ABONNEMENTEN";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Ons klantenservice team zal proberen uw serviceplan handmatig te activeren als u ermee instemt technische gegevens te koppelen die AppStore op het moment van aankoop heeft verstrekt. Deze gegevens bevatten geen details over uw iTunes-account, Apple ID, gekoppelde creditcards of andere gebruikersgegevens. Technische data helpt ons alleen te verifiëren of de transactie is uitgevoerd op de servers van de AppStore.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Onze klantenondersteuning zal proberen uw serviceplan handmatig te activeren als u ermee instemt technische gegevens te koppelen die AppStore op het moment van aankoop heeft verstrekt. Deze gegevens bevatten geen details over uw iTunes-account, Apple ID, gekoppelde creditcards of andere gebruikersgegevens. Technische data helpt ons alleen te verifiëren of de transactie is uitgevoerd op de servers van de AppStore.";
 
 /* "Draft" = "Draft"; */
 "Outbox" = "Postvak uit";
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Voer een geldig e-mailadres in.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Log in op het ProtonMail-account dat u het serviceplan aan het upgraden bent, zodat we de aankoop van het serviceplan kunnen voltooien.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Log in op het ProtonMail-account dat u het serviceplan aan het upgraden bent, zodat we de activering van het serviceplan kunnen voltooien.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Zorg ervoor dat uw internetverbinding werkt.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Probeer opnieuw";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Gelieve de app te ontgrendelen om verder te gaan met de activering van uw service plan";
 
 /* Description */
 "Please use ProtonMail App login first." = "Gebruik eerst de ProtonMail App login.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "Bericht wordt verzonden";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "Bericht verzenden...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Het verzenden van berichten vanaf het adres %1$@ is een betaalde functionaliteit. Uw bericht zal vanaf uw standaard e-mailadres %2$@ verzonden worden";
 
@@ -1858,7 +1840,7 @@
 "Sent" = "Verzonden";
 
 /* mail location title */
-"SENT" = "VERZONDEN";
+"SENT" = "Verzonden";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "Verzonden door ProtonMail met zero access versleuteling";
@@ -1917,18 +1899,15 @@
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Uitgesteld tot";
 
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Sorry, we kunnen aankopen niet verwerken in de bètaversie van de iOS-app. Bedankt voor uw deelname aan onze publieke bètaversie!";
-
 /* (No Comment) */
 "Space Warning" = "Waarschuwing van opslagruimte";
 
 /* mail location desc
    menu title */
-"Spam" = "Ongewenst";
+"Spam" = "Spam";
 
 /* mail location title */
-"SPAM" = "SPAM";
+"SPAM" = "Spam";
 
 /* Description */
 "Spammed" = "Spam";
@@ -1949,7 +1928,7 @@
 "Starred" = "Met ster";
 
 /* "INBOX" */
-"STARRED" = "MET STER";
+"STARRED" = "Met ster";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Starttijd";
@@ -2059,7 +2038,7 @@
 "The maximum number of labels is %d." = "Het maximaal aantal labels is %d.";
 
 /* update password error */
-"The new password can't be empty." = "Het nieuwe wachtwoordveld kan niet leeg zijn.";
+"The new password can't be empty." = "Het nieuwe wachtwoord kan niet leeg zijn.";
 
 /* (No Comment) */
 "The new password can't empty" = "Het nieuwe wachtwoord kan niet leeg zijn";
@@ -2144,16 +2123,16 @@
 "Title" = "Aanhef";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "De validatie van het TLS-certificaat is mislukt. Uw verbinding kan worden bewaakt en de app is tijdelijk geblokkeerd voor uw veiligheid.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "De validatie van het TLS-certificaat is mislukt. Uw gegevens kunnen onderschept worden en de app is voor uw veiligheid tijdelijk geblokkeerd.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "De validatie van het TLS-certificaat is mislukt. Uw verbinding kan worden bewaakt en de app is tijdelijk geblokkeerd voor uw veiligheid.\n\nschakel direct van netwerk";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "De validatie van het TLS-certificaat is mislukt. Uw gegevens kunnen onderschept worden en de app is voor uw veiligheid tijdelijk geblokkeerd.\n\nschakel direct van netwerk";
 
 /* Title */
 "To" = "Aan";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Om misbruik van ProtonMail te voorkomen, moeten we\r\n controleren of u een natuurlijk persoon bent.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Om misbruik van ProtonMail te voorkomen, moeten we&#13;\n controleren of u een natuurlijk persoon bent.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van ProtonMail te gebruiken via ProtonMail.com";
@@ -2186,7 +2165,7 @@
 "Trash" = "Prullenbak";
 
 /* mail location title */
-"TRASH" = "PRULLENBAK";
+"TRASH" = "Prullenbak";
 
 /* Title */
 "Trouble shooting guide" = "Foutoplossingsgids";
@@ -2383,12 +2362,6 @@
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "We konden uw bericht niet versturen, mogelijk vanwege een slechte netwerkverbinding. Uw bericht is opgeslagen in Concepten en wordt de volgende keer dat u de app opent automatisch verzonden.";
 
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We zijn op de hoogte gesteld van een aankoop in de App Store, maar kunnen de aankoop niet koppelen aan een account van jou.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "We hebben uw abonnement succesvol geactiveerd. Start de app opnieuw om gebruik te maken van uw nieuwe abonnement.";
-
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Wij zullen een verificatiecode sturen naar bovenstaand telefoonnummer.";
 
@@ -2432,7 +2405,7 @@
 "You are about to launch the web browser and navigate to" = "U staat op het punt de webbrowser te starten en te navigeren naar";
 
 /* Alert of removing all accounts */
-"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "U staat op het punt om alle rekeningen te verwijderen. U zult niet in staat zijn om ze te openen vanaf dit apparaat, tenzij u ze opnieuw toevoegt.\n\nWilt u toch al uw accounts verwijderen?";
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "U staat op het punt om alle accounts te verwijderen. U zult niet langer toegang hebben vanaf dit apparaat, tenzij u ze opnieuw toevoegt.\n\nWilt u toch al uw accounts verwijderen?";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "U kunt onder \"Instellingen\" in de ProtonMail-app veeggebaren instellen.";
@@ -2444,7 +2417,7 @@
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "U hebt FaceID uitgeschakeld in uw systeeminstellingen. FaceID is gebruikt om belangrijke accountinformatie te beschermen. Om toegang te krijgen tot uw account, gaat u naar de instellingen en heractiveert u FaceID, of meldt u zich weer aan.";
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "U hebt FaceID uitgeschakeld in uw systeeminstellingen. FaceID is gebruikt om belangrijke accountinformatie te beschermen. Om toegang te krijgen tot uw account, gaat u naar de instellingen en heractiveert u FaceID, of u meldt zich opnieuw aan.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "U heeft verlopend bericht ingeschakeld, maar niet alle ontvangers ondersteunen dit. Voeg een wachtwoord toe en/of schakel PGP uit om verlopende berichten te kunnen gebruiken voor alle geadresseerden.";
@@ -2492,7 +2465,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Uw nieuwe versleutelde e-mailaccount is aangemaakt, u kunt nu versleutelde berichten verzenden en ontvangen.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Uw nieuwe beveiligde e-mail\r\n account is klaar.";
+"Your new secure email\r\n account is ready." = "Uw nieuwe beveiligde e-mail&#13;\n account is klaar.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Uw plan is momenteel actief tot";

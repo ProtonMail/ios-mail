@@ -5,7 +5,7 @@
 "NSAppleMusicUsageDescription" = "Потрібно для прикріплення медіафайлів до електронних листів.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Потрібно для прикріплення світлин до електронних листів.";
+"NSCameraUsageDescription" = "Необхідно для вкладання фотографій до електронних листів.";
 
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Використовується для отримання доступу до адрес електронної пошти для контактів, збережених на пристрої, щоб вони могли використовуватися під час складання повідомлення чи під час завантаження контактів пристрою до вашого облікового запису. Контактні дані не завантажується на наші сервери без явної дії для цього.";
@@ -14,8 +14,8 @@
 "NSFaceIDUsageDescription" = "Дозволяє швидко й безпечно розблокувати програму.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Необхідне для збереження вкладених зображень до бібліотеки світлин.";
+"NSPhotoLibraryAddUsageDescription" = "Необхідно для збереження вкладених зображень до бібліотеки фотографій.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Потрібно для прикріплення світлин до електронного листа.";
+"NSPhotoLibraryUsageDescription" = "Необхідно для вкладання фотографій до електронних листів.";
 
