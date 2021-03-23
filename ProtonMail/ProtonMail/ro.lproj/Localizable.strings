@@ -1464,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d MMM yyyy la %1$@, %2$@, a scris:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorați activarea achiziției doar dacă sunteți sigur că toate abonamentele sunt actualizate. Pentru asistență suplimentară, contactați echipa de asistență a clienților. &#13;\n&#13;\n Sigur doriți să ignorați activarea?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorați activarea achiziției doar dacă sunteți sigur că toate abonamentele sunt actualizate. Pentru asistență suplimentară, contactați echipa de asistență a clienților. \r\n\r\n Sigur doriți să ignorați activarea?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Doar un singur cont gratuit poate fi adăugat";
@@ -2132,7 +2132,7 @@
 "To" = "Către";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Pentru a preveni abuzarea ProtonMail,&#13;\n verificăm dacă sunteți persoană.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Pentru a preveni abuzarea ProtonMail,\r\n verificăm dacă sunteți persoană.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pentru a reseta parola mesajelor, vă rugăm să folosiți versiunea web a ProtonMail de la protonmail.com";
@@ -2465,7 +2465,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Noul dvs. cont de e-mail criptat a fost setat și este pregătit pentru trimiterea și primirea mesajelor criptate.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Noul cont de e-mail&#13;\n securizat este gata.";
+"Your new secure email\r\n account is ready." = "Noul cont de e-mail\r\n securizat este gata.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Abonamentul este activ până la";
