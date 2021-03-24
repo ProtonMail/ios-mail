@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Þóknun Apple fyrir kaup í forritinu";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Apple hefur tilkynnt okkur að þeir geti ekki meðhöndlað þessi kaup.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en einhverjar tæknilegar upplýsingar vantaði. Gefðu þær upp í villuskýrslunni og mun notendaaðstoðarteymið okkar síðan hafa samband við þig.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en við sjáum að þú hefur skráð þig út af notandaaðgangnum síðan þá.";
-
 /* Apply action */
 "Apply" = "Virkja";
 
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Birtingarnafn";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Viltu virkja kaupin fyrir %@ póstfangið?";
-
 /* Description */
 "Do you want to cancel the process?" = "Viltu hætta við ferlið?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Drög";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "Draft is still uploading...";
 
 /* menu title */
 "Drafts" = "Drög";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Tókst ekki að ákvarða gerð skráar";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "Það tókst ekki að sækja lista yfir tiltækar vörur í AppStore.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Mistókst að frumstilla vistuð gögn forrits";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Það er ekki hægt að skipta yfir í  %@ innan iOS-forritsins.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Okkur tókst ekki að tengja vöruna sem þú keyptir í AppStore við neina vöru á þjónum okkar. Vinsamlega fylltu inn í villuskýrsluna og notendaaðstoðarteymið okkar mun hafa samband við þig eins fljótt og auðið er.";
-
 /* Title */
 "Keep me updated about new features" = "Halda mér upplýstum um nýja eiginleika";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Skilaboð %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.";
 
 /* *
  *  Expiration View */
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Settu inn gilt tölvupóstfang.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Skráðu þig inn í ProtonMail-aðganginn sem þú ætlar að uppfæra þjónustuáskriftina fyrir, svo að við getum lokið viðskiptunum.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Skráðu þig inn í ProtonMail-aðganginn sem þú ætlar að uppfæra þjónustuáskriftina fyrir, svo að við getum lokið virkjun þjónustuáskriftarinnar.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Gakktu úr skugga um að nettengingin þín virki.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Endilega reyndu aftur";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Aflæstu forritinu til að halda áfram með virkjun þjónustuáskriftarinnar þinnar";
 
 /* Description */
 "Please use ProtonMail App login first." = "Notaðu fyrst ProtonMail-forritið til að skrá þig inn.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "Sendi skilaboð";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "Sending message...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Að senda skilaboð frá %1$@ póstföngum er eiginleiki sem greiða þarf fyrir. Skilaboðin þín verða send frá sjálfgefna tölvupóstfanginu %2$@";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Frestað til";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Því miður getum við ekki meðhöndlað viðskipti í beta-þróunarútgáfu iOS-forritsins. Við þökkum þér hinsvegar fyrir að taka þátt í þróunarvinnu opinberu beta-útgáfunnar.";
 
 /* (No Comment) */
 "Space Warning" = "Aðvörun vegna lítils diskpláss";
@@ -2382,12 +2361,6 @@
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Ekki var hægt að senda skilaboðin þín, mögulega vegna lélegrar nettengingar. Skilaboðin þín voru vistuð í Drög og verða sjálfkrafa send næst þegar þú opnar forritið.";
-
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Okkur hefur verið gert viðvart um kaup í AppStore, en tókst ekki að tengja vöruna við neinn notandaaðgang á þínu nafni.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Okkur tókst að virkja áskriftina þína. Endurræstu forritið til að fara að nota nýju þjónustuáskriftina.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Við munum senda sannvottunarkóða á símanúmerið hér fyrir ofan.";

@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple alkalmazáson belüli vásárlás költsége";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Az Apple azt jelezte vissza, hogy nem tudták feldolgozni a vásárlást.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de bizonyos technikai adatok hiányoznak. Kérjük, töltsön ki egy hiba jelentést és a támogatási csoportunk felveszi önnel a kapcsolatot.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de úgy vettük észre, hogy azóta kilépett a fiókból.";
-
 /* Apply action */
 "Apply" = "Alkalmazás";
 
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Megjelenítendő név";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Aktiválja a vásárlást a %@ címhez?";
-
 /* Description */
 "Do you want to cancel the process?" = "Megszakítja a folyamatot?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Piszkozat";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "Draft is still uploading...";
 
 /* menu title */
 "Drafts" = "Piszkozatok";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Nem sikerült meghatározni a fájl típusát";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "Nem sikerült betölteni az elérhető termékeket az AppStore-ból.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Nem sikerült inicializálni az alkalmazás által mentett adatokat";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Az iOS alkalmazásban nem lehet erre váltani: %@.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nem sikerült összeegyeztetni a megvásárolt AppStore terméket a rendelkezésre álló termékeinkkel. Kérjük, küldjön egy hibabejelentést és ügyfélszolgálatunk felveszi önnel a kapcsolatot.";
-
 /* Title */
 "Keep me updated about new features" = "Tájékoztasson az új funkciókról";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Üzenet %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.";
 
 /* *
  *  Expiration View */
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Adjon meg egy érvényes e-mail címet.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Kérjük, hogy a vásárlás véglegesítéséhez és előfizetői csomagjának frissítéséhez jelentkezzen be ProtonMail fiókjába.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Kérjük, jelentkezzen be ProtonMail fiókjába, hogy az Ön által vásárolt előfizetői csomag aktiválásra kerüljön.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Ellenőrizze, hogy az internet kapcsolat működik-e.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Kérjük, próbálja meg újra";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Kérjük, szolgáltatási csomagjának aktiválásához oldja fel az alkalmazást";
 
 /* Description */
 "Please use ProtonMail App login first." = "Kérjük, először a ProtonMail alkalmazás bejelentkezési felületét használja.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "Üzenet küldése";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "Sending message...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Üzenetek küldése a %1$@ címről előfizetéshez kötött. Az Ön üzenete az %2$@, alapértelmezett címről lesz elküldve";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Szüneteltetve:";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Elnézést, de az iOS alkalmazás béta verziójából nem tudunk vásárlásokat fogadni. De azért köszönjük, hogy részt vesz a béta programban!";
 
 /* (No Comment) */
 "Space Warning" = "Tárhely figyelmeztetés";
@@ -2382,12 +2361,6 @@
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Az üzenet elküldése nem sikerült, valószínűleg akadozó internet kapcsolat miatt. Az üzenet a Piszkozatok közé került mentésre és az alkalmazás következő indításakor automatikusan elküldésre kerül.";
-
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Értesítést kaptunk egy App Store-beli vásárlásról, de nem tudjuk összeegyeztetni az ön egyik fiókjával sem.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Új előfizetését sikeresen aktiváltuk. Indítsa újra az alkalmazást, az új csomag funkcióinak eléréséhez.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Egy ellenőrző kódot küldünk a fenti telefonszámra.";

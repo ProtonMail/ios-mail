@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Appleのアプリ内購入料金";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Appleが購入の手続きを進める事ができませんでした。";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Appleからサブスクリプションプランのアップグレードの通知を受けましたが、いくつかの技術情報が見当たりません。顧客サポートチームがご連絡しますので、バグ報告をお願いします。";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Appleからサービスプランのアップグレードの通知を受けましたが、ログアウトしている事を検出しました。";
-
 /* Apply action */
 "Apply" = "適用";
 
@@ -249,13 +240,13 @@
 "at" = "at";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "At least one email address in the group could not be found";
+"At least one email address in the group could not be found" = "グループ内のメールアドレスが見つからないものがありました。";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "At least one recipient email address is improperly formatted, please double check them.";
+"At least one recipient email address is improperly formatted, please double check them." = "宛先のメールアドレスが正しくないものがあります。再度確認してください。";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "メールアドレスやドメインが存在しないか、フォーマットが正しくない宛先があります。メッセージは下書きに移動されました。";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "添付ファイルがインポートされました。";
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "表示名";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
-
 /* Description */
 "Do you want to cancel the process?" = "手続きをキャンセルしますか？";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "下書き";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "まだ下書きをアップロードしている最中です...";
 
 /* menu title */
 "Drafts" = "下書き";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "ファイル種別の判定に失敗しました。";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "App Store上の利用可能製品の一覧の取得に失敗しました。";
 
 /* Description */
 "Failed to initialize the app's saved data" = "アプリの保存データの初期化に失敗しました。";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "iOSアプリからは%@に切り替えることができません。";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "あなたが購入したApp Storeの商品を、当社のサーバー上の製品に一致させることができませんでした。バグ報告に記入してくだされば、当社の顧客サポートチームからご連絡いたします。";
-
 /* Title */
 "Keep me updated about new features" = "新機能に関する情報を受け取る";
 
@@ -1297,6 +1282,9 @@
 /* Message with title */
 "Message %@" = "メッセージ %@";
 
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "メッセージを送信できませんでした。メールアドレスやドメインが存在しないか、フォーマットが正しくない宛先があります。";
+
 /* *
  *  Expiration View */
 "Message expired" = "メッセージは期限切れです";
@@ -1384,7 +1372,7 @@
 "Name" = "名前";
 
 /* Action */
-"NEED AN ACCOUNT? SIGN UP." = "無料登録\\nr190811";
+"NEED AN ACCOUNT? SIGN UP." = "無料登録\r r210321";
 
 /* section title */
 "Networking" = "ネットワーク";
@@ -1476,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy年MMMd日 (EE)  %1$@に%2$@が送信:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "すべてのサブスクリプションが最新であることが確認されている場合にのみ、アクティベーションの購入を無視してください。 さらなるサポートが必要な場合はカスタマーサポートにお問い合わせください。 \r\n\r\n アクティベーションを無視してもよろしいですか？";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "無料アカウントは１つのみ追加できます";
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "有効なメールアドレスを入力してください。";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "購入手続きを完了させるためにProtonMailのアカウントにログインしてください。";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "サービスプランの有効化を完了させるために、ProtonMailのアカウントにログインしてください。";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "インターネットに接続されていることをご確認ください。";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "もう一度試してください。";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "サービスプランの有効化のために、アプリをロック解除してください。";
 
 /* Description */
 "Please use ProtonMail App login first." = "まずProtonMailアプリにログインしてください。";
@@ -1732,7 +1711,7 @@
 "Reading device contacts data..." = "デバイスの連絡先データを読み取りしています...";
 
 /* The error message is shown in composer */
-"Recipient not found" = "Recipient not found";
+"Recipient not found" = "宛先が見つかりません";
 
 /* Title */
 "Recovery Code" = "回復用コード";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "メッセージを送信しています";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "メッセージを送信しています...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "アドレス%1$@からのメッセージ送信は有料の機能です。 あなたのメッセージは既定のアドレス%2$@から送信されます";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "次の時刻まで休止：";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "申し訳ございませんがベータ版のiOSアプリからは課金ができません。\nパブリックベータにご参加頂きありがとうございます。";
 
 /* (No Comment) */
 "Space Warning" = "容量不足";
@@ -2013,7 +1992,7 @@
 "Take a Photo" = "写真を撮影する";
 
 /* alert description */
-"Tap send anyway to send without expiration to these recipients" = "これらの宛先に有効期限なしで送信するにはタップしてください。";
+"Tap send anyway to send without expiration to these recipients" = "これらの宛先に有効期限を設定せずに送信するにはタップしてください。";
 
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "ウイルス対策ソフトウェアを一時的に無効化または削除してください。";
@@ -2383,12 +2362,6 @@
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "ネットワーク接続が不安定なため、メッセージを送信できませんでした。 メッセージは下書きに保存され、次回アプリを開いたときに自動的に送信されます。";
 
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We have been notified of an App Store purchase but cannot match the purchase with an account of yours.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "購読の有効化に成功しました。アプリの再起動をして新しいプランになっていることを確認してください。";
-
 /* text field notes */
 "We will send a verification code to the cell phone above." = "上記の携帯電話に検証コードを送信します。";
 
@@ -2396,7 +2369,7 @@
 "We will send a verification code to the email address above." = "上記のメールアドレスに検証コードを送ります。";
 
 /* The body of the iOS 10 upgrate alert */
-"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future.";
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "まもなく iOS 10 のサポートを終了します。今後もアップデートを利用するために、お使いのデバイスの OS をアップデートしてください。";
 
 /* Title */
 "We would like to know what we can do better." = "私たちが改善すべき点を教えてください。";
@@ -2459,7 +2432,7 @@
 "You have unsaved changes. Do you want to save it?" = "保存されていない変更があります。保存しますか？";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "ストレージ容量 (%@) の %d%% を使用しています。";
 
 /* *
  *  StorageLimit */

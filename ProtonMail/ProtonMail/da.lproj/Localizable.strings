@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple In-app købspris";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Apple meddelte, at de ikke kunne behandle købet.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple meddelte, at du har opgraderet tjenesteabonnementet, men du er siden da logget ud af kontoen.";
-
 /* Apply action */
 "Apply" = "Anvend";
 
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Vis navn";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
-
 /* Description */
 "Do you want to cancel the process?" = "Annullér processen?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Udkast";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "Draft is still uploading...";
 
 /* menu title */
 "Drafts" = "Udkast";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Filtypebestemmelse mislykkedes";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "Miskykkedes at hente produktoversigt for tilgængelige produkter fra AppButik.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Mislykkedes at initialisere app'ens gemte data";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Det er ikke muligt at skifte til %@ i iOS-app'en.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Det var ikke muligt at matche dit købte App Store-produkt til noget produkt på vores server. Udfyld venligst fejlrapporten, så kontakter kundesupportteamet dig.";
-
 /* Title */
 "Keep me updated about new features" = "Hold mig unnderrettet om nye funktioner";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Besked %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.";
 
 /* *
  *  Expiration View */
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Angiv en gyldig e-mail.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Log ind på den ProtonMail-konto, hvortil abonnementet opgraderes, så købet kan effektures.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Log ind på den ProtonMail-konto, hvortil abonnementet opgraderes, så aktiveringen kan effektueres.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Forsøg igen";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Oplås app'en for at fortsætte med din abonnementsaktivering";
 
 /* Description */
 "Please use ProtonMail App login first." = "Benyt først ProtonMails App-login.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "Afsender besked";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "Sending message...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Afsendelse af beskeder fra en %1$@-adresse er en betalingsfunktion. Din besked afsendes via din standardadresse %2$@";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Udsat indtil";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Beklager, køb kan ikke behandles i beta-versionen af iOS-app'en. Tak fordi du deltog i vores offentlige beta!";
 
 /* (No Comment) */
 "Space Warning" = "Lagerpladsadvarsel";
@@ -2382,12 +2361,6 @@
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app.";
-
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We have been notified of an App Store purchase but cannot match the purchase with an account of yours.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Dit abonnement er nu aktivt. Genstart app'en for at begynde at bruge dine nye abonnementskvoter.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Du får tilsendt en bekræftelseskode til ovenstående mobilnummer.";

@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Appleova naknada za kupnju u aplikaciji";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Apple nas je obavijestio da ne mogu obraditi kupnju.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nas je obavijestio da ste nadogradili plan usluga, ali nedostajali su neki tehnički podaci. Ispunite izvještaj o pogrešci i naš tim za korisničku podršku će vas kontaktirati.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nas je obavijestio da ste nadogradili plan usluge, ali smo otkrili da ste se od tada odjavili s računa.";
-
 /* Apply action */
 "Apply" = "Primijeni";
 
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Zaslonski naziv";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Želite li aktivirati kupnju za %@ adresa?";
-
 /* Description */
 "Do you want to cancel the process?" = "Želite li prekinuti proces?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Skica";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "Skica se još učitava...";
 
 /* menu title */
 "Drafts" = "Skice";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Utvrđivanje vrste datoteke nije uspjelo";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "Nije moguće dohvatiti popis dostupnih proizvoda iz AppStorea.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Inicijalizacija spremljenih podataka aplikacije nije uspjela";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Nije moguće prebaciti se na %@ unutar naše iOS aplikacije.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nismo uspjeli pronaći AppStore proizvod koji ste kupili s proizvodima na našem poslužitelju. Ispunite izvještaj o pogreški i naš tim za korisničku podršku će vas kontaktirati.";
-
 /* Title */
 "Keep me updated about new features" = "Informirajte me o novim značajkama";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Poruka %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Poruku nije moguće poslati. Najmanje jedna od adresa ili domena primatelja ne postoji ili je loše oblikovana.";
 
 /* *
  *  Expiration View */
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Molimo unesite valjanu adresu e-pošte.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Prijavite se na ProtonMail račun za koji nadograđujete plan usluga, kako bismo mogli dovršiti kupnju.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Prijavite se na ProtonMail račun za koji nadograđujete plan usluga, kako bismo mogli dovršiti aktivaciju plana usluga.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Provjerite da li vaša internetska veza radi.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Molimo pokušajte ponovno";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Otključajte aplikaciju da biste nastavili s aktivacijom plana usluge";
 
 /* Description */
 "Please use ProtonMail App login first." = "Najprije koristite prijavu u ProtonMail aplikaciju.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "Poruka se šalje";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "Slanje poruke...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Slanje poruka s %1$@ adrese je plaćena značajka. Vaša će poruka biti poslana s Vaše zadane adrese %2$@";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Odgođeno do";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Nažalost, ne možemo obrađivati kupnje u Beta verziji aplikacije na iOS-u. Hvala što sudjelujete u našoj javnoj Beta verziji!";
 
 /* (No Comment) */
 "Space Warning" = "Upozorenje o slobodnom prostoru";
@@ -2382,12 +2361,6 @@
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nismo mogli poslati vašu poruku, zbog moguće loše mrežne veze. Vaša je poruka spremljena u Skice i biti će automatski poslana sljedeći put kada otvorite aplikaciju.";
-
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Obaviješteni smo o kupnji u App Storeu, ali ne možemo povezati tu kupnju s vašim računom.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Uspješno smo aktivirali vašu pretplatu. Ponovno pokrenite aplikaciju da biste počeli koristiti novi plan usluge.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Poslati ćemo kôd za potvrdu na gore navedeni telefonski broj.";
