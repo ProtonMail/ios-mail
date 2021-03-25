@@ -5638,7 +5638,7 @@
 				B7EBEAA51F130EAAA1213E69D9E40DBD /* [CP] Embed Pods Frameworks */,
 				E04C8B5D7BBBD207F1F503EE464CC7BE /* Embed App Extensions */,
 				D69E6F42AB3779456E68CFB51F664382 /* Embed Frameworks */,
-				9AA3453632AC0DF31B07A4B30A970202 /* Run Proton Sentry script */,
+				0C4F83DFBCEE3602444D4B29BCD6E871 /* Run Proton Sentry script */,
 				6D5C828D5F1C05690725F3B5335631C3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -6403,7 +6403,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9AA3453632AC0DF31B07A4B30A970202 /* Run Proton Sentry script */ = {
+		0C4F83DFBCEE3602444D4B29BCD6E871 /* Run Proton Sentry script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
 			files = (
