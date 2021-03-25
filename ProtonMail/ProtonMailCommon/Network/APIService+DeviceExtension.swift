@@ -23,32 +23,34 @@
 
 import Foundation
 import Crypto
+import PMCommon
 
-extension APIService {
+extension PMAPIService {
     fileprivate struct DevicePath {
         static let basePath = "/devices"
     }
     
-    func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: CompletionBlock?) {
+    func device(registerWith settings: PushSubscriptionSettings,
+                authCredential: AuthCredential?, completion: CompletionBlock?) {
         let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         #if Enterprise
-            #if DEBUG
-                //let env = 20
-                let env = 17  /// Enterprise dev certification build (fabric beta)
-            #else
-                //let env = 21
-                let env = 7 ///Enterprise release certification build
-            #endif
+        #if DEBUG
+        //let env = 20
+        let env = 17  /// Enterprise dev certification build (fabric beta)
         #else
-            // const PROVIDER_FCM_IOS = 4; // google firebase live
-            // const PROVIDER_FCM_IOS_BETA = 5; //google firebase beta
-            #if DEBUG
-                //let env = 1
-                let env = 16 /// apple store certificaiton dev build (dev)
-            #else
-                //let env = 2
-                let env = 6  /// apple store release build (for apple store submit)
-            #endif
+        //let env = 21
+        let env = 7 ///Enterprise release certification build
+        #endif
+        #else
+        // const PROVIDER_FCM_IOS = 4; // google firebase live
+        // const PROVIDER_FCM_IOS_BETA = 5; //google firebase beta
+        #if DEBUG
+        //let env = 1
+        let env = 16 /// apple store certificaiton dev build (dev)
+        #else
+        //let env = 2
+        let env = 6  /// apple store release build (for apple store submit)
+        #endif
         
         #endif
         
@@ -63,12 +65,14 @@ extension APIService {
             "PublicKey" : settings.encryptionKit.publicKey
         ] as [String : Any]
         
-        request(method: .post,
-                path: DevicePath.basePath,
-                parameters: parameters,
-                headers: [HTTPHeader.apiVersion: 3],
-                customAuthCredential: authCredential,
-                completion: completion)
+        self.request(method: .post,
+                     path: DevicePath.basePath,
+                     parameters: parameters,
+                     headers: [HTTPHeader.apiVersion: 3], //will be deprecated
+                     authenticated: false,
+                     autoRetry: true,
+                     customAuthCredential: authCredential,
+                     completion: completion)
     }
     
     func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping CompletionBlock) {
@@ -80,12 +84,13 @@ extension APIService {
             "DeviceToken": settings.token,
             "UID": settings.UID
         ]
-
-        request(method: .delete,
-                path: DevicePath.basePath,
-                parameters: parameters,
-                headers: [HTTPHeader.apiVersion: 3],
-                authenticated: false,
-                completion: completion)
+        self.request(method: .delete,
+                     path: DevicePath.basePath,
+                     parameters: parameters,
+                     headers: [HTTPHeader.apiVersion: 3], //will be deprecated
+                     authenticated: false,
+                     autoRetry: true,
+                     customAuthCredential: nil,
+                     completion: completion)
     }
 }

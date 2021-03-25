@@ -6,11 +6,14 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import XCTest
+
 /// Composer identifiers.
 fileprivate let sendButtonIdentifier = "ComposeContainerViewController.sendButton"
 fileprivate let toTextFieldIdentifier = "ToTextField"
 fileprivate let ccTextFieldIdentifier = "ccTextField"
 fileprivate let bccTextFieldIdentifier = "bccTextField"
+fileprivate let composerWebViewIdentifier = "ComposerBody"
 fileprivate let subjectTextFieldIdentifier = "ComposeHeaderViewController.subject"
 fileprivate let pasteMenuItem = app.menuItems.staticTexts.element(boundBy: 0)
 fileprivate let popoverDismissRegionOtherIdentifier = "PopoverDismissRegion"
@@ -20,6 +23,7 @@ fileprivate let attachmentButtonIdentifier = "ComposeHeaderViewController.attach
 fileprivate let showCcBccButtonIdentifier = "ComposeHeaderViewController.showCcBccButton"
 fileprivate let cancelNavBarButtonIdentifier = "ComposeContainerViewController.cancelButton"
 fileprivate let fromStaticTextIdentifier = "ComposeHeaderViewController.fromAddress"
+fileprivate func getContactCellIdentifier(_ email: String) -> String { return "ContactsTableViewCell.\(email)" }
 
 /// Set Password modal identifiers.
 fileprivate let messagePasswordSecureTextFieldIdentifier = "ComposePasswordViewController.passwordField"
@@ -34,17 +38,18 @@ fileprivate let expirationActionButtonIdentifier = "expirationActionButton"
 
 /// Expiration picker identifiers.
 fileprivate let saveDraftButtonText = "saveDraftButton"
-
+fileprivate let invalidAddressStaticTextIdentifier = LocalString._signle_address_invalid_error_content
+fileprivate let recipientNotFoundStaticTextIdentifier = LocalString._recipient_not_found
 /**
  Represents Composer view.
 */
 class ComposerRobot {
     
     var verify: Verify! = nil
-    init() { verify = Verify(parent: self) }
+    init() { verify = Verify() }
     
     func tapCancel() -> DraftConfirmationRobot {
-        Element.button.tapByIdentifier(cancelNavBarButtonIdentifier)
+        Element.wait.forButtonWithIdentifier(cancelNavBarButtonIdentifier).tap()
         return DraftConfirmationRobot()
     }
     
@@ -54,9 +59,17 @@ class ComposerRobot {
             .send()
     }
     
-    func draftToSubjectBody(_ to: String, _ subjectText: String) -> ComposerRobot {
+    func draftToSubjectBody(_ to: String, _ subjectText: String, _ body: String) -> ComposerRobot {
         recipients(to)
             .subject(subjectText)
+            .body(body)
+        return self
+    }
+    
+    func draftToBody(_ to: String, _ body: String) -> ComposerRobot {
+        recipients(to)
+            .subject("")
+            .body(body)
         return self
     }
     
@@ -164,6 +177,12 @@ class ComposerRobot {
         return InboxRobot()
     }
     
+    @discardableResult
+    func sendReplyMessage() -> MessageRobot {
+        Element.wait.forHittableButton(sendButtonIdentifier, file: #file, line: #line).tap()
+        return MessageRobot()
+    }
+
     func recipients(_ email: String) -> ComposerRobot {
         Element.wait.forTextFieldWithIdentifier(toTextFieldIdentifier, file: #file, line: #line)
             .click()
@@ -172,10 +191,17 @@ class ComposerRobot {
         return self
     }
     
+    func typeAndSelectRecipients(_ email: String) -> ComposerRobot {
+        Element.wait.forTextFieldWithIdentifier(toTextFieldIdentifier, file: #file, line: #line)
+            .click()
+            .typeText(email)
+        Element.wait.forCellWithIdentifier(getContactCellIdentifier(email)).tap()
+        return self
+    }
+    
     func editRecipients(_ email: String) -> ComposerRobot {
         Element.wait.forTextFieldWithIdentifier(toTextFieldIdentifier, file: #file, line: #line)
             .click()
-            .clear()
             .typeText(email)
         Element.other.tapIfExists(popoverDismissRegionOtherIdentifier)
         return self
@@ -184,6 +210,21 @@ class ComposerRobot {
     func changeFromAddressTo(_ email: String) -> ComposerRobot {
         Element.wait.forStaticTextFieldWithIdentifier(fromStaticTextIdentifier, file: #file, line: #line).tap()
         Element.wait.forButtonWithIdentifier(email, file: #file, line: #line).tap()
+        return ComposerRobot()
+    }
+    
+    func changeSubjectTo(_ subjectText: String) -> ComposerRobot {
+        Element.wait.forTextFieldWithIdentifier(subjectTextFieldIdentifier, file: #file, line: #line)
+            .click()
+            .clear()
+            .typeText(subjectText)
+        return ComposerRobot()
+    }
+    
+    func changeBodyTo(_ body: String) -> ComposerRobot {
+        Element.wait.forTextFieldWithIdentifier(subjectTextFieldIdentifier, file: #file, line: #line)
+            .clear()
+            .typeText(body)
         return ComposerRobot()
     }
     
@@ -204,6 +245,14 @@ class ComposerRobot {
         return self
     }
     
+    func typeAndSelectCC(_ email: String) -> ComposerRobot {
+        Element.wait.forTextFieldWithIdentifier(ccTextFieldIdentifier, file: #file, line: #line)
+            .click()
+            .typeText(email)
+        Element.wait.forCellWithIdentifier(getContactCellIdentifier(email)).tap()
+        return self
+    }
+    
     private func bcc(_ email: String) -> ComposerRobot {
         Element.wait.forTextFieldWithIdentifier(bccTextFieldIdentifier, file: #file, line: #line).tap()
         Element.textField.tapByIdentifier(bccTextFieldIdentifier).typeText(email)
@@ -211,13 +260,23 @@ class ComposerRobot {
         return self
     }
     
-    private  func subject(_ subjectText: String) -> ComposerRobot {
+    func typeAndSelectBCC(_ email: String) -> ComposerRobot {
+        Element.wait.forTextFieldWithIdentifier(bccTextFieldIdentifier, file: #file, line: #line)
+            .click()
+            .typeText(email)
+        Element.wait.forCellWithIdentifier(getContactCellIdentifier(email)).tap()
+        return self
+    }
+    
+    func subject(_ subjectText: String) -> ComposerRobot {
         Element.wait.forTextFieldWithIdentifier(subjectTextFieldIdentifier, file: #file, line: #line).tap()
         Element.textField(subjectTextFieldIdentifier).perform.typeText(subjectText)
         return self
     }
     
+    @discardableResult
     private func body(_ text: String) -> ComposerRobot {
+        ///TODO: add body update when WebView field will be accessible.
         return self
     }
     
@@ -227,6 +286,16 @@ class ComposerRobot {
         Element.wait.forTextFieldWithIdentifier(subjectTextFieldIdentifier, file: #file, line: #line).press(forDuration: 3)
         pasteMenuItem.tap()
         return self
+    }
+    
+    func backgroundApp() -> ComposerRobot {
+        XCUIDevice.shared.press(.home)
+        return ComposerRobot()
+    }
+    
+    func foregroundApp() -> ComposerRobot {
+        XCUIApplication().activate()
+        return ComposerRobot()
     }
     
     private func composeMessage(_ to: String, _ subject: String, _ body: String) -> ComposerRobot {
@@ -245,7 +314,7 @@ class ComposerRobot {
         return MessageAttachmentsRobot()
     }
     
-    private func showCcBcc() -> ComposerRobot {
+    func showCcBcc() -> ComposerRobot {
         Element.button.tapByIdentifier(showCcBccButtonIdentifier)
         return self
     }
@@ -332,9 +401,7 @@ class ComposerRobot {
      Contains all the validations that can be performed by ComposerRobot.
     */
     class Verify {
-        unowned let composerRobot: ComposerRobot
-        init(parent: ComposerRobot) { composerRobot = parent }
-        
+
         func fromEmailIs(_ email: String) {
             Element.wait.forStaticTextFieldWithIdentifier(fromStaticTextIdentifier, file: #file, line: #line)
                 .assertWithLabel(email)
@@ -343,6 +410,30 @@ class ComposerRobot {
         func messageWithSubjectOpened(_ subject: String) {
             Element.wait.forTextFieldWithIdentifier(subjectTextFieldIdentifier, file: #file, line: #line)
                 .assertWithValue(subject)
+        }
+        
+        @discardableResult
+        func invalidAddressToastIsShown() -> ComposerRobot {
+            Element.wait.forStaticTextFieldWithIdentifier(invalidAddressStaticTextIdentifier)
+            return ComposerRobot()
+        }
+        
+        @discardableResult
+        func invalidAddressToastIsNotShown() -> ComposerRobot {
+            Element.assert.staticTextWithIdentifierDoesNotExists(invalidAddressStaticTextIdentifier)
+            return ComposerRobot()
+        }
+        
+        @discardableResult
+        func recipientNotFoundToastIsShown() -> ComposerRobot {
+            Element.wait.forStaticTextFieldWithIdentifier(recipientNotFoundStaticTextIdentifier)
+            return ComposerRobot()
+        }
+        
+        @discardableResult
+        func ercipientNotFoundToastIsNotShown() -> ComposerRobot {
+            Element.assert.staticTextWithIdentifierDoesNotExists(recipientNotFoundStaticTextIdentifier)
+            return ComposerRobot()
         }
     }
 }

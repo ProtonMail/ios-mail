@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = "в";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "At least one email address in the group could not be found";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "At least one recipient email address is improperly formatted, please double check them.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Вкладення імпортовано";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "Відображене ім'я";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
+
 /* Description */
 "Do you want to cancel the process?" = "Do you want to cancel the process?";
 
@@ -755,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "Невірна адреса ел. пошти";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "Email address is invalid";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "Email Addresses";
@@ -876,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "Error occured";
 
+/* incorrect email format error in composer */
+"Error sending" = "Error sending";
+
 /* lock app option */
 "Every time enter app" = "Щоразу входячи у застосунок";
 
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "Отримати більше інформації";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Go to drafts";
+
 /* Action */
 "Go to inbox" = "Йти до теки \"Вхідні\"";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Перевірка \"Я не робот\"";
+
+/* Alarm action */
+"Ignore" = "Ignore";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Підтримка IMAP/SMTP через ProtonMail Bridge";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@, wrote:";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Only one free account can be added";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Установа";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "OS compatibility";
 
 /* default vcard types */
 "Other" = "Інше";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Reading device contacts data...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Recipient not found";
+
 /* Title */
 "Recovery Code" = "Код відновлення";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "Sender Verification Failed";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Sending failed";
 
 /* Alert title */
 "Sending message" = "Надсилання повідомлення";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Ми не змогли надіслати ваше повідомлення, можливо, через поганий зв'язок із мережею. Ваше повідомлення збережено в Drafts і буде автоматично надіслано за наступного відкриття застосунку.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We have been notified of an App Store purchase but cannot match the purchase with an account of yours.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Ми успішно активували вашу підписку. Перезапустіть застосунок, щоб почати користуватися новим планом.";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Ми надішлемо коду підтвердження на е-пошту, що вище.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future.";
 
 /* Title */
 "We would like to know what we can do better." = "Ми хотіли б знати, що ми можемо зробити краще.";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "писав(ла):";
+
+/* Yes action */
+"Yes" = "Yes";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Так, увімкнути для ";

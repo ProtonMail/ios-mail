@@ -58,6 +58,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
     
     var prototypeCell: ContactCollectionViewContactCell!
     var promptCell: ContactCollectionViewPromptCell?
+    var isEntryCellRefreshing: Bool = false
     
     class func contactCollectionViewWithFrame(frame: CGRect) -> ContactCollectionView {
         let layout = ContactCollectionViewFlowLayout()
@@ -422,7 +423,7 @@ extension ContactCollectionView : UICollectionViewDelegateFlowLayout {
             widthForItem = max(30, widthForItem)
         } else if self.isCell(entry: indexPath) {
             let prototype = ContactCollectionViewEntryCell()
-            widthForItem = max(50, prototype.widthForText(text: self.searchText))
+            widthForItem = max(100, prototype.widthForText(text: self.searchText) + 44)
         } else {
             if let cell = self.cellForItem(at: indexPath) as? ContactCollectionViewContactCell {
                 widthForItem = cell.widthForCell()
@@ -521,6 +522,21 @@ extension ContactCollectionView : UICollectionViewDelegate {
 extension ContactCollectionView : UITextFieldDelegateImproved {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        defer {
+            isEntryCellRefreshing = false
+            if let cell = self.cellForItem(at: self.entryCellIndexPath) as? ContactCollectionViewEntryCell {
+                
+                let strForWholeString = NSString(format:"%@%@", textField.text!,string) as String
+                
+                let fontSize: CGSize = strForWholeString.size(withAttributes: [NSAttributedString.Key.font: Fonts.h6.light])
+                let width = fontSize.width.rounded(.up)
+                
+                if (self.frame.width - cell.frame.minX) < (44.0 + width) && width < self.frame.width {
+                    isEntryCellRefreshing = true
+                    self.reloadItems(at: [self.entryCellIndexPath])
+                }
+            }
+        }
         let text = textField.text ?? ""
         
         if string == "," || string == ";" {
@@ -550,6 +566,9 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
     
     func textFieldDidChange(textField: UITextField) {
         self.searchText = textField.text
+        guard !isEntryCellRefreshing else {
+            return
+        }
         self.searchText = self.searchText.preg_replace_none_regex("mailto:", replaceto: "")
         textField.text = self.searchText
         let left = self.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -572,6 +591,9 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
     func textFieldDidEndEditing(_ textField: UITextField) {
         let trimmedString = (textField.text ?? "").trimmingCharacters(in: .whitespaces)
         if trimmedString.count > 0 {
+            guard !isEntryCellRefreshing else {
+                return
+            }
             self.contactDelegate?.collectionView(at: self, didEnterCustom: trimmedString, needFocus: false)
         }
     }

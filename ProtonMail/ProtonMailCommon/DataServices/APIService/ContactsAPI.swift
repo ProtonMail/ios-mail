@@ -22,10 +22,42 @@
 
 
 import Foundation
+import PMCommon
 
 
-// MARK : Get contacts part
-class ContactsRequest : ApiRequest<ContactsResponse> {
+//Contact API
+//Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_contacts_v2.md
+struct ContactsAPI {
+    
+    static let path : String = "/contacts"
+    
+    /// get contact list. no details. only name, email, labels for displaying
+    static let v_get_contacts : Int = 3
+    /// get contact email list. this is for auto complete. combine with contacts would be full information without encrypted data.
+    static let v_get_contact_emails : Int = 3
+    /// add & import contact post
+    static let v_add_contacts : Int = 3
+    /// get contact details full date clear&encrypt data
+    static let v_get_details : Int = 3
+    /// update contact put
+    static let v_update_contact : Int = 3
+    /// delete contact put
+    static let v_delete_contacts : Int = 3
+    
+    /// group
+    /// label an array of emails to a certain contact group
+    static let v_label_an_array_of_contact_emails: Int = 3
+    
+    /// unlabel an array of emails from a certain contact group
+    static let v_unlabel_an_array_of_contact_emails: Int = 3
+    
+    /// export
+    
+    /// clear contacts
+}
+
+// MARK : Get contacts part -- ContactsResponse
+class ContactsRequest : Request {
     var page : Int = 0
     var max : Int = 100
     
@@ -34,17 +66,13 @@ class ContactsRequest : ApiRequest<ContactsResponse> {
         self.max = pageSize
     }
     
-    override public func path() -> String {
-        return ContactsAPI.path +  Constants.App.DEBUG_OPTION
-    }
-    
-    override public func apiVersion() -> Int {
-        return ContactsAPI.v_get_contacts
+    var path : String {
+        return ContactsAPI.path
     }
 }
 
 //
-class ContactsResponse : ApiResponse {
+class ContactsResponse : Response {
     var total : Int = -1
     var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
@@ -56,7 +84,7 @@ class ContactsResponse : ApiResponse {
 }
 
 // MARK : Get messages part
-class ContactEmailsRequest<T: ApiResponse>: ApiRequest<T> {
+class ContactEmailsRequest : Request {  //ContactEmailsResponse
     var page : Int = 0
     var max : Int = 100
     let labelID: String?
@@ -67,28 +95,20 @@ class ContactEmailsRequest<T: ApiResponse>: ApiRequest<T> {
         self.labelID = labelID
     }
     
-    override public func path() -> String {
-        return ContactsAPI.path + "/emails" +  Constants.App.DEBUG_OPTION
+    var path: String {
+        return ContactsAPI.path + "/emails"
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         if let ID = labelID {
             return ["Page": page, "PageSize": max, "LabelID": ID]
         }
         return ["Page" : page, "PageSize" : max]
     }
-    
-    override public func apiVersion() -> Int {
-        return ContactsAPI.v_get_contact_emails
-    }
-    
-    override func method() -> HTTPMethod {
-        return .get
-    }
 }
 
 // TODO: performance enhancement?
-class ContactEmailsResponse: ApiResponse {
+class ContactEmailsResponse: Response {
     var total : Int = -1
     var contacts : [[String : Any]] = [] // [["ID": ..., "Name": ..., "ContactEmails": ...], ...]
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
@@ -143,7 +163,7 @@ class ContactEmailsResponse: ApiResponse {
     }
 }
 
-class ContactEmailsResponseForContactGroup: ApiResponse {
+class ContactEmailsResponseForContactGroup: Response {
     var total : Int = -1
     var emailList : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
@@ -157,29 +177,19 @@ class ContactEmailsResponseForContactGroup: ApiResponse {
 }
 
 // MARK : Get messages part
-final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
-    
+final class ContactDetailRequest : Request {  //ContactDetailResponse
     let contactID : String
-    
     init(cid : String) {
         self.contactID = cid
     }
     
-    override public func path() -> String {
-        return ContactsAPI.path + "/" + self.contactID +  Constants.App.DEBUG_OPTION
-    }
-    
-    override public func apiVersion() -> Int {
-        return ContactsAPI.v_get_details
-    }
-    
-    override func method() -> HTTPMethod {
-        return .get
+    var path : String {
+        return ContactsAPI.path + "/" + self.contactID
     }
 }
 
 //
-class ContactDetailResponse : ApiResponse {
+class ContactDetailResponse : Response {
     var contact : [String : Any]?
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
 //      PMLog.D("[Contact] Get contact detail response \(response)")
@@ -203,7 +213,7 @@ final class ContactEmail : Package {
         self.id = ""
     }
     
-    func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         return [
             "ID" : self.id,
             "Email": self.email,
@@ -235,7 +245,7 @@ final class CardData : Package {
         self.sign = s
     }
     
-    func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         return [
             "Data": self.data,
             "Type": self.type.rawValue,
@@ -248,7 +258,7 @@ extension Array where Element: CardData {
     func toDictionary() -> [[String : Any]] {
         var dicts = [[String : Any]]()
         for element in self {
-            if let e = element.toDictionary() {
+            if let e = element.parameters {
                 dicts.append(e)
             }
         }
@@ -257,40 +267,42 @@ extension Array where Element: CardData {
 }
 
 
-final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
+final class ContactAddRequest : Request {   // ContactAddResponse
     let cardsList : [[CardData]]
     init(cards: [CardData], authCredential: AuthCredential?) {
         self.cardsList = [cards]
-        super.init()
-        self.authCredential = authCredential
+        self.auth = authCredential
     }
     
     init(cards: [[CardData]], authCredential: AuthCredential?) {
         self.cardsList = cards
-        super.init()
-        self.authCredential = authCredential
+        self.auth = authCredential
     }
     
-    override public func path() -> String {
-        return ContactsAPI.path +  Constants.App.DEBUG_OPTION
+    //custom auth credentical
+    let auth: AuthCredential?
+    var authCredential : AuthCredential? {
+        get {
+            return self.auth
+        }
     }
     
-    override public func apiVersion() -> Int {
-        return ContactsAPI.v_add_contacts
+    var path : String {
+        return ContactsAPI.path
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .post
     }
     
-    override func toDictionary() -> [String : Any]? {
+    
+    
+    var parameters: [String : Any]? {
         var contacts : [Any] = [Any]()
-       
-        
         for cards in self.cardsList {
             var cards_dict : [Any] = [Any] ()
             for c in cards {
-                if let dict = c.toDictionary() {
+                if let dict = c.parameters {
                     cards_dict.append(dict)
                 }
             }
@@ -309,10 +321,8 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class ContactAddResponse : ApiResponse {
-    
+final class ContactAddResponse : Response {
     var results : [Any?] = []
-
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
         PMLog.D( response.json(prettyPrinted: true) )
         if let responses = response["Responses"] as? [[String : Any]] {
@@ -334,56 +344,47 @@ final class ContactAddResponse : ApiResponse {
     }
 }
 
-final class ContactDeleteRequest<T : ApiResponse> : ApiRequest<T> {
+final class ContactDeleteRequest : Request { // Response
     var IDs : [String] = []
     init(ids: [String]) {
         IDs = ids
     }
     
-    override public func path() -> String {
-        return ContactsAPI.path + "/delete" +  Constants.App.DEBUG_OPTION
+    var path : String {
+        return ContactsAPI.path + "/delete"
     }
     
-    override public func apiVersion() -> Int {
-        return ContactsAPI.v_delete_contacts
-    }
-    
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .put
     }
     
-    override func toDictionary() -> [String : Any]?  {
+    var parameters: [String : Any]? {
         return ["IDs": IDs]
     }
 }
 
 
-final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
+final class ContactUpdateRequest : Request { //ContactDetailResponse
     var contactID : String
     let Cards : [CardData]
     
-    init(contactid: String,
-         cards: [CardData]) {
+    init(contactid: String, cards: [CardData]) {
         self.contactID = contactid
         self.Cards = cards
     }
     
-    override public func path() -> String {
-        return ContactsAPI.path + "/" + self.contactID +  Constants.App.DEBUG_OPTION
+    var path : String {
+        return ContactsAPI.path + "/" + self.contactID
     }
     
-    override public func apiVersion() -> Int {
-        return ContactsAPI.v_update_contact
-    }
-    
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .put
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         var cards_dict : [Any] = [Any] ()
         for c in self.Cards {
-            if let dict = c.toDictionary() {
+            if let dict = c.parameters {
                 cards_dict.append(dict)
             }
         }
@@ -396,8 +397,7 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
 // Contact group APIs
 
 /// Add designated contact emails into a certain contact group
-final class ContactLabelAnArrayOfContactEmailsRequest: ApiRequest<ContactLabelAnArrayOfContactEmailsResponse>
-{
+final class ContactLabelAnArrayOfContactEmailsRequest: Request { //ContactLabelAnArrayOfContactEmailsResponse
     var labelID: String = ""
     var contactEmailIDs: [String] = []
     init(labelID: String, contactEmailIDs: [String]) {
@@ -405,19 +405,15 @@ final class ContactLabelAnArrayOfContactEmailsRequest: ApiRequest<ContactLabelAn
         self.contactEmailIDs = contactEmailIDs
     }
     
-    override public func path() -> String {
-        return ContactsAPI.path + "/emails/label" +  Constants.App.DEBUG_OPTION
+    var path : String {
+        return ContactsAPI.path + "/emails/label"
     }
     
-    override public func apiVersion() -> Int {
-        return ContactsAPI.v_label_an_array_of_contact_emails
-    }
-    
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .put
     }
     
-    override func toDictionary() -> [String : Any]?  {
+    var parameters: [String : Any]? {
         return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID]
     }
 }
@@ -425,9 +421,8 @@ final class ContactLabelAnArrayOfContactEmailsRequest: ApiRequest<ContactLabelAn
 
 /// Process the response of ContactLabelAnArrayOfContactEmailsRequest
 /// TODO: check return body
-final class ContactLabelAnArrayOfContactEmailsResponse: ApiResponse {
+final class ContactLabelAnArrayOfContactEmailsResponse: Response {
     var emailIDs: [String] = []
-    
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
         //PMLog.D("[Contact] label an array of contact emails response \(response)")
         if let responses = response["Responses"] as? [[String: Any]] {
@@ -445,8 +440,7 @@ final class ContactLabelAnArrayOfContactEmailsResponse: ApiResponse {
 
 
 /// Remove designated contact emails from a certain contact group
-final class ContactUnlabelAnArrayOfContactEmailsRequest: ApiRequest<ContactUnlabelAnArrayOfContactEmailsResponse>
-{
+final class ContactUnlabelAnArrayOfContactEmailsRequest: Request { //ContactUnlabelAnArrayOfContactEmailsResponse
     var labelID: String = ""
     var contactEmailIDs: [String] = []
     init(labelID: String, contactEmailIDs: [String]) {
@@ -454,19 +448,15 @@ final class ContactUnlabelAnArrayOfContactEmailsRequest: ApiRequest<ContactUnlab
         self.contactEmailIDs = contactEmailIDs
     }
     
-    override public func path() -> String {
-        return ContactsAPI.path + "/emails/unlabel" +  Constants.App.DEBUG_OPTION
+    var path: String {
+        return ContactsAPI.path + "/emails/unlabel"
     }
     
-    override public func apiVersion() -> Int {
-        return ContactsAPI.v_unlabel_an_array_of_contact_emails
-    }
-    
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .put
     }
     
-    override func toDictionary() -> [String : Any]?  {
+    var parameters: [String : Any]? {
         return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID]
     }
 }
@@ -474,7 +464,7 @@ final class ContactUnlabelAnArrayOfContactEmailsRequest: ApiRequest<ContactUnlab
 
 /// Process the response of ContactUnlabelAnArrayOfContactEmailsRequest
 /// TODO: check return body
-final class ContactUnlabelAnArrayOfContactEmailsResponse: ApiResponse {
+final class ContactUnlabelAnArrayOfContactEmailsResponse: Response {
     var emailIDs: [String] = []
     
     override func ParseResponse (_ response: [String : Any]!) -> Bool {

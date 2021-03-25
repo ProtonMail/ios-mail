@@ -6,6 +6,7 @@ stages:
 
 .before_script_mac: &before_script_mac
   - cd ProtonMail/ProtonMailUITests/ && sh Tests/TestPlans/scripts/prepare_users.sh && cd .. && cd ..
+  - gem install xcpretty
 
 # --- includes ---
 include:
@@ -34,6 +35,7 @@ unit_tests:
     - schedules
   before_script:
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
     # - pip install xUnique
@@ -54,45 +56,54 @@ ui_tests:
     - /^release\/.*$/
     - merge_requests
   artifacts:
+    when: always
     name: "test-report"
     paths:
-      - ./test_output/report.html
-      - ./test_output/report.junit
+      - ./index.html
+      - ./TestResults/report.junit
+      - ./TestResults.xcresult
     expire_in: 20 days
     reports:
-      junit: ./test_output/report.junit
+      junit: ./TestResults/report.junit
   before_script:
     - *before_script_mac
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
   script:
-    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-    - fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMailUITests" --testplan "SmokeTests"  --device "iPhone 11" --clean
+    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
+    - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=14.4" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
   tags:
     - iOS
-
-regression_tests:
+    
+feature_tests:
   dependencies: []
   stage: test
   rules:
-    - if: '$TEST_TYPE == "regression"'
+    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
   artifacts:
+    when: always
     name: "test-report"
     paths:
-      - ./test_output/report.html
-      - ./test_output/report.junit
+      - ./index.html
+      - ./TestResults/report.junit
+      - ./TestResults.xcresult
     expire_in: 20 days
     reports:
-      junit: ./test_output/report.junit
+      junit: ./TestResults/report.junit
   before_script:
     - *before_script_mac
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
+    - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
   script:
-    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-    - fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMailUITests" --testplan "RegressionTests"  --device "iPhone 11" --clean --slack_url ${SLACK_UI_TESTS_URL} --slack_channel "#mail-ios-uitests" --slack_message "<https://gitlab.protontech.ch/ProtonMail/protonmail-ios/-/pipelines/${CI_PIPELINE_ID}/test_report|See test report in GitLab>"
+    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
+    - sh ProtonMail/ProtonMailUITests/Tests/TestPlans/scripts/run_ui_tests.sh $TEST_PLAN $NUMBER_OF_DEVICES $CI_COMMIT_BRANCH $CI_JOB_URL $SLACK_UI_TESTS_URL
+  after_script:
+    - xchtmlreport -r ./TestResults -j
   tags:
     - iOS
 
@@ -112,6 +123,7 @@ build-app-and-upload:
     expire_in: 90 days
   before_script:
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
   script:
@@ -144,5 +156,7 @@ commit-locales-release:
   only:
     refs:
       - branches
+    variables:
+      - $CI_COMMIT_REF_NAME =~ /^release/
     variables:
       - $CI_COMMIT_REF_NAME =~ /^release/

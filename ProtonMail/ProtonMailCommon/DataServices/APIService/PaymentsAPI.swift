@@ -22,23 +22,32 @@
 
 
 import Foundation
+import PMCommon
 
-extension ApiResponse {
+
+//Payments API
+//Doc: FIXME
+struct PaymentsAPI {
+    static let path : String = "/payments"
+}
+
+//TODO:: this need to remove because the networking already have this
+extension Response {
     fileprivate struct Key : CodingKey {
         var stringValue: String
         var intValue: Int?
-        
+
         init?(stringValue: String) {
             self.stringValue = stringValue
             self.intValue = nil
         }
-        
+
         init?(intValue: Int) {
             self.stringValue = "\(intValue)"
             self.intValue = intValue
         }
     }
-    
+
     fileprivate func decapitalizeFirstLetter(_ path: [CodingKey]) -> CodingKey {
         let original: String = path.last!.stringValue
         let uncapitalized = original.prefix(1).lowercased() + original.dropFirst()
@@ -46,21 +55,15 @@ extension ApiResponse {
     }
 }
 
-final class GetIAPStatusRequest: ApiRequestNew<GetIAPStatusResponse> {
-    override func method() -> HTTPMethod {
-        return .get
-    }
+//GetIAPStatusResponse
+final class GetIAPStatusRequest: Request {
     
-    override func path() -> String {
+    var path: String {
         return PaymentsAPI.path + "/status"
-    }
-    
-    override func apiVersion() -> Int {
-        return PaymentsAPI.v_get_status
     }
 }
 
-final class GetIAPStatusResponse: ApiResponse {
+final class GetIAPStatusResponse: Response {
     var isAvailable: Bool?
         
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
@@ -70,21 +73,15 @@ final class GetIAPStatusResponse: ApiResponse {
     }
 }
 
-final class GetPaymentMethodsRequest: ApiRequestNew<GetPaymentMethodsResponse> {
-    override func method() -> HTTPMethod {
-        return .get
-    }
+//GetPaymentMethodsResponse
+final class GetPaymentMethodsRequest: Request {
     
-    override func path() -> String {
+    var path: String {
         return PaymentsAPI.path + "/methods"
-    }
-    
-    override func apiVersion() -> Int {
-        return PaymentsAPI.v_get_payment_methods
     }
 }
 
-final class GetPaymentMethodsResponse: ApiResponse {
+final class GetPaymentMethodsResponse: Response {
     var methods: [PaymentMethod]?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
@@ -103,38 +100,30 @@ final class GetPaymentMethodsResponse: ApiResponse {
     }
 }
 
-final class GetSubscriptionRequest: ApiRequestNew<GetSubscriptionResponse> {
-    override func method() -> HTTPMethod {
-        return .get
-    }
+//GetSubscriptionResponse
+final class GetSubscriptionRequest: Request {
     
-    override func path() -> String {
+    var path: String {
         return PaymentsAPI.path + "/subscription"
-    }
-    
-    override func apiVersion() -> Int {
-        return PaymentsAPI.v_get_subscription
     }
 }
 
-final class GetAppleTier : ApiRequestNew<AppleTier> {
+//AppleTier
+final class GetAppleTier : Request {
     var currency: String
     var country: String
+    
     //TODO:: add tier later
-    init(api: API, currency: String, country: String) {
+    init(currency: String, country: String) {
         self.currency = currency
         self.country = country
-        super.init(api: api)
     }
-    override func path() -> String {
+    
+    var path: String {
         return PaymentsAPI.path + "/apple"
     }
-    
-    override func apiVersion() -> Int {
-        return PaymentsAPI.v_get_apple_tier
-    }
-    
-    override func toDictionary() -> [String : Any]? {
+
+    var parameters: [String : Any]? {
         return [
             "Country": self.country,
             "Currency" : self.currency,
@@ -143,7 +132,7 @@ final class GetAppleTier : ApiRequestNew<AppleTier> {
     }
 }
 
-final class AppleTier : ApiResponse {
+final class AppleTier : Response {
     internal var _proceed : Decimal?
     var price : String?
     
@@ -168,7 +157,7 @@ final class AppleTier : ApiResponse {
 }
 
 
-final class GetSubscriptionResponse: ApiResponse {
+final class GetSubscriptionResponse: Response {
     var subscription: ServicePlanSubscription?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
@@ -194,21 +183,15 @@ final class GetSubscriptionResponse: ApiResponse {
     }
 }
 
-final class GetDefaultServicePlanRequest: ApiRequestNew<GetDefaultServicePlanResponse> {
-    override func method() -> HTTPMethod {
-        return .get
-    }
-    
-    override func path() -> String {
+//GetDefaultServicePlanResponse
+final class GetDefaultServicePlanRequest: Request {
+
+    var path: String {
         return PaymentsAPI.path + "/plans/default"
-    }
-    
-    override func apiVersion() -> Int {
-        return PaymentsAPI.v_get_default_plan
     }
 }
 
-final class GetDefaultServicePlanResponse: ApiResponse {
+final class GetDefaultServicePlanResponse: Response {
     internal var servicePlans: [ServicePlanDetails]?
     
     var defaultMailPlan : ServicePlanDetails? {
@@ -235,25 +218,19 @@ final class GetDefaultServicePlanResponse: ApiResponse {
     }
 }
 
-final class GetServicePlansRequest: ApiRequestNew<GetServicePlansResponse> {
-    override func method() -> HTTPMethod {
-        return .get
-    }
+//GetServicePlansResponse
+final class GetServicePlansRequest: Request {
     
-    override func path() -> String {
+    var path: String {
         return PaymentsAPI.path + "/plans"
     }
     
-    override func apiVersion() -> Int {
-        return PaymentsAPI.v_get_plans
-    }
-    
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         return  ["Currency": "USD", "Cycle": 12]
     }
 }
 
-final class GetServicePlansResponse: ApiResponse {
+final class GetServicePlansResponse: Response {
     internal var availableServicePlans: [ServicePlanDetails]?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
@@ -272,27 +249,22 @@ final class GetServicePlansResponse: ApiResponse {
     }
 }
 //PostCreditResponse
-class PostCreditRequest<T : ApiResponse>: ApiRequestNew<T> {
+class PostCreditRequest : Request {
     private let reciept: String
     
-    init(api: API, reciept: String) {
+    init(reciept: String) {
         self.reciept = reciept
-        super.init(api: api)
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .post
     }
     
-    override func path() -> String {
+    var path: String {
         return PaymentsAPI.path + "/credit"
     }
     
-    override func apiVersion() -> Int {
-        return PaymentsAPI.v_post_credit
-    }
-    
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         return [
             "Amount": 4800,
             "Currency": "USD",
@@ -303,7 +275,7 @@ class PostCreditRequest<T : ApiResponse>: ApiRequestNew<T> {
     }
 }
 
-final class PostCreditResponse: ApiResponse {
+final class PostCreditResponse: Response {
     var newSubscription: ServicePlanSubscription?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
@@ -314,41 +286,36 @@ final class PostCreditResponse: ApiResponse {
         return true
     }
 }
-
-final class PostRecieptRequest: PostCreditRequest<PostRecieptResponse> {
+//PostRecieptResponse
+final class PostRecieptRequest: PostCreditRequest {
     private let reciept: String
     private let planId: String
     
-    init(api: API,
-         reciept: String,
+    init(reciept: String,
          andActivatePlanWithId planId: String)
     {
         self.reciept = reciept
         self.planId = planId
-        super.init(api:api, reciept: self.reciept)
+        super.init(reciept: self.reciept)
     }
     
-    override func method() -> HTTPMethod {
+    override var method: HTTPMethod {
         return .post
     }
     
-    override func path() -> String {
+    override var path: String {
         return PaymentsAPI.path + "/subscription"
     }
     
-    override func apiVersion() -> Int {
-        return PaymentsAPI.v_post_subscription
-    }
-    
-    override func toDictionary() -> [String : Any]? {
-        var params = super.toDictionary()
+    override var parameters: [String : Any]? {
+        var params = super.parameters
         params?["PlanIDs"] = [planId]
         params?["Cycle"] = 12
         return params
     }
 }
 
-final class PostRecieptResponse: ApiResponse {
+final class PostRecieptResponse: Response {
     var newSubscription: ServicePlanSubscription?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {

@@ -30,6 +30,8 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     private var threadObservation: NSKeyValueObservation!
     private var standalonesObservation: [NSKeyValueObservation] = []
     private var isFirstInit: Bool = true
+    private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
+    private var isWebBodyLoaded = false
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -67,6 +69,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         let unreadButton = UIBarButtonItem(image: UIImage.Top.unread, style: .plain, target: self, action: #selector(topUnreadButtonTapped))
         unreadButton.accessibilityLabel = LocalString._mark_as_unread
         self.navigationItem.setRightBarButtonItems([moreButton, trashButton, folderButton, labelButton, unreadButton], animated: true)
+        self.navigationItem.assignNavItemIndentifiers()
         
         // others
         self.bottomView.delegate = self
@@ -74,6 +77,30 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         self.subscribeToThread()
         self.viewModel.downloadThreadDetails()
         generateAccessibilityIdentifiers()
+        setUpBottomButtonsStateUpdates()
+    }
+
+    private func setUpBottomButtonsStateUpdates() {
+        internetConnectionStatusProvider.getConnectionStatuses { [weak self] _ in
+            self?.setUpBottomButtonsState()
+        }
+
+        self.viewModel.isWebViewBodyLoadedNotifier = { [weak self] isLoaded in
+            self?.isWebBodyLoaded = isLoaded
+            self?.setUpBottomButtonsState()
+        }
+    }
+
+    private var areBottomButtonEnabled: Bool {
+        let isConnected = internetConnectionStatusProvider.currentStatus.isConnected
+        let areDetailsDownloaded = viewModel.messages.allSatisfy(\.isDetailDownloaded)
+        return (isConnected || areDetailsDownloaded) && isWebBodyLoaded
+    }
+
+    private func setUpBottomButtonsState() {
+        bottomView.replyButton.isEnabled = areBottomButtonEnabled
+        bottomView.forwardButton.isEnabled = areBottomButtonEnabled
+        bottomView.replyAllButton.isEnabled = areBottomButtonEnabled
     }
     
     @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 

@@ -24,6 +24,7 @@
 import UIKit
 import CoreData
 import MCSwipeTableViewCell
+import PMCommon
 
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
     typealias viewModelType = MailboxViewModel
@@ -749,25 +750,23 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard checkDoh(error) == false else {
             return
         }
-        let code = error.code
-        if code == NSURLErrorTimedOut {
-            self.showTimeOutErrorMessage()
-        } else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
-            self.showNoInternetErrorMessage()
-        } else if code == APIErrorCode.API_offline {
-            self.showOfflineErrorMessage(error)
+        switch error.code {
+        case NSURLErrorTimedOut, APIErrorCode.HTTP504, APIErrorCode.HTTP404:
+            showTimeOutErrorMessage()
+        case NSURLErrorNotConnectedToInternet, NSURLErrorCannotConnectToHost:
+            showNoInternetErrorMessage()
+        case APIErrorCode.API_offline:
+            showOfflineErrorMessage(error)
             offlineTimerReset()
-        } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
-            self.show503ErrorMessage(error)
+        case APIErrorCode.HTTP503, NSURLErrorBadServerResponse:
+            show503ErrorMessage(error)
             offlineTimerReset()
-        } else if code == APIErrorCode.HTTP504 {
-            self.showTimeOutErrorMessage()
-        } else if code == APIErrorCode.HTTP404 {
-            self.showTimeOutErrorMessage()
+        case APIErrorCode.forcePasswordChange:
+            showErrorMessage(error)
+        default:
+            showTimeOutErrorMessage()
         }
-        self.showTimeOutErrorMessage()
     }
-    
     
     @objc internal func pullDown() {
         guard !tableView.isDragging else {
@@ -837,12 +836,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if loadMore > 0 {
                     if self.retryCounter >= 10 {
                         delay(1.0) {
-                            self.retry()
-                            self.retryCounter += 1
+                            self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (_, _, _) in
+                                self.retry()
+                                self.retryCounter += 1
+                            })
                         }
                     } else {
-                        self.retry()
-                        self.retryCounter += 1
+                        self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (_, _, _) in
+                            self.retry()
+                            self.retryCounter += 1
+                        })
                     }
                 } else {
                     DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
@@ -955,6 +958,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if self.checkHuman() {
                     //TODO::QA
                     self.coordinator?.go(to: .composeShow)
+                }
+                self.updateTapped(status: false)
+                return
+            }
+            guard !message.isSending else {
+                LocalString._mailbox_draft_is_uploading.alertToast()
+                self.tableView.indexPathsForSelectedRows?.forEach {
+                    self.tableView.deselectRow(at: $0, animated: true)
                 }
                 self.updateTapped(status: false)
                 return

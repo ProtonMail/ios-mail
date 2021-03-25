@@ -22,26 +22,21 @@
 
 
 import Foundation
-
+import PMCommon
 
 // MARK : update right swipe action
-final class GetAvailableDomainsRequest : ApiRequest<AvailableDomainsResponse> {
-
-    override func getIsAuthFunction() -> Bool {
+final class GetAvailableDomainsRequest : Request {
+    var isAuth: Bool {
         return false
     }
     
-    override func path() -> String {
+    var path: String {
         return DomainsAPI.path + "/available"
-    }
-    
-    override func apiVersion() -> Int {
-        return DomainsAPI.v_available_domains
     }
 }
 
 //Responses
-final class AvailableDomainsResponse : ApiResponse {
+final class AvailableDomainsResponse : Response {
     var domains : [String]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.domains = response?["Domains"] as? [String]

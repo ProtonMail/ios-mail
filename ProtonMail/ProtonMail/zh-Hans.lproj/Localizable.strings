@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = "在";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "At least one email address in the group could not be found";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "至少有一个收件人的电子邮件地址格式不正确，请重新检查。";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "附件已导入";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "对外名称";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
+
 /* Description */
 "Do you want to cancel the process?" = "是否取消该进程？";
 
@@ -755,6 +767,9 @@
 
 /* alert title */
 "Email address invalid" = "电子邮箱地址无效";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "电子邮箱地址无效";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "邮箱地址";
@@ -876,6 +891,9 @@
 /* Error alert title */
 "Error occured" = "出错了";
 
+/* incorrect email format error in composer */
+"Error sending" = "发送时出现错误";
+
 /* lock app option */
 "Every time enter app" = "每次进入应用程序";
 
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "了解详细信息";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "转至草稿";
+
 /* Action */
 "Go to inbox" = "转到收件箱";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "身份验证";
+
+/* Alarm action */
+"Ignore" = "忽略";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "通过 ProtonMail Bridge 使用 IMAP/SMTP";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy 年 MMM d 日EE %1$@, %2$@ 来信：";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "只能同时登录一个免费账户";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "单位";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "OS compatibility";
 
 /* default vcard types */
 "Other" = "其他";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "正在读取设备上的联系人数据...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Recipient not found";
+
 /* Title */
 "Recovery Code" = "恢复码";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "发件人验证失败";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "发送失败";
 
 /* Alert title */
 "Sending message" = "正在发送邮件";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "邮件发送失败，网络可能存在问题。邮件已存为草稿，下次启动程序时将自动发送。";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "我们已经收到了App Store的购买通知，但是无法将这笔购买与您的帐户匹配。";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "激活已完成。请重启此程序开始体验。";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "我们将向该邮箱发送验证码。";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "我们很快将停止对 iOS 10 设备的支持。请更新您设备的操作系统以继续接收未来的更新。";
 
 /* Title */
 "We would like to know what we can do better." = "我们想知道我们哪里可以做的更好。";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "来信：";
+
+/* Yes action */
+"Yes" = "Yes";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "是的，用于 ";
@@ -2447,7 +2492,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "您的加密邮箱账户已经设置完毕，可以收发加密邮件了。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "您的安全邮箱\r现已就绪。";
+"Your new secure email\r\n account is ready." = "您的安全邮箱\r\n现已就绪。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "您的订阅有效期至";

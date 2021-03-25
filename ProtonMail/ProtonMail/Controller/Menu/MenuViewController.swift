@@ -81,8 +81,8 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, A
         self.updateRevealWidth()
         
         //setup labels fetch controller
-        self.viewModel.setupLabels(delegate: self)
-        
+        setupLabelsIfViewIsLoaded()
+
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didPrimaryAccountLoggedOut(_:)),
                                                name: NSNotification.Name.didPrimaryAccountLogout,
@@ -111,6 +111,7 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, A
         
         updateEmailLabel()
         updateDisplayNameLabel()
+        setupLabelsIfViewIsLoaded(shouldFetchLabels: false)
         self.tableView.reloadData()
         
         if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
@@ -229,7 +230,7 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, A
             return
         }
         self.viewModel.updateCurrent()
-        self.viewModel.setupLabels(delegate: self)
+        setupLabelsIfViewIsLoaded()
         self.hideUsers()
         self.sectionClicked = false
         self.coordinator?.go(to: .mailbox)
@@ -311,7 +312,7 @@ extension MenuViewController: UITableViewDelegate {
         case .users:
             // pick it as current user
             self.viewModel.updateCurrent(row: row)
-            self.viewModel.setupLabels(delegate: self)
+            setupLabelsIfViewIsLoaded()
             self.hideUsers()
             self.sectionClicked = false
             self.coordinator?.go(to: .mailbox)
@@ -330,16 +331,21 @@ extension MenuViewController: UITableViewDelegate {
     func toInbox() {
         self.coordinator?.go(to: .mailbox, sender: MenuItem.inbox.menuToLabel)
     }
+
+    func setupLabelsIfViewIsLoaded(shouldFetchLabels: Bool = true) {
+        guard isViewLoaded else { return }
+        viewModel.setupLabels(delegate: self, shouldFetchLabels: shouldFetchLabels)
+    }
     
     func updateUser() {
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async(execute: { [weak self] in
             // pick it as current user
-            self.viewModel.updateCurrent()
-            self.viewModel.setupLabels(delegate: self)
-            self.hideUsers()
-            self.sectionClicked = false
-            self.tableView.reloadData()
-            self.coordinator?.go(to: .mailbox)
+            self?.viewModel.updateCurrent()
+            self?.setupLabelsIfViewIsLoaded()
+            self?.hideUsers()
+            self?.sectionClicked = false
+            self?.tableView.reloadData()
+            self?.coordinator?.go(to: .mailbox)
         })
     }
 }

@@ -248,6 +248,15 @@
 /* like at 10:00pm */
 "at" = "u";
 
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Najmanje jednu adresu e-pošte u grupi nije bilo moguće pronaći";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Barem jedna adresa e-pošte primatelja nije ispravno oblikovana, provjerite ih još jednom.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Barem jedna adresa e-pošte/domena primatelja ne postoji ili je loše oblikovana. Poruka je premještena u skice.";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Privitak je uvezen";
 
@@ -690,6 +699,9 @@
 /* Title in display name settings */
 "DisplayName" = "Zaslonski naziv";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Želite li aktivirati kupnju za %@ adresa?";
+
 /* Description */
 "Do you want to cancel the process?" = "Želite li prekinuti proces?";
 
@@ -756,6 +768,9 @@
 /* alert title */
 "Email address invalid" = "Adresa e-pošte nije valjana";
 
+/* The error message is shown in composer */
+"Email address is invalid" = "Adresa e-pošte nije valjana";
+
 /* contact detail view, email addresses section title */
 "Email Addresses" = "Adrese e-pošte";
 
@@ -811,10 +826,10 @@
 "Encrypted Contact Details" = "Šifrirani podaci o kontaktu";
 
 /* Title */
-"Encrypted for outside" = "Šifrirano za vanjsku komunikaciju";
+"Encrypted for outside" = "Šifrirano prema van";
 
 /* Title */
-"Encrypted for outside reply" = "Šifrirano za odgovor vanjske komunikacije";
+"Encrypted for outside reply" = "Odgovor za Šifrirano prema van";
 
 /* Title */
 "Encrypted from outside" = "Šifrirano izvana";
@@ -875,6 +890,9 @@
 
 /* Error alert title */
 "Error occured" = "Došlo je do pogreške";
+
+/* incorrect email format error in composer */
+"Error sending" = "Pogreška pri slanju";
 
 /* lock app option */
 "Every time enter app" = "Pri svakom ulasku u aplikaciju";
@@ -967,6 +985,9 @@
 /* Action */
 "Get more information" = "Zatražite dodatne informacije";
 
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Idi u skice";
+
 /* Action */
 "Go to inbox" = "Idi u pristiglu poštu";
 
@@ -1020,6 +1041,9 @@
 
 /* top title */
 "Human Verification" = "Ljudska provjera";
+
+/* Alarm action */
+"Ignore" = "Zanemari";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP podrška putem ProtonMail Bridgea";
@@ -1451,6 +1475,9 @@
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Dana EE, d. MMM, yyyy u %1$@, %2$@ je napisao/la:";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Zanemarite aktivaciju kupnje samo ako ste sigurni da su sve vaše pretplate ažurirane. Za daljnju pomoć obratite se korisničkoj podršci. \r\n\r\n Jeste li sigurni da želite zanemariti aktivaciju?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Možete dodati samo jedan besplatni račun";
 
@@ -1462,6 +1489,9 @@
 
 /* contacts talbe cell Organization title */
 "Organization" = "Organizacija";
+
+/* The title of the iOS 10 upgrate alert */
+"OS compatibility" = "OS kompatibilnost";
 
 /* default vcard types */
 "Other" = "Ostalo";
@@ -1701,6 +1731,9 @@
 /* Title */
 "Reading device contacts data..." = "Čitanje podataka o kontaktima uređaja...";
 
+/* The error message is shown in composer */
+"Recipient not found" = "Primatelj nije pronađen";
+
 /* Title */
 "Recovery Code" = "Kôd za oporavak";
 
@@ -1808,6 +1841,9 @@
 
 /* encryption lock description */
 "Sender Verification Failed" = "Neuspjela potvrda pošiljatelja";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Slanje nije uspjelo";
 
 /* Alert title */
 "Sending message" = "Poruka se šalje";
@@ -2348,6 +2384,9 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nismo mogli poslati vašu poruku, zbog moguće loše mrežne veze. Vaša je poruka spremljena u Skice i biti će automatski poslana sljedeći put kada otvorite aplikaciju.";
 
 /* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Obaviješteni smo o kupnji u App Storeu, ali ne možemo povezati tu kupnju s vašim računom.";
+
+/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Uspješno smo aktivirali vašu pretplatu. Ponovno pokrenite aplikaciju da biste počeli koristiti novi plan usluge.";
 
 /* text field notes */
@@ -2355,6 +2394,9 @@
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Poslati ćemo kôd za potvrdu na gore navedenu adresu e-pošte.";
+
+/* The body of the iOS 10 upgrate alert */
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "Uskoro ćemo zaustaviti podršku za iOS 10 uređaje. Ažurirajte operativni sustav uređaja da biste i ubuduće primali ažuriranja.";
 
 /* Title */
 "We would like to know what we can do better." = "Željeli bismo znati što možemo učiniti boljim.";
@@ -2376,6 +2418,9 @@
 
 /* Title */
 "wrote:" = "je napisao/la:";
+
+/* Yes action */
+"Yes" = "Da";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Da, aktiviraj za ";

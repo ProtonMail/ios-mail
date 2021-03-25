@@ -28,7 +28,7 @@ class LoginTests: BaseTestCase {
         let user = testData.onePassUser
         loginRobot
             .loginUser(user)
-            .verify.loginSuccessful()
+            .verify.inboxShown()
     }
 
     func testLoginWithTwoPass() {
@@ -36,14 +36,14 @@ class LoginTests: BaseTestCase {
         loginRobot
             .loginTwoPasswordUser(user)
             .decryptMailbox(user.mailboxPassword)
-            .verify.loginSuccessful()
+            .verify.inboxShown()
     }
     
     func testLoginWithOnePassAnd2FA() {
         let user = testData.onePassUserWith2Fa
         loginRobot
             .loginUserWithTwoFA(user)
-            .verify.loginSuccessful()
+            .verify.inboxShown()
     }
     
     func testLoginWithTwoPassAnd2FA() {
@@ -51,6 +51,35 @@ class LoginTests: BaseTestCase {
         loginRobot
             .loginTwoPasswordUserWithTwoFA(user)
             .decryptMailbox(user.mailboxPassword)
-            .verify.loginSuccessful()
+            .verify.inboxShown()
+    }
+    
+    func testLoginWithInvalidPassword() {
+        let user = testData.onePassUser
+        loginRobot
+            .loginWithInvalidPassword(user)
+            .verify.invalidCredentialDialogDisplay()
+    }
+    
+    func testLoginWithInvalidUserAndPassword() {
+        let user = testData.onePassUser
+        loginRobot
+            .loginWithInvalidUserAndPassword(user)
+            .verify.invalidCredentialDialogDisplay()
+    }
+    
+    func testLoginWithInvalidUser() {
+        let user = testData.onePassUser
+        loginRobot
+            .loginWithInvalidUser(user)
+            .verify.invalidCredentialDialogDisplay()
+    }
+    
+    func testLoginWithInvalid2Pass() {
+        let user = testData.twoPassUser
+        loginRobot
+            .loginTwoPasswordUser(user)
+            .decryptMailboxWithInvalidPassword(user.mailboxPassword)
+            .verify.verifyDecryptFailedErrorDisplayed()
     }
 }

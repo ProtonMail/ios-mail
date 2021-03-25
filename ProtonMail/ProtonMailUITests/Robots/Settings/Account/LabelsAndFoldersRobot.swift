@@ -18,7 +18,7 @@ private func labelFolderSelectButtonIdentifier(_ name: String) -> String { retur
 /**
  LabelsAndFoldersRobot class represents Labels/Folders view.
  */
-class LabelsAndFoldersRobot {
+class AccountSettingsLabelsAndFoldersRobot {
     
     var verify: Verify! = nil
     init() { verify = Verify() }
@@ -34,11 +34,16 @@ class LabelsAndFoldersRobot {
     }
     
     func deleteFolderLabel(_ name: String) -> AccountSettingsRobot {
-        return selectFolderLabel(name)
+        selectFolderLabel(name)
             .delete()
     }
     
-    private func selectFolderLabel(_ name: String) -> LabelsAndFoldersRobot {
+    func editFolderNameAndColor(_ name: String, _ colorPosition: Int) -> AccountSettingsRobot {
+        selectFolderLabel(name)
+            .delete()
+    }
+    
+    private func selectFolderLabel(_ name: String) -> AccountSettingsLabelsAndFoldersRobot {
         Element.button.tapByIdentifier(labelFolderSelectButtonIdentifier(name))
         return self
     }
@@ -53,7 +58,7 @@ class LabelsAndFoldersRobot {
      */
     class AddFolderLabelRobot {
         
-        func createFolderLabel(_ name: String) -> LabelsAndFoldersRobot {
+        func createFolderLabel(_ name: String) -> AccountSettingsLabelsAndFoldersRobot {
             return setFolderLabelName(name)
                 .done()
                 .create()
@@ -69,9 +74,9 @@ class LabelsAndFoldersRobot {
             return self
         }
         
-        private func create() -> LabelsAndFoldersRobot {
+        private func create() -> AccountSettingsLabelsAndFoldersRobot {
             Element.wait.forButtonWithIdentifier(createButtonIdentifier).tap()
-            return LabelsAndFoldersRobot()
+            return AccountSettingsLabelsAndFoldersRobot()
         }
     }
     

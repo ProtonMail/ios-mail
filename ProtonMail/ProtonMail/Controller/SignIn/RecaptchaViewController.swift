@@ -23,6 +23,7 @@
 
 import UIKit
 import MBProgressHUD
+import PMCommon
 
 class RecaptchaViewController: UIViewController {
     

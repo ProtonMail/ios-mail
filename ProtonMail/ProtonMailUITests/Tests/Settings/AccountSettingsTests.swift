@@ -31,7 +31,7 @@ class AccountSettingsTests : BaseTestCase {
         accountSettingsRobot
             .recoveryEmail()
             .changeRecoveryEmail(testData.twoPassUser)
-            .verify.recoveryEmailChangedTo(testData.twoPassUser.email)
+            .verify.recoveryEmailChangedTo(testData.onePassUser.email)
     }
 
     func testNavigateToDefaultEmailAddress() {
@@ -87,7 +87,7 @@ class AccountSettingsTests : BaseTestCase {
             .verify.mobileSignatureIsDisabled()
     }
 
-    func testCreateAndDeleteLabel() {
+    func testCreateAndDeleteLabelFromAccountSettings() {
         let labelName = StringUtils().randomAlphanumericString()
         accountSettingsRobot
             .foldersAndLabels()
@@ -98,7 +98,7 @@ class AccountSettingsTests : BaseTestCase {
             .verify.folderLabelDeleted(labelName)
     }
 
-    func testCreateAndDeleteFolder() {
+    func testCreateAndDeleteFolderFromAccountSettings() {
         let folderName = StringUtils().randomAlphanumericString()
         accountSettingsRobot
             .foldersAndLabels()

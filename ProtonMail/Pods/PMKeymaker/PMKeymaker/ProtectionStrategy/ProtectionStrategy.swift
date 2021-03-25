@@ -36,11 +36,11 @@ public extension ProtectionStrategy {
     static func removeCyphertext(from keychain: Keychain) {
         keychain.remove(forKey: self.keychainLabel)
     }
-    func removeCyphertextFromKeychain() -> OSStatus {
-        return self.keychain.remove(forKey: Self.keychainLabel)
+    func removeCyphertextFromKeychain() {
+        self.keychain.remove(forKey: Self.keychainLabel)
     }
-    static func getCypherBits(from keychain: Keychain, logError: ((OSStatus) -> Void)? = nil) -> Data? {
-        return keychain.data(forKey: self.keychainLabel, logError: logError)
+    static func getCypherBits(from keychain: Keychain) -> Data? {
+        return keychain.data(forKey: self.keychainLabel)
     }
     func getCypherBits() -> Data? {
         return self.keychain.data(forKey: Self.keychainLabel)

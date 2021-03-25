@@ -24,18 +24,8 @@
 import Foundation
 
 //Settings extension
-extension APIService {
-    
-    fileprivate struct SettingPath {
-        static let base = "/settings/mail"
-    }
-    
-    //TODO::Swift, seems no use
-    func settingUpdateSignature(_ signature: String, authCredential: AuthCredential?, completion: @escaping CompletionBlock) {
-        let path = SettingPath.base + "/signature"
-        let parameters = ["Signature" : signature]
-        request(method: .put, path: path, parameters: parameters, headers: [HTTPHeader.apiVersion: 3], customAuthCredential: authCredential, completion: completion)
-    }
-}
-
+//extension APIService {
+//
+//}
+//
 

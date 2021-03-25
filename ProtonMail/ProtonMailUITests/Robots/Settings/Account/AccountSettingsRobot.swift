@@ -19,6 +19,7 @@ private let signatureStaticTextLabel = LocalString._settings_signature_title
 private let signatureOnStaticTextLabel = LocalString._composer_on
 private let signatureOffStaticTextLabel = "Off"
 private let privacySignatureStaticTextLabel = LocalString._privacy
+private let backNavBarButtonIdentifier = LocalString._menu_settings_title
 
 /**
  AccountSettingsRobot class contains actions and verifications for Account settings functionality.
@@ -28,44 +29,49 @@ class AccountSettingsRobot {
     var verify: Verify! = nil
     init() { verify = Verify() }
     
-    func foldersAndLabels() -> LabelsAndFoldersRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(labelsAndFoldersLabel).tap()
-        return LabelsAndFoldersRobot()
+    func foldersAndLabels() -> AccountSettingsLabelsAndFoldersRobot {
+        Element.wait.forStaticTextFieldWithIdentifier(labelsAndFoldersLabel, file: #file, line: #line).tap()
+        return AccountSettingsLabelsAndFoldersRobot()
     }
     
     func defaultEmailAddress() -> DefaultEmailAddressRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(defaultLabel).tap()
+        Element.wait.forStaticTextFieldWithIdentifier(defaultLabel, file: #file, line: #line).tap()
         return DefaultEmailAddressRobot()
     }
     
     func displayName() -> DisplayNameRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(displayNameLabel).tap()
+        Element.wait.forStaticTextFieldWithIdentifier(displayNameLabel, file: #file, line: #line).tap()
         return DisplayNameRobot()
     }
     
     func mobileSignature() -> SignatureRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(mobileSignatureLabel).tap()
+        Element.wait.forStaticTextFieldWithIdentifier(mobileSignatureLabel, file: #file, line: #line).tap()
         return SignatureRobot()
     }
     
     func privacy() -> PrivacyRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(privacySignatureStaticTextLabel).tap()
+        Element.wait.forStaticTextFieldWithIdentifier(privacySignatureStaticTextLabel, file: #file, line: #line).tap()
         return PrivacyRobot()
     }
     
     func recoveryEmail() -> RecoveryEmailRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(recoveryEmailLabel).tap()
+        Element.wait.forStaticTextFieldWithIdentifier(recoveryEmailLabel, file: #file, line: #line).tap()
         return RecoveryEmailRobot()
     }
     
     func singlePassword() -> SinglePasswordRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(singlePasswordLabel).tap()
+        Element.wait.forStaticTextFieldWithIdentifier(singlePasswordLabel, file: #file, line: #line).tap()
         return SinglePasswordRobot()
     }
 
     func signature() -> SignatureRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(signatureLabel).tap()
+        Element.wait.forStaticTextFieldWithIdentifier(signatureLabel, file: #file, line: #line).tap()
         return SignatureRobot()
+    }
+    
+    func navigateBackToSettings() -> SettingsRobot {
+        Element.wait.forButtonWithIdentifier(backNavBarButtonIdentifier, file: #file, line: #line).tap()
+        return SettingsRobot()
     }
     
     /**
@@ -79,7 +85,7 @@ class AccountSettingsRobot {
         class Verify {
             @discardableResult
             func changeDefaultAddressViewShown(_ email: String) -> DefaultEmailAddressRobot {
-                Element.wait.forButtonWithIdentifier(email)
+                Element.wait.forButtonWithIdentifier(email, file: #file, line: #line)
                 return DefaultEmailAddressRobot()
             }
         }
@@ -90,9 +96,7 @@ class AccountSettingsRobot {
      */
     class Verify {
         
-        func accountSettingsOpened() {
-            
-        }
+        func accountSettingsOpened() {}
         
         func signatureIsEnabled() {
             Element.wait.forCellByIndex(5).assertHasStaticTextChild(withText: signatureStaticTextLabel)
@@ -115,7 +119,7 @@ class AccountSettingsRobot {
         }
         
         func displayNameShownWithText(_ name: String) {
-            Element.wait.forStaticTextFieldWithIdentifier(name)
+            Element.wait.forStaticTextFieldWithIdentifier(name, file: #file, line: #line)
         }
     }
 }

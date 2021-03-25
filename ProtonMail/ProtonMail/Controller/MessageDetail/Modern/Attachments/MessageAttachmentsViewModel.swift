@@ -22,6 +22,7 @@
     
 
 import Foundation
+import PMCommon
 
 class MessageAttachmentsViewModel: NSObject {
     @objc internal dynamic var attachments: [AttachmentInfo] = []
@@ -110,7 +111,7 @@ extension MessageAttachmentsViewModel {
         let user = self.parentViewModel.user
         user.messageService.fetchAttachmentForAttachment(attachment, downloadTask: { taskOne in
             setProgress(0.0)
-            user.apiService.getSession().setDownloadTaskDidWriteDataBlock { _, taskTwo, _, totalBytesWritten, _ in
+            user.apiService.getSession()?.setDownloadTaskDidWriteDataBlock { _, taskTwo, _, totalBytesWritten, _ in
                 guard taskOne == taskTwo else { return }
                 let progress = Float(totalBytesWritten) / totalValue
                 setProgress(progress)

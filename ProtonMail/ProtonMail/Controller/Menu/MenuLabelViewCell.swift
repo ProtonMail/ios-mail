@@ -23,7 +23,7 @@
 
 import Foundation
 
-class MenuLabelViewCell: UITableViewCell {
+class MenuLabelViewCell: UITableViewCell, AccessibleCell {
     
     @IBOutlet weak var titleImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -63,6 +63,7 @@ class MenuLabelViewCell: UITableViewCell {
             titleImageView.highlightedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
             titleImageView.tintColor = color
         }
+        generateCellAccessibilityIdentifiers(item.name)
     }
     
     func configUnreadCount (count: Int) {

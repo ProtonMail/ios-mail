@@ -24,6 +24,7 @@
 import Foundation
 import UIKit
 import AFNetworking
+import PMCommon
 
 @objc(ShareExtensionEntry)
 class ShareExtensionEntry : UINavigationController {
@@ -53,20 +54,22 @@ class ShareExtensionEntry : UINavigationController {
         super.viewDidLoad()
         
         self.appCoordinator?.start()
-        APIService.shared.delegate = self
+        //TODO:: fix me
+        //APIService.shared.delegate = self
     }
 }
 
-extension ShareExtensionEntry: APIServiceDelegate {
-    func onError(error: NSError) {
-        // alert
-        error.alertErrorToast()
-    }
-    
-    func isReachable() -> Bool {
-        return self.reachabilityManager.isReachable
-    }
-}
+//TODO:: fix me
+//extension ShareExtensionEntry: APIServiceDelegate {
+//    func onError(error: NSError) {
+//        // alert
+//        error.alertErrorToast()
+//    }
+//
+//    func isReachable() -> Bool {
+//        return self.reachabilityManager.isReachable
+//    }
+//}
 
 extension ShareExtensionEntry: TrustKitUIDelegate {
     func onTrustKitValidationError(_ alert: UIAlertController) {

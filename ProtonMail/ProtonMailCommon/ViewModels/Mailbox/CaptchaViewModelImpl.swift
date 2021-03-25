@@ -22,22 +22,30 @@
 
 
 import Foundation
+import PMCommon
 
 final class CaptchaViewModelImpl : HumanCheckViewModel {
     
-    let apiService = APIService.shared
+    let apiService : APIService
+    init(api: APIService) {
+        self.apiService = api
+    }
     
     override func getToken(_ complete: @escaping HumanResBlock) {
         let api = GetHumanCheckToken()
-        api.call(api: self.apiService) { (task, response, hasError) in
-            complete(response?.token, response?.error)
+        self.apiService.exec(route: api) { (task, response: GetHumanCheckResponse) in
+            if let error = response.error {
+                complete(nil, error)
+            } else {
+                complete(response.token, nil)
+            }
         }
     }
     
     override func humanCheck(_ type: String, token: String, complete: @escaping HumanCheckBlock) {
         let api = HumanCheckRequest(type: type, token: token)
-        api.call (api: self.apiService) { (task, response, hasError) in
-            complete(response?.error)
+        self.apiService.exec(route: api) { (task, response) in
+            complete(response.error)
         }
     }
 }

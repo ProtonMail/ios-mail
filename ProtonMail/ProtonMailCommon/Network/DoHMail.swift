@@ -22,14 +22,19 @@
 
 
 import Foundation
-import PMNetworking
+import PMCommon
 
 
-class DoHMail : DoH, DoHConfig {
-    var defaultPath: String = Constants.App.API_PATH
-    
+class DoHMail : DoH, ServerConfig {
+    //defind your signup domain
+    var signupDomain: String = "protonmail.com"
     //defind your default host
     var defaultHost: String = Constants.App.API_HOST_URL
+    //defind your host path  /api /
+    var defaultPath: String = Constants.App.API_PATH
+    //defind your default captcha host
+    var captchaHost: String = "https://api.protonmail.ch"
+
     //defind your query host
     var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
     //singleton
@@ -38,7 +43,4 @@ class DoHMail : DoH, DoHConfig {
     /// debug mode
     var debugMode: Bool = false
     var blockList: [String : Int] = [:]
-    //["api.protonmail.ch" : NSURLErrorTimedOut,
-//                                     "ec2-18-156-162-103.eu-central-1.compute.amazonaws.com" : NSURLErrorTimedOut,
-//                                     "ec2-3-122-52-63.eu-central-1.compute.amazonaws.com" : NSURLErrorTimedOut]
 }

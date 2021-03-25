@@ -13,9 +13,9 @@ fileprivate let deleteGroupAlertButtonText = LocalString._contact_groups_delete
 fileprivate let deleteButtonText = LocalString._general_delete_action
 fileprivate let contactsTabBarButtonIdentifier = "UITabBar.\(LocalString._contacts_title)"
 fileprivate let groupsTabBarButtonIdentifier = "UITabBar.\(LocalString._menu_contact_group_title)"
-fileprivate func contactCellIdentifier(_ email: String) -> String { return "ContactsTableViewCell.\(email)" }
+fileprivate func contactCellIdentifier(_ name: String) -> String { return "ContactsTableViewCell.\(name)" }
 fileprivate func groupCellIdentifier(_ name: String) -> String { return "ContactGroupsViewCell.\(name)" }
-fileprivate func groupCellSendImailImageIdentifier(_ name: String) -> String { return "\(name).sendButtonImage" }
+fileprivate func groupCellSendImailButtonIdentifier(_ name: String) -> String { return "\(name).sendButton" }
 fileprivate let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
 fileprivate let addContactNavBarButtonIdentifier = "UINavigationItem.addButton"
 fileprivate let importContactNavBarButtonIdentifier = "UINavigationItem.importButton"
@@ -72,19 +72,19 @@ class ContactsRobot {
         var verify: Verify! = nil
         init() { verify = Verify() }
         
-        func deleteContact(_ withEmail: String) -> ContactsView {
-            return swipeLeftToDelete(withEmail)
+        func deleteContact(_ name: String) -> ContactsView {
+            return swipeLeftToDelete(name)
                 .clickDeleteButton()
                 .confirmDeletion()
         }
 
-        func clickContact(_ withEmail: String) -> ContactDetailsRobot {
-            Element.wait.forCellWithIdentifier(contactCellIdentifier(withEmail), file: #file, line:  #line).tap()
+        func clickContact(_ name: String) -> ContactDetailsRobot {
+            Element.wait.forCellWithIdentifier(contactCellIdentifier(name), file: #file, line:  #line).tap()
             return ContactDetailsRobot()
         }
         
-        private func swipeLeftToDelete(_ withEmail: String) -> ContactsView {
-            Element.cell.swipeDownUpUntilVisibleByIdentifier(contactCellIdentifier(withEmail)).swipeLeft()
+        private func swipeLeftToDelete(_ name: String) -> ContactsView {
+            Element.cell.swipeDownUpUntilVisibleByIdentifier(contactCellIdentifier(name)).swipeLeft()
             return ContactsView()
         }
         
@@ -100,12 +100,12 @@ class ContactsRobot {
         
         class Verify {
 
-            func contactExists(_ email: String) {
-                Element.wait.forCellWithIdentifier(contactCellIdentifier(email), file: #file, line:  #line)
+            func contactExists(_ name: String) {
+                Element.wait.forCellWithIdentifier(contactCellIdentifier(name), file: #file, line:  #line)
             }
 
-            func contactDoesNotExists(_ email: String) {
-                Element.wait.forCellWithIdentifierToDisappear(contactCellIdentifier(email), file: #file, line:  #line)
+            func contactDoesNotExists(_ name: String) {
+                Element.wait.forCellWithIdentifierToDisappear(contactCellIdentifier(name), file: #file, line:  #line)
             }
         }
     }
@@ -127,7 +127,9 @@ class ContactsRobot {
         }
         
         func sendGroupEmail(_ name: String) -> ComposerRobot {
-            Element.wait.forImageWithIdentifier(groupCellSendImailImageIdentifier(name), file: #file, line: #line).tap()
+            Element.wait.forButtonWithIdentifier(groupCellSendImailButtonIdentifier(name), file: #file, line: #line)
+                .swipeDownUntilVisible()
+                .tap()
             return ComposerRobot()
         }
         

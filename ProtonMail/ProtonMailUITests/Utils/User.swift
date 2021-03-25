@@ -15,6 +15,7 @@ class User {
     var mailboxPassword: String
     var twoFASecurityKey: String
     var name: String
+    var pmMeEmail: String
     
     init(email: String, password: String, mailboxPassword: String, twoFASecurityKey: String) {
         self.email = email
@@ -22,6 +23,7 @@ class User {
         self.mailboxPassword = mailboxPassword
         self.twoFASecurityKey = twoFASecurityKey
         self.name = String(email.split(separator: "@")[0])
+        self.pmMeEmail = "\(name)@pm.me"
     }
     
     init(user: String) {
@@ -31,6 +33,7 @@ class User {
         self.mailboxPassword = String(userData[2])
         self.twoFASecurityKey = String(userData[3])
         self.name = String(String(userData[0]).split(separator: "@")[0])
+        self.pmMeEmail = "\(name)@pm.me"
     }
     
     func getTwoFaCode() -> String {

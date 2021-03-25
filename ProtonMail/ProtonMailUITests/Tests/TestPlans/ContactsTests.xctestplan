@@ -1,0 +1,35 @@
+{
+  "configurations" : [
+    {
+      "id" : "364FB930-7904-40AE-8F4E-7FF6FF820803",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "selectedTests" : [
+        "ContactsTests\/testContactDetailSendMessage()",
+        "ContactsTests\/testContactGroupSendMessage()",
+        "ContactsTests\/testCreateContact()",
+        "ContactsTests\/testCreateGroup()",
+        "ContactsTests\/testDeleteContact()",
+        "ContactsTests\/testDeleteGroup()",
+        "ContactsTests\/testEditContact()",
+        "ContactsTests\/testEditGroup()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

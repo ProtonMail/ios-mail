@@ -341,23 +341,10 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
     }
     
     func didChanged(textView: UITextView) {
-        if #available(iOS 11.0, *) {
-            UIView.setAnimationsEnabled(false)
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
-            UIView.setAnimationsEnabled(true)
-        } else {
-            synced(self, closure: {
-                UIView.setAnimationsEnabled(false)
-                if let active = self.activeText, active == textView {
-                    if let cell = textView.superview?.superview as? UITableViewCell, let _ = self.tableView.indexPath(for: cell) {
-                        self.tableView.beginUpdates()
-                        self.tableView.endUpdates()
-                    }
-                }
-                UIView.setAnimationsEnabled(true)
-            })
-        }
+        UIView.setAnimationsEnabled(false)
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
+        UIView.setAnimationsEnabled(true)
     }
     
     func synced(_ lock: Any, closure: () -> ()) {

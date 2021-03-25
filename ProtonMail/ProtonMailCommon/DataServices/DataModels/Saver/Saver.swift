@@ -24,11 +24,11 @@
 import Foundation
 
 protocol KeyValueStoreProvider: class {
-    func data(forKey key: String, logError: ((OSStatus) -> Void)?) -> Data?
+    func data(forKey key: String) -> Data?
     func int(forKey key: String) -> Int?
     func set(_ intValue: Int, forKey key: String)
     func set(_ data: Data, forKey key: String)
-    func remove(forKey key: String) -> OSStatus
+    func remove(forKey key: String)
 }
 
 class Saver<T: Codable> {
@@ -46,7 +46,7 @@ class Saver<T: Codable> {
 
 extension Saver where T == String {
     private func getString() -> String? {
-        guard let raw = self.store.data(forKey: key, logError: nil),
+        guard let raw = self.store.data(forKey: key),
             let subscription = String(bytes: raw, encoding: .utf8) else
         {
             return nil
@@ -111,7 +111,7 @@ extension Saver where T == Int {
 
 extension Saver where T: Codable {
     private func getFromStore() -> T? {
-        guard let raw = self.store.data(forKey: key, logError: nil),
+        guard let raw = self.store.data(forKey: key),
             let subscription = try? PropertyListDecoder().decode(T.self, from: raw) else
         {
             return nil

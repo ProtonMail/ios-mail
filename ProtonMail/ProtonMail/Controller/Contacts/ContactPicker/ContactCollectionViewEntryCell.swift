@@ -80,20 +80,19 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
         textField.layer.borderColor = UIColor.green.cgColor
         textField.layer.borderWidth = 2.0
 #endif
-
-        self.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.contentView.addSubview(textField)
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[textField]|",
                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["textField": textField]))
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[textField]|",
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[textField]-(40)-|",
                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["textField": textField]))
-        
-        textField.translatesAutoresizingMaskIntoConstraints = false
     
         self.contactEntryTextField = textField
         
@@ -175,20 +174,16 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
     }
     
     func widthForText(text: String) -> CGFloat {
-        //        guard let font = self.contactEntryTextField?.font else {
-        //            return 0.0
-        //        }
-        //
-        //        let font = Fonts.h6.light
-        //
-        //        let s = CGSize(width: Double.greatestFiniteMagnitude, height: Double.greatestFiniteMagnitude)
-        //        let size = NSString(string: text).boundingRect(with: s,
-        //                                                       options: NSStringDrawingOptions.usesLineFragmentOrigin,
-        //                                                       attributes: [NSAttributedStringKey.font : font],
-        //                                                       context: nil).size
-        //        return size.width.rounded(.up)
+        guard (self.contactEntryTextField?.font) != nil else {
+            return 0.0
+        }
         
-        return 40  //this will avoid the text input disapeared
+        let s = CGSize(width: Double.greatestFiniteMagnitude, height: Double.greatestFiniteMagnitude)
+        let size = NSString(string: text).boundingRect(with: s,
+                                                       options: NSStringDrawingOptions.usesLineFragmentOrigin,
+                                                       attributes: [NSAttributedString.Key.font : Fonts.h6.light],
+                                                       context: nil).size
+        return size.width.rounded(.up)
     }
     
 }

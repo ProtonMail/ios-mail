@@ -13,19 +13,27 @@
   },
   "testTargets" : [
     {
+      "parallelizable" : true,
       "skippedTests" : [
         "AccountSettingsTests\/testChangeSignlePassword()",
         "BaseTestCase",
         "ContactsTests\/testContactDetailSendMessage()",
         "ContactsTests\/testContactGroupSendMessage()",
-        "DraftsTests",
+        "DraftsTests\/testSaveDraftWithAttachment()",
+        "DraftsTests\/testSendDraftWithAttachment()",
         "LoginTests\/testLoginWithOnePassAnd2FA()",
         "LoginTests\/testLoginWithTwoPassAnd2FA()",
         "MultiuserManagementTests\/testAddTwoFreeAccounts()",
         "MultiuserManagementTests\/testCancelLoginOnTwoFaPrompt()",
         "MultiuserManagementTests\/testConnectOnePassAccountWithTwoFa()",
         "MultiuserManagementTests\/testConnectTwoPassAccountWithTwoFa()",
-        "SendNewMessageTests"
+        "SendNewMessageTests\/testSendMessageEOAndExpiryTimeWithAttachment()",
+        "SendNewMessageTests\/testSendMessageToExternalContactWithOneAttachment()",
+        "SendNewMessageTests\/testSendMessageToExternalContactWithTwoAttachments()",
+        "SendNewMessageTests\/testSendMessageToInternalContactWithTwoAttachments()",
+        "SendNewMessageTests\/testSendMessageToInternalNotTrustedContactChooseAttachment()",
+        "SendNewMessageTests\/testSendMessageWithAttachmentFromPmMe()",
+        "SettingsTests\/testEnableAndDisablePinForMultipleAccounts()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",

@@ -1,0 +1,41 @@
+{
+  "configurations" : [
+    {
+      "id" : "710133D1-2D4B-4EA0-BB6F-1BB6330D7157",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "selectedTests" : [
+        "SendNewMessageTests\/testSendMessageEO()",
+        "SendNewMessageTests\/testSendMessageEOAndExpiryTime()",
+        "SendNewMessageTests\/testSendMessageEOAndExpiryTimeWithAttachment()",
+        "SendNewMessageTests\/testSendMessageExpiryTime()",
+        "SendNewMessageTests\/testSendMessageFromPmMe()",
+        "SendNewMessageTests\/testSendMessageToExternalContactWithOneAttachment()",
+        "SendNewMessageTests\/testSendMessageToExternalContactWithTwoAttachments()",
+        "SendNewMessageTests\/testSendMessageToInternalContact()",
+        "SendNewMessageTests\/testSendMessageToInternalContactWithTwoAttachments()",
+        "SendNewMessageTests\/testSendMessageToInternalNotTrustedContact()",
+        "SendNewMessageTests\/testSendMessageToInternalNotTrustedContactChooseAttachment()",
+        "SendNewMessageTests\/testSendMessageToInternalTrustedContact()",
+        "SendNewMessageTests\/testSendMessageToPGPEncryptedContact()",
+        "SendNewMessageTests\/testSendMessageToPGPSignedContact()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

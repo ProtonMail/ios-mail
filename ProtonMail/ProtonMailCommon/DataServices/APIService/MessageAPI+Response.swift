@@ -22,8 +22,9 @@
 
 
 import Foundation
+import PMCommon
 
-final class MessageCountResponse : ApiResponse {
+final class MessageCountResponse : Response {
     var counts : [[String : Any]]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.counts = response?["Counts"] as? [[String : Any]]
@@ -31,7 +32,7 @@ final class MessageCountResponse : ApiResponse {
     }
 }
 
-final class MessageResponse : ApiResponse {
+final class MessageResponse : Response {
     var message : [String : Any]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.message = response?["Message"] as? [String : Any]
@@ -39,3 +40,23 @@ final class MessageResponse : ApiResponse {
     }
 }
 
+final class SearchMessageResponse : Response {
+    var jsonDic : [String : Any]?
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.jsonDic = response
+        return true
+    }
+}
+
+final class UpdateDraftResponse: Response {
+    var responseDict: [String: Any] = [:]
+    
+    override func ParseResponse(_ response: [String : Any]) -> Bool {
+        let result = super.ParseResponse(response)
+        if result {
+            self.responseDict = response["Message"] as? [String : Any] ?? [:]
+        }
+        
+        return result
+    }
+}

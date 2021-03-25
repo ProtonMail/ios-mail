@@ -34,11 +34,7 @@ class MessageBodyViewController: HorizontallyScrollableWebViewContainer {
     }
 
     private lazy var loader: WebContentsSecureLoader = {
-        if #available(iOS 11.0, *) {
-            return HTTPRequestSecureLoader(addSpacerIfNeeded: false)
-        } else {
-            return HTMLStringSecureLoader(addSpacerIfNeeded: false)
-        }
+        return HTTPRequestSecureLoader(addSpacerIfNeeded: false)
     }()
     
     deinit {
@@ -163,4 +159,19 @@ extension MessageBodyViewController: CoordinatedNew {
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
+}
+
+extension MessageBodyViewController {
+
+    override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        super.webView(webView, didFinish: navigation)
+        let isLoadingFinished = Int(webView.estimatedProgress) == 1
+        guard isLoadingFinished else { return }
+        self.viewModel.isWebViewBodyLoaded = loader.renderedContents.isValid
+    }
+
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        self.viewModel.isWebViewBodyLoaded = false
+    }
+
 }

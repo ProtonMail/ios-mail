@@ -1,0 +1,33 @@
+{
+  "configurations" : [
+    {
+      "id" : "71DDEC45-EFB2-4E28-A3F6-38EDE174AF78",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "selectedTests" : [
+        "LabelsFoldersTests\/testAddMessageToCustomFolderFromInbox()",
+        "LabelsFoldersTests\/testAddMessageToCustomLabelFromInbox()",
+        "LabelsFoldersTests\/testCreateAndDeleteCustomFolder()",
+        "LabelsFoldersTests\/testCreateAndDeleteCustomLabel()",
+        "LabelsFoldersTests\/testEditCustomFolderNameAndColor()",
+        "LabelsFoldersTests\/testEditCustomLabelNameAndColor()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

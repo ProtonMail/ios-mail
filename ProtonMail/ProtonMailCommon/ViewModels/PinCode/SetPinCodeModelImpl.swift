@@ -82,18 +82,7 @@ class SetPinCodeModelImpl : PinCodeViewModel {
     override func done(completion: @escaping (Bool)->Void) {
         self.isPinMatched() { matched in
             if matched {
-                keymaker.activate(PinProtection(pin: self.enterPin), logErrorForDeactivate: { (status) in
-                    // TODO: Remove log once it is not needed
-                    var msg: String?
-                    if #available(iOS 11.3, *) {
-                        msg = SecCopyErrorMessageString(status, nil) as String?
-                    }
-                    if let m = msg {
-                        Analytics.shared.error(message: .keychainWipeError, error: "status code: \(m)")
-                    } else {
-                        Analytics.shared.error(message: .keychainWipeError, error: "status code: \(status)")
-                    }
-                } , completion: completion)
+                keymaker.activate(PinProtection(pin: self.enterPin), completion: completion)
             }
         }
     }

@@ -35,7 +35,7 @@ protocol FingerprintProtocol {
 }
 
 protocol SignupViewModelDelegate{
-    func verificationCodeChanged(_ viewModel : SignupViewModel, code : String!)
+    func verificationCodeChanged(_ viewModel : SignupViewModel, code : String)
 }
 
 

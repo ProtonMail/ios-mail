@@ -26,7 +26,7 @@ import MBProgressHUD
 import PMKeymaker
 import Masonry
 
-class SettingsLockViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
+class SettingsLockViewController: UITableViewController, ViewModelProtocol, CoordinatedNew, AccessibleView {
     internal var viewModel : SettingsLockViewModel!
     internal var coordinator : SettingsLockCoordinator?
     
@@ -67,6 +67,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
+        generateAccessibilityIdentifiers()
     }
     
     private func updateTitle() {
@@ -173,18 +174,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
                             if indexPath == indexp {
                                 if !userCachedStatus.isTouchIDEnabled {
                                     // Enable Bio
-                                    keymaker.activate(BioProtection(), logErrorForDeactivate: { (status) in
-                                        // TODO: Remove log once it is not needed
-                                        var msg: String?
-                                        if #available(iOS 11.3, *) {
-                                            msg = SecCopyErrorMessageString(status, nil) as String?
-                                        }
-                                        if let m = msg {
-                                            Analytics.shared.error(message: .keychainWipeError, error: "status code: \(m)")
-                                        } else {
-                                            Analytics.shared.error(message: .keychainWipeError, error: "status code: \(status)")
-                                        }
-                                    }) { _ in
+                                    keymaker.activate(BioProtection()) { _ in
                                         self.updateTableProtectionSection()
                                     }
                                 } else {

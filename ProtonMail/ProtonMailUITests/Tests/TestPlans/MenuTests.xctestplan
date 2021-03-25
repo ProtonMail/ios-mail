@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "22ED1B0F-BCCA-47A2-B789-DF6C4DE4E1D6",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "selectedTests" : [
+        "MenuTests\/testSaveSpecialCharacterDisplayNameWith()",
+        "MenuTests\/testSaveTwoWordsDisplayName()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

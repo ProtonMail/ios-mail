@@ -22,7 +22,7 @@
 
 
 import Foundation
-
+import PMCommon
 
 // message attachment key package
 final class AttachmentPackage {
@@ -84,11 +84,11 @@ final class EOAddressPackage : AddressPackage {
         super.init(email: email, bodyKeyPacket: bodyKeyPacket, type: type, plainText: plainText, attPackets: attPackets, sign: sign)
     }
     
-    override func toDictionary() -> [String : Any]? {
-        var out = super.toDictionary() ?? [String : Any]()
+    override var parameters: [String : Any]? {
+        var out = super.parameters ?? [String : Any]()
         out["Token"] = self.token
         out["EncToken"] = self.encToken
-        out["Auth"] = self.auth.toDictionary()
+        out["Auth"] = self.auth.parameters
         if let hit = self.pwdHit {
             out["PasswordHint"] = hit
         }
@@ -111,8 +111,8 @@ class AddressPackage : AddressPackageBase {
         super.init(email: email, type: type, sign: sign, plainText: plainText)
     }
     
-    override func toDictionary() -> [String : Any]? {
-        var out = super.toDictionary() ?? [String : Any]()
+    override var parameters: [String : Any]? {
+        var out = super.parameters ?? [String : Any]()
         out["BodyKeyPacket"] = self.bodyKeyPacket
         //change to == id : packet
         if attPackets.count > 0 {
@@ -137,8 +137,9 @@ class MimeAddressPackage : AddressPackageBase {
         super.init(email: email, type: type, sign: -1, plainText: plainText)
     }
     
-    override func toDictionary() -> [String : Any]? {
-        var out = super.toDictionary() ?? [String : Any]()
+    
+    override var parameters: [String : Any]? {
+        var out = super.parameters ?? [String : Any]()
         out["BodyKeyPacket"] = self.bodyKeyPacket        
         return out
     }
@@ -159,7 +160,7 @@ class AddressPackageBase : Package {
         self.plainText = plainText
     }
     
-    func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         var out : [String: Any] = [
             "Type" : type.rawValue
         ]

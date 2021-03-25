@@ -1,13 +1,14 @@
 {
   "name": "PMAuthentication",
-  "version": "1.0.0",
+  "version": "1.3.2",
   "summary": "Authentication for ProtonMail",
-  "description": "Lower level Authentication flow for ProtonMail",
+  "description": "Lower level Authentication flow for ProtonMail + UserInfo",
   "homepage": "https://gitlab.protontech.ch/apple/shared/pmauthentication",
   "license": "ProtonMail",
   "authors": "Anatoly Rosencrantz",
   "platforms": {
-    "ios": "10.0"
+    "ios": "10.0",
+    "osx": "10.12"
   },
   "source": {
     "git": ".",
@@ -15,12 +16,27 @@
   },
   "source_files": [
     "PMAuthentication/*.swift",
-    "PMAuthentication/*/*.swift"
+    "PMAuthentication/**/*.swift"
   ],
   "dependencies": {
     "PMCrypto": [
 
+    ],
+    "PMCommon": [
+      ">= 1.1.2"
     ]
   },
-  "static_framework": true
+  "static_framework": true,
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "PMAuthenticationTests/**/*.swift",
+      "dependencies": {
+        "OHHTTPStubs/Swift": [
+
+        ]
+      }
+    }
+  ]
 }

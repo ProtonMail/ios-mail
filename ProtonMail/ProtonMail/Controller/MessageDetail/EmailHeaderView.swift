@@ -73,7 +73,7 @@ extension EmailHeaderView {
     }
 }
 
-class EmailHeaderView: UIView {
+class EmailHeaderView: UIView, AccessibleView {
     
     weak var viewDelegate: EmailHeaderViewProtocol?
     private weak var _delegate: EmailHeaderActionsProtocol?
@@ -357,6 +357,7 @@ class EmailHeaderView: UIView {
                                       self.date!,
                                       self.emailFavoriteButton!,
                                       self.emailDetailButton!]
+        generateAccessibilityIdentifiers()
     }
     
     required init?(coder aDecoder: NSCoder) {

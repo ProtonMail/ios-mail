@@ -1,0 +1,34 @@
+{
+  "configurations" : [
+    {
+      "id" : "4176A7D2-7491-439F-8C15-70582A72CE2D",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "selectedTests" : [
+        "DraftsTests\/testAddRecipientsToDraft()",
+        "DraftsTests\/testChangeDraftSender()",
+        "DraftsTests\/testChangeDraftSubjectAndSendMessage()",
+        "DraftsTests\/testOpenDraftFromSearch()",
+        "DraftsTests\/testSaveDraft()",
+        "DraftsTests\/testSaveDraftWithAttachment()",
+        "DraftsTests\/testSendDraftWithAttachment()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

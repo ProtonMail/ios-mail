@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "0A832D8B-1FBA-4D6F-B24C-ADA9A998B00E",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "selectedTests" : [
+        "LoginTests\/testLoginWithOnePass()",
+        "LoginTests\/testLoginWithTwoPass()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

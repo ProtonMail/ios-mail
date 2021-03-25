@@ -58,9 +58,7 @@ class ContactPicker: UIView, AccessibleView {
         controller.tableView.sectionHeaderHeight = 0
         controller.tableView.sectionFooterHeight = 0
         controller.tableView.reloadData()
-        if #available(iOS 11.0, *) {
-            controller.tableView.contentInsetAdjustmentBehavior = .never
-        }
+        controller.tableView.contentInsetAdjustmentBehavior = .never
         controller.onSelection = { [unowned self] model in
             self.hideSearchTableView()
             // if contact group is selected, we add all emails in it as selected, initially

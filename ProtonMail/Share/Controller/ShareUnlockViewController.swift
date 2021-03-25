@@ -24,6 +24,7 @@
 import UIKit
 import MBProgressHUD
 import PromiseKit
+import PMCommon
 
 var sharedUserDataService : UserDataService!
 
@@ -60,7 +61,8 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        sharedUserDataService = UserDataService(api: APIService.shared)//TODO:: fix me
+        
+        sharedUserDataService = UserDataService(api: PMAPIService.shared)
         LanguageManager.setupCurrentLanguage()
         configureNavigationBar()
         

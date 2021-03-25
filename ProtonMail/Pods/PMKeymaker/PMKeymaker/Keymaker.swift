@@ -21,8 +21,11 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import UIKit
 import EllipticCurveKeyPair
+
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public enum Constants {
     public static let removedMainKeyFromMemory: NSNotification.Name = .init("Keymaker" + ".removedMainKeyFromMemory")
@@ -43,7 +46,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         self.keychain = keychain
         
         super.init()
-        
+        #if canImport(UIKit)
         if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
                                                    name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -55,6 +58,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
             NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
                                                    name: UIApplication.didBecomeActiveNotification, object: nil)
         }
+        #endif
     }
     
     deinit {
@@ -196,7 +200,6 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
     
     // completion says whether protector was activated or not
     public func activate(_ protector: ProtectionStrategy,
-                         logErrorForDeactivate: ((OSStatus) -> Void)? = nil,
                          completion: @escaping (Bool) -> Void)
     {
         let isMainThread = Thread.current.isMainThread
@@ -212,23 +215,19 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
             
             // we want to remove unprotected value from storage if the new Protector is significant
             if !(protector is NoneProtection) {
-                let status = self.deactivate(NoneProtection(keychain: self.keychain))
-                if status != noErr {
-                    //Log error here
-                    logErrorForDeactivate?(status)
-                }
+                self.deactivate(NoneProtection(keychain: self.keychain))
             }
             
             isMainThread ? DispatchQueue.main.async{ completion(true) } : completion(true)
         }
     }
     
-    public func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type, logError: ((OSStatus) -> Void)? = nil) -> Bool {
-        return protectionType.getCypherBits(from: self.keychain, logError: logError) != nil
+    public func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type) -> Bool {
+        return protectionType.getCypherBits(from: self.keychain) != nil
     }
     
-    @discardableResult public func deactivate(_ protector: ProtectionStrategy) -> OSStatus {
-        let status = protector.removeCyphertextFromKeychain()
+    @discardableResult public func deactivate(_ protector: ProtectionStrategy) -> Bool {
+        protector.removeCyphertextFromKeychain()
         
         // need to keep mainKey in keychain in case user switches off all the significant Protectors
         if !self.isProtectorActive(GenericBioProtection<SUBTLE>.self),
@@ -237,7 +236,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
             self.activate(NoneProtection(keychain: self.keychain), completion: { _ in })
         }
         
-        return status
+        return true
     }
     
     private func generateNewMainKeyWithDefaultProtection() -> Key {

@@ -22,25 +22,19 @@
 
 
 import Foundation
+import PMCommon
 
-// Mark : get all settings
-final class TestOffline : ApiRequest<ApiResponse> {
-    override func path() -> String {
+// Mark : get all settings  //Response
+final class TestOffline : Request {
+    var path: String {
         return "/tests/offline"
-    }
-    override func apiVersion() -> Int {
-        return 3
-        
     }
 }
 
-final class TestBadRequest : ApiRequestNew<ApiResponse> {
-    override func path() -> String {
+// Response
+final class TestBadRequest : Request {
+    var path: String {
         return "/tests/offline1"
-    }
-    override func apiVersion() -> Int {
-        return 3
-        
     }
 }
 

@@ -24,6 +24,7 @@
 import Foundation
 import CoreData
 import PromiseKit
+import PMCommon
 
 
 // labels and folders manager
@@ -83,7 +84,10 @@ final class LabelManagerViewModelImpl : LabelViewModel {
                     if value.currentStatus == 2 { //delete
                         if value.label.managedObjectContext != nil && key == value.label.labelID {
                             let api = DeleteLabelRequest(lable_id: key)
-                            api.call(api: self.labelService.api, nil) // TODO:: fix me
+                            // TODO:: fix me.  check if self.apiService works
+                            self.labelService.apiService.exec(route: api) { (_, _) in
+                                
+                            }
                             context.delete(value.label)
                         }
                     }

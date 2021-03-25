@@ -351,21 +351,22 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         }
         
         do {  // payments/subscription
-            let serverUpdateApi = PostRecieptRequest(api: user.apiService, reciept: receipt, andActivatePlanWithId: planId)
-            let serverUpdateRes = try await(serverUpdateApi.run())
-            if let newSubscription = serverUpdateRes.newSubscription {
+            let serverUpdateApi = PostRecieptRequest(reciept: receipt, andActivatePlanWithId: planId)
+            let serverUpdateRes: PostRecieptResponse = try await( user.apiService.run(route: serverUpdateApi))
+            let newSubscription = serverUpdateRes.newSubscription
+//            if let newSubscription = serverUpdateRes.newSubscription {
                 user.sevicePlanService.currentSubscription = newSubscription
                 self.successCompletion?()
                 SKPaymentQueue.default().finishTransaction(transaction)
-            } else {
-                throw Errors.noNewSubscriptionInSuccessfullResponse
-            }
+//            } else {
+//                throw Errors.noNewSubscriptionInSuccessfullResponse
+//            }
             
         } catch let error as NSError where error.code == 22101 {
             // Amount mismatch - try report only credits without activating the plan
             do {  // payments/credits
-                let serverUpdateApi = PostCreditRequest<PostCreditResponse>(api: user.apiService, reciept: receipt)
-                let _ = try await(serverUpdateApi.run())
+                let serverUpdateApi = PostCreditRequest(reciept: receipt)
+                let _ = try await(user.apiService.run(route: serverUpdateApi))//PostCreditResponse
                 SKPaymentQueue.default().finishTransaction(transaction)
                 
                 _ = user.userService.fetchUserInfo().done(on: .main) { _ in

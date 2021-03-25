@@ -13,6 +13,7 @@
 
 @class SrpAuth;
 @class SrpProofs;
+@class SrpServer;
 
 /**
  * Auth stores byte data for the calculation of SRP proofs.
@@ -90,6 +91,41 @@ ExpectedServerProof []byte
 @property (nonatomic) NSData* _Nullable clientProof;
 @property (nonatomic) NSData* _Nullable clientEphemeral;
 @property (nonatomic) NSData* _Nullable expectedServerProof;
+@end
+
+/**
+ * Server stores the internal state for the validation of SRP proofs.
+ */
+@interface SrpServer : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+/**
+ * NewServer creates a new server instance from the raw binary data.
+ */
+- (nullable instancetype)init:(NSData* _Nullable)modulusBytes verifier:(NSData* _Nullable)verifier bitLength:(long)bitLength;
+/**
+ * NewServerFromSigned creates a new server instance from the signed modulus and the binary verifier.
+ */
+- (nullable instancetype)initFromSigned:(NSString* _Nullable)signedModulus verifier:(NSData* _Nullable)verifier bitLength:(long)bitLength;
+/**
+ * GenerateChallenge is the first step for SRP exchange, and generates a valid challenge for the provided verifier.
+ */
+- (NSData* _Nullable)generateChallenge:(NSError* _Nullable* _Nullable)error;
+/**
+ * GetSharedSession returns the shared secret as byte if the session has concluded in valid state.
+ */
+- (NSData* _Nullable)getSharedSession:(NSError* _Nullable* _Nullable)error;
+/**
+ * IsCompleted returns true if the exchange has been concluded in valid state.
+ */
+- (BOOL)isCompleted;
+/**
+ * VerifyProofs Verifies the client proof and - if valid - generates the shared secret and returnd the server proof.
+It concludes the exchange in valid state if successful.
+ */
+- (NSData* _Nullable)verifyProofs:(NSData* _Nullable)clientEphemeralBytes clientProofBytes:(NSData* _Nullable)clientProofBytes error:(NSError* _Nullable* _Nullable)error;
 @end
 
 @interface Srp : NSObject
@@ -170,6 +206,16 @@ Warnings:
 	 - none.
  */
 FOUNDATION_EXPORT SrpAuth* _Nullable SrpNewAuthForVerifier(NSString* _Nullable password, NSString* _Nullable signedModulus, NSData* _Nullable rawSalt, NSError* _Nullable* _Nullable error);
+
+/**
+ * NewServer creates a new server instance from the raw binary data.
+ */
+FOUNDATION_EXPORT SrpServer* _Nullable SrpNewServer(NSData* _Nullable modulusBytes, NSData* _Nullable verifier, long bitLength, NSError* _Nullable* _Nullable error);
+
+/**
+ * NewServerFromSigned creates a new server instance from the signed modulus and the binary verifier.
+ */
+FOUNDATION_EXPORT SrpServer* _Nullable SrpNewServerFromSigned(NSString* _Nullable signedModulus, NSData* _Nullable verifier, long bitLength, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSData* _Nullable SrpRandomBits(long bits, NSError* _Nullable* _Nullable error);
 

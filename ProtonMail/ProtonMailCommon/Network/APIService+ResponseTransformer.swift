@@ -23,7 +23,7 @@
 
 import Foundation
 
-extension APIService {
+extension UsersManager {
     
     fileprivate struct TransType {
         static let boolean     = "BoolTransformer"

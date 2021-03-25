@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PMCommon
 
 @objc(User)
 final class User : NSObject {

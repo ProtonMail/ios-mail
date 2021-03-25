@@ -51,7 +51,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var origvCard2 : PMNIVCard?
     var origvCard3 : PMNIVCard?
     
-    init(c : Contact?, user: UserManager, coreDataService: CoreDataService) {
+    init(c: Contact?, user: UserManager, coreDataService: CoreDataService) {
         super.init(user: user, coreDataService: coreDataService)
         self.contact = c
         self.prepareContactData()
@@ -214,10 +214,13 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                 self.informations.append(info)
                             case "Birthday":
                                 let births = vcard.getBirthdays()
-                                for b in births {
-                                    let info = ContactEditInformation(type: .birthday, value:b.getText(), isNew: false)
-                                    self.informations.append(info)
-                                    break //only change first
+                                if let birthday = births.first {
+                                    let info = ContactEditInformation(
+                                        type: .birthday,
+                                        value: birthday.formattedBirthday,
+                                        isNew: false
+                                    )
+                                    informations.append(info)
                                 }
                             case "Anniversary":
                                 break

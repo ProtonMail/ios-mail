@@ -22,21 +22,18 @@
 
 
 import Foundation
+import PMCommon
 import PMAuthentication
-
-extension APIService {
 
     enum AuthStatus {
         case resCheck
         case ask2FA
     }
-    
+
     struct GeneralResponse {
         static let errorCode = "Code"
         static let errorMsg  = "Error"
     }
-    
-    internal typealias CompletionFetchDetail = (_ task: URLSessionDataTask?, _ response: [String : Any]?, _ message:Message.ObjectIDContainer?, _ error: NSError?) -> Void
 
     // MARK: - Internal variables
     
@@ -45,13 +42,12 @@ extension APIService {
 
     internal typealias AuthInfo                 = (accessToken: String?, expiresId: TimeInterval?, refreshToken: String?, userID: String?)
     internal typealias AuthComplete             = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ hasError : NSError?) -> Void
-    internal typealias AuthRefreshComplete      = (_ task: URLSessionDataTask?, _ auth: PMAuthentication.Credential?, _ hasError : NSError?) -> Void
+    //internal typealias AuthRefreshComplete      = (_ task: URLSessionDataTask?, _ auth: Credential?, _ hasError : NSError?) -> Void
 
     
     internal typealias AuthCredentialBlock      = (AuthCredential?, NSError?) -> Void
 //    internal typealias AuthCompleteBlock        = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ authStatus: AuthStatus, _ res: AuthResponse?, _ error : NSError?) -> Void
 
     
-    internal typealias AuthCompleteBlockNew = (_ mailpassword: String?, _ authStatus: AuthStatus, _ credential: AuthCredential?, _ context: PMAuthentication.TwoFactorContext?, _ userInfo: UserInfo?, _ error : NSError?) -> Void
+    internal typealias AuthCompleteBlockNew = (_ mailpassword: String?, _ authStatus: AuthStatus, _ credential: AuthCredential?, _ context:  TwoFactorContext?, _ userInfo: UserInfo?, _ error : NSError?) -> Void
 
-}

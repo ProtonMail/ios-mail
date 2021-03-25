@@ -67,6 +67,12 @@ enum LinkOpener: String, CaseIterable {
     }
     
     func deeplink(to url: URL) -> URL? {
+        
+        if let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
+           components.scheme == "tel" {
+            return  nil
+        }
+
         switch self {
         case .chrome:
             if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {

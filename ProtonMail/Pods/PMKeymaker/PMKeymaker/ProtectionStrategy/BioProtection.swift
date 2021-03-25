@@ -64,7 +64,7 @@ public struct GenericBioProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
         let privateAccessControl = EllipticCurveKeyPair.AccessControl(protection: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, flags: [.userPresence, .privateKeyUsage])
         let config = EllipticCurveKeyPair.Config(publicLabel: Constants.publicLabelKey,
                                                   privateLabel: Constants.privateLabelKey,
-                                                  operationPrompt: "", // "MUCH IMPORTANT SO NEED",
+                                                  operationPrompt: "", // "MUCH IMPORTANT SO NEED", //removed by PM's request
                                                   publicKeyAccessControl: publicAccessControl,
                                                   privateKeyAccessControl: privateAccessControl,
                                                   publicKeyAccessGroup: keychain.accessGroup,

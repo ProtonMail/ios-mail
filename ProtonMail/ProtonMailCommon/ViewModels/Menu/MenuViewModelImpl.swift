@@ -103,16 +103,17 @@ class MenuViewModelImpl : MenuViewModel {
     
     //
     let usersManager : UsersManager
-    
-    //
-    lazy var labelDataService : LabelsDataService? = { [unowned self] in
-        if let user = self.currentUser {
-            return user.labelService
-        } else {
+
+    private var labelDataService: LabelsDataService? {
+        guard let labelService = self.currentUser?.labelService else {
+            Analytics.shared.debug(message: .menuSetupFailed, extra: ["IsUserNil": self.currentUser == nil], user: self.currentUser)
             return nil
         }
-    }()
+        return labelService
+    }
     
+    //
+
     init(usersManager : UsersManager) {
         self.usersManager = usersManager
     }
@@ -138,14 +139,9 @@ class MenuViewModelImpl : MenuViewModel {
             otherItems = otherItems.filter { $0 != .lockapp }
         }
     }
-    
-    func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
-        guard let labelService = self.currentUser?.labelService else {
-            Analytics.shared.debug(message: .menuSetupFailed, extra: ["IsUserNil": self.currentUser == nil], user: self.currentUser)
-            return
-        }
-        self.labelDataService = labelService
-        self.fetchedLabels = self.labelDataService!.fetchedResultsController(.all)
+
+    func setupLabels(delegate: NSFetchedResultsControllerDelegate?, shouldFetchLabels: Bool) {
+        self.fetchedLabels = self.labelDataService?.fetchedResultsController(.all)
         self.fetchedLabels?.delegate = delegate
         if let fetchedResultsController = fetchedLabels {
             do {
@@ -155,7 +151,8 @@ class MenuViewModelImpl : MenuViewModel {
             }
         }
         ///TODO::fixme not necessary
-        self.labelDataService!.fetchLabels()
+        guard shouldFetchLabels else { return }
+        self.labelDataService?.fetchLabels()
     }
     
     func sectionCount() -> Int {
@@ -170,7 +167,7 @@ class MenuViewModelImpl : MenuViewModel {
     }
     
     func count(by labelID: String, userID: String? = nil) -> Promise<Int> {
-        if let service = self.labelDataService {
+        if let service = labelDataService {
             return service.unreadCount(by: labelID, userID: userID)
         } else {
             return Promise.value(0)

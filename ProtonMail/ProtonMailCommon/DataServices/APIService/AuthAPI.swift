@@ -22,6 +22,36 @@
 
 
 import Foundation
+import PMCommon
+
+
+//Auth API
+//Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_auth.md
+struct AuthAPI {
+    /// base message api path
+    static let path :String = "/auth"
+    
+    /// user auth post
+    static let v_auth : Int = 3
+    
+    /// refresh token post
+    static let v_auth_refresh : Int = 3
+    
+    /// setup auth info post
+    static let v_auth_info : Int = 3
+    
+    /// get random srp modulus
+    static let v_get_auth_modulus : Int = 3
+    
+    /// delete auth
+    static let v_delete_auth : Int = 3
+    
+    /// revoke other tokens
+    static let v_revoke_others : Int = 3
+    
+    /// submit 2fa code
+    static let v_auth_2fa : Int = 3
+}
 
 //TODO:: need refacotr the api request structures
 struct AuthKey {
@@ -41,8 +71,8 @@ struct AuthKey {
 }
 
 
-/// Description
-final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
+/// Description -- AuthInfoResponse
+final class AuthInfoRequest : Request {
     
     var username : String
     
@@ -53,60 +83,61 @@ final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     ///   - authCredential: auto credential
     init(username : String, authCredential: AuthCredential?) {
         self.username = username
-        
-        super.init()
-        
-        self.authCredential = authCredential
+        self.auth = authCredential
     }
     
-    override func toDictionary() -> [String : Any]? {
+    //custom auth credentical
+    let auth: AuthCredential?
+    var authCredential : AuthCredential? {
+        get {
+            return self.auth
+        }
+    }
+    
+    var parameters: [String : Any]? {
         let out : [String : Any] = [
             AuthKey.userName : username
         ]
         return out
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .post
     }
     
-    override func path() -> String {
-        return AuthAPI.path + "/info" + Constants.App.DEBUG_OPTION
+    var path: String {
+        return AuthAPI.path + "/info"
     }
     
-    override func getIsAuthFunction() -> Bool {
+    var isAuth: Bool {
         return false
-    }
-    
-    override func apiVersion() -> Int {
-        return AuthAPI.v_auth_info
     }
 }
 
-
-final class AuthModulusRequest : ApiRequest<AuthModulusResponse> {
+// AuthModulusResponse
+final class AuthModulusRequest : Request {
     init(authCredential: AuthCredential?) {
-        super.init()
-        self.authCredential = authCredential
-    }
-    override func method() -> HTTPMethod {
-        return .get
+        self.auth = authCredential
     }
     
-    override func path() -> String {
-        return AuthAPI.path + "/modulus" + Constants.App.DEBUG_OPTION
+    //custom auth credentical
+    let auth: AuthCredential?
+    var authCredential : AuthCredential? {
+        get {
+            return self.auth
+        }
     }
     
-    override func getIsAuthFunction() -> Bool {
+    var path: String {
+        return AuthAPI.path + "/modulus"
+    }
+    
+    var isAuth: Bool {
         return false
-    }
-    
-    override func apiVersion() -> Int {
-        return AuthAPI.v_get_auth_modulus
     }
 }
 
-final class AuthModulusResponse : ApiResponse {
+final class AuthModulusResponse : Response {
     
     var Modulus : String?
     var ModulusID : String?
@@ -119,8 +150,8 @@ final class AuthModulusResponse : ApiResponse {
 }
 
 
-// MARK : Get messages part
-final class AuthRequest : ApiRequest<AuthResponse> {
+// MARK : Get messages part -- AuthResponse
+final class AuthRequest : Request {
     
     var username : String
     var clientEphemeral : String //base64
@@ -131,7 +162,7 @@ final class AuthRequest : ApiRequest<AuthResponse> {
     //local verify only
     var serverProof : Data!
     
-    init(username : String, ephemeral:Data, proof:Data, session:String!, serverProof : Data!, code:String?) {
+    init(username : String, ephemeral:Data, proof:Data, session:String, serverProof : Data, code:String?) {
         self.username = username
         self.clientEphemeral = ephemeral.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         self.clientProof = proof.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
@@ -140,7 +171,7 @@ final class AuthRequest : ApiRequest<AuthResponse> {
         self.serverProof = serverProof
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         var out : [String : Any] = [
             AuthKey.userName : username,
             
@@ -156,59 +187,48 @@ final class AuthRequest : ApiRequest<AuthResponse> {
         return out
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .post
     }
     
-    override func path() -> String {
-        return AuthAPI.path + Constants.App.DEBUG_OPTION
+    var path: String {
+        return AuthAPI.path
     }
     
-    override func getIsAuthFunction() -> Bool {
+    var isAuth: Bool {
         return false
-    }
-    
-    override func apiVersion() -> Int {
-        return AuthAPI.v_auth
     }
 }
 
-
-final class TwoFARequest : ApiRequestNew<ApiResponse> {
-    
+//Response
+final class TwoFARequest : Request {
     var tfacode : String
     init(api: API, code : String) {
         self.tfacode = code
-        super.init(api: api)
+//        super.init(api: api)
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         let out : [String : Any] = [
             "TwoFactorCode": tfacode
         ]
         return out
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .post
     }
-    
-    override func authRetry() -> Bool {
+    var autoRetry: Bool {
         return false
     }
-    
-    override func path() -> String {
-        return AuthAPI.path + "/2fa" + Constants.App.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return AuthAPI.v_auth_2fa
+    var path: String {
+        return AuthAPI.path + "/2fa"
     }
 }
 
 
-// MARK : refresh token
-final class AuthRefreshRequest : ApiRequest<AuthResponse> {
+// MARK : refresh token -- AuthResponse
+final class AuthRefreshRequest : Request {
     
     var resfreshToken : String
     var Uid : String
@@ -218,11 +238,11 @@ final class AuthRefreshRequest : ApiRequest<AuthResponse> {
         self.Uid = uid
     }
     
-    override func getHeaders() -> [String : Any] {
+    var header: [String : Any] {
         return ["x-pm-uid" :  self.Uid] //TODO:: fixme this shouldn't be here
     }
     
-    override func toDictionary() -> [String : Any]? {
+    var parameters: [String : Any]? {
         let out : [String : Any] = [
             "ResponseType": "token",
             "RefreshToken": resfreshToken,
@@ -232,52 +252,45 @@ final class AuthRefreshRequest : ApiRequest<AuthResponse> {
         return out
     }
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .post
     }
     
-    override func path() -> String {
-        return AuthAPI.path + "/refresh" + Constants.App.DEBUG_OPTION
+    var path: String {
+        return AuthAPI.path + "/refresh"
     }
     
-    override func getIsAuthFunction() -> Bool {
+    var isAuth: Bool{
         return false
     }
     
-    override func apiVersion() -> Int {
-        return AuthAPI.v_auth_refresh
-    }
 }
 
 
 
-// MARK :delete auth token
-final class AuthDeleteRequest : ApiRequest<ApiResponse> {
+// MARK :delete auth token - Response
+final class AuthDeleteRequest : Request {
     
-    override func method() -> HTTPMethod {
+    var method: HTTPMethod {
         return .delete
     }
     
-    override func path() -> String {
-        return AuthAPI.path + Constants.App.DEBUG_OPTION
+    var path: String {
+        return AuthAPI.path
     }
     
-    override func getIsAuthFunction() -> Bool {
+    var isAuth: Bool {
         return true
     }
     
-    override func authRetry() -> Bool {
+    var autoRetry: Bool {
         return false
-    }
-    
-    override func apiVersion() -> Int {
-        return AuthAPI.v_delete_auth
     }
 }
 
 
 // MARK : Response part
-final class AuthResponse : ApiResponse {
+final class AuthResponse : Response {
     
     var accessToken : String?
     var expiresIn : TimeInterval?
@@ -328,7 +341,7 @@ final class AuthResponse : ApiResponse {
     }
 }
 
-final class AuthInfoResponse : ApiResponse {
+final class AuthInfoResponse : Response {
     
     var Modulus : String?
     var ServerEphemeral : String?

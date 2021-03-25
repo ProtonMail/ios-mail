@@ -22,6 +22,7 @@
     
 
 import Foundation
+import PMCommon
 
 class Storefront: NSObject {
     private var servicePlanService: ServicePlanDataService

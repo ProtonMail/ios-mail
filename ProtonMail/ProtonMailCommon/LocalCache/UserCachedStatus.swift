@@ -23,7 +23,6 @@
 
 import Foundation
 import PMKeymaker
-import Sentry
 
 let userCachedStatus = UserCachedStatus()
 
@@ -244,7 +243,7 @@ final class UserCachedStatus : SharedCacheBase {
                 let customSignature = try? locked.unlock(with: mainKey) else
             {
                 SharedCacheBase.getDefault()?.removeObject(forKey: Key.lastLocalMobileSignature)
-                return "Sent from ProtonMail Mobile"
+                return "Sent from ProtonMail for iOS"
             }
 
             return customSignature
@@ -376,7 +375,7 @@ final class UserCachedStatus : SharedCacheBase {
             
             SharedCacheBase.getDefault()?.removeObject(forKey: Key.lastLocalMobileSignature)
             removeMobileSignature(uid: uid)
-            return "Sent from ProtonMail Mobile"
+            return "Sent from ProtonMail for iOS"
         }
         return customSignature
     }
@@ -510,33 +509,11 @@ extension UserCachedStatus : CacheStatusInject {
     }
     
     var isTouchIDEnabled: Bool {
-        return keymaker.isProtectorActive(BioProtection.self) { (status) in
-            // TODO: Remove log once it is not needed
-            var msg: String?
-            if #available(iOS 11.3, *) {
-                msg = SecCopyErrorMessageString(status, nil) as String?
-            }
-            if let m = msg {
-                self.logKeyChainError(error: "status code: \(m)")
-            } else {
-                self.logKeyChainError(error: "status code: \(status)")
-            }
-        }
+        return keymaker.isProtectorActive(BioProtection.self)
     }
     
     var isPinCodeEnabled : Bool {
-        return keymaker.isProtectorActive(PinProtection.self) { (status) in
-            // TODO: Remove log once it is not needed
-            var msg: String?
-            if #available(iOS 11.3, *) {
-                msg = SecCopyErrorMessageString(status, nil) as String?
-            }
-            if let m = msg {
-                self.logKeyChainError(error: "status code: \(m)")
-            } else {
-                self.logKeyChainError(error: "status code: \(status)")
-            }
-        }
+        return keymaker.isProtectorActive(PinProtection.self)
     }
     
     var pinFailedCount : Int {
@@ -583,41 +560,6 @@ extension UserCachedStatus : CacheStatusInject {
     
     func resetAskedEnableTouchID() {
         setValue(Constants.App.AskTouchID, forKey: Key.askEnableTouchID)
-    }
-    
-    private func logKeyChainError(error: String,
-                          file: String = #file,
-                          function: String = #function,
-                          line: Int = #line,
-                          column: Int = #column) {
-        let dic: [String: Any] = [
-            "error": error
-        ]
-        let appendDic = self.getAppendInfo(file, function, line, column)
-        
-        let event = Sentry.Event(level: .error)
-        event.message = "Keychain Access Error"
-        event.extra = appendDic + dic
-        SentrySDK.capture(event: event)
-    }
-    
-    private func getAppendInfo(_ file: String, _ function: String, _ line: Int, _ column: Int) -> [String: Any] {
-        var ver = "1.0.0"
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            ver = version
-        }
-        
-        let appendDic: [String: Any] = [
-            "file": file,
-            "function": function,
-            "line": line,
-            "column": column,
-            "uuid": UIDevice.current.identifierForVendor?.uuidString ?? "UnknowUUID",
-            "DeviceModel" : UIDevice.current.model,
-            "DeviceVersion" : UIDevice.current.systemVersion,
-            "AppVersion" : "iOS_\(ver)",
-        ]
-        return appendDic
     }
 }
 

@@ -252,7 +252,7 @@ class HtmlEditorBehaviour: NSObject {
     ///
     /// - Parameter html: the raw html signatue, don't run escape before here.
     func update(signature html : String) {
-        self.run(with: "html_editor.updateSignature('\(html.escaped)', \(HTMLStringSecureLoader.domPurifyConfiguration));").catch { (error) in
+        self.run(with: "html_editor.updateSignature('\(html.escaped)', \(HTTPRequestSecureLoader.domPurifyConfiguration));").catch { (error) in
             PMLog.D("Error is \(error.localizedDescription)")
         }
     }

@@ -137,7 +137,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         super.didReceiveMemoryWarning()
     }
     
-    func verificationCodeChanged(_ viewModel: SignupViewModel, code: String!) {
+    func verificationCodeChanged(_ viewModel: SignupViewModel, code: String) {
         verifyCodeTextField.text = code
     }
     
@@ -194,17 +194,17 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         let buildPhonenumber = "\(countryCode)\(phonenumber)"
         MBProgressHUD.showAdded(to: view, animated: true)
         viewModel.setCodePhone(buildPhonenumber)
-        self.viewModel.sendVerifyCode (.sms) { (isOK, error) -> Void in
+        self.viewModel.sendVerifyCode (.sms) { (error) -> Void in
             MBProgressHUD.hide(for: self.view, animated: true)
-            if !isOK {
+            if let err = error {
                 var alert :  UIAlertController!
                 var title = LocalString._verification_code_request_failed
                 var message = ""
-                if error?.code == 12231 {
+                if err.code == 12231 {
                     title = LocalString._phone_number_invalid
                     message = LocalString._please_input_a_valid_cell_phone_number
                 } else {
-                    message = error!.localizedDescription
+                    message = err.localizedDescription
                 }
                 alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addOKAction()
@@ -216,7 +216,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             }
-            PMLog.D("\(isOK),   \(String(describing: error))")
+            PMLog.D("\(String(describing: error))")
         }
     }
     

@@ -28,6 +28,7 @@ import Groot
 import PromiseKit
 import AwaitKit
 import Crypto
+import PMCommon
 
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactAddComplete = (([Contact]?, NSError?) -> Void)
@@ -44,9 +45,9 @@ class ContactDataService: Service, HasLocalStorage {
     private let addressBookService: AddressBookService
     private let labelDataService: LabelsDataService
     private let coreDataService: CoreDataService
-    private let apiService : API
+    private let apiService : APIService
     private let userID : String
-    init(api: API, labelDataService: LabelsDataService, userID : String, coreDataService: CoreDataService) {
+    init(api: APIService, labelDataService: LabelsDataService, userID : String, coreDataService: CoreDataService) {
         self.userID = userID
         self.apiService = api
         self.addressBookService = AddressBookService()
@@ -110,7 +111,6 @@ class ContactDataService: Service, HasLocalStorage {
         if !isCombineContact {
             fetchRequest.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.userID)
         }
-        
         return NSFetchedResultsController(fetchRequest: fetchRequest,
                                           managedObjectContext: moc,
                                           sectionNameKeyPath: Contact.Attributes.name,
@@ -123,14 +123,13 @@ class ContactDataService: Service, HasLocalStorage {
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter completion: async add contact complete response
      **/
-    func add(cards: [[CardData]],
-             authCredential: AuthCredential?,
-             completion: ContactAddComplete?) {
-        let api = ContactAddRequest<ContactAddResponse>(cards: cards, authCredential: authCredential)
-        api.call(api: self.apiService) { (task, response, hasError) in
+    func add(cards: [[CardData]], authCredential: AuthCredential?, completion: ContactAddComplete?) {
+        let route = ContactAddRequest(cards: cards, authCredential: authCredential)
+        self.apiService.exec(route: route) { (response: ContactAddResponse) in
             var contacts_json : [[String : Any]] = []
             var lasterror : NSError?
-            if let results = response?.results, !results.isEmpty {
+            let results = response.results
+            if !results.isEmpty {
                 let isCountMatch = cards.count == results.count
                 var i : Int = 0
                 for res in results {
@@ -187,7 +186,8 @@ class ContactDataService: Service, HasLocalStorage {
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter completion: async add contact complete response
      **/
-    func imports(cards: [[CardData]], authCredential: AuthCredential?, cancel: ContactImportCancel?, update: ContactImportUpdate?, completion: ContactImportComplete?) {
+    func imports(cards: [[CardData]], authCredential: AuthCredential?,
+                 cancel: ContactImportCancel?, update: ContactImportUpdate?, completion: ContactImportComplete?) {
         
         {
             var lasterror : [String] = []
@@ -196,24 +196,23 @@ class ContactDataService: Service, HasLocalStorage {
             var tempCards : [[CardData]] = []
             var importedContacts : [Contact] = []
             for card in cards {
-                
+
                 if let isCancel = cancel?(), isCancel == true {
                     completion?(importedContacts, "")
                     return
                 }
-                
+
                 tempCards.append(card)
                 processed += 1
                 if processed == count || tempCards.count >= 3 {
-                    
-                    let api = ContactAddRequest<ContactAddResponse>(cards: tempCards, authCredential: authCredential)
+
+                    let api = ContactAddRequest(cards: tempCards, authCredential: authCredential)
                     do {
-                        let response = try api.syncCall(api: self.apiService)
-                        
+                        let response: ContactAddResponse = try await(self.apiService.run(route: api))
                         update?(processed)
-                        
                         var contacts_json : [[String : Any]] = []
-                        if let results = response?.results, !results.isEmpty {
+                        let results = response.results
+                        if !results.isEmpty {
                             let isCountMatch = tempCards.count == results.count
                             var i : Int = 0
                             for res in results {
@@ -228,9 +227,9 @@ class ContactDataService: Service, HasLocalStorage {
                                 i += 1
                             }
                         }
-                        
+
                         tempCards.removeAll()
-                        
+
                         if !contacts_json.isEmpty {
                             let context = self.coreDataService.mainManagedObjectContext
                             self.coreDataService.enqueue(context: context) { (context) in
@@ -276,13 +275,12 @@ class ContactDataService: Service, HasLocalStorage {
      - Parameter completion: async add contact complete response
      **/
     func update(contactID : String,
-                cards: [CardData],
-                completion: ContactUpdateComplete?) {
-        let api = ContactUpdateRequest<ContactDetailResponse>(contactid: contactID, cards:cards)
-        api.call(api: self.apiService) { (task, response, hasError) in
-            if hasError {
-                completion?(nil, response?.error)
-            } else if var contactDict = response?.contact {
+                cards: [CardData], completion: ContactUpdateComplete?) {
+        let api = ContactUpdateRequest(contactid: contactID, cards:cards)
+        self.apiService.exec(route: api) { (task, response: ContactDetailResponse) in
+            if let error = response.error {
+                completion?(nil, error)
+            } else if var contactDict = response.contact {
                 //api is not returning the cards data so set it use request cards data
                 //check is contactDict has cards if doesnt exsit set it here
                 if contactDict["Cards"] == nil {
@@ -336,23 +334,22 @@ class ContactDataService: Service, HasLocalStorage {
      - Parameter contactID: delete contact id
      - Parameter completion: async delete prcess complete response
      **/
-    func delete(contactID: String,
-                completion: @escaping ContactDeleteComplete) {
-        let api = ContactDeleteRequest<ApiResponse>(ids: [contactID])
-        api.call(api: self.apiService) { (task, response, hasError) in
-            if hasError {
-                if let err = response?.error, err.code == 13043 { //not exsit
+    func delete(contactID: String, completion: @escaping ContactDeleteComplete) {
+        let api = ContactDeleteRequest(ids: [contactID])
+        self.apiService.exec(route: api) { (task, response) in
+            if let error = response.error {
+                if error.code == 13043 { //not exsit
                     let context = self.coreDataService.backgroundManagedObjectContext
                     self.coreDataService.enqueue(context: context) { (context) in
                         if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
                             context.delete(contact)
                         }
-                        if let error = context.saveUpstreamIfNeeded() {
-                            PMLog.D(" error: \(error)")
+                        if let err = context.saveUpstreamIfNeeded() {
+                            PMLog.D(" error: \(err)")
                         }
                     }
                 }
-                completion(response?.error)
+                completion(error)
             } else {
                 let context = self.coreDataService.backgroundManagedObjectContext
                 self.coreDataService.enqueue(context: context) { (context) in
@@ -533,8 +530,8 @@ class ContactDataService: Service, HasLocalStorage {
                     }
                     loop = loop - 1
                     
-                    let contactsApi = ContactsRequest(page: currentPage, pageSize: pageSize)
-                    if let response = try contactsApi.syncCall(api: self.apiService) {
+                    let response: ContactsResponse = try await(self.apiService.run(route: ContactsRequest(page: currentPage, pageSize: pageSize)))
+                    if response.error == nil {
                         let contacts = response.contacts //TODO:: fix me set userID
                         if fetched == -1 {
                             fetched = contacts.count
@@ -558,7 +555,7 @@ class ContactDataService: Service, HasLocalStorage {
                                     }
                                     if let error = context.saveUpstreamIfNeeded() {
                                         PMLog.D(" error: \(error)");
-                                        
+
                                         {
                                             error.alertErrorToast()
                                             } ~> .main
@@ -566,19 +563,19 @@ class ContactDataService: Service, HasLocalStorage {
                                 }
                             } catch let ex as NSError {
                                 PMLog.D(" error: \(ex)");
-                                
+
                                 {
                                     ex.alertErrorToast()
-                                    } ~> .main
+                                } ~> .main
                             }
                         }
                     }
                 }
-                
+
                 // fetch contact groups  //TDOO:: this fetch could be removed.
                 // TODO: if I don't manually store the labels first, the record won't be saved automatically? (cascade)
                 self.labelDataService.fetchLabels(type: 2)
-                
+
                 // fetch contact emails
                 currentPage = 0
                 fetched = -1
@@ -589,8 +586,9 @@ class ContactDataService: Service, HasLocalStorage {
                         break
                     }
                     loop = loop - 1
-                    let api = ContactEmailsRequest<ContactEmailsResponse>(page: currentPage, pageSize: pageSize)
-                    if let contactsRes = try api.syncCall(api: self.apiService) {
+                    let contactsRes: ContactEmailsResponse = try await(self.apiService.run(route: ContactEmailsRequest(page: currentPage,
+                                                                                                                       pageSize: pageSize)))
+                    if contactsRes.error == nil {
                         currentPage = currentPage + 1
                         let contactsArray = contactsRes.contacts
                         if fetched == -1 {
@@ -621,28 +619,28 @@ class ContactDataService: Service, HasLocalStorage {
                                 }
                             } catch let ex as NSError {
                                 PMLog.D("GRTJSONSerialization contact emails error: \(ex) \(ex.userInfo)");
-                                
+
                                 {
                                     ex.alertErrorToast()
-                                    } ~> .main
+                                } ~> .main
                             }
                         }
                     }
                 }
-                
+
                 lastUpdatedStore.contactsCached = 1
                 self.isFetching = false
                 self.retries = 0
-                
+
                 completion?(nil, nil)
-                
+
             } catch let ex as NSError {
                 lastUpdatedStore.contactsCached = 0
                 self.isFetching = false;
-                
+
                 {
                     completion?(nil, ex)
-                    } ~> .main
+                } ~> .main
             }
         }
     }
@@ -655,9 +653,11 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     func details(contactID: String, inContext: NSManagedObjectContext) -> Promise<Contact> {
         return Promise { seal in
-            let api = ContactDetailRequest<ContactDetailResponse>(cid: contactID)
-            api.call(api: self.apiService) { (task, response, hasError) in
-                if let contactDict = response?.contact {
+            let api = ContactDetailRequest(cid: contactID)
+            self.apiService.exec(route: api) { (task, response: ContactDetailResponse) in
+                if let error = response.error {
+                    seal.reject(error)
+                } else if let contactDict = response.contact {
                     let context = inContext
                     self.coreDataService.enqueue(context: context) { (context) in
                         do {
@@ -683,8 +683,6 @@ class ContactDataService: Service, HasLocalStorage {
                 }
             }
         }
-        
-        
     }
     
     
@@ -746,7 +744,7 @@ class ContactDataService: Service, HasLocalStorage {
         
         let context = self.coreDataService.backgroundManagedObjectContext // VALIDATE
         async {
-            let getEmail = UserEmailPubKeys(email: email, api: self.apiService).run()
+            let getEmail: Promise<KeysResponse> = self.apiService.run(route: UserEmailPubKeys(email: email))
             let getContact = self.fetch(byEmails: [email], context: context)
             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                 if keyRes.recipientType == 1 {

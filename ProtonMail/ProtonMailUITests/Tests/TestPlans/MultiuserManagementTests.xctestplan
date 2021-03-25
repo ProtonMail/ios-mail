@@ -1,0 +1,36 @@
+{
+  "configurations" : [
+    {
+      "id" : "B3C86AB5-D6B7-475C-9942-CD2F621B30CB",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "selectedTests" : [
+        "MultiuserManagementTests\/testAddTwoFreeAccounts()",
+        "MultiuserManagementTests\/testConnectOnePassAccount()",
+        "MultiuserManagementTests\/testConnectTwoPassAccount()",
+        "MultiuserManagementTests\/testLogoutPrimaryAccount()",
+        "MultiuserManagementTests\/testLogoutSecondaryAccount()",
+        "MultiuserManagementTests\/testRemoveAllAccounts()",
+        "MultiuserManagementTests\/testRemovePrimaryAccount()",
+        "MultiuserManagementTests\/testRemoveSecondaryAccount()",
+        "MultiuserManagementTests\/testSwitchAccount()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

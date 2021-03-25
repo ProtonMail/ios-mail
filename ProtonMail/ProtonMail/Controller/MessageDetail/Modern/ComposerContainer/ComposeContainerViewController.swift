@@ -53,10 +53,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if #available(iOS 11.0, *) {
-            self.tableView.dropDelegate = self
-        }
+
+        self.tableView.dropDelegate = self
         
         NotificationCenter.default.addKeyboardObserver(self)
         
