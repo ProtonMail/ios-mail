@@ -400,28 +400,49 @@ extension Message {
     
     func decryptBody(keys: [Key], passphrase: String) throws -> String? {
         var firstError : Error?
+        var errorMessages: [String] = []
         for key in keys {
             do {
                 return try body.decryptMessageWithSinglKey(key.private_key, passphrase: passphrase)
             } catch let error {
                 if firstError == nil {
                     firstError = error
+                    errorMessages.append(error.localizedDescription)
                 }
                 PMLog.D(error.localizedDescription)
             }
         }
         
+        let users = sharedServices.get(by: UsersManager.self)
+        let user = users.firstUser
+        let extra: [String: Any] = ["newSchema": false,
+                                    "Ks count": keys.count,
+                                    "Error message": errorMessages]
+        
         if let error = firstError {
+            Analytics.shared.error(message: .decryptedMessageBodyFailed,
+                                   error: error,
+                                   extra: extra,
+                                   user: user)
             throw error
         }
+        Analytics.shared.error(message: .decryptedMessageBodyFailed,
+                               error: "No error from crypto library",
+                               extra: extra,
+                               user: user)
         return nil
     }
     
     func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
         var firstError : Error?
+        var errorMessages: [String] = []
+        var newScheme: Int = 0
+        var oldSchemaWithToken: Int = 0
+        var oldSchema: Int = 0
         for key in keys {
             do {
                 if let token = key.token, let signature = key.signature { //have both means new schema. key is
+                    newScheme += 1
                     if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
                         //TODO:: try to verify signature here Detached signature
                         // if failed return a warning
@@ -429,24 +450,45 @@ extension Message {
                         return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
                     }
                 } else if let token = key.token { //old schema with token - subuser. key is embed singed
+                    oldSchemaWithToken += 1
                     if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
                         //TODO:: try to verify signature here embeded signature
                         return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
                     }
                 } else {//normal key old schema
+                    oldSchema += 1
                     return try body.decryptMessage(binKeys: keys.binPrivKeysArray, passphrase: passphrase)
                 }
             } catch let error {
                 if firstError == nil {
                     firstError = error
+                    errorMessages.append(error.localizedDescription)
                 }
                 PMLog.D(error.localizedDescription)
             }
         }
         
+        let users = sharedServices.get(by: UsersManager.self)
+        let user = users.firstUser
+        let extra: [String: Any] = ["newSchema": true,
+                                    "Ks count": keys.count,
+                                    "UKs count": userKeys.count,
+                                    "newScheme Ks": newScheme,
+                                    "oldSchemaWithT Ks": oldSchemaWithToken,
+                                    "oldSchema Ks": oldSchema,
+                                    "Error message": errorMessages]
+        
         if let error = firstError {
+            Analytics.shared.error(message: .decryptedMessageBodyFailed,
+                                   error: error,
+                                   extra: extra,
+                                   user: user)
             throw error
         }
+        Analytics.shared.error(message: .decryptedMessageBodyFailed,
+                               error: "No error from crypto library",
+                               extra: extra,
+                               user: user)
         return nil
     }
     
