@@ -137,7 +137,10 @@ nightly-build-and-upload:
   dependencies: []
   stage: test_flight
   only:
-    - schedules 
+    refs:
+      - schedules
+    variables:
+      - $SCHEDULE_TYPE == "nightly_build"
   artifacts:
     name: "iOS mail app nightly build on develop branch"
     paths:
