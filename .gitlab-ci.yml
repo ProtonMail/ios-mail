@@ -138,7 +138,6 @@ nightly-build-and-upload:
   stage: test_flight
   only:
     - schedules 
-    - develop
   artifacts:
     name: "iOS mail app nightly build on develop branch"
     paths:
