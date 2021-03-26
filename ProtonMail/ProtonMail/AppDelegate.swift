@@ -327,6 +327,9 @@ extension AppDelegate: UIApplicationDelegate {
         }
         
         if let user = users.firstUser {
+            user.messageService.backgroundTimeRemaining = {
+                application.backgroundTimeRemaining
+            }
             user.messageService.purgeOldMessages()
             user.messageService.cleanOldAttachment()
             user.messageService.updateMessageCount()
@@ -369,8 +372,9 @@ extension AppDelegate: UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.currentState = .active
         let users: UsersManager = sharedServices.get()
-        if let user = users.firstUser {
+        users.users.forEach { (user) in
             user.messageService.unBlockQueueAction()
+            user.messageService.backgroundTimeRemaining = nil
         }
     }
     
