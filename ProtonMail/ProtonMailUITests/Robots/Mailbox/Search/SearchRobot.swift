@@ -42,6 +42,11 @@ class SearchRobot {
         return InboxRobot()
     }
     
+    func goBackToDrafts() -> DraftsRobot {
+        Element.wait.forButtonWithIdentifier(cancelButttonIdentifier).tap()
+        return DraftsRobot()
+    }
+    
     private func typeTextToSearch(_ text: String) -> SearchRobot {
         Element.wait.forTextFieldWithIdentifier(searchTextFieldIdentifier).typeText(text)
         return self
