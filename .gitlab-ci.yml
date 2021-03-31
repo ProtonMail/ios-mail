@@ -111,9 +111,9 @@ feature_tests:
 build-app-and-upload:
   dependencies: []
   stage: test_flight
-  when: manual
-  except:
-    - schedules
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+      when: manual
   artifacts:
     name: "iOS mail app builds"
     paths:
