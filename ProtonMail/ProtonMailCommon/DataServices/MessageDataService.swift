@@ -55,6 +55,8 @@ class MessageDataService : Service, HasLocalStorage {
     private var managedObjectContext: NSManagedObjectContext {
         return self.coreDataService.backgroundManagedObjectContext
     }
+
+    var backgroundTimeRemaining: (() -> Double)?
     
     //FIXME: need to be refracted
     weak var usersManager: UsersManager?
@@ -2361,6 +2363,10 @@ class MessageDataService : Service, HasLocalStorage {
             }
         } else {
             self.dequieNotify = notify
+        }
+
+        if let backgroundRemainTime = self.backgroundTimeRemaining?(), backgroundRemainTime < 5 {
+            sharedMessageQueue.isBlocked = true
         }
         
         // for label action: data1 is `to`
