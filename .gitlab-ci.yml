@@ -114,6 +114,7 @@ build-app-and-upload:
   rules:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: manual
+      allow_failure: true
   artifacts:
     name: "iOS mail app builds"
     paths:
