@@ -395,10 +395,10 @@
 "Can't load share content!" = "Can't load share content!";
 
 /* Error */
-"Can't load the file" = "Не вдалося завантажити файл";
+"Can't load the file" = "Неможливо завантажити файл";
 
 /* Error */
-"Can't open the file" = "Не вдалося відкрити файл";
+"Can't open the file" = "Неможливо відкрити файл";
 
 /* The error message title that will be shown when the contact group being created or edited can't be saved */
 "Can't save contact group" = "Can't save contact group";
@@ -407,16 +407,16 @@
 "Can't update contact group through the API" = "Can't update contact group through the API";
 
 /* Cancel action */
-"Cancel" = "Відмінити";
+"Cancel" = "Скасувати";
 
 /* Action */
-"Cancel Check" = "Відмінити перевірку";
+"Cancel Check" = "Скасувати перевірку";
 
 /* Title */
 "Cancelling" = "Cancelling";
 
 /* (No Comment) */
-"Cant' decrypt this attachment!" = "Не вдалося розшифрувати це вкладення.";
+"Cant' decrypt this attachment!" = "Не вдається розшифрувати це вкладення.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -432,13 +432,13 @@
 "Cell phone number" = "Номер мобільного телефону";
 
 /* Title */
-"Change default address to .." = "Змінити адресу за замовчуванням на...";
+"Change default address to .." = "Змінити типову адресу на...";
 
 /* settings swipe actions section action description */
 "Change left swipe action" = "Змінити дію для поруху вліво";
 
 /* change password input label */
-"Change Login Password" = "Змінити пароль обліковки";
+"Change Login Password" = "Змінити пароль входу";
 
 /* Title */
 "Change Mailbox Password" = "Змінити пароль поштової скриньки";
@@ -493,7 +493,7 @@
 
 /* *
  *  Composer Email view controller */
-"Compose" = "Написати новий лист";
+"Compose" = "Написати";
 
 /* Title */
 "Compose to" = "Compose to";
@@ -503,16 +503,16 @@
 "Confirm" = "Підтвердити";
 
 /* "Login Password" */
-"Confirm Login Password" = "Підтвердження паролю для входу";
+"Confirm Login Password" = "Підтвердити пароль входу";
 
 /* "Mailbox Password" */
-"Confirm Mailbox Password" = "Підтвердження паролю для поштової скриньки";
+"Confirm Mailbox Password" = "Підтвердити пароль поштової скриньки";
 
 /* Title */
-"Confirm new login password" = "Підтвердження нового паролю для входу";
+"Confirm new login password" = "Підтвердження нового пароля входу";
 
 /* Title */
-"Confirm new mailbox password" = "Підтвердження нового паролю для поштової скриньки";
+"Confirm new mailbox password" = "Підтвердження нового пароля поштової скриньки";
 
 /* Placeholder */
 "Confirm new password" = "Підтвердити новий пароль";
@@ -576,13 +576,13 @@
 "Create and add Labels to organize your inbox. Long press on a message for all options." = "Create and add Labels to organize your inbox. Long press on a message for all options.";
 
 /* (No Comment) */
-"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Створити і додати мітки для організації вхідних повідомлень. Натисніть на повідомлення і утримуйте, щоб побачити всі доступні варіанти.";
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Створюйте та додавайте мітки для організації поштової скриньки. Торкніться та утримуйте повідомлення для доступу до усіх можливостей.";
 
 /* title of button in account connect page */
 "Create new account" = "Create new account";
 
 /* error part & alert title */
-"Create user failed" = "Створити користувача не вдалося";
+"Create user failed" = "Не вдалося створити користувача";
 
 /* Error */
 "Create User failed. Please try again." = "Create User failed. Please try again.";
@@ -591,7 +591,7 @@
 "Current Language is: " = "Поточна мова: ";
 
 /* Title */
-"Current login password" = "Поточний пароль для входу";
+"Current login password" = "Поточний пароль входу";
 
 /* Placeholder */
 "Current password" = "Поточний пароль";
@@ -610,13 +610,13 @@
 "days" = "Дні";
 
 /* Title */
-"Debug" = "Відладка";
+"Debug" = "Зневадження";
 
 /* Action */
-"Decrypt" = "Дешифрування";
+"Decrypt" = "Розшифрувати";
 
 /* Title */
-"DECRYPT MAILBOX" = "Розшифровка ПОШТОВОЇ СКРИНЬКИ";
+"DECRYPT MAILBOX" = "РОЗШИФРУВАТИ ПОШТОВУ СКРИНЬКУ";
 
 /* Description */
 "Decrypt token failed. Please try again." = "Decrypt token failed. Please try again.";
@@ -628,7 +628,7 @@
 "Decryption of this content failed" = "Decryption of this content failed";
 
 /* Title */
-"Default" = "За замовчанням";
+"Default" = "Типова";
 
 /* Settings row */
 "Default browser" = "Default browser";
@@ -637,13 +637,13 @@
 "Default error. Please try again." = "Default error. Please try again.";
 
 /* Placeholder */
-"Define Expiration Date" = "Визначте термін придатності";
+"Define Expiration Date" = "Вкажіть термін дії";
 
 /* Placeholder */
 "Define Hint (Optional)" = "Вкажіть підказку (необов'язково)";
 
 /* place holder */
-"Define Password" = "Визначити пароль";
+"Define Password" = "Вкажіть пароль";
 
 /* *
  *  Contacts View Controller */
@@ -675,20 +675,20 @@
 "Discard changes" = "Discard changes";
 
 /* Action */
-"Discard draft" = "Відкинути чернетку";
+"Discard draft" = "Відхилити чернетку";
 
 /* (No Comment) */
 "Display name" = "Display name";
 
 /* Title in settings */
-"Display Name" = "Відображене ім'я";
+"Display Name" = "Ім'я для показу";
 
 /* *
  *  SettingsViewController & alert title */
-"Display Name Updated" = "Видображуване ім'я оновлено";
+"Display Name Updated" = "Ім'я для показу оновлено";
 
 /* Title in display name settings */
-"DisplayName" = "Відображене ім'я";
+"DisplayName" = "Ім'я для показу";
 
 /* Description */
 "Do you want to cancel the process?" = "Do you want to cancel the process?";
@@ -700,10 +700,10 @@
 "Don't remind me again" = "Don't remind me again";
 
 /* Title */
-"Don't Show Again" = "Більше не показувати";
+"Don't Show Again" = "Не показувати знову";
 
 /* Done action */
-"Done" = "Готово";
+"Done" = "Виконано";
 
 /* VoiceOver action description */
 "Double tap to setup" = "Double tap to setup";
@@ -750,14 +750,14 @@
 "email" = "електронна пошта";
 
 /* default vcard types */
-"Email" = "Електронна пошта";
+"Email" = "Е-пошта";
 
 /* *
  *  Email Verify View Controller */
-"Email address" = "Адреса електронної пошти";
+"Email address" = "Адреса е-пошти";
 
 /* alert title */
-"Email address invalid" = "Невірна адреса ел. пошти";
+"Email address invalid" = "Недійсна адреса е-пошти";
 
 /* The error message is shown in composer */
 "Email address is invalid" = "Email address is invalid";
@@ -769,13 +769,13 @@
 "Email Contact" = "Email Contact";
 
 /* place holder */
-"Email default signature" = "Підпис електронної пошти за замовчуванням";
+"Email default signature" = "Типовий підпис електронної пошти";
 
 /* title */
-"Email domain invalid" = "Невірний домен електронної пошти";
+"Email domain invalid" = "Недійсний домен е-пошти";
 
 /* human check option button */
-"Email Verification" = "Підтвердження адреси електронної пошти";
+"Email Verification" = "Підтвердження електронної пошти";
 
 /* cell title in device setting */
 "Empty Cache" = "Empty Cache";
@@ -787,7 +787,7 @@
 "Empty Label" = "Empty Label";
 
 /* Title */
-"Enable Default Signature" = "Включити підпис за замовчуванням";
+"Enable Default Signature" = "Увімкнути типовий підпис";
 
 /* settings protection section title */
 "Enable FaceID" = "Enable FaceID";
@@ -1104,10 +1104,10 @@
 "Invalid credential" = "Хибні дані для входу";
 
 /* update password error */
-"Invalid hashed password!" = "Хибне хешоване гасло!";
+"Invalid hashed password!" = "Неправильний хешований пароль!";
 
 /* Error */
-"Invalid Password" = "Хибне гасло";
+"Invalid Password" = "Неправильний пароль";
 
 /* Invalid URL error when click a url in contact */
 "Invalid URL" = "Недійсна URL-адреса";
@@ -1378,13 +1378,13 @@
 "Networking" = "Networking";
 
 /* Title */
-"New login password" = "Нове гасло для входу";
+"New login password" = "Новий пароль входу";
 
 /* Title */
-"New mailbox password" = "Нове гасло поштової скриньки";
+"New mailbox password" = "Новий пароль поштової скриньки";
 
 /* Placeholder */
-"New password" = "Нове гасло";
+"New password" = "Новий пароль";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Псевдонім";
@@ -1424,7 +1424,7 @@
 "Note: The Username is also your ProtonMail address." = "Примітка: Ім'я користувача – це також ваша ProtonMail адреса.";
 
 /* setup password notes */
-"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Примітка: Це гасло використовується для шифрування і розшифровки повідомлень. Не загубіть це гасло — ми не зможемо його відновити.";
+"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Примітка: Він використовується для шифрування та розшифрування повідомлень. Не згубіть цей пароль, тому що його неможливо відновити.";
 
 /* setup password notes */
 "Note: This is used to log you into your account." = "Примітка: Це використовується, щоб ви могли увійти у свою обліковку.";
@@ -1455,7 +1455,7 @@
 "OK" = "Гаразд";
 
 /* Title */
-"On" = "Увімкнено";
+"On" = "‎";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "On EE, MMM d, yyyy at %@";
@@ -1494,22 +1494,22 @@
 "Outbox" = "Вихідні";
 
 /* title */
-"Password" = "Гасло";
+"Password" = "Пароль";
 
 /* Description */
-"Password cannot be empty." = "Гасло не може бути порожнім.";
+"Password cannot be empty." = "Пароль не може бути порожнім.";
 
 /* cell title in device settings */
 "Password management" = "Password management";
 
 /* Title */
-"Password Mismatch" = "Гасло не підходить";
+"Password Mismatch" = "Паролі відрізняються";
 
 /* update password error */
-"Password update failed" = "Не вдалося оновити гасло";
+"Password update failed" = "Не вдалося оновити пароль";
 
 /* Title */
-"Password Updated" = "Гасло оновлено";
+"Password Updated" = "Пароль оновлено";
 
 /* default vcard types */
 "Personal" = "Personal";
@@ -1597,7 +1597,7 @@
 "Please select one of the following options:" = "Будь ласка, виберіть один з варіантів:";
 
 /* Description */
-"Please set a password." = "Будь ласка, встановть гасло.";
+"Please set a password." = "Будь ласка, встановіть пароль.";
 
 /* (No Comment) */
 "Please try a different domain." = "Будь ласка, спробуйте інший домен.";
@@ -1767,7 +1767,7 @@
 "Request Link Confirmation" = "Request Link Confirmation";
 
 /* Action */
-"RESET MAILBOX PASSWORD" = "СКИНУТИ ГАСЛО ПОШТОВОЇ СКРИНЬКИ";
+"RESET MAILBOX PASSWORD" = "СКИНУТИ ПАРОЛЬ ПОШТОВОЇ СКРИНЬКИ";
 
 /* Title */
 "Resetting message cache ..." = "Скидання кешу листа...";
@@ -1855,13 +1855,13 @@
 "Server proofs not valid!" = "Перевірка сервера зазнала невдачі!";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Встановити гасло для шифрування цього листа для не-ProtonMail користувачів.";
+"Set a password to encrypt this message for non-ProtonMail users." = "Встановити пароль для шифрування цього повідомлення для Користувачів поза ProtonMail.";
 
 /* Title */
-"Set Password" = "Встановити гасло";
+"Set Password" = "Встановити пароль";
 
 /* Signup passwords top title */
-"Set passwords" = "Встановити гасло";
+"Set passwords" = "Встановити паролі";
 
 /* menu title */
 "Settings" = "Налаштування";
@@ -1885,7 +1885,7 @@
 "Signature Updated" = "Підпис оновлено";
 
 /* settings general section title */
-"Single Password" = "Єдине гасло";
+"Single Password" = "Єдиний пароль";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Snooze";
@@ -2028,7 +2028,7 @@
 "The label name is duplicate" = "Ім'я мітки - дублікат";
 
 /* Error */
-"The mailbox password is incorrect." = "Неправильне гасло скриньки.";
+"The mailbox password is incorrect." = "Неправильний пароль поштової скриньки.";
 
 /* Alert message */
 "The maximum number of distinct recipients is %d" = "The maximum number of distinct recipients is %d";
@@ -2041,25 +2041,25 @@
 "The new password can't be empty." = "The new password can't be empty.";
 
 /* (No Comment) */
-"The new password can't empty" = "Нове гасло не може бути порожнім";
+"The new password can't empty" = "Новий пароль не може бути порожнім";
 
 /* update password error */
 "The new password does not match." = "The new password does not match.";
 
 /* (No Comment) */
-"The new password not match" = "Гасла не збігаються";
+"The new password not match" = "Паролі відрізняються";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your login password if you forget it." = "Не обов'язкова адерса е-пошти для відновлення дозволяє Вам скинути вхідне гасло, якщо Ви його забудете.";
+"The optional recovery email address allows you to reset your login password if you forget it." = "Необов'язкова адреса е-пошти для відновлення дозволяє відновити пароль входу, якщо ви його забудете.";
 
 /* update password error */
-"The Password is wrong." = "Хибне гасло.";
+"The Password is wrong." = "Неправильний пароль.";
 
 /* Description */
-"The password you entered does not match the current password." = "Гасло, що Ви ввели, не збігається з чинним гаслом.";
+"The password you entered does not match the current password." = "Введений пароль не збігається з чинним паролем.";
 
 /* Description */
-"The passwords you entered do not match." = "Введене гасло не підходить.";
+"The passwords you entered do not match." = "Введені паролі відрізняються.";
 
 /* update password error */
 "The private key update failed." = "The private key update failed.";
@@ -2135,10 +2135,10 @@
 "To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\r\n we need to verify that you are human.";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Щоб скинути гасло поштової скриньки, будь ласка, використовуйте веб-версію ProtonMail на protonmail.com";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Щоб скинути пароль поштової скриньки, скористайтеся вебверсією ProtonMail за адресою protonmail.com";
 
 /* Description */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Щоб скинути гасло поштової скриньки, будь ласка, використовуйте веб-версію ProtonMail на protonmail.com";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Щоб скинути пароль поштової скриньки, скористайтеся вебверсією ProtonMail за адресою protonmail.com";
 
 /* message To: feild */
 "To:" = "Кому:";
