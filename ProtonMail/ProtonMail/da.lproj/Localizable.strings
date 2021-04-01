@@ -1588,7 +1588,7 @@
 "Please remove all attachments before changing sender!" = "Fjern alle vedhæftninger inden ændring af afsenderen";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Please select at least one email";
+"Please select at least one email" = "Vælg venligst mindst én e-mail";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Vælg mindst én e-mail til kontaktgruppen";
