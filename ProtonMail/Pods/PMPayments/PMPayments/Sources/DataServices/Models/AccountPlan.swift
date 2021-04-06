@@ -84,8 +84,8 @@ public enum AccountPlan: String, CaseIterable {
             self = .mailPlus
         case AccountPlan.vpnBasic.storeKitProductId:
             self = .vpnBasic
-        case AccountPlan.vpnBasic.storeKitProductId:
-            self = .vpnBasic
+        case AccountPlan.vpnPlus.storeKitProductId:
+            self = .vpnPlus
         default:
             return nil
         }

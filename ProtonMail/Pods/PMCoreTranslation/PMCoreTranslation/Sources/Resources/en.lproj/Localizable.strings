@@ -152,6 +152,7 @@
 "Contact customer support" = "Contact customer support";
 "Unknown error" = "Unknown error";
 "Failed to get list of available products from AppStore." = "Failed to get list of available products from AppStore.";
+"Purchase is not possible." = "Purchase is not possible.";
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.";
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.";

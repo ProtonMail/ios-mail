@@ -27,6 +27,7 @@ extension StoreKitManager {
 
     public enum Errors: LocalizedError, Equatable {
         case unavailableProduct
+        case invalidPurchase
         case receiptLost
         case haveTransactionOfAnotherUser
         case alreadyPurchasedPlanDoesNotMatchBackend
@@ -43,6 +44,7 @@ extension StoreKitManager {
         public var errorDescription: String? {
             switch self {
             case .unavailableProduct: return CoreString._error_unavailable_product
+            case .invalidPurchase: return CoreString._error_invalid_purchase
             case .receiptLost: return CoreString._error_reciept_lost
             case .haveTransactionOfAnotherUser: return CoreString._error_another_user_transaction
             case .alreadyPurchasedPlanDoesNotMatchBackend: return CoreString._error_backend_mismatch

@@ -19,6 +19,7 @@
 @class CryptoIdentity;
 @class CryptoKey;
 @class CryptoKeyRing;
+@class CryptoManualAttachmentProcessor;
 @class CryptoPGPMessage;
 @class CryptoPGPSignature;
 @class CryptoPGPSplitMessage;
@@ -310,6 +311,7 @@ publicKey and returns a binary public-key encrypted session key packet.
 // skipped method KeyRing.GetKeys with unsupported parameter or return types
 
 - (CryptoAttachmentProcessor* _Nullable)newLowMemoryAttachmentProcessor:(long)estimatedSize filename:(NSString* _Nullable)filename error:(NSError* _Nullable* _Nullable)error;
+- (CryptoManualAttachmentProcessor* _Nullable)newManualAttachmentProcessor:(long)estimatedSize filename:(NSString* _Nullable)filename dataBuffer:(NSData* _Nullable)dataBuffer error:(NSError* _Nullable* _Nullable)error;
 /**
  * SignDetached generates and returns a PGPSignature for a given PlainMessage.
  */
@@ -330,6 +332,38 @@ with a PGPMessage containing an encrypted detached signature
 and returns a SignatureVerificationError if fails.
  */
 - (BOOL)verifyDetachedEncrypted:(CryptoPlainMessage* _Nullable)message encryptedSignature:(CryptoPGPMessage* _Nullable)encryptedSignature decryptionKeyRing:(CryptoKeyRing* _Nullable)decryptionKeyRing verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
+@end
+
+/**
+ * ManualAttachmentProcessor keeps track of the progress of encrypting an attachment
+(optimized for encrypting large files).
+With this processor, the caller has to first allocate
+a buffer large enough to hold the whole data packet.
+ */
+@interface CryptoManualAttachmentProcessor : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nonnull instancetype)init;
+/**
+ * Finish tells the processor to finalize encryption.
+ */
+- (BOOL)finish:(NSError* _Nullable* _Nullable)error;
+/**
+ * GetDataLength returns the number of bytes in the DataPacket.
+This should be called only after Finish() has been called.
+ */
+- (long)getDataLength;
+/**
+ * GetKeyPacket returns the key packet for the attachment.
+This should be called only after Finish() has been called.
+ */
+- (NSData* _Nullable)getKeyPacket;
+/**
+ * Process writes attachment data to be encrypted.
+ */
+- (BOOL)process:(NSData* _Nullable)plainData error:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**
