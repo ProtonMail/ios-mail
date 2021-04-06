@@ -23,6 +23,7 @@
 import Foundation
 import PMCommon
 import AwaitKit
+import PMAuthentication
 
 class BaseApiRequest<T: ApiResponse>: ApiRequestNew<T> {
     override func method() -> HTTPMethod {
@@ -41,29 +42,30 @@ class BaseApiRequest<T: ApiResponse>: ApiRequestNew<T> {
 let decodeError = NSError(domain: "Payment decode error", code: 0, userInfo: nil)
 
 protocol PaymentsApiProtocol {
-    func statusRequest(api: API) -> StatusRequest
-    func methodsRequest(api: API) -> MethodsRequest
-    func buySubscriptionRequest(api: API, planId: String, amount: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest?
-    func getSubscriptionRequest(api: API) -> GetSubscriptionRequest
-    func appleRequest(api: API, currency: String, country: String) -> AppleRequest
-    func defaultPlanRequest(api: API) -> DefaultPlanRequest
-    func plansRequest(api: API) -> PlansRequest
-    func creditRequest(api: API, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse>
-    func tokenRequest(api: API, amount: Int, receipt: String) -> TokenRequest
-    func tokenStatusRequest(api: API, token: PaymentToken) -> TokenStatusRequest
-    func validateSubscriptionRequest(api: API, planId: String) -> ValidateSubscriptionRequest
+    func statusRequest(api: APIService) -> StatusRequest
+    func methodsRequest(api: APIService) -> MethodsRequest
+    func buySubscriptionRequest(api: APIService, planId: String, amount: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest?
+    func getSubscriptionRequest(api: APIService) -> GetSubscriptionRequest
+    func appleRequest(api: APIService, currency: String, country: String) -> AppleRequest
+    func defaultPlanRequest(api: APIService) -> DefaultPlanRequest
+    func plansRequest(api: APIService) -> PlansRequest
+    func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse>
+    func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest
+    func tokenStatusRequest(api: APIService, token: PaymentToken) -> TokenStatusRequest
+    func validateSubscriptionRequest(api: APIService, planId: String) -> ValidateSubscriptionRequest
+    func getUser(api: APIService, completion: @escaping (Result<User, Error>) -> Void)
 }
 
 class PaymentsApiImplementation: PaymentsApiProtocol {
-    func statusRequest(api: API) -> StatusRequest {
+    func statusRequest(api: APIService) -> StatusRequest {
         return StatusRequest(api: api)
     }
 
-    func methodsRequest(api: API) -> MethodsRequest {
+    func methodsRequest(api: APIService) -> MethodsRequest {
         return MethodsRequest(api: api)
     }
 
-    func buySubscriptionRequest(api: API, planId: String, amount: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest? {
+    func buySubscriptionRequest(api: APIService, planId: String, amount: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest? {
         var validateSubscriptionProcessing = true
         do {
             // validate subscription to get amountDue
@@ -90,36 +92,48 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
         }
     }
 
-    func getSubscriptionRequest(api: API) -> GetSubscriptionRequest {
+    func getSubscriptionRequest(api: APIService) -> GetSubscriptionRequest {
         return GetSubscriptionRequest(api: api)
     }
 
-    func appleRequest(api: API, currency: String, country: String) -> AppleRequest {
+    func appleRequest(api: APIService, currency: String, country: String) -> AppleRequest {
         return AppleRequest(api: api, currency: currency, country: country)
     }
 
-    func defaultPlanRequest(api: API) -> DefaultPlanRequest {
+    func defaultPlanRequest(api: APIService) -> DefaultPlanRequest {
         return DefaultPlanRequest(api: api)
     }
 
-    func plansRequest(api: API) -> PlansRequest {
+    func plansRequest(api: APIService) -> PlansRequest {
         return PlansRequest(api: api)
     }
 
-    func creditRequest(api: API, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse> {
+    func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse> {
         return CreditRequest<CreditResponse>(api: api, amount: amount, paymentAction: paymentAction)
     }
 
-    func tokenRequest(api: API, amount: Int, receipt: String) -> TokenRequest {
+    func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest {
         return TokenRequest(api: api, amount: amount, receipt: receipt)
     }
 
-    func tokenStatusRequest(api: API, token: PaymentToken) -> TokenStatusRequest {
+    func tokenStatusRequest(api: APIService, token: PaymentToken) -> TokenStatusRequest {
         return TokenStatusRequest(api: api, token: token)
     }
 
-    func validateSubscriptionRequest(api: API, planId: String) -> ValidateSubscriptionRequest {
+    func validateSubscriptionRequest(api: APIService, planId: String) -> ValidateSubscriptionRequest {
         return ValidateSubscriptionRequest(api: api, planId: planId)
+    }
+
+    func getUser(api: APIService, completion: @escaping (Result<User, Error>) -> Void) {
+        let authenticator = Authenticator(api: api)
+        authenticator.getUserInfo { result in
+            switch result {
+            case .success(let user):
+                return completion(.success(user))
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+        }
     }
 }
 

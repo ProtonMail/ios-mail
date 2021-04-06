@@ -1,0 +1,51 @@
+{
+  "name": "PMPayments",
+  "version": "1.0.1",
+  "summary": "PMPayments framework",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/ProtonMail/ios-payments",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Greg": "grzegorz.biegaj@protonmail.com"
+  },
+  "platforms": {
+    "ios": "10.0",
+    "osx": "10.10"
+  },
+  "static_framework": true,
+  "swift_versions": [
+    "5.0"
+  ],
+  "source": {
+    "git": "https://github.com/ProtonMail/ios-payments.git",
+    "tag": "1.0.1"
+  },
+  "source_files": "PMPayments/Sources/**/*.{h,m,swift}",
+  "resource_bundles": {
+    "Resources-Payments": [
+      "PMHumanVerification/Sources/**/*.{xib,storyboard,xcassets,geojson}"
+    ]
+  },
+  "exclude_files": "Classes/Exclude",
+  "dependencies": {
+    "PMCommon": [
+
+    ],
+    "PMAuthentication": [
+
+    ],
+    "PMCoreTranslation": [
+
+    ],
+    "PMLog": [
+
+    ],
+    "ReachabilitySwift": [
+
+    ]
+  },
+  "swift_version": "5.0"
+}

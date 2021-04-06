@@ -123,22 +123,23 @@ public class StoreKitManager: NSObject, StoreKitManagerProtocol {
                                 errorCompletion: @escaping ErrorCallback,
                                 deferredCompletion: (() -> Void)? = nil) {
 
-        guard let product = self.availableProducts.first(where: { $0.productIdentifier == identifier }) else {
-            errorCompletion(Errors.unavailableProduct)
-            return
-        }
+        let result = canPurchaseProduct(identifier: identifier)
+        switch result {
+        case .failure(let error):
+            errorCompletion(error)
+        case .success(let product):
+            self.successCompletion = successCompletion
+            self.errorCompletion = errorCompletion
+            self.deferredCompletion = deferredCompletion
 
-        self.successCompletion = successCompletion
-        self.errorCompletion = errorCompletion
-        self.deferredCompletion = deferredCompletion
-
-        let payment = SKMutablePayment(product: product)
-        payment.quantity = 1
-        if let userId = self.applicationUserId() {
-            payment.applicationUsername = self.hash(userId: userId)
+            let payment = SKMutablePayment(product: product)
+            payment.quantity = 1
+            if let userId = self.applicationUserId() {
+                payment.applicationUsername = self.hash(userId: userId)
+            }
+            paymentQueue.add(payment)
+            PMLog.debug("StoreKit: Purchase started")
         }
-        paymentQueue.add(payment)
-        PMLog.debug("StoreKit: Purchase started")
     }
 
     /// This method will be called after relogin and from the SKPaymentTransactionObserver

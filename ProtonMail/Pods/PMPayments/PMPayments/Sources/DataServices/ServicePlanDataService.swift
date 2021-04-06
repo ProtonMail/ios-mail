@@ -84,6 +84,8 @@ public class ServicePlanDataService: NSObject, Service {
     }
 
     public var proceedTier54: Decimal = Decimal(0)
+    public var credit: Double?
+    public var currency: String?
 }
 
 extension ServicePlanDataService {
@@ -139,7 +141,16 @@ extension ServicePlanDataService {
                 self.currentSubscription = subscriptionRes.subscription
                 self.updatePaymentMethods()
                 self.updateTier()
-                seal.fulfill_()
+                self.paymentsApi.getUser(api: self.service) { result in
+                    switch result {
+                    case .success(let user):
+                        self.credit = Double(user.credit) / 100
+                        self.currency = user.currency
+                        seal.fulfill_()
+                    case .failure:
+                        seal.fulfill_()
+                    }
+                }
             }.catch { error in
                 if error.isNoSubscriptionError {
                     // no subscription stands for free/default plan

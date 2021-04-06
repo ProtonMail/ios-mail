@@ -580,6 +580,10 @@ class Crypto {
 
     //MARK: - Attachment
     
+    public func freeGolangMem() {
+        HelperFreeOSMemory()
+    }
+    
      // no verify
     public func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey: String, passphrase: String) throws -> Data? {
         var error: NSError?

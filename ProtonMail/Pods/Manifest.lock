@@ -99,12 +99,12 @@ PODS:
   - PMCommon/Tests (1.2.0):
     - OHHTTPStubs/Swift
   - PMCoreTranslation (1.0.0)
-  - PMCrypto (2.1.5)
+  - PMCrypto (2.1.7)
   - PMKeymaker (1.2.3):
     - EllipticCurveKeyPair
     - PMCrypto
   - PMLog (1.0.0)
-  - PMPayments (1.0.0):
+  - PMPayments (1.0.1):
     - PMAuthentication
     - PMCommon
     - PMCoreTranslation
@@ -152,7 +152,7 @@ DEPENDENCIES:
   - PMCommon (from `../Networking`)
   - PMCommon/Tests (from `../Networking`)
   - "PMCoreTranslation (from `git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git`, branch `develop`)"
-  - "PMCrypto (from `git@gitlab.protontech.ch:apple/shared/pmcrypto.git`, tag `2.1.5`)"
+  - "PMCrypto (from `git@gitlab.protontech.ch:apple/shared/pmcrypto.git`, tag `2.1.7`)"
   - "PMKeymaker (from `git@gitlab.protontech.ch:apple/shared/pmkeymaker.git`, branch `develop`)"
   - "PMLog (from `git@gitlab.protontech.ch:apple/shared/pmlog.git`, branch `master`)"
   - "PMPayments (from `git@gitlab.protontech.ch:apple/shared/pmpayments.git`, branch `develop`)"
@@ -203,7 +203,7 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git"
   PMCrypto:
     :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
-    :tag: 2.1.5
+    :tag: 2.1.7
   PMKeymaker:
     :branch: develop
     :git: "git@gitlab.protontech.ch:apple/shared/pmkeymaker.git"
@@ -234,11 +234,11 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/pmchallenge.git"
     :tag: 0.0.3
   PMCoreTranslation:
-    :commit: b0c1e1be7bbe34f03a08efa991f56689be3db658
+    :commit: e81caa11df4a99b3b4a9664d0c31b0360abe804b
     :git: "git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git"
   PMCrypto:
     :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
-    :tag: 2.1.5
+    :tag: 2.1.7
   PMKeymaker:
     :commit: 97defd9cd70e83c67e7f9ad2b0c9ee93c55a8416
     :git: "git@gitlab.protontech.ch:apple/shared/pmkeymaker.git"
@@ -246,7 +246,7 @@ CHECKOUT OPTIONS:
     :commit: 2f7826833a4eb974c5b0b44a3d938e8019ec6b1a
     :git: "git@gitlab.protontech.ch:apple/shared/pmlog.git"
   PMPayments:
-    :commit: 441db300888af966f137f5147e798277b691c4d9
+    :commit: 47edd7def09a7e26aa608b157ace7a4486e4acc1
     :git: "git@gitlab.protontech.ch:apple/shared/pmpayments.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
@@ -273,10 +273,10 @@ SPEC CHECKSUMS:
   PMChallenge: e1545bb99e3b668f7b4af62aea193d11f1039d3b
   PMCommon: 144fb3aba220fb65ee769c69486b226d2dd73a37
   PMCoreTranslation: 221df023e0a50c73bdadd07ce8917e053f69a859
-  PMCrypto: cfdfe88ea29e3c35788beab63b18f0c111b72617
+  PMCrypto: f6b8e07183e34ca31e66e93a4d15fde2ee903816
   PMKeymaker: 41484527ae0683d08361a0c09023bed5dc8c367b
   PMLog: 872e7cf1c22a2a4ae6ba176de3a7ae0e12ab1b6f
-  PMPayments: 57031fc9742be60b8c4c1e957bce888cd4717cca
+  PMPayments: a8cd7749328c3155f8de959772e7aae76109b14b
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
@@ -286,6 +286,6 @@ SPEC CHECKSUMS:
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 6dbb4154d927449e9a7e58e4a63e4892e0af23e0
+PODFILE CHECKSUM: 8054ec47c4b8769e543006bc0ec995583103f5c5
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.0

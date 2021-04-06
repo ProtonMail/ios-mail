@@ -319,6 +319,8 @@ public class LocalizedString {
     /// Errors
     public lazy var _error_unavailable_product = NSLocalizedString("Failed to get list of available products from AppStore.", bundle: Common.bundle, comment: "Error message")
 
+    public lazy var _error_invalid_purchase = NSLocalizedString("Purchase is not possible.", bundle: Common.bundle, comment: "Error message")
+
     public lazy var _error_reciept_lost = NSLocalizedString("Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.", bundle: Common.bundle, comment: "Error message")
 
     public lazy var _error_another_user_transaction = NSLocalizedString("Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.", bundle: Common.bundle, comment: "Error message")

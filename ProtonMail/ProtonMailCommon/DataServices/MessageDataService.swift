@@ -1534,6 +1534,7 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+        
         let context = self.coreDataService.mainManagedObjectContext
         guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(managedObjectID),
             let managedObject = try? context.existingObject(with: objectID),
@@ -1574,63 +1575,68 @@ class MessageDataService : Service, HasLocalStorage {
 //        }
         let passphrase = attachment.message.cachedPassphrase ?? userManager.mailboxPassword
         
-        guard let encryptedData = attachment.encrypt(byKey: key, mailbox_pwd: passphrase),
-            let keyPacket = encryptedData.keyPacket,
-            let dataPacket = encryptedData.dataPacket else
-        {
-            completion?(nil, nil, NSError.encryptionError())
-            return
-        }
-        
-        let signed = attachment.sign(byKey: key,
-                                     userKeys: attachment.message.cachedUser?.userPrivateKeysArray ?? userManager.userPrivateKeys,
-                                     passphrase: passphrase)
-        let completionWrapper: CompletionBlock = { task, response, error in
-            PMLog.D("SendAttachmentDebug == finish upload att!")
-            if error == nil,
-                let attDict = response?["Attachment"] as? [String : Any],
-                let id = attDict["ID"] as? String
+        autoreleasepool(){
+            guard
+                let (kP, dP) = attachment.encrypt(byKey: key, mailbox_pwd: passphrase),
+                let keyPacket = kP,
+                let dataPacket = dP
+            else
             {
-                self.coreDataService.enqueue(context: context) { (context) in
-                    attachment.attachmentID = id
-                    attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-                    attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
-                    
-                    // proper headers from BE - important for inline attachments
-                    if let headerInfoDict = attDict["Headers"] as? Dictionary<String, String> {
-                        attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
+                completion?(nil, nil, NSError.encryptionError())
+                return
+            }
+            Crypto().freeGolangMem()
+            let signed = attachment.sign(byKey: key,
+                                         userKeys: attachment.message.cachedUser?.userPrivateKeysArray ?? userManager.userPrivateKeys,
+                                         passphrase: passphrase)
+            let completionWrapper: CompletionBlock = { task, response, error in
+                PMLog.D("SendAttachmentDebug == finish upload att!")
+                if error == nil,
+                    let attDict = response?["Attachment"] as? [String : Any],
+                    let id = attDict["ID"] as? String
+                {
+                    self.coreDataService.enqueue(context: context) { (context) in
+                        attachment.attachmentID = id
+                        attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+                        attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
+                        
+                        // proper headers from BE - important for inline attachments
+                        if let headerInfoDict = attDict["Headers"] as? Dictionary<String, String> {
+                            attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
+                        }
+                        
+                        if let fileUrl = attachment.localURL,
+                            let _ = try? FileManager.default.removeItem(at: fileUrl)
+                        {
+                            attachment.localURL = nil
+                        }
+                        
+                        if let error = context.saveUpstreamIfNeeded() {
+                            PMLog.D(" error: \(error)")
+                        }
+                        completion?(task, response, error)
                     }
-                    
-                    if let fileUrl = attachment.localURL,
-                        let _ = try? FileManager.default.removeItem(at: fileUrl)
-                    {
-                        attachment.localURL = nil
-                    }
-                    
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
+                } else {
+                    if let err = error {
+                        Analytics.shared.error(message: .uploadAttachmentError, error: err, user: self.usersManager?.firstUser)
                     }
                     completion?(task, response, error)
                 }
-            } else {
-                if let err = error {
-                    Analytics.shared.error(message: .uploadAttachmentError, error: err, user: self.usersManager?.firstUser)
-                }
-                completion?(task, response, error)
             }
+            
+            PMLog.D("SendAttachmentDebug == start upload att!")
+            ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
+            userManager.apiService.upload( byPath: "/attachments",
+                                           parameters: params,
+                                           keyPackets: keyPacket,
+                                           dataPacket: dataPacket as Data,
+                                           signature: signed,
+                                           headers: [HTTPHeader.apiVersion: 3],
+                                           authenticated: true,
+                                           customAuthCredential: attachment.message.cachedAuthCredential,
+                                           completion: completionWrapper)
         }
         
-        PMLog.D("SendAttachmentDebug == start upload att!")
-        ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
-        userManager.apiService.upload( byPath: "/attachments",
-                                       parameters: params,
-                                       keyPackets: keyPacket,
-                                       dataPacket: dataPacket,
-                                       signature: signed,
-                                       headers: [HTTPHeader.apiVersion: 3],
-                                       authenticated: true,
-                                       customAuthCredential: attachment.message.cachedAuthCredential,
-                                       completion: completionWrapper)
     }
     
     private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
