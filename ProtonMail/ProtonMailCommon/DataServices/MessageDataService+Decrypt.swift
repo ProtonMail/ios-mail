@@ -36,14 +36,19 @@ import PMCommon
 extension MessageDataService {
     func decryptBodyIfNeeded(message: Message) throws -> String? {
         PMLog.D("Flags: \(message.flag.description)")
-        var keys: [Key] = self.userDataSource!.addressKeys
-        if let toAddress = message.toList.toContacts().first,
-           let address = self.userDataSource?.addresses.first(where: {$0.email == toAddress.email}),
-           let _keys = self.userDataSource?.getAllAddressKey(address_id: address.address_id) {
-            
-            keys = _keys
-        }
+        var keys: [Key] = []
         
+        let addresses = message.toList.toContacts()
+            .compactMap { (info) -> Address? in
+                return self.userDataSource?.addresses.first(where: {$0.email == info.email})
+            }
+        for address in addresses {
+            guard let _keys = self.userDataSource?.getAllAddressKey(address_id: address.address_id) else { continue }
+            keys += _keys
+        }
+        if keys.isEmpty {
+            keys = self.userDataSource!.addressKeys
+        }
         
         if let passphrase = self.userDataSource?.mailboxPassword ?? message.cachedPassphrase,
             var body = self.userDataSource!.newSchema ?
