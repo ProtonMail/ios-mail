@@ -99,7 +99,7 @@
 "Add Contact" = "Lägg till kontakt";
 
 /* add custom label type action */
-"Add Custom Label" = "Lägg till egen etikett";
+"Add Custom Label" = "Lägg till anpassad etikett";
 
 /* Action */
 "Add Folder" = "Lägg till mapp";
@@ -243,10 +243,10 @@
 "At least one email address in the group could not be found" = "Det gick inte att hitta minst en e-postadress i gruppen";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "At least one recipient email address is improperly formatted, please double check them.";
+"At least one recipient email address is improperly formatted, please double check them." = "Minst en mottagares e-postadress är felaktigt formaterad, vänligen dubbelkolla dem.";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Åtminstone en mottagares e-postadress/domän finns inte eller är felaktigt formaterad. Meddelande flyttat till utkast.";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Bilaga tillagd";
@@ -713,7 +713,7 @@
 "Draft" = "Utkast";
 
 /* title of toast message that user taps the message which is uploading */
-"Draft is still uploading..." = "Draft is still uploading...";
+"Draft is still uploading..." = "Utkast laddas fortfarande upp...";
 
 /* menu title */
 "Drafts" = "Utkast";
@@ -1283,7 +1283,7 @@
 "Message %@" = "Meddelande %@";
 
 /* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.";
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Meddelandet kunde inte skickas. Minst en mottagares e-postadress/domän finns inte eller är felaktigt formaterad.";
 
 /* *
  *  Expiration View */
@@ -1464,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Den d MMM. yyyy kl %1$@ skrev %2$@:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorera endast aktiveringen av köp om du är säker på att alla dina prenumerationer är uppdaterade. För ytterligare hjälp, vänligen kontakta kundtjänst. \r\n\r\n Är du säker på att du vill ignorera aktivering?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Endast ett gratiskonto kan läggas till";
