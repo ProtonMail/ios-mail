@@ -2928,44 +2928,38 @@ class MessageDataService : Service, HasLocalStorage {
             return Promise()
         }
         return Promise { seal in
-            self.incrementalUpdateQueue.sync {
-                let context = self.coreDataService.mainManagedObjectContext
-                self.coreDataService.enqueue(context: context) { (context) in
-                    for addrEvent in addrEvents {
-                        let address = AddressEvent(event: addrEvent)
-                        switch(address.action) {
-                        case .delete:
-                            if let addrID = address.ID {
-                                self.userDataSource?.deleteFromEvents(addressIDRes: addrID)
-                            }
-                        case .insert, .update1:
-                            guard let addrID = address.ID, let addrDict = address.address else {
-                                break
-                            }
-                            let addrRes = AddressesResponse()
-                            addrRes.parseAddr(res: addrDict)
-                            
-                            guard addrRes.addresses.count == 1, let parsedAddr = addrRes.addresses.first, parsedAddr.address_id == addrID else {
-                                break
-                            }
-                            self.userDataSource?.setFromEvents(addressRes: parsedAddr)
-                            guard let user = self.usersManager?.getUser(byUserId: self.userID) else {
-                                break
-                            }
-                            do {
-                                try await(user.userService.activeUserKeys(userInfo: user.userinfo, auth: user.authCredential))
-                            } catch let error {
-                                print(error.localizedDescription)
-                            }
-                        default:
-                            PMLog.D(" unknown type in message: \(address)")
+            self.incrementalUpdateQueue.async {
+                for addrEvent in addrEvents {
+                    let address = AddressEvent(event: addrEvent)
+                    switch(address.action) {
+                    case .delete:
+                        if let addrID = address.ID {
+                            self.userDataSource?.deleteFromEvents(addressIDRes: addrID)
                         }
-                        if let error = context.saveUpstreamIfNeeded(){
-                            PMLog.D(" error: \(error)")
+                    case .insert, .update1:
+                        guard let addrID = address.ID, let addrDict = address.address else {
+                            break
                         }
+                        let addrRes = AddressesResponse()
+                        addrRes.parseAddr(res: addrDict)
+                        
+                        guard addrRes.addresses.count == 1, let parsedAddr = addrRes.addresses.first, parsedAddr.address_id == addrID else {
+                            break
+                        }
+                        self.userDataSource?.setFromEvents(addressRes: parsedAddr)
+                        guard let user = self.usersManager?.getUser(byUserId: self.userID) else {
+                            break
+                        }
+                        do {
+                            try await(user.userService.activeUserKeys(userInfo: user.userinfo, auth: user.authCredential))
+                        } catch let error {
+                            print(error.localizedDescription)
+                        }
+                    default:
+                        PMLog.D(" unknown type in message: \(address)")
                     }
-                    seal.fulfill_()
                 }
+                seal.fulfill_()
             }
         }
     }
