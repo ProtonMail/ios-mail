@@ -105,7 +105,7 @@ class LabelsDataService: Service, HasLocalStorage {
                 }
                 
                 //save
-                let context = self.coreDataService.backgroundManagedObjectContext
+                let context = self.coreDataService.mainManagedObjectContext
                 self.coreDataService.enqueue(context: context) { (context) in
                     do {
                         let labels_out = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: labels, in: context)
