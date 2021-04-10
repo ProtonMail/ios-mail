@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="646" height="77"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="646" height="76.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="646" height="77"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Here goes the Subject" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIc-09-lb0">
@@ -47,29 +45,22 @@
                         </state>
                         <state key="selected" image="mail_check-active"/>
                     </button>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_lock" highlightedImage="mail_lock-outside" translatesAutoresizingMaskIntoConstraints="NO" id="I1O-3N-hks">
-                        <rect key="frame" x="612" y="50.5" width="18" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="3IN-uA-1v1"/>
-                            <constraint firstAttribute="width" constant="18" id="DL3-zp-Dz4"/>
-                        </constraints>
-                    </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_starred-active-small" translatesAutoresizingMaskIntoConstraints="NO" id="GYc-tV-NYw">
-                        <rect key="frame" x="558" y="50.5" width="18" height="14"/>
+                        <rect key="frame" x="576" y="51" width="18" height="14"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="18" id="ITM-Qa-OrE"/>
                             <constraint firstAttribute="height" constant="14" id="bFa-oL-Ehz"/>
                         </constraints>
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="MUg-6h-6KQ">
-                        <rect key="frame" x="576" y="50.5" width="18" height="14"/>
+                        <rect key="frame" x="594" y="51" width="18" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="FfP-xx-02q"/>
                             <constraint firstAttribute="width" constant="18" id="ZQl-7I-b7j"/>
                         </constraints>
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_expiration" translatesAutoresizingMaskIntoConstraints="NO" id="l8F-Fo-5Gz">
-                        <rect key="frame" x="594" y="50.5" width="18" height="14"/>
+                        <rect key="frame" x="612" y="51" width="18" height="14"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="18" id="GgZ-zI-WdS"/>
                             <constraint firstAttribute="height" constant="14" id="T24-bP-EYb"/>
@@ -101,7 +92,7 @@
                         <color key="highlightedColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qih-v7-hfv" customClass="LabelsView" customModule="ProtonMail" customModuleProvider="target">
-                        <rect key="frame" x="52" y="50.5" width="506" height="14"/>
+                        <rect key="frame" x="52" y="51" width="524" height="14"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="G9G-0u-3jM"/>
@@ -113,6 +104,7 @@
                     <constraint firstItem="SIc-09-lb0" firstAttribute="centerY" secondItem="ERi-2M-ccE" secondAttribute="centerY" id="1Mw-sD-RKm"/>
                     <constraint firstAttribute="bottom" secondItem="l8F-Fo-5Gz" secondAttribute="bottom" constant="12" id="1fv-aE-4tl"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="leading" secondItem="q38-eq-ScR" secondAttribute="trailing" constant="4" id="21n-Rk-D5T"/>
+                    <constraint firstAttribute="trailing" secondItem="l8F-Fo-5Gz" secondAttribute="trailing" constant="16" id="3E7-OO-Tcm"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="4LO-LE-TvG"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="centerY" secondItem="yr1-Vg-xT6" secondAttribute="centerY" id="6h3-kd-U8G"/>
                     <constraint firstItem="qih-v7-hfv" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="7PS-XI-pVi"/>
@@ -120,16 +112,13 @@
                     <constraint firstItem="q38-eq-ScR" firstAttribute="centerY" secondItem="SIc-09-lb0" secondAttribute="centerY" id="DbS-RJ-rxS"/>
                     <constraint firstItem="q38-eq-ScR" firstAttribute="leading" secondItem="W87-z9-Lfj" secondAttribute="trailing" id="I5w-1P-hAe"/>
                     <constraint firstItem="ERi-2M-ccE" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="JvL-Ag-kDX"/>
-                    <constraint firstAttribute="bottom" secondItem="I1O-3N-hks" secondAttribute="bottom" constant="12" id="NAJ-RT-FAm"/>
                     <constraint firstAttribute="bottom" secondItem="MUg-6h-6KQ" secondAttribute="bottom" constant="12" id="PrT-3l-42s"/>
                     <constraint firstItem="ehh-A8-O8P" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="UVn-lf-HvP"/>
-                    <constraint firstItem="I1O-3N-hks" firstAttribute="leading" secondItem="l8F-Fo-5Gz" secondAttribute="trailing" id="aNL-is-MRl"/>
                     <constraint firstItem="ERi-2M-ccE" firstAttribute="centerY" secondItem="W87-z9-Lfj" secondAttribute="centerY" id="c5h-ca-Lhp"/>
                     <constraint firstItem="yr1-Vg-xT6" firstAttribute="leading" secondItem="SIc-09-lb0" secondAttribute="trailing" id="gzJ-4O-edC"/>
                     <constraint firstAttribute="bottom" secondItem="GYc-tV-NYw" secondAttribute="bottom" constant="12" id="haf-Mv-6NM"/>
                     <constraint firstAttribute="bottom" secondItem="qih-v7-hfv" secondAttribute="bottom" constant="12" id="lkU-I3-fcJ"/>
                     <constraint firstAttribute="centerY" secondItem="ehh-A8-O8P" secondAttribute="centerY" id="mZK-f1-017"/>
-                    <constraint firstAttribute="trailing" secondItem="I1O-3N-hks" secondAttribute="trailing" constant="16" id="pNP-jI-IAq"/>
                     <constraint firstItem="GYc-tV-NYw" firstAttribute="leading" secondItem="qih-v7-hfv" secondAttribute="trailing" id="r1k-Ab-m3I"/>
                     <constraint firstItem="MUg-6h-6KQ" firstAttribute="leading" secondItem="GYc-tV-NYw" secondAttribute="trailing" id="r48-Lw-Hi6"/>
                     <constraint firstAttribute="centerY" secondItem="ehh-A8-O8P" secondAttribute="centerY" id="t4G-Qy-sga"/>
@@ -147,8 +136,6 @@
                 <outlet property="labelsView" destination="qih-v7-hfv" id="oHn-37-EtJ"/>
                 <outlet property="locationLabel" destination="q38-eq-ScR" id="B3U-W9-W8B"/>
                 <outlet property="locationWidth" destination="sRT-xH-c9B" id="PsR-ka-mx7"/>
-                <outlet property="lockImage" destination="I1O-3N-hks" id="peF-26-g6I"/>
-                <outlet property="lockWidth" destination="DL3-zp-Dz4" id="10T-on-5fH"/>
                 <outlet property="loctionRightSpace" destination="21n-Rk-D5T" id="hWl-Js-NfU"/>
                 <outlet property="replyImage" destination="ERi-2M-ccE" id="yNE-x0-uEc"/>
                 <outlet property="replyWidth" destination="DB7-Cd-pNk" id="9wX-Nr-ls8"/>
@@ -167,8 +154,6 @@
         <image name="mail_check-active" width="24" height="24"/>
         <image name="mail_expiration" width="14" height="14"/>
         <image name="mail_forwarded" width="16" height="16"/>
-        <image name="mail_lock" width="14" height="14"/>
-        <image name="mail_lock-outside" width="14" height="14"/>
         <image name="mail_replied" width="16" height="16"/>
         <image name="mail_starred-active-small" width="14" height="14"/>
     </resources>

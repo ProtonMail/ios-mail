@@ -57,7 +57,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache, .notificationsSnooze]
     var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
     
-    var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
+    var setting_swipe_action_items : [SwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
                                                             .star, .archive, .unread]
     
@@ -435,17 +435,6 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         cellout = cell
                     }
                 }
-            case .swipeAction:
-                if indexPath.row < setting_swipe_action_items.count {
-                    let actionItem = setting_swipe_action_items[indexPath.row]
-                    let cell = tableView.dequeueReusableCell(withIdentifier: SettingDomainsCell, for: indexPath) as! DomainsTableViewCell
-                    let userInfo = self.userManager.userinfo
-                    let action = actionItem == .left ? userInfo.swipeLeftAction : userInfo.swipeRightAction
-                    cell.domainText.text = actionItem.description
-                    cell.defaultMark.text = action?.description
-                    cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
-                    cellout = cell
-                }
             case .storage:
                 let cell = tableView.dequeueReusableCell(withIdentifier: SettingStorageCell, for: indexPath) as! StorageViewCell
                 let userInfo = self.userManager.userinfo
@@ -512,6 +501,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     cellout = cell
                 }
             case .version:
+                break
+            case .swipeAction:
                 break
             }
         }
@@ -755,32 +746,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     }
                 }
             case .swipeAction:
-                if setting_swipe_action_items.count > indexPath.row {
-                    let action_item = setting_swipe_action_items[indexPath.row]
-                    let alertController = UIAlertController(title: action_item.actionDescription, message: nil, preferredStyle: .actionSheet)
-                    alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-                    let userInfo = self.userManager.userInfo
-                    let currentAction = action_item == .left ? userInfo.swipeLeftAction : userInfo.swipeRightAction
-                    for swipeAction in setting_swipe_actions {
-                        if swipeAction != currentAction {
-                            alertController.addAction(UIAlertAction(title: swipeAction.description, style: .default, handler: { (action) -> Void in
-                                let _ = self.navigationController?.popViewController(animated: true)
-                                let view = UIApplication.shared.keyWindow ?? UIView()
-                                MBProgressHUD.showAdded(to: view, animated: true)
-                                self.userManager.userService.updateUserSwipeAction(auth: self.userManager.auth,
-                                                                                   userInfo: userInfo,
-                                                                                   isLeft: action_item == .left,
-                                                                                   action: swipeAction) { (task, response, error) in
-                                    MBProgressHUD.hide(for: view, animated: true)
-                                }
-                            }))
-                        }
-                    }
-                    let cell = tableView.cellForRow(at: indexPath)
-                    alertController.popoverPresentationController?.sourceView = cell ?? self.view
-                    alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
-                    present(alertController, animated: true, completion: nil)
-                }
+                break
             case .labels:
                 self.coordinator?.go(to: .lableManager)
             case .language:

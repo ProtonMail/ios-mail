@@ -76,13 +76,10 @@ extension AttachmentsTableViewController {
                     self.error(LocalString._cant_copy_the_file)
                     return
                 }
-                self.updateAttachments()
                 self.delegate?.attachments(self, didPickedAttachment: att)
                 seal.fulfill_()
             }
         }
-        
-        
     }
 }
 

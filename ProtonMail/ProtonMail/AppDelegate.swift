@@ -22,13 +22,13 @@
 
 
 import UIKit
-import SWRevealViewController
 import AFNetworking
 import PMKeymaker
 import UserNotifications
 import Intents
 import PMCommon
 import PMPayments
+import SideMenuSwift
 
 let sharedUserDataService = UserDataService(api: PMAPIService.unauthorized)
 
@@ -41,20 +41,17 @@ class AppDelegate: UIResponder {
     private var currentState: UIApplication.State = .active
 }
 
-// MARK: - this is workaround to track when the SWRevealViewController first time load
-extension SWRevealViewController {
+// MARK: - this is workaround to track when the SideMenuController first time load
+extension SideMenuController {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "sw_rear") {
-            if let menuViewController =  segue.destination as? MenuViewController {
-                let usersManager = sharedServices.get(by: UsersManager.self)
-                let viewModel = MenuViewModelImpl(usersManager: usersManager)
-                let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel, services: sharedServices)
-                menu.start()
-            }
-        } else if (segue.identifier == "sw_front") {
+        guard let segue = segue as? SideMenuSegue, let identifier = segue.identifier else {
+            return
+        }
+        switch identifier {
+        case contentSegueID:
+            segue.contentType = .content
             if let navigation = segue.destination as? UINavigationController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                    ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
                     sharedVMService.mailbox(fromMenu: mailboxViewController)
                     let usersManager = sharedServices.get(by: UsersManager.self)
                     let user = usersManager.firstUser!
@@ -62,11 +59,37 @@ extension SWRevealViewController {
                                                          userManager: user,
                                                          usersManager: usersManager,
                                                          pushService: sharedServices.get(),
-                                                         coreDataService: sharedServices.get())
+                                                         coreDataService: sharedServices.get(),
+                                                         lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+                                                         queueManager: sharedServices.get(by: QueueManager.self))
                     let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
                     mailbox.start()
                 }
             }
+        case menuSegueID:
+            segue.contentType = .menu
+            guard let menuVC = segue.destination as? MenuViewController else {
+                return
+            }
+            let usersManager = sharedServices.get(by: UsersManager.self)
+            let pushService = sharedServices.get(by: PushNotificationService.self)
+            let coreDataService = sharedServices.get(by: CoreDataService.self)
+            let lateUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
+            let queueManager = sharedServices.get(by: QueueManager.self)
+            let viewModel = MenuViewModel(usersManager: usersManager, queueManager: queueManager, coreDataService: coreDataService)
+            viewModel.set(delegate: menuVC)
+            let coordinator = MenuCoordinator(services: sharedServices,
+                                              vmService: sharedVMService,
+                                              pushService: pushService,
+                                              coreDataService: coreDataService,
+                                              lastUpdatedStore: lateUpdatedStore,
+                                              usersManager: usersManager,
+                                              vc: menuVC,
+                                              vm: viewModel)
+
+            coordinator.start()
+        default:
+            break
         }
     }
 }
@@ -150,9 +173,14 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
 
         let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
+        let lastUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
+        let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
+        let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
+        let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
+        sharedServices.add(QueueManager.self, for: queueManager)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
-        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager))
+        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager, lastUpdatedStore: lastUpdatedStore, queueManager: queueManager))
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         return true
@@ -163,12 +191,17 @@ extension AppDelegate: UIApplicationDelegate {
         PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
         PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
         PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
+        PMAPIService.noTrustKit = true
+        #else
+        TrustKitWrapper.start(delegate: self)
         #endif
 
-        TrustKitWrapper.start(delegate: self)
         Analytics.shared.setup()
         
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
+
+        UINavigationBar.appearance().backIndicatorImage = UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
         
         ///TODO::fixme refactor
         shareViewModelFactoy = ViewModelFactoryProduction()
@@ -250,8 +283,8 @@ extension AppDelegate: UIApplicationDelegate {
             }
             return UIInterfaceOrientationMask.all
         } else {
-            if let sw = viewController as? SWRevealViewController {
-                if let nav = sw.frontViewController as? UINavigationController {
+            if let sw = viewController as? SideMenuController {
+                if let nav = sw.contentViewController as? UINavigationController {
                     if (nav.topViewController!.isKind(of: PinCodeViewController.self)) {
                         return UIInterfaceOrientationMask.portrait
                     }
@@ -311,29 +344,27 @@ extension AppDelegate: UIApplicationDelegate {
         keymaker.updateAutolockCountdownStart()
         
         let users: UsersManager = sharedServices.get()
+        let queueManager: QueueManager = sharedServices.get()
+        //TODO: - v4 set background remaining time to queue manager
         
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask {
             PMLog.D("Background Task Timed Out")
+        }
+        let delayedCompletion: ()->Void = {
+            PMLog.D("End Background Task")
             application.endBackgroundTask(taskID)
             taskID = .invalid
         }
-        let delayedCompletion: ()->Void = {
-            delay(3) {
-                PMLog.D("End Background Task")
-                application.endBackgroundTask(taskID)
-                taskID = .invalid
-            }
-        }
         
         if let user = users.firstUser {
-            user.messageService.backgroundTimeRemaining = {
-                application.backgroundTimeRemaining
-            }
             user.messageService.purgeOldMessages()
-            user.messageService.cleanOldAttachment()
+            user.cacheService.cleanOldAttachment()
             user.messageService.updateMessageCount()
-            user.messageService.backgroundFetch {
+            
+            let maxium = min(10, application.backgroundTimeRemaining)
+            let limitation = Date().timeIntervalSinceNow + maxium
+            queueManager.backgroundFetch(allowedTime: limitation) {
                 delayedCompletion()
             }
         } else {
@@ -358,23 +389,19 @@ extension AppDelegate: UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         //TODO::here need change to notify composer to save editing draft
         let coreDataService = sharedServices.get(by: CoreDataService.self)
-        let mainContext = coreDataService.mainManagedObjectContext
-        mainContext.performAndWait {
-            let _ = mainContext.saveUpstreamIfNeeded()
-        }
         
-        let backgroundContext = coreDataService.backgroundManagedObjectContext
-        backgroundContext.performAndWait {
-            let _ = backgroundContext.saveUpstreamIfNeeded()
+        let rootContext = coreDataService.rootSavingContext
+        rootContext.performAndWait {
+            let _ = rootContext.saveUpstreamIfNeeded()
         }
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.currentState = .active
         let users: UsersManager = sharedServices.get()
-        users.users.forEach { (user) in
-            user.messageService.unBlockQueueAction()
-            user.messageService.backgroundTimeRemaining = nil
+        let queueManager = sharedServices.get(by: QueueManager.self)
+        if users.firstUser != nil {
+            queueManager.enterForeground()
         }
     }
     
@@ -387,12 +414,11 @@ extension AppDelegate: UIApplicationDelegate {
             completionHandler(.noData)
             return
         }
-        let usersManager: UsersManager = sharedServices.get()
-        usersManager.firstUser?.messageService.backgroundFetch(notify: {
-            completionHandler(.newData)
-        })
-        //HACK: Call this after n seconds to prevent app got killed.
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+        
+        let queueManager = sharedServices.get(by: QueueManager.self)
+        let maxium = min(5, application.backgroundTimeRemaining)
+        let limitation = Date().timeIntervalSinceNow + maxium
+        queueManager.backgroundFetch(allowedTime: limitation) {
             completionHandler(.newData)
         }
     }
@@ -521,7 +547,7 @@ extension AppDelegate : UnlockManagerDelegate {
     
     func cleanAll() {
         ///
-        sharedServices.get(by: UsersManager.self).clean()
+        sharedServices.get(by: UsersManager.self).clean().cauterize()
         keymaker.wipeMainKey()
         keymaker.mainKeyExists()
     }

@@ -94,4 +94,10 @@ class SetPinCodeModelImpl : PinCodeViewModel {
     override func getPinFailedError() -> String {
         return "The PIN does not match!!!"
     }
+
+    override func reset() {
+        self.currentStep = .enterPin
+        self.enterPin = ""
+        self.reEnterPin = ""
+    }
 }

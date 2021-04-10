@@ -11,9 +11,9 @@ import PMCommon
 
 extension AuthService {
     public struct ModulusEndpointResponse: Codable {
-        let modulus: String
-        let modulusID: String
-        let code: Int
+        public let modulus: String
+        public let modulusID: String
+        public let code: Int
     }
 
     struct ModulusEndpoint: Request {

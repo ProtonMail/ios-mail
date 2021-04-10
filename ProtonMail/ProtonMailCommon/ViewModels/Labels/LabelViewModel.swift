@@ -36,17 +36,17 @@ class LabelMessageModel {
 }
 
 class LabelViewModel {
-    internal let apiService: APIService
-    internal let labelService: LabelsDataService
-    internal let coreDataService: CoreDataService
+    let apiService: APIService
+    let labelService: LabelsDataService
+    let messageService: MessageDataService
     
     public typealias OkBlock = () -> Void
     public typealias ErrorBlock = (_ code : Int, _ errorMessage : String) -> Void
     
-    internal init(apiService: APIService, labelService: LabelsDataService, coreDataService: CoreDataService) {
+    internal init(apiService: APIService, labelService: LabelsDataService, messageService: MessageDataService) {
         self.apiService = apiService
         self.labelService = labelService
-        self.coreDataService = coreDataService
+        self.messageService = messageService
     }
     
     func getFetchType() -> LabelFetchType {

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PinCodeConfirmationViewController" customModule="ProtonMail" customModuleProvider="target">
+            <connections>
+                <outlet property="confirmButton" destination="F8F-vR-MiP" id="d09-XB-dBH"/>
+                <outlet property="passwordTextField" destination="HI0-kd-GIE" id="Nvd-So-iQh"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HI0-kd-GIE" customClass="PMTextField" customModule="PMUIFoundations">
+                    <rect key="frame" x="16" y="164" width="382" height="100"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="FHp-c2-ZMN"/>
+                        <constraint firstAttribute="height" constant="100" id="seS-PR-cnW"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="allowOnlyNumbers" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F8F-vR-MiP" customClass="ProtonButton" customModule="PMUIFoundations">
+                    <rect key="frame" x="16" y="280" width="382" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="2Er-K0-UnZ"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="48" id="9M1-ya-aus"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="confirmClicked:" destination="-1" eventType="touchUpInside" id="Wk8-26-iOB"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="F8F-vR-MiP" firstAttribute="top" secondItem="HI0-kd-GIE" secondAttribute="bottom" constant="16" id="0KM-PY-Q0Z"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="HI0-kd-GIE" secondAttribute="trailing" constant="16" id="5Xi-s2-zMA"/>
+                <constraint firstItem="F8F-vR-MiP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="Ehc-TR-Ee4"/>
+                <constraint firstAttribute="trailing" secondItem="F8F-vR-MiP" secondAttribute="trailing" constant="16" id="G5K-2C-MRF"/>
+                <constraint firstItem="HI0-kd-GIE" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="N7e-4A-qed"/>
+                <constraint firstItem="HI0-kd-GIE" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="120" id="bBy-GK-Bra"/>
+            </constraints>
+            <point key="canvasLocation" x="70" y="110"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

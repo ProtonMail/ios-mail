@@ -77,7 +77,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             
             if let messageID = path.value,
                 let nav = self.navigationController,
-                let message = user.messageService.fetchMessages(withIDs: [messageID], in: coreDataService.mainManagedObjectContext).first
+                let message = user.messageService.fetchMessages(withIDs: [messageID], in: coreDataService.mainContext).first
             {
                 let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataService: coreDataService)
                 let composer = ComposeContainerViewCoordinator(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
@@ -256,7 +256,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         case .some(.labels):
             guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
-            popup.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService, coreDataService: self.services.get())
+            popup.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService, cacheService: user.cacheService)
             popup.delegate = self
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
             
@@ -264,7 +264,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
             popup.delegate = self
-            popup.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService, coreDataService: self.services.get())
+            popup.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
         case .some(.toTroubleshoot):
             guard let nav = segue.destination as? UINavigationController else {

@@ -112,7 +112,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         return Promise { seal in
             if self.isFetching == false {
                 self.isFetching = true
-                self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, context: self.coreDataService.mainManagedObjectContext, completion: { (task, res, error) in
+                self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
                     self.isFetching = false
                     if let error = error {
                         seal.reject(error)
@@ -141,7 +141,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         if isFetching == false {
             isFetching = true
             
-            self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, context: self.coreDataService.mainManagedObjectContext, completion: { (task, res, error) in
+            self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
                 self.isFetching = false
             })
         }

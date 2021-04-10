@@ -111,14 +111,9 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.coordinator.sendAction(sender)
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .lightContent
-    }
-    
     override func configureNavigationBar() {
         super.configureNavigationBar()
         
-        self.navigationController?.navigationBar.barStyle = UIBarStyle.black
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white

@@ -129,10 +129,6 @@ class LablesViewController : UIViewController, AccessibleView {
         generateAccessibilityIdentifiers()
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-    
     @IBAction func archiveSelectAction(_ sender: UIButton) {
         archiveMessage = !archiveMessage
         if archiveMessage {
@@ -181,19 +177,20 @@ class LablesViewController : UIViewController, AccessibleView {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let apiService = self.viewModel.apiService
         let labelService = self.viewModel.labelService
+        let messageService = self.viewModel.messageService
         
         if segue.identifier == kToCreateFolder {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = FolderCreatingViewModelImple(apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
+            popup.viewModel = FolderCreatingViewModelImple(apiService: apiService, labelService: labelService, messageService: messageService)
         } else if segue.identifier == kToCreateLabel {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = LabelCreatingViewModelImple(apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
+            popup.viewModel = LabelCreatingViewModelImple(apiService: apiService, labelService: labelService, messageService: messageService)
         } else if segue.identifier == kToEditingLabel {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = LabelEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
+            popup.viewModel = LabelEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService, messageService: messageService)
         } else if segue.identifier == kToEditingFolder {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = FolderEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
+            popup.viewModel = FolderEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService, messageService: messageService)
         }
     }
 }
@@ -221,7 +218,7 @@ extension LablesViewController: UITableViewDataSource {
                                  editAction: { [weak self, weak labelCell] (sender) in
                 guard let self = self else { return }
                 if labelCell == sender, let editlabel = self.fetchedLabels?.object(at: indexPath) as? Label {
-                    if editlabel.exclusive {
+                    if editlabel.type == 3 {
                         self.performSegue(withIdentifier: self.kToEditingFolder, sender: editlabel)
                     } else {
                         self.performSegue(withIdentifier: self.kToEditingLabel, sender: editlabel)

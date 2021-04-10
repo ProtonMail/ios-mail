@@ -189,15 +189,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
                 }
             })
         } else {
-            userService.updateDisplayName(auth: userManager.auth, user: userManager.userInfo,
-                                          displayName: new_value) { _, _, error in
-                if let error = error {
-                    complete(false, error)
-                } else {
-                    self.userManager.save()
-                    complete(true, nil)
-                }
-            }
+            fatalError("Current user has no defualt address. Should not go here")
         }
     }
     
@@ -228,7 +220,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     var sectionTitle2: String {
-        return LocalString._edit_signature
+        return ""
     }
     
     func getNavigationTitle() -> String {
@@ -264,7 +256,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getPlaceholdText() -> String {
-        return ""
+        return LocalString._settings_default_signature_placeholder
     }
     
     func getCurrentValue() -> String {
@@ -328,7 +320,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
     }
     
     var sectionTitle2: String {
-        return LocalString._edit_mobile_signature
+        return ""
     }
     
     func getNavigationTitle() -> String {
@@ -397,7 +389,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
     }
     
     func getNotes() -> String {
-        return self.getRole() ? "" : LocalString._settings_plus_is_required_to_modify_signature_notes
+        return ""
     }
     
     
@@ -425,7 +417,7 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
     }
     
     var sectionTitle2: String {
-        return ""
+        return LocalString._settings_notification_email_section_title
     }
     func getNavigationTitle() -> String {
         return LocalString._settings_notification_email

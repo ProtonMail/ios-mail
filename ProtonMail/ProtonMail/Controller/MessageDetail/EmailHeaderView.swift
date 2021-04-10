@@ -443,7 +443,7 @@ class EmailHeaderView: UIView, AccessibleView {
         var tmplabels : [Label] = []
         if let alllabels = labels {
             for l in alllabels {
-                if l.exclusive == false {
+                if l.type == 1 {
                     if l.name.isEmpty || l.color.isEmpty { //will also check the lable id
                     } else {
                         tmplabels.append(l)

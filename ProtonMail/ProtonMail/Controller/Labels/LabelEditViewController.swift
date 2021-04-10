@@ -67,10 +67,6 @@ class LableEditViewController : UIViewController, AccessibleView {
         generateAccessibilityIdentifiers()
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.newLabelInput.becomeFirstResponder()
@@ -81,12 +77,15 @@ class LableEditViewController : UIViewController, AccessibleView {
         //show loading
         MBProgressHUD.showAdded(to: view, animated: true)
         let color = viewModel.color(at: selected?.row ?? 0)
-        viewModel.apply(withName: newLabelInput.text!, color: color, error: { (code, errorMessage) -> Void in
+        guard let newName = newLabelInput.text else {
+            return
+        }
+        viewModel.apply(withName: newName, color: color, errorBlock: { (code, errorMessage) -> Void in
             MBProgressHUD.hide(for: self.view, animated: true)
             let alert = errorMessage.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
-        }, complete: { () -> Void in
+        }, completion: {
             self.dismiss(animated: true, completion: nil)
             self.delegate?.dismissed()
         })

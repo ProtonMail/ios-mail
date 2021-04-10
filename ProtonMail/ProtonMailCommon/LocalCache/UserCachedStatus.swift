@@ -31,7 +31,7 @@ let userCachedStatus = UserCachedStatus()
 
 //the data in there store longer.
 
-final class UserCachedStatus : SharedCacheBase {
+final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol {
     struct Key {
         // inuse
 //        static let lastCacheVersion = "last_cache_version" //user cache
@@ -94,6 +94,9 @@ final class UserCachedStatus : SharedCacheBase {
         
         //check if the iOS 10 alert is shown
         static let iOS10AlertIsShown = "ios_10_alert_is_shown"
+
+        static let leftToRightSwipeAction = "leftToRightSwipeAction"
+        static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
     }
     
     var primaryUserSessionId: String? {
@@ -643,6 +646,34 @@ extension UserCachedStatus: ServicePlanDataStorage {
         }
         set {
             self.setValue(newValue, forKey: Key.isIAPAvailableOnBE)
+        }
+    }
+}
+
+extension UserCachedStatus: SwipeActionCacheProtocol {
+    var leftToRightSwipeActionType: SwipeActionSettingType {
+        get {
+            if let value = self.getShared()?.int(forKey: Key.leftToRightSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
+                return action
+            } else {
+                return .readAndUnread
+            }
+        }
+        set {
+            self.setValue(newValue.rawValue, forKey: Key.leftToRightSwipeAction)
+        }
+    }
+
+    var rightToLeftSwipeActionType: SwipeActionSettingType {
+        get {
+            if let value = self.getShared()?.int(forKey: Key.rightToLeftSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
+                return action
+            } else {
+                return .trash
+            }
+        }
+        set {
+            self.setValue(newValue.rawValue, forKey: Key.rightToLeftSwipeAction)
         }
     }
 }

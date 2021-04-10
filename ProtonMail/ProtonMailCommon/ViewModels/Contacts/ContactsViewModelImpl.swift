@@ -49,26 +49,28 @@ final class ContactsViewModelImpl : ContactsViewModel {
     
     func correctCachedData(completion: (() -> Void)?) {
         if let objects = fetchedResultsController?.fetchedObjects as? [Contact] {
-            if let context = self.fetchedResultsController?.managedObjectContext {
-                self.coreDataService.enqueue(context: context) { (context) in
-                    var needsSave = false
-                    for obj in objects {
-                        if obj.fixName() {
-                            needsSave = true
-                        }
-                    }
-                    if needsSave {
-                        if let error = context.saveUpstreamIfNeeded() {
-                            PMLog.D("error: \(error)")
-                        }
-                        self.fetchedResultsController = self.getFetchedResultsController()
-                    }
-                    completion?()
-                    return
+            let context = self.coreDataService.rootSavingContext
+            self.coreDataService.enqueue(context: context) { (context) in
+                var needsSave = false
+                let objectsToUpdate = objects.compactMap { obj -> Contact? in
+                    return try? context.existingObject(with: obj.objectID) as? Contact
                 }
+                
+                for obj in objectsToUpdate {
+                    if obj.fixName() {
+                        needsSave = true
+                    }
+                }
+                if needsSave {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D("error: \(error)")
+                    }
+                }
+                completion?()
             }
+        } else {
+            completion?()
         }
-        completion?()
     }
     
     private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
@@ -170,7 +172,6 @@ final class ContactsViewModelImpl : ContactsViewModel {
             
             self.user.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue,
                                                  notificationMessageID: nil,
-                                                 context: self.coreDataService.mainManagedObjectContext,
                                                  completion: { (task, res, error) in
                 self.isFetching = false
                 self.fetchComplete?(nil, nil)

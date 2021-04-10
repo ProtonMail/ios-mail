@@ -29,7 +29,6 @@ protocol LinkOpeningValidator {
 }
 extension LinkOpeningValidator {
     func validateNotPhishing(_ url: URL, handler: @escaping (Bool)->Void) {
-        let userDataService = self.user.userService
         let userInfo = self.user.userInfo
         guard userInfo.linkConfirmation == .confirmationAlert else {
             handler(true)

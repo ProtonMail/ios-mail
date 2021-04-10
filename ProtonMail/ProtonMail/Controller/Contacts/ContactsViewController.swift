@@ -77,7 +77,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.definesPresentationContext = true
         self.extendedLayoutIncludesOpaqueBars = true
-        self.automaticallyAdjustsScrollViewInsets = false
+        self.tableView.contentInsetAdjustmentBehavior = .never
         self.tableView.noSeparatorsBelowFooter()
         self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
         
@@ -131,7 +131,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.automaticallyAdjustsScrollViewInsets = true
         self.searchController.searchBar.sizeToFit()
         self.searchController.searchBar.keyboardType = .default
         self.searchController.searchBar.keyboardAppearance = .light
@@ -210,7 +209,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
 extension ContactsViewController: UpgradeAlertVCDelegate {
     func postToPlan() {
         NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
+                                        object: DeepLink(LabelLocation.subscription.labelID))
     }
     func goPlans() {
         if self.presentingViewController != nil {

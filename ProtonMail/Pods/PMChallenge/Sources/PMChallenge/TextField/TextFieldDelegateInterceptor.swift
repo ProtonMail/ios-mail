@@ -111,10 +111,8 @@ extension TextFieldDelegateInterceptor: UITextFieldDelegate {
             try! self.delegate?.charactersTyped(chars: string, type: self.type)
         } else {
             // Remove characters
-            if let text = textField.text {
-                let start = text.index(text.startIndex, offsetBy: range.location)
-                let end = text.index(start, offsetBy: range.length)
-                let subStr = String(text[start..<end])
+            if let text = textField.text, let textRange = Range(range, in: text) {
+                let subStr = String(text[textRange])
                 self.delegate?.charactersDeleted(chars: subStr, type: self.type)
             }
         }

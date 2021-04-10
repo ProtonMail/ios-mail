@@ -283,28 +283,6 @@ class UserDataService : Service, HasLocalStorage {
         clearAll()
     }
     
-    @available(*, deprecated, message: "account wise display name, i don't think we are using it any more. double check and remvoe it")
-    func updateDisplayName(auth currentAuth: AuthCredential,
-                           user: UserInfo,
-                           displayName: String, completion: UserInfoBlock?) {
-        let authCredential = currentAuth
-        let userInfo = user
-        guard let _ = keymaker.mainKey else
-        {
-            completion?(nil, nil, NSError.lockError())
-            return
-        }
-        
-        let new_displayName = displayName.trim()
-        let api = UpdateDisplayNameRequest(displayName: new_displayName, authCredential: authCredential)
-        self.apiService.exec(route: api) { task, response in
-            if response.error == nil {
-                userInfo.displayName = new_displayName
-            }
-            completion?(userInfo, nil, response.error)
-        }
-    }
-    
     func updateAddress(auth currentAuth: AuthCredential,
                        user: UserInfo,
                        addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
@@ -639,21 +617,6 @@ class UserDataService : Service, HasLocalStorage {
         self.apiService.exec(route: addressOrder) { task, response in
             if response.error == nil {
                 userInfo.userAddresses = email_domains
-            }
-            completion(task, nil, nil)
-        }
-    }
-    
-    func updateUserSwipeAction(auth currentAuth: AuthCredential,
-                               userInfo: UserInfo,
-                               isLeft : Bool,
-                               action: MessageSwipeAction,
-                               completion: @escaping CompletionBlock) {
-        let api : Request = isLeft ? UpdateSwiftLeftAction(action: action, authCredential: currentAuth) : UpdateSwiftRightAction(action: action, authCredential: currentAuth)
-        self.apiService.exec(route: api) { task, response in
-            if response.error == nil {
-                userInfo.swipeLeft = isLeft ? action.rawValue : userInfo.swipeLeft
-                userInfo.swipeRight = isLeft ? userInfo.swipeRight : action.rawValue
             }
             completion(task, nil, nil)
         }

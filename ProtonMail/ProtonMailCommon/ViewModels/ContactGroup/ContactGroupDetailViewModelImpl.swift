@@ -44,14 +44,14 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel {
     /// the contact group's email (in Array)
     var emailIDsArray: [Email]
     private(set) var user: UserManager
-    let coreDataService: CoreDataService
+    let labelsDataService: LabelsDataService
     
-    init(user: UserManager, groupID: String, name: String, color: String, emailIDs: Set<Email>, coreDataService: CoreDataService) {
+    init(user: UserManager, groupID: String, name: String, color: String, emailIDs: Set<Email>, labelsDataService: LabelsDataService) {
         self.user = user
         self.groupID = groupID
         self.name = name
         self.color = color
-        self.coreDataService = coreDataService
+        self.labelsDataService = labelsDataService
         
         emailIDsArray = []
         self.emailIDs = emailIDs
@@ -117,8 +117,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel {
      - Returns: Promise<Bool>. true if the contact group has been deleted from core data, false if the contact group can be fetched from core data
      */
     func reload() -> Promise<Bool> {
-        let context = self.coreDataService.mainManagedObjectContext
-        if let label = Label.labelForLableID(groupID, inManagedObjectContext: context) {
+        if let label = labelsDataService.label(by: groupID) {
             name = label.name
             color = label.color
             emailIDs = (label.emails as? Set<Email>) ?? Set<Email>()

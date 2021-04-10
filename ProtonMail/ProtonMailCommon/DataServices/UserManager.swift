@@ -61,13 +61,13 @@ class UserManager : Service, HasLocalStorage {
         return Promise { seal in
             var wait = Promise<Void>()
             var promises = [
-                self.messageService.cleanUp(),
                 self.labelService.cleanUp(),
                 self.contactService.cleanUp(),
                 self.contactGroupService.cleanUp(),
                 self.localNotificationService.cleanUp(),
-                self.userService.cleanUp(),
-                lastUpdatedStore.cleanUp(userId: self.userinfo.userId)
+//                self.userService.cleanUp(),
+                lastUpdatedStore.cleanUp(userId: self.userinfo.userId),
+                self.messageService.cleanUp()
             ]
             #if !APP_EXTENSION
             promises.append(self.sevicePlanService.cleanUp())
@@ -111,10 +111,6 @@ class UserManager : Service, HasLocalStorage {
         return wait
     }
     
-    func launchCleanUpIfNeeded() {
-        self.messageService.launchCleanUpIfNeeded()
-    }
-    
     var delegate : UserManagerSave?
     
     
@@ -123,8 +119,13 @@ class UserManager : Service, HasLocalStorage {
     public var apiService : APIService
     public var userinfo : UserInfo
     public var auth : AuthCredential
-    
+
+    var isUserSelectedUnreadFilterInInbox = false
     //TODO:: add a user status. logging in, expired, no key etc...
+    
+    var viewMode: UserInfo.ViewMode {
+        return userinfo.viewMode
+    }
 
     //public let user
     public lazy var reportService: BugDataService = { [unowned self] in
@@ -135,7 +136,8 @@ class UserManager : Service, HasLocalStorage {
         let service = ContactDataService(api: self.apiService,
                                          labelDataService: self.labelService,
                                          userID: self.userinfo.userId,
-                                         coreDataService: sharedServices.get(by: CoreDataService.self))
+                                         coreDataService: sharedServices.get(by: CoreDataService.self),
+                                         lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), cacheService: self.cacheService)
         return service
     }()
     
@@ -154,14 +156,19 @@ class UserManager : Service, HasLocalStorage {
                                          labelDataService: self.labelService,
                                          contactDataService: self.contactService,
                                          localNotificationService: self.localNotificationService,
-                                         usersManager: self.parentManager,
-                                         coreDataService: sharedServices.get(by: CoreDataService.self))
+                                         queueManager: sharedServices.get(by: QueueManager.self),
+                                         coreDataService: sharedServices.get(by: CoreDataService.self),
+                                         lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+                                         user: self,
+                                         cacheService: self.cacheService)
+        service.viewModeDataSource = self
         service.userDataSource = self
         return service
     }()
     
     public lazy var labelService: LabelsDataService = { [unowned self] in
-        let service = LabelsDataService(api: self.apiService, userID: self.userinfo.userId, coreDataService: sharedServices.get(by: CoreDataService.self))
+        let service = LabelsDataService(api: self.apiService, userID: self.userinfo.userId, coreDataService: sharedServices.get(by: CoreDataService.self), lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), cacheService: self.cacheService)
+        service.viewModeDataSource = self
         return service
     }()
     
@@ -176,6 +183,15 @@ class UserManager : Service, HasLocalStorage {
         return service
     }()
     
+    public lazy var cacheService: CacheService = { [unowned self] in
+        let service = CacheService(userID: self.userinfo.userId, lastUpdatedStore: self.lastUpdatedStore, coreDataService: sharedServices.get(by: CoreDataService.self))
+        return service
+    }()
+    
+    private var lastUpdatedStore: LastUpdatedStoreProtocol {
+        return sharedServices.get(by: LastUpdatedStore.self)
+    }
+    
     #if !APP_EXTENSION
     public lazy var sevicePlanService: ServicePlanDataService = { [unowned self] in
         let service = ServicePlanDataService(localStorage: userCachedStatus, apiService: self.apiService) // FIXME: SHOULD NOT BE ONE STORAGE FOR ALL
@@ -189,6 +205,7 @@ class UserManager : Service, HasLocalStorage {
         self.apiService = api
         self.apiService.authDelegate = self
         self.parentManager = parent
+        self.messageService.signin()
     }
 
     init(api: APIService) {
@@ -218,6 +235,10 @@ class UserManager : Service, HasLocalStorage {
     
     func save() {
         self.delegate?.onSave(userManger: self)
+    }
+
+    func fetchUserInfo() {
+        self.userService.fetchUserInfo(auth: self.auth).cauterize()
     }
 }
 
@@ -473,7 +494,10 @@ extension UserManager {
             userCachedStatus.setMobileSignature(uid: userInfo.userId, signature: newValue)
         }
     }
-    
-    
-    
+}
+
+extension UserManager: ViewModeDataSource {
+    func getCurrentViewMode() -> UserInfo.ViewMode {
+        return self.userinfo.viewMode
+    }
 }

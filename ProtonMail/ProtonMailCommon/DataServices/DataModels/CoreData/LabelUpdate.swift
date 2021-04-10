@@ -23,15 +23,19 @@
 import Foundation
 import CoreData
 
-public class LabelUpdate: NSManagedObject {
+public class LabelUpdate: NSManagedObject, LabelCount {
     
     @NSManaged public var userID: String
     @NSManaged public var labelID: String
     
-    @NSManaged var start : Date?
-    @NSManaged var end : Date?
-    @NSManaged var update : Date?
+    @NSManaged var start: Date?
+    @NSManaged var end: Date?
+    @NSManaged var update: Date?
     
-    @NSManaged var total : Int32
-    @NSManaged var unread : Int32
+    @NSManaged var unreadStart: Date?
+    @NSManaged var unreadEnd: Date?
+    @NSManaged var unreadUpdate: Date?
+    
+    @NSManaged var total: Int32
+    @NSManaged var unread: Int32
 }

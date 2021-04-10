@@ -149,7 +149,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                                                         action: .newDraft,
                                                         msgService: user.messageService,
                                                         user: user,
-                                                        coreDataService: self.viewModel.coreDataService)
+                                                        coreDataService: sharedServices.get(by: CoreDataService.self))
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
@@ -179,7 +179,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
 extension ContactGroupDetailViewController: UpgradeAlertVCDelegate {
     func postToPlan() {
         NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
+                                        object: DeepLink(LabelLocation.subscription.labelID))
     }
     func goPlans() {
         if self.presentingViewController != nil {

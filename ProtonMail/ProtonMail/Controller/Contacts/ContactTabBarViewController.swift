@@ -62,6 +62,12 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew {
         }
     }
     
+    class func instance() -> ContactTabBarViewController {
+        let board = UIStoryboard.Storyboard.contact.storyboard
+        let vc = board.instantiateInitialViewController() as! ContactTabBarViewController
+        return vc
+    }
+    
     ///    
     override func viewDidLoad() {
         super.viewDidLoad()

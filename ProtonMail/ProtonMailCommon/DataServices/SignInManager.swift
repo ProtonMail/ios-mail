@@ -27,11 +27,15 @@ import PMCommon
 
 class SignInManager: Service {
     let usersManager: UsersManager
+    let queueManager: QueueManager
+    private var lastUpdatedStore: LastUpdatedStoreProtocol
     private(set) var userInfo: UserInfo?
     private(set) var auth: AuthCredential?
     
-    init(usersManager: UsersManager) {
+    init(usersManager: UsersManager, lastUpdatedStore: LastUpdatedStoreProtocol, queueManager: QueueManager) {
         self.usersManager = usersManager
+        self.lastUpdatedStore = lastUpdatedStore
+        self.queueManager = queueManager
     }
     
     internal func signIn(username: String,
@@ -135,9 +139,11 @@ class SignInManager: Service {
         self.userInfo = nil
         
         let user = self.usersManager.getUser(bySessionID: auth.sessionID)!
+        self.queueManager.registerHandler(user.messageService)
+        
         let labelService = user.labelService
         let userDataService = user.userService
-        labelService.fetchLabels()
+        labelService.fetchV4Labels().cauterize()
         userDataService.fetchUserInfo(auth: auth).done(on: .main) { info in
             guard let info = info else {
                 onError(NSError.unknowError())
@@ -146,6 +152,7 @@ class SignInManager: Service {
             self.usersManager.update(auth: auth, user: info)
             
             guard info.delinquent < 3 else {
+                self.queueManager.unregisterHandler(user.messageService)
                 _ = self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false).ensure {
                     onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
                 }
@@ -154,14 +161,14 @@ class SignInManager: Service {
             
             self.usersManager.loggedIn()
             self.usersManager.active(uid: auth.sessionID)
-            lastUpdatedStore.contactsCached = 0
+            self.lastUpdatedStore.contactsCached = 0
             UserTempCachedStatus.restore()
             NotificationCenter.default.post(name: .didSignIn, object: nil)
             
             tryUnlock()
         }.catch(on: .main) { (error) in
             onError(error as NSError)
-            self.usersManager.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
+            _ = self.usersManager.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
         }
     }
 }

@@ -25,19 +25,19 @@ import Foundation
 import PMCommon
 
 public class LabelEditViewModel {
-    internal let apiService: APIService
-    internal let labelService : LabelsDataService
-    internal let coreDataService: CoreDataService
+    let apiService: APIService
+    let labelService : LabelsDataService
+    let messageService: MessageDataService
     
     public typealias OkBlock = () -> Void
-    public typealias ErrorBlock = (_ code : Int, _ errorMessage : String) -> Void
+    public typealias ErrorBlock = (_ code: Int, _ errorMessage: String) -> Void
     
     let colors: [String] = ColorManager.forLabel
     
-    internal init(apiService: APIService, labelService : LabelsDataService, coreDataService: CoreDataService) {
+    internal init(apiService: APIService, labelService : LabelsDataService, messageService: MessageDataService) {
         self.apiService = apiService
         self.labelService = labelService
-        self.coreDataService = coreDataService
+        self.messageService = messageService
     }
     
     public func colorCount() -> Int {
@@ -70,7 +70,7 @@ public class LabelEditViewModel {
         fatalError("This method must be overridden")
     }
     
-    public func apply(withName name : String, color : String, error:@escaping ErrorBlock, complete:@escaping OkBlock) {
+    public func apply(withName name: String, color: String, errorBlock: @escaping ErrorBlock, completion: @escaping OkBlock) {
         fatalError("This method must be overridden")
     }
 }

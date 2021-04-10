@@ -22,8 +22,8 @@
     
 
 import UIKit
-import SWRevealViewController
 import PMPayments
+import SideMenuSwift
 
 class StorefrontCoordinator: PushCoordinator {
     var configuration: ((StorefrontCollectionViewController) -> ())?
@@ -33,7 +33,7 @@ class StorefrontCoordinator: PushCoordinator {
     typealias VC = StorefrontCollectionViewController
     weak var viewController: StorefrontCollectionViewController?
     var navigationController: UINavigationController?
-    weak var rvc: SWRevealViewController?
+    weak var sideMenu: SideMenuController?
     var user: UserManager
     
     init(navigation: UINavigationController, user: UserManager) {
@@ -43,8 +43,8 @@ class StorefrontCoordinator: PushCoordinator {
         self.user = user
     }
     
-    init(rvc: SWRevealViewController?, user: UserManager) {
-        self.rvc = rvc
+    init(sideMenu: SideMenuController?, user: UserManager) {
+        self.sideMenu = sideMenu
         let vc = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
         self.viewController = vc
         self.user = user
@@ -71,7 +71,7 @@ class StorefrontCoordinator: PushCoordinator {
     private var observation: NSKeyValueObservation!
     func start() {
         self.viewController?.set(coordinator: self)
-        if self.navigationController != nil, self.rvc != nil {
+        if self.navigationController != nil, self.sideMenu != nil {
             if let child = self.viewController {
                 let menuButton = UIBarButtonItem(image: UIImage(named: "hamburger")!, style: .plain, target: nil, action: nil)
                 observation = self.navigationController?.observe(\UINavigationController.parent) { (controller, change) in
@@ -79,18 +79,17 @@ class StorefrontCoordinator: PushCoordinator {
                     self.observation = nil
                 }
             }
-            self.rvc?.pushFrontViewController(self.navigationController, animated: true)
+            self.sideMenu?.setContentViewController(to: self.navigationController!)
+            self.sideMenu?.hideMenu()
         } else if let vc = self.viewController {
             navigationController?.pushViewController(vc, animated: animated)
         }
     }
     
     func goToInbox() {
-        guard let menuVC = self.rvc?.rearViewController as? MenuViewController,
-              let coord = menuVC.getCoordinator() as? MenuCoordinatorNew else {
+        guard let menuVC = self.sideMenu?.menuViewController as? MenuViewController else {
             return
         }
-        
-        coord.go(to: .mailbox)
+        menuVC.coordinator.fetchSubscribeDataFailed()
     }
 }

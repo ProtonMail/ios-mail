@@ -22,7 +22,6 @@
     
 
 import Foundation
-import SWRevealViewController
 
 class SettingsPrivacyCoordinator : DefaultCoordinator {
 
@@ -32,8 +31,6 @@ class SettingsPrivacyCoordinator : DefaultCoordinator {
     var services: ServiceFactory
     
     internal weak var viewController: SettingsPrivacyViewController?
-//    internal weak var navigation: UIViewController?
-//    internal weak var swRevealVC: SWRevealViewController?
     internal weak var deepLink: DeepLink?
     
     lazy internal var configuration: ((SettingsPrivacyViewController) -> ())? = { [unowned self] vc in
@@ -49,16 +46,6 @@ class SettingsPrivacyCoordinator : DefaultCoordinator {
     
     enum Destination : String {
         case notification    = "setting_notification"
-//        case displayName     = "setting_displayname"
-//        case signature       = "setting_signature"
-//        case mobileSignature = "setting_mobile_signature"
-//        case debugQueue      = "setting_debug_queue_segue"
-//        case pinCode         = "setting_setup_pingcode"
-//        case lableManager    = "toManagerLabelsSegue"
-//        case loginPwd        = "setting_login_pwd"
-//        case mailboxPwd      = "setting_mailbox_pwd"
-//        case singlePwd       = "setting_single_password_segue"
-//        case snooze          = "setting_notifications_snooze_segue"
     }
     
     init?(dest: UIViewController, vm: SettingsPrivacyViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
@@ -75,21 +62,6 @@ class SettingsPrivacyCoordinator : DefaultCoordinator {
         self.viewController?.set(coordinator: self)
     }
     
-//    init(vc: SettingsAccountViewController, vm: SettingsAccountViewModel, services: ServiceFactory) {
-//        self.viewModel = vm
-//        self.viewController = vc
-//        self.services = services
-//    }
-    
-//    init(rvc: SWRevealViewController?, nav: UIViewController?, vc: SettingsAccountViewController, vm: SettingsAccountViewModel, services: ServiceFactory, deeplink: DeepLink?) {
-//        self.navigation = nav
-//        self.swRevealVC = rvc
-//        self.viewModel = vm
-//        self.viewController = vc
-//        self.deepLink = deeplink
-//        self.services = services
-//    }
-    
     func go(to dest: Destination, sender: Any? = nil) {
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
@@ -105,52 +77,6 @@ class SettingsPrivacyCoordinator : DefaultCoordinator {
                 return false
             }
             next.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
-//        case .displayName:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeDisplayName())
-//        case .signature:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeSignature())
-//        case .mobileSignature:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeMobileSignature())
-//        case .debugQueue:
-//            break
-//        case .pinCode:
-//            guard let next = destination as? PinCodeViewController else {
-//                return false
-//            }
-//            next.viewModel = SetPinCodeModelImpl()
-//        case .lableManager:
-//            guard let next = destination as? LablesViewController else {
-//                return false
-//            }
-//            
-//            let users : UsersManager = services.get()
-//            next.viewModel = LabelManagerViewModelImpl(labelService: users.firstUser.labelService)
-//        case .loginPwd:
-//            guard let next = destination as? ChangePasswordViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
-//        case .mailboxPwd:
-//            guard let next = destination as? ChangePasswordViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
-//        case .singlePwd:
-//            guard let next = destination as? ChangePasswordViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
-//        case .snooze:
-//            break
         }
         return false
     }

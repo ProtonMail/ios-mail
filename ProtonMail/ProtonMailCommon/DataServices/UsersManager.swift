@@ -228,9 +228,11 @@ class UsersManager : Service, Migrate {
     }
     
     func active(uid: String) {
-        if let index = self.users.enumerated().first(where: { $1.isMatch(sessionID: uid) })?.offset {
-            self.users.swapAt(0, index)
+        guard let index = self.users.firstIndex(where: { $0.isMatch(sessionID: uid) }) else {
+            return
         }
+        let user = self.users.remove(at: index)
+        self.users.insert(user, at: 0)
         self.save()
     }
     
@@ -238,8 +240,8 @@ class UsersManager : Service, Migrate {
         guard self.users.count > 0, index < users.count, index != 0 else {
             return
         }
-        
-        self.users.swapAt(0, index)
+        let user = self.users.remove(at: index)
+        self.users.insert(user, at: 0)
         self.save()
     }
     //TODO:: referance could try to use weak.
@@ -364,7 +366,6 @@ class UsersManager : Service, Migrate {
         
         if let oldAuth = oldAuthFetch(),  let user = oldUserInfo() {
             let session = oldAuth.sessionID
-            let userID = user.userId
             
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
@@ -424,13 +425,14 @@ class UsersManager : Service, Migrate {
             
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
                 newUser.delegate = self
                 users.append(newUser)
             }
         }
+
+        users.forEach { $0.fetchUserInfo() }
         self.loggedIn()
     }
         
@@ -508,7 +510,7 @@ extension UsersManager : UserManagerSave {
 /// cache login check
 extension UsersManager {
     func launchCleanUpIfNeeded() {
-        self.users.forEach { $0.launchCleanUpIfNeeded() }
+
     }
     
     func logout(user: UserManager, shouldShowAccountSwitchAlert: Bool = false) -> Promise<Void> {
@@ -540,9 +542,8 @@ extension UsersManager {
         if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.auth.sessionID) })?.auth.sessionID {
             self.active(uid: nextFirst)
         }
-        self.disconnectedUsers.append(.init(defaultDisplayName: user.defaultDisplayName,
-                                         defaultEmail: user.defaultEmail,
-                                         userID: user.userInfo.userId))
+        let logoutUser: DisconnectedUserHandle = .init(defaultDisplayName: user.defaultDisplayName, defaultEmail: user.defaultEmail, userID: user.userinfo.userId)
+        self.disconnectedUsers.insert(logoutUser, at: 0)
         self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
         self.save()
     }
@@ -565,7 +566,6 @@ extension UsersManager {
             userCachedStatus.signOut()
             self.users.forEach { user in
                 user.userService.signOut(true)
-                user.messageService.launchCleanUpIfNeeded()
             }
             self.users = []
             self.save()
@@ -691,7 +691,6 @@ extension UsersManager {
         // check the older auth and older user format first
         if let oldAuth = oldAuthFetchLagcy(),  let user = oldUserInfoLagcy() {
             let session = oldAuth.sessionID
-            let userID = user.userId
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
             newUser.delegate = self
@@ -736,7 +735,6 @@ extension UsersManager {
             
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
                 newUser.delegate = self

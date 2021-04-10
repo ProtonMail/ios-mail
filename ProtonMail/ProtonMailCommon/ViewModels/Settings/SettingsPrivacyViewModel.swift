@@ -19,49 +19,82 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 import PMCommon
 
-public enum SettingPrivacyItem : Int, CustomStringConvertible {
-    case autoLoadImage = 0
-    case linkOpeningMode = 1
-    case browser = 2
-    case metadataStripping = 3
-    
-    public var description : String {
-        switch(self){
+public enum SettingPrivacyItem: CustomStringConvertible {
+    case autoLoadImage
+    case linkOpeningMode
+    case metadataStripping
+
+    public var description: String {
+        switch self {
         case .autoLoadImage:
             return LocalString._auto_show_images
         case .linkOpeningMode:
             return LocalString._request_link_confirmation
         case .metadataStripping:
             return LocalString._strip_metadata
-        case .browser:
-            return LocalString._default_browser
         }
     }
 }
 
 protocol SettingsPrivacyViewModel: AnyObject {
-    var privacySections : [SettingPrivacyItem] { get set}
+    var privacySections: [SettingPrivacyItem] { get set }
     var userInfo: UserInfo { get }
     var user: UserManager { get }
+    var isMetadataStripping: Bool { get set }
+
+    func updateAutoLoadImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?)
+    func updateLinkConfirmation(newStatus: Bool, completion: ((NSError?) -> Void)?)
 }
 
-class SettingsPrivacyViewModelImpl: SettingsPrivacyViewModel {   
-    
-    var privacySections : [SettingPrivacyItem] = [.autoLoadImage, .linkOpeningMode, .metadataStripping]
+class SettingsPrivacyViewModelImpl: SettingsPrivacyViewModel {
+
+    var privacySections: [SettingPrivacyItem] = [.autoLoadImage, .linkOpeningMode, .metadataStripping]
     let user: UserManager
-    
+
     var userInfo: UserInfo {
+        return self.user.userInfo
+    }
+
+    var isMetadataStripping: Bool {
         get {
-            return self.user.userInfo
+            return userCachedStatus.metadataStripping == .stripMetadata
+        }
+        set {
+            userCachedStatus.metadataStripping = newValue ? .stripMetadata : .sendAsIs
         }
     }
-    
+
     init(user: UserManager) {
         self.user = user
+    }
+
+    func updateAutoLoadImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?) {
+        self.user.userService.updateAutoLoadImage(auth: user.auth,
+                                                  user: userInfo,
+                                                  remote: newStatus) { _, _, error in
+            if error == nil {
+                self.user.save()
+                completion?(nil)
+            } else {
+                completion?(error)
+            }
+        }
+    }
+
+    func updateLinkConfirmation(newStatus: Bool, completion: ((NSError?) -> Void)?) {
+        self.user.userService.updateLinkConfirmation(auth: user.auth,
+                                                     user: user.userInfo,
+                                                     newStatus ? .confirmationAlert : .openAtWill) { _, _, error in
+            if error != nil {
+                completion?(error)
+            } else {
+                self.user.save()
+                completion?(nil)
+            }
+        }
     }
 }

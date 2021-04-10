@@ -26,7 +26,6 @@ import PromiseKit
 
 protocol ContactGroupDetailViewModel {
     var user: UserManager { get }
-    var coreDataService: CoreDataService { get }
     
     func getGroupID() -> String
     func getName() -> String

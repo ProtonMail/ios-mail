@@ -104,7 +104,9 @@ final class EventCheckResponse : Response {
     
     var messageCounts: [[String : Any]]?
     
-    var conversationCounts: [[String : Any]]? //TODO:: use when we add conversation view
+    var conversations: [[String: Any]]?
+    
+    var conversationCounts: [[String : Any]]?
     
     var usedSpace : Int64?
     var notices : [String]?
@@ -137,7 +139,9 @@ final class EventCheckResponse : Response {
         
         self.messageCounts = response["MessageCounts"] as? [[String : Any]]
         
-        //self.conversationCounts = response["ConversationCounts"] as? [[String : Any]]
+        self.conversations = response["Conversations"] as? [[String: Any]]
+        //TODO: - V4 Wait for BE fix
+        self.conversationCounts = response["ConversationCounts"] as? [[String : Any]]
         
         self.usedSpace = response["UsedSpace"] as? Int64
         self.notices = response["Notices"] as? [String]
@@ -179,6 +183,21 @@ final class MessageEvent {
         self.ID =  (event["ID"] as! String)
         self.message?["ID"] = self.ID
         self.message?["needsUpdate"] = false
+    }
+}
+
+struct ConversationEvent {
+    var action: Int
+    var ID: String
+    var conversation: [String: Any]
+    init?(event: [String: Any]) {
+        if let action = event["Action"] as? Int, let id = event["ID"] as? String, let con = event["Conversation"] as? [String: Any] {
+            self.action = action
+            self.ID = id
+            self.conversation = con
+        } else {
+            return nil
+        }
     }
 }
 

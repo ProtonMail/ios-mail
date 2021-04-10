@@ -32,6 +32,9 @@ extension UIStoryboard {
         case composer = "Composer"
         case message = "Message"
         case alert = "Alerts"
+        case settings = "Settings"
+        case contact = "Contact"
+        case accountManager = "AccountManager"
         var restorationIdentifier: String {
             return rawValue
         }

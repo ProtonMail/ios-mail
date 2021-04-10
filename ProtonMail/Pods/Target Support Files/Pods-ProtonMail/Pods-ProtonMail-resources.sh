@@ -97,12 +97,15 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/PMAccountSwitcher/PMAccountSwitcher.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/PMPayments/Resources-Payments.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/PMAccountSwitcher/PMAccountSwitcher.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/PMPayments/Resources-Payments.bundle"
 fi
 if [[ "$CONFIGURATION" == "Distribution" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/PMAccountSwitcher/PMAccountSwitcher.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/PMPayments/Resources-Payments.bundle"
 fi
 

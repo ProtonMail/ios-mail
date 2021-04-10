@@ -27,28 +27,27 @@ import UIKit
     @IBOutlet weak var LeftText: UILabel!
     @IBOutlet weak var RightText: UILabel!
     
-    
+    static var CellID: String {
+        return "\(self)"
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        if #available(iOS 10, *) {
-            LeftText.font = UIFont.preferredFont(forTextStyle: .footnote)
-            LeftText.adjustsFontForContentSizeCategory = true
-            
-            RightText.font = UIFont.preferredFont(forTextStyle: .footnote)
-            RightText.adjustsFontForContentSizeCategory = true
-        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-
     
-    func configCell(_ left:String, right:String) {
-        LeftText.text = left
-        RightText.text = right
+    func configCell(_ left: String,
+                    leftTextAttributes: [NSAttributedString.Key : Any]? = FontManager.Default,
+                    right: String,
+                    rightTextAttributes:  [NSAttributedString.Key : Any]? = FontManager.Default) {
+        LeftText.attributedText = NSMutableAttributedString(string: left, attributes: leftTextAttributes)
+        var rightAttribute = rightTextAttributes
+        rightAttribute?.addTextAlignment(.right)
+        RightText.attributedText = NSMutableAttributedString(string: right, attributes: rightAttribute)
+
         self.accessibilityLabel = left
     }
 }

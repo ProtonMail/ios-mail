@@ -364,8 +364,9 @@ let index_64 : [Int8]  = [
 
 // MARK: -
 
-@available(*, deprecated, message: "remove me after gmp")
-class JKBCrypt: NSObject {
+// There are plans to remove JKBCrypt, but it won't happen in the near future.
+// @available(*, deprecated, message: "remove me after gmp")
+public class JKBCrypt: NSObject {
 
     // MARK: Property List
 
@@ -400,7 +401,7 @@ class JKBCrypt: NSObject {
         return salt
     }
 
-    class func based64DotSlash(_ data: Data) -> String {
+    public class func based64DotSlash(_ data: Data) -> String {
         return encodeData(data, ofLength: UInt(data.count))
     }
 
@@ -427,8 +428,9 @@ class JKBCrypt: NSObject {
      :returns: String?  The hashed password.
      */
 
-    @available(*, deprecated, message: "remove me after gmp")
-    class func hashPassword(_ password: String, withSalt salt: String) -> String? {
+    // There are plans to remove JKBCrypt, but it won't happen in the near future.
+    // @available(*, deprecated, message: "remove me after gmp")
+    public class func hashPassword(_ password: String, withSalt salt: String) -> String? {
         var bCrypt         : JKBCrypt
         var realSalt       : String
         //var hashedData     : NSData

@@ -1,23 +1,23 @@
 {
   "images" : [
     {
+      "filename" : "mail_attachments-open.png",
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "mail_attachments-open.png"
+      "scale" : "1x"
     },
     {
+      "filename" : "mail_attachments-open@2x.png",
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "mail_attachments-open@2x.png"
+      "scale" : "2x"
     },
     {
+      "filename" : "mail_attachments-open@3x.png",
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "mail_attachments-open@3x.png"
+      "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }

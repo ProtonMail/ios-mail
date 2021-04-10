@@ -34,7 +34,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     private let groupColor: String
     private var emailArray: [ContactGroupSubSelectionViewModelEmailInfomation]
     private let delegate: ContactGroupSubSelectionViewModelDelegate
-    private let coreDataService: CoreDataService
+    private let labelsDataService: LabelsDataService
     
     /**
      Setup the sub-selection view of a specific group, at a specific state
@@ -51,18 +51,16 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
          selectedEmails: [DraftEmailData],
          user: UserManager,
          delegate: ContactGroupSubSelectionViewModelDelegate,
-         coreDataService: CoreDataService) {
+         labelsDataService: LabelsDataService) {
         self.user = user
         self.groupName = contactGroupName
         self.delegate = delegate
-        self.coreDataService = coreDataService
+        self.labelsDataService = labelsDataService
         
         var emailData: [ContactGroupSubSelectionViewModelEmailInfomation] = []
-        
-        let context = self.coreDataService.mainManagedObjectContext
+
         // (1)
-        if let label = Label.labelForLabelName(self.groupName,
-                                               inManagedObjectContext: context),
+        if let label = labelsDataService.label(name: groupName),
             let emails = label.emails.allObjects as? [Email] {
             self.groupColor = label.color
             

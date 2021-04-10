@@ -22,39 +22,39 @@
 
 import Foundation
 
-enum SettingSction: Int {
-    case combineContact = 0
-    
-    var title: String {
-        switch self {
-        case .combineContact:
-            return "Combined Contacts"
-        }
-    }
-    
-    var foot: String {
-        switch self {
-        case .combineContact:
-            return "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts."
-        }
-    }
-}
-
 class SettingsCombineContactViewModel {
-    let users: UsersManager
-    
-    init(users: UsersManager) {
-        self.users = users
+    enum SettingSection: Int {
+        case combineContact = 0
+
+        var title: String {
+            switch self {
+            case .combineContact:
+                return LocalString._settings_title_of_combined_contact
+            }
+        }
+
+        var foot: String {
+            switch self {
+            case .combineContact:
+                return LocalString._settings_footer_of_combined_contact
+            }
+        }
+    }
+
+    private var combineContactCache: ContactCombinedCacheProtocol
+
+    init(combineContactCache: ContactCombinedCacheProtocol) {
+        self.combineContactCache = combineContactCache
     }
     
     var isContactCombined: Bool {
         get {
-            return userCachedStatus.isCombineContactOn
+            return combineContactCache.isCombineContactOn
         }
         set {
-            userCachedStatus.isCombineContactOn = newValue
+            combineContactCache.isCombineContactOn = newValue
         }
     }
     
-    var sections: [SettingSction] = [.combineContact]
+    var sections: [SettingSection] = [.combineContact]
 }

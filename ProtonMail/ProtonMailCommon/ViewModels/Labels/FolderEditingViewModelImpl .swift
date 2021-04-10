@@ -28,9 +28,9 @@ import PMCommon
 final public class FolderEditingViewModelImple : LabelEditViewModel {
     var currentLabel : Label
     
-    internal init(label: Label, apiService: APIService, labelService: LabelsDataService, coreDataService: CoreDataService) {
+    internal init(label: Label, apiService: APIService, labelService: LabelsDataService, messageService: MessageDataService) {
         self.currentLabel = label
-        super.init(apiService: apiService, labelService: labelService, coreDataService: coreDataService)
+        super.init(apiService: apiService, labelService: labelService, messageService: messageService)
     }
     
     override public func title() -> String {
@@ -58,21 +58,11 @@ final public class FolderEditingViewModelImple : LabelEditViewModel {
         }
     }
     
-    override public func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {
-        let api = UpdateLabelRequest(id: currentLabel.labelID, name: name, color: color)
-        self.apiService.exec(route: api) { (task, response : UpdateLabelRequestResponse) in
-            if let err = response.error {
-                error(err.code, err.localizedDescription)
-            } else {
-                self.coreDataService.enqueue(context: self.currentLabel.managedObjectContext) { (context) in
-                    self.currentLabel.name = name
-                    self.currentLabel.color = color
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    }
-                    complete()
-                }
-            }
+    override public func apply(withName name: String, color: String, errorBlock: @escaping LabelEditViewModel.ErrorBlock, completion: @escaping LabelEditViewModel.OkBlock) {
+        if self.messageService.update(label: currentLabel, name: name, color: color) {
+            completion()
+        } else {
+            errorBlock(-1, LocalString._unknown_error)
         }
     }
 }

@@ -7,3 +7,7 @@ test_output
 .vscode/*
 builds
 ProtonMail/fastlane/report.xml
+*.generated.swift
+*.mobileprovision
+*.p12
+outputs

@@ -30,6 +30,7 @@ public class APIErrorCode {
     static public let HTTP503 = 503
     static public let HTTP504 = 504
     static public let HTTP404 = 404
+    static public let HUMAN_VERIFICATION_REQUIRED = 9001
     
     static public let badParameter = 1
     static public let badPath = 2

@@ -410,10 +410,13 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     break
                 }
             }
-            self.contact.managedObjectContext?.performAndWait {
-                self.contact.needsRebuild = false
-                if let error = self.contact.managedObjectContext?.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
+            
+            self.coreDataService.rootSavingContext.performAndWait {
+                if let contactToUpdate = try? self.coreDataService.rootSavingContext.existingObject(with: self.contact.objectID) as? Contact {
+                    contactToUpdate.needsRebuild = false
+                    if let error = self.coreDataService.rootSavingContext.saveUpstreamIfNeeded() {
+                        PMLog.D("error: \(error)")
+                    }
                 }
             }
             
@@ -441,7 +444,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         loading()
         return Promise { seal in
             //Fixme
-            self.contactService.details(contactID: contact.contactID, inContext: self.coreDataService.mainManagedObjectContext).then { _ in
+            self.contactService.details(contactID: contact.contactID).then { _ in
                 self.setupEmails()
             }.done {
                 seal.fulfill(self.contact)

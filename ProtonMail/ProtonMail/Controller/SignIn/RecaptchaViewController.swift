@@ -50,10 +50,6 @@ class RecaptchaViewController: UIViewController {
     fileprivate var doneClicked : Bool = false
     var viewModel : SignupViewModel!
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.default;
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

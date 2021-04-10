@@ -7,14 +7,14 @@
 
 import Foundation
 
-final class PasswordHash {
+final public class PasswordHash {
     enum PasswordError: Error {
         case hashEmpty
         case hashEmptyEncode
         case hashSizeWrong
     }
 
-    static func hashPassword(_ password: String, salt: Data) -> String {
+    public static func hashPassword(_ password: String, salt: Data) -> String {
         let byteArray = NSMutableData()
         byteArray.append(salt)
         let source = NSData(data: byteArray as Data) as Data

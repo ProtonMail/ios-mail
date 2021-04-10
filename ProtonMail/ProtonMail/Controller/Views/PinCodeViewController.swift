@@ -82,10 +82,6 @@ class PinCodeViewController : UIViewController, BioAuthenticating, AccessibleVie
         }
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent;
-    }
-    
     func authenticateUser() {
         UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
             self.viewModel.done() { shouldPop in

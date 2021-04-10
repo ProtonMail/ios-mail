@@ -1,6 +1,6 @@
 {
   "name": "PMChallenge",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "summary": "Collect challenge data during user signup",
   "description": "Collect challenge data during user signup so that the anti-abuse team can analytic.",
   "homepage": "https://gitlab.protontech.ch/apple/shared/pmchallenge",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/pmchallenge.git",
-    "tag": "0.0.2"
+    "tag": "0.0.4"
   },
   "source_files": "Sources/**/*",
   "swift_version": "5.2"

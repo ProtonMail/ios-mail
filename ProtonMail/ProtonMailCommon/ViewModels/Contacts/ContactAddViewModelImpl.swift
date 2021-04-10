@@ -207,7 +207,9 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         guard let userkey = user.userInfo.firstUserKey(),
             case let authCredential = user.authCredential else
         {
-            complete(NSError.lockError())
+            DispatchQueue.main.async {
+                complete(NSError.lockError())
+            }
             return
         }
         
@@ -215,7 +217,9 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         var a_emails: [ContactEmail] = []
         for e in getEmails() {
             if e.newEmail.isEmpty || !e.newEmail.isValidEmail() {
-                complete(RuntimeError.invalidEmail.toError())
+                DispatchQueue.main.async {
+                    complete(RuntimeError.invalidEmail.toError())
+                }
                 return
             }
             a_emails.append(e.toContactEmail())
@@ -380,10 +384,12 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         }
         //TODO:: can be improved
         user.contactService.add(cards: [cards], authCredential: authCredential) { (contacts : [Contact]?, error : NSError?) in
-            if error == nil {
-                complete(nil)
-            } else {
-                complete(error)
+            DispatchQueue.main.async {
+                if error == nil {
+                    complete(nil)
+                } else {
+                    complete(error)
+                }
             }
         }
     }

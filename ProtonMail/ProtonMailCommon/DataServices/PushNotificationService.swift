@@ -23,7 +23,6 @@
 
 import Foundation
 import UIKit
-import SWRevealViewController
 import PMKeymaker
 import UserNotifications
 import PMCommon
@@ -241,14 +240,14 @@ public class PushNotificationService: NSObject, Service {
 
             switch userInfo["category"] as? String {
             case .some(LocalNotificationService.Categories.failedToSend.rawValue):
-                let link = DeepLink(MenuCoordinatorNew.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
-                link.append(.init(name: MenuCoordinatorNew.Destination.mailbox.rawValue, value: Message.Location.draft.rawValue))
+                let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
+                link.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.draft.rawValue))
                 NotificationCenter.default.post(name: .switchView, object: link)
             default:
                 user.messageService.pushNotificationMessageID = messageid
-                let link = DeepLink(MenuCoordinatorNew.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
-                link.append(.init(name: MenuCoordinatorNew.Destination.mailbox.rawValue))
-                link.append(.init(name: MailboxCoordinator.Destination.detailsFromNotify.rawValue))
+                let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
+                link.append(.init(name: String(describing: MailboxViewController.self)))
+                link.append(.init(name: MailboxCoordinator.Destination.details.rawValue)) // FIXME: - To update MG
                 NotificationCenter.default.post(name: .switchView, object: link)
             }
             completionHandler()

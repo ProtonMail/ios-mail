@@ -42,10 +42,6 @@ class MailboxCaptchaViewController : UIViewController, AccessibleView {
     
     weak var delegate : MailboxCaptchaVCDelegate?
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4

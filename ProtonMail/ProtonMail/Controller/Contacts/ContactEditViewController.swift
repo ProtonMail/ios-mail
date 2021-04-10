@@ -244,7 +244,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         let v : UIView = self.navigationController?.view ?? self.view
         MBProgressHUD.showAdded(to: v, animated: true)
         
-        viewModel.done { (error : NSError?) in
+        viewModel.done { (error : NSError?) in            
             MBProgressHUD.hide(for: v, animated: true)
             if error == nil {
                 self.delegate?.updated()
@@ -378,8 +378,9 @@ extension ContactEditViewController : ContactUpgradeCellDelegate {
 
 extension ContactEditViewController : UpgradeAlertVCDelegate {
     func postToPlan() {
+        self.dismiss(animated: true)
         NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
+                                        object: DeepLink(LabelLocation.subscription.labelID))
     }
     func goPlans() {
         if self.presentingViewController != nil {

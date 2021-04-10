@@ -224,11 +224,11 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
          self.headerView.ccContactPicker,
          self.headerView.bccContactPicker].forEach{ $0.prepareForDesctruction() }
         
-        self.queueObservation = sharedMessageQueue.observe(\.queue, options: [.initial]) { [weak self] _, change in
-            if sharedMessageQueue.queue.isEmpty {
-                self?.step.insert(.queueIsEmpty)
-            }
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateStepWhenTheQueueIsEmpty), name: .queueIsEmpty, object: nil)
+    }
+
+    @objc private func updateStepWhenTheQueueIsEmpty() {
+        self.step.insert(.queueIsEmpty)
     }
     
     private func dismissAnimation() {

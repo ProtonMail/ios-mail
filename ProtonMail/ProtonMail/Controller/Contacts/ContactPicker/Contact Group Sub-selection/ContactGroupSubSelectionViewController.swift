@@ -43,7 +43,7 @@ class ContactGroupSubSelectionViewController: UIViewController {
                                                                user: self.user,
                                                                delegate: self,
                                                                //FIXME: move it to coordinator
-                                                               coreDataService: CoreDataService.shared)
+                                                               labelsDataService: user.labelService)
         
         prepareTableView()
         tableView.zeroMargin()

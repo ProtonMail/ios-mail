@@ -22,7 +22,7 @@
 
 
 import Foundation
-import SWRevealViewController
+import SideMenuSwift
 
 class MailboxCoordinator : DefaultCoordinator {
     typealias VC = MailboxViewController
@@ -32,12 +32,12 @@ class MailboxCoordinator : DefaultCoordinator {
     
     internal weak var viewController: MailboxViewController?
     internal weak var navigation: UINavigationController?
-    internal weak var rvc: SWRevealViewController?
+    internal weak var sideMenu: SideMenuController?
     // whole the ref until started
     internal var navBeforeStart: UINavigationController?
     
-    init(rvc: SWRevealViewController?, vm: MailboxViewModel, services: ServiceFactory) {
-        self.rvc = rvc
+    init(sideMenu: SideMenuController?, vm: MailboxViewModel, services: ServiceFactory) {
+        self.sideMenu = sideMenu
         self.viewModel = vm
         self.services = services
         
@@ -62,8 +62,8 @@ class MailboxCoordinator : DefaultCoordinator {
         self.viewController = vc
     }
     
-    init(rvc: SWRevealViewController?, nav: UINavigationController?, vc: MailboxViewController, vm: MailboxViewModel, services: ServiceFactory) {
-        self.rvc = rvc
+    init(sideMenu: SideMenuController?, nav: UINavigationController?, vc: MailboxViewController, vm: MailboxViewModel, services: ServiceFactory) {
+        self.sideMenu = sideMenu
         self.navigation = nav
         self.viewController = vc
         self.viewModel = vm
@@ -77,8 +77,8 @@ class MailboxCoordinator : DefaultCoordinator {
         case composeShow       = "toComposeShow"
         case composeMailto     = "toComposeMailto"
         case search            = "toSearchViewController"
-        case details           = "toMessageDetailViewController"
-        case detailsFromNotify = "toMessageDetailViewControllerFromNotification"
+        case details           = "SingleMessageViewController"
+//        case detailsFromNotify = "SingleMessageViewController"
         case onboarding        = "to_onboarding_segue"
         case feedback          = "to_feedback_segue"
         case feedbackView      = "to_feedback_view_segue"
@@ -93,8 +93,8 @@ class MailboxCoordinator : DefaultCoordinator {
             case "toComposeShow", String(describing: ComposeContainerViewController.self): self = .composeShow
             case "toComposeMailto": self = .composeMailto
             case "toSearchViewController", String(describing: SearchViewController.self): self = .search
-            case "toMessageDetailViewController", String(describing: MessageContainerViewController.self): self = .details
-            case "toMessageDetailViewControllerFromNotification": self = .detailsFromNotify
+            case "toMessageDetailViewController", String(describing: SingleMessageViewController.self): self = .details
+//            case "toMessageDetailViewControllerFromNotification": self = .detailsFromNotify
             case "to_onboarding_segue": self = .onboarding
             case "to_feedback_segue": self = .feedback
             case "to_feedback_view_segue": self = .feedbackView
@@ -112,8 +112,9 @@ class MailboxCoordinator : DefaultCoordinator {
         self.viewController?.set(viewModel: self.viewModel)
         self.viewController?.set(coordinator: self)
         
-        if self.navigation != nil, self.rvc != nil {
-            self.rvc?.pushFrontViewController(self.navigation, animated: true)
+        if self.navigation != nil, self.sideMenu != nil {
+            self.sideMenu?.setContentViewController(to: self.navigation!)
+            self.sideMenu?.hideMenu()
         }
         if let presented = self.viewController?.presentedViewController {
             presented.dismiss(animated: false, completion: nil)
@@ -123,12 +124,12 @@ class MailboxCoordinator : DefaultCoordinator {
 
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
-            return false //
+            return false
         }
         
         switch dest {
         case .details:
-            self.viewController?.cancelButtonTapped()
+            //self.viewController?.cancelButtonTapped()
             guard let next = destination as? MessageContainerViewController else {
                 return false
             }
@@ -139,21 +140,22 @@ class MailboxCoordinator : DefaultCoordinator {
                     return false
             }
             
-            next.set(viewModel: .init(message: message, msgService: self.viewModel.messageService, user: self.viewModel.user, coreDataService: self.services.get(by: CoreDataService.self)))
+            next.set(viewModel: .init(message: message, msgService: self.viewModel.messageService, user: self.viewModel.user, labelID: viewModel.labelID))
             next.set(coordinator: .init(controller: next))
-        case .detailsFromNotify:
-            guard let next = destination as? MessageContainerViewController else {
-                return false
-            }
-            let vmService = services.get() as ViewModelService
-            vmService.messageDetails(fromPush: next)
-            guard let message = self.viewModel.notificationMessage else {
-                return false
-            }
-            let user = self.viewModel.user
-            next.set(viewModel: .init(message: message, msgService: user.messageService, user: user, coreDataService: self.services.get(by: CoreDataService.self)))
-            next.set(coordinator: .init(controller: next))
-            self.viewModel.resetNotificationMessage()
+//        case .detailsFromNotify:
+//            guard let next = destination as? MessageContainerViewController else {
+//                return false
+//            }
+//            let vmService = services.get() as ViewModelService
+//            vmService.messageDetails(fromPush: next)
+//            guard let message = self.viewModel.notificationMessage else {
+//                return false
+//            }
+//            let user = self.viewModel.user
+//            #warning("v4 check labelID later")
+//            next.set(viewModel: .init(message: message, msgService: user.messageService, user: user, labelID: self.viewModel.labelID))
+//            next.set(coordinator: .init(controller: next))
+//            self.viewModel.resetNotificationMessage()
             
         case .composer:
             guard let nav = destination as? UINavigationController,
@@ -205,8 +207,7 @@ class MailboxCoordinator : DefaultCoordinator {
             }
 
             let user = self.viewModel.user
-            let coreDataService = self.services.get(by: CoreDataService.self)
-            next.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService, coreDataService: coreDataService)
+            next.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             next.delegate = self.viewController
         case .labels:
             guard let next = destination as? LablesViewController else {
@@ -217,8 +218,7 @@ class MailboxCoordinator : DefaultCoordinator {
             }
             
             let user = self.viewModel.user
-            let coreDataService = self.services.get(by: CoreDataService.self)
-            next.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService, coreDataService: coreDataService)
+            next.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService, cacheService: user.cacheService)
             next.delegate = self.viewController
             
         case .troubleShoot:
@@ -234,11 +234,29 @@ class MailboxCoordinator : DefaultCoordinator {
     }   
     
     func go(to dest: Destination, sender: Any? = nil) {
-        guard let vc = self.viewController else {return}
-        if let presented = vc.presentedViewController {
-            presented.dismiss(animated: false, completion: nil)
+        switch dest {
+        case .details:
+            presentSingleMessageViewController()
+        default:
+            guard let vc = self.viewController else {return}
+            if let presented = vc.presentedViewController {
+                presented.dismiss(animated: false, completion: nil)
+            }
+            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
         }
-        self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+    }
+
+    private func presentSingleMessageViewController() {
+        guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
+            let message = self.viewModel.item(index: indexPathForSelectedRow) else { return }
+        let user = viewModel.user
+        let viewModel = SingleMessageViewModel(
+            labelId: self.viewModel.labelID,
+            message: message,
+            messageService: user.messageService
+        )
+        let singleMessageController = SingleMessageViewController(viewModel: viewModel)
+        viewController?.navigationController?.pushViewController(singleMessageController, animated: true)
     }
     
     func follow(_ deeplink: DeepLink) {
@@ -246,18 +264,20 @@ class MailboxCoordinator : DefaultCoordinator {
             
         switch dest {
         case .details:
+            let user = viewModel.user
             let coreDataService = self.services.get(by: CoreDataService.self)
-            
-            if let messageID = path.value,
-                case let user = self.viewModel.user,
-                case let msgService = user.messageService,
-                let message = msgService.fetchMessages(withIDs: [messageID], in: coreDataService.mainManagedObjectContext).first,
-                let nav = self.navigation
-            {
-                let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message, msgService: msgService, user: user, coreDataService: self.services.get(by: CoreDataService.self), states: path.states), services: services)
-                details.start()
-                details.follow(deeplink)
-            }
+            guard let messageId = path.value,
+                  let message = user.messageService.fetchMessages(
+                    withIDs: [messageId],
+                    in: coreDataService.mainContext
+                  ).first else { return }
+            let viewModel = SingleMessageViewModel(
+                labelId: self.viewModel.labelID,
+                message: message,
+                messageService: user.messageService
+            )
+            let viewController = SingleMessageViewController(viewModel: viewModel)
+            self.viewController?.navigationController?.pushViewController(viewController, animated: true)
         case .composeShow where path.value != nil:
             let coreDataService = self.services.get(by: CoreDataService.self)
             
@@ -265,7 +285,7 @@ class MailboxCoordinator : DefaultCoordinator {
                 let nav = self.navigation,
                 case let user = self.viewModel.user,
                 case let msgService = user.messageService,
-                let message = msgService.fetchMessages(withIDs: [messageID], in: coreDataService.mainManagedObjectContext).first
+                let message = msgService.fetchMessages(withIDs: [messageID], in: coreDataService.mainContext).first
             {
                 let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: msgService, user: user, coreDataService: coreDataService)
                 let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)

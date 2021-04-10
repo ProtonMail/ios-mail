@@ -36,4 +36,8 @@ extension UIAlertController {
     func addOKAction(handler : ((UIAlertAction?) -> Void)? = nil) {
         addAction(UIAlertAction.okAction(handler))
     }
+
+    func addCancelAction(handler : ((UIAlertAction?) -> Void)? = nil) {
+        addAction(UIAlertAction.cancelAction(handler))
+    }
 }

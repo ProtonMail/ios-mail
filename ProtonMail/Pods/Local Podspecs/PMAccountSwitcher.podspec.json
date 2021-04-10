@@ -1,0 +1,36 @@
+{
+  "name": "PMAccountSwitcher",
+  "version": "0.0.3",
+  "summary": "The module to show signed in / signed out account list and send action message to the host app",
+  "description": "The module to show signed in / signed out account list and send action message to the host app.",
+  "homepage": "https://gitlab.protontech.ch/apple/shared/pmaccountswitcher",
+  "license": "ProtonMail",
+  "authors": "Anson Chen",
+  "platforms": {
+    "ios": "11.0"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/pmaccountswitcher.git",
+    "tag": "0.0.3"
+  },
+  "source_files": [
+    "PMAccountSwitcher/*.swift",
+    "PMAccountSwitcher/**/*.swift"
+  ],
+  "dependencies": {
+    "PMUIFoundations": [
+
+    ],
+    "PMCoreTranslation": [
+
+    ]
+  },
+  "static_framework": true,
+  "resource_bundles": {
+    "PMAccountSwitcher": [
+      "PMAccountSwitcher/Supporting Files/Assets.xcassets",
+      "PMAccountSwitcher/**/*.xib",
+      "PMAccountSwitcher/**/*.storyboard"
+    ]
+  }
+}

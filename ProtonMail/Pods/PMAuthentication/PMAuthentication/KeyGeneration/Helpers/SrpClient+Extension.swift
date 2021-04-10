@@ -35,11 +35,20 @@ func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
     return outAuth
 }
 
-func SrpAuthForVerifier(_ password: String, _ signedModulus: String, _ rawSalt: Data) throws -> SrpAuth? {
+public func SrpAuthForVerifier(_ password: String, _ signedModulus: String, _ rawSalt: Data) throws -> SrpAuth? {
     var error : NSError?
     let outAuth = SrpNewAuthForVerifier(password, signedModulus, rawSalt, &error)
     if let err = error {
         throw err
     }
     return outAuth
+}
+
+public func SrpRandomBits(_ count: Int) throws -> Data? {
+    var error: NSError?
+    let bits = SrpRandomBits(80, &error)
+    if let err = error {
+        throw err
+    }
+    return bits
 }

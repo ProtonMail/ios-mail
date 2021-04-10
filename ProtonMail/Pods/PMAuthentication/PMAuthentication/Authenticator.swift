@@ -188,6 +188,28 @@ public class Authenticator: NSObject {
         }
     }
     
+    public func createUser(userParameters: UserParameters, completion: @escaping (Result<(), Error>) -> Void) {
+        let route = AuthService.CreateUserEndpoint(userParameters: userParameters)
+        self.apiService.exec(route: route) { (_, response) in
+            if let error = response.error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+
+    public func createExternalUser(externalUserParameters: ExternalUserParameters, completion: @escaping (Result<(), Error>) -> Void) {
+        let route = AuthService.CreateExternalUserEndpoint(externalUserParameters: externalUserParameters)
+        self.apiService.exec(route: route) { (_, response) in
+            if let error = response.error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+
     public func getUserInfo(_ credential: Credential? = nil, completion: @escaping (Result<User, Error>) -> Void) {
         var route = AuthService.UserInfoEndpoint()
         if let auth = credential {

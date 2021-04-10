@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PMAuthentication
 
 enum PasswordError: Error {
     case hashEmpty

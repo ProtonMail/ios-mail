@@ -36,10 +36,6 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
 
     @IBOutlet weak var tableView: UITableView!
     
-    // base protocols
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
     @IBOutlet weak var menuButton: UIBarButtonItem!
     func configureNavigationBar() {
         ProtonMailViewController.configureNavigationBar(self)

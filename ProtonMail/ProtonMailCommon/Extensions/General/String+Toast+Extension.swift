@@ -30,7 +30,7 @@ extension String {
         var application: UIApplication?
 
         #if APP_EXTENSION
-        let obj = UIApplication.perform(Selector("sharedApplication"))
+        let obj = UIApplication.perform(Selector(("sharedApplication")))
         application = obj?.takeRetainedValue() as? UIApplication
         #else
         application = UIApplication.shared
@@ -53,7 +53,7 @@ extension String {
         var application: UIApplication?
 
         #if APP_EXTENSION
-        let obj = UIApplication.perform(Selector("sharedApplication"))
+        let obj = UIApplication.perform(Selector(("sharedApplication")))
         application = obj?.takeRetainedValue() as? UIApplication
         #else
         application = UIApplication.shared

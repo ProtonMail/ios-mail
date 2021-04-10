@@ -1,0 +1,44 @@
+opt_in_rules:
+  - file_name
+  - empty_count
+  - vertical_whitespace
+  - vertical_parameter_alignment_on_call
+  - nimble_operator
+  - single_test_class
+  - quick_discouraged_focused_test
+ 
+disabled_rules:
+  - force_try
+  - force_cast
+  - force_unwrapping
+  - type_name
+  - line_length
+  - file_length
+  - function_parameter_count
+  - cyclomatic_complexity
+  - function_body_length
+  - type_body_length
+  - identifier_name
+  - large_tuple
+  - opening_brace
+
+included:
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/PMNIBirthday_FormattedBirthdayTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsCombineContactViewModelTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsNetworkViewModelTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMail/Components/SingleRowTagsViewTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsLockViewModelTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/MailActionSheet/MailListActionSheetItemViewModel_ActionsTests.swift
+  - ${PWD}/ProtonMailTests/Helpers/AssertEqualImage.swift  
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsGestureViewModelTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsSwipeActionSelectViewModelTests.swift
+
+excluded:
+  - ${PWD}/Pods
+  - ${PWD}/ProtonMail
+  - ${PWD}/ProtonMailCommon
+  - ${PWD}/ProtonMailUITests
+  - ${PWD}/Push
+  - ${PWD}/PushService
+  - ${PWD}/Share
+  - ${PWD}/Siri

@@ -29,13 +29,13 @@ import PromiseKit
 final class LabelApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!
     fileprivate var labelMessages : [String : LabelMessageModel]!
+
+    let cacheService: CacheService
     
-    let messageService : MessageDataService
-    
-    init(msg:[Message]!, labelService: LabelsDataService, messageService: MessageDataService, apiService: APIService, coreDataService: CoreDataService) {
-        self.messageService = messageService
+    init(msg:[Message]!, labelService: LabelsDataService, messageService: MessageDataService, apiService: APIService, cacheService: CacheService) {
+        self.cacheService = cacheService
         
-        super.init(apiService: apiService, labelService: labelService, coreDataService: coreDataService)
+        super.init(apiService: apiService, labelService: labelService, messageService: messageService)
         self.messages = msg
         self.labelMessages = [String : LabelMessageModel]()
     }
@@ -108,51 +108,28 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     
     override func apply(archiveMessage : Bool) -> Promise<Bool> {
         return Promise { seal in
-            let context = self.coreDataService.mainManagedObjectContext
-            self.coreDataService.enqueue(context: context) { (context) in
-                for (key, value) in self.labelMessages {
-                    if value.currentStatus != value.origStatus && value.currentStatus == 0 { //remove
-                        let ids = self.messages.map { ($0).messageID }
-                        let api = RemoveLabelFromMessages(labelID: key, messages: ids)
-                        self.apiService.exec(route: api, complete: { (task, _) in
-                            
-                        })
-                        for mm in self.messages {
-                            if mm.remove(labelID: value.label.labelID) != nil && mm.unRead {
-                                self.messageService.updateCounterSync(plus: false, with: value.label.labelID, context: context)
-                            }
-                        }
-                    } else if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
-                        let ids = self.messages.map { ($0).messageID }
-                        let api = ApplyLabelToMessages(labelID: key, messages: ids)
-                        self.apiService.exec(route: api, complete: { (task, _) in
-                            
-                        })
-                        for mm in self.messages {
-                            if mm.add(labelID: value.label.labelID) != nil && mm.unRead {
-                                self.messageService.updateCounterSync(plus: true, with: value.label.labelID, context: context)
-                            }
-                        }
-                    } else {
-                        
-                    }
+            for (key, value) in self.labelMessages {
+                #warning("v4 update")
+                if value.currentStatus != value.origStatus && value.currentStatus == 0 { //remove
+                    self.messageService.label(messages: self.messages, label: key, apply: false)
+                } else if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
+                    self.messageService.label(messages: self.messages, label: key, apply: true)
                 }
-                
-                let error = context.saveUpstreamIfNeeded()
-                if let error = error {
-                    PMLog.D("error: \(error)")
-                }
-                
-                if archiveMessage {
-                    for message in self.messages {
-                        if let flabel = message.firstValidFolder() {
-                            self.messageService.move(message: message, from: flabel, to: Message.Location.archive.rawValue)
-                        }
-                    }
-                }
-                
-                seal.fulfill(true)
             }
+
+            if archiveMessage {
+                var _msgs = [Message]()
+                var fLabels = [String]()
+                for message in self.messages {
+                    if let flabel = message.firstValidFolder() {
+                        fLabels.append(flabel)
+                        _msgs.append(message)
+                    }
+                }
+                self.messageService.move(messages: _msgs, from: fLabels, to: Message.Location.archive.rawValue)
+            }
+
+            seal.fulfill(true)
         }
     }
     

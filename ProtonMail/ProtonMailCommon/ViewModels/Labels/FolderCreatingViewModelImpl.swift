@@ -39,15 +39,8 @@ final public class FolderCreatingViewModelImple : LabelEditViewModel {
         return LocalString._general_create_action
     }
     
-    override public func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {
-        let api = CreateLabelRequest(name: name, color: color, exclusive: true)
-        self.apiService.exec(route: api) { (task, response: CreateLabelRequestResponse) in
-            if let err = response.error {
-                error(err.code, err.localizedDescription);
-            } else {
-                self.labelService.addNewLabel(response.label);
-                complete()
-            }
-        }
+    override public func apply(withName name: String, color: String, errorBlock: @escaping LabelEditViewModel.ErrorBlock, completion: @escaping LabelEditViewModel.OkBlock) {
+        _ = self.messageService.createLabel(name: name, color: color, isFolder: true)
+        completion()
     }
 }

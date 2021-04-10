@@ -223,9 +223,6 @@ class SignupViewModelImpl : SignupViewModel {
                             }
                         } else {
                             //need clean the cache without ui flow change then signin with a fresh user
-                            //sharedUserDataService.signOutAfterSignUp()
-                            //userCachedStatus.signOut()
-                            //sharedMessageDataService.launchCleanUpIfNeeded()
                             self.signinManager.signUpSignIn(username: self.userName, password: self.plaintext_password, onError: { (error) in
                                 complete(false, true, LocalString._authentication_failed_pls_try_again, error);
                             }) { (pwd, auth, userInfo) in
@@ -297,13 +294,6 @@ class SignupViewModelImpl : SignupViewModel {
                                         }
                                         auth?.update(salt: self.keysalt!.encodeBase64(), privateKey: self.newPrivateKey)
 
-                                        //setup swipe function, will use default auth credential
-                                        let _ = try await(self.apiService.run(route: UpdateSwiftLeftAction(action: MessageSwipeAction.archive,
-                                                                                                           authCredential: auth)))
-                                        let _ = try await(self.apiService.run(route: UpdateSwiftRightAction(action: MessageSwipeAction.trash,
-                                                                                                            authCredential: auth)))
-                                        //sharedLabelsDataService.fetchLabels()
-                                        //ServicePlanDataService.shared.updateCurrentSubscription()
                                         //TODO:: this part looks strange.
                                         UserDataService(api: PMAPIService.unauthorized).fetchUserInfo(auth: auth).done(on: .main) { info in
                                             if info != nil {
@@ -313,10 +303,13 @@ class SignupViewModelImpl : SignupViewModel {
                                                 sharedUserDataService.passwordMode = 1
 
                                                 self.usersManager.add(auth: auth!, user: info!)
+                                                
                                                 let user = self.usersManager.getUser(bySessionID: auth!.sessionID)!
+                                                self.signinManager.queueManager.registerHandler(user.messageService)
+                                                
                                                 self.userManager = user
                                                 let labelService = user.labelService
-                                                labelService.fetchLabels()
+                                                labelService.fetchV4Labels().cauterize()
                                                 self.usersManager.loggedIn()
                                                 self.usersManager.active(uid: auth!.sessionID)
                                                 complete(true, true, "", nil)
@@ -375,11 +368,7 @@ class SignupViewModelImpl : SignupViewModel {
                     
                 })
             } else {
-                user.userService.updateDisplayName(auth: user.auth,
-                                                   user: user.userInfo,
-                                                   displayName: displayName) { _, _, error in
-                    
-                }
+                fatalError("User has no defualt address. Should not go here")
             }
         }
         
@@ -402,7 +391,7 @@ class SignupViewModelImpl : SignupViewModel {
         if direct.count <= 0 {
             let api = DirectRequest()
             self.apiService.exec(route: api) { (task, response: DirectResponse) in
-                if let error = response.error {
+                if response.error != nil {
                     res([])
                 } else {
                     self.direct = response.signupFunctions ?? []
@@ -471,6 +460,6 @@ class SignupViewModelImpl : SignupViewModel {
     }
     
     override func challengeExport() -> PMChallenge.Challenge {
-        return self.challenge.export()
+            return self.challenge.export()
     }
 }

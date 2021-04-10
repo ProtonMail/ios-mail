@@ -137,7 +137,7 @@ extension DocumentAttachmentProvider: UIDocumentPickerDelegate {
         // FileManager.default.attributesOfItem(atPath: url.path)[NSFileSize]
         
         DispatchQueue.global().async {
-            self.process(fileAt: url)
+            _ = self.process(fileAt: url)
         }
     }
     

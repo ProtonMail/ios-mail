@@ -168,7 +168,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func indexLocalObjects(_ completion: @escaping ()->Void) {
-        let context = CoreDataService.shared.makeReadonlyBackgroundManagedObjectContext()
+        let context = CoreDataService.shared.operationContext
         var count = 0
         context.performAndWait {
             do {
@@ -248,7 +248,7 @@ class SearchViewController: ProtonMailViewController {
             return nil
         }
         
-        let context = CoreDataService.shared.mainManagedObjectContext
+        let context = CoreDataService.shared.mainContext
         context.performAndWait {
             let messages = messageIds.compactMap { oldId -> Message? in
                 let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
@@ -310,7 +310,7 @@ class SearchViewController: ProtonMailViewController {
                 return
             }
 
-            let context = CoreDataService.shared.mainManagedObjectContext
+            let context = CoreDataService.shared.mainContext
             context.perform {
                 let mainQueueMessages = messages.compactMap { context.object(with: $0.objectID) as? Message }
                 if pageToLoad > 0 {
@@ -395,20 +395,23 @@ class SearchViewController: ProtonMailViewController {
             composer.start()
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == kSegueToMessageDetailController) {
-            let messageDetailViewController = segue.destination as! MessageContainerViewController
-            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
-            if let indexPathForSelectedRow = indexPathForSelectedRow {
-                //FIXME
-                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user, coreDataService: CoreDataService.shared))
-                messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
-            } else {
-                PMLog.D("No selected row.")
-            }
-        }
-    }
+
+    // FIXME: - To remove
+
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if (segue.identifier == kSegueToMessageDetailController) {
+//            let messageDetailViewController = segue.destination as! MessageContainerViewController
+//            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
+//            if let indexPathForSelectedRow = indexPathForSelectedRow {
+//                //FIXME
+//                #warning("v4 refactor the labelID")
+//                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user, labelID: ""))
+//                messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
+//            } else {
+//                PMLog.D("No selected row.")
+//            }
+//        }
+//    }
 }
 
 // MARK: - UITableViewDataSource
@@ -455,9 +458,16 @@ extension SearchViewController: UITableViewDelegate {
         }
         
         // open messages in MessaveContainerViewController
-        guard case let message = self.searchResult[indexPath.row], message.contains(label: .draft) else {
+        let message = self.searchResult[indexPath.row]
+        guard message.contains(label: .draft) else {
             self.updateTapped(status: false)
-            self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
+            let viewModel = SingleMessageViewModel(
+                labelId: "",
+                message: message,
+                messageService: user.messageService
+            )
+            let viewController = SingleMessageViewController(viewModel: viewModel)
+            self.navigationController?.pushViewController(viewController, animated: true)
             return
         }
         self.prepareForDraft(message)

@@ -66,6 +66,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.coreDataService = coreDataService
         
         super.init()
+        self.composerContext = coreDataService.makeComposerMainContext()
         self.message = nil
         self.setSubject(subject)
         self.setBody(body)
@@ -106,14 +107,24 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.user = user
         
         super.init()
+        self.composerContext = coreDataService.makeComposerMainContext()
+        
         if msg == nil || msg!.contains(label: .draft)  {
-            self.message = msg
+            if let m = msg, let msgToEdit = try? self.composerContext?.existingObject(with: m.objectID) as? Message {
+                self.message = msgToEdit
+            }
             self.setSubject(self.message?.title ?? "")
         } else {
             if msg?.managedObjectContext == nil {
                 self.message = nil
             } else {
-                self.message = messageService.copyMessage(message: msg!, copyAtts: action == ComposeMessageAction.forward, context: self.coreDataService.mainManagedObjectContext)
+                //TODO: -v4 change to composer context
+                guard let m = msg, let msgToCopy = try? self.composerContext?.existingObject(with: m.objectID) as? Message else {
+                    self.message = nil
+                    fatalError("This should not happened.")
+                }
+                
+                self.message = messageService.copyMessage(message: msgToCopy, copyAtts: action == ComposeMessageAction.forward, context: self.composerContext!)
                 self.message?.action = action.rawValue as NSNumber?
                 if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
                     if let title = self.message?.title {
@@ -270,7 +281,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         
         progress()
         
-        let context = self.coreDataService.mainManagedObjectContext // VALIDATE
+        let context = self.composerContext! // VALIDATE
         guard let c = model as? ContactVO else {
             complete?(nil, -1)
             return
@@ -551,7 +562,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                let addr = self.messageService.defaultAddress(msg),
                let key = addr.keys.first,
                let data = key.publicKey.data(using: String.Encoding.utf8) {
-                
+
                 let filename = "publicKey - " + addr.email + " - " + key.shortFingerpritn + ".asc"
                 var attached: Bool = false
                 // check if key already attahced
@@ -563,7 +574,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
                 }
-                
+
                 // attach key
                 if attached == false, let context = msg.managedObjectContext {
                     let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
@@ -576,7 +587,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                     self.uploadPubkey(attachment)
                 }
             }
-            
+
             self.updateDraft()
             self.messageService.send(inQueue: self.message, completion: nil)
         }
@@ -585,9 +596,8 @@ class ComposeViewModelImpl : ComposeViewModel {
     override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
         let mailboxPassword = self.user.mailboxPassword
         self.setSubject(title)
-        
-//        let objectId = self.message?.objectID
-        let context = self.coreDataService.mainManagedObjectContext
+
+        let context = self.composerContext!
         context.performAndWait {
             if self.message == nil || self.message?.managedObjectContext == nil {
                 self.message = self.messageService.messageWithLocation(recipientList: self.toJsonString(self.toSelectedContacts),
@@ -619,19 +629,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 self.message?.unRead = false
                 self.message?.passwordHint = pwdHit
                 self.message?.expirationOffset = Int32(expir)
-                
-    //            if let objId = objectId, let msg = context.object(with: objId) as? Message {
-    //                msg.toList = self.toJsonString(self.toSelectedContacts)
-    //                msg.ccList = self.toJsonString(self.ccSelectedContacts)
-    //                msg.bccList = self.toJsonString(self.bccSelectedContacts)
-    //                msg.title = self.getSubject()
-    //                msg.time = Date()
-    //                msg.password = pwd
-    //                msg.unRead = false
-    //                msg.passwordHint = pwdHit
-    //                msg.expirationOffset = Int32(expir)
-    //
-    //            }
+
                 if let msg = self.message {
                     self.messageService.updateMessage(msg,
                                                       expirationTimeInterval: expir,
@@ -655,20 +653,10 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    override func updateEO(expir:TimeInterval, pwd:String, pwdHit:String) -> Promise<Void> {
+    override func updateEO(expirationTime: TimeInterval, pwd: String, pwdHint: String) -> Promise<Void> {
         return Promise { seal in
-            if message != nil {
-                self.coreDataService.enqueue(context: message?.managedObjectContext) { (context) in
-                    self.message?.time = Date()
-                    self.message?.password = pwd
-                    self.message?.passwordHint = pwdHit
-                    self.message?.expirationOffset = Int32(expir)
-                    if expir > 0 {
-                        self.message?.expirationTime = Date(timeIntervalSinceNow: expir)
-                    }
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    }
+            if let msg = message {
+                self.user.cacheService.updateExpirationOffset(of: msg, expirationTime: expirationTime, pwd: pwd, pwdHint: pwdHint) {
                     seal.fulfill_()
                 }
             } else {
@@ -682,18 +670,14 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func deleteDraft() {
-        messageService.delete(message: self.message!, label: Message.Location.draft.rawValue)
+        guard let _message = self.message else {return}
+        messageService.delete(messages: [_message], label: Message.Location.draft.rawValue)
 
     }
     
     override func markAsRead() {
-        if message != nil {
-            self.coreDataService.enqueue(context: message?.managedObjectContext) { (context) in
-                self.message?.unRead = false
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
-            }
+        if let msg = message, msg.unRead {
+            self.messageService.mark(messages: [msg], labelID: Message.Location.draft.rawValue, unRead: false)
         }
     }
     

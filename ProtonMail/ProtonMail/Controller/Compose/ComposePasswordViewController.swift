@@ -73,10 +73,6 @@ class ComposePasswordViewController: UIViewController, AccessibleView {
         generateAccessibilityIdentifiers()
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addKeyboardObserver(self)
         

@@ -78,22 +78,16 @@ final class LabelManagerViewModelImpl : LabelViewModel {
     
     override func apply(archiveMessage : Bool) -> Promise<Bool> {
         return Promise { seal in
-            let context = self.coreDataService.mainManagedObjectContext
-            self.coreDataService.enqueue(context: context) { (context) in
-                for (key, value) in self.labelMessages {
-                    if value.currentStatus == 2 { //delete
-                        if value.label.managedObjectContext != nil && key == value.label.labelID {
-                            let api = DeleteLabelRequest(lable_id: key)
-                            // TODO:: fix me.  check if self.apiService works
-                            self.labelService.apiService.exec(route: api) { (_, _) in
-                                
-                            }
-                            context.delete(value.label)
-                        }
+            var labels: [Label] = []
+            for (key, value) in self.labelMessages {
+                if value.currentStatus == 2 { //delete
+                    if value.label.managedObjectContext != nil && key == value.label.labelID {
+                        labels.append(value.label)
                     }
                 }
-                seal.fulfill(true)
             }
+            _ = self.messageService.delete(labels: labels)
+            seal.fulfill(true)
         }
     }
     

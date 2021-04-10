@@ -25,6 +25,7 @@ import Foundation
 import PromiseKit
 import AwaitKit
 import PMCommon
+import CoreData
 
 //TODO:: change to enum
 struct EncryptionStep {
@@ -81,6 +82,7 @@ struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
 
 class ComposeViewModel: NSObject {
     @objc dynamic var message: Message?
+    var composerContext: NSManagedObjectContext?
     var messageAction : ComposeMessageAction = .newDraft
     var toSelectedContacts: [ContactPickerModelProtocol] = []
     var ccSelectedContacts: [ContactPickerModelProtocol] = []
@@ -189,8 +191,8 @@ class ComposeViewModel: NSObject {
          NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    func updateEO(expir:TimeInterval, pwd:String, pwdHit:String) -> Promise<Void> {
-        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
+    func updateEO(expirationTime: TimeInterval, pwd: String, pwdHint: String) -> Promise<Void> {
+        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
         return Promise()
     }
     

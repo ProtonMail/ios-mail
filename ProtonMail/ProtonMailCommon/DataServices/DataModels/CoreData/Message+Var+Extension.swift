@@ -125,7 +125,7 @@ extension Message {
         var labelIDs = [String]()
         let labels = self.labels
         for l in labels {
-            if let label = l as? Label, label.exclusive == false {
+            if let label = l as? Label, label.type == 1 {
                 if label.labelID.preg_match ("(?!^\\d+$)^.+$") {
                     labelIDs.append(label.labelID )
                 }
@@ -142,7 +142,7 @@ extension Message {
         let labels = self.labels
         for l in labels {
             if let label = l as? Label {
-                out[label.labelID] = label.exclusive
+                out[label.labelID] = label.type == 3
             }
         }
         return out

@@ -59,7 +59,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return color
             }
             
-            let context = CoreDataService.shared.mainManagedObjectContext
+            let context = CoreDataService.shared.mainContext
             if let label = Label.labelForLabelName(contactTitle,
                                                    inManagedObjectContext: context) {
                 groupColor = label.color
@@ -155,7 +155,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     func selectAllEmailFromGroup() {
         selectedMembers.removeAll()
         
-        let context = CoreDataService.shared.mainManagedObjectContext
+        let context = CoreDataService.shared.mainContext
         
         if let label = Label.labelGroup(byID: self.ID, inManagedObjectContext: context) {
             for email in label.emails.allObjects as! [Email] {
@@ -178,7 +178,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
             return (size, color)
         }
         
-        let context = CoreDataService.shared.mainManagedObjectContext
+        let context = CoreDataService.shared.mainContext
         if let label = Label.labelForLabelName(contactTitle,
                                                inManagedObjectContext: context) {
             groupColor = label.color
@@ -195,7 +195,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return size
             }
             
-            let context = CoreDataService.shared.mainManagedObjectContext
+            let context = CoreDataService.shared.mainContext
             if let label = Label.labelForLabelName(contactTitle,
                                                    inManagedObjectContext: context) {
                 groupColor = label.color
@@ -216,7 +216,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         
         let emailMultiSet = MultiSet<DraftEmailData>()
         var color = ""
-        let context = CoreDataService.shared.mainManagedObjectContext
+        let context = CoreDataService.shared.mainContext
         // (1) get all email in the contact group        
         if self.ID.isEmpty {
             if let label = Label.labelForLabelName(self.contactTitle,

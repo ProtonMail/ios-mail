@@ -53,6 +53,30 @@ extension UIColor {
         )
     }
     
+    func toHex() -> String {
+        guard let components = self.cgColor.components else {
+            return "#000000"
+        }
+        
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        
+        if self.cgColor.numberOfComponents < 3 {
+            // UIExtendedGrayColorSpace
+            r = components[0]
+            g = components[0]
+            b = components[0]
+        } else {
+            r = components[0]
+            g = components[1]
+            b = components[2]
+        }
+        
+        let hexString = String.init(format: "#%02lX%02lX%02lX", lroundf(Float(r * 255)), lroundf(Float(g * 255)), lroundf(Float(b * 255)))
+        return hexString
+    }
+    
     struct ProtonMail {
         
         static let Blue_475F77 = UIColor(RRGGBB: UInt(0x475F77))

@@ -22,7 +22,7 @@
     
 
 import Foundation
-
+import PMCommon
 
 public enum SettingAccountSection : Int, CustomStringConvertible {
     case account = 0
@@ -62,7 +62,7 @@ public enum AccountItem : Int, CustomStringConvertible {
         case .recovery:
             return LocalString._recovery_email
         case .storage:
-            return LocalString._mailbox_size
+            return LocalString._mailbox_storage
         }
     }
 }
@@ -111,8 +111,8 @@ public enum SnoozeItem : Int, CustomStringConvertible {
 public enum MailboxItem : Int, CustomStringConvertible {
     case privacy = 0
     case search = 1
-    case labelFolder = 2
-    case gestures = 3
+    case labels = 2
+    case folders = 3
     case storage = 4
     
     public var description : String {
@@ -121,10 +121,10 @@ public enum MailboxItem : Int, CustomStringConvertible {
             return LocalString._privacy
         case .search:
             return LocalString._general_search_placeholder
-        case .labelFolder:
-            return LocalString._label_and_folders
-        case .gestures:
-            return LocalString._swiping_gestures
+        case .labels:
+            return LocalString._labels
+        case .folders:
+            return LocalString._folders
         case .storage:
             return LocalString._local_storage_limit
         }
@@ -138,7 +138,7 @@ protocol SettingsAccountViewModel : AnyObject {
     var addrItems: [AddressItem] { get set }
     var mailboxItems: [MailboxItem] {get set}
     
-    var setting_swipe_action_items : [SSwipeActionItems] { get set}
+    var setting_swipe_action_items : [SwipeActionItems] { get set}
     var setting_swipe_actions : [MessageSwipeAction] { get set }
     
     var storageText : String { get }
@@ -149,17 +149,20 @@ protocol SettingsAccountViewModel : AnyObject {
     
     var defaultSignatureStatus: String { get }
     var defaultMobileSignatureStatus: String { get }
+    var userManager: UserManager { get }
+    var allSendingAddresses: [Address] { get }
     
     func updateItems()
+    func updateDefaultAddress(with address: Address, completion: (() -> Void)?)
 }
 
 class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox]
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-    var mailboxItems :  [MailboxItem] = [.privacy, /* .search,*/ .labelFolder, .gestures]
+    var mailboxItems :  [MailboxItem] = [.privacy, /* .search,*/ .labels, .folders]
     
-    var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
+    var setting_swipe_action_items : [SwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
                                                             .star, .archive, .unread]
     var userManager: UserManager
@@ -183,7 +186,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
             let formattedUsedSpace = ByteCountFormatter.string(fromByteCount: Int64(usedSpace), countStyle: ByteCountFormatter.CountStyle.binary)
             let formattedMaxSpace = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.binary)
             
-            return "\(formattedUsedSpace)/\(formattedMaxSpace)"
+            return "\(formattedUsedSpace) / \(formattedMaxSpace)"
         }
     }
     
@@ -200,11 +203,13 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
         }
         
     }
+
     var displayName : String {
         get {
             return self.userManager.defaultDisplayName
         }
     }
+
     var defaultSignatureStatus: String {
         get {
             if self.userManager.defaultSignatureStatus {
@@ -214,6 +219,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
             }
         }
     }
+
     var defaultMobileSignatureStatus: String {
         get {
             if self.userManager.showMobileSignature {
@@ -223,6 +229,41 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
             }
         }
     }
-    
-//    var addresses : [add]
+
+    var allSendingAddresses: [Address] {
+        let defaultAddress: Address? = userManager.addresses.defaultAddress()
+        return userManager.addresses.filter { address in
+            address.status == 1 && address.receive == 1 && address != defaultAddress
+        }
+    }
+
+    func updateDefaultAddress(with address: Address, completion: (() -> Void)?) {
+
+        var newAddrs = [Address]()
+        var newOrder = [String]()
+        newAddrs.append(address)
+        newOrder.append(address.address_id)
+        var order = 1
+        address.order = order
+        order += 1
+        for oldAddr in userManager.addresses where oldAddr != address {
+            newAddrs.append(oldAddr)
+            newOrder.append(oldAddr.address_id)
+            oldAddr.order = order
+            order += 1
+        }
+
+        let service = userManager.userService
+        service.updateUserDomiansOrder(auth: userManager.auth,
+                                       user: userManager.userInfo,
+                                       newAddrs,
+                                       newOrder: newOrder) { _, _, error in
+            if error == nil {
+                self.userManager.save()
+            }
+            DispatchQueue.main.async {
+                completion?()
+            }
+        }
+    }
 }

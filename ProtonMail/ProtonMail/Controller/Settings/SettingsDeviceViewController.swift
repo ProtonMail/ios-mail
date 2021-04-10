@@ -20,63 +20,69 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import MBProgressHUD
 import PMKeymaker
+import PMUIFoundations
 
 class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
     struct Key {
-        static let headerCell : String        = "header_cell"
-        static let headerCellHeight : CGFloat = 36.0
+        static let headerCell = "header_cell"
+        static let footerCell = "footer_cell"
+        static let headerCellHeight: CGFloat = 52.0
+        static let accountCell = "AccountSwitcherCell"
+        static let cellHeight: CGFloat = 48.0
+        static let accountCellHeight: CGFloat = 64.0
     }
-    
-    internal var viewModel : SettingsDeviceViewModel!
-    internal var coordinator : SettingsDeviceCoordinator?
-    
-    
-    let SwitchTwolineCell             = "switch_two_line_cell"
-    
-    ///
-    var cleaning : Bool      = false
-    
-    ///
+
+    internal var viewModel: SettingsDeviceViewModel!
+    internal var coordinator: SettingsDeviceCoordinator?
+
+    var cleaning: Bool = false
+
     func set(viewModel: SettingsDeviceViewModel) {
         self.viewModel = viewModel
     }
-    
+
     func set(coordinator: SettingsDeviceCoordinator) {
         self.coordinator = coordinator
     }
-    
+
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
-    
-    //
+
+    class func instance() -> SettingsDeviceViewController {
+        let board = UIStoryboard.Storyboard.settings.storyboard
+        let vc = board.instantiateViewController(withIdentifier: "SettingsDeviceViewController") as! SettingsDeviceViewController
+        _ = UINavigationController(rootViewController: vc)
+        return vc
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateTitle()
-        
+
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
+        self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.footerCell)
         self.tableView.register(SettingsGeneralCell.self)
-        self.tableView.register(SettingsTwoLinesCell.self)
-        self.tableView.register(GeneralSettingActionCell.self)
-        
+        self.tableView.register(SettingsButtonCell.self)
+        self.tableView.register(SettingsAccountCell.self)
+        self.tableView.register(SwitchTableViewCell.self)
+
         if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self, selector: #selector(updateNotificationStatus), name: UIScene.willEnterForegroundNotification, object: nil)
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(updateNotificationStatus), name: UIApplication.willEnterForegroundNotification, object: nil)
         }
-        
-        self.tableView.estimatedRowHeight = 50.0
-        self.tableView.rowHeight = UITableView.automaticDimension
+
+        self.view.backgroundColor = UIColorManager.BackgroundSecondary
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     private func updateTitle() {
         self.title = LocalString._menu_settings_title
     }
@@ -84,14 +90,14 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-        
+
         self.tableView.reloadData()
     }
-    
+
     private func inAppLanguage(_ indexPath: IndexPath) {
         let current_language = LanguageManager.currentLanguageEnum()
         let title = LocalString._settings_current_language_is + current_language.nativeDescription
@@ -99,13 +105,13 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         for l in self.viewModel.languages {
             if l != current_language {
-                alertController.addAction(UIAlertAction(title: l.nativeDescription, style: .default, handler: { (action) -> Void in
-                    let _ = self.navigationController?.popViewController(animated: true)
+                alertController.addAction(UIAlertAction(title: l.nativeDescription, style: .default) { _ in
+                    _ = self.navigationController?.popViewController(animated: true)
                     LanguageManager.saveLanguage(byCode: l.code)
                     LocalizedString.reset()
                     self.updateTitle()
                     self.tableView.reloadData()
-                }))
+                })
             }
         }
         let cell = tableView.cellForRow(at: indexPath)
@@ -113,103 +119,124 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
         present(alertController, animated: true, completion: nil)
     }
-    
+
     @objc private func updateNotificationStatus(_ notification: NSNotification) {
-        if let section = self.viewModel.sections.firstIndex(of: .app),
-            let row = self.viewModel.appSettigns.firstIndex(of: .push) {
+        if let section = self.viewModel.sections.firstIndex(of: .general),
+           let row = self.viewModel.generalSettings.firstIndex(of: .notification) {
             let indexPath = IndexPath(row: row, section: section)
             self.tableView.reloadRows(at: [indexPath], with: .fade)
         }
     }
-    
+
     private func cleanCache() {
         if !cleaning {
             cleaning = true
             let nview = self.navigationController?.view ?? UIView()
-            let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
+            let hud: MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
             hud.label.text = LocalString._settings_resetting_cache
             hud.removeFromSuperViewOnHide = true
-            
-            let usersManager = sharedServices.get(by: UsersManager.self)
-            for userManager in usersManager.users {
-                userManager.messageService.cleanLocalMessageCache() { task, res, error in
-                    guard userManager.userInfo.userId == self.viewModel.userManager.userinfo.userId else {return}
-                    self.cleaning = false
-                    if let error = error {
-                        hud.hide(animated: true, afterDelay: 0)
-                        let alert = error.alertController()
-                        alert.addOKAction()
-                        self.present(alert, animated: true, completion: nil)
-                    } else {
-                        hud.mode = MBProgressHUDMode.text
-                        hud.label.text = LocalString._general_done_button
-                        hud.hide(animated: true, afterDelay: 1)
-                    }
+
+            self.viewModel.cleanCache { (result) in
+                self.cleaning = false
+
+                switch result {
+                case .failure(let error):
+                    hud.hide(animated: true, afterDelay: 0)
+                    let alert = error.alertController()
+                    alert.addOKAction()
+                    self.present(alert, animated: true, completion: nil)
+                case .success:
+                    hud.mode = MBProgressHUDMode.text
+                    hud.label.text = LocalString._general_done_button
+                    hud.hide(animated: true, afterDelay: 1)
                 }
             }
         }
     }
 }
 
-//MARK: - table view delegate
+// MARK: - table view delegate
 extension SettingsDeviceViewController {
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sections.count
     }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.viewModel.sections.count > section {
-            switch( self.viewModel.sections[section]) {
+            switch  self.viewModel.sections[section] {
             case .account:
                 return 1
             case .app:
                 return self.viewModel.appSettigns.count
-            case .info:
-                return 1
-            case .network:
+            case .general:
+                return self.viewModel.generalSettings.count
+            case .clearCache:
                 return 1
             }
         }
         return 0
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         let row = indexPath.row
         let eSection = self.viewModel.sections[section]
-        
+
         switch eSection {
         case .account:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTwoLinesCell.CellID, for: indexPath)
-            cell.accessoryType = .disclosureIndicator
-            if let c = cell as? SettingsTwoLinesCell {
-                c.config(top: self.viewModel.name, bottom: self.viewModel.email)
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsAccountCell.CellID, for: indexPath)
+            if let settingsAccountCell = cell as? SettingsAccountCell {
+                settingsAccountCell.configure(name: self.viewModel.name, email: self.viewModel.email)
             }
             return cell
         case .app:
             let item = self.viewModel.appSettigns[row]
-            
-            if item == .cleanCache {
-                if let cell = tableView.dequeueReusableCell(withIdentifier: GeneralSettingActionCell.CellID, for: indexPath) as? GeneralSettingActionCell {
-                    cell.configCell(left: item.description, action: LocalString._empty_cache) { [weak self] in
-                        self?.cleanCache()
+
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
+            if let settingsGeneralCell = cell as? SettingsGeneralCell {
+                settingsGeneralCell.configure(left: item.description)
+                switch item {
+                case .autolock:
+                    let status = self.viewModel.lockOn ? LocalString._settings_On_title : LocalString._settings_Off_title
+                    switch self.viewModel.biometricType {
+                    case .none:
+                        settingsGeneralCell.configure(left: LocalString._pin)
+                    case .touchID:
+                        settingsGeneralCell.configure(left: LocalString._pin_and_touch_id)
+                    case .faceID:
+                        settingsGeneralCell.configure(left: LocalString._pin_and_face_id)
                     }
-                    cell.selectionStyle = .none
-                    return cell
+                    settingsGeneralCell.configure(right: status)
+                case .combinContacts:
+                    let status = self.viewModel.combineContactOn ? LocalString._settings_On_title : LocalString._settings_Off_title
+                    settingsGeneralCell.configure(right: status)
+                case .browser:
+                    let browser = userCachedStatus.browser
+                    settingsGeneralCell.configure(left: item.description)
+                    settingsGeneralCell.configure(right: browser.isInstalled ? browser.title : LinkOpener.safari.title)
+                case .swipeAction:
+                    settingsGeneralCell.configure(left: item.description)
+                case .alternativeRouting:
+                    settingsGeneralCell.configure(left: item.description)
+                    let status = self.viewModel.isDohOn ? LocalString._settings_On_title : LocalString._settings_Off_title
+                    settingsGeneralCell.configure(right: status)
                 }
             }
-            
+            return cell
+        case .general:
+            let item = self.viewModel.generalSettings[row]
+
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
-            cell.accessoryType = .disclosureIndicator
-            if let c = cell as? SettingsGeneralCell {
-                c.config(left: item.description)
+            if let cellToConfig = cell as? SettingsGeneralCell {
+                cellToConfig.configure(left: item.description, imageType: .system)
                 switch item {
-                case .push:
+                case .notification:
                     let current = UNUserNotificationCenter.current()
                     current.getNotificationSettings(completionHandler: { (settings) in
-                        if settings.authorizationStatus == .notDetermined {
-                            // Notification permission has not been asked yet, go for it!
-                            { c.config(right: "off") } ~> .main
+                        switch settings.authorizationStatus {
+                        case .notDetermined:// Notification permission has not been asked yet, go for it!
+                            { cellToConfig.configure(right: "Off") } ~> .main
                             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] granted, _ in
                                 guard granted else { return }
                                 DispatchQueue.main.async {
@@ -217,118 +244,70 @@ extension SettingsDeviceViewController {
                                     self?.tableView.reloadRows(at: [indexPath], with: .none)
                                 }
                             }
-                        } else if settings.authorizationStatus == .denied {
-                            // Notification permission was previously denied, go to settings & privacy to re-enable
-                            { c.config(right: "off") } ~> .main
-                        } else if settings.authorizationStatus == .authorized {
-                            // Notification permission was already granted
-                            { c.config(right: "on") } ~> .main
+                        case .denied:// Notification permission was previously denied, go to settings & privacy to re-enable
+                            { cellToConfig.configure(right: "Off", imageType: .system) } ~> .main
+                        case .authorized:
+                            { cellToConfig.configure(right: "On", imageType: .system) } ~> .main
+                        default:
+                            break
                         }
                     })
-                case .autolock:
-                    let status = self.viewModel.lockOn ? "on" : "off"
-                    switch UIDevice.current.biometricType {
-                    case .none:
-                        c.config(left: LocalString._pin)
-                    case .touchID:
-                        c.config(left: LocalString._pin_and_touch_id)
-                    case .faceID:
-                        c.config(left: LocalString._pin_and_face_id)
-                    }
-                    c.config(right: status)
                 case .language:
                     let language: ELanguage =  LanguageManager.currentLanguageEnum()
-                    c.config(right: language.nativeDescription)
-                case .combinContacts:
-                    let status = self.viewModel.combineContactOn ? "on" : "off"
-                    c.config(right: status)
-                case .cleanCache:
-//                    c.config(right: LocalString._empty_cache)
-                    break
-                case .browser:
-                    let browser = userCachedStatus.browser
-                    c.config(left: item.description)
-                    c.config(right: browser.isInstalled ? browser.title : LinkOpener.safari.title)
+                    cellToConfig.configure(right: language.nativeDescription, imageType: .system)
                 }
             }
             return cell
-            
-        case .network:
-            let netItem = self.viewModel.networkItems[indexPath.row]
-            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTwolineCell, for: indexPath)
-            if netItem == .doh, let c = cell as? SwitchTwolineCell {
-                c.accessoryType = UITableViewCell.AccessoryType.none
-                c.selectionStyle = UITableViewCell.SelectionStyle.none
-                let topline = "Allow alternative routing"
-                let holder = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@"
-                let learnMore = "Learn more"
-                
-                let full = String.localizedStringWithFormat(holder, learnMore)
-                let attributedString = NSMutableAttributedString(string: full,
-                                                                 attributes: [.font : UIFont.preferredFont(forTextStyle: .footnote),
-                                                                              .foregroundColor : UIColor.darkGray])
-                if let subrange = full.range(of: learnMore) {
-                    let nsRange = NSRange(subrange, in: full)
-                    attributedString.addAttribute(.link,
-                                                  value: "http://protonmail.com/blog/anti-censorship-alternative-routing",
-                                                  range: nsRange)
-                }
-                c.configCell(topline, bottomLine: attributedString, showSwitcher: true, status: DoHMail.default.status == .on) { (cell, newStatus, feedback) in
-                    if newStatus {
-                        DoHMail.default.status = .on
-                        userCachedStatus.isDohOn = true
-                    } else {
-                        DoHMail.default.status = .off
-                        userCachedStatus.isDohOn = false
-                    }
-                }
-            }
-            return cell
-        case .info:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
-            cell.accessoryType = .none
-            if let c = cell as? SettingsGeneralCell {
-                c.config(left: "AppVersion")
-                c.config(right: self.viewModel.appVersion())
+        case .clearCache:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsButtonCell.CellID, for: indexPath)
+            if let cellToConfig = cell as? SettingsButtonCell {
+                cellToConfig.configue(title: LocalString._empty_cache)
             }
             return cell
         }
     }
-    
-    
+
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let eSection = self.viewModel.sections[section]
+        guard !eSection.description.isEmpty else {
+            return UIView()
+        }
+
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
         header?.contentView.subviews.forEach { $0.removeFromSuperview() }
-        
+
         if let headerCell = header {
             let textLabel = UILabel()
-            
-            textLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-            textLabel.adjustsFontForContentSizeCategory = true
-            textLabel.textColor = UIColor.ProtonMail.Gray_8E8E8E
-            let eSection = self.viewModel.sections[section]
-            textLabel.text = eSection.description
-            
+
+            var textAttribute = FontManager.DefaultSmallWeak
+            textAttribute.addTextAlignment(.left)
+            textLabel.attributedText = NSAttributedString(string: eSection.description, attributes: textAttribute)
+            textLabel.translatesAutoresizingMaskIntoConstraints = false
+
             headerCell.contentView.addSubview(textLabel)
-            
-            textLabel.mas_makeConstraints({ (make) in
-                let _ = make?.top.equalTo()(headerCell.contentView.mas_top)?.with()?.offset()(8)
-                let _ = make?.bottom.equalTo()(headerCell.contentView.mas_bottom)?.with()?.offset()(-8)
-                let _ = make?.left.equalTo()(headerCell.contentView.mas_left)?.with()?.offset()(8)
-                let _ = make?.right.equalTo()(headerCell.contentView.mas_right)?.with()?.offset()(-8)
-            })
+
+            NSLayoutConstraint.activate([
+                textLabel.heightAnchor.constraint(equalToConstant: 20.0),
+                textLabel.topAnchor.constraint(equalTo: headerCell.topAnchor, constant: 24),
+                textLabel.bottomAnchor.constraint(equalTo: headerCell.bottomAnchor, constant: -8),
+                textLabel.leftAnchor.constraint(equalTo: headerCell.leftAnchor, constant: 16),
+                textLabel.rightAnchor.constraint(equalTo: headerCell.rightAnchor, constant: -8)
+            ])
         }
         return header
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
+        if self.viewModel.sections[section] == .clearCache {
+            return 20.0
+        }
+        return Key.headerCellHeight
     }
-    
+
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         return Key.headerCellHeight
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
         let row = indexPath.row
@@ -339,37 +318,11 @@ extension SettingsDeviceViewController {
         case .app:
             let item = self.viewModel.appSettigns[row]
             switch item {
-            case .push:
-                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                    return
-                }
-                
-                if UIApplication.shared.canOpenURL(settingsUrl) {
-                    if #available(iOS 10.0, *) {
-                        UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                            print("Settings opened: \(success)") // Prints true
-                        })
-                    } else {
-                        UIApplication.shared.openURL(settingsUrl as URL)
-                    }
-                }
             case .autolock:
                 self.coordinator?.go(to: .autoLock)
                 break
-            case .language:
-                #if targetEnvironment(simulator)
-                self.inAppLanguage(indexPath)
-                #else
-                if #available(iOS 13.0, *) {
-                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                } else {
-                    self.inAppLanguage(indexPath)
-                }
-                #endif
             case .combinContacts:
                 self.coordinator?.go(to: .combineContact)
-                break
-            case .cleanCache:
                 break
             case .browser:
                 let browsers = LinkOpener.allCases.filter {
@@ -388,29 +341,92 @@ extension SettingsDeviceViewController {
                 browsers.forEach(alert.addAction)
                 alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 self.present(alert, animated: true, completion: nil)
+            case .alternativeRouting:
+                self.coordinator?.go(to: .alternativeRouting)
+            case .swipeAction:
+                self.coordinator?.go(to: .swipeAction)
             }
-        case .info, .network:
-            break
+        case .general:
+            let item = self.viewModel.generalSettings[row]
+            switch item {
+            case .notification:
+                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                    return
+                }
+
+                if UIApplication.shared.canOpenURL(settingsUrl) {
+                    UIApplication.shared.open(settingsUrl, completionHandler: nil)
+                }
+            case .language:
+                #if targetEnvironment(simulator)
+                self.inAppLanguage(indexPath)
+                #else
+                if #available(iOS 13.0, *) {
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                } else {
+                    self.inAppLanguage(indexPath)
+                }
+                #endif
+            }
+        case .clearCache:
+            self.cleanCache()
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return UITableViewCell.EditingStyle.none
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let item = self.viewModel.sections[section]
+        let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
+        footer?.contentView.subviews.forEach { $0.removeFromSuperview() }
+
+        var textToAdd: NSAttributedString?
+        switch item {
+        case .clearCache:
+            var textAttribute = FontManager.CaptionWeak
+            textAttribute.addTextAlignment(.center)
+            let description = "App Version: \(self.viewModel.appVersion())"
+            textToAdd = NSAttributedString(string: description, attributes: textAttribute)
+        default:
+            return UIView()
+        }
+
+        if let headerCell = footer {
+            let textLabel = UILabel()
+            textLabel.isUserInteractionEnabled = true
+            textLabel.numberOfLines = 0
+            textLabel.attributedText = textToAdd
+            textLabel.translatesAutoresizingMaskIntoConstraints = false
+            headerCell.contentView.addSubview(textLabel)
+
+            NSLayoutConstraint.activate([
+                textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 16),
+                textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),
+                textLabel.leftAnchor.constraint(equalTo: headerCell.contentView.leftAnchor, constant: 16),
+                textLabel.rightAnchor.constraint(equalTo: headerCell.contentView.rightAnchor, constant: -16)
+            ])
+        }
+        return footer
     }
 
-    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        return false
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if viewModel.sections[section] == .clearCache {
+            return UITableView.automaticDimension
+        } else {
+            return CGFloat.leastNormalMagnitude
+        }
     }
 
+    override func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        return 44.0
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return Key.accountCellHeight
+        } else {
+            return Key.cellHeight
+        }
+    }
 }
 
 extension SettingsDeviceViewController: Deeplinkable {

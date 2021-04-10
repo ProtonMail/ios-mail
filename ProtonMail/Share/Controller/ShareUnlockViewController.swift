@@ -219,7 +219,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     
     func configureNavigationBar() {
         if let bar = self.navigationController?.navigationBar {
-            bar.barStyle = UIBarStyle.black
             bar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
             bar.isTranslucent = false
             bar.tintColor = UIColor.white

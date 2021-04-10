@@ -88,7 +88,7 @@ class LabelTableViewCell: UITableViewCell, AccessibleCell {
                 labelleft.priority = UILayoutPriority(rawValue: 500)
                 let color = UIColor(hexString: model.label.color, alpha:1)
                 var image = UIImage(named: "menu_label")
-                if model.label.exclusive {
+                if model.label.type == 3 {
                     image = UIImage(named: "menu_folder")
                 }
                 
@@ -105,7 +105,7 @@ class LabelTableViewCell: UITableViewCell, AccessibleCell {
                 editButton.isHidden = false
                 editButton.isEnabled = true
                 
-                if model.label.exclusive {
+                if model.label.type == 3 {
                     editButton.setImage(UIImage(named: "folder_edit-active"), for: .normal)
                     editButton.setImage(UIImage(named: "folder_edit"), for: .highlighted)
                 } else {

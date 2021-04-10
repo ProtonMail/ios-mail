@@ -1,0 +1,6 @@
+framework module SwipyCell {
+  umbrella header "SwipyCell-umbrella.h"
+
+  export *
+  module * { export * }
+}

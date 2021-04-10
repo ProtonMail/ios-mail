@@ -92,7 +92,6 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.hidesNavigationBarDuringPresentation = false
-        self.searchController.automaticallyAdjustsScrollViewInsets = true
         self.searchController.searchBar.sizeToFit()
         self.searchController.searchBar.keyboardType = .default
         self.searchController.searchBar.autocapitalizationType = .none

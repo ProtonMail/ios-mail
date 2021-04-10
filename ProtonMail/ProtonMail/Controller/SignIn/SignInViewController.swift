@@ -192,7 +192,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         
         if SignInViewController.isComeBackFromMailbox {
             showLoginViews()
-            self.coordinator?.services.get(by: UsersManager.self).clean()
+            _ = self.coordinator?.services.get(by: UsersManager.self).clean()
         }
     }
     
@@ -286,7 +286,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         
         if SignInViewController.isComeBackFromMailbox {
             showLoginViews()
-            self.coordinator?.services.get(by: UsersManager.self).clean()
+            _ = self.coordinator?.services.get(by: UsersManager.self).clean()
         }
         
         if UIDevice.current.isLargeScreen() && !isRemembered {
@@ -299,10 +299,6 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
-    }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -523,14 +519,14 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
 }
 
 extension SignInViewController : TwoFACodeViewControllerDelegate {
-    func ConfirmedCode(_ code: String, pwd : String) {
+    func confirmedCode(_ code: String, pwd : String) {
         NotificationCenter.default.addKeyboardObserver(self)
         self.signIn(username: self.usernameTextField.text ?? "",
                     password: self.passwordTextField.text ?? "",
                     cachedTwoCode: code)
     }
 
-    func Cancel2FA() {
+    func cancel2FA() {
         UserDataService.authResponse = nil
         NotificationCenter.default.addKeyboardObserver(self)
     }
@@ -541,7 +537,7 @@ extension SignInViewController : PinCodeViewControllerDelegate {
     func Cancel() -> Promise<Void> {
         return Promise { seal in
             UserTempCachedStatus.backup()
-            self.coordinator?.services.get(by: UsersManager.self).clean().done {
+            _ = self.coordinator?.services.get(by: UsersManager.self).clean().done {
                 seal.fulfill_()
             }
         }

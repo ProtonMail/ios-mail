@@ -27,9 +27,9 @@ import CoreData
 class FolderboxViewModelImpl : MailboxViewModel {
     private let label : Label
     
-    init(label : Label, userManager: UserManager, usersManager: UsersManager, pushService: PushNotificationService, coreDataService: CoreDataService) {
+    init(label : Label, userManager: UserManager, usersManager: UsersManager, pushService: PushNotificationService, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, queueManager: QueueManager) {
         self.label = label
-        super.init(labelID: self.label.labelID, userManager: userManager, usersManager: usersManager, pushService: pushService, coreDataService: coreDataService)
+        super.init(labelID: self.label.labelID, userManager: userManager, usersManager: usersManager, pushService: pushService, coreDataService: coreDataService, lastUpdatedStore: lastUpdatedStore, queueManager: queueManager)
     }
     
     override func showLocation () -> Bool {
@@ -37,7 +37,7 @@ class FolderboxViewModelImpl : MailboxViewModel {
     }
     
     override func ignoredLocationTitle() -> String {
-        return self.label.exclusive ? self.label.name : ""
+        return self.label.type == 3 ? self.label.name : ""
     }
     
     override var localizedNavigationTitle: String {

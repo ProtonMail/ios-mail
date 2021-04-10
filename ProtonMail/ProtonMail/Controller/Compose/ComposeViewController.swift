@@ -113,7 +113,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         self.htmlEditor.setup(webView: self.webView)
         
         ///
-        self.automaticallyAdjustsScrollViewInsets = false
         self.extendedLayoutIncludesOpaqueBars = true
         
         //  update header view data
@@ -569,7 +568,10 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         // decrement number of attachments in message manually
         if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted }).count {
             let newNum = number > 0 ? number - 1 : 0
-            self.viewModel.message?.numAttachments = NSNumber(value: newNum)
+            self.viewModel.composerContext?.performAndWait {
+                self.viewModel.message?.numAttachments = NSNumber(value: newNum)
+                _ = self.viewModel.composerContext?.saveUpstreamIfNeeded()
+            }
         }
         
         self.viewModel.deleteAtt(attachment).cauterize()
@@ -748,10 +750,10 @@ extension ComposeViewController : ComposeViewDelegate {
     }
 
     func updateEO() {
-        self.viewModel.updateEO(expir: self.headerView.expirationTimeInterval,
-                                pwd: self.encryptionPassword,
-                                pwdHit: self.encryptionPasswordHint).done { (_) in
-                                    self.headerView.reloadPicker()
+        _ = self.viewModel.updateEO(expirationTime: self.headerView.expirationTimeInterval,
+                                    pwd: self.encryptionPassword,
+                                    pwdHint: self.encryptionPasswordHint).done { (_) in
+                                        self.headerView.reloadPicker()
         }
     }
 
@@ -762,27 +764,6 @@ extension ComposeViewController : ComposeViewDelegate {
             self.viewModel.ccSelectedContacts.append(contact)
         } else if (picker == headerView.bccContactPicker) {
             self.viewModel.bccSelectedContacts.append(contact)
-        }
-        
-        if self.viewModel.isValidNumberOfRecipients() == false {
-            // rollback
-            if (picker == self.headerView.toContactPicker) {
-                self.viewModel.toSelectedContacts.removeLast()
-            } else if (picker == headerView.ccContactPicker) {
-                self.viewModel.ccSelectedContacts.removeLast()
-            } else if (picker == headerView.bccContactPicker) {
-                self.viewModel.bccSelectedContacts.removeLast()
-            }
-            
-            // present error
-            let alert = UIAlertController(title: LocalString._too_many_recipients_title,
-                                          message: String.init(format: LocalString._max_number_of_recipients_is_number,
-                                                               Constants.App.MaxNumberOfRecipients),
-                                          preferredStyle: .alert)
-            alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            picker.reloadData()
-            return
         }
     }
 
@@ -865,8 +846,13 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
     }
 
     func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {
-
         self.collectDraftData().done {
+            attachment.managedObjectContext?.performAndWait {
+                attachment.message = self.viewModel.message!
+                _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                
+                attViewController.updateAttachments()
+            }
             self.viewModel.uploadAtt(attachment)
         }
     }
@@ -881,7 +867,10 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
         }.ensure {
             // decrement number of attachments in message manually
             if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted }).count {
-                self.viewModel.message?.numAttachments = NSNumber(value: number)
+                self.viewModel.composerContext?.performAndWait {
+                    self.viewModel.message?.numAttachments = NSNumber(value: number)
+                    _ = self.viewModel.composerContext?.saveUpstreamIfNeeded()
+                }
             }
             
             attViewController.updateAttachments()

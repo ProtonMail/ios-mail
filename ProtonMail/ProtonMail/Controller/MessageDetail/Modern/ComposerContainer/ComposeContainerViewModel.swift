@@ -48,7 +48,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
     override func syncMailSetting() {
         let usersManager = sharedServices.get(by: UsersManager.self)
         guard let currentUser = usersManager.firstUser else {return}
-        currentUser.messageService.syncMailSetting(context: CoreDataService.shared.mainManagedObjectContext)
+        currentUser.messageService.syncMailSetting()
     }
     
     internal func filesExceedSizeLimit() -> Bool {

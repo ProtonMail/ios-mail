@@ -190,10 +190,8 @@ final class FetchMessages : Request {
     }
 }
 
-/// Response
 final class FetchMessagesByID : Request {
     let msgIDs : [String]
-    
     init(msgIDs: [String]) {
         self.msgIDs = msgIDs
     }
@@ -211,22 +209,24 @@ final class FetchMessagesByID : Request {
         }
         return out
     }
+    
     var path: String {
         return MessageAPI.path + self.buildURL()
     }
 }
 
-
 ///Response
 final class FetchMessagesByLabel : Request {
-    let labelID : String
-    let startTime : Int?
-    let endTime : Int
+    let labelID: String!
+    let startTime: Int?
+    let endTime: Int
+    let isUnread: Bool?
     
-    init(labelID : String, endTime : Int = 0) {
+    init(labelID: String, endTime: Int = 0, isUnread: Bool? = nil) {
         self.labelID = labelID
         self.endTime = endTime
         self.startTime = 0
+        self.isUnread = isUnread
     }
     
     var parameters: [String : Any]? {
@@ -236,6 +236,9 @@ final class FetchMessagesByLabel : Request {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
+        if let unread = self.isUnread, unread {
+            out["Unread"] = 1
+        }
         PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
@@ -244,6 +247,7 @@ final class FetchMessagesByLabel : Request {
         return MessageAPI.path
     }
 }
+
 
 // MARK : Create/Update Draft Part
 /// create draft message request class -- MessageResponse

@@ -22,15 +22,17 @@
     
 
 import Foundation
-import SWRevealViewController
+import SideMenuSwift
 
-class SettingsDeviceCoordinator: SWRevealCoordinator {
+class SettingsDeviceCoordinator: SideMenuCoordinator {
     typealias VC = SettingsDeviceViewController
     
     enum Destination : String {
         case accountSetting = "settings_account_settings"
         case autoLock       = "settings_auto_lock"
         case combineContact = "settings_combine_contact"
+        case alternativeRouting = "settings_alternative_routing"
+        case swipeAction = "settings_swipe_action"
         
 //        case displayName     = "setting_displayname"
 //        case signature       = "setting_signature"
@@ -49,7 +51,7 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
     
     internal weak var viewController: SettingsDeviceViewController?
     internal weak var navigation: UIViewController?
-    internal weak var swRevealVC: SWRevealViewController?
+    internal weak var sideMenu: SideMenuController?
     internal weak var deepLink: DeepLink?
     
     lazy internal var configuration: ((SettingsDeviceViewController) -> ())? = { [unowned self] vc in
@@ -57,14 +59,14 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
         vc.set(viewModel: self.viewModel)
     }
     
-    init?(rvc: SWRevealViewController?, nav: UINavigationController,
+    init?(sideMenu: SideMenuController?, nav: UINavigationController,
           vm: SettingsDeviceViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
         guard let next = nav.firstViewController() as? VC else {
             return nil
         }
         
         self.navigation = nav
-        self.swRevealVC = rvc
+        self.sideMenu = sideMenu
         self.viewController = next
         self.viewModel = vm
         self.services = services
@@ -83,9 +85,9 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
         self.services = services
     }
     
-    init(rvc: SWRevealViewController?, nav: UIViewController?, vc: SettingsDeviceViewController, vm: SettingsDeviceViewModel, services: ServiceFactory, deeplink: DeepLink?) {
+    init(sideMenu: SideMenuController?, nav: UIViewController?, vc: SettingsDeviceViewController, vm: SettingsDeviceViewModel, services: ServiceFactory, deeplink: DeepLink?) {
         self.navigation = nav
-        self.swRevealVC = rvc
+        self.sideMenu = sideMenu
         self.viewModel = vm
         self.viewController = vc
         self.deepLink = deeplink
@@ -93,7 +95,17 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
     }
     
     func go(to dest: Destination, sender: Any? = nil) {
-        self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        switch dest {
+        case .alternativeRouting:
+            let controller = SettingsNetworkTableViewController(nibName: "SettingsNetworkTableViewController", bundle: nil)
+            controller.viewModel = SettingsNetworkViewModel(userCache: userCachedStatus, dohSetting: DoHMail.default)
+            controller.coordinator = self
+            self.viewController?.navigationController?.pushViewController(controller, animated: true)
+        case .swipeAction:
+            openGesture()
+        default:
+            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        }
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -111,8 +123,7 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
             return true
 
         case .autoLock:
-            let users : UsersManager = sharedServices.get()
-            let vm = SettingsLockViewModelImpl(user: users.firstUser!)
+            let vm = SettingsLockViewModelImpl(biometricStatus: UIDevice.current, userCacheStatus: userCachedStatus)
             guard let lockSetting = SettingsLockCoordinator(dest: destination, vm: vm, services: self.services) else {
                 return false
             }
@@ -120,14 +131,28 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
             return true
         case .combineContact:
             if let vc = destination as? SettingsContactCombineViewController {
-                let users : UsersManager = sharedServices.get()
-                let vm = SettingsCombineContactViewModel(users: users)
+                let vm = SettingsCombineContactViewModel(combineContactCache: userCachedStatus)
                 vc.set(viewModel: vm)
                 vc.set(coordinator: self)
                 return true
             }
             return false
+        case .swipeAction:
+            openGesture()
+            return true
+        default:
+            return false
         }
+    }
+
+    private func openGesture() {
+        let viewController = SettingsGesturesViewController(nibName: "SettingsGesturesViewController", bundle: nil)
+        let coordinator = SettingsGesturesCoordinator(dest: viewController,
+                                                      viewModel: SettingsGestureViewModelImpl(cache: userCachedStatus),
+                                                      services: self.services)
+        coordinator?.start()
+        let navigation = UINavigationController(rootViewController: viewController)
+        self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
     }
 }
 

@@ -66,7 +66,7 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
     }
     
     func cleanAll() {
-        sharedServices.get(by: UsersManager.self).clean()
+        sharedServices.get(by: UsersManager.self).clean().cauterize()
         keymaker.wipeMainKey()
         keymaker.mainKeyExists()
     }

@@ -24,6 +24,7 @@
 import Foundation
 import MBProgressHUD
 import PMPayments
+import SideMenuSwift
 
 class ReportBugsViewController: ProtonMailViewController {
     var user: UserManager!
@@ -36,6 +37,13 @@ class ReportBugsViewController: ProtonMailViewController {
     
     private var kSegueToTroubleshoot : String = "toTroubleShootSegue"
     private var reportSent: Bool = false
+    
+    class func instance() -> ReportBugsViewController {
+        let board = UIStoryboard.Storyboard.inbox.storyboard
+        let vc = board.instantiateViewController(withIdentifier: "ReportBugsViewController") as! ReportBugsViewController
+        let _ = UINavigationController(rootViewController: vc)
+        return vc
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,12 +69,14 @@ class ReportBugsViewController: ProtonMailViewController {
         updateSendButtonForText(textView.text)
         NotificationCenter.default.addKeyboardObserver(self)
         textView.becomeFirstResponder()
+        self.sideMenuController?.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         textView.resignFirstResponder()
         NotificationCenter.default.removeKeyboardObserver(self)
+        self.sideMenuController?.delegate = nil
     }
     
     
@@ -127,10 +137,9 @@ class ReportBugsViewController: ProtonMailViewController {
         MBProgressHUD.showAdded(to: v, animated: true)
         sendButton.isEnabled = false
         let username = self.user.defaultEmail.split(separator: "@")[0]
-        self.user.reportService.reportBug(text,
-                                          username: String(username),
-                                          email: self.user.defaultEmail,
-                                          completion: { error in
+        user.reportService.reportBug(text,
+                                     username: String(username),
+                                     email: self.user.defaultEmail, completion: { error in
             MBProgressHUD.hide(for: v, animated: true)
             self.sendButton.isEnabled = true
             if let error = error {
@@ -198,5 +207,16 @@ extension ReportBugsViewController: UITextViewDelegate {
         updateSendButtonForText(changedText)
         cachedBugReport.cachedBug = changedText
         return true
+    }
+}
+
+extension ReportBugsViewController: SideMenuControllerDelegate {
+
+    func sideMenuControllerWillHideMenu(_ sideMenuController: SideMenuController) {
+        self.textView.becomeFirstResponder()
+    }
+    
+    func sideMenuControllerWillRevealMenu(_ sideMenuController: SideMenuController) {
+        self.textView.resignFirstResponder()
     }
 }

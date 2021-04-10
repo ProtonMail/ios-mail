@@ -59,7 +59,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     }
     
     private func prepareContactGroupData() {
-        let groups = self.user.labelService.getAllLabels(of: .contactGroup, context: self.coreDataService.mainManagedObjectContext)
+        let groups = self.user.labelService.getAllLabels(of: .contactGroup, context: self.coreDataService.mainContext)
 
         for group in groups {
             contactGroupData[group.labelID] = (name: group.name, color: group.color, count: group.emails.count)
@@ -557,7 +557,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 //update
                 for email in getEmails() {
                     if email.newEmail.isEmpty || !email.newEmail.isValidEmail() {
-                        complete(RuntimeError.invalidEmail.toError())
+                        DispatchQueue.main.async {
+                            complete(RuntimeError.invalidEmail.toError())
+                        }
                         return
                     }
                     let group = "Item\(i)"
@@ -774,12 +776,14 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             }
             
             let completion = { (contacts : [Contact]?, error : NSError?) in
-                if error == nil {
-                    // we locally maintain the emailID by deleting all old ones
-                    // and use the response to update the core data (see sharedContactDataService.update())
-                    complete(nil)
-                } else {
-                    complete(error)
+                DispatchQueue.main.async {
+                    if error == nil {
+                        // we locally maintain the emailID by deleting all old ones
+                        // and use the response to update the core data (see sharedContactDataService.update())
+                        complete(nil)
+                    } else {
+                        complete(error)
+                    }
                 }
             }
             

@@ -310,7 +310,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.hidesNavigationBarDuringPresentation = false
-        self.searchController.automaticallyAdjustsScrollViewInsets = true
         self.searchController.searchBar.sizeToFit()
         self.searchController.searchBar.keyboardType = .default
         self.searchController.searchBar.autocapitalizationType = .none
@@ -571,7 +570,7 @@ extension ContactGroupsViewController: UITableViewDelegate
 extension ContactGroupsViewController: UpgradeAlertVCDelegate {
     func postToPlan() {
         NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
+                                        object: DeepLink(LabelLocation.subscription.labelID))
     }
     func goPlans() {
         if self.presentingViewController != nil {
