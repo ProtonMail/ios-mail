@@ -873,7 +873,6 @@
 		5CD01AF75B9CA943466DC22E7D8C479B /* Keymaker+SharedKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417EB1F92B7B265DC132835677DE58F /* Keymaker+SharedKeychain.swift */; };
 		5CDC6785B1361A5EF8FD21A57B3287BA /* AccountSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC1C0BA1C5E2E6343CF4512A318E8B8 /* AccountSettingsTests.swift */; };
 		5CDEA026569ACB88CC673131C3F327DB /* LabelManagerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B0B4CCDF297F1A8EA1AE98741B9951 /* LabelManagerCoordinator.swift */; };
-		5CEB02721CB5DDEEA16B634803EE12D9 /* ServicePlanDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0A9E0012B15181164B191A84352546 /* ServicePlanDataServiceTests.swift */; };
 		5CEC3612D454364F02BC0C6DF993907C /* NewMessageBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9E1829051E23A2AF6FFBF70F2EF60C /* NewMessageBodyView.swift */; };
 		5D4B287716271AD24A78F5D953B9E8E1 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227296580D62465EBB981626C208052D /* AuthAPI.swift */; };
 		5D54AAF67422DFA0DF0BB069CD821ABA /* ComposeErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14E8987404D76EC598FCBC542711A09A /* ComposeErrorView.xib */; };
@@ -928,8 +927,8 @@
 		623C04F6DBD70F34EDEAEC45A4A3A290 /* Conversations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F1EA2F6B99E5300207F1CAC24B9568 /* Conversations.swift */; };
 		624236C9A0BC727F0D4B21DEF2DED00F /* MailBoxSkeletonLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4647828065951BE452840C9F351D1DAB /* MailBoxSkeletonLoadingCell.swift */; };
 		6253F0AE1EF9D7D5AAD8837742FA0353 /* StorefrontCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B02B56A82E33F93B3D79E072A10329 /* StorefrontCells.swift */; };
-		6264A7D83A7AB4E723B7CB0063FF04CA /* SwipeActionCacheStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD32FC9A5636ED88F74E86B008E25CD /* SwipeActionCacheStub.swift */; };
 		625E7BADC993E4098FC3E260B119EA80 /* NewMessageBodyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4427A8377872F7DECE5A3B24175A8FA0 /* NewMessageBodyViewModel.swift */; };
+		6264A7D83A7AB4E723B7CB0063FF04CA /* SwipeActionCacheStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD32FC9A5636ED88F74E86B008E25CD /* SwipeActionCacheStub.swift */; };
 		626BC3C873B121016E6D88A241313897 /* ViewModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3625E14CB48ED7B24630CE2FDBCBDA /* ViewModelService.swift */; };
 		62956BA6A4F7BAAACF00D87CB206C352 /* SwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27365B353EBA36DFE400C2780A3DF38C /* SwitchTableViewCell.xib */; };
 		62AA2B38B172FE096BC01DC4ED264BE6 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCF95B8A9A181622FDD72906F9CDB84 /* ProtonMailViewController.swift */; };
@@ -1042,6 +1041,7 @@
 		6F13FF7A4342599760FA88A92A91D901 /* RecipientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940087E63361420310BE075A7E077A15 /* RecipientView.swift */; };
 		6F1750A9F36F8A2A786FFBF67F5D23CD /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4A5F1C9B9B429AB005131084CC1554 /* KeychainWrapper.swift */; };
 		6F1E3C588B0AD6D7319DF83EF8237C4C /* TwoFACodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DD65FC5D2C14D4424C5634F44F0E2ED /* TwoFACodeView.xib */; };
+		6F2B257627E659998B974EF5217D0CF9 /* SingleMessageNavigationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F46234FD69D5FA47F1ED9A55622D5 /* SingleMessageNavigationHeaderView.swift */; };
 		6F2C6246A68758F6E76F3D14AFFAECFB /* NetworkStatus+IsConnected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD822B94169DA7349FC07B4C608DFBC /* NetworkStatus+IsConnected.swift */; };
 		6F42ADF3ED65100FB0FB7FA423EE7D25 /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5E9998E7EE18E2896590E4A25AF8E2 /* LanguageManager.m */; };
 		6F42FC54C0FADB9E9FDF78CE9B9BF9CA /* LabelLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0611D2422F6BE2987ACCA9F48C953AED /* LabelLocation.swift */; };
@@ -4400,31 +4400,6 @@
 			path = Queue;
 			sourceTree = "<group>";
 		};
-		C4DDDB3EDA105069F421BFF78400A14A /* SingleMessage */ = {
-			isa = PBXGroup;
-			children = (
-				7D5067EBE5A4F84912112F4D7AF3B4D7 /* Children */,
-			);
-			path = SingleMessage;
-			sourceTree = "<group>";
-		};
-		88617419A6F7F3C720F9CDA57D09B1E6 /* Children */ = {
-			isa = PBXGroup;
-			children = (
-				EB9E1829051E23A2AF6FFBF70F2EF60C /* NewMessageBodyView.swift */,
-				F54E923ABE77AD5E832ACA4AD6826499 /* NewMessageBodyViewController.swift */,
-			);
-			path = Children;
-			sourceTree = "<group>";
-		};
-		7D5067EBE5A4F84912112F4D7AF3B4D7 /* Children */ = {
-			isa = PBXGroup;
-			children = (
-				4427A8377872F7DECE5A3B24175A8FA0 /* NewMessageBodyViewModel.swift */,
-			);
-			path = Children;
-			sourceTree = "<group>";
-		};
 		480F273763648FD7698B2501262450D4 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -4902,6 +4877,14 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		7D5067EBE5A4F84912112F4D7AF3B4D7 /* Children */ = {
+			isa = PBXGroup;
+			children = (
+				4427A8377872F7DECE5A3B24175A8FA0 /* NewMessageBodyViewModel.swift */,
+			);
+			path = Children;
+			sourceTree = "<group>";
+		};
 		7D9530B1B89D992ADB2151596D5EDDBC /* CacheProtocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -5018,6 +5001,15 @@
 				786AB412A323EBA8B1FD8BCA9E1F938D /* MailListActionSheetItemViewModel_ActionsTests.swift */,
 			);
 			path = MailActionSheet;
+			sourceTree = "<group>";
+		};
+		88617419A6F7F3C720F9CDA57D09B1E6 /* Children */ = {
+			isa = PBXGroup;
+			children = (
+				EB9E1829051E23A2AF6FFBF70F2EF60C /* NewMessageBodyView.swift */,
+				F54E923ABE77AD5E832ACA4AD6826499 /* NewMessageBodyViewController.swift */,
+			);
+			path = Children;
 			sourceTree = "<group>";
 		};
 		8885EBB3E76E67C74FB67A7E325E4CC1 /* DurationPickerViewController */ = {
@@ -5736,6 +5728,14 @@
 				49C16D33EE4F6C03C5887A1EF07F1711 /* ContactGroupsViewCell.xib */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		C4DDDB3EDA105069F421BFF78400A14A /* SingleMessage */ = {
+			isa = PBXGroup;
+			children = (
+				7D5067EBE5A4F84912112F4D7AF3B4D7 /* Children */,
+			);
+			path = SingleMessage;
 			sourceTree = "<group>";
 		};
 		C644D067C7FC349CFF854EBB57D3D7C5 /* Bugs */ = {
@@ -8857,6 +8857,7 @@
 				3BA41E40CF93C151F446E20DC0F70696 /* SignatureAlertViewModelImpl.swift in Sources */,
 				9BCCE7FD2E2CFA14D09A4E5537042438 /* SignupViewModel.swift in Sources */,
 				1ADEC986B96A130518595FF2E0C359B4 /* SignupViewModelImpl.swift in Sources */,
+				6F2B257627E659998B974EF5217D0CF9 /* SingleMessageNavigationHeaderView.swift in Sources */,
 				28CD8334A2E621D522E69D45A1AB9273 /* SingleMessageView.swift in Sources */,
 				AD6CB677BC704D65D8F1564FB04BC9A2 /* SingleMessageViewController.swift in Sources */,
 				085ABDEC52073F85B51F49AA60583089 /* SingleMessageViewModel.swift in Sources */,
