@@ -30,7 +30,11 @@ class StackViewContainer: UIView {
     private let trailing: CGFloat
     private let bottom: CGFloat
 
-    init(view: UIView, top: CGFloat = 0, leading: CGFloat = 0, trailing: CGFloat = 0, bottom: CGFloat = 0) {
+    init(view: UIView,
+         top: CGFloat = 0,
+         leading: CGFloat = 0,
+         trailing: CGFloat = 0,
+         bottom: CGFloat = 0) {
         self.view = view
         self.top = top
         self.leading = leading
@@ -43,18 +47,16 @@ class StackViewContainer: UIView {
     private func setUpSubviews() {
         addSubview(view)
 
-        view.translatesAutoresizingMaskIntoConstraints = false
         [
             view.topAnchor.constraint(equalTo: topAnchor, constant: top),
             view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: leading),
             view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: trailing),
             view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: bottom)
-        ]
-            .activate()
+        ].activate()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        nil
     }
 
 }

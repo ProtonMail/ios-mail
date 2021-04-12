@@ -1,9 +1,32 @@
+//
+//  SingleMessageViewController.swift
+//  ProtonMail
+//
+//
+//  Copyright (c) 2021 Proton Technologies AG
+//
+//  This file is part of ProtonMail.
+//
+//  ProtonMail is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  ProtonMail is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+
 import PMUIFoundations
 import UIKit
 
-class SingleMessageViewController: UIViewController {
+class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
     private(set) lazy var customView = SingleMessageView()
+    private lazy var navigationTitleLabel = SingleMessageNavigationHeaderView()
 
     private let viewModel: SingleMessageViewModel
     private lazy var starBarButton = UIBarButtonItem(
@@ -13,8 +36,11 @@ class SingleMessageViewController: UIViewController {
         action: #selector(starButtonTapped)
     )
 
+    let messageBodyViewController: NewMessageBodyViewController
+
     init(viewModel: SingleMessageViewModel) {
         self.viewModel = viewModel
+        self.messageBodyViewController = NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -24,8 +50,13 @@ class SingleMessageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = starBarButton
-        starButtonSetUp(starred: viewModel.starred)
+
+        setUpSelf()
+        embedChildren()
+    }
+
+    private func embedChildren() {
+        embed(messageBodyViewController, inside: customView.messageBodyContainer)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -41,6 +72,39 @@ class SingleMessageViewController: UIViewController {
         viewModel.userActivity.invalidate()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: nil) { [weak self] _ in
+            self?.reloadAfterRotation()
+        }
+    }
+
+    // MARK: - UIScrollViewDelegate
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let shouldShowSeparator = scrollView.contentOffset.y >= customView.smallTitleHeaderSeparatorView.frame.maxY
+        let shouldShowTitleInNavigationBar = scrollView.contentOffset.y >= customView.titleLabel.frame.maxY
+
+        customView.navigationSeparator.isHidden = !shouldShowSeparator
+        shouldShowTitleInNavigationBar ? showTitleView() : hideTitleView()
+    }
+
+    // MARK: - Private
+
+    private func setUpSelf() {
+        customView.titleLabel.attributedText = viewModel.messageTitle
+        navigationTitleLabel.label.attributedText = viewModel.message.title.apply(style: .DefaultSmallStrong)
+
+        customView.navigationSeparator.isHidden = true
+        customView.scrollView.delegate = self
+        navigationTitleLabel.label.alpha = 0
+
+        navigationItem.rightBarButtonItem = starBarButton
+        navigationItem.titleView = navigationTitleLabel
+        starButtonSetUp(starred: viewModel.starred)
+    }
+
     private func starButtonSetUp(starred: Bool) {
         starBarButton.image = starred ?
             Asset.messageDeatilsStarActive.image : Asset.messageDetailsStarInactive.image
@@ -51,6 +115,22 @@ class SingleMessageViewController: UIViewController {
     private func starButtonTapped() {
         viewModel.starTapped()
         starButtonSetUp(starred: viewModel.starred)
+    }
+
+    private func reloadAfterRotation() {
+        scrollViewDidScroll(customView.scrollView)
+    }
+
+    private func showTitleView() {
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.navigationTitleLabel.label.alpha = 1
+        }
+    }
+
+    private func hideTitleView() {
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.navigationTitleLabel.label.alpha = 0
+        }
     }
 
     required init?(coder: NSCoder) {
