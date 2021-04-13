@@ -1197,13 +1197,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func showCheckOptions(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         let point: CGPoint = longPressGestureRecognizer.location(in: self.tableView)
         let indexPath: IndexPath? = self.tableView.indexPathForRow(at: point)
-        if let indexPath = indexPath {
-            if (longPressGestureRecognizer.state == UIGestureRecognizer.State.began) {
-                self.enterListEditingMode(indexPath: indexPath)
-            }
-        } else {
-            PMLog.D("Long press on table view, but not on a row.")
-        }
+        guard let touchedRowIndexPath = indexPath,
+              longPressGestureRecognizer.state == .began && listEditing == false else { return }
+        enterListEditingMode(indexPath: touchedRowIndexPath)
     }
     
     private func updateNavigationController(_ editingMode: Bool) {

@@ -723,19 +723,23 @@ class MailboxViewModel: StorageLimit {
     }
 
     private var shouldDisplayRemoveAction: Bool {
-        labelID != Message.Location.trash.rawValue && labelID != Message.Location.spam.rawValue
+        let actionUnavailableLocations: [Message.Location] = [.spam, .trash, .draft]
+        return !actionUnavailableLocations.map(\.rawValue).contains(labelID)
     }
 
     private var shouldDisplayDeleteAction: Bool {
-        labelID == Message.Location.trash.rawValue || labelID == Message.Location.spam.rawValue
+        let actionAvailableLocations: [Message.Location] = [.trash, .spam, .draft]
+        return actionAvailableLocations.map(\.rawValue).contains(labelID)
     }
 
     private var shouldDisplayMoveToArchiveAction: Bool {
-        labelID != Message.Location.archive.rawValue
+        let actionUnavailableLocations: [Message.Location] = [.archive, .draft]
+        return !actionUnavailableLocations.map(\.rawValue).contains(labelID)
     }
 
     private var shouldDisplayMoveToSpamAction: Bool {
-        labelID != Message.Location.spam.rawValue
+        let actionUnavailableLocations: [Message.Location] = [.sent, .draft, .spam]
+        return !actionUnavailableLocations.map(\.rawValue).contains(labelID)
     }
 
 }
