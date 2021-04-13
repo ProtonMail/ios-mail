@@ -36,8 +36,8 @@ class MailListActionSheetPresenter {
         let headerView = PMActionSheetHeaderView(
             title: viewModel.title,
             subtitle: nil,
-            leftItem: nil,
-            rightItem: cancelItem
+            leftItem: cancelItem,
+            rightItem: nil
         )
 
         let actions = viewModel.items.map { viewModel in

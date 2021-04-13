@@ -1982,8 +1982,8 @@ class LocalizedString {
     lazy var _title_of_read_action_for_conversations_in_action_sheet = NSLocalizedString("Mark %d conversations as read", comment: "The title of the read action in action sheet")
     
     
-    lazy var _title_of_remove_action_for_single_message_in_action_sheet = NSLocalizedString("Move %d message to Trash", comment: "The title of the remove action in action sheet")
-    lazy var _title_of_remove_action_for_messages_in_action_sheet = NSLocalizedString("Move %d messages to Trash", comment: "The title of the remove action in action sheet")
+    lazy var _title_of_remove_action_for_single_message_in_action_sheet = NSLocalizedString("Remove %d message", comment: "The title of the remove action in action sheet")
+    lazy var _title_of_remove_action_for_messages_in_action_sheet = NSLocalizedString("Remove %d messages", comment: "The title of the remove action in action sheet")
     lazy var _title_of_remove_action_for_single_conversation_in_action_sheet = NSLocalizedString("Remove %d conversation", comment: "The title of the remove action in action sheet")
     lazy var _title_of_remove_action_for_conversations_in_action_sheet = NSLocalizedString("Remove %d conversations", comment: "The title of the remove action in action sheet")
 
