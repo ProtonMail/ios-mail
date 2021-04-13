@@ -1052,6 +1052,12 @@ class LocalizedString {
     lazy var _unlock_required = NSLocalizedString("Unlock required", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
     
     lazy var _enable_faceid_in_settings = NSLocalizedString("You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in.", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
+    
+    lazy var _lock_faceID_desc = NSLocalizedString("Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.", comment: "A description string in pin & faceID setting page")
+    
+    lazy var _lock_touchID_desc = NSLocalizedString("Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.", comment: "A description string in pin & faceID setting page")
+    
+    lazy var _lock_wipe_desc = NSLocalizedString("All protection settings will be reset and wiped upon logging out of the app.", comment: "A description string in pin & faceID setting page")
 
     lazy var _go_to_settings = NSLocalizedString("Go to settings", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
     
