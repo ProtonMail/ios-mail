@@ -10,6 +10,7 @@ def pm_shared_pods
   pod 'EllipticCurveKeyPair', :git => 'https://github.com/abjurato/EllipticCurveKeyPair.git', :tag => '1.0.4'
   pod 'PMAuthentication', :git => 'git@gitlab.protontech.ch:apple/shared/pmauthentication.git', :branch => 'develop', :testspecs => ['Tests']
   pod 'PMKeymaker', :git => 'git@gitlab.protontech.ch:apple/shared/pmkeymaker.git', :branch => 'develop'
+  pod 'PMUIFoundations', :git => 'git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git', :branch => 'fix/share'
 end
 
 def common_pods
@@ -40,7 +41,6 @@ def pm_pods
   pod 'PMPayments', :git => 'git@gitlab.protontech.ch:apple/shared/pmpayments.git', :commit => '47edd7def09a7e26aa608b1'
   pod 'PMCoreTranslation', :git => 'git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git', :branch => 'develop'
   pod 'PMLog', :git => 'git@gitlab.protontech.ch:apple/shared/pmlog.git', :branch => 'master'
-  pod 'PMUIFoundations', :git => 'git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git', :branch => 'master'
   pod 'SideMenuSwift', '2.0.6'
   pod "SkeletonView", '1.11.0'
   pod 'PMAccountSwitcher', :git => 'git@gitlab.protontech.ch:apple/shared/pmaccountswitcher.git', :tag => '0.0.3'

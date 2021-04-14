@@ -36,17 +36,9 @@ extension UIView {
     }
 
     func getKeyboardHeight() -> CGFloat {
-
-        var application: UIApplication
-
-        #if APP_EXTENSION
-        let obj = UIApplication.perform(Selector("sharedApplication"))
-        guard application = obj?.takeRetainedValue() as? UIApplication else {
+        guard let application = UIApplication.getInstance() else {
             return 0
         }
-        #else
-        application = UIApplication.shared
-        #endif
 
         let keyboardWindow = application.windows.first(where: {
             let desc = $0.description.lowercased()

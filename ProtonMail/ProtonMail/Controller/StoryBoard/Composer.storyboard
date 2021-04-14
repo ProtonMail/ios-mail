@@ -65,16 +65,9 @@
                             <constraint firstItem="Gop-XX-JaS" firstAttribute="top" secondItem="kII-As-Kc3" secondAttribute="bottom" placeholder="YES" id="u5a-gy-lr1"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="J9F-Xh-oG8">
-                        <barButtonItem key="rightBarButtonItem" image="sent_compose" id="iiy-bz-03S">
-                            <connections>
-                                <action selector="sendAction:" destination="MYS-qk-SMJ" id="WVA-F3-IFg"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="J9F-Xh-oG8"/>
                     <connections>
                         <outlet property="backButton" destination="8NV-DO-oBM" id="JC9-RG-1I5"/>
-                        <outlet property="sendButton" destination="iiy-bz-03S" id="lm1-LK-kdA"/>
                         <outlet property="tableView" destination="kII-As-Kc3" id="nXg-o5-ymb"/>
                     </connections>
                 </viewController>
@@ -776,7 +769,6 @@
     </scenes>
     <resources>
         <image name="popup_behind_image" width="106.66666412353516" height="153.33332824707031"/>
-        <image name="sent_compose" width="26.5" height="22"/>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
