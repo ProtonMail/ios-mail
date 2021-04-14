@@ -20,14 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
-
+import PMUIFoundations
 import UIKit
 
-class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>, NSNotificationCenterKeyboardObserverProtocol, UITableViewDropDelegate
+class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>
 {
     private var childrenHeightObservations: [NSKeyValueObservation]!
-    private var cancelButton: UIBarButtonItem! //cancel button.
-    @IBOutlet private var sendButton: UIBarButtonItem! //cancel button.
+    private var cancelButton: UIBarButtonItem!
+    private var sendButton: UIBarButtonItem!
     private var bottomPadding: NSLayoutConstraint!
     private var dropLandingZone: UIView? // drag and drop session items dropped on this view will be added as attachments
     private let timerInterval : TimeInterval = 30
@@ -37,6 +37,23 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.childrenHeightObservations = []
         NotificationCenter.default.removeKeyboardObserver(self)
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // fix ios 10 have a seperator at bottom
+        self.tableView.separatorColor = .clear
+        self.tableView.dropDelegate = self
+        
+        NotificationCenter.default.addKeyboardObserver(self)
+        
+        self.setupButtomPadding()
+        self.configureNavigationBar()
+        self.setupChildViewModel()
+
+        // accessibility
+        generateAccessibilityIdentifiers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -51,28 +68,64 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         generateAccessibilityIdentifiers()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.stopAutoSync()
+    }
+    
+    override func configureNavigationBar() {
+        super.configureNavigationBar()
+        
+        self.navigationController?.navigationBar.barTintColor = UIColorManager.BackgroundNorm
+        self.navigationController?.navigationBar.isTranslucent = false
+        
+        self.setupSendButton()
+        self.setupCancelButton()
+    }
+    
+    // tableView
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard self.viewModel.childViewModel.showExpirationPicker && indexPath.row == 1 else {
+            return super.tableView(tableView, cellForRowAt: indexPath)
+        }
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ExpirationPickerCell.self), for: indexPath) as? ExpirationPickerCell else {
+            assert(false, "Broken expiration cell")
+            return UITableViewCell()
+        }
+        
+        self.coordinator.inject(cell.getPicker())
+        cell.generateAccessibilityIdentifiers()
+        return cell
+    }
+    
+    /// MARK: IBAction
+    @objc
+    func cancelAction(_ sender: UIBarButtonItem) {
+        // FIXME: that logic should be in VM of EditorViewController
+        self.coordinator.cancelAction(sender)
+    }
 
-        self.tableView.dropDelegate = self
-        
-        NotificationCenter.default.addKeyboardObserver(self)
-        
+    @objc
+    func sendAction(_ sender: UIBarButtonItem) {
+        // FIXME: that logic should be in VM of EditorViewController
+        self.coordinator.sendAction(sender)
+    }
+}
+
+// MARK: UI related
+extension ComposeContainerViewController {
+    private func setupButtomPadding() {
         self.bottomPadding = self.view.bottomAnchor.constraint(equalTo: self.tableView.bottomAnchor)
         self.bottomPadding.constant = 0.0
         self.bottomPadding.isActive = true
-        
-        self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button, style: .plain, target: self, action: #selector(cancelAction))
-        self.navigationItem.leftBarButtonItem = cancelButton
-        self.configureNavigationBar()
-        
+    }
+    
+    private func setupChildViewModel() {
         let childViewModel = self.viewModel.childViewModel
         let header = self.coordinator.createHeader(childViewModel)
         self.coordinator.createEditor(childViewModel)
-        
-        // fix ios 10 have a seperator at bottom
-        self.tableView.separatorColor = .clear
-        
+
         self.childrenHeightObservations = [
             childViewModel.observe(\.contentHeight) { [weak self] _, _ in
                 UIView.animate(withDuration: 0.001, animations: {
@@ -91,62 +144,50 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
                 self?.tableView.reloadRows(at: [IndexPath.init(row: 1, section: 0)], with: .fade)
             }
         ]
-        
-        // accessibility
+    }
+    
+    private func setupSendButton() {
+        guard let icon = UIImage(named: "menu_sent") else {
+            return
+        }
+        self.sendButton = icon.toUIBarButtonItem(target: self,
+                               action: #selector(sendAction),
+                               style: .plain,
+                               tintColor: UIColorManager.IconInverted,
+                               squareSize: 21.74,
+                               backgroundColor: UIColorManager.InteractionStrong,
+                               backgroundSquareSize: 40,
+                               isRound: true)
+        self.navigationItem.rightBarButtonItem = self.sendButton
         self.sendButton.accessibilityLabel = LocalString._general_send_action
-        generateAccessibilityIdentifiers()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    private func setupCancelButton() {
+        let icon = UIImage(named: "action_sheet_close")
+        self.cancelButton = UIBarButtonItem(image: icon, style: .plain, target: self, action: #selector(cancelAction))
+        self.navigationItem.leftBarButtonItem = self.cancelButton
+    }
+    
+    private func error(_ description: String) {
+        let alert = description.alertController()
+        alert.addOKAction()
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func startAutoSync() {
         self.stopAutoSync()
+        self.syncTimer = Timer.scheduledTimer(withTimeInterval: self.timerInterval, repeats: true, block: { [weak self](_) in
+            self?.viewModel.syncMailSetting()
+        })
     }
     
-    @objc func cancelAction(_ sender: UIBarButtonItem) {
-        // FIXME: that logic should be in VM of EditorViewController
-        self.coordinator.cancelAction(sender)
+    private func stopAutoSync() {
+        self.syncTimer?.invalidate()
+        self.syncTimer = nil
     }
-    @IBAction func sendAction(_ sender: UIBarButtonItem) {
-        // FIXME: that logic should be in VM of EditorViewController
-        self.coordinator.sendAction(sender)
-    }
-    
-    override func configureNavigationBar() {
-        super.configureNavigationBar()
-        
-        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-        
-        let navigationBarTitleFont = Fonts.h2.light
-        self.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.white,
-            NSAttributedString.Key.font: navigationBarTitleFont
-        ]
-        
-        self.navigationItem.leftBarButtonItem?.title = LocalString._general_cancel_button
-        cancelButton.title = LocalString._general_cancel_button
-    }
-    
-    // tableView
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard self.viewModel.childViewModel.showExpirationPicker && indexPath.row == 1 else {
-            return super.tableView(tableView, cellForRowAt: indexPath)
-        }
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ExpirationPickerCell.self), for: indexPath) as? ExpirationPickerCell else {
-            assert(false, "Broken expiration cell")
-            return UITableViewCell()
-        }
-        
-        self.coordinator.inject(cell.picker)
-        cell.generateAccessibilityIdentifiers()
-        return cell
-    }
-    
-    // keyboard
-    
+}
+
+extension ComposeContainerViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         self.bottomPadding.constant = 0.0
     }
@@ -156,19 +197,12 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             self.bottomPadding.constant = keyboardFrame.cgRectValue.height
         }
     }
+}
 
-    // drag and drop
-    
-    private func error(_ description: String) {
-        let alert = description.alertController()
-        alert.addOKAction()
-        self.present(alert, animated: true, completion: nil)
-    }
-    
+extension ComposeContainerViewController: UITableViewDropDelegate {
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
-                   canHandle session: UIDropSession) -> Bool
-    {
+                   canHandle session: UIDropSession) -> Bool {
         // return true only if all the files are supported
         let itemProviders = session.items.map { $0.itemProvider }
         return self.viewModel.filesAreSupported(from: itemProviders)
@@ -177,8 +211,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
                    dropSessionDidUpdate session: UIDropSession,
-                   withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal
-    {
+                   withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
         return UITableViewDropProposal(operation: .copy, intent: .insertIntoDestinationIndexPath)
     }
     
@@ -217,8 +250,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
-                   performDropWith coordinator: UITableViewDropCoordinator)
-    {
+                   performDropWith coordinator: UITableViewDropCoordinator) {
         DispatchQueue.main.async {
             LocalString._importing_drop.alertToastBottom()
         }
@@ -232,24 +264,12 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     }
 }
 
-// MARK: Sync mail settings
-extension ComposeContainerViewController {
-    func startAutoSync() {
-        self.stopAutoSync()
-        self.syncTimer = Timer.scheduledTimer(withTimeInterval: self.timerInterval, repeats: true, block: { [weak self](_) in
-            self?.viewModel.syncMailSetting()
-        })
-    }
-    
-    func stopAutoSync() {
-        self.syncTimer?.invalidate()
-        self.syncTimer = nil
-    }
-}
-
-
 class ExpirationPickerCell: UITableViewCell, AccessibleView {
-    @IBOutlet weak var picker: UIPickerView!
+    @IBOutlet private var picker: UIPickerView!
+    
+    func getPicker() -> UIPickerView {
+        return self.picker
+    }
 }
 
 #if !APP_EXTENSION

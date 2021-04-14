@@ -834,7 +834,7 @@
                         <segue destination="49o-KF-b5x" kind="presentation" identifier="to_onboarding_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="2RB-hE-91p"/>
                         <segue destination="Qwy-GJ-vAH" kind="presentation" identifier="toHumanCheckView" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="dts-X9-0aN"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="XIN-Jt-JzU"/>
-                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="fullScreen" id="dh2-Js-yHz"/>
+                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="pageSheet" id="dh2-Js-yHz"/>
                         <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toComposeShow" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="fullScreen" id="A0a-yx-qTn"/>
                         <segue destination="9Tt-Bl-2aN" kind="presentation" identifier="toTroubleShootSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="LeA-5g-bB1"/>
                     </connections>

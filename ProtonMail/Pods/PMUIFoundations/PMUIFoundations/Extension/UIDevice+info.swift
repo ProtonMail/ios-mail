@@ -28,7 +28,8 @@ extension UIDevice {
             return true
         }
 
-        guard let keyWindow = UIApplication.shared.windows.first,
+        guard let application = UIApplication.getInstance(),
+              let keyWindow = application.windows.first,
             keyWindow.safeAreaInsets.bottom > 0 else {
                 // Device has physical home button
                 return true
@@ -43,7 +44,8 @@ extension UIDevice {
             // Device has physical home button
             return .zero
         }
-        guard let keyWindow = UIApplication.shared.windows.first else {
+        guard let application = UIApplication.getInstance(),
+              let keyWindow = application.windows.first else {
             // Device has physical home button
             return .zero
         }

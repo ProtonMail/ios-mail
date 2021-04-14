@@ -172,7 +172,6 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let font = UIFont.systemFont(ofSize: 15, weight: .semibold)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
-        paragraphStyle.lineBreakMode = .byTruncatingTail
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
