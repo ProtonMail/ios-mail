@@ -172,6 +172,7 @@ class UsersManager : Service, Migrate {
         //let userID = user.userId
         //let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
         let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+        apiService.serviceDelegate = self
         let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
         newUser.delegate = self
         self.removeDisconnectedUser(.init(defaultDisplayName: newUser.defaultDisplayName,
@@ -367,6 +368,7 @@ class UsersManager : Service, Migrate {
             let userID = user.userId
             
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+            apiService.serviceDelegate = self
             let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
@@ -426,6 +428,7 @@ class UsersManager : Service, Migrate {
                 let session = auth.sessionID
                 let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+                apiService.serviceDelegate = self
                 let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
                 newUser.delegate = self
                 users.append(newUser)
@@ -693,6 +696,7 @@ extension UsersManager {
             let session = oldAuth.sessionID
             let userID = user.userId
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+            apiService.serviceDelegate = self
             let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
@@ -738,6 +742,7 @@ extension UsersManager {
                 let session = auth.sessionID
                 let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+                apiService.serviceDelegate = self
                 let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
                 newUser.delegate = self
                 users.append(newUser)
@@ -839,4 +844,24 @@ extension UsersManager {
 //        }
     }
     
+}
+
+extension UsersManager: APIServiceDelegate {
+    func isReachable() -> Bool {
+        return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
+    }
+
+    func onUpdate(serverTime: Int64) {
+        Crypto.updateTime(serverTime)
+    }
+
+    var appVersion: String {
+        return "iOS_\(Bundle.main.majorVersion)"
+    }
+
+    var userAgent: String? {
+        UserAgent.default.ua
+    }
+
+    func onDohTroubleshot() { }
 }
