@@ -111,6 +111,7 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
         if let headerCell = header {
             let textView = UITextView()
             textView.isScrollEnabled = false
+            textView.isEditable = false
             textView.backgroundColor = .clear
 
             let eSection = self.viewModel.sections[section]

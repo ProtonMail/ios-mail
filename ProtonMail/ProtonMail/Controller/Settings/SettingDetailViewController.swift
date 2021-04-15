@@ -86,10 +86,15 @@ class SettingDetailViewController: UIViewController {
         self.navigationItem.title = viewModel.getNavigationTitle()
         
         self.navigationItem.hidesBackButton = true
-        let newBackButton = UIBarButtonItem(image: #imageLiteral(resourceName: "back-arrow").withRenderingMode(.alwaysTemplate),
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(SettingDetailViewController.back(sender:)))
+
+        let newBackButton = Asset.backArrow.image.toUIBarButtonItem(target: self,
+                                                          action: #selector(SettingDetailViewController.back(sender:)),
+                                                          style: .plain,
+                                                          tintColor: UIColorManager.TextNorm,
+                                                          squareSize: 24.0,
+                                                          backgroundColor: nil,
+                                                          backgroundSquareSize: nil,
+                                                          isRound: false)
         self.navigationItem.leftBarButtonItem = newBackButton
         
         if viewModel.isDisplaySwitch() {
@@ -233,6 +238,9 @@ class SettingDetailViewController: UIViewController {
     
     fileprivate func getTextValue () -> String {
         if viewModel.isShowTextView() {
+            guard inputTextView.textColor != UIColorManager.TextHint else {
+                return ""
+            }
             return inputTextView.text
         }
         else {
