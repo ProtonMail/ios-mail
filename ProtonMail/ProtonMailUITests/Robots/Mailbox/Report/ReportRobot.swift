@@ -39,6 +39,7 @@ class ReportRobot {
         return ReportRobot()
     }
     
+    @discardableResult
     func send() -> ReportDialogRobot {
         Element.wait.forHittableButton(sendButtonIdentifier, file: #file, line: #line).tap()
         return ReportDialogRobot()
@@ -47,7 +48,7 @@ class ReportRobot {
     class ReportDialogRobot {
 
         func clickOK() -> MailboxRobotInterface {
-            Element.button.tapByIdentifier(okButtonIdentifier)
+            Element.wait.forButtonWithIdentifier(okButtonIdentifier).tap()
             return MailboxRobotInterface()
         }
     }
