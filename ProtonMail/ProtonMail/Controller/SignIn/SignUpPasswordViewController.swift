@@ -127,6 +127,13 @@ class SignUpPasswordViewController: UIViewController {
         let login_pwd = (loginPasswordField.text ?? "")
         let confirm_login_pwd = (confirmLoginPasswordField.text ?? "")
         
+        guard login_pwd.count >= 8 else {
+            let alert = LocalString._password_needs_at_least_8_chars.alertController()
+            alert.addOKAction()
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
         if !login_pwd.isEmpty && confirm_login_pwd == login_pwd {
             //create user & login
             viewModel.setSinglePassword(login_pwd)

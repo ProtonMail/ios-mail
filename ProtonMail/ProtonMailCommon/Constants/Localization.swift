@@ -1123,6 +1123,8 @@ class LocalizedString {
 
     /// "Invalid hashed password!"
     lazy var _invalid_hashed_password = NSLocalizedString("Invalid hashed password!", comment: "update password error")
+    
+    lazy var _password_needs_at_least_8_chars = NSLocalizedString("The new password needs to be at least 8 characters long", comment: "update password error")
 
     /// "Can't create a SRP verifier!"
     lazy var _cant_create_a_srp_verifier = NSLocalizedString("Can't create a SRP verifier!", comment: "update password error")

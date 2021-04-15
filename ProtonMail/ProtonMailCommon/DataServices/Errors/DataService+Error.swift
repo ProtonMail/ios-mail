@@ -86,6 +86,8 @@ enum UpdatePasswordError : Int, Error, CustomErrorVar {
     case passwordEmpty = 0x110010
     case keyUpdateFailed = 0x110011
     
+    case minimumLengthError = 0x110012
+    
     case `default` = 0x110000
     
     var code : Int {
@@ -120,6 +122,8 @@ enum UpdatePasswordError : Int, Error, CustomErrorVar {
             return LocalString._the_new_password_cant_empty
         case .keyUpdateFailed:
             return LocalString._the_private_key_update_failed
+        case .minimumLengthError:
+            return LocalString._password_needs_at_least_8_chars
         case .default:
             return LocalString._password_update_failed
         }
