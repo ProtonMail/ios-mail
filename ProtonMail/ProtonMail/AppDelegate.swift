@@ -72,7 +72,7 @@ extension SWRevealViewController {
 }
 
 // MARK: - consider move this to coordinator
-extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
+extension AppDelegate: UserDataServiceDelegate {
     func onLogout(animated: Bool) {
         if #available(iOS 13.0, *) {
             let sessions = Array(UIApplication.shared.openSessions)
@@ -88,15 +88,17 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
             self.coordinator.go(dest: .signInWindow)
         }
     }
-    
+}
+
+extension AppDelegate: APIServiceDelegate {
     func isReachable() -> Bool {
+        #if !APP_EXTENSION
         return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
+        #else
+        return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
+        #endif
     }
-    
-    func onError(error: NSError) {
-        error.alertToast()
-    }
-    
+
     func onUpdate(serverTime: Int64) {
         Crypto.updateTime(serverTime)
     }
@@ -111,15 +113,7 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
         UserAgent.default.ua
     }
 
-    func onDohTroubleshot() {
-        //TODO:: fix me TBA
-    }
-
-    func onChallenge(challenge: URLAuthenticationChallenge,
-                     credential: AutoreleasingUnsafeMutablePointer<URLCredential?>?) -> URLSession.AuthChallengeDisposition {
-        //TODO:: fix me TBA
-        return .useCredential
-    }
+    func onDohTroubleshot() { }
 }
 
 extension AppDelegate: TrustKitUIDelegate {
