@@ -138,10 +138,10 @@
 "Add new URL" = "Lägg till ny URL";
 
 /* new contacts add Nickname */
-"Add Nickname" = "Lägg till Smeknamn";
+"Add Nickname" = "Lägg till smeknamn";
 
 /* new contacts add Organization */
-"Add Organization" = "Lägg Organization";
+"Add Organization" = "Lägg till organisation";
 
 /* The button text for add profile picture */
 "Add Photo" = "Lägg till foto";
@@ -518,7 +518,7 @@
 "Confirm new password" = "Bekräfta nytt lösenord";
 
 /* Placeholder */
-"Confirm Password" = "Bekräfta Lösenord";
+"Confirm Password" = "Bekräfta lösenord";
 
 /* alert title */
 "Confirm phishing report" = "Bekräfta nätfiskerapport";
@@ -892,7 +892,7 @@
 "Expires" = "Utgår";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Löper ut om %d dagar %d timmar %d min %d sekunder";
+"Expires in %d days %d hours %d mins %d seconds" = "Upphör om %d dagar %d timmar %d min %d sekunder";
 
 /* Title */
 "Expiring Messages" = "Förfallande meddelanden";
