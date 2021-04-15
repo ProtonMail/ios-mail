@@ -1028,7 +1028,7 @@ class LocalizedString {
     lazy var _error_logs = NSLocalizedString("Error Logs", comment: "settings debug section title")
 
     /// "Login Password"
-    lazy var _login_password = NSLocalizedString("Change login password", comment: "settings general section title")
+    lazy var _login_password = NSLocalizedString("Change account password", comment: "settings general section title")
     /// "Mailbox Password"
     lazy var _mailbox_password = NSLocalizedString("Change mailbox password", comment: "settings general section title")
     /// "Single Password"
@@ -1850,7 +1850,7 @@ class LocalizedString {
     
     lazy var _addresses = NSLocalizedString("Addresses", comment: "cell title in device settings")
     lazy var _snooze = NSLocalizedString("Snooze", comment: "Cell title in device settings - mute notification until a later time.")
-    lazy var _mailbox = NSLocalizedString("MAILBOX", comment: "cell title in device settings")
+    lazy var _mailbox = NSLocalizedString("Mailbox", comment: "cell title in device settings")
     
     lazy var _privacy = NSLocalizedString("Privacy", comment: "cell title in device settings")
     lazy var _label_and_folders = NSLocalizedString("Labels & Folders", comment: "cell title in device settings")
