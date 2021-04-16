@@ -9,6 +9,7 @@
 import XCTest
 
 fileprivate let mailboxTableView = "mailboxTableView"
+fileprivate let inboxTitleLabel = LocalString._menu_inbox_title
 fileprivate var wasTourClosed = false
 
 /**
@@ -21,6 +22,7 @@ class InboxRobot : MailboxRobotInterface {
     override init() {
         super.init()
         closeTourIfShown()
+        Element.staticText.tapByIdentifier(inboxTitleLabel)
         verify = Verify(parent: self)
     }
 
