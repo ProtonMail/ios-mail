@@ -40,7 +40,7 @@ class Storefront: NSObject {
     
     private var subscriptionObserver: NSKeyValueObservation!
     
-    init(plan: AccountPlan, servicePlanService: ServicePlanDataService, user: UserInfo) {
+    init(plan: AccountPlan, servicePlanService: ServicePlanDataService, user: UserInfo, isHavingVpnPlan: Bool = false) {
         self.servicePlanService = servicePlanService
         self.user = user
         
@@ -51,7 +51,9 @@ class Storefront: NSObject {
         
         self.isProductPurchasable = ( plan == .mailPlus
                                         && servicePlanService.currentSubscription?.plan == .free
-                                        && StoreKitManager.default.isReadyToPurchaseProduct() )
+                                        && StoreKitManager.default.isReadyToPurchaseProduct()
+                                        && !isHavingVpnPlan)
+
         self.canBuyMoreCredits = false
         self.credits = self.user.credit
         super.init()
