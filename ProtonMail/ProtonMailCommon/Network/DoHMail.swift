@@ -37,6 +37,8 @@ class DoHMail : DoH, ServerConfig {
 
     //defind your query host
     var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
+    /// if set false app will ignore the Doh status settings
+    var enableDoh: Bool = Constants.App.DOH_ENABLE
     //singleton
     static let `default` = try! DoHMail()
     

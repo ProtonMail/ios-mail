@@ -28,38 +28,25 @@ import PMCommon
 
 
 //Keys API
-//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_keys.md
 struct KeysAPI {
     static let path : String = "/keys"
-    
-    /// Update private keys only, use for mailbox password/single password updates PUT
-    static let v_update_private_key : Int = 3
-    
-    /// Setup keys for new account, private user [POST]
-    static let v_setup_key : Int = 3
-    
-    /// Get key salts, locked route [GET]
-    static let v_get_key_salts : Int = 3
-    
-    /// Get public keys [GET]
-    static let v_get_emails_pub_key : Int = 3
-    
-    /// Activate newly-provisioned member key [PUT]
-    static let v_activate_key : Int = 3
 }
 
 
 ///KeysResponse
 final class UserEmailPubKeys : Request {
     let email : String
+    
     init(email: String, authCredential: AuthCredential? = nil) {
         self.email = email
         self.auth = authCredential
     }
+    
     var parameters: [String : Any]? {
         let out : [String : Any] = ["Email" : self.email]
         return out
     }
+    
     var path: String {
         return KeysAPI.path
     }
@@ -94,6 +81,7 @@ final class KeyResponse {
         self.publicKey = pubkey
     }
 }
+
 
 final class KeysResponse : Response {
     var recipientType : Int = 1 // 1 internal 2 external
@@ -233,17 +221,47 @@ final class UpdatePrivateKeyRequest : Request {
     var userAddressKeys: [Key]
     let orgKey : String?
     
+    let userKeys: [Key]?
+    
     let auth : PasswordAuth?
-
     
     init(clientEphemeral: String,
          clientProof: String,
          SRPSession: String,
          keySalt: String,
-         userlevelKeys: [Key],
-         addressKeys: [Key],
-         tfaCode : String?,
-         orgKey: String?,
+         tfaCode : String? = nil,
+         orgKey: String? = nil,
+         userKeys: [Key]? = nil,
+         auth: PasswordAuth?,
+         authCredential: AuthCredential?
+         ) {
+        self.clientEphemeral = clientEphemeral
+        self.clientProof = clientProof
+        self.SRPSession = SRPSession
+        self.keySalt = keySalt
+        self.userLevelKeys = []
+        self.userAddressKeys = []
+        
+        self.userKeys = userKeys
+        
+        //optional values
+        self.orgKey = orgKey
+        self.tfaCode = tfaCode
+        self.auth = auth
+        
+        self.credential = authCredential
+    }
+
+    init(clientEphemeral: String,
+         clientProof: String,
+         SRPSession: String,
+         keySalt: String,
+         userlevelKeys: [Key] = [],
+         addressKeys: [Key] = [],
+         tfaCode : String? = nil,
+         orgKey: String? = nil,
+
+         userKeys: [Key]?,
          
          auth: PasswordAuth?,
          authCredential: AuthCredential?
@@ -254,6 +272,8 @@ final class UpdatePrivateKeyRequest : Request {
         self.keySalt = keySalt
         self.userLevelKeys = userlevelKeys
         self.userAddressKeys = addressKeys
+        
+        self.userKeys = userKeys
         
         //optional values
         self.orgKey = orgKey
@@ -289,8 +309,21 @@ final class UpdatePrivateKeyRequest : Request {
             "ClientProof" : self.clientProof,
             "SRPSession": self.SRPSession,
             "KeySalt" : self.keySalt,
-            "Keys" : keysDict
             ]
+        
+        if !keysDict.isEmpty {
+            out["Keys"] = keysDict
+        }
+        
+        if let userKeys = self.userKeys {
+            var userKeysDict : [Any] = [Any]()
+            for key in userKeys {
+                userKeysDict.append( ["ID": key.key_id, "PrivateKey" : key.private_key] )
+            }
+            if !userKeysDict.isEmpty {
+                out["UserKeys"] = userKeysDict
+            }
+        }
         
         if let code = tfaCode {
             out["TwoFactorCode"] = code
@@ -301,6 +334,7 @@ final class UpdatePrivateKeyRequest : Request {
         if let auth_obj = self.auth {
             out["Auth"] = auth_obj.parameters
         }
+        
         return out
     }
     
@@ -313,68 +347,37 @@ final class UpdatePrivateKeyRequest : Request {
     }
 }
 
-
-//MARK : update user's private keys -- Response
-final class SetupKeyRequest : Request {
-
-    let addressID : String
-    let privateKey : String
-    let signedKeyList: [String: Any]
-    let keySalt : String //base64 encoded need random value
-    let auth : PasswordAuth
-    
-    init(address_id: String,
-         private_key : String,
-         keysalt : String,
-         signedKL : [String: Any],
-         auth : PasswordAuth,
-         authCredential: AuthCredential?) {
-        self.keySalt = keysalt
-        self.addressID = address_id
-        self.privateKey = private_key
-        self.signedKeyList = signedKL
-        self.auth = auth
-        self.credential = authCredential
-    }
-    
-    //custom auth credentical
-    let credential: AuthCredential?
-    var authCredential : AuthCredential? {
-        get {
-            return self.credential
+extension Array where Element: Package {
+    var parameters: [Any]? {
+        var out : [Any] = []
+        for item in self {
+            out.append(item.parameters)
         }
+        return  out
     }
-    
-    var parameters: [String : Any]? {
-        let address : [String: Any] = [
-            "AddressID" : self.addressID,
-            "PrivateKey" : self.privateKey,
-            "SignedKeyList" : self.signedKeyList
-        ]
-        
-        let out : [String : Any] = [
-            "KeySalt" : self.keySalt,
-            "PrimaryKey": self.privateKey,
-            "AddressKeys" : [address] ,
-            "Auth" : self.auth.parameters!
-        ]
-
-        PMLog.D(out.json(prettyPrinted: true))
-        
-        return out
-    }
-    
-    var method: HTTPMethod {
-        return .post
-    }
-    
-    var path: String {
-        return KeysAPI.path + "/setup"
+    var json : String {
+        return self.parameters!.toJson()
     }
 }
 
-
-
+extension Array where Element: Any {
+    func toJson(prettyPrinted : Bool = false) -> String {
+        let options : JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : JSONSerialization.WritingOptions()
+        let anyObject: Any = self
+        if JSONSerialization.isValidJSONObject(anyObject) {
+            do {
+                let data = try JSONSerialization.data(withJSONObject: anyObject, options: options)
+                if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
+                    return string as String
+                }
+            } catch let ex as NSError {
+                PMLog.D("\(ex)")
+            }
+        }
+        return ""
+    }
+    
+}
 
 //MARK : active a key when Activation is not null --- Response
 final class ActivateKey : Request {
