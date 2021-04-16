@@ -23,6 +23,8 @@
 
 import Foundation
 import PromiseKit
+import PMAuthentication
+import PMCommon
 import PMPayments
 
 class StorefrontViewModel: NSObject {
@@ -55,10 +57,13 @@ class StorefrontViewModel: NSObject {
     @objc dynamic var buyButtonItem: AnyStorefrontItem?
     @objc dynamic var creditsItem: AnyStorefrontItem?
     @objc dynamic var disclaimerItem: AnyStorefrontItem?
+
+    var isHavingVpnPlanInCurrentSubscription: Bool = false
     
-    init(currentUser: UserManager, storefront: Storefront?=nil) {
+    init(currentUser: UserManager, storefront: Storefront? = nil, havingVpnPlan: Bool = false) {
         self.currentUser = currentUser
         self.storefront = storefront
+        self.isHavingVpnPlanInCurrentSubscription = havingVpnPlan
         super.init()
     }
     
@@ -71,19 +76,32 @@ class StorefrontViewModel: NSObject {
             self.setupObserve()
             return Promise()
         }
-        
-        return self.currentUser.sevicePlanService.updateServicePlans()
-            .then { () -> Promise<Void> in
-                guard self.currentUser.sevicePlanService.isIAPAvailable else {
-                    throw NSError(domain: "", code: -1, localizedDescription: "IAP unavailable")
+
+        return Promise { (seal) in
+            let authenticator = Authenticator(api: self.currentUser.apiService)
+            let auth = self.currentUser.auth
+            authenticator.getUserInfo(Credential(auth)) { (result) in
+                switch result {
+                case .success(let userInfo):
+                    self.isHavingVpnPlanInCurrentSubscription = userInfo.subscribed == 4
+                case .failure(_):
+                    break
                 }
-                return self.currentUser.sevicePlanService.updateCurrentSubscription()
-            }.done {
-                self.initStoreFront()
-                self.servicePlanService = self.currentUser.sevicePlanService
-                self.setup(with: self.storefront)
-                self.setupObserve()
+                seal.fulfill_()
             }
+        }.then { () -> Promise<Void> in
+            return self.currentUser.sevicePlanService.updateServicePlans()
+        }.then { () -> Promise<Void> in
+            guard self.currentUser.sevicePlanService.isIAPAvailable else {
+                throw NSError(domain: "", code: -1, localizedDescription: "IAP unavailable")
+            }
+            return self.currentUser.sevicePlanService.updateCurrentSubscription()
+        }.done {
+            self.initStoreFront()
+            self.servicePlanService = self.currentUser.sevicePlanService
+            self.setup(with: self.storefront)
+            self.setupObserve()
+        }
     }
     
     func numberOfSections() -> Int {
@@ -268,6 +286,21 @@ extension StorefrontViewModel {
             }
             return title
         }
+
+        func makeUnavailableUpgradePlanText() -> NSAttributedString {
+            var regularAttributes = [NSAttributedString.Key: Any]()
+            regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
+            let title = LocalString._message_of_unavailable_to_upgrade_account
+            let urlTitle = LocalString._message_of_unavailable_to_upgrade_url
+            let fullTitle = String.localizedStringWithFormat(title, urlTitle)
+            let attributedString = NSMutableAttributedString(string: fullTitle,
+                                                             attributes: regularAttributes)
+            if let subrange = fullTitle.range(of: urlTitle) {
+                let nsRange = NSRange(subrange, in: fullTitle)
+                attributedString.addAttribute(.foregroundColor, value: UIColor.ProtonMail.Menu_UnreadCountBackground, range: nsRange)
+            }
+            return attributedString
+        }
         
         func makeCurrentPlanText(subscription: ServicePlanSubscription) -> NSAttributedString {
             var message: NSAttributedString!
@@ -300,6 +333,8 @@ extension StorefrontViewModel {
         switch storefront.subscription {
         case .some(let subscription):
             return AnnotationStorefrontItem(text: makeCurrentPlanText(subscription: subscription))
+        case .none where !storefront.isProductPurchasable && self.isHavingVpnPlanInCurrentSubscription:
+            return AnnotationStorefrontItem(text: makeUnavailableUpgradePlanText())
         case .none where !storefront.isProductPurchasable:
             return AnnotationStorefrontItem(text: makeUnavailablePlanText(plan: storefront.plan))
         case .none where storefront.isProductPurchasable:

@@ -1905,4 +1905,7 @@ class LocalizedString {
     lazy var _mailbox_draft_is_sending = NSLocalizedString("Sending message...", comment: "content of the sending mesage that will display this text on the date label")
     lazy var _messages_validation_failed_try_again = NSLocalizedString("Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.", comment: "message shown in the notification when the recipient validation is failed while sending")
     lazy var _ignore_IAP_error_descrption = NSLocalizedString("Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?", comment: "Alert message")
+
+    lazy var _message_of_unavailable_to_upgrade_account = NSLocalizedString("It's not possible to swicth to another plan within the app. %1$@", comment: "")
+    lazy var _message_of_unavailable_to_upgrade_url = NSLocalizedString("Plans can be edited on the web version.", comment: "")
 }
