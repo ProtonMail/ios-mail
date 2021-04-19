@@ -794,7 +794,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     var retryCounter = 0
     @objc internal func getLatestMessages() {
-        self.getLatestMessagesRaw(nil)
+        self.getLatestMessagesRaw() { [weak self] _ in
+            self?.deleteExpiredMessages()
+        }
     }
     internal func getLatestMessagesRaw(_ CompleteIsFetch: ((_ fetch: Bool) -> Void)?) {
         self.hideTopMessage()
@@ -1338,6 +1340,10 @@ extension MailboxViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             self.getLatestMessages()
         }
+    }
+
+    func deleteExpiredMessages() {
+        viewModel.user.messageService.deleteExpiredMessage()
     }
 }
 

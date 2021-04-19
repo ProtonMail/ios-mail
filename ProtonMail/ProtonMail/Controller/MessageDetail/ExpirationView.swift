@@ -49,9 +49,14 @@ class ExpirationCell: UITableViewCell {
     @IBOutlet weak var expirationView: ExpirationView!
     private var timer : Timer!
     private var expiration: Date = .distantFuture
+    var handleExpired: (() -> Void)?
     
     @objc private func autoTimer() {
-        self.expirationView.setExpirationTime(Int(self.expiration.timeIntervalSince(Date())))
+        let offset = Int(self.expiration.timeIntervalSince(Date()))
+        if offset <= 0 {
+            handleExpired?()
+        }
+        self.expirationView.setExpirationTime(offset)
     }
     
     override func prepareForReuse() {
