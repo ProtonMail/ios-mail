@@ -24,35 +24,64 @@ import PMUIFoundations
 
 class SingleMessageViewModel {
 
-    let message: Message
-    let messageBodyViewModel: NewMessageBodyViewModel
+    var message: Message {
+        didSet {
+            propagateMessageData()
+        }
+    }
 
-    private(set) var starred: Bool
+    let messageBodyViewModel: NewMessageBodyViewModel
+    let nonExapndedHeaderViewModel: NonExpandedHeaderViewModel
     private(set) lazy var userActivity: NSUserActivity = .messageDetailsActivity(messageId: message.messageID)
 
     private let messageService: MessageDataService
+    private let user: UserManager
     private let labelId: String
+    private let messageObserver: MessageObserver
 
-    init(labelId: String, message: Message, messageService: MessageDataService) {
+    var refreshView: (() -> Void)?
+
+    init(labelId: String, message: Message, user: UserManager) {
         self.labelId = labelId
         self.message = message
-        self.starred = message.starred
-        self.messageService = messageService
+        self.messageService = user.messageService
+        self.user = user
         self.messageBodyViewModel = NewMessageBodyViewModel()
+        self.nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(
+            labelId: labelId,
+            message: message,
+            user: user
+        )
+        self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
     }
 
     var messageTitle: NSAttributedString {
-        NSAttributedString(string: message.title, attributes: .titleAttributes)
+        message.title.apply(style: .titleAttributes)
+    }
+
+    func viewDidLoad() {
+        messageObserver.observe { [weak self] in
+            self?.message = $0
+        }
+        downloadDetails()
+    }
+
+    func propagateMessageData() {
+        refreshView?()
+        nonExapndedHeaderViewModel.messageHasChanged(message: message)
     }
 
     func starTapped() {
-        starred.toggle()
-        messageService.label(messages: [message], label: Message.Location.starred.rawValue, apply: starred)
+        messageService.label(messages: [message], label: Message.Location.starred.rawValue, apply: !message.starred)
     }
 
     func markReadIfNeeded() {
         guard message.unRead else { return }
         messageService.mark(messages: [message], labelID: labelId, unRead: false)
+    }
+
+    func downloadDetails() {
+        messageService.fetchMessageDetailForMessage(message, labelID: labelId) { _, _, _, _ in }
     }
 
 }

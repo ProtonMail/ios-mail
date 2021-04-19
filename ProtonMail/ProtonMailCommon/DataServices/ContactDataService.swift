@@ -653,16 +653,9 @@ extension ContactDataService {
     typealias ContactVOCompletionBlock = ((_ contacts: [ContactVO], _ error: Error?) -> Void)
     
     func allContactVOs() -> [ContactVO] {
-        var contacts: [ContactVO] = []
-        
-        for email in self.allEmails() {
-            contacts.append(ContactVO(id: email.contactID,
-                                      name: email.name,
-                                      email: email.email,
-                                      isProtonMailContact: true))
-        }
-        
-        return contacts
+        allEmails()
+            .filter { $0.userID == userID }
+            .map { ContactVO(id: $0.contactID, name: $0.name, email: $0.email, isProtonMailContact: true) }
     }
     
     func fetchContactVOs(_ completion: @escaping ContactVOCompletionBlock) {

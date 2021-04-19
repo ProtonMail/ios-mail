@@ -339,7 +339,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
 extension LabelManagerViewModel {
     private func fetchLabel() {
         let service = self.user.labelService
-        
+
         let fetchtype: LabelFetchType = self.type == .folder ? .folder: .label
         self.fetchedLabels = service.fetchedResultsController(fetchtype)
         self.fetchedLabels?.delegate = self

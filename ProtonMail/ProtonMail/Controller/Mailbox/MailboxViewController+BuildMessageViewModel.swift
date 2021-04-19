@@ -58,7 +58,7 @@ extension MailboxViewController {
 
     private func createTags(message: Message) -> [TagViewModel] {
         let expirationTag = createTagFromExpirationDate(message: message)
-        let labelsTags = createTagFromLabels(message: message)
+        let labelsTags = message.tagViewModels
         return [expirationTag].compactMap { $0 } + labelsTags
     }
 
@@ -72,43 +72,9 @@ extension MailboxViewController {
         )
     }
 
-    private func createTagFromLabels(message: Message) -> [TagViewModel] {
-        message.orderedLabels.map { label in
-            TagViewModel(
-                title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
-                icon: nil,
-                color: UIColor(hexString: label.color, alpha: 1.0)
-            )
-        }
-    }
-
 }
 
 private extension Message {
-
-    var orderedLabels: [Label] {
-        let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
-        let allLabels = labels.filtered(using: predicate)
-        return allLabels
-            .compactMap { $0 as? Label }
-            .filter { $0.type == 1 }
-            .sorted(by: { $0.order.intValue < $1.order.intValue })
-    }
-
-    var isCustomFolder: Bool {
-        let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
-        let allLabels = labels.filtered(using: predicate)
-        return allLabels.compactMap { $0 as? Label }.filter { $0.type == 3 }.count > 0
-    }
-
-    var messageLocation: Message.Location? {
-        labels
-            .compactMap { $0 as? Label }
-            .map(\.labelID)
-            .compactMap(Message.Location.init)
-            .filter { $0 != .allmail && $0 != .starred }
-            .first
-    }
 
     func isLabelLocation(labelId: String) -> Bool {
         labels
@@ -117,19 +83,6 @@ private extension Message {
             .map(\.labelID)
             .filter { Message.Location(rawValue: $0) == nil }
             .contains(labelId)
-    }
-
-    func senderName(labelId: String, replacingEmails: [Email]) -> String {
-        if labelId == Message.Location.sent.rawValue || draft {
-            return allEmailAddresses(replacingEmails)
-        } else {
-            return displaySender(replacingEmails)
-        }
-    }
-
-    var messageTime: String {
-        guard let time = time, let displayString = NSDate.stringForDisplay(from: time) else { return .empty }
-        return displayString
     }
 
 }

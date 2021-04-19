@@ -113,26 +113,3 @@ extension NewMailboxMessageViewModel {
     }
 
 }
-
-private extension Message.Location {
-
-    var originImage: UIImage? {
-        switch self {
-        case .archive:
-            return Asset.mailArchiveIcon.image
-        case .draft:
-            return Asset.mailDraftIcon.image
-        case .sent:
-            return Asset.mailSendIcon.image
-        case .spam:
-            return Asset.mailSpamIcon.image
-        case .trash:
-            return Asset.mailTrashIcon.image
-        case .inbox:
-            return Asset.mailInboxIcon.image
-        case .starred, .allmail:
-            return nil
-        }
-    }
-
-}
