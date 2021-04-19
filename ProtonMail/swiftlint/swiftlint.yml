@@ -102,6 +102,14 @@ included:
   - ${PWD}/ProtonMailCommon/ViewModels/Labels/LabelManagerViewModel.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Labels/LabelParentSelectVM.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Menu/MenuLabel.swift
+  - ${PWD}/ProtonMail/Components/UILabel+InitialsLabel.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NonExapndedHeader/NonExpandedHeaderView.swift 
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NonExapndedHeader/NonExpandedHeaderViewController.swift 
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NonExapndedHeader/NonExpandedHeaderViewModel.swift 
+  - ${PWD}/ProtonMail/Controller/SingleMessage/MessageObserver.swift
+  - ${PWD}/ProtonMailCommon/Extensions/Message+Helpers.swift 
+  - ${PWD}/ProtonMailCommon/Extensions/MessageLocation+OriginImage.swift 
+  - ${PWD}/ProtonMailCommon/Operators/Operators+NSAttributedStirng.swift 
 
 excluded:
   - ${PWD}/Pods

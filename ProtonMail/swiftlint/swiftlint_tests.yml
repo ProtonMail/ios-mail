@@ -32,6 +32,7 @@ included:
   - ${PWD}/ProtonMailTests/Helpers/AssertEqualImage.swift  
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsGestureViewModelTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsSwipeActionSelectViewModelTests.swift
+  - ${PWD}ProtonMail/ProtonMailTests/ProtonMailCommon/Operators/Operators_NSAttributedStirngTests.swift 
 
 excluded:
   - ${PWD}/Pods

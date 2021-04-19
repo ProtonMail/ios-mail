@@ -37,10 +37,14 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
     )
 
     let messageBodyViewController: NewMessageBodyViewController
+    let nonExapndedHeaderViewController: NonExpandedHeaderViewController
 
     init(viewModel: SingleMessageViewModel) {
         self.viewModel = viewModel
         self.messageBodyViewController = NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel)
+        self.nonExapndedHeaderViewController = NonExpandedHeaderViewController(
+            viewModel: viewModel.nonExapndedHeaderViewModel
+        )
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -51,12 +55,17 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel.viewDidLoad()
+        viewModel.refreshView = { [weak self] in
+            self?.reloadMessageRelatedData()
+        }
         setUpSelf()
         embedChildren()
     }
 
     private func embedChildren() {
         embed(messageBodyViewController, inside: customView.messageBodyContainer)
+        embed(nonExapndedHeaderViewController, inside: customView.messageHeaderContainer)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -64,6 +73,10 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
         viewModel.markReadIfNeeded()
         viewModel.userActivity.becomeCurrent()
+    }
+
+    private func reloadMessageRelatedData() {
+        starButtonSetUp(starred: viewModel.message.starred)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -102,7 +115,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
         navigationItem.rightBarButtonItem = starBarButton
         navigationItem.titleView = navigationTitleLabel
-        starButtonSetUp(starred: viewModel.starred)
+        starButtonSetUp(starred: viewModel.message.starred)
     }
 
     private func starButtonSetUp(starred: Bool) {
@@ -114,7 +127,6 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
     @objc
     private func starButtonTapped() {
         viewModel.starTapped()
-        starButtonSetUp(starred: viewModel.starred)
     }
 
     private func reloadAfterRotation() {

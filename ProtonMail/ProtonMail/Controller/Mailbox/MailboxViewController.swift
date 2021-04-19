@@ -249,7 +249,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         super.viewWillDisappear(animated)
         self.hideTopMessage()
         NotificationCenter.default.removeObserver(self)
-        self.stopAutoFetch()
+//        self.stopAutoFetch()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -279,8 +279,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.tableView.deselectRow(at: selectedItem, animated: true)
             }
         }
-        
-        self.startAutoFetch()
+
+        if timer == nil {
+            self.startAutoFetch()
+        }
         
         FileManager.default.cleanCachedAttsLegacy()
         

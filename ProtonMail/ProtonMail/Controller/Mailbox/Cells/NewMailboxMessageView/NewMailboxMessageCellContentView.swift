@@ -27,7 +27,7 @@ class NewMailboxMessageCellContentView: UIView {
 
     let messageContentView = NewMailboxMessageContentView()
     let leftContainer = UIControl()
-    let initialsLabel = SubviewsFactory.initialsLabel
+    let initialsLabel = UILabel.initialsLabel
     let checkBoxView = NewMailboxMessageCheckBoxView()
 
     init() {
@@ -77,19 +77,6 @@ class NewMailboxMessageCellContentView: UIView {
 
     required init?(coder: NSCoder) {
         nil
-    }
-
-}
-
-private enum SubviewsFactory {
-
-    static var initialsLabel: UILabel {
-        let label = UILabel(frame: .zero)
-        label.backgroundColor = UIColorManager.InteractionWeak
-        label.layer.cornerRadius = 6
-        label.clipsToBounds = true
-        label.isUserInteractionEnabled = false
-        return label
     }
 
 }
