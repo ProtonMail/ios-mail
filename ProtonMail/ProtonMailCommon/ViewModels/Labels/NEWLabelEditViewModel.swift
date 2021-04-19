@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import CoreData
 import Foundation
 import PMCommon
 
@@ -230,15 +231,15 @@ extension NEWLabelEditViewModel: LabelEditVMProtocol {
         switch self.type {
         case .folder:
             if self.label != nil {
-                return LocalString._creating_folder_not_allowed
-            } else {
                 return LocalString._editing_folder_not_allowed
+            } else {
+                return LocalString._creating_folder_not_allowed
             }
         case .label:
             if self.label != nil {
-                return LocalString._creating_label_not_allowed
-            } else {
                 return LocalString._editing_label_not_allowed
+            } else {
+                return LocalString._creating_label_not_allowed
             }
         default:
             return LocalString._general_alert_title
@@ -307,7 +308,12 @@ extension NEWLabelEditViewModel: LabelEditVMProtocol {
         guard let label = self.label,
               let dbLabel = self.user.labelService.label(by: label.location.labelID) else { return }
         self.uiDelegate?.showLoadingHUD()
-        self.user.labelService.deleteLabel(dbLabel) {[weak self] in
+        
+        let subFolders: [NSManagedObjectID] = label.flattenSubFolders()
+            .compactMap { self.user.labelService.label(by: $0.location.labelID)?.objectID }
+
+        self.user.labelService.deleteLabel(dbLabel, subLabelIDs: subFolders) {
+            [weak self] in
             guard let self = self else { return }
             self.uiDelegate?.hideLoadingHUD()
             self.uiDelegate?.dismiss()
@@ -317,13 +323,6 @@ extension NEWLabelEditViewModel: LabelEditVMProtocol {
 
 extension NEWLabelEditViewModel {
     private func setupSection() {
-
-        defer {
-            if self.label != nil {
-                self.section.append(.delete)
-            }
-        }
-
         if self.type == .folder {
             self.section = [.name, .folderOptions]
 
@@ -340,6 +339,10 @@ extension NEWLabelEditViewModel {
         } else {
             self.section = [.name, .palette]
         }
+        
+        guard self.label != nil,
+              let index = self.section.firstIndex(where: { $0 == .palette || $0 == .colorInherited}) else { return }
+        self.section.insert(.delete, at: index)
     }
 
     private func updateLabel(label: MenuLabel) {

@@ -107,4 +107,12 @@ final class MenuLabelTests: XCTestCase {
         label2.setupIndentationByPath()
         XCTAssertEqual(label2.indentationLevel, 0)
     }
+    
+    func testFlattenSubFolders() {
+        let (labels, folders) = menuLabels.sortoutData()
+        XCTAssertEqual(labels.count, 6)
+        
+        XCTAssertEqual(folders[0].flattenSubFolders().count, 1)
+        XCTAssertEqual(folders[1].flattenSubFolders().count, 4)
+    }
 }

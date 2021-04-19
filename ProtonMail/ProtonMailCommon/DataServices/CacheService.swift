@@ -476,7 +476,28 @@ extension CacheService {
             completion?()
         }
     }
-
+    
+    func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?) {
+        context.perform {
+            do {
+                var response = serverReponse
+                response["UserID"] = self.userID
+                if response["ParentID"] == nil {
+                    response["ParentID"] = ""
+                }
+                try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: response, in: self.context)
+                if let error = self.context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            } catch let ex as NSError {
+                PMLog.D("error: \(ex)")
+            }
+            DispatchQueue.main.async {
+                completion?()
+            }
+        }
+    }
+    
     func updateLabel(_ label: Label, name: String, color: String, completion: (() -> Void)?) {
         context.perform {
             if let labelToUpdate = try? self.context.existingObject(with: label.objectID) as? Label {
@@ -503,6 +524,23 @@ extension CacheService {
             DispatchQueue.main.async {
                 completion?()
             }
+        }
+    }
+    
+    func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?) {
+        context.perform {
+            for id in objectIDs {
+                guard let label = try? self.context.existingObject(with: id) else {
+                    continue
+                }
+                self.context.delete(label)
+            }
+            if let err = self.context.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(err)")
+            }
+        }
+        DispatchQueue.main.async {
+            completion?()
         }
     }
 }

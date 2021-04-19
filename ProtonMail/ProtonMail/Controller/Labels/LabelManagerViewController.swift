@@ -72,7 +72,7 @@ final class LabelManagerViewController: UIViewController {
 
 extension LabelManagerViewController {
     private func setupNavigationBar() {
-        self.title = self.viewModel.type == .folder ? LocalString._manage_folders: LocalString._manage_labels
+        self.title = self.viewModel.viewTitle
         self.setupReorderBtn()
     }
 
@@ -135,6 +135,7 @@ extension LabelManagerViewController {
         self.tableView.isEditing = isOn
         self.isEditingModeOn = isOn
         self.reloadData()
+        self.title = isOn ? LocalString._reorder: self.viewModel.viewTitle
     }
 }
 
@@ -208,7 +209,8 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
 
     // MARK: Cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.numberOfRows(in: section)
+        return self.viewModel.numberOfRows(in: section,
+                                           isReorder: tableView.isEditing)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -290,7 +292,8 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
             return .init()
         }
 
-        let data = self.viewModel.data(of: indexPath)
+        let data = self.viewModel.data(of: indexPath,
+                                       isReorder: tableView.isEditing)
         let useFolderColor = self.viewModel.useFolderColor
         cell.config(by: data, showArrow: false, useFillIcon: useFolderColor, delegate: nil)
 
@@ -320,7 +323,8 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
             }
             self.coordinator.goToEditing(label: nil)
         case .data:
-            let label = self.viewModel.data(of: indexPath)
+            let label = self.viewModel.data(of: indexPath,
+                                            isReorder: tableView.isEditing)
             self.coordinator.goToEditing(label: label)
         }
     }
@@ -360,8 +364,10 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
             return sourceIndexPath
         }
 
-        let sourceLabel = self.viewModel.data(of: sourceIndexPath)
-        let targetLabel = self.viewModel.data(of: proposedDestinationIndexPath)
+        let sourceLabel = self.viewModel.data(of: sourceIndexPath,
+                                              isReorder: tableView.isEditing)
+        let targetLabel = self.viewModel.data(of: proposedDestinationIndexPath,
+                                              isReorder: tableView.isEditing)
 
         let wantToMoveUp = sourceIndexPath.row > proposedDestinationIndexPath.row
         let sourceLevel = sourceLabel.indentationLevel

@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="e8T-fy-tso">
-                        <rect key="frame" x="16" y="0.0" width="379" height="96"/>
+                        <rect key="frame" x="0.0" y="0.0" width="395" height="96"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="96" id="ewm-yk-O7O"/>
                         </constraints>
@@ -30,7 +30,7 @@
                     <constraint firstAttribute="bottom" secondItem="e8T-fy-tso" secondAttribute="bottom" id="Top-sd-BTK"/>
                     <constraint firstAttribute="trailing" secondItem="e8T-fy-tso" secondAttribute="trailing" id="fm5-l7-0RJ"/>
                     <constraint firstItem="e8T-fy-tso" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="jNc-u1-U9D"/>
-                    <constraint firstItem="e8T-fy-tso" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="rlW-y1-fs2"/>
+                    <constraint firstItem="e8T-fy-tso" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="rlW-y1-fs2"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

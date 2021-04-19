@@ -47,8 +47,10 @@ final class LabelEditCoordinator: DefaultCoordinator {
     func goToParentSelect() {
         guard let viewModel = self.viewModel else { return }
         let isInherit = viewModel.user.userinfo.inheritParentFolderColor == 1 ? true: false
+        let useFolderColor = viewModel.user.userinfo.enableFolderColor == 1 ? true: false
         let parentVm = LabelParentSelectVM(labels: viewModel.labels,
                                            label: viewModel.label,
+                                           useFolderColor: useFolderColor,
                                            inheritParentColor: isInherit,
                                            delegate: self,
                                            parentID: viewModel.parentID)

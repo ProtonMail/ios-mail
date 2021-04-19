@@ -35,8 +35,11 @@ final class LabelNameCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        let padding = UIView(frame: .init(x: 0, y: 0, width: 16, height: 96))
         self.nameField.delegate = self
         self.nameField.backgroundColor = .clear
+        self.nameField.leftView = padding
+        self.nameField.leftViewMode = .always
         self.contentView.backgroundColor = UIColorManager.BackgroundNorm
     }
 

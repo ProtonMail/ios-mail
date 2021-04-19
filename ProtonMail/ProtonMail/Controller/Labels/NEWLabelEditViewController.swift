@@ -80,12 +80,15 @@ extension NEWLabelEditViewController {
         self.title = self.viewModel.viewTitle
 
         self.setupDoneButton()
-
-        let discardBtn = UIBarButtonItem(image: Asset.actionSheetClose.image,
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(self.clickDiscardButton))
-        discardBtn.tintColor = UIColorManager.IconNorm
+        let discardBtn = Asset.actionSheetClose.image
+            .toUIBarButtonItem(target: self,
+                               action: #selector(self.clickDiscardButton),
+                               style: .plain,
+                               tintColor: UIColorManager.IconNorm,
+                               squareSize: 24,
+                               backgroundColor: nil,
+                               backgroundSquareSize: nil,
+                               isRound: false)
         self.navigationItem.leftBarButtonItem = discardBtn
 
         self.navigationController?.navigationBar.barTintColor = UIColorManager.BackgroundNorm
@@ -256,7 +259,7 @@ extension NEWLabelEditViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch self.viewModel.section[section] {
         case .palette, .colorInherited:
-            return PMHeaderView(title: LocalString._contact_groups_select_color)
+            return PMHeaderView(title: LocalString._select_colour)
         default:
             return PMHeaderView(title: "")
         }

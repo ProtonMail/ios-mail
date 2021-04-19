@@ -31,6 +31,8 @@ struct EventAPI {
     /// base event api path
     static let path :String = "/events"
     
+    static let v4Prefix: String = "/v4"
+    
     /// get latest event id
     static let v_get_latest_event_id : Int = 3
     
@@ -48,14 +50,14 @@ final class EventCheckRequest: Request {
     }
     
     var path: String {
-        return EventAPI.path + "/\(self.eventID)"
+        return EventAPI.v4Prefix + EventAPI.path + "/\(self.eventID)"
     }
 }
 
 // -- EventLatestIDResponse
 final class EventLatestIDRequest : Request{
     var path: String {
-        return EventAPI.path + "/latest"
+        return EventAPI.v4Prefix + EventAPI.path + "/latest"
     }
 }
 

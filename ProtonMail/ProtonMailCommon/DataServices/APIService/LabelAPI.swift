@@ -48,22 +48,6 @@ struct LabelAPI {
     static let v_order_labels : Int = 3
 }
 
-/// Get user's labels/contact groups in the order to be displayed from the server
-final class GetLabelsRequest : Request { //GetLabelsResponse> {
-    var type: Int = 1
-    init(type: Int = 1) {
-        self.type = type
-    }
-    
-    var path: String {
-        return LabelAPI.path
-    }
-        
-    var parameters: [String : Any]? {
-        return ["Type" : type]
-    }
-}
-
 final class GetV4LabelsRequest: Request {
     private let type: Int
     init(type: PMLabelType) {

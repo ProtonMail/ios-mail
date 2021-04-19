@@ -153,6 +153,12 @@ final class MenuLabel: NSObject {
         }
         self.indentationLevel = level - 1
     }
+
+    /// Flatten all subfolders
+    /// - Returns: all subfolders, no ordered, no contain the root label
+    func flattenSubFolders() -> [MenuLabel] {
+        self.subLabels.flatMap { $0.subLabels } + self.subLabels
+    }
 }
 
 /* drag and drop related
