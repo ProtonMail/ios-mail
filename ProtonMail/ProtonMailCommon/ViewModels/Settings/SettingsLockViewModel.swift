@@ -24,22 +24,26 @@
 import Foundation
 import PMKeymaker
 
-enum SettingLockSection : Int, CustomStringConvertible {
+enum SettingLockSection : Int {
     case enableProtection = 0
     case changePin = 1
     case bioProtection = 2
     case timing = 3
     
-    var description: String {
+    var description: NSAttributedString {
         switch self {
         case .enableProtection:
-            return "Protection"
+            let wipeDesc = LocalString._lock_wipe_desc.apply(style: FontManager.CaptionWeak)
+            let title = "\n\nProtection".apply(style: FontManager.DefaultSmallWeak)
+            let desc = NSMutableAttributedString(attributedString: wipeDesc)
+            desc.append(title)
+            return desc
         case .bioProtection:
-            return "BIO"
+            return "BIO".apply(style: .DefaultSmallWeek)
         case .timing:
-            return "Timing"
+            return "Timing".apply(style: .DefaultSmallWeek)
         default:
-            return ""
+            return "".apply(style: .DefaultSmallWeek)
         }
     }
 }
@@ -85,7 +89,7 @@ protocol SettingsLockViewModel : AnyObject {
 
     func updateProtectionItems()
     func disableProtection()
-    func getBioProtectionSectionTitle() -> String?
+    func getBioProtectionSectionTitle() -> NSAttributedString?
 }
 
 class SettingsLockViewModelImpl : SettingsLockViewModel {
@@ -157,12 +161,12 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
         }
     }
 
-    func getBioProtectionSectionTitle() -> String? {
+    func getBioProtectionSectionTitle() -> NSAttributedString? {
         switch self.biometricStatus.biometricType {
         case .faceID:
-            return "Face ID"
+            return "Face ID".apply(style: .DefaultSmallWeek)
         case .touchID:
-            return "Touch ID"
+            return "Touch ID".apply(style: .DefaultSmallWeek)
         default:
             return nil
         }
