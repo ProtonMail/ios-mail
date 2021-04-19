@@ -184,14 +184,14 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             } else if timeIndex == 1{
                 text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
             }
-            cell.configureCell(left: eSection.description, right: text, imageType: .arrow)
+            cell.configureCell(left: eSection.description.string, right: text, imageType: .arrow)
             return cell
         }
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let eSection = self.viewModel.sections[section]
-        guard !eSection.description.isEmpty else {
+        guard !eSection.description.string.isEmpty else {
             return nil
         }
 
@@ -205,13 +205,13 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             if eSection == .bioProtection, let bioTitle = self.viewModel.getBioProtectionSectionTitle() {
                 title = bioTitle
             }
-            let headerAttribute = FontManager.DefaultSmallWeak
-            textLabel.attributedText = NSAttributedString(string: title, attributes: headerAttribute)
+            textLabel.attributedText = title
             
             textLabel.translatesAutoresizingMaskIntoConstraints = false
+            textLabel.numberOfLines = 0
             headerCell.contentView.addSubview(textLabel)
 
-            textLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
+            textLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
             textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 24.0).isActive = true
             textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16.0).isActive = true
             textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16.0).isActive = true
