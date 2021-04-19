@@ -238,7 +238,11 @@ class UserManager : Service, HasLocalStorage {
     }
 
     func fetchUserInfo() {
-        self.userService.fetchUserInfo(auth: self.auth).cauterize()
+        _ = self.userService.fetchUserInfo(auth: self.auth).done { [weak self] info in
+            guard let info = info else { return }
+            self?.userinfo = info
+            self?.save()
+        }
     }
 }
 

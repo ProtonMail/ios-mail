@@ -316,19 +316,34 @@ class LabelsDataService: Service, HasLocalStorage {
             if let err = response.error {
                 completion?(err)
             } else {
-                self.cacheService.updateLabel(label, name: name, color: color) {
+                guard let labelDic = response.label else {
+                    let error = NSError(domain: "", code: -1,
+                                        localizedDescription: LocalString._error_no_object)
+                    completion?(error)
+                    return
+                }
+                self.cacheService.updateLabel(serverReponse: labelDic) {
                     completion?(nil)
                 }
             }
         }
     }
 
-    func deleteLabel(_ label: Label, completion: (() -> Void)?) {
+    
+    /// Send api to delete label and remove related labels from the DB
+    /// - Parameters:
+    ///   - label: The label want to be deleted
+    ///   - subLabelIDs: Object ids array of child labels
+    ///   - completion: completion
+    func deleteLabel(_ label: Label,
+                     subLabelIDs: [NSManagedObjectID] = [],
+                     completion: (() -> Void)?) {
         let api = DeleteLabelRequest(lable_id: label.labelID)
         self.apiService.exec(route: api) { (_, _) in
 
         }
-        self.cacheService.deleteLabel(label) {
+        let ids = subLabelIDs + [label.objectID]
+        self.cacheService.deleteLabels(objectIDs: ids) {
             completion?()
         }
     }

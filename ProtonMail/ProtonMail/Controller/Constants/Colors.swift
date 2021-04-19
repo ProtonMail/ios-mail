@@ -26,10 +26,11 @@ import Foundation
 
 struct ColorManager {
     static let forLabel = [
-        "#7272a7", "#cf5858", "#c26cc7", "#7569d1", "#69a9d1",
-        "#5ec7b7", "#72bb75", "#c3d261", "#e6c04c", "#e6984c",
-        "#8989ac", "#cf7e7e", "#c793ca", "#9b94d1", "#a8c4d5",
-        "#97c9c1", "#9db99f", "#c6cd97", "#e7d292", "#dfb286"
+        "#7272a7", "#8989ac", "#cf5858", "#cf7e7e",
+        "#c26cc7", "#c793ca", "#7569d1", "#9b94d1",
+        "#69a9d1", "#a8c4d5", "#5ec7b7", "#97c9c1",
+        "#72bb75", "#9db99f", "#c3d261", "#c6cd97",
+        "#e6c04c", "#e7d292", "#e6984c", "#dfb286"
     ]
     
     static let defaultColor = ColorManager.forLabel[0]

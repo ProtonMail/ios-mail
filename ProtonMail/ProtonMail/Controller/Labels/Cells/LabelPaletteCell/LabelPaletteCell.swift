@@ -35,8 +35,7 @@ final class LabelPaletteCell: UITableViewCell {
     private var colors: [String] = []
     private var selectedColor: String = ""
     private var type: PMLabelType = .unknow
-    private let itemWidth: CGFloat = 42
-    private let itemHeight: CGFloat = 36
+    private let itemSize = CGSize(width: 48, height: 48)
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -48,11 +47,11 @@ final class LabelPaletteCell: UITableViewCell {
 
         let padding: CGFloat = 35
         let screenSize = UIScreen.main.bounds.width
-        let space: CGFloat = (screenSize - 2 * padding - 4 * self.itemWidth) / 3
+        let space: CGFloat = (screenSize - 2 * padding - 4 * self.itemSize.width) / 3
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: self.itemWidth, height: self.itemHeight)
-        layout.minimumLineSpacing = self.itemHeight
-        layout.minimumInteritemSpacing = space
+        layout.itemSize = self.itemSize
+        layout.minimumLineSpacing = self.itemSize.height
+        layout.minimumInteritemSpacing = floor(space)
         self.collectionView.collectionViewLayout = layout
     }
 
@@ -61,7 +60,8 @@ final class LabelPaletteCell: UITableViewCell {
         self.selectedColor = selected
         self.type = type
         self.collectionView.reloadData()
-        self.collectionHeight.constant = self.itemHeight * 9
+        self.collectionHeight.constant = self.itemSize.height * 9
+        self.delegate = delegate
     }
 }
 

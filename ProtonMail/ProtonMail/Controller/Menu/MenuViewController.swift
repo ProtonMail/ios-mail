@@ -217,7 +217,8 @@ extension MenuViewController: MenuUIProtocol {
                   let label = self.viewModel.getMenuItem(indexPath: indexPath) else {
                 continue
             }
-            cell.config(by: label, delegate: self)
+            cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, delegate: self)
+            cell.update(iconColor: self.viewModel.getColor(of: label))
         }
         
         self.tableView.insertRows(at: insertRows, with: .fade)

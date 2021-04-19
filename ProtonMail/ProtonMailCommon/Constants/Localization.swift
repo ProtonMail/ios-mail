@@ -2077,4 +2077,5 @@ class LocalizedString {
     lazy var _folder_name_duplicated_message = NSLocalizedString("A sub-folder with this name already exists in the destination folder", comment: "Alert message is shown when folder name duplicated")
     lazy var _use_folder_color = NSLocalizedString("Use folder colors", comment: "Option title")
     lazy var _inherit_parent_color = NSLocalizedString("Inherit color from parent folder", comment: "Option title")
+    lazy var _select_colour = NSLocalizedString("Select colour", comment: "section title")
 }

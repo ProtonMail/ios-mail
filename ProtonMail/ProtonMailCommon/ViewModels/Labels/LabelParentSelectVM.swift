@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import PMUIFoundations
 import Foundation
 
 protocol LabelParentSelctVMProtocol {
@@ -27,6 +28,7 @@ protocol LabelParentSelctVMProtocol {
     var labels: [MenuLabel] { get }
     var name: String { get }
     var parentID: String { get }
+    var useFolderColor: Bool { get }
 
     func update(parentID: String)
     func selectRow(row: Int)
@@ -42,6 +44,7 @@ protocol LabelParentSelectDelegate: class {
 final class LabelParentSelectVM: LabelParentSelctVMProtocol {
     let labels: [MenuLabel]
     let name: String
+    let useFolderColor: Bool
     private let label: MenuLabel?
     private(set) var parentID: String
     private let originalParentID: String
@@ -52,10 +55,12 @@ final class LabelParentSelectVM: LabelParentSelctVMProtocol {
     /// - Parameters:
     ///   - labels: Sorted out labels data
     ///   - label: The editing label
+    ///   - useFolderColor: use folder color?
     ///   - inheritParentColor: inherit parent color?
     ///   - delegate: delegate
     init(labels: [MenuLabel],
          label: MenuLabel?,
+         useFolderColor: Bool,
          inheritParentColor: Bool,
          delegate: LabelParentSelectDelegate?,
          parentID: String) {
@@ -64,6 +69,7 @@ final class LabelParentSelectVM: LabelParentSelctVMProtocol {
         self.originalParentID = parentID
         self.parentID = parentID
         self.name = label?.name ?? ""
+        self.useFolderColor = useFolderColor
         self.inheritParentColor = inheritParentColor
         self.delegate = delegate
     }
@@ -133,6 +139,10 @@ final class LabelParentSelectVM: LabelParentSelctVMProtocol {
 
     /// Get folder color, will handle inheritParentColor
     func getFolderColor(label: MenuLabel) -> UIColor {
+        guard self.useFolderColor else {
+            return UIColorManager.IconNorm
+        }
+
         guard self.inheritParentColor else {
             return UIColor(hexColorCode: label.iconColor)
         }

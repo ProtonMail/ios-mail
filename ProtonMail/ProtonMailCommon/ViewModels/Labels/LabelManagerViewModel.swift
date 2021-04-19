@@ -43,9 +43,9 @@ protocol LabelManagerProtocol: class {
     func set(uiDelegate: LabelManagerUIProtocol)
     func viewDidLoad()
     func getHeight(of section: Int) -> CGFloat
-    func numberOfRows(in section: Int) -> Int
+    func numberOfRows(in section: Int, isReorder: Bool) -> Int
     func switcherData(of indexPath: IndexPath) -> (title: String, value: Bool)
-    func data(of indexPath: IndexPath) -> MenuLabel
+    func data(of indexPath: IndexPath, isReorder: Bool) -> MenuLabel
     func queryLabel(id: String?) -> MenuLabel?
     func move(sourceIndex: IndexPath, to destIndex: IndexPath)
     func drag(sourceIndex: IndexPath, into destIndex: IndexPath)
@@ -90,7 +90,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
     }
 
     var viewTitle: String {
-        return self.type == .folder ? LocalString._manage_folders: LocalString._manage_labels
+        return self.type == .folder ? LocalString._folders: LocalString._labels
     }
 
     var createTitle: String {
@@ -154,7 +154,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
         }
     }
 
-    func numberOfRows(in section: Int) -> Int {
+    func numberOfRows(in section: Int, isReorder: Bool) -> Int {
         if self.type == .label {
             switch self.section[section] {
             case .switcher:
@@ -162,7 +162,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
             case .create:
                 return 1
             case .data:
-                return self.data.getNumberOfRows()
+                return self.data.count
             }
         } else {
             switch self.section[section] {
@@ -171,7 +171,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
             case .create:
                 return 1
             case .data:
-                return self.data.getNumberOfRows()
+                return isReorder ? self.data.count: self.data.getNumberOfRows()
             }
         }
     }
@@ -188,11 +188,11 @@ extension LabelManagerViewModel: LabelManagerProtocol {
         }
     }
 
-    func data(of indexPath: IndexPath) -> MenuLabel {
+    func data(of indexPath: IndexPath, isReorder: Bool) -> MenuLabel {
         if self.type == .label {
             return self.labelData(of: indexPath)
         } else {
-            return self.folderData(of: indexPath)
+            return self.folderData(of: indexPath, isReorder: isReorder)
         }
     }
 
@@ -204,8 +204,8 @@ extension LabelManagerViewModel: LabelManagerProtocol {
     func move(sourceIndex: IndexPath, to destIndex: IndexPath) {
 
         self.uiDelegate?.showLoadingHUD()
-        let sourceLabel = self.data(of: sourceIndex)
-        var targetLabel = self.data(of: destIndex)
+        let sourceLabel = self.data(of: sourceIndex, isReorder: true)
+        var targetLabel = self.data(of: destIndex, isReorder: true)
 
         // Make sure source and target are in the same level
         if sourceLabel.indentationLevel != targetLabel.indentationLevel {
@@ -263,8 +263,8 @@ extension LabelManagerViewModel: LabelManagerProtocol {
         }
         self.uiDelegate?.showLoadingHUD()
 
-        let sourceItem = self.data(of: sourceIndex)
-        let destItem = self.data(of: destIndex)
+        let sourceItem = self.data(of: sourceIndex, isReorder: true)
+        let destItem = self.data(of: destIndex, isReorder: true)
 
         if let parentLabel = self.queryLabel(id: sourceItem.parentID) {
             guard let index = parentLabel.subLabels.firstIndex(of: sourceItem) else {
@@ -339,7 +339,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
 extension LabelManagerViewModel {
     private func fetchLabel() {
         let service = self.user.labelService
-        
+
         let fetchtype: LabelFetchType = self.type == .folder ? .folder: .label
         self.fetchedLabels = service.fetchedResultsController(fetchtype)
         self.fetchedLabels?.delegate = self
@@ -389,7 +389,7 @@ extension LabelManagerViewModel {
         return self.data[indexPath.row]
     }
 
-    private func folderData(of indexPath: IndexPath) -> MenuLabel {
+    private func folderData(of indexPath: IndexPath, isReorder: Bool) -> MenuLabel {
         switch self.section[indexPath.section] {
         case .create:
             let addFolder = MenuLabel(id: LabelLocation.addFolder.labelID,
@@ -403,6 +403,9 @@ extension LabelManagerViewModel {
                                       notify: false)
             return addFolder
         case .data:
+            if isReorder {
+                return self.data[indexPath.row]
+            }
             guard let item = self.data.getFolderItem(by: indexPath) else {
                 assert(false, "bugs")
                 return MenuLabel(location: .bugs)
@@ -425,6 +428,7 @@ extension LabelManagerViewModel {
             return
         }
         self.user.userInfo.parse(mailSettings: mailSettingsResponse.mailSettings)
+        self.user.save()
         self.uiDelegate?.reloadData()
     }
 

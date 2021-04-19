@@ -126,7 +126,7 @@ extension LabelParentSelectViewController: UITableViewDelegate, UITableViewDataS
         guard let label = self.viewModel.labels.getFolderItem(by: path) else {
             return .init()
         }
-        cell.config(by: label, showArrow: false, useFillIcon: true, delegate: nil)
+        cell.config(by: label, showArrow: false, useFillIcon: self.viewModel.useFolderColor, delegate: nil)
         if self.viewModel.isAllowToSelect(row: indexPath.row) {
             cell.update(textColor: UIColorManager.TextNorm)
             cell.update(iconColor: self.viewModel.getFolderColor(label: label))
