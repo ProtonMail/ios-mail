@@ -108,6 +108,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
     private func setUpSelf() {
         customView.titleLabel.attributedText = viewModel.messageTitle
         navigationTitleLabel.label.attributedText = viewModel.message.title.apply(style: .DefaultSmallStrong)
+        navigationTitleLabel.label.lineBreakMode = .byTruncatingTail
 
         customView.navigationSeparator.isHidden = true
         customView.scrollView.delegate = self
