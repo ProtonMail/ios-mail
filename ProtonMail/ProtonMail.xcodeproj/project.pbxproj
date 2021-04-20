@@ -423,6 +423,7 @@
 		2D8872A73A2FCCEF28D4D2D9827CD89B /* BioCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */; };
 		2D9C8564B25958BF619F258CFFAF91B3 /* MailboxMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C178973BACB0B6484835660600335F4 /* MailboxMessageCell.swift */; };
 		2DB425A565E3E5977E5A3C698E6AB84E /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A87699F7C2DA54C829BE680A6AF3B92 /* SignInViewController.swift */; };
+		2E30993E5D8D5752EEE1A12092950E25 /* NonExpandedHeaderViewModel+LockIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987F181D4CF7D745CE42C1DC3B45866F /* NonExpandedHeaderViewModel+LockIcon.swift */; };
 		2E3CC5FBF60018E602CB985A62829CF4 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52EFAA1E5968D63455EF89B7C3CCC5C2 /* WebViewController.swift */; };
 		2E4AC0721F7467EE6D865D2AC4A6FA38 /* BioCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A2C4F86BB7CF8BD48A4132F16CB0E /* BioCodeView.swift */; };
 		2E6568A250DC461B19CFCBF74D8A6532 /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A790589C2185C0BBD7B5BDC105E151 /* NotificationName.swift */; };
@@ -534,6 +535,7 @@
 		3937F3278BDC9F8F3E7DD05226153013 /* ContactsDetailsWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B4974E9CC194892692CE0F147C1428 /* ContactsDetailsWarningCell.swift */; };
 		3974A37D648939146D82C0A06E8C4505 /* HtmlEditor.html in Resources */ = {isa = PBXBuildFile; fileRef = C5CAEDD4BF1C083D26B5050E226CE4DC /* HtmlEditor.html */; };
 		398B4379C21AFBE8FC503A5493BAC856 /* AccountSettingsRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C674D83EC6978C2E18346B16811283A /* AccountSettingsRobot.swift */; };
+		39BBA9A4CE444DB6F9CA39DF3A22741E /* NonExpandedHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FD25015DB0F87C3CDB90BB685BEDBC /* NonExpandedHeaderViewModel.swift */; };
 		39E7036920DA6AE8538EB9A3FFAF5BA7 /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA10D85CE79610C05969E8D8B788B1C /* PasswordUtils.swift */; };
 		3A027F9E156D13283AB6FA3F680745D1 /* ContactEditInformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5EE475A5F2B95E51D3A3B59EA40B50 /* ContactEditInformationCell.swift */; };
 		3A7A0B8EB1BEB5E8600400F8B84DE918 /* MockQueueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2CE38D76CFB682CFC1607938540EF8 /* MockQueueHandler.swift */; };
@@ -1963,6 +1965,7 @@
 		D347A4FD324BC0E3982A152A870D59AF /* MailSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78935D907A4A5837283960605A94A31F /* MailSettings.swift */; };
 		D3847DC3D063CCC7CC2CB9C8D6492E24 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227296580D62465EBB981626C208052D /* AuthAPI.swift */; };
 		D3C357F6C07D7DF0877F6E4A01B925BD /* NotificationCenter+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B924404B24EC8056D1E834431E6614 /* NotificationCenter+KeyboardExtension.swift */; };
+		D3C46CE072D407403E227E606E4CF693 /* NonExpandedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5532B57CD37BAB97BD5E113F718D877C /* NonExpandedHeaderView.swift */; };
 		D3D1FA712B15968A306E15147CDB1C1C /* SettingsPrivacyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AF9D982968623754ABB144B312AA6A /* SettingsPrivacyViewModel.swift */; };
 		D408B45EA4F4F6F577D93DFC701BA112 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AA063DDB34350CC9B431705C5A4D03 /* Contact.swift */; };
 		D41813CD24AF3CB64799B2D49BB7353F /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7915305A9078452FD4617B7895B4E803 /* APIService+AuthenticationExtension.swift */; };
@@ -4230,6 +4233,14 @@
 			path = Contacts;
 			sourceTree = "<group>";
 		};
+		2A6230EB4B5041165D8D2CDC2C726622 /* Operators */ = {
+			isa = PBXGroup;
+			children = (
+				193D7D121BB067816F0F7CB460C26C23 /* Operators_NSAttributedStringTests.swift */,
+			);
+			path = Operators;
+			sourceTree = "<group>";
+		};
 		2AF3359203835E353281F42161F5BB46 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -4420,14 +4431,6 @@
 				3AFB641BB83CFC2DBF6FA0479D66BCB7 /* ContactsTableViewCell.xib */,
 			);
 			path = Cell;
-			sourceTree = "<group>";
-		};
-		2A6230EB4B5041165D8D2CDC2C726622 /* Operators */ = {
-			isa = PBXGroup;
-			children = (
-				193D7D121BB067816F0F7CB460C26C23 /* Operators_NSAttributedStringTests.swift */,
-			);
-			path = Operators;
 			sourceTree = "<group>";
 		};
 		4768FD238A29BBC4CCDA9E5E4B9DD6A1 /* Queue */ = {
@@ -8817,7 +8820,10 @@
 				5CEC3612D454364F02BC0C6DF993907C /* NewMessageBodyView.swift in Sources */,
 				849BAE4951E24817656B06523AACA44E /* NewMessageBodyViewController.swift in Sources */,
 				625E7BADC993E4098FC3E260B119EA80 /* NewMessageBodyViewModel.swift in Sources */,
+				D3C46CE072D407403E227E606E4CF693 /* NonExpandedHeaderView.swift in Sources */,
 				C87F1E3F265E94A77967D1D628E8DE39 /* NonExpandedHeaderViewController.swift in Sources */,
+				2E30993E5D8D5752EEE1A12092950E25 /* NonExpandedHeaderViewModel+LockIcon.swift in Sources */,
+				39BBA9A4CE444DB6F9CA39DF3A22741E /* NonExpandedHeaderViewModel.swift in Sources */,
 				FC512606212D0EA8441A077C46AB9F4E /* Notification+KeyboardExtension.swift in Sources */,
 				A5992358AA73EDBCEF1F36BDA36C5544 /* NotificationCenter+KeyboardExtension.swift in Sources */,
 				85A9AB89CD1730B38A8D623AB0FB6990 /* NotificationName.swift in Sources */,
