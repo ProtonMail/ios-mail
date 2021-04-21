@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import PMUIFoundations
 import UIKit
 
 //Complete
@@ -101,7 +101,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         
         self.allowsMultipleSelection = false
         self.allowsSelection = true
-        self.backgroundColor = UIColor(hexColorCode: "#FFFFFF") //UIColorFromRGB(0xFCFEFF)
+        self.backgroundColor = UIColorManager.BackgroundNorm
         
         //        self.register(ContactCollectionViewContactCell.self, forCellWithReuseIdentifier: "ContactCell")
         self.register(UINib.init(nibName: "ContactCollectionViewContactCell", bundle: nil),
@@ -423,7 +423,7 @@ extension ContactCollectionView : UICollectionViewDelegateFlowLayout {
             widthForItem = max(30, widthForItem)
         } else if self.isCell(entry: indexPath) {
             let prototype = ContactCollectionViewEntryCell()
-            widthForItem = max(100, prototype.widthForText(text: self.searchText) + 44)
+            widthForItem = max(self.maxContentWidth, prototype.widthForText(text: self.searchText) + 44)
         } else {
             if let cell = self.cellForItem(at: indexPath) as? ContactCollectionViewContactCell {
                 widthForItem = cell.widthForCell()

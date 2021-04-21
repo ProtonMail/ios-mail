@@ -22,52 +22,22 @@
 
 
 import Foundation
-import UIKit
+import PMUIFoundations
 import Masonry
+import UIKit
 
-protocol ComposeViewDelegate: class {
-    func composeViewWillPresentSubview()
-    func composeViewWillDismissSubview()
-    
-    func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
-    func ComposeViewDidOffsetChanged(_ offset: CGPoint)
-    func composeViewDidTapNextButton(_ composeView: ComposeHeaderViewController)
-    func composeViewDidTapEncryptedButton(_ composeView: ComposeHeaderViewController)
-    func composeViewDidTapAttachmentButton(_ composeView: ComposeHeaderViewController)
-    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
-                                                   contactGroup: ContactGroupVO,
-                                                   callback: @escaping (([DraftEmailData]) -> Void))
-    
-    func composeView(_ composeView: ComposeHeaderViewController, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker)
-    func composeView(_ composeView: ComposeHeaderViewController, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
-    
-    func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController)
-    func composeViewCancelExpirationData(_ composeView: ComposeHeaderViewController)
-    func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController)
-    func composeViewCollectExpirationData(_ composeView: ComposeHeaderViewController)
-    
-    func composeViewPickFrom(_ composeView: ComposeHeaderViewController)
-
-    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
-    func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?)
-}
-
-protocol ComposeViewDataSource: class {
-    func ccBccIsShownInitially() -> Bool
-    func composeViewContactsModelForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol]
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol]
-}
-
-class ComposeHeaderViewController: UIViewController, AccessibleView {
+final class ComposeHeaderViewController: UIViewController, AccessibleView {
     private var height: NSLayoutConstraint!
-    @objc internal dynamic var size: CGSize = .zero {
+    private(set) var pickerHeight : CGFloat = 0.0
+    private(set) var toContactPicker: ContactPicker!
+    
+    @objc
+    dynamic var size: CGSize = .zero {
         didSet {
             self.height.constant = size.height
         }
     }
-    var pickerHeight : CGFloat = 0.0
     
-    var toContactPicker: ContactPicker!
     var toContacts: String {
         return toContactPicker.contactList
     }
@@ -109,7 +79,6 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
         
         return false
     }
- 
 
     var hasPGPPinned : Bool {
         let toHas = toContactPicker.hasPGPPinned
@@ -193,6 +162,7 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
     // MARK : - Outlets
     @IBOutlet var fakeContactPickerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var subject: UITextField!
+    @IBOutlet var subjectLabel: UILabel!
     @IBOutlet var showCcBccButton: UIButton!
     
     // MARK: - Action Buttons
@@ -217,6 +187,7 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
     @IBOutlet weak var fromAddress: UILabel!
     @IBOutlet weak var fromPickerButton: UIButton!
     @IBOutlet weak var fromLable: UILabel!
+    @IBOutlet private var fromGrayView: UIView!
     
     // MARK: - Delegate and Datasource
     weak var datasource: ComposeViewDataSource?
@@ -251,8 +222,12 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.height.priority = .init(999.0)
         self.height.isActive = true
         
-        fromLable.text = LocalString._composer_from_label
-        subject.placeholder = LocalString._composer_subject_placeholder
+        self.fromLable.attributedText = "\(LocalString._composer_from_label): ".apply(style: .DefaultSmallWeek)
+        self.fromAddress.textColor = UIColorManager.TextNorm
+        self.fromPickerButton.tintColor = UIColorManager.IconWeak
+        
+        self.subjectLabel.attributedText = "\(LocalString._composer_subject_placeholder):".apply(style: .DefaultSmallWeek)
+        self.showCcBccButton.tintColor = UIColorManager.IconWeak
         encryptedPasswordTextField.placeholder = LocalString._composer_define_expiration_placeholder
         
         self.configureContactPickerTemplate()
@@ -462,7 +437,7 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
                 self.ccContactPicker.alpha = 1.0
                 self.bccContactPicker.alpha = 1.0
                 self.fakeContactPickerHeightConstraint.constant = self.toContactPicker.currentContentHeight + self.ccContactPicker.currentContentHeight + self.bccContactPicker.currentContentHeight
-                self.showCcBccButton.setImage(UIImage(named: "compose_minuscontact"), for:UIControl.State() )
+                self.showCcBccButton.setImage(UIImage(named: "arrow_up"), for:.normal )
                 self.view.layoutIfNeeded()
             })
         } else {
@@ -470,7 +445,7 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
                 self.fakeContactPickerHeightConstraint.constant = self.toContactPicker.currentContentHeight
                 self.ccContactPicker.alpha = 0.0
                 self.bccContactPicker.alpha = 0.0
-                self.showCcBccButton.setImage(UIImage(named: "compose_pluscontact"), for:UIControl.State() )
+                self.showCcBccButton.setImage(UIImage(named: "arrow_down"), for:.normal )
                 self.view.layoutIfNeeded()
             })
             
@@ -621,7 +596,7 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
             let _ = make?.top.equalTo()(self.fromView.mas_bottom)?.with().offset()(5)
             let _ = make?.left.equalTo()(self.view)
             let _ = make?.right.equalTo()(self.view)
-            let _ = make?.height.equalTo()(self.kDefaultRecipientHeight)
+            let _ = make?.height.equalTo()(44)
         }
     }
     
@@ -690,10 +665,6 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
         } else {
             fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight
         }
-        contactPicker.contactCollectionView?.add(border: .bottom,
-                                                 color: UIColor.ProtonMail.Gray_C9CED4,
-                                                 borderWidth: 1.0,
-                                                 at: newHeight)
     }
 
     private func observeInternetConnectionStatus() {
@@ -722,11 +693,11 @@ extension ComposeHeaderViewController: ContactPickerDataSource {
     
     func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol] {
         if (contactPickerView == toContactPicker) {
-            contactPickerView.prompt = LocalString._composer_to_label
+            contactPickerView.prompt = "\(LocalString._composer_to_label):"
         } else if (contactPickerView == ccContactPicker) {
-            contactPickerView.prompt = LocalString._composer_cc_label
+            contactPickerView.prompt = "\(LocalString._composer_cc_label):"
         } else if (contactPickerView == bccContactPicker) {
-            contactPickerView.prompt = LocalString._composer_bcc_label
+            contactPickerView.prompt = "\(LocalString._composer_bcc_label):"
         }
         return self.datasource?.composeViewContactsModelForPicker(self, picker: contactPickerView) ?? [ContactPickerModelProtocol]()
     }
