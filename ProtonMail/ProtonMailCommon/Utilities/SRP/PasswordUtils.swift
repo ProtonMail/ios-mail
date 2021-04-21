@@ -23,6 +23,7 @@
 
 import Foundation
 import PMAuthentication
+import OpenPGP
 
 enum PasswordError: Error {
     case hashEmpty

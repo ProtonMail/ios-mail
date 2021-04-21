@@ -27,6 +27,7 @@ import PMChallenge
 import PMCommon
 import PromiseKit
 import AwaitKit
+import OpenPGP
 
 final class AccountSignupViewModelImpl : SignupViewModelImpl {
     override func isAccountManager() -> Bool {

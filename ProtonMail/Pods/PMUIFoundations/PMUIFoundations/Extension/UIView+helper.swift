@@ -21,7 +21,7 @@
 //
 
 import UIKit
-extension UIView {
+public extension UIView {
     var safeGuide: UIEdgeInsets {
         guard #available(iOS 11.0, *) else {
             // Device has physical home button

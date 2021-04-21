@@ -22,8 +22,7 @@
 
 
 import Foundation
-
-
+import OpenPGP
 
 class ContactEditViewModelImpl : ContactEditViewModel {
     var sections : [ContactEditSectionType] = [.emails,
