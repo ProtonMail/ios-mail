@@ -26,6 +26,7 @@ import AwaitKit
 import PromiseKit
 import PMKeymaker
 import Crypto
+import OpenPGP
 import PMAuthentication
 import PMCommon
 

@@ -20,9 +20,9 @@
 //
 
 import UIKit
-extension UIDevice {
+public extension UIDevice {
     /// A boolean value that indicates the device has a physical home button or not.
-    static var hasPhysicalHome: Bool {
+    public static var hasPhysicalHome: Bool {
         guard #available(iOS 11.0, *) else {
             // Device has physical home button
             return true
@@ -39,7 +39,7 @@ extension UIDevice {
 
     /// Return `safeAreaInsets` of the device.
     /// Compatible with iOS lower than `11.0`
-    static let safeGuide: UIEdgeInsets = {
+    public static let safeGuide: UIEdgeInsets = {
         guard #available(iOS 11.0, *) else {
             // Device has physical home button
             return .zero

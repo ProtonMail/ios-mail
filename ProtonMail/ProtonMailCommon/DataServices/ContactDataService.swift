@@ -28,6 +28,7 @@ import Groot
 import PromiseKit
 import AwaitKit
 import Crypto
+import OpenPGP
 import PMCommon
 
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)

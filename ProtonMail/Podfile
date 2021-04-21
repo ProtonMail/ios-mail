@@ -16,7 +16,7 @@ end
 def common_pods
   pm_shared_pods
 
-  pod 'OpenPGP', :path => '../OpenPGP'
+  pod 'OpenPGP', :git => 'git@gitlab.protontech.ch:apple/shared/pmopenpgp.git', :branch => 'develop' #:path => '../OpenPGP'
   pod 'Groot', '3.0.1'
   pod 'AFNetworking', '4.0.1'
   pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
@@ -30,6 +30,8 @@ def common_pods
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
   pod 'PMCommon', :path => '../Networking', :testspecs => ['Tests']
   pod 'SwipyCell', '4.0.1'
+
+  pod 'SwiftGen', '~> 6.0'
 end
 
 def pm_pods
@@ -72,7 +74,7 @@ end
 
 target 'ProtonMailTests' do
   inherit! :search_paths
-  pod 'OpenPGP', :path => '../OpenPGP'
+  pod 'OpenPGP', :git => 'git@gitlab.protontech.ch:apple/shared/pmopenpgp.git', :branch => 'develop' #:path => '../OpenPGP'
   pod 'AFNetworking', '4.0.1'
   pod 'OHHTTPStubs/Swift', '9.0.0'
   pod 'Groot', '3.0.1'

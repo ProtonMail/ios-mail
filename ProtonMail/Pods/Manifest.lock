@@ -68,9 +68,7 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (9.0.0)
   - OHHTTPStubs/Swift (9.0.0):
     - OHHTTPStubs/Default
-  - OpenPGP (1.0.5):
-    - OpenSSL
-  - OpenSSL (1.0.210)
+  - OpenPGP (1.1.1)
   - PMAccountSwitcher (0.0.3):
     - PMCoreTranslation
     - PMUIFoundations
@@ -133,6 +131,7 @@ PODS:
   - Sentry/Core (5.2.2)
   - SideMenuSwift (2.0.6)
   - SkeletonView (1.11.0)
+  - SwiftGen (6.4.0)
   - SwiftyGif (5.4.0)
   - SwipyCell (4.0.1)
   - TrustKit (1.7.0)
@@ -152,7 +151,7 @@ DEPENDENCIES:
   - MCSwipeTableViewCell (= 2.1.4)
   - "NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)"
   - OHHTTPStubs/Swift (= 9.0.0)
-  - OpenPGP (from `../OpenPGP`)
+  - "OpenPGP (from `git@gitlab.protontech.ch:apple/shared/pmopenpgp.git`, branch `develop`)"
   - "PMAccountSwitcher (from `git@gitlab.protontech.ch:apple/shared/pmaccountswitcher.git`, tag `0.0.3`)"
   - "PMAuthentication (from `git@gitlab.protontech.ch:apple/shared/pmauthentication.git`, branch `develop`)"
   - "PMAuthentication/Tests (from `git@gitlab.protontech.ch:apple/shared/pmauthentication.git`, branch `develop`)"
@@ -169,6 +168,7 @@ DEPENDENCIES:
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `5.2.2`)
   - SideMenuSwift (= 2.0.6)
   - SkeletonView (= 1.11.0)
+  - SwiftGen (~> 6.0)
   - SwipyCell (= 4.0.1)
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `master`)
   - "UIColor+Hex (= 1.0.1)"
@@ -184,12 +184,12 @@ SPEC REPOS:
     - MBProgressHUD
     - MCSwipeTableViewCell
     - OHHTTPStubs
-    - OpenSSL
     - PromiseKit
     - ReachabilitySwift
     - SDWebImage
     - SideMenuSwift
     - SkeletonView
+    - SwiftGen
     - SwiftyGif
     - SwipyCell
     - "UIColor+Hex"
@@ -202,7 +202,8 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/ProtonMail/nsdate-helper.git
   OpenPGP:
-    :path: "../OpenPGP"
+    :branch: develop
+    :git: "git@gitlab.protontech.ch:apple/shared/pmopenpgp.git"
   PMAccountSwitcher:
     :git: "git@gitlab.protontech.ch:apple/shared/pmaccountswitcher.git"
     :tag: 0.0.3
@@ -246,6 +247,9 @@ CHECKOUT OPTIONS:
   "NSDate+Helper":
     :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
     :git: https://github.com/ProtonMail/nsdate-helper.git
+  OpenPGP:
+    :commit: 5e879205f5fd99fea860f9d9865d5189c10d67b8
+    :git: "git@gitlab.protontech.ch:apple/shared/pmopenpgp.git"
   PMAccountSwitcher:
     :git: "git@gitlab.protontech.ch:apple/shared/pmaccountswitcher.git"
     :tag: 0.0.3
@@ -271,7 +275,7 @@ CHECKOUT OPTIONS:
     :commit: 47edd7def09a7e26aa608b1
     :git: "git@gitlab.protontech.ch:apple/shared/pmpayments.git"
   PMUIFoundations:
-    :commit: bf098858223d02babf597782a8d840f331fda62b
+    :commit: 2eeaaa334d8c7ee83eaad5f2da8ca956d306cfa9
     :git: "git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
@@ -292,8 +296,7 @@ SPEC CHECKSUMS:
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
-  OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
-  OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
+  OpenPGP: f55b53823addb41962c9d6bf78523d54320d3cb9
   PMAccountSwitcher: 71f923c1e53c67e41920a3ba0f604d3a60e6b481
   PMAuthentication: 4e1a422232304311f34a7651a5b348a7782c99bf
   PMChallenge: efd562984cf2c0db28e39c2d06e8336025a26633
@@ -310,11 +313,12 @@ SPEC CHECKSUMS:
   Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
   SideMenuSwift: f12ca1b11faad909bfc2878df37e0a1c40fa4570
   SkeletonView: cc84ce90a804dd0dd7198dd802833411c8a64eaf
+  SwiftGen: 67860cc7c3cfc2ed25b9b74cfd55495fc89f9108
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   SwipyCell: 3fbfd7dc091c4699d1cb03f015e2ecdc6f26929d
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 8e0d789f58bde59ad25c099c524926e427785da1
+PODFILE CHECKSUM: 6e2330fac6097741939ffad309612792923ffa60
 
 COCOAPODS: 1.10.1

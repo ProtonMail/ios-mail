@@ -1,3 +1,5 @@
+import OpenPGP
+
 extension PMNIBirthday {
 
     var formattedBirthday: String {

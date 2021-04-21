@@ -25,6 +25,7 @@ import UIKit
 import MBProgressHUD
 import PMKeymaker
 import PMCommon
+import OpenPGP
 
 class SettingsTableViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
     internal var viewModel : SettingsViewModel!
