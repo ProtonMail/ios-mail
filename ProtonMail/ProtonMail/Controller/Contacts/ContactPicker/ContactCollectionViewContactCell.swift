@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import PMUIFoundations
 import UIKit
 
 
@@ -59,14 +59,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.setup()
     }
     
-    override func prepareForReuse() {
-        self.bgView.layer.borderColor = UIColor.clear.cgColor
-    }
-    
     func setup() {
         self.backgroundColor = UIColor(hexColorCode: "#FCFEFF")
-        
-        self.contactTitleLabel.textColor = UIColor.blue
         self.bgView.clipsToBounds = true
         self.bgView.layer.cornerRadius = 3.0
         self.bgView.translatesAutoresizingMaskIntoConstraints = false
@@ -109,7 +103,9 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             self._model = newValue
             
             if let _ = self._model as? ContactVO {
-                self.contactTitleLabel.text = self._model.contactTitle;
+                let title = self._model.contactTitle
+                let subTitle = self._model.contactSubtitle ?? ""
+                self.contactTitleLabel.text = title == subTitle ? title : "\(title)<\(subTitle)>"
                 
                 {
                     self.checkLock(caller: self.model)
@@ -144,7 +140,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             guard caller.equals(self.model) else {
                 return
             }
-            
+            self.bgView.backgroundColor = UIColorManager.InteractionWeak
+            self.contactTitleLabel.textColor = UIColorManager.TextNorm
             self._model.setType(type: type)
             self.isEmailVerified(type: type)
             self.lockImage.backgroundColor = nil
@@ -184,6 +181,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             self?.activityView.startAnimating()
         }, complete: { [weak self](_, type) in
             let (_, _, color) = group.getGroupInformation()
+            self?.bgView.backgroundColor = UIColorManager.InteractionWeak
+            self?.contactTitleLabel.textColor = UIColorManager.TextNorm
             self?.isEmailVerified(type: type)
             self?.lockImage.image = UIImage.init(named: "contact_groups_icon")
             self?.lockImage.setupImage(scale: 0.8,
@@ -196,7 +195,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     }
     
     func widthForCell() -> CGFloat {
-        var size = self._model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h5.light])
+        let text = self.contactTitleLabel.text ?? self._model.contactTitle
+        var size = text.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h5.light])
         if let _ = self._model as? ContactGroupVO {
             if let estimation = self.contactTitleLabel.text?.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h5.light]) {
                 size = estimation
@@ -223,8 +223,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         // Code=33101 "Email address failed validation"
         // Code=33102 "Recipient could not be found"
         let isBadMail = [33101, 33102].contains(type)
-        let color = isBadMail ? UIColor.red.cgColor: UIColor.clear.cgColor
-        self.bgView.layer.borderColor = color
-        self.bgView.layer.borderWidth = 1
+        guard isBadMail else { return }
+        self.bgView.backgroundColor = UIColorManager.NotificationError
+        self.contactTitleLabel.textColor = .white
     }
 }
