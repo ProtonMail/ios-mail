@@ -99,6 +99,10 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         self.icon.tintColor = iconColor
         self.icon.alpha = alpha
     }
+    
+    func update(attribure: [NSAttributedString.Key: Any]) {
+        self.name.attributedText = self.name.text?.apply(style: attribure)
+    }
 }
 
 // MARK: Private functions

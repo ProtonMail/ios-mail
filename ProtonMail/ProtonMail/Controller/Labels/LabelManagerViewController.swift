@@ -270,7 +270,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
             cell = UITableViewCell(style: .default, reuseIdentifier: "defaultCellWithIcon")
         }
         guard let instance = cell else { return .init() }
-        instance.textLabel?.text = self.viewModel.createTitle
+        instance.textLabel?.attributedText = self.viewModel.createTitle.apply(style: .DefaultHint)
         instance.imageView?.image = Asset.menuPlus.image
         instance.contentView.backgroundColor = UIColorManager.BackgroundNorm
 
@@ -299,8 +299,8 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
 
         let color = self.viewModel.getFolderColor(label: data)
         cell.update(iconColor: color)
-
         cell.update(textColor: UIColorManager.TextNorm)
+        cell.update(attribure: FontManager.Default)
         cell.backgroundColor = UIColorManager.BackgroundNorm
         cell.selectionStyle = .none
         cell.accessoryType = .disclosureIndicator
