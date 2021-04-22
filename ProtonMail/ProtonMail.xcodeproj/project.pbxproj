@@ -805,8 +805,8 @@
 		55EB2659F5F57DFEEB4BACF5EAF166E3 /* PMView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B58EA1AD6B80AE3B0F8182EFF649C0 /* PMView.swift */; };
 		560D452C2FEAC1EABE37A09B3678F05E /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2293514215254B488A7DC1E65D59FF02 /* APIServiceRequest.swift */; };
 		563699092D664FFFB3D72EE94672B1CE /* TrustKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7E4D250B1A03C4E05DB97AD1A70D9F /* TrustKitWrapper.swift */; };
-		5673DC3E61BD62F242B837A7C53C233E /* Operators_NSAttributedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193D7D121BB067816F0F7CB460C26C23 /* Operators_NSAttributedStringTests.swift */; };
 		5660218DE651F8766768819F7A4B666D /* ComposeHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FFBFC2C8C8F31598B00A85625B0E79 /* ComposeHeaderViewController.swift */; };
+		5673DC3E61BD62F242B837A7C53C233E /* Operators_NSAttributedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193D7D121BB067816F0F7CB460C26C23 /* Operators_NSAttributedStringTests.swift */; };
 		567C446A342DFC8F203AD7F70549E09F /* APIService+AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A393D6E5869452F381061A31E34594 /* APIService+AttachmentExtension.swift */; };
 		567D0322CE3C59E82E44203ABCC5E4E5 /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090959F01713916918218A20B1ED07FF /* APIErrors.swift */; };
 		56AB2FC32CF834C801E42DDEE3564378 /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB2C8C70329A749308561A4CE0D54D /* NSBundle+Language.m */; };
