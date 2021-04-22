@@ -199,7 +199,7 @@ build-enterprise-app-and-upload:
       - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
       - fastlane ios enterprise
     tags:
-      - iOS_ARM_TAIPEI
+      - iOS
 
 
 # --- Translation related tasks ---
