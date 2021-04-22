@@ -27,6 +27,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
     private(set) lazy var customView = SingleMessageView()
     private lazy var navigationTitleLabel = SingleMessageNavigationHeaderView()
+    private var contentOffsetToPerserve: CGPoint = .zero
 
     private let viewModel: SingleMessageViewModel
     private lazy var starBarButton = UIBarButtonItem(
@@ -36,16 +37,22 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         action: #selector(starButtonTapped)
     )
 
-    let messageBodyViewController: NewMessageBodyViewController
+    private(set) var messageBodyViewController: NewMessageBodyViewController!
     let nonExapndedHeaderViewController: NonExpandedHeaderViewController
 
     init(viewModel: SingleMessageViewModel) {
         self.viewModel = viewModel
-        self.messageBodyViewController = NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel)
         self.nonExapndedHeaderViewController = NonExpandedHeaderViewController(
             viewModel: viewModel.nonExapndedHeaderViewModel
         )
         super.init(nibName: nil, bundle: nil)
+        self.messageBodyViewController = NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel,
+                                                                      parentScrollView: self)
+        self.messageBodyViewController.delegate = self
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func loadView() {
@@ -59,11 +66,33 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         viewModel.refreshView = { [weak self] in
             self?.reloadMessageRelatedData()
         }
+
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(restoreOffset),
+                                                   name: UIWindowScene.willEnterForegroundNotification,
+                                                   object: nil)
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(saveOffset),
+                                                   name: UIWindowScene.didEnterBackgroundNotification,
+                                                   object: nil)
+        } else {
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(restoreOffset),
+                                                   name: UIApplication.willEnterForegroundNotification,
+                                                   object: nil)
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(saveOffset),
+                                                   name: UIApplication.didEnterBackgroundNotification,
+                                                   object: nil)
+        }
+
         setUpSelf()
         embedChildren()
     }
 
     private func embedChildren() {
+        precondition(messageBodyViewController != nil)
         embed(messageBodyViewController, inside: customView.messageBodyContainer)
         embed(nonExapndedHeaderViewController, inside: customView.messageHeaderContainer)
     }
@@ -161,4 +190,51 @@ extension SingleMessageViewController: Deeplinkable {
         )
     }
 
+}
+
+extension SingleMessageViewController: ScrollableContainer {
+    var scroller: UIScrollView {
+        return self.customView.scrollView
+    }
+
+    func propogate(scrolling delta: CGPoint, boundsTouchedHandler: () -> Void) {
+        let scrollView = customView.scrollView
+        UIView.animate(withDuration: 0.001) { // hackish way to show scrolling indicators on tableView
+            scrollView.flashScrollIndicators()
+        }
+        let maxOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        guard maxOffset > 0 else { return }
+
+        let yOffset = scrollView.contentOffset.y + delta.y
+
+        if yOffset < 0 { // not too high
+            scrollView.setContentOffset(.zero, animated: false)
+            boundsTouchedHandler()
+        } else if yOffset > maxOffset { // not too low
+            scrollView.setContentOffset(.init(x: 0, y: maxOffset), animated: false)
+            boundsTouchedHandler()
+        } else {
+            scrollView.contentOffset = .init(x: 0, y: yOffset)
+        }
+    }
+
+    @objc
+    func saveOffset() {
+        self.contentOffsetToPerserve = scroller.contentOffset
+    }
+
+    @objc
+    func restoreOffset() {
+        scroller.setContentOffset(self.contentOffsetToPerserve, animated: false)
+    }
+}
+
+extension SingleMessageViewController: NewMessageBodyViewControllerDelegate {
+    func openUrl(_ url: URL) {
+        // TODO: handle open web url/ mailto url here
+    }
+
+    func handleReload() {
+        viewModel.downloadDetails()
+    }
 }
