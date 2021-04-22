@@ -20,6 +20,7 @@ private let draftsStaticText = "MenuItemTableViewCell.\(LocalString._menu_drafts
 private let settingsStaticText = "MenuItemTableViewCell.\(LocalString._menu_settings_title)"
 private let sidebarHeaderViewOtherIdentifier = "MenuViewController.primaryUserview"
 private let manageAccountsStaticTextIdentifier = "MenuButtonViewCell.\(LocalString._menu_manage_accounts.replaceSpaces())"
+private let primaryUserViewIdentifier = "MenuViewController.primaryUserview"
 private func userAccountCellIdentifier(_ email: String) -> String { return "MenuUserViewCell.\(email)" }
 private func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
 private func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
@@ -130,9 +131,8 @@ class MenuRobot {
                 Element.wait.forStaticTextFieldWithIdentifier(displayNameStaticTextdentifier(user.email), file: #file, line: #line)
             }
             
-            func accountShortNameIsCorrect(_ user: User, _ shortName: String) {
-                Element.wait.forStaticTextFieldWithIdentifier(shortNameStaticTextdentifier(user.email), file: #file, line: #line)
-                    .assertWithLabel(shortName)
+            func accountShortNameIsCorrect(_ shortName: String) {
+                Element.wait.forOtherFieldWithIdentifier(primaryUserViewIdentifier).assertHasStaticTextChild(withText: shortName)
             }
         }
     }
