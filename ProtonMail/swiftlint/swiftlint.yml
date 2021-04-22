@@ -110,6 +110,9 @@ included:
   - ${PWD}/ProtonMailCommon/Extensions/Message+Helpers.swift 
   - ${PWD}/ProtonMailCommon/Extensions/MessageLocation+OriginImage.swift 
   - ${PWD}/ProtonMailCommon/Operators/Operators+NSAttributedStirng.swift 
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyViewController.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyView.swift
+  - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/NewMessageBodyViewModel.swift
 
 excluded:
   - ${PWD}/Pods

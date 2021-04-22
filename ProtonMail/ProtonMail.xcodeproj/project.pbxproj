@@ -27,7 +27,6 @@
 		01F14EB26FC13BD97570BC745E77F93C /* UserDefaultsSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2985F86E3CBF92AC6C7595C6AD6BDC11 /* UserDefaultsSaver.swift */; };
 		020DBD140704E1FAFB568F1C84C264FD /* ComposeContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA79CC603CE1C8009B44AFF554E984A /* ComposeContainerViewModel.swift */; };
 		02203B615FEF5A1901A7978082298EB2 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF670755650E5DD985579607F574B57 /* DeepLink.swift */; };
-		0260BCCDEB635330FED6E4F04E3BCCED /* ConversationUnlabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB514EFE08596FCA7AC7842EBB328A23 /* ConversationUnlabel.swift */; };
 		02AA234908EE873C5A93B4E8ACD34CA7 /* SwipeActionCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33338562E664D5FA911E596B71F0C4 /* SwipeActionCacheProtocol.swift */; };
 		02B5904D049F6EC59AC0B3A96F01FDFD /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B9E881D2DF16816299A285CD5CDFC /* Array+Extension.swift */; };
 		02F412A2A429476D1C447EE3539DEBE1 /* MailboxViewController+BuildMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709AA3550A9F3421B299A9A6DC439685 /* MailboxViewController+BuildMessageViewModel.swift */; };
@@ -8610,7 +8609,6 @@
 				53B17D5F7B75BE9CBB7FC6B056675CF1 /* ConversationDetail.swift in Sources */,
 				4823D37FCE103C66006127BBF584798A /* ConversationLabel.swift in Sources */,
 				EBC70A26D27C13492AE539D76372E880 /* ConversationRead.swift in Sources */,
-				0260BCCDEB635330FED6E4F04E3BCCED /* ConversationUnlabel.swift in Sources */,
 				1B4DF46F4662D8747D061724C1F9B28B /* ConversationUnread.swift in Sources */,
 				B2AC7EA61E6E91E5591EF3C4F9FB9114 /* Conversations.swift in Sources */,
 				2BFCE0C69350CAAD13C948D18DDEF4B2 /* ConversationsDelete.swift in Sources */,

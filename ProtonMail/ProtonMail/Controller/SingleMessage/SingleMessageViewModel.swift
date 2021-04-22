@@ -46,7 +46,10 @@ class SingleMessageViewModel {
         self.message = message
         self.messageService = user.messageService
         self.user = user
-        self.messageBodyViewModel = NewMessageBodyViewModel()
+        self.messageBodyViewModel = NewMessageBodyViewModel(message: message,
+                                                            messageService: user.messageService,
+                                                            userManager: user,
+                                                            shouldAutoLoadRemoteImages: user.autoLoadRemoteImages)
         self.nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(
             labelId: labelId,
             message: message,
@@ -69,6 +72,7 @@ class SingleMessageViewModel {
     func propagateMessageData() {
         refreshView?()
         nonExapndedHeaderViewModel.messageHasChanged(message: message)
+        messageBodyViewModel.messageHasChanged(message: message)
     }
 
     func starTapped() {
@@ -81,7 +85,12 @@ class SingleMessageViewModel {
     }
 
     func downloadDetails() {
-        messageService.fetchMessageDetailForMessage(message, labelID: labelId) { _, _, _, _ in }
+        messageService.fetchMessageDetailForMessage(message, labelID: labelId) { [weak self] _, _, _, error in
+            guard let self = self else { return }
+            if error != nil && !self.message.isDetailDownloaded {
+                self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
+            }
+        }
     }
 
 }
