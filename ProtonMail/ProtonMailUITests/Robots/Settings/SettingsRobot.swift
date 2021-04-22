@@ -10,6 +10,9 @@ fileprivate func accountCellIdentifier(_ name: String) -> String { return "Setti
 fileprivate let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
 fileprivate let menuButton = LocalString._menu_button
 fileprivate let pinStaticTextIdentifier = LocalString._pin
+fileprivate let swipeActionStaticTextIdentifier = LocalString._swipe_actions
+fileprivate let clearLocalCacheStaticTextIdentifier = LocalString._clear_local_message_cache
+
 /**
  * [SettingsRobot] class contains actions and verifications for Settings view.
  */
@@ -22,10 +25,16 @@ class SettingsRobot {
         Element.wait.forHittableButton(menuButton).tap()
         return MenuRobot()
     }
+    
     @discardableResult
     func selectAccount(_ email: String) -> AccountSettingsRobot {
-        Element.wait.forCellWithIdentifier(accountCellIdentifier(email)).tap()
+        Element.tableView.tapByIdentifier(email)
         return AccountSettingsRobot()
+    }
+    
+    func clearCache() -> SettingsRobot {
+        Element.wait.forStaticTextFieldWithIdentifier(clearLocalCacheStaticTextIdentifier, file: #file, line: #line).tap()
+        return SettingsRobot()
     }
     
     func pin() -> PinRobot {
