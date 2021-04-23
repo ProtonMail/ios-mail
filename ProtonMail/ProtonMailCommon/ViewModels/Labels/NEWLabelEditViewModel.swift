@@ -340,7 +340,10 @@ extension NEWLabelEditViewModel {
             let isInherit = self.user.userinfo.inheritParentFolderColor
             let enableFolderColor = self.user.userinfo.enableFolderColor
             
-            guard enableFolderColor == 1 else { return }
+            guard enableFolderColor == 1 else {
+                self.section.append(.delete)
+                return
+            }
             if isInherit == 1 {
                 let item: EditSection = self.parentID.isEmpty ? .palette: .colorInherited
                 self.section.append(item)
