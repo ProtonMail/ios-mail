@@ -78,6 +78,13 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         viewModel.refreshView = { [weak self] in
             self?.reloadMessageRelatedData()
         }
+        viewModel.updateErrorBanner = { [weak self] error in
+            if let error = error {
+                self?.bannerViewController.showErrorBanner(error: error)
+            } else {
+                self?.bannerViewController.hideBanner(type: .error)
+            }
+        }
 
         if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self,

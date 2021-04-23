@@ -44,6 +44,7 @@ class SingleMessageViewModel {
     let linkOpener: LinkOpener
 
     var refreshView: (() -> Void)?
+    var updateErrorBanner: ((NSError?) -> Void)?
 
     init(labelId: String, message: Message, user: UserManager, linkOpenerCache: LinkOpenerCacheProtocol) {
         self.labelId = labelId
@@ -100,6 +101,7 @@ class SingleMessageViewModel {
     func downloadDetails() {
         messageService.fetchMessageDetailForMessage(message, labelID: labelId) { [weak self] _, _, _, error in
             guard let self = self else { return }
+            self.updateErrorBanner?(error)
             if error != nil && !self.message.isDetailDownloaded {
                 self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
             }

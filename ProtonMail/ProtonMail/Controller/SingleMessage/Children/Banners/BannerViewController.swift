@@ -30,12 +30,15 @@ class BannerViewController: UIViewController {
     enum BannerType {
         case remoteContent
         case expiration
+        case error
 
         var order: Int {
             switch self {
             case .remoteContent:
-                return 1
+                return 0
             case .expiration:
+                return 1
+            case .error:
                 return 2
             }
         }
@@ -47,6 +50,7 @@ class BannerViewController: UIViewController {
     private(set) lazy var customView = UIView()
     private(set) var containerView: UIStackView?
     private(set) lazy var remoteContentBanner = RemoteContentBannerView()
+    private(set) lazy var errorBanner = ErrorBannerView()
     private(set) lazy var expirationBanner = ExpirationBannerView()
 
     private(set) var displayedBanners: [BannerType: UIView] = [:]
@@ -102,6 +106,25 @@ class BannerViewController: UIViewController {
             view.removeFromSuperview()
             displayedBanners.removeValue(forKey: type)
         }
+    }
+
+    func showErrorBanner(error: NSError) {
+        guard let containerView = self.containerView else { return }
+        errorBanner.setErrorTitle(error.localizedDescription)
+
+        let bannerConainterView = UIView()
+        bannerConainterView.addSubview(errorBanner)
+        [
+            errorBanner.topAnchor.constraint(equalTo: bannerConainterView.topAnchor, constant: 12),
+            errorBanner.leadingAnchor.constraint(equalTo: bannerConainterView.leadingAnchor, constant: 12),
+            errorBanner.trailingAnchor.constraint(equalTo: bannerConainterView.trailingAnchor, constant: -12),
+            errorBanner.bottomAnchor.constraint(equalTo: bannerConainterView.bottomAnchor, constant: -12)
+        ].activate()
+
+        let indexToInsert = findIndexToInsert(.error)
+
+        containerView.insertArrangedSubview(bannerConainterView, at: indexToInsert)
+        displayedBanners[.error] = bannerConainterView
     }
 
     func showRemoteContentBanner() {
