@@ -63,7 +63,7 @@ final class MenuLabel: NSObject {
         if !self.subLabels.isEmpty {
             level = 2
         }
-        if self.subLabels.first(where: { !$0.subLabels.isEmpty }) != nil {
+        if self.subLabels.contains(where: { !$0.subLabels.isEmpty }) {
             level = 3
         }
 
