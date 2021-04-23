@@ -135,6 +135,7 @@ extension MenuItemTableViewCell {
     
     private func setup(badge: Int) {
         guard badge > 0 else {
+            self.badge.text = ""
             self.badgeBGView.isHidden = true
             self.badge.isHidden = true
             return

@@ -298,7 +298,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
         let color = self.viewModel.getFolderColor(label: data)
         cell.update(iconColor: color)
         cell.update(textColor: UIColorManager.TextNorm)
-        cell.update(attribure: FontManager.Default)
+        cell.update(attribure: FontManager.Default.lineBreakMode())
         cell.backgroundColor = UIColorManager.BackgroundNorm
         cell.selectionStyle = .none
         cell.accessoryType = .disclosureIndicator
