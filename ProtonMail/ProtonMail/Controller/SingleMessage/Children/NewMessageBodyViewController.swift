@@ -262,8 +262,12 @@ extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
     }
 
     func reloadWebView() {
+        self.customView.removeReloadView()
         guard let contents = viewModel.contents else { return }
         if let webView = self.webView {
+            if !customView.subviews.contains(webView) {
+                customView.embed(webView)
+            }
             self.loader.load(contents: contents, in: webView)
         } else {
             self.prepareWebView(with: self.loader)

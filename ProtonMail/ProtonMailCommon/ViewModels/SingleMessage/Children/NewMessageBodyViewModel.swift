@@ -109,7 +109,7 @@ class NewMessageBodyViewModel {
                                             remoteContentMode:
                                                 remoteContentMode)
             }
-        } else {
+        } else if !message.body.isEmpty {
             body = message.bodyToHtml()
             self.contents = WebContents(body: self.body ?? "",
                                         remoteContentMode:
