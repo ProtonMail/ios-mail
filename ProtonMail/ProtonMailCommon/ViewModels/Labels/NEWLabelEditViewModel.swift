@@ -328,9 +328,12 @@ extension NEWLabelEditViewModel: LabelEditVMProtocol {
 extension NEWLabelEditViewModel {
     private func setupSection() {
         defer {
-            if self.label != nil,
-               let index = self.section.firstIndex(where: { $0 == .palette || $0 == .colorInherited}) {
-                self.section.insert(.delete, at: index)
+            if self.label != nil {
+                if let index = self.section.firstIndex(where: { $0 == .palette || $0 == .colorInherited}) {
+                    self.section.insert(.delete, at: index)
+                } else {
+                    self.section.append(.delete)
+                }
             }
         }
         
@@ -340,10 +343,7 @@ extension NEWLabelEditViewModel {
             let isInherit = self.user.userinfo.inheritParentFolderColor
             let enableFolderColor = self.user.userinfo.enableFolderColor
             
-            guard enableFolderColor == 1 else {
-                self.section.append(.delete)
-                return
-            }
+            guard enableFolderColor == 1 else { return }
             if isInherit == 1 {
                 let item: EditSection = self.parentID.isEmpty ? .palette: .colorInherited
                 self.section.append(item)

@@ -379,13 +379,25 @@ extension Dictionary where Key == NSAttributedString.Key, Value == Any {
         self[NSAttributedString.Key.paragraphStyle] = paragraphStyle
     }
 
-    mutating func addTruncatingTail() {
+    mutating func addTruncatingTail(mode: NSLineBreakMode = .byTruncatingTail) {
         if let style = self[NSAttributedString.Key.paragraphStyle] as? NSMutableParagraphStyle {
-            style.lineBreakMode = .byTruncatingTail
+            style.lineBreakMode = mode
         } else {
             let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineBreakMode = .byTruncatingTail
+            paragraphStyle.lineBreakMode = mode
             self[NSAttributedString.Key.paragraphStyle] = paragraphStyle
         }
+    }
+    
+    func lineBreakMode(_ mode: NSLineBreakMode = .byTruncatingTail) -> Self {
+        var attributes = self
+        if let style = attributes[NSAttributedString.Key.paragraphStyle] as? NSMutableParagraphStyle {
+            style.lineBreakMode = mode
+        } else {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineBreakMode = mode
+            attributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
+        }
+        return attributes
     }
 }
