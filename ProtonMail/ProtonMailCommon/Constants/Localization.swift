@@ -2078,7 +2078,7 @@ class LocalizedString {
     lazy var _creating_label_not_allowed = NSLocalizedString("Creating label not allowed", comment: "Alert title")
     lazy var _editing_label_not_allowed = NSLocalizedString("Editing label not allowed", comment: "Alert title")
     lazy var _upgrade_to_create_folder = NSLocalizedString("Please uprade to a paid plan to use more than 3 folders", comment: "Alert message")
-    lazy var _upgrade_to_create_label = NSLocalizedString("Please uprade to a paid plan to use more than 3 label", comment: "Alert message")
+    lazy var _upgrade_to_create_label = NSLocalizedString("Please uprade to a paid plan to use more than 3 labels", comment: "Alert message")
     lazy var _please_connect_and_retry = NSLocalizedString("Please connect and retry", comment: "Alert message is shown when the device doesn't have network connection")
     lazy var _folder_name_duplicated_message = NSLocalizedString("A sub-folder with this name already exists in the destination folder", comment: "Alert message is shown when folder name duplicated")
     lazy var _use_folder_color = NSLocalizedString("Use folder colors", comment: "Option title")
