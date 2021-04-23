@@ -112,7 +112,11 @@ final class NEWLabelEditViewModel {
             self.uiDelegate?.checkDoneButtonStatus()
         }
     }
-    private(set) var notify: Bool
+    private(set) var notify: Bool {
+        didSet {
+            self.uiDelegate?.checkDoneButtonStatus()
+        }
+    }
     private(set) var parentID: String {
         didSet {
             self.uiDelegate?.checkDoneButtonStatus()
@@ -323,12 +327,19 @@ extension NEWLabelEditViewModel: LabelEditVMProtocol {
 
 extension NEWLabelEditViewModel {
     private func setupSection() {
+        defer {
+            if self.label != nil,
+               let index = self.section.firstIndex(where: { $0 == .palette || $0 == .colorInherited}) {
+                self.section.insert(.delete, at: index)
+            }
+        }
+        
         if self.type == .folder {
             self.section = [.name, .folderOptions]
 
             let isInherit = self.user.userinfo.inheritParentFolderColor
             let enableFolderColor = self.user.userinfo.enableFolderColor
-
+            
             guard enableFolderColor == 1 else { return }
             if isInherit == 1 {
                 let item: EditSection = self.parentID.isEmpty ? .palette: .colorInherited
@@ -339,10 +350,6 @@ extension NEWLabelEditViewModel {
         } else {
             self.section = [.name, .palette]
         }
-        
-        guard self.label != nil,
-              let index = self.section.firstIndex(where: { $0 == .palette || $0 == .colorInherited}) else { return }
-        self.section.insert(.delete, at: index)
     }
 
     private func updateLabel(label: MenuLabel) {

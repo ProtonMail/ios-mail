@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import PMUIFoundations
 import Foundation
+import PMUIFoundations
 
 protocol LabelParentSelctVMProtocol {
     /// Sorted out data
