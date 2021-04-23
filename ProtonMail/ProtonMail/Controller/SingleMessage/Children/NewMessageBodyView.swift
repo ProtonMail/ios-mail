@@ -49,6 +49,10 @@ class NewMessageBodyView: UIView {
         ].activate()
     }
 
+    func removeReloadView() {
+        reloadContainerView.removeFromSuperview()
+    }
+
     func addReloadView() {
         subviews.forEach({ $0.removeFromSuperview() })
         reloadContainerView.backgroundColor = UIColorManager.BackgroundNorm
