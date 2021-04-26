@@ -586,7 +586,7 @@ extension UserCachedStatus {
 }
 
 #if !APP_EXTENSION
-extension UserCachedStatus {
+extension UserCachedStatus: LinkOpenerCacheProtocol {
     var browser: LinkOpener {
         get {
             guard let raw = KeychainWrapper.keychain.string(forKey: Key.browser) ?? getShared().string(forKey: Key.browser) else {

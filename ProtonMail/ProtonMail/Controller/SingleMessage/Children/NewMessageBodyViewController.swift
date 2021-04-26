@@ -27,6 +27,7 @@ import UIKit
 
 protocol NewMessageBodyViewControllerDelegate: class {
     func openUrl(_ url: URL)
+    func openMailUrl(_ mailUrl: URL)
     func handleReload()
     func updateRemoteContentBanner(shouldShow: Bool)
 }
@@ -309,7 +310,7 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
         switch navigationAction.navigationType {
         case .linkActivated where navigationAction.request.url?.scheme == "mailto":
             if let url = navigationAction.request.url {
-                self.delegate?.openUrl(url)
+                self.delegate?.openMailUrl(url)
             }
             decisionHandler(.cancel)
 

@@ -464,7 +464,8 @@ extension SearchViewController: UITableViewDelegate {
             let viewModel = SingleMessageViewModel(
                 labelId: "",
                 message: message,
-                user: user
+                user: user,
+                linkOpenerCache: userCachedStatus
             )
             let viewController = SingleMessageViewController(viewModel: viewModel)
             self.navigationController?.pushViewController(viewController, animated: true)

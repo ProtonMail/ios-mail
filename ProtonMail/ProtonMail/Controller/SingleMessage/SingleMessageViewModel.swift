@@ -33,21 +33,24 @@ class SingleMessageViewModel {
 
     let messageBodyViewModel: NewMessageBodyViewModel
     let nonExapndedHeaderViewModel: NonExpandedHeaderViewModel
+    let attachmentViewModel: AttachmentViewModel
     let bannerViewModel: BannerViewModel
     private(set) lazy var userActivity: NSUserActivity = .messageDetailsActivity(messageId: message.messageID)
 
     private let messageService: MessageDataService
-    private let user: UserManager
+    let user: UserManager
     private let labelId: String
     private let messageObserver: MessageObserver
+    let linkOpener: LinkOpener
 
     var refreshView: (() -> Void)?
 
-    init(labelId: String, message: Message, user: UserManager) {
+    init(labelId: String, message: Message, user: UserManager, linkOpenerCache: LinkOpenerCacheProtocol) {
         self.labelId = labelId
         self.message = message
         self.messageService = user.messageService
         self.user = user
+        self.linkOpener = linkOpenerCache.browser
         self.shouldAutoLoadRemoteImage = user.autoLoadRemoteImages
         self.messageBodyViewModel = NewMessageBodyViewModel(message: message,
                                                             messageService: user.messageService,
@@ -59,6 +62,11 @@ class SingleMessageViewModel {
             user: user
         )
         self.bannerViewModel = BannerViewModel(shouldAutoLoadRemoteContent: user.autoLoadRemoteImages)
+
+        let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
+            .map(AttachmentNormal.init) + (message.tempAtts ?? [])
+
+        self.attachmentViewModel = AttachmentViewModel(attachments: attachments)
         self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
     }
 
@@ -77,6 +85,7 @@ class SingleMessageViewModel {
         refreshView?()
         nonExapndedHeaderViewModel.messageHasChanged(message: message)
         messageBodyViewModel.messageHasChanged(message: message)
+        attachmentViewModel.messageHasChanged(message: message)
     }
 
     func starTapped() {

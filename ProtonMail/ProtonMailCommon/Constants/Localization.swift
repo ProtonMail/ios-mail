@@ -2090,4 +2090,9 @@ class LocalizedString {
 
     lazy var _banner_remote_content_title = NSLocalizedString("This message contains remote content.", comment: "")
     lazy var _banner_load_remote_content = NSLocalizedString("Load content", comment: "")
+    lazy var _one_attachment_list_title = NSLocalizedString("attachment", comment: "")
+    lazy var _attachments_list_title = NSLocalizedString("attachments", comment: "")
+
+    lazy var _one_attachment_title = NSLocalizedString("Attachment", comment: "")
+    lazy var _attachments_title = NSLocalizedString("Attachments", comment: "")
 }

@@ -113,6 +113,12 @@ included:
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyView.swift
   - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/NewMessageBodyViewModel.swift
+  - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/AttachmentList/AttachmentListViewModel.swift
+  - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/AttachmentViewModel.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Attachment/AttachmentViewController.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/AttachmentList/AttachmentListViewController.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/AttachmentList/AttachmentLIstTableViewCell.swift
+  - ${PWD}/ProtonMail/Controller/MessageDetail/QuickViewViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Banners/BannerViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Banners/RemoteContentBannerView.swift
   - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/BannerViewModel.swift

@@ -253,7 +253,8 @@ class MailboxCoordinator : DefaultCoordinator {
         let viewModel = SingleMessageViewModel(
             labelId: self.viewModel.labelID,
             message: message,
-            user: user
+            user: user,
+            linkOpenerCache: userCachedStatus
         )
         let singleMessageController = SingleMessageViewController(viewModel: viewModel)
         viewController?.navigationController?.pushViewController(singleMessageController, animated: true)
@@ -274,7 +275,8 @@ class MailboxCoordinator : DefaultCoordinator {
             let viewModel = SingleMessageViewModel(
                 labelId: self.viewModel.labelID,
                 message: message,
-                user: user
+                user: user,
+                linkOpenerCache: userCachedStatus
             )
             let viewController = SingleMessageViewController(viewModel: viewModel)
             self.viewController?.navigationController?.pushViewController(viewController, animated: true)

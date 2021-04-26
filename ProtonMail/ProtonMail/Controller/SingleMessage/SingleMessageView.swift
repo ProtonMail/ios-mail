@@ -40,6 +40,7 @@ class SingleMessageView: UIView {
     let bannerContainer = UIView()
     let messageBodyContainer = UIView()
     let messageHeaderContainer = UIView()
+    let attachmentContainer = UIView()
 
     private func addSubviews() {
         addSubview(scrollView)
@@ -51,6 +52,7 @@ class SingleMessageView: UIView {
         stackView.addArrangedSubview(smallTitleHeaderSeparatorView)
         stackView.addArrangedSubview(bigSeparatorView)
         stackView.addArrangedSubview(messageHeaderContainer)
+        stackView.addArrangedSubview(attachmentContainer)
         stackView.addArrangedSubview(bannerContainer)
         stackView.addArrangedSubview(messageBodyContainer)
     }

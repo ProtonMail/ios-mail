@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PMUIFoundations
+import SafariServices
 import UIKit
 
 class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
@@ -39,6 +40,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
     private(set) var messageBodyViewController: NewMessageBodyViewController!
     let nonExapndedHeaderViewController: NonExpandedHeaderViewController
+    private(set) var attachmentViewController: AttachmentViewController?
     let bannerViewController: BannerViewController
 
     init(viewModel: SingleMessageViewModel) {
@@ -48,12 +50,16 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         )
         self.bannerViewController = BannerViewController(viewModel: viewModel.bannerViewModel)
 
+        if viewModel.message.numAttachments != 0 {
+            attachmentViewController = AttachmentViewController(viewModel: viewModel.attachmentViewModel)
+        }
         super.init(nibName: nil, bundle: nil)
         self.messageBodyViewController =
             NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel,
                                          parentScrollView: self)
         self.messageBodyViewController.delegate = self
 
+        self.attachmentViewController?.delegate = self
         self.bannerViewController.delegate = self
     }
 
@@ -95,6 +101,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
         setUpSelf()
         embedChildren()
+        emptyBackButtonTitleForNextView()
     }
 
     private func embedChildren() {
@@ -102,6 +109,9 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         embed(messageBodyViewController, inside: customView.messageBodyContainer)
         embed(nonExapndedHeaderViewController, inside: customView.messageHeaderContainer)
         embed(bannerViewController, inside: customView.bannerContainer)
+        if let attachmentVC = self.attachmentViewController {
+            embed(attachmentVC, inside: customView.attachmentContainer)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -243,12 +253,59 @@ extension SingleMessageViewController: NewMessageBodyViewControllerDelegate {
         }
     }
 
+	func openMailUrl(_ mailUrl: URL) {
+        // TODO: handle in coordinator
+    }
+
     func openUrl(_ url: URL) {
-        // TODO: handle open web url/ mailto url here
+        // TODO: Move to coordinator
+        let browserSpecificUrl = viewModel.linkOpener.deeplink(to: url) ?? url
+        switch viewModel.linkOpener {
+        case .inAppSafari:
+            let supports = ["https", "http"]
+            let scheme = browserSpecificUrl.scheme ?? ""
+            guard supports.contains(scheme) else {
+                self.showUnsupportAlert(url: browserSpecificUrl)
+                return
+            }
+            let safari = SFSafariViewController(url: browserSpecificUrl)
+            self.present(safari, animated: true, completion: nil)
+        case _ where UIApplication.shared.canOpenURL(browserSpecificUrl):
+            UIApplication.shared.open(browserSpecificUrl, options: [:], completionHandler: nil)
+        default:
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
 
     func handleReload() {
         viewModel.downloadDetails()
+    }
+
+    private func showUnsupportAlert(url: URL) {
+        let message = LocalString._unsupported_url
+        let open = LocalString._general_open_button
+        let alertController = UIAlertController(title: LocalString._general_alert_title,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: open,
+                                                style: .default,
+                                                handler: { action in
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                style: .cancel,
+                                                handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension SingleMessageViewController: AttachmentViewControllerDelegate {
+    func openAttachmentList() {
+        // TODO: Move to coordinator
+        let viewModel = AttachmentListViewModel(attachments: self.viewModel.attachmentViewModel.attachments,
+                                                user: self.viewModel.user)
+        let viewController = AttachmentListViewController(viewModel: viewModel)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
