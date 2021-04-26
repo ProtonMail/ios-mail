@@ -17,7 +17,7 @@ fileprivate func messageCellIdentifier(_ subject: String) -> String { return sub
 class DraftsRobot : MailboxRobotInterface {
     
     var verify: Verify! = nil
-    override init() { verify = Verify()}
+    required init() { verify = Verify()}
 
     override func swipeLeftMessageAtPosition(_ position: Int) -> DraftsRobot {
         super.swipeLeftMessageAtPosition(position)

@@ -7,7 +7,9 @@
 //
 
 import XCTest
-import PMCoreTranslation
+import ProtonCore_CoreTranslation
+import ProtonCore_TestingToolkit
+import PMTestAutomation
 
 private let logoutCell = "MenuItemTableViewCell.Sign_out"
 private let logoutConfirmButton = NSLocalizedString("Log out", comment: "comment")
@@ -37,7 +39,7 @@ private func folderLabelCellIdentifier(_ name: String) -> String { return "MenuL
 /**
  Represents Menu view.
 */
-class MenuRobot {
+class MenuRobot: CoreElements {
     
     func logoutUser() -> LoginRobot {
         return logout()

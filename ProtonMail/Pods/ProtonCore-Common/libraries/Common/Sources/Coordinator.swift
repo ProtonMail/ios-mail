@@ -21,8 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 #if canImport(UIKit)
-import ProtonCore_UIFoundations
 import UIKit
+import ProtonCore_UIFoundations
 
 public protocol CoordinatorDelegate: AnyObject {
     func willStop(in coordinator: Coordinator)

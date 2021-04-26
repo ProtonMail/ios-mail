@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 class ContactsTests : BaseTestCase {
 
     private var contactsRobot = ContactsRobot()

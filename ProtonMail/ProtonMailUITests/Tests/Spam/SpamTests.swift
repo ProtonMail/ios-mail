@@ -8,6 +8,8 @@
 
 import XCTest
 
+import ProtonCore_TestingToolkit
+
 class SpamTests: BaseTestCase {
     var subject = String()
     var body = String()

@@ -8,6 +8,8 @@
 
 import XCTest
 
+import ProtonCore_TestingToolkit
+
 class TrashTests: BaseTestCase {
     
     var subject = String()

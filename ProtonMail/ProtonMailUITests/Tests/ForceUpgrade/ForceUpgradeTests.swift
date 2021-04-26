@@ -8,6 +8,8 @@
 
 import XCTest
 
+import ProtonCore_TestingToolkit
+
 class ForceUpgradeTests: BaseTestCase {
 
     private let loginRobot = LoginRobot()

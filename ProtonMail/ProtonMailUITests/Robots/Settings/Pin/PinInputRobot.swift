@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 fileprivate let pinCodeViewIdentifier = "PinCodeViewController.pinCodeView"
 fileprivate let pinCodeAttemptStaticTextIdentifier = "PinCodeViewController.attempsLabel"
 fileprivate let pinCodeLogoutButtonIdentifier = "PinCodeViewController.backButton"

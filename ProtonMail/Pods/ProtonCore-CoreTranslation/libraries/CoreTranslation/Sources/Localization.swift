@@ -498,6 +498,8 @@ public class LocalizedString {
     /// Signup error password empty
     public lazy var _su_error_password_empty = NSLocalizedString("Password can not be empty.\nPlease try again.", bundle: Common.bundle, comment: "Password empty error")
 
+    public lazy var _su_error_password_too_short = NSLocalizedString("Password is too short. Should have at least %@ characters.\nPlease try again.", bundle: Common.bundle, comment: "Password too short error")
+
     /// Signup error password not equal
     public lazy var _su_error_password_not_equal = NSLocalizedString("Passwords do not match.\nPlease try again.", bundle: Common.bundle, comment: "Password not equal error")
 

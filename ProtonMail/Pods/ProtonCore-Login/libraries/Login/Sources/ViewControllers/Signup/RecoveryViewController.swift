@@ -1,0 +1,294 @@
+//
+//  RecoveryViewController.swift
+//  PMLogin - Created on 11/03/2021.
+//
+//  Copyright (c) 2019 Proton Technologies AG
+//
+//  This file is part of ProtonMail.
+//
+//  ProtonMail is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  ProtonMail is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+
+#if canImport(UIKit)
+import UIKit
+import ProtonCore_CoreTranslation
+import ProtonCore_Foundations
+import ProtonCore_UIFoundations
+
+protocol RecoveryViewControllerDelegate: AnyObject {
+    func recoveryBackButtonPressed()
+    func recoverySkipButtonPressed()
+    func recoveryFinish(email: String?, phoneNumber: String?)
+    func termsAndConditionsLinkPressed()
+    func recoveryCountryPickerPressed()
+}
+
+class RecoveryViewController: UIViewController, AccessibleView {
+
+    enum RecoveryMethod: Int {
+        case email = 0
+        case phoneNumber
+    }
+
+    weak var delegate: RecoveryViewControllerDelegate?
+    var viewModel: RecoveryViewModel!
+    var accountCreationError: Error? {
+        didSet {
+            guard let error = accountCreationError else { return }
+            if let error = error as? LoginError {
+                showError(error: error)
+            } else if let error = error as? SignupError {
+                showError(error: error)
+            }
+        }
+    }
+    private var countryCode: String = ""
+
+    // MARK: Outlets
+
+    @IBOutlet weak var recoveryMethodTitleLabel: UILabel! {
+        didSet {
+            recoveryMethodTitleLabel.text = CoreString._su_recovery_view_title
+            recoveryMethodTitleLabel.textColor = UIColorManager.TextNorm
+        }
+    }
+    @IBOutlet weak var recoveryMethodDescriptionLabel: UILabel! {
+        didSet {
+            recoveryMethodDescriptionLabel.text = CoreString._su_recovery_view_desc
+            recoveryMethodDescriptionLabel.textColor = UIColorManager.TextWeak
+        }
+    }
+    @IBOutlet weak var recoveryEmailTextField: PMTextField! {
+        didSet {
+            recoveryEmailTextField.title = CoreString._su_recovery_email_field_title
+            recoveryEmailTextField.delegate = self
+            recoveryEmailTextField.keyboardType = .emailAddress
+            recoveryEmailTextField.textContentType = .emailAddress
+            recoveryEmailTextField.autocorrectionType = .no
+            recoveryEmailTextField.autocapitalizationType = .none
+            recoveryEmailTextField.spellCheckingType = .no
+        }
+    }
+    @IBOutlet weak var recoveryPhoneTextField: PMTextFieldCombo! {
+        didSet {
+            recoveryPhoneTextField.title = CoreString._su_recovery_phone_field_title
+            recoveryPhoneTextField.placeholder = "XX XXX XX XX"
+            recoveryPhoneTextField.delegate = self
+            recoveryPhoneTextField.keyboardType = .phonePad
+            recoveryPhoneTextField.textContentType = .telephoneNumber
+            recoveryPhoneTextField.autocorrectionType = .no
+            recoveryPhoneTextField.autocapitalizationType = .none
+            recoveryPhoneTextField.spellCheckingType = .no
+            updateCountryCode(viewModel.initialCountryCode)
+        }
+    }
+    @IBOutlet weak var methodSegmenedControl: PMSegmentedControl! {
+        didSet {
+            methodSegmenedControl.setImage(image: UIImage(named: "ic-envelope", in: PMLogin.bundle, compatibleWith: nil)!, withText: CoreString._su_recovery_seg_email, forSegmentAt: 0)
+            methodSegmenedControl.setImage(image: UIImage(named: "ic-mobile", in: PMLogin.bundle, compatibleWith: nil)!, withText: CoreString._su_recovery_seg_phone, forSegmentAt: 1)
+        }
+    }
+    @IBOutlet weak var nextButton: ProtonButton! {
+        didSet {
+            nextButton.setTitle(CoreString._su_next_button, for: .normal)
+            nextButton.isEnabled = false
+        }
+    }
+    @IBOutlet weak var termsTextView: UITextView! {
+        didSet {
+            termsTextView.delegate = self
+            termsTextView.attributedText = viewModel?.termsAttributedString(textView: termsTextView)
+            termsTextView.backgroundColor = UIColorManager.BackgroundNorm
+            termsTextView.textColor = UIColorManager.TextWeak
+        }
+    }
+    @IBOutlet weak var skipButton: UIButton! {
+        didSet {
+            skipButton.setTitle(CoreString._su_skip_button, for: .normal)
+        }
+    }
+    @IBOutlet weak var scrollView: UIScrollView!
+
+    // MARK: View controller life cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColorManager.BackgroundNorm
+        setupGestures()
+        setupNotifications()
+        recoveryPhoneTextField.isHidden = true
+        generateAccessibilityIdentifiers()
+        try? recoveryEmailTextField.setUpChallenge(viewModel.challenge, type: .recovery)
+    }
+
+    func updateCountryCode(_ responseCode: Int) {
+        countryCode = "+\(responseCode)"
+        recoveryPhoneTextField.buttonTitleText = countryCode
+    }
+
+    // MARK: Actions
+
+    @IBAction func onMethodSegmentedTap(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case RecoveryMethod.email.rawValue:
+            recoveryEmailTextField.isHidden = false
+            recoveryPhoneTextField.isHidden = true
+            try? recoveryEmailTextField.setUpChallenge(viewModel.challenge, type: .recovery)
+        case RecoveryMethod.phoneNumber.rawValue:
+            recoveryEmailTextField.isHidden = true
+            recoveryPhoneTextField.isHidden = false
+            try? recoveryPhoneTextField.setUpChallenge(viewModel.challenge, type: .recovery)
+        default:
+            break
+        }
+        validateNextButton()
+    }
+
+    @IBAction func onBackButtonTap(_ sender: UIButton) {
+        delegate?.recoveryBackButtonPressed()
+    }
+
+    @IBAction func onSkipButtonTap(_ sender: UIButton) {
+        PMBanner.dismissAll(on: self)
+        showSkipRecoveryAlert()
+    }
+
+    @IBAction func onNextButtonTap(_ sender: ProtonButton) {
+        PMBanner.dismissAll(on: self)
+        var email: String?
+        var phoneNumber: String?
+        switch methodSegmenedControl.selectedSegmentIndex {
+        case RecoveryMethod.email.rawValue:
+            email = recoveryEmailTextField.value
+        case RecoveryMethod.phoneNumber.rawValue:
+            phoneNumber = countryCode + recoveryPhoneTextField.value
+        default: break
+        }
+        self.delegate?.recoveryFinish(email: email, phoneNumber: phoneNumber)
+    }
+
+    private func setupGestures() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func dismissKeyboard(_ sender: UITapGestureRecognizer) {
+        dismissKeyboard()
+    }
+
+    private func dismissKeyboard() {
+        if recoveryEmailTextField.isFirstResponder {
+            _ = recoveryEmailTextField.resignFirstResponder()
+        }
+
+        if recoveryPhoneTextField.isFirstResponder {
+            _ = recoveryPhoneTextField.resignFirstResponder()
+        }
+    }
+
+    private func showSkipRecoveryAlert() {
+        let title = CoreString._su_recovery_skip_title
+        let message = CoreString._su_recovery_skip_desc
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let skipAction = UIAlertAction(title: CoreString._su_skip_button, style: .default, handler: { _ in
+            self.delegate?.recoverySkipButtonPressed()
+        })
+        skipAction.accessibilityLabel = "DialogSkipButton"
+        alertController.addAction(skipAction)
+        let recoveryMethodAction = UIAlertAction(title: CoreString._su_recovery_method_button, style: .default)
+        recoveryMethodAction.accessibilityLabel = "DialogRecoveryMethodButton"
+        alertController.addAction(recoveryMethodAction)
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func validateNextButton() {
+        switch methodSegmenedControl.selectedSegmentIndex {
+        case RecoveryMethod.email.rawValue:
+            nextButton.isEnabled = isValidEmail
+        case RecoveryMethod.phoneNumber.rawValue:
+            nextButton.isEnabled = isValidPhoneNumber
+        default:
+            nextButton.isEnabled = false
+        }
+    }
+
+    private var isValidEmail: Bool {
+        return viewModel.isValidEmail(email: recoveryEmailTextField.value)
+    }
+
+    private var isValidPhoneNumber: Bool {
+        return viewModel.isValidPhoneNumber(number: recoveryPhoneTextField.value)
+    }
+
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc private func adjustKeyboard(notification: NSNotification) {
+        scrollView.adjustForKeyboard(notification: notification)
+    }
+}
+
+extension RecoveryViewController: PMTextFieldDelegate {
+    func didChangeValue(_ textField: PMTextField, value: String) {
+        validateNextButton()
+    }
+
+    func didEndEditing(textField: PMTextField) {
+        validateNextButton()
+    }
+
+    func textFieldShouldReturn(_ textField: PMTextField) -> Bool {
+        dismissKeyboard()
+        return true
+    }
+
+    func didBeginEditing(textField: PMTextField) {
+
+    }
+}
+
+extension RecoveryViewController: PMTextFieldComboDelegate {
+    func didChangeValue(_ textField: PMTextFieldCombo, value: String) {
+        validateNextButton()
+    }
+
+    func didEndEditing(textField: PMTextFieldCombo) {
+        validateNextButton()
+    }
+
+    func textFieldShouldReturn(_ textField: PMTextFieldCombo) -> Bool {
+        dismissKeyboard()
+        return true
+    }
+
+    func userDidRequestDataSelection(button: UIButton) {
+        delegate?.recoveryCountryPickerPressed()
+    }
+}
+
+extension RecoveryViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        delegate?.termsAndConditionsLinkPressed()
+        return false
+    }
+}
+
+extension RecoveryViewController: SignUpErrorCapable, LoginErrorCapable {
+    var bannerPosition: PMBannerPosition {
+        return PMBannerPosition.topCustom(UIEdgeInsets(top: 64, left: 16, bottom: CGFloat.infinity, right: 16))
+    }
+}
+
+#endif

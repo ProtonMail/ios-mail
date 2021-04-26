@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import ProtonCore_TestingToolkit
 
 class PinTests: BaseTestCase {
     private let pinRobot: PinRobot = PinRobot()
@@ -51,6 +52,6 @@ class PinTests: BaseTestCase {
             .inputIncorrectPin(incorrectPins)
             .verify.pinErrorMessageShows(2)
             .logout()
-            .verify.loginScreenDisplayed()
+            .verify.loginScreenIsShown()
     }
 }

@@ -12,7 +12,7 @@
 class SentRobot : MailboxRobotInterface {
     
     var verify: Verify! = nil
-    override init() {
+    required init() {
         super.init()
         verify = Verify(parent: self)
     }

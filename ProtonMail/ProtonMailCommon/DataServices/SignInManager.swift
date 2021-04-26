@@ -128,24 +128,40 @@ class SignInManager: Service {
         }
         auth.udpate(password: mailboxPassword)
         
-        let count = self.usersManager.freeAccountNum()
-        if count > 0 && !userInfo.isPaid {
-            reachLimit()
-            return
-        }
+        finalizeSignIn(userInfo: userInfo,
+                       auth: auth,
+                       onError: onError,
+                       reachLimit: reachLimit,
+                       existError: existError,
+                       tryUnlock: tryUnlock)
+    }
+
+    func finalizeSignIn(userInfo: UserInfo,
+                        auth: AuthCredential,
+                        onError: @escaping (NSError) -> Void,
+                        reachLimit: @escaping () -> Void,
+                        existError: @escaping () -> Void,
+                        tryUnlock: @escaping () -> Void) {
+
         let exist = self.usersManager.isExist(userID: userInfo.userId)
         if exist == true {
             existError()
             return
         }
-        
+
+        let count = self.usersManager.freeAccountNum()
+        if count > 0 && !userInfo.isPaid {
+            reachLimit()
+            return
+        }
+
         self.usersManager.add(auth: auth, user: userInfo)
         self.auth = nil
         self.userInfo = nil
-        
+
         let user = self.usersManager.getUser(bySessionID: auth.sessionID)!
         self.queueManager.registerHandler(user.messageService)
-        
+
         let labelService = user.labelService
         let userDataService = user.userService
         labelService.fetchV4Labels().cauterize()
@@ -155,7 +171,7 @@ class SignInManager: Service {
                 return
             }
             self.usersManager.update(auth: auth, user: info)
-            
+
             guard info.delinquent < 3 else {
                 self.queueManager.unregisterHandler(user.messageService)
                 _ = self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false).ensure {
@@ -163,13 +179,13 @@ class SignInManager: Service {
                 }
                 return
             }
-            
+
             self.usersManager.loggedIn()
             self.usersManager.active(uid: auth.sessionID)
             self.lastUpdatedStore.contactsCached = 0
             UserTempCachedStatus.restore()
             NotificationCenter.default.post(name: .didSignIn, object: nil)
-            
+
             tryUnlock()
         }.catch(on: .main) { (error) in
             onError(error as NSError)

@@ -12,7 +12,7 @@
     "zhj4478": "feng@pm.me"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "git": "",
     "tag": "1.0.0"
   },
   "platforms": {
@@ -40,6 +40,12 @@
     ],
     "AFNetworking": [
       "~> 4.0"
+    ],
+    "PromiseKit": [
+      "~> 6.0"
+    ],
+    "AwaitKit": [
+      "~> 5.0.0"
     ],
     "TrustKit": [
 

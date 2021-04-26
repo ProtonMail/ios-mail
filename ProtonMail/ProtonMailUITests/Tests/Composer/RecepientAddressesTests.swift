@@ -6,6 +6,8 @@
 //  Copyright © 2021 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 class RecepientAddressesTests: BaseTestCase {
     
     var subject = String()

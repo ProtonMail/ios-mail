@@ -27,7 +27,7 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public class Authenticator: NSObject {
+public class Authenticator: NSObject, AuthenticatorInterface {
     public typealias Errors = AuthErrors
     public typealias Completion = (Result<Status, AuthErrors>) -> Void
     
@@ -228,8 +228,8 @@ public class Authenticator: NSObject {
             switch result {
             case .failure(let responseError):
                 completion(.failure(.networkingError(responseError)))
-            case .success(let salts):
-                completion(.success(salts.user))
+            case .success(let response):
+                completion(.success(response.user))
             }
         }
     }

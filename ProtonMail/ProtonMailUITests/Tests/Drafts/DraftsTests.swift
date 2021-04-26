@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 import Foundation
 
 class DraftsTests: BaseTestCase {
@@ -222,7 +224,6 @@ class DraftsTests: BaseTestCase {
         let newSubject = testData.newMessageSubject
         loginRobot
             .loginTwoPasswordUser(testData.twoPassUser)
-            .decryptMailbox(testData.twoPassUser.mailboxPassword)
             .compose()
             .draftToSubjectBody(testData.onePassUser.email, subject, body)
             .tapCancel()
@@ -249,7 +250,6 @@ class DraftsTests: BaseTestCase {
         let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
         loginRobot
             .loginTwoPasswordUser(testData.twoPassUser)
-            .decryptMailbox(testData.twoPassUser.mailboxPassword)
             .compose()
             .draftToSubjectBody(testData.onePassUser.email, subject, body)
             .tapCancel()

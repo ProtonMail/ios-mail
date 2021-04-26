@@ -29,7 +29,6 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 // Test API
-// Humanverify test: https://gitlab.protontech.ch/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_test.md
 
 public class TestApiClient: Client {
     public var apiService: APIService
