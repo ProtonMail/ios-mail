@@ -130,7 +130,7 @@ final class LabelParentSelectVM: LabelParentSelctVMProtocol {
         let hasSameName = usedNames.contains(self.name)
 
         let newDeepLevel = item.indentationLevel + (label?.deepLevel ?? 1)
-        let isAllowDeep = newDeepLevel <= 3
+        let isAllowDeep = newDeepLevel < 3
 
         let isAllow = !hasSameName && isAllowDeep && !targetIsChild
         self.allowed[row] = isAllow
