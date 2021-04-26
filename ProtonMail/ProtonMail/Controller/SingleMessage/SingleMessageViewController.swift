@@ -39,16 +39,22 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
     private(set) var messageBodyViewController: NewMessageBodyViewController!
     let nonExapndedHeaderViewController: NonExpandedHeaderViewController
+    let bannerViewController: BannerViewController
 
     init(viewModel: SingleMessageViewModel) {
         self.viewModel = viewModel
         self.nonExapndedHeaderViewController = NonExpandedHeaderViewController(
             viewModel: viewModel.nonExapndedHeaderViewModel
         )
+        self.bannerViewController = BannerViewController(viewModel: viewModel.bannerViewModel)
+
         super.init(nibName: nil, bundle: nil)
-        self.messageBodyViewController = NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel,
-                                                                      parentScrollView: self)
+        self.messageBodyViewController =
+            NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel,
+                                         parentScrollView: self)
         self.messageBodyViewController.delegate = self
+
+        self.bannerViewController.delegate = self
     }
 
     deinit {
@@ -95,6 +101,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         precondition(messageBodyViewController != nil)
         embed(messageBodyViewController, inside: customView.messageBodyContainer)
         embed(nonExapndedHeaderViewController, inside: customView.messageHeaderContainer)
+        embed(bannerViewController, inside: customView.bannerContainer)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -230,11 +237,23 @@ extension SingleMessageViewController: ScrollableContainer {
 }
 
 extension SingleMessageViewController: NewMessageBodyViewControllerDelegate {
+    func updateRemoteContentBanner(shouldShow: Bool) {
+        if shouldShow && !viewModel.bannerViewModel.shouldAutoLoadRemoteContent {
+            bannerViewController.showRemoteContentBanner()
+        }
+    }
+
     func openUrl(_ url: URL) {
         // TODO: handle open web url/ mailto url here
     }
 
     func handleReload() {
         viewModel.downloadDetails()
+    }
+}
+
+extension SingleMessageViewController: BannerViewControllerDelegate {
+    func loadRemoteContent() {
+        viewModel.messageBodyViewModel.remoteContentPolicy = WebContents.RemoteContentPolicy.allowed.rawValue
     }
 }

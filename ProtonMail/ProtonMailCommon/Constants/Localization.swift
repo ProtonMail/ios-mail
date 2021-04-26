@@ -2087,4 +2087,7 @@ class LocalizedString {
 
     lazy var _message_body_view_not_connected_text = NSLocalizedString("You are not connected. We cannot display the content of your message.", comment: "")
     lazy var _message_body_view_reload_button_title = NSLocalizedString("Reload", comment: "")
+
+    lazy var _banner_remote_content_title = NSLocalizedString("This message contains remote content.", comment: "")
+    lazy var _banner_load_remote_content = NSLocalizedString("Load content", comment: "")
 }

@@ -29,9 +29,11 @@ class SingleMessageViewModel {
             propagateMessageData()
         }
     }
+    let shouldAutoLoadRemoteImage: Bool
 
     let messageBodyViewModel: NewMessageBodyViewModel
     let nonExapndedHeaderViewModel: NonExpandedHeaderViewModel
+    let bannerViewModel: BannerViewModel
     private(set) lazy var userActivity: NSUserActivity = .messageDetailsActivity(messageId: message.messageID)
 
     private let messageService: MessageDataService
@@ -46,6 +48,7 @@ class SingleMessageViewModel {
         self.message = message
         self.messageService = user.messageService
         self.user = user
+        self.shouldAutoLoadRemoteImage = user.autoLoadRemoteImages
         self.messageBodyViewModel = NewMessageBodyViewModel(message: message,
                                                             messageService: user.messageService,
                                                             userManager: user,
@@ -55,6 +58,7 @@ class SingleMessageViewModel {
             message: message,
             user: user
         )
+        self.bannerViewModel = BannerViewModel(shouldAutoLoadRemoteContent: user.autoLoadRemoteImages)
         self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
     }
 

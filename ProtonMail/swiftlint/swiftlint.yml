@@ -113,6 +113,9 @@ included:
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyView.swift
   - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/NewMessageBodyViewModel.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Banners/BannerViewController.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Banners/RemoteContentBannerView.swift
+  - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/BannerViewModel.swift
 
 excluded:
   - ${PWD}/Pods

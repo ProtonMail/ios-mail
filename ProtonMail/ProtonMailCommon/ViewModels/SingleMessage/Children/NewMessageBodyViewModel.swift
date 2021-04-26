@@ -23,6 +23,7 @@
 protocol NewMessageBodyViewModelDelegate: class {
     func reloadWebView()
     func showReloadError()
+    func updateBannerStatus()
 }
 
 class NewMessageBodyViewModel {
@@ -33,8 +34,11 @@ class NewMessageBodyViewModel {
 
     weak var delegate: NewMessageBodyViewModelDelegate?
 
-    private(set) var remoteContentPolicy: WebContents.RemoteContentPolicy.RawValue {
+    private(set) var shouldShowRemoteBanner = false
+
+    var remoteContentPolicy: WebContents.RemoteContentPolicy.RawValue {
         didSet {
+            reload(from: message)
             delegate?.reloadWebView()
         }
     }
@@ -104,6 +108,8 @@ class NewMessageBodyViewModel {
         if let decryptedBody = decryptBody(from: message) {
             body = decryptedBody
 
+            checkBannerStatus(decryptedBody)
+
             showEmbedImage(message, body: decryptedBody) {
                 self.contents = WebContents(body: self.body ?? "",
                                             remoteContentMode:
@@ -114,6 +120,22 @@ class NewMessageBodyViewModel {
             self.contents = WebContents(body: self.body ?? "",
                                         remoteContentMode:
                                             remoteContentMode)
+        }
+    }
+
+    private func checkBannerStatus(_ bodyToCheck: String) {
+        if remoteContentPolicy != WebContents.RemoteContentPolicy.allowed.rawValue {
+            DispatchQueue.global().async { [weak self] in
+                // this method is slow
+                let shouldShowRemoteBanner = bodyToCheck.hasImage()
+                DispatchQueue.main.async {
+                    self?.shouldShowRemoteBanner = shouldShowRemoteBanner
+                    self?.delegate?.updateBannerStatus()
+                }
+            }
+        } else {
+            self.shouldShowRemoteBanner = true
+            delegate?.updateBannerStatus()
         }
     }
 
