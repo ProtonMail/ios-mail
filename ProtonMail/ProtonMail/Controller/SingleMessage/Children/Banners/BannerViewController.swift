@@ -20,9 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import PMUIFoundations
+
 protocol BannerViewControllerDelegate: class {
     func loadRemoteContent()
+    func loadEmbeddedImage()
     func handleMessageExpired()
+    func hideBannerController()
 }
 
 class BannerViewController: UIViewController {
@@ -50,10 +54,18 @@ class BannerViewController: UIViewController {
     private(set) lazy var customView = UIView()
     private(set) var containerView: UIStackView?
     private(set) lazy var remoteContentBanner = RemoteContentBannerView()
+    private(set) lazy var embeddedImageBanner = EmbeddedImageBannerView()
     private(set) lazy var errorBanner = ErrorBannerView()
     private(set) lazy var expirationBanner = ExpirationBannerView()
+    private(set) lazy var remoteAndEmbeddedContentBanner = RemoteAndEmbeddedBannerView()
 
-    private(set) var displayedBanners: [BannerType: UIView] = [:]
+    private(set) var displayedBanners: [BannerType: UIView] = [:] {
+        didSet {
+            if displayedBanners.isEmpty {
+                delegate?.hideBannerController()
+            }
+        }
+    }
 
     init(viewModel: BannerViewModel) {
         self.viewModel = viewModel
@@ -108,61 +120,105 @@ class BannerViewController: UIViewController {
         }
     }
 
+    func showContentBanner(remoteContent: Bool, embeddedImage: Bool) {
+        if displayedBanners[.remoteContent]?.subviews.first as? RemoteAndEmbeddedBannerView != nil {
+            return
+        } else if remoteContent && embeddedImage {
+            showRemoteAndEmbeddedContentBanner()
+        } else if remoteContent {
+            showRemoteContentBanner()
+        } else if embeddedImage {
+            showEmbeddedImageBanner()
+        }
+    }
+
     func showErrorBanner(error: NSError) {
-        guard let containerView = self.containerView else { return }
         errorBanner.setErrorTitle(error.localizedDescription)
-
-        let bannerConainterView = UIView()
-        bannerConainterView.addSubview(errorBanner)
-        [
-            errorBanner.topAnchor.constraint(equalTo: bannerConainterView.topAnchor, constant: 12),
-            errorBanner.leadingAnchor.constraint(equalTo: bannerConainterView.leadingAnchor, constant: 12),
-            errorBanner.trailingAnchor.constraint(equalTo: bannerConainterView.trailingAnchor, constant: -12),
-            errorBanner.bottomAnchor.constraint(equalTo: bannerConainterView.bottomAnchor, constant: -12)
-        ].activate()
-
-        let indexToInsert = findIndexToInsert(.error)
-
-        containerView.insertArrangedSubview(bannerConainterView, at: indexToInsert)
-        displayedBanners[.error] = bannerConainterView
+        addBannerView(type: .error, shouldAddContainer: true, bannerView: errorBanner)
     }
 
     func showRemoteContentBanner() {
-        guard let containerView = self.containerView else { return }
-
         remoteContentBanner.titleLabel.attributedText =
             LocalString._banner_remote_content_title.apply(style: FontManager.Caption)
         remoteContentBanner.loadContentButton.setAttributedTitle(
             LocalString._banner_load_remote_content.apply(style: FontManager.body3RegularNorm),
             for: .normal
         )
-
-        let bannerConainterView = UIView()
-        bannerConainterView.addSubview(remoteContentBanner)
-        [
-            remoteContentBanner.topAnchor.constraint(equalTo: bannerConainterView.topAnchor, constant: 12),
-            remoteContentBanner.leadingAnchor.constraint(equalTo: bannerConainterView.leadingAnchor, constant: 12),
-            remoteContentBanner.trailingAnchor.constraint(equalTo: bannerConainterView.trailingAnchor, constant: -12),
-            remoteContentBanner.bottomAnchor.constraint(equalTo: bannerConainterView.bottomAnchor, constant: -12)
-        ].activate()
-
-        let indexToInsert = findIndexToInsert(.remoteContent)
-
-        containerView.insertArrangedSubview(bannerConainterView, at: indexToInsert)
-        displayedBanners[.remoteContent] = bannerConainterView
-
         remoteContentBanner.loadContentButton.addTarget(self,
                                                         action: #selector(self.loadRemoteContent),
                                                         for: .touchUpInside)
+        addBannerView(type: .remoteContent, shouldAddContainer: true, bannerView: remoteContentBanner)
+    }
+
+    func showEmbeddedImageBanner() {
+        embeddedImageBanner.titleLabel.attributedText =
+            LocalString._banner_embedded_image_title.apply(style: FontManager.Caption)
+        embeddedImageBanner.loadContentButton.setAttributedTitle(
+            LocalString._banner_load_embedded_image.apply(style: FontManager.body3RegularNorm),
+            for: .normal
+        )
+        embeddedImageBanner.loadContentButton.addTarget(self,
+                                                        action: #selector(self.loadEmbeddedImages),
+                                                        for: .touchUpInside)
+        addBannerView(type: .remoteContent, shouldAddContainer: true, bannerView: embeddedImageBanner)
+    }
+
+    func showRemoteAndEmbeddedContentBanner() {
+        remoteAndEmbeddedContentBanner.titleLabel.attributedText =
+            LocalString._banner_embedded_image_title.apply(style: FontManager.Caption)
+        remoteAndEmbeddedContentBanner.loadImagesButton.setAttributedTitle(
+            LocalString._banner_load_embedded_image.apply(style: FontManager.body3RegularNorm),
+            for: .normal
+        )
+        remoteAndEmbeddedContentBanner.loadContentButton.setAttributedTitle(
+            LocalString._banner_load_remote_content.apply(style: FontManager.body3RegularNorm),
+            for: .normal
+        )
+        var disabledAttribute = FontManager.body3RegularNorm
+        disabledAttribute[.foregroundColor] = UIColorManager.TextDisabled
+        remoteAndEmbeddedContentBanner.loadImagesButton.setAttributedTitle(
+            LocalString._banner_load_embedded_image.apply(style: disabledAttribute),
+            for: .disabled
+        )
+        remoteAndEmbeddedContentBanner.loadContentButton.setAttributedTitle(
+            LocalString._banner_load_remote_content.apply(style: disabledAttribute),
+            for: .disabled
+        )
+
+        remoteAndEmbeddedContentBanner.loadImagesButton.addTarget(self,
+                                                                  action: #selector(self.loadEmbeddedImageAndCheck),
+                                                                  for: .touchUpInside)
+        remoteAndEmbeddedContentBanner.loadContentButton.addTarget(self,
+                                                                   action: #selector(self.loadRemoteContentAndCheck),
+                                                                   for: .touchUpInside)
+        addBannerView(type: .remoteContent, shouldAddContainer: true, bannerView: remoteAndEmbeddedContentBanner)
     }
 
     func showExpirationBanner() {
-        guard let containerView = self.containerView else { return }
         let banner = self.expirationBanner
         banner.updateTitleWith(offset: viewModel.getExpirationOffset())
-        let indexToInsert = findIndexToInsert(.expiration)
-        containerView.insertArrangedSubview(banner, at: indexToInsert)
-        displayedBanners[.expiration] = banner
+
+        addBannerView(type: .expiration, shouldAddContainer: false, bannerView: banner)
+    }
+
+    private func addBannerView(type: BannerType, shouldAddContainer: Bool, bannerView: UIView) {
+        guard let containerView = self.containerView else { return }
+        var viewToAdd = bannerView
+        if shouldAddContainer {
+            let bannerConainterView = UIView()
+            bannerConainterView.addSubview(bannerView)
+            [
+                bannerView.topAnchor.constraint(equalTo: bannerConainterView.topAnchor, constant: 12),
+                bannerView.leadingAnchor.constraint(equalTo: bannerConainterView.leadingAnchor, constant: 12),
+                bannerView.trailingAnchor.constraint(equalTo: bannerConainterView.trailingAnchor, constant: -12),
+                bannerView.bottomAnchor.constraint(equalTo: bannerConainterView.bottomAnchor, constant: -12)
+            ].activate()
+            viewToAdd = bannerConainterView
+        }
+        let indexToInsert = findIndexToInsert(type)
+
+        containerView.insertArrangedSubview(viewToAdd, at: indexToInsert)
+        displayedBanners[type] = viewToAdd
     }
 
     private func findIndexToInsert(_ typeToInsert: BannerType) -> Int {
@@ -182,8 +238,32 @@ class BannerViewController: UIViewController {
     }
 
     @objc
+    private func loadRemoteContentAndCheck() {
+        delegate?.loadRemoteContent()
+        remoteAndEmbeddedContentBanner.loadContentButton.isEnabled = false
+        if remoteAndEmbeddedContentBanner.areBothButtonDisabled {
+            self.hideBanner(type: .remoteContent)
+        }
+    }
+
+    @objc
+    private func loadEmbeddedImageAndCheck() {
+        delegate?.loadEmbeddedImage()
+        remoteAndEmbeddedContentBanner.loadImagesButton.isEnabled = false
+        if remoteAndEmbeddedContentBanner.areBothButtonDisabled {
+            self.hideBanner(type: .remoteContent)
+        }
+    }
+
+    @objc
     private func loadRemoteContent() {
         delegate?.loadRemoteContent()
+        self.hideBanner(type: .remoteContent)
+    }
+
+    @objc
+    private func loadEmbeddedImages() {
+        delegate?.loadEmbeddedImage()
         self.hideBanner(type: .remoteContent)
     }
 }

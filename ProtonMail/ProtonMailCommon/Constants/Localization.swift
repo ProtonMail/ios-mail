@@ -1036,7 +1036,8 @@ class LocalizedString {
     /// "Clear Local Message Cache"
     lazy var _clear_local_message_cache = NSLocalizedString("Clear Local Message Cache", comment: "settings general section title")
     /// "Auto Show Images"
-    lazy var _auto_show_images = NSLocalizedString("Auto Show Images", comment: "settings general section title")
+    lazy var _auto_show_images = NSLocalizedString("Auto show remote content", comment: "settings general section title")
+    lazy var _auto_show_embedded_images = NSLocalizedString("Auto load embedded image", comment: "settings general section title")
     /// "Swipe Left to Right"
     lazy var _swipe_left_to_right = NSLocalizedString("Left to Right", comment: "settings swipe actions section title")
     /// "Swipe Right to Left"
@@ -2095,4 +2096,7 @@ class LocalizedString {
 
     lazy var _one_attachment_title = NSLocalizedString("Attachment", comment: "")
     lazy var _attachments_title = NSLocalizedString("Attachments", comment: "")
+
+    lazy var _banner_embedded_image_title = NSLocalizedString("This message contains embedded images.", comment: "")
+    lazy var _banner_load_embedded_image = NSLocalizedString("Load images", comment: "")
 }

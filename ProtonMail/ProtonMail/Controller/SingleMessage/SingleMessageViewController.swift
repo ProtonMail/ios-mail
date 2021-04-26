@@ -40,16 +40,14 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
     private(set) var messageBodyViewController: NewMessageBodyViewController!
     let nonExapndedHeaderViewController: NonExpandedHeaderViewController
+    private(set) var bannerViewController: BannerViewController?
     private(set) var attachmentViewController: AttachmentViewController?
-    let bannerViewController: BannerViewController
 
     init(viewModel: SingleMessageViewModel) {
         self.viewModel = viewModel
         self.nonExapndedHeaderViewController = NonExpandedHeaderViewController(
             viewModel: viewModel.nonExapndedHeaderViewModel
         )
-        self.bannerViewController = BannerViewController(viewModel: viewModel.bannerViewModel)
-
         if viewModel.message.numAttachments != 0 {
             attachmentViewController = AttachmentViewController(viewModel: viewModel.attachmentViewModel)
         }
@@ -60,7 +58,9 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         self.messageBodyViewController.delegate = self
 
         self.attachmentViewController?.delegate = self
-        self.bannerViewController.delegate = self
+        if viewModel.message.expirationTime != nil {
+            showBanner()
+        }
     }
 
     deinit {
@@ -80,9 +80,10 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         }
         viewModel.updateErrorBanner = { [weak self] error in
             if let error = error {
-                self?.bannerViewController.showErrorBanner(error: error)
+                self?.showBanner()
+                self?.bannerViewController?.showErrorBanner(error: error)
             } else {
-                self?.bannerViewController.hideBanner(type: .error)
+                self?.bannerViewController?.hideBanner(type: .error)
             }
         }
 
@@ -115,7 +116,6 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         precondition(messageBodyViewController != nil)
         embed(messageBodyViewController, inside: customView.messageBodyContainer)
         embed(nonExapndedHeaderViewController, inside: customView.messageHeaderContainer)
-        embed(bannerViewController, inside: customView.bannerContainer)
         if let attachmentVC = self.attachmentViewController {
             embed(attachmentVC, inside: customView.attachmentContainer)
         }
@@ -199,6 +199,22 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         }
     }
 
+    private func showBanner() {
+        guard self.bannerViewController == nil else { return }
+        let controller = BannerViewController(viewModel: viewModel.bannerViewModel)
+        controller.delegate = self
+        embed(controller, inside: customView.bannerContainer)
+        self.bannerViewController = controller
+    }
+
+    private func hideBanner() {
+        guard let controler = self.bannerViewController else {
+            return
+        }
+        unembed(controler)
+        self.bannerViewController = nil
+    }
+
     required init?(coder: NSCoder) {
         nil
     }
@@ -254,14 +270,20 @@ extension SingleMessageViewController: ScrollableContainer {
 }
 
 extension SingleMessageViewController: NewMessageBodyViewControllerDelegate {
-    func updateRemoteContentBanner(shouldShow: Bool) {
-        if shouldShow && !viewModel.bannerViewModel.shouldAutoLoadRemoteContent {
-            bannerViewController.showRemoteContentBanner()
-        }
+    func updateContentBanner(shouldShowRemoteContentBanner: Bool, shouldShowEmbeddedContentBanner: Bool) {
+        let shouldShowRemoteContentBanner =
+            shouldShowRemoteContentBanner && !viewModel.bannerViewModel.shouldAutoLoadRemoteContent
+        let shouldShowEmbeddedImageBanner =
+            shouldShowEmbeddedContentBanner && !viewModel.bannerViewModel.shouldAutoLoadEmbeddedImage
+
+        showBanner()
+        bannerViewController?.showContentBanner(remoteContent: shouldShowRemoteContentBanner,
+                                                embeddedImage: shouldShowEmbeddedImageBanner)
     }
 
 	func openMailUrl(_ mailUrl: URL) {
         // TODO: handle in coordinator
+
     }
 
     func openUrl(_ url: URL) {
@@ -317,6 +339,14 @@ extension SingleMessageViewController: AttachmentViewControllerDelegate {
 }
 
 extension SingleMessageViewController: BannerViewControllerDelegate {
+    func hideBannerController() {
+        hideBanner()
+    }
+
+    func loadEmbeddedImage() {
+        viewModel.messageBodyViewModel.embeddedContentPolicy = .allowed
+    }
+
     func handleMessageExpired() {
         self.navigationController?.popViewController(animated: true)
     }

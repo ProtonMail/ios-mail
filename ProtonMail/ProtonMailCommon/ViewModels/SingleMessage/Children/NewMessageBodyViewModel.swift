@@ -34,9 +34,14 @@ class NewMessageBodyViewModel {
 
     weak var delegate: NewMessageBodyViewModelDelegate?
 
-    private(set) var shouldShowRemoteBanner = false
-
     var remoteContentPolicy: WebContents.RemoteContentPolicy.RawValue {
+        didSet {
+            reload(from: message)
+            delegate?.reloadWebView()
+        }
+    }
+
+    var embeddedContentPolicy: WebContents.EmbeddedContentPolicy {
         didSet {
             reload(from: message)
             delegate?.reloadWebView()
@@ -76,7 +81,8 @@ class NewMessageBodyViewModel {
     init(message: Message,
          messageService: MessageDataService,
          userManager: UserManager,
-         shouldAutoLoadRemoteImages: Bool) {
+         shouldAutoLoadRemoteImages: Bool,
+         shouldAutoLoadEmbeddedImages: Bool) {
         self.message = message
         self.messageService = messageService
         self.userManager = userManager
@@ -84,6 +90,7 @@ class NewMessageBodyViewModel {
         remoteContentPolicy = shouldAutoLoadRemoteImages ?
             WebContents.RemoteContentPolicy.allowed.rawValue :
             WebContents.RemoteContentPolicy.disallowed.rawValue
+        embeddedContentPolicy = shouldAutoLoadEmbeddedImages ? .allowed : .disallowed
 
         guard message.isDetailDownloaded else {
             return
@@ -110,7 +117,12 @@ class NewMessageBodyViewModel {
 
             checkBannerStatus(decryptedBody)
 
-            showEmbedImage(message, body: decryptedBody) {
+            if embeddedContentPolicy == .allowed {
+                showEmbedImage(message, body: decryptedBody) {
+                    self.contents = WebContents(body: self.body ?? "",
+                                                remoteContentMode: WebContents.RemoteContentPolicy(rawValue: self.remoteContentPolicy)!)
+                }
+            } else {
                 self.contents = WebContents(body: self.body ?? "",
                                             remoteContentMode:
                                                 remoteContentMode)
@@ -123,18 +135,28 @@ class NewMessageBodyViewModel {
         }
     }
 
+    private(set) var shouldShowRemoteBanner = false
+    private(set) var shouldShowEmbeddedBanner = false
+
     private func checkBannerStatus(_ bodyToCheck: String) {
+        var shouldShowEmbeddedBanner = false
+        if embeddedContentPolicy != .allowed && message.isHavingEmbeddedImages {
+            shouldShowEmbeddedBanner = true
+        }
+
         if remoteContentPolicy != WebContents.RemoteContentPolicy.allowed.rawValue {
             DispatchQueue.global().async { [weak self] in
                 // this method is slow
                 let shouldShowRemoteBanner = bodyToCheck.hasImage()
                 DispatchQueue.main.async {
                     self?.shouldShowRemoteBanner = shouldShowRemoteBanner
+                    self?.shouldShowEmbeddedBanner = shouldShowEmbeddedBanner
                     self?.delegate?.updateBannerStatus()
                 }
             }
         } else {
-            self.shouldShowRemoteBanner = false
+            self.shouldShowRemoteBanner = true
+            self.shouldShowEmbeddedBanner = shouldShowEmbeddedBanner
             delegate?.updateBannerStatus()
         }
     }
@@ -210,5 +232,13 @@ class NewMessageBodyViewModel {
                 }
             }
         }
+    }
+}
+
+extension Message {
+    var isHavingEmbeddedImages: Bool {
+        let allAttachments = (self.attachments.allObjects as? [Attachment]) ?? []
+        let atts = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false })
+        return !atts.isEmpty
     }
 }

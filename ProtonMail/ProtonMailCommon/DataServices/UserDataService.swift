@@ -341,6 +341,31 @@ class UserDataService : Service, HasLocalStorage {
             completion(userInfo, nil, response.error)
         }
     }
+
+    func updateAutoLoadEmbeddedImage(auth currentAuth: AuthCredential,
+                                     userInfo: UserInfo,
+                                     remote status: Bool,
+                                     completion: @escaping UserInfoBlock) {
+        guard keymaker.mainKey != nil else {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+
+        var newStatus = userInfo.showImages
+        if status {
+            newStatus.insert(.embedded)
+        } else {
+            newStatus.remove(.embedded)
+        }
+
+        let api = UpdateShowImages(status: newStatus.rawValue, authCredential: currentAuth)
+        self.apiService.exec(route: api) { (task, response) in
+            if response.error == nil {
+                userInfo.showImages = newStatus
+            }
+            completion(userInfo, nil, response.error)
+        }
+    }
     
     #if !APP_EXTENSION
     func updateLinkConfirmation(auth currentAuth: AuthCredential,

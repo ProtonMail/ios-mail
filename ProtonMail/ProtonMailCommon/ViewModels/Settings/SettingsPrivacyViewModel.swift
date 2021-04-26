@@ -24,14 +24,17 @@ import Foundation
 import PMCommon
 
 public enum SettingPrivacyItem: CustomStringConvertible {
-    case autoLoadImage
+    case autoLoadRemoteContent
+    case autoLoadEmbeddedImage
     case linkOpeningMode
     case metadataStripping
 
     public var description: String {
         switch self {
-        case .autoLoadImage:
+        case .autoLoadRemoteContent:
             return LocalString._auto_show_images
+        case .autoLoadEmbeddedImage:
+            return LocalString._auto_show_embedded_images
         case .linkOpeningMode:
             return LocalString._request_link_confirmation
         case .metadataStripping:
@@ -46,13 +49,17 @@ protocol SettingsPrivacyViewModel: AnyObject {
     var user: UserManager { get }
     var isMetadataStripping: Bool { get set }
 
+    func updateAutoLoadEmbeddedImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?)
     func updateAutoLoadImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?)
     func updateLinkConfirmation(newStatus: Bool, completion: ((NSError?) -> Void)?)
 }
 
 class SettingsPrivacyViewModelImpl: SettingsPrivacyViewModel {
 
-    var privacySections: [SettingPrivacyItem] = [.autoLoadImage, .linkOpeningMode, .metadataStripping]
+    var privacySections: [SettingPrivacyItem] = [.autoLoadRemoteContent,
+                                                 .autoLoadEmbeddedImage,
+                                                 .linkOpeningMode,
+                                                 .metadataStripping]
     let user: UserManager
 
     var userInfo: UserInfo {
@@ -94,6 +101,19 @@ class SettingsPrivacyViewModelImpl: SettingsPrivacyViewModel {
             } else {
                 self.user.save()
                 completion?(nil)
+            }
+        }
+    }
+
+    func updateAutoLoadEmbeddedImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?) {
+        self.user.userService.updateAutoLoadEmbeddedImage(auth: user.auth,
+                                                          userInfo: user.userInfo,
+                                                          remote: newStatus) { _, _, error in
+            if error == nil {
+                self.user.save()
+                completion?(nil)
+            } else {
+                completion?(error)
             }
         }
     }

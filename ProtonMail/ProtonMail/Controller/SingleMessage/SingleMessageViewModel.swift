@@ -56,14 +56,16 @@ class SingleMessageViewModel {
         self.messageBodyViewModel = NewMessageBodyViewModel(message: message,
                                                             messageService: user.messageService,
                                                             userManager: user,
-                                                            shouldAutoLoadRemoteImages: user.autoLoadRemoteImages)
+                                                            shouldAutoLoadRemoteImages: user.userinfo.showImages.contains(.remote),
+                                                            shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded))
         self.nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(
             labelId: labelId,
             message: message,
             user: user
         )
-        self.bannerViewModel = BannerViewModel(shouldAutoLoadRemoteContent: user.autoLoadRemoteImages,
-                                               expirationTime: message.expirationTime)
+        self.bannerViewModel = BannerViewModel(shouldAutoLoadRemoteContent: user.userinfo.showImages.contains(.remote),
+                                               expirationTime: message.expirationTime,
+                                               shouldAutoLoadEmbeddedImage: user.userinfo.showImages.contains(.embedded))
         let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
             .map(AttachmentNormal.init) + (message.tempAtts ?? [])
 

@@ -86,8 +86,10 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
         cell.backgroundColor = UIColorManager.BackgroundNorm
         switch item {
-        case .autoLoadImage:
+        case .autoLoadRemoteContent:
             configureAutoLoadImageCell(cell, item, tableView, indexPath)
+        case .autoLoadEmbeddedImage:
+            configureAutoLoadEmbeddedImageCell(cell, item, tableView, indexPath)
         case .linkOpeningMode:
             configureLinkOpeningModeCell(cell, item, tableView, indexPath)
         case .metadataStripping:
@@ -111,16 +113,6 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let row = indexPath.row
-        let item = self.viewModel.privacySections[row]
-        switch item {
-        case .autoLoadImage:
-            break
-        case .linkOpeningMode:
-            break
-        case .metadataStripping:
-            break
-        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -134,13 +126,43 @@ extension SettingsPrivacyViewController {
         if let cellToUpdate = cell as? SwitchTableViewCell {
             cellToUpdate.configCell(item.description,
                                     bottomLine: "",
-                                    status: viewModel.userInfo.autoShowRemote,
+                                    status: viewModel.userInfo.showImages.contains(.remote),
                                     complete: { (_, newStatus, feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
                                         if let indexp = tableView.indexPath(for: cellToUpdate), indexPath == indexp {
                                             let view = UIApplication.shared.keyWindow ?? UIView()
                                             MBProgressHUD.showAdded(to: view, animated: true)
 
                                             self.viewModel.updateAutoLoadImageStatus(newStatus: newStatus) { error in
+                                                MBProgressHUD.hide(for: view, animated: true)
+                                                if let error = error {
+                                                    feedback(false)
+                                                    let alertController = error.alertController()
+                                                    alertController.addOKAction()
+                                                    self.present(alertController, animated: true, completion: nil)
+                                                } else {
+                                                    feedback(true)
+                                                }
+                                            }
+                                        } else {
+                                            feedback(false)
+                                        }
+                                    })
+        }
+    }
+
+    private func configureAutoLoadEmbeddedImageCell(_ cell: UITableViewCell,
+                                            _ item: SettingPrivacyItem,
+                                            _ tableView: UITableView,
+                                            _ indexPath: IndexPath) {
+        if let cellToUpdate = cell as? SwitchTableViewCell {
+            cellToUpdate.configCell(item.description,
+                                    bottomLine: "",
+                                    status: viewModel.userInfo.showImages.contains(.embedded),
+                                    complete: { (_, newStatus, feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
+                                        if let indexp = tableView.indexPath(for: cellToUpdate), indexPath == indexp {
+                                            let view = UIApplication.shared.keyWindow ?? UIView()
+                                            MBProgressHUD.showAdded(to: view, animated: true)
+                                            self.viewModel.updateAutoLoadEmbeddedImageStatus(newStatus: newStatus) { error in
                                                 MBProgressHUD.hide(for: view, animated: true)
                                                 if let error = error {
                                                     feedback(false)

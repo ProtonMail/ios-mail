@@ -29,7 +29,7 @@ protocol NewMessageBodyViewControllerDelegate: class {
     func openUrl(_ url: URL)
     func openMailUrl(_ mailUrl: URL)
     func handleReload()
-    func updateRemoteContentBanner(shouldShow: Bool)
+    func updateContentBanner(shouldShowRemoteContentBanner: Bool, shouldShowEmbeddedContentBanner: Bool)
 }
 
 class NewMessageBodyViewController: UIViewController {
@@ -260,7 +260,8 @@ class NewMessageBodyViewController: UIViewController {
 
 extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
     func updateBannerStatus() {
-        delegate?.updateRemoteContentBanner(shouldShow: viewModel.shouldShowRemoteBanner)
+        delegate?.updateContentBanner(shouldShowRemoteContentBanner: viewModel.shouldShowRemoteBanner,
+                                      shouldShowEmbeddedContentBanner: viewModel.shouldShowEmbeddedBanner)
     }
 
     func showReloadError() {

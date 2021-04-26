@@ -24,14 +24,18 @@ import Foundation
 
 class BannerViewModel {
     let shouldAutoLoadRemoteContent: Bool
+    let shouldAutoLoadEmbeddedImage: Bool
     private(set) var expirationTime: Date = .distantFuture
     private var timer: Timer?
 
     var updateExpirationTime: ((Int) -> Void)?
     var messageExpired: (() -> Void)?
 
-    init(shouldAutoLoadRemoteContent: Bool, expirationTime: Date?) {
+    init(shouldAutoLoadRemoteContent: Bool,
+         expirationTime: Date?,
+         shouldAutoLoadEmbeddedImage: Bool) {
         self.shouldAutoLoadRemoteContent = shouldAutoLoadRemoteContent
+        self.shouldAutoLoadEmbeddedImage = shouldAutoLoadEmbeddedImage
         if let time = expirationTime {
             self.expirationTime = time
             self.timer = Timer.scheduledTimer(timeInterval: 1,
