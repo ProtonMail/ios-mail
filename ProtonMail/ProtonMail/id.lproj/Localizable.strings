@@ -47,7 +47,7 @@
 "+ Drop here to add as attachment" = "+ Seret ke sini untuk menambahkan lampiran";
 
 /* default empty object */
-"<no object>" = "<no object>";
+"<no object>" = "<tidak ada objek>";
 
 /* 2fa verification failed */
 "2FA failed. Please try to login again." = "2FA gagal. Coba masuk lagi.";
@@ -171,6 +171,9 @@
    mail location title
    menu title */
 "All Mail" = "Semua Surat";
+
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Semua pengaturan perlindungan akan diatur ulang dan dihapus saat keluar dari aplikasi.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Izinkan route alternatif";
@@ -1116,13 +1119,16 @@
 "Invalid UserName" = "Nama pengguna tidak valid";
 
 /* Error message */
-"Invalid UserName!" = "Invalid UserName!";
+"Invalid UserName!" = "Nama pengguna tidak valid!";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Apakah ini laporan bug tentang pembayaran di dalam aplikasi?";
 
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Tidak mungkin pindah ke %@ lewat aplikasi iOS kami.";
+
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "Tidak mungkin untuk mengganti ke paket lain dalam aplikasi. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Beri saya kabar tentang fitur-fitur baru";
@@ -1399,7 +1405,7 @@
 "No Messages" = "Tidak Ada Pesan";
 
 /* no object error, local only , this could be not translated! */
-"no object" = "no object";
+"no object" = "tidak ada subjek";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "Bukan, untuk akun ProtonMail lain";
@@ -1473,7 +1479,7 @@
 "Open" = "Buka";
 
 /* (No Comment) */
-"OpenDraft" = "Open draft";
+"OpenDraft" = "Buka draf";
 
 /* contacts talbe cell Organization title */
 "Organization" = "Organisasi";
@@ -1557,6 +1563,9 @@
 /* Description */
 "Pin code can't be empty." = "Kode pin tidak boleh kosong.";
 
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Paket dapat diedit di versi web.";
+
 /* alert description */
 "Please add a password for the following recipients." = "Silakan tambahkan kata sandi untuk penerima berikut.";
 
@@ -1633,7 +1642,7 @@
 "Please wait until the email downloaded!" = "Mohon tunggu sampai surel berhasil diunduh!";
 
 /* alert title */
-"Please, manage it in your phone." = "Please, manage it in your phone.";
+"Please, manage it in your phone." = "Tolong, kelola di telepon Anda.";
 
 /* Upgrade warning title */
 "PREMIUM FEATURE" = "FITUR PREMIUM";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "Kata sandi baru tidak cocok.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Panjang password baru setidaknya 8 karakter";
+
 /* (No Comment) */
 "The new password not match" = "Kata sandi tidak cocok";
 
@@ -2181,6 +2193,12 @@
 
 /* action sheet option */
 "Turn Off" = "Matikan";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Aktifkan fitur ini untuk mengunci aplikasi Anda secara otomatis dan gunakan kode PIN atau FaceID untuk membukanya.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Aktifkan fitur ini untuk mengunci aplikasi Anda secara otomatis dan gunakan kode PIN atau sidik jari untuk membukanya.";
 
 /* Title */
 "Tweet about ProtonMail" = "Tulis twit tentang ProtonMail";

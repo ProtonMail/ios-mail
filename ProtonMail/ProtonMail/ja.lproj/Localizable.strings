@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "全てのメール";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "アプリからログアウトすると、すべての保護設定がリセットされ、消去されます。";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "代替ルーティングを許可";
 
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "iOSアプリからは%@に切り替えることができません。";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "アプリ内の別のプランに切り替えることはできません。 %1$@";
+
 /* Title */
 "Keep me updated about new features" = "新機能に関する情報を受け取る";
 
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "PINコードを空にすることはできません。";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "プランは Web 版で編集できます。";
 
 /* alert description */
 "Please add a password for the following recipients." = "次の宛先には、パスワードを追加して送信してください";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "新しいパスワードが一致しません";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "パスワードは8文字以上にする必要があります。";
+
 /* (No Comment) */
 "The new password not match" = "パスワードが一致しません";
 
@@ -2181,6 +2193,12 @@
 
 /* action sheet option */
 "Turn Off" = "オフにする";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "アプリを自動ロックし、PINコードまたはFaceIDを使用してロックを解除するには、この機能をオンにしてください。";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "アプリを自動ロックし、PINコードまたは指紋認証を使用してロックを解除するには、この機能をオンにしてください。";
 
 /* Title */
 "Tweet about ProtonMail" = "ProtonMailについてツイートする";

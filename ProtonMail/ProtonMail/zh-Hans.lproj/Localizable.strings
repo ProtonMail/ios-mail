@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "所有邮件";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "所有保护设置将在登出应用程序时被重置和清除。";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "允许使用备用线路";
 
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "不支持在 iOS 程序中开通 %@。";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "It's not possible to swicth to another plan within the app. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "有新功能时通知我";
 
@@ -1165,10 +1171,10 @@
 "Language" = "语言";
 
 /* network troubleshot cell title */
-"Learn more" = "详细了解";
+"Learn more" = "了解详情";
 
 /* Action */
-"Learn More" = "详细了解";
+"Learn More" = "了解详情";
 
 /* learn more button */
 "Learn more here" = "在此处了解更多";
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "口令不能为空。";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Plans can be edited on the web version.";
 
 /* alert description */
 "Please add a password for the following recipients." = "请为下列收件人设置邮件密码。";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "密码不一致。";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "新密码长度应至少为 8 个字符";
+
 /* (No Comment) */
 "The new password not match" = "密码不一致";
 
@@ -2181,6 +2193,12 @@
 
 /* action sheet option */
 "Turn Off" = "关闭";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "开启后程序将自动锁定，您需要输入 PIN 码或使用面容 ID 来解锁。";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "开启后程序将自动锁定，您需要输入 PIN 码或使用指纹来解锁。";
 
 /* Title */
 "Tweet about ProtonMail" = "推文分享ProtonMail";

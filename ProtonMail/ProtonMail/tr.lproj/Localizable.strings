@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Tüm Postalar";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Uygulamadan çıkış yapıldıktan sonra tüm koruma ayarları sıfırlanacak ve silinecektir.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Alternatif yönlendirmeye izin ver";
 
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "iOS uygulamamız içerisinde %@ planına geçmek mümkün değildir.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "It's not possible to swicth to another plan within the app. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "Beni yeni özellikler hakkında bilgilendirmeye devam et";
 
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "Pin kodu boş olamaz.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Plans can be edited on the web version.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Lütfen aşağıdaki alıcılar için bir parola ekleyin.";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "Yeni parola uyuşmuyor.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+
 /* (No Comment) */
 "The new password not match" = "Parolalar eşleşmiyor";
 
@@ -2181,6 +2193,12 @@
 
 /* action sheet option */
 "Turn Off" = "Kapat";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Uygulamanızı otomatik olarak kilitlemek için bu özelliği açın ve kilidini açmak için bir PIN kodu ya da FaceID kullanın.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Uygulamanızı otomatik olarak kilitlemek için bu özelliği açın ve kilidini açmak için bir PIN kodu ya da parmak izi kullanın.";
 
 /* Title */
 "Tweet about ProtonMail" = "ProtonMail hakkında tweet atın";

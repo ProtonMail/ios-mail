@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Alle Nachrichten";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Alle Schutzeinstellungen werden beim Abmelden von der App zurückgesetzt und gelöscht.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Alternatives Routing erlauben";
 
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Es ist nicht möglich, innerhalb unserer iOS-App zu „%@” zu wechseln.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "Es ist nicht möglich, innerhalb der App zu einem anderen Tarif zu wechseln. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "Mich über neue Funktionen Informieren";
 
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "Der PIN-Code darf nicht leer sein.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Die Pakete/Tarife können in der Web-Version angepasst werden.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Bitte Passwort für folgende Empfänger hinzufügen.";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "Die neuen Passwörter stimmen nicht überein.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Das neue Passwort muss mindestens 8 Zeichen lang sein";
+
 /* (No Comment) */
 "The new password not match" = "Passwörter stimmen nicht überein";
 
@@ -2181,6 +2193,12 @@
 
 /* action sheet option */
 "Turn Off" = "Deaktivieren";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Aktivieren Sie diese Funktion, um Ihre App automatisch zu sperren und sie mit einer PIN oder FaceID zu entsperren.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Aktivieren Sie diese Funktion, um Ihre App automatisch zu sperren und mit einer PIN oder einem Fingerabdruck zu entsperren.";
 
 /* Title */
 "Tweet about ProtonMail" = "Tweete über ProtonMail";
