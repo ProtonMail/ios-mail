@@ -28,6 +28,7 @@ import UIKit
 protocol NewMessageBodyViewControllerDelegate: class {
     func openUrl(_ url: URL)
     func handleReload()
+    func updateRemoteContentBanner(shouldShow: Bool)
 }
 
 class NewMessageBodyViewController: UIViewController {
@@ -257,6 +258,10 @@ class NewMessageBodyViewController: UIViewController {
 }
 
 extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
+    func updateBannerStatus() {
+        delegate?.updateRemoteContentBanner(shouldShow: viewModel.shouldShowRemoteBanner)
+    }
+
     func showReloadError() {
         self.prepareReloadView()
     }

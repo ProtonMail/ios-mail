@@ -37,6 +37,7 @@ class SingleMessageView: UIView {
     let navigationSeparator = SubviewsFactory.smallSeparatorView
     let smallTitleHeaderSeparatorView = SubviewsFactory.smallSeparatorView
     let bigSeparatorView = SubviewsFactory.bigSeparatorView
+    let bannerContainer = UIView()
     let messageBodyContainer = UIView()
     let messageHeaderContainer = UIView()
 
@@ -50,6 +51,7 @@ class SingleMessageView: UIView {
         stackView.addArrangedSubview(smallTitleHeaderSeparatorView)
         stackView.addArrangedSubview(bigSeparatorView)
         stackView.addArrangedSubview(messageHeaderContainer)
+        stackView.addArrangedSubview(bannerContainer)
         stackView.addArrangedSubview(messageBodyContainer)
     }
 
