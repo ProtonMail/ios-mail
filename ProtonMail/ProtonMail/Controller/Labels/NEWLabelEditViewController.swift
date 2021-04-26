@@ -190,7 +190,7 @@ extension NEWLabelEditViewController {
 
         let title = "\(self.viewModel.deleteTitle)?"
         let alert = UIAlertController(title: title, message: self.viewModel.deleteMessage, preferredStyle: .alert)
-        let deleteAction = UIAlertAction(title: LocalString._general_delete_action, style: .default) { _ in
+        let deleteAction = UIAlertAction(title: LocalString._general_delete_action, style: .destructive) { _ in
             self.deleteLabel()
         }
 
