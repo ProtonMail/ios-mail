@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 class LogoutTests: BaseTestCase {
     
     private let loginRobot = LoginRobot()
@@ -16,6 +18,6 @@ class LogoutTests: BaseTestCase {
             .loginUser(user)
             .menuDrawer()
             .logoutUser()
-            .verify.loginScreenDisplayed()
+            .verify.loginScreenIsShown()
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import ProtonCore_TestingToolkit
 
 class HumanVerificationTests: BaseTestCase {
 
@@ -30,7 +31,7 @@ class HumanVerificationTests: BaseTestCase {
             .emailTab()
             .smsTab()
             .captchaTab()
-            .close()
+            .close(to: MenuRobot.self)
             .paymentsErrorDialog()      
     }
 }

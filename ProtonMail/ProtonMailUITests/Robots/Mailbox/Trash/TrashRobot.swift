@@ -13,7 +13,7 @@ fileprivate let emptyFolderButtonIdentifier = "Empty folder"
 class TrashRobot: MailboxRobotInterface {
     
     var verify: Verify! = nil
-    override init() {
+    required init() {
         super.init()
         verify = Verify(parent: self)
     }

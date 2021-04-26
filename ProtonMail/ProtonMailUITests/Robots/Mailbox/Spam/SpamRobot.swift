@@ -15,7 +15,7 @@ fileprivate let spamStaticTextIdentifier = "MailboxViewController.navigationTitl
 class SpamRobot: MailboxRobotInterface {
     
     var verify: Verify! = nil
-    override init() {
+    required init() {
         super.init()
         let label = LocalString._menu_spam_title
         Element.wait.forStaticTextFieldWithIdentifier(spamStaticTextIdentifier, file:#file, line: #line).assertWithLabel(label)

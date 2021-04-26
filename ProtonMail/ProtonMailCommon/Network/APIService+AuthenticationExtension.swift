@@ -31,6 +31,13 @@ import ProtonCore_Services
 
 var refreshTokenFailedCount = 0
 
+/*
+
+ NOTE: this might possibly be removed after login integration. check if this is needed anymore.
+        If not, we could try to move this into the core authentication
+
+ */
+
 /// Auth extension
 extension APIService {
     private func completeAuthFlow(credential: AuthCredential, password: String, passwordMode: Int, noKey: Bool, completion: @escaping AuthCompleteBlockNew) {

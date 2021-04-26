@@ -24,6 +24,7 @@
 import Foundation
 import SideMenuSwift
 import ProtonCore_AccountSwitcher
+import ProtonCore_Networking
 
 final class MenuCoordinator: DefaultCoordinator {
     
@@ -352,18 +353,51 @@ extension MenuCoordinator {
     }
     
     private func navigateToAddAccount(mail: String) {
-        let vc = AccountConnectViewController.instance()
-        guard let nav = vc.navigationController,
-              let account = AccountConnectCoordinator(nav: nav, vm: SignInViewModel(usersManager: self.usersManager, username: mail), services: self.services) else {
-            return
+
+        guard let sideMenu = self.viewController?.sideMenuController else { return }
+
+        let signInEnvironment = SignInCoordinatorEnvironment.live(
+            services: sharedServices, forceUpgradeDelegate: ForceUpgradeManager.shared.forceUpgradeHelper
+        )
+
+        let coordinator: SignInCoordinator = .loginFlowForSecondAndAnotherAccount(
+            username: mail.isEmpty ? nil : mail, environment: signInEnvironment
+        ) { [weak self] result in
+            switch result {
+            case .succeeded:
+                sideMenu.dismiss(animated: false, completion: nil)
+            case .loggedInFreeAccountsLimitReached:
+                sideMenu.dismiss(animated: false, completion: nil)
+            case .alreadyLoggedIn:
+                sideMenu.dismiss(animated: false, completion: nil)
+            case .userWantsToGoToTroubleshooting:
+                sideMenu.dismiss(animated: false) { [weak self] in self?.navigateToTroubleshooting() }
+            case .errored:
+                sideMenu.dismiss(animated: false) { [weak self] in self?.navigateToAccountManager() }
+            case .dismissed:
+                sideMenu.dismiss(animated: false) { [weak self] in self?.navigateToAccountManager() }
+            }
         }
-        account.delegate = self
-        account.start()
+        coordinator.delegate = self
+        let vc = coordinator.actualViewController
+        vc.modalPresentationStyle = .overCurrentContext
+        sideMenu.present(vc, animated: false) {
+            sideMenu.hideMenu()
+            coordinator.start()
+        }
+    }
+
+    private func navigateToTroubleshooting() {
+        let troubleshootingVC = UIStoryboard.Storyboard.alert.storyboard.make(NetworkTroubleShootViewController.self)
+        troubleshootingVC.onDismiss = { [weak self] in
+            self?.navigateToAccountManager()
+        }
+        let navigationVC = UINavigationController(rootViewController: troubleshootingVC)
+        navigationVC.modalPresentationStyle = .fullScreen
         guard let sideMenu = self.viewController?.sideMenuController else {
             return
         }
-        nav.modalPresentationStyle = .fullScreen
-        sideMenu.present(nav, animated: true) {
+        sideMenu.present(navigationVC, animated: true) {
             sideMenu.hideMenu()
         }
     }

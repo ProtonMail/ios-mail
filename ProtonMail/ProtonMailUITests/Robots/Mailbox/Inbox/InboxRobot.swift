@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import PMTestAutomation
 
 fileprivate let mailboxTableView = "mailboxTableView"
 fileprivate let inboxTitleLabel = LocalString._menu_inbox_title
@@ -19,7 +20,7 @@ class InboxRobot : MailboxRobotInterface {
     
     var verify: Verify! = nil
     
-    override init() {
+    required init() {
         super.init()
         closeTourIfShown()
         Element.staticText.tapByIdentifier(inboxTitleLabel)

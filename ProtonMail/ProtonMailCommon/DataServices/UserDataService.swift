@@ -158,6 +158,24 @@ class UserDataService : Service, HasLocalStorage {
             return userRes.userInfo
         }
     }
+
+    func fetchSettings(userInfo: UserInfo, auth: AuthCredential) -> Promise<UserInfo> {
+        return async {
+
+            let userSettingsApi = GetUserSettings()
+            userSettingsApi.auth = auth
+            let mailSettingsApi = GetMailSettings()
+            mailSettingsApi.auth = auth
+
+            let userSettingsRes: SettingsResponse = try AwaitKit.await(self.apiService.run(route: userSettingsApi))
+            let mailSettingsRes: MailSettingsResponse = try AwaitKit.await(self.apiService.run(route: mailSettingsApi))
+
+            userInfo.parse(userSettings: userSettingsRes.userSettings)
+            userInfo.parse(mailSettings: mailSettingsRes.mailSettings)
+
+            return userInfo
+        }
+    }
     
     func activeUserKeys(userInfo: UserInfo?, auth: AuthCredential? = nil) -> Promise<Void> {
         return async {

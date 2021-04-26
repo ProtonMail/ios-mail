@@ -21,6 +21,7 @@
 //
 
 import UIKit
+import ProtonCore_Challenge
 
 public protocol PMTextFieldComboDelegate: AnyObject {
     /**
@@ -264,6 +265,10 @@ public class PMTextFieldCombo: UIView {
 
     @objc private func textFieldDidChange(textField: UITextField) {
         delegate?.didChangeValue(self, value: value)
+    }
+
+    public func setUpChallenge(_ challenge: PMChallenge, type: PMChallenge.TextFieldType) throws {
+        try challenge.observeTextField(textField, type: type)
     }
 
     // MARK: - Responder overrides

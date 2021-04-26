@@ -532,7 +532,6 @@ extension UsersManager {
             
             UserTempCachedStatus.backup()
             
-            
             sharedUserDataService.signOut(true)
                     
             userCachedStatus.signOut()

@@ -39,7 +39,7 @@ struct PMActionSheetValueStore {
     let HEADER_HEIGHT: CGFloat = 64
     let SECTION_HEADER_HEIGHT: CGFloat = 56
     let TOGGLE_CELL_HEIGHT: CGFloat = 48
-    let PLAIN_CELL_HEIGHT: CGFloat = 64
+    let PLAIN_CELL_HEIGHT: CGFloat = 56
     let GRID_ROW_HEIGHT: CGFloat = 100
     let BOTTOM_PADDING: CGFloat = 35
     let RADIUS: CGFloat = 6

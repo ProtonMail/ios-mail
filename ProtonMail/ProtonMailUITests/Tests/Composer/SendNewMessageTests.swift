@@ -6,6 +6,7 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
 
 class SendNewMessageTests: BaseTestCase {
     
@@ -111,7 +112,6 @@ class SendNewMessageTests: BaseTestCase {
         let hint = testData.editedPasswordHint
         LoginRobot()
             .loginTwoPasswordUser(testData.twoPassUser)
-            .decryptMailbox(testData.twoPassUser.mailboxPassword)
             .compose()
             .sendMessageEOAndExpiryTime(to, subject, password, hint)
             .menuDrawer()
@@ -174,7 +174,6 @@ class SendNewMessageTests: BaseTestCase {
         let hint = testData.editedPasswordHint
         LoginRobot()
             .loginTwoPasswordUser(testData.twoPassUser)
-            .decryptMailbox(testData.twoPassUser.mailboxPassword)
             .compose()
             .sendMessageEOAndExpiryTimeWithAttachment(to, subject, password, hint)
             .menuDrawer()

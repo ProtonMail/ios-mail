@@ -30,6 +30,8 @@ final class PMActionSheetPlainCell: UITableViewCell {
     @IBOutlet private var leftIconLeftConstraint: NSLayoutConstraint!
     @IBOutlet private var titleLeftToIcon: NSLayoutConstraint!
     @IBOutlet private var titleLeftToSuperView: NSLayoutConstraint!
+    @IBOutlet private var titleRightToIcon: NSLayoutConstraint!
+    @IBOutlet private var titleRightToSuperView: NSLayoutConstraint!
     @IBOutlet weak var rightIcon: UIImageView!
 
     class func nib() -> UINib {
@@ -43,43 +45,51 @@ final class PMActionSheetPlainCell: UITableViewCell {
 
     func config(item: PMActionSheetPlainItem) {
 
-        if let icon = item.icon {
-            self.leftIcon.image = icon
+        let hasLeftIcon: Bool
+        if let leftIcon = item.icon {
+            self.leftIcon.image = leftIcon
             self.leftIcon.tintColor = item.iconColor
-            self.setupTitleLeftConstraint(hasLeftIcon: true)
+            hasLeftIcon = true
         } else {
             self.leftIcon.image = nil
-            self.setupTitleLeftConstraint(hasLeftIcon: false)
+            hasLeftIcon = false
+        }
+
+        let hasRightIcon: Bool
+        if let rightIcon = item.markType.icon {
+            self.rightIcon.image = rightIcon
+            hasRightIcon = true
+        } else {
+            self.rightIcon.image = nil
+            hasRightIcon = false
         }
 
         self.titleLabel.text = item.title
         self.titleLabel.textColor = item.textColor
         self.titleLabel.textAlignment = item.alignment
         self.separator?.isHidden = !item.hasSeparator
-        self.rightIcon.image = item.markType.icon
         self.accessibilityIdentifier = item.title
-        self.setupIndentation(level: item.indentationLevel,
-                              width: item.indentationWidth)
+        self.setupTitleConstraints(level: item.indentationLevel,
+                                   width: item.indentationWidth,
+                                   alignment: item.alignment,
+                                   hasLeftIcon: hasLeftIcon,
+                                   hasRightIcon: hasRightIcon)
     }
 
-    private func setupTitleLeftConstraint(hasLeftIcon: Bool) {
+    private func setupTitleConstraints(
+        level: Int, width: CGFloat, alignment: NSTextAlignment, hasLeftIcon: Bool, hasRightIcon: Bool
+    ) {
+
+        self.titleLeftToIcon.isActive = hasLeftIcon
+        self.titleLeftToSuperView.isActive = !hasLeftIcon
+        self.titleRightToIcon.isActive = hasRightIcon
+        self.titleRightToSuperView.isActive = !hasRightIcon
+
+        let indentationOffset = CGFloat(level) * width
         if hasLeftIcon {
-            self.titleLeftToIcon.isActive = true
-            self.titleLeftToSuperView.isActive = false
+            self.leftIconLeftConstraint.constant = 16 + indentationOffset
         } else {
-            self.titleLeftToIcon.isActive = false
-            self.titleLeftToSuperView.isActive = true
+            self.titleLeftToSuperView.constant = 16 + indentationOffset
         }
     }
-
-    private func setupIndentation(level: Int, width: CGFloat) {
-        if titleLeftToIcon.isActive {
-            // this item has left icon
-            self.leftIconLeftConstraint.constant = 16 + CGFloat(level) * width
-        } else {
-            // this item doesn't have left icon
-            self.titleLeftToSuperView.constant = 16 + CGFloat(level) * width
-        }
-    }
-
 }
