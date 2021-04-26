@@ -24,8 +24,38 @@ import Foundation
 
 class BannerViewModel {
     let shouldAutoLoadRemoteContent: Bool
+    private(set) var expirationTime: Date = .distantFuture
+    private var timer: Timer?
 
-    init(shouldAutoLoadRemoteContent: Bool) {
+    var updateExpirationTime: ((Int) -> Void)?
+    var messageExpired: (() -> Void)?
+
+    init(shouldAutoLoadRemoteContent: Bool, expirationTime: Date?) {
         self.shouldAutoLoadRemoteContent = shouldAutoLoadRemoteContent
+        if let time = expirationTime {
+            self.expirationTime = time
+            self.timer = Timer.scheduledTimer(timeInterval: 1,
+                                              target: self,
+                                              selector: #selector(self.timerUpdate),
+                                              userInfo: nil,
+                                              repeats: true)
+        }
+    }
+
+    deinit {
+        timer?.invalidate()
+    }
+
+    func getExpirationOffset() -> Int {
+        return Int(self.expirationTime.timeIntervalSince(Date()))
+    }
+
+    @objc
+    private func timerUpdate() {
+        let offset = getExpirationOffset()
+        if offset <= 0 {
+            messageExpired?()
+        }
+        updateExpirationTime?(offset)
     }
 }

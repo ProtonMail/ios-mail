@@ -61,8 +61,8 @@ class SingleMessageViewModel {
             message: message,
             user: user
         )
-        self.bannerViewModel = BannerViewModel(shouldAutoLoadRemoteContent: user.autoLoadRemoteImages)
-
+        self.bannerViewModel = BannerViewModel(shouldAutoLoadRemoteContent: user.autoLoadRemoteImages,
+                                               expirationTime: message.expirationTime)
         let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
             .map(AttachmentNormal.init) + (message.tempAtts ?? [])
 

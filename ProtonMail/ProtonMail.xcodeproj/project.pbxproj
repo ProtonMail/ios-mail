@@ -226,6 +226,7 @@
 		199A0E8E456F9625F468F4E20A6A9CB6 /* ExpirationWarningEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC182C1B583843D594847F2DB05E0E1 /* ExpirationWarningEmailCell.swift */; };
 		19BC0877EFBC7090B03600D4815D726A /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6576E6B2E5753D73F5405E8DA8E1137 /* NSManagedObjectContextExtension.swift */; };
 		19DC6D51C10AA421BA9651B12C206A72 /* Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE36B28208BD286A0723AD3898C35B43 /* Wait.swift */; };
+		19FAC1EBC43284D92F2687096B071AAE /* ExpirationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16D99CBE67AC61BF48C40859A597851 /* ExpirationBannerView.swift */; };
 		19FC8B102E847B6BC8F00F31BDE56554 /* TableCellRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1B928013A4DD34975C4B61ECE6874D /* TableCellRegister.swift */; };
 		19FE5FC38CA6E8F3B1AD89D84FE0247C /* NewMailboxMessageCheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAE54621907AC421185F84540D8952B /* NewMailboxMessageCheckBoxView.swift */; };
 		1A1C51D868EC3D1420F45CBA454204C0 /* ContactSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030C21C9C16C7CA8E12A9016B7208942 /* ContactSearchTableViewController.swift */; };
@@ -1332,6 +1333,7 @@
 		8CACC83E2AA9FC001F28908B13806CE1 /* ManageAddressesRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727EE0520687DA2783B429341A2D0F36 /* ManageAddressesRobot.swift */; };
 		8CCBB3D793C2EBB0AE6B3EE2407AD14C /* TableCellRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1B928013A4DD34975C4B61ECE6874D /* TableCellRegister.swift */; };
 		8CDCCC503AB758A7CD7BF9726A58BF1C /* SingleRowTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9E992C68719EFB3C625260E4DA13A /* SingleRowTagsView.swift */; };
+		8D2DCC96AE462A2836C6BEF296B6CA1E /* ExpirationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16D99CBE67AC61BF48C40859A597851 /* ExpirationBannerView.swift */; };
 		8D4D46181E80961FCCE6E662D68F5A37 /* LabelUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687C050F04EF01856E07749C85013212 /* LabelUpdate.swift */; };
 		8D69E305D576E1A527FF2F0CE1895111 /* ContactTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC27E325DA65B3E21AC66F81C8E1BCF8 /* ContactTypeViewModel.swift */; };
 		8D7185CAA9DB1E42B6B9812ED237C96C /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090959F01713916918218A20B1ED07FF /* APIErrors.swift */; };
@@ -3646,6 +3648,7 @@
 		F0466DB6812B789E32ADF3673EAC8268 /* ContactGroupSelectColorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSelectColorViewModel.swift; sourceTree = "<group>"; };
 		F131B12E9F6F23D7063B2C786358C896 /* APIService+UserExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+UserExtension.swift"; sourceTree = "<group>"; };
 		F164439303F6BB7AE593EA5549BFDF4E /* UserDefaultsSaverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsSaverTests.swift; sourceTree = "<group>"; };
+		F16D99CBE67AC61BF48C40859A597851 /* ExpirationBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationBannerView.swift; sourceTree = "<group>"; };
 		F1AB46393CCFCAFF41AA979C674E54AC /* MigrateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateTests.swift; sourceTree = "<group>"; };
 		F1DCEBF738DE5E71E3E0C3D716F345C5 /* SinglePasswordRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePasswordRobot.swift; sourceTree = "<group>"; };
 		F295806467A17370D467415BC4E19260 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/PasswordExtension.strings"; sourceTree = "<group>"; };
@@ -4175,6 +4178,7 @@
 			isa = PBXGroup;
 			children = (
 				E75C7628F12759AF6AA37E41867779FF /* BannerViewController.swift */,
+				F16D99CBE67AC61BF48C40859A597851 /* ExpirationBannerView.swift */,
 				CBF3B98E120BE095A6776D6F6904AFCA /* RemoteContentBannerView.swift */,
 			);
 			path = Banners;
@@ -8082,6 +8086,7 @@
 				640FA534D105BAC006DCDF9ADCB29D8B /* Error+Extension.swift in Sources */,
 				5F37196CA49D225A1C5471EDB9B62690 /* EventAPI.swift in Sources */,
 				AC07F1813FED65206AAF0CB79AE47EF5 /* EventDataService.swift in Sources */,
+				8D2DCC96AE462A2836C6BEF296B6CA1E /* ExpirationBannerView.swift in Sources */,
 				864E24C9D07EFFB1EB0D663845F244CD /* ExpirationIconView.swift in Sources */,
 				BD73ABAC501E8912CA52EB528A069664 /* ExpirationView.swift in Sources */,
 				A0BE5474D057B897319ACBA944107E83 /* ExpirationWarningEmailCell.swift in Sources */,
@@ -8752,6 +8757,7 @@
 				F6AA17DB27CCECEA32E099B870D5E884 /* Error+Extension.swift in Sources */,
 				2A5A2B497E52F628B5E593796B29E59F /* EventAPI.swift in Sources */,
 				5E811663A8C6FC2BB2F9FBE3F49B788F /* EventDataService.swift in Sources */,
+				19FAC1EBC43284D92F2687096B071AAE /* ExpirationBannerView.swift in Sources */,
 				FB1E62735B13935ADDF6E9CEC3EB5379 /* ExpirationIconView.swift in Sources */,
 				47035CA1D94435505D9116BBB176E14E /* ExpirationView.swift in Sources */,
 				73FA14EFF140127BDD2C977ECD728DE0 /* ExpirationWarningEmailCell.swift in Sources */,

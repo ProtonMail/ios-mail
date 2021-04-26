@@ -289,7 +289,7 @@ extension SingleMessageViewController: NewMessageBodyViewControllerDelegate {
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: open,
                                                 style: .default,
-                                                handler: { action in
+                                                handler: { _ in
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }))
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
@@ -310,6 +310,10 @@ extension SingleMessageViewController: AttachmentViewControllerDelegate {
 }
 
 extension SingleMessageViewController: BannerViewControllerDelegate {
+    func handleMessageExpired() {
+        self.navigationController?.popViewController(animated: true)
+    }
+
     func loadRemoteContent() {
         viewModel.messageBodyViewModel.remoteContentPolicy = WebContents.RemoteContentPolicy.allowed.rawValue
     }

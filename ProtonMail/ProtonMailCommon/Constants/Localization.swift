@@ -1377,7 +1377,7 @@ class LocalizedString {
     lazy var _message_expired = NSLocalizedString("Message expired", comment: "")
 
     /// "Expires in %d days %d hours %d mins %d seconds"
-    lazy var _expires_in_days_hours_mins_seconds = NSLocalizedString("Expires in %d days %d hours %d mins %d seconds", comment: "expiration time count down")
+    lazy var _expires_in_days_hours_mins_seconds = NSLocalizedString("This message will expire in %dD %dH %dM", comment: "expiration time count down")
 
     /// "Sign Out"
     lazy var _sign_out = NSLocalizedString("Sign Out", comment: "Action")

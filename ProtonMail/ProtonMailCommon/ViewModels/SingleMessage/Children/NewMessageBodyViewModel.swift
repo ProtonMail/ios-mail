@@ -134,7 +134,7 @@ class NewMessageBodyViewModel {
                 }
             }
         } else {
-            self.shouldShowRemoteBanner = true
+            self.shouldShowRemoteBanner = false
             delegate?.updateBannerStatus()
         }
     }
