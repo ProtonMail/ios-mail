@@ -26,6 +26,7 @@ import PromiseKit
 import AwaitKit
 import Crypto
 import PMCommon
+import OpenPGP
 
 class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     

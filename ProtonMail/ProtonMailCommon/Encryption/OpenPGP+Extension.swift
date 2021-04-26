@@ -25,6 +25,7 @@
 import Foundation
 import Crypto
 import PMCommon
+import OpenPGP
 
 extension Crypto {
     

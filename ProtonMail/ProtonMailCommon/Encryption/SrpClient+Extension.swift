@@ -23,6 +23,7 @@
 
 import Foundation
 import Crypto
+import OpenPGP
 
 func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
              _ salt: String, _ signedModulus: String, _ serverEphemeral: String) throws -> SrpAuth? {

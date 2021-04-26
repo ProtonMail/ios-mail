@@ -68,9 +68,7 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (9.0.0)
   - OHHTTPStubs/Swift (9.0.0):
     - OHHTTPStubs/Default
-  - OpenPGP (1.0.5):
-    - OpenSSL
-  - OpenSSL (1.0.210)
+  - OpenPGP (1.1.1)
   - PMAuthentication (1.3.2):
     - PMCommon (>= 1.1.2)
     - PMCrypto
@@ -98,6 +96,7 @@ PODS:
   - PMCommon/SRP (1.2.0)
   - PMCommon/Tests (1.2.0):
     - OHHTTPStubs/Swift
+    - TrustKit
   - PMCoreTranslation (1.0.0)
   - PMCrypto (2.1.7)
   - PMKeymaker (1.2.3):
@@ -145,7 +144,7 @@ DEPENDENCIES:
   - MCSwipeTableViewCell (~> 2.1.4)
   - "NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)"
   - OHHTTPStubs/Swift (= 9.0.0)
-  - OpenPGP (from `../OpenPGP`)
+  - "OpenPGP (from `git@gitlab.protontech.ch:apple/shared/pmopenpgp.git`, branch `develop`)"
   - "PMAuthentication (from `git@gitlab.protontech.ch:apple/shared/pmauthentication.git`, branch `develop`)"
   - "PMAuthentication/Tests (from `git@gitlab.protontech.ch:apple/shared/pmauthentication.git`, branch `develop`)"
   - "PMChallenge (from `git@gitlab.protontech.ch:apple/shared/pmchallenge.git`, tag `0.0.3`)"
@@ -173,7 +172,6 @@ SPEC REPOS:
     - MBProgressHUD
     - MCSwipeTableViewCell
     - OHHTTPStubs
-    - OpenSSL
     - PromiseKit
     - ReachabilitySwift
     - SDWebImage
@@ -189,7 +187,8 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/ProtonMail/nsdate-helper.git
   OpenPGP:
-    :path: "../OpenPGP"
+    :branch: develop
+    :git: "git@gitlab.protontech.ch:apple/shared/pmopenpgp.git"
   PMAuthentication:
     :branch: develop
     :git: "git@gitlab.protontech.ch:apple/shared/pmauthentication.git"
@@ -227,6 +226,9 @@ CHECKOUT OPTIONS:
   "NSDate+Helper":
     :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
     :git: https://github.com/ProtonMail/nsdate-helper.git
+  OpenPGP:
+    :commit: ad04f85b416f31378f22eee3c97e4d133a82d843
+    :git: "git@gitlab.protontech.ch:apple/shared/pmopenpgp.git"
   PMAuthentication:
     :commit: 16949e15b45da02a74972dbda6370372037f51c6
     :git: "git@gitlab.protontech.ch:apple/shared/pmauthentication.git"
@@ -234,7 +236,7 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/pmchallenge.git"
     :tag: 0.0.3
   PMCoreTranslation:
-    :commit: e81caa11df4a99b3b4a9664d0c31b0360abe804b
+    :commit: 3dd6961d0366e2e403449163ce52b7dd53b7ffde
     :git: "git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git"
   PMCrypto:
     :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
@@ -246,7 +248,7 @@ CHECKOUT OPTIONS:
     :commit: 2f7826833a4eb974c5b0b44a3d938e8019ec6b1a
     :git: "git@gitlab.protontech.ch:apple/shared/pmlog.git"
   PMPayments:
-    :commit: 47edd7def09a7e26aa608b157ace7a4486e4acc1
+    :commit: 6b42ab93d9d9efa88a2154d3e04b02cb730385c5
     :git: "git@gitlab.protontech.ch:apple/shared/pmpayments.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
@@ -267,11 +269,10 @@ SPEC CHECKSUMS:
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
-  OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
-  OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
+  OpenPGP: f55b53823addb41962c9d6bf78523d54320d3cb9
   PMAuthentication: 4e1a422232304311f34a7651a5b348a7782c99bf
   PMChallenge: e1545bb99e3b668f7b4af62aea193d11f1039d3b
-  PMCommon: 144fb3aba220fb65ee769c69486b226d2dd73a37
+  PMCommon: f816f55710a806755ba44149436f9b15313598f4
   PMCoreTranslation: 221df023e0a50c73bdadd07ce8917e053f69a859
   PMCrypto: f6b8e07183e34ca31e66e93a4d15fde2ee903816
   PMKeymaker: 41484527ae0683d08361a0c09023bed5dc8c367b
@@ -286,6 +287,6 @@ SPEC CHECKSUMS:
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 8054ec47c4b8769e543006bc0ec995583103f5c5
+PODFILE CHECKSUM: 66dd7242cb7985d35963efa075cab5715d24c4df
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1

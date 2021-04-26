@@ -44,7 +44,7 @@ final class SubscriptionRequest: CreditRequest<SubscriptionResponse> {
 
     override func toDictionary() -> [String: Any]? {
         var params = super.toDictionary()
-        params?["PlanIDs"] = [planId]
+        params?["PlanIDs"] = [planId: 1]
         params?["Cycle"] = 12
         return params
     }

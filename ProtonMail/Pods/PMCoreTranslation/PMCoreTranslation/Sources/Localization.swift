@@ -167,6 +167,9 @@ public class LocalizedString {
     /// Help button
     public lazy var _ls_help_button = NSLocalizedString("Need help?", bundle: Common.bundle, comment: "Help button")
 
+    /// Help button
+    public lazy var _ls_create_account_button = NSLocalizedString("Create an account", bundle: Common.bundle, comment: "Create account button")
+
     // Login help
 
     /// Login help screen title
@@ -355,24 +358,155 @@ public class LocalizedString {
 
     /// Dialog message for organization user first login
     public lazy var _login_username_org_dialog_message = NSLocalizedString("To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.", bundle: Common.bundle, comment: "Dialog message for organization user first login")
-    
+
     /// Account switcher
-    
+
     public lazy var _as_switch_to_title = NSLocalizedString("switch to", bundle: Common.bundle, comment: "Section title of account switcher")
-    
+
     public lazy var _as_manage_accounts = NSLocalizedString("Manage accounts", bundle: Common.bundle, comment: "Manage accounts button")
-    
+
     public lazy var _as_signed_in_to_protonmail = NSLocalizedString("Signed in to ProtonMail", bundle: Common.bundle, comment: "Section title of account manager")
-    
+
     public lazy var _as_signed_out_of_protonmail = NSLocalizedString("Signed out of Protonmail", bundle: Common.bundle, comment: "Section title of account manager")
-    
+
     public lazy var _as_signout = NSLocalizedString("Sign out", bundle: Common.bundle, comment: "Sign out button/ title")
-    
+
     public lazy var _as_remove_account = NSLocalizedString("Remove account", bundle: Common.bundle, comment: "remove account button")
-    
+
     public lazy var _as_remove_account_alert_text = NSLocalizedString("You will be signed out and all the data associated with this account will be removed from this device.", bundle: Common.bundle, comment: "Alert message of remove account")
-    
+
     public lazy var _as_remove_button = NSLocalizedString("Remove", bundle: Common.bundle, comment: "Remove button")
-    
+
     public lazy var _as_signout_alert_text = NSLocalizedString("Are you sure you want to sign out %@?", bundle: Common.bundle, comment: "Alert message of sign out the email address")
+
+    // Signup
+
+    /// Signup main view title
+    public lazy var _su_main_view_title = NSLocalizedString("Create your\nProton Account", bundle: Common.bundle, comment: "Signup main view title")
+
+    /// Signup main view description
+    public lazy var _su_main_view_desc = NSLocalizedString("One account for all Proton services.", bundle: Common.bundle, comment: "Signup main view description")
+
+    /// Next button
+    public lazy var _su_next_button = NSLocalizedString("Next", bundle: Common.bundle, comment: "Next button")
+
+    /// Sign in button
+    public lazy var _su_signin_button = NSLocalizedString("Sign in", bundle: Common.bundle, comment: "Sign in button")
+
+    /// Email address button
+    public lazy var _su_email_address_button = NSLocalizedString("Use your current email instead", bundle: Common.bundle, comment: "Email address button")
+
+    /// ProtonMail address  button
+    public lazy var _su_proton_address_button = NSLocalizedString("Create a secure ProtonMail address instead", bundle: Common.bundle, comment: "ProtonMail address button")
+
+    /// Username field title
+    public lazy var _su_username_field_title = NSLocalizedString("Username", bundle: Common.bundle, comment: "Username field title")
+
+    /// Email field title
+    public lazy var _su_email_field_title = NSLocalizedString("Email", bundle: Common.bundle, comment: "Email field title")
+
+    /// Signup password proton view title
+    public lazy var _su_password_proton_view_title = NSLocalizedString("Creates your password", bundle: Common.bundle, comment: "Signup password proton view title")
+
+    /// Signup password email view title
+    public lazy var _su_password_email_view_title = NSLocalizedString("Create a Proton account with your current email", bundle: Common.bundle, comment: "Signup password email view title")
+
+    /// Password field title
+    public lazy var _su_password_field_title = NSLocalizedString("Password", bundle: Common.bundle, comment: "Password field title")
+
+    /// Repeat password field title
+    public lazy var _su_repeat_password_field_title = NSLocalizedString("Repeat password", bundle: Common.bundle, comment: "Repeat password field title")
+
+    /// Signup recovery view title
+    public lazy var _su_recovery_view_title = NSLocalizedString("Set recovery method", bundle: Common.bundle, comment: "Recovery view title")
+
+    /// Signup recovery view description
+    public lazy var _su_recovery_view_desc = NSLocalizedString("This will help you access your account in case you forget your password or get locked out of your account.", bundle: Common.bundle, comment: "Recovery view description")
+
+    /// Signup recovery segmented email
+    public lazy var _su_recovery_seg_email = NSLocalizedString("Email", bundle: Common.bundle, comment: "Recovery segmenet email")
+
+    /// Signup recovery segmented phone
+    public lazy var _su_recovery_seg_phone = NSLocalizedString("Phone", bundle: Common.bundle, comment: "Recovery segmenet phone")
+
+    /// Signup recovery email field title
+    public lazy var _su_recovery_email_field_title = NSLocalizedString("Recovery email", bundle: Common.bundle, comment: "Recovery email field title")
+
+    /// Signup recovery phone field title
+    public lazy var _su_recovery_phone_field_title = NSLocalizedString("Recovery phone number", bundle: Common.bundle, comment: "Recovery phone field title")
+
+    /// Signup recovery terms and conditions description
+    public lazy var _su_recovery_t_c_desc = NSLocalizedString("By clicking Next, you agree with Proton's Terms and Conditions", bundle: Common.bundle, comment: "Recovery terms and conditions description")
+
+    /// Signup recovery terms and conditions link
+    public lazy var _su_recovery_t_c_link = NSLocalizedString("Terms and Conditions", bundle: Common.bundle, comment: "Recovery terms and conditions link")
+
+    /// Skip button
+    public lazy var _su_skip_button = NSLocalizedString("Skip", bundle: Common.bundle, comment: "Skip button")
+
+    /// Recovery skip title
+    public lazy var _su_recovery_skip_title = NSLocalizedString("Skip recovery method?", bundle: Common.bundle, comment: "Recovery skip title")
+
+    /// Recovery skip description
+    public lazy var _su_recovery_skip_desc = NSLocalizedString("A recovery method will help you access your account in case you forget your password or get locked out of your account.", bundle: Common.bundle, comment: "Recovery skip description")
+
+    /// Recovery method button
+    public lazy var _su_recovery_method_button = NSLocalizedString("Set recovery method", bundle: Common.bundle, comment: "Set recovery method button")
+
+    /// Signup complete view title
+    public lazy var _su_complete_view_title = NSLocalizedString("Just a second…\nYour account is being created", bundle: Common.bundle, comment: "Complete view title")
+
+    /// Signup complete view description
+    public lazy var _su_complete_view_desc = NSLocalizedString("It usually takes no more than a minute.", bundle: Common.bundle, comment: "Complete view description")
+
+    /// Signup email verification view title
+    public lazy var _su_email_verification_view_title = NSLocalizedString("Account verification", bundle: Common.bundle, comment: "Email verification view title")
+
+    /// Signup email verification view description
+    public lazy var _su_email_verification_view_desc = NSLocalizedString("For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:", bundle: Common.bundle, comment: "Email verification view description")
+
+    /// Signup email verification code name
+    public lazy var _su_email_verification_code_name = NSLocalizedString("Verification code", bundle: Common.bundle, comment: "Email verification code name")
+
+    /// Signup email verification code description
+    public lazy var _su_email_verification_code_desc = NSLocalizedString("Enter the 6-digit code.", bundle: Common.bundle, comment: "Email verification code description")
+
+    /// Did not receive code button
+    public lazy var _su_did_not_receive_code_button = NSLocalizedString("Did not receive a code?", bundle: Common.bundle, comment: "Did not receive code button")
+
+    /// Signup terms and conditions view title
+    public lazy var _su_terms_conditions_view_title = NSLocalizedString("Terms and Conditions", bundle: Common.bundle, comment: "Terms and conditions view title")
+
+    /// Signup error device token
+    public lazy var _su_error_device_token = NSLocalizedString("Device token error", bundle: Common.bundle, comment: "Device token error")
+
+    /// Signup error device token unsupported
+    public lazy var _su_error_device_token_unsupported = NSLocalizedString("Device token unsupported", bundle: Common.bundle, comment: "Device token unsupported error")
+
+    /// Signup error invalid token request
+    public lazy var _su_error_invalid_token_request = NSLocalizedString("Invalid token request", bundle: Common.bundle, comment: "Invalid token request error")
+
+    /// Signup error invalid token
+    public lazy var _su_error_invalid_token = NSLocalizedString("Invalid token error", bundle: Common.bundle, comment: "Invalid token error")
+
+    /// Signup error create user failed
+    public lazy var _su_error_create_user_failed = NSLocalizedString("Create user failed", bundle: Common.bundle, comment: "Create user failed error")
+
+    /// Signup error invalid hashed password
+    public lazy var _su_error_invalid_hashed_password = NSLocalizedString("Invalid hashed password", bundle: Common.bundle, comment: "Invalid hashed password error")
+
+    /// Signup error password empty
+    public lazy var _su_error_password_empty = NSLocalizedString("Password can not be empty.\nPlease try again.", bundle: Common.bundle, comment: "Password empty error")
+
+    /// Signup error password not equal
+    public lazy var _su_error_password_not_equal = NSLocalizedString("Passwords do not match.\nPlease try again.", bundle: Common.bundle, comment: "Password not equal error")
+
+    /// Signup error email address already used
+    public lazy var _su_error_email_already_used = NSLocalizedString("Email address already used.", bundle: Common.bundle, comment: "Email address already used error")
+
+    /// Signup invalid verification alert message
+    public lazy var _su_invalid_verification_alert_message = NSLocalizedString("Would you like to receive a new verification code or use an alternate email address?", bundle: Common.bundle, comment: "Invalid verification alert message")
+
+    /// Signup invalid verification change email address button
+    public lazy var _su_invalid_verification_change_email_button = NSLocalizedString("Change email address", bundle: Common.bundle, comment: "Change email address button")
 }
