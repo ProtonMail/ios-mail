@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Akk iznan";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Meṛṛa iɣewwaren n ummesten ad ttuwennzen syen ad ttwasefḍen mi ara teffɣeḍ seg tuqqna seg usnas.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Allow alternative routing";
 
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Ur tezmireḍ ara ad tɛeddiḍ ɣer %@ seg usnas-nneɣ iOS.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "D awezɣi ad tuɣaleḍ ɣer uɣawas-nniḍen s wae asnas. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "Lɣu-yi-d ɣef timahilin timaynutin";
 
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "Tangalt Pin ur tezmir ara ad tili d tilemt.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Iɣawasen zemren ad ttwaẓragen ɣef lqem web.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Ttxil-k rnu awal n uɛeddi i iɣerwaḍen-agi.";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "Awal uffir amaynut ur imenṭaḍ ara.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Awal uffir amaynut ilaq ad yesɛu ma drus 8 n yisekkilen";
+
 /* (No Comment) */
 "The new password not match" = "Awalen uffiren ur menṭaḍen ara";
 
@@ -2181,6 +2193,12 @@
 
 /* action sheet option */
 "Turn Off" = "Sens";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Err tamahilt-a ɣer usnas-ik·im s usekkeṛ awurman syen seqdec tangalt PIN neɣ FaceID i wakken ad as-tekkseḍ asekker.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Err tamahilt-a ɣer usnas-ik·im s usekkeṛ awurman syen seqdec tangalt PIN neɣ s useqdec n udsil umḍin i wakken ad as-tekkseḍ asekker.";
 
 /* Title */
 "Tweet about ProtonMail" = "Twiti ɣef ProntonMail";

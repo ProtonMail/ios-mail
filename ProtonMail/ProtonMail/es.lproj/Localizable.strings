@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Todos";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "All protection settings will be reset and wiped upon logging out of the app.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Permitir el enrutado alternativo";
 
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "No es posible cambiar a %@ dentro de nuestra aplicación iOS.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "It's not possible to swicth to another plan within the app. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "Mantenerme actualizado acerca de nuevas funciones";
 
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "El código PIN no puede estar vacío.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Plans can be edited on the web version.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Por favor añade una contraseña para los siguientes destinatarios.";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "La nueva contraseña no coincide.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+
 /* (No Comment) */
 "The new password not match" = "Las contraseñas no coinciden";
 
@@ -2181,6 +2193,12 @@
 
 /* action sheet option */
 "Turn Off" = "Desactivar";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.";
 
 /* Title */
 "Tweet about ProtonMail" = "Tweetear acerca de ProtonMail";

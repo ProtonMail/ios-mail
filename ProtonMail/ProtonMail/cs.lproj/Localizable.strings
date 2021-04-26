@@ -87,7 +87,7 @@
 "Add" = "Přidat";
 
 /* menu title */
-"Add accounts" = "Add accounts";
+"Add accounts" = "Přidat účty";
 
 /* new contacts add Anniversary */
 "Add Anniversary" = "Přidat výročí";
@@ -172,8 +172,11 @@
    menu title */
 "All Mail" = "Všechna pošta";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "All protection settings will be reset and wiped upon logging out of the app.";
+
 /* network troubleshot cell title */
-"Allow alternative routing" = "Allow alternative routing";
+"Allow alternative routing" = "Povolit alternativní směrování";
 
 /* archive when apply label */
 "Also Archive" = "Také archivovat";
@@ -188,7 +191,7 @@
 "Anniversary" = "Výročí";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Antivirus interference";
+"Antivirus interference" = "Interference antiviru";
 
 /* when server not reachable */
 "API Server not reachable..." = "API Server není dosažitelný...";
@@ -231,16 +234,16 @@
 "Are you sure you want to logout %@?" = "Opravdu se chcete odhlásit z účtu %@?";
 
 /* Alert to confirm logout */
-"Are you sure you want to logout?" = "Are you sure you want to logout?";
+"Are you sure you want to logout?" = "Opravdu se chcete odhlásit?";
 
 /* emptify folder/label confirmation alert */
-"Are you sure? This can't be undone." = "Are you sure? This can't be undone.";
+"Are you sure? This can't be undone." = "Jste si jisti? Nelze to vrátit zpět.";
 
 /* like at 10:00pm */
 "at" = "v(ve)";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "At least one email address in the group could not be found";
+"At least one email address in the group could not be found" = "Alespoň jedna e-mailová adresa ve skupině nebyla nalezena";
 
 /* incorrect email format error in composer */
 "At least one recipient email address is improperly formatted, please double check them." = "At least one recipient email address is improperly formatted, please double check them.";
@@ -530,7 +533,7 @@
 "Congratulations!" = "Blahopřejeme!";
 
 /* Account manager title */
-"Connect Account" = "Connect Account";
+"Connect Account" = "Připojit účet";
 
 /* contact section title */
 "Contact Details" = "Detaily kontaktu";
@@ -579,7 +582,7 @@
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Vytvoř a přidej označení pro třídění doručené pošty. Stiskni a přidrž na zprávě pro zobrazení všech možností.";
 
 /* title of button in account connect page */
-"Create new account" = "Create new account";
+"Create new account" = "Vytvořit nový účet";
 
 /* error part & alert title */
 "Create user failed" = "Vytváření uživatele selhalo";
@@ -631,7 +634,7 @@
 "Default" = "Výchozí";
 
 /* Settings row */
-"Default browser" = "Default browser";
+"Default browser" = "Výchozí prohlížeč";
 
 /* error message when create new user */
 "Default error. Please try again." = "Defaultní chyba. Prosím, zkuste znovu.";
@@ -650,7 +653,7 @@
 "Delete" = "Smazat";
 
 /* emptify folder/label confirmation alert */
-"Delete all" = "Delete all";
+"Delete all" = "Smazat vše";
 
 /* Title-Contacts */
 "Delete Contact" = "Smazat kontakt";
@@ -799,7 +802,7 @@
 "Enable Notification Email" = "Povolit e-mailové notifikace";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Enable PIN";
+"Enable PIN" = "Zapnout PIN";
 
 /* settings protection section title */
 "Enable Pin Protection" = "Zapnout ochranu PIN kódem";
@@ -868,7 +871,7 @@
 "Enter your existing email address." = "Zadejte svoji existující emailovou adresu.";
 
 /* Account manager title */
-"Enter your mailbox password" = "Enter your mailbox password";
+"Enter your mailbox password" = "Prosím, zadejte Vaše heslo do schránky";
 
 /* set pin title */
 "Enter your PIN" = "Zadejte Váš PIN";
@@ -980,13 +983,13 @@
 "Go to inbox" = "Přejít do složky Doručené";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to login" = "Go to login";
+"Go to login" = "Přejít na přihlášení";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "Go to settings";
+"Go to settings" = "Přejít do nastavení";
 
 /* network troubleshot cell title */
-"Government block" = "Government block";
+"Government block" = "Vládní blokování";
 
 /* The title for the contact group detail view */
 "Group Details" = "Podrobnosti o skupině";
@@ -1031,7 +1034,7 @@
 "Human Verification" = "Ověření lidskosti";
 
 /* Alarm action */
-"Ignore" = "Ignore";
+"Ignore" = "Ignorovat";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Podpora IMAP/SMTP přes ProtonMail Bridge";
@@ -1043,7 +1046,7 @@
 "Import File From..." = "Importovat soubor...";
 
 /* Downloading attachments from cloud */
-"Importing" = "Importing";
+"Importing" = "Probíhá import";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Importování přílohy, může to chvíli trvat";
@@ -1083,7 +1086,7 @@
 "Input Notification Email ..." = "Vložte e-mail pro zasílání notofikací ...";
 
 /* Cert pinning failed alert title */
-"Insecure connection" = "Insecure connection";
+"Insecure connection" = "Nezabezpečené připojení";
 
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Okamžité vytvoření účtu ProtonMail bylo dočasně vypnuto. Přejděte prosím na https://protonmail.com/invite a zažádejte o pozvánku.";
@@ -1095,7 +1098,7 @@
 "Internet" = "Internet";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+"Internet Service Provider (ISP) problem" = "Problém s poskytovatelem internetových služeb (ISP)";
 
 /* (No Comment) */
 "Invalid access token please relogin" = "Neplatný token pro přístup. Přihlašte se prosím znovu";
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "It is not possible to switch to %@ within our iOS app.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "It's not possible to swicth to another plan within the app. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "Informujte mě o nových funkcích";
 
@@ -1150,7 +1156,7 @@
 "Labels" = "Štítky";
 
 /* cell title in device settings */
-"Labels & Folders" = "Labels & Folders";
+"Labels & Folders" = "Štítky & složky";
 
 /* Title */
 "Labels have been applied." = "Označení bylo použito.";
@@ -1165,7 +1171,7 @@
 "Language" = "Jazyk";
 
 /* network troubleshot cell title */
-"Learn more" = "Learn more";
+"Learn more" = "Zjistit více";
 
 /* Action */
 "Learn More" = "Více informací";
@@ -1202,7 +1208,7 @@
 "Lock The App" = "Zamknout aplikaci";
 
 /* Account manager title */
-"Log in to your ProtonMail account" = "Log in to your ProtonMail account";
+"Log in to your ProtonMail account" = "Přihlásit se do Vašeho ProtonMail účtu";
 
 /* comment */
 "Log out" = "Log out";
@@ -1500,7 +1506,7 @@
 "Password cannot be empty." = "Heslo nemůže být prázdné.";
 
 /* cell title in device settings */
-"Password management" = "Password management";
+"Password management" = "Správa hesel";
 
 /* Title */
 "Password Mismatch" = "Heslo se neshoduje";
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "PIN kód nemůže být prázdný.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Plans can be edited on the web version.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Prosím, přidejte heslo pro následující příjemce.";
@@ -1642,7 +1651,7 @@
 "Print" = "Tisk";
 
 /* cell title in device settings */
-"Privacy" = "Privacy";
+"Privacy" = "Ochrana soukromí";
 
 /* agree check box privacy */
 "privacy policy." = "zásady ochrany osobních údajů.";
@@ -1660,7 +1669,7 @@
 "Proton is down" = "Proton is down";
 
 /* network troubleshot cell title */
-"Proton Status" = "Proton Status";
+"Proton Status" = "Stav Protonu";
 
 /* Title */
 "ProtonMail" = "ProtonMail";
@@ -1675,7 +1684,7 @@
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail je nyní v režimu offline, zkontrolujte náš twitter pro aktuální stav: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline..." = "ProtonMail is currently offline...";
+"ProtonMail is currently offline..." = "ProtonMail je momentálně offline...";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus je nutný k úpravě vašeho mobilního podpisu";
@@ -1690,7 +1699,7 @@
 "ProtonVPN included" = "ProtonVPN v ceně";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Proxy/Firewall interference";
+"Proxy/Firewall interference" = "Rušení proxy/firewall";
 
 /* cell title in device settings */
 "Push Notifications" = "Push Notifications";
@@ -1822,7 +1831,7 @@
 "Sender Verification Failed" = "Ověření odesílatele se selhalo";
 
 /* title of incorrect email format error while sending */
-"Sending failed" = "Sending failed";
+"Sending failed" = "Odeslání se nezdařilo";
 
 /* Alert title */
 "Sending message" = "Odesílání zprávy";
@@ -1831,7 +1840,7 @@
 "Sending Message" = "Odesílání zprávy";
 
 /* content of the sending mesage that will display this text on the date label */
-"Sending message..." = "Sending message...";
+"Sending message..." = "Odesílání zprávy...";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Odesílání zpráv z adresy %1$@ je placená funkce. Vaše zpráva bude odeslána z Vaší výchozí adresy %2$@";
@@ -1983,7 +1992,7 @@
 "Swiping gestures" = "Swiping gestures";
 
 /* Alert when switched account by clicking notification of another account */
-"Switched to account '%@'" = "Switched to account '%@'";
+"Switched to account '%@'" = "Přepnuto na účet '%@'";
 
 /* Error */
 "System can't copy the file" = "Systém nemůže zkopírovat soubor";
@@ -2045,6 +2054,9 @@
 
 /* update password error */
 "The new password does not match." = "Nová hesla se neshodují.";
+
+/* update password error */
+"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
 
 /* (No Comment) */
 "The new password not match" = "Hesla se neshodují";
@@ -2171,7 +2183,7 @@
 "Trouble shooting guide" = "Průvodce odstraňováním problémů";
 
 /* troubleshooting view button */
-"Troubleshoot" = "Troubleshoot";
+"Troubleshoot" = "Poradce při potížích";
 
 /* network troubleshot view title */
 "TroubleShooting" = "TroubleShooting";
@@ -2181,6 +2193,12 @@
 
 /* action sheet option */
 "Turn Off" = "Vypnout";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.";
 
 /* Title */
 "Tweet about ProtonMail" = "Tvítovat o ProtonMailu";
@@ -2345,7 +2363,7 @@
 "View Headers" = "Zobrazit záhlaví";
 
 /* message details-> more action-> view raw html of message body */
-"View HTML" = "View HTML";
+"View HTML" = "Zobrazit HTML";
 
 /* Action */
 "View Plans" = "Zobrazit tarify";
@@ -2393,7 +2411,7 @@
 "wrote:" = "napsal/a:";
 
 /* Yes action */
-"Yes" = "Yes";
+"Yes" = "Ano";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Ano, aktivujte pro ";
