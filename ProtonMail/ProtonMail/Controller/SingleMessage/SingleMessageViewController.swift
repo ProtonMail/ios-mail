@@ -107,6 +107,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         setUpSelf()
         embedChildren()
         emptyBackButtonTitleForNextView()
+        setUpExpandAction()
     }
 
     override func viewDidAppear(_ animated: Bool) {
