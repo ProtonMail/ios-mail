@@ -248,16 +248,15 @@ class MailboxCoordinator : DefaultCoordinator {
 
     private func presentSingleMessageViewController() {
         guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
-            let message = self.viewModel.item(index: indexPathForSelectedRow) else { return }
-        let user = viewModel.user
-        let viewModel = SingleMessageViewModel(
-            labelId: self.viewModel.labelID,
+            let message = self.viewModel.item(index: indexPathForSelectedRow),
+            let navigationController = viewController?.navigationController else { return }
+        let coordinator = SingleMessageCoordinator(
+            navigationController: navigationController,
+            labelId: viewModel.labelID,
             message: message,
-            user: user,
-            linkOpenerCache: userCachedStatus
+            user: viewModel.user
         )
-        let singleMessageController = SingleMessageViewController(viewModel: viewModel)
-        viewController?.navigationController?.pushViewController(singleMessageController, animated: true)
+        coordinator.start()
     }
     
     func follow(_ deeplink: DeepLink) {
@@ -265,21 +264,20 @@ class MailboxCoordinator : DefaultCoordinator {
             
         switch dest {
         case .details:
-            let user = viewModel.user
             let coreDataService = self.services.get(by: CoreDataService.self)
             guard let messageId = path.value,
-                  let message = user.messageService.fetchMessages(
+                  let message = viewModel.user.messageService.fetchMessages(
                     withIDs: [messageId],
                     in: coreDataService.mainContext
-                  ).first else { return }
-            let viewModel = SingleMessageViewModel(
-                labelId: self.viewModel.labelID,
+                  ).first,
+                  let navigationController = viewController?.navigationController else { return }
+            let coordinator = SingleMessageCoordinator(
+                navigationController: navigationController,
+                labelId: viewModel.labelID,
                 message: message,
-                user: user,
-                linkOpenerCache: userCachedStatus
+                user: viewModel.user
             )
-            let viewController = SingleMessageViewController(viewModel: viewModel)
-            self.viewController?.navigationController?.pushViewController(viewController, animated: true)
+            coordinator.start()
         case .composeShow where path.value != nil:
             let coreDataService = self.services.get(by: CoreDataService.self)
             

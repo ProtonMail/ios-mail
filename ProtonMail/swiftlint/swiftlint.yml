@@ -48,8 +48,8 @@ opt_in_rules:
 
 included:
   - ${PWD}/ProtonMail/Controller/Attachments/AttachmentsTableViewController.swift
-  - ${PWD}/ProtonMail/ProtonMail/Components/TagView.swift
-  - ${PWD}/ProtonMail/ProtonMail/Components/SingleRowTagsView.swift
+  - ${PWD}/ProtonMail/Components/TagsView/TagView.swift
+  - ${PWD}/ProtonMail/Components/TagsView/SingleRowTagsView.swift
   - ${PWD}/ProtonMail/Controller/Mailbox/Cells/NewMailboxMessageView/NewMailboxMessageContentView.swift
   - ${PWD}/ProtonMail/Controller/Mailbox/Cells/NewMailboxMessageView/NewMailboxMessageCheckBoxView.swift
   - ${PWD}/ProtonMail/Controller/Mailbox/Cells/NewMailboxMessageView/NewMailboxMessageCellContentView.swift
@@ -119,6 +119,22 @@ included:
   - ${PWD}/ProtonMail/Controller/SingleMessage/AttachmentList/AttachmentListViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/AttachmentList/AttachmentLIstTableViewCell.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/QuickViewViewController.swift
+  - ${PWD}/ProtonMail/Components/TagsView/MultiRowsTagsView.swift
+  - ${PWD}/ProtonMail/Components/TagsView/StackViewContainer.swift 
+  - ${PWD}/ProtonMail/Components/TagsView/TagsPresenter.swift 
+  - ${PWD}/ProtonMail/Components/TagsView/TagsView.swift 
+  - ${PWD}/ProtonMail/Components/TextControl.swift 
+  - ${PWD}/ProtonMail/Controller/SingleMessage/ActionSheet/MessageDetailsContactActionSheetAction.swift 
+  - ${PWD}/ProtonMail/Controller/SingleMessage/ActionSheet/MessageDetailsContactActionSheetType.swift 
+  - ${PWD}/ProtonMail/Controller/SingleMessage/ActionSheet/PMActionSheet+MessageDetailsContact.swift 
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExapndedHeaderViewController.swift 
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExpandedHeaderContactContext.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExpandedHeaderRecipientRowViewModel.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExpandedHeaderRowView.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExpandedHeaderView.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExpandedHeaderViewModel.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/HeaderContainerView.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/SingleMessageCoordinator.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Banners/BannerViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Banners/RemoteContentBannerView.swift
   - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/BannerViewModel.swift

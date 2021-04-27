@@ -460,15 +460,14 @@ extension SearchViewController: UITableViewDelegate {
         // open messages in MessaveContainerViewController
         let message = self.searchResult[indexPath.row]
         guard message.contains(label: .draft) else {
-            self.updateTapped(status: false)
-            let viewModel = SingleMessageViewModel(
+            guard let navigationController = navigationController else { return }
+            let coordinator = SingleMessageCoordinator(
+                navigationController: navigationController,
                 labelId: "",
                 message: message,
-                user: user,
-                linkOpenerCache: userCachedStatus
+                user: user
             )
-            let viewController = SingleMessageViewController(viewModel: viewModel)
-            self.navigationController?.pushViewController(viewController, animated: true)
+            coordinator.start()
             return
         }
         self.prepareForDraft(message)

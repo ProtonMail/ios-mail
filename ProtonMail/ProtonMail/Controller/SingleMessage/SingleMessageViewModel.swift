@@ -31,8 +31,27 @@ class SingleMessageViewModel {
     }
     let shouldAutoLoadRemoteImage: Bool
 
+    var isExpanded = false {
+        didSet { isExpanded ? createExpandedHeaderViewModel() : createNonExpandedHeaderViewModel() }
+    }
+
+    var nonExapndedHeaderViewModel: NonExpandedHeaderViewModel? {
+        didSet {
+            guard let viewModel = nonExapndedHeaderViewModel else { return }
+            embedNonExpandedHeader?(viewModel)
+            expandedHeaderViewModel = nil
+        }
+    }
+
+    var expandedHeaderViewModel: ExpandedHeaderViewModel? {
+        didSet {
+            guard let viewModel = expandedHeaderViewModel else { return }
+            embedExpandedHeader?(viewModel)
+            nonExapndedHeaderViewModel = nil
+        }
+    }
+
     let messageBodyViewModel: NewMessageBodyViewModel
-    let nonExapndedHeaderViewModel: NonExpandedHeaderViewModel
     let attachmentViewModel: AttachmentViewModel
     let bannerViewModel: BannerViewModel
     private(set) lazy var userActivity: NSUserActivity = .messageDetailsActivity(messageId: message.messageID)
@@ -45,6 +64,8 @@ class SingleMessageViewModel {
 
     var refreshView: (() -> Void)?
     var updateErrorBanner: ((NSError?) -> Void)?
+    var embedExpandedHeader: ((ExpandedHeaderViewModel) -> Void)?
+    var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
 
     init(labelId: String, message: Message, user: UserManager, linkOpenerCache: LinkOpenerCacheProtocol) {
         self.labelId = labelId
@@ -53,19 +74,23 @@ class SingleMessageViewModel {
         self.user = user
         self.linkOpener = linkOpenerCache.browser
         self.shouldAutoLoadRemoteImage = user.autoLoadRemoteImages
-        self.messageBodyViewModel = NewMessageBodyViewModel(message: message,
-                                                            messageService: user.messageService,
-                                                            userManager: user,
-                                                            shouldAutoLoadRemoteImages: user.userinfo.showImages.contains(.remote),
-                                                            shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded))
+        self.messageBodyViewModel = NewMessageBodyViewModel(
+            message: message,
+            messageService: user.messageService,
+            userManager: user,
+            shouldAutoLoadRemoteImages: user.userinfo.showImages.contains(.remote),
+            shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded)
+        )
         self.nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(
             labelId: labelId,
             message: message,
             user: user
         )
-        self.bannerViewModel = BannerViewModel(shouldAutoLoadRemoteContent: user.userinfo.showImages.contains(.remote),
-                                               expirationTime: message.expirationTime,
-                                               shouldAutoLoadEmbeddedImage: user.userinfo.showImages.contains(.embedded))
+        self.bannerViewModel = BannerViewModel(
+            shouldAutoLoadRemoteContent: user.userinfo.showImages.contains(.remote),
+            expirationTime: message.expirationTime,
+            shouldAutoLoadEmbeddedImage: user.userinfo.showImages.contains(.embedded)
+        )
         let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
             .map(AttachmentNormal.init) + (message.tempAtts ?? [])
 
@@ -86,8 +111,9 @@ class SingleMessageViewModel {
 
     func propagateMessageData() {
         refreshView?()
-        nonExapndedHeaderViewModel.messageHasChanged(message: message)
         messageBodyViewModel.messageHasChanged(message: message)
+        nonExapndedHeaderViewModel?.messageHasChanged(message: message)
+        expandedHeaderViewModel?.messageHasChanged(message: message)
         attachmentViewModel.messageHasChanged(message: message)
     }
 
@@ -108,6 +134,14 @@ class SingleMessageViewModel {
                 self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
             }
         }
+    }
+
+    func createExpandedHeaderViewModel() {
+        expandedHeaderViewModel = ExpandedHeaderViewModel(labelId: labelId, message: message, user: user)
+    }
+
+    func createNonExpandedHeaderViewModel() {
+        nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(labelId: labelId, message: message, user: user)
     }
 
 }
