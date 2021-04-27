@@ -366,12 +366,13 @@ extension NEWLabelEditViewModel {
                                            notify: self.notify) { [weak self] error in
             guard let self = self else { return }
             if let error = error {
+                self.uiDelegate?.hideLoadingHUD()
                 self.uiDelegate?.showAlert(message: error.localizedDescription)
                 return
             }
-            _ = self.user.labelService.fetchV4Labels().done { _ in
-                self.uiDelegate?.hideLoadingHUD()
-                self.uiDelegate?.dismiss()
+            _ = self.user.labelService.fetchV4Labels().done { [weak self] _ in
+                self?.uiDelegate?.hideLoadingHUD()
+                self?.uiDelegate?.dismiss()
             }
         }
     }
@@ -384,12 +385,15 @@ extension NEWLabelEditViewModel {
                                               parentID: self.parentID,
                                               notify: self.notify) { [weak self] _, error in
             guard let self = self else { return }
-            self.uiDelegate?.hideLoadingHUD()
             if let error = error {
+                self.uiDelegate?.hideLoadingHUD()
                 self.uiDelegate?.showAlert(message: error.localizedDescription)
                 return
             }
-            self.uiDelegate?.dismiss()
+            _ = self.user.labelService.fetchV4Labels().done { [weak self] _ in
+                self?.uiDelegate?.hideLoadingHUD()
+                self?.uiDelegate?.dismiss()
+            }
         }
     }
 }
