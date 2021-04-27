@@ -55,7 +55,6 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
     init(coordinator: SingleMessageCoordinator, viewModel: SingleMessageViewModel) {
         self.coordinator = coordinator
         self.viewModel = viewModel
-        self.bannerViewController = BannerViewController(viewModel: viewModel.bannerViewModel)
 
         if viewModel.message.numAttachments != 0 {
             attachmentViewController = AttachmentViewController(viewModel: viewModel.attachmentViewModel)
