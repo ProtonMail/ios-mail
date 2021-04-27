@@ -365,12 +365,14 @@ extension NEWLabelEditViewModel {
                                            parentID: self.parentID,
                                            notify: self.notify) { [weak self] error in
             guard let self = self else { return }
-            self.uiDelegate?.hideLoadingHUD()
             if let error = error {
                 self.uiDelegate?.showAlert(message: error.localizedDescription)
                 return
             }
-            self.uiDelegate?.dismiss()
+            _ = self.user.labelService.fetchV4Labels().done { _ in
+                self.uiDelegate?.hideLoadingHUD()
+                self.uiDelegate?.dismiss()
+            }
         }
     }
 
