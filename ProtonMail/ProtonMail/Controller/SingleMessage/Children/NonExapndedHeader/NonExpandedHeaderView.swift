@@ -36,7 +36,6 @@ class NonExpandedHeaderView: UIView {
     let tagsView = SingleRowTagsView()
     private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
 
-    private let separator = SubviewsFactory.separator
     private let firstLineStackView = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
 
     init() {
@@ -49,7 +48,6 @@ class NonExpandedHeaderView: UIView {
     private func addSubviews() {
         addSubview(initialsLabel)
         addSubview(contentStackView)
-        addSubview(separator)
 
         lockImageControl.addSubview(lockImageView)
 
@@ -84,13 +82,6 @@ class NonExpandedHeaderView: UIView {
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 14),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
-        ].activate()
-
-        [
-            separator.leadingAnchor.constraint(equalTo: leadingAnchor),
-            separator.trailingAnchor.constraint(equalTo: trailingAnchor),
-            separator.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
 
         [
@@ -131,12 +122,6 @@ private enum SubviewsFactory {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
         return imageView
-    }
-
-    static var separator: UIView {
-        let view = UIView(frame: .zero)
-        view.backgroundColor = UIColorManager.Shade20
-        return view
     }
 
 }

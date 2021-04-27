@@ -25,6 +25,8 @@ import UIKit
 
 class NewMailboxMessageCellPresenter {
 
+    private let tagsPresenter = TagsPresenter()
+
     func present(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageCellContentView) {
         view.initialsLabel.attributedText = viewModel.initial
         view.initialsLabel.textAlignment = .center
@@ -48,15 +50,7 @@ class NewMailboxMessageCellPresenter {
     }
 
     private func presentTags(tags: [TagViewModel], in view: NewMailboxMessageContentView) {
-        view.tagsView.tagViews = tags.map { tagViewModel in
-            let tagView = TagView()
-            tagView.tagLabel.attributedText = tagViewModel.title
-            tagView.tagLabel.isHidden = tagViewModel.title?.string.isEmpty ?? true
-            tagView.imageView.image = tagViewModel.icon
-            tagView.imageView.isHidden = tagViewModel.icon == nil
-            tagView.backgroundColor = tagViewModel.color
-            return tagView
-        }
+        tagsPresenter.presentTags(tags: tags, in: view.tagsView)
 
         tags.isEmpty ? view.removeTagsView() : view.addTagsView()
     }

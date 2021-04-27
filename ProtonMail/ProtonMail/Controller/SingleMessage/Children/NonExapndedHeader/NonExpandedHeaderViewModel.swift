@@ -26,7 +26,6 @@ import PromiseKit
 class NonExpandedHeaderViewModel {
 
     var reloadView: (() -> Void)?
-    var detailsDownloaded: (() -> Void)?
 
     var sender: NSAttributedString {
         senderName.apply(style: .Default)
@@ -77,7 +76,7 @@ class NonExpandedHeaderViewModel {
 
     private var senderName: String {
         let contactsEmails = contactService.allEmails().filter { $0.userID == message.userID }
-        return message.senderName(labelId: labelId, replacingEmails: contactsEmails)
+        return message.displaySender(contactsEmails)
     }
 
     init(labelId: String, message: Message, user: UserManager) {
@@ -95,15 +94,15 @@ class NonExpandedHeaderViewModel {
 
 private extension Dictionary where Key == NSAttributedString.Key, Value == Any {
 
-    static var toAttributes: [Key: Value] {
+    static var toAttributes: Self {
         attributes(color: UIColorManager.TextNorm)
     }
 
-    static var recipientAttibutes: [Key: Value] {
+    static var recipientAttibutes: Self {
         attributes(color: UIColorManager.TextWeak)
     }
 
-    static func attributes(color: UIColor) -> [Key: Value] {
+    private static func attributes(color: UIColor) -> Self {
         let font = UIFont.systemFont(ofSize: 14)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.17

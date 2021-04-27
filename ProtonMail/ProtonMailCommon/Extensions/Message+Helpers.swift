@@ -18,7 +18,7 @@
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
 extension Message {
 
@@ -54,9 +54,13 @@ extension Message {
     }
 
     var isCustomFolder: Bool {
+        customFolder != nil
+    }
+
+    var customFolder: Label? {
         let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
         let allLabels = labels.filtered(using: predicate)
-        return !allLabels.compactMap { $0 as? Label }.filter { $0.type == 3 }.isEmpty
+        return allLabels.compactMap { $0 as? Label }.first(where: { $0.type == 3 })
     }
 
     var messageLocation: Message.Location? {

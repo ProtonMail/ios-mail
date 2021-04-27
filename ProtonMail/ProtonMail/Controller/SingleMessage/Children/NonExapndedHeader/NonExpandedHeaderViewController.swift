@@ -25,8 +25,9 @@ import UIKit
 
 class NonExpandedHeaderViewController: UIViewController {
 
-    private let viewModel: NonExpandedHeaderViewModel
     private(set) lazy var customView = NonExpandedHeaderView()
+    private let viewModel: NonExpandedHeaderViewModel
+    private let tagsPresenter = TagsPresenter()
 
     init(viewModel: NonExpandedHeaderViewModel) {
         self.viewModel = viewModel
@@ -50,9 +51,10 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.initialsLabel.textAlignment = .center
         customView.originImageView.image = viewModel.originImage
         customView.senderLabel.attributedText = viewModel.sender
+        customView.senderLabel.lineBreakMode = .byTruncatingTail
         customView.timeLabel.attributedText = viewModel.time
         customView.recipientLabel.attributedText = viewModel.recipient
-        presentTags()
+        tagsPresenter.presentTags(tags: viewModel.tags, in: customView.tagsView)
         setUpLock()
     }
 
@@ -71,17 +73,6 @@ class NonExpandedHeaderViewController: UIViewController {
     @objc
     private func lockTapped() {
         viewModel.senderContact?.inboxNotes.alertToastBottom()
-    }
-
-    private func presentTags() {
-        customView.tagsView.isHidden = viewModel.tags.isEmpty
-        customView.tagsView.tagViews = viewModel.tags.map { viewModel in
-            let view = TagView()
-            view.tagLabel.attributedText = viewModel.title
-            view.backgroundColor = viewModel.color
-            view.imageView.isHidden = true
-            return view
-        }
     }
 
     private func setUpViewModelObservations() {

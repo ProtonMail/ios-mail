@@ -39,7 +39,9 @@ class SingleMessageView: UIView {
     let bigSeparatorView = SubviewsFactory.bigSeparatorView
     let bannerContainer = UIView()
     let messageBodyContainer = UIView()
-    let messageHeaderContainer = UIView()
+    let messageHeaderContainer = HeaderContainerView()
+    let expandButton = UIButton(frame: .zero)
+    let headerSeparator = SubviewsFactory.smallSeparatorView
     let attachmentContainer = UIView()
 
     private func addSubviews() {
@@ -55,6 +57,8 @@ class SingleMessageView: UIView {
         stackView.addArrangedSubview(attachmentContainer)
         stackView.addArrangedSubview(bannerContainer)
         stackView.addArrangedSubview(messageBodyContainer)
+
+        messageHeaderContainer.addSubview(headerSeparator)
     }
 
     private func setUpLayout() {
@@ -81,6 +85,13 @@ class SingleMessageView: UIView {
             navigationSeparator.leadingAnchor.constraint(equalTo: leadingAnchor),
             navigationSeparator.trailingAnchor.constraint(equalTo: trailingAnchor),
             navigationSeparator.heightAnchor.constraint(equalToConstant: 1)
+        ].activate()
+
+        [
+            headerSeparator.heightAnchor.constraint(equalToConstant: 1),
+            headerSeparator.leadingAnchor.constraint(equalTo: messageHeaderContainer.leadingAnchor),
+            headerSeparator.trailingAnchor.constraint(equalTo: messageHeaderContainer.trailingAnchor),
+            headerSeparator.bottomAnchor.constraint(equalTo: messageHeaderContainer.bottomAnchor)
         ].activate()
     }
 

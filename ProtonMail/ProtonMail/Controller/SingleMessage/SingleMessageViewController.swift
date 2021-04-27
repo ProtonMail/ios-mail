@@ -26,10 +26,10 @@ import UIKit
 
 class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
-    private(set) lazy var customView = SingleMessageView()
     private lazy var navigationTitleLabel = SingleMessageNavigationHeaderView()
     private var contentOffsetToPerserve: CGPoint = .zero
 
+    private let coordinator: SingleMessageCoordinator
     private let viewModel: SingleMessageViewModel
     private lazy var starBarButton = UIBarButtonItem(
         image: nil,
@@ -38,19 +38,35 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         action: #selector(starButtonTapped)
     )
 
+    private var isExpandingHeader = false
+
+    private(set) lazy var customView = SingleMessageView()
+
     private(set) var messageBodyViewController: NewMessageBodyViewController!
-    let nonExapndedHeaderViewController: NonExpandedHeaderViewController
     private(set) var bannerViewController: BannerViewController?
     private(set) var attachmentViewController: AttachmentViewController?
 
-    init(viewModel: SingleMessageViewModel) {
+    var headerViewController: UIViewController {
+        didSet {
+            changeHeader(oldController: oldValue, newController: headerViewController)
+        }
+    }
+
+    init(coordinator: SingleMessageCoordinator, viewModel: SingleMessageViewModel) {
+        self.coordinator = coordinator
         self.viewModel = viewModel
-        self.nonExapndedHeaderViewController = NonExpandedHeaderViewController(
-            viewModel: viewModel.nonExapndedHeaderViewModel
-        )
+        self.bannerViewController = BannerViewController(viewModel: viewModel.bannerViewModel)
+
         if viewModel.message.numAttachments != 0 {
             attachmentViewController = AttachmentViewController(viewModel: viewModel.attachmentViewModel)
         }
+
+        self.headerViewController = {
+            if let nonExpandedHeaderViewModel = viewModel.nonExapndedHeaderViewModel {
+                return NonExpandedHeaderViewController(viewModel: nonExpandedHeaderViewModel)
+            }
+            return UIViewController()
+        }()
         super.init(nibName: nil, bundle: nil)
         self.messageBodyViewController =
             NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel,
@@ -87,38 +103,10 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
             }
         }
 
-        if #available(iOS 13.0, *) {
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(restoreOffset),
-                                                   name: UIWindowScene.willEnterForegroundNotification,
-                                                   object: nil)
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(saveOffset),
-                                                   name: UIWindowScene.didEnterBackgroundNotification,
-                                                   object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(restoreOffset),
-                                                   name: UIApplication.willEnterForegroundNotification,
-                                                   object: nil)
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(saveOffset),
-                                                   name: UIApplication.didEnterBackgroundNotification,
-                                                   object: nil)
-        }
-
+        addObservations()
         setUpSelf()
         embedChildren()
         emptyBackButtonTitleForNextView()
-    }
-
-    private func embedChildren() {
-        precondition(messageBodyViewController != nil)
-        embed(messageBodyViewController, inside: customView.messageBodyContainer)
-        embed(nonExapndedHeaderViewController, inside: customView.messageHeaderContainer)
-        if let attachmentVC = self.attachmentViewController {
-            embed(attachmentVC, inside: customView.attachmentContainer)
-        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -126,10 +114,6 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
         viewModel.markReadIfNeeded()
         viewModel.userActivity.becomeCurrent()
-    }
-
-    private func reloadMessageRelatedData() {
-        starButtonSetUp(starred: viewModel.message.starred)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -157,6 +141,97 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
     }
 
     // MARK: - Private
+
+    @objc
+    private func expandButton() {
+        guard isExpandingHeader == false else { return }
+        viewModel.isExpanded.toggle()
+    }
+
+    private func addObservations() {
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(restoreOffset),
+                                                   name: UIWindowScene.willEnterForegroundNotification,
+                                                   object: nil)
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(saveOffset),
+                                                   name: UIWindowScene.didEnterBackgroundNotification,
+                                                   object: nil)
+        } else {
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(restoreOffset),
+                                                   name: UIApplication.willEnterForegroundNotification,
+                                                   object: nil)
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(saveOffset),
+                                                   name: UIApplication.didEnterBackgroundNotification,
+                                                   object: nil)
+        }
+    }
+
+    private func setUpExpandAction() {
+        customView.messageHeaderContainer.expandArrowControl.addTarget(
+            self,
+            action: #selector(expandButton),
+            for: .touchUpInside
+        )
+    }
+
+    private func embedChildren() {
+        precondition(messageBodyViewController != nil)
+        embed(messageBodyViewController, inside: customView.messageBodyContainer)
+        embed(headerViewController, inside: customView.messageHeaderContainer.contentContainer)
+
+        viewModel.embedExpandedHeader = { [weak self] viewModel in
+            let viewController = ExpandedHeaderViewController(viewModel: viewModel)
+            viewController.contactTapped = {
+                self?.presentActionSheet(context: $0)
+            }
+            self?.headerViewController = viewController
+        }
+
+        viewModel.embedNonExpandedHeader = { [weak self] viewModel in
+            self?.headerViewController = NonExpandedHeaderViewController(viewModel: viewModel)
+        }
+
+        if let attachmentViewController = self.attachmentViewController {
+            embed(attachmentViewController, inside: customView.attachmentContainer)
+        }
+    }
+
+    private func presentActionSheet(context: ExpandedHeaderContactContext) {
+        let actionSheet = PMActionSheet.messageDetailsContact(for: context.type) { [weak self] action in
+            self?.dismissActionSheet()
+            self?.handleAction(context: context, action: action)
+        }
+        actionSheet.presentAt(navigationController ?? self, hasTopConstant: false, animated: true)
+    }
+
+    private func dismissActionSheet() {
+        let viewController = navigationController ?? self
+        guard let actionSheet = viewController.view.subviews.compactMap({ $0 as? PMActionSheet }).first else { return }
+        actionSheet.dismiss(animated: true)
+    }
+
+    private func handleAction(context: ExpandedHeaderContactContext, action: MessageDetailsContactActionSheetAction) {
+        switch action {
+        case .addToContacts:
+            coordinator.navigate(to: .contacts(contact: context.contact))
+        case .composeTo:
+            coordinator.navigate(to: .compose(contact: context.contact))
+        case .copyAddress:
+            UIPasteboard.general.string = context.contact.email
+        case .copyName:
+            UIPasteboard.general.string = context.contact.name
+        case .close:
+            break
+        }
+    }
+
+    private func reloadMessageRelatedData() {
+        starButtonSetUp(starred: viewModel.message.starred)
+    }
 
     private func setUpSelf() {
         customView.titleLabel.attributedText = viewModel.messageTitle
@@ -213,6 +288,43 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         }
         unembed(controler)
         self.bannerViewController = nil
+    }
+
+    private func changeHeader(oldController: UIViewController, newController: UIViewController) {
+        guard isExpandingHeader == false else { return }
+        isExpandingHeader = true
+        let arrow = viewModel.isExpanded ? Asset.mailUpArrow.image : Asset.mailDownArrow.image
+        let showAnimation = { [weak self] in
+            UIView.animate(
+                withDuration: 0.25,
+                animations: {
+                    self?.isHeaderContainerHidden(false)
+                },
+                completion: { _ in
+                    self?.isExpandingHeader = false
+                }
+            )
+        }
+        UIView.animate(
+            withDuration: 0.25,
+            animations: { [weak self] in
+                self?.isHeaderContainerHidden(true)
+            }, completion: { [weak self] _ in
+                self?.manageHeaderViewControllers(oldController: oldController, newController: newController)
+                self?.customView.messageHeaderContainer.expandArrowImageView.image = arrow
+                showAnimation()
+            }
+        )
+    }
+
+    private func isHeaderContainerHidden(_ isHidden: Bool) {
+        customView.messageHeaderContainer.contentContainer.isHidden = isHidden
+        customView.messageHeaderContainer.contentContainer.alpha = isHidden ? 0 : 1
+    }
+
+    private func manageHeaderViewControllers(oldController: UIViewController, newController: UIViewController) {
+        unembed(oldController)
+        embed(newController, inside: self.customView.messageHeaderContainer.contentContainer)
     }
 
     required init?(coder: NSCoder) {
