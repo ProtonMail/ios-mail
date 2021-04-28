@@ -604,6 +604,40 @@ extension ComposeViewController : ComposeViewDelegate {
         self.viewModel.checkMails(in: contactGroup, progress: progress, complete: complete)
     }
     
+    @available(iOS 14.0, *)
+    func setupComposeFromMenu(for button: UIButton) {
+        var multi_domains = self.viewModel.getAddresses()
+        multi_domains.sort(by: { $0.order < $1.order })
+        let defaultAddr = self.viewModel.getDefaultSendAddress()
+        var actions: [UIAction] = []
+        for addr in multi_domains {
+            guard addr.status == 1 && addr.receive == 1 else {
+                continue
+            }
+
+            let state: UIMenuElement.State = defaultAddr == addr ? .on: .off
+            let item = UIAction(title: addr.email, state: state) { (action) in
+                guard action.state == .off else { return }
+                if addr.send == 0 {
+                    let alertController = String(format: LocalString._composer_change_paid_plan_sender_error, addr.email).alertController()
+                    alertController.addOKAction()
+                    self.present(alertController, animated: true, completion: nil)
+                } else {
+                    if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
+                        self.htmlEditor.update(signature: signature)
+                    }
+                    MBProgressHUD.showAdded(to: self.parent!.navigationController!.view, animated: true)
+                    self.updateSenderMail(addr: addr)
+                }
+            }
+            item.accessibilityLabel = addr.email
+            actions.append(item)
+        }
+        let menu = UIMenu(title: "", options: .displayInline, children: actions)
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
+    }
+    
     func composeViewPickFrom(_ composeView: ComposeHeaderViewController) {
         var needsShow : Bool = false
         let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to,
@@ -614,27 +648,34 @@ extension ComposeViewController : ComposeViewDelegate {
                                    handler: nil)
         cancel.accessibilityLabel = "cancelButton"
         alertController.addAction(cancel)
-        let multi_domains = self.viewModel.getAddresses()
+        var multi_domains = self.viewModel.getAddresses()
+        multi_domains.sort(by: { $0.order < $1.order })
         let defaultAddr = self.viewModel.getDefaultSendAddress()
         for addr in multi_domains {
-            if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
-                needsShow = true
-                let selectEmail = UIAlertAction(title: addr.email, style: .default) { _ in
-                    if addr.send == 0 {
-                        let alertController = String(format: LocalString._composer_change_paid_plan_sender_error, addr.email).alertController()
-                        alertController.addOKAction()
-                        self.present(alertController, animated: true, completion: nil)
-                    } else {
-                        if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
-                            self.htmlEditor.update(signature: signature)
-                        }
-                        MBProgressHUD.showAdded(to: self.parent!.navigationController!.view, animated: true)
-                        self.updateSenderMail(addr: addr)
-                    }
-                }
-                selectEmail.accessibilityLabel = selectEmail.title
-                alertController.addAction(selectEmail)
+            guard addr.status == 1 && addr.receive == 1 else {
+                continue
             }
+            needsShow = true
+            let selectEmail = UIAlertAction(title: addr.email, style: .default) { action in
+                guard action.title != defaultAddr?.email else { return }
+                if addr.send == 0 {
+                    let alertController = String(format: LocalString._composer_change_paid_plan_sender_error, addr.email).alertController()
+                    alertController.addOKAction()
+                    self.present(alertController, animated: true, completion: nil)
+                } else {
+                    if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
+                        self.htmlEditor.update(signature: signature)
+                    }
+                    MBProgressHUD.showAdded(to: self.parent!.navigationController!.view, animated: true)
+                    self.updateSenderMail(addr: addr)
+                }
+            }
+            selectEmail.accessibilityLabel = selectEmail.title
+            if defaultAddr == addr {
+                selectEmail.setValue(true, forKey: "checked")
+            }
+            alertController.addAction(selectEmail)
+            
         }
         if needsShow {
             alertController.popoverPresentationController?.sourceView = self.headerView.fromView

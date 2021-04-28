@@ -223,8 +223,11 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.height.isActive = true
         
         self.fromLable.attributedText = "\(LocalString._composer_from_label): ".apply(style: .DefaultSmallWeek)
-        self.fromAddress.textColor = UIColorManager.TextNorm
         self.fromPickerButton.tintColor = UIColorManager.IconWeak
+        if #available(iOS 14.0, *) {
+            self.delegate?.setupComposeFromMenu(for: self.fromPickerButton)
+            self.fromPickerButton.addTarget(self, action: #selector(self.clickFromField(_:)), for: .menuActionTriggered)
+        }
         
         self.subjectLabel.attributedText = "\(LocalString._composer_subject_placeholder):".apply(style: .DefaultSmallWeek)
         self.showCcBccButton.tintColor = UIColorManager.IconWeak
@@ -302,7 +305,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
     
     func updateFromValue (_ email: String , pickerEnabled : Bool) {
-        fromAddress.text = email
+        fromAddress.attributedText = email.apply(style: FontManager.DefaultSmall.lineBreakMode(.byTruncatingMiddle))
         fromPickerButton.isEnabled = pickerEnabled
     }
     
@@ -359,6 +362,19 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         })
     }
     
+    @objc
+    func clickFromField(_ sender: Any) {
+        self.hidePasswordAndConfirmDoesntMatch()
+        self.view.endEditing(true)
+        let _ = self.toContactPicker.becomeFirstResponder()
+        UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
+            self.passwordView.alpha = 0.0
+            self.buttonView.alpha = 1.0
+            self.expirationView.alpha = 0.0
+            
+            let _ = self.toContactPicker.resignFirstResponder()
+        })
+    }
     
     // Mark: -- Private Methods
     fileprivate func includeButtonBorder(_ view: UIView) {
