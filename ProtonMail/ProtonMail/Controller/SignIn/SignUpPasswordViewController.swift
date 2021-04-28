@@ -46,7 +46,7 @@ class SignUpPasswordViewController: UIViewController {
     
     @IBOutlet weak var leftTopItem: UIButton!
     @IBOutlet weak var topTitleLabel: UILabel!
-    @IBOutlet weak var noteOneLable: UILabel!
+    @IBOutlet weak var noteOneLabel: UILabel!
     @IBOutlet weak var noteTwoLabel: UILabel!
     
     fileprivate let kSegueToEncryptionSetup = "sign_up_password_to_encryption_segue"
@@ -77,7 +77,7 @@ class SignUpPasswordViewController: UIViewController {
         
         leftTopItem.setTitle(LocalString._general_back_action, for: .normal)
         topTitleLabel.text = LocalString._signup_set_passwords_title
-        noteOneLable.text = LocalString._signup_set_pwd_note_1
+        noteOneLabel.text = LocalString._signup_set_pwd_note_1
         noteTwoLabel.text =  LocalString._signup_set_pwd_note_2
         createPasswordButton.setTitle(LocalString._signup_create_account_action, for: .normal)
         

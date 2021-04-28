@@ -30,7 +30,7 @@ class ChangePasswordViewController: UIViewController {
     @IBOutlet weak var newPwdEditor: UITextField!
     @IBOutlet weak var confirmPwdEditor: UITextField!
     
-    @IBOutlet weak var titleLable: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var labelOne: UILabel!
     @IBOutlet weak var labelTwo: UILabel!
     @IBOutlet weak var labelThree: UILabel!
@@ -57,7 +57,7 @@ class ChangePasswordViewController: UIViewController {
         doneButton.title = LocalString._general_save_action
 
         self.navigationItem.title = viewModel.getNavigationTitle()
-        self.titleLable.text = viewModel.getSectionTitle()
+        self.titleLabel.text = viewModel.getSectionTitle()
         self.labelOne.text = viewModel.getLabelOne()
         self.labelTwo.text = viewModel.getLabelTwo()
         self.labelThree.text = viewModel.getLabelThree()

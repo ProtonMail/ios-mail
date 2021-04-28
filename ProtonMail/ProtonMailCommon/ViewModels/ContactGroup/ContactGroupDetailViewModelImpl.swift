@@ -118,7 +118,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel {
      */
     func reload() -> Promise<Bool> {
         let context = self.coreDataService.mainManagedObjectContext
-        if let label = Label.labelForLableID(groupID, inManagedObjectContext: context) {
+        if let label = Label.labelForLabelID(groupID, inManagedObjectContext: context) {
             name = label.name
             color = label.color
             emailIDs = (label.emails as? Set<Email>) ?? Set<Email>()

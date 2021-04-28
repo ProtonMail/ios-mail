@@ -31,7 +31,7 @@ protocol ComposePasswordViewControllerDelegate : AnyObject {
 
 class ComposePasswordViewController: UIViewController, AccessibleView {
     
-    @IBOutlet weak var viewTitleLable: UILabel!
+    @IBOutlet weak var viewTitleLabel: UILabel!
     @IBOutlet weak var titleDesLabel: UILabel!
     @IBOutlet weak var moreInfoButton: UIButton!
     @IBOutlet weak var passwordField: UITextField!
@@ -55,7 +55,7 @@ class ComposePasswordViewController: UIViewController, AccessibleView {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewTitleLable.text              = LocalString._composer_set_password
+        viewTitleLabel.text              = LocalString._composer_set_password
         titleDesLabel.text               = LocalString._composer_eo_desc
         moreInfoButton.setTitle(LocalString._composer_eo_info, for: .normal)
         passwordField.placeholder        = LocalString._composer_eo_msg_pwd_placeholder

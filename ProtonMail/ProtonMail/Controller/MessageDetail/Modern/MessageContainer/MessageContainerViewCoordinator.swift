@@ -255,14 +255,14 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             
         case .some(.labels):
             guard let messages = sender as? [Message] else { return }
-            let popup = segue.destination as! LablesViewController
+            let popup = segue.destination as! LabelsViewController
             popup.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService, coreDataService: self.services.get())
             popup.delegate = self
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
             
         case .some(.folders):
             guard let messages = sender as? [Message] else { return }
-            let popup = segue.destination as! LablesViewController
+            let popup = segue.destination as! LabelsViewController
             popup.delegate = self
             popup.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService, coreDataService: self.services.get())
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
@@ -300,7 +300,7 @@ extension MessageContainerViewCoordinator: QLPreviewControllerDataSource, QLPrev
     }
 }
 
-extension MessageContainerViewCoordinator: LablesViewControllerDelegate {
+extension MessageContainerViewCoordinator: LabelsViewControllerDelegate {
     func dismissed() {
         // FIXME: update header
     }

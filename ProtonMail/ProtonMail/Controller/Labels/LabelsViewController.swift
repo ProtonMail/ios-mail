@@ -24,13 +24,13 @@
 import Foundation
 import CoreData
 
-protocol LablesViewControllerDelegate {
+protocol LabelsViewControllerDelegate {
     func dismissed()
     func apply(type: LabelFetchType)
 }
 
 //TODO::fixme coordinator
-class LablesViewController : UIViewController, AccessibleView {
+class LabelsViewController : UIViewController, AccessibleView {
     
     var viewModel : LabelViewModel!
     
@@ -66,7 +66,7 @@ class LablesViewController : UIViewController, AccessibleView {
     @IBOutlet weak var addFolderButton: UIButton!
     @IBOutlet weak var archiveOptionLabel: UILabel!
     //
-    var delegate : LablesViewControllerDelegate?
+    var delegate : LabelsViewControllerDelegate?
     var applyButtonText : String!
     
     //
@@ -183,16 +183,16 @@ class LablesViewController : UIViewController, AccessibleView {
         let labelService = self.viewModel.labelService
         
         if segue.identifier == kToCreateFolder {
-            let popup = segue.destination as! LableEditViewController
+            let popup = segue.destination as! LabelEditViewController
             popup.viewModel = FolderCreatingViewModelImple(apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
         } else if segue.identifier == kToCreateLabel {
-            let popup = segue.destination as! LableEditViewController
+            let popup = segue.destination as! LabelEditViewController
             popup.viewModel = LabelCreatingViewModelImple(apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
         } else if segue.identifier == kToEditingLabel {
-            let popup = segue.destination as! LableEditViewController
+            let popup = segue.destination as! LabelEditViewController
             popup.viewModel = LabelEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
         } else if segue.identifier == kToEditingFolder {
-            let popup = segue.destination as! LableEditViewController
+            let popup = segue.destination as! LabelEditViewController
             popup.viewModel = FolderEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService, coreDataService: self.viewModel.coreDataService)
         }
     }
@@ -200,7 +200,7 @@ class LablesViewController : UIViewController, AccessibleView {
 
 // MARK: - UITableViewDataSource
 
-extension LablesViewController: UITableViewDataSource {
+extension LabelsViewController: UITableViewDataSource {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
@@ -244,7 +244,7 @@ extension LablesViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension LablesViewController: UITableViewDelegate {
+extension LabelsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 45.0
@@ -272,7 +272,7 @@ extension LablesViewController: UITableViewDelegate {
 
 // MARK: - NSFetchedResultsControllerDelegate
 
-extension LablesViewController : NSFetchedResultsControllerDelegate {
+extension LabelsViewController : NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }

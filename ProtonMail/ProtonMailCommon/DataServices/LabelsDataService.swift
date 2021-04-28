@@ -218,7 +218,7 @@ class LabelsDataService: Service, HasLocalStorage {
     
     func label(by labelID : String) -> Label? {
         let context = self.coreDataService.backgroundManagedObjectContext
-        return Label.labelForLableID(labelID, inManagedObjectContext: context) 
+        return Label.labelForLabelID(labelID, inManagedObjectContext: context) 
     }
     
     func unreadCount(by lableID: String, userID: String? = nil) -> Promise<Int> {

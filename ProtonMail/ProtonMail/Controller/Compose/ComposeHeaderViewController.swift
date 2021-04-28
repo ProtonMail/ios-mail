@@ -216,7 +216,7 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
     @IBOutlet weak var fromView: UIView!
     @IBOutlet weak var fromAddress: UILabel!
     @IBOutlet weak var fromPickerButton: UIButton!
-    @IBOutlet weak var fromLable: UILabel!
+    @IBOutlet weak var fromLabel: UILabel!
     
     // MARK: - Delegate and Datasource
     weak var datasource: ComposeViewDataSource?
@@ -251,7 +251,7 @@ class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.height.priority = .init(999.0)
         self.height.isActive = true
         
-        fromLable.text = LocalString._composer_from_label
+        fromLabel.text = LocalString._composer_from_label
         subject.placeholder = LocalString._composer_subject_placeholder
         encryptedPasswordTextField.placeholder = LocalString._composer_define_expiration_placeholder
         

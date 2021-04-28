@@ -184,7 +184,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
         var result: [String] = []
         for labelID in newContactGroupIDs {
             let context = self.coreDataService.mainManagedObjectContext
-            if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
+            if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
                 result.append(label.name)
             } else {
                 // TODO: handle error
@@ -211,7 +211,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
         
         let context = self.coreDataService.mainManagedObjectContext
         for ID in newContactGroupIDs {
-            let label = Label.labelForLableID(ID, inManagedObjectContext: context)
+            let label = Label.labelForLabelID(ID, inManagedObjectContext: context)
             
             if let label = label {
                 colors.append(label.color)

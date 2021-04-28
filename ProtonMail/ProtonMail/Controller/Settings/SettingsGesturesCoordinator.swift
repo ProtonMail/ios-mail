@@ -128,7 +128,7 @@ class SettingsGesturesCoordinator : DefaultCoordinator {
 //            }
 //            next.viewModel = SetPinCodeModelImpl()
 //        case .lableManager:
-//            guard let next = destination as? LablesViewController else {
+//            guard let next = destination as? LabelsViewController else {
 //                return false
 //            }
 //            

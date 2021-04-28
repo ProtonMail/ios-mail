@@ -24,7 +24,7 @@
 import Foundation
 import MBProgressHUD
 
-class LableEditViewController : UIViewController, AccessibleView {
+class LabelEditViewController : UIViewController, AccessibleView {
     
     var viewModel : LabelEditViewModel!
 
@@ -45,7 +45,7 @@ class LableEditViewController : UIViewController, AccessibleView {
     
     @IBOutlet weak var newLabelInput: UITextField!
 
-    var delegate : LablesViewControllerDelegate?
+    var delegate : LabelsViewControllerDelegate?
     var applyButtonText : String!
     
     override func viewDidLoad() {
@@ -104,7 +104,7 @@ class LableEditViewController : UIViewController, AccessibleView {
     }
 }
 
-extension LableEditViewController : UITextFieldDelegate {
+extension LabelEditViewController : UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
@@ -123,7 +123,7 @@ extension LableEditViewController : UITextFieldDelegate {
 }
 
 // MARK: UICollectionViewDataSource
-extension LableEditViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension LabelEditViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1

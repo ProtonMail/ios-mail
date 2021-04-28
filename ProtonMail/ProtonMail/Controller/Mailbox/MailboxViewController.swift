@@ -1169,7 +1169,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
 }
 
-extension MailboxViewController : LablesViewControllerDelegate {
+extension MailboxViewController : LabelsViewControllerDelegate {
     func dismissed() {
         
     }
