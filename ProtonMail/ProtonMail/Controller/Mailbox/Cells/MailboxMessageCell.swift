@@ -211,11 +211,11 @@ class MailboxMessageCell: MCSwipeTableViewCell, AccessibleCell {
         }
         
         if message.contains(label: Message.Location.sent) {
-            labelsView.configLables( message.allEmailAddresses(replacingEmails), labels: labels)
+            labelsView.configLabels( message.allEmailAddresses(replacingEmails), labels: labels)
         } else if message.draft {
-            labelsView.configLables( message.allEmailAddresses(replacingEmails), labels: labels)
+            labelsView.configLabels( message.allEmailAddresses(replacingEmails), labels: labels)
         } else {
-            labelsView.configLables( message.displaySender(replacingEmails), labels: labels)
+            labelsView.configLabels( message.displaySender(replacingEmails), labels: labels)
         }
         
         if message.unRead {
@@ -254,7 +254,7 @@ class MailboxMessageCell: MCSwipeTableViewCell, AccessibleCell {
         self.setNeedsUpdateConstraints()
         generateCellAccessibilityIdentifiers(message.subject)
     }
-    fileprivate func updateLables (_ labelView : LabelDisplayView, label:Label?) {
+    fileprivate func updateLabels (_ labelView : LabelDisplayView, label:Label?) {
         if let label = label {
             if label.name.isEmpty || label.color.isEmpty {
                 labelView.isHidden = true

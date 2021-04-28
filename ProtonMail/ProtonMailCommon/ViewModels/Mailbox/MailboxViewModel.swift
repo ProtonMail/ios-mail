@@ -130,7 +130,7 @@ class MailboxViewModel: StorageLimit {
                 
                 if let updateTime = lastUpdatedStore.lastUpdate(by: self.labelID, userID: secondUser.userInfo.userId, context: self.coreDataService.mainManagedObjectContext),
                    updateTime.isNew == false, secondUser.messageService.isEventIDValid(context: self.coreDataService.mainManagedObjectContext) {
-                    secondUser.messageService.fetchEvents(byLable: self.labelID,
+                    secondUser.messageService.fetchEvents(byLabel: self.labelID,
                                                           notificationMessageID: nil,
                                                           context: self.coreDataService.mainManagedObjectContext,
                                                           completion: secondComplete)
@@ -139,7 +139,7 @@ class MailboxViewModel: StorageLimit {
                         secondUser.messageService.fetchMessagesWithReset(byLabel: self.labelID, time: 0, completion: secondComplete)
                     }
                     else {
-                        secondUser.messageService.fetchMessages(byLable: self.labelID,
+                        secondUser.messageService.fetchMessages(byLabel: self.labelID,
                                                                 time: 0,
                                                                 forceClean: false,
                                                                 completion: secondComplete)
@@ -389,11 +389,11 @@ class MailboxViewModel: StorageLimit {
     }
     
     func fetchMessages(time: Int, foucsClean: Bool, completion: CompletionBlock?) {
-        messageService.fetchMessages(byLable: self.labelID, time: time, forceClean: foucsClean, completion: completion)
+        messageService.fetchMessages(byLabel: self.labelID, time: time, forceClean: foucsClean, completion: completion)
     }
     
     func fetchEvents(time: Int, notificationMessageID:String?, completion: CompletionBlock?) {
-        messageService.fetchEvents(byLable: self.labelID,
+        messageService.fetchEvents(byLabel: self.labelID,
                                    notificationMessageID: notificationMessageID,
                                    context: self.coreDataService.mainManagedObjectContext,
                                    completion: completion)

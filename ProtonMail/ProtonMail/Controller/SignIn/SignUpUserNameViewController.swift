@@ -43,7 +43,7 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
     @IBOutlet weak var userNameNoteLabel: UILabel!
     @IBOutlet weak var agreementButton: UIButton!
     @IBOutlet weak var termsButton: UIButton!
-    @IBOutlet weak var andLable: UILabel!
+    @IBOutlet weak var andLabel: UILabel!
     @IBOutlet weak var privacyButton: UIButton!
     
     //define
@@ -108,7 +108,7 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
         userNameNoteLabel.text = LocalString._notes_the_username_is_also_your_protonmail_address
         agreementButton.setTitle(LocalString._notes_by_using_protonmail_you_agree_to_our, for: .normal)
         termsButton.setTitle(LocalString._notes_terms_and_conditions, for: .normal)
-        andLable.text = LocalString._and
+        andLabel.text = LocalString._and
         privacyButton.setTitle(LocalString._privacy_policy, for: .normal)
         createAccountButton.setTitle(LocalString._signup_create_account_action, for: .normal)
         

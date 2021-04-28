@@ -127,7 +127,7 @@ class MessageDataService : Service, HasLocalStorage {
     
     private func updateCounter(markUnRead: Bool, on message: Message, context: NSManagedObjectContext) {
         let offset = markUnRead ? 1 : -1
-        let labelIDs: [String] = message.getLableIDs()
+        let labelIDs: [String] = message.getLabelIDs()
         self.coreDataService.enqueue(context: context) { (context) in
             for lID in labelIDs {
                 let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context)
@@ -145,7 +145,7 @@ class MessageDataService : Service, HasLocalStorage {
     
     private func updateCounterSync(markUnRead: Bool, on message: Message, context: NSManagedObjectContext) {
         let offset = markUnRead ? 1 : -1
-        let labelIDs: [String] = message.getLableIDs()
+        let labelIDs: [String] = message.getLabelIDs()
         for lID in labelIDs {
             let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context)
             var count = unreadCount + offset
@@ -230,7 +230,7 @@ class MessageDataService : Service, HasLocalStorage {
             }
             if let lid = message.add(labelID: tLabel) {
                 //if move to trash. clean lables.
-                var labelsFound = message.getNormalLableIDs()
+                var labelsFound = message.getNormalLabelIDs()
                 labelsFound.append(Message.Location.starred.rawValue)
                 labelsFound.append(Message.Location.allmail.rawValue)
                 if lid == Message.Location.trash.rawValue {
@@ -296,7 +296,7 @@ class MessageDataService : Service, HasLocalStorage {
                     self.updateCounterSync(plus: false, with: id, context: context)
                 }
             }
-            var labelsFound = message.getNormalLableIDs()
+            var labelsFound = message.getNormalLabelIDs()
             labelsFound.append(Message.Location.starred.rawValue)
             labelsFound.append(Message.Location.allmail.rawValue)
             self.remove(labels: labelsFound, on: message, cleanUnread: true)
@@ -330,7 +330,7 @@ class MessageDataService : Service, HasLocalStorage {
             if let messages = try? context.fetch(fetch) as? [Message] {
                 messages.forEach { (msg) in
                     if msg.unRead {
-                        let labels: [String] = msg.getLableIDs()
+                        let labels: [String] = msg.getLabelIDs()
                         labels.forEach { (label) in
                             self.updateCounterSync(plus: false, with: label, context: context)
                         }
@@ -355,7 +355,7 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - time: the latest update time
     ///   - forceClean: force clean the exsition messages first
     ///   - completion: aync complete handler
-    func fetchMessages(byLable labelID : String, time: Int, forceClean: Bool, completion: CompletionBlock?) {
+    func fetchMessages(byLabel labelID : String, time: Int, forceClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if error != nil {
@@ -475,7 +475,7 @@ class MessageDataService : Service, HasLocalStorage {
                         lastUpdatedStore.removeUpdateTime(by: self.userID, context: self.managedObjectContext)
                         return self.contactDataService.cleanUp()
                     }.ensure {
-                        self.fetchMessages(byLable: labelID, time: time, forceClean: false, completion: completionWrapper)
+                        self.fetchMessages(byLabel: labelID, time: time, forceClean: false, completion: completionWrapper)
                         self.contactDataService.fetchContacts(completion: nil)
                         self.labelDataService.fetchLabels()
                     }.cauterize()
@@ -498,7 +498,7 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - labelID: Label/location/forlder
     ///   - notificationMessageID: the notification message
     ///   - completion: async complete handler
-    func fetchEvents(byLable labelID: String, notificationMessageID : String?, context: NSManagedObjectContext, completion: CompletionBlock?) {
+    func fetchEvents(byLabel labelID: String, notificationMessageID : String?, context: NSManagedObjectContext, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID(userID: self.userID, context: context))
             self.apiService.exec(route: eventAPI) { (task, response: EventCheckResponse) in
@@ -524,7 +524,7 @@ class MessageDataService : Service, HasLocalStorage {
                                     self.cleanMessage().then {
                                         return self.contactDataService.cleanUp()
                                     }.ensure {
-                                        self.fetchMessages(byLable: labelID, time: 0, forceClean: false, completion: completionWrapper)
+                                        self.fetchMessages(byLabel: labelID, time: 0, forceClean: false, completion: completionWrapper)
                                         self.contactDataService.fetchContacts(completion: nil)
                                         self.labelDataService.fetchLabels()
                                     }.cauterize()
@@ -566,7 +566,7 @@ class MessageDataService : Service, HasLocalStorage {
                                     self.cleanMessage().then {
                                         return self.contactDataService.cleanUp()
                                     }.ensure {
-                                        self.fetchMessages(byLable: labelID, time: 0, forceClean: false, completion: completionWrapper)
+                                        self.fetchMessages(byLabel: labelID, time: 0, forceClean: false, completion: completionWrapper)
                                         self.contactDataService.fetchContacts(completion: nil)
                                         self.labelDataService.fetchLabels()
                                     }.cauterize()
@@ -665,7 +665,7 @@ class MessageDataService : Service, HasLocalStorage {
 
     private func fetchEvents(labelID: String) {
         fetchEvents(
-            byLable: labelID,
+            byLabel: labelID,
             notificationMessageID: nil,
             context: coreDataService.mainManagedObjectContext,
             completion: nil
@@ -2491,7 +2491,7 @@ class MessageDataService : Service, HasLocalStorage {
                     return self.contactDataService.cleanUp()
                 }.ensure {
                     lastUpdatedStore.clear()
-                    self.fetchMessages(byLable: Message.Location.inbox.rawValue, time: 0, forceClean: false) { (_, _, _) in
+                    self.fetchMessages(byLabel: Message.Location.inbox.rawValue, time: 0, forceClean: false) { (_, _, _) in
                         self.labelDataService.fetchLabels() {
                             self.contactDataService.fetchContacts { (_, error) in
                                 if error == nil {
@@ -2645,7 +2645,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
                                     for delete in deleted {
                                         let labelID = delete as! String
-                                        if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
+                                        if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
                                             let labelObjs = messageObject.mutableSetValue(forKey: "labels")
                                             if labelObjs.count > 0 {
                                                 labelObjs.remove(label)
@@ -2663,7 +2663,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 
                                 if let added = msg.message?["LabelIDsAdded"] as? NSArray {
                                     for add in added {
-                                        if let label = Label.labelForLableID(add as! String, inManagedObjectContext: context) {
+                                        if let label = Label.labelForLabelID(add as! String, inManagedObjectContext: context) {
                                             let labelObjs = messageObject.mutableSetValue(forKey: "labels")
                                             labelObjs.add(label)
                                             messageObject.setValue(labelObjs, forKey: "labels")
@@ -2898,7 +2898,7 @@ class MessageDataService : Service, HasLocalStorage {
                             switch(label.Action) {
                             case .some(IncrementalUpdateType.delete):
                                 if let labelID = label.ID {
-                                    if let dLabel = Label.labelForLableID(labelID, inManagedObjectContext: context) {
+                                    if let dLabel = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
                                         context.delete(dLabel)
                                     }
                                 }
