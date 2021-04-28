@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-protocol NewMessageBodyViewModelDelegate: class {
+protocol NewMessageBodyViewModelDelegate: AnyObject {
     func reloadWebView()
     func showReloadError()
     func updateBannerStatus()
@@ -100,12 +100,12 @@ class NewMessageBodyViewModel {
     }
 
     func messageHasChanged(message: Message, isError: Bool = false) {
-        self.message = message
         if isError {
             delegate?.showReloadError()
-        } else {
+        } else if message.body != self.message.body {
             reload(from: message)
         }
+        self.message = message
     }
 
     private func reload(from message: Message) {
@@ -215,7 +215,9 @@ class NewMessageBodyViewModel {
 
         group.notify(queue: .main) {
             defer {
-                completion?()
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
+                    completion?()
+                }
             }
             if checkCount == strings.count {
                 var updatedBody = body
