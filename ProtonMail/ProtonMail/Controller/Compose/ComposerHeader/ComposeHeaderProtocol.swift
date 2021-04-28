@@ -42,6 +42,8 @@ protocol ComposeViewDelegate: class {
     func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController)
     func composeViewCollectExpirationData(_ composeView: ComposeHeaderViewController)
     
+    @available(iOS 14.0, *)
+    func setupComposeFromMenu(for button: UIButton)
     func composeViewPickFrom(_ composeView: ComposeHeaderViewController)
 
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
