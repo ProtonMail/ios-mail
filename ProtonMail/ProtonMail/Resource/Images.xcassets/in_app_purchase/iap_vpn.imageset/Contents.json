@@ -1,23 +1,23 @@
 {
   "images" : [
     {
+      "filename" : "iap_vpn.png",
       "idiom" : "universal",
-      "filename" : "vpn1.png",
       "scale" : "1x"
     },
     {
+      "filename" : "iap_vpn@2x.png",
       "idiom" : "universal",
-      "filename" : "vpn2.png",
       "scale" : "2x"
     },
     {
+      "filename" : "iap_vpn@3x.png",
       "idiom" : "universal",
-      "filename" : "vpn3.png",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }
