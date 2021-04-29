@@ -111,7 +111,7 @@ class SingleMessageViewModel {
 
     func propagateMessageData() {
         refreshView?()
-        messageBodyViewModel.messageHasChanged(message: message)
+        // messageBodyViewModel.messageHasChanged(message: message)
         nonExapndedHeaderViewModel?.messageHasChanged(message: message)
         expandedHeaderViewModel?.messageHasChanged(message: message)
         attachmentViewModel.messageHasChanged(message: message)
@@ -127,11 +127,14 @@ class SingleMessageViewModel {
     }
 
     func downloadDetails() {
+        let shouldLoadBody = message.body.isEmpty
         messageService.fetchMessageDetailForMessage(message, labelID: labelId) { [weak self] _, _, _, error in
             guard let self = self else { return }
             self.updateErrorBanner?(error)
             if error != nil && !self.message.isDetailDownloaded {
                 self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
+            } else if shouldLoadBody {
+                self.messageBodyViewModel.messageHasChanged(message: self.message)
             }
         }
     }

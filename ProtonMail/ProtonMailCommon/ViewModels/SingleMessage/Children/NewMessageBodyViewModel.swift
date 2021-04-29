@@ -102,7 +102,7 @@ class NewMessageBodyViewModel {
     func messageHasChanged(message: Message, isError: Bool = false) {
         if isError {
             delegate?.showReloadError()
-        } else if message.body != self.message.body {
+        } else {
             reload(from: message)
         }
         self.message = message
