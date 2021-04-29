@@ -58,7 +58,7 @@ class SingleMessageViewModel {
 
     private let messageService: MessageDataService
     let user: UserManager
-    private let labelId: String
+    let labelId: String
     private let messageObserver: MessageObserver
     let linkOpener: LinkOpener
 
@@ -144,6 +144,119 @@ class SingleMessageViewModel {
         nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(labelId: labelId, message: message, user: user)
     }
 
+    func getActionTypes() -> [MailboxViewModel.ActionTypes] {
+        var actions: [MailboxViewModel.ActionTypes] = []
+        let isHavingMoreThanOneContact = (message.toList.toContacts() + message.ccList.toContacts()).count > 1
+        actions.append(isHavingMoreThanOneContact ? .replyAll : .reply)
+        actions.append(.readUnread)
+        let deleteLocation = [
+            Message.Location.draft.rawValue,
+            Message.Location.spam.rawValue,
+            Message.Location.trash.rawValue
+        ]
+        actions.append(deleteLocation.contains(labelId) ? .delete : .trash)
+        actions.append(.more)
+        return actions
+    }
+
+    func handleActionBarAction(_ action: MailboxViewModel.ActionTypes) {
+        switch action {
+        case .delete:
+            messageService.delete(messages: [message], label: labelId)
+        case .readUnread:
+            messageService.mark(messages: [message], labelID: labelId, unRead: !message.unRead)
+        case .trash:
+            messageService.move(messages: [message],
+                                from: [labelId],
+                                to: Message.Location.trash.rawValue,
+                                queue: true)
+        default:
+            return
+        }
+    }
+
+    func handleActionSheetAction(_ action: MessageViewActionSheetAction,
+                                 completion: @escaping () -> Void) {
+        switch action {
+        case .markUnread:
+            messageService.mark(messages: [message], labelID: labelId, unRead: true)
+        case .trash:
+            messageService.move(messages: [message],
+                                from: [labelId],
+                                to: Message.Location.trash.rawValue,
+                                queue: true)
+        case .archive:
+            messageService.move(messages: [message],
+                                from: [labelId],
+                                to: Message.Location.archive.rawValue,
+                                queue: true)
+        case .spam:
+            messageService.move(messages: [message],
+                                from: [labelId],
+                                to: Message.Location.spam.rawValue,
+                                queue: true)
+        case .delete:
+            messageService.delete(messages: [message], label: labelId)
+        case .reportPhishing:
+            BugDataService(api: self.user.apiService).reportPhishing(messageID: message.messageID,
+                                                                     messageBody: messageBodyViewModel.body
+                                                                        ?? LocalString._error_no_object) { _ in
+                self.messageService.move(messages: [self.message],
+                                         from: [self.labelId],
+                                         to: Message.Location.spam.rawValue,
+                                         queue: true)
+                completion()
+            }
+            return
+        case .inbox, .spamMoveToInbox:
+            messageService.move(messages: [message],
+                                from: [labelId],
+                                to: Message.Location.inbox.rawValue,
+                                queue: true)
+        default:
+            break
+        }
+        completion()
+    }
+
+    func getMessageHeaderUrl() -> URL? {
+        let message = messageBodyViewModel.message
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        let time = formatter.string(from: message.time ?? Date())
+        let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
+        let filename = "headers-" + time + "-" + title.joined(separator: "-")
+        guard let header = message.header else {
+            assert(false, "No header in message")
+            return nil
+        }
+        return try? self.writeToTemporaryUrl(header, filename: filename)
+    }
+
+    func getMessageBodyUrl() -> URL? {
+        let message = messageBodyViewModel.message
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        let time = formatter.string(from: message.time ?? Date())
+        let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
+        let filename = "body-" + time + "-" + title.joined(separator: "-")
+        guard let body = try? messageService.decryptBodyIfNeeded(message: message) else {
+            return nil
+        }
+        return try? self.writeToTemporaryUrl(body, filename: filename)
+    }
+
+    private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
+        let tempFileUri = FileManager.default.temporaryDirectoryUrl
+            .appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
+        try? FileManager.default.removeItem(at: tempFileUri)
+        try content.write(to: tempFileUri, atomically: true, encoding: .utf8)
+        return tempFileUri
+    }
 }
 
 private extension MessageDataService {

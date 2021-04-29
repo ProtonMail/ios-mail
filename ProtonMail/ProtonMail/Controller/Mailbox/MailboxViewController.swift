@@ -1391,14 +1391,14 @@ extension MailboxViewController {
             }
             
             if key == actions.startIndex {
-                let barItem = PMActionBarItem(icon: action.iconImage!,
+                let barItem = PMActionBarItem(icon: action.iconImage,
                                               text: action.name,
                                               backgroundColor: UIColorManager.Shade50,
                                               selectedBgColor: UIColorManager.Shade20,
                                               handler: actionHandler)
                 actionItems.append(barItem)
             } else {
-                let barItem = PMActionBarItem(icon: action.iconImage!,
+                let barItem = PMActionBarItem(icon: action.iconImage,
                                               backgroundColor: .clear,
                                               handler: actionHandler)
                 actionItems.append(barItem)

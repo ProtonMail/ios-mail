@@ -2102,4 +2102,22 @@ class LocalizedString {
 
     lazy var _message_action_sheet_title_recipient = NSLocalizedString("Recipient details", comment: "")
     lazy var _message_action_sheet_title_sender = NSLocalizedString("Sender details", comment: "")
+
+    // MARK: Action sheet action title
+    lazy var _action_sheet_action_title_archive = NSLocalizedString("Archive", comment: "")
+    lazy var _action_sheet_action_title_reply = NSLocalizedString("Reply", comment: "")
+    lazy var _action_sheet_action_title_replyAll = NSLocalizedString("Reply all", comment: "")
+    lazy var _action_sheet_action_title_forward = NSLocalizedString("Forward", comment: "")
+    lazy var _action_sheet_action_title_markUnread = NSLocalizedString("Mark unread", comment: "")
+    lazy var _action_sheet_action_title_labelAs = NSLocalizedString("Label as...", comment: "")
+    lazy var _action_sheet_action_title_trash = NSLocalizedString("Move to trash", comment: "")
+    lazy var _action_sheet_action_title_spam = NSLocalizedString("Move to spam", comment: "")
+    lazy var _action_sheet_action_title_delete = NSLocalizedString("Delete", comment: "")
+    lazy var _action_sheet_action_title_moveTo = NSLocalizedString("Move to...", comment: "")
+    lazy var _action_sheet_action_title_print = NSLocalizedString("Print", comment: "")
+    lazy var _action_sheet_action_title_view_headers = NSLocalizedString("View headers", comment: "")
+    lazy var _action_sheet_action_title_view_html = NSLocalizedString("View HTML", comment: "")
+    lazy var _action_sheet_action_title_phishing = NSLocalizedString("Report phishing", comment: "")
+    lazy var _action_sheet_action_title_inbox = NSLocalizedString("Move to inbox", comment: "")
+    lazy var _action_sheet_action_title_spam_to_inbox = NSLocalizedString("Not a spam (move to inbox)", comment: "")
 }
