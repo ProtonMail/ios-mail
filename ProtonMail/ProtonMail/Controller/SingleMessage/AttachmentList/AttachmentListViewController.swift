@@ -25,24 +25,41 @@ import PMUIFoundations
 import QuickLook
 import UIKit
 
-class AttachmentListViewController: UITableViewController {
+class AttachmentListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let viewModel: AttachmentListViewModel
+    let tableView: UITableView = UITableView(frame: .zero)
+    let bannerContainer: UIView = UIView()
+    private var bannerHeightConstraint: NSLayoutConstraint?
+    private var isInternetBannerPresented = false
 
     // Used in Quick Look dataSource
     private var tempClearFileURL: URL?
+    private var currentNetworkStatus: NetworkStatus = .NotReachable
 
     init(viewModel: AttachmentListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+
+        setUpSubviews()
     }
 
     required init?(coder: NSCoder) {
         nil
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    override func loadView() {
+        view = UIView()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.register(AttachmentListTableViewCell.self)
         tableView.sectionHeaderHeight = 52.0
@@ -53,13 +70,23 @@ class AttachmentListViewController: UITableViewController {
             LocalString._attachments_list_title :
             LocalString._one_attachment_list_title
         title = titleToAdd
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(reachabilityChanged(_:)),
+                                               name: NSNotification.Name.reachabilityChanged,
+                                               object: nil)
     }
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.updateInterface(reachability: sharedInternetReachability)
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.attachmentSections.count
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch viewModel.attachmentSections[section] {
         case .normal:
             return viewModel.normalAttachments.count
@@ -68,7 +95,7 @@ class AttachmentListViewController: UITableViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentListTableViewCell.CellID, for: indexPath)
         if let cellToConfig = cell as? AttachmentListTableViewCell {
             let attachment: AttachmentInfo
@@ -86,11 +113,18 @@ class AttachmentListViewController: UITableViewController {
             cellToConfig.configure(mimeType: attachment.mimeType,
                                    fileName: attachment.fileName,
                                    fileSize: sizeString)
+
+            if currentNetworkStatus == .NotReachable && !attachment.isDownloaded {
+                cellToConfig.selectionStyle = .none
+            } else {
+                cellToConfig.selectionStyle = .default
+            }
         }
+
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let sectionItem = viewModel.attachmentSections[section]
         return PMHeaderView(title: sectionItem.actionTitle,
                             fontSize: 15,
@@ -100,7 +134,16 @@ class AttachmentListViewController: UITableViewController {
                             background: UIColorManager.BackgroundNorm)
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let cell = tableView.cellForRow(at: indexPath)
+        if cell?.selectionStyle == UITableViewCell.SelectionStyle.none {
+            return nil
+        } else {
+            return indexPath
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let sectionItem = viewModel.attachmentSections[indexPath.section]
         var attachment: AttachmentInfo
@@ -112,9 +155,11 @@ class AttachmentListViewController: UITableViewController {
         }
 
         let errorClosure: (NSError) -> Void = { [weak self] error in
-            let alert = error.localizedDescription.alertController()
-            alert.addOKAction()
-            self?.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                let alert = error.localizedDescription.alertController()
+                alert.addOKAction()
+                self?.present(alert, animated: true, completion: nil)
+            }
         }
 
         viewModel.open(attachmentInfo: attachment, failed: errorClosure) { [weak self] url in
@@ -125,16 +170,40 @@ class AttachmentListViewController: UITableViewController {
             }
         }
     }
+}
+
+private extension AttachmentListViewController {
+    private func setUpSubviews() {
+        bannerContainer.backgroundColor = UIColorManager.BackgroundNorm
+        tableView.backgroundColor = UIColorManager.BackgroundNorm
+
+        let stackView = UIStackView(arrangedSubviews: [bannerContainer, tableView])
+        stackView.distribution = .fill
+        stackView.axis = .vertical
+
+        view.addSubview(stackView)
+
+        let bannerHeightConstraint = bannerContainer.heightAnchor.constraint(equalToConstant: 0)
+        bannerHeightConstraint.isActive = true
+
+        [
+            stackView.topAnchor.constraint(equalTo: view.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ].activate()
+        self.bannerHeightConstraint = bannerHeightConstraint
+    }
 
     func openQuickLook(clearfileURL: URL, fileName: String, type: String) {
         self.tempClearFileURL = clearfileURL
 
         if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
-            let pkfile = try? Data(contentsOf: clearfileURL),
-            let pass = try? PKPass(data: pkfile),
-            let viewController = PKAddPassesViewController(pass: pass),
-            // as of iOS 12.0 SDK, PKAddPassesViewController will not be initialized on iPads without any warning 🤯
-            (viewController as UIViewController?) != nil {
+           let pkfile = try? Data(contentsOf: clearfileURL),
+           let pass = try? PKPass(data: pkfile),
+           let viewController = PKAddPassesViewController(pass: pass),
+           // as of iOS 12.0 SDK, PKAddPassesViewController will not be initialized on iPads without any warning 🤯
+           (viewController as UIViewController?) != nil {
             self.present(viewController, animated: true, completion: nil)
             return
         }
@@ -143,6 +212,66 @@ class AttachmentListViewController: UITableViewController {
         previewQL.dataSource = self
         previewQL.delegate = self
         self.present(previewQL, animated: true, completion: nil)
+    }
+}
+
+// MARK: - Handle Network status changed
+private extension AttachmentListViewController {
+    private func showInternetConnectionBanner() {
+        guard isInternetBannerPresented == false else { return }
+        let banner = MailBannerView()
+        bannerContainer.addSubview(banner)
+
+        banner.label.attributedText = LocalString._banner_no_internet_connection
+            .apply(style: FontManager.body3RegularTextInverted)
+
+        [
+            banner.bottomAnchor.constraint(equalTo: bannerContainer.bottomAnchor),
+            banner.leadingAnchor.constraint(equalTo: bannerContainer.leadingAnchor),
+            banner.trailingAnchor.constraint(equalTo: bannerContainer.trailingAnchor),
+            banner.topAnchor.constraint(equalTo: bannerContainer.topAnchor)
+        ].activate()
+
+        bannerHeightConstraint?.isActive = false
+
+        view.layoutIfNeeded()
+
+        isInternetBannerPresented = true
+    }
+
+    private func hideInternetConnectionBanner() {
+        guard isInternetBannerPresented else { return }
+        UIView.animate(withDuration: 0.25,
+                       animations: { [weak self] in
+                        self?.bannerHeightConstraint?.isActive = true
+                       },
+                       completion: { [weak self] _ in
+                        self?.bannerContainer.subviews.forEach { $0.removeFromSuperview() }
+                        self?.isInternetBannerPresented = false
+                       })
+    }
+
+    private func updateInterface(reachability: Reachability) {
+        let netStatus = reachability.currentReachabilityStatus()
+        currentNetworkStatus = netStatus
+        switch netStatus {
+        case .NotReachable:
+            showInternetConnectionBanner()
+        case .ReachableViaWWAN:
+            hideInternetConnectionBanner()
+        case .ReachableViaWiFi:
+            hideInternetConnectionBanner()
+        default:
+            break
+        }
+        tableView.reloadData()
+    }
+
+    @objc
+    private func reachabilityChanged(_ note: Notification) {
+        if let currentReachability = note.object as? Reachability {
+            self.updateInterface(reachability: currentReachability)
+        }
     }
 }
 
