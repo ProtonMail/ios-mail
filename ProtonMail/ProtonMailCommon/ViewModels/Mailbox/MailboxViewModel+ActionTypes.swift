@@ -36,8 +36,7 @@ extension MailboxViewModel {
         case spam
         case reply
         case replyAll
-        
-        #warning("v4 check later")
+
         var name: String {
             switch self {
             case .trash:
@@ -63,26 +62,28 @@ extension MailboxViewModel {
             }
         }
         
-        var iconImage: UIImage? {
+        var iconImage: ImageAsset.Image {
             switch self {
             case .archive:
-                return UIImage(named: "action_bar_archive")
-            case .delete, .trash:
-                return UIImage(named: "action_bar_delete")
+                return Asset.actionBarArchive.image
+            case .delete:
+                return Asset.actionBarDelete.image
+            case .trash:
+                return Asset.actionBarTrash.image
             case .moveTo:
-                return UIImage(named: "action_bar_moveTo")
+                return Asset.actionBarMoveTo.image
             case .more:
-                return UIImage(named: "action_bar_more")
+                return Asset.actionBarMore.image
             case .spam:
-                return UIImage(named: "action_bar_spam")
+                return Asset.actionBarSpam.image
             case .labelAs:
-                return UIImage(named: "action_bar_label")
+                return Asset.actionBarLabel.image
             case .reply:
-                return UIImage(named: "action_bar_reply")
+                return Asset.actionBarReply.image
             case .replyAll:
-                return UIImage(named: "action_bar_replyAll")
+                return Asset.actionBarReplyAll.image
             case .readUnread:
-                return UIImage(named: "action_bar_readUnread")
+                return Asset.actionBarReadUnread.image
             }
         }
     }

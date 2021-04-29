@@ -20,7 +20,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-enum SingleMessageNavigationAction {
+enum SingleMessageNavigationAction: Equatable {
     case contacts(contact: ContactVO)
     case compose(contact: ContactVO)
+    case viewData(url: URL?)
+    case reply
+    case replyAll
+    case forward
+    case attachmentList
+    case url(url: URL)
+    case inAppSafari(url: URL)
+    case mailToUrl(url: URL)
 }
