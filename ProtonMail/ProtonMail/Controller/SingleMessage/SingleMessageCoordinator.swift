@@ -88,6 +88,8 @@ class SingleMessageCoordinator: NSObject {
             coreDataService: sharedServices.get(by: CoreDataService.self)
         )
 
+        viewModel.addToContacts(contact)
+
         viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
         viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
         self.viewController?.present(destination, animated: true)

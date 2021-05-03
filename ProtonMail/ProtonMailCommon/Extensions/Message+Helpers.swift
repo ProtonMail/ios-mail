@@ -48,6 +48,11 @@ extension Message {
         }
     }
 
+    func senderContact(userContacts: [ContactVO]) -> ContactVO? {
+        guard let sender = sender?.toContact() else { return nil }
+        return userContacts.first(where: { $0.email == sender.email }) ?? sender
+    }
+
     var messageTime: String {
         guard let time = time, let displayString = NSDate.stringForDisplay(from: time) else { return .empty }
         return displayString
