@@ -27,31 +27,79 @@ class BannerViewModel {
     let shouldAutoLoadEmbeddedImage: Bool
     private(set) var expirationTime: Date = .distantFuture
     private var timer: Timer?
+    private let unsubscribeService: UnsubscribeService
+    private let urlOpener: URLOpener
 
     var updateExpirationTime: ((Int) -> Void)?
     var messageExpired: (() -> Void)?
+    var reloadBanners: (() -> Void)?
 
-    init(shouldAutoLoadRemoteContent: Bool,
+    var canUnsubscribe: Bool {
+        let unsubscribeMethods = self.message.getUnsubscribeMethods
+        let isAvailable = unsubscribeMethods?.oneClick != nil || unsubscribeMethods?.httpClient != nil
+        return isAvailable && !message.flag.contains(.unsubscribed)
+    }
+
+    private(set) var message: Message {
+        didSet {
+            reloadBanners?()
+        }
+    }
+
+    init(message: Message,
+         shouldAutoLoadRemoteContent: Bool,
          expirationTime: Date?,
-         shouldAutoLoadEmbeddedImage: Bool) {
+         shouldAutoLoadEmbeddedImage: Bool,
+         unsubscribeService: UnsubscribeService,
+         urlOpener: URLOpener = UIApplication.shared) {
+        self.message = message
         self.shouldAutoLoadRemoteContent = shouldAutoLoadRemoteContent
         self.shouldAutoLoadEmbeddedImage = shouldAutoLoadEmbeddedImage
-        if let time = expirationTime {
-            self.expirationTime = time
-            self.timer = Timer.scheduledTimer(timeInterval: 1,
-                                              target: self,
-                                              selector: #selector(self.timerUpdate),
-                                              userInfo: nil,
-                                              repeats: true)
-        }
+        self.unsubscribeService = unsubscribeService
+        self.urlOpener = urlOpener
+        setUpTimer(expirationTime: expirationTime)
     }
 
     deinit {
         timer?.invalidate()
     }
 
+    func setUpTimer(expirationTime: Date?) {
+        if let time = expirationTime {
+            self.expirationTime = time
+            self.timer = Timer.scheduledTimer(
+                timeInterval: 1,
+                target: self,
+                selector: #selector(self.timerUpdate),
+                userInfo: nil,
+
+                repeats: true
+            )
+        }
+    }
+
     func getExpirationOffset() -> Int {
         return Int(self.expirationTime.timeIntervalSince(Date()))
+    }
+
+    func messageHasChanged(message: Message) {
+        self.message = message
+    }
+
+    @objc
+    func unsubscribe() {
+        let unsubscribeMethods = message.getUnsubscribeMethods
+        if unsubscribeMethods?.oneClick != nil {
+            unsubscribeService.oneClickUnsubscribe(messageId: message.messageID)
+        } else if let httpClient = unsubscribeMethods?.httpClient {
+            open(url: httpClient)
+        }
+    }
+
+    private func open(url: String) {
+        guard let url = URL(string: url), urlOpener.canOpenURL(url) else { return }
+        urlOpener.open(url)
+        _ = unsubscribeService.markAsUnsubscribed(messageId: message.messageID)
     }
 
     @objc

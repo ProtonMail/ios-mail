@@ -110,7 +110,8 @@ final public class Message: NSManagedObject {
 
     @NSManaged public var conversationID: String
 
-    
+    @NSManaged public var unsubscribeMethods: String?
+
     /// Mark -- relationship
     
     //"Attachments":[ { }, {} ]

@@ -1,5 +1,5 @@
 //
-//  Link.swift
+//  URLOpener.swift
 //  ProtonMail
 //
 //
@@ -20,9 +20,21 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import UIKit
 
-enum Link {
-    static let alternativeRouting = "https://protonmail.com/blog/anti-censorship-alternative-routing"
-    static let unsubscribeInfo = "https://protonmail.com/support/knowledge-base/auto-unsubscribe"
+protocol URLOpener {
+    func canOpenURL(_ url: URL) -> Bool
+    func open(_ url: URL,
+              options: [UIApplication.OpenExternalURLOptionsKey: Any],
+              completionHandler completion: ((Bool) -> Void)?)
 }
+
+extension URLOpener {
+
+    func open(_ url: URL) {
+        open(url, options: [:], completionHandler: nil)
+    }
+
+}
+
+extension UIApplication: URLOpener {}

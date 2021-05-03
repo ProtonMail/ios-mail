@@ -1,5 +1,5 @@
 //
-//  Link.swift
+//  Dictionary+Helpers.swift
 //  ProtonMail
 //
 //
@@ -22,7 +22,13 @@
 
 import Foundation
 
-enum Link {
-    static let alternativeRouting = "https://protonmail.com/blog/anti-censorship-alternative-routing"
-    static let unsubscribeInfo = "https://protonmail.com/support/knowledge-base/auto-unsubscribe"
+extension Dictionary where Key == String, Value == Any {
+
+    func toString() -> String? {
+        guard let data = try? JSONSerialization.data(withJSONObject: self, options: .fragmentsAllowed) else {
+            return nil
+        }
+        return String(data: data, encoding: .utf8)
+    }
+
 }

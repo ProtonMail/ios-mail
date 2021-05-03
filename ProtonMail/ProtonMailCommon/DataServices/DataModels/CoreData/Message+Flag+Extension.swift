@@ -62,11 +62,13 @@ extension Message {
         
         /// Mark -- For drafts only
         /// whether to request a read receipt for the message
-        static let receiptRequest  = Flag(rawValue: 1 << 16) //const RECEIPT_REQUEST = 65536
+        static let receiptRequest = Flag(rawValue: 1 << 16) //const RECEIPT_REQUEST = 65536
         /// whether to attach the public key
-        static let publicKey       = Flag(rawValue: 1 << 17) //const PUBLIC_KEY = 131072
+        static let publicKey = Flag(rawValue: 1 << 17) //const PUBLIC_KEY = 131072
         /// whether to sign the message
-        static let sign            = Flag(rawValue: 1 << 18) //const SIGN = 262144
+        static let sign = Flag(rawValue: 1 << 18) //const SIGN = 262144
+
+        static let unsubscribed = Flag(rawValue: 1 << 19) // 524288
         
         var description : String {
             var out = "Raw: \(rawValue)\n"
@@ -122,6 +124,9 @@ extension Message {
             }
             if self.contains(.sign) {
                 out += "FLAG_SIGN = 262144\n"
+            }
+            if self.contains(.unsubscribed) {
+                out += "FLAG_UNSUBSCRIBED = 524288\n"
             }
             return out
         }

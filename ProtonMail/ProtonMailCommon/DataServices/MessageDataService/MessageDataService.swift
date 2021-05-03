@@ -778,6 +778,8 @@ class MessageDataService : Service, HasLocalStorage {
                                 msg["UserID"] = self.userID
                                 do {
                                     if let message_n = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
+                                        let unsubscribeMethods = msg["UnsubscribeMethods"] as? [String: Any]
+                                        message_n.unsubscribeMethods = unsubscribeMethods?.toString()
                                         message_n.messageStatus = 1
                                         message_n.isDetailDownloaded = true
                                         if let labelID = message.firstValidFolder() {

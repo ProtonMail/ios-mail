@@ -545,6 +545,7 @@
                 <entry key="JSONKeyPath" value="Unread"/>
             </userInfo>
         </attribute>
+        <attribute name="unsubscribeMethods" optional="YES" attributeType="String"/>
         <attribute name="userID" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="UserID"/>
@@ -597,7 +598,7 @@
         <element name="Email" positionX="1539" positionY="-3582" width="128" height="193"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="239"/>
         <element name="LabelUpdate" positionX="1440" positionY="-3717" width="128" height="179"/>
-        <element name="Message" positionX="1717" positionY="-3867" width="128" height="599"/>
+        <element name="Message" positionX="1717" positionY="-3867" width="128" height="614"/>
         <element name="UserEvent" positionX="1440" positionY="-3717" width="128" height="74"/>
     </elements>
 </model>

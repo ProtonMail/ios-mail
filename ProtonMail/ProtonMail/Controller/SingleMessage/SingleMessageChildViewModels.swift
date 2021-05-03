@@ -1,5 +1,5 @@
 //
-//  Link.swift
+//  SingleMessageChildViewModels.swift
 //  ProtonMail
 //
 //
@@ -20,9 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
-
-enum Link {
-    static let alternativeRouting = "https://protonmail.com/blog/anti-censorship-alternative-routing"
-    static let unsubscribeInfo = "https://protonmail.com/support/knowledge-base/auto-unsubscribe"
+struct SingleMessageChildViewModels {
+    let messageBody: NewMessageBodyViewModel
+    let nonExpandedHeader: NonExpandedHeaderViewModel
+    let bannerViewModel: BannerViewModel
+    let attachments: AttachmentViewModel
 }

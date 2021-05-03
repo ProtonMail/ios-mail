@@ -22,6 +22,12 @@
 
 extension Message {
 
+    var getUnsubscribeMethods: UnsubscribeMethods? {
+        guard let unsubscribeMethods = unsubscribeMethods,
+              let data = unsubscribeMethods.data(using: .utf8) else { return nil }
+        return try? JSONDecoder().decode(UnsubscribeMethods?.self, from: data)
+    }
+
     func recipients(userContacts: [ContactVO]) -> [String] {
         let allMessageRecipients = toList.toContacts() + ccList.toContacts() + bccList.toContacts()
 

@@ -279,7 +279,9 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
     }
 
     private func showBanner() {
-        guard self.bannerViewController == nil else { return }
+        guard self.bannerViewController == nil && !children.contains(where: { $0 is BannerViewController }) else {
+            return
+        }
         let controller = BannerViewController(viewModel: viewModel.bannerViewModel)
         controller.delegate = self
         embed(controller, inside: customView.bannerContainer)
@@ -593,6 +595,10 @@ extension SingleMessageViewController: AttachmentViewControllerDelegate {
 extension SingleMessageViewController: BannerViewControllerDelegate {
     func hideBannerController() {
         hideBanner()
+    }
+
+    func showBannerController() {
+        showBanner()
     }
 
     func loadEmbeddedImage() {
