@@ -628,6 +628,7 @@ extension ComposeViewController : ComposeViewDelegate {
                     }
                     MBProgressHUD.showAdded(to: self.parent!.navigationController!.view, animated: true)
                     self.updateSenderMail(addr: addr)
+                    self.setupComposeFromMenu(for: button)
                 }
             }
             item.accessibilityLabel = addr.email
