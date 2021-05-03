@@ -37,6 +37,9 @@ unit_tests:
     - merge_requests
   except:
     - schedules
+  artifacts:
+    reports:
+      cobertura: ./test_output/slatherOutput/cobertura.xml
   before_script:
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
@@ -46,7 +49,10 @@ unit_tests:
     # - pip install xUnique
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-    - fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "Tests" --device "iPhone 8" --clean
+    - cd ProtonMail
+    - bundle install
+    - bundle exec fastlane unit_test
+    - bundle exec slather | tail -2
   tags:
     - iOS_ARM_TAIPEI
 
