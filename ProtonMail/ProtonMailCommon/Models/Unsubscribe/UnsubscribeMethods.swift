@@ -1,5 +1,5 @@
 //
-//  Link.swift
+//  UnsubscribeMethods.swift
 //  ProtonMail
 //
 //
@@ -22,7 +22,14 @@
 
 import Foundation
 
-enum Link {
-    static let alternativeRouting = "https://protonmail.com/blog/anti-censorship-alternative-routing"
-    static let unsubscribeInfo = "https://protonmail.com/support/knowledge-base/auto-unsubscribe"
+struct UnsubscribeMethods: Decodable {
+    let oneClick: String?
+    let httpClient: String?
+    let mailTo: UnsubscribeMailTo?
+
+    private enum CodingKeys: String, CodingKey {
+        case oneClick = "OneClick"
+        case httpClient = "HttpClient"
+        case mailTo = "Mailto"
+    }
 }

@@ -2122,4 +2122,8 @@ class LocalizedString {
     lazy var _action_sheet_action_title_spam_to_inbox = NSLocalizedString("Not a spam (move to inbox)", comment: "")
 
     lazy var _undisclosed_recipients = NSLocalizedString("Undisclosed Recipients", comment: "") 
+
+    lazy var _unsubscribe = NSLocalizedString("Unsubscribe", comment: "")
+
+    lazy var _unsubscribe_banner_description = NSLocalizedString("This message is from a mailing list.", comment: "")
 }

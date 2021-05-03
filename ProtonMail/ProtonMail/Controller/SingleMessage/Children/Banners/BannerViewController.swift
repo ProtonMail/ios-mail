@@ -27,24 +27,19 @@ protocol BannerViewControllerDelegate: class {
     func loadEmbeddedImage()
     func handleMessageExpired()
     func hideBannerController()
+    func showBannerController()
 }
 
 class BannerViewController: UIViewController {
 
-    enum BannerType {
+    enum BannerType: Int {
         case remoteContent
         case expiration
         case error
+        case unsubscribe
 
         var order: Int {
-            switch self {
-            case .remoteContent:
-                return 0
-            case .expiration:
-                return 1
-            case .error:
-                return 2
-            }
+            rawValue
         }
     }
 
@@ -58,12 +53,11 @@ class BannerViewController: UIViewController {
     private(set) lazy var errorBanner = ErrorBannerView()
     private(set) lazy var expirationBanner = ExpirationBannerView()
     private(set) lazy var remoteAndEmbeddedContentBanner = RemoteAndEmbeddedBannerView()
+    private(set) lazy var unsubscribeBanner = UnsubscribeBanner()
 
     private(set) var displayedBanners: [BannerType: UIView] = [:] {
         didSet {
-            if displayedBanners.isEmpty {
-                delegate?.hideBannerController()
-            }
+            displayedBanners.isEmpty ? delegate?.hideBannerController() : delegate?.showBannerController()
         }
     }
 
@@ -96,6 +90,23 @@ class BannerViewController: UIViewController {
         if viewModel.expirationTime != .distantFuture {
             self.showExpirationBanner()
         }
+        handleUnsubscribeBanner()
+        setUpMessageObservation()
+    }
+
+    private func setUpMessageObservation() {
+        viewModel.reloadBanners = { [weak self] in
+            self?.handleUnsubscribeBanner()
+        }
+    }
+
+    private func handleUnsubscribeBanner() {
+        let isUnsubscribeBannerDisplayed = displayedBanners.contains(where: { $0.key == .unsubscribe })
+        if isUnsubscribeBannerDisplayed && !viewModel.canUnsubscribe {
+            hideBanner(type: .unsubscribe)
+        }
+        guard viewModel.canUnsubscribe && !isUnsubscribeBannerDisplayed else { return }
+        showUnsubscribeBanner()
     }
 
     private func setupContainerView() {
@@ -199,6 +210,12 @@ class BannerViewController: UIViewController {
         banner.updateTitleWith(offset: viewModel.getExpirationOffset())
 
         addBannerView(type: .expiration, shouldAddContainer: false, bannerView: banner)
+    }
+
+    func showUnsubscribeBanner() {
+        let banner = unsubscribeBanner
+        banner.unsubscribeButton.addTarget(viewModel, action: #selector(viewModel.unsubscribe), for: .touchUpInside)
+        addBannerView(type: .unsubscribe, shouldAddContainer: true, bannerView: banner)
     }
 
     private func addBannerView(type: BannerType, shouldAddContainer: Bool, bannerView: UIView) {

@@ -60,41 +60,23 @@ class SingleMessageViewModel {
     let user: UserManager
     let labelId: String
     private let messageObserver: MessageObserver
-    let linkOpener: LinkOpener
+    let linkOpener: LinkOpener = userCachedStatus.browser
 
     var refreshView: (() -> Void)?
     var updateErrorBanner: ((NSError?) -> Void)?
     var embedExpandedHeader: ((ExpandedHeaderViewModel) -> Void)?
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
 
-    init(labelId: String, message: Message, user: UserManager, linkOpenerCache: LinkOpenerCacheProtocol) {
+    init(labelId: String, message: Message, user: UserManager, childViewModels: SingleMessageChildViewModels) {
         self.labelId = labelId
         self.message = message
         self.messageService = user.messageService
         self.user = user
-        self.linkOpener = linkOpenerCache.browser
         self.shouldAutoLoadRemoteImage = user.autoLoadRemoteImages
-        self.messageBodyViewModel = NewMessageBodyViewModel(
-            message: message,
-            messageService: user.messageService,
-            userManager: user,
-            shouldAutoLoadRemoteImages: user.userinfo.showImages.contains(.remote),
-            shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded)
-        )
-        self.nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(
-            labelId: labelId,
-            message: message,
-            user: user
-        )
-        self.bannerViewModel = BannerViewModel(
-            shouldAutoLoadRemoteContent: user.userinfo.showImages.contains(.remote),
-            expirationTime: message.expirationTime,
-            shouldAutoLoadEmbeddedImage: user.userinfo.showImages.contains(.embedded)
-        )
-        let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
-            .map(AttachmentNormal.init) + (message.tempAtts ?? [])
-
-        self.attachmentViewModel = AttachmentViewModel(attachments: attachments)
+        self.messageBodyViewModel = childViewModels.messageBody
+        self.nonExapndedHeaderViewModel = childViewModels.nonExpandedHeader
+        self.bannerViewModel = childViewModels.bannerViewModel
+        self.attachmentViewModel = childViewModels.attachments
         self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
     }
 
@@ -115,6 +97,7 @@ class SingleMessageViewModel {
         nonExapndedHeaderViewModel?.messageHasChanged(message: message)
         expandedHeaderViewModel?.messageHasChanged(message: message)
         attachmentViewModel.messageHasChanged(message: message)
+        bannerViewModel.messageHasChanged(message: message)
     }
 
     func starTapped() {

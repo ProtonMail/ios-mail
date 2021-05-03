@@ -400,4 +400,9 @@ extension Dictionary where Key == NSAttributedString.Key, Value == Any {
         }
         return attributes
     }
+
+    func link(url: String) -> Self {
+        self + [.link: url]
+    }
+
 }

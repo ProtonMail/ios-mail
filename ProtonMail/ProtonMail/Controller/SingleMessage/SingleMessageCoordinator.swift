@@ -42,12 +42,8 @@ class SingleMessageCoordinator: NSObject {
     }
 
     func start() {
-        let viewModel = SingleMessageViewModel(
-            labelId: labelId,
-            message: message,
-            user: user,
-            linkOpenerCache: userCachedStatus
-        )
+        let singleMessageViewModelFacory = SingleMessageViewModelFactory()
+        let viewModel = singleMessageViewModelFacory.createViewModel(labelId: labelId, message: message, user: user)
         let viewController = SingleMessageViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
         navigationController.pushViewController(viewController, animated: true)

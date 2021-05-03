@@ -119,8 +119,10 @@ class NewMessageBodyViewModel {
 
             if embeddedContentPolicy == .allowed {
                 showEmbedImage(message, body: decryptedBody) {
-                    self.contents = WebContents(body: self.body ?? "",
-                                                remoteContentMode: WebContents.RemoteContentPolicy(rawValue: self.remoteContentPolicy)!)
+                    self.contents = WebContents(
+                        body: self.body ?? "",
+                        remoteContentMode: remoteContentMode
+                    )
                 }
             } else {
                 self.contents = WebContents(body: self.body ?? "",
