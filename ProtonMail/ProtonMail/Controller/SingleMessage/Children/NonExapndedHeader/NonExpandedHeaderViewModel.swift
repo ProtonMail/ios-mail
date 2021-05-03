@@ -47,11 +47,11 @@ class NonExpandedHeaderViewModel {
     }
 
     var recipient: NSAttributedString {
-        let recipients = message.recipients(userContacts: userContacts)
+        let allRecipeints = message.recipients(userContacts: userContacts)
             .joined(separator: ", ")
-            .apply(style: .recipientAttibutes)
-        let toText = "\(LocalString._general_to_label) ".apply(style: .toAttributes)
-        return toText + recipients
+        let recipients = allRecipeints.isEmpty ? LocalString._undisclosed_recipients : allRecipeints
+        let toText = "\(LocalString._general_to_label): ".apply(style: .toAttributes)
+        return toText + recipients.apply(style: .recipientAttibutes)
     }
 
     var tags: [TagViewModel] {

@@ -53,7 +53,10 @@ class ExpandedHeaderViewModel {
     }
 
     var toData: ExpandedHeaderRecipientsRowViewModel? {
-        createRecipientRowViewModel(from: message.toList.toContacts(), title: "To")
+        createRecipientRowViewModel(
+            from: message.toList.toContacts(),
+            title: "\(LocalString._general_to_label):"
+        )
     }
 
     var ccData: ExpandedHeaderRecipientsRowViewModel? {
@@ -75,7 +78,7 @@ class ExpandedHeaderViewModel {
     }
 
     var senderContact: ContactVO? {
-        message.sender?.toContact()
+        message.senderContact(userContacts: userContacts)
     }
 
     private(set) var message: Message {
@@ -119,9 +122,10 @@ class ExpandedHeaderViewModel {
     ) -> ExpandedHeaderRecipientsRowViewModel? {
         guard !contacts.isEmpty else { return nil }
         let recipients = contacts.map { recipient -> ExpandedHeaderRecipientRowViewModel in
-            let email = recipient.email.isEmpty ? "" : "<\(recipient.email ?? "")>"
+            let email = recipient.email.isEmpty ? "" : "\(recipient.email ?? "")"
+            let emailToDisplay = email.isEmpty ? "" : "<\(email)>"
             let name = recipient.getName(userContacts: userContacts) ?? ""
-            let title = name.isEmpty ? "\(email)" : "\(name) \(email)"
+            let title = name.isEmpty ? "\(email) \(emailToDisplay)" : "\(name) \(emailToDisplay)"
             let contact = ContactVO(name: name, email: recipient.email)
             return ExpandedHeaderRecipientRowViewModel(title: title.apply(style: .contactAttributes), contact: contact)
         }

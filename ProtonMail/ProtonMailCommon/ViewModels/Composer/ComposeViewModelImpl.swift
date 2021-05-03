@@ -746,8 +746,8 @@ class ComposeViewModelImpl : ComposeViewModel {
             let from = LocalString._general_from_label
             let dt = LocalString._composer_date_field
             let sj = LocalString._composer_subject_field
-            let t = LocalString._general_to_label
-            let c = LocalString._general_cc_label
+            let t = "\(LocalString._general_to_label):"
+            let c = "\(LocalString._general_cc_label):"
             var forwardHeader =
                 "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
             

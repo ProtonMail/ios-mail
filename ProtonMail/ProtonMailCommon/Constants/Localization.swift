@@ -483,9 +483,9 @@ class LocalizedString {
     /// "From:"
     lazy var _general_from_label      = NSLocalizedString("From:", comment: "message From: field text")
     /// "To:"
-    lazy var _general_to_label        = NSLocalizedString("To:", comment: "message To: feild")
+    lazy var _general_to_label        = NSLocalizedString("To", comment: "message To: feild")
     /// "Cc:"
-    lazy var _general_cc_label        = NSLocalizedString("Cc:", comment: "message Cc: feild")
+    lazy var _general_cc_label        = NSLocalizedString("Cc", comment: "message Cc: feild")
     /// "Cc:"
     lazy var _general_bcc_label        = NSLocalizedString("Bcc:", comment: "message Bcc: feild")
     /// "at"
@@ -2120,4 +2120,6 @@ class LocalizedString {
     lazy var _action_sheet_action_title_phishing = NSLocalizedString("Report phishing", comment: "")
     lazy var _action_sheet_action_title_inbox = NSLocalizedString("Move to inbox", comment: "")
     lazy var _action_sheet_action_title_spam_to_inbox = NSLocalizedString("Not a spam (move to inbox)", comment: "")
+
+    lazy var _undisclosed_recipients = NSLocalizedString("Undisclosed Recipients", comment: "") 
 }

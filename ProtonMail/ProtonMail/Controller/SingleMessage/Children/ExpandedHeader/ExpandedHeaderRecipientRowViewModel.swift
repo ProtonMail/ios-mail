@@ -22,5 +22,5 @@
 
 struct ExpandedHeaderRecipientRowViewModel {
     let title: NSAttributedString
-    let contact: ContactVO
+    let contact: ContactVO?
 }

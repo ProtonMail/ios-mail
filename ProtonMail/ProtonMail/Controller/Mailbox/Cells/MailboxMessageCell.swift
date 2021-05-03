@@ -352,13 +352,13 @@ extension Message {
             assert(false, "Sender with no name or address")
             return ""
         }
-        
+
         // will this be deadly slow?
         let email = replacingEmails.first { $0.email == sender.email }
         if let contact = email?.contact {
             return contact.name
         }
-        
+
         return sender.name.isEmpty ? sender.email : sender.name
     }
     

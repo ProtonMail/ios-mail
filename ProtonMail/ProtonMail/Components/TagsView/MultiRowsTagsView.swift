@@ -108,7 +108,7 @@ class MultiRowsTagsView: UIView {
         var rowWidth: CGFloat = 0
         tagViews.forEach { tag in
             let tagWidth = tag.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).width
-            if rowWidth + tagWidth <= containerWidth {
+            if rowWidth + tagWidth <= containerWidth || rows[rows.endIndex - 1].isEmpty {
                 rowWidth += tagWidth + horizontalSpacing
             } else {
                 rowWidth = tagWidth + horizontalSpacing

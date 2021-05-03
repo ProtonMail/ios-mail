@@ -78,6 +78,10 @@ class ExpandedHeaderViewController: UIViewController {
             present(viewModel: ccData)
         }
 
+        if viewModel.toData == nil && viewModel.ccData == nil {
+            present(viewModel: .undisclosedRecipients)
+        }
+
         !viewModel.tags.isEmpty ? presentTags() : ()
 
         if let fullDate = viewModel.date {
@@ -109,8 +113,10 @@ class ExpandedHeaderViewController: UIViewController {
         viewModel.recipients.map { recipient in
             let control = TextControl()
             control.label.attributedText = recipient.title
-            control.tap = { [weak self] in
-                self?.contactTapped(sheetType: .recipient, contact: recipient.contact)
+            if let contact = recipient.contact {
+                control.tap = { [weak self] in
+                    self?.contactTapped(sheetType: .recipient, contact: contact)
+                }
             }
             return control
         }.forEach {
