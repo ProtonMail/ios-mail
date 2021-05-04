@@ -82,11 +82,19 @@ struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
 
 class ComposeViewModel: NSObject {
     @objc dynamic var message: Message?
+    /// Only to notify ComposeContainerViewModel that contacts changed
+    @objc dynamic private(set) var contactsChange: Int = 0
     var composerContext: NSManagedObjectContext?
     var messageAction : ComposeMessageAction = .newDraft
-    var toSelectedContacts: [ContactPickerModelProtocol] = []
-    var ccSelectedContacts: [ContactPickerModelProtocol] = []
-    var bccSelectedContacts: [ContactPickerModelProtocol] = []
+    var toSelectedContacts: [ContactPickerModelProtocol] = [] {
+        didSet { self.contactsChange += 1 }
+    }
+    var ccSelectedContacts: [ContactPickerModelProtocol] = [] {
+        didSet { self.contactsChange += 1 }
+    }
+    var bccSelectedContacts: [ContactPickerModelProtocol] = [] {
+        didSet { self.contactsChange += 1 }
+    }
     
     private var _subject : String! = ""
     var body : String! = ""
@@ -96,17 +104,6 @@ class ComposeViewModel: NSObject {
             return message?.isDetailDownloaded ?? false
         }
     }
-    var needsUpdate : Bool {
-        get{
-            return toChanged || ccChanged || bccChanged || titleChanged || bodyChanged
-        }
-    }
-    
-    var toChanged : Bool = false;
-    var ccChanged : Bool = false;
-    var bccChanged : Bool = false;
-    var titleChanged : Bool = false;
-    var bodyChanged : Bool = false;
     
     func isValidNumberOfRecipients() -> Bool {
         return true

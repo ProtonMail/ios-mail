@@ -138,7 +138,7 @@ class MessageBodyCoordinator {
                 assert(false, "Wrong root view controller in Compose storyboard")
                 return
             }
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
         }
     }

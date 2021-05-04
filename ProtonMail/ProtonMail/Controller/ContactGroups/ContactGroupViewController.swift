@@ -375,7 +375,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                 contactGroupVO.selectAllEmailFromGroup()
                 viewModel.addToContacts(contactGroupVO)
             }
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
         } else if segue.identifier == kToUpgradeAlertSegue {

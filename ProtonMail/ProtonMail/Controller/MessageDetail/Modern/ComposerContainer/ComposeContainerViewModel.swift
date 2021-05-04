@@ -31,11 +31,15 @@ class ComposeContainerViewModel: TableContainerViewModel {
     internal lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
     internal lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
     internal let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
-    
+    private var contactChanged: NSKeyValueObservation!
+    private weak var uiDelegate: ComposeContainerUIProtocol?
 
-    init(editorViewModel: ContainableComposeViewModel) {
+    init(editorViewModel: ContainableComposeViewModel,
+         uiDelegate: ComposeContainerUIProtocol?) {
         self.childViewModel = editorViewModel
+        self.uiDelegate = uiDelegate
         super.init()
+        self.contactChanged = obsereReicpients()
     }
     
     override var numberOfSections: Int {
@@ -65,6 +69,17 @@ class ComposeContainerViewModel: TableContainerViewModel {
         for itemProvider in itemProviders {
             guard let type = itemProvider.hasItem(types: self.filetypes) else { return }
             self.importFile(itemProvider, type: type, errorHandler: errorHandler, handler: successHandler)
+        }
+    }
+    
+    func hasRecipients() -> Bool {
+        let count = self.childViewModel.toSelectedContacts.count + self.childViewModel.ccSelectedContacts.count + self.childViewModel.bccSelectedContacts.count
+        return count > 0
+    }
+    
+    private func obsereReicpients() -> NSKeyValueObservation {
+        return self.childViewModel.observe(\.contactsChange, options: [.new, .old]) { [weak self](_, _) in
+            self?.uiDelegate?.updateSendButton()
         }
     }
 }

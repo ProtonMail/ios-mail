@@ -165,7 +165,7 @@ class MailboxCoordinator : DefaultCoordinator {
             }
             let user = self.viewModel.user
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user, coreDataService: self.services.get(by: CoreDataService.self))
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
         case .composeShow, .composeMailto:
@@ -180,7 +180,7 @@ class MailboxCoordinator : DefaultCoordinator {
 
             let user = self.viewModel.user
             let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataService: self.services.get(by: CoreDataService.self))
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
         case .search, .onboarding:
@@ -283,26 +283,30 @@ class MailboxCoordinator : DefaultCoordinator {
             
             if let messageID = path.value,
                 let nav = self.navigation,
+                let next = nav.viewControllers.first as? ComposeContainerViewController,
                 case let user = self.viewModel.user,
                 case let msgService = user.messageService,
                 let message = msgService.fetchMessages(withIDs: [messageID], in: coreDataService.mainContext).first
             {
                 let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: msgService, user: user, coreDataService: coreDataService)
-                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next), services: services)
                 composer.start()
                 composer.follow(deeplink)
             }
             
         case .composeShow where path.value == nil:
-            if let nav = self.navigation {
+            if let nav = self.navigation,
+               let next = nav.viewControllers.first as? ComposeContainerViewController {
                 let user = self.viewModel.user
                 let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user, coreDataService: self.services.get(by: CoreDataService.self))
-                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next), services: services)
                 composer.start()
                 composer.follow(deeplink)
             }
         case .composeMailto where path.value != nil:
-            if let nav = self.navigation, let value = path.value {
+            if let nav = self.navigation,
+               let next = nav.viewControllers.first as? ComposeContainerViewController,
+               let value = path.value {
                 let user = self.viewModel.user
                 let mailToURL = URL(string: value)!
                 let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user, coreDataService: self.services.get(by: CoreDataService.self))
@@ -331,7 +335,7 @@ class MailboxCoordinator : DefaultCoordinator {
                     }
                 }
                     
-                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next), services: services)
                 composer.start()
                 composer.follow(deeplink)
             }

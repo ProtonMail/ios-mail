@@ -77,10 +77,11 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             
             if let messageID = path.value,
                 let nav = self.navigationController,
+                let next = nav.viewControllers.first as? ComposeContainerViewController,
                 let message = user.messageService.fetchMessages(withIDs: [messageID], in: coreDataService.mainContext).first
             {
                 let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataService: coreDataService)
-                let composer = ComposeContainerViewCoordinator(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                let composer = ComposeContainerViewCoordinator(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next), services: services)
                 composer.start()
                 composer.follow(deeplink)
             }
@@ -250,7 +251,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: ContainableComposeViewModel(msg: messages.first!,
                                                                                                        action: tapped,
                                                                                                        msgService: user.messageService,
-                                                                                                       user: user, coreDataService: self.services.get(by: CoreDataService.self))))
+                                                                                                       user: user, coreDataService: self.services.get(by: CoreDataService.self)), uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
         case .some(.labels):

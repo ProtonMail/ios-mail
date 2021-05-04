@@ -385,10 +385,10 @@ class SearchViewController: ProtonMailViewController {
                                                     msgService: user.messageService,
                                                     user: user,
                                                     coreDataService: CoreDataService.shared)//FIXME
-        if let navigationController = self.navigationController
-        {
+        if let navigationController = self.navigationController,
+           let next = navigationController.viewControllers.first as? ComposeContainerViewController {
             let composer = ComposeContainerViewCoordinator(nav: navigationController,
-                                                           viewModel: ComposeContainerViewModel(editorViewModel: viewModel),
+                                                           viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next),
                                                            services: ServiceFactory.default)
             // this will present composer in a modal which is discouraged
             // TODO: refactor when implementing enc search

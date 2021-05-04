@@ -290,7 +290,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             if let contact = sender as? ContactVO {
                 viewModel.addToContacts(contact)
             }
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
         } else if segue.identifier == kToUpgradeAlertSegue {

@@ -23,7 +23,6 @@
 
 import Foundation
 import PMUIFoundations
-import Masonry
 import UIKit
 
 final class ComposeHeaderViewController: UIViewController, AccessibleView {
@@ -148,6 +147,9 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     var bccContacts: String {
         return bccContactPicker.contactList
     }
+    private var toContactPickerHeight: NSLayoutConstraint!
+    private var ccContactPickerHeight: NSLayoutConstraint!
+    private var bccContactPickerHeight: NSLayoutConstraint!
     
     var expirationTimeInterval: TimeInterval = 0
     
@@ -194,7 +196,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     weak var delegate: ComposeViewDelegate?
     
     // MARK: - Constants
-    fileprivate let kDefaultRecipientHeight : Int = 44
+    fileprivate let kDefaultRecipientHeight : Int = 28
     fileprivate let kErrorMessageHeight: CGFloat = 48.0
     fileprivate let kNumberOfColumnsInTimePicker: Int = 2
     fileprivate let kNumberOfDaysInTimePicker: Int = 30
@@ -316,6 +318,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
     
     func updateAttachmentButton(_ hasAtts: Bool) {
+        // FIXME: use Asset
         if hasAtts {
             self.attachmentButton.setImage(UIImage(named: "compose_attachment-active"), for: UIControl.State())
         } else {
@@ -440,7 +443,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
     
     internal func configureSubject() {
-        let subjectLeftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: self.subject.frame.size.height))
+        let subjectLeftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: self.subject.frame.size.height))
         self.subject.leftView = subjectLeftPaddingView
         self.subject.leftViewMode = UITextField.ViewMode.always
         self.subject.autocapitalizationType = .sentences
@@ -528,35 +531,11 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
     
     internal func showPasswordAndConfirmDoesntMatch(_ error : String) {
-        self.errorView.backgroundColor = UIColor.ProtonMail.Red_FF5959
-        
-        self.errorView.mas_updateConstraints { (update) -> Void in
-            update?.removeExisting = true
-            let _ = update?.left.equalTo()(self.view)
-            let _ = update?.right.equalTo()(self.view)
-            let _ = update?.height.equalTo()(self.kErrorMessageHeight)
-            let _ = update?.top.equalTo()(self.encryptedPasswordTextField.mas_bottom)
-        }
-        
-        self.errorView.setError(error, withShake: true)
-        
-        UIView.animate(withDuration: 0.1, animations: { () -> Void in
-            
-        })
+        // todo to remove, for password only
     }
     
     internal func hidePasswordAndConfirmDoesntMatch() {
-        self.errorView.mas_updateConstraints { (update) -> Void in
-            update?.removeExisting = true
-            let _ = update?.left.equalTo()(self.view)
-            let _ = update?.right.equalTo()(self.view)
-            let _ = update?.height.equalTo()(0)
-            let _ = update?.top.equalTo()(self.encryptedPasswordTextField.mas_bottom)
-        }
-        
-        UIView.animate(withDuration: 0.1, animations: { () -> Void in
-            //self.layoutIfNeeded()
-        })
+        // todo, remove, for password only
     }
     
     func updateExpirationValue(_ intagerV : TimeInterval, text : String) {
@@ -602,78 +581,70 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     
     fileprivate func configureToContactPicker() {
         toContactPicker = ContactPicker()
-        toContactPicker.translatesAutoresizingMaskIntoConstraints = true
+        toContactPicker.translatesAutoresizingMaskIntoConstraints = false
         toContactPicker.cellHeight = self.kDefaultRecipientHeight
         self.view.addSubview(toContactPicker)
         toContactPicker.datasource = self
         toContactPicker.delegate = self
         
-        toContactPicker.mas_makeConstraints { (make) -> Void in
-            let _ = make?.top.equalTo()(self.fromView.mas_bottom)?.with().offset()(5)
-            let _ = make?.left.equalTo()(self.view)
-            let _ = make?.right.equalTo()(self.view)
-            let _ = make?.height.equalTo()(44)
-        }
+        [
+            toContactPicker.topAnchor.constraint(equalTo: self.fromView.bottomAnchor),
+            toContactPicker.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            toContactPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        ].activate()
+        
+        self.toContactPickerHeight = toContactPicker.heightAnchor.constraint(equalToConstant: 44)
+        self.toContactPickerHeight.isActive = true
     }
     
     fileprivate func configureCcContactPicker() {
         ccContactPicker = ContactPicker()
+        ccContactPicker.cellHeight = self.kDefaultRecipientHeight
+        ccContactPicker.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(ccContactPicker)
         
         ccContactPicker.datasource = self
         ccContactPicker.delegate = self
         ccContactPicker.alpha = 0.0
         
-        ccContactPicker.mas_makeConstraints { (make) -> Void in
-            let _ = make?.top.equalTo()(self.toContactPicker.mas_bottom)
-            let _ = make?.left.equalTo()(self.view)
-            let _ = make?.right.equalTo()(self.view)
-            let _ = make?.height.equalTo()(self.toContactPicker)
-        }
+        [
+            ccContactPicker.topAnchor.constraint(equalTo: self.toContactPicker.bottomAnchor),
+            ccContactPicker.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            ccContactPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        ].activate()
+        
+        self.ccContactPickerHeight = ccContactPicker.heightAnchor.constraint(equalToConstant: 44)
+        self.ccContactPickerHeight.isActive = true
     }
     
     fileprivate func configureBccContactPicker() {
         bccContactPicker = ContactPicker()
+        bccContactPicker.translatesAutoresizingMaskIntoConstraints = false
+        bccContactPicker.cellHeight = self.kDefaultRecipientHeight
         self.view.addSubview(bccContactPicker)
         
         bccContactPicker.datasource = self
         bccContactPicker.delegate = self
         bccContactPicker.alpha = 0.0
         
-        bccContactPicker.mas_makeConstraints { (make) -> Void in
-            let _ = make?.top.equalTo()(self.ccContactPicker.mas_bottom)
-            let _ = make?.left.equalTo()(self.view)
-            let _ = make?.right.equalTo()(self.view)
-            let _ = make?.height.equalTo()(self.ccContactPicker)
-        }
+        [
+            bccContactPicker.topAnchor.constraint(equalTo: self.ccContactPicker.bottomAnchor),
+            bccContactPicker.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            bccContactPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        ].activate()
+        
+        self.bccContactPickerHeight = bccContactPicker.heightAnchor.constraint(equalToConstant: 44)
+        self.bccContactPickerHeight.isActive = true
     }
     
     fileprivate func updateContactPickerHeight(_ contactPicker: ContactPicker, newHeight: CGFloat) {
         if (contactPicker == self.toContactPicker) {
-            toContactPicker.mas_updateConstraints({ (make) -> Void in
-                make?.removeExisting = true
-                let _ = make?.top.equalTo()(self.fromView.mas_bottom)
-                let _ = make?.left.equalTo()(self.view)
-                let _ = make?.right.equalTo()(self.view)
-                let _ = make?.height.equalTo()(newHeight)
-            })
+            self.toContactPickerHeight.constant = newHeight
         }
         else if (contactPicker == self.ccContactPicker) {
-            ccContactPicker.mas_updateConstraints({ (make) -> Void in
-                make?.removeExisting = true
-                let _ = make?.top.equalTo()(self.toContactPicker.mas_bottom)
-                let _ = make?.left.equalTo()(self.view)
-                let _ = make?.right.equalTo()(self.view)
-                let _ = make?.height.equalTo()(newHeight)
-            })
+            self.ccContactPickerHeight.constant = newHeight
         } else if (contactPicker == self.bccContactPicker) {
-            bccContactPicker.mas_updateConstraints({ (make) -> Void in
-                make?.removeExisting = true
-                let _ = make?.top.equalTo()(self.ccContactPicker.mas_bottom)
-                let _ = make?.left.equalTo()(self.view)
-                let _ = make?.right.equalTo()(self.view)
-                let _ = make?.height.equalTo()(newHeight)
-            })
+            self.bccContactPickerHeight.constant = newHeight
         }
         
         if (isShowingCcBccView) {
