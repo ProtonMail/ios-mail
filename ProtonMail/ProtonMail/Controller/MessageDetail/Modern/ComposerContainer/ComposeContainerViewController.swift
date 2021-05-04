@@ -23,6 +23,10 @@
 import PMUIFoundations
 import UIKit
 
+protocol ComposeContainerUIProtocol: class {
+    func updateSendButton()
+}
+
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>
 {
     private var childrenHeightObservations: [NSKeyValueObservation]!
@@ -150,14 +154,26 @@ extension ComposeContainerViewController {
         guard let icon = UIImage(named: "menu_sent") else {
             return
         }
-        self.sendButton = icon.toUIBarButtonItem(target: self,
-                               action: #selector(sendAction),
-                               style: .plain,
-                               tintColor: UIColorManager.IconInverted,
-                               squareSize: 21.74,
-                               backgroundColor: UIColorManager.InteractionStrong,
-                               backgroundSquareSize: 40,
-                               isRound: true)
+        
+        if self.viewModel.hasRecipients() {
+            self.sendButton = icon.toUIBarButtonItem(target: self,
+                                   action: #selector(sendAction),
+                                   style: .plain,
+                                   tintColor: UIColorManager.IconInverted,
+                                   squareSize: 21.74,
+                                   backgroundColor: UIColorManager.InteractionStrong,
+                                   backgroundSquareSize: 40,
+                                   isRound: true)
+        } else {
+            self.sendButton = icon.toUIBarButtonItem(target: self,
+                                   action: nil,
+                                   style: .plain,
+                                   tintColor: UIColorManager.IconDisabled,
+                                   squareSize: 21.74,
+                                   backgroundColor: UIColorManager.InteractionWeakDisabled,
+                                   backgroundSquareSize: 40,
+                                   isRound: true)
+        }
         self.navigationItem.rightBarButtonItem = self.sendButton
         self.sendButton.accessibilityLabel = LocalString._general_send_action
     }
@@ -184,6 +200,12 @@ extension ComposeContainerViewController {
     private func stopAutoSync() {
         self.syncTimer?.invalidate()
         self.syncTimer = nil
+    }
+}
+
+extension ComposeContainerViewController: ComposeContainerUIProtocol {
+    func updateSendButton() {
+        self.setupSendButton()
     }
 }
 

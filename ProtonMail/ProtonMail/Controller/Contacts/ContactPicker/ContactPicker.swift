@@ -168,7 +168,7 @@ class ContactPicker: UIView, AccessibleView {
         self.addSubview(self.promptLabel)
         [
             self.promptLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            self.promptLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
+            self.promptLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 14)
         ].activate()
     }
     
@@ -183,10 +183,10 @@ class ContactPicker: UIView, AccessibleView {
         self.contactCollectionView = contactCollectionView
         
         [
-            self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 11),
+            self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 10),
             self.contactCollectionView.leadingAnchor.constraint(equalTo: self.promptLabel.trailingAnchor, constant: 8),
-            self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+            self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -25)
         ].activate()
     }
     
@@ -268,7 +268,13 @@ class ContactPicker: UIView, AccessibleView {
             var minimumSizeWithContent = max(CGFloat(self.cellHeight), self.contactCollectionViewContentSize.height)
             minimumSizeWithContent = max(minimumHeight, minimumSizeWithContent)
             let maximumSize = self.maxVisibleRows * CGFloat(self.cellHeight)
-            return min(minimumSizeWithContent, maximumSize)
+            var result = min(minimumSizeWithContent, maximumSize)
+            if result > 48 {
+                let topPadding: CGFloat = 11
+                let bottomPadding: CGFloat = 10
+                result = result + topPadding + bottomPadding
+            }
+            return result
         }
     }
 

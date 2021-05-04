@@ -854,7 +854,6 @@ extension ComposeViewController : ComposeViewDelegate {
     }
 }
 
-
 // MARK : compose data source
 extension ComposeViewController : ComposeViewDataSource {
 

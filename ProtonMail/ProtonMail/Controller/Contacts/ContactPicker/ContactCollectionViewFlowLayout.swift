@@ -65,26 +65,31 @@ class ContactCollectionViewFlowLayout: UICollectionViewFlowLayout {
             return currentItemAttributes
         }
         
-        guard let cv_dataSource = collectionView.dataSource else {
+        guard let cvDataSource = collectionView.dataSource else {
             return currentItemAttributes
         }
         
         let sectionInset = flowLayout.sectionInset
         
-        let total = cv_dataSource.collectionView(collectionView, numberOfItemsInSection: 0)
-        let sections = cv_dataSource.numberOfSections!(in: collectionView)
+        let total = cvDataSource.collectionView(collectionView, numberOfItemsInSection: 0)
+        let sections = cvDataSource.numberOfSections!(in: collectionView)
         
         if indexPath.section >= sections {
             return currentItemAttributes
         }
         
-        if indexPath.item == 0 {
+        let rows = cvDataSource.collectionView(collectionView, numberOfItemsInSection: indexPath.section)
+        if indexPath.item == 0  {
             // first item of section
             var frame = currentItemAttributes.frame
             // first item of the section should always be left aligned
             frame.origin.x = sectionInset.left
+            if rows == 1 {
+                // Entry cell
+                let newWidth = collectionView.frame.width - sectionInset.left - sectionInset.right
+                frame.size.width = max(max(50, newWidth.rounded(.up)), frame.width)
+            }
             currentItemAttributes.frame = frame
-            
             return currentItemAttributes
         }
         
@@ -126,7 +131,7 @@ class ContactCollectionViewFlowLayout: UICollectionViewFlowLayout {
         }
 
         var frame = currentItemAttributes.frame
-        frame.origin.x = previousFrameRightPoint
+        frame.origin.x = previousFrameRightPoint + self.minimumInteritemSpacing
         if indexPath.row == total - 1 {
             let newWidth = collectionView.frame.width - previousFrameRightPoint - sectionInset.right
             frame.size.width = max(max(50, newWidth.rounded(.up)), frame.width)

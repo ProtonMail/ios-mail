@@ -92,9 +92,9 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         self._showPrompt = true
         
         if let layout = self.collectionViewLayout as? ContactCollectionViewFlowLayout {
-            layout.minimumInteritemSpacing = 0 //5
-            layout.minimumLineSpacing = 0 // 1
-            layout.sectionInset = UIEdgeInsets.init(top: 0, left: 6, bottom: 0, right: 6)
+            layout.minimumInteritemSpacing = 5
+            layout.minimumLineSpacing = 8
+            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 6)
         }
         
         self.prototypeCell = ContactCollectionViewContactCell()
@@ -423,7 +423,7 @@ extension ContactCollectionView : UICollectionViewDelegateFlowLayout {
             widthForItem = max(30, widthForItem)
         } else if self.isCell(entry: indexPath) {
             let prototype = ContactCollectionViewEntryCell()
-            widthForItem = max(self.maxContentWidth, prototype.widthForText(text: self.searchText) + 44)
+            widthForItem = max(100, prototype.widthForText(text: self.searchText))
         } else {
             if let cell = self.cellForItem(at: indexPath) as? ContactCollectionViewContactCell {
                 widthForItem = cell.widthForCell()
