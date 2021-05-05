@@ -281,14 +281,22 @@ class LocalizedString {
     lazy var _composer_eo_info       = NSLocalizedString("Get more information", comment: "Action")
     /// "Message Password"
     lazy var _composer_eo_msg_pwd_placeholder     = NSLocalizedString("Message Password", comment: "Placeholder")
+    lazy var _composer_eo_msg_pwd_hint = NSLocalizedString("8 to 21 characters long", comment: "Placeholder")
+    lazy var _composer_eo_msg_pwd_length_error = NSLocalizedString("The password must be between 8 and 21 characters long", comment: "Error message")
+    lazy var _composer_eo_repeat_pwd = NSLocalizedString("Repeat password", comment: "textview title")
+    lazy var _composer_eo_repeat_pwd_placeholder = NSLocalizedString("Passwords must match", comment: "Placeholder")
+    lazy var _composer_eo_repeat_pwd_match_error = NSLocalizedString("The 2 passwords are not matching", comment: "Error message")
     /// "Password is required."
     lazy var _composer_eo_empty_pwd_desc          = NSLocalizedString("Password cannot be empty.", comment: "Description")
+    lazy var _composer_eo_remove_pwd = NSLocalizedString("Remove password", comment: "action title")
     /// "Please set a password."
     lazy var _composer_eo_pls_set_password = NSLocalizedString("Please set a password.", comment: "Description")
     /// "Confirm Password"
     lazy var _composer_eo_confirm_pwd_placeholder = NSLocalizedString("Confirm Password", comment: "Placeholder")
     /// "Message password does not match."
     lazy var _composer_eo_dismatch_pwd_desc       = NSLocalizedString("Message password does not match.", comment: "Description")
+    lazy var _composer_password_hint_title = NSLocalizedString("Password Hint", comment: "title")
+    lazy var _composer_password_apply = NSLocalizedString("Apply Password", comment: "button title")
     /// "Compose"
     lazy var _composer_compose_action = NSLocalizedString("Compose", comment: "Action")
     /// "Send message without subject?"
@@ -2140,4 +2148,5 @@ class LocalizedString {
     lazy var _auto_phising_banner_button_title = NSLocalizedString("Mark as legitimate", comment: "")
 
     lazy var _dmarc_failed_banner_message = NSLocalizedString("This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!", comment: "")
+    lazy var _discard_warning = NSLocalizedString("Do you want to discard the changes?", comment: "Warning message")
 }

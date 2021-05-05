@@ -103,13 +103,13 @@ included:
   - ${PWD}/ProtonMailCommon/ViewModels/Labels/LabelParentSelectVM.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Menu/MenuLabel.swift
   - ${PWD}/ProtonMail/Components/UILabel+InitialsLabel.swift
-  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NonExapndedHeader/NonExpandedHeaderView.swift 
-  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NonExapndedHeader/NonExpandedHeaderViewController.swift 
-  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NonExapndedHeader/NonExpandedHeaderViewModel.swift 
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NonExapndedHeader/NonExpandedHeaderView.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NonExapndedHeader/NonExpandedHeaderViewController.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NonExapndedHeader/NonExpandedHeaderViewModel.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/MessageObserver.swift
-  - ${PWD}/ProtonMailCommon/Extensions/Message+Helpers.swift 
-  - ${PWD}/ProtonMailCommon/Extensions/MessageLocation+OriginImage.swift 
-  - ${PWD}/ProtonMailCommon/Operators/Operators+NSAttributedStirng.swift 
+  - ${PWD}/ProtonMailCommon/Extensions/Message+Helpers.swift
+  - ${PWD}/ProtonMailCommon/Extensions/MessageLocation+OriginImage.swift
+  - ${PWD}/ProtonMailCommon/Operators/Operators+NSAttributedStirng.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyView.swift
   - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/NewMessageBodyViewModel.swift
@@ -138,6 +138,8 @@ included:
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Banners/BannerViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Banners/RemoteContentBannerView.swift
   - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/BannerViewModel.swift
+  - ${PWD}/ProtonMail/Controller/Compose/ComposeToolbar/ComposeToolbar.swift
+  - ${PWD}/ProtonMail/Controller/Compose/ComposeToolbar/ComposePasswordVC.swift
 
 excluded:
   - ${PWD}/Pods

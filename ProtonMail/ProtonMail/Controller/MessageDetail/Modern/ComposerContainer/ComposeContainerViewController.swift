@@ -25,6 +25,8 @@ import UIKit
 
 protocol ComposeContainerUIProtocol: class {
     func updateSendButton()
+    func setLockStatus(isLock: Bool)
+    func setExpirationStatus(isSetting: Bool)
 }
 
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>
@@ -36,6 +38,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     private var dropLandingZone: UIView? // drag and drop session items dropped on this view will be added as attachments
     private let timerInterval : TimeInterval = 30
     private var syncTimer: Timer?
+    private var toolbarBottom: NSLayoutConstraint!
+    private var toolbar: ComposeToolbar!
     
     deinit {
         self.childrenHeightObservations = []
@@ -55,6 +59,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.setupButtomPadding()
         self.configureNavigationBar()
         self.setupChildViewModel()
+        self.setupToolbar()
+        self.emptyBackButtonTitleForNextView()
 
         // accessibility
         generateAccessibilityIdentifiers()
@@ -184,6 +190,20 @@ extension ComposeContainerViewController {
         self.navigationItem.leftBarButtonItem = self.cancelButton
     }
     
+    private func setupToolbar() {
+        let bar = ComposeToolbar(delegate: self)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(bar)
+        [
+            bar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            bar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            bar.heightAnchor.constraint(equalToConstant: 48)
+        ].activate()
+        self.toolbarBottom = bar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -1*UIDevice.safeGuide.bottom)
+        self.toolbarBottom.isActive = true
+        self.toolbar = bar
+    }
+    
     private func error(_ description: String) {
         let alert = description.alertController()
         alert.addOKAction()
@@ -207,16 +227,30 @@ extension ComposeContainerViewController: ComposeContainerUIProtocol {
     func updateSendButton() {
         self.setupSendButton()
     }
+
+    func setLockStatus(isLock: Bool) {
+        self.toolbar.setLockStatus(isLock: isLock)
+    }
+
+    func setExpirationStatus(isSetting: Bool) {
+        self.toolbar.setExpirationStatus(isSetting: isSetting)
+    }
 }
 
 extension ComposeContainerViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         self.bottomPadding.constant = 0.0
+        self.toolbarBottom.constant = -1 * UIDevice.safeGuide.bottom
     }
     
     func keyboardWillShowNotification(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             self.bottomPadding.constant = keyboardFrame.cgRectValue.height
+            self.toolbarBottom.constant = -1 * keyboardFrame.cgRectValue.height
+            UIView.animate(withDuration: 0.25) {
+                self.view.layoutIfNeeded()
+            }
+            
         }
     }
 }
@@ -283,6 +317,21 @@ extension ComposeContainerViewController: UITableViewDropDelegate {
                 LocalString._drop_finished.alertToastBottom()
             }
         }
+    }
+}
+
+extension ComposeContainerViewController: ComposeToolbarDelegate {
+    func showEncryptOutsideView() {
+        self.view.endEditing(true)
+        self.coordinator.navigateToPassword()
+    }
+    
+    func showExpireView() {
+        self.view.endEditing(true)
+    }
+    
+    func showAttachmentView() {
+        self.view.endEditing(true)
     }
 }
 
