@@ -23,6 +23,7 @@
 
 import Foundation
 import Photos
+import PMUIFoundations
 import MBProgressHUD
 
 protocol ContactEditViewControllerDelegate {
@@ -65,7 +66,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     //
     fileprivate var doneItem: UIBarButtonItem!
-    @IBOutlet weak var cancelItem: UIBarButtonItem!
+    private var cancelItem: UIBarButtonItem!
     @IBOutlet weak var displayNameField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomOffset: NSLayoutConstraint!
@@ -118,19 +119,25 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.doneItem = UIBarButtonItem(title: LocalString._general_done_button,
+        self.doneItem = UIBarButtonItem(title: LocalString._general_save_action,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(ContactEditViewController.doneAction))
+        self.cancelItem = Asset.actionSheetClose.image
+            .toUIBarButtonItem(target: self,
+                               action: #selector(self.cancelAction(_:)),
+                               tintColor: UIColorManager.IconNorm)
+
+        var attributes = FontManager.DefaultStrong
+        attributes[.foregroundColor] = UIColorManager.InteractionNorm
+        self.doneItem.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = doneItem
+        self.navigationItem.leftBarButtonItem = cancelItem
         self.navigationItem.assignNavItemIndentifiers()
         
-        if viewModel.isNew() {
-            self.title = LocalString._contacts_add_contact
-        } else {
-            self.title = LocalString._update_contact
+        if !viewModel.isNew() {
+            self.title = LocalString._edit_contact
         }
-        doneItem.title = LocalString._general_save_action
-        
+
         UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
         self.displayNameField.text = viewModel.getProfile().newDisplayName
         self.displayNameField.delegate = self
@@ -213,22 +220,15 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
-        
-        //show confirmation first if anything changed
+
         if self.viewModel.needsUpdate() {
-            let alertController = UIAlertController(title: LocalString._do_you_want_to_save_the_unsaved_changes,
-                                                    message: nil, preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction(title: LocalString._general_save_action, style: .default, handler: { (action) -> Void in
-                //save and dismiss
-                self.doneAction(self.doneItem)
-            }))
+            let alertController = UIAlertController(title: LocalString._warning,
+                                                    message: LocalString._changes_will_discarded,
+                                                    preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            alertController.addAction(UIAlertAction(title: LocalString._discard_changes, style: .destructive, handler: { (action) -> Void in
-                //discard and dismiss
+            alertController.addAction(UIAlertAction(title: LocalString._general_discard, style: .destructive, handler: { _ in
                 self.dismiss(animated: true, completion: nil)
             }))
-            alertController.popoverPresentationController?.barButtonItem = sender
-            alertController.popoverPresentationController?.sourceRect = self.view.frame
             present(alertController, animated: true, completion: nil)
         } else {
             self.dismiss(animated: true, completion: nil)

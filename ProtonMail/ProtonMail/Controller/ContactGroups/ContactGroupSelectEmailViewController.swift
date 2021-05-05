@@ -22,6 +22,7 @@
 
 
 import UIKit
+import PMUIFoundations
 
 class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactGroupSelectEmailViewModel
@@ -35,6 +36,8 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
+    private var doneButton: UIBarButtonItem!
+    private var cancelButton: UIBarButtonItem!
     
     private var queryString = ""
     private var searchController: UISearchController!
@@ -50,6 +53,19 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactGroupEditCellIdentifier)
         prepareSearchBar()
+
+        self.doneButton = UIBarButtonItem(title: LocalString._general_edit_action,
+                                        style: UIBarButtonItem.Style.plain,
+                                        target: self, action: #selector(self.didTapDoneButton))
+        var attributes = FontManager.DefaultStrong
+        attributes[.foregroundColor] = UIColorManager.InteractionNorm
+        self.doneButton.setTitleTextAttributes(attributes, for: .normal)
+        self.navigationItem.rightBarButtonItem = doneButton
+
+        self.cancelButton = Asset.backArrow.image.toUIBarButtonItem(target: self,
+                                                                    action: #selector(self.didTapCancelButton(_:)),
+                                                                    tintColor: UIColorManager.IconNorm)
+        self.navigationItem.leftBarButtonItem = cancelButton
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,7 +87,6 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        viewModel.save()
         NotificationCenter.default.removeKeyboardObserver(self)
     }
     
@@ -80,13 +95,6 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     private func prepareSearchBar() {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = LocalString._general_search_placeholder
-        
-        if #available(iOS 13.0, *) {
-            // Terminating app due to uncaught exception 'NSGenericException', reason: 'Access to UISearchBar's set_cancelButtonText: ivar is prohibited. This is an application bug'
-        } else {
-            searchController.searchBar.setValue(LocalString._general_done_button,
-                                                forKey:"_cancelButtonText")
-        }
         
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
@@ -98,13 +106,34 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         self.searchController.searchBar.isTranslucent = false
         self.searchController.searchBar.tintColor = .white
         self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-        self.searchController.searchBar.backgroundColor = .clear
+        self.searchController.searchBar.backgroundColor = UIColorManager.BackgroundNorm
 
         self.searchViewConstraint.constant = 0.0
         self.searchView.isHidden = true
         self.navigationItem.largeTitleDisplayMode = .never
         self.navigationItem.hidesSearchBarWhenScrolling = false
         self.navigationItem.searchController = self.searchController
+    }
+
+    @objc
+    private func didTapCancelButton(_ sender: UIBarButtonItem) {
+        if viewModel.havingUnsavedChanges {
+            let alertController = UIAlertController(title: LocalString._warning,
+                                                    message: LocalString._changes_will_discarded, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._general_discard, style: .destructive, handler: { _ in
+                self.navigationController?.popViewController(animated: true)
+            }))
+            present(alertController, animated: true, completion: nil)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+
+    @objc
+    private func didTapDoneButton() {
+        viewModel.save()
+        self.navigationController?.popViewController(animated: true)
     }
 }
 

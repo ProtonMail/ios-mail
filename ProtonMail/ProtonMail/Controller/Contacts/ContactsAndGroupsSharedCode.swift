@@ -21,14 +21,13 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import PMUIFoundations
 
 class ContactsAndGroupsSharedCode: ProtonMailViewController {
     
     var navigationItemRightNotEditing: [UIBarButtonItem]? = nil
     var navigationItemLeftNotEditing: [UIBarButtonItem]? = nil
     private var addBarButtonItem: UIBarButtonItem!
-    private var importBarButtonItem: UIBarButtonItem!
     private var user: UserManager?
     
     let kAddContactSugue = "toAddContact"
@@ -48,15 +47,16 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     
     func prepareNavigationItemRightDefault(_ user: UserManager) {
         self.user = user
-        self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
-                                                         target: self,
-                                                         action: #selector(self.addButtonTapped))
-        self.importBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "mail_attachment-closed"),
-                                                        style: .plain,
-                                                        target: self,
-                                                        action: #selector(self.importButtonTapped))
+        self.addBarButtonItem = Asset.menuPlus.image.toUIBarButtonItem(
+            target: self,
+            action: #selector(addButtonTapped),
+            tintColor: UIColorManager.Shade0,
+            backgroundColor: UIColorManager.InteractionStrong,
+            backgroundSquareSize: 40,
+            isRound: true
+        )
         
-        let rightButtons: [UIBarButtonItem] = [self.importBarButtonItem, self.addBarButtonItem]
+        let rightButtons: [UIBarButtonItem] = [self.addBarButtonItem]
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
         
         navigationItemLeftNotEditing = navigationItem.leftBarButtonItems

@@ -25,6 +25,7 @@ import UIKit
 import Contacts
 import CoreData
 import MBProgressHUD
+import PMUIFoundations
 
 class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     typealias viewModelType = ContactsViewModel
@@ -87,6 +88,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         
         prepareNavigationItemRightDefault(self.viewModel.user)
         generateAccessibilityIdentifiers()
+
+        emptyBackButtonTitleForNextView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -136,7 +139,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.searchController.searchBar.keyboardAppearance = .light
         self.searchController.searchBar.autocapitalizationType = .none
         self.searchController.searchBar.isTranslucent = false
-        self.searchController.searchBar.tintColor = .white
+        self.searchController.searchBar.tintColor = UIColorManager.TextNorm
         self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         self.searchController.searchBar.backgroundColor = .clear
 
@@ -333,32 +336,6 @@ extension ContactsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        //TODO:: add this later the full size index
-        //        - (void)viewDidLoad
-        //            {
-        //                [super viewDidLoad];
-        //                self.indexArray = @[@"{search}", @"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J",@"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
-        //            }
-        //
-        //            - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-        //        {
-        //            NSString *letter = [self.indexArray objectAtIndex:index];
-        //            NSUInteger sectionIndex = [[self.fetchedResultsController sectionIndexTitles] indexOfObject:letter];
-        //            while (sectionIndex > [self.indexArray count]) {
-        //                if (index <= 0) {
-        //                    sectionIndex = 0;
-        //                    break;
-        //                }
-        //                sectionIndex = [self tableView:tableView sectionForSectionIndexTitle:title atIndex:index - 1];
-        //            }
-        //
-        //            return sectionIndex;
-        //            }
-        //
-        //            - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-        //        {
-        //            return self.indexArray;
-        //        }
         return self.viewModel.sectionForSectionIndexTitle(title: title, atIndex: index)
     }
     

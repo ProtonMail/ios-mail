@@ -24,6 +24,7 @@
 import Foundation
 
 protocol ContactGroupSelectColorViewModel {
+    var havingUnsavedChanges: Bool { get }
     func isSelectedColor(at indexPath: IndexPath) -> Bool
     func getTotalColors() -> Int
     func getColor(at indexPath: IndexPath) -> String
