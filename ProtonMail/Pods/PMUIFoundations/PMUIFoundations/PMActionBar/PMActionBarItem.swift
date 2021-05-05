@@ -23,9 +23,9 @@
 import UIKit
 
 public enum PMActionBarItemType {
-    ///
     case label
     case button
+    case separator
 }
 
 public struct PMActionBarItem {
@@ -162,5 +162,19 @@ public struct PMActionBarItem {
         self.handler = handler
         self.type = .button
         self.isSelected = isSelected
+    }
+
+    /// Initializer of separator
+    /// - Parameters:
+    ///   - width: width of separator
+    ///   - verticalPadding: top padding and bottom padding
+    ///   - color: color of spearator
+    public init(width: CGFloat = 1,
+                verticalPadding: CGFloat = 6,
+                color: UIColor = UIColorManager.BackgroundSecondary) {
+        self.itemColor = color
+        self.backgroundColor = color
+        self.type = .separator
+        self.userInfo = ["width": width, "verticalPadding": verticalPadding]
     }
 }

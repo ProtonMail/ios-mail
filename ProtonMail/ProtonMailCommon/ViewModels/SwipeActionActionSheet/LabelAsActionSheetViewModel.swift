@@ -1,5 +1,5 @@
 //
-//  SingleMessageNavigationAction.swift
+//  LabelAsActionSheetViewModel.swift
 //  ProtonMail
 //
 //
@@ -20,17 +20,23 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-enum SingleMessageNavigationAction: Equatable {
-    case contacts(contact: ContactVO)
-    case compose(contact: ContactVO)
-    case viewData(url: URL?)
-    case reply
-    case replyAll
-    case forward
-    case attachmentList
-    case url(url: URL)
-    case inAppSafari(url: URL)
-    case mailToUrl(url: URL)
-    case addNewFoler
-    case addNewLabel
+import PMUIFoundations
+
+struct LabelAsActionSheetViewModel {
+    let menuLabels: [MenuLabel]
+    var initialLabelSelectionStatus: [MenuLabel: Bool] = [:]
+
+    init(menuLabels: [MenuLabel], messages: [Message]) {
+        self.menuLabels = menuLabels
+        menuLabels.forEach({ initialLabelSelectionStatus[$0] = false })
+        initialLabelSelectionStatus.forEach { (label, _) in
+            for msg in messages where msg.contains(label: label.location.labelID) {
+                initialLabelSelectionStatus[label] = true
+            }
+        }
+    }
+
+    func getColor(of label: MenuLabel) -> UIColor {
+        return UIColor(hexColorCode: label.iconColor)
+    }
 }

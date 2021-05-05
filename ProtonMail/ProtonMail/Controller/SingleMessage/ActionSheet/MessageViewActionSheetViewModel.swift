@@ -32,7 +32,7 @@ struct MessageViewActionSheetViewModel {
             .replyAll,
             .forward,
             .markUnread,
-            //.labelAs
+            .labelAs
         ])
 
         if labelID != Message.Location.trash.rawValue {
@@ -64,7 +64,7 @@ struct MessageViewActionSheetViewModel {
         }
 
         items.append(contentsOf: [
-            //.moveTo,
+            .moveTo,
             //.print,
             .viewHeaders,
             .viewHTML,

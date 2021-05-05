@@ -78,7 +78,7 @@ class MailboxCoordinator : DefaultCoordinator {
         case composeMailto     = "toComposeMailto"
         case search            = "toSearchViewController"
         case details           = "SingleMessageViewController"
-//        case detailsFromNotify = "SingleMessageViewController"
+        //        case detailsFromNotify = "SingleMessageViewController"
         case onboarding        = "to_onboarding_segue"
         case feedback          = "to_feedback_segue"
         case feedbackView      = "to_feedback_view_segue"
@@ -86,6 +86,8 @@ class MailboxCoordinator : DefaultCoordinator {
         case folder            = "toMoveToFolderSegue"
         case labels            = "toApplyLabelsSegue"
         case troubleShoot      = "toTroubleShootSegue"
+        case newFolder = "toNewFolder"
+        case newLabel = "toNewLabel"
         
         init?(rawValue: String) {
             switch rawValue {
@@ -94,7 +96,7 @@ class MailboxCoordinator : DefaultCoordinator {
             case "toComposeMailto": self = .composeMailto
             case "toSearchViewController", String(describing: SearchViewController.self): self = .search
             case "toMessageDetailViewController", String(describing: SingleMessageViewController.self): self = .details
-//            case "toMessageDetailViewControllerFromNotification": self = .detailsFromNotify
+            //            case "toMessageDetailViewControllerFromNotification": self = .detailsFromNotify
             case "to_onboarding_segue": self = .onboarding
             case "to_feedback_segue": self = .feedback
             case "to_feedback_view_segue": self = .feedbackView
@@ -229,6 +231,8 @@ class MailboxCoordinator : DefaultCoordinator {
             
             let tsVC = NetworkTroubleShootCoordinator.init(segueNav: nav, vm: NetworkTroubleShootViewModelImpl(), services: services)
             tsVC.start()
+        case .newFolder, .newLabel:
+            break
         }
         return true
     }   
@@ -237,12 +241,29 @@ class MailboxCoordinator : DefaultCoordinator {
         switch dest {
         case .details:
             presentSingleMessageViewController()
+        case .newFolder:
+            presentCreateFolder(type: .folder)
+        case .newLabel:
+            presentCreateFolder(type: .label)
         default:
             guard let vc = self.viewController else {return}
             if let presented = vc.presentedViewController {
                 presented.dismiss(animated: false, completion: nil)
             }
             self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        }
+    }
+
+    private func presentCreateFolder(type: PMLabelType) {
+        let user = viewModel.user
+        let vm = NEWLabelEditViewModel(user: user, label: nil, type: type, labels: [])
+        let vc = NEWLabelEditViewController.instance()
+        let coordinator = LabelEditCoordinator(services: self.services,
+                                               viewController: vc,
+                                               viewModel: vm)
+        coordinator.start()
+        if let navigation = vc.navigationController {
+            viewController?.navigationController?.present(navigation, animated: true, completion: nil)
         }
     }
 

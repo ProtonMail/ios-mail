@@ -137,4 +137,9 @@ extension UIColorManager {
 
 	// MARK: Blenders
 	public static let BlenderNorm = UIColor(named: "BlenderNorm", in: PMUIFoundations.bundle, compatibleWith: nil)!
+
+    // MARK: Floaty
+    public static let FloatyBackground = Tuna
+    public static let FloatyPressed = Woodsmoke
+    public static let FloatyText = White
 }

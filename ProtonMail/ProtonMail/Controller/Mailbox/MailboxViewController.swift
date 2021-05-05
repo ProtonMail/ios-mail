@@ -140,6 +140,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     private let messageCellPresenter = NewMailboxMessageCellPresenter()
     private let mailListActionSheetPresenter = MailListActionSheetPresenter()
+    private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
+    private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
 
     func inactiveViewModel() {
         guard self.viewModel != nil else {
@@ -1393,8 +1395,6 @@ extension MailboxViewController {
             if key == actions.startIndex {
                 let barItem = PMActionBarItem(icon: action.iconImage,
                                               text: action.name,
-                                              backgroundColor: UIColorManager.Shade50,
-                                              selectedBgColor: UIColorManager.Shade20,
                                               handler: actionHandler)
                 actionItems.append(barItem)
             } else {
@@ -1404,8 +1404,15 @@ extension MailboxViewController {
                 actionItems.append(barItem)
             }
         }
-        
-        self.mailActionBar = PMActionBar(items: actionItems, floatingHeight: 42.0, width: .fit, height: 48.0)
+        let separator = PMActionBarItem(width: 1,
+                                        verticalPadding: 6,
+                                        color: UIColorManager.FloatyText)
+        actionItems.insert(separator, at: 1)
+        self.mailActionBar = PMActionBar(items: actionItems,
+                                         backgroundColor: UIColorManager.FloatyBackground,
+                                         floatingHeight: 42.0,
+                                         width: .fit,
+                                         height: 48.0)
         self.mailActionBar?.show(at: self)
     }
     
@@ -1442,28 +1449,6 @@ extension MailboxViewController {
         [yes, cancel].forEach(alert.addAction)
         present(alert, animated: true, completion: nil)
     }
-    
-    func labelButtonTapped() {
-        self.removePresentedViewController()
-        guard !self.viewModel.selectedIDs.isEmpty else {
-            showNoEmailSelected(title: LocalString._apply_labels)
-            return
-        }
-        //TODO: - v4 needs refractor
-        let temp = NSMutableSet(set: self.viewModel.selectedIDs)
-        self.coordinator?.go(to: .labels, sender: self.viewModel.selectedMessages(selected: temp))
-    }
-    
-    func folderButtonTapped() {
-        self.removePresentedViewController()
-        guard !self.viewModel.selectedIDs.isEmpty else {
-            showNoEmailSelected(title: LocalString._labels_move_to_folder)
-            return
-        }
-        //TODO: - v4 needs refractor
-        let temp = NSMutableSet(set: self.viewModel.selectedIDs)
-        self.coordinator?.go(to: .folder, sender: self.viewModel.selectedMessages(selected: temp))
-    }
 
     func moreButtonTapped() {
         mailListActionSheetPresenter.present(
@@ -1474,6 +1459,97 @@ extension MailboxViewController {
                 self?.handleActionSheetAction($0)
             }
         )
+    }
+}
+
+extension MailboxViewController: LabelAsActionSheetPresentProtocol {
+    var labelAsActionHandler: LabelAsActionSheetProtocol {
+        return viewModel
+    }
+
+    func labelButtonTapped() {
+        guard !viewModel.selectedIDs.isEmpty else {
+            showNoEmailSelected(title: LocalString._apply_labels)
+            return
+        }
+
+        let labelAsViewModel = LabelAsActionSheetViewModel(menuLabels: labelAsActionHandler.getLabelMenuItems(),
+                                                           messages: viewModel.selectedMessages(selected: NSMutableSet(set: viewModel.selectedIDs)))
+
+        labelAsActionSheetPresenter
+            .present(on: self.navigationController ?? self,
+                     viewModel: labelAsViewModel,
+                     addNewLabel: { [weak self] in
+                        self?.coordinator?.go(to: .newLabel)
+                     },
+                     selected: { [weak self] menuLabel, isOn in
+                        self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
+                     },
+                     cancel: { [weak self] in
+                        //Check if the selected label is the same as the original values
+                        let originalSelectedLabelIds = labelAsViewModel.initialLabelSelectionStatus.filter{ $0.value }.map({ $0.key.location.labelID })
+                        let selectedLabelIds = self?.labelAsActionHandler.selectedLabelAsLabels.map({ $0.labelID }) ?? []
+
+                        if Set(originalSelectedLabelIds) != Set(selectedLabelIds) {
+                            self?.showDiscardAlert(handleDiscard: {
+                                self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
+                                self?.dismissActionSheet()
+                            })
+                        } else {
+                            self?.dismissActionSheet()
+                        }
+                     },
+                     done: { [weak self] isArchive in
+                        self?.labelAsActionHandler
+                            .handleLabelAsAction(shouldArchive: isArchive,
+                                                 allOptions: self?.labelAsActionHandler.getLabelMenuItems() ?? [])
+                        self?.dismissActionSheet()
+                        self?.cancelButtonTapped()
+                     })
+    }
+}
+
+extension MailboxViewController: MoveToActionSheetPresentProtocol {
+    var moveToActionHandler: MoveToActionSheetProtocol {
+        return viewModel
+    }
+
+    func folderButtonTapped() {
+        guard !self.viewModel.selectedIDs.isEmpty else {
+            showNoEmailSelected(title: LocalString._apply_labels)
+            return
+        }
+
+        let isEnableColor = viewModel.user.isEnableFolderColor
+        let isInherit = viewModel.user.isInheritParentFolderColor
+        let moveToViewModel =
+            MoveToActionSheetViewModel(menuLabels: moveToActionHandler.getFolderMenuItems(),
+                                       isEnableColor: isEnableColor,
+                                       isInherit: isInherit)
+        moveToActionSheetPresenter
+            .present(on: self.navigationController ?? self,
+                     viewModel: moveToViewModel,
+                     addNewFolder: { [weak self] in
+                        self?.coordinator?.go(to: .newFolder)
+                     },
+                     selected: { [weak self] menuLabel, isOn in
+                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+                     },
+                     cancel: { [weak self] in
+                        if self?.moveToActionHandler.selectedMoveToFolder != nil {
+                            self?.showDiscardAlert(handleDiscard: {
+                                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
+                                self?.dismissActionSheet()
+                            })
+                        } else {
+                            self?.dismissActionSheet()
+                        }
+                     },
+                     done: { [weak self] in
+                        self?.moveToActionHandler.handleMoveToAction()
+                        self?.dismissActionSheet()
+                        self?.cancelButtonTapped()
+                     })
     }
 
     private func handleActionSheetAction(_ action: MailListSheetAction) {
@@ -1493,7 +1569,6 @@ extension MailboxViewController {
             }
         }
     }
-
 }
 
 // MARK: - LablesViewControllerDelegate

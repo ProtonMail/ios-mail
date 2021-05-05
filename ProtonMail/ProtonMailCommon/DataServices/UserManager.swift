@@ -498,6 +498,14 @@ extension UserManager {
             userCachedStatus.setMobileSignature(uid: userInfo.userId, signature: newValue)
         }
     }
+
+    var isEnableFolderColor: Bool {
+        return userinfo.enableFolderColor == 1
+    }
+
+    var isInheritParentFolderColor: Bool {
+        return userinfo.inheritParentFolderColor == 1
+    }
 }
 
 extension UserManager: ViewModeDataSource {

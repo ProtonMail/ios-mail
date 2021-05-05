@@ -2121,6 +2121,15 @@ class LocalizedString {
     lazy var _action_sheet_action_title_inbox = NSLocalizedString("Move to inbox", comment: "")
     lazy var _action_sheet_action_title_spam_to_inbox = NSLocalizedString("Not a spam (move to inbox)", comment: "")
 
+    lazy var _move_to_done_button_title = NSLocalizedString("Done", comment: "")
+    lazy var _move_to_title = NSLocalizedString("Move to", comment: "")
+    lazy var _move_to_new_folder = NSLocalizedString("New Folder", comment: "")
+    lazy var _discard_changes_title = NSLocalizedString("Do you want to discard your changes?", comment: "")
+
+    lazy var _label_as_title = NSLocalizedString("Label as", comment: "")
+    lazy var _label_as_send_to_archive = NSLocalizedString("Send to archive?", comment: "")
+    lazy var _label_as_new_label = NSLocalizedString("New Label", comment: "")
+
     lazy var _undisclosed_recipients = NSLocalizedString("Undisclosed Recipients", comment: "") 
 
     lazy var _unsubscribe = NSLocalizedString("Unsubscribe", comment: "")
