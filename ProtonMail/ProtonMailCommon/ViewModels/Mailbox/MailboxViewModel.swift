@@ -68,9 +68,11 @@ class MailboxViewModel: StorageLimit {
     
     private(set) var selectedIDs: Set<String> = Set()
     private let queueManager: QueueManager
-    
-    ///
-    internal weak var users: UsersManager?
+
+    var selectedMoveToFolder: MenuLabel?
+    var selectedLabelAsLabels: Set<LabelLocation> = Set()
+
+    weak var users: UsersManager?
     
     /// mailbox viewModel
     ///
@@ -145,7 +147,7 @@ class MailboxViewModel: StorageLimit {
         return .init(title: .actionSheetTitle(selectedCount: selectedIDs.count), items: actions)
     }
 
-    private var selectedMessages: [Message] {
+    var selectedMessages: [Message] {
         fetchedResultsController?.fetchedObjects?
             .compactMap { $0 as? Message }
             .filter { selectedIDs.contains($0.messageID) } ?? []

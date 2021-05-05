@@ -67,6 +67,10 @@ class SingleMessageCoordinator: NSObject {
             presentCompose(mailToURL: url)
         case .inAppSafari(url: let url):
             presentInAppSafari(url: url)
+        case .addNewFoler:
+            presentCreateFolder(type: .folder)
+        case .addNewLabel:
+            presentCreateFolder(type: .label)
         }
     }
 
@@ -207,6 +211,18 @@ class SingleMessageCoordinator: NSObject {
         viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
         viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
         self.viewController?.present(destination, animated: true)
+    }
+
+    private func presentCreateFolder(type: PMLabelType) {
+        let viewModel = NEWLabelEditViewModel(user: user, label: nil, type: type, labels: [])
+        let viewController = NEWLabelEditViewController.instance()
+        let coordinator = LabelEditCoordinator(services: sharedServices,
+                                               viewController: viewController,
+                                               viewModel: viewModel)
+        coordinator.start()
+        if let navigation = viewController.navigationController {
+            self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
+        }
     }
 }
 

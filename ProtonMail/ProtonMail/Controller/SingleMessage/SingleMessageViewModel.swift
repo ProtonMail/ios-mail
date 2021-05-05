@@ -67,6 +67,17 @@ class SingleMessageViewModel {
     var embedExpandedHeader: ((ExpandedHeaderViewModel) -> Void)?
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
 
+    private(set) var selectedMoveToFolder: MenuLabel?
+    private(set) var selectedLabelAsLabels: Set<LabelLocation> = Set()
+
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        return formatter
+    }()
+
     init(labelId: String, message: Message, user: UserManager, childViewModels: SingleMessageChildViewModels) {
         self.labelId = labelId
         self.message = message
@@ -207,11 +218,7 @@ class SingleMessageViewModel {
 
     func getMessageHeaderUrl() -> URL? {
         let message = messageBodyViewModel.message
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        let time = formatter.string(from: message.time ?? Date())
+        let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "headers-" + time + "-" + title.joined(separator: "-")
         guard let header = message.header else {
@@ -223,11 +230,7 @@ class SingleMessageViewModel {
 
     func getMessageBodyUrl() -> URL? {
         let message = messageBodyViewModel.message
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        let time = formatter.string(from: message.time ?? Date())
+        let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "body-" + time + "-" + title.joined(separator: "-")
         guard let body = try? messageService.decryptBodyIfNeeded(message: message) else {
@@ -242,6 +245,71 @@ class SingleMessageViewModel {
         try? FileManager.default.removeItem(at: tempFileUri)
         try content.write(to: tempFileUri, atomically: true, encoding: .utf8)
         return tempFileUri
+    }
+}
+
+// MARK: - Move to functions
+extension SingleMessageViewModel: MoveToActionSheetProtocol {
+
+    func handleMoveToAction() {
+        guard let destination = selectedMoveToFolder else { return }
+
+        let fromLabel = message.firstValidFolder() ?? Message.Location.inbox.rawValue
+        let id = message.selfSent(labelID: fromLabel) ?? fromLabel
+
+        messageService.move(messages: [message],
+                            from: [id],
+                            to: destination.location.labelID,
+                            queue: true)
+    }
+
+    func updateSelectedMoveToDestination(menuLabel: MenuLabel?, isOn: Bool) {
+        selectedMoveToFolder = isOn ? menuLabel : nil
+    }
+}
+
+// MARK: - Label as functions
+extension SingleMessageViewModel: LabelAsActionSheetProtocol {
+    func handleLabelAsAction(shouldArchive: Bool, allOptions: [MenuLabel]) {
+        for label in allOptions {
+            if selectedLabelAsLabels
+                .contains(where: { $0.labelID == label.location.labelID }) {
+                // Add to message which does not have this label
+                if !message.contains(label: label.location.labelID) {
+                    messageService.label(messages: [message],
+                                         label: label.location.labelID,
+                                         apply: true)
+                }
+            } else {
+                if message.contains(label: label.location.labelID) {
+                    messageService.label(messages: [message],
+                                         label: label.location.labelID,
+                                         apply: false)
+                }
+            }
+        }
+
+        selectedLabelAsLabels.removeAll()
+
+        if shouldArchive {
+            if let fLabel = message.firstValidFolder() {
+                messageService.move(messages: [message],
+                                    from: [fLabel],
+                                    to: Message.Location.archive.rawValue)
+            }
+        }
+    }
+
+    func updateSelectedLabelAsDestination(menuLabel: MenuLabel?, isOn: Bool) {
+        if let label = menuLabel {
+            if isOn {
+                selectedLabelAsLabels.insert(label.location)
+            } else {
+                selectedLabelAsLabels.remove(label.location)
+            }
+        } else {
+            selectedLabelAsLabels.removeAll()
+        }
     }
 }
 

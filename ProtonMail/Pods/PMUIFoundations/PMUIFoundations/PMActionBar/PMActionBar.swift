@@ -221,6 +221,15 @@ extension PMActionBar {
                     stack.addArrangedSubview(spacer)
                 }
                 stack.addArrangedSubview(btn)
+            case .separator:
+                guard let width = item.userInfo?["width"] as? CGFloat,
+                      let padding = item.userInfo?["verticalPadding"] as? CGFloat else {
+                    continue
+                }
+                let view = self.createSeparatorView(width: width,
+                                                    color: item.backgroundColor,
+                                                    vPadding: padding)
+                stack.addArrangedSubview(view)
             }
         }
     }
@@ -280,6 +289,25 @@ extension PMActionBar {
         self.setup(button: btn, for: state)
         btn.addTarget(self, action: #selector(self.clickItem(sender:)), for: .touchUpInside)
         return btn
+    }
+
+    private func createSeparatorView(width: CGFloat, color: UIColor, vPadding: CGFloat) -> UIView {
+        let container = UIView(frame: .zero)
+        container.translatesAutoresizingMaskIntoConstraints = false
+
+        let separator = UIView(frame: .zero)
+        separator.backgroundColor = color
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(separator)
+
+        NSLayoutConstraint.activate([
+            separator.topAnchor.constraint(equalTo: container.topAnchor, constant: vPadding),
+            separator.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            separator.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            separator.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -1 * vPadding),
+            separator.widthAnchor.constraint(equalToConstant: width)
+        ])
+        return container
     }
 
     private func setup(button: UIButton, for state: UIButton.State) {

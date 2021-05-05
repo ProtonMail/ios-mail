@@ -22,7 +22,7 @@
 
 import Foundation
 
-enum LabelLocation: Equatable {
+enum LabelLocation: Equatable, Hashable {
     case inbox
     case hiddenDraft //1 can't be removed
     case draft

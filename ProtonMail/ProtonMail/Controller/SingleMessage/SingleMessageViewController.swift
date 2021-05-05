@@ -48,6 +48,8 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
     private lazy var actionSheetPresenter = MessageViewActionSheetPresenter()
     private var actionBar: PMActionBar?
+    private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
+    private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
 
     var headerViewController: UIViewController {
         didSet {
@@ -212,12 +214,6 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
         actionSheet.presentAt(navigationController ?? self, hasTopConstant: false, animated: true)
     }
 
-    private func dismissActionSheet() {
-        let viewController = navigationController ?? self
-        guard let actionSheet = viewController.view.subviews.compactMap({ $0 as? PMActionSheet }).first else { return }
-        actionSheet.dismiss(animated: true)
-    }
-
     private func handleAction(context: ExpandedHeaderContactContext, action: MessageDetailsContactActionSheetAction) {
         switch action {
         case .addToContacts:
@@ -327,8 +323,6 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
             if key == actions.startIndex {
                 actionBarItem = PMActionBarItem(icon: action.iconImage,
                                                 text: action.name,
-                                                backgroundColor: UIColorManager.Shade50,
-                                                selectedBgColor: UIColorManager.Shade20,
                                                 handler: actionHandler)
             } else {
                 actionBarItem = PMActionBarItem(icon: action.iconImage,
@@ -337,7 +331,12 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
             }
             actionBarItems.append(actionBarItem)
         }
+        let separator = PMActionBarItem(width: 1,
+                                        verticalPadding: 6,
+                                        color: UIColorManager.FloatyText)
+        actionBarItems.insert(separator, at: 1)
         self.actionBar = PMActionBar(items: actionBarItems,
+                                     backgroundColor: UIColorManager.FloatyBackground,
                                      floatingHeight: 42.0,
                                      width: .fit,
                                      height: 48.0)
@@ -423,11 +422,9 @@ private extension SingleMessageViewController {
         case .reply, .replyAll, .forward:
             handleOpenComposerAction(action)
         case .labelAs:
-            // TODO: open label as view
-            break
+            showLabelAsActionSheet()
         case .moveTo:
-            // TODO: open move to view
-            break
+            showMoveToActionSheet()
         case .print:
             // TODO: Fix later
             break
@@ -481,6 +478,90 @@ private extension SingleMessageViewController {
         default:
             return
         }
+    }
+}
+
+extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
+    var labelAsActionHandler: LabelAsActionSheetProtocol {
+        return viewModel
+    }
+
+    func showLabelAsActionSheet() {
+        let labelAsViewModel = LabelAsActionSheetViewModel(menuLabels: labelAsActionHandler.getLabelMenuItems(),
+                                                           messages: [viewModel.message])
+
+        labelAsActionSheetPresenter
+            .present(on: self.navigationController ?? self,
+                     viewModel: labelAsViewModel,
+                     addNewLabel: { [weak self] in
+                        self?.coordinator.navigate(to: .addNewFoler)
+                     },
+                     selected: { [weak self] menuLabel, isOn in
+                        self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
+                     },
+                     cancel: { [weak self] in
+                        // Check if the selected label is the same as the original values
+                        let originalSelectedLabelIds =
+                            labelAsViewModel.initialLabelSelectionStatus
+                            .filter { $0.value }.map { $0.key.location.labelID }
+                        let selectedLabelIds = self?.labelAsActionHandler
+                            .selectedLabelAsLabels.map({ $0.labelID }) ?? []
+
+                        if Set(originalSelectedLabelIds) != Set(selectedLabelIds) {
+                            self?.showDiscardAlert(handleDiscard: {
+                                self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
+                                self?.dismissActionSheet()
+                            })
+                        } else {
+                            self?.dismissActionSheet()
+                        }
+                     },
+                     done: { [weak self] isArchive in
+                        self?.labelAsActionHandler
+                            .handleLabelAsAction(shouldArchive: isArchive,
+                                                 allOptions: self?.labelAsActionHandler.getLabelMenuItems() ?? [])
+                        self?.dismissActionSheet()
+                        self?.navigationController?.popViewController(animated: true)
+                     })
+    }
+}
+
+extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
+    var moveToActionHandler: MoveToActionSheetProtocol {
+        return viewModel
+    }
+
+    func showMoveToActionSheet() {
+        let isEnableColor = viewModel.user.isEnableFolderColor
+        let isInherit = viewModel.user.isInheritParentFolderColor
+        let moveToViewModel =
+            MoveToActionSheetViewModel(menuLabels: viewModel.getFolderMenuItems(),
+                                       isEnableColor: isEnableColor,
+                                       isInherit: isInherit)
+        moveToActionSheetPresenter
+            .present(on: self.navigationController ?? self,
+                     viewModel: moveToViewModel,
+                     addNewFolder: { [weak self] in
+                        self?.coordinator.navigate(to: .addNewFoler)
+                     },
+                     selected: { [weak self] menuLabel, isOn in
+                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+                     },
+                     cancel: { [weak self] in
+                        if self?.moveToActionHandler.selectedMoveToFolder != nil {
+                            self?.showDiscardAlert(handleDiscard: {
+                                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
+                                self?.dismissActionSheet()
+                            })
+                        } else {
+                            self?.dismissActionSheet()
+                        }
+                     },
+                     done: { [weak self] in
+                        self?.moveToActionHandler.handleMoveToAction()
+                        self?.dismissActionSheet()
+                        self?.navigationController?.popViewController(animated: true)
+                     })
     }
 }
 
