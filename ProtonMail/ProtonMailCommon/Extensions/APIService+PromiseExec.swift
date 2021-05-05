@@ -1,5 +1,5 @@
 //
-//  Link.swift
+//  APIService+PromiseExec.swift
 //  ProtonMail
 //
 //
@@ -20,10 +20,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import PMCommon
+import PromiseKit
 
-enum Link {
-    static let alternativeRouting = "https://protonmail.com/blog/anti-censorship-alternative-routing"
-    static let unsubscribeInfo = "https://protonmail.com/support/knowledge-base/auto-unsubscribe"
-    static let dmarcFailedInfo = "https://protonmail.com/support/knowledge-base/email-has-failed-its-domains-authentication-requirements-warning/"
+extension APIService {
+
+    func exec(route: Request) -> Promise<Response> {
+        Promise { resolver in
+            exec(route: route) { dataTask, response in
+                if let error = dataTask?.error {
+                    resolver.reject(error)
+                }
+                resolver.fulfill(response)
+            }
+        }
+    }
+
 }

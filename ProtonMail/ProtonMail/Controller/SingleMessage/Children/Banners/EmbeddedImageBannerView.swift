@@ -77,11 +77,16 @@ private enum SubviewsFactory {
         let button = UIButton(frame: .zero)
         button.backgroundColor = UIColorManager.InteractionWeak
         button.setCornerRadius(radius: 3)
+        button.setAttributedTitle(
+            LocalString._banner_load_embedded_image.apply(style: FontManager.body3RegularNorm),
+            for: .normal
+        )
         return button
     }
 
     static var titleLabel: UILabel {
         let label = UILabel(frame: .zero)
+        label.attributedText = LocalString._banner_embedded_image_title.apply(style: FontManager.Caption)
         label.numberOfLines = 0
         return label
     }

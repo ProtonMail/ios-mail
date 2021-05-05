@@ -28,6 +28,7 @@ class BannerViewModel {
     private(set) var expirationTime: Date = .distantFuture
     private var timer: Timer?
     private let unsubscribeService: UnsubscribeService
+    private let markLegitimateService: MarkLegitimateService
     private let urlOpener: URLOpener
 
     var updateExpirationTime: ((Int) -> Void)?
@@ -46,16 +47,22 @@ class BannerViewModel {
         }
     }
 
+    var spamType: SpamType? {
+        message.spam
+    }
+
     init(message: Message,
          shouldAutoLoadRemoteContent: Bool,
          expirationTime: Date?,
          shouldAutoLoadEmbeddedImage: Bool,
          unsubscribeService: UnsubscribeService,
+         markLegitimateService: MarkLegitimateService,
          urlOpener: URLOpener = UIApplication.shared) {
         self.message = message
         self.shouldAutoLoadRemoteContent = shouldAutoLoadRemoteContent
         self.shouldAutoLoadEmbeddedImage = shouldAutoLoadEmbeddedImage
         self.unsubscribeService = unsubscribeService
+        self.markLegitimateService = markLegitimateService
         self.urlOpener = urlOpener
         setUpTimer(expirationTime: expirationTime)
     }
@@ -94,6 +101,10 @@ class BannerViewModel {
         } else if let httpClient = unsubscribeMethods?.httpClient {
             open(url: httpClient)
         }
+    }
+
+    func markAsLegitimate() {
+        markLegitimateService.markAsLegitimate(messageId: message.messageID)
     }
 
     private func open(url: String) {

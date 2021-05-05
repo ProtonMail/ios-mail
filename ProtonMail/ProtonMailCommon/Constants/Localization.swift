@@ -2126,4 +2126,9 @@ class LocalizedString {
     lazy var _unsubscribe = NSLocalizedString("Unsubscribe", comment: "")
 
     lazy var _unsubscribe_banner_description = NSLocalizedString("This message is from a mailing list.", comment: "")
+
+    lazy var _auto_phising_banner_message = NSLocalizedString("Our system flagged this message as a phishing attempt. Please check that it is legitimate", comment: "")
+    lazy var _auto_phising_banner_button_title = NSLocalizedString("Mark as legitimate", comment: "")
+
+    lazy var _dmarc_failed_banner_message = NSLocalizedString("This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!", comment: "")
 }

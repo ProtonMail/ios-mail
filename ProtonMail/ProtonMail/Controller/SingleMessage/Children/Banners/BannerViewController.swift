@@ -35,6 +35,7 @@ class BannerViewController: UIViewController {
     enum BannerType: Int {
         case remoteContent
         case expiration
+        case spam
         case error
         case unsubscribe
 
@@ -54,6 +55,7 @@ class BannerViewController: UIViewController {
     private(set) lazy var expirationBanner = ExpirationBannerView()
     private(set) lazy var remoteAndEmbeddedContentBanner = RemoteAndEmbeddedBannerView()
     private(set) lazy var unsubscribeBanner = UnsubscribeBanner()
+    private(set) lazy var spamBanner = SpamBannerView()
 
     private(set) var displayedBanners: [BannerType: UIView] = [:] {
         didSet {
@@ -91,12 +93,54 @@ class BannerViewController: UIViewController {
             self.showExpirationBanner()
         }
         handleUnsubscribeBanner()
+        handleSpamBanner()
         setUpMessageObservation()
+    }
+
+    func hideBanner(type: BannerType) {
+        if let view = displayedBanners[type] {
+            view.removeFromSuperview()
+            displayedBanners.removeValue(forKey: type)
+        }
+    }
+
+    func showContentBanner(remoteContent: Bool, embeddedImage: Bool) {
+        if displayedBanners[.remoteContent]?.subviews.first as? RemoteAndEmbeddedBannerView != nil {
+            return
+        } else if remoteContent && embeddedImage {
+            showRemoteAndEmbeddedContentBanner()
+        } else if remoteContent {
+            showRemoteContentBanner()
+        } else if embeddedImage {
+            showEmbeddedImageBanner()
+        }
+    }
+
+    func showErrorBanner(error: NSError) {
+        errorBanner.setErrorTitle(error.localizedDescription)
+        addBannerView(type: .error, shouldAddContainer: true, bannerView: errorBanner)
+    }
+
+    private func handleSpamBanner() {
+        let isSpamBannerPresenter = displayedBanners.contains(where: { $0.key == .spam })
+        isSpamBannerPresenter ? hideBanner(type: .spam) : ()
+        guard let spamType = viewModel.spamType else { return }
+        showSpamBanner(spamType: spamType)
+    }
+
+    private func showSpamBanner(spamType: SpamType) {
+        spamBanner.infoTextView.attributedText = spamType.text
+        spamBanner.iconImageView.image = spamType.icon
+        spamBanner.button.setAttributedTitle(spamType.buttonTitle, for: .normal)
+        spamBanner.button.isHidden = spamType.buttonTitle == nil
+        spamBanner.button.addTarget(self, action: #selector(markAsLegitimate), for: .touchUpInside)
+        addBannerView(type: .spam, shouldAddContainer: true, bannerView: spamBanner)
     }
 
     private func setUpMessageObservation() {
         viewModel.reloadBanners = { [weak self] in
             self?.handleUnsubscribeBanner()
+            self?.handleSpamBanner()
         }
     }
 
@@ -124,78 +168,21 @@ class BannerViewController: UIViewController {
         containerView = stackView
     }
 
-    func hideBanner(type: BannerType) {
-        if let view = displayedBanners[type] {
-            view.removeFromSuperview()
-            displayedBanners.removeValue(forKey: type)
-        }
-    }
-
-    func showContentBanner(remoteContent: Bool, embeddedImage: Bool) {
-        if displayedBanners[.remoteContent]?.subviews.first as? RemoteAndEmbeddedBannerView != nil {
-            return
-        } else if remoteContent && embeddedImage {
-            showRemoteAndEmbeddedContentBanner()
-        } else if remoteContent {
-            showRemoteContentBanner()
-        } else if embeddedImage {
-            showEmbeddedImageBanner()
-        }
-    }
-
-    func showErrorBanner(error: NSError) {
-        errorBanner.setErrorTitle(error.localizedDescription)
-        addBannerView(type: .error, shouldAddContainer: true, bannerView: errorBanner)
-    }
-
-    func showRemoteContentBanner() {
-        remoteContentBanner.titleLabel.attributedText =
-            LocalString._banner_remote_content_title.apply(style: FontManager.Caption)
-        remoteContentBanner.loadContentButton.setAttributedTitle(
-            LocalString._banner_load_remote_content.apply(style: FontManager.body3RegularNorm),
-            for: .normal
-        )
+    private func showRemoteContentBanner() {
         remoteContentBanner.loadContentButton.addTarget(self,
                                                         action: #selector(self.loadRemoteContent),
                                                         for: .touchUpInside)
         addBannerView(type: .remoteContent, shouldAddContainer: true, bannerView: remoteContentBanner)
     }
 
-    func showEmbeddedImageBanner() {
-        embeddedImageBanner.titleLabel.attributedText =
-            LocalString._banner_embedded_image_title.apply(style: FontManager.Caption)
-        embeddedImageBanner.loadContentButton.setAttributedTitle(
-            LocalString._banner_load_embedded_image.apply(style: FontManager.body3RegularNorm),
-            for: .normal
-        )
+    private func showEmbeddedImageBanner() {
         embeddedImageBanner.loadContentButton.addTarget(self,
                                                         action: #selector(self.loadEmbeddedImages),
                                                         for: .touchUpInside)
         addBannerView(type: .remoteContent, shouldAddContainer: true, bannerView: embeddedImageBanner)
     }
 
-    func showRemoteAndEmbeddedContentBanner() {
-        remoteAndEmbeddedContentBanner.titleLabel.attributedText =
-            LocalString._banner_embedded_image_title.apply(style: FontManager.Caption)
-        remoteAndEmbeddedContentBanner.loadImagesButton.setAttributedTitle(
-            LocalString._banner_load_embedded_image.apply(style: FontManager.body3RegularNorm),
-            for: .normal
-        )
-        remoteAndEmbeddedContentBanner.loadContentButton.setAttributedTitle(
-            LocalString._banner_load_remote_content.apply(style: FontManager.body3RegularNorm),
-            for: .normal
-        )
-        var disabledAttribute = FontManager.body3RegularNorm
-        disabledAttribute[.foregroundColor] = UIColorManager.TextDisabled
-        remoteAndEmbeddedContentBanner.loadImagesButton.setAttributedTitle(
-            LocalString._banner_load_embedded_image.apply(style: disabledAttribute),
-            for: .disabled
-        )
-        remoteAndEmbeddedContentBanner.loadContentButton.setAttributedTitle(
-            LocalString._banner_load_remote_content.apply(style: disabledAttribute),
-            for: .disabled
-        )
-
+    private func showRemoteAndEmbeddedContentBanner() {
         remoteAndEmbeddedContentBanner.loadImagesButton.addTarget(self,
                                                                   action: #selector(self.loadEmbeddedImageAndCheck),
                                                                   for: .touchUpInside)
@@ -205,14 +192,14 @@ class BannerViewController: UIViewController {
         addBannerView(type: .remoteContent, shouldAddContainer: true, bannerView: remoteAndEmbeddedContentBanner)
     }
 
-    func showExpirationBanner() {
+    private func showExpirationBanner() {
         let banner = self.expirationBanner
         banner.updateTitleWith(offset: viewModel.getExpirationOffset())
 
         addBannerView(type: .expiration, shouldAddContainer: false, bannerView: banner)
     }
 
-    func showUnsubscribeBanner() {
+    private func showUnsubscribeBanner() {
         let banner = unsubscribeBanner
         banner.unsubscribeButton.addTarget(viewModel, action: #selector(viewModel.unsubscribe), for: .touchUpInside)
         addBannerView(type: .unsubscribe, shouldAddContainer: true, bannerView: banner)
@@ -283,4 +270,11 @@ class BannerViewController: UIViewController {
         delegate?.loadEmbeddedImage()
         self.hideBanner(type: .remoteContent)
     }
+
+    @objc
+    private func markAsLegitimate() {
+        viewModel.markAsLegitimate()
+        hideBanner(type: .spam)
+    }
+
 }

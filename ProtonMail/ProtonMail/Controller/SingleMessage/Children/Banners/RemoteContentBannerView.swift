@@ -75,6 +75,10 @@ private enum SubviewsFactory {
 
     static var loadContentButton: UIButton {
         let button = UIButton(frame: .zero)
+        button.setAttributedTitle(
+            LocalString._banner_load_remote_content.apply(style: FontManager.body3RegularNorm),
+            for: .normal
+        )
         button.backgroundColor = UIColorManager.InteractionWeak
         button.setCornerRadius(radius: 3)
         return button
@@ -82,6 +86,7 @@ private enum SubviewsFactory {
 
     static var titleLabel: UILabel {
         let label = UILabel(frame: .zero)
+        label.attributedText = LocalString._banner_remote_content_title.apply(style: FontManager.Caption)
         label.numberOfLines = 0
         return label
     }

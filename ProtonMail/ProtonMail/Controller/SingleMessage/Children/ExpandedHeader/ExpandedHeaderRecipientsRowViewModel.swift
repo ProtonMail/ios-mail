@@ -35,25 +35,11 @@ extension ExpandedHeaderRecipientsRowViewModel {
             title: "\(LocalString._general_to_label):".apply(style: FontManager.body3RegularWeak),
             recipients: [
                 ExpandedHeaderRecipientRowViewModel(
-                    title: LocalString._undisclosed_recipients.apply(style: contactAttributes),
+                    title: LocalString._undisclosed_recipients.apply(style: FontManager.body3RegularInteractionNorm),
                     contact: nil
                 )
             ]
         )
-    }
-
-    static var contactAttributes: [NSAttributedString.Key: Any] {
-        let font = UIFont.systemFont(ofSize: 14)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.2
-        paragraphStyle.lineBreakMode = .byTruncatingTail
-
-        return [
-            .kern: -0.24,
-            .font: font,
-            .foregroundColor: UIColorManager.InteractionNorm,
-            .paragraphStyle: paragraphStyle
-        ]
     }
 
 }

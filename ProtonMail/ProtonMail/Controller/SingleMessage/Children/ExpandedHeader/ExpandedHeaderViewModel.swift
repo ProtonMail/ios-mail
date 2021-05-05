@@ -36,7 +36,7 @@ class ExpandedHeaderViewModel {
     }
 
     var senderEmail: NSAttributedString {
-        "<\((message.sender?.toContact()?.email ?? ""))>".apply(style: .contactAttributes)
+        "<\((message.sender?.toContact()?.email ?? ""))>".apply(style: FontManager.body3RegularInteractionNorm)
     }
 
     var time: NSAttributedString {
@@ -127,30 +127,15 @@ class ExpandedHeaderViewModel {
             let name = recipient.getName(userContacts: userContacts) ?? ""
             let title = name.isEmpty ? "\(email) \(emailToDisplay)" : "\(name) \(emailToDisplay)"
             let contact = ContactVO(name: name, email: recipient.email)
-            return ExpandedHeaderRecipientRowViewModel(title: title.apply(style: .contactAttributes), contact: contact)
+            return ExpandedHeaderRecipientRowViewModel(
+                title: title.apply(style: FontManager.body3RegularInteractionNorm),
+                contact: contact
+            )
         }
         return ExpandedHeaderRecipientsRowViewModel(
             title: title.apply(style: FontManager.body3RegularWeak),
             recipients: recipients
         )
-    }
-
-}
-
-private extension Dictionary where Key == NSAttributedString.Key, Value == Any {
-
-    static var contactAttributes: [Key: Value] {
-        let font = UIFont.systemFont(ofSize: 14)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.2
-        paragraphStyle.lineBreakMode = .byTruncatingTail
-
-        return [
-            .kern: -0.24,
-            .font: font,
-            .foregroundColor: UIColorManager.InteractionNorm,
-            .paragraphStyle: paragraphStyle
-        ]
     }
 
 }

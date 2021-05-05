@@ -49,12 +49,18 @@ class SingleMessageViewModelFactory {
             apiService: user.apiService,
             messageDataService: user.messageService
         )
+        let markLegitimateService = MarkLegitimateService(
+            labelId: labelId,
+            apiService: user.apiService,
+            messageDataService: user.messageService
+        )
         return .init(
             message: message,
             shouldAutoLoadRemoteContent: user.userinfo.showImages.contains(.remote),
             expirationTime: message.expirationTime,
             shouldAutoLoadEmbeddedImage: user.userinfo.showImages.contains(.embedded),
-            unsubscribeService: unsubscribeService
+            unsubscribeService: unsubscribeService,
+            markLegitimateService: markLegitimateService
         )
     }
 
