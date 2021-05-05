@@ -134,4 +134,33 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             return
         }
     }
+    
+    func navigateToPassword() {
+        let password = self.editor.encryptionPassword
+        let confirm = self.editor.encryptionConfirmPassword
+        let hint = self.editor.encryptionPasswordHint
+        let passwordVC = ComposePasswordVC.instance(password: password, confirmPassword: confirm, hint: hint, delegate: self)
+        guard let nvc = self.controller.navigationController else {
+            return
+        }
+        nvc.show(passwordVC, sender: nil)
+    }
+}
+
+extension ComposeContainerViewCoordinator: ComposePasswordDelegate {
+    func apply(password: String, confirmPassword: String, hint: String) {
+        self.editor.encryptionPassword = password
+        self.editor.encryptionConfirmPassword = confirmPassword
+        self.editor.encryptionPasswordHint = hint
+        self.editor.updateEO()
+        self.controller.setLockStatus(isLock: true)
+    }
+    
+    func removedPassword() {
+        self.editor.encryptionPassword = ""
+        self.editor.encryptionConfirmPassword = ""
+        self.editor.encryptionPasswordHint = ""
+        self.editor.updateEO()
+        self.controller.setLockStatus(isLock: false)
+    }
 }
