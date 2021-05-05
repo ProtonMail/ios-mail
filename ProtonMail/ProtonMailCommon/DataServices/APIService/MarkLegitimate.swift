@@ -1,5 +1,5 @@
 //
-//  Link.swift
+//  MarkLegitimate.swift
 //  ProtonMail
 //
 //
@@ -20,10 +20,22 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import PMCommon
 
-enum Link {
-    static let alternativeRouting = "https://protonmail.com/blog/anti-censorship-alternative-routing"
-    static let unsubscribeInfo = "https://protonmail.com/support/knowledge-base/auto-unsubscribe"
-    static let dmarcFailedInfo = "https://protonmail.com/support/knowledge-base/email-has-failed-its-domains-authentication-requirements-warning/"
+struct MarkLegitimate: Request {
+
+    private let messageId: String
+
+    init(messageId: String) {
+        self.messageId = messageId
+    }
+
+    var path: String {
+        "/mail/v4/messages/\(messageId)/mark/ham"
+    }
+
+    var method: HTTPMethod {
+        .put
+    }
+
 }

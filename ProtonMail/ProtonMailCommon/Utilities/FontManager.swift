@@ -334,6 +334,20 @@ struct FontManager {
         return attributes
     }()
 
+    static let body2RegularInverted: [NSAttributedString.Key: Any] = {
+        let font = UIFont.systemFont(ofSize: 15)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.12
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .kern: -0.24,
+            .font: font,
+            .foregroundColor: UIColorManager.TextInverted,
+            .paragraphStyle: paragraphStyle
+        ]
+        return attributes
+    }()
+
     static let body3RegularNorm: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 14)
         var paragraphStyle = NSMutableParagraphStyle()
@@ -360,6 +374,20 @@ struct FontManager {
             .paragraphStyle: paragraphStyle
         ]
         return attributes
+    }()
+
+    static let body3RegularInteractionNorm: [NSAttributedString.Key: Any] = {
+        let font = UIFont.systemFont(ofSize: 14)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.2
+        paragraphStyle.lineBreakMode = .byTruncatingTail
+
+        return [
+            .kern: -0.24,
+            .font: font,
+            .foregroundColor: UIColorManager.InteractionNorm,
+            .paragraphStyle: paragraphStyle
+        ]
     }()
 
 }
@@ -403,6 +431,13 @@ extension Dictionary where Key == NSAttributedString.Key, Value == Any {
 
     func link(url: String) -> Self {
         self + [.link: url]
+    }
+
+
+    func foregroundColor(_ color: UIColor) -> Self {
+        var attributes = self
+        attributes[.foregroundColor] = color
+        return attributes
     }
 
 }

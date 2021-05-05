@@ -100,21 +100,16 @@ private enum SubviewsFactory {
     }
 
     static var loadContentButton: UIButton {
-        let button = UIButton(frame: .zero)
-        button.backgroundColor = UIColorManager.InteractionWeak
-        button.setCornerRadius(radius: 3)
-        return button
+        button(title: LocalString._banner_load_remote_content)
     }
 
     static var loadImagesButton: UIButton {
-        let button = UIButton(frame: .zero)
-        button.backgroundColor = UIColorManager.InteractionWeak
-        button.setCornerRadius(radius: 3)
-        return button
+        button(title: LocalString._banner_load_embedded_image)
     }
 
     static var titleLabel: UILabel {
         let label = UILabel(frame: .zero)
+        label.attributedText = LocalString._banner_embedded_image_title.apply(style: FontManager.Caption)
         label.numberOfLines = 0
         return label
     }
@@ -125,4 +120,18 @@ private enum SubviewsFactory {
         imageView.tintColor = UIColorManager.IconNorm
         return imageView
     }
+
+    private static func button(title: String) -> UIButton {
+        let button = UIButton(frame: .zero)
+        button.backgroundColor = UIColorManager.InteractionWeak
+        button.setCornerRadius(radius: 3)
+        let attributes = FontManager.body3RegularNorm
+        button.setAttributedTitle(title.apply(style: attributes), for: .normal)
+        button.setAttributedTitle(
+            title.apply(style: attributes.foregroundColor(UIColorManager.TextDisabled)),
+            for: .disabled
+        )
+        return button
+    }
+
 }

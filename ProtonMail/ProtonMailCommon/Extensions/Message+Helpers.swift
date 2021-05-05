@@ -22,6 +22,14 @@
 
 extension Message {
 
+    var spam: SpamType? {
+        if flag.contains(.dmarcFailed) {
+            return .dmarcFailed
+        }
+        let isSpam = getLableIDs().contains(Message.Location.spam.rawValue)
+        return flag.contains(.autoPhishing) && (!flag.contains(.hamManual) || isSpam) ? .autoPhishing : nil
+    }
+
     var getUnsubscribeMethods: UnsubscribeMethods? {
         guard let unsubscribeMethods = unsubscribeMethods,
               let data = unsubscribeMethods.data(using: .utf8) else { return nil }
