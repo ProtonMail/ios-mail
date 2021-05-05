@@ -524,14 +524,18 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         defer {
             isEntryCellRefreshing = false
-            if let cell = self.cellForItem(at: self.entryCellIndexPath) as? ContactCollectionViewEntryCell {
+            if let cell = self.cellForItem(at: self.entryCellIndexPath) as? ContactCollectionViewEntryCell,
+               var text = textField.text,
+               let textRange = Range(range, in: text) {
                 
-                let strForWholeString = NSString(format:"%@%@", textField.text!,string) as String
+                text.replaceSubrange(textRange, with: string)
                 
-                let fontSize: CGSize = strForWholeString.size(withAttributes: [NSAttributedString.Key.font: Fonts.h6.light])
+                let fontSize: CGSize = text.size(withAttributes: [NSAttributedString.Key.font: Fonts.h5.regular])
                 let width = fontSize.width.rounded(.up)
                 
-                if (self.frame.width - cell.frame.minX) < (44.0 + width) && width < self.frame.width {
+                if cell.frame.minX > 0 &&
+                    (self.frame.width - cell.frame.minX) < (10 + width) &&
+                    width < self.frame.width {
                     isEntryCellRefreshing = true
                     self.reloadItems(at: [self.entryCellIndexPath])
                 }
