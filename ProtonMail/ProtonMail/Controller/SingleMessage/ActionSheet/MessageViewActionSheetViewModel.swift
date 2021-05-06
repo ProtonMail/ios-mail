@@ -39,7 +39,7 @@ struct MessageViewActionSheetViewModel {
             items.append(.trash)
         }
 
-        if labelID != Message.Location.archive.rawValue || labelID != Message.Location.spam.rawValue {
+        if ![Message.Location.archive.rawValue, Message.Location.spam.rawValue].contains(labelID) {
             items.append(.archive)
         }
 
