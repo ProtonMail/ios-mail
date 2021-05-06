@@ -134,7 +134,18 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
     }
     
     override func reloadData() {
-        super.reloadData()
+        guard self.selectedContacts.count > 0 else {
+            super.reloadData()
+            self.collectionViewLayout.invalidateLayout()
+            return
+        }
+
+        var paths: [IndexPath] = []
+        for i in 0..<self.selectedContacts.count {
+            let path = IndexPath(row: i, section: 0)
+            paths.append(path)
+        }
+        self.reloadItems(at: paths)
         self.collectionViewLayout.invalidateLayout()
         // FIXME: next like with forceRelayout() sometimes causes cycle of relayouts because ContactCollectionViewFlowLayout then calls reloadData() again and the app crashes. It happens 100% when restoring saved state of Composer. Check if it's safe to remove
         // self.forceRelayout()
