@@ -131,13 +131,19 @@ extension PMActionSheetVM {
 
     private func handleSingleSelectionEventAt(_ indexPath: IndexPath) {
         guard self.itemGroups != nil else {return}
-
+        
         let count = self.itemGroups![indexPath.section].items.count
         for i in 0..<count {
             let isOn = i == indexPath.row
-            self.itemGroups![indexPath.section].items[i].isOn = isOn
+            if var itemToUpdate = itemGroups![indexPath.section].items[i] as? PMActionSheetPlainItem {
+                itemToUpdate.isOn = isOn
+                itemToUpdate.markType = isOn ? .checkMark : .none
+                self.itemGroups![indexPath.section].items[i] = itemToUpdate
+            } else {
+                self.itemGroups![indexPath.section].items[i].isOn = isOn
+            }
             if i == indexPath.row,
-                let _item = self.itemGroups![indexPath.section].items[i] as? PMActionSheetPlainItem {
+               let _item = self.itemGroups![indexPath.section].items[i] as? PMActionSheetPlainItem {
                 _item.handler?(_item)
             }
         }
@@ -149,10 +155,18 @@ extension PMActionSheetVM {
 
         let section = indexPath.section
         let row = indexPath.row
-        let isOn = self.itemGroups![section].items[row].isOn
-        self.itemGroups![section].items[row].isOn = !isOn
-        if let _item = self.itemGroups![section].items[row] as? PMActionSheetPlainItem {
+        if var _item = self.itemGroups![section].items[row] as? PMActionSheetPlainItem {
+            if _item.markType == .none {
+                _item.markType = .checkMark
+                self.itemGroups![section].items[row] = _item
+            } else {
+                _item.markType = .none
+                self.itemGroups![section].items[row] = _item
+            }
             _item.handler?(_item)
+        } else {
+            let isOn = self.itemGroups![section].items[row].isOn
+            self.itemGroups![section].items[row].isOn = !isOn
         }
         self.actionsheet?.reloadRows(at: [indexPath])
     }

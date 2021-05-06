@@ -275,7 +275,7 @@ CHECKOUT OPTIONS:
     :commit: 47edd7def09a7e26aa608b1
     :git: "git@gitlab.protontech.ch:apple/shared/pmpayments.git"
   PMUIFoundations:
-    :commit: b1b3b3f3dd08b10a95b26bf69089ab0503333056
+    :commit: 317e8d412cc5751e921c2aa16e65f17722654847
     :git: "git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git

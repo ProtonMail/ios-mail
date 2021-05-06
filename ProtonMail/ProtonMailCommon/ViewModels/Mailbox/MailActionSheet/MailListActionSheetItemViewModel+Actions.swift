@@ -22,60 +22,75 @@
 
 extension MailListActionSheetItemViewModel {
 
-    static func unstarActionViewModel(number: Int) -> MailListActionSheetItemViewModel {
-        let title = number > 1 ?
-            LocalString._title_of_unstar_action_for_messages_in_action_sheet :
-            LocalString._title_of_unstar_action_for_single_message_in_action_sheet
-        return .init(type: .unstar, title: String(format: title, number), icon: Asset.actionSheetStar.image)
+    static func unstarActionViewModel() -> MailListActionSheetItemViewModel {
+        return .init(type: .unstar,
+                     title: LocalString._title_of_unstar_action_in_action_sheet,
+                     icon: Asset.actionSheetUnstar.image)
     }
 
-    static func starActionViewModel(number: Int) -> MailListActionSheetItemViewModel {
-        let title = number > 1 ?
-            LocalString._title_of_star_action_for_messages_in_action_sheet :
-            LocalString._title_of_star_action_for_single_message_in_action_sheet
-        return .init(type: .star, title: String(format: title, number), icon: Asset.actionSheetStar.image)
+    static func starActionViewModel() -> MailListActionSheetItemViewModel {
+        return .init(type: .star,
+                     title: LocalString._title_of_star_action_in_action_sheet,
+                     icon: Asset.actionSheetStar.image)
     }
 
-    static func markReadActionViewModel(number: Int) -> MailListActionSheetItemViewModel {
-        let title = number > 1 ?
-            LocalString._title_of_read_action_for_messages_in_action_sheet :
-            LocalString._title_of_read_action_for_single_message_in_action_sheet
-        return .init(type: .markRead, title: String(format: title, number), icon: Asset.actionSheetRead.image)
+    static func markReadActionViewModel() -> MailListActionSheetItemViewModel {
+        return .init(type: .markRead,
+                     title: LocalString._title_of_read_action_in_action_sheet,
+                     icon: Asset.actionSheetRead.image)
     }
 
-    static func markUnreadActionViewModel(number: Int) -> MailListActionSheetItemViewModel {
-        let title = number > 1 ?
-            LocalString._title_of_unread_action_for_messages_in_action_sheet :
-            LocalString._title_of_unread_action_for_single_message_in_action_sheet
-        return .init(type: .markUnread, title: String(format: title, number), icon: Asset.actionSheetUnread.image)
+    static func markUnreadActionViewModel() -> MailListActionSheetItemViewModel {
+        return .init(type: .markUnread,
+                     title: LocalString._title_of_unread_action_in_action_sheet,
+                     icon: Asset.actionSheetUnread.image)
     }
 
-    static func moveToArchive(number: Int) -> MailListActionSheetItemViewModel {
-        let title = number > 1 ?
-            LocalString._title_of_archive_action_for_messages_in_action_sheet :
-            LocalString._title_of_archive_action_for_single_message_in_action_sheet
-        return .init(type: .moveToArchive, title: String(format: title, number), icon: Asset.actionSheetArchive.image)
+    static func moveToArchive() -> MailListActionSheetItemViewModel {
+        return .init(type: .moveToArchive,
+                     title: LocalString._title_of_archive_action_in_action_sheet,
+                     icon: Asset.actionSheetArchive.image)
     }
 
-    static func moveToSpam(number: Int) -> MailListActionSheetItemViewModel {
-        let title = number > 1 ?
-            LocalString._title_of_spam_action_for_messages_in_action_sheet :
-            LocalString._title_of_spam_action_for_single_message_in_action_sheet
-        return .init(type: .moveToSpam, title: String(format: title, number), icon: Asset.actionSheetSpam.image)
+    static func moveToSpam() -> MailListActionSheetItemViewModel {
+        return .init(type: .moveToSpam,
+                     title: LocalString._title_of_spam_action_in_action_sheet,
+                     icon: Asset.actionSheetSpam.image)
     }
 
-    static func removeActionViewModel(number: Int) -> MailListActionSheetItemViewModel {
-        let title = number > 1 ?
-            LocalString._title_of_remove_action_for_messages_in_action_sheet :
-            LocalString._title_of_remove_action_for_single_message_in_action_sheet
-        return .init(type: .remove, title: String(format: title, number), icon: Asset.actionSheetTrash.image)
+    static func removeActionViewModel() -> MailListActionSheetItemViewModel {
+        return .init(type: .remove,
+                     title: LocalString._title_of_remove_action_in_action_sheet,
+                     icon: Asset.actionSheetTrash.image)
     }
 
-    static func deleteActionViewModel(number: Int) -> MailListActionSheetItemViewModel {
-        let title = number > 1 ?
-            LocalString._title_of_delete_action_for_messages_in_action_sheet :
-            LocalString._title_of_delete_action_for_single_message_in_action_sheet
-        return .init(type: .delete, title: String(format: title, number), icon: Asset.actionSheetTrash.image)
+    static func deleteActionViewModel() -> MailListActionSheetItemViewModel {
+        return .init(type: .delete,
+                     title: LocalString._title_of_delete_action_in_action_sheet,
+                     icon: Asset.actionSheetTrash.image)
     }
 
+    static func labelAsActionViewModel() -> MailListActionSheetItemViewModel {
+        return .init(type: .labelAs,
+                     title: LocalString._label_as_,
+                     icon: Asset.swipeLabelAs.image)
+    }
+
+    static func moveToActionViewModel() -> MailListActionSheetItemViewModel {
+        return .init(type: .moveTo,
+                     title: LocalString._move_to_,
+                     icon: Asset.swipeMoveTo.image)
+    }
+
+    static func moveToInboxActionViewModel() -> MailListActionSheetItemViewModel {
+        return .init(type: .moveToInbox,
+                     title: LocalString._title_of_move_inbox_action_in_action_sheet,
+                     icon: Asset.menuInbox.image)
+    }
+
+    static func notSpamActionViewModel() -> MailListActionSheetItemViewModel {
+        return .init(type: .moveToInbox,
+                     title: LocalString._action_sheet_action_title_spam_to_inbox,
+                     icon: Asset.menuInbox.image)
+    }
 }

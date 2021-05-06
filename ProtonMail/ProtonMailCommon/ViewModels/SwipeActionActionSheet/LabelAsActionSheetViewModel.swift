@@ -24,14 +24,29 @@ import PMUIFoundations
 
 struct LabelAsActionSheetViewModel {
     let menuLabels: [MenuLabel]
-    var initialLabelSelectionStatus: [MenuLabel: Bool] = [:]
+    private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
+    private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
 
     init(menuLabels: [MenuLabel], messages: [Message]) {
         self.menuLabels = menuLabels
-        menuLabels.forEach({ initialLabelSelectionStatus[$0] = false })
-        initialLabelSelectionStatus.forEach { (label, _) in
+        menuLabels.forEach { initialLabelSelectionCount[$0] = 0 }
+        initialLabelSelectionCount.forEach { (label, _) in
             for msg in messages where msg.contains(label: label.location.labelID) {
-                initialLabelSelectionStatus[label] = true
+                if let labelCount = initialLabelSelectionCount[label] {
+                    initialLabelSelectionCount[label] = labelCount + 1
+                } else {
+                    initialLabelSelectionCount[label] = 1
+                }
+            }
+        }
+
+        initialLabelSelectionCount.forEach { (key, value) in
+            if value == messages.count {
+                initialLabelSelectionStatus[key] = .checkMark
+            } else if value < messages.count && value > 0 {
+                initialLabelSelectionStatus[key] = .dash
+            } else {
+                initialLabelSelectionStatus[key] = PMActionSheetPlainItem.MarkType.none
             }
         }
     }

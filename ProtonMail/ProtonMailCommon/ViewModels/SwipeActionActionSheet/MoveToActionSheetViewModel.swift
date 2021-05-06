@@ -26,6 +26,48 @@ struct MoveToActionSheetViewModel {
     let menuLabels: [MenuLabel]
     let isEnableColor: Bool
     let isInherit: Bool
+    let labelId: String
+    private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
+    private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
+
+    init(menuLabels: [MenuLabel],
+         messages: [Message],
+         isEnableColor: Bool,
+         isInherit: Bool,
+         labelId: String) {
+        self.isInherit = isInherit
+        self.isEnableColor = isEnableColor
+        self.labelId = labelId
+        self.menuLabels = menuLabels
+
+        let labelCount = menuLabels.getNumberOfRows()
+        for i in 0..<labelCount {
+            let indexPath = IndexPath(row: i, section: 0)
+            if let label = menuLabels.getFolderItem(by: indexPath) {
+                initialLabelSelectionCount[label] = 0
+            }
+        }
+
+        initialLabelSelectionCount.forEach { (label, _) in
+            for msg in messages where msg.contains(label: label.location.labelID) {
+                if let labelCount = initialLabelSelectionCount[label] {
+                    initialLabelSelectionCount[label] = labelCount + 1
+                } else {
+                    initialLabelSelectionCount[label] = 1
+                }
+            }
+        }
+
+        initialLabelSelectionCount.forEach { (key, value) in
+            if value == messages.count {
+                initialLabelSelectionStatus[key] = .checkMark
+            } else if value < messages.count && value > 0 {
+                initialLabelSelectionStatus[key] = .dash
+            } else {
+                initialLabelSelectionStatus[key] = PMActionSheetPlainItem.MarkType.none
+            }
+        }
+    }
 
     func getColor(of label: MenuLabel) -> UIColor {
         guard label.location.icon == nil else {

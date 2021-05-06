@@ -270,8 +270,9 @@ extension SingleMessageViewModel: MoveToActionSheetProtocol {
 
 // MARK: - Label as functions
 extension SingleMessageViewModel: LabelAsActionSheetProtocol {
-    func handleLabelAsAction(shouldArchive: Bool, allOptions: [MenuLabel]) {
-        for label in allOptions {
+    func handleLabelAsAction(shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+        for (label, status) in currentOptionsStatus {
+            guard status != .dash else { continue } // Ignore the option in dash
             if selectedLabelAsLabels
                 .contains(where: { $0.labelID == label.location.labelID }) {
                 // Add to message which does not have this label

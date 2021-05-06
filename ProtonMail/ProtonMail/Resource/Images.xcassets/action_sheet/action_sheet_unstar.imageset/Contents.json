@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic-folder-move.png",
+      "filename" : "ic-star-remove.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "ic-folder-move@2x.png",
+      "filename" : "ic-star-remove@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "ic-folder-move@3x.png",
+      "filename" : "ic-star-remove@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

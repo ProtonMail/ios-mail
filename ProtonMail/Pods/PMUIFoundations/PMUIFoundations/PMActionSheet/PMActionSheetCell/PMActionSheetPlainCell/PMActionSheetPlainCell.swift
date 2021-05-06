@@ -30,6 +30,7 @@ final class PMActionSheetPlainCell: UITableViewCell {
     @IBOutlet private var leftIconLeftConstraint: NSLayoutConstraint!
     @IBOutlet private var titleLeftToIcon: NSLayoutConstraint!
     @IBOutlet private var titleLeftToSuperView: NSLayoutConstraint!
+    @IBOutlet weak var rightIcon: UIImageView!
 
     class func nib() -> UINib {
         return UINib(nibName: "PMActionSheetPlainCell", bundle: PMUIFoundations.bundle)
@@ -55,7 +56,7 @@ final class PMActionSheetPlainCell: UITableViewCell {
         self.titleLabel.textColor = item.textColor
         self.titleLabel.textAlignment = item.alignment
         self.separator?.isHidden = !item.hasSeparator
-        self.accessoryType = item.isOn ? .checkmark: .none
+        self.rightIcon.image = item.markType.icon
         self.accessibilityIdentifier = item.title
         self.setupIndentation(level: item.indentationLevel,
                               width: item.indentationWidth)
