@@ -328,6 +328,7 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
     
     func showExpireView() {
         self.view.endEditing(true)
+        self.coordinator.navigateToExpiration()
     }
     
     func showAttachmentView() {

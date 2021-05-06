@@ -55,7 +55,7 @@ final class ComposeToolbar: UIView {
     }
 
     func setExpirationStatus(isSetting: Bool) {
-        let icon = isSetting ? UIImage(named: "ic_hourglass_check") : UIImage(named: "iic_hourglass_no_check")
+        let icon = isSetting ? UIImage(named: "ic_hourglass_check") : UIImage(named: "ic_hourglass_no_check")
         self.hourButton.setImage(icon, for: .normal)
     }
 
