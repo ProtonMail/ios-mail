@@ -20,6 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
+import PMUIFoundations
+
 extension Message {
 
     var spam: SpamType? {
@@ -88,6 +90,39 @@ extension Message {
             .map(\.labelID)
             .compactMap(Message.Location.init)
             .first(where: { $0 != .allmail && $0 != .starred })
+    }
+
+    var createTags: [TagViewModel] {
+        [createTagFromExpirationDate].compactMap { $0 } + tagViewModels
+    }
+
+    var createTagFromExpirationDate: TagViewModel? {
+        guard let expirationTime = expirationTime else { return nil }
+
+        return TagViewModel(
+            title: expirationTime.countExpirationTime.apply(style: FontManager.OverlineRegularInteractionStrong),
+            icon: Asset.mailHourglass.image,
+            color: UIColorManager.InteractionWeak
+        )
+    }
+
+    func initial(replacingEmails: [Email]) -> String {
+        let senderName = self.senderName(labelId: "", replacingEmails: replacingEmails)
+        return senderName.isEmpty ? "?" : senderName.shortName()
+    }
+
+    func sender(replacingEmails: [Email]) -> String {
+        let senderName = self.senderName(labelId: "", replacingEmails: replacingEmails)
+        return senderName.isEmpty ? "(\(String(format: LocalString._mailbox_no_recipient)))" : senderName
+    }
+
+    func isLabelLocation(labelId: String) -> Bool {
+        labels
+            .compactMap { $0 as? Label }
+            .filter { !$0.exclusive }
+            .map(\.labelID)
+            .filter { Message.Location(rawValue: $0) == nil }
+            .contains(labelId)
     }
 
     func senderName(labelId: String, replacingEmails: [Email]) -> String {

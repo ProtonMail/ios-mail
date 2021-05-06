@@ -1,5 +1,5 @@
 //
-//  MailboxViewController+BuildMessageViewModel.swift
+//  SearchViewController+BuildMessageViewModel.swift
 //  ProtonMail
 //
 //
@@ -20,24 +20,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import UIKit
 import PMUIFoundations
 
-extension MailboxViewController {
+extension SearchViewController {
 
-    func buildNewMailboxMessageViewModel(message: Message) -> NewMailboxMessageViewModel {
-        let labelId = viewModel.labelID
-        let isSelected = self.viewModel.selectionContains(id: message.messageID)
+    func buildViewModel(message: Message) -> NewMailboxMessageViewModel {
         let initial = message.initial(replacingEmails: replacingEmails)
         let sender = message.sender(replacingEmails: replacingEmails)
 
-        return NewMailboxMessageViewModel(
-            location: Message.Location(rawValue: viewModel.labelID),
-            isLabelLocation: message.isLabelLocation(labelId: labelId),
+        return .init(
+            location: nil,
+            isLabelLocation: false,
             messageLocation: message.messageLocation,
-            isCustomFolderLocation: message.isCustomFolder,
-            style: listEditing ? .selection(isSelected: isSelected) : .normal,
+            isCustomFolderLocation: false,
+            style: .normal,
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
             sender: sender,
