@@ -447,7 +447,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.subject.leftView = subjectLeftPaddingView
         self.subject.leftViewMode = UITextField.ViewMode.always
         self.subject.autocapitalizationType = .sentences
-
+        self.subject.delegate = self
     }
     
     internal func setShowingCcBccView(to show: Bool) {
@@ -836,6 +836,17 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
 extension ComposeHeaderViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if (textField == expirationDateTextField) {
+            return false
+        }
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard textField == self.subject, string.count > 1 else { return true }
+        if var text = textField.text,
+           let textRange = Range(range, in: text) {
+            text.replaceSubrange(textRange, with: string)
+            textField.text = text.trim()
             return false
         }
         return true
