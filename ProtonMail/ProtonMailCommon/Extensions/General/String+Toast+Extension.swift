@@ -45,6 +45,8 @@ extension String {
             hud.label.text = LocalString._general_alert_title
         }
         hud.detailsLabel.text = self
+        let offset = self.getOffset(window: window, hud: hud)
+        hud.offset = CGPoint(x: 0, y: offset)
         hud.removeFromSuperViewOnHide = true
         hud.hide(animated: true, afterDelay: 3)
     }
@@ -85,6 +87,24 @@ extension String {
         hud.detailsLabel.text = self
         hud.removeFromSuperViewOnHide = true
         hud.hide(animated: true, afterDelay: 3)
+    }
+    
+    private func getOffset(window: UIWindow, hud: MBProgressHUD) -> CGFloat {
+        guard let previousHUD = window.subviews.first(where: { $0 is MBProgressHUD  && $0 != hud }) else {
+            return 0
+        }
+        hud.layoutIfNeeded()
+        previousHUD.layoutIfNeeded()
+        
+        guard let newEffectView = hud.subviews.flatMap(\.subviews).first(where: { $0 is UIVisualEffectView }),
+              let oldEffectView = previousHUD.subviews.flatMap(\.subviews).first(where: { $0 is UIVisualEffectView }) else {
+            return 0
+        }
+        let newHeight = newEffectView.frame.size.height
+        let oldHeight = oldEffectView.frame.size.height
+        
+        let padding: CGFloat = 10
+        return 0 - newHeight / 2 - oldHeight / 2 - padding
     }
     
 }
