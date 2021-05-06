@@ -199,7 +199,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     func getViewTitle() -> String {
         switch state {
         case .create:
-            return LocalString._contact_groups_add
+            return ""
         case .edit:
             return LocalString._contact_groups_edit
         }

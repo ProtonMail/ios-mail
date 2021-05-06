@@ -1020,8 +1020,7 @@ class LocalizedString {
     /// "In order to use our services, you must agree to ProtonMail's Terms of Service."
     lazy var _in_order_to_use_our_services_you_must_agree_to_protonmails_terms_of_service = NSLocalizedString("In order to use our services, you must agree to ProtonMail's Terms of Service.", comment: "Error")
 
-    /// "Update Contact"
-    lazy var _update_contact = NSLocalizedString("Update Contact", comment: "Contacts Update contact")
+    lazy var _edit_contact = NSLocalizedString("Edit Contact", comment: "Contacts Edit contact")
 
     /// "Do you want to save the unsaved changes?"
     lazy var _do_you_want_to_save_the_unsaved_changes = NSLocalizedString("Do you want to save the unsaved changes?", comment: "Title")
@@ -1730,7 +1729,7 @@ class LocalizedString {
     lazy var _contact_groups_manage_addresses = NSLocalizedString("Manage Addresses",
                                                                   comment: "The title for the view where user can manage emails in the contact group")
     
-    lazy var _contact_groups_select_color = NSLocalizedString("Select Color",
+    lazy var _contact_groups_edit_avartar = NSLocalizedString("Edit avartar",
                                                               comment: "The title for the view where user can select the color for the group")
     lazy var _contact_groups_delete = NSLocalizedString("Delete Contact Group",
                                                         comment: "The description of the button for deleting the contact group")
@@ -2121,6 +2120,7 @@ class LocalizedString {
     lazy var _move_to_title = NSLocalizedString("Move to", comment: "")
     lazy var _move_to_new_folder = NSLocalizedString("New Folder", comment: "")
     lazy var _discard_changes_title = NSLocalizedString("Do you want to discard your changes?", comment: "")
+    lazy var _changes_will_discarded = NSLocalizedString("Your changes will be discarded", comment: "")
 
     lazy var _label_as_title = NSLocalizedString("Label as", comment: "")
     lazy var _label_as_send_to_archive = NSLocalizedString("Send to archive?", comment: "")

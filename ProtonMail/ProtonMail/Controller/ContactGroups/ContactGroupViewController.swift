@@ -24,6 +24,7 @@
 import UIKit
 import CoreData
 import PromiseKit
+import PMUIFoundations
 import MBProgressHUD
 
 /**
@@ -94,6 +95,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             updateNavigationBar()
         }
         generateAccessibilityIdentifiers()
+
+        emptyBackButtonTitleForNextView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -316,7 +319,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.searchController.searchBar.isTranslucent = false
         self.searchController.searchBar.tintColor = .white
         self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-        self.searchController.searchBar.backgroundColor = .clear
+        self.searchController.searchBar.backgroundColor = UIColorManager.BackgroundNorm
 
         self.searchViewConstraint.constant = 0.0
         self.searchView.isHidden = true

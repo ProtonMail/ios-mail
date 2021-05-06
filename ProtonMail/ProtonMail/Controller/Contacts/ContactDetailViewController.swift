@@ -22,6 +22,7 @@
 
 import UIKit
 import PromiseKit
+import PMUIFoundations
 import AwaitKit
 import MBProgressHUD
 
@@ -72,12 +73,13 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     ///
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.title = LocalString._contacts_contact_details_title
-        
+
         self.doneItem = UIBarButtonItem(title: LocalString._general_edit_action,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(didTapEditButton(sender:)))
+        var attributes = FontManager.DefaultStrong
+        attributes[.foregroundColor] = UIColorManager.InteractionNorm
+        self.doneItem.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = doneItem
         self.navigationItem.assignNavItemIndentifiers()
         self.configHeaderStyle()

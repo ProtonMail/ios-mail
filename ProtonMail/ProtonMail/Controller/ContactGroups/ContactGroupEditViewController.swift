@@ -23,6 +23,7 @@
 
 import UIKit
 import PromiseKit
+import PMUIFoundations
 import MBProgressHUD
 
 /**
@@ -40,8 +41,8 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     @IBOutlet weak var contactGroupNameLabel: UITextField!
     @IBOutlet weak var contactGroupImage: UIImageView!
     
-    @IBOutlet weak var cancelButton: UIBarButtonItem!
-    @IBOutlet weak var saveButton: UIBarButtonItem!
+    private var cancelButton: UIBarButtonItem!
+    private var doneButton: UIBarButtonItem!
     
     @IBOutlet weak var navigationBarItem: UINavigationItem!
     
@@ -60,25 +61,13 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         dismissKeyboard()
         
         if viewModel.hasUnsavedChanges() {
-            let alertController = UIAlertController(title: LocalString._do_you_want_to_save_the_unsaved_changes,
-                                                    message: nil, preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction(title: LocalString._general_save_action,
-                                                    style: .default,
-                                                    handler: { (action) -> Void in
-                                                        //save and dismiss
-                                                        self.save()
+            let alertController = UIAlertController(title: LocalString._warning,
+                                                    message: LocalString._changes_will_discarded,
+                                                    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._general_discard, style: .destructive, handler: { _ in
+                self.dismiss(animated: true, completion: nil)
             }))
-            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
-                                                    style: .cancel,
-                                                    handler: nil))
-            alertController.addAction(UIAlertAction(title: LocalString._discard_changes,
-                                                    style: .destructive,
-                                                    handler: { (action) -> Void in
-                                                        //discard and dismiss
-                                                        self.dismiss(animated: true, completion: nil)
-            }))
-            alertController.popoverPresentationController?.barButtonItem = sender
-            alertController.popoverPresentationController?.sourceRect = self.view.frame
             present(alertController, animated: true, completion: nil)
         } else {
             self.dismiss(animated: true, completion: nil)
@@ -110,10 +99,26 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         prepareContactGroupImage()
         
         contactGroupNameInstructionLabel.text = LocalString._contact_groups_group_name_instruction_label
-        saveButton.title = LocalString._general_save_action
-        cancelButton.title = LocalString._general_cancel_button
+
+        doneButton = UIBarButtonItem(title: LocalString._general_done_button,
+                                     style: .plain,
+                                     target: self, action: #selector(self.saveAction(_:)))
+        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
+        doneButton.setTitleTextAttributes(attributes, for: .normal)
+        navigationItem.rightBarButtonItem = doneButton
+
+        if let viewModel = self.viewModel as? ContactGroupEditViewModelImpl, viewModel.state == .create {
+            doneButton.title = LocalString._general_save_action
+        }
+
+        cancelButton = Asset.actionSheetClose.image.toUIBarButtonItem(target: self,
+                                                                      action: #selector(self.cancelItem(_:)),
+                                                                      tintColor: UIColorManager.IconNorm)
+        navigationItem.leftBarButtonItem = cancelButton
         
         contactGroupNameLabel.addBottomBorder()
+
+        emptyBackButtonTitleForNextView()
     }
     
     func prepareContactGroupImage() {

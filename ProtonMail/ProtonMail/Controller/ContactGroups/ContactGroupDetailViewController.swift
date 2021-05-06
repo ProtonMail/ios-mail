@@ -23,6 +23,7 @@
 
 import UIKit
 import PromiseKit
+import PMUIFoundations
 import MBProgressHUD
 
 class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol {
@@ -35,6 +36,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     @IBOutlet weak var groupImage: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
+    private var editBarItem: UIBarButtonItem!
     
     private let kToContactGroupEditSegue = "toContactGroupEditSegue"
     private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
@@ -64,7 +66,14 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = LocalString._contact_groups_detail_view_title
+
+        editBarItem = UIBarButtonItem(title: LocalString._general_edit_action,
+                                      style: .plain,
+                                      target: self,
+                                      action: #selector(self.editButtonTapped(_:)))
+        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
+        editBarItem.setTitleTextAttributes(attributes, for: .normal)
+        navigationItem.rightBarButtonItem = editBarItem
         
         prepareTable()
     }
