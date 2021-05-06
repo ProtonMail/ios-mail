@@ -103,7 +103,7 @@ class NewMailboxMessageCellPresenter {
 extension NewMailboxMessageViewModel {
 
     var displayOriginIcon: Bool {
-        location == .allmail || location == .starred || isLabelLocation
+        location == .allmail || location == .starred || isLabelLocation || location == nil
     }
 
 }

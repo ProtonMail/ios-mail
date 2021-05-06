@@ -20,29 +20,26 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import PMUIFoundations
 import UIKit
 import CoreData
 
 class SearchViewController: ProtonMailViewController {
     
+    @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchTextField: UITextField!
-    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var noResultLabel: UILabel!
-    @IBOutlet weak var cancelButton: UIButton!
     
     // MARK: - Private Constants
     fileprivate let kAnimationDuration: TimeInterval = 0.3
-    fileprivate let kSearchCellHeight: CGFloat = 64.0
-    fileprivate let kCellIdentifier: String = "SearchedCell"
     fileprivate let kSegueToMessageDetailController: String = "toMessageDetailViewController"
     
     internal var user: UserManager!
     private let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
     private var messageTapped = false
     
-    private lazy var replacingEmails : [Email] = { [unowned self] in
+    lazy var replacingEmails: [Email] = { [unowned self] in
         return user.contactService.allEmails()
     }()
     
@@ -87,33 +84,25 @@ class SearchViewController: ProtonMailViewController {
 
     fileprivate var query: String = ""
 
+    private let cellPresenter = NewMailboxMessageCellPresenter()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
+        searchBar.cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        searchBar.textField.addTarget(self, action: #selector(textHasChanged), for: .editingChanged)
+        searchBar.clearButton.addTarget(self, action: #selector(clearAction), for: .touchUpInside)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.noSeparatorsBelowFooter()
-        self.tableView.RegisterCell(MailboxMessageCell.Constant.identifier)
+        self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
         self.tableView.contentInsetAdjustmentBehavior = .automatic
+        self.tableView.estimatedRowHeight = 100
+        self.tableView.backgroundColor = .clear
         
         self.edgesForExtendedLayout = UIRectEdge()
         self.extendedLayoutIncludesOpaqueBars = false;
         self.navigationController?.navigationBar.isTranslucent = false;
-        
-        searchTextField.autocapitalizationType = UITextAutocapitalizationType.none
-        searchTextField.returnKeyType = .search
-        searchTextField.delegate = self
-        searchTextField.font = Fonts.h4.regular
-        searchTextField.textColor = UIColor.white
-        searchTextField.tintColor = UIColor.white
-        searchTextField.attributedPlaceholder = NSAttributedString(string: LocalString._general_search_placeholder, attributes:
-            [
-                NSAttributedString.Key.foregroundColor: UIColor.white,
-                NSAttributedString.Key.font: Fonts.h3.light
-            ])
-        
-        searchTextField.becomeFirstResponder()
         
         self.progressBar.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.progressBar)
@@ -127,7 +116,23 @@ class SearchViewController: ProtonMailViewController {
                 self.fetchLocalObjects()
             }
         }
+
+        navigationBarView.addSubview(searchBar)
+        [
+            searchBar.topAnchor.constraint(equalTo: navigationBarView.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: navigationBarView.leadingAnchor, constant: 16),
+            searchBar.trailingAnchor.constraint(equalTo: navigationBarView.trailingAnchor, constant: -16),
+            searchBar.bottomAnchor.constraint(equalTo: navigationBarView.bottomAnchor)
+        ].activate()
+
+        searchBar.textField.delegate = self
+        searchBar.textField.becomeFirstResponder()
+
+        activityIndicator.color = UIColorManager.BrandNorm
+        activityIndicator.isHidden = true
     }
+
+    let searchBar = SearchBarView()
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -158,7 +163,7 @@ class SearchViewController: ProtonMailViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        searchTextField.resignFirstResponder()
+        searchBar.textField.resignFirstResponder()
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
@@ -283,12 +288,12 @@ class SearchViewController: ProtonMailViewController {
 //            return
 //        }
         noResultLabel.isHidden = true
-        tableView.showLoadingFooter()
+        showActivityIndicator()
         
         let service = user.messageService
         service.search(query, page: pageToLoad) { (messageBoxes, error) -> Void in
-            DispatchQueue.main.async {
-                self.tableView.hideLoadingFooter()
+            DispatchQueue.main.async { [weak self] in
+                self?.hideActivityIndicator()
             }
 
             guard error == nil, let messages = messageBoxes else {
@@ -327,6 +332,16 @@ class SearchViewController: ProtonMailViewController {
             self.fetchRemoteObjects(query, page: self.currentPage + 1)
         }
     }
+
+    private func showActivityIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+
+    private func hideActivityIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
     
     private func updateTapped(status: Bool) {
         serialQueue.sync {
@@ -344,12 +359,25 @@ class SearchViewController: ProtonMailViewController {
         }
     }
 
-    @IBAction func tapAction(_ sender: AnyObject) {
-        searchTextField.resignFirstResponder()
+    @objc
+    private func textHasChanged() {
+        searchBar.clearButton.isHidden = searchBar.textField.text?.isEmpty == true
     }
+
+    @objc
+    private func clearAction() {
+        searchBar.textField.text = nil
+        searchBar.textField.sendActions(for: .editingChanged)
+    }
+
+    @IBAction func tapAction(_ sender: AnyObject) {
+        searchBar.textField.resignFirstResponder()
+    }
+
     // MARK: - Button Actions
     
-    @IBAction func cancelButtonTapped(_ sender: UIButton) {
+    @objc
+    private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -427,20 +455,27 @@ extension SearchViewController: UITableViewDataSource {
     }
     
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let mailboxCell = tableView.dequeueReusableCell(withIdentifier: MailboxMessageCell.Constant.identifier, for: indexPath) as? MailboxMessageCell else
-        {
+        guard let mailboxCell = tableView.dequeueReusableCell(
+                withIdentifier: NewMailboxMessageCell.defaultID(),
+                for: indexPath
+        ) as? NewMailboxMessageCell else {
             assert(false)
             return UITableViewCell()
         }
         
         let message = self.searchResult[indexPath.row]
-        mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "", replacingEmails: replacingEmails)
+        let viewModel = buildViewModel(message: message)
+        cellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
         return mailboxCell
     }
     
     @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.zeroMargin()
         self.initiateFetchIfCloseToBottom(indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
     }
 }
 
@@ -450,7 +485,6 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController: UITableViewDelegate {
     
     @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         if self.getTapped() {
             // Fetching other draft data
             tableView.deselectRow(at: indexPath, animated: true)
@@ -460,6 +494,7 @@ extension SearchViewController: UITableViewDelegate {
         // open messages in MessaveContainerViewController
         let message = self.searchResult[indexPath.row]
         guard message.contains(label: .draft) else {
+            self.updateTapped(status: false)
             guard let navigationController = navigationController else { return }
             let coordinator = SingleMessageCoordinator(
                 navigationController: navigationController,
@@ -472,10 +507,7 @@ extension SearchViewController: UITableViewDelegate {
         }
         self.prepareForDraft(message)
     }
-    
-    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return kSearchCellHeight
-    }
+
 }
 
 
