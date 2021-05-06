@@ -160,6 +160,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     var subjectTitle: String {
         return subject.text ?? ""
     }
+    private var isConnected: Bool?
     
     // MARK : - Outlets
     @IBOutlet var fakeContactPickerHeightConstraint: NSLayoutConstraint!
@@ -656,7 +657,18 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
 
     private func observeInternetConnectionStatus() {
         internetConnectionStatusProvider.getConnectionStatuses { [weak self] status in
-            guard status.isConnected else { return }
+            guard status.isConnected else {
+                self?.isConnected = false
+                return
+            }
+            if let previousStatus = self?.isConnected,
+               previousStatus == status.isConnected {
+                // In card modal
+                // even slightly drag down can trigger viewWillDisappear and view willAppear
+                // Validate mail addresses until the status really changed
+                return
+            }
+            self?.isConnected = status.isConnected
             self?.checkEmails()
         }
     }
