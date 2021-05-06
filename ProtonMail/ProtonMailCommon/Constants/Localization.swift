@@ -357,6 +357,7 @@ class LocalizedString {
     /// "Add Gender"
     lazy var _contacts_add_gender           = NSLocalizedString("Add Gender", comment: "new contacts add Gender")
     /// "Add Contact"
+    lazy var _contacts_new_contact          = NSLocalizedString("New contact", comment: "Contacts add new contact")
     lazy var _contacts_add_contact          = NSLocalizedString("Add Contact", comment: "Contacts add new contact")
     /// "Add Custom Label"
     lazy var _contacts_add_custom_label     = NSLocalizedString("Add Custom Label", comment: "add custom label type action")
@@ -436,7 +437,9 @@ class LocalizedString {
     /// "Notes"
     lazy var _contacts_info_notes = NSLocalizedString("Notes", comment: "title")
     /// "Upload Contacts"
-    lazy var _contacts_upload_contacts = NSLocalizedString("Upload Contacts",  comment: "Action")
+    lazy var _contacts_upload_device_contacts = NSLocalizedString("Upload device contacts",  comment: "Action")
+
+    lazy var _contacts_action_sheet_title = NSLocalizedString("Create", comment: "")
 
 
     // Mark Labels
@@ -1721,6 +1724,8 @@ class LocalizedString {
                                                                               comment: "The instruction label for the group name textfield")
     lazy var _contact_groups_detail_view_title = NSLocalizedString("Group Details",
                                                                    comment: "The title for the contact group detail view")
+    lazy var _contact_groups_new = NSLocalizedString("New group",
+                                                     comment: "The title for the contact group creation view")
     lazy var _contact_groups_add = NSLocalizedString("Add Group",
                                                      comment: "The title for the contact group creation view")
     lazy var _contact_groups_edit = NSLocalizedString("Edit Group",
