@@ -127,8 +127,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
                                action: #selector(self.cancelAction(_:)),
                                tintColor: UIColorManager.IconNorm)
 
-        var attributes = FontManager.DefaultStrong
-        attributes[.foregroundColor] = UIColorManager.InteractionNorm
+        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
         self.doneItem.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = doneItem
         self.navigationItem.leftBarButtonItem = cancelItem

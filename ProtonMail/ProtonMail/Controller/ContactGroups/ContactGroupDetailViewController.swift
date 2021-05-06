@@ -71,8 +71,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                                       style: .plain,
                                       target: self,
                                       action: #selector(self.editButtonTapped(_:)))
-        var attributes = FontManager.DefaultStrong
-        attributes[.foregroundColor] = UIColorManager.InteractionNorm
+        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
         editBarItem.setTitleTextAttributes(attributes, for: .normal)
         navigationItem.rightBarButtonItem = editBarItem
         

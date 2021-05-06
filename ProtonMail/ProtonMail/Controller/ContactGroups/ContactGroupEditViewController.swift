@@ -103,15 +103,12 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         doneButton = UIBarButtonItem(title: LocalString._general_done_button,
                                      style: .plain,
                                      target: self, action: #selector(self.saveAction(_:)))
-        var attributes = FontManager.DefaultStrong
-        attributes[.foregroundColor] = UIColorManager.InteractionNorm
+        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
         doneButton.setTitleTextAttributes(attributes, for: .normal)
         navigationItem.rightBarButtonItem = doneButton
 
-        if let viewModel = self.viewModel as? ContactGroupEditViewModelImpl {
-            if viewModel.state == .create {
-                doneButton.title = LocalString._general_save_action
-            }
+        if let viewModel = self.viewModel as? ContactGroupEditViewModelImpl, viewModel.state == .create {
+            doneButton.title = LocalString._general_save_action
         }
 
         cancelButton = Asset.actionSheetClose.image.toUIBarButtonItem(target: self,

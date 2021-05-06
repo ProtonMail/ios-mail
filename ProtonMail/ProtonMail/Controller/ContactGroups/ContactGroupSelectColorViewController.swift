@@ -42,8 +42,7 @@ class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModel
         self.doneButton = UIBarButtonItem(title: LocalString._general_edit_action,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(self.didTapDoneButton))
-        var attributes = FontManager.DefaultStrong
-        attributes[.foregroundColor] = UIColorManager.InteractionNorm
+        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
         self.doneButton.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = doneButton
 
