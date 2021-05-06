@@ -120,14 +120,14 @@ included:
   - ${PWD}/ProtonMail/Controller/SingleMessage/AttachmentList/AttachmentLIstTableViewCell.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/QuickViewViewController.swift
   - ${PWD}/ProtonMail/Components/TagsView/MultiRowsTagsView.swift
-  - ${PWD}/ProtonMail/Components/TagsView/StackViewContainer.swift 
-  - ${PWD}/ProtonMail/Components/TagsView/TagsPresenter.swift 
-  - ${PWD}/ProtonMail/Components/TagsView/TagsView.swift 
-  - ${PWD}/ProtonMail/Components/TextControl.swift 
-  - ${PWD}/ProtonMail/Controller/SingleMessage/ActionSheet/MessageDetailsContactActionSheetAction.swift 
-  - ${PWD}/ProtonMail/Controller/SingleMessage/ActionSheet/MessageDetailsContactActionSheetType.swift 
-  - ${PWD}/ProtonMail/Controller/SingleMessage/ActionSheet/PMActionSheet+MessageDetailsContact.swift 
-  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExapndedHeaderViewController.swift 
+  - ${PWD}/ProtonMail/Components/TagsView/StackViewContainer.swift
+  - ${PWD}/ProtonMail/Components/TagsView/TagsPresenter.swift
+  - ${PWD}/ProtonMail/Components/TagsView/TagsView.swift
+  - ${PWD}/ProtonMail/Components/TextControl.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/ActionSheet/MessageDetailsContactActionSheetAction.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/ActionSheet/MessageDetailsContactActionSheetType.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/ActionSheet/PMActionSheet+MessageDetailsContact.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExapndedHeaderViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExpandedHeaderContactContext.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExpandedHeaderRecipientRowViewModel.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExpandedHeaderRowView.swift
@@ -140,6 +140,7 @@ included:
   - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/BannerViewModel.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposeToolbar/ComposeToolbar.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposeToolbar/ComposePasswordVC.swift
+  - ${PWD}/ProtonMail/Controller/Compose/ComposeToolbar/ComposeExpirationVC.swift
 
 excluded:
   - ${PWD}/Pods

@@ -140,10 +140,19 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         let confirm = self.editor.encryptionConfirmPassword
         let hint = self.editor.encryptionPasswordHint
         let passwordVC = ComposePasswordVC.instance(password: password, confirmPassword: confirm, hint: hint, delegate: self)
-        guard let nvc = self.controller.navigationController else {
+        guard let navigationController = self.controller.navigationController else {
             return
         }
-        nvc.show(passwordVC, sender: nil)
+        navigationController.show(passwordVC, sender: nil)
+    }
+    
+    func navigateToExpiration() {
+        let time = self.header.expirationTimeInterval
+        let expirationVC = ComposeExpirationVC(expiration: time, delegate: self)
+        guard let navigationController = self.controller.navigationController else {
+            return
+        }
+        navigationController.show(expirationVC, sender: nil)
     }
 }
 
@@ -162,5 +171,12 @@ extension ComposeContainerViewCoordinator: ComposePasswordDelegate {
         self.editor.encryptionPasswordHint = ""
         self.editor.updateEO()
         self.controller.setLockStatus(isLock: false)
+    }
+}
+
+extension ComposeContainerViewCoordinator: ComposeExpirationDelegate {
+    func update(expiration: TimeInterval) {
+        self.header.expirationTimeInterval = expiration
+        self.controller.setExpirationStatus(isSetting: expiration > 0)
     }
 }

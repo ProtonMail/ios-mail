@@ -299,6 +299,8 @@ class LocalizedString {
     lazy var _composer_password_apply = NSLocalizedString("Apply Password", comment: "button title")
     /// "Compose"
     lazy var _composer_compose_action = NSLocalizedString("Compose", comment: "Action")
+    lazy var _composer_expiration_title = NSLocalizedString("message expiration", comment: "Composer expiration page title")
+    lazy var _composer_expiration_custom = NSLocalizedString("Custom", comment: "Custom option for time config picker")
     /// "Send message without subject?"
     lazy var _composer_send_no_subject_desc = NSLocalizedString("Send message without subject?", comment: "Description")
     /// "You need at least one recipient to send"
@@ -687,6 +689,8 @@ class LocalizedString {
 
     /// "Default"
     lazy var _general_default = NSLocalizedString("Default", comment: "Title")
+    
+    lazy var _general_set = NSLocalizedString("Set", comment: "Title")
 
     /// "Please use the web version of ProtonMail to change your passwords!"
     lazy var _general_use_web_reset_pwd = NSLocalizedString("Please use the web version of ProtonMail to change your passwords!", comment: "Alert")
@@ -1939,6 +1943,7 @@ class LocalizedString {
     lazy var _mailbox_draft_is_sending = NSLocalizedString("Sending message...", comment: "content of the sending mesage that will display this text on the date label")
     lazy var _messages_validation_failed_try_again = NSLocalizedString("Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.", comment: "message shown in the notification when the recipient validation is failed while sending")
     lazy var _ignore_IAP_error_descrption = NSLocalizedString("Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?", comment: "Alert message")
+    lazy var _week = NSLocalizedString("week", comment: "week")
     lazy var _day = NSLocalizedString("day", comment: "day")
     lazy var _days = NSLocalizedString("days", comment: "days")
     
