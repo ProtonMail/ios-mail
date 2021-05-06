@@ -127,24 +127,7 @@ class MailboxViewModel: StorageLimit {
     }
 
     var actionSheetViewModel: MailListActionSheetViewModel {
-        let selectedMessages = self.selectedMessages
-
-        let starredMessages = selectedMessages.filter { $0.starred }
-        let unstarredMessages = selectedMessages.filter { !$0.starred }
-        let readMessages = selectedMessages.filter { !$0.unRead }
-        let unreadMessages = selectedMessages.filter { $0.unRead }
-
-        var actions: [MailListActionSheetItemViewModel] = []
-        actions += !starredMessages.isEmpty ? [.unstarActionViewModel(number: starredMessages.count)] : []
-        actions += !unstarredMessages.isEmpty ? [.starActionViewModel(number: unstarredMessages.count)] : []
-        actions += !unreadMessages.isEmpty ? [.markReadActionViewModel(number: unreadMessages.count)] : []
-        actions += !readMessages.isEmpty ? [.markUnreadActionViewModel(number: readMessages.count)] : []
-        actions += shouldDisplayRemoveAction ? [.removeActionViewModel(number: selectedIDs.count)] : []
-        actions += shouldDisplayDeleteAction ? [.deleteActionViewModel(number: selectedIDs.count)] : []
-        actions += shouldDisplayMoveToArchiveAction ? [.moveToArchive(number: selectedIDs.count)] : []
-        actions += shouldDisplayMoveToSpamAction ? [.moveToSpam(number: selectedIDs.count)] : []
-
-        return .init(title: .actionSheetTitle(selectedCount: selectedIDs.count), items: actions)
+        return .init(labelId: labelId, title: .actionSheetTitle(selectedCount: selectedIDs.count))
     }
 
     var selectedMessages: [Message] {
@@ -681,7 +664,20 @@ class MailboxViewModel: StorageLimit {
             handleMoveToSpamAction()
         case .dismiss, .delete:
             break
+        case .labelAs:
+            // TODO: add action
+            break
+        case .moveTo:
+            // TODO: add action
+            break
+        case .moveToInbox:
+            handleMoveToInboxAction()
+            break
         }
+    }
+
+    private func handleMoveToInboxAction() {
+        move(IDs: NSMutableSet(set: selectedIDs), to: Message.Location.inbox.rawValue)
     }
 
     private func handleMoveToArchiveAction() {

@@ -34,99 +34,94 @@ class MailListActionSheetItemViewModel_ActionsTests: XCTestCase {
     }
 
     func testUnstarActionViewModel() {
-        sut = .unstarActionViewModel(number: 1)
-        AssertEqualImage(sut.icon, Asset.actionSheetStar.image)
+        sut = .unstarActionViewModel()
+        AssertEqualImage(sut.icon, Asset.actionSheetUnstar.image)
         XCTAssertEqual(sut.type, .unstar)
-        let singleMessageFormat = LocalString._title_of_unstar_action_for_single_message_in_action_sheet
+        let singleMessageFormat = LocalString._title_of_unstar_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
-
-        sut = .unstarActionViewModel(number: 3)
-        let messagesFormat = LocalString._title_of_unstar_action_for_messages_in_action_sheet
-        XCTAssertEqual(sut.title, String(format: messagesFormat, 3))
     }
 
     func testStarActionViewModel() {
-        sut = .starActionViewModel(number: 1)
+        sut = .starActionViewModel()
         AssertEqualImage(sut.icon, Asset.actionSheetStar.image)
         XCTAssertEqual(sut.type, .star)
-        let singleMessageFormat = LocalString._title_of_star_action_for_single_message_in_action_sheet
+        let singleMessageFormat = LocalString._title_of_star_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
-
-        sut = .starActionViewModel(number: 3)
-        let messagesFormat = LocalString._title_of_star_action_for_messages_in_action_sheet
-        XCTAssertEqual(sut.title, String(format: messagesFormat, 3))
     }
 
     func testMarkReadActionViewModel() {
-        sut = .markReadActionViewModel(number: 1)
+        sut = .markReadActionViewModel()
         AssertEqualImage(sut.icon, Asset.actionSheetRead.image)
         XCTAssertEqual(sut.type, .markRead)
-        let singleMessageFormat = LocalString._title_of_read_action_for_single_message_in_action_sheet
+        let singleMessageFormat = LocalString._title_of_read_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
-
-        sut = .markReadActionViewModel(number: 3)
-        let messagesFormat = LocalString._title_of_read_action_for_messages_in_action_sheet
-        XCTAssertEqual(sut.title, String(format: messagesFormat, 3))
     }
 
     func testMarkUnreadActionViewModel() {
-        sut = .markUnreadActionViewModel(number: 1)
+        sut = .markUnreadActionViewModel()
         AssertEqualImage(sut.icon, Asset.actionSheetUnread.image)
         XCTAssertEqual(sut.type, .markUnread)
-        let singleMessageFormat = LocalString._title_of_unread_action_for_single_message_in_action_sheet
+        let singleMessageFormat = LocalString._title_of_unread_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
-
-        sut = .markUnreadActionViewModel(number: 3)
-        let messagesFormat = LocalString._title_of_unread_action_for_messages_in_action_sheet
-        XCTAssertEqual(sut.title, String(format: messagesFormat, 3))
     }
 
     func testRemoveActionViewModel() {
-        sut = .removeActionViewModel(number: 1)
+        sut = .removeActionViewModel()
         AssertEqualImage(sut.icon, Asset.actionSheetTrash.image)
         XCTAssertEqual(sut.type, .remove)
-        let singleMessageFormat = LocalString._title_of_remove_action_for_single_message_in_action_sheet
+        let singleMessageFormat = LocalString._title_of_remove_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
-
-        sut = .removeActionViewModel(number: 3)
-        let messagesFormat = LocalString._title_of_remove_action_for_messages_in_action_sheet
-        XCTAssertEqual(sut.title, String(format: messagesFormat, 3))
     }
 
     func testDeleteActionViewModel() {
-        sut = .deleteActionViewModel(number: 1)
+        sut = .deleteActionViewModel()
         AssertEqualImage(sut.icon, Asset.actionSheetTrash.image)
         XCTAssertEqual(sut.type, .delete)
-        let singleMessageFormat = LocalString._title_of_delete_action_for_single_message_in_action_sheet
+        let singleMessageFormat = LocalString._title_of_delete_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
-
-        sut = .deleteActionViewModel(number: 3)
-        let messagesFormat = LocalString._title_of_delete_action_for_messages_in_action_sheet
-        XCTAssertEqual(sut.title, String(format: messagesFormat, 3))
     }
 
     func testMoveToArchiveActionViewModel() {
-        sut = .moveToArchive(number: 1)
+        sut = .moveToArchive()
         AssertEqualImage(sut.icon, Asset.actionSheetArchive.image)
         XCTAssertEqual(sut.type, .moveToArchive)
-        let singleMessageFormat = LocalString._title_of_archive_action_for_single_message_in_action_sheet
+        let singleMessageFormat = LocalString._title_of_archive_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
-
-        sut = .moveToArchive(number: 3)
-        let messagesFormat = LocalString._title_of_archive_action_for_messages_in_action_sheet
-        XCTAssertEqual(sut.title, String(format: messagesFormat, 3))
     }
 
     func testMoveToSpamActionViewModel() {
-        sut = .moveToSpam(number: 1)
+        sut = .moveToSpam()
         AssertEqualImage(sut.icon, Asset.actionSheetSpam.image)
         XCTAssertEqual(sut.type, .moveToSpam)
-        let singleMessageFormat = LocalString._title_of_spam_action_for_single_message_in_action_sheet
+        let singleMessageFormat = LocalString._title_of_spam_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
-
-        sut = .moveToSpam(number: 3)
-        let messagesFormat = LocalString._title_of_spam_action_for_messages_in_action_sheet
-        XCTAssertEqual(sut.title, String(format: messagesFormat, 3))
     }
 
+    func testLabelAsActionViewModel() {
+        sut = .labelAsActionViewModel()
+        AssertEqualImage(sut.icon, Asset.swipeLabelAs.image)
+        XCTAssertEqual(sut.type, .labelAs)
+        XCTAssertEqual(sut.title, LocalString._label_as_)
+    }
+
+    func testMoveToActionViewModel() {
+        sut = .moveToActionViewModel()
+        AssertEqualImage(sut.icon, Asset.swipeMoveTo.image)
+        XCTAssertEqual(sut.type, .moveTo)
+        XCTAssertEqual(sut.title, LocalString._move_to_)
+    }
+
+    func testMoveToInboxActionViewModel() {
+        sut = .moveToInboxActionViewModel()
+        AssertEqualImage(sut.icon, Asset.menuInbox.image)
+        XCTAssertEqual(sut.type, .moveToInbox)
+        XCTAssertEqual(sut.title, LocalString._title_of_move_inbox_action_in_action_sheet)
+    }
+
+    func testNotSpamActionViewModel() {
+        sut = .notSpamActionViewModel()
+        AssertEqualImage(sut.icon, Asset.menuInbox.image)
+        XCTAssertEqual(sut.type, .moveToInbox)
+        XCTAssertEqual(sut.title, LocalString._action_sheet_action_title_spam_to_inbox)
+    }
 }

@@ -1980,40 +1980,23 @@ class LocalizedString {
     lazy var _title_of_move_to_action_in_action_sheet = NSLocalizedString("Move to..", comment: "The title of the move to action in action sheet")
     lazy var _title_of_label_as_action_in_action_sheet = NSLocalizedString("Label as..", comment: "The title of the label as action in action sheet")
 
-    lazy var _title_of_star_action_for_single_message_in_action_sheet = NSLocalizedString("Star %d message", comment: "The title of the star action in action sheet")
-    lazy var _title_of_star_action_for_messages_in_action_sheet = NSLocalizedString("Star %d messages", comment: "The title of the star action in action sheet")
+    lazy var _title_of_star_action_in_action_sheet = NSLocalizedString("Star", comment: "The title of the star action in action sheet")
 
-    lazy var _title_of_unstar_action_for_single_message_in_action_sheet = NSLocalizedString("Unstar %d message", comment: "The title of the star action in action sheet")
-    lazy var _title_of_unstar_action_for_messages_in_action_sheet = NSLocalizedString("Unstar %d messages", comment: "The title of the star action in action sheet")
+    lazy var _title_of_unstar_action_in_action_sheet = NSLocalizedString("Unstar", comment: "The title of the star action in action sheet")
     
-    lazy var _title_of_unread_action_for_single_message_in_action_sheet = NSLocalizedString("Mark %d message as unread", comment: "The title of the unread action in action sheet")
-    lazy var _title_of_unread_action_for_messages_in_action_sheet = NSLocalizedString("Mark %d messages as unread", comment: "The title of the unread action in action sheet")
-    lazy var _title_of_unread_action_for_single_conversation_in_action_sheet = NSLocalizedString("Mark %d conversation as unread", comment: "The title of the unread action in action sheet")
-    lazy var _title_of_unread_action_for_conversations_in_action_sheet = NSLocalizedString("Mark %d conversations as unread", comment: "The title of the unread action in action sheet")
+    lazy var _title_of_unread_action_in_action_sheet = NSLocalizedString("Mark as unread", comment: "The title of the unread action in action sheet")
     
-    lazy var _title_of_read_action_for_single_message_in_action_sheet = NSLocalizedString("Mark %d message as read", comment: "The title of the read action in action sheet")
-    lazy var _title_of_read_action_for_messages_in_action_sheet = NSLocalizedString("Mark %d messages as read", comment: "The title of the read action in action sheet")
-    lazy var _title_of_read_action_for_single_conversation_in_action_sheet = NSLocalizedString("Mark %d conversation as read", comment: "The title of the read action in action sheet")
-    lazy var _title_of_read_action_for_conversations_in_action_sheet = NSLocalizedString("Mark %d conversations as read", comment: "The title of the read action in action sheet")
+    lazy var _title_of_read_action_in_action_sheet = NSLocalizedString("Mark as read", comment: "The title of the read action in action sheet")
     
-    
-    lazy var _title_of_remove_action_for_single_message_in_action_sheet = NSLocalizedString("Remove %d message", comment: "The title of the remove action in action sheet")
-    lazy var _title_of_remove_action_for_messages_in_action_sheet = NSLocalizedString("Remove %d messages", comment: "The title of the remove action in action sheet")
-    lazy var _title_of_remove_action_for_single_conversation_in_action_sheet = NSLocalizedString("Remove %d conversation", comment: "The title of the remove action in action sheet")
-    lazy var _title_of_remove_action_for_conversations_in_action_sheet = NSLocalizedString("Remove %d conversations", comment: "The title of the remove action in action sheet")
+    lazy var _title_of_remove_action_in_action_sheet = NSLocalizedString("Move to trash", comment: "The title of the remove action in action sheet")
 
-    lazy var _title_of_delete_action_for_single_message_in_action_sheet = NSLocalizedString("Delete %d message", comment: "The title of the delete action in action sheet")
-    lazy var _title_of_delete_action_for_messages_in_action_sheet = NSLocalizedString("Delete %d messages", comment: "The title of the delete action in action sheet")
+    lazy var _title_of_move_inbox_action_in_action_sheet = NSLocalizedString("Move to inbox", comment: "The title of the remove action in action sheet")
+
+    lazy var _title_of_delete_action_in_action_sheet = NSLocalizedString("Delete", comment: "The title of the delete action in action sheet")
     
-    lazy var _title_of_archive_action_for_single_message_in_action_sheet = NSLocalizedString("Move %d message to Archive", comment: "The title of the archive action in action sheet")
-    lazy var _title_of_archive_action_for_messages_in_action_sheet = NSLocalizedString("Move %d messages to Archive", comment: "The title of the archive action in action sheet")
-    lazy var _title_of_archive_action_for_single_conversation_in_action_sheet = NSLocalizedString("Move %d conversation to Archive", comment: "The title of the archive action in action sheet")
-    lazy var _title_of_archive_action_for_conversations_in_action_sheet = NSLocalizedString("Move %d conversations to Archive", comment: "The title of the archive action in action sheet")
+    lazy var _title_of_archive_action_in_action_sheet = NSLocalizedString("Archive", comment: "The title of the archive action in action sheet")
     
-    lazy var _title_of_spam_action_for_single_message_in_action_sheet = NSLocalizedString("Move %d message to Spam", comment: "The title of the spam action in action sheet")
-    lazy var _title_of_spam_action_for_messages_in_action_sheet = NSLocalizedString("Move %d messages to Spam", comment: "The title of the spam action in action sheet")
-    lazy var _title_of_spam_action_for_single_conversation_in_action_sheet = NSLocalizedString("Move %d conversation to Spam", comment: "The title of the spam action in action sheet")
-    lazy var _title_of_spam_action_for_conversations_in_action_sheet = NSLocalizedString("Move %d conversations to Spam", comment: "The title of the spam action in action sheet")
+    lazy var _title_of_spam_action_in_action_sheet = NSLocalizedString("Move to spam", comment: "The title of the spam action in action sheet")
 
     lazy var _settings_footer_of_combined_contact = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.", comment: "The footer of combined contact in settings")
     lazy var _settings_title_of_combined_contact = NSLocalizedString("Combined Contacts", comment: "The title of combined contact in settings")

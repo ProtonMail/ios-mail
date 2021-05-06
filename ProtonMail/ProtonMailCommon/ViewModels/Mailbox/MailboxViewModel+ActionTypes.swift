@@ -93,21 +93,19 @@ extension MailboxViewModel {
         //default inbox
         if let type = Message.Location.init(rawValue: self.labelID) {
             switch type {
-            case .inbox, .starred, .archive, .allmail:
-                return [.trash, .readUnread, .moveTo, .labelAs, .more]
+            case .inbox, .starred, .archive, .allmail, .sent, .draft:
+                return [.trash, .readUnread, .archive, .labelAs, .more]
             case .spam, .trash:
-                return [.delete, .moveTo, .labelAs, .more]
-            case .sent, .draft:
-                return [.trash, .moveTo, .labelAs, .more]
+                return [.delete, .archive, .labelAs, .more]
             }
         }
         if let label = self.user.labelService.label(by: self.labelID) {
             if label.type == 3 {
                 //custom folder
-                return [.trash, .readUnread, .moveTo, .labelAs, .more]
+                return [.trash, .readUnread, .archive, .labelAs, .more]
             } else {
                 //custom label
-                return [.trash, .readUnread, .moveTo, .labelAs, .more]
+                return [.trash, .readUnread, .archive, .labelAs, .more]
             }
         } else {
             return []
@@ -117,7 +115,7 @@ extension MailboxViewModel {
     func handleBarActions(_ action: ActionTypes, selectedIDs: NSMutableSet) {
         switch action {
         case .archive:
-            break
+            self.move(IDs: selectedIDs, to: Message.Location.archive.rawValue)
         case .readUnread:
             //if all unread -> read
             //if all read -> unread

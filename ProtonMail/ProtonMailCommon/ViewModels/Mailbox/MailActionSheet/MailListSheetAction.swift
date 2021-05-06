@@ -30,4 +30,7 @@ enum MailListSheetAction: Equatable {
     case moveToArchive
     case moveToSpam
     case dismiss
+    case labelAs
+    case moveTo
+    case moveToInbox
 }

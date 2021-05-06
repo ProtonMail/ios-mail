@@ -37,13 +37,12 @@ extension MoveToActionSheetProtocol {
     }
 
     func getMailBoxMenuItems() -> [MenuLabel] {
-        var items = [
+        let items = [
             MenuLabel(location: .inbox),
             MenuLabel(location: .archive),
             MenuLabel(location: .spam),
             MenuLabel(location: .trash)
         ]
-        items.removeAll(where: { $0.location.labelID == labelId})
         return items
     }
 

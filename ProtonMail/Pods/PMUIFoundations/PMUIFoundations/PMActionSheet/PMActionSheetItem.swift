@@ -63,6 +63,23 @@ public struct PMActionSheetItemGroup {
 
 public struct PMActionSheetPlainItem: PMActionSheetItem {
 
+    public enum MarkType {
+        case checkMark
+        case dash
+        case none
+
+        var icon: UIImage? {
+            switch self {
+            case .none:
+                return nil
+            case .checkMark:
+                return UIImage(named: "checkmark", in: PMUIFoundations.bundle, compatibleWith: nil)
+            case .dash:
+                return UIImage(named: "ic-minus", in: PMUIFoundations.bundle, compatibleWith: nil)
+            }
+        }
+    }
+
     public let title: String?
     public let icon: UIImage?
     public let textColor: UIColor
@@ -70,6 +87,17 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
     /// A Boolean value that determines if the item is selected
     public var isOn: Bool = false
     public let userInfo: [String: Any]?
+    /// A enum type that determines which icon shows in the right side of the cell
+    public var markType: MarkType = .none {
+        didSet {
+            switch markType {
+            case .checkMark, .dash:
+                self.isOn = true
+            default:
+                self.isOn = false
+            }
+        }
+    }
     /// The indentation level of the cell’s content. starts from 0
     let indentationLevel: Int
     /// The width for each level of indentation of a cell's content.
@@ -94,12 +122,15 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
     ///   - indentationLevel: The indentation level of the cell’s content. starts from 0
     ///   - indentationWidth:The width for each level of indentation of a cell's content.
     ///   - handler: A block to execute when the user selects the action.
-    public init(title: String?, icon: UIImage?, textColor: UIColor?=nil, iconColor: UIColor?=nil, isOn: Bool = false, alignment: NSTextAlignment = .left, hasSeparator: Bool = true, userInfo: [String: Any]?=nil, indentationLevel: Int=0, indentationWidth: CGFloat=24, handler: ((PMActionSheetPlainItem) -> Void)?) {
+    public init(title: String?, icon: UIImage?, textColor: UIColor?=nil, iconColor: UIColor?=nil, isOn: Bool = false, markType: MarkType? = nil, alignment: NSTextAlignment = .left, hasSeparator: Bool = true, userInfo: [String: Any]?=nil, indentationLevel: Int=0, indentationWidth: CGFloat=24, handler: ((PMActionSheetPlainItem) -> Void)?) {
         self.title = title
         self.icon = icon
         self.textColor = textColor ?? AdaptiveTextColors._N5
         self.iconColor = iconColor ?? AdaptiveTextColors._N5
-        self.isOn = isOn
+        self.markType = isOn ? .checkMark : .none
+        if let type = markType {
+            self.markType = type
+        }
         self.alignment = alignment
         self.hasSeparator = hasSeparator
         self.userInfo = userInfo

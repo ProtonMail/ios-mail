@@ -20,10 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import PMUIFoundations
+
 // MARK: - Label as functinos
 extension MailboxViewModel: LabelAsActionSheetProtocol {
-    func handleLabelAsAction(shouldArchive: Bool, allOptions: [MenuLabel]) {
-        for label in allOptions {
+    func handleLabelAsAction(shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+        for (label, markType) in currentOptionsStatus {
             if selectedLabelAsLabels
                 .contains(where: { $0.labelID == label.location.labelID}) {
                 // Add to message which does not have this label
@@ -31,7 +33,7 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
                 messageService.label(messages: messageToApply,
                                      label: label.location.labelID,
                                      apply: true)
-            } else {
+            } else if markType != .dash { // Ignore the option in dash
                 let messageToRemove = selectedMessages.filter({ $0.contains(label: label.location.labelID )})
                 messageService.label(messages: messageToRemove,
                                      label: label.location.labelID,

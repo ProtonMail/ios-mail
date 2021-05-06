@@ -28,14 +28,14 @@ class LabelAsActionSheetPresenter {
         viewModel: LabelAsActionSheetViewModel,
         addNewLabel: @escaping () -> Void,
         selected: @escaping (MenuLabel, Bool) -> Void,
-        cancel: @escaping () -> Void,
-        done: @escaping (_ isArchive: Bool) -> Void
+        cancel: @escaping (_ isHavingUnsavedChanges: Bool) -> Void,
+        done: @escaping (_ isArchive: Bool, _ currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) -> Void
     ) {
-        var folderSelection: PMActionSheet?
+        var labelSelectionActionSheet: PMActionSheet?
         let labelItems = viewModel.menuLabels
         let rows = labelItems.count
 
-        viewModel.initialLabelSelectionStatus.filter({ $0.value }).forEach({ selected($0.key, true) })
+        viewModel.initialLabelSelectionStatus.filter({ $0.value == .checkMark }).forEach({ selected($0.key, true) })
 
         var labelActions: [PMActionSheetPlainItem] = []
         for i in 0..<rows {
@@ -47,7 +47,7 @@ class LabelAsActionSheetPresenter {
                                               icon: Asset.mailUnreadIcon.image,
                                               iconColor:
                                                 UIColor(hexColorCode: menuLabel.iconColor),
-                                              isOn: viewModel.initialLabelSelectionStatus[menuLabel] ?? false,
+                                              markType: viewModel.initialLabelSelectionStatus[menuLabel],
                                               indentationLevel: menuLabel.indentationLevel) { item in
                 selected(menuLabel, item.isOn)
             }
@@ -59,14 +59,35 @@ class LabelAsActionSheetPresenter {
         let doneButton = PMActionSheetPlainItem(title: LocalString._move_to_done_button_title,
                                                 icon: nil,
                                                 textColor: UIColorManager.BrandNorm) { _ in
-            guard let toggleItem = folderSelection?.itemGroups?.first?.items.first else {
-                done(false)
+            // Collect current label markType status of all options in the action sheet
+            var currentMarkTypes = viewModel.initialLabelSelectionStatus
+            let currentLabelOptions = labelSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
+            currentLabelOptions?.forEach({ item in
+                if let option = currentMarkTypes.first(where: { key, _ in
+                    key.name == item.title
+                }) {
+                    currentMarkTypes[option.key] = item.markType
+                }
+            })
+
+            guard let toggleItem = labelSelectionActionSheet?.itemGroups?.first?.items.first else {
+                done(false, currentMarkTypes)
                 return
             }
-            done(toggleItem.isOn)
+            done(toggleItem.isOn, currentMarkTypes)
         }
         let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { _ in
-            cancel()
+            // Collect current label markType status of all options in the action sheet
+            var currentMarkTypes = viewModel.initialLabelSelectionStatus
+            let currentLabelOptions = labelSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
+            currentLabelOptions?.forEach({ item in
+                if let option = currentMarkTypes.first(where: { key, _ in
+                    key.name == item.title
+                }) {
+                    currentMarkTypes[option.key] = item.markType
+                }
+            })
+            cancel(viewModel.initialLabelSelectionStatus != currentMarkTypes)
         }
         let headerView = PMActionSheetHeaderView(title: LocalString._label_as_title,
                                                  subtitle: nil,
@@ -86,6 +107,6 @@ class LabelAsActionSheetPresenter {
         let foldersGroup = PMActionSheetItemGroup(items: labelActions, style: .multiSelection)
         let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [archiveGroup, addFolderGroup, foldersGroup])
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
-        folderSelection = actionSheet
+        labelSelectionActionSheet = actionSheet
     }
 }

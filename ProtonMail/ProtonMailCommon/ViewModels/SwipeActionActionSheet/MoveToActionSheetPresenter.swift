@@ -30,17 +30,41 @@ class MoveToActionSheetPresenter {
         viewModel: MoveToActionSheetViewModel,
         addNewFolder: @escaping () -> Void,
         selected: @escaping (MenuLabel, Bool) -> Void,
-        cancel: @escaping () -> Void,
-        done: @escaping () -> Void
+        cancel: @escaping (_ havingUnsaveChanges: Bool) -> Void,
+        done: @escaping (_ havingUnsaveChanges: Bool) -> Void
     ) {
+        var folderSelectionActionSheet: PMActionSheet?
         let doneButton = PMActionSheetPlainItem(title: LocalString._move_to_done_button_title,
                                                 icon: nil,
                                                 textColor: UIColorManager.BrandNorm) { _ in
-            done()
+            // Collect current label markType status of all options in the action sheet
+            var currentMarkTypes = viewModel.initialLabelSelectionStatus
+            let currentLabelOptions = folderSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
+            currentLabelOptions?.forEach({ item in
+                if let option = currentMarkTypes.first(where: { key, _ in
+                    key.name == item.title
+                }) {
+                    currentMarkTypes[option.key] = item.markType
+                }
+            })
+
+            done(currentMarkTypes != viewModel.initialLabelSelectionStatus)
         }
 
         let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { _ in
-            cancel()
+            // Collect current label markType status of all options in the action sheet
+            var currentMarkTypes = viewModel.initialLabelSelectionStatus
+            let currentLabelOptions = folderSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
+            currentLabelOptions?.forEach({ item in
+                if let option = currentMarkTypes.first(where: { key, _ in
+                    key.name == item.title
+                }) {
+                    currentMarkTypes[option.key] = item.markType
+                }
+            })
+
+
+            cancel(currentMarkTypes != viewModel.initialLabelSelectionStatus)
         }
 
         let rows = viewModel.menuLabels.getNumberOfRows()
@@ -67,6 +91,7 @@ class MoveToActionSheetPresenter {
             let item = PMActionSheetPlainItem(title: menuLabel.name,
                                               icon: icon,
                                               iconColor: iconColor,
+                                              markType: viewModel.initialLabelSelectionStatus[menuLabel],
                                               indentationLevel: menuLabel.indentationLevel) { item in
                 selected(menuLabel, item.isOn)
             }
@@ -86,7 +111,8 @@ class MoveToActionSheetPresenter {
 
 
         let foldersGroup = PMActionSheetItemGroup(items: folderActions, style: .singleSelection)
-        let folderSelection = PMActionSheet(headerView: headerView, itemGroups: [addFolderGroup, foldersGroup])
-        folderSelection.presentAt(viewController, hasTopConstant: false, animated: true)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [addFolderGroup, foldersGroup])
+        actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
+        folderSelectionActionSheet = actionSheet
     }
 }

@@ -499,15 +499,8 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
                      selected: { [weak self] menuLabel, isOn in
                         self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
                      },
-                     cancel: { [weak self] in
-                        // Check if the selected label is the same as the original values
-                        let originalSelectedLabelIds =
-                            labelAsViewModel.initialLabelSelectionStatus
-                            .filter { $0.value }.map { $0.key.location.labelID }
-                        let selectedLabelIds = self?.labelAsActionHandler
-                            .selectedLabelAsLabels.map({ $0.labelID }) ?? []
-
-                        if Set(originalSelectedLabelIds) != Set(selectedLabelIds) {
+                     cancel: { [weak self] isHavingUnsavedChanges in
+                        if isHavingUnsavedChanges {
                             self?.showDiscardAlert(handleDiscard: {
                                 self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
                                 self?.dismissActionSheet()
@@ -516,10 +509,10 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
                             self?.dismissActionSheet()
                         }
                      },
-                     done: { [weak self] isArchive in
+                     done: { [weak self] isArchive, currentOptionsStatus  in
                         self?.labelAsActionHandler
                             .handleLabelAsAction(shouldArchive: isArchive,
-                                                 allOptions: self?.labelAsActionHandler.getLabelMenuItems() ?? [])
+                                                 currentOptionsStatus: currentOptionsStatus)
                         self?.dismissActionSheet()
                         self?.navigationController?.popViewController(animated: true)
                      })
@@ -536,8 +529,10 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
         let isInherit = viewModel.user.isInheritParentFolderColor
         let moveToViewModel =
             MoveToActionSheetViewModel(menuLabels: viewModel.getFolderMenuItems(),
+                                       messages: [viewModel.message],
                                        isEnableColor: isEnableColor,
-                                       isInherit: isInherit)
+                                       isInherit: isInherit,
+                                       labelId: viewModel.labelId)
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,
@@ -547,8 +542,8 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                      selected: { [weak self] menuLabel, isOn in
                         self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
                      },
-                     cancel: { [weak self] in
-                        if self?.moveToActionHandler.selectedMoveToFolder != nil {
+                     cancel: { [weak self] isHavingUnsavedChanges in
+                        if isHavingUnsavedChanges {
                             self?.showDiscardAlert(handleDiscard: {
                                 self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
                                 self?.dismissActionSheet()
@@ -557,10 +552,15 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                             self?.dismissActionSheet()
                         }
                      },
-                     done: { [weak self] in
+                     done: { [weak self] isHavingUnsavedChanges in
+                        defer {
+                            self?.dismissActionSheet()
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                        guard isHavingUnsavedChanges else {
+                            return
+                        }
                         self?.moveToActionHandler.handleMoveToAction()
-                        self?.dismissActionSheet()
-                        self?.navigationController?.popViewController(animated: true)
                      })
     }
 }

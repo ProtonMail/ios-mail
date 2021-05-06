@@ -20,14 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import PMUIFoundations
 
 protocol LabelAsActionSheetProtocol {
     var user: UserManager { get }
     var labelId: String { get }
     var selectedLabelAsLabels: Set<LabelLocation> { get }
 
-    func handleLabelAsAction(shouldArchive: Bool, allOptions: [MenuLabel])
+    func handleLabelAsAction(shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType])
     func updateSelectedLabelAsDestination(menuLabel: MenuLabel?, isOn: Bool)
 }
 

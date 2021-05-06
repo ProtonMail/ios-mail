@@ -22,5 +22,39 @@
 
 struct MailListActionSheetViewModel {
     let title: String
-    let items: [MailListActionSheetItemViewModel]
+    private(set) var items: [MailListActionSheetItemViewModel] = []
+
+    init(labelId: String, title: String) {
+        self.title = title
+
+        items += [
+            .starActionViewModel(),
+            .unstarActionViewModel(),
+            .markUnreadActionViewModel(),
+            .markReadActionViewModel(),
+            .labelAsActionViewModel()
+        ]
+
+        if labelId == Message.Location.trash.rawValue {
+            items += [.moveToInboxActionViewModel()]
+        } else {
+            items += [.removeActionViewModel()]
+        }
+
+        if labelId == Message.Location.archive.rawValue {
+            items += [.moveToInboxActionViewModel()]
+        } else if labelId == Message.Location.spam.rawValue {
+            items += [.notSpamActionViewModel()]
+        } else {
+            items += [.moveToArchive()]
+        }
+
+        let locationsHavingSpam: [Message.Location] = [.draft, .spam, .sent, .trash]
+        if let location = Message.Location(rawValue: labelId), locationsHavingSpam.contains(location) {
+            items += [.removeActionViewModel()]
+        } else {
+            items += [.moveToSpam()]
+        }
+        items += [.moveToActionViewModel()]
+    }
 }
