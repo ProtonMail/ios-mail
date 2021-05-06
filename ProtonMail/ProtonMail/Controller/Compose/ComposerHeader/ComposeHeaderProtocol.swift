@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 import Foundation
 
-protocol ComposeViewDelegate: class {
+protocol ComposeViewDelegate: AnyObject {
     func composeViewWillPresentSubview()
     func composeViewWillDismissSubview()
     
@@ -50,7 +50,7 @@ protocol ComposeViewDelegate: class {
     func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?)
 }
 
-protocol ComposeViewDataSource: class {
+protocol ComposeViewDataSource: AnyObject {
     func ccBccIsShownInitially() -> Bool
     func composeViewContactsModelForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol]
     func composeViewSelectedContactsForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol]

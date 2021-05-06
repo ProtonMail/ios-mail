@@ -25,7 +25,7 @@ import Foundation
 import PMCommon
 import PMUIFoundations
 
-protocol LabelManagerProtocol: class {
+protocol LabelManagerProtocol: AnyObject {
     var data: [MenuLabel] { get }
     var type: PMLabelType { get }
     var user: UserManager { get }

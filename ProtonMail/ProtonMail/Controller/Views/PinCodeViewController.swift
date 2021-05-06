@@ -25,7 +25,7 @@ import Foundation
 import UIKit
 import PromiseKit
 
-protocol PinCodeViewControllerDelegate: class {
+protocol PinCodeViewControllerDelegate: AnyObject {
     func Cancel() -> Promise<Void>
     func Next()
 }

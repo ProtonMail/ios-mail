@@ -579,7 +579,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 // attach key
                 if attached == false, let context = msg.managedObjectContext {
                     let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                    let attachment = try? await(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
+                    let attachment = try? `await`(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
                     var error: NSError? = nil
                     error = context.saveUpstreamIfNeeded()
                     if error != nil {

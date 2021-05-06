@@ -22,7 +22,7 @@
 
 import UIKit
 
-protocol MenuItemTableViewCellDelegate: class {
+protocol MenuItemTableViewCellDelegate: AnyObject {
     func clickCollapsedArrow(labelID: String)
 }
 

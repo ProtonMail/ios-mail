@@ -24,7 +24,7 @@
 import Foundation
 import PromiseKit
 
-protocol ContactGroupEditViewControllerDelegate: class {
+protocol ContactGroupEditViewControllerDelegate: AnyObject {
     func update()
 }
 

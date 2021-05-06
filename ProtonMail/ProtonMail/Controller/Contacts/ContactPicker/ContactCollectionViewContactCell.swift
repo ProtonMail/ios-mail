@@ -24,7 +24,7 @@ import PMUIFoundations
 import UIKit
 
 
-protocol ContactCollectionViewContactCellDelegate: class {
+protocol ContactCollectionViewContactCellDelegate: AnyObject {
     func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
     func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?)
 }

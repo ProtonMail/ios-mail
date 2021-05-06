@@ -24,7 +24,7 @@ import PMUIFoundations
 import SwipyCell
 import UIKit
 
-protocol NewMailboxMessageCellDelegate: class {
+protocol NewMailboxMessageCellDelegate: AnyObject {
     func didSelectButtonStatusChange(id: String?)
 }
 

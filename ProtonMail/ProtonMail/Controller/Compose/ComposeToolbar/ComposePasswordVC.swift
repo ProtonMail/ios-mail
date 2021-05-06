@@ -23,7 +23,7 @@
 import PMUIFoundations
 import UIKit
 
-protocol ComposePasswordDelegate: class {
+protocol ComposePasswordDelegate: AnyObject {
     func apply(password: String, confirmPassword: String, hint: String)
     func removedPassword()
 }

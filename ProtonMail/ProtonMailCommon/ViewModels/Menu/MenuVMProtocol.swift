@@ -24,7 +24,7 @@ import Foundation
 import PromiseKit
 import PMAccountSwitcher
 
-protocol MenuVMProtocol: class {
+protocol MenuVMProtocol: AnyObject {
     var menuWidth: CGFloat! { get }
     var sections: [MenuSection] { get }
     var currentUser: UserManager? { get }

@@ -28,7 +28,7 @@ import PMKeymaker
 import Crypto
 import PMCommon
 
-protocol UsersManagerDelegate: class {
+protocol UsersManagerDelegate: AnyObject {
     func migrating()
     func session()
 }

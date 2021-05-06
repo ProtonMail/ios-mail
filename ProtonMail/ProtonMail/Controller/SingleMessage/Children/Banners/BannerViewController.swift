@@ -22,7 +22,7 @@
 
 import PMUIFoundations
 
-protocol BannerViewControllerDelegate: class {
+protocol BannerViewControllerDelegate: AnyObject {
     func loadRemoteContent()
     func loadEmbeddedImage()
     func handleMessageExpired()

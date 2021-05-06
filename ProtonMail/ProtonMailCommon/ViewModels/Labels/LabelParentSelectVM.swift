@@ -37,7 +37,7 @@ protocol LabelParentSelctVMProtocol {
     func finishSelect()
 }
 
-protocol LabelParentSelectDelegate: class {
+protocol LabelParentSelectDelegate: AnyObject {
     func select(parentID: String)
 }
 

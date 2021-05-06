@@ -24,7 +24,7 @@
 import TrustKit
 import PMCommon
 
-protocol TrustKitUIDelegate: class {
+protocol TrustKitUIDelegate: AnyObject {
     func onTrustKitValidationError(_ alert: UIAlertController)
 }
 

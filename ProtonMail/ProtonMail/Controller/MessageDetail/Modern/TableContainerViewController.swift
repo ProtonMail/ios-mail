@@ -23,7 +23,7 @@
 
 import UIKit
 
-protocol ScrollableContainer: class {
+protocol ScrollableContainer: AnyObject {
     func propogate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
     var scroller: UIScrollView { get }
     

@@ -32,7 +32,7 @@ typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType : Int) -> Void)
     case contactGroup = 2
 }
 
-protocol ContactPickerModelProtocol: class {
+protocol ContactPickerModelProtocol: AnyObject {
     
     var modelType: ContactPickerModelState { get }
     var contactTitle : String { get }

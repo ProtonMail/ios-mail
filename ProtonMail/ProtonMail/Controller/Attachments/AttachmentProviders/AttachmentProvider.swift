@@ -31,7 +31,7 @@ protocol AttachmentProvider {
 }
 
 
-protocol AttachmentController: class {
+protocol AttachmentController: AnyObject {
     func present(_ controller: UIViewController, animated: Bool, completion: (()->Void)?)
     func error(_ description: String)
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void>
@@ -70,7 +70,7 @@ extension AttachmentsTableViewController {
                 }
                 let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
                 
-                let attachment = try? await(fileData.contents.toAttachment(self.message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata))
+                let attachment = try? `await`(fileData.contents.toAttachment(self.message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata))
                 guard let att = attachment else {
                     PMLog.D(" Error during copying size incorrect")
                     self.error(LocalString._cant_copy_the_file)

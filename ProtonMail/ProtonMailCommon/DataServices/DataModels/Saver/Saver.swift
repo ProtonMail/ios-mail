@@ -23,7 +23,7 @@
 
 import Foundation
 
-protocol KeyValueStoreProvider: class {
+protocol KeyValueStoreProvider: AnyObject {
     func data(forKey key: String) -> Data?
     func int(forKey key: String) -> Int?
     func set(_ intValue: Int, forKey key: String)

@@ -23,6 +23,6 @@
 import Foundation
 import PMCommon
 
-protocol ViewModeDataSource: class {
+protocol ViewModeDataSource: AnyObject {
     func getCurrentViewMode() -> UserInfo.ViewMode
 }

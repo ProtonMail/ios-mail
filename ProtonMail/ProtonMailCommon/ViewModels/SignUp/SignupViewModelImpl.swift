@@ -192,7 +192,7 @@ class SignupViewModelImpl : SignupViewModel {
         if let key = self.newPrivateKey {
             {
                 do {
-                    let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: nil)))
+                    let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: nil)))
                     guard let moduls_id = authModuls.ModulusID else {
                         throw SignUpCreateUserError.invalidModulsID.error
                     }
@@ -242,9 +242,9 @@ class SignupViewModelImpl : SignupViewModel {
 //                                        try AuthCredential.setupToken(self.keypwd_with_keysalt)
 
                                         //need setup address
-                                        let setupAddrApi: AddressesResponse = try await(self.apiService.run( route: SetupAddressRequest(domain_name: self.domain, auth: auth)))
+                                        let setupAddrApi: AddressesResponse = try `await`(self.apiService.run( route: SetupAddressRequest(domain_name: self.domain, auth: auth)))
                                         //need setup keys
-                                        let authModuls_for_key: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: auth)))
+                                        let authModuls_for_key: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: auth)))
                                         guard let moduls_id_for_key = authModuls_for_key.ModulusID else {
                                             throw SignUpCreateUserError.invalidModulsID.error
                                         }
@@ -284,7 +284,7 @@ class SignupViewModelImpl : SignupViewModel {
                                             "Signature" : signed
                                         ]
                                         
-                                        let setupKeyApi = try await(self.apiService.run(route: SetupKeyRequest(address_id: addr_id!,
+                                        let setupKeyApi = try `await`(self.apiService.run(route: SetupKeyRequest(address_id: addr_id!,
                                                                                                                private_key: key,
                                                                                                                keysalt: self.keysalt!.encodeBase64(),
                                                                                                                signedKL: signedKeyList,

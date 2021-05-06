@@ -24,7 +24,7 @@ import MBProgressHUD
 import PMUIFoundations
 import UIKit
 
-protocol LabelManagerUIProtocol: class {
+protocol LabelManagerUIProtocol: AnyObject {
     func showLoadingHUD()
     func hideLoadingHUD()
     func reloadData()
