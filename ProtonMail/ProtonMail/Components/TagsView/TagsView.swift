@@ -22,7 +22,7 @@
 
 import UIKit
 
-protocol TagsView: class {
+protocol TagsView: AnyObject {
     var tagViews: [UIView] { get set }
 }
 

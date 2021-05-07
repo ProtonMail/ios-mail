@@ -24,7 +24,7 @@ import MBProgressHUD
 import PMUIFoundations
 import UIKit
 
-protocol LabelEditUIProtocol: class {
+protocol LabelEditUIProtocol: AnyObject {
     func updateParentFolderName()
     func checkDoneButtonStatus()
     func updatePaletteSection(index: Int)

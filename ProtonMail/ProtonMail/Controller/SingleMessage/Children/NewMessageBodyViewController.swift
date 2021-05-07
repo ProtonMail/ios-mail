@@ -25,7 +25,7 @@ import PMUIFoundations
 import TrustKit
 import UIKit
 
-protocol NewMessageBodyViewControllerDelegate: class {
+protocol NewMessageBodyViewControllerDelegate: AnyObject {
     func openUrl(_ url: URL)
     func openMailUrl(_ mailUrl: URL)
     func handleReload()

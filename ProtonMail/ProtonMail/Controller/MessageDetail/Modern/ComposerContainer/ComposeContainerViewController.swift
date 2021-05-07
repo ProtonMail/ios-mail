@@ -23,7 +23,7 @@
 import PMUIFoundations
 import UIKit
 
-protocol ComposeContainerUIProtocol: class {
+protocol ComposeContainerUIProtocol: AnyObject {
     func updateSendButton()
     func setLockStatus(isLock: Bool)
     func setExpirationStatus(isSetting: Bool)

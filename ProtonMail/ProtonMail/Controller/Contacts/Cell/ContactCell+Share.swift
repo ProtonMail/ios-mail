@@ -23,7 +23,7 @@
 
 import Foundation
 
-protocol ContactCellShare: class
+protocol ContactCellShare: AnyObject
 {
     func prepareContactGroupIcons(cell: UITableViewCell,
                                   contactGroupColors: [String],

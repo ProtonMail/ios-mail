@@ -24,7 +24,7 @@ import CoreData
 import Foundation
 import PMCommon
 
-protocol LabelEditVMProtocol: class {
+protocol LabelEditVMProtocol: AnyObject {
     var section: [NEWLabelEditViewModel.EditSection] { get }
     var colors: [String] { get }
     var type: PMLabelType { get }

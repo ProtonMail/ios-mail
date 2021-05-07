@@ -23,7 +23,7 @@
 import PMUIFoundations
 import UIKit
 
-protocol ComposeToolbarDelegate: class {
+protocol ComposeToolbarDelegate: AnyObject {
     func showEncryptOutsideView()
     func showExpireView()
     func showAttachmentView()

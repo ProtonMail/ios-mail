@@ -23,7 +23,7 @@
 import PMUIFoundations
 import UIKit
 
-protocol LabelPaletteCellDelegate: class {
+protocol LabelPaletteCellDelegate: AnyObject {
     func selectColor(hex: String, index: Int)
 }
 

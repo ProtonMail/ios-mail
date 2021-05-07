@@ -74,7 +74,7 @@ class StorefrontAnnotationCell: AutoSizedCell, StorefrontItemConfigurable {
     }
 }
 
-@objc protocol StorefrontBuyButtonCellDelegate: class {
+@objc protocol StorefrontBuyButtonCellDelegate: AnyObject {
     func buyButtonTapped()
 }
 class StorefrontBuyButtonCell: AutoSizedCell, StorefrontItemConfigurable  {

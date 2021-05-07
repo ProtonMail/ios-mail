@@ -23,7 +23,7 @@
 import PMUIFoundations
 import UIKit
 
-protocol ComposeExpirationDelegate: class {
+protocol ComposeExpirationDelegate: AnyObject {
     func update(expiration: TimeInterval)
 }
 

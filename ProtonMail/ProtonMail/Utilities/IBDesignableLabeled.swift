@@ -24,7 +24,7 @@
 import UIKit
 
 /// Calling method labelAtInterfaceBuilder() in prepareForInterfaceBuilder() of a concrete class will label cell with a class name in Interface Builder.
-protocol IBDesignableLabeled: class {
+protocol IBDesignableLabeled: AnyObject {
     var contentView: UIView { get }
 }
 extension IBDesignableLabeled {

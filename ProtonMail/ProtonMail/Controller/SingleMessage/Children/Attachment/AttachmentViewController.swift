@@ -22,7 +22,7 @@
 
 import UIKit
 
-protocol AttachmentViewControllerDelegate: class {
+protocol AttachmentViewControllerDelegate: AnyObject {
     func openAttachmentList()
 }
 

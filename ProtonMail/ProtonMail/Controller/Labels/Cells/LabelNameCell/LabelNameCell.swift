@@ -23,7 +23,7 @@
 import PMUIFoundations
 import UIKit
 
-protocol LabelNameDelegate: class {
+protocol LabelNameDelegate: AnyObject {
     func nameChanged(name: String)
 }
 

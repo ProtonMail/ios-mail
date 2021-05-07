@@ -40,7 +40,7 @@ protocol CacheStatusInject {
     var pinFailedCount : Int { get set }
 }
 
-protocol UnlockManagerDelegate : class {
+protocol UnlockManagerDelegate : AnyObject {
     func cleanAll()
     func unlocked()
     func isUserStored() -> Bool

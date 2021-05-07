@@ -30,7 +30,7 @@ import PMPayments
 #endif
 
 /// TODO:: this is temp
-protocol UserDataSource : class {
+protocol UserDataSource : AnyObject {
     var mailboxPassword : String { get }
     var newSchema : Bool { get }
     var addresses: [PMCommon.Address] { get }
@@ -51,7 +51,7 @@ protocol UserDataSource : class {
     func deleteFromEvents(addressIDRes: String)
 }
 
-protocol UserManagerSave : class {
+protocol UserManagerSave: AnyObject {
     func onSave(userManger: UserManager)
 }
 
