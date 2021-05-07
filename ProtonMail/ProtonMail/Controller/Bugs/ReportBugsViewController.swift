@@ -25,15 +25,19 @@ import Foundation
 import MBProgressHUD
 import PMPayments
 import SideMenuSwift
+import PMUIFoundations
 
 class ReportBugsViewController: ProtonMailViewController {
     var user: UserManager!
     fileprivate let bottomPadding: CGFloat = 30.0
+    fileprivate let textViewDefaultHeight: CGFloat = 120.0
+    fileprivate var beginningVerticalPositionOfKeyboard: CGFloat = 30.0
+    fileprivate let textViewInset: CGFloat = 16.0
+    fileprivate let topTextViewMargin: CGFloat = 24.0
     
     fileprivate var sendButton: UIBarButtonItem!
     @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var textViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var topTitleLabel: UILabel!
+    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     
     private var kSegueToTroubleshoot : String = "toTroubleShootSegue"
     private var reportSent: Bool = false
@@ -48,19 +52,32 @@ class ReportBugsViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = UIColorManager.BackgroundSecondary
         self.sendButton = UIBarButtonItem(title: LocalString._general_send_action,
                                           style: UIBarButtonItem.Style.plain,
                                           target: self,
                                           action: #selector(ReportBugsViewController.sendAction(_:)))
+        let sendButtonAttributes = FontManager.HeadlineSmall
+        self.sendButton.setTitleTextAttributes(
+            sendButtonAttributes.foregroundColor(UIColorManager.InteractionNormDisabled),
+            for: .disabled
+        )
+        self.sendButton.setTitleTextAttributes(
+            sendButtonAttributes.foregroundColor(UIColorManager.InteractionNorm),
+            for: .normal
+        )
         self.navigationItem.rightBarButtonItem = sendButton
         
-        textView.text = cachedBugReport.cachedBug
-        
-        topTitleLabel.text = LocalString._bug_description
+        if cachedBugReport.cachedBug.isEmpty {
+            addPlaceholder()
+        } else {
+            removePlaceholder()
+            textView.attributedText = cachedBugReport.cachedBug.apply(style: FontManager.Default)
+        }
         self.title = LocalString._menu_bugs_title
         
         self.textView.textContainer.lineFragmentPadding = 0
-        self.textView.textContainerInset = .zero
+        self.textView.textContainerInset = .init(all: textViewInset)
     }
     
     
@@ -98,15 +115,33 @@ class ReportBugsViewController: ProtonMailViewController {
             stop = true
         }
     }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        resizeHeightIfNeeded()
+    }
+
     // MARK: - Private methods
+
+    fileprivate func addPlaceholder() {
+        textView.attributedText = LocalString._bug_description.apply(style: FontManager.Default.foregroundColor(UIColorManager.TextHint))
+    }
+
+    fileprivate func removePlaceholder() {
+        textView.attributedText = .init()
+        textView.typingAttributes = FontManager.Default
+    }
+
     fileprivate func reset() {
-        textView.text = ""
+        removePlaceholder()
         cachedBugReport.cachedBug = ""
         updateSendButtonForText(textView.text)
+        resizeHeightIfNeeded()
+        addPlaceholder()
     }
     
     fileprivate func updateSendButtonForText(_ text: String?) {
-        sendButton.isEnabled = (text != nil) && !text!.isEmpty
+        sendButton.isEnabled = (text != nil) && !text!.isEmpty && !(text! == LocalString._bug_description)
     }
     
     // MARK: Actions
@@ -146,7 +181,7 @@ class ReportBugsViewController: ProtonMailViewController {
                 guard !self.checkDoh(error) else {
                     return
                 }
-                let alert = error.alertController()
+                let alert = error.alertController(LocalString._offline_bug_report)
                 alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             } else {
@@ -177,6 +212,17 @@ class ReportBugsViewController: ProtonMailViewController {
 
         return true
     }
+    
+    fileprivate func resizeHeightIfNeeded() {
+        let maxTextViewSize = CGSize(width: textView.frame.size.width, height: CGFloat.greatestFiniteMagnitude)
+        let wantedHeightAfterVerticalGrowth = textView.sizeThatFits(maxTextViewSize).height
+        if wantedHeightAfterVerticalGrowth < textViewDefaultHeight {
+            textViewHeightConstraint.constant = textViewDefaultHeight
+        } else {
+            let heightMinusKeyboard = view.bounds.height - topTextViewMargin - beginningVerticalPositionOfKeyboard
+            textViewHeightConstraint.constant = min(wantedHeightAfterVerticalGrowth + textViewInset * 2, heightMinusKeyboard + bottomPadding)
+        }
+    }
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
@@ -184,7 +230,7 @@ class ReportBugsViewController: ProtonMailViewController {
 extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
-        textViewBottomConstraint.constant = bottomPadding
+        beginningVerticalPositionOfKeyboard = bottomPadding
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
@@ -192,7 +238,7 @@ extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol
     
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
-        textViewBottomConstraint.constant = keyboardInfo.beginFrame.height + bottomPadding
+        beginningVerticalPositionOfKeyboard = view.window?.convert(keyboardInfo.endFrame, to: view).origin.y ?? bottomPadding
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
@@ -206,7 +252,20 @@ extension ReportBugsViewController: UITextViewDelegate {
         let changedText = oldText.replacingCharacters(in: range, with: text)
         updateSendButtonForText(changedText)
         cachedBugReport.cachedBug = changedText
+        resizeHeightIfNeeded()
         return true
+    }
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == LocalString._bug_description {
+            removePlaceholder()
+        }
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            addPlaceholder()
+        }
     }
 }
 

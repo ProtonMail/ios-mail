@@ -1446,6 +1446,10 @@
 		906B9E8FD660D2312ADAF7C18ACD0248 /* TouchID+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E341C7A4C59A405508EE4D80B2D742E /* TouchID+Helper.swift */; };
 		90861CA6F7DCACD0842BCA6A185DD8FC /* ComposeContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77DE57A0B78E8BC157323518DCA084E /* ComposeContainerViewController.swift */; };
 		90AEEB6118F66430B81960AB5FDACCF8 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52EFAA1E5968D63455EF89B7C3CCC5C2 /* WebViewController.swift */; };
+		90D388B9264431610097655C /* UIEdgeInsets+All.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D388B8264431610097655C /* UIEdgeInsets+All.swift */; };
+		90D388BA264431610097655C /* UIEdgeInsets+All.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D388B8264431610097655C /* UIEdgeInsets+All.swift */; };
+		90D388BB264431610097655C /* UIEdgeInsets+All.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D388B8264431610097655C /* UIEdgeInsets+All.swift */; };
+		90D388BC264431610097655C /* UIEdgeInsets+All.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D388B8264431610097655C /* UIEdgeInsets+All.swift */; };
 		90DF3A0765C91FDC4678D8BF443E5F38 /* Message+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2342422724509A168047AB7CC97F8CC0 /* Message+Constants.swift */; };
 		90F964393A0A945EAB4449C47BC4BFAE /* CoreDataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE806529A0A9DD9C13466174BE1C9E4 /* CoreDataCache.swift */; };
 		911805C79C34D32D980A3EA3BCF44AD2 /* ServicePlanHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A268F54F9D34443D73CA7ED589B5339 /* ServicePlanHeader.swift */; };
@@ -3392,6 +3396,7 @@
 		904EF45ADECDB5E125026F6A85A0C571 /* NSMutableAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		905502183909756FA3618F30C369DD71 /* MenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCoordinator.swift; sourceTree = "<group>"; };
 		90B9239CA4DC05CF27EDB94610595572 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		90D388B8264431610097655C /* UIEdgeInsets+All.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+All.swift"; sourceTree = "<group>"; };
 		90E89ED05611299BD505852A49471A9B /* ContainableComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainableComposeViewModel.swift; sourceTree = "<group>"; };
 		90F5A5B64761ADF908ACA015D0526FA5 /* StorageViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageViewCell.swift; sourceTree = "<group>"; };
 		90FF60F9FFC7E1CC1C1A0B1BD2E973C2 /* SelectableTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectableTableViewCell.xib; sourceTree = "<group>"; };
@@ -4506,6 +4511,7 @@
 				5D177BAB644338B3576C9A2FEE1934BF /* UIWindow+Extension.swift */,
 				680AA287FBEF2802C1CC7D4471321EF3 /* URL+Extension.swift */,
 				325B84027809DA6DB073D1D84C4DBBB2 /* UserDefaults+Extension.swift */,
+				90D388B8264431610097655C /* UIEdgeInsets+All.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -8207,6 +8213,7 @@
 				81DA877DC6D94AC5213A23130813056E /* Analytics.swift in Sources */,
 				5FBC7E38BF61CE739ACAB89758FBB3C6 /* AnyImagePickerDelegate.swift in Sources */,
 				DF90BA17E924977B873577AE034F8307 /* AnyStorefrontItem.swift in Sources */,
+				90D388B9264431610097655C /* UIEdgeInsets+All.swift in Sources */,
 				A2AB5608642643551D4CFD6903A63FD1 /* App.swift in Sources */,
 				412F884F7A9B1FEEBB6FBABCDA17790B /* AppCache.swift in Sources */,
 				A4B864A0110756258C51C4B768D0F1E4 /* AppCacheService.swift in Sources */,
@@ -9421,6 +9428,7 @@
 				75E806B32AE4F5D16381256B127C6301 /* RemoteAndEmbeddedBannerView.swift in Sources */,
 				811249FD21C4E61C8F420838C7EC9121 /* RemoteContentBannerView.swift in Sources */,
 				0B8D184238D90CADABB529C2049C5E02 /* ReportBugsViewController.swift in Sources */,
+				90D388BB264431610097655C /* UIEdgeInsets+All.swift in Sources */,
 				44B343F18132FF5605E3F365CC6AD337 /* ReportsAPI.swift in Sources */,
 				FA11B6A589FE1807370D0F766E38426A /* SRPClient.swift in Sources */,
 				780C99C4C808DB76F9928C7E9AB3816D /* Saver.swift in Sources */,
@@ -9894,6 +9902,7 @@
 				DB3CD65995DF9004FD1DB81AF727B971 /* OpenPGP+String+Extension.swift in Sources */,
 				B79B06B7C137447F4C8D49A2DE260ACA /* OrganizationsAPI.swift in Sources */,
 				0CDC65FB202C41A24BABB40B9327348A /* PMDocumentPickerViewController.swift in Sources */,
+				90D388BA264431610097655C /* UIEdgeInsets+All.swift in Sources */,
 				DDE1F0E986DBAD24F12A6332BBA3426E /* PMImagePickerController.swift in Sources */,
 				A9E6433F21B93FDD9AF8C61627BE76E9 /* PMLabelType.swift in Sources */,
 				FE38980315BBC29B5104A4288AC49261 /* PMPersistentQueue.swift in Sources */,
@@ -10185,6 +10194,7 @@
 				4A9CEC990FA98447E94B4A2D061686DF /* Message+String+Extension.swift in Sources */,
 				F5C052482D3681E31E00790BD792AEAC /* Message+Var+Extension.swift in Sources */,
 				0855AB84061C0791D7DD9359855F7CD2 /* Message.swift in Sources */,
+				90D388BC264431610097655C /* UIEdgeInsets+All.swift in Sources */,
 				BD3F4D1C5F071C7E815AB76D1841141F /* MessageAPI+Packages.swift in Sources */,
 				41400D940BEBF23E70821A6EDABC2D12 /* MessageAPI+Response.swift in Sources */,
 				3AB0164C18E62769BE249E23CC8AB1F6 /* MessageAPI+SendType.swift in Sources */,

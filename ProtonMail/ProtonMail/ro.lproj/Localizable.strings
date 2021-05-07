@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Răspuns tuturor";
 
 /* menu title */
-"Report Bugs" = "Raportare erori";
+"Report a bug" = "Raportare erori";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Raportare înșelăciune";

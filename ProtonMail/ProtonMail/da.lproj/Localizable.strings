@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Svar på alle";
 
 /* menu title */
-"Report Bugs" = "Anmeld fejl";
+"Report a bug" = "Anmeld fejl";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Anmeld phishing";

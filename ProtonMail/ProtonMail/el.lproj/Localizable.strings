@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Απάντηση σε όλους";
 
 /* menu title */
-"Report Bugs" = "Αναφορά σφαλμάτων";
+"Report a bug" = "Αναφορά σφαλμάτων";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Αναφορά ηλεκτρονικού «ψαρέματος»";

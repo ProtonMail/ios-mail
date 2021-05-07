@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Ответить всем";
 
 /* menu title */
-"Report Bugs" = "Сообщить об ошибках";
+"Report a bug" = "Сообщить об ошибках";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Пожаловаться на фишинг";

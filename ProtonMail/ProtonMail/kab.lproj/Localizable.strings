@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Err i meṛṛa";
 
 /* menu title */
-"Report Bugs" = "Azen ibugen";
+"Report a bug" = "Azen ibugen";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Azen aneqqis phishing";
