@@ -67,6 +67,8 @@ class SignInManager: Service {
         self.userInfo = nil
         // one time api and service
         let service = PMAPIService(doh: usersManager.doh, sessionUID: "")
+        service.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: service)
+        service.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         let userService = UserDataService(check: false, api: service)
         userService.sign(in: username,
                          password: password,
@@ -87,6 +89,8 @@ class SignInManager: Service {
         self.userInfo = nil
         // one time api and service
         let service = PMAPIService(doh: usersManager.doh, sessionUID: "")
+        service.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: service)
+        service.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         let userService = UserDataService(check: false, api: service)
         userService.sign(in: username,
                          password: password,

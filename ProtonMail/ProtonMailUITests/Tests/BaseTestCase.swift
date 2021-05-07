@@ -17,12 +17,19 @@ class BaseTestCase: XCTestCase {
     let app = XCUIApplication()
     var launchArguments = ["-clear_all_preference", "YES"]
     let testData = TestData()
+    var humanVerificationStubs = false
+    var forceUpgradeStubs = false
     
     override func setUp() {
         super.setUp()
         app.terminate()
         continueAfterFailure = false
         app.launchArguments = launchArguments
+        if humanVerificationStubs {
+            app.launchEnvironment["HumanVerificationStubs"] = "1"
+        } else if forceUpgradeStubs {
+            app.launchEnvironment["ForceUpgradeStubs"] = "1"
+        }
         app.launch()
         handleInterruption()
         

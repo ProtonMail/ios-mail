@@ -37,6 +37,10 @@ def pm_pods
   pod 'PMPayments', :git => 'git@gitlab.protontech.ch:apple/shared/pmpayments.git', :branch => 'develop'
   pod 'PMCoreTranslation', :git => 'git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git', :branch => 'develop'
   pod 'PMLog', :git => 'git@gitlab.protontech.ch:apple/shared/pmlog.git', :branch => 'master'
+  pod 'PMUIFoundations', :git => 'git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git', :branch => 'master'
+  pod 'PMHumanVerification', :git => 'git@gitlab.protontech.ch:apple/shared/pmhumanverification.git', :branch => 'Develop'
+  pod 'PMForceUpgrade', :git => 'git@gitlab.protontech.ch:apple/shared/pmforceupgrade.git', :branch => 'develop'
+  pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug']
 end
 
 def pm_share
@@ -73,6 +77,7 @@ end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
+  pod 'PMCoreTranslation', :git => 'git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git', :branch => 'develop'
 end
 
 target 'Share' do

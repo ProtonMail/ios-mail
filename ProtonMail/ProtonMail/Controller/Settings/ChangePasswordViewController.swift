@@ -174,7 +174,7 @@ class ChangePasswordViewController: UIViewController {
             viewModel.setNewPassword(currentPwdEditor.text!, new_pwd: newPwdEditor.text!, confirm_new_pwd: confirmPwdEditor.text!, tfaCode: self.cached2faCode, complete: { value, error in
                 self.cached2faCode = nil
                 MBProgressHUD.hide(for: self.view, animated: true)
-                if let error = error {
+                if let error = error, !error.isBadVersionError {
                     if error.code == APIErrorCode.UserErrorCode.currentWrong {
                         self.currentPwdEditor.becomeFirstResponder()
                     }
