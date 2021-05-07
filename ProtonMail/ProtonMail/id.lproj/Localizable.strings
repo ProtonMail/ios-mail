@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Balas semua";
 
 /* menu title */
-"Report Bugs" = "Laporkan bug";
+"Report a bug" = "Laporkan bug";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Laporkan Phishing";

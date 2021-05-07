@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="PFh-fl-VGv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="PFh-fl-VGv">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -59,15 +59,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bug Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0q-PU-hIm">
-                                <rect key="frame" x="20" y="58" width="127" height="21.5"/>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
-                                <color key="textColor" red="0.1663493812084198" green="0.17256289720535278" blue="0.17573174834251404" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
-                                <rect key="frame" x="20" y="87.5" width="728" height="916.5"/>
+                                <rect key="frame" x="0.0" y="74" width="768" height="120"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="lGA-Cq-8Mn"/>
+                                </constraints>
                                 <color key="textColor" red="0.1663493812084198" green="0.17256289720535278" blue="0.17573174834251404" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -78,12 +75,9 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="nEw-IQ-Gzw" firstAttribute="top" secondItem="5sX-Zk-W85" secondAttribute="bottom" constant="20" id="F0r-BE-NrT"/>
-                            <constraint firstItem="K0q-PU-hIm" firstAttribute="top" secondItem="tPy-OC-Itx" secondAttribute="bottom" constant="8" id="XaW-5W-cEG"/>
-                            <constraint firstItem="5sX-Zk-W85" firstAttribute="leading" secondItem="5q1-fl-xFV" secondAttribute="leadingMargin" id="YoW-Sr-z5T"/>
-                            <constraint firstItem="5sX-Zk-W85" firstAttribute="trailing" secondItem="5q1-fl-xFV" secondAttribute="trailingMargin" id="uwk-bn-Ose"/>
-                            <constraint firstItem="5sX-Zk-W85" firstAttribute="top" secondItem="K0q-PU-hIm" secondAttribute="bottom" constant="8" id="v6W-Bb-gmP"/>
-                            <constraint firstItem="K0q-PU-hIm" firstAttribute="leading" secondItem="5q1-fl-xFV" secondAttribute="leadingMargin" id="vIB-SQ-Rz2"/>
+                            <constraint firstItem="5sX-Zk-W85" firstAttribute="top" secondItem="tPy-OC-Itx" secondAttribute="bottom" constant="24" id="8dB-pc-t6C"/>
+                            <constraint firstItem="5sX-Zk-W85" firstAttribute="leading" secondItem="5q1-fl-xFV" secondAttribute="leading" id="JKt-IR-d0w"/>
+                            <constraint firstAttribute="trailing" secondItem="5sX-Zk-W85" secondAttribute="trailing" id="h71-3J-r9y"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="REPORT BUGS" id="V6k-R2-Ziv" userLabel="SETTINGS">
@@ -92,8 +86,7 @@
                     <connections>
                         <outlet property="menuButton" destination="G3s-bn-rVj" id="dRo-vS-Pzj"/>
                         <outlet property="textView" destination="5sX-Zk-W85" id="CLI-h2-uS2"/>
-                        <outlet property="textViewBottomConstraint" destination="F0r-BE-NrT" id="sH4-Q9-Mwl"/>
-                        <outlet property="topTitleLabel" destination="K0q-PU-hIm" id="XTI-xE-UyW"/>
+                        <outlet property="textViewHeightConstraint" destination="lGA-Cq-8Mn" id="3yw-w6-nre"/>
                         <segue destination="KJr-Mu-WLW" kind="presentation" identifier="toTroubleShootSegue" id="Gho-wU-eDO"/>
                     </connections>
                 </viewController>
@@ -387,7 +380,7 @@
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <prototypes>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="labelApplyCell" rowHeight="45" id="zeh-GA-VuO" customClass="LabelTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="672" height="45"/>
+                                                <rect key="frame" x="0.0" y="24.5" width="672" height="45"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zeh-GA-VuO" id="wuB-ho-YEh">
                                                     <rect key="frame" x="0.0" y="0.0" width="672" height="45"/>

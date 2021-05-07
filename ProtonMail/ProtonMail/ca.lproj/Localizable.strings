@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Respondre a tots";
 
 /* menu title */
-"Report Bugs" = "Informa d'un error";
+"Report a bug" = "Informa d'un error";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Informar de suplantació";

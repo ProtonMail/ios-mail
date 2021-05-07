@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Svara öllum";
 
 /* menu title */
-"Report Bugs" = "Tilkynna villur";
+"Report a bug" = "Tilkynna villur";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Tilkynna um veiðipóst (phishing)";

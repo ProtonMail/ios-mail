@@ -1755,7 +1755,7 @@
 "ReplyAll" = "全部回覆";
 
 /* menu title */
-"Report Bugs" = "錯誤回報";
+"Report a bug" = "錯誤回報";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "檢舉詐欺郵件";

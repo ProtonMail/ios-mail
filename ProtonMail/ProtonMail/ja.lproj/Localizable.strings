@@ -1755,7 +1755,7 @@
 "ReplyAll" = "全員に返信";
 
 /* menu title */
-"Report Bugs" = "バグを報告";
+"Report a bug" = "バグを報告";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "フィッシングを報告";

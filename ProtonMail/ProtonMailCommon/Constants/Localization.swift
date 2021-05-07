@@ -107,8 +107,8 @@ class LocalizedString {
     
     // Mark Menu
     lazy var _menu_button         = NSLocalizedString("Menu", comment: "menu title")
-    /// "Report Bugs"
-    lazy var _menu_bugs_title     = NSLocalizedString("Report Bugs", comment: "menu title")
+    /// "Report a bug"
+    lazy var _menu_bugs_title     = NSLocalizedString("Report a bug", comment: "menu title")
     /// "Inbox"
     lazy var _menu_inbox_title    =  NSLocalizedString("Inbox", comment: "menu title")
     /// "Starred"
@@ -1456,6 +1456,9 @@ class LocalizedString {
 
     /// "Thank you for submitting a bug report.  We have added your report to our bug tracking system."
     lazy var _thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system = NSLocalizedString("Thank you for submitting a bug report.  We have added your report to our bug tracking system.", comment: "")
+
+    /// "Offline Callback On Bug Report"
+    lazy var _offline_bug_report = NSLocalizedString("Offline", comment: "Title of the alert when the device is offline")
 
     /// "Label as..."
     lazy var _label_as_ = NSLocalizedString("Label as...", comment: "Title")

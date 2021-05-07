@@ -28,7 +28,7 @@ import PMCommon
 
 /**
  [ProtonMail Reports API]:
- https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md "Report bugs"
+ https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md "Report a bug"
  
  Reports API
  - Doc: [ProtonMail Reports API]

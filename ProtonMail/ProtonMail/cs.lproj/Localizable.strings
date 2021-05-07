@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Odpovědět všem";
 
 /* menu title */
-"Report Bugs" = "Nahlásit chybu";
+"Report a bug" = "Nahlásit chybu";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Oznámit Phishing";

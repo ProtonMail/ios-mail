@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Válasz mindenkinek";
 
 /* menu title */
-"Report Bugs" = "Hiba bejelentése";
+"Report a bug" = "Hiba bejelentése";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Adathalászat bejelentése";

@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Tümünü yanıtla";
 
 /* menu title */
-"Report Bugs" = "Hataları Bildir";
+"Report a bug" = "Hataları Bildir";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Kimlik avını raporla";

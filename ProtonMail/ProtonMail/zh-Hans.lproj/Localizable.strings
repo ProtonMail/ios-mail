@@ -1755,7 +1755,7 @@
 "ReplyAll" = "回复所有人";
 
 /* menu title */
-"Report Bugs" = "反馈问题";
+"Report a bug" = "反馈问题";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "举报欺诈邮件";

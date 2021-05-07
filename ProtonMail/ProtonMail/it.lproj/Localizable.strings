@@ -1755,7 +1755,7 @@
 "ReplyAll" = "Rispondi a tutti";
 
 /* menu title */
-"Report Bugs" = "Segnalazione bug";
+"Report a bug" = "Segnalazione bug";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Segnala phishing";
