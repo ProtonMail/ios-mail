@@ -66,76 +66,61 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     }
     
     @objc private func addButtonTapped() {
-        /// set title
-        let alertController = UIAlertController(title: LocalString._contacts_action_select_an_option,
-                                                message: nil,
-                                                preferredStyle: .actionSheet)
-        
-        /// set options
-        alertController.addAction(UIAlertAction(title: LocalString._contacts_add_contact,
+        let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { [weak self] _ in
+            self?.dismissActionSheet()
+        }
+        let headerView =
+            PMActionSheetHeaderView(title: LocalString._contacts_action_sheet_title,
+                                    subtitle: nil,
+                                    leftItem: cancelItem,
+                                    rightItem: nil)
+        let newContactAction =
+            PMActionSheetPlainItem(title: LocalString._contacts_new_contact,
+                                   icon: Asset.contactsNew.image,
+                                   iconColor: UIColorManager.IconNorm) { _ in
+                self.addContactTapped()
+            }
+        let newContactGroupAction =
+            PMActionSheetPlainItem(title: LocalString._contact_groups_new,
+                                   icon: Asset.contactGroupsNew.image,
+                                   iconColor: UIColorManager.IconNorm) { _ in
+                self.addContactGroupTapped()
+            }
+        let uploadDeviceContactAction =
+            PMActionSheetPlainItem(title: LocalString._contacts_upload_device_contacts,
+                                   icon: Asset.contactDeviceUpload.image,
+                                   iconColor: UIColorManager.IconNorm) { _ in
+                self.importButtonTapped()
+            }
+        let actionsGroup = PMActionSheetItemGroup(items: [newContactAction,
+                                                          newContactGroupAction,
+                                                          uploadDeviceContactAction],
+                                                  style: .clickable)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup])
+        actionSheet.presentAt(self.tabBarController ?? self, animated: true)
+    }
+    
+    private func importButtonTapped() {
+        let alertController = UIAlertController(title: LocalString._contacts_title,
+                                                message: LocalString._upload_ios_contacts_to_protonmail,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
                                                 style: .default,
-                                                handler: {
-                                                    (action) -> Void in
-                                                    self.addContactTapped()
+                                                handler: { (action) -> Void in
+                                                    self.performSegue(withIdentifier: self.kSegueToImportView,
+                                                                      sender: self)
         }))
-        
-        alertController.addAction(UIAlertAction(title: LocalString._contact_groups_add,
-                                                style: .default,
-                                                handler: {
-                                                    (action) -> Void in
-                                                    self.addContactGroupTapped()
-        }))
-        
-        /// set cancel
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
                                                 style: .cancel,
                                                 handler: nil))
-        
-        /// present
-        alertController.popoverPresentationController?.barButtonItem = addBarButtonItem
-        alertController.popoverPresentationController?.sourceRect = self.view.frame
-        alertController.assignActionsAccessibilityIdentifiers()
         self.present(alertController, animated: true, completion: nil)
     }
     
-    @objc private func importButtonTapped() {
-        let alertController = UIAlertController(title: LocalString._contacts_action_select_an_option,
-                                                message: nil,
-                                                preferredStyle: .actionSheet)
-        
-        alertController.addAction(UIAlertAction(title: LocalString._contacts_upload_contacts, style: .default, handler: { (action) -> Void in
-            self.navigationController?.popViewController(animated: true)
-            
-            let alertController = UIAlertController(title: LocalString._contacts_title,
-                                                    message: LocalString._upload_ios_contacts_to_protonmail,
-                                                    preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
-                                                    style: .default,
-                                                    handler: { (action) -> Void in
-                                                        self.performSegue(withIdentifier: self.kSegueToImportView,
-                                                                          sender: self)
-            }))
-            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            self.present(alertController, animated: true, completion: nil)
-        }))
-        
-        /// set cancel
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
-                                                style: .cancel,
-                                                handler: nil))
-        
-        /// present
-        alertController.popoverPresentationController?.barButtonItem = addBarButtonItem
-        alertController.popoverPresentationController?.sourceRect = self.view.frame
-        alertController.assignActionsAccessibilityIdentifiers()
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    @objc private func addContactTapped() {
+    private func addContactTapped() {
         self.performSegue(withIdentifier: kAddContactSugue, sender: self)
     }
     
-    @objc private func addContactGroupTapped() {
+    private func addContactGroupTapped() {
         if let user = self.user, user.isPaid  {
             self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
         } else {
