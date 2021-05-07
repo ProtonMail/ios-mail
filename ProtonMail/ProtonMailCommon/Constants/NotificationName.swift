@@ -35,11 +35,6 @@ extension Notification.Name {
         return .init(rawValue: "Application.TouchStatusBar")
     }
     
-    /// notify user the app need to be upgraded
-    static var forceUpgrade: Notification.Name {
-        return .init(rawValue: "Application.ForceUpgrade")
-    }
-    
     /// when received a custom url schema. ex. verify code
     static var customUrlSchema: Notification.Name {
         return .init(rawValue: "Application.CustomUrlSchema")

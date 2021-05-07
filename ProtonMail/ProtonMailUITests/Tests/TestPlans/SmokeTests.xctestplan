@@ -22,6 +22,7 @@
         "AccountSettingsTests\/testNavigateToDefaultEmailAddress()",
         "ContactsTests\/testEditContact()",
         "ContactsTests\/testEditGroup()",
+        "HumanVerificationTests\/testHumanVerification()",
         "LabelsFoldersTests\/testCreateAndDeleteCustomFolder()",
         "LabelsFoldersTests\/testCreateAndDeleteCustomLabel()",
         "LoginTests\/testLoginWithOnePass()",

@@ -23,14 +23,17 @@
 
 import Foundation
 import MBProgressHUD
+import PMCommon
 
 extension Error
 {
     func alertToast() ->Void {
+        guard !(self as NSError).isBadVersionError else { return }
         MBProgressHUD.alertToast(errorString: localizedDescription)
     }
     
     func alert(at view: UIView) ->Void {
+        guard !(self as NSError).isBadVersionError else { return }
         MBProgressHUD.alert(at: view, errorString: localizedDescription)
     }
     

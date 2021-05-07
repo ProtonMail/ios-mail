@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PMCommon
 
 extension NSError {
     
@@ -82,6 +83,9 @@ extension NSError {
         }
         return isInternetIssue
     }
-    
-    
+
+    var isBadVersionError: Bool {
+        return self.code == PMCommon.APIErrorCode.badAppVersion || self.code == PMCommon.APIErrorCode.badApiVersion
+    }
+
 }

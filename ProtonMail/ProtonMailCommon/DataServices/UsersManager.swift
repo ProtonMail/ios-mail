@@ -27,6 +27,9 @@ import PromiseKit
 import PMKeymaker
 import Crypto
 import PMCommon
+#if !APP_EXTENSION
+import PMHumanVerification
+#endif
 
 protocol UsersManagerDelegate: class {
     func migrating()
@@ -173,6 +176,10 @@ class UsersManager : Service, Migrate {
         //let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
         let apiService = PMAPIService(doh: self.doh, sessionUID: session)
         apiService.serviceDelegate = self
+        #if !APP_EXTENSION
+        apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
+        apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+        #endif
         let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
         newUser.delegate = self
         self.removeDisconnectedUser(.init(defaultDisplayName: newUser.defaultDisplayName,
@@ -369,6 +376,10 @@ class UsersManager : Service, Migrate {
             
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             apiService.serviceDelegate = self
+            #if !APP_EXTENSION
+            apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
+            apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+            #endif
             let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
@@ -429,6 +440,10 @@ class UsersManager : Service, Migrate {
                 let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 apiService.serviceDelegate = self
+                #if !APP_EXTENSION
+                apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
+                apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+                #endif
                 let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
                 newUser.delegate = self
                 users.append(newUser)
@@ -697,6 +712,10 @@ extension UsersManager {
             let userID = user.userId
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             apiService.serviceDelegate = self
+            #if !APP_EXTENSION
+            apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
+            apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+            #endif
             let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
@@ -743,6 +762,10 @@ extension UsersManager {
                 let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 apiService.serviceDelegate = self
+                #if !APP_EXTENSION
+                apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
+                apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+                #endif
                 let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
                 newUser.delegate = self
                 users.append(newUser)

@@ -450,8 +450,15 @@
 		371A41B911AD00F666F40C049A9EECEE /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BE9D2FABB2F4204098EE8B5588DE5C /* Settings+Defined.swift */; };
 		37388B6B6676993FBDB9C4105FCF5A33 /* ContactDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D6B81CADB11CAD01B8E46E92DF6B12 /* ContactDetailsViewModel.swift */; };
 		373EF13536AA14C156F4935597950164 /* HtmlEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = A6C04767BA1CE507C0BA14CCD593576F /* HtmlEditor.js */; };
+		3773D362262A2A230016B859 /* HumanVerificationRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3773D361262A2A230016B859 /* HumanVerificationRobot.swift */; };
+		3773D4D9262B143C0016B859 /* ForceUpgradeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3773D4D8262B143B0016B859 /* ForceUpgradeTests.swift */; };
 		3796ED98A01848ABA4DB967E32D790E7 /* ContactDetailsViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF763E07270F62BEC7CF8DE84EB86D8 /* ContactDetailsViewModelImpl.swift */; };
 		37CC5A7C62FF7FD4DDBA192C62FCBB5F /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7872DBC0CE90F88AD865EFB3C8D5B51C /* SignIn.storyboard */; };
+		37DA6BD6262973DB00D01F55 /* HumanVerificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DA6BD5262973DB00D01F55 /* HumanVerificationManager.swift */; };
+		37DA6BD8262973DB00D01F55 /* HumanVerificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DA6BD5262973DB00D01F55 /* HumanVerificationManager.swift */; };
+		37DA6CAE2629893500D01F55 /* ForceUpgradeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DA6CAD2629893500D01F55 /* ForceUpgradeManager.swift */; };
+		37DA6CB02629893500D01F55 /* ForceUpgradeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DA6CAD2629893500D01F55 /* ForceUpgradeManager.swift */; };
+		37DA6CFC2629B76700D01F55 /* HumanVerificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DA6CFB2629B76700D01F55 /* HumanVerificationTests.swift */; };
 		37DAE617BC5F06C3B3B62EC876B9BDA5 /* ContactsDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AE767C6397168279C0ADCF111E1383 /* ContactsDefined.swift */; };
 		37E6341675484BA5AB76775412FBF750 /* ViewModelServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14199450E90754880823E59D3068A8F4 /* ViewModelServiceImpl.swift */; };
 		37F859AF2D4F48027EFE98068D61FAA1 /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0214F4524AF2E8823C6C57E07A7C305A /* UIScrollView+Extension.swift */; };
@@ -546,7 +553,6 @@
 		44338554D399CC6B3888A218C865FB05 /* NotificationCenter+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B924404B24EC8056D1E834431E6614 /* NotificationCenter+KeyboardExtension.swift */; };
 		4450AF55BD9DDBD939CCF32E2D877A50 /* LabelEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F316188242477E404DB5C128DA38712 /* LabelEditViewController.swift */; };
 		44B343F18132FF5605E3F365CC6AD337 /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
-		44BA9354B7960F0D530F15A528A1A2F4 /* ForceUpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AA9CD05E95098F2E1A5F5ADED547BF /* ForceUpgradeView.swift */; };
 		44C252A90EBE0F1DF3CF5C408C7C7A04 /* BioAuthenticating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB44CB6D5A2E50712713374FC6B482C /* BioAuthenticating.swift */; };
 		44D5B94E288F1DFB58B401F5C310ADAE /* ContactGroupSelectEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868B9DB322FDF331F2E057421684798D /* ContactGroupSelectEmailViewModel.swift */; };
 		44D9562BF3BFD11754EE64C1A9858052 /* ShareUnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9124F85553079D292C10B6135CE2CD /* ShareUnlockPinCodeModelImpl.swift */; };
@@ -883,7 +889,6 @@
 		6A0E256F2AD0A8BD02B861A2D114302E /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4A5F1C9B9B429AB005131084CC1554 /* KeychainWrapper.swift */; };
 		6A231C121B65B738854D06059DD601E3 /* ContactGroupsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4EE54A268109D2981B1AF1C57F7040 /* ContactGroupsViewCell.swift */; };
 		6A25D4621BD0EA344CA63038F536C166 /* SettingsLockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557EDDD2F75D3AD64D8574EC4EF51077 /* SettingsLockCoordinator.swift */; };
-		6A378C62A3EFD64B079D027DBE5CFDD3 /* ForceUpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AA9CD05E95098F2E1A5F5ADED547BF /* ForceUpgradeView.swift */; };
 		6A4E96B40AEA073453C285E358C25D71 /* MessageAttachmentsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47904ABCB915E53DA53742D106A9D21 /* MessageAttachmentsCoordinator.swift */; };
 		6A5FF586DA4AACA25910507A29055BB1 /* EncryptionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300A42E73CE48B7B3B4F8A70ABFA3C /* EncryptionKit.swift */; };
 		6AAE2C6D91DAE0C565346D4817CE5301 /* DomainAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6B6DA72FC64376C0F63D8E75593A09 /* DomainAPI.swift */; };
@@ -1127,7 +1132,6 @@
 		888052BD938AEC8A1B291D6DE2143022 /* SettingsGesturesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970048A9C65B4A39A882ECD6742D1B4C /* SettingsGesturesCoordinator.swift */; };
 		8884F57E7501757C12651DE4D8442A02 /* LinkOpeningMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006B4EB43FF5EB36A9D584477B9777C9 /* LinkOpeningMode.swift */; };
 		889A9738E20467DBD5B490E1CEA8F3BC /* SettingsGestureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AA750B6B171EF6759553F4F16CF1C9 /* SettingsGestureViewModel.swift */; };
-		889EEE1EDADB651B4FA530B58904F6AE /* ForceUpgradeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D9667E37D3C989F4A573929F329B87D /* ForceUpgradeView.xib */; };
 		88A1F5419E81730BED3A992B25CA7E06 /* QuotedPrintable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0869F01BF78BFA135AF9E1654905D3A9 /* QuotedPrintable.swift */; };
 		88A65111ABCFED5CA208235F73E78EAE /* UpgradeAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642BAB85BF31A87E9AE6400AB84E65CF /* UpgradeAlertViewModel.swift */; };
 		88AF0A78EE71F93D2D2A4F58CB7A8DCD /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5285D8EEFAB67EE756E374E86D04AF5 /* MessageDetailBottomView.xib */; };
@@ -1429,7 +1433,6 @@
 		AD3FC9A8281D52D92DD6AB2AC337BBE4 /* Otp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5DB3F8B4300F56E6B07717CFD02181 /* Otp.swift */; };
 		AD6BC462886581D44928BD3E102FDABE /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDEEB4FE40AE05D69323DFE6EBD375E /* String+Empty.swift */; };
 		ADA1DEE8C30AEA46B9CADF452C3C5792 /* ComposeContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA79CC603CE1C8009B44AFF554E984A /* ComposeContainerViewModel.swift */; };
-		ADA70D31EA51254CB5EE9DE928D34FB4 /* ForceUpgradeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D9667E37D3C989F4A573929F329B87D /* ForceUpgradeView.xib */; };
 		ADE5C94F5057C65080C219518A266625 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57CA6DB7B96640D8E5ADE7AA38DAEB4 /* AddressBookService.swift */; };
 		AE1C2969342BBAD48DAA1C8DCE1D69D2 /* UserCachedStatus+NotificationSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EFB2E7F66C228E239E6B8C080B2355 /* UserCachedStatus+NotificationSnoozerCore.swift */; };
 		AE3A658C03AFFB900A9DE60B22430701 /* LabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8F91DDC0A969EA9035A26B837BFF4 /* LabelsView.swift */; };
@@ -2468,7 +2471,12 @@
 		366440FD86C2A31F36A17127B4F2D8B4 /* FileManager+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		36EBFF7A70D5FE8F033BC71378E8E17A /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		37148171E21C75FFBFE2661ED75A49AE /* PushNotificationServiceSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationServiceSubscription.swift; sourceTree = "<group>"; };
+		3773D361262A2A230016B859 /* HumanVerificationRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationRobot.swift; sourceTree = "<group>"; };
+		3773D4D8262B143B0016B859 /* ForceUpgradeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceUpgradeTests.swift; sourceTree = "<group>"; };
 		379A95E7F50DC578342DE3A3EA92FF7D /* Pods-Siri.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Siri.release.xcconfig"; path = "Pods/Target Support Files/Pods-Siri/Pods-Siri.release.xcconfig"; sourceTree = "<group>"; };
+		37DA6BD5262973DB00D01F55 /* HumanVerificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationManager.swift; sourceTree = "<group>"; };
+		37DA6CAD2629893500D01F55 /* ForceUpgradeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceUpgradeManager.swift; sourceTree = "<group>"; };
+		37DA6CFB2629B76700D01F55 /* HumanVerificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationTests.swift; sourceTree = "<group>"; };
 		38144BF07B75CAB6D3B53E8148AC747B /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		3837129A19F297C0079CE5AF3176490A /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
 		38CCA3B1062F0427A8266881B161951C /* SpamScoreWarningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpamScoreWarningView.xib; sourceTree = "<group>"; };
@@ -2737,7 +2745,6 @@
 		75FFC0F937D149117E07B6ADFEF9186F /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
 		760C5DA9DF82644FD4A749CF84130A95 /* String+Toast+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Toast+Extension.swift"; sourceTree = "<group>"; };
 		7627FEBF2F33A575273ACF9A8A0AA738 /* SettingsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAPI.swift; sourceTree = "<group>"; };
-		76AA9CD05E95098F2E1A5F5ADED547BF /* ForceUpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceUpgradeView.swift; sourceTree = "<group>"; };
 		76C59E968B84EFA98595260E397FD856 /* ContactGroupSubSelectionViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSubSelectionViewModelImpl.swift; sourceTree = "<group>"; };
 		7701811CC159E155675343DC85A414BD /* NetworkTroubleShootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTroubleShootCoordinator.swift; sourceTree = "<group>"; };
 		77470A28987E8BF0D25380DCA11EE454 /* DateFormatter+VCardBirthdayTextFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+VCardBirthdayTextFormatterTests.swift"; sourceTree = "<group>"; };
@@ -2897,7 +2904,6 @@
 		9CFE3868B0060D33182C2D17832CAF5F /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = APIService.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9D2DF54E18BEB8D52362623451A13350 /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		9D3541C080FEB2E40FF2EC49FBD12E8E /* InboxRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxRobot.swift; sourceTree = "<group>"; };
-		9D9667E37D3C989F4A573929F329B87D /* ForceUpgradeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForceUpgradeView.xib; sourceTree = "<group>"; };
 		9DB1C20863F2073B64B8819A059F313F /* Onboarding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		9DF670755650E5DD985579607F574B57 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		9DF88A834B12464DF1599E364D514B85 /* HumanCheckMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckMenuViewController.swift; sourceTree = "<group>"; };
@@ -3398,6 +3404,8 @@
 				48C7A0F9BCC6AC42892A9E6B5DF67120 /* CoreDataStore.swift */,
 				338B5030AA2AC5D7A9B5F4BCE1CDEEA0 /* CoreDataStoreTest.swift */,
 				DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */,
+				37DA6CAD2629893500D01F55 /* ForceUpgradeManager.swift */,
+				37DA6BD5262973DB00D01F55 /* HumanVerificationManager.swift */,
 				475371327F0AFA5EBE8C9E572ADC90F5 /* KeyManager.swift */,
 				2407BF5796C9E19D445712F8FD6D18A2 /* LabelsDataService.swift */,
 				9E8B4288C5616BC0386F1E7673A353E7 /* LocalNotificationService.swift */,
@@ -3445,6 +3453,8 @@
 				A7081D7BD43E6D25BFF6342BBBAF0F47 /* Composer */,
 				294973B01BBF6D11B2350E979CA8C4AE /* Contacts */,
 				073D1FC81ECA32ECB65DA4B15292FECA /* Drafts */,
+				3773D4D7262B14120016B859 /* ForceUpgrade */,
+				37DA6CFA2629B72000D01F55 /* HumanVerification */,
 				B1F874B764C3FFBF854B6DBF731EB8F6 /* LabelFolder */,
 				1C1B82D542CF2D686015AD43EC12C5AE /* Login */,
 				66C245856B49003030A4B5C4955E9C72 /* Logout */,
@@ -3828,8 +3838,6 @@
 				215A2C4F86BB7CF8BD48A4132F16CB0E /* BioCodeView.swift */,
 				7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */,
 				0D3F8063AC2797A497E3780E5689868D /* DropLandingZone.swift */,
-				76AA9CD05E95098F2E1A5F5ADED547BF /* ForceUpgradeView.swift */,
-				9D9667E37D3C989F4A573929F329B87D /* ForceUpgradeView.xib */,
 				D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */,
 				C0A6A9213EBF556CB9344EDEDD80B021 /* LabelDisplayView.xib */,
 				5AE81D376E0F8F347F32607EFABE1337 /* LoadingView.swift */,
@@ -3904,6 +3912,30 @@
 				04CAE4733926A58198B65D2DC1B50F00 /* ContactGroupViewModelImpl.swift */,
 			);
 			path = ContactGroup;
+			sourceTree = "<group>";
+		};
+		3773D360262A29F50016B859 /* HumanVerification */ = {
+			isa = PBXGroup;
+			children = (
+				3773D361262A2A230016B859 /* HumanVerificationRobot.swift */,
+			);
+			path = HumanVerification;
+			sourceTree = "<group>";
+		};
+		3773D4D7262B14120016B859 /* ForceUpgrade */ = {
+			isa = PBXGroup;
+			children = (
+				3773D4D8262B143B0016B859 /* ForceUpgradeTests.swift */,
+			);
+			path = ForceUpgrade;
+			sourceTree = "<group>";
+		};
+		37DA6CFA2629B72000D01F55 /* HumanVerification */ = {
+			isa = PBXGroup;
+			children = (
+				37DA6CFB2629B76700D01F55 /* HumanVerificationTests.swift */,
+			);
+			path = HumanVerification;
 			sourceTree = "<group>";
 		};
 		395DB8FC12730E6D4CE4A2F11AEF5DC0 /* PushService */ = {
@@ -4188,6 +4220,7 @@
 				0CE59C23C85E4F44C4AAD88EB046503C /* ManageAccounts */,
 				04CFA334F535FC9A18B0C0471F183FF4 /* Menu */,
 				F8E6C6A44201E1A9B5B019F054C2DAF9 /* Settings */,
+				3773D360262A29F50016B859 /* HumanVerification */,
 			);
 			path = Robots;
 			sourceTree = "<group>";
@@ -5595,6 +5628,7 @@
 				FC0C0B7EA8A8FBB727A5ADE1E1495779 /* Sources */,
 				2B857D75F91317177E8959F47BA20486 /* Frameworks */,
 				62D3021FF0F850AB3DDA2E25EAFA4C1B /* Resources */,
+				B44AF5FD5C538788951081B7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -6032,7 +6066,6 @@
 				4C278335DF8F682CB41DDBE437E35276 /* DurationPickerViewController.xib in Resources */,
 				78F95849907F2D42532CF5AE1BEC2123 /* ExpirationView.xib in Resources */,
 				DE25A58F063F9553B41A12F653064371 /* ExpirationWarningHeaderCell.xib in Resources */,
-				ADA70D31EA51254CB5EE9DE928D34FB4 /* ForceUpgradeView.xib in Resources */,
 				A20CA81EF0D00E50A6F350B15253B0D8 /* GeneralSettingActionCell.xib in Resources */,
 				9D8AA94044019EE989862A88469971C1 /* GeneralSettingViewCell.xib in Resources */,
 				2F502E26FF1CB0F6178CA27F2FF94E92 /* HtmlEditor.css in Resources */,
@@ -6109,7 +6142,6 @@
 				B5B27CCDF8981984DEA0C92B2AC56FB5 /* DurationPickerViewController.xib in Resources */,
 				E2D4C9A8E9CEF40C493D1FDFE6896434 /* ExpirationView.xib in Resources */,
 				DD80543BA11F118055C8ED60F0C025EE /* ExpirationWarningHeaderCell.xib in Resources */,
-				889EEE1EDADB651B4FA530B58904F6AE /* ForceUpgradeView.xib in Resources */,
 				3AA3CB72CF7DE62B020F41B963C98FAA /* GeneralSettingActionCell.xib in Resources */,
 				88726C426B9D5CED48CBB851DEBA9717 /* GeneralSettingViewCell.xib in Resources */,
 				611B705D8210806CBB9FEFBD436C98BF /* HtmlEditor.css in Resources */,
@@ -6445,9 +6477,13 @@
 				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PMChallenge/PMChallenge.framework",
 				"${BUILT_PRODUCTS_DIR}/PMCommon/PMCommon.framework",
 				"${BUILT_PRODUCTS_DIR}/PMCoreTranslation/PMCoreTranslation.framework",
+				"${BUILT_PRODUCTS_DIR}/PMForceUpgrade/PMForceUpgrade.framework",
+				"${BUILT_PRODUCTS_DIR}/PMHumanVerification/PMHumanVerification.framework",
+				"${BUILT_PRODUCTS_DIR}/PMUIFoundations/PMUIFoundations.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -6470,9 +6506,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMChallenge.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCommon.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCoreTranslation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMForceUpgrade.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMHumanVerification.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMUIFoundations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -6512,6 +6552,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B44AF5FD5C538788951081B7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/PMCoreTranslation/PMCoreTranslation.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCoreTranslation.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		B72357FB89BB57B686695C3F5724852D /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6543,9 +6601,13 @@
 				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PMChallenge/PMChallenge.framework",
 				"${BUILT_PRODUCTS_DIR}/PMCommon/PMCommon.framework",
 				"${BUILT_PRODUCTS_DIR}/PMCoreTranslation/PMCoreTranslation.framework",
+				"${BUILT_PRODUCTS_DIR}/PMForceUpgrade/PMForceUpgrade.framework",
+				"${BUILT_PRODUCTS_DIR}/PMHumanVerification/PMHumanVerification.framework",
+				"${BUILT_PRODUCTS_DIR}/PMUIFoundations/PMUIFoundations.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -6568,9 +6630,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMChallenge.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCommon.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCoreTranslation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMForceUpgrade.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMHumanVerification.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMUIFoundations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -7060,7 +7126,6 @@
 				CC3DB70813C01D33892530589099992B /* FolderEditingViewModelImpl .swift in Sources */,
 				D16D95D7A6A4D03761B972DB3A60341A /* FolderboxViewModelImpl.swift in Sources */,
 				A07D710E56B39CF6A9E9F94E5511CE24 /* Fonts.swift in Sources */,
-				44BA9354B7960F0D530F15A528A1A2F4 /* ForceUpgradeView.swift in Sources */,
 				450818E1FCADD68E679DEDEAAA97676D /* Foundation+Extension.swift in Sources */,
 				64B71D4524861CCE5DA02014EB54FFAB /* General2FAViewModelImpl.swift in Sources */,
 				86C0E2F7D1FB1BF7AE46580117DAC976 /* GeneralSettingActionCell.swift in Sources */,
@@ -7205,6 +7270,7 @@
 				3062C7F5707A5B792112747FA45FB48A /* NotificationName.swift in Sources */,
 				6E6084A47AE00E45DE695555A7BA24B7 /* NotificationsSnoozer.swift in Sources */,
 				CD363AB14F086A2C9C56132A0F944DDA /* NotificationsSnoozerCore.swift in Sources */,
+				37DA6BD6262973DB00D01F55 /* HumanVerificationManager.swift in Sources */,
 				9E0168A849F55F77372A4C644140087C /* Onboarding.swift in Sources */,
 				BEA98836096B013C6D83F5172795DA09 /* OnboardingView.swift in Sources */,
 				A3BCF0E24697018917EB2040E8B0EE4B /* OnboardingViewController.swift in Sources */,
@@ -7296,6 +7362,7 @@
 				FEFEFE67385EE1D22A004FA4D8771A71 /* SignInManager.swift in Sources */,
 				82DD3C30B97B92CB58E84B9598442554 /* SignInViewController.swift in Sources */,
 				E20408F50EA4F9E209C894391753FF19 /* SignInViewModel.swift in Sources */,
+				37DA6CAE2629893500D01F55 /* ForceUpgradeManager.swift in Sources */,
 				FF9485B6BF07BD9F040979B9E7A9BA92 /* SignInViewModelImpl.swift in Sources */,
 				1E7522BABCC657E429D5D4E38D7326E5 /* SignUp+Error.swift in Sources */,
 				12E191DDD05451180364B839A3718410 /* SignUpEmailViewController.swift in Sources */,
@@ -7636,7 +7703,6 @@
 				C7CFB07D275EFCC8033DD8DB1A37CF88 /* FolderEditingViewModelImpl .swift in Sources */,
 				5BF9AB9C4FBCDDF4DE40718C16406DFF /* FolderboxViewModelImpl.swift in Sources */,
 				0F4558D5FC030B10CF54D2B09FA18E49 /* Fonts.swift in Sources */,
-				6A378C62A3EFD64B079D027DBE5CFDD3 /* ForceUpgradeView.swift in Sources */,
 				3ABF24A184F0084019B954FFBCD990B8 /* Foundation+Extension.swift in Sources */,
 				97FEA651880A7FAB26C1A6790BB3A75F /* General2FAViewModelImpl.swift in Sources */,
 				037FABCFA3B05F82C3A9BAE59E48915D /* GeneralSettingActionCell.swift in Sources */,
@@ -7706,6 +7772,7 @@
 				B2448D5CBC7B34D66386A165CBB2C63E /* MailboxPasswordViewController.swift in Sources */,
 				8415B78B597015374248455E31A3BC5E /* MailboxRateReviewCell.swift in Sources */,
 				77FA61E5A274F02A98876EA49975CB57 /* MailboxViewController.swift in Sources */,
+				37DA6BD8262973DB00D01F55 /* HumanVerificationManager.swift in Sources */,
 				03707D2C6D04541FD01546ECC5C5A420 /* MailboxViewModel.swift in Sources */,
 				3E30E2232D703928A764AA1BBC80C690 /* MailboxViewModelImpl.swift in Sources */,
 				9B0C9424459D866EB2ADF60C06F5FAAA /* MenuButtonViewCell.swift in Sources */,
@@ -7920,6 +7987,7 @@
 				1893B1330F8436A5A38076EB834037BD /* TwoFACodeViewController.swift in Sources */,
 				618E4286F2CC46EDCECC5D09133EB672 /* TwoFAViewModel.swift in Sources */,
 				AF5F9D667D5CAEAC4452EE842978D452 /* UIAlertAction+Extension.swift in Sources */,
+				37DA6CB02629893500D01F55 /* ForceUpgradeManager.swift in Sources */,
 				D938CBE8ACB1D06AD17D6A6CA17785CF /* UIAlertController+Extension.swift in Sources */,
 				A5AE15C2180C3C4000A6A0F44ABB4185 /* UIApplication+BadgeNumber.swift in Sources */,
 				2EAABE021DF0E8FEDFB9F4ED5966BCC3 /* UIApplication+InfoExtension.swift in Sources */,
@@ -8629,6 +8697,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				663FB796BEE1191AFCA491957A476D39 /* AccountManagerRobot.swift in Sources */,
+				3773D362262A2A230016B859 /* HumanVerificationRobot.swift in Sources */,
 				ABDB848CC01B8D3C9383413303CEC9AE /* AccountSettingsLabelsAndFoldersRobot.swift in Sources */,
 				398B4379C21AFBE8FC503A5493BAC856 /* AccountSettingsRobot.swift in Sources */,
 				5CDC6785B1361A5EF8FD21A57B3287BA /* AccountSettingsTests.swift in Sources */,
@@ -8643,6 +8712,7 @@
 				F82CB11DCEFA4359FA0D62B8A831B2AB /* ContactsTests.swift in Sources */,
 				886900565FA0787348BE9EAFB46495EF /* DateUtils.swift in Sources */,
 				339F0958CB911D297E56B848D4C9A88D /* DisplayNameRobot.swift in Sources */,
+				3773D4D9262B143C0016B859 /* ForceUpgradeTests.swift in Sources */,
 				9720B2B85C2D4C1E23E2A6F28D8EEA83 /* DraftsRobot.swift in Sources */,
 				76F645C4CDB4BC11EFBA5E84561CC8BE /* DraftsTests.swift in Sources */,
 				671C4E531F5B7E16DFE870F28521EE8D /* Element.swift in Sources */,
@@ -8670,6 +8740,7 @@
 				D0928086A7392A23180510E7F5882B92 /* PinRobot.swift in Sources */,
 				AA1D644EF57D828E97DBCB4B6C0DEEBC /* PinTests.swift in Sources */,
 				1E952CC2E4C2B9DA22AECED7CDE3B7C8 /* PrivacyRobot.swift in Sources */,
+				37DA6CFC2629B76700D01F55 /* HumanVerificationTests.swift in Sources */,
 				B233509E528F2C9A3A8D1626C904F3B0 /* RecepientAddressesTests.swift in Sources */,
 				E18AEE6C8E70452BA423A2AA3D172BBC /* RecoveryEmailRobot.swift in Sources */,
 				7720FFA0FBF5F55974793EDE8E7F94E2 /* ReplyToMessageTests.swift in Sources */,
