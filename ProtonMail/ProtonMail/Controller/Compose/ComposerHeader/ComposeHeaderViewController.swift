@@ -165,7 +165,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     // MARK : - Outlets
     @IBOutlet var fakeContactPickerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var subject: UITextField!
-    @IBOutlet var subjectLabel: UILabel!
     @IBOutlet var showCcBccButton: UIButton!
     
     // MARK: - Action Buttons
@@ -231,8 +230,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
             self.delegate?.setupComposeFromMenu(for: self.fromPickerButton)
             self.fromPickerButton.addTarget(self, action: #selector(self.clickFromField(_:)), for: .menuActionTriggered)
         }
-        
-        self.subjectLabel.attributedText = "\(LocalString._composer_subject_placeholder):".apply(style: .DefaultSmallWeek)
+
         self.showCcBccButton.tintColor = UIColorManager.IconWeak
         encryptedPasswordTextField.placeholder = LocalString._composer_define_expiration_placeholder
         
@@ -444,8 +442,20 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
     
     internal func configureSubject() {
-        let subjectLeftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: self.subject.frame.size.height))
-        self.subject.leftView = subjectLeftPaddingView
+        let paddingView = UIView(frame: .zero)
+        let label = UILabel(frame: .zero)
+        label.attributedText = "\(LocalString._composer_subject_placeholder):".apply(style: .DefaultSmallWeek)
+        label.sizeToFit()
+        paddingView.addSubview(label)
+        [
+            label.leadingAnchor.constraint(equalTo: paddingView.leadingAnchor, constant: 16),
+            label.topAnchor.constraint(equalTo: paddingView.topAnchor, constant: 13),
+            label.widthAnchor.constraint(equalToConstant: label.frame.size.width),
+            paddingView.heightAnchor.constraint(equalToConstant: 48),
+            paddingView.widthAnchor.constraint(equalToConstant: label.frame.size.width + 24)
+        ].activate()
+        paddingView.layoutIfNeeded()
+        self.subject.leftView = paddingView
         self.subject.leftViewMode = UITextField.ViewMode.always
         self.subject.autocapitalizationType = .sentences
         self.subject.delegate = self
