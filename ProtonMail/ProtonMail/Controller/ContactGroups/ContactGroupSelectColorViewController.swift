@@ -37,6 +37,8 @@ class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColorManager.BackgroundNorm
+        collectionView.backgroundColor = UIColorManager.BackgroundNorm
         title = LocalString._contact_groups_edit_avartar
 
         self.doneButton = UIBarButtonItem(title: LocalString._general_edit_action,

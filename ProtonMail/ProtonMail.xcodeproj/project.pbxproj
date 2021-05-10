@@ -122,7 +122,6 @@
 		0B22FB82D80F3CDC617D0408AF2A6272 /* LinkOpeningMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006B4EB43FF5EB36A9D584477B9777C9 /* LinkOpeningMode.swift */; };
 		0B2A217947A5A0BB21BBE2D868EA7B95 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A3F7FEB833E1B45FB6F23517638989 /* Logger.swift */; };
 		0B2BB0B040F400886AAD1F7975F4D1DE /* ConfettiLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98DAF0C9EE1C0C66F33821F7A3E0B77 /* ConfettiLayer.swift */; };
-		0B431B2B4E5D3F9D9BBD2A858E92E9E6 /* ContactEditAddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C674BC00A2F8ED261865474FC3C1E4 /* ContactEditAddCell.swift */; };
 		0B6F05323F95CAA38DF0E6F9A05F5066 /* ContextLabelUpdate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180B3C0F547DF217C0EEFD3E2087941E /* ContextLabelUpdate+Extension.swift */; };
 		0B8D184238D90CADABB529C2049C5E02 /* ReportBugsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FA25E2EEE3FC1EFAACBC1CA95424E9 /* ReportBugsViewController.swift */; };
 		0BA03A95583C7E04AA3861BA17ADE1C9 /* ActionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02635A572CAAECCED7BCF09361710C5D /* ActionLabel.swift */; };
@@ -967,7 +966,6 @@
 		5EB160FC490AD34FF908ABF03EDD654E /* WebContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8668BBC5EBD231D99F6FCA87C19655E0 /* WebContents.swift */; };
 		5EC9B883DDADD8F946EF70131343E775 /* LabelsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8E9956AFBF3E695807F99C8E6C0108 /* LabelsCollectionView.swift */; };
 		5EEF491F109173AE120E9EC8AA002AD4 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6975591022B24982654B9F6C071D9C /* SignInViewModel.swift */; };
-		5F091CACF9DAF2B5D3A4EBA123478B35 /* ContactSectionHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45E225D395E3FBF26473033706769 /* ContactSectionHeadView.swift */; };
 		5F2321E397B3CF5ED761799D3DA2EFBD /* TagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25030D0DED2C181E31C6E643F2A6E245 /* TagsView.swift */; };
 		5F28FD9604F7429B5176B6EE9BBC1024 /* MessageObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437A832964EE3B1330F4F0B1D61C7474 /* MessageObserver.swift */; };
 		5F2D0D40A41579999E50434D8EF072FF /* ContactGroupSubSelectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03E85409930EE316CC8D01F495EE28 /* ContactGroupSubSelectionHeaderCell.swift */; };
@@ -1207,7 +1205,6 @@
 		7606172D4BFF42F0BC8DA0FB526B685F /* PinCodeConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6829926EB5E66DCB993678059AA19F1F /* PinCodeConfirmationViewController.swift */; };
 		7612D1D751F1638A3E7D0963267A841F /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D28181F605058E6AC8C6F86E57A90F /* AttachmentView.swift */; };
 		7623C962C76D5B6468E88A7D9C6D439C /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C488F429960C863BD52CBAE22E09A9A8 /* CoreDataStore.swift */; };
-		76341350BD484FB4954719F527056488 /* ContactSectionHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45E225D395E3FBF26473033706769 /* ContactSectionHeadView.swift */; };
 		764E2C83C9348ACA7169C7E4CCB81CDF /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E69C5B65182DB326ABC46A0FAAE2CE1 /* Part.swift */; };
 		76505CEB807298E7C70279B9F4E2E8D6 /* ContactEditUpgradeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F5E85AF3C943547102D7BC136F381 /* ContactEditUpgradeCell.swift */; };
 		7665C366A01036025928CF09DD5EE2C4 /* ComposeErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14E8987404D76EC598FCBC542711A09A /* ComposeErrorView.xib */; };
@@ -9762,7 +9759,6 @@
 				DE8B1CFF3F7669EB9B8134314EB23C6C /* ContactDataService.swift in Sources */,
 				C998BF9FC169B1810CE2EE034E614DAB /* ContactDetailsDisplayCell.swift in Sources */,
 				BDC00B3182A2E743877CB71ACD66417A /* ContactDetailsUpgradeCell.swift in Sources */,
-				0B431B2B4E5D3F9D9BBD2A858E92E9E6 /* ContactEditAddCell.swift in Sources */,
 				DED0C4E3F184BCB33EFBC348E4898330 /* ContactEditTextViewCell.swift in Sources */,
 				C38D9831C64909A55AAF47245CB646D8 /* ContactEditUpgradeCell.swift in Sources */,
 				AA1F34B44C5705862A4533D8ADF12AEC /* ContactEditVIewModel.swift in Sources */,
@@ -9781,7 +9777,6 @@
 				E58CB37E3EE15655942A918C2FF36521 /* ContactPicker.swift in Sources */,
 				066B9EAC905451A3766D949D632243BF /* ContactPickerDefined.swift in Sources */,
 				4B9FD8AA0A9B45960EFA116A537CCFAA /* ContactSearchTableViewController.swift in Sources */,
-				5F091CACF9DAF2B5D3A4EBA123478B35 /* ContactSectionHeadView.swift in Sources */,
 				4CDD8CB281814A99B1D9A1BBA78E4F21 /* ContactTypeAddCustomCell.swift in Sources */,
 				EABDA9D7A8059403DCF358EFBC08C899 /* ContactUpgradeCellDelegate.swift in Sources */,
 				A87D01BD6E56BE610D487C5835CA7D18 /* ContactVO+Extension.swift in Sources */,
@@ -10111,7 +10106,6 @@
 				D6CD12158C3D06E3D992755C8803B04F /* ContactPicker.swift in Sources */,
 				0CEE2E2473A5DE6369AD900851B72585 /* ContactPickerDefined.swift in Sources */,
 				FDBB29593B6D80732967DA2CFD1F1647 /* ContactSearchTableViewController.swift in Sources */,
-				76341350BD484FB4954719F527056488 /* ContactSectionHeadView.swift in Sources */,
 				1CD22D56BD03F904999CD5020296C976 /* ContactTypeAddCustomCell.swift in Sources */,
 				315D4DED546B4B384FCAB9BCFC16BC90 /* ContactUpgradeCellDelegate.swift in Sources */,
 				676DF650D1EF869785997153601FDA55 /* ContactVO+Extension.swift in Sources */,

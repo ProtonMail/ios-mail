@@ -31,6 +31,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
 
     var viewModel: ContactGroupDetailViewModel!
     
+    @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var groupNameLabel: UILabel!
     @IBOutlet weak var groupDetailLabel: UILabel!
     @IBOutlet weak var groupImage: UIImageView!
@@ -74,6 +75,11 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
         editBarItem.setTitleTextAttributes(attributes, for: .normal)
         navigationItem.rightBarButtonItem = editBarItem
+
+        view.backgroundColor = UIColorManager.BackgroundNorm
+        tableView.backgroundColor = UIColorManager.BackgroundNorm
+
+        headerContainerView.backgroundColor = UIColorManager.BackgroundNorm
         
         prepareTable()
     }
@@ -107,9 +113,9 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     }
 
     private func prepareHeader() {
-        groupNameLabel.text = viewModel.getName()
+        groupNameLabel.attributedText = viewModel.getName().apply(style: .Default)
         
-        groupDetailLabel.text = viewModel.getTotalEmailString()
+        groupDetailLabel.attributedText = viewModel.getTotalEmailString().apply(style: .DefaultSmallWeek)
         
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: UIColor.init(hexString: viewModel.getColor(),
@@ -213,8 +219,7 @@ extension ContactGroupDetailViewController: UpgradeAlertVCDelegate {
     }
 }
 
-extension ContactGroupDetailViewController: UITableViewDataSource
-{
+extension ContactGroupDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -242,6 +247,12 @@ extension ContactGroupDetailViewController: UITableViewDataSource
                     state: .detailView)
         
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let titleView = view as? UITableViewHeaderFooterView {
+            titleView.textLabel?.text =  titleView.textLabel?.text?.capitalized
+        }
     }
 }
 

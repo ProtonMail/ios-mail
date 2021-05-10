@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import PMUIFoundations
 
 protocol ContactEditTextViewCellDelegate {
     func beginEditing(textView: UITextView)
@@ -41,9 +41,13 @@ final class ContactEditTextViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.textView.delegate = self
+        self.textView.tintColor = UIColorManager.TextHint
+        self.textView.textColor = UIColorManager.TextNorm
+        self.textView.backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = UIColorManager.BackgroundNorm
     }
+
     @IBAction func notesClicked(_ sender: Any) {
-        
         self.textView.becomeFirstResponder()
     }
     

@@ -50,6 +50,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
         // 20 because the width is 40 hard coded
         self.shortName.layer.cornerRadius = 20
         self.shortName.backgroundColor = UIColorManager.InteractionWeak
+        self.backgroundColor = UIColorManager.BackgroundNorm
     }
     
     /// config cell when cellForRowAt
@@ -60,8 +61,13 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
     ///   - highlight: hightlight string. autocomplete in composer
     ///   - color: contact group color -- String type and optional
     func config(name: String, email: String, highlight: String, color : String? = nil) {
-        self.nameLabel.attributedText = name.apply(style: .Default)
-        self.emailLabel.attributedText = email.apply(style: .DefaultSmallWeek)
+        var nameAttributes = FontManager.Default
+        nameAttributes.addTruncatingTail()
+        self.nameLabel.attributedText = name.apply(style: nameAttributes)
+
+        var emailAttributes = FontManager.DefaultSmallWeak
+        emailAttributes.addTruncatingTail()
+        self.emailLabel.attributedText = email.apply(style: emailAttributes)
         
         //will be show the image
         if let color = color {

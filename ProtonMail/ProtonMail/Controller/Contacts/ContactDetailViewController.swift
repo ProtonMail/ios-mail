@@ -49,6 +49,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     @IBOutlet weak var tableView: UITableView!
     
     // header view
+    @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var shortNameLabel: UILabel!
     @IBOutlet weak var fullNameLabel: UILabel!
@@ -69,10 +70,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     func set(viewModel: ContactDetailsViewModel) {
         self.viewModel = viewModel
     }
-    
-    ///
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = UIColorManager.BackgroundNorm
 
         self.doneItem = UIBarButtonItem(title: LocalString._general_edit_action,
                                         style: UIBarButtonItem.Style.plain,
@@ -83,6 +85,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         self.navigationItem.rightBarButtonItem = doneItem
         self.navigationItem.assignNavItemIndentifiers()
         self.configHeaderStyle()
+        self.configureStyle()
         
         viewModel.getDetails {
             self.configHeaderDefault()
@@ -104,8 +107,13 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 60.0
         tableView.noSeparatorsBelowFooter()
+        tableView.backgroundColor = UIColorManager.BackgroundNorm
 
         navigationItem.largeTitleDisplayMode = .never
+    }
+
+    private func configureStyle() {
+        headerContainerView.backgroundColor = UIColorManager.BackgroundNorm
     }
     
     /// config header style only need once
@@ -159,7 +167,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             shortName = String(name[name.startIndex])
         }
         shortNameLabel.text = shortName
-        fullNameLabel.text = name
+
+        var attributes = FontManager.Headline
+        attributes.addTextAlignment(.center)
+        attributes.addTruncatingTail()
+        fullNameLabel.attributedText = name.apply(style: attributes)
     }
     
     
@@ -185,7 +197,10 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         }
         
         // full name
-        fullNameLabel.text = viewModel.getProfile().newDisplayName
+        var attributes = FontManager.Headline
+        attributes.addTextAlignment(.center)
+        attributes.addTruncatingTail()
+        fullNameLabel.attributedText = viewModel.getProfile().newDisplayName.apply(style: attributes)
         
         // email contact
         if viewModel.getEmails().count == 0 {
@@ -383,12 +398,12 @@ extension ContactDetailViewController: UITableViewDataSource {
         switch s {
         case .email_header:
             let signed = viewModel.statusType2()
-            cell?.ConfigHeader(title: LocalString._contacts_email_addresses_title, signed: signed)
+            cell?.configHeader(title: LocalString._contacts_email_addresses_title, signed: signed)
         case .encrypted_header:
             let signed = viewModel.statusType3()
-            cell?.ConfigHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: signed)
+            cell?.configHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: signed)
         default:
-            cell?.ConfigHeader(title: "", signed: false)
+            cell?.configHeader(title: "", signed: false)
         }
         return cell
     }

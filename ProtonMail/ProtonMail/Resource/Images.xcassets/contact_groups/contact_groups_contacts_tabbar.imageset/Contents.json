@@ -1,23 +1,23 @@
 {
   "images" : [
     {
+      "filename" : "ic-contact.png",
       "idiom" : "universal",
-      "filename" : "Contact-18px.png",
       "scale" : "1x"
     },
     {
+      "filename" : "ic-contact@2x.png",
       "idiom" : "universal",
-      "filename" : "Contact-18px@2x.png",
       "scale" : "2x"
     },
     {
+      "filename" : "ic-contact@3x.png",
       "idiom" : "universal",
-      "filename" : "Contact-18px@3x.png",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }
