@@ -23,7 +23,8 @@
 enum SingleMessageNavigationAction: Equatable {
     case contacts(contact: ContactVO)
     case compose(contact: ContactVO)
-    case viewData(url: URL?)
+    case viewHeaders(url: URL?)
+    case viewHTML(url: URL?)
     case reply
     case replyAll
     case forward

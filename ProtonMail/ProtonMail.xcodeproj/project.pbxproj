@@ -487,6 +487,7 @@
 		2FD722352701885DAC4BB5617C3C1B38 /* InternetConnectionStatusProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB513DF5433EEDA2409F48ABCB426310 /* InternetConnectionStatusProviderTests.swift */; };
 		2FE2BC0122836F97ED616BCB3B633F3C /* SpamScoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892FCF187AFEC42762863D4C7CBE7C40 /* SpamScoreWarningView.swift */; };
 		2FFB01FB34D2EA6F88EC021A0C667F5F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA6547BB92EFBFF9D78045E47FD613 /* InfoPlist.strings */; };
+		300FAB471D79465022B087D1A6FAC654 /* PlainTextViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1727BD7D388F10D22586424B2AED5EB1 /* PlainTextViewerViewController.swift */; };
 		3016A2818AD0AC78137FB8F30A6B0D2F /* ShareUnlockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D63E722A24AF52CA417EEC2F60DD5FE /* ShareUnlockViewModel.swift */; };
 		3049D93B0110F1F043F7866B96D4C0ED /* Message+Header+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3962A53C77C0454D3750041EC8679593 /* Message+Header+Extension.swift */; };
 		3062BC1DA6D34D5CEA48E0E087A3C050 /* ContactAddViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A51ECEB173169390A074BC71D38A1C /* ContactAddViewModelImpl.swift */; };
@@ -2383,6 +2384,7 @@
 		EC9A72EA6291E3CC2FFA351145800DFD /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
 		ECA25C2FD620AED5E2E34E8C5F9BF35F /* MessageAttachmentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A4DC33F9A8BFF217C0FD648B08D202 /* MessageAttachmentsViewModel.swift */; };
 		ECEC94D71E8864FF5E36320EEC55609F /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACDE1DAAB38F6186B5D1B8E877760A4 /* Date+Extension.swift */; };
+		ED0C68D38C474C76910CC1A03BD910F2 /* PlainTextViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1727BD7D388F10D22586424B2AED5EB1 /* PlainTextViewerViewController.swift */; };
 		ED1066357FF807C1ACB0E3926F01D9EA /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6974F6AA8FEDB33BA4293427A6631D /* ViewModelProtocol.swift */; };
 		ED1983FB1A5A4CE945ADBA5416F44583 /* LoginRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17E49EE35CCAC16B977B295510FC090 /* LoginRobot.swift */; };
 		ED1F88B6C52DCEE694B6C3D53963435A /* MessageDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7DBA44EF07200C14AF3A1A0EAFD128 /* MessageDataService.swift */; };
@@ -2793,6 +2795,7 @@
 		16B33435E3875BAE2ABCD6AC4557BFCC /* ContactTypeAddCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTypeAddCustomCell.swift; sourceTree = "<group>"; };
 		16B6569366FDC394D6615172DC14A7EB /* ProtonMail.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ProtonMail.entitlements; sourceTree = "<group>"; };
 		16BC097CE45BBA4955C470E0C44BFC30 /* ServicePlanFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlanFooter.swift; sourceTree = "<group>"; };
+		1727BD7D388F10D22586424B2AED5EB1 /* PlainTextViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextViewerViewController.swift; sourceTree = "<group>"; };
 		17529B230FA6C6CEA6CD667958536E05 /* NetworkTroubleShootViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkTroubleShootViewModel.swift; sourceTree = "<group>"; };
 		175BF8CBA30FAFFA1B1BBCF6B2A4079A /* AppCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCache.swift; sourceTree = "<group>"; };
 		17608DE73A1D836A393D38EC6352FD4B /* PinCodeSetUpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PinCodeSetUpViewController.xib; sourceTree = "<group>"; };
@@ -6035,6 +6038,7 @@
 				BF4EFAD3914CECAEACD64A81A54B0C40 /* LinkOpeningValidator.swift */,
 				D44197C2854A56316913BA83B997F9E9 /* MessageDetailBottomView.swift */,
 				F5285D8EEFAB67EE756E374E86D04AF5 /* MessageDetailBottomView.xib */,
+				1727BD7D388F10D22586424B2AED5EB1 /* PlainTextViewerViewController.swift */,
 				02FF79CFF7FA477B9D0579D5A3796CBD /* QuickViewViewController.swift */,
 				0B2CFA0A2EC91C90BA021AA2387FA522 /* RecipientCell.swift */,
 				46511E284393F2C9530ED66B13614B12 /* RecipientCell.xib */,
@@ -8689,6 +8693,7 @@
 				5E119D36FB875F30A940E4C1342BC422 /* PinCodeSetupCoordinator.swift in Sources */,
 				99AB57B36E4C92AB4C5EAC62D759F31E /* PinCodeView.swift in Sources */,
 				2F237A02D8C011B5EB238A04F4DEE1AD /* PinCodeViewController.swift in Sources */,
+				300FAB471D79465022B087D1A6FAC654 /* PlainTextViewerViewController.swift in Sources */,
 				822C2BF7D764CE745521282EE2E3843E /* PolicyWebViewModelImpl.swift in Sources */,
 				B308F25B64E576D18A105960C0D06D45 /* Promise+BrokenPromise.swift in Sources */,
 				146758F8128B7B09EAF1E7CFCB6F94F8 /* ProtonMail-Bridging-Header.cpp in Sources */,
@@ -9419,6 +9424,7 @@
 				E5764FD0875E0C069ED5E06DE1E4A21B /* PinCodeSetupCoordinator.swift in Sources */,
 				03287416CCC1876DCE8F514D944D8BE3 /* PinCodeView.swift in Sources */,
 				1FF8F1476C862C9E6FE82915BBF0F5DC /* PinCodeViewController.swift in Sources */,
+				ED0C68D38C474C76910CC1A03BD910F2 /* PlainTextViewerViewController.swift in Sources */,
 				C655A8047C4902C34716969970217422 /* PolicyWebViewModelImpl.swift in Sources */,
 				6B16E91928840A54BABC891C57795D09 /* Promise+BrokenPromise.swift in Sources */,
 				D0901BBAEB31D2C8C2CE6407C90217BC /* ProtonMail-Bridging-Header.cpp in Sources */,

@@ -173,3 +173,6 @@ modifier_order:
   preferred_modifier_order:
     - acl
     - override
+
+cyclomatic_complexity:
+  ignores_case_statements: true

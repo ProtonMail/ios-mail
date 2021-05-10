@@ -32,7 +32,6 @@ class SingleMessageCoordinator: NSObject {
     private let message: Message
     private let user: UserManager
     private let navigationController: UINavigationController
-    private var tempClearFileURL: URL?
 
     init(navigationController: UINavigationController, labelId: String, message: Message, user: UserManager) {
         self.navigationController = navigationController
@@ -55,8 +54,10 @@ class SingleMessageCoordinator: NSObject {
             presentCompose(with: contact)
         case .contacts(let contact):
             presentAddContacts(with: contact)
-        case .viewData(let url):
-            presentQuickLookView(url: url)
+        case .viewHeaders(let url):
+            presentQuickLookView(url: url, subType: .headers)
+        case .viewHTML(let url):
+            presentQuickLookView(url: url, subType: .html)
         case .reply, .replyAll, .forward:
             presentCompose(action: navigationAction)
         case .attachmentList:
@@ -104,13 +105,11 @@ class SingleMessageCoordinator: NSObject {
         self.viewController?.present(destination, animated: true)
     }
 
-    private func presentQuickLookView(url: URL?) {
-        guard let fileUrl = url else { return }
-        self.tempClearFileURL = fileUrl
-        let previewQL = QuickViewViewController()
-        previewQL.dataSource = self
-        previewQL.delegate = self
-        self.navigationController.present(previewQL, animated: true, completion: nil)
+    private func presentQuickLookView(url: URL?, subType: PlainTextViewerViewController.ViewerSubType) {
+        guard let fileUrl = url, let text = try? String(contentsOf: fileUrl) else { return }
+        let viewer = PlainTextViewerViewController(text: text, subType: subType)
+        try? FileManager.default.removeItem(at: fileUrl)
+        self.navigationController.pushViewController(viewer, animated: true)
     }
 
     private func presentCompose(action: SingleMessageNavigationAction) {
@@ -223,26 +222,5 @@ class SingleMessageCoordinator: NSObject {
         if let navigation = viewController.navigationController {
             self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
         }
-    }
-}
-
-extension SingleMessageCoordinator: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
-    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        return 1
-    }
-
-    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        if let url = self.tempClearFileURL {
-            return url as QLPreviewItem
-        } else {
-            return NSURL() as QLPreviewItem
-        }
-    }
-
-    func previewControllerDidDismiss(_ controller: QLPreviewController) {
-        if let url = self.tempClearFileURL {
-            try? FileManager.default.removeItem(at: url)
-        }
-        self.tempClearFileURL = nil
     }
 }
