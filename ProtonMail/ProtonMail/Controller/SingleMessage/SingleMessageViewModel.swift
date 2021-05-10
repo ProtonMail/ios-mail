@@ -251,16 +251,9 @@ class SingleMessageViewModel {
 // MARK: - Move to functions
 extension SingleMessageViewModel: MoveToActionSheetProtocol {
 
-    func handleMoveToAction() {
+    func handleMoveToAction(messages: [Message]) {
         guard let destination = selectedMoveToFolder else { return }
-
-        let fromLabel = message.firstValidFolder() ?? Message.Location.inbox.rawValue
-        let id = message.selfSent(labelID: fromLabel) ?? fromLabel
-
-        messageService.move(messages: [message],
-                            from: [id],
-                            to: destination.location.labelID,
-                            queue: true)
+        messageService.move(messages: messages, to: destination.location.labelID, queue: true)
     }
 
     func updateSelectedMoveToDestination(menuLabel: MenuLabel?, isOn: Bool) {
@@ -270,20 +263,22 @@ extension SingleMessageViewModel: MoveToActionSheetProtocol {
 
 // MARK: - Label as functions
 extension SingleMessageViewModel: LabelAsActionSheetProtocol {
-    func handleLabelAsAction(shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+    func handleLabelAsAction(messages: [Message],
+                             shouldArchive: Bool,
+                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
         for (label, status) in currentOptionsStatus {
             guard status != .dash else { continue } // Ignore the option in dash
             if selectedLabelAsLabels
                 .contains(where: { $0.labelID == label.location.labelID }) {
                 // Add to message which does not have this label
                 if !message.contains(label: label.location.labelID) {
-                    messageService.label(messages: [message],
+                    messageService.label(messages: messages,
                                          label: label.location.labelID,
                                          apply: true)
                 }
             } else {
                 if message.contains(label: label.location.labelID) {
-                    messageService.label(messages: [message],
+                    messageService.label(messages: messages,
                                          label: label.location.labelID,
                                          apply: false)
                 }
@@ -294,7 +289,7 @@ extension SingleMessageViewModel: LabelAsActionSheetProtocol {
 
         if shouldArchive {
             if let fLabel = message.firstValidFolder() {
-                messageService.move(messages: [message],
+                messageService.move(messages: messages,
                                     from: [fLabel],
                                     to: Message.Location.archive.rawValue)
             }

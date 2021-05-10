@@ -510,9 +510,12 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
                         }
                      },
                      done: { [weak self] isArchive, currentOptionsStatus  in
-                        self?.labelAsActionHandler
-                            .handleLabelAsAction(shouldArchive: isArchive,
-                                                 currentOptionsStatus: currentOptionsStatus)
+                        if let message = self?.viewModel.message {
+                            self?.labelAsActionHandler
+                                .handleLabelAsAction(messages: [message],
+                                                     shouldArchive: isArchive,
+                                                     currentOptionsStatus: currentOptionsStatus)
+                        }
                         self?.dismissActionSheet()
                         self?.navigationController?.popViewController(animated: true)
                      })
@@ -557,10 +560,10 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                             self?.dismissActionSheet()
                             self?.navigationController?.popViewController(animated: true)
                         }
-                        guard isHavingUnsavedChanges else {
+                        guard isHavingUnsavedChanges, let msg = self?.viewModel.message else {
                             return
                         }
-                        self?.moveToActionHandler.handleMoveToAction()
+                        self?.moveToActionHandler.handleMoveToAction(messages: [msg])
                      })
     }
 }

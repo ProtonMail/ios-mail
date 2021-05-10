@@ -24,17 +24,17 @@ import PMUIFoundations
 
 // MARK: - Label as functinos
 extension MailboxViewModel: LabelAsActionSheetProtocol {
-    func handleLabelAsAction(shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+    func handleLabelAsAction(messages: [Message], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
         for (label, markType) in currentOptionsStatus {
             if selectedLabelAsLabels
                 .contains(where: { $0.labelID == label.location.labelID}) {
                 // Add to message which does not have this label
-                let messageToApply = selectedMessages.filter({ !$0.contains(label: label.location.labelID )})
+                let messageToApply = messages.filter({ !$0.contains(label: label.location.labelID )})
                 messageService.label(messages: messageToApply,
                                      label: label.location.labelID,
                                      apply: true)
             } else if markType != .dash { // Ignore the option in dash
-                let messageToRemove = selectedMessages.filter({ $0.contains(label: label.location.labelID )})
+                let messageToRemove = messages.filter({ $0.contains(label: label.location.labelID )})
                 messageService.label(messages: messageToRemove,
                                      label: label.location.labelID,
                                      apply: false)
@@ -44,17 +44,9 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
         selectedLabelAsLabels.removeAll()
 
         if shouldArchive {
-            var msgToArchive: [Message] = []
-            var fromLabels: [String] = []
-            for msg in selectedMessages {
-                if let fLabel = msg.firstValidFolder() {
-                    fromLabels.append(fLabel)
-                    msgToArchive.append(msg)
-                }
-            }
-            messageService.move(messages: msgToArchive,
-                                from: fromLabels,
-                                to: Message.Location.archive.rawValue)
+            messageService.move(messages: messages,
+                                to: Message.Location.archive.rawValue,
+                                queue: true)
         }
     }
 

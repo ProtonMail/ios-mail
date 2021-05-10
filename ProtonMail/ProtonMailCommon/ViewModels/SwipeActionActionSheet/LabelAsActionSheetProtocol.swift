@@ -27,7 +27,7 @@ protocol LabelAsActionSheetProtocol {
     var labelId: String { get }
     var selectedLabelAsLabels: Set<LabelLocation> { get }
 
-    func handleLabelAsAction(shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType])
+    func handleLabelAsAction(messages: [Message], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType])
     func updateSelectedLabelAsDestination(menuLabel: MenuLabel?, isOn: Bool)
 }
 

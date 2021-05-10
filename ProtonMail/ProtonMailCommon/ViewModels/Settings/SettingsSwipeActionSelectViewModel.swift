@@ -36,7 +36,8 @@ class SettingsSwipeActionSelectViewModelImpl: SettingsSwipeActionSelectViewModel
                                                          .readAndUnread,
                                                          .starAndUnstar,
                                                          .trash,
-                                                         /*.labelAs, .moveTo,*/
+                                                         .labelAs,
+                                                         .moveTo,
                                                          .archive,
                                                          .spam]
 

@@ -574,8 +574,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: action.description)
         // TODO: handle conversation
         switch action {
-        case .none, .labelAs, .moveTo:
+        case .none:
             break
+        case .labelAs:
+            labelAs(indexPath)
+        case .moveTo:
+            moveTo(indexPath)
         case .unread:
             self.unread(indexPath)
             return false
@@ -599,6 +603,20 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return true
         }
         return false
+    }
+
+    private func labelAs(_ index: IndexPath) {
+        guard let message = viewModel.item(index: index) else { return }
+        showLabelAsActionSheet(messages: [message])
+    }
+
+    private func moveTo(_ index: IndexPath) {
+        guard let message = viewModel.item(index: index) else { return }
+        let isEnableColor = viewModel.user.isEnableFolderColor
+        let isInherit = viewModel.user.isInheritParentFolderColor
+        showMoveToActionSheet(messages: [message],
+                              isEnableColor: isEnableColor,
+                              isInherit: isInherit)
     }
     
     private func archive(_ index: IndexPath) {
@@ -1473,8 +1491,12 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
             return
         }
 
+        showLabelAsActionSheet(messages: viewModel.selectedMessages)
+    }
+
+    private func showLabelAsActionSheet(messages: [Message]) {
         let labelAsViewModel = LabelAsActionSheetViewModel(menuLabels: labelAsActionHandler.getLabelMenuItems(),
-                                                           messages: viewModel.selectedMessages(selected: NSMutableSet(set: viewModel.selectedIDs)))
+                                                           messages: messages)
 
         labelAsActionSheetPresenter
             .present(on: self.navigationController ?? self,
@@ -1497,7 +1519,8 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                      },
                      done: { [weak self] isArchive, currentOptionsStatus in
                         self?.labelAsActionHandler
-                            .handleLabelAsAction(shouldArchive: isArchive,
+                            .handleLabelAsAction(messages: messages,
+                                                 shouldArchive: isArchive,
                                                  currentOptionsStatus: currentOptionsStatus)
                         self?.dismissActionSheet()
                         self?.cancelButtonTapped()
@@ -1518,9 +1541,15 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
 
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
+        showMoveToActionSheet(messages: viewModel.selectedMessages,
+                              isEnableColor: isEnableColor,
+                              isInherit: isInherit)
+    }
+
+    private func showMoveToActionSheet(messages: [Message], isEnableColor: Bool, isInherit: Bool) {
         let moveToViewModel =
             MoveToActionSheetViewModel(menuLabels: moveToActionHandler.getFolderMenuItems(),
-                                       messages: viewModel.selectedMessages,
+                                       messages: messages,
                                        isEnableColor: isEnableColor,
                                        isInherit: isInherit,
                                        labelId: viewModel.labelId)
@@ -1551,7 +1580,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                         guard isHavingUnsavedChanges else {
                             return
                         }
-                        self?.moveToActionHandler.handleMoveToAction()
+                        self?.moveToActionHandler.handleMoveToAction(messages: messages)
                      })
     }
 
