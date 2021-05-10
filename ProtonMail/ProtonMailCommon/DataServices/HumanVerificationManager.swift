@@ -23,7 +23,9 @@
 import Foundation
 import PMCommon
 import PMHumanVerification
+#if DEBUG
 import OHHTTPStubs
+#endif
 
 class HumanVerificationManager {
 

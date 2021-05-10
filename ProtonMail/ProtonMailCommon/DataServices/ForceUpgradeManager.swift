@@ -23,7 +23,9 @@
 import Foundation
 import PMCommon
 import PMForceUpgrade
+#if DEBUG
 import OHHTTPStubs
+#endif
 
 class ForceUpgradeManager {
     static let shared = ForceUpgradeManager()
