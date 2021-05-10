@@ -1190,9 +1190,15 @@ class LocalizedString {
 
     /// "View headers"
     lazy var _view_message_headers = NSLocalizedString("View Headers", comment: "message details-> more action-> view headers")
-    
+
+    /// "Message headers"
+    lazy var _message_headers = NSLocalizedString("Message headers", comment: "Title of the view showing the message header")
+
     /// "View HTML"
     lazy var _view_message_html_body = NSLocalizedString("View HTML", comment: "message details-> more action-> view raw html of message body")
+
+    /// "HTML"
+    lazy var _message_html = NSLocalizedString("HTML", comment: "Title of the view showing the message HTML source")
 
     /// "Confirm phishing report"
     lazy var _confirm_phishing_report = NSLocalizedString("Confirm phishing report", comment: "alert title")

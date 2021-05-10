@@ -1,9 +1,9 @@
 //
-//  UserDefaults+Extension.swift
+//  UIEdgeInsets+All.swift
 //  ProtonMail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2021 Proton Technologies AG
 //
 //  This file is part of ProtonMail.
 //

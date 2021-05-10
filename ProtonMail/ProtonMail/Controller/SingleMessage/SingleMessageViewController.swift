@@ -482,11 +482,11 @@ private extension SingleMessageViewController {
         switch action {
         case .viewHeaders:
             if let url = viewModel.getMessageHeaderUrl() {
-                coordinator.navigate(to: .viewData(url: url))
+                coordinator.navigate(to: .viewHeaders(url: url))
             }
         case .viewHTML:
             if let url = viewModel.getMessageBodyUrl() {
-                coordinator.navigate(to: .viewData(url: url))
+                coordinator.navigate(to: .viewHTML(url: url))
             }
         default:
             return
