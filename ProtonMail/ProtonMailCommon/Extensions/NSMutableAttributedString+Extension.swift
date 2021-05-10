@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import PMUIFoundations
 
 extension NSAttributedString {
     /**
@@ -34,7 +34,10 @@ extension NSAttributedString {
                                  font: UIFont) -> NSAttributedString {
         let resultText = text
         let searchTerm = search
-        let attributedString = NSMutableAttributedString(string: resultText)
+        var attributes = FontManager.Default
+        attributes.addTruncatingTail()
+        let attributedString = NSMutableAttributedString(string: resultText,
+                                                         attributes: attributes)
         let pattern = "(\(searchTerm))"
         let range = NSMakeRange(0, resultText.count)
         let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
@@ -45,7 +48,7 @@ extension NSAttributedString {
             using: { (textCheckingResult, matchingFlags, stop) -> Void in
                 let subRange = textCheckingResult?.range
                 attributedString.addAttribute(NSAttributedString.Key.foregroundColor,
-                                              value: UIColor.ProtonMail.Blue_6789AB,
+                                              value: UIColorManager.InteractionNorm,
                                               range: subRange!)
                 
                 attributedString.addAttribute(NSAttributedString.Key.font,

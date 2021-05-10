@@ -58,7 +58,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     private var refreshControl: UIRefreshControl!
     private var searchController: UISearchController!
     
-    
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
@@ -66,11 +65,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     func set(viewModel: ContactGroupsViewModel) {
         self.viewModel = viewModel
-    }
-    
-    
-    func inactiveViewModel() {
-        
     }
     
     override func viewDidLoad() {
@@ -97,6 +91,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         generateAccessibilityIdentifiers()
 
         emptyBackButtonTitleForNextView()
+        view.backgroundColor = UIColorManager.BackgroundNorm
+        tableView.backgroundColor = UIColorManager.BackgroundNorm
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -119,12 +115,12 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     private func prepareRefreshController() {
         refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
+        refreshControl.backgroundColor = UIColorManager.BackgroundNorm
         refreshControl.addTarget(self,
                                  action: #selector(fireFetch),
                                  for: UIControl.Event.valueChanged)
         tableView.addSubview(self.refreshControl)
-        refreshControl.tintColor = UIColor.gray
+        refreshControl.tintColor = UIColorManager.InteractionNorm
         refreshControl.tintColorDidChange()
     }
     
@@ -317,8 +313,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.searchController.searchBar.keyboardType = .default
         self.searchController.searchBar.autocapitalizationType = .none
         self.searchController.searchBar.isTranslucent = false
-        self.searchController.searchBar.tintColor = .white
-        self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
+        self.searchController.searchBar.tintColor = UIColorManager.TextNorm
+        self.searchController.searchBar.barTintColor = UIColorManager.TextHint
         self.searchController.searchBar.backgroundColor = UIColorManager.BackgroundNorm
 
         self.searchViewConstraint.constant = 0.0

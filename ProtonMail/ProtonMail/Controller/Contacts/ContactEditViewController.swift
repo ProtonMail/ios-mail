@@ -71,8 +71,11 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomOffset: NSLayoutConstraint!
     
+    @IBOutlet weak var topContainerView: UIView!
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var selectProfilePictureLabel: UILabel!
+    @IBOutlet weak var editPhotoButton: UIButton!
+
     @IBAction func tappedSelectProfilePictureButton(_ sender: UIButton) {
         func checkPermission() {
             let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
@@ -137,7 +140,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             self.title = LocalString._edit_contact
         }
 
-        UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
+        self.editPhotoButton.setTitleColor(UIColorManager.InteractionNorm, for: .normal)
+
+        UITextField.appearance().tintColor = UIColorManager.TextHint
         self.displayNameField.text = viewModel.getProfile().newDisplayName
         self.displayNameField.delegate = self
         
@@ -145,9 +150,13 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
         self.tableView.estimatedRowHeight = 70
         self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.backgroundColor = UIColorManager.BackgroundNorm
         
         self.tableView.isEditing = true
         self.tableView.noSeparatorsBelowFooter()
+
+        self.view.backgroundColor = UIColorManager.BackgroundNorm
+        self.topContainerView.backgroundColor = UIColorManager.BackgroundNorm
         
         // profile image picker
         self.imagePicker = UIImagePickerController()
@@ -552,7 +561,8 @@ extension ContactEditViewController: UITableViewDataSource {
             outCell = cell
         case .delete:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditDeleteCell, for: indexPath) as! ContactEditAddCell
-            cell.configCell(value: LocalString._delete_contact)
+            cell.configCell(value: LocalString._delete_contact,
+                            color: UIColorManager.NotificationError)
             cell.selectionStyle = .default
             outCell = cell
         case .upgrade:
@@ -735,14 +745,16 @@ extension ContactEditViewController: UITableViewDelegate {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView else {
             return nil
         }
+        cell.contentView.backgroundColor = UIColorManager.BackgroundNorm
         let sections = viewModel.getSections()
         let sc = sections[section]
         if sc == .encrypted_header {
-            cell.ConfigHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: false)
+            cell.configHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: false)
         } else if sc == .delete || sc == .notes {
-            return nil
+            cell.configHeader(title: "", signed: false)
+            return cell
         } else if sc == .emails {
-            cell.ConfigHeader(title: LocalString._contacts_email_addresses_title, signed: false)
+            cell.configHeader(title: LocalString._contacts_email_addresses_title, signed: false)
         }
         return cell
     }

@@ -21,8 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
-
+import PMUIFoundations
 
 final class ContactEditFieldCell: UITableViewCell {
     
@@ -40,6 +39,8 @@ final class ContactEditFieldCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
+        self.valueField.tintColor = UIColorManager.TextHint
+        backgroundColor = UIColorManager.BackgroundNorm
     }
     
     override func layoutSubviews() {
@@ -52,8 +53,10 @@ final class ContactEditFieldCell: UITableViewCell {
         self.isPaid = paid
         self.delegate = callback
     
-        typeLabel.text = self.field.newType.title
-        valueField.text = self.field.newField
+        typeLabel.attributedText = NSAttributedString(string: self.field.newType.title,
+                                                      attributes: FontManager.Default)
+        valueField.attributedText = NSAttributedString(string: self.field.newField,
+                                                       attributes: FontManager.Default)
 
         if self.isPaid {
             if becomeFirstResponder {
@@ -95,6 +98,6 @@ extension ContactEditFieldCell: UITextFieldDelegate {
             self.delegate?.featureBlocked()
             return
         }
-        field.newField = valueField.text!
+        field.newField = valueField.attributedText?.string ?? ""
     }
 }

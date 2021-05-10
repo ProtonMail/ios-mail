@@ -58,11 +58,12 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = UIColorManager.BackgroundNorm
         
         tableView.register(ContactsTableViewCell.nib,
                            forCellReuseIdentifier: ContactsTableViewCell.cellID)
         refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
         refreshControl.addTarget(self,
                                  action: #selector(fireFetch),
                                  for: UIControl.Event.valueChanged)
@@ -72,7 +73,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         tableView.dataSource = self
         tableView.delegate = self
         
-        refreshControl.tintColor = UIColor.gray
+        refreshControl.tintColor = UIColorManager.BrandNorm
         refreshControl.tintColorDidChange()
 
         self.navigationController?.navigationBar.prefersLargeTitles = false
@@ -81,6 +82,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.tableView.contentInsetAdjustmentBehavior = .never
         self.tableView.noSeparatorsBelowFooter()
         self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
+        self.tableView.backgroundColor = UIColorManager.BackgroundNorm
         
         //get all contacts
         self.viewModel.setupFetchedResults(delegate: self)
@@ -140,7 +142,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.searchController.searchBar.autocapitalizationType = .none
         self.searchController.searchBar.isTranslucent = false
         self.searchController.searchBar.tintColor = UIColorManager.TextNorm
-        self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
+        self.searchController.searchBar.barTintColor = UIColorManager.BackgroundNorm
         self.searchController.searchBar.backgroundColor = .clear
 
         self.searchViewConstraint.constant = 0.0

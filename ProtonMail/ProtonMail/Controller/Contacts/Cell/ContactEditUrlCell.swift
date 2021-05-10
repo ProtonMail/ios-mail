@@ -21,8 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
-
+import PMUIFoundations
 
 final class ContactEditUrlCell: UITableViewCell {
     
@@ -40,6 +39,8 @@ final class ContactEditUrlCell: UITableViewCell {
         super.awakeFromNib()
         self.valueField.delegate = self
         self.valueField.placeholder = LocalString._contacts_vcard_url_placeholder
+        self.valueField.tintColor = UIColorManager.TextHint
+        backgroundColor = UIColorManager.BackgroundNorm
     }
     
     override func layoutSubviews() {
@@ -52,8 +53,10 @@ final class ContactEditUrlCell: UITableViewCell {
         self.isPaid = paid
         self.delegate = callback
         
-        typeLabel.text = self.url.newType.title
-        valueField.text = self.url.newUrl
+        typeLabel.attributedText = NSAttributedString(string: self.url.newType.title,
+                                                      attributes: FontManager.Default)
+        valueField.attributedText = NSAttributedString(string: self.url.newUrl,
+                                                       attributes: FontManager.Default)
 
         if self.isPaid {
             if becomeFirstResponder {
@@ -94,6 +97,6 @@ extension ContactEditUrlCell: UITextFieldDelegate {
             self.delegate?.featureBlocked()
             return
         }
-        url.newUrl = valueField.text!
+        url.newUrl = valueField.attributedText?.string ?? ""
     }
 }

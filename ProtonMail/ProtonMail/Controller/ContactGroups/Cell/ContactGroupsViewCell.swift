@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import UIKit
+import PMUIFoundations
 
 protocol ContactGroupsViewCellDelegate : AnyObject {
     func isMultiSelect() -> Bool
@@ -60,6 +60,9 @@ class ContactGroupsViewCell: UITableViewCell, AccessibleCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        backgroundColor = UIColorManager.BackgroundNorm
+        sendButtonImage.image = UIImage(named: "mail_send_icon")
+        sendButtonImage.tintColor = UIColorManager.IconWeak
     }
     
     func setCount(_ count: Int) {
@@ -69,11 +72,11 @@ class ContactGroupsViewCell: UITableViewCell, AccessibleCell {
     
     private func setDetailString() {        
         if self.count <= 1 {
-            self.detailLabel.text = String.init(format: LocalString._contact_groups_member_count_description,
-                                                self.count)
+            self.detailLabel.attributedText = String.init(format: LocalString._contact_groups_member_count_description,
+                                                          self.count).apply(style: FontManager.DefaultSmallWeak)
         } else {
-            self.detailLabel.text = String.init(format: LocalString._contact_groups_members_count_description,
-                                                self.count)
+            self.detailLabel.attributedText = String.init(format: LocalString._contact_groups_members_count_description,
+                                                          self.count).apply(style: FontManager.DefaultSmallWeak)
         }
     }
     

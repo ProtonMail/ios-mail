@@ -46,6 +46,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColorManager.BackgroundNorm
         self.definesPresentationContext = true
         title = LocalString._contact_groups_manage_addresses
         

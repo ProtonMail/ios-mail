@@ -20,17 +20,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
-
+import PMUIFoundations
 
 final class ContactEditAddCell: UITableViewCell, AccessibleCell {
-    
-    @IBOutlet weak var valueLabel: UILabel!
+    @IBOutlet var valueLabel: UILabel!
 
-    func configCell(value : String) {
-        self.valueLabel.text = value
+    func configCell(value: String, color: UIColor = UIColorManager.TextNorm) {
+        backgroundColor = UIColorManager.BackgroundNorm
+
+        self.valueLabel.attributedText = value.apply(style: FontManager.Default.foregroundColor(color))
         generateCellAccessibilityIdentifiers(value)
     }
-    
 }

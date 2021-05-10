@@ -345,22 +345,22 @@ class LocalizedString {
     // Mark Contacts
 
     /// "Add Organization"
-    lazy var _contacts_add_org              = NSLocalizedString("Add Organization", comment: "new contacts add Organization ")
+    lazy var _contacts_add_org              = NSLocalizedString("Add organization", comment: "new contacts add Organization ")
     /// "Add Nickname"
-    lazy var _contacts_add_nickname         = NSLocalizedString("Add Nickname", comment: "new contacts add Nickname")
+    lazy var _contacts_add_nickname         = NSLocalizedString("Add nickname", comment: "new contacts add Nickname")
     /// "Add Title"
-    lazy var _contacts_add_title            = NSLocalizedString("Add Title", comment: "new contacts add Title")
+    lazy var _contacts_add_title            = NSLocalizedString("Add title", comment: "new contacts add Title")
     /// "Add Birthday"
-    lazy var _contacts_add_bd               = NSLocalizedString("Add Birthday", comment: "new contacts add Birthday")
+    lazy var _contacts_add_bd               = NSLocalizedString("Add birthday", comment: "new contacts add Birthday")
     /// "Add Anniversary"
-    lazy var _contacts_add_anniversary      = NSLocalizedString("Add Anniversary", comment: "new contacts add Anniversary")
+    lazy var _contacts_add_anniversary      = NSLocalizedString("Add anniversary", comment: "new contacts add Anniversary")
     /// "Add Gender"
-    lazy var _contacts_add_gender           = NSLocalizedString("Add Gender", comment: "new contacts add Gender")
+    lazy var _contacts_add_gender           = NSLocalizedString("Add gender", comment: "new contacts add Gender")
     /// "Add Contact"
     lazy var _contacts_new_contact          = NSLocalizedString("New contact", comment: "Contacts add new contact")
     lazy var _contacts_add_contact          = NSLocalizedString("Add Contact", comment: "Contacts add new contact")
     /// "Add Custom Label"
-    lazy var _contacts_add_custom_label     = NSLocalizedString("Add Custom Label", comment: "add custom label type action")
+    lazy var _contacts_add_custom_label     = NSLocalizedString("Add custom label", comment: "add custom label type action")
     /// "Add new address"
     lazy var _contacts_add_new_address      = NSLocalizedString("Add new address", comment: "add new address action")
     /// "Add new custom field"
@@ -420,18 +420,18 @@ class LocalizedString {
     /// "Gender"
     lazy var _contacts_info_gender = NSLocalizedString("Gender", comment: "contacts talbe cell gender title")
     /// "Contact Details"
-    lazy var _contacts_contact_details_title = NSLocalizedString("Contact Details", comment: "contact section title")
-    lazy var _contacts_email_contact_title = NSLocalizedString("Email Contact", comment: "Send an email to the current contact (button title text)")
-    lazy var _contacts_call_contact_title = NSLocalizedString("Call Contact", comment: "Call the contact (button title text)")
+    lazy var _contacts_contact_details_title = NSLocalizedString("Contact details", comment: "contact section title")
+    lazy var _contacts_email_contact_title = NSLocalizedString("Email contact", comment: "Send an email to the current contact (button title text)")
+    lazy var _contacts_call_contact_title = NSLocalizedString("Call contact", comment: "Call the contact (button title text)")
     /// "Email addresses"
-    lazy var _contacts_email_addresses_title = NSLocalizedString("Email Addresses", comment: "contact detail view, email addresses section title")
+    lazy var _contacts_email_addresses_title = NSLocalizedString("Email addresses", comment: "contact detail view, email addresses section title")
     /// "Profile picture"
-    lazy var _contacts_add_profile_picture = NSLocalizedString("Add Photo", comment: "The button text for add profile picture")
-    lazy var _contacts_edit_profile_picture = NSLocalizedString("Edit Photo", comment: "The button text for edit profile picture")
+    lazy var _contacts_add_profile_picture = NSLocalizedString("Add photo", comment: "The button text for add profile picture")
+    lazy var _contacts_edit_profile_picture = NSLocalizedString("Edit photo", comment: "The button text for edit profile picture")
     /// "Encrypted Contact Details"
-    lazy var _contacts_encrypted_contact_details_title = NSLocalizedString("Encrypted Contact Details", comment: "contact section title")
+    lazy var _contacts_encrypted_contact_details_title = NSLocalizedString("Encrypted contact details", comment: "contact section title")
     /// "Share Contact"
-    lazy var _contacts_share_contact_action = NSLocalizedString("Share Contact", comment: "action")
+    lazy var _contacts_share_contact_action = NSLocalizedString("Share contact", comment: "action")
     /// "Name"
     lazy var _contacts_name_title = NSLocalizedString("Name", comment: "title")
     /// "Notes"
@@ -774,7 +774,7 @@ class LocalizedString {
     lazy var _upload_ios_contacts_to_protonmail = NSLocalizedString("Upload iOS contacts to ProtonMail?", comment: "Description")
 
     /// "Delete Contact"
-    lazy var _delete_contact = NSLocalizedString("Delete Contact", comment: "Title-Contacts")
+    lazy var _delete_contact = NSLocalizedString("Delete contact", comment: "Title-Contacts")
 
     /// "Login"
     lazy var _general_login = NSLocalizedString("Login", comment: "Title")
@@ -1723,23 +1723,23 @@ class LocalizedString {
     lazy var _contacts_action_select_an_option = NSLocalizedString("Select An Option",
                                                                    comment: "The title for the popup list, presenting a list of options for creating a contact or creating a contact group")
     
-    lazy var _contact_groups_group_name_instruction_label = NSLocalizedString("Group Name",
+    lazy var _contact_groups_group_name_instruction_label = NSLocalizedString("Group name",
                                                                               comment: "The instruction label for the group name textfield")
-    lazy var _contact_groups_detail_view_title = NSLocalizedString("Group Details",
+    lazy var _contact_groups_detail_view_title = NSLocalizedString("Group details",
                                                                    comment: "The title for the contact group detail view")
     lazy var _contact_groups_new = NSLocalizedString("New group",
                                                      comment: "The title for the contact group creation view")
-    lazy var _contact_groups_add = NSLocalizedString("Add Group",
+    lazy var _contact_groups_add = NSLocalizedString("Add group",
                                                      comment: "The title for the contact group creation view")
-    lazy var _contact_groups_edit = NSLocalizedString("Edit Group",
+    lazy var _contact_groups_edit = NSLocalizedString("Edit group",
                                                       comment: "The title for the contact group editing view")
     
-    lazy var _contact_groups_manage_addresses = NSLocalizedString("Manage Addresses",
+    lazy var _contact_groups_manage_addresses = NSLocalizedString("Manage addresses",
                                                                   comment: "The title for the view where user can manage emails in the contact group")
     
     lazy var _contact_groups_edit_avartar = NSLocalizedString("Edit avartar",
                                                               comment: "The title for the view where user can select the color for the group")
-    lazy var _contact_groups_delete = NSLocalizedString("Delete Contact Group",
+    lazy var _contact_groups_delete = NSLocalizedString("Delete contact group",
                                                         comment: "The description of the button for deleting the contact group")
     
     lazy var _contact_groups_member_count_description = NSLocalizedString("%d Member",
