@@ -134,20 +134,6 @@ extension Message {
         return labelIDs
     }
     
-    /// get the lable IDs with the info about exclusive
-    ///
-    /// - Returns: dict
-    func getLableIDs() -> [String: Bool] {
-        var out : [String : Bool] = [String : Bool]()
-        let labels = self.labels
-        for l in labels {
-            if let label = l as? Label {
-                out[label.labelID] = label.type == 3
-            }
-        }
-        return out
-    }
-    
     /// check if message replied
     var replied : Bool {
         get {

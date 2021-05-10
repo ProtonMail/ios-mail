@@ -26,21 +26,9 @@ extension MailboxViewModel: MoveToActionSheetProtocol {
         return labelID
     }
 
-    func handleMoveToAction() {
+    func handleMoveToAction(messages: [Message]) {
         guard let destination = selectedMoveToFolder else { return }
-        let msgs = selectedMessages.filter { $0.firstValidFolder() != nil }
-
-        var fLabels = [String]()
-        for msg in msgs {
-            let flable = msg.firstValidFolder() ?? Message.Location.inbox.rawValue
-            let id = msg.selfSent(labelID: flable) ?? flable
-            fLabels.append(id)
-        }
-
-        messageService.move(messages: msgs,
-                            from: fLabels,
-                            to: destination.location.labelID,
-                            queue: true)
+        messageService.move(messages: messages, to: destination.location.labelID, queue: true)
         selectedMoveToFolder = nil
     }
 
