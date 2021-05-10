@@ -41,7 +41,9 @@ extension Message {
         
         static let messageType = "messageType"
         static let messageStatus = "messageStatus"
-        
+
+        static let expirationTime = "expirationTime"
+
         // 1.9.1
         static let unRead = "unRead"
         

@@ -299,6 +299,33 @@ class CacheService: Service {
             completion?()
         }
     }
+
+    func deleteExpiredMessage(completion: (() -> Void)?) {
+        let context = coreDataService.mainContext
+        context.perform {
+            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+            fetch.predicate = NSPredicate(format: "%K != NULL AND %K < %@",
+                                          Message.Attributes.expirationTime,
+                                          Message.Attributes.expirationTime,
+                                          NSDate())
+
+            if let messages = try? context.fetch(fetch) as? [Message] {
+                messages.forEach { (msg) in
+                    if msg.unRead {
+                        let labels: [String] = msg.getLableIDs()
+                        labels.forEach { (label) in
+                            self.updateCounterSync(plus: false, with: label, context: context)
+                        }
+                    }
+                    context.delete(msg)
+                }
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            }
+            completion?()
+        }
+    }
 }
 
 // MARK: - Attachment related functions

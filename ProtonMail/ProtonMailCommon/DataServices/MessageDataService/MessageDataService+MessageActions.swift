@@ -86,6 +86,10 @@ extension MessageDataService {
         self.queue(apply ? .label : .unlabel, isConversation: false, data1: label, data2: "", otherData: messagesIds)
         return true
     }
+
+    func deleteExpiredMessage(completion: (() -> Void)?) {
+        self.cacheService.deleteExpiredMessage(completion: completion)
+    }
 }
 
 extension MessageDataService {

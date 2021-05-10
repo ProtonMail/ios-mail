@@ -877,6 +877,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     @objc private func getLatestMessages() {
         self.getLatestMessagesRaw { [weak self] (_) in
             self?.updateLastUpdateTimeLabel()
+            self?.deleteExpiredMessages()
         }
     }
     private func getLatestMessagesRaw(_ CompleteIsFetch: ((_ fetch: Bool) -> Void)?) {
@@ -1350,6 +1351,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         isScrolled ? topActionsView.layer.apply(shadow: .default) : topActionsView.layer.clearShadow()
     }
 
+    private func deleteExpiredMessages() {
+        viewModel.user.messageService.deleteExpiredMessage(completion: nil)
+    }
 }
 
 // MARK: - Action bar
