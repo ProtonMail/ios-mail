@@ -249,11 +249,8 @@ class NewMessageBodyViewController: UIViewController {
             guard webView.estimatedProgress > 0.1 else { return }
             self?.updateViewHeight(to: webView.scrollView.contentSize.height)
 
-            if webView.isLoading == false {
-                self?.originalHeight = webView.scrollView.contentSize.height
-                // Work around for webview tap too sensitive. Save the default scale value
-                self?.defaultScale = round(webView.scrollView.zoomScale * 1_000) / 1_000.0
-            }
+            // Work around for webview tap too sensitive. Save the default scale value
+            self?.defaultScale = round(webView.scrollView.zoomScale * 1_000) / 1_000.0
         }
     }
 }
@@ -368,9 +365,6 @@ extension NewMessageBodyViewController: UIScrollViewDelegate {
     }
 
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        var newSize = scrollView.contentSize
-        newSize = newSize.applying(self.lastZoom.inverted()).applying(self.initialZoom)
-
         let united = CGPoint(x: 0, y: self.lastContentOffset.y + self.scrollViewContainer.scroller.contentOffset.y)
         self.scrollViewContainer.propogate(scrolling: self.lastContentOffset, boundsTouchedHandler: {
             /* Sometimes offset after zoom can exceed tableView's heigth
@@ -383,14 +377,16 @@ extension NewMessageBodyViewController: UIScrollViewDelegate {
             self.scrollViewContainer.saveOffset()
         })
 
-        self.updateViewHeight(to: newSize.height)
+        self.updateViewHeight(to: scrollView.contentSize.height)
 
         // Work around for webview tap too sensitive
         if let defaultScale = self.defaultScale {
             if round(scrollView.zoomScale * 1_000) / 1_000.0 == defaultScale {
                 self.webView?.scrollView.isScrollEnabled = false
                 self.verticalRecognizer.isEnabled = false
-                self.updateViewHeight(to: self.originalHeight)
+                if self.originalHeight >= 0 {
+                    self.updateViewHeight(to: self.originalHeight)
+                }
                 return
             }
         }

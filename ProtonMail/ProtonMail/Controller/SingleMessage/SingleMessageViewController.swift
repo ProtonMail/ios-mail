@@ -174,6 +174,11 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
                                                    name: UIApplication.didEnterBackgroundNotification,
                                                    object: nil)
         }
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(networkStatusUpdated(_:)),
+                                               name: NSNotification.Name.reachabilityChanged,
+                                               object: nil)
     }
 
     private func setUpExpandAction() {
@@ -408,6 +413,14 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
     private func manageHeaderViewControllers(oldController: UIViewController, newController: UIViewController) {
         unembed(oldController)
         embed(newController, inside: self.customView.messageHeaderContainer.contentContainer)
+    }
+
+    @objc
+    private func networkStatusUpdated(_ note: Notification) {
+        guard let currentReachability = note.object as? Reachability else { return }
+        if currentReachability.currentReachabilityStatus() != .NotReachable && viewModel.message.body.isEmpty {
+            viewModel.downloadDetails()
+        }
     }
 
     required init?(coder: NSCoder) {
