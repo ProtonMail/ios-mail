@@ -32,11 +32,11 @@ extension Date {
             distance = timeIntervalSinceReferenceDate - Date().timeIntervalSinceReferenceDate
         }
 
-        if distance > 86400 {
-            let day = Int(distance / 86400)
+        if distance > 86_400 {
+            let day = Int(distance / 86_400)
             return "\(day) " + (day > 1 ? LocalString._days : LocalString._day)
-        } else if distance > 3600 {
-            let hour = Int(distance / 3600)
+        } else if distance > 3_600 {
+            let hour = Int(distance / 3_600)
             return "\(hour) " + (hour > 1 ? LocalString._hours : LocalString._hour)
         } else {
             let minute = Int(distance / 60)

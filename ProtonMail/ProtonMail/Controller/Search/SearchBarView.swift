@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import PMUIFoundations
+import UIKit
 
 class SearchBarView: UIView {
 
@@ -67,7 +67,7 @@ class SearchBarView: UIView {
         [
             cancelButton.topAnchor.constraint(equalTo: topAnchor),
             cancelButton.bottomAnchor.constraint(equalTo: bottomAnchor),
-            cancelButton.trailingAnchor.constraint(equalTo: trailingAnchor),
+            cancelButton.trailingAnchor.constraint(equalTo: trailingAnchor)
         ].activate()
 
         [
@@ -80,7 +80,7 @@ class SearchBarView: UIView {
         [
             textField.leadingAnchor.constraint(equalTo: searchIcon.trailingAnchor, constant: 8),
             textField.topAnchor.constraint(equalTo: container.topAnchor, constant: 6),
-            textField.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -6),
+            textField.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -6)
         ].activate()
 
         [

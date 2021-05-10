@@ -65,7 +65,7 @@ struct MessageViewActionSheetViewModel {
 
         items.append(contentsOf: [
             .moveTo,
-            //.print,
+            .print,
             .viewHeaders,
             .viewHTML,
             .reportPhishing

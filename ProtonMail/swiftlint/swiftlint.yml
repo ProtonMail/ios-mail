@@ -141,6 +141,11 @@ included:
   - ${PWD}/ProtonMail/Controller/Compose/ComposeToolbar/ComposeToolbar.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposeToolbar/ComposePasswordVC.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposeToolbar/ComposeExpirationVC.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/SingleMessageViewController+Print.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyViewController+Print.swift
+  - ${PWD}/ProtonMail/Controller/Search/SearchBarView.swift
+  - ${PWD}/ProtonMail/Controller/Search/SearchViewController+BuildMessageViewModel.swift
+  - ${PWD}/ProtonMailCommon/Extensions/Date+CountExpirationTime.swift
 
 excluded:
   - ${PWD}/Pods
