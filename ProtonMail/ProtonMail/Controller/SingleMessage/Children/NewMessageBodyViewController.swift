@@ -41,7 +41,7 @@ class NewMessageBodyViewController: UIViewController {
         HTTPRequestSecureLoader(addSpacerIfNeeded: false)
     }()
     weak var delegate: NewMessageBodyViewControllerDelegate?
-    private var webView: WKWebView?
+    private(set) var webView: WKWebView?
 
     /// used to update content size after loading images
     private var contentSizeObservation: NSKeyValueObservation!
@@ -256,6 +256,7 @@ class NewMessageBodyViewController: UIViewController {
             }
         }
     }
+
 }
 
 extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {

@@ -132,15 +132,6 @@ extension MessageBodyViewController {
     }
 }
 
-extension MessageBodyViewController: Printable {
-    func printPageRenderer() -> UIPrintPageRenderer {
-        let render = HeaderedPrintRenderer()
-        let printFormatter = self.webView.viewPrintFormatter()
-        render.addPrintFormatter(printFormatter, startingAtPageAt: 0)
-        return render
-    }
-}
-
 extension MessageBodyViewController: ViewModelProtocol {
     func set(viewModel: MessageBodyViewModel) {
         self.viewModel = viewModel

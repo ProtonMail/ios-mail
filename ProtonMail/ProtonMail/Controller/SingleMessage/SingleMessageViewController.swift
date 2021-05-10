@@ -26,11 +26,12 @@ import UIKit
 
 class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
 
+    let viewModel: SingleMessageViewModel
+
     private lazy var navigationTitleLabel = SingleMessageNavigationHeaderView()
     private var contentOffsetToPerserve: CGPoint = .zero
 
     private let coordinator: SingleMessageCoordinator
-    private let viewModel: SingleMessageViewModel
     private lazy var starBarButton = UIBarButtonItem(
         image: nil,
         style: .plain,
@@ -426,8 +427,7 @@ private extension SingleMessageViewController {
         case .moveTo:
             showMoveToActionSheet()
         case .print:
-            // TODO: Fix later
-            break
+            self.presentPrintController()
         case .viewHeaders, .viewHTML:
             handleOpenViewAction(action)
         case .dismiss:
