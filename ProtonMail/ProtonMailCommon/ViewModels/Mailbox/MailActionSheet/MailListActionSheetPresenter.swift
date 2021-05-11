@@ -41,7 +41,9 @@ class MailListActionSheetPresenter {
         )
 
         let actions = viewModel.items.map { viewModel in
-            PMActionSheetPlainItem(title: viewModel.title, icon: viewModel.icon) { _ in
+            PMActionSheetPlainItem(title: viewModel.title,
+                                   icon: viewModel.icon.withRenderingMode(.alwaysTemplate),
+                                   iconColor: UIColorManager.IconNorm) { _ in
                 action(viewModel.type)
             }
         }

@@ -1408,19 +1408,22 @@ extension MailboxViewController {
                     default:
                         let temp = NSMutableSet(set: self.viewModel.selectedIDs)
                         self.viewModel.handleBarActions(action, selectedIDs: temp)
-                        self.showMessageMoved(title: LocalString._messages_has_been_moved)
+                        if action != .readUnread {
+                            self.showMessageMoved(title: LocalString._messages_has_been_moved)
+                        }
                         self.cancelButtonTapped()
                     }
                 }
             }
             
             if key == actions.startIndex {
-                let barItem = PMActionBarItem(icon: action.iconImage,
+                let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
                                               text: action.name,
+                                              itemColor: UIColorManager.TextInverted,
                                               handler: actionHandler)
                 actionItems.append(barItem)
             } else {
-                let barItem = PMActionBarItem(icon: action.iconImage,
+                let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
                                               backgroundColor: .clear,
                                               handler: actionHandler)
                 actionItems.append(barItem)

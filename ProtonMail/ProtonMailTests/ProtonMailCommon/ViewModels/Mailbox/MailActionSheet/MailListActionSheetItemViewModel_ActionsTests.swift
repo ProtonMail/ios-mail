@@ -75,7 +75,7 @@ class MailListActionSheetItemViewModel_ActionsTests: XCTestCase {
 
     func testDeleteActionViewModel() {
         sut = .deleteActionViewModel()
-        AssertEqualImage(sut.icon, Asset.actionSheetTrash.image)
+        AssertEqualImage(sut.icon, Asset.actionBarDelete.image)
         XCTAssertEqual(sut.type, .delete)
         let singleMessageFormat = LocalString._title_of_delete_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))

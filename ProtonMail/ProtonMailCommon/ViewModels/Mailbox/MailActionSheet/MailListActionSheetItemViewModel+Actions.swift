@@ -67,7 +67,7 @@ extension MailListActionSheetItemViewModel {
     static func deleteActionViewModel() -> MailListActionSheetItemViewModel {
         return .init(type: .delete,
                      title: LocalString._title_of_delete_action_in_action_sheet,
-                     icon: Asset.actionSheetTrash.image)
+                     icon: Asset.actionBarDelete.image)
     }
 
     static func labelAsActionViewModel() -> MailListActionSheetItemViewModel {
