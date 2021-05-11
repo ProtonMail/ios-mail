@@ -51,9 +51,9 @@ class TableContainerViewCoordinator: NSObject, CoordinatorNew {
         }
 
         // clean up subviews
-        view.subviews.forEach {
-            $0.removeFromSuperview()
-        }
+//        view.subviews.forEach {
+//            $0.removeFromSuperview()
+//        }
         
         // add child to new parent
         controller.addChild(child)
