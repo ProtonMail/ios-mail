@@ -28,7 +28,7 @@ import PMUIFoundations
 import SkeletonView
 import SwipyCell
 
-class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
+class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, ComposeSaveHintProtocol {
     typealias viewModelType = MailboxViewModel
     typealias coordinatorType = MailboxCoordinator
 

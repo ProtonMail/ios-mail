@@ -218,7 +218,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.view.backgroundColor = UIColorManager.BackgroundNorm
         // 184 is default height of header view
         self.height = self.view.heightAnchor.constraint(equalToConstant: 184)
         self.height.priority = .init(999.0)

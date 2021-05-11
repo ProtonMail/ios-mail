@@ -49,7 +49,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.tableView.backgroundColor = .white
         // fix ios 10 have a seperator at bottom
         self.tableView.separatorColor = .clear
         self.tableView.dropDelegate = self
@@ -96,7 +96,9 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     // tableView
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard self.viewModel.childViewModel.showExpirationPicker && indexPath.row == 1 else {
-            return super.tableView(tableView, cellForRowAt: indexPath)
+            let cell = super.tableView(tableView, cellForRowAt: indexPath)
+            cell.backgroundColor = .white
+            return cell
         }
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ExpirationPickerCell.self), for: indexPath) as? ExpirationPickerCell else {

@@ -194,6 +194,7 @@
 		13D7C2EF8DB7A54FF4C709972D7D6D38 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0274395474CC1045787FCCB2815446EB /* APIResponse.swift */; };
 		14058CBC4B1B03FBFB6E795354DDE837 /* LabelUpdate+Var+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C0E41C40732B45C409A90B2BA762CE /* LabelUpdate+Var+Extension.swift */; };
 		14346E6FF9EB1D75199D8F7DAF30E2C6 /* PhotoAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */; };
+		143B7F6A2ECDD3D45E59325CE144DD3E /* ComposeSaveHintProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AF5EDEE68E54B0199C56A386F1FA07 /* ComposeSaveHintProtocol.swift */; };
 		146758F8128B7B09EAF1E7CFCB6F94F8 /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E20C729B58B3E8CDD72CE5DCB2AD4CFF /* ProtonMail-Bridging-Header.cpp */; };
 		147684DE4D10FD9CE6E2A4CBC3381F88 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D696BC7A9D9CECB6B6E9876B61032680 /* TestAPI.swift */; };
 		1478D70DABC5270D07696F2B826F39DC /* RecipientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940087E63361420310BE075A7E077A15 /* RecipientView.swift */; };
@@ -2549,6 +2550,7 @@
 		FCCADD9770FE924AEB4AEBAAF4FF3E65 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328E1656BCAC99F33671898D6E40D00B /* CoreDataService.swift */; };
 		FCCBB57BA76B5E8053A2B4457069D5B5 /* ContactEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */; };
 		FCD7706DD098F5789342A659404AF73D /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B8D056C5CE08382D71EDBD635B6A5 /* Label.swift */; };
+		FCF521A094BDD7B5DBE7E809F340FA08 /* ComposeSaveHintProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AF5EDEE68E54B0199C56A386F1FA07 /* ComposeSaveHintProtocol.swift */; };
 		FCFC1724C3A150EA4F36764A519795DB /* test_html.html in Resources */ = {isa = PBXBuildFile; fileRef = 64762B896DE435D0D6267C79BF66D6C3 /* test_html.html */; };
 		FD056076A18125FFD1C5C6107D64E520 /* MailSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78935D907A4A5837283960605A94A31F /* MailSettings.swift */; };
 		FD4541FAA9D98F3C51A8537E2D497F61 /* LabelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BB62B325DD5BE0397727C9D82E7949 /* LabelsViewController.swift */; };
@@ -3643,6 +3645,7 @@
 		C488F429960C863BD52CBAE22E09A9A8 /* CoreDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStore.swift; sourceTree = "<group>"; };
 		C494D600210F73792400DA0119E37A68 /* NSError+Alert+Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Alert+Share.swift"; sourceTree = "<group>"; };
 		C4ADCC7D2012B60DE6EF1A3B76603B4E /* FigmaShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigmaShadow.swift; sourceTree = "<group>"; };
+		C4AF5EDEE68E54B0199C56A386F1FA07 /* ComposeSaveHintProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeSaveHintProtocol.swift; sourceTree = "<group>"; };
 		C50EEB51DEBAE20EB18DFC176CA92BF8 /* DisplayNameRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayNameRobot.swift; sourceTree = "<group>"; };
 		C5B44405F0FD5F2F269A0F21AB23CEE5 /* LabelEditCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelEditCoordinator.swift; sourceTree = "<group>"; };
 		C5CAEDD4BF1C083D26B5050E226CE4DC /* HtmlEditor.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = HtmlEditor.html; sourceTree = "<group>"; };
@@ -6251,6 +6254,7 @@
 				7C83FBFD5F77D9FC09A7E1F0B30FC69E /* ComposeErrorView.swift */,
 				14E8987404D76EC598FCBC542711A09A /* ComposeErrorView.xib */,
 				8641F7C9FE8AAC5D53AA6888F93E65CC /* ComposePasswordViewController.swift */,
+				C4AF5EDEE68E54B0199C56A386F1FA07 /* ComposeSaveHintProtocol.swift */,
 				435497D587584C850EC2B1A04CE6D372 /* ComposeViewController.swift */,
 				7CC182C1B583843D594847F2DB05E0E1 /* ExpirationWarningEmailCell.swift */,
 				667B259499756B936C5965740FB1C262 /* ExpirationWarningHeaderCell.swift */,
@@ -8281,6 +8285,7 @@
 				F7590D5E372AFBED4431E5E0636200CD /* ComposeHeaderViewController.swift in Sources */,
 				CBE05B69B46558ECDDC264D63C20A8F0 /* ComposePasswordVC.swift in Sources */,
 				F8F8306BFF45B8301F645C9EB2F0AF70 /* ComposePasswordViewController.swift in Sources */,
+				FCF521A094BDD7B5DBE7E809F340FA08 /* ComposeSaveHintProtocol.swift in Sources */,
 				8CBF763DD28493FC94C418ABEB7D565D /* ComposeToolbar.swift in Sources */,
 				B5960C080B5837397D7F14277430E7F0 /* ComposeViewController.swift in Sources */,
 				0E29BAA2714CDAC375CEEB88F3E4EBED /* ComposeViewModel.swift in Sources */,
@@ -9014,6 +9019,7 @@
 				5660218DE651F8766768819F7A4B666D /* ComposeHeaderViewController.swift in Sources */,
 				06A6816F7FE26FF3BB2BFEA1DD6718B1 /* ComposePasswordVC.swift in Sources */,
 				51F8182E24BDDE5131AA1ABCEB5EEDAC /* ComposePasswordViewController.swift in Sources */,
+				143B7F6A2ECDD3D45E59325CE144DD3E /* ComposeSaveHintProtocol.swift in Sources */,
 				9BB2F10FCA33A209732B1B64DF0A01BD /* ComposeToolbar.swift in Sources */,
 				1566F8F46A6456E7906FC35965BAF884 /* ComposeViewController.swift in Sources */,
 				F3E09335DB7FB95EAB0BB1D8FD818DB2 /* ComposeViewModel.swift in Sources */,

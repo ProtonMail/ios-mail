@@ -828,7 +828,7 @@
                         <segue destination="Qwy-GJ-vAH" kind="presentation" identifier="toHumanCheckView" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="dts-X9-0aN"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="XIN-Jt-JzU"/>
                         <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="pageSheet" id="dh2-Js-yHz"/>
-                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toComposeShow" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="fullScreen" id="A0a-yx-qTn"/>
+                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toComposeShow" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="pageSheet" id="A0a-yx-qTn"/>
                         <segue destination="9Tt-Bl-2aN" kind="presentation" identifier="toTroubleShootSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="LeA-5g-bB1"/>
                     </connections>
                 </viewController>
@@ -911,7 +911,7 @@
                                 <color key="separatorColor" red="0.74228572845458984" green="0.76431012153625488" blue="0.79264485836029053" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchedCelloldtwo" id="zaY-w6-1EB" customClass="MailboxTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="768" height="56.5"/>
+                                        <rect key="frame" x="0.0" y="24.5" width="768" height="56.5"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zaY-w6-1EB" id="VBr-MR-OMr">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="56.5"/>
@@ -1050,7 +1050,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchedCellOld" id="dPv-H5-B16" userLabel="SearchedCell" customClass="MailboxTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="84.5" width="768" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="81" width="768" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dPv-H5-B16" id="NPq-YL-tsi">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="43.5"/>
@@ -1143,7 +1143,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchedCell" rowHeight="62" id="zvE-09-XM9" customClass="MailboxTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="128" width="768" height="62"/>
+                                        <rect key="frame" x="0.0" y="124.5" width="768" height="62"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zvE-09-XM9" id="0xG-Sa-tLw">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="62"/>
@@ -1887,7 +1887,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="udh-Uk-5dd"/>
-        <segue reference="dh2-Js-yHz"/>
+        <segue reference="A0a-yx-qTn"/>
         <segue reference="w5b-0j-26v"/>
         <segue reference="zIE-XJ-wkG"/>
         <segue reference="ce7-08-teM"/>

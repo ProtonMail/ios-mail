@@ -26,6 +26,9 @@ import PromiseKit
 import AwaitKit
 import MBProgressHUD
 import PMCommon
+#if !APP_EXTENSION
+import SideMenuSwift
+#endif
 
 class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew, AccessibleView, HtmlEditorBehaviourDelegate {
     typealias viewModelType = ComposeViewModel
@@ -225,10 +228,39 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
 
     @objc internal func dismiss() {
         if self.presentingViewController != nil {
-            self.dismiss(animated: true, completion: nil)
+            let presentingVC = self.presentingViewController
+            self.dismiss(animated: true) { [weak self] in
+                self?.handleHintBanner(presentingVC: presentingVC)
+            }
         } else {
             let _ = self.navigationController?.popViewController(animated: true)
         }
+    }
+    
+    private func handleHintBanner(presentingVC: UIViewController?) {
+        #if !APP_EXTENSION
+        guard let messageID = self.viewModel.message?.messageID else { return }
+        userCachedStatus.lastDraftMessageID = messageID
+        
+        guard let viewModel = self.viewModel as? ComposeViewModelImpl,
+              let presentingVC = presentingVC as? SideMenuController else {
+            return
+        }
+
+        let messageService = self.viewModel.getUser().messageService
+        let coreDataService = viewModel.coreDataService
+        let contentVC = presentingVC.contentViewController
+        var navigationController: UINavigationController?
+        
+        if let contactTabbar = contentVC as? ContactTabBarViewController {
+            navigationController = contactTabbar.selectedViewController as? UINavigationController
+        } else {
+            navigationController = contentVC as? UINavigationController
+        }
+        let topVC = navigationController?.topViewController as? ComposeSaveHintProtocol
+        topVC?.showDraftSaveHintBanner(cache: userCachedStatus, messageService: messageService, coreDataService: coreDataService)
+
+        #endif
     }
 
     private func dismissKeyboard() {
@@ -237,7 +269,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
 
     private func updateMessageView() {
-        self.headerView.subject.text = self.viewModel.getSubject()
+        self.headerView.subject.attributedText = self.viewModel.getSubject().apply(style: .DefaultSmall)
         let body = self.viewModel.getHtmlBody()
         self.htmlEditor.setHtml(body: body)
         
@@ -400,52 +432,23 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             self.dismiss()
         }
         
-        if self.viewModel.hasDraft || self.headerView.hasContent || ((attachments?.count ?? 0) > 0) {
-            self.isShowingConfirm = true
-            let alertController = UIAlertController(title: LocalString._general_confirmation_title,
-                                                    message: nil,
-                                                    preferredStyle: .actionSheet)
-            let save = UIAlertAction(title: LocalString._composer_save_draft_action,
-                                     style: .default) { _ in
-                self.stopAutoSave()
-                self.collectDraftData().done {
-                    self.viewModel.updateDraft()
-                }.catch { _ in
-                    
-                }.finally {
-                    dismiss()
-                }
-            }
-            let cancel = UIAlertAction(title: LocalString._general_cancel_button,
-                                       style: .cancel) { _ in
-                self.isShowingConfirm = false
-            }
-            let delete = UIAlertAction(title: LocalString._composer_discard_draft_action,
-                                       style: .destructive) { _ in
-                //Ignore the contact validation when user choose to discard the draft
-                self.headerView.shouldValidateTheEmail = false
-                self.stopAutoSave()
-                self.viewModel.deleteDraft()
-                dismiss()
-            }
+        guard self.viewModel.hasDraft ||
+                self.headerView.hasContent ||
+                (self.attachments?.count ?? 0) > 0 else {
+            dismiss()
+            return
+        }
+        
+        self.stopAutoSave()
+        self.collectDraftData().done {
+            self.viewModel.updateDraft()
+        }.catch { _ in
             
-            // for UITests
-            save.accessibilityLabel = "saveDraftButton"
-            cancel.accessibilityLabel = "cancelDraftButton"
-            delete.accessibilityLabel = "deleteDraftButton"
-            
-            [save, delete, cancel].forEach(alertController.addAction)
-            alertController.popoverPresentationController?.barButtonItem = sender
-            alertController.popoverPresentationController?.sourceRect = self.view.frame
-            present(alertController, animated: true, completion: nil)
-        } else {
+        }.finally {
             dismiss()
         }
     }
-    
-    
-    
-    
+
     // MARK: - Private methods
     private func setupAutoSave(firstTime : Bool = false) {
         self.timer = Timer.scheduledTimer(timeInterval: 120,
