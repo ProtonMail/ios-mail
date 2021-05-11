@@ -86,6 +86,7 @@ class ReportBugsViewController: ProtonMailViewController {
         updateSendButtonForText(textView.text)
         NotificationCenter.default.addKeyboardObserver(self)
         textView.becomeFirstResponder()
+        resizeHeightIfNeeded()
         self.sideMenuController?.delegate = self
     }
     
@@ -220,7 +221,7 @@ class ReportBugsViewController: ProtonMailViewController {
             textViewHeightConstraint.constant = textViewDefaultHeight
         } else {
             let heightMinusKeyboard = view.bounds.height - topTextViewMargin - beginningVerticalPositionOfKeyboard
-            textViewHeightConstraint.constant = min(wantedHeightAfterVerticalGrowth + textViewInset * 2, heightMinusKeyboard + bottomPadding)
+            textViewHeightConstraint.constant = min(wantedHeightAfterVerticalGrowth + textViewInset * 2, heightMinusKeyboard)
         }
     }
 }
@@ -231,6 +232,7 @@ extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol
     func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         beginningVerticalPositionOfKeyboard = bottomPadding
+        resizeHeightIfNeeded()
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
@@ -239,6 +241,7 @@ extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         beginningVerticalPositionOfKeyboard = view.window?.convert(keyboardInfo.endFrame, to: view).origin.y ?? bottomPadding
+        resizeHeightIfNeeded()
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
