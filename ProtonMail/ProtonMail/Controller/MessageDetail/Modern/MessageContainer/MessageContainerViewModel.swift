@@ -178,7 +178,8 @@ class MessageContainerViewModel: TableContainerViewModel {
         self.unsubscribeFromUpdatesOfChildren()
         self.messages.forEach { message in
             if message.contains(label: .trash) || message.contains(label: .spam) {
-                self.messageService.delete(message: message, label: Message.Location.trash.rawValue)
+                let label: Message.Location = message.contains(label: .trash) ? .trash : .spam
+                self.messageService.delete(message: message, label: label.rawValue)
             } else {
                 if let label = message.firstValidFolder() {
                     self.messageService.move(message: message, from: label, to: Message.Location.trash.rawValue)
