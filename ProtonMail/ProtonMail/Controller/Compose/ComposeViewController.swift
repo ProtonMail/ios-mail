@@ -408,6 +408,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             let save = UIAlertAction(title: LocalString._composer_save_draft_action,
                                      style: .default) { _ in
                 self.stopAutoSave()
+                //Remove the EO when we save the draft
+                self.headerView.expirationTimeInterval = 0
                 self.collectDraftData().done {
                     self.viewModel.updateDraft()
                 }.catch { _ in
