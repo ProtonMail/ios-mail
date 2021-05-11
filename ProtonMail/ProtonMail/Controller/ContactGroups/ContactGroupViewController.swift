@@ -31,7 +31,7 @@ import MBProgressHUD
  When the core data that provides data to this controller has data changes,
  the update will be performed immediately and automatically by core data
  */
-class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
+class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol, ComposeSaveHintProtocol {
     typealias viewModelType = ContactGroupsViewModel
     
     private var viewModel: ContactGroupsViewModel!
@@ -366,6 +366,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                                                        presentingController: popup,
                                                        style: .overFullScreen)
         } else if segue.identifier == kToComposerSegue {
+            self.isOnMainView = true
             guard let nav = segue.destination as? UINavigationController,
                 let next = nav.viewControllers.first as? ComposeContainerViewController else
             {

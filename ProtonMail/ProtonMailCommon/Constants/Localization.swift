@@ -333,6 +333,9 @@ class LocalizedString {
     lazy var _composer_define_expiration_placeholder = NSLocalizedString("Define Expiration Date", comment: "Placeholder")
     /// "Define Password"
     lazy var _composer_define_password = NSLocalizedString("Define Password", comment: "place holder")
+    lazy var _composer_draft_saved = NSLocalizedString("Draft saved", comment: "hint message")
+    lazy var _composer_draft_moved_to_trash = NSLocalizedString("Draft moved to trash", comment: "hint message")
+    lazy var _composer_draft_restored = NSLocalizedString("Draft restored", comment: "hint message")
     /// "Define Hint (Optional)"
     lazy var _define_hint_optional = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
     /// "Too many recipients"

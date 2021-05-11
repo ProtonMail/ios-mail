@@ -50,11 +50,13 @@ final class ComposeToolbar: UIView {
     }
 
     func setLockStatus(isLock: Bool) {
+        // FIXME: use asset
         let icon = isLock ? UIImage(named: "ic_Lock_check") : UIImage(named: "ic_lock_no_ckeck")
         self.lockButton.setImage(icon, for: .normal)
     }
 
     func setExpirationStatus(isSetting: Bool) {
+        // FIXME: use asset
         let icon = isSetting ? UIImage(named: "ic_hourglass_check") : UIImage(named: "ic_hourglass_no_check")
         self.hourButton.setImage(icon, for: .normal)
     }

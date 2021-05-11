@@ -26,7 +26,7 @@ import PromiseKit
 import PMUIFoundations
 import MBProgressHUD
 
-class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol {
     typealias viewModelType = ContactGroupDetailViewModel
 
     var viewModel: ContactGroupDetailViewModel!

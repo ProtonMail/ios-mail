@@ -183,6 +183,9 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
     var isForcedLogout : Bool = false
     
+    /// Record the last draft messageID, so the app can do delete / restore
+    var lastDraftMessageID: String?
+    
     var isPMMEWarningDisabled : Bool {
         get {
             return getShared().bool(forKey: Key.isPM_MEWarningDisabled)

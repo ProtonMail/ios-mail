@@ -66,7 +66,6 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     }
     
     func setup() {
-        self.backgroundColor = UIColor(hexColorCode: "#FCFEFF")
         self.bgView.clipsToBounds = true
         self.bgView.layer.cornerRadius = 8.0
         self.bgView.translatesAutoresizingMaskIntoConstraints = false

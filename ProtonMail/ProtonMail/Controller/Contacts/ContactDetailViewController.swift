@@ -26,7 +26,7 @@ import PMUIFoundations
 import AwaitKit
 import MBProgressHUD
 
-class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol {
     typealias viewModelType = ContactDetailsViewModel
     
     fileprivate var viewModel : ContactDetailsViewModel!
