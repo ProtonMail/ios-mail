@@ -301,7 +301,6 @@ class CacheService: Service {
     }
 
     func deleteExpiredMessage(completion: (() -> Void)?) {
-        let context = coreDataService.mainContext
         context.perform {
             let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             fetch.predicate = NSPredicate(format: "%K != NULL AND %K < %@",
@@ -309,21 +308,23 @@ class CacheService: Service {
                                           Message.Attributes.expirationTime,
                                           NSDate())
 
-            if let messages = try? context.fetch(fetch) as? [Message] {
+            if let messages = try? self.context.fetch(fetch) as? [Message] {
                 messages.forEach { (msg) in
                     if msg.unRead {
                         let labels: [String] = msg.getLableIDs()
                         labels.forEach { (label) in
-                            self.updateCounterSync(plus: false, with: label, context: context)
+                            self.updateCounterSync(plus: false, with: label, context: self.context)
                         }
                     }
-                    context.delete(msg)
+                    self.context.delete(msg)
                 }
-                if let error = context.saveUpstreamIfNeeded() {
+                if let error = self.context.saveUpstreamIfNeeded() {
                     PMLog.D("error: \(error)")
                 }
             }
-            completion?()
+            DispatchQueue.main.async {
+                completion?()
+            }
         }
     }
 }
