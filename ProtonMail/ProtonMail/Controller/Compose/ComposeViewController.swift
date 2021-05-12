@@ -440,6 +440,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
         
         self.stopAutoSave()
+		//Remove the EO when we save the draft
+        self.headerView.expirationTimeInterval = 0
         self.collectDraftData().done {
             self.viewModel.updateDraft()
         }.catch { _ in

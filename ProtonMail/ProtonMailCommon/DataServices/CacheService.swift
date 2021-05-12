@@ -289,9 +289,6 @@ class CacheService: Service {
                 msg.password = pwd
                 msg.passwordHint = pwdHint
                 msg.expirationOffset = Int32(expirationTime)
-                if expirationTime > 0 {
-                    msg.expirationTime = Date(timeIntervalSinceNow: expirationTime)
-                }
                 if let error = contextToUse.saveUpstreamIfNeeded() {
                     PMLog.D(" error: \(error)")
                 }
