@@ -195,7 +195,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             
             self?.activityView.isHidden = true
             self?.activityView.stopAnimating()
-            
+            self?._model.setType(type: type)
             guard self?.isEmailVerified(type: type) ?? true else { return }
             // FIXME: use Asset
             self?.lockImage.image = UIImage(named: "ic-contact-groups-filled")
