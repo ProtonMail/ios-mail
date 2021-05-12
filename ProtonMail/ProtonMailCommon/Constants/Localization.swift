@@ -1595,6 +1595,9 @@ class LocalizedString {
     lazy var _please_add_a_password_for_the_following_recipients = NSLocalizedString("Please add a password for the following recipients.", comment: "alert description")
     /// "Please disable PGP sending for following addresses"
     lazy var _please_disable_pgp_sending_for_following_addresses = NSLocalizedString("Please disable PGP Sending for following addresses.", comment: "alert description")
+    lazy var _expiration_non_supported = NSLocalizedString("Expiration non supported", comment: "alert title")
+    lazy var _we_recommend_setting_up_a_password = NSLocalizedString("We recommend setting up a password instead for the following recipients:", comment: "alert body before list of addresses")
+    lazy var _we_recommend_setting_up_a_password_or_disabling_pgp = NSLocalizedString("We recommend setting up a password instead, or disabling PGP for the following recipients:", comment: "alert body before list of addresses")
 
 
     // MARK: - Notifcations Snooze feature
