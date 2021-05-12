@@ -35,6 +35,7 @@ class MailboxCoordinator : DefaultCoordinator {
     internal weak var sideMenu: SideMenuController?
     // whole the ref until started
     internal var navBeforeStart: UINavigationController?
+    var pendingActionAfterDismissal: (() -> Void)? = nil
     
     init(sideMenu: SideMenuController?, vm: MailboxViewModel, services: ServiceFactory) {
         self.sideMenu = sideMenu
@@ -260,11 +261,18 @@ class MailboxCoordinator : DefaultCoordinator {
         let vc = NEWLabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: self.services,
                                                viewController: vc,
-                                               viewModel: vm)
+                                               viewModel: vm,
+                                               mailboxCoordinator: self)
         coordinator.start()
+        // We want to call back when navController is dismissed to show sheet again
         if let navigation = vc.navigationController {
             viewController?.navigationController?.present(navigation, animated: true, completion: nil)
         }
+    }
+
+    func labelEditCoordinatorDidDismiss() {
+        pendingActionAfterDismissal?()
+        pendingActionAfterDismissal = nil
     }
 
     private func presentSingleMessageViewController() {
