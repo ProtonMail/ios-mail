@@ -591,6 +591,34 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
 }
 
+// MARK: - Expiration unavaibility alert
+extension ComposeViewController {
+    func showExpirationUnavailabilityAlert(nonPMEmails: [String], pgpEmails: [String]) {
+        var message = String()
+        if nonPMEmails.count > 0 {
+            message.append(LocalString._we_recommend_setting_up_a_password)
+            message.append("\n\n")
+            message.append(nonPMEmails.joined(separator: ","))
+            message.append("\n")
+        }
+        if pgpEmails.count > 0 {
+            if nonPMEmails.count > 0 { message.append("\n") }
+            message.append(LocalString._we_recommend_setting_up_a_password_or_disabling_pgp)
+            message.append("\n\n")
+            message.append(pgpEmails.joined(separator: ","))
+            message.append("\n")
+        }
+        let alertController = UIAlertController(title: LocalString._expiration_non_supported, message: message, preferredStyle: .alert)
+        let sendAnywayAction = UIAlertAction(title: LocalString._send_anyway, style: .destructive) { [weak self] _ in
+            self?.sendMessageStepTwo()
+        }
+        let cancelAction = UIAlertAction(title: LocalString._general_cancel_action, style: .cancel, handler: nil)
+        alertController.addAction(sendAnywayAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+}
+
 //MARK: - view extensions
 extension ComposeViewController : ComposeViewDelegate {
     

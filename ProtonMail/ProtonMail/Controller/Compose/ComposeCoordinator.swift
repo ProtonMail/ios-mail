@@ -75,15 +75,16 @@ class ComposeCoordinator : DefaultCoordinator {
             popup.setupPasswords(vc.encryptionPassword, confirmPassword: vc.encryptionConfirmPassword, hint: vc.encryptionPasswordHint)
             
         case .expirationWarning:
-            guard let popup = destination as? ExpirationWarningViewController else {
-                return false
-            }
             guard let vc = viewController else {
                 return false
             }
-            popup.delegate = self
-            let nonePMEmail = vc.encryptionPassword.count <= 0 ? vc.headerView.nonePMEmails : [String]()
-            popup.config(needPwd: nonePMEmail, pgp: vc.headerView.pgpEmails)
+            let nonPMEmails = vc.encryptionPassword.count <= 0 ? vc.headerView.nonePMEmails : [String]()
+            let pgpEmails = vc.headerView.pgpEmails
+            guard (nonPMEmails.count > 0 || pgpEmails.count > 0) else {
+                vc.sendMessageStepTwo()
+                return false
+            }
+            vc.showExpirationUnavailabilityAlert(nonPMEmails: nonPMEmails, pgpEmails: pgpEmails)
         case .subSelection:
             guard let destination = destination as? ContactGroupSubSelectionViewController else {
                 return false
@@ -159,25 +160,5 @@ extension ComposeCoordinator : ComposePasswordViewControllerDelegate {
         
         vc.headerView.showEncryptionRemoved()
         vc.updateEO()
-    }
-}
-
-
-extension ComposeCoordinator: ExpirationWarningVCDelegate{
-    func send() {
-        guard let vc = viewController else {
-            return
-        }
-        vc.sendMessageStepTwo()
-    }
-    
-    func learnMore() {
-        #if !APP_EXTENSION
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(.eoLearnMore, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(.eoLearnMore)
-        }
-        #endif
     }
 }
