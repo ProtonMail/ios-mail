@@ -143,7 +143,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         
         // update
         updateTableContent(emailCount: self.emailsInGroup.count)
-        self.delegate?.update()
+        self.delegate?.updateAddressSection()
     }
     
     /**

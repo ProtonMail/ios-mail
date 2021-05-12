@@ -23,8 +23,9 @@
 
 import Foundation
 import PromiseKit
+import CoreData
 
-class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel {
+class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
     /// the contact group label ID
     let groupID: String
     
@@ -45,6 +46,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel {
     var emailIDsArray: [Email]
     private(set) var user: UserManager
     let labelsDataService: LabelsDataService
+    private var fetchedController: NSFetchedResultsController<NSFetchRequestResult>?
     
     init(user: UserManager, groupID: String, name: String, color: String, emailIDs: Set<Email>, labelsDataService: LabelsDataService) {
         self.user = user
@@ -52,10 +54,16 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel {
         self.name = name
         self.color = color
         self.labelsDataService = labelsDataService
-        
         emailIDsArray = []
         self.emailIDs = emailIDs
+
+        super.init()
         setupEmailIDsArray()
+
+        let fetchedController = labelsDataService.labelFetchedController(by: groupID)
+        try? fetchedController.performFetch()
+        fetchedController.delegate = self
+        self.fetchedController = fetchedController
     }
     
     private func setupEmailIDsArray() {
@@ -117,15 +125,21 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel {
      - Returns: Promise<Bool>. true if the contact group has been deleted from core data, false if the contact group can be fetched from core data
      */
     func reload() -> Promise<Bool> {
-        if let label = labelsDataService.label(by: groupID) {
+        if let label = self.fetchedController?.fetchedObjects?.compactMap({$0 as? Label}).first {
             name = label.name
             color = label.color
             emailIDs = (label.emails as? Set<Email>) ?? Set<Email>()
-            
+
             return .value(false)
         } else {
             // deleted case
             return .value(true)
         }
+    }
+}
+
+extension ContactGroupDetailViewModelImpl: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        _ = reload()
     }
 }

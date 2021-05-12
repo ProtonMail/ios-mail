@@ -130,7 +130,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         
         // email contact
         emailContactLabel.text = LocalString._contacts_email_contact_title
-        emailContactImageView.image = UIImage.init(named: "iap_email")
+        emailContactImageView.image = Asset.envelope.image
         emailContactImageView.setupImage(scale: 0.5,
                                          tintColor: UIColor.white,
                                          backgroundColor: UIColor.ProtonMail.Blue_9397CD)
@@ -147,7 +147,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         
         // share contact
         shareContactLabel.text = LocalString._contacts_share_contact_action
-        shareContactImageView.image = UIImage.init(named: "Share-28px-#ffffff")
+        shareContactImageView.image = Asset.icArrowOutBox.image
         shareContactImageView.setupImage(scale: 0.5,
                                          tintColor: UIColor.white,
                                          backgroundColor: UIColor.ProtonMail.Blue_9397CD)

@@ -34,6 +34,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var groupNameLabel: UILabel!
     @IBOutlet weak var groupDetailLabel: UILabel!
+    @IBOutlet weak var sendImage: UIImageView!
     @IBOutlet weak var groupImage: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
@@ -80,7 +81,10 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         tableView.backgroundColor = UIColorManager.BackgroundNorm
 
         headerContainerView.backgroundColor = UIColorManager.BackgroundNorm
-        
+
+        sendImage.image = Asset.mailSendIcon.image.withRenderingMode(.alwaysTemplate)
+        sendImage.tintColor = UIColorManager.InteractionNorm
+
         prepareTable()
     }
     
@@ -120,7 +124,6 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: UIColor.init(hexString: viewModel.getColor(),
                                                             alpha: 1))
-        
         if let image = sendButton.imageView?.image {
             sendButton.imageView?.contentMode = .center
             sendButton.imageView?.image = UIImage.resize(image: image, targetSize: CGSize.init(width: 20, height: 20))

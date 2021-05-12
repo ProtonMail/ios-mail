@@ -1749,8 +1749,9 @@ class LocalizedString {
                                                      comment: "The title for the contact group creation view")
     lazy var _contact_groups_edit = NSLocalizedString("Edit group",
                                                       comment: "The title for the contact group editing view")
-    
     lazy var _contact_groups_manage_addresses = NSLocalizedString("Manage addresses",
+                                                                  comment: "The title for the view where user can manage emails in the contact group")
+    lazy var _contact_groups_add_contacts = NSLocalizedString("Add contacts",
                                                                   comment: "The title for the view where user can manage emails in the contact group")
     
     lazy var _contact_groups_edit_avartar = NSLocalizedString("Edit avartar",

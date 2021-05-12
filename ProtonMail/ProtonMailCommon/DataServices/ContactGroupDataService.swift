@@ -186,13 +186,12 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                                 }
                                 
                                 label.emails = newSet as NSSet
-                                
-                                do {
-                                    try context.save()
-                                    seal.fulfill(())
-                                } catch {
+
+                                if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D("addEmailsToContactGroup updating error: \(error)")
                                     seal.reject(error)
+                                } else {
+                                    seal.fulfill(())
                                 }
                             } else {
                                 PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
@@ -245,14 +244,14 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                                 }
                                 
                                 label.emails = newSet as NSSet
-                                
-                                do {
-                                    try context.save()
-                                    seal.fulfill(())
-                                } catch {
+
+                                if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D("addEmailsToContactGroup updating error: \(error)")
                                     seal.reject(error)
+                                } else {
+                                    seal.fulfill(())
                                 }
+
                             } else {
                                 PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
                                 seal.reject(ContactGroupEditError.InternalError)

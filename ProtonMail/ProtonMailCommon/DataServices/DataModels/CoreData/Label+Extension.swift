@@ -53,6 +53,17 @@ extension Label {
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
+
+    class func labelFetchController(for labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController<NSFetchRequestResult> {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Attributes.labelID, labelID)
+        let strComp = NSSortDescriptor(key: Label.Attributes.name,
+                                       ascending: true,
+                                       selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
+        fetchRequest.sortDescriptors = [strComp]
+        let fetchedController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        return fetchedController
+    }
     
     class func labelForLableID(_ labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.labelID, matchingValue: labelID) as? Label

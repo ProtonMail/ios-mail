@@ -75,8 +75,10 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew {
         // setup tab bar item title
         self.tabBar.items?[0].title = LocalString._menu_contacts_title
         self.tabBar.items?[0].image = Asset.contactGroupsContactsTabbar.image
+        self.tabBar.items?[0].selectedImage = Asset.contactGroupsContactsTabbarFilled.image
         self.tabBar.items?[1].title = LocalString._menu_contact_group_title
         self.tabBar.items?[1].image = Asset.contactGroupsGroupsTabbar.image
+        self.tabBar.items?[1].selectedImage = Asset.contactGroupsGroupsTabbarFilled.image
         self.tabBar.assignItemsAccessibilityIdentifiers()
     }
 }

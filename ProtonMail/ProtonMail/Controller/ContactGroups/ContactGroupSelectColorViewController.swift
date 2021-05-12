@@ -41,7 +41,7 @@ class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModel
         collectionView.backgroundColor = UIColorManager.BackgroundNorm
         title = LocalString._contact_groups_edit_avartar
 
-        self.doneButton = UIBarButtonItem(title: LocalString._general_done_button,
+        self.doneButton = UIBarButtonItem(title: LocalString._general_edit_action,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(self.didTapDoneButton))
         let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)

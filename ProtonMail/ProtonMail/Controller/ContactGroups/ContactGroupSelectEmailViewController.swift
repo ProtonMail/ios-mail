@@ -48,14 +48,14 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         super.viewDidLoad()
         view.backgroundColor = UIColorManager.BackgroundNorm
         self.definesPresentationContext = true
-        title = LocalString._contact_groups_manage_addresses
+        title = LocalString._contact_groups_add_contacts
         
         tableView.allowsMultipleSelection = true
         tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactGroupEditCellIdentifier)
         prepareSearchBar()
 
-        self.doneButton = UIBarButtonItem(title: LocalString._general_edit_action,
+        self.doneButton = UIBarButtonItem(title: LocalString._general_done_button,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(self.didTapDoneButton))
         let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)

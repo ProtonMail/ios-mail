@@ -26,6 +26,7 @@ import PromiseKit
 
 protocol ContactGroupEditViewControllerDelegate: AnyObject {
     func update()
+    func updateAddressSection()
 }
 
 enum ContactGroupEditError: Error {
