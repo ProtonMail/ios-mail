@@ -512,6 +512,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             mailboxCell.id = message.messageID
             mailboxCell.cellDelegate = self
             messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
+            if message.expirationTime != nil {
+                mailboxCell.startUpdateExpiration()
+            }
 
             configureSwipeAction(mailboxCell, indexPath: indexPath, message: message)
         case .conversation:
@@ -2018,6 +2021,16 @@ extension MailboxViewController: UITableViewDelegate {
 }
 
 extension MailboxViewController: NewMailboxMessageCellDelegate {
+    func getExpirationDate(id: String) -> String? {
+        let tappedCell = tableView.visibleCells
+            .compactMap { $0 as? NewMailboxMessageCell }
+            .first(where: { $0.id == id })
+        guard let cell = tappedCell,
+              let indexPath = tableView.indexPath(for: cell),
+              let expirationTime = viewModel.item(index: indexPath)?.expirationTime else { return nil }
+        return expirationTime.countExpirationTime
+    }
+
     func didSelectButtonStatusChange(id: String?) {
         let tappedCell = tableView.visibleCells
             .compactMap { $0 as? NewMailboxMessageCell }
