@@ -69,12 +69,13 @@ enum MIMEType {
     }
 
     // FIXME: use asset
+    /// Icon for composer
     var icon: UIImage? {
         switch self {
         case .jpg:
             return UIImage(named: "mail_attachment-jpeg")
         case .png:
-            return UIImage(named: "mail_attachment-png")
+            return UIImage(named: "mail_attachment-jpeg")
         case .zip:
             return UIImage(named: "mail_attachment-zip")
         case .pdf:
@@ -89,6 +90,31 @@ enum MIMEType {
             return UIImage(named: "mail_attachment-ppt")
         default:
             return UIImage(named: "mail_attachment_unknow")
+        }
+    }
+    
+    /// Icon for message detail
+    var bigIcon: UIImage? {
+        switch self {
+        case .jpg:
+            return UIImage(named: "mail_attachment_file_image")
+        case .png:
+            return UIImage(named: "mail_attachment_file_image")
+        case .zip:
+            return UIImage(named: "mail_attachment_file_zip")
+        case .pdf:
+            return UIImage(named: "mail_attachment_file_pdf")
+        case .txt:
+            // There is no icon for txt, use general temporary
+            return UIImage(named: "mail_attachment_file_general")
+        case .doc:
+            return UIImage(named: "mail_attachment_file_doc")
+        case .xls:
+            return UIImage(named: "mail_attachment_file_xls")
+        case .ppt:
+            return UIImage(named: "mail_attachment_file_ppt")
+        default:
+            return UIImage(named: "mail_attachment_file_unknow")
         }
     }
 }
