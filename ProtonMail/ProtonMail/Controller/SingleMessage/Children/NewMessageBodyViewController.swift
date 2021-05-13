@@ -233,18 +233,16 @@ class NewMessageBodyViewController: UIViewController {
 
                 self?.updateViewHeight(to: scrollView.contentSize.height)
 
-                let currentScale = round(webView.scrollView.zoomScale * 1_000) / 1_000.0
-                if webView.isLoading == false && currentScale == self?.defaultScale {
-                    // Update the original height here for the web page that has image to be downloaded.
-                    self?.originalHeight = webView.scrollView.contentSize.height
-                }
+                // Update the original height here for the web page that has image to be downloaded.
+                self?.originalHeight = webView.scrollView.contentSize.height
             }
 
         guard self.loadingObservation == nil else {
             return
         }
 
-        self.loadingObservation = self.webView?.observe(\.isLoading) { [weak self] webView, _ in
+        self.loadingObservation = self.webView?.observe(\.isLoading,
+                                                        options: [.initial, .new, .old]) { [weak self] webView, _ in
             // skip first call because it will inherit irrelevant contentSize
             guard webView.estimatedProgress > 0.1 else { return }
             self?.updateViewHeight(to: webView.scrollView.contentSize.height)
