@@ -78,4 +78,8 @@ extension Notification.Name {
     static var queueIsEmpty: Notification.Name {
         return .init("queueIsEmpty")
     }
+    
+    static var attachmentUploaded: Notification.Name {
+        return .init("attachmentUploaded")
+    }
 }

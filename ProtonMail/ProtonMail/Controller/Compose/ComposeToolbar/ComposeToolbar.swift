@@ -61,6 +61,15 @@ final class ComposeToolbar: UIView {
         self.hourButton.setImage(icon, for: .normal)
     }
 
+    func setAttachment(number: Int) {
+        let text = number == 0 ? "": "\(number)"
+        self.attachmentNumLabel.text = text
+        self.attachmentNumView.isHidden = number == 0
+        self.attachmentNumLabel.sizeToFit()
+        let height = max(self.attachmentNumLabel.frame.size.height, 24)
+        self.attachmentNumLabel.roundCorner(height / 2)
+    }
+
     @IBAction private func clickEOButton(_ sender: Any) {
         self.delegate?.showEncryptOutsideView()
     }
@@ -103,7 +112,8 @@ extension ComposeToolbar {
         self.lockButton.tintColor = UIColorManager.IconNorm
         self.hourButton.tintColor = UIColorManager.IconNorm
         self.attachmentButton.tintColor = UIColorManager.IconNorm
-        self.attachmentNumView.backgroundColor = UIColorManager.InteractionNorm
+        self.attachmentNumView.backgroundColor = .clear
         self.attachmentNumLabel.textColor = .white
+        self.attachmentNumLabel.backgroundColor = UIColorManager.InteractionNorm
     }
 }

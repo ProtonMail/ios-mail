@@ -136,9 +136,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         }
         return emails.joined(separator: ",")
     }
-    
-    
-    
+
     var ccContactPicker: ContactPicker!
     var ccContacts: String {
         return ccContactPicker.contactList
@@ -167,23 +165,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     @IBOutlet var subject: UITextField!
     @IBOutlet var showCcBccButton: UIButton!
     
-    // MARK: - Action Buttons
-    @IBOutlet weak var buttonView: UIView!
-    @IBOutlet var encryptedButton: UIButton!
-    @IBOutlet var expirationButton: UIButton!
-    @IBOutlet var attachmentButton: UIButton!
-    fileprivate var confirmExpirationButton: UIButton!
-    
-    // MARK: - Encryption password
-    @IBOutlet weak var passwordView: UIView!
-    @IBOutlet var encryptedPasswordTextField: UITextField!
-    @IBOutlet var encryptedActionButton: UIButton!
-    
-    
-    // MARK: - Expiration Date
-    @IBOutlet var expirationView: UIView!
-    @IBOutlet var expirationDateTextField: UITextField!
-    
     // MARK: - From field
     @IBOutlet weak var fromView: UIView!
     @IBOutlet weak var fromAddress: UILabel!
@@ -207,7 +188,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     fileprivate let kAnimationDuration = 0.25
     
     //
-    fileprivate var errorView: ComposeErrorView!
     fileprivate var isShowingCcBccView: Bool = false
     fileprivate var hasExpirationSchedule: Bool = false
     
@@ -232,23 +212,13 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         }
 
         self.showCcBccButton.tintColor = UIColorManager.IconWeak
-        encryptedPasswordTextField.placeholder = LocalString._composer_define_expiration_placeholder
         
         self.configureContactPickerTemplate()
-        self.includeButtonBorder(encryptedButton)
-        self.includeButtonBorder(expirationButton)
-        self.includeButtonBorder(attachmentButton)
-        self.includeButtonBorder(encryptedPasswordTextField)
-        self.includeButtonBorder(expirationDateTextField)
         
         self.configureToContactPicker()
         self.configureCcContactPicker()
         self.configureBccContactPicker()
         self.configureSubject()
-        
-        self.configureEncryptionPasswordField()
-        self.configureExpirationField()
-        self.configureErrorMessage()
         
         self.view.bringSubviewToFront(showCcBccButton)
         self.view.bringSubviewToFront(subject)
@@ -260,8 +230,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.accessibilityElements = [ self.fromPickerButton!,
                                        self.toContactPicker!,
                                        self.ccContactPicker!, self.bccContactPicker!,
-                                       self.subject!,
-                                       self.expirationView!, self.buttonView!, self.passwordView!
+                                       self.subject!
         ]
         generateAccessibilityIdentifiers()
     }
@@ -310,70 +279,11 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         fromPickerButton.isEnabled = pickerEnabled
     }
     
-    @IBAction func attachmentButtonTapped(_ sender: UIButton) {
-        self.hidePasswordAndConfirmDoesntMatch()
-        self.view.endEditing(true)
-        self.delegate?.composeViewDidTapAttachmentButton(self)
-    }
-    
-    func updateAttachmentButton(_ hasAtts: Bool) {
-        // FIXME: use Asset
-        if hasAtts {
-            self.attachmentButton.setImage(UIImage(named: "compose_attachment-active"), for: UIControl.State())
-        } else {
-            self.attachmentButton.setImage(UIImage(named: "compose_attachment"), for: UIControl.State())
-        }
-    }
-    
-    @IBAction func expirationButtonTapped(_ sender: UIButton) {
-        self.hidePasswordAndConfirmDoesntMatch()
-        self.view.endEditing(true)
-        let _ = self.toContactPicker.becomeFirstResponder()
-        UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
-            self.passwordView.alpha = 0.0
-            self.buttonView.alpha = 0.0
-            self.expirationView.alpha = 1.0
-            
-            self.toContactPicker.isUserInteractionEnabled = false
-            self.ccContactPicker.isUserInteractionEnabled = false
-            self.bccContactPicker.isUserInteractionEnabled = false
-            self.subject.isUserInteractionEnabled = false
-            
-            self.showExpirationPicker()
-            let _ = self.toContactPicker.resignFirstResponder()
-        })
-    }
-    
-    @IBAction func encryptedButtonTapped(_ sender: UIButton) {
-        self.hidePasswordAndConfirmDoesntMatch()
-        self.delegate?.composeViewDidTapEncryptedButton(self)
-    }
-    
-    @IBAction func didTapExpirationDismissButton(_ sender: UIButton) {
-        self.hideExpirationPicker()
-        self.updateExpirationIcons()
-    }
-    
-    @IBAction func didTapEncryptedDismissButton(_ sender: UIButton) {
-        self.delegate?.composeViewDidTapEncryptedButton(self)
-        self.encryptedPasswordTextField.resignFirstResponder()
-        UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
-            self.encryptedPasswordTextField.text = ""
-            self.passwordView.alpha = 0.0
-            self.buttonView.alpha = 1.0
-        })
-    }
-    
     @objc
     func clickFromField(_ sender: Any) {
-        self.hidePasswordAndConfirmDoesntMatch()
         self.view.endEditing(true)
         let _ = self.toContactPicker.becomeFirstResponder()
         UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
-            self.passwordView.alpha = 0.0
-            self.buttonView.alpha = 1.0
-            self.expirationView.alpha = 0.0
-            
             let _ = self.toContactPicker.resignFirstResponder()
         })
     }
@@ -382,47 +292,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     fileprivate func includeButtonBorder(_ view: UIView) {
         view.layer.borderWidth = 1.0
         view.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.cgColor
-    }
-    
-    fileprivate func configureEncryptionPasswordField() {
-        let passwordLeftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: self.encryptedPasswordTextField.frame.size.height))
-        encryptedPasswordTextField.leftView = passwordLeftPaddingView
-        encryptedPasswordTextField.leftViewMode = UITextField.ViewMode.always
-        
-        let nextButton = UIButton()
-        nextButton.addTarget(self, action: #selector(ComposeHeaderViewController.didTapNextButton), for: UIControl.Event.touchUpInside)
-        nextButton.setImage(UIImage(named: "next"), for: UIControl.State())
-        nextButton.sizeToFit()
-        
-        let nextView = UIView(frame: CGRect(x: 0, y: 0, width: nextButton.frame.size.width + 10, height: nextButton.frame.size.height))
-        nextView.addSubview(nextButton)
-        encryptedPasswordTextField.rightView = nextView
-        encryptedPasswordTextField.rightViewMode = UITextField.ViewMode.always
-    }
-    
-    fileprivate func configureExpirationField() {
-        let expirationLeftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: self.expirationDateTextField.frame.size.height))
-        expirationDateTextField.leftView = expirationLeftPaddingView
-        expirationDateTextField.leftViewMode = UITextField.ViewMode.always
-        
-        self.confirmExpirationButton = UIButton()
-        confirmExpirationButton.addTarget(self, action: #selector(ComposeHeaderViewController.didTapConfirmExpirationButton), for: UIControl.Event.touchUpInside)
-        confirmExpirationButton.setImage(UIImage(named: "next"), for: UIControl.State())
-        confirmExpirationButton.sizeToFit()
-        
-        let confirmView = UIView(frame: CGRect(x: 0, y: 0, width: confirmExpirationButton.frame.size.width + 10, height: confirmExpirationButton.frame.size.height))
-        confirmView.addSubview(confirmExpirationButton)
-        expirationDateTextField.rightView = confirmView
-        expirationDateTextField.rightViewMode = UITextField.ViewMode.always
-        expirationDateTextField.delegate = self
-    }
-    
-    fileprivate func configureErrorMessage() {
-        self.errorView = ComposeErrorView()
-        self.errorView.backgroundColor = UIColor.white
-        self.errorView.clipsToBounds = true
-        self.errorView.backgroundColor = UIColor.darkGray
-        self.view.addSubview(errorView)
     }
     
     fileprivate func configureContactPickerTemplate() {
@@ -436,7 +305,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     internal func notifyViewSize(_ animation : Bool) {
         UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, delay:0, options: UIView.AnimationOptions(), animations: {
             self.updateViewSize()
-            self.size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height + self.pickerHeight)
+            self.size = CGSize(width: self.view.frame.width, height: self.subject.frame.origin.y + self.subject.frame.height + self.pickerHeight)
             self.delegate?.ComposeViewDidSizeChanged(self.size, showPicker: self.pickerHeight > 0.0)
             }, completion: nil)
     }
@@ -459,6 +328,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.subject.leftViewMode = UITextField.ViewMode.always
         self.subject.autocapitalizationType = .sentences
         self.subject.delegate = self
+        self.subject.textColor = UIColorManager.TextNorm
     }
     
     internal func setShowingCcBccView(to show: Bool) {
@@ -487,107 +357,9 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     internal func plusButtonHandle() {
         self.setShowingCcBccView(to: !isShowingCcBccView)
     }
-    
-    @objc internal func didTapConfirmExpirationButton() {
-        self.delegate?.composeViewCollectExpirationData(self)
-    }
-    
-    @objc internal func didTapNextButton() {
-        self.delegate?.composeViewDidTapNextButton(self)
-    }
-    
-    
-    internal func showConfirmPasswordView() {
-        self.encryptedPasswordTextField.placeholder = LocalString._composer_eo_confirm_pwd_placeholder
-        self.encryptedPasswordTextField.isSecureTextEntry = true
-        self.encryptedPasswordTextField.text = ""
-    }
-    
-    internal func showPasswordHintView() {
-        self.encryptedPasswordTextField.placeholder = LocalString._define_hint_optional
-        self.encryptedPasswordTextField.isSecureTextEntry = false
-        self.encryptedPasswordTextField.text = ""
-    }
-    
-    internal func showEncryptionDone() {
-        didTapEncryptedDismissButton(encryptedButton)
-        self.encryptedPasswordTextField.placeholder = LocalString._composer_define_password
-        self.encryptedPasswordTextField.isSecureTextEntry = true
-        self.encryptedButton.setImage(UIImage(named: "compose_lock-active"), for: UIControl.State())
-    }
-    
-    internal func showEncryptionRemoved() {
-        didTapEncryptedDismissButton(encryptedButton)
-        self.encryptedButton.setImage(UIImage(named: "compose_lock"), for: UIControl.State())
-    }
-    
-    internal func showExpirationPicker() {
-        UIView.animate(withDuration: 0.2, animations: { () -> Void in
-            self.delegate?.composeViewDidTapExpirationButton(self)
-        })
-    }
-    
-    internal func hideExpirationPicker() {
-        self.toContactPicker.isUserInteractionEnabled = true
-        self.ccContactPicker.isUserInteractionEnabled = true
-        self.bccContactPicker.isUserInteractionEnabled = true
-        self.subject.isUserInteractionEnabled = true
-        //self.htmlEditor.view.userInteractionEnabled = true
-        
-        UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
-            self.expirationView.alpha = 0.0
-            self.buttonView.alpha = 1.0
-            self.delegate?.composeViewHideExpirationView(self)
-        })
-    }
-    
-    internal func showPasswordAndConfirmDoesntMatch(_ error : String) {
-        // todo to remove, for password only
-    }
-    
-    internal func hidePasswordAndConfirmDoesntMatch() {
-        // todo, remove, for password only
-    }
-    
-    func updateExpirationValue(_ intagerV : TimeInterval, text : String) {
-        self.expirationDateTextField.text = text
-        self.expirationTimeInterval = intagerV
-    }
-    
-    func setExpirationValue (_ day : Int, hour : Int) -> Bool {
-        if (day == 0 && hour == 0 && !hasExpirationSchedule) {
-            self.expirationDateTextField.shake(3, offset: 10.0)
-            
-            return false
-            
-        } else {
-            if (!hasExpirationSchedule) {
-                self.confirmExpirationButton.setImage(UIImage(named: "compose_expiration_cancel"), for: UIControl.State())
-            } else {
-                self.expirationDateTextField.text = ""
-                self.expirationTimeInterval  = 0
-                self.confirmExpirationButton.setImage(UIImage(named: "next"), for: UIControl.State())
-                self.delegate?.composeViewCancelExpirationData(self)
-            }
-            self.updateExpirationIcons()
-            hasExpirationSchedule = !hasExpirationSchedule
-            self.hideExpirationPicker()
-            return true
-        }
-    }
-    
-    fileprivate func updateExpirationIcons() {
-        if (self.expirationTimeInterval > 0) {
-            self.expirationButton.setImage(UIImage(named: "compose_expiration-active"), for: UIControl.State())
-        } else {
-            self.expirationButton.setImage(UIImage(named: "compose_expiration"), for: UIControl.State())
-        }
-    }
-    
+
     fileprivate func updateViewSize() {
-        self.size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
-        //self.htmlEditor.view.frame = CGRect(x: 0, y: size.height, width: editorSize.width, height: editorSize.height)
-        //self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: editorSize.width, height: editorSize.height))
+        self.size = CGSize(width: self.view.frame.width, height: self.subject.frame.origin.y + self.subject.frame.height)
     }
     
     fileprivate func configureToContactPicker() {
@@ -857,9 +629,6 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
 // MARK: - UITextFieldDelegate
 extension ComposeHeaderViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if (textField == expirationDateTextField) {
-            return false
-        }
         return true
     }
     

@@ -27,20 +27,12 @@ protocol ComposeViewDelegate: AnyObject {
     
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
     func ComposeViewDidOffsetChanged(_ offset: CGPoint)
-    func composeViewDidTapNextButton(_ composeView: ComposeHeaderViewController)
-    func composeViewDidTapEncryptedButton(_ composeView: ComposeHeaderViewController)
-    func composeViewDidTapAttachmentButton(_ composeView: ComposeHeaderViewController)
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void))
     
     func composeView(_ composeView: ComposeHeaderViewController, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker)
     func composeView(_ composeView: ComposeHeaderViewController, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
-    
-    func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController)
-    func composeViewCancelExpirationData(_ composeView: ComposeHeaderViewController)
-    func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController)
-    func composeViewCollectExpirationData(_ composeView: ComposeHeaderViewController)
     
     @available(iOS 14.0, *)
     func setupComposeFromMenu(for button: UIButton)

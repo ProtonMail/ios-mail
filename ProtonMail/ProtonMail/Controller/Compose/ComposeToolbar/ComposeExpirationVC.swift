@@ -88,6 +88,9 @@ final class ComposeExpirationVC: UIViewController {
         self.expiration = expiration
         self.originalExpiration = expiration
         self.delegate = delegate
+        if #available(iOS 13.0, *) {
+            self.isModalInPresentation = true
+        }
     }
 
     override func loadView() {

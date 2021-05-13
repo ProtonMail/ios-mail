@@ -22,16 +22,16 @@
 
 
 import Foundation
+import PMUIFoundations
 
 final class CameraAttachmentProvider: AnyImagePickerDelegate {
-    override var alertAction: UIAlertAction {
-        return UIAlertAction(title: LocalString._take_a_photo, style: .default) { action in
-            if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera)) {
-                let picker = UIImagePickerController()
-                picker.delegate = self
-                picker.sourceType = UIImagePickerController.SourceType.camera
-                self.controller?.present(picker, animated: true, completion: nil)
-            }
+    override var actionSheetItem: PMActionSheetItem {
+        return PMActionSheetPlainItem(title: LocalString._take_new_photo, icon: UIImage(named: "ic-camera")) { (_) -> (Void) in
+            guard (UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera)) else { return }
+            let picker = UIImagePickerController()
+            picker.delegate = self
+            picker.sourceType = UIImagePickerController.SourceType.camera
+            self.controller?.present(picker, animated: true, completion: nil)
         }
     }
 }

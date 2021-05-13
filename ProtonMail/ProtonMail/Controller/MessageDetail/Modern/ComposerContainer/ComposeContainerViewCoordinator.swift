@@ -34,16 +34,9 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     
     private var header: ComposeHeaderViewController!
     internal var editor: ContainableComposeViewController!
-    
-    private var attachmentsObservation: NSKeyValueObservation!
-    private var messageObservation: NSKeyValueObservation!
+    private var attachmentView: ComposerAttachmentVC!
     
     internal weak var navigationController: UINavigationController?
-    
-    deinit {
-        self.attachmentsObservation = nil
-        self.messageObservation = nil
-    }
     
     init(controller: ComposeContainerViewController, services: ServiceFactory) {
         self.controller = controller
@@ -92,10 +85,6 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         return self.header.view.frame
     }
     
-    internal func inject(_ picker: UIPickerView) {
-        self.editor.injectExpirationPicker(picker)
-    }
-    
     internal func createEditor(_ childViewModel: ContainableComposeViewModel) {
         let child = UIStoryboard(name: "Composer", bundle: nil).make(ContainableComposeViewController.self)
         child.injectHeader(self.header)
@@ -108,19 +97,13 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     
     internal func createHeader(_ childViewModel: ContainableComposeViewModel) -> ComposeHeaderViewController {
         self.header = ComposeHeaderViewController(nibName: String(describing: ComposeHeaderViewController.self), bundle: nil)
-        
-        self.messageObservation = childViewModel.observe(\.message, options: [.initial]) { [weak self] childViewModel, _ in
-            self?.attachmentsObservation = childViewModel.message?.observe(\.attachments, options: [.new, .old]) { [weak self] message, change in
-                DispatchQueue.main.async {
-                    self?.header.updateAttachmentButton(message.attachments.count != 0)
-                    if change.oldValue?.count != change.newValue?.count, change.newValue?.count != 0 {
-                        self?.header.attachmentButton.shake(5, offset: 5.0)
-                    }
-                }
-            }
-        }
-        
         return self.header
+    }
+    
+    func createAttachmentView(attachments: [Attachment]) -> ComposerAttachmentVC {
+        self.attachmentView = ComposerAttachmentVC(attachments: attachments, delegate: self)
+        self.controller.updateAttachmentCount(number: self.attachmentView.datas.count)
+        return self.attachmentView
     }
     
     override func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
@@ -129,6 +112,8 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             self.embed(self.header, onto: cell.contentView, ownedBy: self.controller)
         case 1:
             self.embed(self.editor, onto: cell.contentView, layoutGuide: cell.contentView.layoutMarginsGuide, ownedBy: self.controller)
+        case 2:
+            self.embed(self.attachmentView, onto: cell.contentView, ownedBy: self.controller)
         default:
             assert(false, "Children number misalignment")
             return
@@ -154,6 +139,26 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         }
         navigationController.show(expirationVC, sender: nil)
     }
+    
+    func addAttachment(_ attachment: Attachment) {
+        guard let message = self.editor.viewModel.message else { return }
+        let coreDataService: CoreDataService = sharedServices.get(by: CoreDataService.self)
+        let context = coreDataService.operationContext
+        context.performAndWait {
+            attachment.message = message
+            _ = context.saveUpstreamIfNeeded()
+        }
+        if attachment.objectID.isTemporaryID {
+            context.performAndWait {
+                try? context.obtainPermanentIDs(for: [attachment])
+            }
+        }
+        self.attachmentView.add(attachments: [attachment])
+        _ = self.editor.attachments(pickup: attachment).done { [weak self] in
+            let number = self?.attachmentView.datas.count ?? 0
+            self?.controller.updateAttachmentCount(number: number)
+        }
+    }
 }
 
 extension ComposeContainerViewCoordinator: ComposePasswordDelegate {
@@ -178,5 +183,15 @@ extension ComposeContainerViewCoordinator: ComposeExpirationDelegate {
     func update(expiration: TimeInterval) {
         self.header.expirationTimeInterval = expiration
         self.controller.setExpirationStatus(isSetting: expiration > 0)
+    }
+}
+
+extension ComposeContainerViewCoordinator: ComposerAttachmentVCDelegate {
+    func delete(attachment: Attachment) {
+        self.controller.view.endEditing(true)
+        _ = self.editor.attachments(deleted: attachment).done { [weak self] in
+            let number = self?.attachmentView.datas.count ?? 0
+            self?.controller.updateAttachmentCount(number: number)
+        }
     }
 }

@@ -39,7 +39,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     private var coordinator: ComposeCoordinator?
     
     ///  UI
-    private weak var expirationPicker: UIPickerView?
     weak var headerView: ComposeHeaderViewController!
     lazy var htmlEditor = HtmlEditorBehaviour()
     
@@ -55,11 +54,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     var encryptionConfirmPassword: String = ""
     var encryptionPasswordHint: String    = ""
     private var hasAccessToAddressBook: Bool      = false
-
-    /// const values
-    private let kNumberOfColumnsInTimePicker: Int = 2
-    private let kNumberOfDaysInTimePicker: Int    = 30
-    private let kNumberOfHoursInTimePicker: Int   = 24
     
     private let queue = DispatchQueue(label: "UpdateAddressIdQueue")
     
@@ -84,7 +78,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         self.stopAutoSave()
         NotificationCenter.default.removeObserver(self)
         self.dismissKeyboard()
-        self.dismiss()
+        self.dismiss(animated: true, completion: nil)
     }
     private var isShowingConfirm : Bool = false
 
@@ -97,12 +91,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         self.headerView = header
         self.headerView.delegate = self
         self.headerView.datasource = self
-    }
-    
-    internal func injectExpirationPicker(_ picker: UIPickerView) {
-        self.expirationPicker = picker
-        picker.dataSource = self
-        picker.delegate = self
     }
 
     override func viewDidLoad() {
@@ -229,26 +217,20 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     @objc internal func dismiss() {
         if self.presentingViewController != nil {
             let presentingVC = self.presentingViewController
-            self.dismiss(animated: true) { [weak self] in
-                self?.handleHintBanner(presentingVC: presentingVC)
-            }
-        } else {
-            let _ = self.navigationController?.popViewController(animated: true)
+            self.handleHintBanner(presentingVC: presentingVC)
         }
     }
     
-    private func handleHintBanner(presentingVC: UIViewController?) {
+    private func findPreviousVC(presentingVC: UIViewController?) -> UIViewController? {
         #if !APP_EXTENSION
-        guard let messageID = self.viewModel.message?.messageID else { return }
+        guard let messageID = self.viewModel.message?.messageID else {
+            return nil
+        }
         userCachedStatus.lastDraftMessageID = messageID
         
-        guard let viewModel = self.viewModel as? ComposeViewModelImpl,
-              let presentingVC = presentingVC as? SideMenuController else {
-            return
+        guard let presentingVC = presentingVC as? SideMenuController else {
+            return nil
         }
-
-        let messageService = self.viewModel.getUser().messageService
-        let coreDataService = viewModel.coreDataService
         let contentVC = presentingVC.contentViewController
         var navigationController: UINavigationController?
         
@@ -258,8 +240,32 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             navigationController = contentVC as? UINavigationController
         }
         let topVC = navigationController?.topViewController as? ComposeSaveHintProtocol
-        topVC?.showDraftSaveHintBanner(cache: userCachedStatus, messageService: messageService, coreDataService: coreDataService)
-
+        return topVC
+        #else
+        return nil
+        #endif
+    }
+    
+    private func removeHintBanner(presentingVC: UIViewController?) {
+        #if !APP_EXTENSION
+        guard let topVC = self.findPreviousVC(presentingVC: presentingVC) as? ComposeSaveHintProtocol else {
+            return
+        }
+        topVC.removeDraftSaveHintBanner()
+        #endif
+    }
+    
+    private func handleHintBanner(presentingVC: UIViewController?) {
+        #if !APP_EXTENSION
+        guard let topVC = self.findPreviousVC(presentingVC: presentingVC) as? ComposeSaveHintProtocol,
+              let viewModel = self.viewModel as? ComposeViewModelImpl else {
+            return
+        }
+        let messageService = self.viewModel.getUser().messageService
+        let coreDataService = viewModel.coreDataService
+        topVC.showDraftSaveHintBanner(cache: userCachedStatus,
+                                      messageService: messageService,
+                                      coreDataService: coreDataService)
         #endif
     }
 
@@ -269,7 +275,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
 
     private func updateMessageView() {
-        self.headerView.subject.attributedText = self.viewModel.getSubject().apply(style: .DefaultSmall)
+        self.headerView.subject.text = self.viewModel.getSubject()
         let body = self.viewModel.getHtmlBody()
         self.htmlEditor.setHtml(body: body)
         
@@ -323,8 +329,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.updateAttachmentButton()
         super.viewWillAppear(animated)
+        self.removeHintBanner(presentingVC: self.presentingViewController)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(ComposeViewController.willResignActiveNotification(_:)),
                                                name: UIApplication.willResignActiveNotification,
@@ -336,6 +342,13 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
         stopAutoSave()
+        guard let viewCounts = self.navigationController?.viewControllers.count else {
+            return
+        }
+        if viewCounts == 1 {
+            // view dismiss
+            self.handleDismissDraft()
+        }
     }
     
     @objc internal func willResignActiveNotification (_ notify: Notification) {
@@ -417,7 +430,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             NSError.alertMessageSendingToast()
         }
         
-        self.dismiss()
+        self.dismiss(animated: true, completion: nil)
     }
     
     func cancel() {
@@ -425,6 +438,10 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     func cancelAction(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    private func handleDismissDraft() {
         let dismiss: (() -> Void) = {
             self.isShowingConfirm = false
             self.dismissKeyboard()
@@ -535,20 +552,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                     }
                 }
             }
-        }
-    }
-    
-    private func updateAttachmentButton () {
-        guard let atts = self.viewModel.message?.attachments.allObjects as? [Attachment] else {
-            self.headerView.updateAttachmentButton(false)
-            return
-        }
-        
-        let count = atts.filter({$0.isSoftDeleted == false}).count
-        if count > 0 {
-            self.headerView.updateAttachmentButton(true)
-        } else {
-            self.headerView.updateAttachmentButton(false)
         }
     }
     
@@ -750,78 +753,12 @@ extension ComposeViewController : ComposeViewDelegate {
         // FIXME
     }
     
-    func composeViewDidTapNextButton(_ composeView: ComposeHeaderViewController) {
-        switch(actualEncryptionStep) {
-        case EncryptionStep.DefinePassword:
-            self.encryptionPassword = (composeView.encryptedPasswordTextField.text ?? "").trim()
-            if !self.encryptionPassword.isEmpty {
-                self.actualEncryptionStep = EncryptionStep.ConfirmPassword
-                self.headerView.showConfirmPasswordView()
-            } else {
-                self.headerView.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_empty_pwd_desc)
-            }
-        case EncryptionStep.ConfirmPassword:
-            self.encryptionConfirmPassword = (composeView.encryptedPasswordTextField.text ?? "").trim()
-            
-            if (self.encryptionPassword == self.encryptionConfirmPassword) {
-                self.actualEncryptionStep = EncryptionStep.DefineHintPassword
-                self.headerView.hidePasswordAndConfirmDoesntMatch()
-                self.headerView.showPasswordHintView()
-            } else {
-                self.headerView.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_dismatch_pwd_desc)
-            }
-            
-        case EncryptionStep.DefineHintPassword:
-            self.encryptionPasswordHint = (composeView.encryptedPasswordTextField.text ?? "").trim()
-            self.actualEncryptionStep = EncryptionStep.DefinePassword
-            self.headerView.showEncryptionDone()
-        default:
-            PMLog.D("No step defined.")
-        }
-    }
-
-    func composeViewDidTapEncryptedButton(_ composeView: ComposeHeaderViewController) {
-        self.coordinator?.go(to: .password)
-    }
-    
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void)) {
         self.pickedGroup = contactGroup
         self.pickedCallback = callback
         self.coordinator?.go(to: .subSelection)
-    }
-
-    func composeViewDidTapAttachmentButton(_ composeView: ComposeHeaderViewController) {
-        //TODO:: change this to segue
-        self.autoSaveTimer()
-        self.coordinator?.go(to: .attachment)
-    }
-
-    @objc func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
-        (self.viewModel as? ContainableComposeViewModel)?.showExpirationPicker = true
-    }
-
-    @objc func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController) {
-        (self.viewModel as? ContainableComposeViewModel)?.showExpirationPicker = false
-    }
-
-    func composeViewCancelExpirationData(_ composeView: ComposeHeaderViewController) {
-        self.expirationPicker?.selectRow(0, inComponent: 0, animated: true)
-        self.expirationPicker?.selectRow(0, inComponent: 1, animated: true)
-    }
-
-    func composeViewCollectExpirationData(_ composeView: ComposeHeaderViewController) {
-        guard let selectedDay = expirationPicker?.selectedRow(inComponent: 0),
-            let selectedHour = expirationPicker?.selectedRow(inComponent: 1) else
-        {
-            assert(false, "Expiration picker does not exist")
-            return
-        }
-        if self.headerView.setExpirationValue(selectedDay, hour: selectedHour) {
-            (self.viewModel as? ContainableComposeViewModel)?.showExpirationPicker = false
-        }
-        self.updateEO()
     }
 
     func updateEO() {
@@ -911,89 +848,42 @@ extension ComposeViewController : ComposeViewDataSource {
     }
 }
 
-
-// MARK: - AttachmentsViewControllerDelegate
-extension ComposeViewController: AttachmentsTableViewControllerDelegate {
-
-    func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments attachments: [Any]) {
-        self.attachments = attachments
-    }
-
-    func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {
-        self.collectDraftData().done {
-            attachment.managedObjectContext?.performAndWait {
-                attachment.message = self.viewModel.message!
-                _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-                
-                attViewController.updateAttachments()
-            }
-            self.viewModel.uploadAtt(attachment)
-        }
-    }
-
-    func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
-        self.collectDraftData().done {
-            if let content_id = attachment.contentID(), !content_id.isEmpty && attachment.inline() {
-                self.htmlEditor.remove(embedImage: "cid:\(content_id)")
-            }
-        }.then { (_) -> Promise<Void> in
-            return self.viewModel.deleteAtt(attachment)
-        }.ensure {
-            // decrement number of attachments in message manually
-            if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted }).count {
-                self.viewModel.composerContext?.performAndWait {
-                    self.viewModel.message?.numAttachments = NSNumber(value: number)
-                    _ = self.viewModel.composerContext?.saveUpstreamIfNeeded()
+// MARK: Attachment
+extension ComposeViewController: ComposerAttachmentHandlerProtocol {
+    func attachments(pickup attachment: Attachment) -> Promise<Void> {
+        return Promise { seal in
+            self.collectDraftData().done {
+                attachment.managedObjectContext?.performAndWait {
+                    attachment.message = self.viewModel.message!
+                    _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
                 }
+                self.viewModel.uploadAtt(attachment)
+                seal.fulfill_()
             }
-            
-            attViewController.updateAttachments()
-            self.updateAttachmentButton()
-        }.cauterize()
-    }
-
-    func attachments(_ attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {
-    }
-
-    func attachments(_ attViewController: AttachmentsTableViewController, error: String) {
-    }
-}
-
-// MARK: - UIPickerViewDataSource
-extension ComposeViewController: UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return kNumberOfColumnsInTimePicker
-    }
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if (component == 0) {
-            return kNumberOfDaysInTimePicker
-        } else {
-            return kNumberOfHoursInTimePicker
-        }
-    }
-}
-
-// MARK: - UIPickerViewDelegate
-extension ComposeViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if (component == 0) {
-            return "\(row) " + LocalString._composer_eo_days_title
-        } else {
-            return "\(row) " + LocalString._composer_eo_hours_title
         }
     }
 
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let selectedDay = pickerView.selectedRow(inComponent: 0)
-        let selectedHour = pickerView.selectedRow(inComponent: 1)
-
-        let day = "\(selectedDay) " + LocalString._composer_eo_days_title
-        let hour = "\(selectedHour) " + LocalString._composer_eo_hours_title
-        self.headerView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
+    func attachments(deleted attachment: Attachment) -> Promise<Void> {
+        return Promise { seal in
+            self.collectDraftData().done {
+                if let content_id = attachment.contentID(),
+                   !content_id.isEmpty &&
+                    attachment.inline() {
+                    self.htmlEditor.remove(embedImage: "cid:\(content_id)")
+                }
+            }.then { (_) -> Promise<Void> in
+                return self.viewModel.deleteAtt(attachment)
+            }.ensure {
+                // decrement number of attachments in message manually
+                if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted }).count {
+                    self.viewModel.composerContext?.performAndWait {
+                        self.viewModel.message?.numAttachments = NSNumber(value: number)
+                        _ = self.viewModel.composerContext?.saveUpstreamIfNeeded()
+                    }
+                }
+                seal.fulfill_()
+            }.cauterize()
+        }
+        
     }
-
-    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        return super.canPerformAction(action, withSender: sender)
-    }
-
 }
