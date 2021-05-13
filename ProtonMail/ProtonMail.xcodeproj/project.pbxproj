@@ -2386,6 +2386,7 @@
 		EC9A72EA6291E3CC2FFA351145800DFD /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
 		ECA25C2FD620AED5E2E34E8C5F9BF35F /* MessageAttachmentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A4DC33F9A8BFF217C0FD648B08D202 /* MessageAttachmentsViewModel.swift */; };
 		ECEC94D71E8864FF5E36320EEC55609F /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACDE1DAAB38F6186B5D1B8E877760A4 /* Date+Extension.swift */; };
+		ECF1C1D54F6F781700ACB38E7948EDD3 /* ComposerAttachmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6DE9EACECE82BC8BC546959E160511 /* ComposerAttachmentVC.swift */; };
 		ED0C68D38C474C76910CC1A03BD910F2 /* PlainTextViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1727BD7D388F10D22586424B2AED5EB1 /* PlainTextViewerViewController.swift */; };
 		ED1066357FF807C1ACB0E3926F01D9EA /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6974F6AA8FEDB33BA4293427A6631D /* ViewModelProtocol.swift */; };
 		ED1983FB1A5A4CE945ADBA5416F44583 /* LoginRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17E49EE35CCAC16B977B295510FC090 /* LoginRobot.swift */; };
@@ -9040,6 +9041,7 @@
 				4B77B461130CB53376665C3AC4FA8465 /* ComposeViewModelImpl.swift in Sources */,
 				DF35E9E125DF12FEA509FBE34530984F /* ComposerAttachmentCellTableViewCell.swift in Sources */,
 				D073B2A7FB24FAE3A245310D9859B93E /* ComposerAttachmentHandlerProtocol.swift in Sources */,
+				ECF1C1D54F6F781700ACB38E7948EDD3 /* ComposerAttachmentVC.swift in Sources */,
 				1C60B8DD3B64B3DFB836C46D5968652E /* ComposerNavigationController.swift in Sources */,
 				0B2BB0B040F400886AAD1F7975F4D1DE /* ConfettiLayer.swift in Sources */,
 				7B2961D1063882B8F5AB1F1E7D0EC717 /* Contact+Extension.swift in Sources */,
