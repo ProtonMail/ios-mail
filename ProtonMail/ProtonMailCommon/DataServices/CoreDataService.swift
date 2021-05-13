@@ -67,19 +67,22 @@ class CoreDataService: Service {
         }
 
         NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: parent, queue: nil) { [weak context] (noti) in
-            guard let _ = noti.object as? NSManagedObjectContext,
-                  let context = context else {
-                return
-            }
-            let mergeChanges = {
-                if let updatedObjects = (noti.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) {
-                    for object in updatedObjects {
-                        context.object(with: object.objectID).willAccessValue(forKey: nil)
-                    }
+            DispatchQueue.main.async {
+                guard let _ = noti.object as? NSManagedObjectContext,
+                      let context = context else {
+                    return
                 }
-                context.mergeChanges(fromContextDidSave: noti)
+                let mergeChanges = {
+                    if let updatedObjects = (noti.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) {
+                        for object in updatedObjects {
+                            context.object(with: object.objectID).willAccessValue(forKey: nil)
+                        }
+                    }
+                    context.mergeChanges(fromContextDidSave: noti)
+                }
+                context.perform(mergeChanges)
             }
-            context.perform(mergeChanges)
+            
         }
 
         return context

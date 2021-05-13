@@ -148,7 +148,7 @@ extension ComposeContainerViewController {
         let childViewModel = self.viewModel.childViewModel
         let header = self.coordinator.createHeader(childViewModel)
         self.coordinator.createEditor(childViewModel)
-        let attachmentView = self.coordinator.createAttachmentView(attachments: childViewModel.getAttachments() ?? [])
+        let attachmentView = self.coordinator.createAttachmentView(childViewModel: childViewModel)
 
         self.childrenHeightObservations = [
             childViewModel.observe(\.contentHeight) { [weak self] _, _ in

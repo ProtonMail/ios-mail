@@ -193,9 +193,11 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     }
     private var stepAlert: UIAlertController? {
         didSet {
-            self.presentedViewController?.dismiss(animated: false)
-            if let alert = self.stepAlert {
-                self.present(alert, animated: false, completion: nil)
+            DispatchQueue.main.async {
+                self.presentedViewController?.dismiss(animated: false)
+                if let alert = self.stepAlert {
+                    self.present(alert, animated: false, completion: nil)
+                }
             }
         }
     }
