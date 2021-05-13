@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic-inbox.png",
+      "filename" : "ic-folder-move.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "ic-inbox@2x.png",
+      "filename" : "ic-folder-move@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "ic-inbox@3x.png",
+      "filename" : "ic-folder-move@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

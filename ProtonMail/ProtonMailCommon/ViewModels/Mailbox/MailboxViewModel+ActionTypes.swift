@@ -94,18 +94,18 @@ extension MailboxViewModel {
         if let type = Message.Location.init(rawValue: self.labelID) {
             switch type {
             case .inbox, .starred, .archive, .allmail, .sent, .draft:
-                return [.trash, .readUnread, .archive, .labelAs, .more]
+                return [.trash, .readUnread, .moveTo, .labelAs, .more]
             case .spam, .trash:
-                return [.delete, .archive, .labelAs, .more]
+                return [.delete, .moveTo, .labelAs, .more]
             }
         }
         if let label = self.user.labelService.label(by: self.labelID) {
             if label.type == 3 {
                 //custom folder
-                return [.trash, .readUnread, .archive, .labelAs, .more]
+                return [.trash, .readUnread, .moveTo, .labelAs, .more]
             } else {
                 //custom label
-                return [.trash, .readUnread, .archive, .labelAs, .more]
+                return [.trash, .readUnread, .moveTo, .labelAs, .more]
             }
         } else {
             return []
