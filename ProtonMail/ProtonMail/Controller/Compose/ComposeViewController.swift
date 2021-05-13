@@ -357,6 +357,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
 
     @IBAction func sendAction(_ sender: AnyObject) {
         self.dismissKeyboard()
+        guard self.recipientsValidation() else { return }
         if let suject = self.headerView.subject.text {
             if !suject.isEmpty {
                 self.sendMessage()
@@ -373,6 +374,45 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }))
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
+    }
+    
+    private func recipientsValidation() -> Bool {
+        
+        let showAlert: ((String) -> Void) = { message in
+            let title = LocalString._warning
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addOKAction()
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        let contacts = self.headerView.toContactPicker.contactsSelected +
+            self.headerView.ccContactPicker.contactsSelected +
+            self.headerView.bccContactPicker.contactsSelected
+        let recipients = contacts.compactMap { $0 as? ContactVO }
+        
+        let invalids = recipients.filter { $0.pgpType == .failed_server_validation }
+        guard invalids.count == 0 else {
+            let message = LocalString._address_invalid_warning_sending
+            showAlert(message)
+            return false
+        }
+        
+        let nonExists = recipients.filter { $0.pgpType == .failed_non_exist }
+        guard nonExists.count == 0 else {
+            let message = LocalString._address_non_exist_warning
+            showAlert(message)
+            return false
+        }
+        
+        let badGroups = contacts
+            .compactMap { $0 as? ContactGroupVO }
+            .filter { !$0.allMemberValidate }
+        guard badGroups.count == 0 else {
+            let message = LocalString._address_in_group_not_found_warning
+            showAlert(message)
+            return false
+        }
+        return true
     }
 
     internal func sendMessage () {

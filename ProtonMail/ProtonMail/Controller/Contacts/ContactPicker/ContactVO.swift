@@ -36,8 +36,9 @@ enum SignStatus : Int {
 
  enum PGPType : Int {
     //Do not use -1, this value will break the locker check function
-    case failed_validation = -3 // not pass FE validation
-    case failed_server_validation = -2 // not pass BE validation
+    case failed_non_exist = 33102 // non existing internal user
+    case failed_validation = -2 // not pass FE validation
+    case failed_server_validation = 33101 // not pass BE validation
     case none = 0 /// default none
     case pgp_signed = 1 /// external pgp signed only
     case pgp_encrypt_trusted_key = 2 /// external encrypted and signed with trusted key
@@ -149,7 +150,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                 return UIImage(named: "internal_sign_failed")
             case .pgp_encrypted:
                 return UIImage(named: "pgp_encrypted")
-            case .none, .failed_server_validation, .failed_validation:
+            case .none, .failed_server_validation, .failed_validation, .failed_non_exist:
                 return nil
             case .sent_sender_out_side,
                  .zero_access_store:
@@ -223,7 +224,8 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                  .pgp_signed_verified,
                  .none,
                  .failed_server_validation,
-                 .failed_validation:
+                 .failed_validation,
+                 .failed_non_exist:
                 return ""
             }
         }
@@ -232,7 +234,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     var sentNotes: String {
         get {
             switch self.pgpType {
-            case .none, .failed_server_validation, .failed_validation:
+            case .none, .failed_server_validation, .failed_validation, .failed_non_exist:
                 return LocalString._stored_with_zero_access_encryption
             case .eo:
                 return LocalString._end_to_end_encrypted
@@ -268,7 +270,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     var inboxNotes: String {
         get {
             switch self.pgpType {
-            case .none, .failed_server_validation, .failed_validation:
+            case .none, .failed_server_validation, .failed_validation, .failed_non_exist:
                 return LocalString._stored_with_zero_access_encryption
             case .eo, .internal_normal: //PM --> PM (encrypted+signed)
                 return LocalString._end_to_end_encrypted_message

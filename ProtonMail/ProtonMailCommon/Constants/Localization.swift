@@ -1959,6 +1959,9 @@ class LocalizedString {
     
     lazy var _address_in_group_not_found_error = NSLocalizedString("At least one email address in the group could not be found", comment: "incorrect email format error while sending")
     lazy var _address_invalid_error_sending = NSLocalizedString("At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.", comment: "incorrect email format error while sending")
+    lazy var _address_invalid_warning_sending = NSLocalizedString("You have entered at least one invalid email address. Please verify your recipients.", comment: "incorrect email format error while sending")
+    lazy var _address_in_group_not_found_warning = NSLocalizedString("At least one email address in the group could not be found.", comment: "incorrect email format error while sending")
+    lazy var _address_non_exist_warning = NSLocalizedString("You have entered at least one unknown recipient. Please verify your recipients.", comment: "incorrect email format error while sending")
     lazy var _address_invalid_error_sending_title = NSLocalizedString("Sending failed", comment: "title of incorrect email format error while sending")
     lazy var _address_invalid_error_to_draft_action_title = NSLocalizedString("Go to drafts", comment: "title of alert acton of incorrect email format error")
     

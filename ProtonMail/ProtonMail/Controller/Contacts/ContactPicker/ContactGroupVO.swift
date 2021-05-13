@@ -52,6 +52,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     var lock: UIImage?
     var hasPGPPined: Bool
     var hasNonePM: Bool
+    private(set) var allMemberValidate = true
     
     var color: String? {
         get {
@@ -88,7 +89,16 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         return ""
     }
     
-    func setType(type: Int) { }
+    func setType(type: Int) {
+        if let pgp = PGPType(rawValue: type) {
+            let badTypes: [PGPType] = [.failed_validation,
+                                       .failed_non_exist,
+                                       .failed_server_validation]
+            self.allMemberValidate = !badTypes.contains(pgp)
+        } else {
+            self.allMemberValidate = false
+        }
+    }
     
     func lockCheck(api: APIService, contactService: ContactDataService, progress: () -> Void, complete: LockCheckComplete?) {}
     
