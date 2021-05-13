@@ -108,7 +108,7 @@ extension UIViewController {
         controller.navigationController?.navigationBar.tintColor = UIColorManager.TextNorm
         #else
         controller.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
-        controller.navigationController?.navigationBar.tintColor = UIColor.white
+        controller.navigationController?.navigationBar.tintColor = UIColor.black
         #endif
         
         controller.navigationController?.navigationBar.isTranslucent = false
@@ -124,7 +124,7 @@ extension UIViewController {
         ]
         #else
         controller.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.foregroundColor: UIColor.black,
             NSAttributedString.Key.font: navigationBarTitleFont
         ]
         #endif

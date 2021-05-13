@@ -83,6 +83,16 @@ class ComposeViewModelImpl : ComposeViewModel {
         for f in files {
             f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata).done { (attachment) in
                 if let att = attachment {
+                    let context = coreDataService.operationContext
+                    context.performAndWait {
+                        att.message = self.message!
+                        _ = context.saveUpstreamIfNeeded()
+                    }
+                    if att.objectID.isTemporaryID {
+                        context.performAndWait {
+                            try? context.obtainPermanentIDs(for: [att])
+                        }
+                    }
                     self.uploadAtt(att)
                 }
             }.cauterize()

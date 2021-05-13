@@ -75,6 +75,11 @@ final class ComposerAttachmentVC: UIViewController {
     }
 
     func add(attachments: [Attachment]) {
+        let existedID = self.datas
+            .map { $0.objectID.uriRepresentation().absoluteString }
+        let attachments = attachments
+            .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) }
+
         let preCount = self.datas.count
         self.datas += attachments
         let paths = Array(preCount..<self.datas.count).map { row in

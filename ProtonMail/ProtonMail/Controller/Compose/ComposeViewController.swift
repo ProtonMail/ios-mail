@@ -478,7 +478,12 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     func cancelAction(_ sender: UIBarButtonItem) {
+        #if APP_EXTENSION
+        self.handleDismissDraft()
+        #else
         self.dismiss(animated: true, completion: nil)
+        #endif
+        
     }
     
     private func handleDismissDraft() {

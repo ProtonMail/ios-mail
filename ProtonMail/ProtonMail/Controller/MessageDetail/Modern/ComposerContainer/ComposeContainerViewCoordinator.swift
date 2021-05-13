@@ -35,8 +35,15 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     private var header: ComposeHeaderViewController!
     internal var editor: ContainableComposeViewController!
     private var attachmentView: ComposerAttachmentVC!
+    private var attachmentsObservation: NSKeyValueObservation!
+    private var messageObservation: NSKeyValueObservation!
     
     internal weak var navigationController: UINavigationController?
+    
+    deinit {
+        self.attachmentsObservation = nil
+        self.messageObservation = nil
+    }
     
     init(controller: ComposeContainerViewController, services: ServiceFactory) {
         self.controller = controller
@@ -100,7 +107,26 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         return self.header
     }
     
-    func createAttachmentView(attachments: [Attachment]) -> ComposerAttachmentVC {
+    func createAttachmentView(childViewModel: ContainableComposeViewModel) -> ComposerAttachmentVC {
+        
+        #if APP_EXTENSION
+        let cachedMessage = childViewModel.message
+        self.messageObservation = childViewModel.observe(\.message, options: [.initial]) { [weak self] childViewModel, _ in
+            self?.attachmentsObservation = childViewModel.message?.observe(\.attachments, options: [.new, .old]) { [weak self] message, change in
+                DispatchQueue.main.async {
+                    guard change.oldValue?.count != change.newValue?.count,
+                          let attachments = cachedMessage?.attachments.allObjects as? [Attachment] else {
+                        return
+                    }
+                    attachments.forEach { attachment in
+                        self?.addAttachment(attachment, shouldUpload: false)
+                    }
+                }
+            }
+        }
+        #endif
+
+        let attachments = childViewModel.getAttachments() ?? []
         self.attachmentView = ComposerAttachmentVC(attachments: attachments, delegate: self)
         self.controller.updateAttachmentCount(number: self.attachmentView.datas.count)
         return self.attachmentView
@@ -147,7 +173,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         navigationController.show(expirationVC, sender: nil)
     }
     
-    func addAttachment(_ attachment: Attachment) {
+    func addAttachment(_ attachment: Attachment, shouldUpload: Bool = true) {
         guard let message = self.editor.viewModel.message else { return }
         let coreDataService: CoreDataService = sharedServices.get(by: CoreDataService.self)
         let context = coreDataService.operationContext
@@ -161,6 +187,11 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             }
         }
         self.attachmentView.add(attachments: [attachment])
+        guard shouldUpload else {
+            let number = self.attachmentView.datas.count
+            self.controller.updateAttachmentCount(number: number)
+            return
+        }
         _ = self.editor.attachments(pickup: attachment).done { [weak self] in
             let number = self?.attachmentView.datas.count ?? 0
             self?.controller.updateAttachmentCount(number: number)
