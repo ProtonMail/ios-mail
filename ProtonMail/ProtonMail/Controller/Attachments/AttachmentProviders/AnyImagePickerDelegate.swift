@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PMUIFoundations
 import Photos
 
 // abstract
@@ -32,7 +33,7 @@ class AnyImagePickerDelegate: NSObject, AttachmentProvider, ImageProcessor {
         self.controller = controller
     }
     
-    var alertAction: UIAlertAction {
+    var actionSheetItem: PMActionSheetItem {
         fatalError() // override
     }
 }

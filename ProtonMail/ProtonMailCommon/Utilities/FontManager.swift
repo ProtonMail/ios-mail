@@ -193,6 +193,20 @@ struct FontManager {
         return attributes
     }()
     
+    static var DefaultSmallDisabled: [NSAttributedString.Key: Any] = {
+        let font = UIFont.systemFont(ofSize: 15)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.12
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .kern: -0.24,
+            .font: font,
+            .foregroundColor: UIColorManager.TextDisabled,
+            .paragraphStyle: paragraphStyle
+        ]
+        return attributes
+    }()
+    
     static let CaptionStrong: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13, weight: .semibold) // Check with design, if it's correct one
         //let font = UIFont(name: "SFProDisplay-Semibold", size: 13)!
@@ -245,6 +259,20 @@ struct FontManager {
             .kern: -0.08,
             .font: font,
             .foregroundColor: UIColorManager.TextWeak,
+            .paragraphStyle: paragraphStyle
+        ]
+        return attributes
+    }()
+    
+    static let CaptionDisabled: [NSAttributedString.Key: Any] = {
+        let font = UIFont.systemFont(ofSize: 13)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.03
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .kern: -0.08,
+            .font: font,
+            .foregroundColor: UIColorManager.TextDisabled,
             .paragraphStyle: paragraphStyle
         ]
         return attributes

@@ -19,14 +19,17 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
+
+import AwaitKit
 import PMUIFoundations
+import PromiseKit
 import UIKit
 
 protocol ComposeContainerUIProtocol: AnyObject {
     func updateSendButton()
     func setLockStatus(isLock: Bool)
     func setExpirationStatus(isSetting: Bool)
+    func updateAttachmentCount(number: Int)
 }
 
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>
@@ -40,6 +43,25 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     private var syncTimer: Timer?
     private var toolbarBottom: NSLayoutConstraint!
     private var toolbar: ComposeToolbar!
+    /// MARK: Attachment variables
+    let kDefaultAttachmentFileSize: Int = 25 * 1_000 * 1_000 // 25 mb
+    private(set) var currentAttachmentSize: Int = 0
+    lazy private(set) var attachmentProcessQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+    lazy private(set) var attachmentProviders: [AttachmentProvider] = { [unowned self] in
+        // There is no access to camera in AppExtensions, so should not include it into menu
+        #if APP_EXTENSION
+            return [PhotoAttachmentProvider(for: self),
+                    DocumentAttachmentProvider(for: self)]
+        #else
+            return [PhotoAttachmentProvider(for: self),
+                    CameraAttachmentProvider(for: self),
+                    DocumentAttachmentProvider(for: self)]
+        #endif
+    }()
     
     deinit {
         self.childrenHeightObservations = []
@@ -95,19 +117,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     
     // tableView
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard self.viewModel.childViewModel.showExpirationPicker && indexPath.row == 1 else {
-            let cell = super.tableView(tableView, cellForRowAt: indexPath)
-            cell.backgroundColor = .white
-            return cell
-        }
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ExpirationPickerCell.self), for: indexPath) as? ExpirationPickerCell else {
-            assert(false, "Broken expiration cell")
-            return UITableViewCell()
-        }
-        
-        self.coordinator.inject(cell.getPicker())
-        cell.generateAccessibilityIdentifiers()
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        cell.backgroundColor = .white
         return cell
     }
     
@@ -129,7 +140,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 extension ComposeContainerViewController {
     private func setupButtomPadding() {
         self.bottomPadding = self.view.bottomAnchor.constraint(equalTo: self.tableView.bottomAnchor)
-        self.bottomPadding.constant = 0.0
+        self.bottomPadding.constant = 50.0
         self.bottomPadding.isActive = true
     }
     
@@ -137,6 +148,7 @@ extension ComposeContainerViewController {
         let childViewModel = self.viewModel.childViewModel
         let header = self.coordinator.createHeader(childViewModel)
         self.coordinator.createEditor(childViewModel)
+        let attachmentView = self.coordinator.createAttachmentView(attachments: childViewModel.getAttachments() ?? [])
 
         self.childrenHeightObservations = [
             childViewModel.observe(\.contentHeight) { [weak self] _, _ in
@@ -151,9 +163,9 @@ extension ComposeContainerViewController {
                 self?.tableView.beginUpdates()
                 self?.tableView.endUpdates()
             },
-            childViewModel.observe(\.showExpirationPicker) { [weak self] viewModel, _ in
-                // TODO: this index is hardcoded position of expiration view, not flexible approach. Fix when decoupling Header and ExpirationPicker from old ComposeViewController
-                self?.tableView.reloadRows(at: [IndexPath.init(row: 1, section: 0)], with: .fade)
+            attachmentView.observe(\.tableHeight) { [weak self] _, _ in
+                self?.tableView.beginUpdates()
+                self?.tableView.endUpdates()
             }
         ]
     }
@@ -206,12 +218,6 @@ extension ComposeContainerViewController {
         self.toolbar = bar
     }
     
-    private func error(_ description: String) {
-        let alert = description.alertController()
-        alert.addOKAction()
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     private func startAutoSync() {
         self.stopAutoSync()
         self.syncTimer = Timer.scheduledTimer(withTimeInterval: self.timerInterval, repeats: true, block: { [weak self](_) in
@@ -237,17 +243,23 @@ extension ComposeContainerViewController: ComposeContainerUIProtocol {
     func setExpirationStatus(isSetting: Bool) {
         self.toolbar.setExpirationStatus(isSetting: isSetting)
     }
+    
+    func updateAttachmentCount(number: Int) {
+        DispatchQueue.main.async {
+            self.toolbar.setAttachment(number: number)
+        }
+    }
 }
 
 extension ComposeContainerViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
-        self.bottomPadding.constant = 0.0
+        self.bottomPadding.constant = 50.0
         self.toolbarBottom.constant = -1 * UIDevice.safeGuide.bottom
     }
     
     func keyboardWillShowNotification(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            self.bottomPadding.constant = keyboardFrame.cgRectValue.height
+            self.bottomPadding.constant = keyboardFrame.cgRectValue.height + 10
             self.toolbarBottom.constant = -1 * keyboardFrame.cgRectValue.height
             UIView.animate(withDuration: 0.25) {
                 self.view.layoutIfNeeded()
@@ -335,14 +347,78 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
     
     func showAttachmentView() {
         self.view.endEditing(true)
+        
+        var sheet: PMActionSheet!
+        // FIXME: use asset
+        let left = PMActionSheetPlainItem(title: nil, icon: UIImage(named: "action_sheet_close")) { (_) -> (Void) in
+            sheet.dismiss(animated: true)
+        }
+
+        let header = PMActionSheetHeaderView(title: LocalString._menu_add_attachment, subtitle: nil, leftItem: left, rightItem: nil, hasSeparator: false)
+        let itemGroup = self.getActionSheetItemGroup()
+        sheet = PMActionSheet(headerView: header, itemGroups: [itemGroup], showDragBar: false)
+        let viewController = self.navigationController ?? self
+        sheet.presentAt(viewController, animated: true)
+    }
+    
+    private func getActionSheetItemGroup() -> PMActionSheetItemGroup {
+        let items: [PMActionSheetItem] = self.attachmentProviders.map(\.actionSheetItem)
+        let itemGroup = PMActionSheetItemGroup(items: items, style: .clickable)
+        return itemGroup
     }
 }
 
-class ExpirationPickerCell: UITableViewCell, AccessibleView {
-    @IBOutlet private var picker: UIPickerView!
+extension ComposeContainerViewController: AttachmentController {
+    func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
+        return Promise { seal in
+            self.attachmentProcessQueue.addOperation {
+                let size = fileData.contents.dataSize
+                
+                guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
+                    self.sizeError(0)
+                    PMLog.D(" Size too big Orig: \(size) -- Limit: \(self.kDefaultAttachmentFileSize)")
+                    seal.fulfill_()
+                    return
+                }
+                
+                guard let message = self.coordinator.editor.viewModel.message,
+                      message.managedObjectContext != nil else {
+                    PMLog.D(" Error during copying size incorrect")
+                    self.error(LocalString._system_cant_copy_the_file)
+                    seal.fulfill_()
+                    return
+                }
+                
+                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+                
+                let attachment = try? `await`(fileData.contents.toAttachment(message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata))
+                guard let att = attachment else {
+                    PMLog.D(" Error during copying size incorrect")
+                    self.error(LocalString._cant_copy_the_file)
+                    return
+                }
+                self.coordinator.addAttachment(att)
+                seal.fulfill_()
+            }
+        }
+    }
     
-    func getPicker() -> UIPickerView {
-        return self.picker
+    var barItem: UIBarButtonItem? {
+        nil
+    }
+    
+    func error(_ description: String) {
+        let alert = description.alertController()
+        alert.addOKAction()
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func sizeError(_ size: Int) {
+        DispatchQueue.main.async {
+            self.error(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+        }
     }
 }
 

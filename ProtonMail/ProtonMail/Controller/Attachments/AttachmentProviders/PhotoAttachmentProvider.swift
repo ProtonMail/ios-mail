@@ -22,10 +22,11 @@
 
 
 import Foundation
+import PMUIFoundations
 
 class PhotoAttachmentProvider: AnyImagePickerDelegate {
-    override var alertAction: UIAlertAction {
-        return UIAlertAction(title: LocalString._photo_library, style: .default) { action in
+    override var actionSheetItem: PMActionSheetItem {
+        return PMActionSheetPlainItem(title: LocalString._from_your_photo_library, icon: UIImage(named: "ic-photo")) { (_) -> (Void) in
             let picker = PMImagePickerController()
             picker.setup(withDelegate: self)
             self.controller?.present(picker, animated: true, completion: nil)

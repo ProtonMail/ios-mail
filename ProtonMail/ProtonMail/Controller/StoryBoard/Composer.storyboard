@@ -95,7 +95,6 @@
                         <segue destination="Rhr-Kb-Xse" kind="presentation" identifier="toContactGroupSubSelection" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="ptq-KY-KHm"/>
                         <segue destination="iup-Ok-tgO" kind="presentation" identifier="to_eo_password_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="8VI-B0-waP"/>
                         <segue destination="5RO-QY-c50" kind="presentation" identifier="expiration_warning_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="JDD-0U-kJK"/>
-                        <segue destination="F3j-5h-us2" kind="presentation" identifier="to_attachment" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="3yI-kR-cuW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fVl-II-JA6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -783,18 +782,9 @@
             </objects>
             <point key="canvasLocation" x="10986" y="1450"/>
         </scene>
-        <!--Attachments-->
-        <scene sceneID="LQx-xx-qnz">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Attachments" id="F3j-5h-us2" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YBy-cG-iFR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="9811" y="2952"/>
-        </scene>
         <!--View Controller-->
         <scene sceneID="XkO-2C-TUd">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7xu-ny-cIQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController restorationIdentifier="ExpirationWarningViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="overCurrentContext" id="5RO-QY-c50" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Kv3-tY-XjR"/>
@@ -807,6 +797,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="3FI-S3-Oge"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7xu-ny-cIQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="11002" y="2800"/>
         </scene>

@@ -64,6 +64,9 @@ final class ComposePasswordVC: UIViewController {
         passwordVC.encryptionConfirmPassword = confirmPassword
         passwordVC.encryptionPasswordHint = hint
         passwordVC.delegate = delegate
+        if #available(iOS 13.0, *) {
+            passwordVC.isModalInPresentation = true
+        }
         return passwordVC
     }
 
@@ -119,6 +122,7 @@ extension ComposePasswordVC {
     private func setupNavigation() {
         self.title = LocalString._composer_set_password
 
+        // FIXME: use asset
         let arrowIcon = UIImage(named: "back-arrow")
         guard let backBtn = arrowIcon?.toUIBarButtonItem(target: self, action: #selector(self.clickBackButton)) else {
             return

@@ -24,6 +24,7 @@ import Foundation
 import PMUIFoundations
 
 protocol ComposeSaveHintProtocol: UIViewController {
+    func removeDraftSaveHintBanner()
     func showDraftSaveHintBanner(cache: UserCachedStatus,
                                  messageService: MessageDataService,
                                  coreDataService: CoreDataService)
@@ -34,6 +35,10 @@ protocol ComposeSaveHintProtocol: UIViewController {
 }
 
 extension ComposeSaveHintProtocol {
+    func removeDraftSaveHintBanner() {
+        PMBanner.dismissAll(on: self)
+    }
+    
     func showDraftSaveHintBanner(cache: UserCachedStatus,
                                  messageService: MessageDataService,
                                  coreDataService: CoreDataService) {
@@ -51,6 +56,14 @@ extension ComposeSaveHintProtocol {
                                              messageService: messageService)
         }
         banner.show(at: .bottom, on: self)
+        
+        if let listVC = self as? MailboxViewController {
+            // Since we ignore core data event when composer is presented
+            // We need to refresh view when composer dismiss
+            // Or the app could crash when user pull down to refresh
+            // the display data and data source not compatible
+            listVC.tableView.reloadData()
+        }
     }
 
     func showDraftMoveToTrashBanner(messages: [Message],

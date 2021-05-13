@@ -23,10 +23,11 @@
 
 import Foundation
 import PromiseKit
+import PMUIFoundations
 import AwaitKit
 
 protocol AttachmentProvider {
-    var alertAction: UIAlertAction { get }
+    var actionSheetItem: PMActionSheetItem { get }
     var controller: AttachmentController? { get }
 }
 
@@ -39,47 +40,3 @@ protocol AttachmentController: AnyObject {
     @available(iOS, deprecated: 11.0, message: "ios 10 and below required sourceView&sourceRect or barButtonItem")
     var barItem : UIBarButtonItem? {get}
 }
-
-extension AttachmentsTableViewController {
-    func error(_ description: String) {
-        self.showErrorAlert(description)
-        self.delegate?.attachments(self, error: description)
-    }
-    
-    func sizeError(_ size: Int) {
-        self.showSizeErrorAlert(size)
-        self.delegate?.attachments(self, didReachedSizeLimitation: size)
-    }
-    
-    func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
-        return Promise { seal in
-            self.processQueue.addOperation {
-                let size = fileData.contents.dataSize
-                guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
-                    self.sizeError(0)
-                    PMLog.D(" Size too big Orig: \(size) -- Limit: \(self.kDefaultAttachmentFileSize)")
-                    seal.fulfill_()
-                    return
-                }
-            
-                guard self.message.managedObjectContext != nil else {
-                    PMLog.D(" Error during copying size incorrect")
-                    self.error(LocalString._system_cant_copy_the_file)
-                    seal.fulfill_()
-                    return
-                }
-                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                
-                let attachment = try? `await`(fileData.contents.toAttachment(self.message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata))
-                guard let att = attachment else {
-                    PMLog.D(" Error during copying size incorrect")
-                    self.error(LocalString._cant_copy_the_file)
-                    return
-                }
-                self.delegate?.attachments(self, didPickedAttachment: att)
-                seal.fulfill_()
-            }
-        }
-    }
-}
-

@@ -143,6 +143,7 @@ class LocalizedString {
     lazy var _menu_manage_accounts  =  NSLocalizedString("Manage accounts", comment: "menu title")
     /// "Add accounts"
     lazy var _menu_add_account  =  NSLocalizedString("Add accounts", comment: "menu title")
+    lazy var _menu_add_attachment = NSLocalizedString("Add attachment", comment: "menu title")
 
 
     // Mark Message localtion
@@ -1342,6 +1343,9 @@ class LocalizedString {
 
     /// "Import File From..."
     lazy var _import_file_from_ = NSLocalizedString("Import File From...", comment: "Title")
+    lazy var _from_your_photo_library = NSLocalizedString("From your photo library", comment: "Title")
+    lazy var _take_new_photo = NSLocalizedString("Take new photo", comment: "Title")
+    lazy var _import_from = NSLocalizedString("Import from...", comment: "Title")
 
     /// "The total attachment size cannot exceed 25MB"
     lazy var _the_total_attachment_size_cant_be_bigger_than_25mb = NSLocalizedString("The total attachment size cannot exceed 25MB", comment: "Description")
@@ -2111,6 +2115,7 @@ class LocalizedString {
 
     lazy var _one_attachment_title = NSLocalizedString("Attachment", comment: "")
     lazy var _attachments_title = NSLocalizedString("Attachments", comment: "")
+    lazy var _remove_attachment_warning = NSLocalizedString("Are you sure you want to remove this file from attachments?", comment: "")
 
     lazy var _banner_embedded_image_title = NSLocalizedString("This message contains embedded images.", comment: "")
     lazy var _banner_load_embedded_image = NSLocalizedString("Load images", comment: "")

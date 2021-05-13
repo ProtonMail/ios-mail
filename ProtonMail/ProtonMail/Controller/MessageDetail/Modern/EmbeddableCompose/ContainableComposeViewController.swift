@@ -99,16 +99,6 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         }
     }
     
-    override func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController) {
-        super.composeViewHideExpirationView(composeView)
-        self.enclosingScroller?.scroller.isScrollEnabled = true
-    }
-    
-    override func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
-        super.composeViewDidTapExpirationButton(composeView)
-        self.enclosingScroller?.scroller.isScrollEnabled = false
-    }
-    
     override func webViewPreferences() -> WKPreferences {
         let preferences = WKPreferences()
         preferences.javaScriptEnabled = true

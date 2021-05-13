@@ -9,21 +9,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ComposeHeaderViewController">
             <connections>
-                <outlet property="attachmentButton" destination="dbl-67-gDP" id="XCz-Hd-FJa"/>
-                <outlet property="buttonView" destination="PQh-ZL-ZOh" id="aRB-m7-7iP"/>
-                <outlet property="encryptedActionButton" destination="w8G-S8-0hr" id="mKH-HU-BYp"/>
-                <outlet property="encryptedButton" destination="Z2X-0b-CtZ" id="YeV-Tz-5Xl"/>
-                <outlet property="encryptedPasswordTextField" destination="WxL-Ya-BL5" id="GB1-ja-o2y"/>
-                <outlet property="expirationButton" destination="JkT-bn-Mlp" id="d74-2E-wtG"/>
-                <outlet property="expirationDateTextField" destination="0cq-9r-3dX" id="Iyw-GC-34o"/>
-                <outlet property="expirationView" destination="Okn-ub-h7D" id="LFA-QV-Pk0"/>
                 <outlet property="fakeContactPickerHeightConstraint" destination="sdc-Ad-iWb" id="j2p-Du-il9"/>
                 <outlet property="fromAddress" destination="Ilt-bS-8Pw" id="GBU-Pz-zPv"/>
                 <outlet property="fromGrayView" destination="8d8-Tv-c5P" id="uxW-BR-rei"/>
                 <outlet property="fromLable" destination="N1Q-LP-p4d" id="Wbt-N4-7Ib"/>
                 <outlet property="fromPickerButton" destination="hKt-vn-DC9" id="2uw-Wn-Oiu"/>
                 <outlet property="fromView" destination="lId-3P-n4a" id="gE8-LW-qDX"/>
-                <outlet property="passwordView" destination="f6s-5h-iHn" id="FiQ-AK-GUN"/>
                 <outlet property="showCcBccButton" destination="chC-fW-E4g" id="nEi-tN-jKt"/>
                 <outlet property="subject" destination="6W7-2D-2Lf" id="IHs-QH-LuQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -60,134 +51,6 @@
                         <action selector="contactPlusButtonTapped:" destination="-1" eventType="touchUpInside" id="G3X-mf-cRu"/>
                     </connections>
                 </button>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PQh-ZL-ZOh" userLabel="Buttons View">
-                    <rect key="frame" x="0.0" y="144" width="375" height="48"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbl-67-gDP" userLabel="Attachment Button">
-                            <rect key="frame" x="250" y="0.0" width="125" height="48"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <accessibility key="accessibilityConfiguration" identifier="attachmentButton"/>
-                            <state key="normal" image="compose_attachment">
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="attachmentButtonTapped:" destination="-1" eventType="touchUpInside" id="0eg-L5-AT4"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z2X-0b-CtZ" userLabel="Encrypted Button">
-                            <rect key="frame" x="0.0" y="0.0" width="125" height="48"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <accessibility key="accessibilityConfiguration" identifier="encryptedButton"/>
-                            <state key="normal" image="compose_lock">
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="encryptedButtonTapped:" destination="-1" eventType="touchUpInside" id="HBX-kK-90z"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JkT-bn-Mlp" userLabel="Expiration Button">
-                            <rect key="frame" x="125" y="0.0" width="125" height="48"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <accessibility key="accessibilityConfiguration" identifier="expirationButton"/>
-                            <state key="normal" image="compose_expiration">
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="expirationButtonTapped:" destination="-1" eventType="touchUpInside" id="SdU-ws-BEf"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstItem="JkT-bn-Mlp" firstAttribute="bottom" secondItem="Z2X-0b-CtZ" secondAttribute="bottom" id="2ly-X2-VWh"/>
-                        <constraint firstItem="JkT-bn-Mlp" firstAttribute="width" secondItem="dbl-67-gDP" secondAttribute="width" id="6BJ-Bw-5tg"/>
-                        <constraint firstItem="Z2X-0b-CtZ" firstAttribute="trailing" secondItem="JkT-bn-Mlp" secondAttribute="leading" id="RDa-80-S6a">
-                            <variation key="widthClass=compact" constant="0.0"/>
-                        </constraint>
-                        <constraint firstItem="dbl-67-gDP" firstAttribute="bottom" secondItem="Z2X-0b-CtZ" secondAttribute="bottom" id="TrQ-z2-kV8"/>
-                        <constraint firstItem="Z2X-0b-CtZ" firstAttribute="top" secondItem="PQh-ZL-ZOh" secondAttribute="top" id="c63-vs-izc"/>
-                        <constraint firstAttribute="trailing" secondItem="dbl-67-gDP" secondAttribute="trailing" id="eE0-g2-IIh"/>
-                        <constraint firstItem="JkT-bn-Mlp" firstAttribute="top" secondItem="dbl-67-gDP" secondAttribute="top" id="eXZ-DK-SxI"/>
-                        <constraint firstAttribute="bottom" secondItem="Z2X-0b-CtZ" secondAttribute="bottom" id="hFN-F3-MCC"/>
-                        <constraint firstItem="JkT-bn-Mlp" firstAttribute="top" secondItem="Z2X-0b-CtZ" secondAttribute="top" id="lIF-Wu-Ymt"/>
-                        <constraint firstItem="JkT-bn-Mlp" firstAttribute="trailing" secondItem="dbl-67-gDP" secondAttribute="leading" id="mq3-ZN-Spr"/>
-                        <constraint firstItem="Z2X-0b-CtZ" firstAttribute="leading" secondItem="PQh-ZL-ZOh" secondAttribute="leading" id="nEi-zy-ahE"/>
-                        <constraint firstAttribute="height" constant="48" id="s9u-q4-97u"/>
-                        <constraint firstItem="JkT-bn-Mlp" firstAttribute="width" secondItem="Z2X-0b-CtZ" secondAttribute="width" id="yLB-ok-WoR"/>
-                    </constraints>
-                </view>
-                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Okn-ub-h7D" userLabel="Expiration View">
-                    <rect key="frame" x="0.0" y="144" width="375" height="48"/>
-                    <subviews>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Define Expiration Date" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0cq-9r-3dX" userLabel="Expiration Text Field">
-                            <rect key="frame" x="52" y="0.0" width="323" height="48"/>
-                            <accessibility key="accessibilityConfiguration" identifier="expirationDateTextField"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="48" id="5hk-D9-wdh"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
-                            <textInputTraits key="textInputTraits"/>
-                        </textField>
-                        <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eEu-2X-OTC" userLabel="Expiration Action">
-                            <rect key="frame" x="0.0" y="0.0" width="52" height="48"/>
-                            <color key="backgroundColor" red="0.33301636576652527" green="0.45990800857543945" blue="0.60649919509887695" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <accessibility key="accessibilityConfiguration" identifier="expirationActionButton"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="48" id="IpN-S8-Y9f"/>
-                                <constraint firstAttribute="width" constant="52" id="XzH-29-5vD"/>
-                            </constraints>
-                            <state key="normal" image="compose_expiration">
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="didTapExpirationDismissButton:" destination="-1" eventType="touchUpInside" id="I6s-jv-onC"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <constraints>
-                        <constraint firstItem="eEu-2X-OTC" firstAttribute="leading" secondItem="Okn-ub-h7D" secondAttribute="leading" id="5I1-BN-U40"/>
-                        <constraint firstItem="0cq-9r-3dX" firstAttribute="top" secondItem="Okn-ub-h7D" secondAttribute="top" id="M9A-pn-K3G"/>
-                        <constraint firstItem="0cq-9r-3dX" firstAttribute="leading" secondItem="eEu-2X-OTC" secondAttribute="trailing" id="UUf-FW-we7"/>
-                        <constraint firstAttribute="bottom" secondItem="0cq-9r-3dX" secondAttribute="bottom" id="cC9-CO-mwh"/>
-                        <constraint firstAttribute="trailing" secondItem="0cq-9r-3dX" secondAttribute="trailing" id="oX2-2F-FuJ"/>
-                        <constraint firstItem="eEu-2X-OTC" firstAttribute="top" secondItem="Okn-ub-h7D" secondAttribute="top" id="vs2-Uj-JKP"/>
-                    </constraints>
-                </view>
-                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f6s-5h-iHn" userLabel="Password View">
-                    <rect key="frame" x="0.0" y="144" width="375" height="48"/>
-                    <subviews>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Define Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WxL-Ya-BL5" userLabel="Encrypted Password TextField">
-                            <rect key="frame" x="52" y="0.0" width="323" height="48"/>
-                            <accessibility key="accessibilityConfiguration" identifier="encryptedPasswordTextField"/>
-                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
-                            <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
-                        </textField>
-                        <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w8G-S8-0hr" userLabel="Encrypted Action Button">
-                            <rect key="frame" x="0.0" y="0.0" width="52" height="48"/>
-                            <color key="backgroundColor" red="0.33301636576652527" green="0.45990800857543945" blue="0.60649919509887695" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <accessibility key="accessibilityConfiguration" identifier="encryptedActionButton"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="52" id="Tmt-hU-Ru0"/>
-                                <constraint firstAttribute="height" constant="48" id="eOb-yZ-g4D"/>
-                            </constraints>
-                            <state key="normal" image="compose_expiration">
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="didTapEncryptedDismissButton:" destination="-1" eventType="touchUpInside" id="P8h-Cq-PFc"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <constraints>
-                        <constraint firstItem="w8G-S8-0hr" firstAttribute="top" secondItem="f6s-5h-iHn" secondAttribute="top" id="0wP-NS-ef5"/>
-                        <constraint firstItem="WxL-Ya-BL5" firstAttribute="top" secondItem="f6s-5h-iHn" secondAttribute="top" id="2Dr-3D-GIJ"/>
-                        <constraint firstAttribute="trailing" secondItem="WxL-Ya-BL5" secondAttribute="trailing" id="8yZ-F7-KFB"/>
-                        <constraint firstItem="w8G-S8-0hr" firstAttribute="leading" secondItem="f6s-5h-iHn" secondAttribute="leading" id="SoZ-sC-hzm"/>
-                        <constraint firstAttribute="bottom" secondItem="WxL-Ya-BL5" secondAttribute="bottom" id="YcI-kj-lhY"/>
-                        <constraint firstItem="WxL-Ya-BL5" firstAttribute="leading" secondItem="w8G-S8-0hr" secondAttribute="trailing" id="vUf-hN-TeO"/>
-                        <constraint firstAttribute="bottom" secondItem="w8G-S8-0hr" secondAttribute="bottom" id="vmb-t3-gWi"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lId-3P-n4a">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
                     <subviews>
@@ -259,7 +122,7 @@
                         </constraint>
                     </constraints>
                     <color key="textColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textField>
             </subviews>
@@ -269,43 +132,25 @@
                 <constraint firstAttribute="trailing" secondItem="chC-fW-E4g" secondAttribute="trailing" id="71z-mG-smT">
                     <variation key="widthClass=compact" constant="10"/>
                 </constraint>
-                <constraint firstItem="PQh-ZL-ZOh" firstAttribute="top" secondItem="6W7-2D-2Lf" secondAttribute="bottom" id="Afc-sd-pei"/>
                 <constraint firstAttribute="trailing" secondItem="lId-3P-n4a" secondAttribute="trailing" id="BfA-2A-BgH"/>
-                <constraint firstItem="Okn-ub-h7D" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ey3-pg-qAo"/>
                 <constraint firstItem="aWx-4S-hlX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="H8G-DQ-rjr"/>
                 <constraint firstAttribute="trailing" secondItem="aWx-4S-hlX" secondAttribute="trailing" id="KGx-QJ-TrU"/>
                 <constraint firstAttribute="trailing" secondItem="kJd-U5-xJL" secondAttribute="trailing" id="KLV-mt-c8a"/>
-                <constraint firstItem="Okn-ub-h7D" firstAttribute="top" secondItem="6W7-2D-2Lf" secondAttribute="bottom" id="L15-Kd-rkO"/>
                 <constraint firstItem="aWx-4S-hlX" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="bottom" id="N9x-xo-nRQ"/>
                 <constraint firstItem="lId-3P-n4a" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="UZV-dJ-o9P"/>
                 <constraint firstItem="chC-fW-E4g" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="bottom" id="V63-QO-KeO"/>
-                <constraint firstAttribute="trailing" secondItem="f6s-5h-iHn" secondAttribute="trailing" id="VDJ-kw-Zpd"/>
-                <constraint firstItem="f6s-5h-iHn" firstAttribute="top" secondItem="6W7-2D-2Lf" secondAttribute="bottom" constant="-1" id="VLg-3e-bpA"/>
                 <constraint firstItem="6W7-2D-2Lf" firstAttribute="top" secondItem="aWx-4S-hlX" secondAttribute="bottom" id="c4T-qO-1T0"/>
-                <constraint firstAttribute="trailing" secondItem="PQh-ZL-ZOh" secondAttribute="trailing" id="dLk-az-gmB"/>
-                <constraint firstItem="f6s-5h-iHn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jYM-Dz-byF"/>
-                <constraint firstItem="f6s-5h-iHn" firstAttribute="top" secondItem="Okn-ub-h7D" secondAttribute="top" id="kEZ-Iq-5Vy"/>
                 <constraint firstItem="lId-3P-n4a" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="oVi-aI-KHl"/>
-                <constraint firstAttribute="trailing" secondItem="Okn-ub-h7D" secondAttribute="trailing" id="qxU-er-lpB"/>
                 <constraint firstAttribute="trailing" secondItem="6W7-2D-2Lf" secondAttribute="trailing" id="riS-Pg-jLT"/>
-                <constraint firstItem="PQh-ZL-ZOh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vMI-IJ-gQT"/>
                 <constraint firstItem="kJd-U5-xJL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="wTx-4N-M62"/>
                 <constraint firstItem="6W7-2D-2Lf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="yfs-VQ-XKu"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="VLg-3e-bpA"/>
-                </mask>
-            </variation>
             <point key="canvasLocation" x="240.80000000000001" y="366.56671664167919"/>
         </view>
     </objects>
     <resources>
         <image name="arrow_down" width="15" height="8"/>
-        <image name="compose_attachment" width="44" height="44"/>
-        <image name="compose_expiration" width="44" height="44"/>
-        <image name="compose_lock" width="44" height="44"/>
         <image name="ic-three-dots-horizontal" width="18" height="3"/>
     </resources>
 </document>

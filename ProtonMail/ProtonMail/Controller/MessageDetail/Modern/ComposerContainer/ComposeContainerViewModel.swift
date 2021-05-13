@@ -46,7 +46,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
         return 1
     }
     override func numberOfRows(in section: Int) -> Int {
-        return 2
+        return 3
     }
     
     override func syncMailSetting() {
@@ -76,7 +76,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
         let count = self.childViewModel.toSelectedContacts.count + self.childViewModel.ccSelectedContacts.count + self.childViewModel.bccSelectedContacts.count
         return count > 0
     }
-    
+
     private func obsereReicpients() -> NSKeyValueObservation {
         return self.childViewModel.observe(\.contactsChange, options: [.new, .old]) { [weak self](_, _) in
             self?.uiDelegate?.updateSendButton()
