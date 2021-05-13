@@ -580,7 +580,7 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
     }
     
     func textFieldDidChange(textField: UITextField) {
-        self.searchText = textField.text
+        self.searchText = textField.text?.isEmpty == true ? " " : textField.text
         guard !isEntryCellRefreshing else {
             return
         }

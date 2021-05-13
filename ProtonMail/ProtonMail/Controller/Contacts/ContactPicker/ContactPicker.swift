@@ -186,7 +186,7 @@ class ContactPicker: UIView, AccessibleView {
             self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 11),
             self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 10),
             self.contactCollectionView.leadingAnchor.constraint(equalTo: self.promptLabel.trailingAnchor, constant: 8),
-            self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -25)
+            self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -35)
         ].activate()
     }
     
