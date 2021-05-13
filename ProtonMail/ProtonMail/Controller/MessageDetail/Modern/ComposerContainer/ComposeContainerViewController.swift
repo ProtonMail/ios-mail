@@ -247,6 +247,7 @@ extension ComposeContainerViewController: ComposeContainerUIProtocol {
     func updateAttachmentCount(number: Int) {
         DispatchQueue.main.async {
             self.toolbar.setAttachment(number: number)
+            self.currentAttachmentSize = self.coordinator.getAttachmentSize()
         }
     }
 }

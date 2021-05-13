@@ -106,6 +106,13 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         return self.attachmentView
     }
     
+    func getAttachmentSize() -> Int {
+        let size = self.attachmentView.datas.reduce(into: 0) {
+            $0 += $1.fileSize.intValue
+        }
+        return size
+    }
+    
     override func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
         switch indexPath.row {
         case 0:
