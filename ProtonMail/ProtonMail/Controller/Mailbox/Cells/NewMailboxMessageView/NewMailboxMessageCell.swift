@@ -26,12 +26,15 @@ import UIKit
 
 protocol NewMailboxMessageCellDelegate: AnyObject {
     func didSelectButtonStatusChange(id: String?)
+    func getExpirationDate(id: String) -> String?
 }
 
 class NewMailboxMessageCell: SwipyCell {
 
     weak var cellDelegate: NewMailboxMessageCellDelegate?
+    private var shouldUpdateTime: Bool = false
     var id: String?
+    private var workItem: DispatchWorkItem?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -44,6 +47,10 @@ class NewMailboxMessageCell: SwipyCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+
+        shouldUpdateTime = false
+        workItem?.cancel()
+        workItem = nil
 
         customView.initialsLabel.attributedText = nil
         customView.initialsLabel.isHidden = false
@@ -64,6 +71,28 @@ class NewMailboxMessageCell: SwipyCell {
         customView.messageContentView.draftImageView.isHidden = false
         customView.messageContentView.originImageView.isHidden = false
         customView.messageContentView.originImageView.image = nil
+    }
+
+    func startUpdateExpiration() {
+        shouldUpdateTime = true
+        getExpirationOffset()
+    }
+
+    private func getExpirationOffset() {
+        let workItem = DispatchWorkItem { [weak self] in
+            if self?.shouldUpdateTime == true,
+               let id = self?.id,
+               let expiration = self?.cellDelegate?.getExpirationDate(id: id) {
+                let tag = self?.customView.messageContentView.tagsView.tagViews.compactMap({ $0 as? TagView })
+                    .first(where: { $0.imageView.image == Asset.mailHourglass.image })
+                tag?.tagLabel.attributedText = expiration.apply(style: FontManager.OverlineRegularInteractionStrong)
+                self?.getExpirationOffset()
+            } else {
+                self?.shouldUpdateTime = false
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: workItem)
+        self.workItem = workItem
     }
 
     private func addSubviews() {
