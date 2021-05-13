@@ -27,7 +27,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RIQ-6S-Rqf">
-                                <rect key="frame" x="0.0" y="88" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="88" width="320" height="431"/>
                                 <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactsCell" id="Ewr-ha-VvA">
@@ -45,7 +45,7 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="AOf-GB-wad" secondAttribute="trailing" id="Cyl-fc-cBL"/>
                             <constraint firstItem="AOf-GB-wad" firstAttribute="leading" secondItem="S4B-4p-Yy3" secondAttribute="leading" id="J2h-xG-OFx"/>
-                            <constraint firstAttribute="bottom" secondItem="RIQ-6S-Rqf" secondAttribute="bottom" id="Rc8-Bf-RFt"/>
+                            <constraint firstItem="SMa-Y1-qS2" firstAttribute="top" secondItem="RIQ-6S-Rqf" secondAttribute="bottom" id="Rc8-Bf-RFt"/>
                             <constraint firstAttribute="trailing" secondItem="RIQ-6S-Rqf" secondAttribute="trailing" id="Y24-4r-1jf"/>
                             <constraint firstItem="AOf-GB-wad" firstAttribute="top" secondItem="60O-Ao-olg" secondAttribute="bottom" id="aAJ-gg-tP0"/>
                             <constraint firstItem="RIQ-6S-Rqf" firstAttribute="top" secondItem="AOf-GB-wad" secondAttribute="bottom" id="iVg-Sh-xUy"/>
@@ -55,6 +55,7 @@
                     <navigationItem key="navigationItem" title="CONTACTS" id="dNI-3f-weZ">
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="G3m-Jr-Xhu"/>
                     </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="menuButton" destination="G3m-Jr-Xhu" id="MWn-nO-giN"/>
                         <outlet property="searchView" destination="AOf-GB-wad" id="T02-fR-U3L"/>
@@ -71,7 +72,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Rs-Sb-Nje" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4584.8000000000002" y="3626.5367316341831"/>
+            <point key="canvasLocation" x="4584.375" y="3626.4084507042253"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="LY1-jV-d6l">
@@ -455,6 +456,7 @@
                         <outlet property="groupNameLabel" destination="xZ6-7X-eau" id="2bi-l8-6t1"/>
                         <outlet property="headerContainerView" destination="sFp-SQ-U22" id="M0m-oT-j5c"/>
                         <outlet property="sendButton" destination="Zke-2D-wWe" id="YT8-nQ-DdH"/>
+                        <outlet property="sendImage" destination="UmD-K6-v1y" id="cFU-15-hOa"/>
                         <outlet property="tableView" destination="KRC-sl-Cdx" id="Yhy-A6-85s"/>
                         <segue destination="HW2-St-HGr" kind="presentation" identifier="toContactGroupEditSegue" id="Rzd-pg-PEg"/>
                         <segue destination="1jS-uV-TRv" kind="presentation" identifier="toComposer" modalPresentationStyle="pageSheet" id="6yh-h8-btl"/>

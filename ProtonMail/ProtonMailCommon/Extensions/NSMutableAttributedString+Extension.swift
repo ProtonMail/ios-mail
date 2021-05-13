@@ -30,11 +30,12 @@ extension NSAttributedString {
      - search: search term to be highlighted in the string
      */
     class func highlightedString(text: String,
+                                 textAttributes: [NSAttributedString.Key: Any]? = nil,
                                  search: String,
                                  font: UIFont) -> NSAttributedString {
         let resultText = text
         let searchTerm = search
-        var attributes = FontManager.Default
+        var attributes = textAttributes ?? FontManager.Default
         attributes.addTruncatingTail()
         let attributedString = NSMutableAttributedString(string: resultText,
                                                          attributes: attributes)

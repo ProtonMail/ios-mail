@@ -333,4 +333,8 @@ extension ContactGroupEditViewController: ContactGroupEditViewControllerDelegate
     func update() {
         loadDataIntoView()
     }
+
+    func updateAddressSection() {
+        tableView.reloadData()
+    }
 }

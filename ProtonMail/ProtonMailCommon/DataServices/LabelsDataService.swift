@@ -272,6 +272,11 @@ class LabelsDataService: Service, HasLocalStorage {
             }
         }
     }
+
+    func labelFetchedController(by labelID: String) -> NSFetchedResultsController<NSFetchRequestResult> {
+        let context = self.coreDataService.mainContext
+        return Label.labelFetchController(for: labelID, inManagedObjectContext: context)
+    }
     
     func label(by labelID : String) -> Label? {
         let context = self.coreDataService.mainContext

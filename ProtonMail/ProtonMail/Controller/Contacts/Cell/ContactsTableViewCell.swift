@@ -61,13 +61,18 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
     ///   - highlight: hightlight string. autocomplete in composer
     ///   - color: contact group color -- String type and optional
     func config(name: String, email: String, highlight: String, color : String? = nil) {
-        var nameAttributes = FontManager.Default
-        nameAttributes.addTruncatingTail()
-        self.nameLabel.attributedText = name.apply(style: nameAttributes)
+        self.nameLabel.attributedText =
+            .highlightedString(text: name,
+                               search: highlight,
+                               font: .highlightSearchTextForTitle)
 
         var emailAttributes = FontManager.DefaultSmallWeak
         emailAttributes.addTruncatingTail()
-        self.emailLabel.attributedText = email.apply(style: emailAttributes)
+        self.emailLabel.attributedText =
+            .highlightedString(text: email,
+                               textAttributes: emailAttributes,
+                               search: highlight,
+                               font: .highlightSearchTextForSubtitle)
         
         //will be show the image
         if let color = color {
@@ -79,7 +84,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
         } else {
             self.groupImage.isHidden = true
         }
-    
+
         var attr = FontManager.body3RegularNorm
         attr.addTextAlignment(.center)
         shortName.attributedText = name.shortName().apply(style: attr)
