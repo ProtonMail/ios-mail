@@ -128,6 +128,7 @@ extension ComposerAttachmentVC {
 
         self.updateTableViewHeight()
         self.height = table.heightAnchor.constraint(equalToConstant: self.tableHeight)
+        self.height?.priority = UILayoutPriority(999)
         self.height?.isActive = true
 
         let nib = ComposerAttachmentCellTableViewCell.defaultNib()
