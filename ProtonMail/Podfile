@@ -10,12 +10,12 @@ def pm_shared_pods
   pod 'EllipticCurveKeyPair', :git => 'https://github.com/abjurato/EllipticCurveKeyPair.git', :tag => '1.0.4'
   pod 'PMAuthentication', :git => 'git@gitlab.protontech.ch:apple/shared/pmauthentication.git', :branch => 'develop', :testspecs => ['Tests']
   pod 'PMKeymaker', :git => 'git@gitlab.protontech.ch:apple/shared/pmkeymaker.git', :branch => 'develop'
-  pod 'PMUIFoundations', :git => 'git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git', :branch => 'fix/share'
 end
 
 def common_pods
   pm_shared_pods
 
+  pod 'PMUIFoundations', :git => 'git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git', :branch => 'fix/share'
   pod 'OpenPGP', :git => 'git@gitlab.protontech.ch:apple/shared/pmopenpgp.git', :branch => 'develop' #:path => '../OpenPGP'
   pod 'Groot', '3.0.1'
   pod 'AFNetworking', '4.0.1'
@@ -29,15 +29,14 @@ def common_pods
   pod 'MBProgressHUD' , '1.1.0'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
   pod 'PMCommon', :path => '../Networking', :testspecs => ['Tests']
-  pod 'SwipyCell', '4.0.1'
-
   pod 'SwiftGen', '~> 6.0'
 end
 
 def pm_pods
     
   common_pods
-  
+
+  pod 'SwipyCell', '4.0.1'
   pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
   pod 'PMChallenge', :git => 'git@gitlab.protontech.ch:apple/shared/pmchallenge.git', :tag => '0.0.4'
   pod 'PMPayments', :git => 'git@gitlab.protontech.ch:apple/shared/pmpayments.git', :commit => '47edd7def09a7e26aa608b1'
@@ -66,10 +65,10 @@ end
 
 target 'ProtonMailDev' do
   pm_pods
+end
 
-  target 'PushServiceDev' do
-    inherit! :search_paths
-  end
+target 'PushServiceDev' do
+  pm_shared_pods
 end
 
 target 'ProtonMailTests' do
