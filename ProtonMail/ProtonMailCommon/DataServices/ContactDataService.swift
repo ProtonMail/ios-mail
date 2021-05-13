@@ -110,7 +110,7 @@ class ContactDataService: Service, HasLocalStorage {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
         let strComp = NSSortDescriptor(key: Contact.Attributes.name,
                                        ascending: true,
-                                       selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
+                                       selector: #selector(NSString.caseInsensitiveCompare(_:)))
         fetchRequest.sortDescriptors = [strComp]
         
         if !isCombineContact {
@@ -118,7 +118,7 @@ class ContactDataService: Service, HasLocalStorage {
         }
         return NSFetchedResultsController(fetchRequest: fetchRequest,
                                           managedObjectContext: moc,
-                                          sectionNameKeyPath: Contact.Attributes.name,
+                                          sectionNameKeyPath: Contact.Attributes.sectionName,
                                           cacheName: nil)
     }
     
@@ -460,7 +460,7 @@ class ContactDataService: Service, HasLocalStorage {
                         } else {
                             fetched = fetched + contacts.count
                         }
-                        self.cacheService.addNewContact(serverReponse: contacts) { (_, error) in
+                        self.cacheService.addNewContact(serverReponse: contacts, shouldFixName: true) { (_, error) in
                             if let err = error {
                                 DispatchQueue.main.async {
                                     err.alertErrorToast()
