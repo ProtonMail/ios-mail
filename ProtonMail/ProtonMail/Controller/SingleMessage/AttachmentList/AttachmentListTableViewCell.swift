@@ -58,7 +58,6 @@ class AttachmentListTableViewCell: UITableViewCell {
     }
 
     @IBOutlet private weak var fileIconView: UIImageView!
-    @IBOutlet private weak var iconContainerView: UIView!
     @IBOutlet private weak var fileNameLabel: UILabel!
     @IBOutlet private weak var fileSizeLabel: UILabel!
     @IBOutlet private weak var arrowIconView: UIImageView!
@@ -71,20 +70,16 @@ class AttachmentListTableViewCell: UITableViewCell {
 
     private func setupView() {
         backgroundColor = UIColorManager.BackgroundNorm
-        iconContainerView.backgroundColor = .clear
 
         arrowIconView.image = Asset.cellRightArrow.image.withRenderingMode(.alwaysTemplate)
         arrowIconView.tintColor = UIColorManager.TextNorm
-
-        iconContainerView.roundCorner(4)
-        iconContainerView.layer.borderWidth = 1
-        iconContainerView.layer.borderColor = AdaptiveColors._N2.cgColor
 
         addSeparator(padding: 0)
     }
 
     func configure(mimeType: String, fileName: String, fileSize: String) {
-        fileIconView.image = FileType(mimeType: mimeType).image.withRenderingMode(.alwaysTemplate)
+        let type = MIMEType(rawValue: mimeType)
+        fileIconView.image = type.bigIcon
         fileIconView.tintColor = UIColorManager.TextNorm
 
         var fileNameAttribute = FontManager.Default
