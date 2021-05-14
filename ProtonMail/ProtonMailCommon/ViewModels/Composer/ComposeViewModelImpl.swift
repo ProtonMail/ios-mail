@@ -114,8 +114,8 @@ class ComposeViewModelImpl : ComposeViewModel {
                 self.message = nil
             } else {
                 self.message = messageService.copyMessage(message: msg!, copyAtts: action == ComposeMessageAction.forward, context: self.coreDataService.mainManagedObjectContext)
-                self.message?.action = action.rawValue as NSNumber?
                 if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
+                    self.message?.action = action.rawValue as NSNumber?
                     if let title = self.message?.title {
                         if !title.hasRe() {
                             let re = LocalString._composer_short_reply
@@ -123,6 +123,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
                 } else if action == ComposeMessageAction.forward {
+                    self.message?.action = action.rawValue as NSNumber?
                     if let title = self.message?.title {
                         if !( title.hasFwd() || title.hasFw() ) {
                             let fwd = LocalString._composer_short_forward
