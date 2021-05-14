@@ -28,13 +28,16 @@ final class LabelEditCoordinator: DefaultCoordinator {
 
     weak var viewController: VC?
     private weak var viewModel: LabelEditVMProtocol?
+    private weak var mailboxCoordinator: MailboxCoordinator?
 
     init(services: ServiceFactory,
          viewController: NEWLabelEditViewController,
-         viewModel: LabelEditVMProtocol) {
+         viewModel: LabelEditVMProtocol,
+         mailboxCoordinator: MailboxCoordinator? = nil) {
         self.services = services
         self.viewController = viewController
         self.viewModel = viewModel
+        self.mailboxCoordinator = mailboxCoordinator
     }
 
     func start() {
@@ -57,6 +60,10 @@ final class LabelEditCoordinator: DefaultCoordinator {
         let parentVC = LabelParentSelectViewController.instance(hasNavigation: false)
         parentVC.set(viewModel: parentVm)
         self.viewController?.navigationController?.show(parentVC, sender: nil)
+    }
+
+    func viewControllerDidDismiss() {
+        mailboxCoordinator?.labelEditCoordinatorDidDismiss()
     }
 }
 

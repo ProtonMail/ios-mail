@@ -132,6 +132,11 @@ extension NEWLabelEditViewController {
 
         self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyWindow.safeAreaInsets.bottom, right: 0)
     }
+
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: true)
+        coordinator.viewControllerDidDismiss()
+    }
 }
 
 // MARK: Functions

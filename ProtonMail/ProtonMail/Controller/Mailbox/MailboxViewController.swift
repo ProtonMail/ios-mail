@@ -1512,6 +1512,9 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
             .present(on: self.navigationController ?? self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
+                        self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
+                            self?.showLabelAsActionSheet(messages: messages)
+                        }
                         self?.coordinator?.go(to: .newLabel)
                      },
                      selected: { [weak self] menuLabel, isOn in
@@ -1567,6 +1570,9 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
+                        self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
+                            self?.showMoveToActionSheet(messages: messages, isEnableColor: isEnableColor, isInherit: isInherit)
+                        }
                         self?.coordinator?.go(to: .newFolder)
                      },
                      selected: { [weak self] menuLabel, isOn in
