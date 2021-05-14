@@ -247,7 +247,7 @@ public class PushNotificationService: NSObject, Service {
                 user.messageService.pushNotificationMessageID = messageid
                 let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
                 link.append(.init(name: String(describing: MailboxViewController.self)))
-                link.append(.init(name: MailboxCoordinator.Destination.details.rawValue)) // FIXME: - To update MG
+                link.append(.init(name: MailboxCoordinator.Destination.details.rawValue, value: messageid))
                 NotificationCenter.default.post(name: .switchView, object: link)
             }
             completionHandler()

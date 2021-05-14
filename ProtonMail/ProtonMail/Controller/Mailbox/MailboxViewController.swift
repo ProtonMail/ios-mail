@@ -287,10 +287,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         
         FileManager.default.cleanCachedAttsLegacy()
-        
-        if self.viewModel.notificationMessageID != nil {
-            self.coordinator?.go(to: .details) // FIXME: - To update MG
-        } else if checkHuman() {
+
+        if checkHuman() {
             self.handleUpdateAlert()
         }
     }
@@ -923,7 +921,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 var loadMore: Int = 0
                 if error == nil {
                     self.onlineTimerReset()
-                    self.viewModel.resetNotificationMessage()
                     if let notices = res?["Notices"] as? [String] {
                         serverNotice.check(notices)
                     }

@@ -132,7 +132,6 @@ class MailboxCoordinator : DefaultCoordinator {
         
         switch dest {
         case .details:
-            //self.viewController?.cancelButtonTapped()
             guard let next = destination as? MessageContainerViewController else {
                 return false
             }
@@ -145,21 +144,6 @@ class MailboxCoordinator : DefaultCoordinator {
             
             next.set(viewModel: .init(message: message, msgService: self.viewModel.messageService, user: self.viewModel.user, labelID: viewModel.labelID))
             next.set(coordinator: .init(controller: next))
-//        case .detailsFromNotify:
-//            guard let next = destination as? MessageContainerViewController else {
-//                return false
-//            }
-//            let vmService = services.get() as ViewModelService
-//            vmService.messageDetails(fromPush: next)
-//            guard let message = self.viewModel.notificationMessage else {
-//                return false
-//            }
-//            let user = self.viewModel.user
-//            #warning("v4 check labelID later")
-//            next.set(viewModel: .init(message: message, msgService: user.messageService, user: user, labelID: self.viewModel.labelID))
-//            next.set(coordinator: .init(controller: next))
-//            self.viewModel.resetNotificationMessage()
-            
         case .composer:
             guard let nav = destination as? UINavigationController,
                 let next = nav.viewControllers.first as? ComposeContainerViewController else
@@ -307,6 +291,7 @@ class MailboxCoordinator : DefaultCoordinator {
                 user: viewModel.user
             )
             coordinator.start()
+            viewModel.resetNotificationMessage()
         case .composeShow where path.value != nil:
             let coreDataService = self.services.get(by: CoreDataService.self)
             
