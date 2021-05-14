@@ -37,16 +37,10 @@ extension MessageDataService {
     func decryptBodyIfNeeded(message: Message) throws -> String? {
         PMLog.D("Flags: \(message.flag.description)")
         var keys: [Key] = []
-        
-        let addresses = message.toList.toContacts()
-            .compactMap { (info) -> Address? in
-                return self.userDataSource?.addresses.first(where: {$0.email == info.email})
-            }
-        for address in addresses {
-            guard let _keys = self.userDataSource?.getAllAddressKey(address_id: address.address_id) else { continue }
-            keys += _keys
-        }
-        if keys.isEmpty {
+        if let addressID = message.addressID,
+           let _keys = self.userDataSource?.getAllAddressKey(address_id: addressID) {
+            keys = _keys
+        } else {
             keys = self.userDataSource!.addressKeys
         }
         
