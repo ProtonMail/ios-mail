@@ -145,6 +145,11 @@ extension NSManagedObjectContext {
                 if self == CoreDataService.shared.mainContext {
                     fatalError("Do not save on main context")
                 }
+
+                if !insertedObjects.isEmpty {
+                    try obtainPermanentIDs(for: Array(insertedObjects))
+                }
+
                 try save()
                 if let parentContext = parent {
                     parentContext.performAndWait() { () -> Void in

@@ -60,18 +60,25 @@ final class ComposerAttachmentVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setup()
-        self.addNotificationObserver()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        guard let vcCounts = self.navigationController?.viewControllers.count else {
-            return
-        }
-        if vcCounts == 1 {
-            // Composer dismiss
-            NotificationCenter.default.removeObserver(self)
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tableView?.reloadData()
+    }
+
+    func addNotificationObserver() {
+        self.removeNotificationObserver()
+        NotificationCenter
+            .default
+            .addObserver(self,
+                         selector: #selector(self.attachmentUploaded(noti:)),
+                         name: .attachmentUploaded,
+                         object: nil)
+    }
+
+    func removeNotificationObserver() {
+        NotificationCenter.default.removeObserver(self)
     }
 
     func add(attachments: [Attachment]) {
@@ -145,10 +152,6 @@ extension ComposerAttachmentVC {
         let newHeight = CGFloat(self.datas.count) * self.cellHeight
         self.height?.constant = newHeight
         self.tableHeight = newHeight
-    }
-
-    private func addNotificationObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.attachmentUploaded(noti:)), name: .attachmentUploaded, object: nil)
     }
 
     @objc

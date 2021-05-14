@@ -30,6 +30,7 @@ protocol ComposeContainerUIProtocol: AnyObject {
     func setLockStatus(isLock: Bool)
     func setExpirationStatus(isSetting: Bool)
     func updateAttachmentCount(number: Int)
+    func updateCurrentAttachmentSize()
 }
 
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>
@@ -88,6 +89,13 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         generateAccessibilityIdentifiers()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let attachmentView = self.coordinator.attachmentView {
+            attachmentView.addNotificationObserver()
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.startAutoSync()
@@ -103,6 +111,14 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.stopAutoSync()
+        
+        guard let vcCounts = self.navigationController?.viewControllers.count else {
+            return
+        }
+        if vcCounts == 1 {
+            // Composer dismiss
+            self.coordinator.attachmentView?.removeNotificationObserver()
+        }
     }
     
     override func configureNavigationBar() {
@@ -247,8 +263,11 @@ extension ComposeContainerViewController: ComposeContainerUIProtocol {
     func updateAttachmentCount(number: Int) {
         DispatchQueue.main.async {
             self.toolbar.setAttachment(number: number)
-            self.currentAttachmentSize = self.coordinator.getAttachmentSize()
         }
+    }
+    
+    func updateCurrentAttachmentSize() {
+        self.currentAttachmentSize = self.coordinator.getAttachmentSize()
     }
 }
 
@@ -399,6 +418,7 @@ extension ComposeContainerViewController: AttachmentController {
                     return
                 }
                 self.coordinator.addAttachment(att)
+                self.updateCurrentAttachmentSize()
                 seal.fulfill_()
             }
         }

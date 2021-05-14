@@ -39,6 +39,7 @@ final class QueueManager: Service {
     private let messageQueue: PMPersistentQueueProtocol
     /// Handle actions exclude sending message related things
     private let miscQueue: PMPersistentQueueProtocol
+    private let reachability: Reachability
     /// Handle the fetching data related things
     private var readQueue: [ReadBlock] = []
     private var handlers: [UserID: QueueHandler] = [:]
@@ -54,9 +55,12 @@ final class QueueManager: Service {
     // A block will be called when exceed allowed background execute time
     private var exceedNotify: (() -> Void)?
 
-    init(messageQueue: PMPersistentQueueProtocol, miscQueue: PMPersistentQueueProtocol) {
+    init(messageQueue: PMPersistentQueueProtocol,
+         miscQueue: PMPersistentQueueProtocol,
+         reachability: Reachability = Reachability.forInternetConnection()) {
         self.messageQueue = messageQueue
         self.miscQueue = miscQueue
+        self.reachability = reachability
     }
 
     // MARK: Add task
@@ -332,7 +336,8 @@ extension QueueManager {
     }
 
     private func dequeueIfNeeded() {
-        guard self.checkQueueStatus(),
+        guard self.reachability.currentReachabilityStatus() != .NotReachable,
+              self.checkQueueStatus(),
               self.allowedToDequeue() else {return}
         self.dequeueMessageQueue()
         self.dequeueMiscQueue()
