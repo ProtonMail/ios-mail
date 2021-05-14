@@ -34,7 +34,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     
     private var header: ComposeHeaderViewController!
     internal var editor: ContainableComposeViewController!
-    private var attachmentView: ComposerAttachmentVC!
+    private(set) var attachmentView: ComposerAttachmentVC?
     private var attachmentsObservation: NSKeyValueObservation!
     private var messageObservation: NSKeyValueObservation!
     
@@ -127,13 +127,16 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         #endif
 
         let attachments = childViewModel.getAttachments() ?? []
-        self.attachmentView = ComposerAttachmentVC(attachments: attachments, delegate: self)
-        self.controller.updateAttachmentCount(number: self.attachmentView.datas.count)
-        return self.attachmentView
+        let component = ComposerAttachmentVC(attachments: attachments, delegate: self)
+        self.attachmentView = component
+        self.controller.updateAttachmentCount(number: component.datas.count)
+        component.addNotificationObserver()
+        return component
     }
     
     func getAttachmentSize() -> Int {
-        let size = self.attachmentView.datas.reduce(into: 0) {
+        let array = self.attachmentView?.datas ?? []
+        let size = array.reduce(into: 0) {
             $0 += $1.fileSize.intValue
         }
         return size
@@ -146,7 +149,8 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         case 1:
             self.embed(self.editor, onto: cell.contentView, layoutGuide: cell.contentView.layoutMarginsGuide, ownedBy: self.controller)
         case 2:
-            self.embed(self.attachmentView, onto: cell.contentView, ownedBy: self.controller)
+            guard let component = self.attachmentView else { return }
+            self.embed(component, onto: cell.contentView, ownedBy: self.controller)
         default:
             assert(false, "Children number misalignment")
             return
@@ -181,19 +185,13 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             attachment.message = message
             _ = context.saveUpstreamIfNeeded()
         }
-        if attachment.objectID.isTemporaryID {
-            context.performAndWait {
-                try? context.obtainPermanentIDs(for: [attachment])
-            }
-        }
-        self.attachmentView.add(attachments: [attachment])
-        guard shouldUpload else {
-            let number = self.attachmentView.datas.count
-            self.controller.updateAttachmentCount(number: number)
-            return
-        }
+        guard let component = self.attachmentView else { return }
+        component.add(attachments: [attachment])
+        let number = component.datas.count
+        self.controller.updateAttachmentCount(number: number)
+        guard shouldUpload else { return }
         _ = self.editor.attachments(pickup: attachment).done { [weak self] in
-            let number = self?.attachmentView.datas.count ?? 0
+            let number = self?.attachmentView?.datas.count ?? 0
             self?.controller.updateAttachmentCount(number: number)
         }
     }
@@ -228,8 +226,9 @@ extension ComposeContainerViewCoordinator: ComposerAttachmentVCDelegate {
     func delete(attachment: Attachment) {
         self.controller.view.endEditing(true)
         _ = self.editor.attachments(deleted: attachment).done { [weak self] in
-            let number = self?.attachmentView.datas.count ?? 0
+            let number = self?.attachmentView?.datas.count ?? 0
             self?.controller.updateAttachmentCount(number: number)
+            self?.controller.updateCurrentAttachmentSize()
         }
     }
 }

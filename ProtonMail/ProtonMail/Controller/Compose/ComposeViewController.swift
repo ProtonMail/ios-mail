@@ -54,6 +54,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     var encryptionConfirmPassword: String = ""
     var encryptionPasswordHint: String    = ""
     private var hasAccessToAddressBook: Bool      = false
+    private var dismissBySending = false
     
     private let queue = DispatchQueue(label: "UpdateAddressIdQueue")
     
@@ -263,9 +264,15 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
         let messageService = self.viewModel.getUser().messageService
         let coreDataService = viewModel.coreDataService
-        topVC.showDraftSaveHintBanner(cache: userCachedStatus,
-                                      messageService: messageService,
-                                      coreDataService: coreDataService)
+        if self.dismissBySending {
+            if let listVC = topVC as? MailboxViewController {
+                listVC.tableView.reloadData()
+            }
+        } else {
+            topVC.showDraftSaveHintBanner(cache: userCachedStatus,
+                                          messageService: messageService,
+                                          coreDataService: coreDataService)
+        }
         #endif
     }
 
@@ -469,7 +476,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         delay(0.5) {
             NSError.alertMessageSendingToast()
         }
-        
+        self.dismissBySending = true
         self.dismiss(animated: true, completion: nil)
     }
     

@@ -55,7 +55,10 @@ extension ComposeSaveHintProtocol {
                                              cache: cache,
                                              messageService: messageService)
         }
-        banner.show(at: .bottom, on: self)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            banner.show(at: .bottom, on: self)
+        }
+        
         
         if let listVC = self as? MailboxViewController {
             // Since we ignore core data event when composer is presented

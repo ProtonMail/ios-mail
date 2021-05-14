@@ -30,6 +30,7 @@ enum MIMEType {
     case doc
     case xls
     case ppt
+    case video
     case unknowFile
 
     init(rawValue: String) {
@@ -47,6 +48,16 @@ enum MIMEType {
                          "application/vnd.ms-powerpoint",
                          "application/x-mspowerpoint",
                          "application/vnd.openxmlformats-officedocument.presentationml.presentation"]
+        let videoMIME = ["video/quicktime",
+                         "video/x-quicktime",
+                         "image/mov",
+                         "audio/aiff",
+                         "audio/x-midi",
+                         "audio/x-wav",
+                         "video/avi",
+                         "video/mp4",
+                         "video/x-matroska",
+                         "application/octet-stream"]
         if rawValue == "image/jpeg" || rawValue == "image/jpg" {
             self = .jpg
         } else if rawValue == "image/png" {
@@ -63,6 +74,8 @@ enum MIMEType {
             self = .xls
         } else if msPptMIME.contains(rawValue) {
             self = .ppt
+        } else if videoMIME.contains(rawValue) {
+            self = .video
         } else {
             self = .unknowFile
         }
@@ -88,6 +101,8 @@ enum MIMEType {
             return UIImage(named: "mail_attachment-xls")
         case .ppt:
             return UIImage(named: "mail_attachment-ppt")
+        case .video:
+            return UIImage(named: "mail_attachment_video")
         default:
             return UIImage(named: "mail_attachment_unknow")
         }
@@ -113,6 +128,8 @@ enum MIMEType {
             return UIImage(named: "mail_attachment_file_xls")
         case .ppt:
             return UIImage(named: "mail_attachment_file_ppt")
+        case .video:
+            return UIImage(named: "mail_attachment_file_video")
         default:
             return UIImage(named: "mail_attachment_file_unknow")
         }

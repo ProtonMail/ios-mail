@@ -52,7 +52,7 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         self.objectID = objectID
         self.deleteButton.tintColor = UIColorManager.IconNorm
         self.delegate = delegate
-        
+
         var nameAttr = isUploading ? FontManager.DefaultSmallDisabled: .DefaultSmall
         nameAttr.addTruncatingTail(mode: .byTruncatingMiddle)
         self.fileName.attributedText = name.apply(style: nameAttr)
