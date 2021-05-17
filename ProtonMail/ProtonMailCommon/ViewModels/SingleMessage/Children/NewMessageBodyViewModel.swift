@@ -31,6 +31,7 @@ class NewMessageBodyViewModel {
     private let messageService: MessageDataService
     let userManager: UserManager
     private(set) var body: String?
+    let internetStatusProvider: InternetConnectionStatusProvider
 
     weak var delegate: NewMessageBodyViewModelDelegate?
 
@@ -82,10 +83,12 @@ class NewMessageBodyViewModel {
          messageService: MessageDataService,
          userManager: UserManager,
          shouldAutoLoadRemoteImages: Bool,
-         shouldAutoLoadEmbeddedImages: Bool) {
+         shouldAutoLoadEmbeddedImages: Bool,
+         internetStatusProvider: InternetConnectionStatusProvider) {
         self.message = message
         self.messageService = messageService
         self.userManager = userManager
+        self.internetStatusProvider = internetStatusProvider
 
         remoteContentPolicy = shouldAutoLoadRemoteImages ?
             WebContents.RemoteContentPolicy.allowed.rawValue :

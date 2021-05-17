@@ -419,7 +419,9 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate {
     @objc
     private func networkStatusUpdated(_ note: Notification) {
         guard let currentReachability = note.object as? Reachability else { return }
-        if currentReachability.currentReachabilityStatus() != .NotReachable && viewModel.message.body.isEmpty {
+        if currentReachability.currentReachabilityStatus() == .NotReachable && viewModel.message.body.isEmpty {
+            messageBodyViewController.showReloadError()
+        } else if currentReachability.currentReachabilityStatus() != .NotReachable && viewModel.message.body.isEmpty {
             viewModel.downloadDetails()
         }
     }
@@ -659,10 +661,6 @@ extension SingleMessageViewController: NewMessageBodyViewControllerDelegate {
         default:
             coordinator.navigate(to: .url(url: browserSpecificUrl))
         }
-    }
-
-    func handleReload() {
-        viewModel.downloadDetails()
     }
 
     private func showUnsupportAlert(url: URL) {

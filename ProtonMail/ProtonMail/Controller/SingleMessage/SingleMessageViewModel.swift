@@ -69,6 +69,7 @@ class SingleMessageViewModel {
 
     private(set) var selectedMoveToFolder: MenuLabel?
     private(set) var selectedLabelAsLabels: Set<LabelLocation> = Set()
+    private let internetStatusProvider: InternetConnectionStatusProvider
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -78,7 +79,11 @@ class SingleMessageViewModel {
         return formatter
     }()
 
-    init(labelId: String, message: Message, user: UserManager, childViewModels: SingleMessageChildViewModels) {
+    init(labelId: String,
+         message: Message,
+         user: UserManager,
+         childViewModels: SingleMessageChildViewModels,
+         internetStatusProvider: InternetConnectionStatusProvider) {
         self.labelId = labelId
         self.message = message
         self.messageService = user.messageService
@@ -89,6 +94,7 @@ class SingleMessageViewModel {
         self.bannerViewModel = childViewModels.bannerViewModel
         self.attachmentViewModel = childViewModels.attachments
         self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
+        self.internetStatusProvider = internetStatusProvider
     }
 
     var messageTitle: NSAttributedString {
@@ -122,6 +128,10 @@ class SingleMessageViewModel {
 
     func downloadDetails() {
         let shouldLoadBody = message.body.isEmpty
+        guard internetStatusProvider.currentStatus != .NotReachable else {
+            self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
+            return
+        }
         messageService.fetchMessageDetailForMessage(message, labelID: labelId) { [weak self] _, _, _, error in
             guard let self = self else { return }
             self.updateErrorBanner?(error)
