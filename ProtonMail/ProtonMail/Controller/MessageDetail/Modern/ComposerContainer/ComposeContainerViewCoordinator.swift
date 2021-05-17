@@ -32,7 +32,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     private weak var controller: ComposeContainerViewController!
     private weak var services: ServiceFactory!
     
-    private var header: ComposeHeaderViewController!
+    private(set) var header: ComposeHeaderViewController!
     internal var editor: ContainableComposeViewController!
     private(set) var attachmentView: ComposerAttachmentVC?
     private var attachmentsObservation: NSKeyValueObservation!
@@ -113,14 +113,12 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         let cachedMessage = childViewModel.message
         self.messageObservation = childViewModel.observe(\.message, options: [.initial]) { [weak self] childViewModel, _ in
             self?.attachmentsObservation = childViewModel.message?.observe(\.attachments, options: [.new, .old]) { [weak self] message, change in
-                DispatchQueue.main.async {
-                    guard change.oldValue?.count != change.newValue?.count,
-                          let attachments = cachedMessage?.attachments.allObjects as? [Attachment] else {
-                        return
-                    }
-                    attachments.forEach { attachment in
-                        self?.addAttachment(attachment, shouldUpload: false)
-                    }
+                guard change.oldValue?.count != change.newValue?.count,
+                      let attachments = cachedMessage?.attachments.allObjects as? [Attachment] else {
+                    return
+                }
+                attachments.forEach { attachment in
+                    self?.addAttachment(attachment, shouldUpload: false)
                 }
             }
         }
@@ -186,9 +184,13 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             _ = context.saveUpstreamIfNeeded()
         }
         guard let component = self.attachmentView else { return }
-        component.add(attachments: [attachment])
-        let number = component.datas.count
-        self.controller.updateAttachmentCount(number: number)
+        component.add(attachments: [attachment]) { [weak self] in
+            DispatchQueue.main.async {
+                let number = component.datas.count
+                self?.controller.updateAttachmentCount(number: number)
+            }
+        }
+        
         guard shouldUpload else { return }
         _ = self.editor.attachments(pickup: attachment).done { [weak self] in
             let number = self?.attachmentView?.datas.count ?? 0
@@ -224,6 +226,8 @@ extension ComposeContainerViewCoordinator: ComposeExpirationDelegate {
 
 extension ComposeContainerViewCoordinator: ComposerAttachmentVCDelegate {
     func delete(attachment: Attachment) {
+        self.editor.view.endEditing(true)
+        self.header.view.endEditing(true)
         self.controller.view.endEditing(true)
         _ = self.editor.attachments(deleted: attachment).done { [weak self] in
             let number = self?.attachmentView?.datas.count ?? 0

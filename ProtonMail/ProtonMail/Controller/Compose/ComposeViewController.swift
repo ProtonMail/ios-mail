@@ -477,7 +477,11 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             NSError.alertMessageSendingToast()
         }
         self.dismissBySending = true
+        #if APP_EXTENSION
+        self.dismiss()
+        #else
         self.dismiss(animated: true, completion: nil)
+        #endif
     }
     
     func cancel() {
