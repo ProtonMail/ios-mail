@@ -14,7 +14,7 @@
 "NSFaceIDUsageDescription" = "Vous permet de déverrouiller votre application rapidement et de façon sécurisée.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Requis pour l’enregistrement des pièces jointes dans la Galerie.";
+"NSPhotoLibraryAddUsageDescription" = "Requis pour l’enregistrement des pièces jointes images dans la photothèque.";
 
 /* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "Nécessaire pour joindre des photos au courriel.";

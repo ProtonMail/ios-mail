@@ -5,7 +5,7 @@
 "NSAppleMusicUsageDescription" = "E-postaya medya eklemek için gereklidir.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "E-postaya fotoğraf eklemek için gereklidir.";
+"NSCameraUsageDescription" = "Fotoğrafları e-postaya eklemek için gereklidir.";
 
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Cihaza kaydedilen kişiler için e-posta adreslerine erişmek amacıyla kullanılır. Böylece ileti oluştururken veya cihaz kişilerini hesabınıza elle yüklerken kullanılabilirler. Kişi bilgileri, açık bir işlem yapılmadan sunucularımıza yüklenmez.";
