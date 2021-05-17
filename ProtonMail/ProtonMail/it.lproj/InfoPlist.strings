@@ -5,7 +5,7 @@
 "NSAppleMusicUsageDescription" = "Necessario per allegare media all'email.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Necessario per allegare foto all'email.";
+"NSCameraUsageDescription" = "Necessaria per allegare foto all'email.";
 
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Utilizzato per accedere agli indirizzi email per i contatti salvati sul dispositivo in modo che possano essere utilizzati quando si compone un messaggio o quando si caricano manualmente i contatti del dispositivo sul proprio account. Le informazioni di contatto non vengono caricate sui nostri server senza un'azione esplicita per farlo.";

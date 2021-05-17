@@ -5,7 +5,7 @@
 "NSAppleMusicUsageDescription" = "Requerit per adjuntar fitxers multimèdia al correu electrònic.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Requerit per adjuntar imatges al correu electrònic.";
+"NSCameraUsageDescription" = "Requerit per adjuntar fotos al correu electrònic.";
 
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "S'utilitza per accedir a les adreces de correu electrònic per als contactes desats al dispositiu de manera que es puguin utilitzar quan redacteu un missatge o quan pengeu manualment els contactes del dispositiu al vostre compte. La informació de contacte no es penja als nostres servidors sense una acció explícita per fer-ho.";
