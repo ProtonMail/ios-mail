@@ -50,8 +50,8 @@ class BaseTokenViewModel {
     func finalToken(token: String, complete: @escaping SendVerificationCodeBlock) {
         self.token = token
         self.tokenMethod = self.method
-        onVerificationCodeBlock?({ (res, error) in
-            complete(res, error)
+        onVerificationCodeBlock?({ (res, error, finish) in
+            complete(res, error, finish)
         })
     }
 

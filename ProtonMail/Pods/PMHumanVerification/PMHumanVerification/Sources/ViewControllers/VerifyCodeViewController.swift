@@ -129,7 +129,7 @@ class VerifyCodeViewController: BaseUIViewController {
         continueButton.isSelected = true
         verifyCodeTextFieldView.isError = false
         continueButton.setTitle(CoreString._hv_verification_verifying_button, for: .normal)
-        viewModel.finalToken(token: code) { (res, error) in
+        viewModel.finalToken(token: code) { (res, error, finish) in
             DispatchQueue.main.async {
                 self.verifyCodeTextFieldView.value = ""
                 self.continueButton.isEnabled = true
@@ -137,7 +137,9 @@ class VerifyCodeViewController: BaseUIViewController {
                 self.continueButton.setTitle(CoreString._hv_verification_verify_button, for: .normal)
                 if res {
                     self.verifyCodeTextFieldView.isError = false
-                    self.navigationController?.dismiss(animated: true, completion: nil)
+                    self.navigationController?.dismiss(animated: true) {
+                        finish?()
+                    }
                 } else {
                     if let error = error {
                         self.showErrorAlert(error: error)

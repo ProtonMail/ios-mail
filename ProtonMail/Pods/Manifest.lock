@@ -265,7 +265,7 @@ CHECKOUT OPTIONS:
     :commit: 73ad84d27f1592699ce5e357760bdc7ed44413ea
     :git: "git@gitlab.protontech.ch:apple/shared/pmforceupgrade.git"
   PMHumanVerification:
-    :commit: c164cc8fd25cd874a9cfa3bf55b555b2defcf466
+    :commit: e253503593d711ae848d12dcf78ab10cdcf3cb10
     :git: "git@gitlab.protontech.ch:apple/shared/pmhumanverification.git"
   PMKeymaker:
     :commit: 97defd9cd70e83c67e7f9ad2b0c9ee93c55a8416
