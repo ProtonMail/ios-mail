@@ -2474,6 +2474,8 @@
 		3773D361262A2A230016B859 /* HumanVerificationRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationRobot.swift; sourceTree = "<group>"; };
 		3773D4D8262B143B0016B859 /* ForceUpgradeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceUpgradeTests.swift; sourceTree = "<group>"; };
 		379A95E7F50DC578342DE3A3EA92FF7D /* Pods-Siri.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Siri.release.xcconfig"; path = "Pods/Target Support Files/Pods-Siri/Pods-Siri.release.xcconfig"; sourceTree = "<group>"; };
+		37B7AF00264BFEAE0009E33F /* HumanVerificationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = HumanVerificationTests.xctestplan; sourceTree = "<group>"; };
+		37B7AF01264C01A00009E33F /* ForceUpgradeTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ForceUpgradeTests.xctestplan; sourceTree = "<group>"; };
 		37DA6BD5262973DB00D01F55 /* HumanVerificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationManager.swift; sourceTree = "<group>"; };
 		37DA6CAD2629893500D01F55 /* ForceUpgradeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceUpgradeManager.swift; sourceTree = "<group>"; };
 		37DA6CFB2629B76700D01F55 /* HumanVerificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationTests.swift; sourceTree = "<group>"; };
@@ -5037,6 +5039,8 @@
 				8249479B52CC370EE6021401D9714F6F /* SendNewMessageTests.xctestplan */,
 				C23DCA9A5904465133DACD9580B40372 /* SettingsTests.xctestplan */,
 				EF7A5A2BF0FD6ADA8445147AFC9C0C02 /* SmokeTests.xctestplan */,
+				37B7AF00264BFEAE0009E33F /* HumanVerificationTests.xctestplan */,
+				37B7AF01264C01A00009E33F /* ForceUpgradeTests.xctestplan */,
 			);
 			path = TestPlans;
 			sourceTree = "<group>";

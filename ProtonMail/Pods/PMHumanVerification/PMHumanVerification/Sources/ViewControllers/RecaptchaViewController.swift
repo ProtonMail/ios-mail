@@ -70,11 +70,13 @@ class RecaptchaViewController: UIViewController {
     private func checkCaptcha() {
         guard let finalToken = finalToken else { return }
         stackView.isHidden = false
-        viewModel.finalToken(token: finalToken, complete: { res, error in
+        viewModel.finalToken(token: finalToken, complete: { res, error, finish in
             DispatchQueue.main.async {
                 self.stackView.isHidden = true
                 if res {
-                    self.navigationController?.dismiss(animated: true, completion: nil)
+                    self.navigationController?.dismiss(animated: true) {
+                        finish?()
+                    }
                 } else {
                     if let error = error {
                         let banner = PMBanner(message: error.localizedDescription, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)

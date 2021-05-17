@@ -30,7 +30,6 @@ class HumanVerificationTests: BaseTestCase {
             .emailTab()
             .smsTab()
             .captchaTab()
-            .captchaTap()
             .close()
             .paymentsErrorDialog()      
     }
