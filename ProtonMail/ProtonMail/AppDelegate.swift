@@ -279,27 +279,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return self.checkOrientation(window?.rootViewController)
-    }
-    
-    func checkOrientation (_ viewController: UIViewController?) -> UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
-            return UIInterfaceOrientationMask.all
-        } else if let nav = viewController as? UINavigationController {
-            if (nav.topViewController!.isKind(of: PinCodeViewController.self)) {
-                return UIInterfaceOrientationMask.portrait
-            }
-            return UIInterfaceOrientationMask.all
-        } else {
-            if let sw = viewController as? SideMenuController {
-                if let nav = sw.contentViewController as? UINavigationController {
-                    if (nav.topViewController!.isKind(of: PinCodeViewController.self)) {
-                        return UIInterfaceOrientationMask.portrait
-                    }
-                }
-            }
-            return .all
-        }
+        return .portrait
     }
     
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
