@@ -25,7 +25,6 @@ import UIKit
 
 class NewMessageBodyView: UIView {
     let reloadContainerView = UIView(frame: .zero)
-    let reloadButton: ProtonButton = SubViewsFactory.reloadButton
     let alertIconBackgroundView: UIView = SubViewsFactory.alertIconBackgroundView
     let alertIconView: UIView = SubViewsFactory.alertIconView
     let alertTextLabel: UILabel = SubViewsFactory.alertTextLabel
@@ -57,7 +56,6 @@ class NewMessageBodyView: UIView {
         subviews.forEach({ $0.removeFromSuperview() })
         reloadContainerView.backgroundColor = UIColorManager.BackgroundNorm
         addSubview(reloadContainerView)
-        reloadContainerView.addSubview(reloadButton)
         reloadContainerView.addSubview(alertIconBackgroundView)
         reloadContainerView.addSubview(alertIconView)
         reloadContainerView.addSubview(alertTextLabel)
@@ -90,18 +88,11 @@ class NewMessageBodyView: UIView {
         [
             alertTextLabel.topAnchor.constraint(equalTo: alertIconBackgroundView.bottomAnchor, constant: 20),
             alertTextLabel.leadingAnchor.constraint(equalTo: reloadContainerView.leadingAnchor, constant: 52),
-            alertTextLabel.trailingAnchor.constraint(equalTo: reloadContainerView.trailingAnchor, constant: -52)
+            alertTextLabel.trailingAnchor.constraint(equalTo: reloadContainerView.trailingAnchor, constant: -52),
+            alertTextLabel.bottomAnchor.constraint(equalTo: reloadContainerView.bottomAnchor)
         ].activate()
 
         alertTextLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-
-        [
-            reloadButton.topAnchor.constraint(equalTo: alertTextLabel.bottomAnchor, constant: 28),
-            reloadButton.heightAnchor.constraint(equalToConstant: 48),
-            reloadButton.widthAnchor.constraint(equalToConstant: 125),
-            reloadButton.bottomAnchor.constraint(equalTo: reloadContainerView.bottomAnchor),
-            reloadButton.centerXAnchor.constraint(equalTo: reloadContainerView.centerXAnchor)
-        ].activate()
     }
 }
 

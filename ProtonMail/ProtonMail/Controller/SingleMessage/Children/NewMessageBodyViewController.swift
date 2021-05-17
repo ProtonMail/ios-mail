@@ -28,7 +28,6 @@ import UIKit
 protocol NewMessageBodyViewControllerDelegate: AnyObject {
     func openUrl(_ url: URL)
     func openMailUrl(_ mailUrl: URL)
-    func handleReload()
     func updateContentBanner(shouldShowRemoteContentBanner: Bool, shouldShowEmbeddedContentBanner: Bool)
 }
 
@@ -99,6 +98,8 @@ class NewMessageBodyViewController: UIViewController {
 
         if let contents = self.viewModel.contents, !contents.body.isEmpty {
             self.loader.load(contents: contents, in: webView)
+        } else if viewModel.internetStatusProvider.currentStatus == .NotReachable {
+            prepareReloadView()
         } else {
             webView.loadHTMLString(self.viewModel.placeholderContent, baseURL: URL(string: "about:blank"))
         }
@@ -108,15 +109,7 @@ class NewMessageBodyViewController: UIViewController {
         self.customView.alertTextLabel.text = LocalString._message_body_view_not_connected_text
         var textAttribute = FontManager.Default
         textAttribute[.foregroundColor] = UIColorManager.TextInverted
-        let text = LocalString._message_body_view_reload_button_title.apply(style: textAttribute)
-        self.customView.reloadButton.setAttributedTitle(text, for: .normal)
-        self.customView.reloadButton.addTarget(self, action: #selector(self.handleReloadAction), for: .touchUpInside)
         self.customView.addReloadView()
-    }
-
-    @objc
-    private func handleReloadAction() {
-        self.delegate?.handleReload()
     }
 
     func prepareWebView(with loader: WebContentsSecureLoader? = nil) {

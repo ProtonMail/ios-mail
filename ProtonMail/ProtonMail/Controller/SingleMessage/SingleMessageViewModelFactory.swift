@@ -30,7 +30,7 @@ class SingleMessageViewModelFactory {
             attachments: attachments(message: message)
         )
 
-        return .init(labelId: labelId, message: message, user: user, childViewModels: childViewModels)
+        return .init(labelId: labelId, message: message, user: user, childViewModels: childViewModels, internetStatusProvider: InternetConnectionStatusProvider())
     }
 
     private func messageBody(message: Message, user: UserManager) -> NewMessageBodyViewModel {
@@ -39,7 +39,8 @@ class SingleMessageViewModelFactory {
             messageService: user.messageService,
             userManager: user,
             shouldAutoLoadRemoteImages: user.userinfo.showImages.contains(.remote),
-            shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded)
+            shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded),
+            internetStatusProvider: InternetConnectionStatusProvider()
         )
     }
 
