@@ -27,7 +27,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RIQ-6S-Rqf">
-                                <rect key="frame" x="0.0" y="88" width="320" height="431"/>
+                                <rect key="frame" x="0.0" y="88" width="320" height="480"/>
                                 <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactsCell" id="Ewr-ha-VvA">
@@ -45,7 +45,7 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="AOf-GB-wad" secondAttribute="trailing" id="Cyl-fc-cBL"/>
                             <constraint firstItem="AOf-GB-wad" firstAttribute="leading" secondItem="S4B-4p-Yy3" secondAttribute="leading" id="J2h-xG-OFx"/>
-                            <constraint firstItem="SMa-Y1-qS2" firstAttribute="top" secondItem="RIQ-6S-Rqf" secondAttribute="bottom" id="Rc8-Bf-RFt"/>
+                            <constraint firstAttribute="bottom" secondItem="RIQ-6S-Rqf" secondAttribute="bottom" id="Rc8-Bf-RFt"/>
                             <constraint firstAttribute="trailing" secondItem="RIQ-6S-Rqf" secondAttribute="trailing" id="Y24-4r-1jf"/>
                             <constraint firstItem="AOf-GB-wad" firstAttribute="top" secondItem="60O-Ao-olg" secondAttribute="bottom" id="aAJ-gg-tP0"/>
                             <constraint firstItem="RIQ-6S-Rqf" firstAttribute="top" secondItem="AOf-GB-wad" secondAttribute="bottom" id="iVg-Sh-xUy"/>
@@ -55,7 +55,6 @@
                     <navigationItem key="navigationItem" title="CONTACTS" id="dNI-3f-weZ">
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="G3m-Jr-Xhu"/>
                     </navigationItem>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="menuButton" destination="G3m-Jr-Xhu" id="MWn-nO-giN"/>
                         <outlet property="searchView" destination="AOf-GB-wad" id="T02-fR-U3L"/>
@@ -291,18 +290,18 @@
                         <viewControllerLayoutGuide type="bottom" id="RqS-2f-w4i"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="d86-wE-Bc8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bh9-82-LsH">
-                                <rect key="frame" x="0.0" y="56" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ysN-oo-Xni"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PSd-wW-WIb">
-                                <rect key="frame" x="0.0" y="100" width="320" height="448"/>
+                                <rect key="frame" x="0.0" y="88" width="320" height="480"/>
                                 <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="ContactGroupCell" textLabel="WbC-oa-iR9" style="IBUITableViewCellStyleDefault" id="y6B-Pu-T9r">
@@ -370,11 +369,11 @@
                         <viewControllerLayoutGuide type="bottom" id="MSl-sf-MVB"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1Nj-fq-uUv">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sFp-SQ-U22">
-                                <rect key="frame" x="0.0" y="56" width="320" height="80"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="80"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact_groups_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Gyj-Fm-pIs">
                                         <rect key="frame" x="16" y="12.5" width="55" height="55"/>
@@ -430,7 +429,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="KRC-sl-Cdx">
-                                <rect key="frame" x="0.0" y="136" width="320" height="412"/>
+                                <rect key="frame" x="0.0" y="124" width="320" height="395"/>
                                 <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="JZ0-Zf-iCa" id="f5C-8V-j6y"/>
@@ -2475,11 +2474,11 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="6gL-17-Vjp"/>
-        <segue reference="2p9-E1-lOg"/>
-        <segue reference="6yh-h8-btl"/>
-        <segue reference="Grd-B0-e0M"/>
-        <segue reference="GcK-DS-QnS"/>
-        <segue reference="Rzd-pg-PEg"/>
+        <segue reference="A8I-lk-YH7"/>
+        <segue reference="oQx-RX-nff"/>
+        <segue reference="pLm-6L-kNd"/>
+        <segue reference="vny-dJ-xp5"/>
+        <segue reference="3li-n2-ywX"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="contact_groups_icon" width="40" height="40"/>

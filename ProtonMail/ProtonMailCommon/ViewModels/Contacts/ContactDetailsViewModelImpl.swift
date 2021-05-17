@@ -25,10 +25,11 @@ import Foundation
 import PromiseKit
 import AwaitKit
 import Crypto
+import CoreData
 import OpenPGP
 import PMCommon
 
-class ContactDetailsViewModelImpl : ContactDetailsViewModel {
+class ContactDetailsViewModelImpl: ContactDetailsViewModel {
     
     private let contact: Contact
     private let contactService: ContactDataService
@@ -63,10 +64,16 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         .share
     ]
 
+    private var contactFetchedController: NSFetchedResultsController<NSFetchRequestResult>?
+
     init(contact: Contact, user: UserManager, coreDateService: CoreDataService) {
         self.contactService = user.contactService
         self.contact = contact
         super.init(user: user, coreDataService: coreDateService)
+
+        contactFetchedController = contactService.contactFetchedController(by: contact.contactID)
+        contactFetchedController?.delegate = self
+        try? contactFetchedController?.performFetch()
     }
     
     override func sections() -> [ContactEditSectionType] {
@@ -143,9 +150,24 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         }
         return false
     }
+
+    private func rebuildData() {
+        origEmails = []
+        origAddresses = []
+        origTelephons = []
+        origInformations = []
+        origFields = []
+        origNotes = []
+        origUrls = []
+        profilePicture = nil
+
+        verifyType2 = true
+        verifyType3 = true
+        self.setupEmails(forceRebuild: true)
+    }
     
     @discardableResult
-    private func setupEmails() -> Promise<Void> {
+    private func setupEmails(forceRebuild: Bool = false) -> Promise<Void> {
         return firstly { () -> Promise<Void> in
             let userInfo = self.user.userInfo
             
@@ -411,12 +433,14 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     break
                 }
             }
-            
-            self.coreDataService.rootSavingContext.performAndWait {
-                if let contactToUpdate = try? self.coreDataService.rootSavingContext.existingObject(with: self.contact.objectID) as? Contact {
-                    contactToUpdate.needsRebuild = false
-                    if let error = self.coreDataService.rootSavingContext.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
+
+            if !forceRebuild {
+                self.coreDataService.rootSavingContext.performAndWait {
+                    if let contactToUpdate = try? self.coreDataService.rootSavingContext.existingObject(with: self.contact.objectID) as? Contact {
+                        contactToUpdate.needsRebuild = false
+                        if let error = self.coreDataService.rootSavingContext.saveUpstreamIfNeeded() {
+                            PMLog.D("error: \(error)")
+                        }
                     }
                 }
             }
@@ -562,5 +586,12 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             return name + ".vcf"
         }
         return "exported.vcf"
+    }
+}
+
+extension ContactDetailsViewModelImpl: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        rebuildData()
+        reloadView?()
     }
 }

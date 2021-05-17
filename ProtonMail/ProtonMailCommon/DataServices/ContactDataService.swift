@@ -121,6 +121,20 @@ class ContactDataService: Service, HasLocalStorage {
                                           sectionNameKeyPath: Contact.Attributes.sectionName,
                                           cacheName: nil)
     }
+
+    func contactFetchedController(by contactID: String) -> NSFetchedResultsController<NSFetchRequestResult>? {
+        let moc = self.coreDataService.mainContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.contactID, contactID)
+        let strComp = NSSortDescriptor(key: Contact.Attributes.name,
+                                       ascending: true,
+                                       selector: #selector(NSString.caseInsensitiveCompare(_:)))
+        fetchRequest.sortDescriptors = [strComp]
+        return NSFetchedResultsController(fetchRequest: fetchRequest,
+                                          managedObjectContext: moc,
+                                          sectionNameKeyPath: nil,
+                                          cacheName: nil)
+    }
     
     /**
      add a new contact

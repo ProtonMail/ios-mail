@@ -233,17 +233,20 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                             
                             // remove only the email objects in the response
-                            if let label = label, var newSet = label.emails as? Set<Email> {
+                            if let label = label {
+                                let emailObjects = label.mutableSetValue(forKey: Label.Attributes.emails)
+
                                 for emailID in response.emailIDs {
                                     for email in emailList {
                                         if email.emailID == emailID {
-                                            newSet.remove(email)
-                                            break
+                                            if let emailToDelete = emailObjects.compactMap({ $0 as? Email }).first(where: { email in
+                                                return email.emailID == emailID
+                                            }) {
+                                                emailObjects.remove(emailToDelete)
+                                            }
                                         }
                                     }
                                 }
-                                
-                                label.emails = newSet as NSSet
 
                                 if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D("addEmailsToContactGroup updating error: \(error)")

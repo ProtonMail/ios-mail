@@ -79,7 +79,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.definesPresentationContext = true
         self.extendedLayoutIncludesOpaqueBars = true
-        self.tableView.contentInsetAdjustmentBehavior = .never
         self.tableView.noSeparatorsBelowFooter()
         self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
         self.tableView.backgroundColor = UIColorManager.BackgroundNorm

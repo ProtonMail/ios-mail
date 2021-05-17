@@ -47,6 +47,8 @@ class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
     private(set) var user: UserManager
     let labelsDataService: LabelsDataService
     private var fetchedController: NSFetchedResultsController<NSFetchRequestResult>?
+
+    var reloadView: (() -> Void)?
     
     init(user: UserManager, groupID: String, name: String, color: String, emailIDs: Set<Email>, labelsDataService: LabelsDataService) {
         self.user = user
@@ -140,6 +142,6 @@ class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
 
 extension ContactGroupDetailViewModelImpl: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        _ = reload()
+        self.reloadView?()
     }
 }
