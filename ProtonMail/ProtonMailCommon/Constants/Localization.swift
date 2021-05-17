@@ -1141,11 +1141,11 @@ class LocalizedString {
     /// "Change Password"
     lazy var _change_password = NSLocalizedString("Change Password", comment: "update password error title")
 
-    /// "Can't get a Moduls ID!"
-    lazy var _cant_get_a_moduls_id = NSLocalizedString("Can't get a Moduls ID!", comment: "update password error = typo:Modulus")
+    /// "Can't get a Modulus ID!"
+    lazy var _cant_get_a_modulus_id = NSLocalizedString("Can't get a Modulus ID!", comment: "update password error = typo:Modulus")
 
-    /// "Can't get a Moduls!"
-    lazy var _cant_get_a_moduls = NSLocalizedString("Can't get a Moduls!", comment: "update password error = typo:Modulus")
+    /// "Can't get a Modulus!"
+    lazy var _cant_get_a_modulus = NSLocalizedString("Can't get a Modulus!", comment: "update password error = typo:Modulus")
 
     /// "Invalid hashed password!"
     lazy var _invalid_hashed_password = NSLocalizedString("Invalid hashed password!", comment: "update password error")
@@ -1755,7 +1755,7 @@ class LocalizedString {
     lazy var _contact_groups_add_contacts = NSLocalizedString("Add contacts",
                                                                   comment: "The title for the view where user can manage emails in the contact group")
     
-    lazy var _contact_groups_edit_avartar = NSLocalizedString("Edit avartar",
+    lazy var _contact_groups_edit_avartar = NSLocalizedString("Edit avatar",
                                                               comment: "The title for the view where user can select the color for the group")
     lazy var _contact_groups_delete = NSLocalizedString("Delete contact group",
                                                         comment: "The description of the button for deleting the contact group")
@@ -2010,8 +2010,8 @@ class LocalizedString {
     lazy var _title_of_single_conversation_action_sheet = NSLocalizedString("%d conversation", comment: "The title of single selected conversation of action sheet in inbox")
     lazy var _title_of_multiple_conversations_action_sheet = NSLocalizedString("%d conversations", comment: "The title of multiple selected conversations of action sheet in inbox")
 
-    lazy var _title_of_move_to_action_in_action_sheet = NSLocalizedString("Move to..", comment: "The title of the move to action in action sheet")
-    lazy var _title_of_label_as_action_in_action_sheet = NSLocalizedString("Label as..", comment: "The title of the label as action in action sheet")
+    lazy var _title_of_move_to_action_in_action_sheet = NSLocalizedString("Move to…", comment: "The title of the move to action in action sheet")
+    lazy var _title_of_label_as_action_in_action_sheet = NSLocalizedString("Label as…", comment: "The title of the label as action in action sheet")
 
     lazy var _title_of_star_action_in_action_sheet = NSLocalizedString("Star", comment: "The title of the star action in action sheet")
 
@@ -2102,8 +2102,8 @@ class LocalizedString {
     lazy var _editing_folder_not_allowed = NSLocalizedString("Editing folder not allowed", comment: "Alert title")
     lazy var _creating_label_not_allowed = NSLocalizedString("Creating label not allowed", comment: "Alert title")
     lazy var _editing_label_not_allowed = NSLocalizedString("Editing label not allowed", comment: "Alert title")
-    lazy var _upgrade_to_create_folder = NSLocalizedString("Please uprade to a paid plan to use more than 3 folders", comment: "Alert message")
-    lazy var _upgrade_to_create_label = NSLocalizedString("Please uprade to a paid plan to use more than 3 labels", comment: "Alert message")
+    lazy var _upgrade_to_create_folder = NSLocalizedString("Please upgrade to a paid plan to use more than 3 folders", comment: "Alert message")
+    lazy var _upgrade_to_create_label = NSLocalizedString("Please upgrade to a paid plan to use more than 3 labels", comment: "Alert message")
     lazy var _please_connect_and_retry = NSLocalizedString("Please connect and retry", comment: "Alert message is shown when the device doesn't have network connection")
     lazy var _folder_name_duplicated_message = NSLocalizedString("A sub-folder with this name already exists in the destination folder", comment: "Alert message is shown when folder name duplicated")
     lazy var _use_folder_color = NSLocalizedString("Use folder colors", comment: "Option title")

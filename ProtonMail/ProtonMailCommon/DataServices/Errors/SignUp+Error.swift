@@ -44,9 +44,9 @@ enum SignUpCreateUserError : Int, Error, CustomErrorVar {
     var reason : String {
         switch self {
         case .invalidModulsID:
-            return LocalString._cant_get_a_moduls_id
+            return LocalString._cant_get_a_modulus_id
         case .invalidModuls:
-            return LocalString._cant_get_a_moduls
+            return LocalString._cant_get_a_modulus
         case .cantHashPassword:
             return LocalString._invalid_hashed_password
         case .cantGenerateVerifier:
