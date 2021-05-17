@@ -25,6 +25,8 @@ import Foundation
 import PromiseKit
 
 protocol ContactGroupDetailViewModel {
+    var reloadView: (() -> Void)? { get set }
+
     var user: UserManager { get }
     
     func getGroupID() -> String

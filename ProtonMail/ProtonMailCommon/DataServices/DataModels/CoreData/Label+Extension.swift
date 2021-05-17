@@ -37,6 +37,7 @@ extension Label {
         static let type = "type"
         static let exclusive = "exclusive"
         static let userID = "userID"
+        static let emails = "emails"
     }
     
     // MARK: - Public methods

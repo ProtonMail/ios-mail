@@ -47,6 +47,9 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     
     func set(viewModel: ContactGroupDetailViewModel) {
         self.viewModel = viewModel
+        self.viewModel.reloadView = { [weak self] in
+            self?.reload()
+        }
     }
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {

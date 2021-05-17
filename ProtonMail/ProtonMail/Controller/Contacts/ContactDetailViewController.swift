@@ -69,6 +69,10 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     
     func set(viewModel: ContactDetailsViewModel) {
         self.viewModel = viewModel
+        self.viewModel.reloadView = { [weak self] in
+            self?.configHeader()
+            self?.tableView.reloadData()
+        }
     }
 
     override func viewDidLoad() {
