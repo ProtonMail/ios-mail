@@ -413,14 +413,24 @@ class SearchViewController: ProtonMailViewController {
                                                     msgService: user.messageService,
                                                     user: user,
                                                     coreDataService: CoreDataService.shared)//FIXME
+        let board = UIStoryboard.Storyboard.composer.storyboard
         if let navigationController = self.navigationController,
-           let next = navigationController.viewControllers.first as? ComposeContainerViewController {
+           let next = board.instantiateViewController(withIdentifier: "ComposeContainerViewController") as? ComposeContainerViewController {
+            let composerVM = ComposeContainerViewModel(editorViewModel: viewModel,
+                                                      uiDelegate: next)
             let composer = ComposeContainerViewCoordinator(nav: navigationController,
-                                                           viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next),
+                                                           viewModel: composerVM,
                                                            services: ServiceFactory.default)
+            
+            next.set(viewModel: composerVM)
+            next.set(coordinator: composer)
             // this will present composer in a modal which is discouraged
             // TODO: refactor when implementing enc search
             composer.start()
+//            if #available(iOS 13.0, *) {
+//                next.isModalInPresentation = false
+//            }
+            self.present(next, animated: true, completion: nil)
         }
     }
 

@@ -33,6 +33,11 @@ final class ComposerAttachmentVC: UIViewController {
     private(set) var tableHeight: CGFloat = 0
     private(set) var datas: [Attachment] = []
     private weak var delegate: ComposerAttachmentVCDelegate?
+    private let queue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
     private var height: NSLayoutConstraint?
     private let cellHeight: CGFloat = 52
 
@@ -81,38 +86,38 @@ final class ComposerAttachmentVC: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
-    func add(attachments: [Attachment]) {
-        let existedID = self.datas
-            .map { $0.objectID.uriRepresentation().absoluteString }
-        let attachments = attachments
-            .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) }
+    func add(attachments: [Attachment], completeHandler: (()->())? = nil) {
+        self.queue.addOperation {
+            let existedID = self.datas
+                .map { $0.objectID.uriRepresentation().absoluteString }
+            let attachments = attachments
+                .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) }
 
-        let preCount = self.datas.count
-        self.datas += attachments
-        let paths = Array(preCount..<self.datas.count).map { row in
-            return IndexPath(row: self.datas.count - 1, section: 0)
-        }
-
-        DispatchQueue.main.async {
-            self.tableView?.beginUpdates()
-            self.tableView?.insertRows(at: paths, with: .automatic)
-            self.tableView?.endUpdates()
-            self.updateTableViewHeight()
+            // FIXME: insert function for better UX
+            // the insert function could break in the concurrency
+            self.datas += attachments
+            completeHandler?()
+            DispatchQueue.main.async {
+                self.tableView?.reloadData()
+                self.updateTableViewHeight()
+            }
         }
     }
 
     func delete(attachment: Attachment) {
-        guard let index = self.datas.firstIndex(of: attachment) else {
-            return
-        }
-        self.datas.remove(at: index)
+        self.queue.addOperation {
+            guard let index = self.datas.firstIndex(of: attachment) else {
+                return
+            }
+            self.datas.remove(at: index)
 
-        DispatchQueue.main.async {
-            self.tableView?.beginUpdates()
-            let path = IndexPath(row: index, section: 0)
-            self.tableView?.deleteRows(at: [path], with: .automatic)
-            self.tableView?.endUpdates()
-            self.updateTableViewHeight()
+            DispatchQueue.main.async {
+                self.tableView?.beginUpdates()
+                let path = IndexPath(row: index, section: 0)
+                self.tableView?.deleteRows(at: [path], with: .automatic)
+                self.tableView?.endUpdates()
+                self.updateTableViewHeight()
+            }
         }
     }
 }
@@ -156,17 +161,19 @@ extension ComposerAttachmentVC {
 
     @objc
     private func attachmentUploaded(noti: Notification) {
-        guard let objectID = noti.userInfo?["objectID"] as? String,
-              let attachmentID = noti.userInfo?["attachmentID"] as? String,
-              let index = self.datas.firstIndex(where: { $0.objectID.uriRepresentation().absoluteString == objectID }) else {
-            return
-        }
-        self.datas[index].attachmentID = attachmentID
-        DispatchQueue.main.async {
-            self.tableView?.beginUpdates()
-            let path = IndexPath(row: index, section: 0)
-            self.tableView?.reloadRows(at: [path], with: .automatic)
-            self.tableView?.endUpdates()
+        self.queue.addOperation {
+            guard let objectID = noti.userInfo?["objectID"] as? String,
+                  let attachmentID = noti.userInfo?["attachmentID"] as? String,
+                  let index = self.datas.firstIndex(where: { $0.objectID.uriRepresentation().absoluteString == objectID }) else {
+                return
+            }
+            self.datas[index].attachmentID = attachmentID
+            DispatchQueue.main.async {
+                self.tableView?.beginUpdates()
+                let path = IndexPath(row: index, section: 0)
+                self.tableView?.reloadRows(at: [path], with: .automatic)
+                self.tableView?.endUpdates()
+            }
         }
     }
 }

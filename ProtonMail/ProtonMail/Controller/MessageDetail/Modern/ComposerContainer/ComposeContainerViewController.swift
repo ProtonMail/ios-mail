@@ -44,6 +44,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     private var syncTimer: Timer?
     private var toolbarBottom: NSLayoutConstraint!
     private var toolbar: ComposeToolbar!
+    private var isAddingAttachment: Bool = false
     /// MARK: Attachment variables
     let kDefaultAttachmentFileSize: Int = 25 * 1_000 * 1_000 // 25 mb
     private(set) var currentAttachmentSize: Int = 0
@@ -182,6 +183,18 @@ extension ComposeContainerViewController {
             attachmentView.observe(\.tableHeight) { [weak self] _, _ in
                 self?.tableView.beginUpdates()
                 self?.tableView.endUpdates()
+                guard self?.isAddingAttachment ?? false else { return }
+                // A bit of delay can get real contentSize
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    var yOffset: CGFloat = 0
+                    let contentHieht = self?.tableView.contentSize.height ?? 0
+                    let sizeHeight = self?.tableView.bounds.size.height ?? 0
+                    if contentHieht > sizeHeight {
+                        yOffset = contentHieht - sizeHeight
+                    }
+
+                    self?.tableView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: false)
+                }
             }
         ]
     }
@@ -366,6 +379,8 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
     }
     
     func showAttachmentView() {
+        self.coordinator.header.view.endEditing(true)
+        self.coordinator.editor.view.endEditing(true)
         self.view.endEditing(true)
         
         var sheet: PMActionSheet!
@@ -417,6 +432,7 @@ extension ComposeContainerViewController: AttachmentController {
                     self.error(LocalString._cant_copy_the_file)
                     return
                 }
+                self.isAddingAttachment = true
                 self.coordinator.addAttachment(att)
                 self.updateCurrentAttachmentSize()
                 seal.fulfill_()
@@ -438,7 +454,11 @@ extension ComposeContainerViewController: AttachmentController {
     
     private func sizeError(_ size: Int) {
         DispatchQueue.main.async {
-            self.error(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+            let title = LocalString._attachment_limit
+            let message = LocalString._the_total_attachment_size_cant_be_bigger_than_25mb
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addOKAction()
+            self.present(alert, animated: true, completion: nil)
         }
     }
 }
