@@ -133,11 +133,14 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     func getAttachmentSize() -> Int {
-        let array = self.attachmentView?.datas ?? []
-        let size = array.reduce(into: 0) {
-            $0 += $1.fileSize.intValue
-        }
-        return size
+        var attachmentSize: Int = 0
+        let semaphore = DispatchSemaphore(value: 0)
+        self.attachmentView?.getSize(completeHandler: { size in
+            attachmentSize = size
+            semaphore.signal()
+        })
+        semaphore.wait(timeout: .distantFuture)
+        return attachmentSize
     }
     
     override func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {

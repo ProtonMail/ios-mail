@@ -86,7 +86,17 @@ final class ComposerAttachmentVC: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
-    func add(attachments: [Attachment], completeHandler: (()->())? = nil) {
+    func getSize(completeHandler: ((Int) -> Void)?) {
+        self.queue.addOperation { [weak self] in
+            let array = self?.datas ?? []
+            let size = array.reduce(into: 0) {
+                $0 += $1.fileSize.intValue
+            }
+            completeHandler?(size)
+        }
+    }
+
+    func add(attachments: [Attachment], completeHandler: (() -> Void)? = nil) {
         self.queue.addOperation {
             let existedID = self.datas
                 .map { $0.objectID.uriRepresentation().absoluteString }
@@ -112,10 +122,7 @@ final class ComposerAttachmentVC: UIViewController {
             self.datas.remove(at: index)
 
             DispatchQueue.main.async {
-                self.tableView?.beginUpdates()
-                let path = IndexPath(row: index, section: 0)
-                self.tableView?.deleteRows(at: [path], with: .automatic)
-                self.tableView?.endUpdates()
+                self.tableView?.reloadData()
                 self.updateTableViewHeight()
             }
         }
@@ -167,11 +174,16 @@ extension ComposerAttachmentVC {
                   let index = self.datas.firstIndex(where: { $0.objectID.uriRepresentation().absoluteString == objectID }) else {
                 return
             }
-            self.datas[index].attachmentID = attachmentID
+            let attachment = self.datas[index]
+            let context = attachment.managedObjectContext
+            context?.performAndWait {
+                attachment.attachmentID = attachmentID
+                if let error = context?.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(String(describing: error))")
+                }
+            }
             DispatchQueue.main.async {
-                self.tableView?.beginUpdates()
-                let path = IndexPath(row: index, section: 0)
-                self.tableView?.reloadRows(at: [path], with: .automatic)
+                self.tableView?.reloadData()
                 self.tableView?.endUpdates()
             }
         }

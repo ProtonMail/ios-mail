@@ -53,6 +53,8 @@ class ComposeViewModelImpl : ComposeViewModel {
     let messageService : MessageDataService
     let coreDataService: CoreDataService
     let user : UserManager
+    /// Only use in share extension, to record if the share items over 25 mb or not
+    private(set) var shareOverLimitationAttachment = false
     
     // for the share target to init composer VM
     init(subject: String, body: String, files: [FileData],
@@ -80,7 +82,15 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
         
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+        let kDefaultAttachmentFileSize: Int = 25 * 1_000 * 1_000 // 25 mb
+        var currentAttachmentSize: Int = 0
         for f in files {
+            let size = f.contents.dataSize
+            guard size < (kDefaultAttachmentFileSize - currentAttachmentSize) else {
+                self.shareOverLimitationAttachment = true
+                break
+            }
+            currentAttachmentSize += size
             f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata).done { (attachment) in
                 if let att = attachment {
                     let context = coreDataService.operationContext
