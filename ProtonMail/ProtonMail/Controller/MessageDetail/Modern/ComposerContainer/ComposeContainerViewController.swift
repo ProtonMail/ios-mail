@@ -85,6 +85,10 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.setupChildViewModel()
         self.setupToolbar()
         self.emptyBackButtonTitleForNextView()
+        let childVM = self.viewModel.childViewModel
+        if childVM.shareOverLimitationAttachment {
+            self.sizeError(0)
+        }
 
         // accessibility
         generateAccessibilityIdentifiers()
@@ -184,6 +188,7 @@ extension ComposeContainerViewController {
                 self?.tableView.beginUpdates()
                 self?.tableView.endUpdates()
                 guard self?.isAddingAttachment ?? false else { return }
+                self?.isAddingAttachment = false
                 // A bit of delay can get real contentSize
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     var yOffset: CGFloat = 0
