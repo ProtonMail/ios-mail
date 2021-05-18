@@ -1347,7 +1347,7 @@ class LocalizedString {
     lazy var _take_new_photo = NSLocalizedString("Take new photo", comment: "Title")
     lazy var _import_from = NSLocalizedString("Import from…", comment: "Title")
 
-    lazy var _attachment_limit = NSLocalizedString("Attachemnt limit", comment: "Alert title")
+    lazy var _attachment_limit = NSLocalizedString("Attachment limit", comment: "Alert title")
     /// "The total attachment size cannot exceed 25MB"
     lazy var _the_total_attachment_size_cant_be_bigger_than_25mb = NSLocalizedString("The size limit for attachments is 25 Mbs.", comment: "Description")
 
