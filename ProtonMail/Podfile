@@ -15,7 +15,7 @@ end
 def common_pods
   pm_shared_pods
 
-  pod 'PMUIFoundations', :git => 'git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git', :branch => 'fix/share'
+  pod 'PMUIFoundations', :git => 'git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git', :branch => 'master'
   pod 'OpenPGP', :git => 'git@gitlab.protontech.ch:apple/shared/pmopenpgp.git', :branch => 'develop' #:path => '../OpenPGP'
   pod 'Groot', '3.0.1'
   pod 'AFNetworking', '4.0.1'

@@ -32,6 +32,7 @@ protocol ComposeSaveHintProtocol: UIViewController {
                                     cache: UserCachedStatus,
                                     messageService: MessageDataService)
     func showDraftRestoredBanner(cache: UserCachedStatus)
+    func showMessageSendingHintBanner()
 }
 
 extension ComposeSaveHintProtocol {
@@ -55,10 +56,7 @@ extension ComposeSaveHintProtocol {
                                              cache: cache,
                                              messageService: messageService)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            banner.show(at: .bottom, on: self)
-        }
-        
+        banner.show(at: .bottom, on: self, ignoreKeyboard: true)
         
         if let listVC = self as? MailboxViewController {
             // Since we ignore core data event when composer is presented
@@ -88,5 +86,10 @@ extension ComposeSaveHintProtocol {
         // _composer_draft_restored
         let banner = PMBanner(message: LocalString._composer_draft_restored, style: PMBannerStyle.info)
         banner.show(at: .bottom, on: self)
+    }
+    
+    func showMessageSendingHintBanner() {
+        let banner = PMBanner(message: LocalString._messages_sending_message, style: PMBannerStyle.info)
+        banner.show(at: .bottom, on: self, ignoreKeyboard: true)
     }
 }

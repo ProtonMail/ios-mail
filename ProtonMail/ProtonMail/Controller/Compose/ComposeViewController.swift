@@ -268,6 +268,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()
             }
+            topVC.showMessageSendingHintBanner()
         } else {
             topVC.showDraftSaveHintBanner(cache: userCachedStatus,
                                           messageService: messageService,
@@ -473,9 +474,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     func sendMessageStepThree() {
         self.viewModel.sendMessage()
 
-        delay(0.5) {
-            NSError.alertMessageSendingToast()
-        }
         self.dismissBySending = true
         #if APP_EXTENSION
         self.dismiss()

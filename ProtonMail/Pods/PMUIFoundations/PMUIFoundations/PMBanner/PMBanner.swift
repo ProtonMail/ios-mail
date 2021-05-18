@@ -133,7 +133,7 @@ extension PMBanner {
     /// - Parameters:
     ///   - position: Position that `PMBanner` will show
     ///   - parent: `UIViewController` that `PMBanner` will show
-    public func show(at position: PMBannerPosition, on parent: UIViewController) {
+    public func show(at position: PMBannerPosition, on parent: UIViewController, ignoreKeyboard: Bool = false) {
 
         self.setupElements()
         self.position = position
@@ -141,7 +141,7 @@ extension PMBanner {
         self.setupBannerConstraint(position: position, parent: parent.view)
         self.setupDismissTimer(duration: self.dismissDuration)
         parent.view.layoutIfNeeded()
-        self.showAnimate()
+        self.showAnimate(ignoreKeyboard: ignoreKeyboard)
         self.subscribeNotification()
     }
 
@@ -372,8 +372,8 @@ extension PMBanner {
         return height + 2 * style.borderInsets.top
     }
 
-    private func showAnimate() {
-        let keyboardHeight = self.getKeyboardHeight()
+    private func showAnimate(ignoreKeyboard: Bool) {
+        let keyboardHeight = ignoreKeyboard ? 0: self.getKeyboardHeight()
         guard let parent = self.superview else {return}
         switch self.position! {
         case .top, .topCustom:
