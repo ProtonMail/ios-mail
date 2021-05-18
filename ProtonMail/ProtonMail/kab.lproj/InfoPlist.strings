@@ -2,10 +2,10 @@
 "CFBundleDisplayName" = "ProtonMail";
 
 /* Privacy - Media Library Usage Description */
-"NSAppleMusicUsageDescription" = "Ilaq i ucuddu n umidya ar yimayl.";
+"NSAppleMusicUsageDescription" = "Ilaq i ucuddu n umidya ɣer yimayl.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Ilaq i ucuddu n tewlafin ar yimayl.";
+"NSCameraUsageDescription" = "Ilaq i ucuddu n tewlafin ɣer yimayl.";
 
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Yettuseqdec i unekcum ɣer tansiwin n yimayl i yinermisen yettwaskelsen ɣef yibenk i wakken ad izmiren ad ttusqedcen deg tira n yizen neɣ deg usali n yinermisen n yibenk s ufus ɣer umiḍan-inek·inem. Talɣut n unermas ur d-tettwasuli ara ɣer yimeẓla-nneɣ war tigawt yettwafernen i tigin n wayen.";

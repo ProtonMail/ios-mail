@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple uygulama içi satın alma ücreti";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Apple, satın alma işlemlerini gerçekleştiremediklerini bildirdi.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple, hizmet planınızı yükselttiğinizi bildirdi. Ancak bazı teknik veriler eksikti. Lütfen hata raporunu doldurun. Müşteri destek ekibimiz sizinle iletişime geçecektir.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple, hizmet planını yükselttiğiniz konusunda bize bilgi verdi. Ancak o zamandan beri hesaptan çıkış yaptığınızı tespit ettik.";
-
 /* Apply action */
 "Apply" = "Uygula";
 
@@ -249,13 +240,13 @@
 "at" = " ";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "At least one email address in the group could not be found";
+"At least one email address in the group could not be found" = "Gruptaki en az bir e-posta adresi bulunamadı";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "En az bir alıcı adresinin biçimi yanlış, lütfen tekrar kontrol edin.";
+"At least one recipient email address is improperly formatted, please double check them." = "En az bir alıcı adresinin biçimi yanlış, lütfen bu adresi iki kez kontrol edin.";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "En az bir alıcının eposta adresi/alanı bulunamadı veya biçimi hatalı. İleti taslaklara taşındı.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "En az bir alıcının e-posta adresi/alanı bulunamadı veya biçimi hatalı. İleti taslaklara taşındı.";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Ek içe aktarıldı";
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Görünen isim";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
-
 /* Description */
 "Do you want to cancel the process?" = "İşlemi iptal etmek istiyor musunuz?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Taslak";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "Taslak hala karşıya yükleniyor...";
 
 /* menu title */
 "Drafts" = "Taslaklar";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Dosya türü belirlenemedi";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "App Store'dan mevcut ürünlerin listesi alınamadı.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Uygulamanın kayıtlı verileri başlatılamadı";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "iOS uygulamamız içerisinde %@ planına geçmek mümkün değildir.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Satın aldığınız App Store ürününü sunucumuzdaki hiçbir ürünle eşleştiremedik. Lütfen hata raporunu doldurun. Müşteri destek ekibimiz sizinle iletişime geçecektir.";
-
 /* Title */
 "Keep me updated about new features" = "Beni yeni özellikler hakkında bilgilendirmeye devam et";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "%@ ileti";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "İleti gönderilemedi. En az bir alıcı e-posta adresi/etki alanı mevcut değil veya kötü biçimlendirilmiş.";
 
 /* *
  *  Expiration View */
@@ -1476,7 +1464,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "%1$@, %2$@ d EE MMM yyyy tarihinde yazdı:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Yalnızca tüm aboneliklerinizin güncel olduğundan eminseniz satın alma aktivasyonunu göz ardı edin. Daha fazla yardım için lütfen müşteri desteği ile irtibat kurun. \r\n\r\n Aktivasyonu görmezden gelmek istediğinizden emin misiniz?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Sadece bir tane ücretsiz hesap eklenebilir";
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Lütfen geçerli bir e-posta adresi girin.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Lütfen, satın alma işleminizi tamamlayabilmemiz için hizmet planınızı yükselttiğiniz ProtonMail hesabına giriş yapın.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Hizmet planı aktivasyonunu tamamlayabilmemiz için, lütfen hizmet planınızı yükseltmekte olduğunuz ProtonMail hesabına giriş yapın.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Lütfen internet bağlantınızın çalıştığından emin olun.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Lütfen tekrar deneyin";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Hizmet planı aktivasyonunuza devam etmek için lütfen uygulamanın kilidini açın";
 
 /* Description */
 "Please use ProtonMail App login first." = "Lütfen önce ProtonMail uygulamasına giriş yapın.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "İleti gönderiliyor";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "İleti gönderiliyor...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "%1$@ adresinden ileti göndermek ücretli bir özelliktir. İletiniz varsayılan adresinizden gönderilecektir %2$@";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Erteleme süresi:";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Üzgünüz, iOS uygulamasının beta sürümündeki satın alımları işleme koyamıyoruz. Herkese açık beta programımıza katıldığınız için teşekkür ederiz!";
 
 /* (No Comment) */
 "Space Warning" = "Boş alan uyarısı";
@@ -2383,12 +2362,6 @@
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "İletinizi, muhtemelen zayıf bir ağ bağlantısı nedeniyle gönderemedik. İletiniz taslaklara kaydedildi ve uygulamayı bir sonraki açtığınızda otomatik olarak gönderilecektir.";
 
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Bize bildirilen App Store satınalma işlemini, sizin hesabınız ile eşleştiremedik.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Aboneliğinizi başarıyla etkinleştirdik. Lütfen yeni hizmet planınızı kullanmaya başlamak için uygulamayı yeniden başlatın.";
-
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Yukarıdaki cep telefonuna bir doğrulama kodu göndereceğiz.";
 
@@ -2396,7 +2369,7 @@
 "We will send a verification code to the email address above." = "Yukarıdaki e-posta adresine bir doğrulama kodu göndereceğiz.";
 
 /* The body of the iOS 10 upgrate alert */
-"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future.";
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "Yakında iOS 10 cihazları için desteği durduracağız. Gelecekte güncellemeleri almaya devam etmek için lütfen cihazınızın işletim sistemini güncelleyin.";
 
 /* Title */
 "We would like to know what we can do better." = "Neyi daha iyi yapabileceğimizi bilmek istiyoruz.";

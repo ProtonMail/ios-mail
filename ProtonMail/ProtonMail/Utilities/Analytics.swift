@@ -147,6 +147,7 @@ extension Analytics {
         case menuSetupFailed = "Menu Failed to setup"
         case usersRestoreFailed = "Users Restore Failed"
         case coredataIssue = "CoreData Issue"
+        case decryptedMessageBodyFailed = "Decrypted Message Body Failed"
     }
     
     struct Reason {

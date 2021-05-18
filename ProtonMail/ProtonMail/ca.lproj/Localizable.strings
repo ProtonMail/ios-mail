@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Tarifa de compra en l'aplicació d'Apple";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Apple ens ha informat que no han pogut processar la compra.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ens ha informat que heu subscrit un nou abonament, però falten algunes dades tècniques. Envieu-nos un informe d'errors i el nostre equip es posarà en contacte amb vosté.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple ens ha informat que heu subscrit un nou abonament, però hem detectat que us heu desconnectat del compte després de la subscripció.";
-
 /* Apply action */
 "Apply" = "Aplicar";
 
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Nom a mostrar";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Vol activar la compra de l'adreça %@?";
-
 /* Description */
 "Do you want to cancel the process?" = "Voleu cancel·lar el procés?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Esborrany";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "L'esborrany encara s'està carregant...";
 
 /* menu title */
 "Drafts" = "Esborranys";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "No s'ha pogut determinar el tipus de fitxer";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "Impossible recuperar la llista de productes disponibles a l'AppStore.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "No ha pogut inicialitzar les dades salvades de la aplicació";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "No es pot canviar a %@ dins la nostra aplicació de iOS.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "No hem pogut comprobar el producte que heu comprat AppStore amb els productes al nostre servidor. Empleneu l’informe d’errors i el nostre equip de suport al client es posarà en contacte amb vostè.";
-
 /* Title */
 "Keep me updated about new features" = "Mantén-me actualitzat sobre les noves funcions";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Missatges %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "El missatge no s'ha pogut enviar. Almenys un domini o adreça electrònica de destinatari no existeix o bé té un format incorrecte.";
 
 /* *
  *  Expiration View */
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Please input a valid email address.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Si us plau, accediu al compte de ProtonMail que voleu actualitzar per poder completar la compra.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Si us plau, accediu al compte de ProtonMail que voleu actualitzar per poder completar la compra.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Si us plau, assegura't que la teva connexió a internet funciona.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Torneu-ho a provar, si us plau";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Si us plau, obriu l'app per continuar amb l’activació de l’abonament";
 
 /* Description */
 "Please use ProtonMail App login first." = "Si us plau, utilitzeu primer l'inici de sessió en l’App ProtonMail.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "Missatge d'enviament";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "Enviant el missatge...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "S'estan enviant missatges de %1$@ L'adreça és una funció remunerada. El vostre missatge s'enviarà des de la vostra adreça predeterminada %2$@";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Posposat fins";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Ho sentim, no processem compres en la versió beta de l’app iOS. Gràcies per participar en la nostra beta pública!";
 
 /* (No Comment) */
 "Space Warning" = "Avís espacial";
@@ -2382,12 +2361,6 @@
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No hem pogut enviar el vostre missatge, possiblement a causa d'una mala connexió de xarxa. El vostre missatge s'ha desat a Esborranys i s'enviarà automàticament la propera vegada que obriu l'aplicació.";
-
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Hem estat notificats d'una compra a l'App Store però no podem relacionar-la amb un dels seus comptes.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Heu activat l’abonament correctament. Si us plau, reinicieu l'app per començar a utilitzar els nous serveis.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Enviarem un codi de verificació al telèfon cel · lular anterior.";

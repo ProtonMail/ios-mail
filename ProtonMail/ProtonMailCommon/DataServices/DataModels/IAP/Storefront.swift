@@ -23,14 +23,15 @@
 
 import Foundation
 import PMCommon
+import PMPayments
 
 class Storefront: NSObject {
     private var servicePlanService: ServicePlanDataService
     private var user: UserInfo
     
-    var plan: ServicePlan
+    var plan: AccountPlan
     var details: ServicePlanDetails?
-    var others: [ServicePlan]
+    var others: [AccountPlan]
     var title: String
     var canBuyMoreCredits: Bool
     @objc dynamic var credits: Int
@@ -39,7 +40,7 @@ class Storefront: NSObject {
     
     private var subscriptionObserver: NSKeyValueObservation!
     
-    init(plan: ServicePlan, servicePlanService: ServicePlanDataService, user: UserInfo) {
+    init(plan: AccountPlan, servicePlanService: ServicePlanDataService, user: UserInfo, isHavingVpnPlan: Bool = false) {
         self.servicePlanService = servicePlanService
         self.user = user
         
@@ -48,9 +49,11 @@ class Storefront: NSObject {
         self.others = []
         self.title = plan.subheader.0
         
-        self.isProductPurchasable = ( plan == .plus
+        self.isProductPurchasable = ( plan == .mailPlus
                                         && servicePlanService.currentSubscription?.plan == .free
-                                        && StoreKitManager.default.readyToPurchaseProduct() )
+                                        && StoreKitManager.default.isReadyToPurchaseProduct()
+                                        && !isHavingVpnPlan)
+
         self.canBuyMoreCredits = false
         self.credits = self.user.credit
         super.init()
@@ -63,13 +66,13 @@ class Storefront: NSObject {
         self.subscription = subscription
         self.plan = subscription.plan
         self.details = subscription.details
-        self.others = Array<ServicePlan>(arrayLiteral: .free, .plus).filter({ $0 != subscription.plan })
+        self.others = Array<AccountPlan>(arrayLiteral: .free, .mailPlus).filter({ $0 != subscription.plan })
         
         self.title = LocalString._menu_service_plan_title
         self.isProductPurchasable = false
         
         // only plus, payed via apple
-        self.canBuyMoreCredits = ( subscription.plan == .plus && !subscription.hadOnlinePayments )
+        self.canBuyMoreCredits = ( subscription.plan == .mailPlus && !subscription.hadOnlinePayments )
          self.credits = self.user.credit
         super.init()
 
@@ -78,7 +81,7 @@ class Storefront: NSObject {
             DispatchQueue.main.async {
                 self.plan = newSubscription.plan
                 self.details = newSubscription.details
-                self.others = Array<ServicePlan>(arrayLiteral: .free, .plus).filter({ $0 != newSubscription.plan })
+                self.others = Array<AccountPlan>(arrayLiteral: .free, .mailPlus).filter({ $0 != newSubscription.plan })
                 self.credits = user.credit
                 self.subscription = shared.currentSubscription
             }
@@ -95,9 +98,9 @@ class Storefront: NSObject {
         self.others = []
         
         // Plus, payed via apple, storekit is ready
-        self.isProductPurchasable = ( subscription.plan == .plus
+        self.isProductPurchasable = ( subscription.plan == .mailPlus
                                         && !subscription.hadOnlinePayments
-                                        && StoreKitManager.default.readyToPurchaseProduct() )
+                                        && StoreKitManager.default.isReadyToPurchaseProduct() )
         self.credits = user.credit
         self.canBuyMoreCredits = false
         
@@ -110,15 +113,19 @@ class Storefront: NSObject {
         guard let productId = self.plan.storeKitProductId else { return }
         self.isProductPurchasable = false
         
-        let successWrapper: ()->Void = {
+        let successWrapper: (PaymentToken?)->Void = { _ in
             DispatchQueue.main.async {
                 successHandler()
             }
         }
         let errorWrapper: (Error)->Void = { [weak self] error in
             DispatchQueue.main.async {
-                self?.isProductPurchasable = true
-                errorHandler(error)
+                if let error = error as? StoreKitManager.Errors, error == StoreKitManager.Errors.cancelled {
+                    // don't handle payment cancelled by the user
+                } else {
+                    self?.isProductPurchasable = true
+                    errorHandler(error)
+                }
             }
         }
         let deferredCompletion: ()->Void = {
@@ -126,11 +133,45 @@ class Storefront: NSObject {
         }
         let canceledCompletion: ()->Void = { [weak self] in
             DispatchQueue.main.async {
-                self?.isProductPurchasable = StoreKitManager.default.readyToPurchaseProduct()
+                self?.isProductPurchasable = StoreKitManager.default.isReadyToPurchaseProduct()
             }
         }
         StoreKitManager.default.refreshHandler = canceledCompletion
-        StoreKitManager.default.purchaseProduct(withId: productId, successCompletion: successWrapper, errorCompletion: errorWrapper, deferredCompletion: deferredCompletion)
+        StoreKitManager.default.purchaseProduct(identifier: productId, successCompletion: successWrapper, errorCompletion: errorWrapper, deferredCompletion: deferredCompletion)
     }
 }
 
+extension AccountPlan {
+    var subheader: (String, UIColor) {
+        switch self {
+        case .free: return ("Free", UIColor.ProtonMail.ServicePlanFree)
+        case .mailPlus: return ("Plus", UIColor.ProtonMail.ServicePlanPlus)
+        case .pro: return ("Professional", UIColor.ProtonMail.ServicePlanPro)
+        case .visionary: return ("Visionary", UIColor.ProtonMail.ServicePlanVisionary)
+        default: return ("Free", UIColor.ProtonMail.ServicePlanFree)
+        }
+    }
+    
+    var headerText: String {
+        switch self {
+        case .free: return LocalString._free_header
+        case .mailPlus: return LocalString._plus_header
+        case .pro: return LocalString._pro_header
+        case .visionary: return LocalString._vis_header
+        default: return LocalString._free_header
+        }
+    }
+}
+
+extension ServicePlanSubscription {
+    var plan: AccountPlan {
+        var result: AccountPlan = .free
+        let mailPlans: [AccountPlan] = [.visionary, .pro, .mailPlus, .free]
+        mailPlans.forEach {
+            if plans.contains($0) {
+                result = $0
+            }
+        }
+        return result
+    }
+}

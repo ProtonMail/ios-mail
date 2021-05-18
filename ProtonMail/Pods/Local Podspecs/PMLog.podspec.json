@@ -1,0 +1,18 @@
+{
+  "name": "PMLog",
+  "version": "1.0.0",
+  "summary": "Logger ProtonMail",
+  "description": "Logger ProtonMail",
+  "homepage": "https://gitlab.protontech.ch/apple/shared/pmlog",
+  "license": "ProtonMail",
+  "authors": "Igor Kulman",
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source": {
+    "git": ".",
+    "commit": ""
+  },
+  "source_files": "PMLog/*.swift",
+  "static_framework": true
+}

@@ -28,6 +28,7 @@ import PMKeymaker
 import UserNotifications
 import Intents
 import PMCommon
+import PMPayments
 
 let sharedUserDataService = UserDataService(api: PMAPIService.unauthorized)
 
@@ -71,7 +72,7 @@ extension SWRevealViewController {
 }
 
 // MARK: - consider move this to coordinator
-extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
+extension AppDelegate: UserDataServiceDelegate {
     func onLogout(animated: Bool) {
         if #available(iOS 13.0, *) {
             let sessions = Array(UIApplication.shared.openSessions)
@@ -87,15 +88,17 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
             self.coordinator.go(dest: .signInWindow)
         }
     }
-    
+}
+
+extension AppDelegate: APIServiceDelegate {
     func isReachable() -> Bool {
+        #if !APP_EXTENSION
         return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
+        #else
+        return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
+        #endif
     }
-    
-    func onError(error: NSError) {
-        error.alertToast()
-    }
-    
+
     func onUpdate(serverTime: Int64) {
         Crypto.updateTime(serverTime)
     }
@@ -110,15 +113,7 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
         UserAgent.default.ua
     }
 
-    func onDohTroubleshot() {
-        //TODO:: fix me TBA
-    }
-
-    func onChallenge(challenge: URLAuthenticationChallenge,
-                     credential: AutoreleasingUnsafeMutablePointer<URLCredential?>?) -> URLSession.AuthChallengeDisposition {
-        //TODO:: fix me TBA
-        return .useCredential
-    }
+    func onDohTroubleshot() { }
 }
 
 extension AppDelegate: TrustKitUIDelegate {
@@ -153,6 +148,7 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(UsersManager.self, for: usersManager)
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager))
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
+        sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         return true
     }
     
@@ -190,6 +186,7 @@ extension AppDelegate: UIApplicationDelegate {
         pushService.registerForRemoteNotifications()
         pushService.setLaunchOptions(launchOptions)
         
+        StoreKitManager.default.delegate = sharedServices.get(by: StoreKitManagerImpl.self)
         StoreKitManager.default.subscribeToPaymentQueue()
         StoreKitManager.default.updateAvailableProductsList()
         
@@ -324,6 +321,9 @@ extension AppDelegate: UIApplicationDelegate {
         }
         
         if let user = users.firstUser {
+            user.messageService.backgroundTimeRemaining = {
+                application.backgroundTimeRemaining
+            }
             user.messageService.purgeOldMessages()
             user.messageService.cleanOldAttachment()
             user.messageService.updateMessageCount()
@@ -366,8 +366,9 @@ extension AppDelegate: UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.currentState = .active
         let users: UsersManager = sharedServices.get()
-        if let user = users.firstUser {
+        users.users.forEach { (user) in
             user.messageService.unBlockQueueAction()
+            user.messageService.backgroundTimeRemaining = nil
         }
     }
     

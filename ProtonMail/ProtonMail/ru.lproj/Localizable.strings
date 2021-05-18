@@ -208,15 +208,6 @@
 /* Price breakdown */
 "Apple in-app purchase fee" = "Наценка Apple за заказ через приложение";
 
-/* Error message */
-"Apple informed us they could not process the purchase." = "Из компании Apple нам сообщили, что не смогли обработать покупку.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Из компании Apple нам сообщили, что вы улучшили тарифный план, но нам не хватает некоторых технических данных. Пожалуйста, заполните отчёт об ошибке, и наша команда поддержки клиентов свяжется с вами.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Из компании Apple нам сообщили, что вы улучшили тарифный план, но мы обнаружили, что с того момента вы вышли из учётной записи.";
-
 /* Apply action */
 "Apply" = "Применить";
 
@@ -699,9 +690,6 @@
 /* Title in display name settings */
 "DisplayName" = "Отображаемое имя";
 
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Вы хотите активировать покупку для %@ адреса?";
-
 /* Description */
 "Do you want to cancel the process?" = "Вы хотите отменить процесс?";
 
@@ -723,6 +711,9 @@
 /* Action
    mail location desc */
 "Draft" = "Черновик";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading..." = "Черновик ещё сохраняется...";
 
 /* menu title */
 "Drafts" = "Черновики";
@@ -911,9 +902,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Не удалось определить тип файла";
-
-/* Error message */
-"Failed to get list of available products from AppStore." = "Не удалось получить список доступных продуктов из AppStore.";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Не удалось инициализировать сохранённые данные приложения";
@@ -1136,9 +1124,6 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Невозможно переключиться на %@ через наше приложение iOS.";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Нет возможности сопоставить приобретённый вами в App Store продукт с какими-либо продуктами на нашем сервере. Пожалуйста, заполните отчёт об ошибке, и наша команда поддержки клиентов свяжется с вами.";
-
 /* Title */
 "Keep me updated about new features" = "Сообщайте мне о новых функциях";
 
@@ -1296,6 +1281,9 @@
 
 /* Message with title */
 "Message %@" = "Сообщение %@";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Сообщение не может быть отправлено. По крайней мере один адрес электронной почты/домен получателя не существует или неправильно отформатирован.";
 
 /* *
  *  Expiration View */
@@ -1587,12 +1575,6 @@
 /* error message */
 "Please input a valid email address." = "Пожалуйста, введите адрес электронной почты в правильном формате.";
 
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Пожалуйста, войдите в учётную запись ProtonMail, тариф которой вы расширяете, чтобы мы могли завершить заказ.";
-
-/* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Пожалуйста, войдите в учётную запись ProtonMail, тариф которой вы расширяете, чтобы мы могли завершить активацию тарифа.";
-
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Пожалуйста, убедитесь, что ваше интернет-соединение работает.";
 
@@ -1631,9 +1613,6 @@
 
 /* (No Comment) */
 "Please try again." = "Пожалуйста, попробуйте ещё раз";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Пожалуйста, разблокируйте приложение, чтобы продолжить активацию вашего тарифа";
 
 /* Description */
 "Please use ProtonMail App login first." = "Пожалуйста, сначала войдите через приложение ProtonMail.";
@@ -1851,6 +1830,9 @@
 /* Description */
 "Sending Message" = "Отправка сообщения";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message..." = "Отправка сообщения...";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Отправка сообщений с %1$@ – платная функция. Ваше сообщение будет отправлено с вашего обычного адреса %2$@";
 
@@ -1916,9 +1898,6 @@
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Приглушено до";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Извините, мы не можем обрабатывать покупки в бета-версии приложения для iOS. Благодарим вас за участие в нашем публичном бета-тестировании!";
 
 /* (No Comment) */
 "Space Warning" = "Предупреждение о доступном пространстве";
@@ -2382,12 +2361,6 @@
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Мы не смогли отправить ваше сообщение, возможно из-за плохого сетевого соединения. Ваше сообщение было сохранено в Черновики и будет отправлено автоматически при следующем запуске приложения.";
-
-/* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Мы были уведомлены о покупке App Store, но не можем определить ее связь с вашей учетной записью.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Мы успешно активировали вашу подписку. Пожалуйста, перезапустите приложение, чтобы начать использование своего нового тарифа.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Мы отправим код подтверждения на телефон, указанный выше.";

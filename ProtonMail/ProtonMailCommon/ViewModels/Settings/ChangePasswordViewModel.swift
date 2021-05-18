@@ -74,6 +74,8 @@ public class ChangeLoginPWDViewModel : ChangePWDViewModel{
         
         if newpwd == "" || confirmpwd == "" {
             complete(false, UpdatePasswordError.passwordEmpty.error)
+        } else if newpwd.count < 8 {
+            complete(false, UpdatePasswordError.minimumLengthError.error)
         }
         else if newpwd != confirmpwd {
             complete(false, UpdatePasswordError.newNotMatch.error);
@@ -191,6 +193,8 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel {
         let confirmpwd = confirm_new_pwd
         if newpwd == "" || confirmpwd == "" {
             complete(false, UpdatePasswordError.passwordEmpty.error)
+        } else if newpwd.count < 8 {
+            complete(false, UpdatePasswordError.minimumLengthError.error)
         }
         else if newpwd != confirmpwd {
             complete(false, UpdatePasswordError.newNotMatch.error)

@@ -1,0 +1,188 @@
+
+/**
+ *  Human verification
+ */
+
+"Human verification" = "Human verification";
+"SMS" = "SMS";
+"Email" = "Email";
+"CAPTCHA" = "CAPTCHA";
+"Help" = "Help";
+"OK" = "OK";
+"Cancel" = "Cancel";
+
+// Email method
+
+"Your email will only be used for this one-time verification." = "Your email will only be used for this one-time verification.";
+"Email" = "Email";
+"Get verification code" = "Get verification code";
+
+// SMS method
+
+"Your phone number will only be used for this one-time verification." = "Your phone number will only be used for this one-time verification.";
+"Phone number" = "Phone number";
+"Search country" = "Search country";
+
+// Verification
+
+"Enter the verification code that was sent to %@" = "Enter the verification code that was sent to %@";
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder.";
+"Verification code" = "Verification code";
+"Enter the 6-digit code." = "Enter the 6-digit code.";
+"Verify" = "Verify";
+"Verifying" = "Verifying";
+"Did not receive the code?" = "Did not receive the code?";
+"Invalid verification code" = "Invalid verification code";
+"Would you like to receive a new verification code or use an alternative verification method?" = "Would you like to receive a new verification code or use an alternative verification method?";
+"Resend" = "Resend";
+"Try other method" = "Try other method";
+"Request new code?" = "Request new code?";
+"Get a replacement code sent to %@." = "Get a replacement code sent to %@.";
+"Request new code" = "Request new code";
+"Code sent to %@" = "Code sent to %@";
+
+// Verification help
+
+"Need help with human verification?" = "Need help with human verification?";
+"Request an invite" = "Request an invite";
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day.";
+"Visit our Help Center" = "Visit our Help Center";
+"Learn more about human verification and why we ask for it." = "Learn more about human verification and why we ask for it.";
+
+/**
+ *  Force upgrade
+ */
+
+"Update required" = "Update required";
+"Learn more" = "Learn more";
+"Update" = "Update";
+"Quit" = "Quit";
+
+/**
+ *  Login screen
+ */
+"Sign in" = "Sign in";
+"Enter your Proton Account details." = "Enter your Proton Account details.";
+"Email or username" = "Email or username";
+"Password" = "Password";
+"Need help?" = "Need help?";
+
+/**
+ *  Login help
+ */
+
+"Still need help? Contact us directly." = "Still need help? Contact us directly.";
+"Forgot username" = "Forgot username";
+"Forgot password" = "Forgot password";
+"Other sign-in issues" = "Other sign-in issues";
+"Customer support" = "Customer support";
+"How can we help?" = "How can we help?";
+
+/**
+ * Login validation
+ */
+
+"Please enter your Proton Account email or username." = "Please enter your Proton Account email or username.";
+"Please enter your Proton Account password." = "Please enter your Proton Account password.";
+
+/**
+ *  Login errors
+ */
+"Account setup required" = "Account setup required";
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
+"Complete Setup" = "Complete Setup";
+"Incorrect mailbox password" = "Incorrect mailbox password";
+"An error has occured" = "An error has occured";
+
+/**
+ * Login choose username
+ */
+
+"Create ProtonMail address" = "Create ProtonMail address";
+"Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
+"Username" = "Username";
+"Next" = "Next";
+"Please enter a username." = "Please enter a username.";
+
+/**
+ * Login create address
+ */
+"You will use this email address to log in to all Proton services." = "You will use this email address to log in to all Proton services.";
+"Your recovery email address:" = "Your recovery email address:";
+"Create address" = "Create address";
+"By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
+"Terms and Conditions" = "Terms and Conditions";
+"%@ is available" = "%@ is available";
+
+/**
+ * Login unlock mailbox
+ */
+
+"Unlock your mailbox" = "Unlock your mailbox";
+"Unlock" = "Unlock";
+"Forgot password" = "Forgot password";
+"Mailbox password" = "Mailbox password";
+
+/**
+ * Login 2FA
+ */
+
+"Authenticate" = "Authenticate";
+"Use recovery code" = "Use recovery code";
+"Use two-factor code" = "Use two-factor code";
+"Two-factor authentication" = "Two-factor authentication";
+"Recovery code" = "Recovery code";
+"Enter an 8-character recovery code." = "Enter an 8-character recovery code.";
+"Two-factor code" = "Two-factor code";
+"Enter the 6-digit code." = "Enter the 6-digit code.";
+
+/**
+ *  Payments
+ */
+
+"Error occured" = "Error occured";
+"OK" = "OK";
+"Warning" = "Warning";
+"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
+"Yes, activate it for " = "Yes, activate it for ";
+"No, for another ProtonMail account" = "No, for another ProtonMail account";
+"payment failed" = "payment failed";
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support.";
+"Retry" = "Retry";
+"Contact customer support" = "Contact customer support";
+"Unknown error" = "Unknown error";
+"Failed to get list of available products from AppStore." = "Failed to get list of available products from AppStore.";
+"Purchase is not possible." = "Purchase is not possible.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.";
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.";
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!";
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We have been notified of an App Store purchase but cannot match the purchase with an account of yours.";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.";
+"Apple informed us they could not process the purchase." = "Apple informed us they could not process the purchase.";
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "We have successfully activated your subscription. Please relaunch the app to start using your new service plan.";
+"Please unlock the app to proceed with your service plan activation" = "Please unlock the app to proceed with your service plan activation";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.";
+"Contact support@protonvpn.com to complete your purchase." = "Contact support@protonvpn.com to complete your purchase.";
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Wrong payment token status. Please relaunch the app. If error persists, contact support.";
+
+/**
+ * Login upgrade username-only account
+ */
+
+"Change your password" = "Change your password";
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
+"Change password" = "Change password";
+
+/*
+ *  Account Manager
+ */
+"switch to" = "switch to";
+"Manage accounts" = "Manage accounts";
+"Signed in to ProtonMail" = "Signed in to ProtonMail";
+"Signed out of Protonmail" = "Signed out of Protonmail";
+"Sign out" = "Sign out";
+"Remove account" = "Remove account";
+"You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
+"Remove" = "Remove";
+"Are you sure you want to sign out %@?" = "Are you sure you want to sign out %@?";

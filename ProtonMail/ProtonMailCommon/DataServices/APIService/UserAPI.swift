@@ -67,9 +67,7 @@ class CreateNewUser : Request {
     let email : String
     let tokenType : String
     
-    let modulusID : String //encrypted_id
-    let salt : String //base64_encoded_salt
-    let verifer : String //base64_encoded_verifier
+    let passwordAuth: PasswordAuth
     
     let deviceToken : String
     let challenge: [String: Any]
@@ -78,30 +76,20 @@ class CreateNewUser : Request {
          type : String,
          username :String,
          email:String,
-         modulusID : String,
-         salt : String,
-         verifer : String,
+         passwordAuth: PasswordAuth,
          deviceToken: String,
          challenge: [String: Any]) {
         self.recaptchaToken = token
         self.tokenType = type
         self.userName = username
         self.email = email
+
+        self.passwordAuth = passwordAuth
         
-        self.modulusID = modulusID
-        self.salt = salt
-        self.verifer = verifer
         self.deviceToken = deviceToken
         self.challenge = challenge
     }
     var parameters: [String : Any]? {
-        
-        let auth : [String : Any] = [
-            "Version" : 4,
-            "ModulusID" : self.modulusID,
-            "Salt" : self.salt,
-            "Verifier" : self.verifer
-        ]
         
         let payload: [String: Any] = [
             "mail-ios-payload": deviceToken,
@@ -113,7 +101,7 @@ class CreateNewUser : Request {
             "Username" : self.userName,
             "Email" : self.email,
             "Token" : self.recaptchaToken,
-            "Auth" : auth,
+            "Auth" : self.passwordAuth.parameters,
             "Type" : 1,   //hard code to 1 for mail
             "Payload": payload
         ]

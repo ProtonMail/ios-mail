@@ -23,6 +23,7 @@
 
 import Foundation
 import MBProgressHUD
+import PMPayments
 
 class ReportBugsViewController: ProtonMailViewController {
     var user: UserManager!
@@ -126,9 +127,10 @@ class ReportBugsViewController: ProtonMailViewController {
         MBProgressHUD.showAdded(to: v, animated: true)
         sendButton.isEnabled = false
         let username = self.user.defaultEmail.split(separator: "@")[0]
-        _ = self.user.reportService.reportBug(text,
-                                              username: String(username),
-                                              email: self.user.defaultEmail, completion: { error in
+        self.user.reportService.reportBug(text,
+                                          username: String(username),
+                                          email: self.user.defaultEmail,
+                                          completion: { error in
             MBProgressHUD.hide(for: v, animated: true)
             self.sendButton.isEnabled = true
             if let error = error {

@@ -23,6 +23,9 @@
 
 import Foundation
 import PromiseKit
+import PMAuthentication
+import PMCommon
+import PMPayments
 
 class StorefrontViewModel: NSObject {
     let currentUser: UserManager
@@ -54,10 +57,13 @@ class StorefrontViewModel: NSObject {
     @objc dynamic var buyButtonItem: AnyStorefrontItem?
     @objc dynamic var creditsItem: AnyStorefrontItem?
     @objc dynamic var disclaimerItem: AnyStorefrontItem?
+
+    var isHavingVpnPlanInCurrentSubscription: Bool = false
     
-    init(currentUser: UserManager, storefront: Storefront?=nil) {
+    init(currentUser: UserManager, storefront: Storefront? = nil, havingVpnPlan: Bool = false) {
         self.currentUser = currentUser
         self.storefront = storefront
+        self.isHavingVpnPlanInCurrentSubscription = havingVpnPlan
         super.init()
     }
     
@@ -70,19 +76,32 @@ class StorefrontViewModel: NSObject {
             self.setupObserve()
             return Promise()
         }
-        
-        return self.currentUser.sevicePlanService.updateServicePlans()
-            .then { () -> Promise<Void> in
-                guard self.currentUser.sevicePlanService.isIAPAvailable else {
-                    throw NSError(domain: "", code: -1, localizedDescription: "IAP unavailable")
+
+        return Promise { (seal) in
+            let authenticator = Authenticator(api: self.currentUser.apiService)
+            let auth = self.currentUser.auth
+            authenticator.getUserInfo(Credential(auth)) { (result) in
+                switch result {
+                case .success(let userInfo):
+                    self.isHavingVpnPlanInCurrentSubscription = userInfo.subscribed == 4
+                case .failure(_):
+                    break
                 }
-                return self.currentUser.sevicePlanService.updateCurrentSubscription()
-            }.done {
-                self.initStoreFront()
-                self.servicePlanService = self.currentUser.sevicePlanService
-                self.setup(with: self.storefront)
-                self.setupObserve()
+                seal.fulfill_()
             }
+        }.then { () -> Promise<Void> in
+            return self.currentUser.sevicePlanService.updateServicePlans()
+        }.then { () -> Promise<Void> in
+            guard self.currentUser.sevicePlanService.isIAPAvailable else {
+                throw NSError(domain: "", code: -1, localizedDescription: "IAP unavailable")
+            }
+            return self.currentUser.sevicePlanService.updateCurrentSubscription()
+        }.done {
+            self.initStoreFront()
+            self.servicePlanService = self.currentUser.sevicePlanService
+            self.setup(with: self.storefront)
+            self.setupObserve()
+        }
     }
     
     func numberOfSections() -> Int {
@@ -130,7 +149,7 @@ class StorefrontViewModel: NSObject {
         }
     }
     
-    func plan(at indexPath: IndexPath) -> ServicePlan? {
+    func plan(at indexPath: IndexPath) -> AccountPlan? {
         guard let section = Sections(rawValue: indexPath.section) else {
             assert(false, "Attempt to get incorrect section")
             return nil
@@ -216,7 +235,7 @@ extension StorefrontViewModel {
                 DetailStorefrontItem(imageName: "iap_hdd", text: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
                 DetailStorefrontItem(imageName: "iap_lock", text: LocalString._limited_to_150_messages)
             ]
-        case .plus:
+        case .mailPlus:
             return [
                 DetailStorefrontItem(imageName: "iap_email", text: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses)),
                 DetailStorefrontItem(imageName: "iap_hdd", text: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
@@ -242,11 +261,17 @@ extension StorefrontViewModel {
                 DetailStorefrontItem(imageName: "iap_lifering", text: String(format: LocalString._support_n_domains, details.maxDomains)),
                 DetailStorefrontItem(imageName: "iap_vpn", text: LocalString._vpn_included)
             ]
+        default:
+            return [
+                DetailStorefrontItem(imageName: "iap_email", text: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses)),
+                DetailStorefrontItem(imageName: "iap_hdd", text: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
+                DetailStorefrontItem(imageName: "iap_lock", text: LocalString._limited_to_150_messages)
+            ]
         }
     }
     
     private func extractAnnotation(from storefront: Storefront) -> AnyStorefrontItem? {
-        func makeUnavailablePlanText(plan: ServicePlan) -> NSAttributedString {
+        func makeUnavailablePlanText(plan: AccountPlan) -> NSAttributedString {
             var regularAttributes = [NSAttributedString.Key: Any]()
             regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
             var coloredAttributes = regularAttributes
@@ -261,6 +286,21 @@ extension StorefrontViewModel {
             }
             return title
         }
+
+        func makeUnavailableUpgradePlanText() -> NSAttributedString {
+            var regularAttributes = [NSAttributedString.Key: Any]()
+            regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
+            let title = LocalString._message_of_unavailable_to_upgrade_account
+            let urlTitle = LocalString._message_of_unavailable_to_upgrade_url
+            let fullTitle = String.localizedStringWithFormat(title, urlTitle)
+            let attributedString = NSMutableAttributedString(string: fullTitle,
+                                                             attributes: regularAttributes)
+            if let subrange = fullTitle.range(of: urlTitle) {
+                let nsRange = NSRange(subrange, in: fullTitle)
+                attributedString.addAttribute(.foregroundColor, value: UIColor.ProtonMail.Menu_UnreadCountBackground, range: nsRange)
+            }
+            return attributedString
+        }
         
         func makeCurrentPlanText(subscription: ServicePlanSubscription) -> NSAttributedString {
             var message: NSAttributedString!
@@ -272,7 +312,7 @@ extension StorefrontViewModel {
             switch subscription.plan {
             case .free:
                 message = NSAttributedString(string: LocalString._upgrade_to_paid, attributes: regularAttributes)
-            case .plus, .pro, .visionary:
+            case .mailPlus, .pro, .visionary:
                 let formatter = DateFormatter()
                 formatter.timeStyle = .none
                 formatter.dateStyle = .short
@@ -284,6 +324,8 @@ extension StorefrontViewModel {
                     title1.append(title2)
                     message = title1
                 }
+            default: message = NSAttributedString(string: LocalString._upgrade_to_paid, attributes: regularAttributes)
+
             }
             return message ?? NSAttributedString()
         }
@@ -291,6 +333,8 @@ extension StorefrontViewModel {
         switch storefront.subscription {
         case .some(let subscription):
             return AnnotationStorefrontItem(text: makeCurrentPlanText(subscription: subscription))
+        case .none where !storefront.isProductPurchasable && self.isHavingVpnPlanInCurrentSubscription:
+            return AnnotationStorefrontItem(text: makeUnavailableUpgradePlanText())
         case .none where !storefront.isProductPurchasable:
             return AnnotationStorefrontItem(text: makeUnavailablePlanText(plan: storefront.plan))
         case .none where storefront.isProductPurchasable:
@@ -315,8 +359,8 @@ extension StorefrontViewModel {
     
     private func extractBuyButton(from storefront: Storefront) -> AnyStorefrontItem? {
         guard storefront.isProductPurchasable,
-            let productId = ServicePlan.plus.storeKitProductId,
-            let price = StoreKitManager.default.priceLabelForProduct(id: productId) else
+            let productId = AccountPlan.mailPlus.storeKitProductId,
+            let price = StoreKitManager.default.priceLabelForProduct(identifier: productId) else
         {
             return nil
         }

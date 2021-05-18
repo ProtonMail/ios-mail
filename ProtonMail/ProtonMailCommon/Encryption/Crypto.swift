@@ -580,6 +580,10 @@ class Crypto {
 
     //MARK: - Attachment
     
+    public func freeGolangMem() {
+        HelperFreeOSMemory()
+    }
+    
      // no verify
     public func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey: String, passphrase: String) throws -> Data? {
         var error: NSError?
@@ -955,6 +959,19 @@ extension String {
         }
         
         return key?.getFingerprint() ?? ""
+    }
+    
+    var SHA256fingerprints : [String] {
+        var error: NSError?
+        let fingerprints = HelperGetJsonSHA256Fingerprints(self, &error)
+        if error != nil {
+            return []
+        }
+        let parsedObject: Any? = try! JSONSerialization.jsonObject(with: fingerprints!, options: JSONSerialization.ReadingOptions.allowFragments) as Any?
+        if let objects = parsedObject as? [String] {
+            return objects
+        }
+        return []
     }
     
     var unArmor : Data? {

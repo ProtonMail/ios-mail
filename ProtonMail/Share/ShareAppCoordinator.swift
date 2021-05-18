@@ -24,6 +24,8 @@
 import Foundation
 import PMCommon
 
+let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
+
 /// Main entry point to the app
 class ShareAppCoordinator: CoordinatorNew {
     // navigation controller instance -- entry

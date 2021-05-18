@@ -85,7 +85,9 @@ final class StorefrontCollectionViewController: UICollectionViewController {
             if let subscription = self.viewModel.currentSubscription {
                 self.coordinator.goToBuyMoreCredits(for: subscription)
             }
-            
+
+        case .annotation where self.viewModel.isHavingVpnPlanInCurrentSubscription:
+            self.coordinator.openProtonWebPage()
         default: break
         }
     }

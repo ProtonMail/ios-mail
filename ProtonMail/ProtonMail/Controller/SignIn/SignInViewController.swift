@@ -424,17 +424,17 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         
         if self.isPrepareSignup {return}
         self.isPrepareSignup = true
-        
-        firstly {
-            self.viewModel.generateToken()
-        }.done { (token) in
-            self.performSegue(withIdentifier: self.kSignUpKeySegue, sender: token)
-        }.catch { (error) in
-            let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
-            alert.addOKAction()
-            self.present(alert, animated: true, completion: nil)
-            self.isPrepareSignup = false
-        }
+        self.performSegue(withIdentifier: self.kSignUpKeySegue, sender: "token")
+//        firstly {
+//            self.viewModel.generateToken()
+//        }.done { (token) in
+//            self.performSegue(withIdentifier: self.kSignUpKeySegue, sender: token)
+//        }.catch { (error) in
+//            let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
+//            alert.addOKAction()
+//            self.present(alert, animated: true, completion: nil)
+//            self.isPrepareSignup = false
+//        }
     }
     
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {

@@ -111,13 +111,39 @@ feature_tests:
 build-app-and-upload:
   dependencies: []
   stage: test_flight
-  when: manual
-  only:
-    - master
-    - develop
-    - /^release\/.*$/
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+      when: manual
+      allow_failure: true
   artifacts:
     name: "iOS mail app builds"
+    paths:
+      - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
+    expire_in: 90 days
+  before_script:
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
+    - git submodule init
+    - git submodule update --init --recursive
+  script:
+    - cd ProtonMail
+    - touch ~/.bashrc
+    - curl -sL https://sentry.io/get-cli/ | bash || true
+    - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
+    - fastlane ios build
+  tags:
+    - iOS
+
+nightly-build-and-upload:
+  dependencies: []
+  stage: test_flight
+  only:
+    refs:
+      - schedules
+    variables:
+      - $SCHEDULE_TYPE == "nightly_build"
+  artifacts:
+    name: "iOS mail app nightly build on develop branch"
     paths:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
