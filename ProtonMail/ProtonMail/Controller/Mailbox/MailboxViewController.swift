@@ -1454,14 +1454,14 @@ extension MailboxViewController {
     private func showDeleteAlert(yesHandler: @escaping () -> Void) {
         let messagesCount = viewModel.selectedIDs.count
         let title = messagesCount > 1 ?
-            LocalString._messages_delete_confirmation_alert_title :
+            String(format: LocalString._messages_delete_confirmation_alert_title, messagesCount) :
             LocalString._single_message_delete_confirmation_alert_title
         let message = messagesCount > 1 ?
-            LocalString._messages_delete_confirmation_alert_message :
+            String(format: LocalString._messages_delete_confirmation_alert_message, messagesCount) :
             LocalString._single_message_delete_confirmation_alert_message
         let alert = UIAlertController(
-            title: String(format: title, messagesCount),
-            message: String(format: message, messagesCount),
+            title: title,
+            message: message,
             preferredStyle: .alert
         )
         let yes = UIAlertAction(title: LocalString._general_delete_action, style: .destructive) { [weak self] _ in
