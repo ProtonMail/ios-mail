@@ -300,7 +300,7 @@ class LocalizedString {
     lazy var _composer_password_apply = NSLocalizedString("Apply Password", comment: "button title")
     /// "Compose"
     lazy var _composer_compose_action = NSLocalizedString("Compose", comment: "Action")
-    lazy var _composer_expiration_title = NSLocalizedString("message expiration", comment: "Composer expiration page title")
+    lazy var _composer_expiration_title = NSLocalizedString("Message expiration", comment: "Composer expiration page title")
     lazy var _composer_expiration_custom = NSLocalizedString("Custom", comment: "Custom option for time config picker")
     /// "Send message without subject?"
     lazy var _composer_send_no_subject_desc = NSLocalizedString("Send message without subject?", comment: "Description")
