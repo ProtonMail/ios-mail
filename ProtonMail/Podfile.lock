@@ -163,7 +163,7 @@ DEPENDENCIES:
   - "PMKeymaker (from `git@gitlab.protontech.ch:apple/shared/pmkeymaker.git`, branch `develop`)"
   - "PMLog (from `git@gitlab.protontech.ch:apple/shared/pmlog.git`, branch `master`)"
   - "PMPayments (from `git@gitlab.protontech.ch:apple/shared/pmpayments.git`, commit `47edd7def09a7e26aa608b1`)"
-  - "PMUIFoundations (from `git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git`, branch `fix/share`)"
+  - "PMUIFoundations (from `git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git`, branch `master`)"
   - PromiseKit (= 6.13.1)
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `5.2.2`)
   - SideMenuSwift (= 2.0.6)
@@ -231,7 +231,7 @@ EXTERNAL SOURCES:
     :commit: 47edd7def09a7e26aa608b1
     :git: "git@gitlab.protontech.ch:apple/shared/pmpayments.git"
   PMUIFoundations:
-    :branch: fix/share
+    :branch: master
     :git: "git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
@@ -275,7 +275,7 @@ CHECKOUT OPTIONS:
     :commit: 47edd7def09a7e26aa608b1
     :git: "git@gitlab.protontech.ch:apple/shared/pmpayments.git"
   PMUIFoundations:
-    :commit: 317e8d412cc5751e921c2aa16e65f17722654847
+    :commit: 0b0394306f5fb49d6d5873caf6d2cc7bb35de6c7
     :git: "git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
@@ -319,6 +319,6 @@ SPEC CHECKSUMS:
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: e0cacb160bc5301fff1279dfa5b386fe799579aa
+PODFILE CHECKSUM: 1f2c2afa6221b561d3766000a2da58bbc5b7eda0
 
 COCOAPODS: 1.10.1

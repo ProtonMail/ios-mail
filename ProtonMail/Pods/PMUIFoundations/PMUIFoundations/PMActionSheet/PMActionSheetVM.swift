@@ -131,7 +131,7 @@ extension PMActionSheetVM {
 
     private func handleSingleSelectionEventAt(_ indexPath: IndexPath) {
         guard self.itemGroups != nil else {return}
-        
+
         let count = self.itemGroups![indexPath.section].items.count
         for i in 0..<count {
             let isOn = i == indexPath.row

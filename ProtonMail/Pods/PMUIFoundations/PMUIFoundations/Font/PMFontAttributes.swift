@@ -268,20 +268,6 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         return attributes
     }
 
-    public static var CaptionInverted: [NSAttributedString.Key: Any] {
-        let font = UIFont.systemFont(ofSize: 13)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.03
-
-        let attributes: [NSAttributedString.Key: Any] = [
-            .kern: -0.08,
-            .font: font,
-            .foregroundColor: UIColorManager.TextInverted,
-            .paragraphStyle: paragraphStyle
-        ]
-        return attributes
-    }
-
     public static var CaptionWeak: [NSAttributedString.Key: Any] {
         let font = UIFont.systemFont(ofSize: 13)
         let paragraphStyle = NSMutableParagraphStyle()
