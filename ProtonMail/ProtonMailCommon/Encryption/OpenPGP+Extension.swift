@@ -146,7 +146,8 @@ extension PMNOpenPgp {
     func generateKey(_ passphrase: String, userName: String, domain:String, bits: Int32) throws -> PMNOpenPgpKey? {
         var out_new_key : PMNOpenPgpKey?
         try ObjC.catchException {
-            out_new_key = self.generateKey(userName, domain: domain, passphrase: passphrase, bits: bits, time: 0)
+            let email =  userName + "@" + domain
+            out_new_key = self.generateKey(email, domain: email, passphrase: passphrase, bits: bits, time: 0)
             if out_new_key!.privateKey.isEmpty || out_new_key!.publicKey.isEmpty {
                 out_new_key = nil
             }
