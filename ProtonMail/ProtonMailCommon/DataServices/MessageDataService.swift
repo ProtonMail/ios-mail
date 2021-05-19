@@ -1338,20 +1338,8 @@ class MessageDataService : Service, HasLocalStorage {
                     for message in badMessages {
                         badIDs.append(message.messageID)
                     }
-                    
-                    var temp: [String] = []
-                    for i in 0..<badIDs.count {
-                        if temp.count > 10 {
-                            self.fetchMetadata(with: temp)
-                            temp.removeAll()
-                        } else {
-                            temp.append(badIDs[i])
-                            continue
-                        }
-                    }
-                    if !temp.isEmpty {
-                        self.fetchMetadata(with: temp)
-                    }
+
+                    self.fetchMessageInBatches(messageIDs: badIDs)
                 }
             } catch let ex as NSError {
                 Analytics.shared.error(message: .purgeOldMessages,
@@ -2746,12 +2734,30 @@ class MessageDataService : Service, HasLocalStorage {
                         PMLog.D(" error: \(String(describing: error))")
                     }
                 }
-                self.fetchMetadata(with: messagesNoCache)
+
+                self.fetchMessageInBatches(messageIDs: messagesNoCache)
+
                 DispatchQueue.main.async {
                     completion?(task, nil, error)
                     return
                 }
             }
+        }
+    }
+
+    private func fetchMessageInBatches(messageIDs: [String]) {
+        //split the api call in case there are too many messages
+        var temp: [String] = []
+        for i in 0..<messageIDs.count {
+            if temp.count > 20 {
+                self.fetchMetadata(with: temp)
+                temp.removeAll()
+            } else {
+                temp.append(messageIDs[i])
+            }
+        }
+        if !temp.isEmpty {
+            self.fetchMetadata(with: temp)
         }
     }
     
