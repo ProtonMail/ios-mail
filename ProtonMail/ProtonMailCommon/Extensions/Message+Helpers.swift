@@ -97,7 +97,8 @@ extension Message {
     }
 
     var createTagFromExpirationDate: TagViewModel? {
-        guard let expirationTime = expirationTime else { return nil }
+        guard let expirationTime = expirationTime,
+              messageLocation != .draft else { return nil }
 
         return TagViewModel(
             title: expirationTime.countExpirationTime.apply(style: FontManager.OverlineRegularInteractionStrong),

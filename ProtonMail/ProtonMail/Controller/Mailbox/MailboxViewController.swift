@@ -510,7 +510,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             mailboxCell.id = message.messageID
             mailboxCell.cellDelegate = self
             messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
-            if message.expirationTime != nil {
+            if message.expirationTime != nil &&
+                message.messageLocation != .draft {
                 mailboxCell.startUpdateExpiration()
             }
 

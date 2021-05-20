@@ -496,6 +496,13 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     private func handleDismissDraft() {
+        
+        guard !self.dismissBySending else {
+            self.dismiss()
+            return
+        }
+        
+        // Cancel handling
         let dismiss: (() -> Void) = {
             self.isShowingConfirm = false
             self.dismissKeyboard()
