@@ -773,12 +773,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return
         }
 
-        self.getLatestMessagesRaw { (fetch) in
-            if fetch {
-                //temperay to fix the new messages are not loaded
-                self.fetchNewMessage()
-            }
-        }
+        forceRefreshAllMessages()
     }
     
     private func fetchNewMessage() {
@@ -791,6 +786,83 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.coordinator?.go(to: .troubleShoot)
     }
     
+    private func getLatestMessagesCompletion(task: URLSessionDataTask?, res: [String : Any]?, error: NSError?, handleNoResultLabel: Bool, completeIsFetch: ((_ fetch: Bool) -> Void)?) {
+        self.needToShowNewMessage = false
+        self.newMessageCount = 0
+        self.fetchingMessage = false
+        
+        if self.fetchingStopped! == true {
+            self.refreshControl?.endRefreshing()
+            completeIsFetch?(false)
+            return
+        }
+        
+        if let error = error {
+            self.handleRequestError(error)
+        }
+        
+        var loadMore: Int = 0
+        if error == nil {
+            self.onlineTimerReset()
+            self.viewModel.resetNotificationMessage()
+            if let notices = res?["Notices"] as? [String] {
+                serverNotice.check(notices)
+            }
+            
+            if let more = res?["More"] as? Int {
+               loadMore = more
+            }
+            
+            if loadMore <= 0 {
+                self.viewModel.messageService.updateMessageCount()
+            }
+        }
+        
+        if loadMore > 0 {
+            if self.retryCounter >= 10 {
+                completeIsFetch?(false)
+                delay(1.0) {
+                    self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (_, _, _) in
+                        self.retry()
+                        self.retryCounter += 1
+                    })
+                }
+            } else {
+                completeIsFetch?(false)
+                self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (_, _, _) in
+                    self.retry()
+                    self.retryCounter += 1
+                })
+            }
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                if self.refreshControl.isRefreshing {
+                    self.refreshControl.endRefreshing()
+                }
+            }
+            
+            self.retryCounter = 0
+            if self.fetchingStopped! == true {
+                completeIsFetch?(false)
+                return
+            }
+            if handleNoResultLabel {
+                self.showNoResultLabel()
+            }
+            let _ = self.checkHuman()
+            
+            //temperay to check message status and fetch metadata
+            self.viewModel.messageService.purgeOldMessages()
+            
+            if userCachedStatus.hasMessageFromNotification {
+                userCachedStatus.hasMessageFromNotification = false
+                self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: nil)
+                completeIsFetch?(false)
+            } else {
+                completeIsFetch?(true)
+            }
+        }
+    }
     
     var retryCounter = 0
     @objc internal func getLatestMessages() {
@@ -798,84 +870,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self?.deleteExpiredMessages()
         }
     }
-    internal func getLatestMessagesRaw(_ CompleteIsFetch: ((_ fetch: Bool) -> Void)?) {
+    
+    internal func getLatestMessagesRaw(_ completeIsFetch: ((_ fetch: Bool) -> Void)?) {
         self.hideTopMessage()
         if !fetchingMessage {
             fetchingMessage = true
             self.beginRefreshingManually(animated: self.viewModel.rowCount(section: 0) < 1 ? true : false)
             var handleNoResultLabel: Bool = true
-            let complete : CompletionBlock = { (task, res, error) -> Void in
-                self.needToShowNewMessage = false
-                self.newMessageCount = 0
-                self.fetchingMessage = false
-                
-                if self.fetchingStopped! == true {
-                    self.refreshControl?.endRefreshing()
-                    return
-                }
-                
-                if let error = error {
-                    self.handleRequestError(error)
-                }
-                
-                var loadMore: Int = 0
-                if error == nil {
-                    self.onlineTimerReset()
-                    self.viewModel.resetNotificationMessage()
-                    if let notices = res?["Notices"] as? [String] {
-                        serverNotice.check(notices)
-                    }
-                    
-                    if let more = res?["More"] as? Int {
-                       loadMore = more
-                    }
-                    
-                    if loadMore <= 0 {
-                        self.viewModel.messageService.updateMessageCount()
-                    }
-                }
-                
-                if loadMore > 0 {
-                    if self.retryCounter >= 10 {
-                        delay(1.0) {
-                            self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (_, _, _) in
-                                self.retry()
-                                self.retryCounter += 1
-                            })
-                        }
-                    } else {
-                        self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (_, _, _) in
-                            self.retry()
-                            self.retryCounter += 1
-                        })
-                    }
-                } else {
-                    DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-                        if self.refreshControl.isRefreshing {
-                            self.refreshControl.endRefreshing()
-                        }
-                    }
-                    
-                    self.retryCounter = 0
-                    if self.fetchingStopped! == true {
-                        return
-                    }
-                    if handleNoResultLabel {
-                        self.showNoResultLabel()
-                    }
-                    let _ = self.checkHuman()
-                    
-                    //temperay to check message status and fetch metadata
-                    self.viewModel.messageService.purgeOldMessages()
-                    
-                    if userCachedStatus.hasMessageFromNotification {
-                        userCachedStatus.hasMessageFromNotification = false
-                        self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: nil)
-                    } else {
-                        CompleteIsFetch?(true)
-                    }
-                }
-            }
             self.showRefreshController()
             if let updateTime = viewModel.lastUpdateTime(), updateTime.isNew == false, viewModel.isEventIDValid() {
                 // let response of checkEmptyMailbox decide show label or not.
@@ -883,20 +884,34 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 //fetch
                 self.needToShowNewMessage = true
                 viewModel.fetchEvents(time: Int(updateTime.startTime.timeIntervalSince1970),
-                                      notificationMessageID: self.viewModel.notificationMessageID,
-                                      completion: complete)
+                                      notificationMessageID: self.viewModel.notificationMessageID) { [weak self] task, res, error in
+                    self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: handleNoResultLabel, completeIsFetch: completeIsFetch)
+                }
             } else {// this new
                 if !viewModel.isEventIDValid() { //if event id is not valid reset
-                    viewModel.fetchMessageWithReset(time: 0, completion: complete)
+                    viewModel.fetchMessageWithReset(time: 0) { [weak self] task, res, error in
+                        self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: handleNoResultLabel, completeIsFetch: completeIsFetch)
+                    }
                 }
                 else {
-                    viewModel.fetchMessages(time: 0, foucsClean: false, completion: complete)
+                    viewModel.fetchMessages(time: 0, foucsClean: false) { [weak self] task, res, error in
+                        self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: handleNoResultLabel, completeIsFetch: completeIsFetch)
+                    }
                 }
             }
             self.checkContact()
         }
         
         self.viewModel.getLatestMessagesForOthers()
+    }
+    
+    private func forceRefreshAllMessages() {
+        stopAutoFetch()
+        viewModel.fetchMessageOnlyWithReset(time: 0) { [weak self] task, res, error in
+            self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: true, completeIsFetch: nil)
+            self?.startAutoFetch()
+        }
+        self.viewModel.forceRefreshMessagesForOthers()
     }
     
     fileprivate func showNoResultLabel() {

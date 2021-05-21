@@ -486,6 +486,37 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
+    func fetchMessagesOnlyWithReset(byLabel labelID: String, time: Int, completion: CompletionBlock?) {
+        queue {
+            let getLatestEventID = EventLatestIDRequest()
+            self.apiService.exec(route: getLatestEventID) { (task, IDRes: EventLatestIDResponse) in
+                if !IDRes.eventID.isEmpty {
+                    let completionWrapper: CompletionBlock = { task, responseDict, error in
+                        if error == nil {
+                            lastUpdatedStore.clear()
+                            _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID, context: self.managedObjectContext).ensure {
+                                completion?(task, responseDict, error)
+                            }
+                            return
+                            //lastUpdatedStore.lastEventID = IDRes.eventID
+                        }
+                        completion?(task, responseDict, error)
+                    }
+                    
+                    self.cleanMessage().then { (_) -> Promise<Void> in
+                        lastUpdatedStore.removeUpdateTime(by: self.userID, context: self.managedObjectContext)
+                        return Promise<Void>()
+                    }.ensure {
+                        self.fetchMessages(byLabel: labelID, time: time, forceClean: false, completion: completionWrapper)
+                        self.labelDataService.fetchLabels()
+                    }.cauterize()
+                }  else {
+                    completion?(task, nil, nil)
+                }
+            }
+        }
+    }
+    
     
     func isEventIDValid(context: NSManagedObjectContext) -> Bool {
         let eventID = lastUpdatedStore.lastEventID(userID: self.userID, context: context)

@@ -149,6 +149,36 @@ class MailboxViewModel: StorageLimit {
         }
     }
     
+    func forceRefreshMessagesForOthers() {
+        if fetchingMessageForOhters == false {
+            fetchingMessageForOhters = true
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                guard let users = self.users else { return }
+                guard let secondUser = users.get(not: self.user.userInfo.userId) else { return }
+                let secondComplete : CompletionBlock = { (task, res, error) -> Void in
+                    var loadMore: Int = 0
+                    if error == nil {
+                        if let more = res?["More"] as? Int {
+                            loadMore = more
+                        }
+                        if loadMore <= 0 {
+                            secondUser.messageService.updateMessageCount()
+                        }
+                    }
+                    
+                    if loadMore > 0 {
+                        //self.retry()
+                    } else {
+                        self.fetchingMessageForOhters = false
+                    }
+                }
+                
+                secondUser.messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: 0, completion: secondComplete)
+            }
+        }
+    }
+    
     /// create a fetch controller with labelID
     ///
     /// - Returns: fetched result controller
@@ -406,6 +436,10 @@ class MailboxViewModel: StorageLimit {
     ///   - completion: aync complete handler
     func fetchMessageWithReset(time: Int, completion: CompletionBlock?) {
         messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
+    }
+    
+    func fetchMessageOnlyWithReset(time: Int, completion: CompletionBlock?) {
+        messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
     }
     
     func isEventIDValid() -> Bool {
