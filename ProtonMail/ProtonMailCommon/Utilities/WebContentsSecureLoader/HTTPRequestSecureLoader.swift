@@ -155,7 +155,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         metaWidth.content = "width=device-width";
         var ratio = document.body.offsetWidth/document.body.scrollWidth;
         if (ratio < 1) {
-            metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0";
+            metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
         } else {
             ratio = 1;
         };

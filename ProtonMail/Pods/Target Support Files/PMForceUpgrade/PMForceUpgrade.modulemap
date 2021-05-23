@@ -1,6 +1,0 @@
-framework module PMForceUpgrade {
-  umbrella header "PMForceUpgrade-umbrella.h"
-
-  export *
-  module * { export * }
-}

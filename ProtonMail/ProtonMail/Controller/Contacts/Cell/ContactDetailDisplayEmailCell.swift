@@ -20,8 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import UIKit
+import ProtonCore_UIFoundations
 
 class ContactDetailDisplayEmailCell: UITableViewCell {
     
@@ -29,9 +28,11 @@ class ContactDetailDisplayEmailCell: UITableViewCell {
     @IBOutlet weak var value: UILabel!
     @IBOutlet weak var iconStackView: UIStackView!
     
-    func configCell(title: String, value: String, contactGroupColors: [String]) {        
-        self.title.text = title
-        self.value.text = value
+    func configCell(title: String, value: String, contactGroupColors: [String]) {
+        contentView.backgroundColor = UIColorManager.BackgroundNorm
+
+        self.title.attributedText = title.apply(style: .DefaultSmallWeek)
+        self.value.attributedText = value.apply(style: .Default)
         
         prepareContactGroupIcons(cell: self,
                                  contactGroupColors: contactGroupColors,

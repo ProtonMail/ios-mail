@@ -20,29 +20,26 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import CoreData
+import ProtonCore_UIFoundations
 
 class SearchViewController: ProtonMailViewController {
     
+    @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchTextField: UITextField!
-    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var noResultLabel: UILabel!
-    @IBOutlet weak var cancelButton: UIButton!
     
     // MARK: - Private Constants
     fileprivate let kAnimationDuration: TimeInterval = 0.3
-    fileprivate let kSearchCellHeight: CGFloat = 64.0
-    fileprivate let kCellIdentifier: String = "SearchedCell"
     fileprivate let kSegueToMessageDetailController: String = "toMessageDetailViewController"
     
     internal var user: UserManager!
     private let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
     private var messageTapped = false
     
-    private lazy var replacingEmails : [Email] = { [unowned self] in
+    lazy var replacingEmails: [Email] = { [unowned self] in
         return user.contactService.allEmails()
     }()
     
@@ -87,33 +84,25 @@ class SearchViewController: ProtonMailViewController {
 
     fileprivate var query: String = ""
 
+    private let cellPresenter = NewMailboxMessageCellPresenter()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
+        searchBar.cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        searchBar.textField.addTarget(self, action: #selector(textHasChanged), for: .editingChanged)
+        searchBar.clearButton.addTarget(self, action: #selector(clearAction), for: .touchUpInside)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.noSeparatorsBelowFooter()
-        self.tableView.RegisterCell(MailboxMessageCell.Constant.identifier)
+        self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
         self.tableView.contentInsetAdjustmentBehavior = .automatic
+        self.tableView.estimatedRowHeight = 100
+        self.tableView.backgroundColor = .clear
         
         self.edgesForExtendedLayout = UIRectEdge()
         self.extendedLayoutIncludesOpaqueBars = false;
         self.navigationController?.navigationBar.isTranslucent = false;
-        
-        searchTextField.autocapitalizationType = UITextAutocapitalizationType.none
-        searchTextField.returnKeyType = .search
-        searchTextField.delegate = self
-        searchTextField.font = Fonts.h4.regular
-        searchTextField.textColor = UIColor.white
-        searchTextField.tintColor = UIColor.white
-        searchTextField.attributedPlaceholder = NSAttributedString(string: LocalString._general_search_placeholder, attributes:
-            [
-                NSAttributedString.Key.foregroundColor: UIColor.white,
-                NSAttributedString.Key.font: Fonts.h3.light
-            ])
-        
-        searchTextField.becomeFirstResponder()
         
         self.progressBar.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.progressBar)
@@ -127,7 +116,23 @@ class SearchViewController: ProtonMailViewController {
                 self.fetchLocalObjects()
             }
         }
+
+        navigationBarView.addSubview(searchBar)
+        [
+            searchBar.topAnchor.constraint(equalTo: navigationBarView.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: navigationBarView.leadingAnchor, constant: 16),
+            searchBar.trailingAnchor.constraint(equalTo: navigationBarView.trailingAnchor, constant: -16),
+            searchBar.bottomAnchor.constraint(equalTo: navigationBarView.bottomAnchor)
+        ].activate()
+
+        searchBar.textField.delegate = self
+        searchBar.textField.becomeFirstResponder()
+
+        activityIndicator.color = UIColorManager.BrandNorm
+        activityIndicator.isHidden = true
     }
+
+    let searchBar = SearchBarView()
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -158,7 +163,7 @@ class SearchViewController: ProtonMailViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        searchTextField.resignFirstResponder()
+        searchBar.textField.resignFirstResponder()
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
@@ -168,7 +173,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func indexLocalObjects(_ completion: @escaping ()->Void) {
-        let context = CoreDataService.shared.makeReadonlyBackgroundManagedObjectContext()
+        let context = CoreDataService.shared.operationContext
         var count = 0
         context.performAndWait {
             do {
@@ -248,7 +253,7 @@ class SearchViewController: ProtonMailViewController {
             return nil
         }
         
-        let context = CoreDataService.shared.mainManagedObjectContext
+        let context = CoreDataService.shared.mainContext
         context.performAndWait {
             let messages = messageIds.compactMap { oldId -> Message? in
                 let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
@@ -283,12 +288,12 @@ class SearchViewController: ProtonMailViewController {
 //            return
 //        }
         noResultLabel.isHidden = true
-        tableView.showLoadingFooter()
+        showActivityIndicator()
         
         let service = user.messageService
         service.search(query, page: pageToLoad) { (messageBoxes, error) -> Void in
-            DispatchQueue.main.async {
-                self.tableView.hideLoadingFooter()
+            DispatchQueue.main.async { [weak self] in
+                self?.hideActivityIndicator()
             }
 
             guard error == nil, let messages = messageBoxes else {
@@ -310,7 +315,7 @@ class SearchViewController: ProtonMailViewController {
                 return
             }
 
-            let context = CoreDataService.shared.mainManagedObjectContext
+            let context = CoreDataService.shared.mainContext
             context.perform {
                 let mainQueueMessages = messages.compactMap { context.object(with: $0.objectID) as? Message }
                 if pageToLoad > 0 {
@@ -326,6 +331,16 @@ class SearchViewController: ProtonMailViewController {
         if (self.searchResult.count - 1) <= indexPath.row {
             self.fetchRemoteObjects(query, page: self.currentPage + 1)
         }
+    }
+
+    private func showActivityIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+
+    private func hideActivityIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
     }
     
     private func updateTapped(status: Bool) {
@@ -344,12 +359,25 @@ class SearchViewController: ProtonMailViewController {
         }
     }
 
-    @IBAction func tapAction(_ sender: AnyObject) {
-        searchTextField.resignFirstResponder()
+    @objc
+    private func textHasChanged() {
+        searchBar.clearButton.isHidden = searchBar.textField.text?.isEmpty == true
     }
+
+    @objc
+    private func clearAction() {
+        searchBar.textField.text = nil
+        searchBar.textField.sendActions(for: .editingChanged)
+    }
+
+    @IBAction func tapAction(_ sender: AnyObject) {
+        searchBar.textField.resignFirstResponder()
+    }
+
     // MARK: - Button Actions
     
-    @IBAction func cancelButtonTapped(_ sender: UIButton) {
+    @objc
+    private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -385,30 +413,43 @@ class SearchViewController: ProtonMailViewController {
                                                     msgService: user.messageService,
                                                     user: user,
                                                     coreDataService: CoreDataService.shared)//FIXME
-        if let navigationController = self.navigationController
-        {
+        let board = UIStoryboard.Storyboard.composer.storyboard
+        if let navigationController = self.navigationController,
+           let next = board.instantiateViewController(withIdentifier: "ComposeContainerViewController") as? ComposeContainerViewController {
+            let composerVM = ComposeContainerViewModel(editorViewModel: viewModel,
+                                                      uiDelegate: next)
             let composer = ComposeContainerViewCoordinator(nav: navigationController,
-                                                           viewModel: ComposeContainerViewModel(editorViewModel: viewModel),
+                                                           viewModel: composerVM,
                                                            services: ServiceFactory.default)
+            
+            next.set(viewModel: composerVM)
+            next.set(coordinator: composer)
             // this will present composer in a modal which is discouraged
             // TODO: refactor when implementing enc search
             composer.start()
+//            if #available(iOS 13.0, *) {
+//                next.isModalInPresentation = false
+//            }
+            self.present(next, animated: true, completion: nil)
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == kSegueToMessageDetailController) {
-            let messageDetailViewController = segue.destination as! MessageContainerViewController
-            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
-            if let indexPathForSelectedRow = indexPathForSelectedRow {
-                //FIXME
-                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user, coreDataService: CoreDataService.shared))
-                messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
-            } else {
-                PMLog.D("No selected row.")
-            }
-        }
-    }
+
+    // FIXME: - To remove
+
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if (segue.identifier == kSegueToMessageDetailController) {
+//            let messageDetailViewController = segue.destination as! MessageContainerViewController
+//            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
+//            if let indexPathForSelectedRow = indexPathForSelectedRow {
+//                //FIXME
+//                #warning("v4 refactor the labelID")
+//                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user, labelID: ""))
+//                messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
+//            } else {
+//                PMLog.D("No selected row.")
+//            }
+//        }
+//    }
 }
 
 // MARK: - UITableViewDataSource
@@ -424,20 +465,27 @@ extension SearchViewController: UITableViewDataSource {
     }
     
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let mailboxCell = tableView.dequeueReusableCell(withIdentifier: MailboxMessageCell.Constant.identifier, for: indexPath) as? MailboxMessageCell else
-        {
+        guard let mailboxCell = tableView.dequeueReusableCell(
+                withIdentifier: NewMailboxMessageCell.defaultID(),
+                for: indexPath
+        ) as? NewMailboxMessageCell else {
             assert(false)
             return UITableViewCell()
         }
         
         let message = self.searchResult[indexPath.row]
-        mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "", replacingEmails: replacingEmails)
+        let viewModel = buildViewModel(message: message)
+        cellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
         return mailboxCell
     }
     
     @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.zeroMargin()
         self.initiateFetchIfCloseToBottom(indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
     }
 }
 
@@ -447,7 +495,6 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController: UITableViewDelegate {
     
     @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         if self.getTapped() {
             // Fetching other draft data
             tableView.deselectRow(at: indexPath, animated: true)
@@ -455,17 +502,22 @@ extension SearchViewController: UITableViewDelegate {
         }
         
         // open messages in MessaveContainerViewController
-        guard case let message = self.searchResult[indexPath.row], message.contains(label: .draft) else {
+        let message = self.searchResult[indexPath.row]
+        guard message.contains(label: .draft) else {
             self.updateTapped(status: false)
-            self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
+            guard let navigationController = navigationController else { return }
+            let coordinator = SingleMessageCoordinator(
+                navigationController: navigationController,
+                labelId: "",
+                message: message,
+                user: user
+            )
+            coordinator.start()
             return
         }
         self.prepareForDraft(message)
     }
-    
-    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return kSearchCellHeight
-    }
+
 }
 
 

@@ -23,6 +23,7 @@
 
 import XCTest
 import Crypto
+import OpenPGP
 
 @testable import ProtonMail
 

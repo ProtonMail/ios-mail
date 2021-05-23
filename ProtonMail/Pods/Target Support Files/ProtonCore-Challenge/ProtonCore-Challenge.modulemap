@@ -1,0 +1,6 @@
+framework module ProtonCore_Challenge {
+  umbrella header "ProtonCore-Challenge-umbrella.h"
+
+  export *
+  module * { export * }
+}

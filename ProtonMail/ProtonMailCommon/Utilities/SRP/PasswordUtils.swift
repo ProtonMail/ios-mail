@@ -23,6 +23,8 @@
 
 import Foundation
 import OpenPGP
+import ProtonCore_Authentication
+import ProtonCore_SRP
 
 enum PasswordError: Error {
     case hashEmpty
@@ -70,8 +72,8 @@ final class PasswordUtils {
             }
         }
         
-        //backup plan when native bcrypt return empty string
-        if let out = JKBCrypt.hashPassword(password, withSalt: real_salt), !out.isEmpty {
+        /* TODO NOTE for Feng: migrate this code to ProtonCore's version of bcrypt */
+        if let out = real_salt.data(using: .utf8).map({ PasswordHash.hashPassword(password, salt: $0) }), !out.isEmpty {
             let size = out.count
             if size > 4 {
                 let index = out.index(out.startIndex, offsetBy: 4)

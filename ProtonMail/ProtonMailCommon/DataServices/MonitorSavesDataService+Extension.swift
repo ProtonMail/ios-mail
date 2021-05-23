@@ -23,12 +23,12 @@
 
 import Foundation
 
-extension MonitorSavesDataService {
-    func registerMessage(attribute: String, handler: @escaping ((Message) -> Void)) {
-        registerEntityName(Message.Attributes.entityName, attribute: attribute, handler: { managedObject in
-            if let message = managedObject as? Message {
-                handler(message)
-            }
-        })
-    }
-}
+//extension MonitorSavesDataService {
+//    func registerMessage(attribute: String, handler: @escaping ((Message) -> Void)) {
+//        registerEntityName(Message.Attributes.entityName, attribute: attribute, handler: { managedObject in
+//            if let message = managedObject as? Message {
+//                handler(message)
+//            }
+//        })
+//    }
+//}

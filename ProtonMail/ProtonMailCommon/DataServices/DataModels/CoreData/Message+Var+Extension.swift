@@ -22,8 +22,8 @@
 
 
 import Foundation
-import PMCommon
-
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
 extension Message {
     
@@ -125,27 +125,13 @@ extension Message {
         var labelIDs = [String]()
         let labels = self.labels
         for l in labels {
-            if let label = l as? Label, label.exclusive == false {
+            if let label = l as? Label, label.type == 1 {
                 if label.labelID.preg_match ("(?!^\\d+$)^.+$") {
                     labelIDs.append(label.labelID )
                 }
             }
         }
         return labelIDs
-    }
-    
-    /// get the lable IDs with the info about exclusive
-    ///
-    /// - Returns: dict
-    func getLabelIDs() -> [String: Bool] {
-        var out : [String : Bool] = [String : Bool]()
-        let labels = self.labels
-        for l in labels {
-            if let label = l as? Label {
-                out[label.labelID] = label.exclusive
-            }
-        }
-        return out
     }
     
     /// check if message replied

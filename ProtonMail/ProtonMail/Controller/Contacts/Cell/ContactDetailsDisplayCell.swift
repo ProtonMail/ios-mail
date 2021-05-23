@@ -20,19 +20,21 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
-
+import ProtonCore_UIFoundations
 
 final class ContactDetailsDisplayCell: UITableViewCell {
     
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var value: UILabel!
-    
-    
+
     func configCell(title : String, value : String) {
-        self.title.text = title
-        self.value.text = value
+        contentView.backgroundColor = UIColorManager.BackgroundNorm
+
+        self.title.attributedText = title.apply(style: .DefaultSmallWeek)
+        
+        var attribute = FontManager.Default
+        attribute.addTruncatingTail()
+        self.value.attributedText = value.apply(style: attribute)
     }
     
 }

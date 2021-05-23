@@ -126,7 +126,7 @@ class LabelsView: PMView {
         var tmplabels : [Label] = []
         if let alllabels = labels {
             for l in alllabels {
-                if l.exclusive == false {
+                if l.type == 1 {
                     tmplabels.append(l)
                 }
             }

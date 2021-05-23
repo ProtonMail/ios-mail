@@ -25,7 +25,6 @@ import Foundation
 
 class ContainableComposeViewModel: ComposeViewModelImpl {
     @objc internal dynamic var contentHeight: CGFloat = 0.1
-    @objc internal dynamic var showExpirationPicker: Bool = false
     private let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
 }
 

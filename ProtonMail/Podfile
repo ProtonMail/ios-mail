@@ -1,45 +1,125 @@
+source 'https://cdn.cocoapods.org/'
 platform :ios, '11.0'
+
 inhibit_all_warnings!
 use_frameworks!
 
+def proton_core_path
+  'git@gitlab.protontech.ch:apple/shared/protoncore.git'
+end
+
+def proton_core_branch
+  'main'
+end
+
 def pm_shared_pods
-  pod 'PMCrypto', :git => 'git@gitlab.protontech.ch:apple/shared/pmcrypto.git', :tag => '2.1.10'
-  # this is needed by PMKeymaker, otherwise will fetch outdated version from cocoapods
-  pod 'EllipticCurveKeyPair', :git => 'https://github.com/abjurato/EllipticCurveKeyPair.git', :tag => '1.0.4'
-  pod 'PMAuthentication', :git => 'git@gitlab.protontech.ch:apple/shared/pmauthentication.git', :branch => 'develop', :testspecs => ['Tests']
-  pod 'PMKeymaker', :git => 'git@gitlab.protontech.ch:apple/shared/pmkeymaker.git', :branch => 'develop'
+  pod 'ProtonCore-Crypto', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-SRP', :git => proton_core_path, :branch => proton_core_branch
+
+  # dependencies of Authentication
+  pod "ProtonCore-Services", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-Log", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-DataModel", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-Utilities", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-Doh", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-Networking", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-APIClient", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-OpenPGP", :git => proton_core_path, :branch => proton_core_branch
+
+  pod 'ProtonCore-Authentication', :git => proton_core_path, :branch => proton_core_branch, :testspecs => ['Tests']
+
+  # dependencies of Keymaker
+  pod 'ProtonCore-Crypto', :git => proton_core_path, :branch => proton_core_branch
+
+  pod 'ProtonCore-Keymaker', :git => proton_core_path, :branch => proton_core_branch
+
+  # dependencies of Payments
+  pod 'ProtonCore-APIClient', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-Networking', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-Doh', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-Log', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-Services', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-DataModel', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-Utilities', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-Authentication', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-Crypto', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-OpenPGP', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-SRP', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-Foundations', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :branch => proton_core_branch
+
+  pod 'ProtonCore-Payments', :git => proton_core_path, :branch => proton_core_branch
+
 end
 
 def common_pods
   pm_shared_pods
 
-  pod 'OpenPGP', :git => 'git@gitlab.protontech.ch:apple/shared/pmopenpgp.git', :branch => 'develop' #:path => '../OpenPGP'
+  # dependencies of UIFoundations
+  pod 'ProtonCore-Log', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-Foundations', :git => proton_core_path, :branch => proton_core_branch
+
+  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :branch => proton_core_branch
+
+  # dependencies of Common
+  pod "ProtonCore-Services", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-Log", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-DataModel", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-Utilities", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-Doh", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-Networking", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-APIClient", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-UIFoundations", :git => proton_core_path, :branch => proton_core_branch
+  pod "ProtonCore-Foundations", :git => proton_core_path, :branch => proton_core_branch
+
+  pod 'ProtonCore-Common', :git => proton_core_path, :branch => proton_core_branch, :testspecs => ['Tests']
+
+  pod 'ProtonCore-OpenPGP', :git => proton_core_path, :branch => proton_core_branch
+
   pod 'Groot', '3.0.1'
   pod 'AFNetworking', '4.0.1'
   pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
   pod 'Masonry', '1.1.0'
   pod 'UIColor+Hex', '1.0.1'
-  pod 'MCSwipeTableViewCell', '~> 2.1.4'
-  pod 'PromiseKit', '~> 6.0'
-  pod 'AwaitKit', '~> 5.0.0'
+  pod 'PromiseKit', '6.13.1'
+  pod 'AwaitKit', '5.0.1'
+  pod 'MCSwipeTableViewCell', '2.1.4'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '5.2.2'
   pod 'MBProgressHUD' , '1.1.0'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
-  pod 'PMCommon', :path => '../Networking', :testspecs => ['Tests']
+  pod 'SwiftGen', '~> 6.0'
 end
 
 def pm_pods
+
   common_pods
 
-  pod 'SWRevealViewController', '2.3.0'
+  pod 'SwipyCell', '4.0.1'
   pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
-  pod 'PMChallenge', :git => 'git@gitlab.protontech.ch:apple/shared/pmchallenge.git', :tag => '0.0.3'
-  pod 'PMPayments', :git => 'git@gitlab.protontech.ch:apple/shared/pmpayments.git', :branch => 'develop'
-  pod 'PMCoreTranslation', :git => 'git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git', :branch => 'develop'
-  pod 'PMLog', :git => 'git@gitlab.protontech.ch:apple/shared/pmlog.git', :branch => 'master'
-  pod 'PMUIFoundations', :git => 'git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git', :branch => 'master'
-  pod 'PMHumanVerification', :git => 'git@gitlab.protontech.ch:apple/shared/pmhumanverification.git', :branch => 'Develop'
-  pod 'PMForceUpgrade', :git => 'git@gitlab.protontech.ch:apple/shared/pmforceupgrade.git', :branch => 'develop'
+
+  # dependencies of Challenge
+  pod 'ProtonCore-Foundations', :git => proton_core_path, :branch => proton_core_branch
+
+  pod 'ProtonCore-Challenge', :git => proton_core_path, :branch => proton_core_branch
+
+  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :branch => proton_core_branch
+
+  pod 'ProtonCore-Log', :git => proton_core_path, :branch => proton_core_branch
+
+  # dependencies of AccountSwitcher
+  pod 'ProtonCore-Log', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-Foundations', :git => proton_core_path, :branch => proton_core_branch
+
+  pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :branch => proton_core_branch
+  
+  pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :branch => proton_core_branch
+  pod 'ProtonCore-HumanVerification', :git => proton_core_path, :branch => proton_core_branch
+
+  pod 'SideMenuSwift', '2.0.6'
+  pod "SkeletonView", '1.11.0'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug']
 end
 
@@ -61,18 +141,20 @@ end
 
 target 'ProtonMailDev' do
   pm_pods
+end
 
-  target 'PushServiceDev' do
-    inherit! :search_paths
-  end
+target 'PushServiceDev' do
+  pm_shared_pods
 end
 
 target 'ProtonMailTests' do
   inherit! :search_paths
-  pod 'OpenPGP', :git => 'git@gitlab.protontech.ch:apple/shared/pmopenpgp.git', :branch => 'develop' #:path => '../OpenPGP'
   pod 'AFNetworking', '4.0.1'
   pod 'OHHTTPStubs/Swift', '9.0.0'
   pod 'Groot', '3.0.1'
+  pod 'PromiseKit', '6.13.1'
+
+  pm_pods
 end
 
 target 'ProtonMailUITests' do
@@ -102,6 +184,7 @@ post_install do | installer |
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
       config.build_settings['SWIFT_VERSION'] = '5.0'
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
       if config.name == 'Release'
         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
         else
@@ -110,3 +193,4 @@ post_install do | installer |
     end
   end
 end
+

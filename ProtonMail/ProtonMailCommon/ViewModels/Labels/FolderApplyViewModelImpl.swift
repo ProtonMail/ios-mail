@@ -23,19 +23,15 @@
 
 import Foundation
 import CoreData
-import PMCommon
 import PromiseKit
+import ProtonCore_Services
 
 final class FolderApplyViewModelImpl : LabelViewModel {
     private var messages : [Message]!
     private var labelMessages : [String : LabelMessageModel]!
     
-    private let messageService : MessageDataService
-    
-    init(msg:[Message], folderService: LabelsDataService, messageService: MessageDataService, apiService: APIService, coreDataService: CoreDataService) {
-        self.messageService = messageService
-        
-        super.init(apiService: apiService, labelService: folderService, coreDataService: coreDataService)
+    init(msg:[Message], folderService: LabelsDataService, messageService: MessageDataService, apiService: APIService) {
+        super.init(apiService: apiService, labelService: folderService, messageService: messageService)
         self.messages = msg
         self.labelMessages = [String : LabelMessageModel]()
     }
@@ -107,19 +103,21 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     
     override func apply(archiveMessage : Bool) -> Promise<Bool> {
         return Promise { seal in
-            let context = self.coreDataService.mainManagedObjectContext
-            self.coreDataService.enqueue(context: context) { (context) in
-                for (key, value) in self.labelMessages {
-                    if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
-                        for mm in self.messages {
-                            let flable = mm.firstValidFolder() ?? Message.Location.inbox.rawValue
-                            let id = mm.selfSent(labelID: flable)
-                            self.messageService.move(message: mm, from: id ?? flable, to: key)
-                        }
-                    }
+            for (key, value) in self.labelMessages {
+                guard value.currentStatus != value.origStatus &&
+                        value.currentStatus == 2 else {
+                    continue
                 }
-                seal.fulfill(true)
+                //add
+                var fLabels = [String]()
+                for mm in self.messages {
+                    let flable = mm.firstValidFolder() ?? Message.Location.inbox.rawValue
+                    let id = mm.selfSent(labelID: flable) ?? flable
+                    fLabels.append(id)
+                }
+                self.messageService.move(messages: self.messages, from: fLabels, to: key)
             }
+            seal.fulfill(true)
         }
     }
     
@@ -127,38 +125,12 @@ final class FolderApplyViewModelImpl : LabelViewModel {
         return LocalString._labels_move_to_folder
     }
     
-    override func cancel() {
-        //TODO:: cleanup
-//        let context = sharedCoreDataService.newMainManagedObjectContext()
-//        for (_, value) in self.labelMessages {
-//            
-//            for mm in self.messages {
-//                let labelObjs = mm.mutableSetValueForKey("labels")
-//                labelObjs.removeObject(value.label)
-//                mm.setValue(labelObjs, forKey: "labels")
-//            }
-//            
-//            for mm in value.originalSelected {
-//                let labelObjs = mm.mutableSetValueForKey("labels")
-//                labelObjs.addObject(value.label)
-//                mm.setValue(labelObjs, forKey: "labels")
-//            }
-//        }
-//        
-//        let error = context.saveUpstreamIfNeeded()
-//        if let error = error {
-//            PMLog.D("error: \(error)")
-//        }
-    }
-    
     override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         let hasSent = self.messages.first { $0.contains(label: "2") } != nil // hidden sent, unremovable
         return labelService.fetchedResultsController(hasSent ? .folderWithOutbox : .folderWithInbox )
     }
     
-    
     override func getFetchType() -> LabelFetchType {
         return .folder
     }
-
 }

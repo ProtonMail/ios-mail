@@ -36,7 +36,6 @@ class SignInCoordinator: DefaultCoordinator {
         case settings  = "toSettingsSegue"
         case bugs      = "toBugsSegue"
         case contacts  = "toContactsSegue"
-        case feedbacks = "toFeedbackSegue"
         case plan      = "toServicePlan"
         
         init?(rawValue: String) {
@@ -46,7 +45,6 @@ class SignInCoordinator: DefaultCoordinator {
             case "toSettingsSegue": self = .settings
             case "toBugsSegue": self = .bugs
             case "toContactsSegue": self = .contacts
-            case "toFeedbackSegue": self = .feedbacks
             case "toServicePlan": self = .plan
             default: return nil
             }
@@ -71,8 +69,8 @@ class SignInCoordinator: DefaultCoordinator {
     
     internal func follow(_ deepLink: DeepLink) {
         // FIXME: does this make sense? do we ever get here?
-        if let path = deepLink.popFirst, let dest = MenuCoordinatorNew.Destination(rawValue: path.name) {
-            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: deepLink)
+        if let path = deepLink.popFirst, let _ = MenuCoordinator.getLocation(by: path.name, value: nil) {
+            self.viewController?.performSegue(withIdentifier: path.name, sender: deepLink)
         }
     }
     

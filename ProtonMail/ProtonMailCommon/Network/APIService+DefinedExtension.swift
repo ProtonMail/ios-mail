@@ -22,32 +22,33 @@
 
 
 import Foundation
-import PMCommon
-import PMAuthentication
+import ProtonCore_APIClient
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
-    enum AuthStatus {
-        case resCheck
-        case ask2FA
-    }
+enum AuthStatus {
+    case resCheck
+    case ask2FA
+}
 
-    struct GeneralResponse {
-        static let errorCode = "Code"
-        static let errorMsg  = "Error"
-    }
+struct GeneralResponse {
+    static let errorCode = "Code"
+    static let errorMsg  = "Error"
+}
 
-    // MARK: - Internal variables
-    
-    internal typealias AFNetworkingFailureBlock = (URLSessionDataTask?, Error?) -> Void
-    internal typealias AFNetworkingSuccessBlock = (URLSessionDataTask?, Any?) -> Void
+// MARK: - Internal variables
 
-    internal typealias AuthInfo                 = (accessToken: String?, expiresId: TimeInterval?, refreshToken: String?, userID: String?)
-    internal typealias AuthComplete             = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ hasError : NSError?) -> Void
-    //internal typealias AuthRefreshComplete      = (_ task: URLSessionDataTask?, _ auth: Credential?, _ hasError : NSError?) -> Void
+internal typealias AFNetworkingFailureBlock = (URLSessionDataTask?, Error?) -> Void
+internal typealias AFNetworkingSuccessBlock = (URLSessionDataTask?, Any?) -> Void
 
-    
-    internal typealias AuthCredentialBlock      = (AuthCredential?, NSError?) -> Void
+internal typealias AuthInfo                 = (accessToken: String?, expiresId: TimeInterval?, refreshToken: String?, userID: String?)
+internal typealias AuthComplete             = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ hasError : NSError?) -> Void
+//internal typealias AuthRefreshComplete      = (_ task: URLSessionDataTask?, _ auth: Credential?, _ hasError : NSError?) -> Void
+
+
+internal typealias AuthCredentialBlock      = (AuthCredential?, NSError?) -> Void
 //    internal typealias AuthCompleteBlock        = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ authStatus: AuthStatus, _ res: AuthResponse?, _ error : NSError?) -> Void
 
-    
-    internal typealias AuthCompleteBlockNew = (_ mailpassword: String?, _ authStatus: AuthStatus, _ credential: AuthCredential?, _ context:  TwoFactorContext?, _ userInfo: UserInfo?, _ error : NSError?) -> Void
+
+internal typealias AuthCompleteBlockNew = (_ mailpassword: String?, _ authStatus: AuthStatus, _ credential: AuthCredential?, _ context:  TwoFactorContext?, _ userInfo: UserInfo?, _ error : NSError?) -> Void
 

@@ -24,14 +24,14 @@
 import Foundation
 import AwaitKit
 import PromiseKit
-import PMKeymaker
 import Crypto
-import PMCommon
-#if !APP_EXTENSION
-import PMHumanVerification
-#endif
+import ProtonCore_DataModel
+import ProtonCore_Doh
+import ProtonCore_Keymaker
+import ProtonCore_Networking
+import ProtonCore_Services
 
-protocol UsersManagerDelegate: class {
+protocol UsersManagerDelegate: AnyObject {
     func migrating()
     func session()
 }
@@ -216,9 +216,11 @@ class UsersManager : Service, Migrate {
     }
     
     func active(uid: String) {
-        if let index = self.users.enumerated().first(where: { $1.isMatch(sessionID: uid) })?.offset {
-            self.users.swapAt(0, index)
+        guard let index = self.users.firstIndex(where: { $0.isMatch(sessionID: uid) }) else {
+            return
         }
+        let user = self.users.remove(at: index)
+        self.users.insert(user, at: 0)
         self.save()
     }
     
@@ -226,8 +228,8 @@ class UsersManager : Service, Migrate {
         guard self.users.count > 0, index < users.count, index != 0 else {
             return
         }
-        
-        self.users.swapAt(0, index)
+        let user = self.users.remove(at: index)
+        self.users.insert(user, at: 0)
         self.save()
     }
     //TODO:: referance could try to use weak.
@@ -347,7 +349,6 @@ class UsersManager : Service, Migrate {
         
         if let oldAuth = oldAuthFetch(),  let user = oldUserInfo() {
             let session = oldAuth.sessionID
-            let userID = user.userId
             
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             apiService.serviceDelegate = self
@@ -414,7 +415,6 @@ class UsersManager : Service, Migrate {
             
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 apiService.serviceDelegate = self
                 #if !APP_EXTENSION
@@ -426,6 +426,7 @@ class UsersManager : Service, Migrate {
                 users.append(newUser)
             }
         }
+
         users.forEach { $0.fetchUserInfo() }
         self.loggedIn()
     }
@@ -464,7 +465,7 @@ extension UsersManager : UserManagerSave {
 /// cache login check
 extension UsersManager {
     func launchCleanUpIfNeeded() {
-        self.users.forEach { $0.launchCleanUpIfNeeded() }
+
     }
     
     func logout(user: UserManager, shouldShowAccountSwitchAlert: Bool = false) -> Promise<Void> {
@@ -508,9 +509,10 @@ extension UsersManager {
             self.active(uid: nextFirst)
         }
         if !disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
-            self.disconnectedUsers.append(.init(defaultDisplayName: user.defaultDisplayName,
-                                             defaultEmail: user.defaultEmail,
-                                             userID: user.userInfo.userId))
+            let logoutUser: DisconnectedUserHandle = .init(defaultDisplayName: user.defaultDisplayName,
+                                                           defaultEmail: user.defaultEmail,
+                                                           userID: user.userinfo.userId)
+            self.disconnectedUsers.insert(logoutUser, at: 0)
         }
         self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
         self.save()
@@ -535,7 +537,6 @@ extension UsersManager {
             userCachedStatus.signOut()
             self.users.forEach { user in
                 user.userService.signOut(true)
-                user.messageService.launchCleanUpIfNeeded()
             }
             self.users = []
             self.save()
@@ -662,7 +663,6 @@ extension UsersManager {
         // check the older auth and older user format first
         if let oldAuth = oldAuthFetchLagcy(),  let user = oldUserInfoLagcy() {
             let session = oldAuth.sessionID
-            let userID = user.userId
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             apiService.serviceDelegate = self
             #if !APP_EXTENSION
@@ -712,7 +712,6 @@ extension UsersManager {
             
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 apiService.serviceDelegate = self
                 #if !APP_EXTENSION

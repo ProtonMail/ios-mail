@@ -99,16 +99,6 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         }
     }
     
-    override func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController) {
-        super.composeViewHideExpirationView(composeView)
-        self.enclosingScroller?.scroller.isScrollEnabled = true
-    }
-    
-    override func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
-        super.composeViewDidTapExpirationButton(composeView)
-        self.enclosingScroller?.scroller.isScrollEnabled = false
-    }
-    
     override func webViewPreferences() -> WKPreferences {
         let preferences = WKPreferences()
         preferences.javaScriptEnabled = true
@@ -203,9 +193,11 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     }
     private var stepAlert: UIAlertController? {
         didSet {
-            self.presentedViewController?.dismiss(animated: false)
-            if let alert = self.stepAlert {
-                self.present(alert, animated: false, completion: nil)
+            DispatchQueue.main.async {
+                self.presentedViewController?.dismiss(animated: false)
+                if let alert = self.stepAlert {
+                    self.present(alert, animated: false, completion: nil)
+                }
             }
         }
     }
@@ -224,11 +216,11 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
          self.headerView.ccContactPicker,
          self.headerView.bccContactPicker].forEach{ $0.prepareForDesctruction() }
         
-        self.queueObservation = sharedMessageQueue.observe(\.queue, options: [.initial]) { [weak self] _, change in
-            if sharedMessageQueue.queue.isEmpty {
-                self?.step.insert(.queueIsEmpty)
-            }
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateStepWhenTheQueueIsEmpty), name: .queueIsEmpty, object: nil)
+    }
+
+    @objc private func updateStepWhenTheQueueIsEmpty() {
+        self.step.insert(.queueIsEmpty)
     }
     
     private func dismissAnimation() {

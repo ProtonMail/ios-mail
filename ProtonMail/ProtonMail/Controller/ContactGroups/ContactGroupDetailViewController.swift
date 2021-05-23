@@ -24,17 +24,21 @@
 import UIKit
 import PromiseKit
 import MBProgressHUD
+import ProtonCore_UIFoundations
 
-class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol {
     typealias viewModelType = ContactGroupDetailViewModel
 
     var viewModel: ContactGroupDetailViewModel!
     
+    @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var groupNameLabel: UILabel!
     @IBOutlet weak var groupDetailLabel: UILabel!
+    @IBOutlet weak var sendImage: UIImageView!
     @IBOutlet weak var groupImage: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
+    private var editBarItem: UIBarButtonItem!
     
     private let kToContactGroupEditSegue = "toContactGroupEditSegue"
     private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
@@ -43,6 +47,9 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     
     func set(viewModel: ContactGroupDetailViewModel) {
         self.viewModel = viewModel
+        self.viewModel.reloadView = { [weak self] in
+            self?.reload()
+        }
     }
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {
@@ -64,8 +71,23 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = LocalString._contact_groups_detail_view_title
-        
+
+        editBarItem = UIBarButtonItem(title: LocalString._general_edit_action,
+                                      style: .plain,
+                                      target: self,
+                                      action: #selector(self.editButtonTapped(_:)))
+        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
+        editBarItem.setTitleTextAttributes(attributes, for: .normal)
+        navigationItem.rightBarButtonItem = editBarItem
+
+        view.backgroundColor = UIColorManager.BackgroundNorm
+        tableView.backgroundColor = UIColorManager.BackgroundNorm
+
+        headerContainerView.backgroundColor = UIColorManager.BackgroundNorm
+
+        sendImage.image = Asset.mailSendIcon.image.withRenderingMode(.alwaysTemplate)
+        sendImage.tintColor = UIColorManager.InteractionNorm
+
         prepareTable()
     }
     
@@ -98,14 +120,13 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     }
 
     private func prepareHeader() {
-        groupNameLabel.text = viewModel.getName()
+        groupNameLabel.attributedText = viewModel.getName().apply(style: .Default)
         
-        groupDetailLabel.text = viewModel.getTotalEmailString()
+        groupDetailLabel.attributedText = viewModel.getTotalEmailString().apply(style: .DefaultSmallWeek)
         
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: UIColor.init(hexString: viewModel.getColor(),
                                                             alpha: 1))
-        
         if let image = sendButton.imageView?.image {
             sendButton.imageView?.contentMode = .center
             sendButton.imageView?.image = UIImage.resize(image: image, targetSize: CGSize.init(width: 20, height: 20))
@@ -149,13 +170,13 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                                                         action: .newDraft,
                                                         msgService: user.messageService,
                                                         user: user,
-                                                        coreDataService: self.viewModel.coreDataService)
+                                                        coreDataService: sharedServices.get(by: CoreDataService.self))
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
                 viewModel.addToContacts(contactGroupVO)
             }
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
         } else if segue.identifier == kToUpgradeAlertSegue {
@@ -179,7 +200,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
 extension ContactGroupDetailViewController: UpgradeAlertVCDelegate {
     func postToPlan() {
         NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
+                                        object: DeepLink(LabelLocation.subscription.labelID))
     }
     func goPlans() {
         if self.presentingViewController != nil {
@@ -204,8 +225,7 @@ extension ContactGroupDetailViewController: UpgradeAlertVCDelegate {
     }
 }
 
-extension ContactGroupDetailViewController: UITableViewDataSource
-{
+extension ContactGroupDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -233,6 +253,12 @@ extension ContactGroupDetailViewController: UITableViewDataSource
                     state: .detailView)
         
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let titleView = view as? UITableViewHeaderFooterView {
+            titleView.textLabel?.text =  titleView.textLabel?.text?.capitalized
+        }
     }
 }
 

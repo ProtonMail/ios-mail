@@ -23,7 +23,8 @@
 
 import Foundation
 import PromiseKit
-import PMCommon
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
 typealias CheckUserNameBlock = (Result<CheckUserExistResponse.AvailabilityStatus>) -> Void
 typealias CreateUserBlock = (Bool, Bool, String, Error?) -> Void

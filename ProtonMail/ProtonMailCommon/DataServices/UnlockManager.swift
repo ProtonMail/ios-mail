@@ -22,11 +22,9 @@
 
 
 import Foundation
-import PMKeymaker
 import LocalAuthentication
-#if !APP_EXTENSION
-import PMPayments
-#endif
+import ProtonCore_Keymaker
+import ProtonCore_Payments
 
 enum SignInUIFlow : Int {
     case requirePin = 0
@@ -40,7 +38,7 @@ protocol CacheStatusInject {
     var pinFailedCount : Int { get set }
 }
 
-protocol UnlockManagerDelegate : class {
+protocol UnlockManagerDelegate : AnyObject {
     func cleanAll()
     func unlocked()
     func isUserStored() -> Bool
@@ -95,8 +93,8 @@ class UnlockManager: Service {
             completion(true)
         }
     }
-    
-    private func validate(mainKey: PMKeymaker.Key?) -> Bool {
+
+    private func validate(mainKey: MainKey?) -> Bool {
         guard let _ = mainKey else { // currently enough: key is Array and will be nil in case it was unlocked incorrectly
             keymaker.lockTheApp() // remember to remove invalid key in case validation will become more complex
             return false
@@ -167,6 +165,11 @@ class UnlockManager: Service {
         let usersManager = sharedServices.get(by: UsersManager.self)
         usersManager.run()
         usersManager.tryRestore()
+        
+        let queueManager = sharedServices.get(by: QueueManager.self)
+        usersManager.users.forEach { (user) in
+            queueManager.registerHandler(user.messageService)
+        }
         
         #if !APP_EXTENSION
         sharedServices.get(by: UsersManager.self).users.forEach {

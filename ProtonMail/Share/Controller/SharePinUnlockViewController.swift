@@ -81,10 +81,6 @@ class SharePinUnlockViewController : UIViewController, CoordinatedNew {
         super.didReceiveMemoryWarning()
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent;
-    }
-    
     func doEnterForeground(){
 //        if userCachedStatus.isTouchIDEnabled {
 //            

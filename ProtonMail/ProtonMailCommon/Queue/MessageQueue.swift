@@ -23,8 +23,8 @@
 
 import Foundation
 
-let sharedMessageQueue = MessageQueue(queueName: "writeQueue")
-let sharedFailedQueue = MessageQueue(queueName: "failedQueue")
+//let sharedMessageQueue = MessageQueue(queueName: "writeQueue")
+//let sharedFailedQueue = MessageQueue(queueName: "failedQueue")
 
 class MessageQueue: PersistentQueue {
     fileprivate struct Key {

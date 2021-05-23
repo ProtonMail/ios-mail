@@ -22,11 +22,23 @@
 /* Service plan capability */
 "%@ storage capacity" = "%@ kapasitas penyimpanan";
 
+/* The title of single selected conversation of action sheet in inbox */
+"%d conversation" = "%d conversation";
+
+/* The title of multiple selected conversations of action sheet in inbox */
+"%d conversations" = "%d conversations";
+
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d Anggota";
 
 /* The string that describes whether there are 2 or more members in the contact group */
 "%d Members" = "%d Anggota";
+
+/* The title of single selected message of action sheet in inbox */
+"%d message" = "%d message";
+
+/* The title of multiple selected messages of action sheet in inbox */
+"%d messages" = "%d messages";
 
 /* auto lock time format */
 "%d Minute" = "%d menit";
@@ -52,6 +64,9 @@
 /* 2fa verification failed */
 "2FA failed. Please try to login again." = "2FA gagal. Coba masuk lagi.";
 
+/* Placeholder */
+"8 to 21 characters long" = "8 to 21 characters long";
+
 /* *
  *  LabelTableViewCell */
 "A message cannot have more than 5 labels" = "Pesan tidak boleh memiliki lebih dari 5 label";
@@ -67,6 +82,9 @@
 
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "Kode akses belum diatur, aktifkan dalam Pengaturan sistem";
+
+/* Alert message is shown when folder name duplicated */
+"A sub-folder with this name already exists in the destination folder" = "A sub-folder with this name already exists in the destination folder";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Akses ke akun ini dinonaktifkan karena tagihan belum dibayar. Silakan masuk lewat protonmail.com untuk membayar tagihan Anda.";
@@ -90,25 +108,25 @@
 "Add accounts" = "Tambah akun";
 
 /* new contacts add Anniversary */
-"Add Anniversary" = "Tambahkan Hari Pernikahan";
+"Add anniversary" = "Add anniversary";
 
 /* new contacts add Birthday */
-"Add Birthday" = "Tambah Ulang Tahun";
+"Add birthday" = "Add birthday";
 
 /* Contacts add new contact */
 "Add Contact" = "Tambah Kontak";
 
 /* add custom label type action */
-"Add Custom Label" = "Tambah Label Khusus";
+"Add custom label" = "Add custom label";
 
 /* Action */
 "Add Folder" = "Tambah Folder";
 
 /* new contacts add Gender */
-"Add Gender" = "Tambahkan Gender";
+"Add gender" = "Add gender";
 
 /* The title for the contact group creation view */
-"Add Group" = "Tambah Grup";
+"Add group" = "Add group";
 
 /* add label action */
 "Add Label" = "Tambah Label";
@@ -138,19 +156,19 @@
 "Add new URL" = "Tambah URL baru";
 
 /* new contacts add Nickname */
-"Add Nickname" = "Tambah Julukan";
+"Add nickname" = "Add nickname";
 
 /* new contacts add Organization */
-"Add Organization" = "Tambah Organisasi";
+"Add organization" = "Add organization";
 
 /* The button text for add profile picture */
-"Add Photo" = "Tambah Foto";
+"Add photo" = "Add photo";
 
 /* mark message star */
 "Add Star" = "Tambahkan Bintang";
 
 /* new contacts add Title */
-"Add Title" = "Tambah Judul";
+"Add title" = "Add title";
 
 /* Title */
 "Add to contacts" = "Tambah ke kontak";
@@ -184,6 +202,9 @@
 /* Description */
 "Also used to reset a forgotten password." = "Gunakan juga untuk mengatur ulang sandi yang terlupakan.";
 
+/* cell title in app settings */
+"Alternative routing" = "Alternative routing";
+
 /* agree check box middle word */
 "and" = "dan";
 
@@ -193,6 +214,9 @@
 /* network troubleshot cell title */
 "Antivirus interference" = "Interferensi Antivirus";
 
+/* Alert message when user tries to discard unsaved changes */
+"Any unsaved changes will be lost." = "Any unsaved changes will be lost.";
+
 /* when server not reachable */
 "API Server not reachable..." = "Server API tidak terjangkau...";
 
@@ -201,9 +225,6 @@
 
 /* Error */
 "App is locked" = "Aplikasi terkunci";
-
-/* cell title in device settings */
-"App Language" = "Bahasa Aplikasi";
 
 /* section title in settings */
 "App Settings" = "Pengaturan Aplikasi";
@@ -217,8 +238,12 @@
 /* Title */
 "Apply Labels" = "Terapkan Label";
 
+/* button title */
+"Apply Password" = "Apply Password";
+
 /* mail location desc
-   menu title */
+   menu title
+   The title of the archive action in action sheet */
 "Archive" = "Arsip";
 
 /* mail location title */
@@ -226,6 +251,12 @@
 
 /* Description */
 "Archived" = "Diarsipkan";
+
+/* Message of message permanent deletion alert */
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete permanently these %d messages?";
+
+/* Message of message permanent deletion alert */
+"Are you sure you want to delete permanently this %d message?" = "Are you sure you want to delete permanently this %d message?";
 
 /* Alert when logout non-primary account from account manager */
 "Are you sure you want to log out?" = "Apakah anda yakin anda ingin keluar?";
@@ -251,8 +282,17 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Setidaknya satu domain/alamat surel penerima tidak ada atau salah format. Pesan dipindah ke draf.";
 
+/* No comment provided by engineer. */
+"attachment" = "attachment";
+
+/* No comment provided by engineer. */
+"Attachment" = "Attachment";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Lampiran telah diimpor";
+
+/* No comment provided by engineer. */
+"attachments" = "attachments";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Lampiran";
@@ -284,11 +324,17 @@
 /* Description */
 "Authentication was cancelled by the system" = "Autentikasi dibatalkan oleh sistem";
 
+/* settings general section title */
+"Auto load embedded image" = "Auto load embedded image";
+
 /* Title */
 "Auto Lock Time" = "Waktu penguncian otomatis";
 
-/* settings general section title */
+/* (No Comment) */
 "Auto Show Images" = "Tampilkan gambar otomatis";
+
+/* settings general section title */
+"Auto show remote content" = "Auto show remote content";
 
 /* section title in settings */
 "Auto-lock" = "Kunci Otomatis";
@@ -330,7 +376,7 @@
 "Buy More Credits" = "Beli Lebih Banyak Kredit";
 
 /* Alert for removing disconnected accounts */
-"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "Dengan menghapus akun ini, anda lagi dapat mengakses kembali akun dari perangkat ini kecuali anda menambahkannya kembali.\n\nApakah anda ingin menghapus akun ini?";
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?";
 
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "Dengan menggunakan protonmail, Anda setuju dengan";
@@ -339,7 +385,7 @@
 "By using protonmail, you agree to our %@ and %@." = "Dengan menggunakan protonmail, Anda setuju dengan %1$@ dan %2$@ kami.";
 
 /* Call the contact (button title text) */
-"Call Contact" = "Panggil Kontak";
+"Call contact" = "Call contact";
 
 /* key size note part 2 */
 "Can take several minutes to setup." = "Pengaturan memerlukan waktu beberapa menit.";
@@ -409,7 +455,8 @@
 /* The error message will be shown when the update of the contact group through API failed */
 "Can't update contact group through the API" = "Tidak dapat memperbarui grup kontak lewat API";
 
-/* Cancel action */
+/* Cancel action
+   general cancel action */
 "Cancel" = "Batal";
 
 /* Action */
@@ -424,15 +471,16 @@
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
 
-/* Title */
+/* message Cc: feild
+   Title */
 "Cc" = "CC";
-
-/* message Cc: feild */
-"Cc:" = "Cc:";
 
 /* *
  *  PhoneVerifyViewController */
 "Cell phone number" = "Nomor ponsel";
+
+/* settings general section title */
+"Change account password" = "Change account password";
 
 /* Title */
 "Change default address to .." = "Ubah alamat bawaan menjadi...";
@@ -443,14 +491,23 @@
 /* change password input label */
 "Change Login Password" = "Ubah Kata Sandi untuk Masuk";
 
+/* settings general section title */
+"Change mailbox password" = "Change mailbox password";
+
 /* Title */
 "Change Mailbox Password" = "Ubah Kata Sandi Kotak Pesan";
+
+/* settings general section title */
+"Change password" = "Ubah kata sandi";
 
 /* title */
 "Change Password" = "Ubah kata sandi";
 
 /* settings protection section title */
 "Change Pin" = "Ganti PIN";
+
+/* The title of change pin code option in security settings */
+"Change Pin code" = "Change Pin code";
 
 /* settings swipe actions section action description */
 "Change right swipe action" = "Ganti tindakan usap ke kanan";
@@ -476,6 +533,9 @@
 /* contact placeholder */
 "City" = "Kota";
 
+/* cell title in device setting */
+"Clear local cache" = "Clear local cache";
+
 /* settings general section title */
 "Clear Local Message Cache" = "Hapus singgahan pesan lokal";
 
@@ -492,6 +552,9 @@
 "Closing" = "Menutup";
 
 /* cell title in device settings */
+"Combined contacts" = "Combined contacts";
+
+/* The title of combined contact in settings */
 "Combined Contacts" = "Kontak Gabungan";
 
 /* *
@@ -536,7 +599,7 @@
 "Connect Account" = "Hubungkan Akun";
 
 /* contact section title */
-"Contact Details" = "Rincian Kontak";
+"Contact details" = "Contact details";
 
 /* Title */
 "Contact the ProtonMail team" = "Hubungi tim ProtonMail";
@@ -548,7 +611,8 @@
    menu title */
 "Contacts" = "Kontak";
 
-/* Action */
+/* Action
+   The title of button of pin code setup1 */
 "Continue" = "Lanjut";
 
 /* Action */
@@ -578,9 +642,6 @@
 /* Description */
 "Create and add Labels to organize your inbox. Long press on a message for all options." = "Buat dan tambahkan Label untuk merapikan kotak masuk Anda. Tekan pesan dengan lama untuk melihat semua opsi.";
 
-/* (No Comment) */
-"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Buat dan tambahkan label untuk merapikan kotak masuk Anda. Tekan dan tahan pesan untuk melihat semua opsi.";
-
 /* title of button in account connect page */
 "Create new account" = "Buat akun baru";
 
@@ -589,6 +650,12 @@
 
 /* Error */
 "Create User failed. Please try again." = "Buat Akun gagal. Coba lagi.";
+
+/* Alert title */
+"Creating folder not allowed" = "Creating folder not allowed";
+
+/* Alert title */
+"Creating label not allowed" = "Creating label not allowed";
 
 /* Change language title */
 "Current Language is: " = "Bahasa Sekarang adalah: ";
@@ -599,8 +666,12 @@
 /* Placeholder */
 "Current password" = "Kata sandi sekarang";
 
+/* No comment provided by engineer. */
+"Current Recovery Email" = "Current Recovery Email";
+
 /* action sheet option
-   contacts default label type */
+   contacts default label type
+   Custom option for time config picker */
 "Custom" = "Sesuaikan";
 
 /* message Date: text */
@@ -609,7 +680,11 @@
 /* like Date: 2017-10-10 */
 "Date: %@" = "Tanggal: %@";
 
-/* Title */
+/* day */
+"day" = "day";
+
+/* days
+   Title */
 "days" = "Hari";
 
 /* Title */
@@ -652,14 +727,26 @@
  *  Contacts View Controller */
 "Delete" = "Hapus";
 
+/* Title of message permanent deletion alert */
+"Delete %d Message" = "Delete %d Message";
+
+/* Title of message permanent deletion alert */
+"Delete %d Messages" = "Delete %d Messages";
+
 /* emptify folder/label confirmation alert */
 "Delete all" = "Hapus semua";
 
 /* Title-Contacts */
-"Delete Contact" = "Hapus kontak";
+"Delete contact" = "Delete contact";
 
 /* The description of the button for deleting the contact group */
-"Delete Contact Group" = "Hapus Grup Kontak";
+"Delete contact group" = "Delete contact group";
+
+/* The title of delete folder button */
+"Delete folder" = "Delete folder";
+
+/* The title of delete label button */
+"Delete label" = "Delete label";
 
 /* mail location desc */
 "Deleted" = "Dihapus";
@@ -673,6 +760,9 @@
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Nonaktifkan Validasi";
+
+/* Action */
+"Discard" = "Discard";
 
 /* Action */
 "Discard changes" = "Buang perubahan";
@@ -696,6 +786,12 @@
 /* Description */
 "Do you want to cancel the process?" = "Anda ingin membatalkan proses?";
 
+/* Warning message */
+"Do you want to discard the changes?" = "Do you want to discard the changes?";
+
+/* No comment provided by engineer. */
+"Do you want to discard your changes?" = "Do you want to discard your changes?";
+
 /* Title */
 "Do you want to save the unsaved changes?" = "Anda ingin menyimpan perubahan?";
 
@@ -718,6 +814,15 @@
 /* title of toast message that user taps the message which is uploading */
 "Draft is still uploading..." = "Draf masih mengunggah...";
 
+/* hint message */
+"Draft moved to trash" = "Draft moved to trash";
+
+/* hint message */
+"Draft restored" = "Draft restored";
+
+/* hint message */
+"Draft saved" = "Draft saved";
+
 /* menu title */
 "Drafts" = "Draf";
 
@@ -727,15 +832,24 @@
 /* Action */
 "Edit" = "Edit";
 
+/* The title for the view where user can select the color for the group */
+"Edit avartar" = "Edit avartar";
+
 /* *
  *  Edit Contact view controller */
 "Edit Contact" = "Edit kontak";
+
+/* The title of edit folder page */
+"Edit folder" = "Edit folder";
 
 /* Title */
 "Edit Folder" = "Edit Folder";
 
 /* The title for the contact group editing view */
-"Edit Group" = "Ubah Grup";
+"Edit group" = "Edit group";
+
+/* The title of edit label page */
+"Edit label" = "Edit label";
 
 /* Title */
 "Edit Label" = "Edit Label";
@@ -744,10 +858,16 @@
 "Edit mobile signature" = "Edit tanda tangan seluler";
 
 /* The button text for edit profile picture */
-"Edit Photo" = "Edit Foto";
+"Edit photo" = "Edit photo";
 
 /* title */
 "Edit signature" = "Edit tanda tangan";
+
+/* Alert title */
+"Editing folder not allowed" = "Editing folder not allowed";
+
+/* Alert title */
+"Editing label not allowed" = "Editing label not allowed";
 
 /* network troubleshot cell title */
 "email" = "email";
@@ -766,10 +886,10 @@
 "Email address is invalid" = "Alamat surel tidak valid";
 
 /* contact detail view, email addresses section title */
-"Email Addresses" = "Alamat Surel";
+"Email addresses" = "Email addresses";
 
 /* Send an email to the current contact (button title text) */
-"Email Contact" = "Kontak Surel";
+"Email contact" = "Email contact";
 
 /* place holder */
 "Email default signature" = "Tanda tangan bawaan surel";
@@ -780,9 +900,6 @@
 /* human check option button */
 "Email Verification" = "Verifikasi Surel";
 
-/* cell title in device setting */
-"Empty Cache" = "Kosongkan Cache";
-
 /* "Cancel" */
 "Empty Folder" = "Kosongkan folder";
 
@@ -790,16 +907,10 @@
 "Empty Label" = "Kosongkan Label";
 
 /* Title */
-"Enable Default Signature" = "Aktifkan Tanda Tangan Bawaan";
+"Enable email notices" = "Enable email notices";
 
 /* settings protection section title */
 "Enable FaceID" = "Aktifkan FaceID";
-
-/* Title */
-"Enable Mobile Signature" = "Aktifkan Tanda Tangan Seluler";
-
-/* Title */
-"Enable Notification Email" = "Aktifkan Pemberitahuan Surel";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "Aktifkan PIN";
@@ -813,11 +924,17 @@
 /* device settings auto lock type title toggle text */
 "Enable PIN/TouchID" = "Aktifkan PIN/TouchID";
 
+/* Title */
+"Enable signature" = "Enable signature";
+
 /* settings protection section title */
 "Enable TouchID" = "Aktifkan TouchID";
 
+/* The footer shown when there is not result in the inbox */
+"Encrypted by Proton" = "Encrypted by Proton";
+
 /* contact section title */
-"Encrypted Contact Details" = "Rincian Kontak Terenkripsi";
+"Encrypted contact details" = "Encrypted contact details";
 
 /* Title */
 "Encrypted for outside" = "Dienkripsi untuk di luar";
@@ -861,6 +978,12 @@
 /* Action in 2fa popup view */
 "Enter" = "Masukkan";
 
+/* The assistive text of textfield of pin code setup1 */
+"Enter a pin code with min 4 characters and max 21 characters." = "Enter a pin code with min 4 characters and max 21 characters.";
+
+/* The title of textfield of pin code setup1 */
+"Enter pin code" = "Enter pin code";
+
 /* Title */
 "Enter Verification Code" = "Masukkan kode verifikasi";
 
@@ -873,11 +996,17 @@
 /* Account manager title */
 "Enter your mailbox password" = "Masukan kata sandi pesan anda";
 
+/* The content of the re auth alert */
+"Enter your password to make changes" = "Enter your password to make changes";
+
 /* set pin title */
 "Enter your PIN" = "Masukkan PIN Anda";
 
 /* Title */
 "Enter your PIN to unlock your inbox." = "Masukkan PIN Anda untuk membuka kunci kotak masuk Anda.";
+
+/* No comment provided by engineer. */
+"Enter your signature here" = "Enter your signature here";
 
 /* settings debug section title */
 "Error Logs" = "Log kesalahan";
@@ -894,7 +1023,7 @@
 /* VoiceOver: email can expire */
 "Expires" = "Kedaluwarsa";
 
-/* expiration time count down */
+/* (No Comment) */
 "Expires in %d days %d hours %d mins %d seconds" = "Kedaluwarsa dalam %d hari %d jam %d menit %d detik";
 
 /* Title */
@@ -927,6 +1056,9 @@
 
 /* place holder */
 "Folder Name" = "Nama Folder";
+
+/* VoiceOver: email belongs to folders */
+"Folders" = "Folders";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Untuk individu yang ingin mendapatkan keuntungan dari komunikasi aman tanpa biaya";
@@ -967,6 +1099,9 @@
 /* contacts talbe cell gender title */
 "Gender" = "Gender";
 
+/* section title in settings */
+"General settings" = "Pengaturan Umum";
+
 /* Title */
 "General Settings" = "Pengaturan Umum";
 
@@ -992,10 +1127,10 @@
 "Government block" = "Blokir dari Pemerintah";
 
 /* The title for the contact group detail view */
-"Group Details" = "Rincian Grup";
+"Group details" = "Group details";
 
 /* The instruction label for the group name textfield */
-"Group Name" = "Nama Grup";
+"Group name" = "Group name";
 
 /* menu title (contact groups) */
 "Groups" = "Grup";
@@ -1018,11 +1153,17 @@
 /* Key size checkbox */
 "High Security" = "Keamanan Tinggi";
 
-/* (No Comment) */
+/* hour */
+"hour" = "hour";
+
+/* hours */
 "hours" = "Jam";
 
 /* Title */
 "Hours" = "Jam";
+
+/* Title of the view showing the message HTML source */
+"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Pemeriksaan Manusia Gagal";
@@ -1057,7 +1198,8 @@
 /* network troubleshot cell title */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "Jika situs Proton di blokir, pengaturan ini memungkinkan aplikasi untuk mencoba perutean jaringan alternatif untuk mencapai Proton, yang mana dapat berguna untuk melewati/mem-bypass firewall atau masalah jaringan. Kami sarankan untuk tetap mengaktifkan pengaturan ini untuk keandalan yang lebih baik. [Pelajari lebih lanjut]";
 
-/* network troubleshot cell title */
+/* network troubleshot cell title
+   The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Jika situs Proton di blokir, pengaturan ini memungkinkan aplikasi untuk mencoba perutean jaringan alternatif untuk mencapai Proton, yang mana dapat berguna untuk melewati/mem-bypass firewall atau masalah jaringan. Kami sarankan untuk tetap mengaktifkan pengaturan ini untuk keandalan yang lebih baik. %1$@";
 
 /* Error */
@@ -1075,6 +1217,12 @@
 
 /* Error */
 "Incorrect PIN," = "PIN salah,";
+
+/* Option title */
+"Inherit color from parent folder" = "Inherit color from parent folder";
+
+/* A label message */
+"Inherited from parent folder" = "Inherited from parent folder";
 
 /* Title */
 "inline attachments" = "lampiran sebaris";
@@ -1109,6 +1257,9 @@
 /* update password error */
 "Invalid hashed password!" = "Sandi hash tidak valid!";
 
+/* The error message of entering an invalid password */
+"Invalid password" = "Invalid password";
+
 /* Error */
 "Invalid Password" = "Kata Sandi tidak valid";
 
@@ -1142,6 +1293,12 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Kunci tidak valid. Silakan kembali dan coba lagi.";
 
+/* No comment provided by engineer. */
+"Label as" = "Label as";
+
+/* The title of the label as action in action sheet */
+"Label as.." = "Label as..";
+
 /* *
  *  MoreOptionsView */
 "Label as..." = "Labeli sebagai...";
@@ -1167,10 +1324,12 @@
 /* Title */
 "Labels/Folders" = "Label/Folder";
 
-/* Title */
+/* cell title in device settings
+   Title */
 "Language" = "Bahasa";
 
-/* network troubleshot cell title */
+/* network troubleshot cell title
+   The title of learn more link */
 "Learn more" = "Pelajari lebih lanjut";
 
 /* Action */
@@ -1179,11 +1338,20 @@
 /* learn more button */
 "Learn more here" = "Pelajari lebih lanjut di sini";
 
+/* settings swipe actions section title */
+"Left to Right" = "Left to Right";
+
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Batas tercapai";
 
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "Dibatasi hingga 150 pesan terkirim/hari";
+
+/* No comment provided by engineer. */
+"Load content" = "Load content";
+
+/* No comment provided by engineer. */
+"Load images" = "Load images";
 
 /* Action */
 "Load remote content" = "Muat konten jarak jauh";
@@ -1228,15 +1396,14 @@
 /* (No Comment) */
 "LOGIN" = "Masuk";
 
-/* settings general section title */
+/* (No Comment) */
 "Login Password" = "Kata sandi masuk";
 
 /* Error */
 "Login password doesn't match" = "Kata sandi masuk tidak cocok";
 
 /* Alert title to confirm logout
-   Alert title when logout primary account from account manager
-   menu title */
+   Alert title when logout primary account from account manager */
 "Logout" = "Keluar";
 
 /* error title */
@@ -1246,9 +1413,9 @@
 "Looking to secure your contact's details?" = "Mencari cara untuk mengamankan rincian kontak Anda?";
 
 /* cell title in device settings */
-"MAILBOX" = "Kotak Pesan";
+"Mailbox" = "Mailbox";
 
-/* settings general section title */
+/* (No Comment) */
 "Mailbox Password" = "Sandi kotak pesan";
 
 /* *
@@ -1258,26 +1425,41 @@
 /* (No Comment) */
 "Mailbox password doesn't match" = "Sandi kotak besan tidak cocok";
 
-/* cell title in device settings */
-"Mailbox size" = "Ukuran Kotak Pesan";
-
 /* menu title */
 "Manage accounts" = "Kelola akun";
 
 /* The title for the view where user can manage emails in the contact group */
-"Manage Addresses" = "Kelola Alamat";
+"Manage addresses" = "Manage addresses";
+
+/* The title of folder manager page */
+"Manage folders" = "Manage folders";
 
 /* Settings row */
 "Manage in device Settings" = "Kelola di pengaturan perangkat";
 
+/* The title of label manager page */
+"Manage labels" = "Manage labels";
+
 /* Title */
 "Manage Labels/Folders" = "Kelola Label/Folder";
 
-/* Action */
+/* No comment provided by engineer. */
+"Mark as legitimate" = "Mark as legitimate";
+
+/* The title of the read action in action sheet */
+"Mark as read" = "Tandai sudah dibaca";
+
+/* The title of the unread action in action sheet */
 "Mark as unread" = "Tandai belum dibaca";
+
+/* Action */
+"Mark as unread/read" = "Mark as unread/read";
 
 /* mark message as read action */
 "Mark Read" = "Tandai sudah dibaca";
+
+/* No comment provided by engineer. */
+"Mark unread" = "Mark unread";
 
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
@@ -1291,6 +1473,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Pesan tidak dapat dikirim. Setidaknya satu domain/alamat surel penerima yang tidak ada atau diformat buruk.";
 
+/* Composer expiration page title */
+"message expiration" = "message expiration";
+
 /* *
  *  Expiration View */
 "Message expired" = "Pesan kedaluwarsa";
@@ -1300,6 +1485,9 @@
 
 /* Title */
 "Message has been moved." = "Pesan telah dipindahkan.";
+
+/* Title of the view showing the message header */
+"Message headers" = "Message headers";
 
 /* Placeholder */
 "Message Password" = "Kata Sandi Pesan";
@@ -1325,6 +1513,12 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Pesan yang Anda kirim dapat diatur terhapus otomatis setelah jangka waktu tertentu.";
 
+/* minute */
+"min" = "min";
+
+/* minutes */
+"mins" = "mins";
+
 /* default vcard types */
 "Mobile" = "Seluler";
 
@@ -1344,8 +1538,14 @@
 /* Screen header */
 "More Credits" = "Lebih Banyak Kredit";
 
+/* No comment provided by engineer. */
+"Move to" = "Move to";
+
 /* move action */
 "Move to All Mail" = "Pindahkan ke Semua Pesan";
+
+/* Action title of move to archive */
+"Move to archive" = "Move to archive";
 
 /* move action */
 "Move to Archive" = "Pindahkan ke Arsip";
@@ -1356,17 +1556,30 @@
 /* folder apply - title */
 "Move to Folder" = "Pindahkan ke Folder";
 
+/* The title of the remove action in action sheet */
+"Move to inbox" = "Move to inbox";
+
 /* "Trash" */
 "Move to Inbox" = "Pindahkan ke Kotak Masuk";
 
 /* move action */
 "Move to Outbox" = "Pindahkan ke Kotak Keluar";
 
+/* Action title of move to spam
+   The title of the spam action in action sheet */
+"Move to spam" = "Move to spam";
+
 /* move action */
 "Move to Spam" = "Pindahkan ke Spam";
 
+/* The title of the remove action in action sheet */
+"Move to trash" = "Move to trash";
+
 /* move action */
 "Move to Trash" = "Pindahkan ke Sampah";
+
+/* The title of the move to action in action sheet */
+"Move to.." = "Move to..";
 
 /* Title */
 "Move to..." = "Pindahkan ke...";
@@ -1380,8 +1593,27 @@
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Daftar gratis";
 
-/* section title */
+/* section title 
+   The title of alternative routing settings */
 "Networking" = "Jaringan";
+
+/* Contacts add new contact */
+"New contact" = "New contact";
+
+/* The title of create folder page */
+"New folder" = "New folder";
+
+/* No comment provided by engineer. */
+"New Folder" = "New Folder";
+
+/* The title for the contact group creation view */
+"New group" = "New group";
+
+/* The title of create label page */
+"New label" = "New label";
+
+/* No comment provided by engineer. */
+"New Label" = "New Label";
 
 /* Title */
 "New login password" = "Kata sandi baru untuk masuk";
@@ -1407,6 +1639,9 @@
 /* no object error, local only , this could be not translated! */
 "no object" = "tidak ada subjek";
 
+/* Placeholder if message sender is empty */
+"No Recipient" = "No Recipient";
+
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "Bukan, untuk akun ProtonMail lain";
 
@@ -1414,17 +1649,24 @@
 "No, not related to in-app purchase" = "Tidak, tidak berhubungan dengan pembayaran dalam aplikasi";
 
 /* A *short* description saying that there is no contact group associated with this contact email
+   Action title of none
    Title */
 "None" = "Tidak ada";
 
 /* Title */
 "normal attachments" = "lampiran normal";
 
+/* No comment provided by engineer. */
+"Not a spam (move to inbox)" = "Not a spam (move to inbox)";
+
 /* alert description */
 "Not all recipients support message expiration" = "Tidak semua penerima mendukung pesan kedaluwarsa";
 
 /* Action */
 "Not Now" = "Tidak Sekarang";
+
+/* No comment provided by engineer. */
+"Not set" = "Not set";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Catatan: Nama pengguna juga merupakan alamat ProtonMail Anda.";
@@ -1438,17 +1680,24 @@
 /* title */
 "Notes" = "Catatan";
 
+/* The main title of no result message */
+"Nothing to see here" = "Nothing to see here";
+
 /* Alert title */
 "Notice" = "Pemberitahuan";
 
 /* Title */
 "Notification / Recovery Email" = "Surel Notifikasi / Pemulihan";
 
-/* Title */
+/* (No Comment) */
 "Notification Email" = "Surel pemberitahuan";
 
 /* title of action sheet */
 "Notification Snooze" = "Tunda Pemberitahuan";
+
+/* A option title that enable/disable notification feature
+   cell title in device settings */
+"Notifications" = "Notifications";
 
 /* VoiceOver description */
 "Notifications Are Snoozed" = "Pemberitahuan Ditunda";
@@ -1456,11 +1705,18 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "Tunda Pemberitahuan Tidak Aktif";
 
+/* The title of Off setting options */
+"Off" = "Off";
+
+/* Title of the alert when the device is offline */
+"Offline" = "Offline";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
 
-/* Title */
+/* The title of On setting options
+   Title */
 "On" = "Aktif";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
@@ -1470,7 +1726,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Pada EE, d MMM yyyy pukul %1$@, %2$@, menulis:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Abaikan aktivasi pembayaran saja jika Anda yakin semua langganan Anda terus diperbarui. Untuk bantuan lebih lanjut, silakan hubungi layanan konsumen. \r\n\r\n Anda yakin ingin mengabaikan aktivasi?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Hanya satu akun gratis yang bisa ditambahkan";
@@ -1496,14 +1752,23 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Tim Dukungan Pelanggan kami akan mencoba mengaktifkan paket layanan Anda secara manual jika Anda setuju untuk melampirkan data teknis yang disediakan AppStore pada aplikasi saat pembayaran. Data ini tidak berisi rincian tentang akun iTunes, Apple ID Anda, kartu kredit, atau informasi pengguna lain. Data teknis hanya untuk membantu kami memeriksa dan memverifikasi bahwa transaksi sudah terpenuhi di server AppStore.";
 
+/* No comment provided by engineer. */
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate";
+
 /* "Draft" = "Draft"; */
 "Outbox" = "Kotak keluar";
+
+/* Setting option title of folder setting page */
+"Parent folder" = "Parent folder";
 
 /* title */
 "Password" = "Kata Sandi";
 
 /* Description */
 "Password cannot be empty." = "Kata sandi tidak boleh kosong.";
+
+/* title */
+"Password Hint" = "Password Hint";
 
 /* cell title in device settings */
 "Password management" = "Kelola kata sandi";
@@ -1516,6 +1781,9 @@
 
 /* Title */
 "Password Updated" = "Kata sandi diperbarui";
+
+/* Placeholder */
+"Passwords must match" = "Passwords must match";
 
 /* default vcard types */
 "Personal" = "Pribadi";
@@ -1552,16 +1820,16 @@
 "Photo Library" = "Perpustakaan Foto";
 
 /* device settings auto lock type title */
-"PIN" = "PIN";
-
-/* device settings auto lock type title */
-"PIN & FaceID" = "PIN & FaceID";
-
-/* device settings auto lock type title */
-"PIN & TouchID" = "PIN & TouchID";
+"Pin" = "Pin";
 
 /* Description */
 "Pin code can't be empty." = "Kode pin tidak boleh kosong.";
+
+/* device settings auto lock type title */
+"Pin/Face ID" = "Pin/Face ID";
+
+/* device settings auto lock type title */
+"Pin/Touch ID" = "Pin/Touch ID";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Paket dapat diedit di versi web.";
@@ -1574,6 +1842,9 @@
 
 /* error message */
 "Please check your email for the verification code." = "Silakan periksa surel Anda untuk kode verifikasi.";
+
+/* Alert message is shown when the device doesn't have network connection */
+"Please connect and retry" = "Please connect and retry";
 
 /* alert description */
 "Please disable PGP Sending for following addresses." = "Silakan nonaktifkan Pengiriman PGP untuk alamat berikut.";
@@ -1608,6 +1879,9 @@
 /* Description */
 "Please set a password." = "Harap tentukan kata sandi.";
 
+/* No comment provided by engineer. */
+"Please set a recovery / notification email" = "Please set a recovery / notification email";
+
 /* (No Comment) */
 "Please try a different domain." = "Silakan coba domain yang berbeda.";
 
@@ -1622,6 +1896,12 @@
 
 /* (No Comment) */
 "Please try again." = "Silakan coba lagi";
+
+/* Alert message */
+"Please uprade to a paid plan to use more than 3 folders" = "Please uprade to a paid plan to use more than 3 folders";
+
+/* Alert message */
+"Please uprade to a paid plan to use more than 3 labels" = "Please uprade to a paid plan to use more than 3 labels";
 
 /* Description */
 "Please use ProtonMail App login first." = "Mohon masuk lewat aplikasi ProtonMail lebih dahulu.";
@@ -1701,14 +1981,14 @@
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Halangan dari Proxy/Firewall";
 
-/* cell title in device settings */
-"Push Notifications" = "Notifikasi";
-
 /* Title */
 "Quick swipe actions" = "Tindakan Gesek Cepat";
 
 /* Title */
 "Rate & Review" = "Nilai & Ulasan";
+
+/* The title of re auth alert */
+"Re-authenticate" = "Re-authenticate";
 
 /* set pin title */
 "Re-Enter your PIN" = "Masukkan ulang PIN Anda";
@@ -1716,8 +1996,14 @@
 /* abbreviation of reply: */
 "Re:" = "Balas:";
 
+/* No comment provided by engineer. */
+"Read" = "Read";
+
 /* Title */
 "Reading device contacts data..." = "Membaca data kontak perangkat...";
+
+/* No comment provided by engineer. */
+"Recipient details" = "Recipient details";
 
 /* The error message is shown in composer */
 "Recipient not found" = "Penerima tidak ditemukan";
@@ -1725,12 +2011,21 @@
 /* Title */
 "Recovery Code" = "Kode Pemulihan";
 
+/* Title */
+"Recovery email" = "Recovery email";
+
 /* *
  *  SignUpEmailViewController */
 "Recovery Email" = "Surel Pemulihan";
 
 /* Title */
 "Recovery Email Warning" = "Peringatan Surel Pemulihan";
+
+/* No comment provided by engineer. */
+"Recovery enabled" = "Recovery enabled";
+
+/* No comment provided by engineer. */
+"Reload" = "Reload";
 
 /* Title */
 "Remind Me Later" = "Ingatkan Lagi Nanti";
@@ -1744,15 +2039,31 @@
 /* Settings row */
 "Remove image meta-data" = "Hapus meta-data gambar";
 
+/* action title */
+"Remove password" = "Remove password";
+
 /* un star message */
 "Remove Star" = "Hapus Bintang";
+
+/* The button to enable label list reorder */
+"Reorder" = "Reorder";
 
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Ulangi";
 
+/* textview title */
+"Repeat password" = "Repeat password";
+
+/* The title of pin code setup2 view 
+   The title of textfield of pin code setup2 */
+"Repeat pin code" = "Repeat pin code";
+
 /* *
  *  Controller Defined */
 "Reply" = "Balas";
+
+/* No comment provided by engineer. */
+"Reply all" = "Balas semua";
 
 /* reply all action */
 "Reply All" = "Balas Semua";
@@ -1764,7 +2075,10 @@
 "ReplyAll" = "Balas semua";
 
 /* menu title */
-"Report Bugs" = "Laporkan bug";
+"Report a bug" = "Report a bug";
+
+/* No comment provided by engineer. */
+"Report phishing" = "Report phishing";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Laporkan Phishing";
@@ -1787,6 +2101,9 @@
 /* email verify code resend count down */
 "Retry after %d seconds" = "Coba lagi setelah %d detik";
 
+/* settings swipe actions section title */
+"Right to Left" = "Right to Left";
+
 /* Title */
 "Save" = "Simpan";
 
@@ -1803,14 +2120,20 @@
  *  SearchViewController */
 "Search" = "Pencarian";
 
+/* section title in settings */
+"Security" = "Security";
+
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "Pilih Opsi";
 
-/* The title for the view where user can select the color for the group */
-"Select Color" = "Pilih Warna";
+/* section title */
+"Select colour" = "Select colour";
 
 /* (No Comment) */
 "Select your language" = "Pilih bahasa";
+
+/* The title of navigation bar title of mailbox view while selecting the message */
+"Selected" = "Selected";
 
 /* Action */
 "Send" = "Kirim";
@@ -1824,8 +2147,14 @@
 /* Title */
 "Send plain but stored enc" = "Kirim secara polos tapi simpan dengan enkripsi";
 
+/* No comment provided by engineer. */
+"Send to archive?" = "Send to archive?";
+
 /* Title */
 "Send Verification Code" = "Kirim kode verifikasi";
+
+/* No comment provided by engineer. */
+"Sender details" = "Sender details";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verifikasi Pengirim Gagal";
@@ -1863,6 +2192,9 @@
 /* Description */
 "Server proofs not valid!" = "Bukti server tidak valid!";
 
+/* Title */
+"Set" = "Set";
+
 /* Description */
 "Set a password to encrypt this message for non-ProtonMail users." = "Atur kata sandi untuk mengenkripsi pesan ini untuk pengguna non-ProtonMail.";
 
@@ -1872,6 +2204,12 @@
 /* Signup passwords top title */
 "Set passwords" = "Atur kata sandi";
 
+/* The title of pin code setup1 view */
+"Set pin code" = "Set pin code";
+
+/* No comment provided by engineer. */
+"Set up swipe gestures to access most used actions." = "Set up swipe gestures to access most used actions.";
+
 /* menu title */
 "Settings" = "Pengaturan";
 
@@ -1879,10 +2217,13 @@
 "Share Alert" = "Peringatan";
 
 /* action */
-"Share Contact" = "Bagikan Kontak";
+"Share contact" = "Share contact";
 
 /* Title */
 "Share it with your friends" = "Berbagi dengan teman Anda";
+
+/* menu title */
+"Sign out" = "Sign out";
 
 /* Action */
 "Sign Out" = "Keluar";
@@ -1893,8 +2234,8 @@
 /* Title */
 "Signature Updated" = "Tanda tangan diperbarui";
 
-/* settings general section title */
-"Single Password" = "Sandi Tunggal";
+/* The text shown on the mailbox when the primary user changed */
+"Signed in as %@" = "Signed in as %@";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Tunda";
@@ -1930,8 +2271,11 @@
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
 
-/* Title */
+/* The title of the star action in action sheet */
 "Star" = "Bintang";
+
+/* Title */
+"Star/unstar" = "Star/unstar";
 
 /* "Spam" */
 "Starred" = "Dibintangi";
@@ -1948,7 +2292,8 @@
 /* network troubleshot cell title */
 "Still can't find a solution" = "Masih belum menemukan solusi";
 
-/* Title */
+/* cell title in device settings
+   Title */
 "Storage" = "Penyimpanan";
 
 /* Title */
@@ -1981,11 +2326,17 @@
 /* Action */
 "Support ProtonMail" = "Dukung ProtonMail";
 
-/* settings swipe actions section title */
+/* cell title in app settings */
+"Swipe actions" = "Swipe actions";
+
+/* (No Comment) */
 "Swipe Left to Right" = "Geser dari kiri ke kanan";
 
-/* settings swipe actions section title */
+/* (No Comment) */
 "Swipe Right to Left" = "Geser dari kanan ke kiri";
+
+/* No comment provided by engineer. */
+"Swipe to set up swipable actions" = "Swipe to set up swipable actions";
 
 /* cell title in device settings
    Swiping gestures */
@@ -2000,6 +2351,9 @@
 /* Title */
 "Take a Photo" = "Ambil foto";
 
+/* No comment provided by engineer. */
+"Tap here to set" = "Tap here to set";
+
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Ketuk tetap kirim untuk mengirimkan pesan tanpa kedaluwarsa ke penerima ini";
 
@@ -2011,6 +2365,9 @@
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Terima kasih telah mengirimkan laporan bug. Kami telah menambahkan laporan Anda ke sistem pelacakan bug kami.";
+
+/* Error message */
+"The 2 passwords are not matching" = "The 2 passwords are not matching";
 
 /* Description */
 "The authentication credentials are invalid." = "Kredensial autentikasi tidak valid.";
@@ -2067,11 +2424,17 @@
 /* update password error */
 "The Password is wrong." = "Kata sandi salah.";
 
+/* Error message */
+"The password must be between 8 and 21 characters long" = "The password must be between 8 and 21 characters long";
+
 /* Description */
 "The password you entered does not match the current password." = "Kata sandi yang Anda masukkan tidak cocok dengan kata sandi saat ini.";
 
 /* Description */
 "The passwords you entered do not match." = "Kata sandi yang Anda masukkan tidak cocok.";
+
+/* The error message of entering an invalid password */
+"The pin codes must match!" = "The pin codes must match!";
 
 /* update password error */
 "The private key update failed." = "Pembaruan kunci pribadi gagal.";
@@ -2113,11 +2476,20 @@
 /* local error */
 "There was an error creating or loading the application's saved data." = "Terjadi kesalahan saat membuat atau memuat data yang disimpan aplikasi.";
 
+/* Alert message when user tries to delete label */
+"This action cannot be undone." = "This action cannot be undone.";
+
+/* Alert message when user tries to delete folder */
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder.";
+
 /* Alert message */
 "This can take a while. Please do not dismiss the app." = "Tunggu sebentar. Jangan tutup aplikasi ini.";
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Kontak ini ada di buku alamat Anda.";
+
+/* No comment provided by engineer. */
+"This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Surel ini telah gagal memenuhi persyaratan autentikasi domainnya. Surel ini mungkin palsu atau tidak diteruskan dengan benar!";
@@ -2125,35 +2497,51 @@
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Surel ini sepertinya berasal dari alamat ProtonMail tapi datang dari luar sistem kami dan gagal memenuhi persyaratan autentikasi kami. Surel mungkin palsu atau tidak diteruskan dengan benar!";
 
+/* The secondary title of no result message */
+"This folder is empty" = "This folder is empty";
+
+/* No comment provided by engineer. */
+"This message contains embedded images." = "This message contains embedded images.";
+
+/* No comment provided by engineer. */
+"This message contains remote content." = "This message contains remote content.";
+
+/* No comment provided by engineer. */
+"This message is from a mailing list." = "This message is from a mailing list.";
+
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Pesan ini mungkin phishing. Mohon periksa pengirim dan isi pesan untuk memastikan keasliannya.";
 
+/* expiration time count down */
+"This message will expire in %dD %dH %dM" = "This message will expire in %1$dD %2$dH %3$dM";
+
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Prefensi ini akan kembali ke Safari jika peramban pilihan akan di hapus.";
+
+/* The secondary title of no result message */
+"Time to relax" = "Time to relax";
 
 /* contacts talbe cell Title title */
 "Title" = "Gelar";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Validasi sertifikat TLS gagal. Koneksi anda mungkin sedang dipantau dan sementara aplikasi di blokir untuk keamanan anda.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Validasi sertifikat TLS gagal. Koneksi anda mungkin sedang dipantau dan sementara aplikasi di blokir untuk keamanan anda.\n\nSegera beralih jaringan";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately";
 
-/* Title */
+/* message To: feild
+   Title */
 "To" = "Untuk";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Untuk mencegah penyalahgunaan ProtonMail,\r\n kami perlu memverifikasi bahwa Anda manusia.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\r\n we need to verify that you are human.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Untuk mengatur ulang kata sandi kotak surat Anda, mohon gunakan ProtonMail versi web di protonmail.com";
 
 /* Description */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Untuk mengatur ulang kata sandi kotak surat Anda, mohon gunakan ProtonMail versi web di protonmail.com";
-
-/* message To: feild */
-"To:" = "Untuk:";
 
 /* *
  *  API Error & alert title */
@@ -2193,6 +2581,9 @@
 
 /* action sheet option */
 "Turn Off" = "Matikan";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.";
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Aktifkan fitur ini untuk mengunci aplikasi Anda secara otomatis dan gunakan kode PIN atau FaceID untuk membukanya.";
@@ -2246,7 +2637,7 @@
 "Unable to parse response" = "Tidak dapat menguraikan respon";
 
 /* Description */
-"Unable to parse the response object:\n%@" = "Tidak dapat mengurai objek respon: %@";
+"Unable to parse the response object:\n%@" = "Unable to parse the response object:\n%@";
 
 /* alert title */
 "Unable to parse token" = "Tidak dapat mengurai token";
@@ -2254,6 +2645,9 @@
 /* *
  *  MessageDataService */
 "Unable to send the email" = "Tidak dapat mengirim surel.";
+
+/* No comment provided by engineer. */
+"Undisclosed Recipients" = "Undisclosed Recipients";
 
 /* Action */
 "Undo" = "Urungkan";
@@ -2279,9 +2673,17 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Membuka kunci diperlukan";
 
-/* The verb for describing the unread action
-   VoiceOver: email is not read yet */
+/* The unread title of unread action button in mailbox view */
+"unread" = "unread";
+
+/* VoiceOver: email is not read yet */
 "Unread" = "Belum dibaca";
+
+/* The title of the star action in action sheet */
+"Unstar" = "Unstar";
+
+/* No comment provided by engineer. */
+"Unsubscribe" = "Unsubscribe";
 
 /* Error message */
 "Unsupported file type" = "Tipe berkas tidak didukung";
@@ -2292,11 +2694,23 @@
 /* like top right action text */
 "Update" = "Perbarui";
 
-/* Contacts Update contact */
-"Update Contact" = "Perbarui Kontak";
-
 /* update notification email error title */
 "Update Notification Email" = "Perbarui Surel Pemberitahuan";
+
+/* title */
+"Update Now" = "Perbarui Sekarang";
+
+/* title */
+"Update Required" = "Pembaruan Dibutuhkan";
+
+/* The title of last update status of updated time */
+"Updated %d min ago" = "Updated %d min ago";
+
+/* The title of last update status of more than 1 hour */
+"Updated >1 hour ago" = "Updated >1 hour ago";
+
+/* The title of last update status of updated just now */
+"Updated just now" = "Updated just now";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Tingkatkan ke paket berbayar untuk mendapatkan fitur lebih";
@@ -2308,7 +2722,7 @@
 "Upgrade to get all paid features." = "Tingkatkan paket untuk mendapatkan semua fitur berbayar.";
 
 /* Action */
-"Upload Contacts" = "Unggah Kontak";
+"Upload device contacts" = "Upload device contacts";
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "Unggah kontak iOS ke ProtonMail?";
@@ -2318,6 +2732,9 @@
 
 /* default vcard types */
 "URL" = "URL";
+
+/* Option title */
+"Use folder colors" = "Use folder colors";
 
 /* error when user already exist */
 "User already exist!" = "Nama pengguna sudah digunakan";
@@ -2353,6 +2770,9 @@
 /* (No Comment) */
 "Version %@ %@" = "Versi %@ %@";
 
+/* No comment provided by engineer. */
+"View headers" = "View headers";
+
 /* message details-> more action-> view headers */
 "View Headers" = "Lihat Header";
 
@@ -2374,6 +2794,9 @@
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Kami tidak dapat mengirim pesan anda, mungkin karena koneksi jaringan yang buruk. Pesan anda telah disimpan di Draf dan akan dikirim secara otomatis saat anda membuka aplikasi berikutnya.";
 
+/* Message of a banner which is displayed on the messages list when offline */
+"We have trouble connecting to the servers. Please reconnect." = "We have trouble connecting to the servers. Please reconnect.";
+
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Kami akan mengirimkan kode verifikasi ke ponsel di atas.";
 
@@ -2385,6 +2808,9 @@
 
 /* Title */
 "We would like to know what we can do better." = "Kami ingin tahu apa yang bisa kita lakukan dengan lebih baik.";
+
+/* week */
+"week" = "week";
 
 /* Title */
 "Welcome to ProtonMail!" = "Selamat datang di ProtonMail";
@@ -2417,7 +2843,16 @@
 "You are about to launch the web browser and navigate to" = "Anda akan meluncurkan peramban web dan mengunjungi";
 
 /* Alert of removing all accounts */
-"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Anda akan menghapus semua akun. Anda tidak dapat mengaksesnya dari perangkat ini kecuali anda menanbahkannya lagi.\n\nApakah anda ingin menghapus semua akun anda?";
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?";
+
+/* The main title of no result message */
+"You are all caught up" = "You are all caught up";
+
+/* No comment provided by engineer. */
+"You are not connected. We cannot display the content of your message." = "You are not connected. We cannot display the content of your message.";
+
+/* The text shown on the mailbox when the device is in offline mode */
+"You are offline" = "You are offline";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Anda dapat menyesuaikan isyarat gerakan pada Pengaturan Aplikasi ProtonMail.";
@@ -2460,6 +2895,9 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Anda akan menghapus pesan secara permanen. Apakah anda yakin?";
 
+/* No comment provided by engineer. */
+"Your changes will be discarded" = "Your changes will be discarded";
+
 /* view top title */
 "Your Country Code" = "Kode Negara Anda";
 
@@ -2469,15 +2907,21 @@
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Negara anda mungkin memblokir akses ke Proton. Coba gunakan ProtonVPN (atau VPN lainnya) atau Tor untuk mengakses Proton.";
 
+/* The section title of folder manager table */
+"Your folders" = "Your folders";
+
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Kotak masuk Anda kini dilindungi dengan enkripsi end-to-end. Agar surel teman Anda aman secara otomatis, undang mereka untuk menggunakan ProtonMail! Anda juga dapat mengenkripsi pesan secara manual jika mereka tidak menggunakan ProtonMail.";
+
+/* The section title of label manager table */
+"Your labels" = "Your labels";
 
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Akun surel terenkripsi baru Anda sudah diatur dan siap untuk mengirim dan menerima pesan terenkripsi.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Akun surel aman Anda\r\n telah siap digunakan.";
+"Your new secure email\r\n account is ready." = "Your new secure email\r\n account is ready.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Paket Anda aktif sampai";

@@ -315,25 +315,32 @@ public enum SGItems: Int, CustomStringConvertible {
     }
 }
 
-public enum SSwipeActionItems: Int, CustomStringConvertible {
+public enum SwipeActionItems: Int, CustomStringConvertible {
     case left = 0
-    case right = 1
+    case leftActionView
+    case empty
+    case right
+    case rightActionView
     
     public var description : String {
-        switch(self){
+        switch self {
         case .left:
             return LocalString._swipe_left_to_right
         case .right:
             return LocalString._swipe_right_to_left
+        case .leftActionView, .empty, .rightActionView:
+            return ""
         }
     }
     
     public var actionDescription : String {
-        switch(self){
+        switch self {
         case .left:
             return LocalString._change_left_swipe_action
         case .right:
             return LocalString._change_right_swipe_action
+        case .leftActionView, .empty, .rightActionView:
+            return ""
         }
     }
 }

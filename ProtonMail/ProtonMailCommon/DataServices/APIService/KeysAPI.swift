@@ -24,8 +24,9 @@
 import Foundation
 import PromiseKit
 import Crypto
-import PMCommon
-
+import ProtonCore_DataModel
+import ProtonCore_Networking
+import ProtonCore_Services
 
 //Keys API
 struct KeysAPI {
@@ -294,13 +295,13 @@ final class UpdatePrivateKeyRequest : Request {
     var parameters: [String : Any]? {
         var keysDict : [Any] = [Any]()
         for _key in userLevelKeys {
-            if _key.is_updated {
-                keysDict.append( ["ID": _key.key_id, "PrivateKey" : _key.private_key] )
+            if _key.isUpdated {
+                keysDict.append( ["ID": _key.keyID, "PrivateKey" : _key.privateKey] )
             }
         }
         for _key in userAddressKeys {
-            if _key.is_updated {
-                keysDict.append( ["ID": _key.key_id, "PrivateKey" : _key.private_key] )
+            if _key.isUpdated {
+                keysDict.append( ["ID": _key.keyID, "PrivateKey" : _key.privateKey] )
             }
         }
         
@@ -318,7 +319,7 @@ final class UpdatePrivateKeyRequest : Request {
         if let userKeys = self.userKeys {
             var userKeysDict : [Any] = [Any]()
             for key in userKeys {
-                userKeysDict.append( ["ID": key.key_id, "PrivateKey" : key.private_key] )
+                userKeysDict.append( ["ID": key.keyID, "PrivateKey" : key.privateKey] )
             }
             if !userKeysDict.isEmpty {
                 out["UserKeys"] = userKeysDict

@@ -23,6 +23,7 @@
 
 import Foundation
 import PromiseKit
+import ProtonCore_UIFoundations
 
 class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     internal weak var controller: AttachmentController?
@@ -30,9 +31,9 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     init(for controller: AttachmentController) {
         self.controller = controller
     }
-    
-    var alertAction: UIAlertAction {
-        return UIAlertAction(title: LocalString._import_file_from_, style: UIAlertAction.Style.default, handler: { (action) -> Void in
+
+    var actionSheetItem: PMActionSheetItem {
+        PMActionSheetPlainItem(title: LocalString._import_from, icon: UIImage(named: "ic-export")) { (_) -> (Void) in
             let types = [
                 kUTTypeMovie as String,
                 kUTTypeVideo as String,
@@ -50,7 +51,7 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
             picker.delegate = self
             picker.allowsMultipleSelection = true
             self.controller?.present(picker, animated: true, completion: nil)
-        })
+        }
     }
     
     
@@ -137,7 +138,7 @@ extension DocumentAttachmentProvider: UIDocumentPickerDelegate {
         // FileManager.default.attributesOfItem(atPath: url.path)[NSFileSize]
         
         DispatchQueue.global().async {
-            self.process(fileAt: url)
+            _ = self.process(fileAt: url)
         }
     }
     

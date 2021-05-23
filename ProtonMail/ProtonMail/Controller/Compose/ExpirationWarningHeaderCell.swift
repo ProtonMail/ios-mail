@@ -23,7 +23,7 @@
 
 import UIKit
 
-protocol ExpirationWarningHeaderCellDelegate: class {
+protocol ExpirationWarningHeaderCellDelegate: AnyObject {
     func clicked(at section : Int, expend: Bool)
 }
 

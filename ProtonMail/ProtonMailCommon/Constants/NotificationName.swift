@@ -68,4 +68,13 @@ extension Notification.Name {
     static var didPrimaryAccountLogout: Notification.Name {
         return .init("didPrimaryAccountLogout")
     }
+    
+    ///notify when the queue in the QueueManager is Empty
+    static var queueIsEmpty: Notification.Name {
+        return .init("queueIsEmpty")
+    }
+    
+    static var attachmentUploaded: Notification.Name {
+        return .init("attachmentUploaded")
+    }
 }

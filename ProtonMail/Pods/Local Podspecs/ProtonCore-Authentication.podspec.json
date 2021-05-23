@@ -1,0 +1,70 @@
+{
+  "name": "ProtonCore-Authentication",
+  "version": "1.0.0",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.12"
+  },
+  "swift_versions": [
+    "5.1"
+  ],
+  "dependencies": {
+    "ProtonCore-Services": [
+
+    ],
+    "ProtonCore-APIClient": [
+
+    ],
+    "ProtonCore-Crypto": [
+
+    ],
+    "ProtonCore-OpenPGP": [
+
+    ]
+  },
+  "source_files": [
+    "libraries/Authentication/Sources/*.swift",
+    "libraries/Authentication/Sources/**/*.swift"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "script_phases": {
+        "name": "Obfuscation",
+        "script": "../../../libraries/Authentication/Scripts/prepare_obfuscated_constants.sh",
+        "execution_position": "before_compile",
+        "output_files": [
+          "../../../libraries/Authentication/Tests/TestData/ObfuscatedConstants.swift"
+        ]
+      },
+      "source_files": [
+        "libraries/Authentication/Tests/TestData/ObfuscatedConstants.swift",
+        "libraries/Authentication/Tests/**/*.swift"
+      ],
+      "dependencies": {
+        "OHHTTPStubs/Swift": [
+
+        ]
+      }
+    }
+  ],
+  "swift_version": "5.1"
+}

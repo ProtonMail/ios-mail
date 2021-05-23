@@ -35,6 +35,14 @@ extension UITableViewCell {
             self.layoutMargins = .zero
         }
     }
+    
+    class func defaultNib() -> UINib {
+        let name = String(describing: self)
+        return UINib(nibName: name, bundle: Bundle.main)
+    }
+    
+    class func defaultID() -> String {
+        return String(describing: self)
+    }
 }
-
 

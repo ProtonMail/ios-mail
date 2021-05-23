@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PMTextFieldCombo" customModule="ProtonCore_UIFoundations">
+            <connections>
+                <outlet property="assistiveTextLabel" destination="KwT-5E-H5t" id="X6V-yg-9Gi"/>
+                <outlet property="mainView" destination="iN0-l3-epB" id="hy4-Uc-35w"/>
+                <outlet property="pickerButton" destination="3dA-GC-FgZ" id="J6f-se-fgc"/>
+                <outlet property="pickerLabel" destination="XBk-cH-j3B" id="Sdu-ee-Uev"/>
+                <outlet property="textField" destination="dKl-wh-Uzq" id="5CI-4H-tMk"/>
+                <outlet property="titleLabel" destination="dfC-Ta-TiY" id="xOc-25-sfR"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="533" height="165"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dfC-Ta-TiY" userLabel="Title">
+                    <rect key="frame" x="0.0" y="44" width="533" height="0.0"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KwT-5E-H5t" userLabel="Assistive text">
+                    <rect key="frame" x="0.0" y="131" width="533" height="0.0"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="dKl-wh-Uzq" customClass="PMInternalTextField" customModule="ProtonCore_UIFoundations">
+                    <rect key="frame" x="117" y="52" width="416" height="75"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3dA-GC-FgZ" userLabel="PickerButton">
+                    <rect key="frame" x="0.0" y="52" width="116" height="75"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="116" id="XaQ-HG-Xat"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
+                    <state key="normal" image="ic-chevron-down"/>
+                    <connections>
+                        <action selector="onPickerButtonTouchDown:" destination="-1" eventType="touchDown" id="n0D-ML-neA"/>
+                        <action selector="onPickerButtonTouchUp:" destination="-1" eventType="touchUpInside" id="bO9-uF-jUe"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XBk-cH-j3B" userLabel="PickerLabel">
+                    <rect key="frame" x="16" y="89.5" width="64" height="0.0"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <constraints>
+                <constraint firstItem="KwT-5E-H5t" firstAttribute="top" secondItem="3dA-GC-FgZ" secondAttribute="bottom" constant="4" id="1NF-59-wqL"/>
+                <constraint firstItem="dKl-wh-Uzq" firstAttribute="leading" secondItem="XBk-cH-j3B" secondAttribute="trailing" constant="37" id="2fi-r1-UU2"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="KwT-5E-H5t" secondAttribute="trailing" id="Dno-Cc-et6"/>
+                <constraint firstItem="3dA-GC-FgZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="H2q-Re-09u"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="KwT-5E-H5t" secondAttribute="bottom" id="HyR-sw-G4Y"/>
+                <constraint firstItem="KwT-5E-H5t" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="N74-id-hNZ"/>
+                <constraint firstItem="XBk-cH-j3B" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="PMt-Wp-lhe"/>
+                <constraint firstItem="KwT-5E-H5t" firstAttribute="top" secondItem="dKl-wh-Uzq" secondAttribute="bottom" constant="4" id="Sef-yi-0YF"/>
+                <constraint firstItem="3dA-GC-FgZ" firstAttribute="top" secondItem="dfC-Ta-TiY" secondAttribute="bottom" constant="8" id="Ugc-mx-JKM"/>
+                <constraint firstItem="XBk-cH-j3B" firstAttribute="centerY" secondItem="3dA-GC-FgZ" secondAttribute="centerY" id="WI2-ga-Shp"/>
+                <constraint firstItem="dKl-wh-Uzq" firstAttribute="top" secondItem="dfC-Ta-TiY" secondAttribute="bottom" constant="8" id="dxF-Sr-HEw"/>
+                <constraint firstItem="dKl-wh-Uzq" firstAttribute="leading" secondItem="3dA-GC-FgZ" secondAttribute="trailing" constant="1" id="euh-Dc-cw9"/>
+                <constraint firstItem="dfC-Ta-TiY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fN8-BP-9W4"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="dKl-wh-Uzq" secondAttribute="trailing" id="oaK-0b-qAO"/>
+                <constraint firstAttribute="trailing" secondItem="dfC-Ta-TiY" secondAttribute="trailing" id="rcK-Qn-RbR"/>
+                <constraint firstItem="dfC-Ta-TiY" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="uKk-6j-hS3"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="223.91304347826087" y="-93.415178571428569"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic-chevron-down" width="16" height="16"/>
+    </resources>
+</document>

@@ -232,9 +232,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
                 self.updateContentView(with: data)
                 self.centerContentView()
                 self.hidesError()
-                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-                    self.thumbnailView.isHidden = true
-                }
+                self.thumbnailView.isHidden = true
             } else {
                 self.showError()
             }

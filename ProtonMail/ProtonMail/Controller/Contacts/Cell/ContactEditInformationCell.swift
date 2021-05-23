@@ -20,8 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
+import ProtonCore_UIFoundations
 
 final class ContactEditInformationCell: UITableViewCell {
     
@@ -40,6 +39,8 @@ final class ContactEditInformationCell: UITableViewCell {
         self.valueField.delegate = self
         self.typeButton.isHidden = true
         self.typeButton.isEnabled = false
+        valueField.tintColor = UIColorManager.TextHint
+        backgroundColor = UIColorManager.BackgroundNorm
     }
     
     override func layoutSubviews() {
@@ -52,9 +53,11 @@ final class ContactEditInformationCell: UITableViewCell {
         self.isPaid = paid
         self.delegate = callback
         
-        typeLabel.text = self.information.infoType.title
+        typeLabel.attributedText = NSAttributedString(string: self.information.infoType.title,
+                                                      attributes: FontManager.Default)
         valueField.placeholder = self.information.infoType.title
-        valueField.text = self.information.newValue
+        valueField.attributedText = NSAttributedString(string: self.information.newValue,
+                                                       attributes: FontManager.Default)
 
         if self.isPaid {
             if becomeFirstResponder {
@@ -92,6 +95,6 @@ extension ContactEditInformationCell: UITextFieldDelegate {
             self.delegate?.featureBlocked()
             return
         }
-        information.newValue = valueField.text!
+        information.newValue = valueField.attributedText?.string ?? ""
     }
 }

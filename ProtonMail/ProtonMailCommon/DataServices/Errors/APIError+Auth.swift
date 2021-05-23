@@ -86,7 +86,7 @@ extension NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.authInValidKeySalt,
             localizedDescription: LocalString._invalid_password,
-            localizedFailureReason: LocalString._srp_single_password_keyslat_invalid)
+            localizedFailureReason: LocalString._srp_single_password_keysalt_invalid)
     }
     
     class func authCacheBad() -> NSError {

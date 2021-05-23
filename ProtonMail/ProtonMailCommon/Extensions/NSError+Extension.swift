@@ -22,7 +22,7 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Services
 
 extension NSError {
     
@@ -85,7 +85,12 @@ extension NSError {
     }
 
     var isBadVersionError: Bool {
-        return self.code == PMCommon.APIErrorCode.badAppVersion || self.code == PMCommon.APIErrorCode.badApiVersion
+        
+//        return self.code == PMCommon.APIErrorCode.badAppVersion || self.code == PMCommon.APIErrorCode.badApiVersion
+        // FIXME: These two error codes are badAppVersion and badApiVersion
+        // But the ProtonCore doesn't have it
+        // it should use library constant after library update
+        return self.code == 5003 || self.code == 5005
     }
 
 }

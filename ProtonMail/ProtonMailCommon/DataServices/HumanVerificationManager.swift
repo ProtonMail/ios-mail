@@ -21,8 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import PMCommon
-import PMHumanVerification
+import ProtonCore_Services
+import ProtonCore_HumanVerification
 #if DEBUG
 import OHHTTPStubs
 #endif

@@ -23,7 +23,7 @@
 
 import Foundation
 import MBProgressHUD
-import PMCommon
+import ProtonCore_Services
 
 protocol MailboxCaptchaVCDelegate : AnyObject {
     func cancel()
@@ -41,10 +41,6 @@ class MailboxCaptchaViewController : UIViewController, AccessibleView {
     @IBOutlet var cancelView: UIView!
     
     weak var delegate : MailboxCaptchaVCDelegate?
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

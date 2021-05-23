@@ -24,8 +24,9 @@ import UIKit
 import PromiseKit
 import AwaitKit
 import MBProgressHUD
+import ProtonCore_UIFoundations
 
-class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol {
     typealias viewModelType = ContactDetailsViewModel
     
     fileprivate var viewModel : ContactDetailsViewModel!
@@ -48,6 +49,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     @IBOutlet weak var tableView: UITableView!
     
     // header view
+    @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var shortNameLabel: UILabel!
     @IBOutlet weak var fullNameLabel: UILabel!
@@ -67,20 +69,27 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     func set(viewModel: ContactDetailsViewModel) {
         self.viewModel = viewModel
+        self.viewModel.reloadView = { [weak self] in
+            self?.configHeader()
+            self?.tableView.reloadData()
+        }
     }
-    
-    ///
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.title = LocalString._contacts_contact_details_title
-        
+
+        view.backgroundColor = UIColorManager.BackgroundNorm
+
         self.doneItem = UIBarButtonItem(title: LocalString._general_edit_action,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(didTapEditButton(sender:)))
+        var attributes = FontManager.DefaultStrong
+        attributes[.foregroundColor] = UIColorManager.InteractionNorm
+        self.doneItem.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = doneItem
         self.navigationItem.assignNavItemIndentifiers()
         self.configHeaderStyle()
+        self.configureStyle()
         
         viewModel.getDetails {
             self.configHeaderDefault()
@@ -102,8 +111,13 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 60.0
         tableView.noSeparatorsBelowFooter()
+        tableView.backgroundColor = UIColorManager.BackgroundNorm
 
         navigationItem.largeTitleDisplayMode = .never
+    }
+
+    private func configureStyle() {
+        headerContainerView.backgroundColor = UIColorManager.BackgroundNorm
     }
     
     /// config header style only need once
@@ -120,7 +134,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         
         // email contact
         emailContactLabel.text = LocalString._contacts_email_contact_title
-        emailContactImageView.image = UIImage.init(named: "iap_email")
+        emailContactImageView.image = Asset.envelope.image
         emailContactImageView.setupImage(scale: 0.5,
                                          tintColor: UIColor.white,
                                          backgroundColor: UIColor.ProtonMail.Blue_9397CD)
@@ -137,7 +151,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         
         // share contact
         shareContactLabel.text = LocalString._contacts_share_contact_action
-        shareContactImageView.image = UIImage.init(named: "Share-28px-#ffffff")
+        shareContactImageView.image = Asset.icArrowOutBox.image
         shareContactImageView.setupImage(scale: 0.5,
                                          tintColor: UIColor.white,
                                          backgroundColor: UIColor.ProtonMail.Blue_9397CD)
@@ -157,7 +171,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             shortName = String(name[name.startIndex])
         }
         shortNameLabel.text = shortName
-        fullNameLabel.text = name
+
+        var attributes = FontManager.Headline
+        attributes.addTextAlignment(.center)
+        attributes.addTruncatingTail()
+        fullNameLabel.attributedText = name.apply(style: attributes)
     }
     
     
@@ -183,7 +201,10 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         }
         
         // full name
-        fullNameLabel.text = viewModel.getProfile().newDisplayName
+        var attributes = FontManager.Headline
+        attributes.addTextAlignment(.center)
+        attributes.addTruncatingTail()
+        fullNameLabel.attributedText = viewModel.getProfile().newDisplayName.apply(style: attributes)
         
         // email contact
         if viewModel.getEmails().count == 0 {
@@ -290,7 +311,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             if let contact = sender as? ContactVO {
                 viewModel.addToContacts(contact)
             }
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
         } else if segue.identifier == kToUpgradeAlertSegue {
@@ -381,12 +402,12 @@ extension ContactDetailViewController: UITableViewDataSource {
         switch s {
         case .email_header:
             let signed = viewModel.statusType2()
-            cell?.ConfigHeader(title: LocalString._contacts_email_addresses_title, signed: signed)
+            cell?.configHeader(title: LocalString._contacts_email_addresses_title, signed: signed)
         case .encrypted_header:
             let signed = viewModel.statusType3()
-            cell?.ConfigHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: signed)
+            cell?.configHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: signed)
         default:
-            cell?.ConfigHeader(title: "", signed: false)
+            cell?.configHeader(title: "", signed: false)
         }
         return cell
     }

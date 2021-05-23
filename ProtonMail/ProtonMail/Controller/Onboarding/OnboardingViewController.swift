@@ -87,8 +87,4 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     @IBAction func closeAction(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)
     }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
 }

@@ -1,0 +1,65 @@
+{
+  "name": "ProtonCore-Networking",
+  "version": "1.0.0",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.12"
+  },
+  "swift_versions": [
+    "5.1"
+  ],
+  "dependencies": {
+    "AFNetworking": [
+      "~> 4.0"
+    ],
+    "PromiseKit": [
+      "~> 6.0"
+    ],
+    "AwaitKit": [
+      "~> 5.0.0"
+    ]
+  },
+  "source_files": "libraries/Networking/Sources/Networking/**/*",
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "libraries/Networking/Tests/Networking/*",
+      "dependencies": {
+        "ProtonCore-Doh": [
+
+        ],
+        "ProtonCore-Services": [
+
+        ],
+        "ProtonCore-APIClient": [
+
+        ],
+        "OHHTTPStubs/Swift": [
+
+        ],
+        "TrustKit": [
+
+        ]
+      }
+    }
+  ],
+  "swift_version": "5.1"
+}

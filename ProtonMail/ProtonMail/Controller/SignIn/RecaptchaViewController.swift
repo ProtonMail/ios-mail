@@ -23,7 +23,7 @@
 
 import UIKit
 import MBProgressHUD
-import PMCommon
+import ProtonCore_Services
 
 class RecaptchaViewController: UIViewController {
     
@@ -49,10 +49,6 @@ class RecaptchaViewController: UIViewController {
     fileprivate var stopLoading : Bool = false
     fileprivate var doneClicked : Bool = false
     var viewModel : SignupViewModel!
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.default;
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

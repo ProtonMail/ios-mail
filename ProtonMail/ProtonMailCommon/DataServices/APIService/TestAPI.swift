@@ -22,7 +22,7 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
 
 // Mark : get all settings  //Response
 final class TestOffline : Request {

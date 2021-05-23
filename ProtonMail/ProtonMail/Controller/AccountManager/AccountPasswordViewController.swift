@@ -117,11 +117,6 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
     }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-    
     // MARK: - Private methods
     
     func dismissKeyboard() {

@@ -21,42 +21,47 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import PMCommon
+
 
 protocol SettingsGestureViewModel: AnyObject {
-    var setting_swipe_action_items : [SSwipeActionItems] { get set}
-    var setting_swipe_actions : [MessageSwipeAction] { get set }
-    var userInfo: UserInfo { get }
-    var user: UserManager { get }
-    
-    func updateUserSwipeAction(isLeft : Bool,
-                               action: MessageSwipeAction,
-                               completion: @escaping CompletionBlock)
+    var settingSwipeActionItems: [SwipeActionItems] { get set }
+    var settingSwipeActions: [SwipeActionSettingType] { get set }
+    var leftToRightAction: SwipeActionSettingType { get set }
+    var rightToLeftAction: SwipeActionSettingType { get set }
 }
 
 class SettingsGestureViewModelImpl: SettingsGestureViewModel {
-    
-    var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
-    var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
-                                                            .star, .archive, .unread]
-    let user: UserManager
-    let users: UsersManager
-    
-    var userInfo: UserInfo {
+
+    var settingSwipeActionItems: [SwipeActionItems] = [.leftActionView, .left, .empty, .rightActionView, .right]
+    var settingSwipeActions: [SwipeActionSettingType] = [.none,
+                                                         .readAndUnread,
+                                                         .starAndUnstar,
+                                                         .trash,
+                                                         /*.labelAs, .moveTo,*/
+                                                         .archive,
+                                                         .spam]
+
+    private var swipeActionsCache: SwipeActionCacheProtocol
+
+    var leftToRightAction: SwipeActionSettingType {
         get {
-            return self.user.userInfo
+            return swipeActionsCache.leftToRightSwipeActionType
+        }
+        set {
+            swipeActionsCache.leftToRightSwipeActionType = newValue
         }
     }
-    
-    init(user: UserManager, users: UsersManager) {
-        self.user = user
-        self.users = users
-    }
-    
-    func updateUserSwipeAction(isLeft: Bool, action: MessageSwipeAction, completion: @escaping CompletionBlock) {
-        self.user.userService.updateUserSwipeAction(auth: self.user.auth, userInfo: self.userInfo, isLeft: isLeft, action: action) { task, res, err in
-            self.users.onSave(userManger: self.user)
-            completion(task, res, err)
+
+    var rightToLeftAction: SwipeActionSettingType {
+        get {
+            return swipeActionsCache.rightToLeftSwipeActionType
         }
+        set {
+            swipeActionsCache.rightToLeftSwipeActionType = newValue
+        }
+    }
+
+    init(cache: SwipeActionCacheProtocol) {
+        self.swipeActionsCache = cache
     }
 }

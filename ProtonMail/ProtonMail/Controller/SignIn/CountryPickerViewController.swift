@@ -88,10 +88,6 @@ class CountryPickerViewController : UIViewController {
         }
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-    
     @IBAction func applyAction(_ sender: AnyObject) {
         if let indexPath = self.tableView.indexPathForSelectedRow {
             if indexPath.row < countryCodes.count {

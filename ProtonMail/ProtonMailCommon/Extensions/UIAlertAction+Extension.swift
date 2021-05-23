@@ -35,4 +35,10 @@ extension UIAlertAction {
                              style: .default,
                              handler: handler)
     }
+
+    class func cancelAction(_ handler : ((UIAlertAction?) -> Void)? = nil) -> UIAlertAction {
+        return UIAlertAction(title: LocalString._general_cancel_action,
+                             style: .default,
+                             handler: handler)
+    }
 }

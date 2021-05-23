@@ -159,7 +159,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
         // we decide to stick with using core data information for now
         origContactGroupIDs.removeAll()
         
-        let context = self.coreDataService.mainManagedObjectContext
+        let context = self.coreDataService.mainContext
         let emailObject = Email.EmailForAddressWithContact(self.newEmail,
                                                            contactID: contactID,
                                                            inManagedObjectContext: context)
@@ -183,7 +183,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getContactGroupNames() -> [String] {
         var result: [String] = []
         for labelID in newContactGroupIDs {
-            let context = self.coreDataService.mainManagedObjectContext
+            let context = self.coreDataService.mainContext
             if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
                 result.append(label.name)
             } else {
@@ -209,7 +209,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getCurrentlySelectedContactGroupColors() -> [String] {
         var colors = [String]()
         
-        let context = self.coreDataService.mainManagedObjectContext
+        let context = self.coreDataService.mainContext
         for ID in newContactGroupIDs {
             let label = Label.labelForLabelID(ID, inManagedObjectContext: context)
             

@@ -24,12 +24,10 @@
 import Foundation
 
 //logging for view model could merge with timer
-class ViewModelBase {
+class ViewModelBase: NSObject {
     
     private var debugInfo : [String] = []
     private var logging : Bool = false
-    
-    init() { }
 
     public func start(_ initLog: String) {
         self.debugInfo.removeAll()

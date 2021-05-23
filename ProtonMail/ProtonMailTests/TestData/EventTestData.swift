@@ -1,0 +1,266 @@
+//
+//  EventTestData.swift
+//  ProtonMail
+//
+//
+//  Copyright (c) 2020 Proton Technologies AG
+//
+//  This file is part of ProtonMail.
+//
+//  ProtonMail is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  ProtonMail is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+
+import Foundation
+
+let eventTestDatawithDeleteConversation = """
+    {
+       "Code":1000,
+       "EventID":"YavOMCsY_G_OM2ti21cBlKbY-wVO-LaxvvLwGFM5duj3RpswhVBMFkepPg==",
+       "Refresh":0,
+       "More":0,
+       "Messages":[
+          {
+             "ID":"yFB3cIZKN6v9Yi-U412pnXCihxjECML2y6AYQ9xlNw2cAoKJi03XoaK8-3kJBFqjkdWHyQ==",
+             "Action":0
+          },
+          {
+             "ID":"z07aOb878rT8DnonOxMQbUazrVyrpIsA9Jfo1sEeljwm_zUeEFhGvqLjcf1foaTolwJSDgqg==",
+             "Action":0
+          },
+          {
+             "ID":"uXLofJM80hmX60S-PvRP8WIxKfeRHmd416UqaT1Of8OHHKZzMy14drpv45EBpXOsIfd7VVA==",
+             "Action":0
+          }
+       ],
+       "Conversations":[
+          {
+             "ID":"sY1LHLrAfl0vL_mUE4meCEHQt3M5IRKUQRdQi_538-AZ-494hHfMs9RMpBw==",
+             "Action":0
+          }
+       ],
+       "Total":{
+          "Locations":[
+             {
+                "Location":0,
+                "Count":39
+             },
+             {
+                "Location":1,
+                "Count":26
+             },
+             {
+                "Location":2,
+                "Count":70
+             },
+             {
+                "Location":3,
+                "Count":15
+             },
+             {
+                "Location":4,
+                "Count":4
+             },
+             {
+                "Location":5,
+                "Count":129
+             },
+             {
+                "Location":6,
+                "Count":0
+             },
+             {
+                "Location":7,
+                "Count":66
+             },
+             {
+                "Location":8,
+                "Count":25
+             },
+             {
+                "Location":9,
+                "Count":0
+             }
+          ],
+          "Labels":[
+             
+          ],
+          "Starred":5
+       },
+       "Unread":{
+          "Locations":[
+             {
+                "Location":0,
+                "Count":0
+             },
+             {
+                "Location":1,
+                "Count":0
+             },
+             {
+                "Location":2,
+                "Count":0
+             },
+             {
+                "Location":3,
+                "Count":0
+             },
+             {
+                "Location":4,
+                "Count":0
+             },
+             {
+                "Location":5,
+                "Count":0
+             },
+             {
+                "Location":6,
+                "Count":0
+             },
+             {
+                "Location":7,
+                "Count":0
+             },
+             {
+                "Location":8,
+                "Count":0
+             },
+             {
+                "Location":9,
+                "Count":0
+             }
+          ],
+          "Labels":[
+             
+          ],
+          "Starred":0
+       },
+       "MessageCounts":[
+          {
+             "LabelID":"0",
+             "Total":39,
+             "Unread":0
+          },
+          {
+             "LabelID":"1",
+             "Total":26,
+             "Unread":0
+          },
+          {
+             "LabelID":"2",
+             "Total":70,
+             "Unread":0
+          },
+          {
+             "LabelID":"3",
+             "Total":15,
+             "Unread":0
+          },
+          {
+             "LabelID":"4",
+             "Total":4,
+             "Unread":0
+          },
+          {
+             "LabelID":"5",
+             "Total":129,
+             "Unread":0
+          },
+          {
+             "LabelID":"6",
+             "Total":0,
+             "Unread":0
+          },
+          {
+             "LabelID":"7",
+             "Total":66,
+             "Unread":0
+          },
+          {
+             "LabelID":"8",
+             "Total":25,
+             "Unread":0
+          },
+          {
+             "LabelID":"9",
+             "Total":0,
+             "Unread":0
+          },
+          {
+             "LabelID":"10",
+             "Total":5,
+             "Unread":0
+          }
+       ],
+       "ConversationCounts":[
+          {
+             "LabelID":"0",
+             "Total":36,
+             "Unread":0
+          },
+          {
+             "LabelID":"1",
+             "Total":23,
+             "Unread":0
+          },
+          {
+             "LabelID":"2",
+             "Total":69,
+             "Unread":0
+          },
+          {
+             "LabelID":"3",
+             "Total":13,
+             "Unread":0
+          },
+          {
+             "LabelID":"4",
+             "Total":4,
+             "Unread":0
+          },
+          {
+             "LabelID":"5",
+             "Total":116,
+             "Unread":0
+          },
+          {
+             "LabelID":"6",
+             "Total":0,
+             "Unread":0
+          },
+          {
+             "LabelID":"7",
+             "Total":65,
+             "Unread":0
+          },
+          {
+             "LabelID":"8",
+             "Total":22,
+             "Unread":0
+          },
+          {
+             "LabelID":"9",
+             "Total":0,
+             "Unread":0
+          },
+          {
+             "LabelID":"10",
+             "Total":5,
+             "Unread":0
+          }
+       ],
+       "UsedSpace":157621062,
+       "Notices":[
+          
+       ]
+    }
+"""

@@ -22,6 +22,7 @@
 
 
 import XCTest
+import OpenPGP
 @testable import ProtonMail
 
 class OpenPGP_ExtensionTests: XCTestCase {

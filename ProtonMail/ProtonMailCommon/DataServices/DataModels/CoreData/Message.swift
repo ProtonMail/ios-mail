@@ -62,8 +62,6 @@ final public class Message: NSManagedObject {
     
     ///local use, check if details downloaded
     @NSManaged public var isDetailDownloaded: Bool
-    @available(*, deprecated, message: "use flag instead")
-    @NSManaged public var isEncrypted: NSNumber
     
     ////local use, to check draft latest update time to decide pick cache or remote. should use the server time.
     @NSManaged public var lastModified: Date?
@@ -109,7 +107,11 @@ final public class Message: NSManagedObject {
     
     //Check if the message is being sent now
     @NSManaged public var isSending: Bool
-    
+
+    @NSManaged public var conversationID: String
+
+    @NSManaged public var unsubscribeMethods: String?
+
     /// Mark -- relationship
     
     //"Attachments":[ { }, {} ]

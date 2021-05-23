@@ -39,7 +39,6 @@ class MailboxMessageCell: MCSwipeTableViewCell, AccessibleCell {
     @IBOutlet weak var timeWidth: NSLayoutConstraint!
     @IBOutlet weak var starWidth: NSLayoutConstraint!
     @IBOutlet weak var attachmentWidth: NSLayoutConstraint!
-    @IBOutlet weak var lockWidth: NSLayoutConstraint!
     @IBOutlet weak var expirationWidth: NSLayoutConstraint!
     
     @IBOutlet weak var replyWidth: NSLayoutConstraint!
@@ -58,7 +57,6 @@ class MailboxMessageCell: MCSwipeTableViewCell, AccessibleCell {
     @IBOutlet weak var checkboxButton: UIButton!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var time: UILabel!
-    @available(*, deprecated) @IBOutlet weak var lockImage: UIImageView!
     @IBOutlet weak var replyImage: UIImageView!
     
     @IBOutlet weak var attachmentImage: UIImageView!
@@ -71,9 +69,6 @@ class MailboxMessageCell: MCSwipeTableViewCell, AccessibleCell {
         self.checkboxButton.isAccessibilityElement = false // TODO: check that this action is included into accessibility actions
         
         self.locationLabel.layer.cornerRadius = 2
-        
-        self.lockImage.isHidden = true
-        self.lockWidth.constant = 0.0
     }
     
     private var accessibilityActionBoxes: [MCSwipeCompletionBlockBox] = []
@@ -158,6 +153,65 @@ class MailboxMessageCell: MCSwipeTableViewCell, AccessibleCell {
     
     
     // MARK: - Cell configuration
+    func configureCell(_ conversation: Conversation, labelID: String) {
+        self.title.text = conversation.subject
+        
+        if conversation.numAttachments.intValue > 0 {
+            self.attachmentImage.isHidden = false
+            self.attachmentWidth.constant = kIconsWidth
+        } else {
+            self.attachmentImage.isHidden = true
+            self.attachmentWidth.constant = 0
+        }
+        
+        let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
+        let tempLabels = conversation.labels.filtered(using: predicate) //TODO:: later need add labels exsiting check
+        var labels : [ContextLabel] = []
+        for vowel in tempLabels {
+            let label = vowel as! ContextLabel
+            labels.append(label)
+        }
+        
+        if conversation.contains(of: Message.Location.sent.rawValue) {
+            labelsView.configLabels( conversation.recipients, labels: [])
+        } else if conversation.draft {
+            labelsView.configLabels( conversation.recipients, labels: [])
+        } else {
+            labelsView.configLabels( conversation.senders, labels: [])
+        }
+        
+        if conversation.starred {
+            self.starImage.isHidden = false
+            self.starWidth.constant = self.kIconsWidth
+        } else {
+            self.starImage.isHidden = true
+            self.starWidth.constant = 0
+        }
+        
+        self.expirationImage.isHidden = true
+        self.expirationWidth.constant = 0
+        
+        if conversation.isUnread(labelID: labelID) {
+            changeStyleToUnreadDesign()
+        } else {
+            changeStyleToReadDesign()
+        }
+        
+        hideReply()
+        hideForward()
+        
+        if let t : Date = conversation.getTime(labelID: labelID), let displayString = NSDate.stringForDisplay(from: t) {
+            self.time.text = " \(displayString)"
+        } else {
+            self.time.text = " "
+        }
+        
+        timeWidth.constant = self.time.sizeThatFits(CGSize.zero).width
+        
+        self.updateAccessibilityLabel()
+        self.setNeedsUpdateConstraints()
+    }
+    
     func configureCell(_ message: Message, showLocation : Bool, ignoredTitle: String, replacingEmails: [Email]) {
         self.accessibilityActionBoxes = []
         self.title.text = message.subject
@@ -298,13 +352,13 @@ extension Message {
             assert(false, "Sender with no name or address")
             return ""
         }
-        
+
         // will this be deadly slow?
         let email = replacingEmails.first { $0.email == sender.email }
         if let contact = email?.contact {
             return contact.name
         }
-        
+
         return sender.name.isEmpty ? sender.email : sender.name
     }
     
@@ -315,6 +369,6 @@ extension Message {
         if lists.isEmpty {
             return ""
         }
-        return lists.joined(separator: ",")
+        return lists.joined(separator: ", ")
     }
 }

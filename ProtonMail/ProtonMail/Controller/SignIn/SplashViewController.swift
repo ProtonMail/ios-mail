@@ -99,8 +99,4 @@ class SplashViewController: UIViewController {
             viewController.viewModel = SignupViewModelImpl(token: deviceCheckToken, usersManager: usersManager , signinManager: signInManager)
         }
     }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent;
-    }
 }

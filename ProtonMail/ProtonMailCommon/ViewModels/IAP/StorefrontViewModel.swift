@@ -23,9 +23,9 @@
 
 import Foundation
 import PromiseKit
-import PMAuthentication
-import PMCommon
-import PMPayments
+import ProtonCore_Authentication
+import ProtonCore_Networking
+import ProtonCore_Payments
 
 class StorefrontViewModel: NSObject {
     let currentUser: UserManager
