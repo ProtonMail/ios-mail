@@ -22,8 +22,7 @@
 
 
 import Foundation
-import PMCommon
-
+import ProtonCore_Doh
 
 class DoHMail : DoH, ServerConfig {
     //defind your signup domain

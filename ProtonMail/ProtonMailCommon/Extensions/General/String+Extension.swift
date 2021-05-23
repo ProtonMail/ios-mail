@@ -445,6 +445,24 @@ extension String {
         }
         return escaped
     }
+
+    func shortName() -> String {
+        var shortName = ""
+        let splitCharacterOfName = self
+            .split(separator: " ")
+            .compactMap { $0.first?.uppercased() }
+        let upperbound = min(2, splitCharacterOfName.count)
+        for i in 0..<upperbound {
+            if i == 1 && splitCharacterOfName[i].containsEmoji {
+                continue
+            }
+            shortName.append(splitCharacterOfName[i])
+            if i == 0 && splitCharacterOfName[i].containsEmoji {
+                break
+            }
+        }
+        return shortName
+    }
 }
 
 
@@ -457,4 +475,31 @@ extension String {
     subscript (i: Int) -> String {
         return String(self[i] as Character)
     }
+}
+
+extension Character {
+    /// A simple emoji is one scalar and presented to the user as an Emoji
+    var isSimpleEmoji: Bool {
+        guard let firstScalar = unicodeScalars.first else { return false }
+        return firstScalar.properties.isEmoji && firstScalar.value > 0x238C
+    }
+
+    /// Checks if the scalars will be merged into an emoji
+    var isCombinedIntoEmoji: Bool { unicodeScalars.count > 1 && unicodeScalars.first?.properties.isEmoji ?? false }
+
+    var isEmoji: Bool { isSimpleEmoji || isCombinedIntoEmoji }
+}
+
+extension String {
+    var isSingleEmoji: Bool { count == 1 && containsEmoji }
+
+    var containsEmoji: Bool { contains { $0.isEmoji } }
+
+    var containsOnlyEmoji: Bool { !isEmpty && !contains { !$0.isEmoji } }
+
+    var emojiString: String { emojis.map { String($0) }.reduce("", +) }
+
+    var emojis: [Character] { filter { $0.isEmoji } }
+
+    var emojiScalars: [UnicodeScalar] { filter { $0.isEmoji }.flatMap { $0.unicodeScalars } }
 }

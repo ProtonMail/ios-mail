@@ -72,6 +72,13 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
+    class func instance() -> AccountConnectViewController {
+        let board = UIStoryboard.Storyboard.accountManager.storyboard
+        let vc = board.instantiateViewController(withIdentifier: "AccountConnectViewController") as! AccountConnectViewController
+        let _ = UINavigationController(rootViewController: vc)
+        return vc
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +92,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         setupTextFields()
         setupButtons()
         
-        if self.viewModel.username == nil {
+        if self.viewModel.username == nil || self.viewModel.username == "" {
             self.showCreateNewAccountButton()
         }
         generateAccessibilityIdentifiers()
@@ -145,11 +152,6 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
     }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-    
     // MARK: - Private methods
     
     func dismissKeyboard() {
@@ -348,14 +350,14 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
 }
 
 extension AccountConnectViewController : TwoFACodeViewControllerDelegate {
-    func ConfirmedCode(_ code: String, pwd : String) {
+    func confirmedCode(_ code: String, pwd : String) {
         NotificationCenter.default.addKeyboardObserver(self)
         self.signIn(username: usernameTextField.text ?? "",
                     password: passwordTextField.text ?? "",
                     cachedTwoCode: code)
     }
 
-    func Cancel2FA() {
+    func cancel2FA() {
         UserDataService.authResponse = nil
         NotificationCenter.default.addKeyboardObserver(self)
     }

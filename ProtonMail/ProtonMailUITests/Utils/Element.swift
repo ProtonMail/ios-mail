@@ -252,6 +252,11 @@ struct Element {
             let toCoordinate = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
             topEdge.press(forDuration: 0, thenDragTo: toCoordinate)
         }
+        
+        class func tapByIdentifier(_ identifier: String) {
+            let element = app.tables.staticTexts[identifier]
+            element.tap()
+        }
     }
     
     class textField {

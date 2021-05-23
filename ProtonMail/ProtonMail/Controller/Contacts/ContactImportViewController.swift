@@ -256,7 +256,7 @@ class ContactImportViewController: UIViewController {
                                     continue
                                 }
                                 let signed_vcard2 = try Crypto().signDetached(plainData: vcard2Str,
-                                                                              privateKey: userkey.private_key,
+                                                                              privateKey: userkey.privateKey,
                                                                               passphrase: mailboxPassword)
                                 
                                 //card 2 object
@@ -274,7 +274,7 @@ class ContactImportViewController: UIViewController {
                                 }
                                 let encrypted_vcard3 = try vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", passphrase: "")
                                 let signed_vcard3 = try Crypto().signDetached(plainData: vcard3Str,
-                                                                              privateKey: userkey.private_key,
+                                                                              privateKey: userkey.privateKey,
                                                                               passphrase: mailboxPassword)
                                 //card 3 object
                                 let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3)

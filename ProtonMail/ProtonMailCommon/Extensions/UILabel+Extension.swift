@@ -24,6 +24,12 @@
 import Foundation
 
 extension UILabel {
+
+    convenience init(attributedString: NSAttributedString) {
+        self.init()
+        self.attributedText = attributedString
+        self.sizeToFit()
+    }
     
     convenience init(font: UIFont, text: String, textColor: UIColor) {
         self.init()

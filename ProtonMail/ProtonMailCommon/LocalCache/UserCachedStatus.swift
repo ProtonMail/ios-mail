@@ -20,18 +20,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
-import PMKeymaker
-#if !APP_EXTENSION
-import PMPayments
-#endif
+import ProtonCore_Keymaker
+import ProtonCore_Payments
 
 let userCachedStatus = UserCachedStatus()
 
 //the data in there store longer.
 
-final class UserCachedStatus : SharedCacheBase {
+final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol {
     struct Key {
         // inuse
 //        static let lastCacheVersion = "last_cache_version" //user cache
@@ -94,6 +91,9 @@ final class UserCachedStatus : SharedCacheBase {
         
         //check if the iOS 10 alert is shown
         static let iOS10AlertIsShown = "ios_10_alert_is_shown"
+
+        static let leftToRightSwipeAction = "leftToRightSwipeAction"
+        static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
     }
     
     var primaryUserSessionId: String? {
@@ -179,6 +179,9 @@ final class UserCachedStatus : SharedCacheBase {
        }
 
     var isForcedLogout : Bool = false
+    
+    /// Record the last draft messageID, so the app can do delete / restore
+    var lastDraftMessageID: String?
     
     var isPMMEWarningDisabled : Bool {
         get {
@@ -583,7 +586,7 @@ extension UserCachedStatus {
 }
 
 #if !APP_EXTENSION
-extension UserCachedStatus {
+extension UserCachedStatus: LinkOpenerCacheProtocol {
     var browser: LinkOpener {
         get {
             guard let raw = KeychainWrapper.keychain.string(forKey: Key.browser) ?? getShared().string(forKey: Key.browser) else {
@@ -598,6 +601,12 @@ extension UserCachedStatus {
     }
 }
 extension UserCachedStatus: ServicePlanDataStorage {
+    /* TODO NOTE: this should be updated alongside Payments integration */
+    var credits: Credits? {
+        get { nil }
+        set { }
+    }
+
     var servicePlansDetails: [ServicePlanDetails]? {
         get {
             guard let data = self.getShared().data(forKey: Key.servicePlans) else {
@@ -645,13 +654,33 @@ extension UserCachedStatus: ServicePlanDataStorage {
             self.setValue(newValue, forKey: Key.isIAPAvailableOnBE)
         }
     }
-    
-    var credits: Credits? {
+
+}
+
+extension UserCachedStatus: SwipeActionCacheProtocol {
+    var leftToRightSwipeActionType: SwipeActionSettingType {
         get {
-            return nil
+            if let value = self.getShared()?.int(forKey: Key.leftToRightSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
+                return action
+            } else {
+                return .readAndUnread
+            }
         }
         set {
-            
+            self.setValue(newValue.rawValue, forKey: Key.leftToRightSwipeAction)
+        }
+    }
+
+    var rightToLeftSwipeActionType: SwipeActionSettingType {
+        get {
+            if let value = self.getShared()?.int(forKey: Key.rightToLeftSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
+                return action
+            } else {
+                return .trash
+            }
+        }
+        set {
+            self.setValue(newValue.rawValue, forKey: Key.rightToLeftSwipeAction)
         }
     }
 }

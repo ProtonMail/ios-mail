@@ -62,8 +62,4 @@ class ContactSearchTableViewController: UITableViewController {
         return UIDevice.current.orientation == .landscapeLeft ||
                 UIDevice.current.orientation == .landscapeRight
     }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
 }

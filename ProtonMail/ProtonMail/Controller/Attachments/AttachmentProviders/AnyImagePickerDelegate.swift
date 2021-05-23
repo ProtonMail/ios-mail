@@ -23,6 +23,7 @@
 
 import Foundation
 import Photos
+import ProtonCore_UIFoundations
 
 // abstract
 class AnyImagePickerDelegate: NSObject, AttachmentProvider, ImageProcessor {
@@ -32,7 +33,7 @@ class AnyImagePickerDelegate: NSObject, AttachmentProvider, ImageProcessor {
         self.controller = controller
     }
     
-    var alertAction: UIAlertAction {
+    var actionSheetItem: PMActionSheetItem {
         fatalError() // override
     }
 }
@@ -41,10 +42,8 @@ extension AnyImagePickerDelegate: UIImagePickerControllerDelegate, UINavigationC
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // Local variable inserted by Swift 4.2 migrator.
         let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
-        
-        if let url = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.referenceURL)] as? NSURL,
-           let asset = PHAsset.fetchAssets(withALAssetURLs: [url as URL], options: nil).firstObject
-        {
+
+        if let asset = info[UIImagePickerController.InfoKey.phAsset.rawValue] as? PHAsset {
             self.process(asset: asset)
             picker.dismiss(animated: true, completion: nil)
         } else if let originalImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage {

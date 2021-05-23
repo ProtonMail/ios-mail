@@ -24,12 +24,12 @@
 import Foundation
 import AwaitKit
 import PromiseKit
-import PMKeymaker
 import Crypto
-import PMAuthentication
-import PMCommon
 import OpenPGP
-
+import ProtonCore_APIClient
+import ProtonCore_DataModel
+import ProtonCore_Networking
+import ProtonCore_Services
 
 typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void
 
@@ -92,23 +92,23 @@ class UserDataService : Service, HasLocalStorage {
             defaultSignatureStauts = newValue
         }
     }
-   
+
     // MARK: - Public variables
     
     var linkConfirmation: LinkOpeningMode {
         return .confirmationAlert
         //TODO:: fix me
-//        return userInfo?.linkConfirmation ?? .confirmationAlert
+        //        return userInfo?.linkConfirmation ?? .confirmationAlert
     }
-//
-//    var addresses: [Address] { //never be null
-//        return userInfo?.userAddresses ?? [Address]()
-//    }
-//
-//    var displayName: String {
-//        return (userInfo?.displayName ?? "").decodeHtml()
-//    }
-//
+    //
+    //    var addresses: [Address] { //never be null
+    //        return userInfo?.userAddresses ?? [Address]()
+    //    }
+    //
+    //    var displayName: String {
+    //        return (userInfo?.displayName ?? "").decodeHtml()
+    //    }
+    //
     var isMailboxPasswordStored: Bool {
         return KeychainWrapper.keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }
@@ -117,7 +117,7 @@ class UserDataService : Service, HasLocalStorage {
     
     var isUserCredentialStored: Bool {
         return isMailboxPasswordStored
-//        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.atLeastOneLoggedIn) != nil
+        //        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }
     
     func allLoggedout() {
@@ -126,7 +126,7 @@ class UserDataService : Service, HasLocalStorage {
     
     // MARK: - methods
     init(check : Bool = true, api: APIService) {  //Add interface for data agent //
-         self.apiService = api
+        self.apiService = api
         if check {
             cleanUpIfFirstRun()
             launchCleanUp()
@@ -145,16 +145,16 @@ class UserDataService : Service, HasLocalStorage {
             let mailSettingsApi = GetMailSettings()
             mailSettingsApi.auth = auth
 
-            let addrRes: AddressesResponse = try await(self.apiService.run(route: addrApi))
-            let userRes: GetUserInfoResponse = try await(self.apiService.run(route: userApi))
-            let userSettingsRes: SettingsResponse = try await(self.apiService.run(route: userSettingsApi))
-            let mailSettingsRes: MailSettingsResponse = try await(self.apiService.run(route: mailSettingsApi))
+            let addrRes: AddressesResponse = try `await`(self.apiService.run(route: addrApi))
+            let userRes: GetUserInfoResponse = try `await`(self.apiService.run(route: userApi))
+            let userSettingsRes: SettingsResponse = try `await`(self.apiService.run(route: userSettingsApi))
+            let mailSettingsRes: MailSettingsResponse = try `await`(self.apiService.run(route: mailSettingsApi))
 
             userRes.userInfo?.set(addresses: addrRes.addresses)
             userRes.userInfo?.parse(userSettings: userSettingsRes.userSettings)
             userRes.userInfo?.parse(mailSettings: mailSettingsRes.mailSettings)
 
-            try await(self.activeUserKeys(userInfo: userRes.userInfo, auth: auth) )
+            try `await`(self.activeUserKeys(userInfo: userRes.userInfo, auth: auth) )
             return userRes.userInfo
         }
     }
@@ -164,15 +164,14 @@ class UserDataService : Service, HasLocalStorage {
             guard let user = userInfo, let pwd = auth?.mailboxpassword else {
                 return
             }
-            let addresses = user.userAddresses
-            for addr in addresses {
-                for index in 0 ..< addr.keys.count {
+            for addr in user.userAddresses {
+                for index in addr.keys.indices {
                     let key = addr.keys[index]
                     if let activtion = key.activation {
                         guard let token = try activtion.decryptMessage(binKeys: user.userPrivateKeysArray, passphrase: pwd) else {
                             continue
                         }
-                        let new_private_key = try Crypto.updatePassphrase(privateKey: key.private_key, oldPassphrase: token, newPassphrase: pwd)
+                        let new_private_key = try Crypto.updatePassphrase(privateKey: key.privateKey, oldPassphrase: token, newPassphrase: pwd)
                         let keylist : [[String: Any]] = [[
                             "Fingerprint" :  key.fingerprint,
                             "Primary" : 1,
@@ -184,24 +183,22 @@ class UserDataService : Service, HasLocalStorage {
                             "Data" : jsonKeylist,
                             "Signature" : signed
                         ]
-                        let api = ActivateKey(addrID: key.key_id, privKey: new_private_key, signedKL: signedKeyList)
+                        let api = ActivateKey(addrID: key.keyID, privKey: new_private_key, signedKL: signedKeyList)
                         api.auth = auth
                         
                         do {
-                            let activateKeyResponse = try await(self.apiService.run(route: api))
-                            if activateKeyResponse.code == 1000 {
+                            let activateKeyResponse = try `await`(self.apiService.run(route: api))
+                            if activateKeyResponse.responseCode == 1000 {
+                                addr.keys[index].privateKey = new_private_key
                                 addr.keys[index].activation = nil
-                                addr.keys[index].private_key = new_private_key
                             }
                         } catch let ex {
                             PMLog.D(ex.localizedDescription)
                             //ignore error for now
                         }
-                        
                     }
                 }
             }
-            return
         }
     }
     
@@ -284,28 +281,6 @@ class UserDataService : Service, HasLocalStorage {
         clearAll()
     }
     
-    @available(*, deprecated, message: "account wise display name, i don't think we are using it any more. double check and remvoe it")
-    func updateDisplayName(auth currentAuth: AuthCredential,
-                           user: UserInfo,
-                           displayName: String, completion: UserInfoBlock?) {
-        let authCredential = currentAuth
-        let userInfo = user
-        guard let _ = keymaker.mainKey else
-        {
-            completion?(nil, nil, NSError.lockError())
-            return
-        }
-        
-        let new_displayName = displayName.trim()
-        let api = UpdateDisplayNameRequest(displayName: new_displayName, authCredential: authCredential)
-        self.apiService.exec(route: api) { task, response in
-            if response.error == nil {
-                userInfo.displayName = new_displayName
-            }
-            completion?(userInfo, nil, response.error)
-        }
-    }
-    
     func updateAddress(auth currentAuth: AuthCredential,
                        user: UserInfo,
                        addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
@@ -322,17 +297,12 @@ class UserDataService : Service, HasLocalStorage {
         let api = UpdateAddressRequest(id: addressId, displayName: new_displayName, signature: new_signature, authCredential: authCredential)
         self.apiService.exec(route: api) { task, response in
             if response.error == nil {
-                let addresses = userInfo.userAddresses
-                for addr in addresses {
-                    if addr.address_id == addressId {
-                        addr.display_name = new_displayName
-                        addr.signature = new_signature
-                        break
-                    }
+                userInfo.userAddresses = userInfo.userAddresses.map { addr in
+                    guard addr.addressID == addressId else { return addr }
+                    return addr.withUpdated(displayName: new_displayName, signature: new_signature)
                 }
-                userInfo.userAddresses = addresses
             }
-            completion?(userInfo, nil, response.error)
+            completion?(userInfo, nil, response.error?.toNSError)
         }
     }
     
@@ -360,7 +330,32 @@ class UserDataService : Service, HasLocalStorage {
             if response.error == nil {
                 userInfo.showImages = newStatus
             }
-            completion(userInfo, nil, response.error)
+            completion(userInfo, nil, response.error?.toNSError)
+        }
+    }
+
+    func updateAutoLoadEmbeddedImage(auth currentAuth: AuthCredential,
+                                     userInfo: UserInfo,
+                                     remote status: Bool,
+                                     completion: @escaping UserInfoBlock) {
+        guard keymaker.mainKey != nil else {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+
+        var newStatus = userInfo.showImages
+        if status {
+            newStatus.insert(.embedded)
+        } else {
+            newStatus.remove(.embedded)
+        }
+
+        let api = UpdateShowImages(status: newStatus.rawValue, authCredential: currentAuth)
+        self.apiService.exec(route: api) { (task, response) in
+            if response.error == nil {
+                userInfo.showImages = newStatus
+            }
+            completion(userInfo, nil, response.error?.toNSError)
         }
     }
     
@@ -380,7 +375,7 @@ class UserDataService : Service, HasLocalStorage {
             if response.error == nil {
                 userInfo.linkConfirmation = status
             }
-            completion(userInfo, nil, response.error)
+            completion(userInfo, nil, response.error?.toNSError)
         }
     }
     #endif
@@ -395,14 +390,14 @@ class UserDataService : Service, HasLocalStorage {
         var _username = "" //oldAuthCredential.userName
         if _username.isEmpty {
             if let addr = user.userAddresses.defaultAddress() {
-               _username = addr.email
+                _username = addr.email
             }
         }
 
         {//async
             do {
                 //generate new pwd and verifier
-                let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                 guard let moduls_id = authModuls.ModulusID else {
                     throw UpdatePasswordError.invalidModulusID.error
                 }
@@ -423,12 +418,12 @@ class UserDataService : Service, HasLocalStorage {
 
                 repeat {
                     // get auto info
-                    let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                    let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                     let authVersion = info.Version
                     guard let modulus = info.Modulus,
-                        let ephemeral = info.ServerEphemeral, let salt = info.Salt,
-                        let session = info.SRPSession else {
-                            throw UpdatePasswordError.invalideAuthInfo.error
+                          let ephemeral = info.ServerEphemeral, let salt = info.Salt,
+                          let session = info.SRPSession else {
+                        throw UpdatePasswordError.invalideAuthInfo.error
                     }
 
                     if authVersion <= 2 && !forceRetry {
@@ -448,15 +443,16 @@ class UserDataService : Service, HasLocalStorage {
                     }
 
                     do {
-                        let updatePwd_res = try await(self.apiService.run(route: UpdateLoginPassword(clientEphemeral: clientEphemeral.encodeBase64(),
-                                                                                                     clientProof: clientProof.encodeBase64(),
-                                                                                                     SRPSession: session,
-                                                                                                     modulusID: moduls_id,
-                                                                                                     salt: new_salt.encodeBase64(),
-                                                                                                     verifer: verifier.encodeBase64(),
-                                                                                                     tfaCode: twoFACode,
-                                                                                                     authCredential: oldAuthCredential)))
-                        if updatePwd_res.code == 1000 {
+                        let updatePwd_res = try `await`(
+                            self.apiService.run(route: UpdateLoginPassword(clientEphemeral: clientEphemeral.encodeBase64(),
+                                                                           clientProof: clientProof.encodeBase64(),
+                                                                           SRPSession: session,
+                                                                           modulusID: moduls_id,
+                                                                           salt: new_salt.encodeBase64(),
+                                                                           verifer: verifier.encodeBase64(),
+                                                                           tfaCode: twoFACode,
+                                                                           authCredential: oldAuthCredential)))
+                        if updatePwd_res.responseCode == 1000 {
                             forceRetry = false
                         } else {
                             throw UpdatePasswordError.default.error
@@ -494,7 +490,7 @@ class UserDataService : Service, HasLocalStorage {
         var _username = "" //oldAuthCredential.userName
         if _username.isEmpty {
             if let addr = userInfo.userAddresses.defaultAddress() {
-               _username = addr.email
+                _username = addr.email
             }
         }
         guard keymaker.mainKey != nil else {
@@ -503,8 +499,8 @@ class UserDataService : Service, HasLocalStorage {
         }
         
         /// will look up the address key. if found new schema we will run through new logci
-        let isNewSchema = userInfo.newSchema
-        if isNewSchema == true {
+        let isKeyV2 = userInfo.isKeyV2
+        if isKeyV2 == true {
             /// go through key v1.2 logic
             /// v1.2. update the mailboxpassword or singlelogin password. only need to update userkeys and org keys
             {//asyn
@@ -521,7 +517,7 @@ class UserDataService : Service, HasLocalStorage {
                     //create a key list for key updates
                     if userInfo.role == 2 { //need to get the org keys
                         //check user role if equal 2 try to get the org key.
-                        let cur_org_key: OrgKeyResponse = try await(self.apiService.run(route: GetOrgKeys()))
+                        let cur_org_key: OrgKeyResponse = try `await`(self.apiService.run(route: GetOrgKeys()))
                         if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                             do {
                                 new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
@@ -537,7 +533,7 @@ class UserDataService : Service, HasLocalStorage {
                     if buildAuth {
                         
                         ///
-                        let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                        let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                         guard let moduls_id = authModuls.ModulusID else {
                             throw UpdatePasswordError.invalidModulusID.error
                         }
@@ -563,7 +559,7 @@ class UserDataService : Service, HasLocalStorage {
                     var forceRetryVersion = 2
                     repeat {
                         // get auto info
-                        let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                        let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                         let authVersion = info.Version
                         guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
                             throw UpdatePasswordError.invalideAuthInfo.error
@@ -594,8 +590,12 @@ class UserDataService : Service, HasLocalStorage {
                                                                         userKeys: updated_userlevel_keys,
                                                                         auth: authPacket,
                                                                         authCredential: oldAuthCredential)
-                            let update_res = try await(self.apiService.run(route: updatePrivkey))
-                            guard update_res.code == 1000 else {
+                            let update_res = try `await`(self.apiService.run(route: updatePrivkey))
+                            // Anson Rebase need to check
+//                            guard update_res.code == 1000 else {
+//                                throw UpdatePasswordError.default.error
+//                            }
+                            guard update_res.error == nil else {
                                 throw UpdatePasswordError.default.error
                             }
                             //update local keys
@@ -645,7 +645,7 @@ class UserDataService : Service, HasLocalStorage {
                     //create a key list for key updates
                     if userInfo.role == 2 { //need to get the org keys
                         //check user role if equal 2 try to get the org key.
-                        let cur_org_key: OrgKeyResponse = try await(self.apiService.run(route: GetOrgKeys()))
+                        let cur_org_key: OrgKeyResponse = try `await`(self.apiService.run(route: GetOrgKeys()))
                         if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                             do {
                                 new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
@@ -662,7 +662,7 @@ class UserDataService : Service, HasLocalStorage {
                         
                         ///
                         
-                        let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                        let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                         guard let moduls_id = authModuls.ModulusID else {
                             throw UpdatePasswordError.invalidModulusID.error
                         }
@@ -687,7 +687,7 @@ class UserDataService : Service, HasLocalStorage {
                     var forceRetryVersion = 2
                     repeat {
                         // get auto info
-                        let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                        let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                         let authVersion = info.Version
                         guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
                             throw UpdatePasswordError.invalideAuthInfo.error
@@ -710,7 +710,7 @@ class UserDataService : Service, HasLocalStorage {
                         }
 
                         do {
-                            let update_res = try await(self.apiService.run(route: UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
+                            let update_res = try `await`(self.apiService.run(route: UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
                                                                                                           clientProof:clientProof.encodeBase64(),
                                                                                                           SRPSession: session,
                                                                                                           keySalt: new_mpwd_salt.encodeBase64(),
@@ -720,7 +720,11 @@ class UserDataService : Service, HasLocalStorage {
                                                                                                           orgKey: new_org_key, userKeys: nil,
                                                                                                           auth: authPacket,
                                                                                                           authCredential: oldAuthCredential)))
-                            guard update_res.code == 1000 else {
+                            // Anson Rebase need to check
+//                            guard update_res.code == 1000 else {
+//                                throw UpdatePasswordError.default.error
+//                            }
+                            guard update_res.error == nil else {
                                 throw UpdatePasswordError.default.error
                             }
                             //update local keys
@@ -752,10 +756,10 @@ class UserDataService : Service, HasLocalStorage {
         }
     }
     
-    //TODO:: refactor newOrders. 
+    //TODO:: refactor newOrders.
     func updateUserDomiansOrder(auth currentAuth: AuthCredential,
                                 user: UserInfo,
-                                _ email_domains: [PMCommon.Address], newOrder : [String], completion: @escaping CompletionBlock) {
+                                _ email_domains: [Address], newOrder : [String], completion: @escaping CompletionBlock) {
         
         let authCredential = currentAuth
         let userInfo = user
@@ -774,32 +778,17 @@ class UserDataService : Service, HasLocalStorage {
         }
     }
     
-    func updateUserSwipeAction(auth currentAuth: AuthCredential,
-                               userInfo: UserInfo,
-                               isLeft : Bool,
-                               action: MessageSwipeAction,
-                               completion: @escaping CompletionBlock) {
-        let api : Request = isLeft ? UpdateSwiftLeftAction(action: action, authCredential: currentAuth) : UpdateSwiftRightAction(action: action, authCredential: currentAuth)
-        self.apiService.exec(route: api) { task, response in
-            if response.error == nil {
-                userInfo.swipeLeft = isLeft ? action.rawValue : userInfo.swipeLeft
-                userInfo.swipeRight = isLeft ? userInfo.swipeRight : action.rawValue
-            }
-            completion(task, nil, nil)
-        }
-    }
-    
     func updateNotificationEmail(auth currentAuth: AuthCredential,
                                  user: UserInfo,
                                  new_notification_email: String, login_password : String,
                                  twoFACode: String?, completion: @escaping CompletionBlock) {
         let oldAuthCredential = currentAuth
         let userInfo = user
-//        let old_password = oldAuthCredential.mailboxpassword
+        //        let old_password = oldAuthCredential.mailboxpassword
         var _username = "" //oldAuthCredential.userName
         if _username.isEmpty {
             if let addr = userInfo.userAddresses.defaultAddress() {
-               _username = addr.email
+                _username = addr.email
             }
         }
 
@@ -816,7 +805,7 @@ class UserDataService : Service, HasLocalStorage {
 
                 repeat {
                     // get auto info
-                    let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                    let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                     let authVersion = info.Version
                     guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
                         throw UpdateNotificationEmailError.invalideAuthInfo.error
@@ -839,13 +828,14 @@ class UserDataService : Service, HasLocalStorage {
                     }
 
                     do {
-                        let updatetNotifyEmailRes = try await(self.apiService.run(route: UpdateNotificationEmail(clientEphemeral: clientEphemeral.encodeBase64(),
-                                                                                                                 clientProof: clientProof.encodeBase64(),
-                                                                                                                 sRPSession: session,
-                                                                                                                 notificationEmail: new_notification_email,
-                                                                                                                 tfaCode: twoFACode,
-                                                                                                                 authCredential: oldAuthCredential)))
-                        if updatetNotifyEmailRes.code == 1000 {
+                        let updatetNotifyEmailRes = try `await`(
+                            self.apiService.run(route: UpdateNotificationEmail(clientEphemeral: clientEphemeral.encodeBase64(),
+                                                                               clientProof: clientProof.encodeBase64(),
+                                                                               sRPSession: session,
+                                                                               notificationEmail: new_notification_email,
+                                                                               tfaCode: twoFACode,
+                                                                               authCredential: oldAuthCredential)))
+                        if updatetNotifyEmailRes.responseCode == 1000 {
                             userInfo.notificationEmail = new_notification_email
                             forceRetry = false
                         } else {
@@ -887,7 +877,7 @@ class UserDataService : Service, HasLocalStorage {
             if response.error == nil {
                 userInfo.notify = (isOn ? 1 : 0)
             }
-            completion(task, nil, response.error)
+            completion(task, nil, response.error?.toNSError)
         }
     }
     
@@ -901,7 +891,7 @@ class UserDataService : Service, HasLocalStorage {
 
         let signatureSetting = UpdateSignature(signature: signature, authCredential: currentAuth)
         self.apiService.exec(route: signatureSetting) { (task, response) in
-            completion(task, nil, response.error)
+            completion(task, nil, response.error?.toNSError)
         }
     }
     
@@ -919,27 +909,27 @@ class UserDataService : Service, HasLocalStorage {
     
     func clearAll() {
         allLoggedout()
-       //mailboxPassword = nil
+        //mailboxPassword = nil
         passwordMode = 2
     }
     
     
-//    func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
-//        return { task, response, error in
-//            if error == nil {
-//                self.fetchUserInfo().done { (userInfo) in
-//                    
-////                    self.fetchUserInfo(completion)
-//                }.catch { error in
-//                    
-////                    self.fetchUserInfo(completion)
-//                }
-//                
-//            } else {
-//                completion?(nil, nil, error)
-//            }
-//        }
-//    }
+    //    func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
+    //        return { task, response, error in
+    //            if error == nil {
+    //                self.fetchUserInfo().done { (userInfo) in
+    //
+    ////                    self.fetchUserInfo(completion)
+    //                }.catch { error in
+    //
+    ////                    self.fetchUserInfo(completion)
+    //                }
+    //
+    //            } else {
+    //                completion?(nil, nil, error)
+    //            }
+    //        }
+    //    }
     
     func launchCleanUp() {
         if !self.isUserCredentialStored {
@@ -962,18 +952,16 @@ extension AppCache {
     }
     
     static func inject(username: String, into userDataService: UserDataService) {
-//        userDataService.username = username
+        //        userDataService.username = username
     }
 }
 
-
-
-extension PMCommon.UserInfo {
+extension UserInfo {
     var userPrivateKeys : Data {
         var out = Data()
         var error : NSError?
         for key in userKeys {
-            if let privK = ArmorUnarmor(key.private_key, &error) {
+            if let privK = ArmorUnarmor(key.privateKey, &error) {
                 out.append(privK)
             }
         }
@@ -984,7 +972,7 @@ extension PMCommon.UserInfo {
         var out: [Data] = []
         var error: NSError?
         for key in userKeys {
-            if let privK = ArmorUnarmor(key.private_key, &error) {
+            if let privK = ArmorUnarmor(key.privateKey, &error) {
                 out.append(privK)
             }
         }

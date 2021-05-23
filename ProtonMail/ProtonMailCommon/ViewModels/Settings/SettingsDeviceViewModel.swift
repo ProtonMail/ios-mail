@@ -19,96 +19,136 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 
-public enum SettingDeviceSection : Int, CustomStringConvertible {
+public enum SettingDeviceSection: Int, CustomStringConvertible {
     case account = 0
     case app = 1
-    case info = 2
-    case network = 3
-    
-    public var description : String {
-        switch(self){
+    case general = 2
+    case clearCache = 3
+
+    public var description: String {
+        switch self {
         case .account:
             return LocalString._account_settings
         case .app:
             return LocalString._app_settings
-        case .info:
-            return LocalString._app_information
-        case .network:
-            return LocalString._networking
+        case .general:
+            return LocalString._app_general_settings
+        case .clearCache:
+            return ""
         }
     }
 }
 
-public enum DeviceSectionItem : Int, CustomStringConvertible {
+public enum DeviceSectionItem: Int, CustomStringConvertible {
     case autolock = 0
-    case language = 1
+    case swipeAction = 1
     case combinContacts = 2
-    case cleanCache = 3
-    case push = 4
-    case browser = 5
-    
-    public var description : String {
-        switch(self){
+    case alternativeRouting = 3
+    case browser = 4
+
+    public var description: String {
+        switch self {
         case .autolock:
             return LocalString._auto_lock
-        case .language:
-            return LocalString._app_language
         case .combinContacts:
             return LocalString._combined_contacts
-        case .cleanCache:
-            return LocalString._local_cache_management
-        case .push:
-            return LocalString._push_notification
         case .browser:
             return LocalString._default_browser
+        case .swipeAction:
+            return LocalString._swipe_actions
+        case .alternativeRouting:
+            return LocalString._alternative_routing
         }
     }
 }
 
+public enum GeneralSectionItem: Int, CustomStringConvertible {
+    case notification = 0
+    case language = 1
 
-protocol SettingsDeviceViewModel : AnyObject {
+    public var description: String {
+        switch self {
+        case .notification:
+            return LocalString._push_notification
+        case .language:
+            return LocalString._app_language
+        }
+    }
+}
+
+protocol SettingsDeviceViewModel: AnyObject {
     var sections: [SettingDeviceSection] { get set }
-    
+
     var appSettigns: [DeviceSectionItem] { get set }
-    
-    var networkItems : [SNetworkItems] {get set }
+
+    var generalSettings: [GeneralSectionItem] { get set }
     
     func appVersion() -> String
-    
+
     var userManager: UserManager { get }
-    
-    var email : String { get }
-    var name : String { get }
-    
-    var languages : [ELanguage] { get }
-    
-    var lockOn : Bool { get }
+
+    var email: String { get }
+    var name: String { get }
+
+    var languages: [ELanguage] { get }
+
+    var lockOn: Bool { get }
     var combineContactOn: Bool { get }
+    var biometricType: BiometricType { get }
+    var isDohOn: Bool { get }
+
+    func cleanCache(completion: ((Result<Void, NSError>) -> Void)?)
 }
 
 class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
-    var sections: [SettingDeviceSection] = [ .account, .app, .network, .info]
+    var sections: [SettingDeviceSection] = [ .account, .app, .general, .clearCache]
     
-    var appSettigns: [DeviceSectionItem] = [.push, .autolock, .language, .combinContacts, .browser, .cleanCache]
-    var networkItems : [SNetworkItems] = [.doh]
+    var appSettigns: [DeviceSectionItem] = [.autolock, .combinContacts, .browser, .alternativeRouting, .swipeAction]
+
+    var generalSettings: [GeneralSectionItem] = [.notification, .language]
+
     var userManager: UserManager
-    var lockOn : Bool {
+    private let users: UsersManager
+    private let bioStatusProvider: BiometricStatusProvider
+    private var dohSetting: DohStatusProtocol
+
+    var lockOn: Bool {
         return userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled
     }
+
     var combineContactOn: Bool {
         return userCachedStatus.isCombineContactOn
     }
-    init(user : UserManager) {
-        self.userManager = user
+
+    var biometricType: BiometricType {
+        return self.bioStatusProvider.biometricType
     }
-    
+
+    var email: String {
+        return self.userManager.defaultEmail
+    }
+
+    var name: String {
+        let name = self.userManager.defaultDisplayName
+        return name.isEmpty ? self.email : name
+    }
+
     var languages: [ELanguage] = ELanguage.allItems()
-    
-    
+
+    var isDohOn: Bool {
+        return self.dohSetting.status == .on
+    }
+
+    init(user: UserManager, users: UsersManager, bioStatusProvider: BiometricStatusProvider, dohSetting: DohStatusProtocol) {
+        self.userManager = user
+        self.users = users
+        self.bioStatusProvider = bioStatusProvider
+        self.dohSetting = dohSetting
+    }
+
     func appVersion() -> String {
         var appVersion = "Unkonw Version"
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -119,16 +159,20 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
         }
         return appVersion
     }
-    
-    var email : String {
-        get {
-            return self.userManager.defaultEmail
-        }
-    }
-    
-    var name : String {
-        get {
-            return self.userManager.defaultDisplayName
+
+    func cleanCache(completion: ((Result<Void, NSError>) -> Void)?) {
+        for user in users.users {
+            user.messageService.cleanLocalMessageCache { (_, _, error) in
+                guard user.userinfo.userId == self.userManager.userinfo.userId else {
+                    return
+                }
+
+                if let err = error {
+                    completion?(.failure(err))
+                } else {
+                    completion?(.success(()))
+                }
+            }
         }
     }
 }

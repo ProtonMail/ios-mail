@@ -1,0 +1,6 @@
+xcassets:
+  inputs:
+    - ../ProtonMail/Resource/Images.xcassets
+  outputs:
+    - templateName: swift5
+      output: ../ProtonMail/Resource/Generated/Images.generated.swift

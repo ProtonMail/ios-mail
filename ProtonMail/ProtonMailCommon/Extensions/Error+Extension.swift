@@ -23,7 +23,7 @@
 
 import Foundation
 import MBProgressHUD
-import PMCommon
+import ProtonCore_Common
 
 extension Error
 {

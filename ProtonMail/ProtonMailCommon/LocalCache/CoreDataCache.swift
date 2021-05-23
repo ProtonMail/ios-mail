@@ -19,10 +19,9 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
-
+import ProtonCore_Keymaker
 
 /// core data related cache versioning. when clean or rebuild. should also rebuild the counter and queue
 class CoreDataCache : Migrate {

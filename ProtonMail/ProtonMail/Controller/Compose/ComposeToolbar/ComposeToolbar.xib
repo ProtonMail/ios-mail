@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ComposeToolbar" customModule="ProtonMail" customModuleProvider="target">
+            <connections>
+                <outlet property="attachmentButton" destination="9F1-kc-8xO" id="qG2-bH-f8q"/>
+                <outlet property="attachmentNumLabel" destination="rxs-3V-m8f" id="BFH-7W-V9O"/>
+                <outlet property="attachmentNumView" destination="cjw-7e-Whk" id="DJr-Hl-vbM"/>
+                <outlet property="hourButton" destination="wwl-u8-v2B" id="VJg-vZ-3Ck"/>
+                <outlet property="lockButton" destination="Agv-Ge-cKS" id="Lki-on-RsP"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ASf-I1-6xk">
+                    <rect key="frame" x="16" y="0.0" width="343" height="48"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agv-Ge-cKS">
+                            <rect key="frame" x="0.0" y="0.0" width="40" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="oux-TE-YHL"/>
+                            </constraints>
+                            <state key="normal" image="ic_lock_no_ckeck"/>
+                            <connections>
+                                <action selector="clickEOButton:" destination="-1" eventType="touchUpInside" id="cpk-63-TwZ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwl-u8-v2B">
+                            <rect key="frame" x="52" y="0.0" width="40" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="R3J-01-kAi"/>
+                            </constraints>
+                            <state key="normal" image="ic_hourglass_no_check"/>
+                            <connections>
+                                <action selector="clickExpireButton:" destination="-1" eventType="touchUpInside" id="CJW-lQ-suF"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a4z-ls-iMB">
+                            <rect key="frame" x="104" y="0.0" width="187" height="48"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cjw-7e-Whk">
+                            <rect key="frame" x="297" y="0.0" width="24" height="48"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rxs-3V-m8f">
+                                    <rect key="frame" x="0.0" y="12" width="24" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="8Je-Wz-NW6"/>
+                                        <constraint firstAttribute="width" secondItem="rxs-3V-m8f" secondAttribute="height" multiplier="1:1" id="ZPK-VG-L1H"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="rxs-3V-m8f" firstAttribute="leading" secondItem="cjw-7e-Whk" secondAttribute="leading" id="CRU-58-v0c"/>
+                                <constraint firstAttribute="trailing" secondItem="rxs-3V-m8f" secondAttribute="trailing" id="SNN-yL-dEx"/>
+                                <constraint firstItem="rxs-3V-m8f" firstAttribute="centerY" secondItem="cjw-7e-Whk" secondAttribute="centerY" id="TVr-O1-UY5"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9F1-kc-8xO">
+                            <rect key="frame" x="303" y="0.0" width="40" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="bw7-dd-b3p"/>
+                            </constraints>
+                            <state key="normal" image="ic-paper-clip"/>
+                            <connections>
+                                <action selector="clickAttachmentButton:" destination="-1" eventType="touchUpInside" id="n4r-u6-ToZ"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ASf-I1-6xk" secondAttribute="trailing" constant="16" id="ArB-xF-F4U"/>
+                <constraint firstItem="ASf-I1-6xk" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="O50-Gc-ZRV"/>
+                <constraint firstAttribute="bottom" secondItem="ASf-I1-6xk" secondAttribute="bottom" id="hdz-CQ-NhD"/>
+                <constraint firstItem="ASf-I1-6xk" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="sFr-cn-gud"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="188" y="91"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic-paper-clip" width="21.5" height="19"/>
+        <image name="ic_hourglass_no_check" width="40" height="40"/>
+        <image name="ic_lock_no_ckeck" width="40" height="40"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

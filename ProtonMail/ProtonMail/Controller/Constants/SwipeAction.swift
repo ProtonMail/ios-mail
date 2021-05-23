@@ -19,41 +19,182 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
-import Foundation
+import ProtonCore_UIFoundations
 
-enum MessageSwipeAction : Int, CustomStringConvertible {
-    case trash = 0
-    case spam = 1
-    case star = 2
-    case archive = 3
-    case unread = 4
-    
-    var description : String {
-        get {
-            switch(self) {
-            case .trash:
-                return LocalString._locations_trash_desc //Trash
-            case .spam:
-                return LocalString._locations_spam_desc
-            case .star:
-                return LocalString._star
-            case .archive:
-                return LocalString._locations_archive_desc
-            case .unread:
-                return LocalString._mark_as_unread_short
-            }
+enum SwipeActionSettingType: Int, CustomStringConvertible {
+    case none
+    case trash
+    case spam
+    case starAndUnstar
+    case archive
+    case readAndUnread
+    case labelAs
+    case moveTo
+
+    var description: String {
+        switch self {
+        case .trash:
+            return LocalString._locations_trash_desc
+        case .spam:
+            return LocalString._move_to_spam
+        case .starAndUnstar:
+            return LocalString._star_unstar
+        case .archive:
+            return LocalString._move_to_archive
+        case .readAndUnread:
+            return LocalString._mark_as_unread_read
+        case .none:
+            return LocalString._none
+        case .labelAs:
+            return LocalString._label_as_
+        case .moveTo:
+            return LocalString._move_to_
         }
     }
-    
-    var actionColor: UIColor {
-        switch(self) {
-        case .trash:
-            return UIColor.red
+
+    var selectionTitle: String {
+        switch self {
+        case .none:
+            return LocalString._setting_swipe_action_none_selection_title
         default:
-            return UIColor.ProtonMail.MessageActionTintColor
+            return description
+        }
+    }
+
+    var actionDisplayTitle: String {
+        switch self {
+        case .none:
+            return LocalString._setting_swipe_action_none_display_title
+        case .readAndUnread:
+            return LocalString._swipe_action_unread
+        case .starAndUnstar:
+            return LocalString._swipe_action_star
+        case .archive:
+            return LocalString._swipe_action_archive
+        case .spam:
+            return LocalString._swipe_action_spam
+        default:
+            return description
+        }
+    }
+
+    var actionDisplayIcon: UIImage {
+        switch self {
+        case .starAndUnstar:
+            return Asset.swipeStar.image
+        default:
+            return icon
+        }
+    }
+
+    var icon: UIImage {
+        switch self {
+        case .none:
+            return Asset.swipeNone.image
+        case .starAndUnstar:
+            return Asset.swipeUnstar.image
+        case .readAndUnread:
+            return Asset.swipeUnread.image
+        case .trash:
+            return Asset.swipeTrash.image
+        case .labelAs:
+            return Asset.swipeLabelAs.image
+        case .moveTo:
+            return Asset.swipeMoveTo.image
+        case .archive:
+            return Asset.swipeArchive.image
+        case .spam:
+            return Asset.swipeSpam.image
+        }
+    }
+
+    var actionColor: UIColor {
+        switch self {
+        case .none, .labelAs, .moveTo, .archive, .spam:
+            return UIColorManager.IconHint
+        case .readAndUnread:
+            return UIColorManager.InteractionNorm
+        case .starAndUnstar:
+            return UIColorManager.NotificationWarning
+        case .trash:
+            return UIColorManager.NotificationError
         }
     }
 }
 
+enum MessageSwipeAction: CustomStringConvertible {
+    case none
+    case unread
+    case read
+    case star
+    case unstar
+    case trash
+    case labelAs
+    case moveTo
+    case archive
+    case spam
+
+    var description: String {
+        switch self {
+        case .none:
+            return LocalString._swipe_action_unread
+        case .unread:
+            return LocalString._swipe_action_unread
+        case .read:
+            return LocalString._swipe_action_read
+        case .star:
+            return LocalString._swipe_action_star
+        case .unstar:
+            return LocalString._swipe_action_unstar
+        case .trash:
+            return LocalString._locations_trash_desc
+        case .labelAs:
+            return LocalString._label_as_
+        case .moveTo:
+            return LocalString._move_to_
+        case .archive:
+            return LocalString._swipe_action_archive
+        case .spam:
+            return LocalString._swipe_action_spam
+        }
+    }
+
+    var actionColor: UIColor {
+        switch self {
+        case .none, .unstar, .labelAs, .moveTo, .archive, .spam:
+            return UIColorManager.IconHint
+        case .unread, .read:
+            return UIColorManager.InteractionNorm
+        case .star:
+            return UIColorManager.NotificationWarning
+        case .trash:
+            return UIColorManager.NotificationError
+        }
+    }
+
+    var icon: UIImage {
+        switch self {
+        case .none:
+            return Asset.swipeNone.image
+        case .unread:
+            return Asset.swipeUnread.image
+        case .read:
+            return Asset.swipeRead.image
+        case .star:
+            return Asset.swipeStar.image
+        case .unstar:
+            return Asset.swipeUnstar.image
+        case .trash:
+            return Asset.swipeTrash.image
+        case .labelAs:
+            return Asset.swipeLabelAs.image
+        case .moveTo:
+            return Asset.swipeMoveTo.image
+        case .archive:
+            return Asset.swipeArchive.image
+        case .spam:
+            return Asset.swipeSpam.image
+        }
+    }
+}

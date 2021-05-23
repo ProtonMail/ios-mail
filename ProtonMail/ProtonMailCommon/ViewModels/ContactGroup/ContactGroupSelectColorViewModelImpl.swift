@@ -25,11 +25,17 @@ import Foundation
 
 class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel
 {
+    let originalColor: String
     var currentColor: String
     let colors = ColorManager.forLabel
     let refreshHandler: (String) -> Void
+
+    var havingUnsavedChanges: Bool {
+        return originalColor != currentColor
+    }
     
     init(currentColor: String, refreshHandler: @escaping (String) -> Void) {
+        self.originalColor = currentColor
         self.currentColor = currentColor
         self.refreshHandler = refreshHandler
     }

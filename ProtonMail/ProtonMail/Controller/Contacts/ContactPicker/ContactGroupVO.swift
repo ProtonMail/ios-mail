@@ -20,9 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
-import PMCommon
+import ProtonCore_Services
 
 // contact group sub-selection
 struct DraftEmailData: Hashable
@@ -52,6 +51,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     var lock: UIImage?
     var hasPGPPined: Bool
     var hasNonePM: Bool
+    private(set) var allMemberValidate = true
     
     var color: String? {
         get {
@@ -59,7 +59,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return color
             }
             
-            let context = CoreDataService.shared.mainManagedObjectContext
+            let context = CoreDataService.shared.mainContext
             if let label = Label.labelForLabelName(contactTitle,
                                                    inManagedObjectContext: context) {
                 groupColor = label.color
@@ -88,7 +88,16 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         return ""
     }
     
-    func setType(type: Int) { }
+    func setType(type: Int) {
+        if let pgp = PGPType(rawValue: type) {
+            let badTypes: [PGPType] = [.failed_validation,
+                                       .failed_non_exist,
+                                       .failed_server_validation]
+            self.allMemberValidate = !badTypes.contains(pgp)
+        } else {
+            self.allMemberValidate = false
+        }
+    }
     
     func lockCheck(api: APIService, contactService: ContactDataService, progress: () -> Void, complete: LockCheckComplete?) {}
     
@@ -155,7 +164,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     func selectAllEmailFromGroup() {
         selectedMembers.removeAll()
         
-        let context = CoreDataService.shared.mainManagedObjectContext
+        let context = CoreDataService.shared.mainContext
         
         if let label = Label.labelGroup(byID: self.ID, inManagedObjectContext: context) {
             for email in label.emails.allObjects as! [Email] {
@@ -178,7 +187,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
             return (size, color)
         }
         
-        let context = CoreDataService.shared.mainManagedObjectContext
+        let context = CoreDataService.shared.mainContext
         if let label = Label.labelForLabelName(contactTitle,
                                                inManagedObjectContext: context) {
             groupColor = label.color
@@ -195,7 +204,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return size
             }
             
-            let context = CoreDataService.shared.mainManagedObjectContext
+            let context = CoreDataService.shared.mainContext
             if let label = Label.labelForLabelName(contactTitle,
                                                    inManagedObjectContext: context) {
                 groupColor = label.color
@@ -216,7 +225,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         
         let emailMultiSet = MultiSet<DraftEmailData>()
         var color = ""
-        let context = CoreDataService.shared.mainManagedObjectContext
+        let context = CoreDataService.shared.mainContext
         // (1) get all email in the contact group        
         if self.ID.isEmpty {
             if let label = Label.labelForLabelName(self.contactTitle,

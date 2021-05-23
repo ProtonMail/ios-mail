@@ -25,10 +25,11 @@ import Foundation
 import PromiseKit
 import AwaitKit
 import Crypto
-import PMCommon
+import CoreData
 import OpenPGP
+import ProtonCore_DataModel
 
-class ContactDetailsViewModelImpl : ContactDetailsViewModel {
+class ContactDetailsViewModelImpl: ContactDetailsViewModel {
     
     private let contact: Contact
     private let contactService: ContactDataService
@@ -63,10 +64,16 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         .share
     ]
 
+    private var contactFetchedController: NSFetchedResultsController<NSFetchRequestResult>?
+
     init(contact: Contact, user: UserManager, coreDateService: CoreDataService) {
         self.contactService = user.contactService
         self.contact = contact
         super.init(user: user, coreDataService: coreDateService)
+
+        contactFetchedController = contactService.contactFetchedController(by: contact.contactID)
+        contactFetchedController?.delegate = self
+        try? contactFetchedController?.performFetch()
     }
     
     override func sections() -> [ContactEditSectionType] {
@@ -143,9 +150,24 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         }
         return false
     }
+
+    private func rebuildData() {
+        origEmails = []
+        origAddresses = []
+        origTelephons = []
+        origInformations = []
+        origFields = []
+        origNotes = []
+        origUrls = []
+        profilePicture = nil
+
+        verifyType2 = true
+        verifyType3 = true
+        self.setupEmails(forceRebuild: true)
+    }
     
     @discardableResult
-    private func setupEmails() -> Promise<Void> {
+    private func setupEmails(forceRebuild: Bool = false) -> Promise<Void> {
         return firstly { () -> Promise<Void> in
             let userInfo = self.user.userInfo
             
@@ -191,7 +213,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                                            verifyTime: 0)
                             self.verifyType2 = verifyStatus
                             if self.verifyType2 {
-                                if !key.private_key.check(passphrase: user.mailboxPassword) {
+                                if !key.privateKey.check(passphrase: user.mailboxPassword) {
                                     self.verifyType2 = false
                                 }
                                 break
@@ -238,7 +260,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     let userkeys = userInfo.userKeys
                     for key in userkeys {
                         do {
-                            pt_contact = try card.data.decryptMessageWithSinglKey(key.private_key,
+                            pt_contact = try card.data.decryptMessageWithSinglKey(key.privateKey,
                                                                                   passphrase: user.mailboxPassword)
                             signKey = key
                             self.decryptError = false
@@ -411,10 +433,15 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     break
                 }
             }
-            self.contact.managedObjectContext?.performAndWait {
-                self.contact.needsRebuild = false
-                if let error = self.contact.managedObjectContext?.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
+
+            if !forceRebuild {
+                self.coreDataService.rootSavingContext.performAndWait {
+                    if let contactToUpdate = try? self.coreDataService.rootSavingContext.existingObject(with: self.contact.objectID) as? Contact {
+                        contactToUpdate.needsRebuild = false
+                        if let error = self.coreDataService.rootSavingContext.saveUpstreamIfNeeded() {
+                            PMLog.D("error: \(error)")
+                        }
+                    }
                 }
             }
             
@@ -442,7 +469,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         loading()
         return Promise { seal in
             //Fixme
-            self.contactService.details(contactID: contact.contactID, inContext: self.coreDataService.mainManagedObjectContext).then { _ in
+            self.contactService.details(contactID: contact.contactID).then { _ in
                 self.setupEmails()
             }.done {
                 seal.fulfill(self.contact)
@@ -502,7 +529,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 let userkeys = userInfo.userKeys
                 for key in userkeys {
                     do {
-                        pt_contact = try? card.data.decryptMessageWithSinglKey(key.private_key,
+                        pt_contact = try? card.data.decryptMessageWithSinglKey(key.privateKey,
                                                                                passphrase: user.mailboxPassword)
                         break
                     }
@@ -559,5 +586,12 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             return name + ".vcf"
         }
         return "exported.vcf"
+    }
+}
+
+extension ContactDetailsViewModelImpl: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        rebuildData()
+        reloadView?()
     }
 }

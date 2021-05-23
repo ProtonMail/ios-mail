@@ -22,7 +22,8 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
+import ProtonCore_Services
 
 //TODO:: this file need to be removed
 fileprivate struct MessagePath {

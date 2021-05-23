@@ -22,8 +22,8 @@
     
 
 import Foundation
-import PMCommon
-import PMPayments
+import ProtonCore_DataModel
+import ProtonCore_Payments
 
 class Storefront: NSObject {
     private var servicePlanService: ServicePlanDataService

@@ -24,7 +24,6 @@
 import Foundation
 import UIKit
 import AFNetworking
-import PMCommon
 
 @objc(ShareExtensionEntry)
 class ShareExtensionEntry : UINavigationController {

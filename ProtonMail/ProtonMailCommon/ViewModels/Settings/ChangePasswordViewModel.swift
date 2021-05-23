@@ -20,72 +20,78 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-public typealias ChangePasswordComplete = (Bool, NSError?) -> Void
+typealias ChangePasswordComplete = (Bool, NSError?) -> Void
 
-public protocol ChangePWDViewModel {
-    
+protocol ChangePasswordViewModel {
+
     func getNavigationTitle() -> String
     func getSectionTitle() -> String
-    func getLabelOne() -> String
-    func getLabelTwo() -> String
-    func getLabelThree() -> String
+    func getCurrentPasswordEditorTitle() -> String
+    func getNewPasswordEditorTitle() -> String
+    func getConfirmPasswordEditorTitle() -> String
     func needAsk2FA() -> Bool
-    func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete:@escaping ChangePasswordComplete)
+    func setNewPassword(_ current: String,
+                        newPassword: String,
+                        confirmNewPassword: String,
+                        tFACode: String?,
+                        complete: @escaping ChangePasswordComplete)
 }
 
-public class ChangeLoginPWDViewModel : ChangePWDViewModel{
-    
+class ChangeLoginPWDViewModel: ChangePasswordViewModel {
+
     let userManager: UserManager
+
     init(user: UserManager) {
         self.userManager = user
     }
-    
+
     public func getNavigationTitle() -> String {
-        return LocalString._password
+        return LocalString._setting_change_password
     }
-    
+
     public func getSectionTitle() -> String {
         return LocalString._change_login_password
     }
-    
-    public func getLabelOne() -> String {
+
+    public func getCurrentPasswordEditorTitle() -> String {
         return LocalString._current_login_password
     }
-    
-    public func getLabelTwo() -> String {
+
+    public func getNewPasswordEditorTitle() -> String {
         return LocalString._new_login_password
     }
-    
-    public func getLabelThree() -> String {
+
+    public func getConfirmPasswordEditorTitle() -> String {
         return LocalString._confirm_new_login_password
     }
-    
+
     public func needAsk2FA() -> Bool {
         return self.userManager.userInfo.twoFactor > 0
     }
-    
-    public func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
-        let curr_pwd = current //.trim();
-        let newpwd = new_pwd //.trim();
-        let confirmpwd = confirm_new_pwd //.trim();
-        
-        if newpwd == "" || confirmpwd == "" {
+
+    public func setNewPassword(_ current: String,
+                               newPassword: String,
+                               confirmNewPassword: String,
+                               tFACode: String?,
+                               complete: @escaping ChangePasswordComplete) {
+        let currentPassword = current // .trim();
+        let newpwd = newPassword // .trim();
+        let confirmpwd = confirmNewPassword // .trim();
+
+        if newpwd.isEmpty || confirmpwd.isEmpty {
             complete(false, UpdatePasswordError.passwordEmpty.error)
         } else if newpwd.count < 8 {
             complete(false, UpdatePasswordError.minimumLengthError.error)
-        }
-        else if newpwd != confirmpwd {
+        } else if newpwd != confirmpwd {
             complete(false, UpdatePasswordError.newNotMatch.error);
-        }
-        else {
+        } else {
             self.userManager.userService.updatePassword(auth: userManager.auth,
                                                         user: userManager.userInfo,
-                                                        login_password: curr_pwd,
+                                                        login_password: currentPassword,
                                                         new_password: newpwd,
-                                                        twoFACode: tfaCode) { (_, _, error) in
+                                                        twoFACode: tFACode) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -96,55 +102,56 @@ public class ChangeLoginPWDViewModel : ChangePWDViewModel{
     }
 }
 
-class ChangeMailboxPWDViewModel : ChangePWDViewModel{
+class ChangeMailboxPWDViewModel: ChangePasswordViewModel {
     let userManager: UserManager
+
     init(user: UserManager) {
         self.userManager = user
     }
-    
+
     func getNavigationTitle() -> String {
-        return LocalString._password
+        return LocalString._setting_change_password
     }
     func getSectionTitle() -> String {
         return LocalString._change_mailbox_password
     }
-    
-    func getLabelOne() -> String {
+
+    func getCurrentPasswordEditorTitle() -> String {
         return LocalString._current_login_password
     }
-    
-    func getLabelTwo() -> String {
+
+    func getNewPasswordEditorTitle() -> String {
         return LocalString._new_mailbox_password
     }
-    
-    func getLabelThree() -> String {
+
+    func getConfirmPasswordEditorTitle() -> String {
         return LocalString._confirm_new_mailbox_password
     }
-    
+
     func needAsk2FA() -> Bool {
         return self.userManager.userInfo.twoFactor > 0
     }
-    
-    func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
-        //passwords support empty spaces like " 1 1 "
-        let curr_pwd = current
-        let newpwd = new_pwd
-        let confirmpwd = confirm_new_pwd
-        
 
-        if newpwd == "" || confirmpwd == "" {
+    func setNewPassword(_ current: String,
+                        newPassword: String,
+                        confirmNewPassword: String,
+                        tFACode: String?,
+                        complete: @escaping ChangePasswordComplete) {
+        // passwords support empty spaces like " 1 1 "
+        let currentPassword = current
+        let confirmpwd = confirmNewPassword
+
+        if newPassword.isEmpty || confirmpwd.isEmpty {
             complete(false, UpdatePasswordError.passwordEmpty.error)
-        }
-        else if newpwd != confirmpwd {
+        } else if newPassword != confirmpwd {
             complete(false, UpdatePasswordError.newNotMatch.error)
-        }
-        else {
+        } else {
             self.userManager.userService.updateMailboxPassword(auth: userManager.auth,
                                                                user: userManager.userInfo,
-                                                               loginPassword: curr_pwd,
-                                                               newPassword: newpwd,
-                                                               twoFACode: tfaCode,
-                                                               buildAuth: false) { (_, _, error) in
+                                                               loginPassword: currentPassword,
+                                                               newPassword: newPassword,
+                                                               twoFACode: tFACode,
+                                                               buildAuth: false) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -155,52 +162,59 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
     }
 }
 
+class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
 
-class ChangeSinglePasswordViewModel : ChangePWDViewModel {
-    
-    let userManager : UserManager
+    let userManager: UserManager
+
     init(user: UserManager) {
         self.userManager = user
     }
 
     func getNavigationTitle() -> String {
-        return LocalString._password
+        return LocalString._setting_change_password
     }
     func getSectionTitle() -> String {
         return LocalString._change_single_password
     }
-    
-    func getLabelOne() -> String {
+
+    func getCurrentPasswordEditorTitle() -> String {
         return LocalString._settings_current_password
     }
-    
-    func getLabelTwo() -> String {
+
+    func getNewPasswordEditorTitle() -> String {
         return LocalString._settings_new_password
     }
-    
-    func getLabelThree() -> String {
+
+    func getConfirmPasswordEditorTitle() -> String {
         return LocalString._settings_confirm_new_password
     }
-    
+
     func needAsk2FA() -> Bool {
         return userManager.userInfo.twoFactor > 0
     }
-    
-    func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
-        //passwords support empty spaces like " * * "
-        let curr_pwd = current
-        let newpwd = new_pwd
-        let confirmpwd = confirm_new_pwd
-        if newpwd == "" || confirmpwd == "" {
+
+    func setNewPassword(_ current: String,
+                        newPassword: String,
+                        confirmNewPassword: String,
+                        tFACode: String?,
+                        complete: @escaping ChangePasswordComplete) {
+        // passwords support empty spaces like " * * "
+        let currentPassword = current
+        let confirmpwd = confirmNewPassword
+        if newPassword.isEmpty || confirmpwd.isEmpty {
             complete(false, UpdatePasswordError.passwordEmpty.error)
-        } else if newpwd.count < 8 {
+        } else if newPassword.count < 8 {
             complete(false, UpdatePasswordError.minimumLengthError.error)
-        }
-        else if newpwd != confirmpwd {
+        } else if newPassword != confirmpwd {
             complete(false, UpdatePasswordError.newNotMatch.error)
         } else {
             let service = self.userManager.userService
-            service.updateMailboxPassword(auth: userManager.auth, user: userManager.userInfo, loginPassword: curr_pwd, newPassword: newpwd, twoFACode: tfaCode, buildAuth: true) { (_, _, error) in
+            service.updateMailboxPassword(auth: userManager.auth,
+                                          user: userManager.userInfo,
+                                          loginPassword: currentPassword,
+                                          newPassword: newPassword,
+                                          twoFACode: tFACode,
+                                          buildAuth: true) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -212,37 +226,41 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel {
     }
 }
 
-class ChangePWDViewModelTest : ChangePWDViewModel{
+class ChangePWDViewModelTest: ChangePasswordViewModel {
     func getNavigationTitle() -> String {
         return "PASSWORD - Test"
     }
     func getSectionTitle() -> String {
         return "Change Mailbox Password - Test"
     }
-    
-    func getLabelOne() -> String {
+
+    func getCurrentPasswordEditorTitle() -> String {
         return "Current mailbox password - Test"
     }
-    
-    func getLabelTwo() -> String {
+
+    func getNewPasswordEditorTitle() -> String {
         return "New mailbox password - Test"
     }
-    
-    func getLabelThree() -> String {
+
+    func getConfirmPasswordEditorTitle() -> String {
         return "Confirm new mailbox password - Test"
     }
-    
+
     func needAsk2FA() -> Bool {
         return false
     }
-    
-    func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete:@escaping (Bool, NSError?) -> Void) {
-        //add random test case and random
-        //remove space.
+
+    func setNewPassword(_ current: String,
+                        newPassword: String,
+                        confirmNewPassword: String,
+                        tFACode: String?,
+                        complete: @escaping (Bool, NSError?) -> Void) {
+        // add random test case and random
+        // remove space.
 //        let curr_pwd = current//.trim();
 //        let newpwd = new_pwd//.trim();
 //        let confirmpwd = confirm_new_pwd//.trim();
-        
+
 //        if curr_pwd != sharedUserDataService.mailboxPassword {
 //            complete(false, UpdatePasswordError.currentPasswordWrong.error)
 //        }

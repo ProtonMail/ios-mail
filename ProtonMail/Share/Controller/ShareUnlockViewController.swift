@@ -24,7 +24,7 @@
 import UIKit
 import MBProgressHUD
 import PromiseKit
-import PMCommon
+import ProtonCore_Services
 
 var sharedUserDataService : UserDataService!
 
@@ -219,7 +219,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     
     func configureNavigationBar() {
         if let bar = self.navigationController?.navigationBar {
-            bar.barStyle = UIBarStyle.black
             bar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
             bar.isTranslucent = false
             bar.tintColor = UIColor.white

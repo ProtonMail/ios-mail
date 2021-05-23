@@ -20,8 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
+import ProtonCore_UIFoundations
 
 final class ContactEditAddressCell: UITableViewCell {
     
@@ -56,11 +55,18 @@ final class ContactEditAddressCell: UITableViewCell {
         self.countyField.delegate = self
         
         self.valueField.placeholder  = LocalString._contacts_street_field_placeholder
+        self.valueField.tintColor = UIColorManager.TextHint
         self.street_two.placeholder  = LocalString._contacts_street_field_placeholder
+        self.street_two.tintColor = UIColorManager.TextHint
         self.cityField.placeholder   = LocalString._contacts_city_field_placeholder
+        self.cityField.tintColor = UIColorManager.TextHint
         self.stateField.placeholder  = LocalString._contacts_state_field_placeholder
+        self.stateField.tintColor = UIColorManager.TextHint
         self.zipField.placeholder    = LocalString._contacts_zip_field_placeholder
+        self.zipField.tintColor = UIColorManager.TextHint
         self.countyField.placeholder = LocalString._contacts_country_field_placeholder
+        self.countyField.tintColor = UIColorManager.TextHint
+        self.backgroundColor = UIColorManager.BackgroundNorm
     }
     
     
@@ -80,13 +86,20 @@ final class ContactEditAddressCell: UITableViewCell {
         self.isPaid = paid
         self.delegate = callback
         
-        typeLabel.text = self.addr.newType.title
-        valueField.text = self.addr.newStreet
-        street_two.text = self.addr.newStreetTwo
-        cityField.text = self.addr.newLocality
-        stateField.text = self.addr.newRegion
-        zipField.text = self.addr.newPostal
-        countyField.text = self.addr.newCountry
+        typeLabel.attributedText = NSAttributedString(string: self.addr.newType.title,
+                                                      attributes: FontManager.Default)
+        valueField.attributedText = NSAttributedString(string: self.addr.newStreet,
+                                                       attributes: FontManager.Default)
+        street_two.attributedText = NSAttributedString(string: self.addr.newStreetTwo,
+                                                       attributes: FontManager.Default)
+        cityField.attributedText = NSAttributedString(string: self.addr.newLocality,
+                                                      attributes: FontManager.Default)
+        stateField.attributedText = NSAttributedString(string: self.addr.newRegion,
+                                                       attributes: FontManager.Default)
+        zipField.attributedText = NSAttributedString(string: self.addr.newPostal,
+                                                     attributes: FontManager.Default)
+        countyField.attributedText = NSAttributedString(string: self.addr.newCountry,
+                                                        attributes: FontManager.Default)
             
         if self.isPaid {
             if becomeFirstResponder {
@@ -129,23 +142,23 @@ extension ContactEditAddressCell: UITextFieldDelegate {
             return
         }
         if textField == valueField {
-            addr.newStreet = valueField.text!
+            addr.newStreet = valueField.attributedText?.string ?? ""
         }
         
         if textField == cityField {
-            addr.newLocality = cityField.text!
+            addr.newLocality = cityField.attributedText?.string ?? ""
         }
         
         if textField == street_two {
-            addr.newStreetTwo = street_two.text!
+            addr.newStreetTwo = street_two.attributedText?.string ?? ""
         }
     
         if textField == stateField {
-            addr.newRegion = stateField.text!
+            addr.newRegion = stateField.attributedText?.string ?? ""
         }
         
         if textField == zipField {
-            addr.newPostal = zipField.text!
+            addr.newPostal = zipField.attributedText?.string ?? ""
         }
         
         if textField == countyField {

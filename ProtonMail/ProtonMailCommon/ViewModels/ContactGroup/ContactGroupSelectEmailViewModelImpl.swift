@@ -37,7 +37,12 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
     
     /// after saving the email list, we refresh the edit view controller's data
     private let refreshHandler: (Set<Email>) -> Void
-    
+
+    private var originalSelectedEmails: Set<Email>
+
+    var havingUnsavedChanges: Bool {
+        return selectedEmails != originalSelectedEmails
+    }
     
     let contactService : ContactDataService
     
@@ -65,6 +70,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
             .sorted(by: {$1.name.localizedCaseInsensitiveCompare($0.name) == .orderedDescending})
         
         self.selectedEmails = selectedEmails
+        self.originalSelectedEmails = selectedEmails
         self.refreshHandler = refreshHandler
     }
     

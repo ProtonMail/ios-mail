@@ -20,8 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
+import ProtonCore_UIFoundations
 
 extension NSAttributedString {
     /**
@@ -30,11 +29,15 @@ extension NSAttributedString {
      - search: search term to be highlighted in the string
      */
     class func highlightedString(text: String,
+                                 textAttributes: [NSAttributedString.Key: Any]? = nil,
                                  search: String,
                                  font: UIFont) -> NSAttributedString {
         let resultText = text
         let searchTerm = search
-        let attributedString = NSMutableAttributedString(string: resultText)
+        var attributes = textAttributes ?? FontManager.Default
+        attributes.addTruncatingTail()
+        let attributedString = NSMutableAttributedString(string: resultText,
+                                                         attributes: attributes)
         let pattern = "(\(searchTerm))"
         let range = NSMakeRange(0, resultText.count)
         let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
@@ -45,7 +48,7 @@ extension NSAttributedString {
             using: { (textCheckingResult, matchingFlags, stop) -> Void in
                 let subRange = textCheckingResult?.range
                 attributedString.addAttribute(NSAttributedString.Key.foregroundColor,
-                                              value: UIColor.ProtonMail.Blue_6789AB,
+                                              value: UIColorManager.InteractionNorm,
                                               range: subRange!)
                 
                 attributedString.addAttribute(NSAttributedString.Key.font,

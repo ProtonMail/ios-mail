@@ -25,7 +25,7 @@
 import Foundation
 import UIKit
 import MCSwipeTableViewCell
-
+import ProtonCore_UIFoundations
 
 /// Custom cell for Contact list, Group list and composer autocomplete
 final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
@@ -48,6 +48,8 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
     override func awakeFromNib() {
         // 20 because the width is 40 hard coded
         self.shortName.layer.cornerRadius = 20
+        self.shortName.backgroundColor = UIColorManager.InteractionWeak
+        self.backgroundColor = UIColorManager.BackgroundNorm
     }
     
     /// config cell when cellForRowAt
@@ -58,20 +60,18 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
     ///   - highlight: hightlight string. autocomplete in composer
     ///   - color: contact group color -- String type and optional
     func config(name: String, email: String, highlight: String, color : String? = nil) {
-        if highlight.isEmpty {
-            self.nameLabel.attributedText = nil
-            self.nameLabel.text = name
-            
-            self.emailLabel.attributedText = nil
-            self.emailLabel.text = email
-        } else {
-            self.nameLabel.attributedText = .highlightedString(text: name,
-                                                               search: highlight,
-                                                               font: .highlightSearchTextForTitle)
-            self.emailLabel.attributedText = .highlightedString(text: email,
-                                                                search: highlight,
-                                                                font: .highlightSearchTextForSubtitle)
-        }
+        self.nameLabel.attributedText =
+            .highlightedString(text: name,
+                               search: highlight,
+                               font: .highlightSearchTextForTitle)
+
+        var emailAttributes = FontManager.DefaultSmallWeak
+        emailAttributes.addTruncatingTail()
+        self.emailLabel.attributedText =
+            .highlightedString(text: email,
+                               textAttributes: emailAttributes,
+                               search: highlight,
+                               font: .highlightSearchTextForSubtitle)
         
         //will be show the image
         if let color = color {
@@ -83,34 +83,10 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
         } else {
             self.groupImage.isHidden = true
         }
-        
-        var shortn: String = ""
-        if !name.isEmpty {
-            let index = name.index(name.startIndex, offsetBy: 1)
-            shortn = String(name[..<index])
-        } else if !email.isEmpty {
-            let index = email.index(email.startIndex, offsetBy: 1)
-            shortn = String(email[..<index])
-        }
-        shortName.text = shortn.uppercased()
+
+        var attr = FontManager.body3RegularNorm
+        attr.addTextAlignment(.center)
+        shortName.attributedText = name.shortName().apply(style: attr)
         generateCellAccessibilityIdentifiers(name)
-    }
-    
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
-        if highlighted {
-            shortName.backgroundColor = UIColor(hexColorCode: "#BFBFBF")
-        } else {
-            shortName.backgroundColor = UIColor(hexColorCode: "#9497CE")
-        }
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        if selected {
-            shortName.backgroundColor = UIColor(hexColorCode: "#BFBFBF")
-        } else {
-            shortName.backgroundColor = UIColor(hexColorCode: "#9497CE")
-        }
     }
 }

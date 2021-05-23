@@ -21,57 +21,22 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-//import Foundation
-//
-//
-//public class ApiResponse {
-//    required public init() {}
-//    
-//    var code : Int! = 1000
-//    var errorMessage : String?
-//    var internetCode : Int? //only use when error happend.
-//    
-//    var error : NSError?
-//    
-//    func CheckHttpStatus() -> Bool {
-//        return code == 200 || code == 1000
-//    }
-//    
-//    func CheckBodyStatus () -> Bool {
-//        return code == 1000
-//    }
-//    
-//    func ParseResponseError (_ response: [String : Any]) -> Bool {
-//        code = response["Code"] as? Int
-//        errorMessage = response["Error"] as? String
-//        
-//        if code == nil {
-//            return false
-//        }
-//        
-//        if code != 1000 && code != 1001 {
-//            self.error = NSError.protonMailError(code ?? 1000,
-//                                                 localizedDescription: errorMessage ?? "",
-//                                                 localizedFailureReason: nil,
-//                                                 localizedRecoverySuggestion: nil)
-//        }
-//        return code != 1000 && code != 1001
-//    }
-//    
-//    func ParseHttpError (_ error: NSError, response: [String : Any]? = nil) {//TODO::need refactor.
-//        self.code = 404
-//        if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
-//            self.code = detail.statusCode
-//        }
-//        else {
-//            internetCode = error.code
-//            self.code = internetCode
-//        }
-//        self.errorMessage = error.localizedDescription
-//        self.error = error
-//    }
-//    
-//    func ParseResponse (_ response: [String : Any]) -> Bool {
-//        return true
-//    }
-//}
+import Foundation
+
+enum HTTPStatusCode: Int {
+    case ok = 200
+    case badRequest = 400
+    case notFound = 404
+    case internalServerError = 500
+    case BadGateway = 502
+}
+
+extension HTTPStatusCode {
+    static func ==(lhs: Int, rhs: HTTPStatusCode) -> Bool {
+        lhs == rhs.rawValue
+    }
+    
+    static func !=(lhs: Int, rhs: HTTPStatusCode) -> Bool {
+        lhs != rhs.rawValue
+    }
+}

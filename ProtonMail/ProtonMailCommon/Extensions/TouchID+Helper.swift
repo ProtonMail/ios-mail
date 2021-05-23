@@ -31,7 +31,7 @@ enum BiometricType {
     case faceID
 }
 
-extension UIDevice {
+extension UIDevice: BiometricStatusProvider {
     var biometricType: BiometricType {
         get {
             let context = LAContext()
@@ -52,4 +52,8 @@ extension UIDevice {
             }
         }
     }
+}
+
+protocol BiometricStatusProvider {
+    var biometricType: BiometricType { get }
 }

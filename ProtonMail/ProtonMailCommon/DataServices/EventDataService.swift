@@ -22,7 +22,7 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Services
 
 //TODO::fixme. keep it in message
 class EventDataService : Service {

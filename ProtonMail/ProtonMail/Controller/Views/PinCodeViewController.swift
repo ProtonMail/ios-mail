@@ -25,7 +25,7 @@ import Foundation
 import UIKit
 import PromiseKit
 
-protocol PinCodeViewControllerDelegate: class {
+protocol PinCodeViewControllerDelegate: AnyObject {
     func Cancel() -> Promise<Void>
     func Next()
 }
@@ -80,10 +80,6 @@ class PinCodeViewController : UIViewController, BioAuthenticating, AccessibleVie
         if self.viewModel.getPinFailedRemainingCount() < 4 {
             self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: true)
         }
-    }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent;
     }
     
     func authenticateUser() {

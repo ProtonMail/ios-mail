@@ -77,10 +77,11 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             
             if let messageID = path.value,
                 let nav = self.navigationController,
-                let message = user.messageService.fetchMessages(withIDs: [messageID], in: coreDataService.mainManagedObjectContext).first
+                let next = nav.viewControllers.first as? ComposeContainerViewController,
+                let message = user.messageService.fetchMessages(withIDs: [messageID], in: coreDataService.mainContext).first
             {
                 let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataService: coreDataService)
-                let composer = ComposeContainerViewCoordinator(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                let composer = ComposeContainerViewCoordinator(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next), services: services)
                 composer.start()
                 composer.follow(deeplink)
             }
@@ -250,13 +251,13 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: ContainableComposeViewModel(msg: messages.first!,
                                                                                                        action: tapped,
                                                                                                        msgService: user.messageService,
-                                                                                                       user: user, coreDataService: self.services.get(by: CoreDataService.self))))
+                                                                                                       user: user, coreDataService: self.services.get(by: CoreDataService.self)), uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
         case .some(.labels):
             guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LabelsViewController
-            popup.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService, coreDataService: self.services.get())
+            popup.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService, cacheService: user.cacheService)
             popup.delegate = self
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
             
@@ -264,7 +265,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LabelsViewController
             popup.delegate = self
-            popup.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService, coreDataService: self.services.get())
+            popup.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
         case .some(.toTroubleshoot):
             guard let nav = segue.destination as? UINavigationController else {

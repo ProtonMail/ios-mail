@@ -22,7 +22,7 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
 
 // MARK : delete attachment from a draft -- Response
 final class DeleteAttachment : Request {

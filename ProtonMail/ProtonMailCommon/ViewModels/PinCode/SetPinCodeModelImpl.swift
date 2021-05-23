@@ -20,9 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
-import PMKeymaker
+import ProtonCore_Keymaker
 
 class SetPinCodeModelImpl : PinCodeViewModel {
     
@@ -93,5 +92,11 @@ class SetPinCodeModelImpl : PinCodeViewModel {
     
     override func getPinFailedError() -> String {
         return "The PIN does not match!!!"
+    }
+
+    override func reset() {
+        self.currentStep = .enterPin
+        self.enterPin = ""
+        self.reEnterPin = ""
     }
 }

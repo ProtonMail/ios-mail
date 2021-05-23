@@ -25,10 +25,9 @@ import Foundation
 
 extension UIStackView {
     func clearAllViews() {
-        while self.arrangedSubviews.count > 0 {
-            let view = self.arrangedSubviews[0]
-            self.removeArrangedSubview(view)
-            view.removeFromSuperview()
+        arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+            removeArrangedSubview($0)
         }
     }
 }

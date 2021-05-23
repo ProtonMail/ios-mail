@@ -54,6 +54,10 @@ enum Fonts : CGFloat {
     var bold : UIFont {
         return UIFont.systemFont(ofSize: self.rawValue, weight: .bold)
     }
+    
+    var semiBold: UIFont {
+        return UIFont.systemFont(ofSize: self.rawValue, weight: .semibold)
+    }
 }
 
 

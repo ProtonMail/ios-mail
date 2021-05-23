@@ -24,10 +24,14 @@
 import Foundation
 import AwaitKit
 import PromiseKit
-import PMKeymaker
 import Crypto
-import PMAuthentication
-import PMCommon
+import ProtonCore_Keymaker
+import ProtonCore_Authentication
+import ProtonCore_Common
+import ProtonCore_Services
+import ProtonCore_Networking
+import ProtonCore_DataModel
+import ProtonCore_SRP
 import OpenPGP
 
 class KeyManager : Service {
@@ -59,9 +63,9 @@ class KeyManager : Service {
         var reason : String {
             switch self {
             case .invalidModulsID:
-                return LocalString._cant_get_a_moduls_id
+                return LocalString._cant_get_a_modulus_id
             case .invalidModuls:
-                return LocalString._cant_get_a_moduls
+                return LocalString._cant_get_a_modulus
             case .cantGenerateVerifier:
                 return LocalString._cant_create_a_srp_verifier
             }
@@ -80,7 +84,7 @@ class KeyManager : Service {
     /// - Throws: SRPError
     /// - Returns: password auth : PasswordAuth
     func generatPasswordAuth(password: String, authCredential: AuthCredential? = nil) throws -> PasswordAuth {
-        let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: authCredential)))
+        let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: authCredential)))
         guard let moduls_id = authModuls.ModulusID else {
             throw SRPError.invalidModulsID
         }
@@ -108,7 +112,7 @@ class KeyManager : Service {
     /// - Throws: exception
     private func uploadUserKey(userName: String, loginPassword: String, keySalt: String, privateKey: String, authCredential: AuthCredential?) throws {
         // get auto info fors srp client
-        let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: userName, authCredential: authCredential)))
+        let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: userName, authCredential: authCredential)))
         guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
             throw UpdatePasswordError.invalideAuthInfo.error
         }
@@ -138,8 +142,12 @@ class KeyManager : Service {
                                                    auth: authPassword,
                                                    authCredential: authCredential)
         
-        let update_res = try await(self.apiService.run(route: uploadKeyApi))
-        guard update_res.code == 1000 else {
+        let update_res = try `await`(self.apiService.run(route: uploadKeyApi))
+        // Anson Rebase need to check
+//        guard update_res.code == 1000 else {
+//            throw UpdatePasswordError.default.error
+//        }
+        guard update_res.responseCode == 1000 else {
             throw UpdatePasswordError.default.error
         }
         //sucessed
@@ -171,16 +179,15 @@ class KeyManager : Service {
                         domain: String, authCredential: AuthCredential? = nil) throws {
         
         //need setup address
-        let setupAddrApi: AddressesResponse = try await(self.apiService.run( route: SetupAddressRequest(domain_name: domain, auth: authCredential)))
+        let setupAddrApi: AddressesResponse = try `await`(self.apiService.run( route: SetupAddressRequest(domain_name: domain, auth: authCredential)))
         
         let passwordAuth = try self.generatPasswordAuth(password: password, authCredential: authCredential)
-     
-        let addr_id = setupAddrApi.addresses.first?.address_id
+        let addr_id = setupAddrApi.addresses.first?.addressID
         
         let fingerprint = privateKey.fingerprint
         let keylist: [KeyListRaw] = [KeyListRaw.init(fingerprint: fingerprint, primary: 1, flags: 3)]
         
-        let jsonKeylist = keylist.json
+        let jsonKeylist = keylist.toJson()
         
         let signed = try Crypto().signDetached(plainData: jsonKeylist,
                                                privateKey: privateKey,
@@ -197,7 +204,7 @@ class KeyManager : Service {
                                                addressKeys: [addressKey],
                                                passwordAuth: passwordAuth,
                                                credential: authCredential)
-        let setupKeyApi = try await(self.apiService.run(route: setupKeyReq))
+        let setupKeyApi = try `await`(self.apiService.run(route: setupKeyReq))
         if setupKeyApi.error != nil {
             PMLog.D("signup seupt key error")
         }
@@ -208,16 +215,16 @@ class KeyManager : Service {
                         domain: String, authCredential: AuthCredential? = nil) throws {
         
         //need setup address
-        let setupAddrApi: AddressesResponse = try await(self.apiService.run( route: SetupAddressRequest(domain_name: domain, auth: authCredential)))
+        let setupAddrApi: AddressesResponse = try `await`(self.apiService.run( route: SetupAddressRequest(domain_name: domain, auth: authCredential)))
         
         let passwordAuth = try self.generatPasswordAuth(password: password, authCredential: authCredential)
         
-        let addr_id = setupAddrApi.addresses.first?.address_id
+        let addr_id = setupAddrApi.addresses.first?.addressID
         
         let sha256fp = privateKey.SHA256fingerprints
         let fingerprint = privateKey.fingerprint
         let keylist: [KeyListRaw] = [KeyListRaw(fingerprint: fingerprint, sha256fingerprint: sha256fp, primary: 1, flags: 3)]
-        let jsonKeylist = keylist.json
+        let jsonKeylist = keylist.toJson()
         
         let randomToken = try Crypto.random(byte: 32)
         let hexToken = HMAC.hexStringFromData(randomToken) //should be 64 bytes
@@ -251,7 +258,7 @@ class KeyManager : Service {
                                                addressKeys: [addressKey], passwordAuth: passwordAuth,
                                                credential: authCredential)
         
-        let setupKeyApi = try await(self.apiService.run(route: setupKeyReq))
+        let setupKeyApi = try `await`(self.apiService.run(route: setupKeyReq))
         if setupKeyApi.error != nil {
             PMLog.D("signup seupt key error")
         }
@@ -288,8 +295,8 @@ class KeyManager : Service {
         }
         
         /// will look up the address key. if found new schema we will run through new logci
-        let isNewSchema = userInfo.newSchema
-        if isNewSchema == true {
+        let isKeyV2 = userInfo.isKeyV2
+        if isKeyV2 == true {
             /// go through key v1.2 logic
             /// v1.2. update the mailboxpassword or singlelogin password. only need to update userkeys and org keys
             {//asyn
@@ -306,7 +313,7 @@ class KeyManager : Service {
                     //create a key list for key updates
                     if userInfo.role == 2 { //need to get the org keys
                         //check user role if equal 2 try to get the org key.
-                        let cur_org_key: OrgKeyResponse = try await(self.apiService.run(route: GetOrgKeys()))
+                        let cur_org_key: OrgKeyResponse = try `await`(self.apiService.run(route: GetOrgKeys()))
                         if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                             do {
                                 new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
@@ -322,7 +329,7 @@ class KeyManager : Service {
                     if buildAuth {
                         
                         ///
-                        let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                        let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                         guard let moduls_id = authModuls.ModulusID else {
                             throw UpdatePasswordError.invalidModulusID.error
                         }
@@ -348,7 +355,7 @@ class KeyManager : Service {
                     var forceRetryVersion = 2
                     repeat {
                         // get auto info
-                        let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                        let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                         let authVersion = info.Version
                         guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
                             throw UpdatePasswordError.invalideAuthInfo.error
@@ -379,8 +386,12 @@ class KeyManager : Service {
                                                                         userKeys: updated_userlevel_keys,
                                                                         auth: authPacket,
                                                                         authCredential: oldAuthCredential)
-                            let update_res = try await(self.apiService.run(route: updatePrivkey))
-                            guard update_res.code == 1000 else {
+                            let update_res: Response = try `await`(self.apiService.run(route: updatePrivkey))
+                            // Anson Rebase need to check
+//                            guard update_res.code == 1000 else {
+//                                throw UpdatePasswordError.default.error
+//                            }
+                            guard update_res.responseCode == 1000 else {
                                 throw UpdatePasswordError.default.error
                             }
                             //update local keys
@@ -430,7 +441,7 @@ class KeyManager : Service {
                     //create a key list for key updates
                     if userInfo.role == 2 { //need to get the org keys
                         //check user role if equal 2 try to get the org key.
-                        let cur_org_key: OrgKeyResponse = try await(self.apiService.run(route: GetOrgKeys()))
+                        let cur_org_key: OrgKeyResponse = try `await`(self.apiService.run(route: GetOrgKeys()))
                         if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                             do {
                                 new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
@@ -447,7 +458,7 @@ class KeyManager : Service {
                         
                         ///
                         
-                        let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                        let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                         guard let moduls_id = authModuls.ModulusID else {
                             throw UpdatePasswordError.invalidModulusID.error
                         }
@@ -472,7 +483,7 @@ class KeyManager : Service {
                     var forceRetryVersion = 2
                     repeat {
                         // get auto info
-                        let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                        let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                         let authVersion = info.Version
                         guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
                             throw UpdatePasswordError.invalideAuthInfo.error
@@ -495,7 +506,7 @@ class KeyManager : Service {
                         }
 
                         do {
-                            let update_res = try await(self.apiService.run(route: UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
+                            let update_res = try `await`(self.apiService.run(route: UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
                                                                                                           clientProof:clientProof.encodeBase64(),
                                                                                                           SRPSession: session,
                                                                                                           keySalt: new_mpwd_salt.encodeBase64(),
@@ -505,7 +516,8 @@ class KeyManager : Service {
                                                                                                           orgKey: new_org_key, userKeys: nil,
                                                                                                           auth: authPacket,
                                                                                                           authCredential: oldAuthCredential)))
-                            guard update_res.code == 1000 else {
+                            // Anson Rebase need to check
+                            guard update_res.responseCode == nil else {
                                 throw UpdatePasswordError.default.error
                             }
                             //update local keys

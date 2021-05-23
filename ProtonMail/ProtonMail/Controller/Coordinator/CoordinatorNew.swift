@@ -24,7 +24,7 @@
 import Foundation
 
 
-protocol CoordinatorDelegate: class {
+protocol CoordinatorDelegate: AnyObject {
     func willStop(in coordinator: CoordinatorNew)
     func didStop(in coordinator: CoordinatorNew)
 }

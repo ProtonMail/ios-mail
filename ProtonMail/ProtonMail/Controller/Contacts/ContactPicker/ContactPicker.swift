@@ -84,7 +84,6 @@ class ContactPicker: UIView, AccessibleView {
     internal weak var delegate : (ContactPickerDelegate&UIViewController)?
     internal weak var datasource : ContactPickerDataSource?
     
-    private var _showPrompt : Bool = true
     private var _prompt : String = ContactPickerDefined.kPrompt
     private var _maxVisibleRows : CGFloat = ContactPickerDefined.kMaxVisibleRows
     private var animationSpeed : CGFloat = ContactPickerDefined.kAnimationSpeed
@@ -95,6 +94,8 @@ class ContactPicker: UIView, AccessibleView {
     private var contacts: [ContactPickerModelProtocol] = [ContactPickerModelProtocol]()
 
     internal var contactCollectionView : ContactCollectionView!
+    private var promptLabel: UILabel!
+    private var grayLine: UIView!
     
     private var contactCollectionViewContentSize: CGSize = CGSize.zero
     private var hasLoadedData : Bool = false
@@ -136,20 +137,9 @@ class ContactPicker: UIView, AccessibleView {
     
     private func setup() {
         self._prompt = ContactPickerDefined.kPrompt
-        self._showPrompt = true
-        
-        let contactCollectionView = ContactCollectionView.contactCollectionViewWithFrame(frame: self.bounds)
-        contactCollectionView.contactDelegate = self
-        contactCollectionView.clipsToBounds = true
-        contactCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(contactCollectionView)
-        
-        self.contactCollectionView = contactCollectionView
-        
-        self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        self.contactCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 4).isActive = true
-        self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        self.setupPromptLabel()
+        self.setupContactCollectionView()
+        self.setupGrayLine()
         
         self.maxVisibleRows = ContactPickerDefined.kMaxVisibleRows
         self.animationSpeed = ContactPickerDefined.kAnimationSpeed
@@ -170,6 +160,48 @@ class ContactPicker: UIView, AccessibleView {
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
         generateAccessibilityIdentifiers()
+    }
+    
+    private func setupPromptLabel() {
+        self.promptLabel = UILabel()
+        self.promptLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.promptLabel)
+        [
+            self.promptLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            self.promptLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 14)
+        ].activate()
+    }
+    
+    private func setupContactCollectionView() {
+        let contactCollectionView = ContactCollectionView.contactCollectionViewWithFrame(frame: self.bounds)
+        contactCollectionView.showPrompt = false
+        contactCollectionView.contactDelegate = self
+        contactCollectionView.clipsToBounds = true
+        contactCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(contactCollectionView)
+        
+        self.contactCollectionView = contactCollectionView
+        
+        [
+            self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 11),
+            self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 10),
+            self.contactCollectionView.leadingAnchor.constraint(equalTo: self.promptLabel.trailingAnchor, constant: 8),
+            self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -35)
+        ].activate()
+    }
+    
+    private func setupGrayLine() {
+        self.grayLine = UIView(frame: .zero)
+        self.grayLine.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
+        self.grayLine.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.grayLine)
+        
+        [
+            self.grayLine.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.grayLine.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.grayLine.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.grayLine.heightAnchor.constraint(equalToConstant: 1)
+        ].activate()
     }
     
     override func awakeFromNib() {
@@ -214,6 +246,7 @@ class ContactPicker: UIView, AccessibleView {
         }
         set {
             self._prompt = newValue
+            self.promptLabel.attributedText = newValue.apply(style: .DefaultSmallWeek)
             self.contactCollectionView.prompt = self._prompt
         }
     }
@@ -231,9 +264,17 @@ class ContactPicker: UIView, AccessibleView {
 
     internal var currentContentHeight : CGFloat {
         get {
-            let minimumSizeWithContent = max(CGFloat(self.cellHeight), self.contactCollectionViewContentSize.height)
+            let minimumHeight: CGFloat = 48
+            var minimumSizeWithContent = max(CGFloat(self.cellHeight), self.contactCollectionViewContentSize.height)
+            minimumSizeWithContent = max(minimumHeight, minimumSizeWithContent)
             let maximumSize = self.maxVisibleRows * CGFloat(self.cellHeight)
-            return min(minimumSizeWithContent, maximumSize)
+            var result = min(minimumSizeWithContent, maximumSize)
+            if result > 48 {
+                let topPadding: CGFloat = 11
+                let bottomPadding: CGFloat = 10
+                result = result + topPadding + bottomPadding
+            }
+            return result
         }
     }
 
@@ -251,17 +292,6 @@ class ContactPicker: UIView, AccessibleView {
             }
         }
     }
-    
-    private var showPrompt: Bool {
-        get {
-            return self._showPrompt
-        }
-        set {
-            self._showPrompt = newValue
-            self.contactCollectionView.showPrompt = newValue
-        }
-    }
-
     
     internal func addToSelectedContacts(model: ContactPickerModelProtocol, needFocus focus: Bool) {
         self.contactCollectionView.addToSelectedContacts(model: model) {

@@ -22,7 +22,6 @@
     
 
 import Foundation
-import SWRevealViewController
 
 class SettingsLockCoordinator : DefaultCoordinator {
 
@@ -47,6 +46,7 @@ class SettingsLockCoordinator : DefaultCoordinator {
     
     enum Destination : String {
         case pinCode         = "setting_setup_pingcode"
+        case pinCodeSetup = "pincode_setup"
     }
     
     init?(dest: UIViewController, vm: SettingsLockViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
@@ -63,23 +63,20 @@ class SettingsLockCoordinator : DefaultCoordinator {
         self.viewController?.set(coordinator: self)
     }
     
-//    init(vc: SettingsAccountViewController, vm: SettingsAccountViewModel, services: ServiceFactory) {
-//        self.viewModel = vm
-//        self.viewController = vc
-//        self.services = services
-//    }
-    
-//    init(rvc: SWRevealViewController?, nav: UIViewController?, vc: SettingsAccountViewController, vm: SettingsAccountViewModel, services: ServiceFactory, deeplink: DeepLink?) {
-//        self.navigation = nav
-//        self.swRevealVC = rvc
-//        self.viewModel = vm
-//        self.viewController = vc
-//        self.deepLink = deeplink
-//        self.services = services
-//    }
-    
     func go(to dest: Destination, sender: Any? = nil) {
-        self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        switch dest {
+        case .pinCode:
+            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        case .pinCodeSetup:
+            let nav = UINavigationController()
+            nav.modalPresentationStyle = .fullScreen
+            let coordinator = PinCodeSetupCoordinator(nav: nav, services: self.services)
+            coordinator.configuration = { vc in
+                vc.viewModel = SetPinCodeModelImpl()
+            }
+            coordinator.start()
+            self.viewController?.present(nav, animated: true, completion: nil)
+        }
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -93,64 +90,11 @@ class SettingsLockCoordinator : DefaultCoordinator {
                 return false
             }
             next.viewModel = SetPinCodeModelImpl()
+        case .pinCodeSetup:
+            break
         }
         
-        
         return true
-//        switch dest {
-//        case .notification:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
-////        case .displayName:
-////            guard let next = destination as? SettingDetailViewController else {
-////                return false
-////            }
-////            next.setViewModel(shareViewModelFactoy.getChangeDisplayName())
-////        case .signature:
-////            guard let next = destination as? SettingDetailViewController else {
-////                return false
-////            }
-////            next.setViewModel(shareViewModelFactoy.getChangeSignature())
-////        case .mobileSignature:
-////            guard let next = destination as? SettingDetailViewController else {
-////                return false
-////            }
-////            next.setViewModel(shareViewModelFactoy.getChangeMobileSignature())
-////        case .debugQueue:
-////            break
-////        case .pinCode:
-////            guard let next = destination as? PinCodeViewController else {
-////                return false
-////            }
-////            next.viewModel = SetPinCodeModelImpl()
-////        case .lableManager:
-////            guard let next = destination as? LabelsViewController else {
-////                return false
-////            }
-////
-////            let users : UsersManager = services.get()
-////            next.viewModel = LabelManagerViewModelImpl(labelService: users.firstUser.labelService)
-////        case .loginPwd:
-////            guard let next = destination as? ChangePasswordViewController else {
-////                return false
-////            }
-////            next.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
-////        case .mailboxPwd:
-////            guard let next = destination as? ChangePasswordViewController else {
-////                return false
-////            }
-////            next.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
-////        case .singlePwd:
-////            guard let next = destination as? ChangePasswordViewController else {
-////                return false
-////            }
-////            next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
-////        case .snooze:
-////            break
-//        }
-//        return false
     }
 }
 

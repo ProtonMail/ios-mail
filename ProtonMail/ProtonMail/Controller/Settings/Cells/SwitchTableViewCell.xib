@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SwitchTableViewCell" id="hOB-bE-kQD" customClass="SwitchTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SwitchTableViewCell" rowHeight="55" id="hOB-bE-kQD" customClass="SwitchTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hOB-bE-kQD" id="cUS-OI-VCK">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eqg-gq-rnt">
-                        <rect key="frame" x="23" y="32" width="270" height="18"/>
+                        <rect key="frame" x="16" y="37" width="276" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="b83-Hi-ylC"/>
                         </constraints>
@@ -26,7 +26,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4EK-SM-FCP">
-                        <rect key="frame" x="303" y="9.5" width="51" height="31"/>
+                        <rect key="frame" x="302" y="12" width="51" height="31"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="49" id="yxO-Pi-QfK"/>
                         </constraints>
@@ -35,7 +35,7 @@
                         </connections>
                     </switch>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9o-Y0-v9M">
-                        <rect key="frame" x="23" y="6" width="272" height="38"/>
+                        <rect key="frame" x="16" y="12" width="278" height="31"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -43,14 +43,14 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="eqg-gq-rnt" secondAttribute="bottom" id="4Kb-uQ-9Fe"/>
-                    <constraint firstItem="eqg-gq-rnt" firstAttribute="leading" secondItem="cUS-OI-VCK" secondAttribute="leadingMargin" constant="8" id="90y-U8-1dy"/>
+                    <constraint firstItem="eqg-gq-rnt" firstAttribute="leading" secondItem="cUS-OI-VCK" secondAttribute="leading" constant="16" id="90y-U8-1dy"/>
                     <constraint firstItem="4EK-SM-FCP" firstAttribute="leading" secondItem="eqg-gq-rnt" secondAttribute="trailing" constant="10" id="Xc2-iP-96e"/>
-                    <constraint firstItem="r9o-Y0-v9M" firstAttribute="top" secondItem="cUS-OI-VCK" secondAttribute="top" constant="6" id="acg-4O-u3g"/>
+                    <constraint firstItem="r9o-Y0-v9M" firstAttribute="top" secondItem="cUS-OI-VCK" secondAttribute="top" constant="12" id="acg-4O-u3g"/>
                     <constraint firstItem="4EK-SM-FCP" firstAttribute="leading" secondItem="r9o-Y0-v9M" secondAttribute="trailing" constant="8" id="eB6-09-xEU"/>
-                    <constraint firstAttribute="bottom" secondItem="r9o-Y0-v9M" secondAttribute="bottom" constant="6" id="j6Z-EH-eKl"/>
+                    <constraint firstAttribute="bottom" secondItem="r9o-Y0-v9M" secondAttribute="bottom" constant="12" id="j6Z-EH-eKl"/>
                     <constraint firstItem="4EK-SM-FCP" firstAttribute="centerY" secondItem="cUS-OI-VCK" secondAttribute="centerY" id="kYL-vp-WNe"/>
                     <constraint firstAttribute="trailingMargin" secondItem="4EK-SM-FCP" secondAttribute="trailing" constant="8" id="mBj-vE-Rd1"/>
-                    <constraint firstItem="r9o-Y0-v9M" firstAttribute="leading" secondItem="cUS-OI-VCK" secondAttribute="leadingMargin" constant="8" id="mq7-uy-jBH"/>
+                    <constraint firstItem="r9o-Y0-v9M" firstAttribute="leading" secondItem="cUS-OI-VCK" secondAttribute="leading" constant="16" id="mq7-uy-jBH"/>
                     <constraint firstAttribute="centerY" secondItem="r9o-Y0-v9M" secondAttribute="centerY" priority="1" id="xYj-vj-FcS"/>
                 </constraints>
             </tableViewCellContentView>
@@ -60,7 +60,7 @@
                 <outlet property="switchView" destination="4EK-SM-FCP" id="nxA-nf-AmD"/>
                 <outlet property="topLineLabel" destination="r9o-Y0-v9M" id="rvK-6D-JTE"/>
             </connections>
-            <point key="canvasLocation" x="134" y="146"/>
+            <point key="canvasLocation" x="-18" y="83"/>
         </tableViewCell>
     </objects>
 </document>

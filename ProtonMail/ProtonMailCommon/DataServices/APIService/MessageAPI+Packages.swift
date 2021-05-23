@@ -22,7 +22,7 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
 
 // message attachment key package
 final class AttachmentPackage {

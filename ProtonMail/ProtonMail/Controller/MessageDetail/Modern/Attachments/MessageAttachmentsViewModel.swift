@@ -22,7 +22,7 @@
     
 
 import Foundation
-import PMCommon
+
 
 class MessageAttachmentsViewModel: NSObject {
     @objc internal dynamic var attachments: [AttachmentInfo] = []

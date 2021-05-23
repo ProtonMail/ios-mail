@@ -24,7 +24,8 @@
 import Foundation
 import PromiseKit
 import Crypto
-import PMCommon
+import ProtonCore_Networking
+import ProtonCore_DataModel
 
 ///MARK: This file is prepared for future key manager framwork
 

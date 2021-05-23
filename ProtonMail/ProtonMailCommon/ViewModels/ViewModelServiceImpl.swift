@@ -20,9 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
-import PMKeymaker
+
 
 //TODO:: move this to coordinator.
 //keep this unique
@@ -112,8 +111,7 @@ class ViewModelServiceImpl: ViewModelService {
                                                       selectedGroupIDs: Set<String>,
                                                       refreshHandler: @escaping (Set<String>) -> Void) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactGroupMutiSelectViewModelImpl(user: user,
-                                                             coreDateService: self.coreDataService,
+        vmp.setModel(vm: ContactGroupMutiSelectViewModelImpl(user: user, coreDateService: CoreDataService.shared,
                                                              groupCountInformation: groupCountInformation,
                                                              selectedGroupIDs: selectedGroupIDs,
                                                              refreshHandler: refreshHandler))
@@ -137,7 +135,7 @@ class ViewModelServiceImpl: ViewModelService {
                                                          name: name,
                                                          color: color,
                                                          emailIDs: emailIDs,
-                                                         coreDataService: self.coreDataService))
+                                                         labelsDataService: user.labelService))
     }
     
     override func contactGroupEditViewModel(_ vmp : ViewModelProtocolBase,

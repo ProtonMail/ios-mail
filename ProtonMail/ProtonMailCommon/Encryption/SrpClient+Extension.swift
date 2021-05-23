@@ -28,7 +28,8 @@ import OpenPGP
 func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
              _ salt: String, _ signedModulus: String, _ serverEphemeral: String) throws -> SrpAuth? {
     var error : NSError?
-    let outAuth = SrpNewAuth(hashVersion, userName, password, salt, signedModulus, serverEphemeral, &error)
+    let passwordSlic = password.data(using: .utf8)
+    let outAuth = SrpNewAuth(hashVersion, userName, passwordSlic, salt, signedModulus, serverEphemeral, &error)
     
     if let err = error {
         PMLog.D(api: err)
@@ -39,7 +40,8 @@ func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
 
 func SrpAuthForVerifier(_ password: String, _ signedModulus: String, _ rawSalt: Data) throws -> SrpAuth? {
     var error : NSError?
-    let outAuth = SrpNewAuthForVerifier(password, signedModulus, rawSalt, &error)
+    let passwordSlic = password.data(using: .utf8)
+    let outAuth = SrpNewAuthForVerifier(passwordSlic, signedModulus, rawSalt, &error)
     if let err = error {
         throw err
     }

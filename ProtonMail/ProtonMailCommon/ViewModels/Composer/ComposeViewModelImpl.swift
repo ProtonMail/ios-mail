@@ -24,7 +24,8 @@
 import Foundation
 import PromiseKit
 import AwaitKit
-import PMCommon
+import ProtonCore_Networking
+import ProtonCore_DataModel
 
 class ComposeViewModelImpl : ComposeViewModel {
     
@@ -53,6 +54,8 @@ class ComposeViewModelImpl : ComposeViewModel {
     let messageService : MessageDataService
     let coreDataService: CoreDataService
     let user : UserManager
+    /// Only use in share extension, to record if the share items over 25 mb or not
+    private(set) var shareOverLimitationAttachment = false
     
     // for the share target to init composer VM
     init(subject: String, body: String, files: [FileData],
@@ -66,6 +69,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.coreDataService = coreDataService
         
         super.init()
+        self.composerContext = coreDataService.makeComposerMainContext()
         self.message = nil
         self.setSubject(subject)
         self.setBody(body)
@@ -79,9 +83,27 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
         
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+        let kDefaultAttachmentFileSize: Int = 25 * 1_000 * 1_000 // 25 mb
+        var currentAttachmentSize: Int = 0
         for f in files {
+            let size = f.contents.dataSize
+            guard size < (kDefaultAttachmentFileSize - currentAttachmentSize) else {
+                self.shareOverLimitationAttachment = true
+                break
+            }
+            currentAttachmentSize += size
             f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata).done { (attachment) in
                 if let att = attachment {
+                    let context = coreDataService.operationContext
+                    context.performAndWait {
+                        att.message = self.message!
+                        _ = context.saveUpstreamIfNeeded()
+                    }
+                    if att.objectID.isTemporaryID {
+                        context.performAndWait {
+                            try? context.obtainPermanentIDs(for: [att])
+                        }
+                    }
                     self.uploadAtt(att)
                 }
             }.cauterize()
@@ -106,14 +128,25 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.user = user
         
         super.init()
+        self.composerContext = coreDataService.makeComposerMainContext()
+        
         if msg == nil || msg!.contains(label: .draft)  {
-            self.message = msg
+            if let m = msg, let msgToEdit = try? self.composerContext?.existingObject(with: m.objectID) as? Message {
+                self.message = msgToEdit
+            }
             self.setSubject(self.message?.title ?? "")
         } else {
             if msg?.managedObjectContext == nil {
                 self.message = nil
             } else {
-                self.message = messageService.copyMessage(message: msg!, copyAtts: action == ComposeMessageAction.forward, context: self.coreDataService.mainManagedObjectContext)
+                //TODO: -v4 change to composer context
+                guard let m = msg, let msgToCopy = try? self.composerContext?.existingObject(with: m.objectID) as? Message else {
+                    self.message = nil
+                    fatalError("This should not happened.")
+                }
+                
+                self.message = messageService.copyMessage(message: msgToCopy, copyAtts: action == ComposeMessageAction.forward, context: self.composerContext!)
+                self.message?.action = action.rawValue as NSNumber?
                 if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
                     self.message?.action = action.rawValue as NSNumber?
                     if let title = self.message?.title {
@@ -271,7 +304,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         
         progress()
         
-        let context = self.coreDataService.mainManagedObjectContext // VALIDATE
+        let context = self.composerContext! // VALIDATE
         guard let c = model as? ContactVO else {
             complete?(nil, -1)
             return
@@ -315,23 +348,24 @@ class ComposeViewModelImpl : ComposeViewModel {
             }
             complete?(c.lock, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { (error) in
+            // Anson Rebase need to check
+            guard let error = error as? ResponseError else { return }
             PMLog.D(error.localizedDescription)
             defer {
                 complete?(nil, errCode)
             }
             
-            let err = error as NSError
-            var errCode = err.code
+            var errCode = error.responseCode ?? -1
             
             if errCode == 33101 {
                 c.pgpType = .failed_server_validation
-                LocalString._signle_address_invalid_error_content.alertToast(withTitle: false)
+                LocalString._signle_address_invalid_error_content.alertToast()
                 return
             }
             
             // Code=33102 "Recipient could not be found"
             if errCode == 33102 {
-                LocalString._recipient_not_found.alertToast(withTitle: false)
+                LocalString._recipient_not_found.alertToast()
                 return
             }
             
@@ -351,16 +385,18 @@ class ComposeViewModelImpl : ComposeViewModel {
         when(fulfilled: reqs).done { (_) in
             complete?(nil, 0)
         }.catch(policy: .allErrors) { (error) in
+            // Anson Rebase need to check
+            guard let error = error as? ResponseError else { return }
             PMLog.D(error.localizedDescription)
             defer {
                 complete?(nil, errCode)
             }
             
-            let err = error as NSError
-            var errCode = err.code
+            var errCode = error.responseCode ?? -1
 
             // Code=33102 "Recipient could not be found"
-            if errCode == 33102 {                LocalString._address_in_group_not_found_error.alertToast(withTitle: false)
+            if errCode == 33102 {
+                LocalString._address_in_group_not_found_error.alertToast()
                 return
             }
             
@@ -369,7 +405,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                     continue
                 }
                 errCode = 33102
-                LocalString._address_in_group_not_found_error.alertToast(withTitle: false)
+                LocalString._address_in_group_not_found_error.alertToast()
                 break
             }
         }
@@ -552,7 +588,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                let addr = self.messageService.defaultAddress(msg),
                let key = addr.keys.first,
                let data = key.publicKey.data(using: String.Encoding.utf8) {
-                
+
                 let filename = "publicKey - " + addr.email + " - " + key.shortFingerpritn + ".asc"
                 var attached: Bool = false
                 // check if key already attahced
@@ -564,11 +600,11 @@ class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
                 }
-                
+
                 // attach key
                 if attached == false, let context = msg.managedObjectContext {
                     let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                    let attachment = try? await(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
+                    let attachment = try? `await`(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
                     var error: NSError? = nil
                     error = context.saveUpstreamIfNeeded()
                     if error != nil {
@@ -577,7 +613,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                     self.uploadPubkey(attachment)
                 }
             }
-            
+
             self.updateDraft()
             self.messageService.send(inQueue: self.message, completion: nil)
         }
@@ -586,9 +622,8 @@ class ComposeViewModelImpl : ComposeViewModel {
     override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
         let mailboxPassword = self.user.mailboxPassword
         self.setSubject(title)
-        
-//        let objectId = self.message?.objectID
-        let context = self.coreDataService.mainManagedObjectContext
+
+        let context = self.composerContext!
         context.performAndWait {
             if self.message == nil || self.message?.managedObjectContext == nil {
                 self.message = self.messageService.messageWithLocation(recipientList: self.toJsonString(self.toSelectedContacts),
@@ -620,19 +655,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 self.message?.unRead = false
                 self.message?.passwordHint = pwdHit
                 self.message?.expirationOffset = Int32(expir)
-                
-    //            if let objId = objectId, let msg = context.object(with: objId) as? Message {
-    //                msg.toList = self.toJsonString(self.toSelectedContacts)
-    //                msg.ccList = self.toJsonString(self.ccSelectedContacts)
-    //                msg.bccList = self.toJsonString(self.bccSelectedContacts)
-    //                msg.title = self.getSubject()
-    //                msg.time = Date()
-    //                msg.password = pwd
-    //                msg.unRead = false
-    //                msg.passwordHint = pwdHit
-    //                msg.expirationOffset = Int32(expir)
-    //
-    //            }
+
                 if let msg = self.message {
                     self.messageService.updateMessage(msg,
                                                       expirationTimeInterval: expir,
@@ -656,20 +679,10 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    override func updateEO(expir:TimeInterval, pwd:String, pwdHit:String) -> Promise<Void> {
+    override func updateEO(expirationTime: TimeInterval, pwd: String, pwdHint: String) -> Promise<Void> {
         return Promise { seal in
-            if message != nil {
-                self.coreDataService.enqueue(context: message?.managedObjectContext) { (context) in
-                    self.message?.time = Date()
-                    self.message?.password = pwd
-                    self.message?.passwordHint = pwdHit
-                    self.message?.expirationOffset = Int32(expir)
-                    if expir > 0 {
-                        self.message?.expirationTime = Date(timeIntervalSinceNow: expir)
-                    }
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    }
+            if let msg = message {
+                self.user.cacheService.updateExpirationOffset(of: msg, expirationTime: expirationTime, pwd: pwd, pwdHint: pwdHint) {
                     seal.fulfill_()
                 }
             } else {
@@ -683,18 +696,14 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func deleteDraft() {
-        messageService.delete(message: self.message!, label: Message.Location.draft.rawValue)
+        guard let _message = self.message else {return}
+        messageService.delete(messages: [_message], label: Message.Location.draft.rawValue)
 
     }
     
     override func markAsRead() {
-        if message != nil {
-            self.coreDataService.enqueue(context: message?.managedObjectContext) { (context) in
-                self.message?.unRead = false
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
-            }
+        if let msg = message, msg.unRead {
+            self.messageService.mark(messages: [msg], labelID: Message.Location.draft.rawValue, unRead: false)
         }
     }
     
@@ -763,8 +772,8 @@ class ComposeViewModelImpl : ComposeViewModel {
             let from = LocalString._general_from_label
             let dt = LocalString._composer_date_field
             let sj = LocalString._composer_subject_field
-            let t = LocalString._general_to_label
-            let c = LocalString._general_cc_label
+            let t = "\(LocalString._general_to_label):"
+            let c = "\(LocalString._general_cc_label):"
             var forwardHeader =
                 "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
             

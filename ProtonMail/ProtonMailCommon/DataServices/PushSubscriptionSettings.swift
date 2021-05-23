@@ -22,6 +22,9 @@
 
 
 import Foundation
+#if !APP_EXTENSION
+import OpenPGP
+#endif
 
 #if !APP_EXTENSION
 import OpenPGP

@@ -23,7 +23,7 @@
 
 import Foundation
 
-protocol BioCodeViewDelegate: class {
+protocol BioCodeViewDelegate: AnyObject {
     func touch_id_action(_ sender: Any)
     func pin_unlock_action(_ sender: Any)
 }

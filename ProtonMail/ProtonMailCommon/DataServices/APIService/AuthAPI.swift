@@ -22,8 +22,8 @@
 
 
 import Foundation
-import PMCommon
-
+import ProtonCore_Networking
+import ProtonCore_Services
 
 //Auth API
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_auth.md

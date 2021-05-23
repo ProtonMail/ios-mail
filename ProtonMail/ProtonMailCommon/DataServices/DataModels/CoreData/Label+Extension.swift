@@ -37,6 +37,7 @@ extension Label {
         static let type = "type"
         static let exclusive = "exclusive"
         static let userID = "userID"
+        static let emails = "emails"
     }
     
     // MARK: - Public methods
@@ -52,6 +53,17 @@ extension Label {
     /// Removes all messages from the store.
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
+    }
+
+    class func labelFetchController(for labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController<NSFetchRequestResult> {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Attributes.labelID, labelID)
+        let strComp = NSSortDescriptor(key: Label.Attributes.name,
+                                       ascending: true,
+                                       selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
+        fetchRequest.sortDescriptors = [strComp]
+        let fetchedController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        return fetchedController
     }
     
     class func labelForLabelID(_ labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {

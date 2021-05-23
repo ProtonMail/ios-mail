@@ -20,11 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
+import ProtonCore_UIFoundations
 
-
-protocol ContactCollectionViewContactCellDelegate: class {
+protocol ContactCollectionViewContactCellDelegate: AnyObject {
     func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
     func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?)
 }
@@ -46,6 +45,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     
     /// focused ?
     var _pickerFocused: Bool = false
+    private var isError = false
     
     @objc dynamic var font: UIFont? {
         get { return self.contactTitleLabel.font }
@@ -60,16 +60,16 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        self.bgView.layer.borderColor = UIColor.clear.cgColor
+        super.prepareForReuse()
+        self.isError = false
     }
     
     func setup() {
-        self.backgroundColor = UIColor(hexColorCode: "#FCFEFF")
-        
-        self.contactTitleLabel.textColor = UIColor.blue
         self.bgView.clipsToBounds = true
-        self.bgView.layer.cornerRadius = 3.0
+        self.bgView.layer.cornerRadius = 8.0
         self.bgView.translatesAutoresizingMaskIntoConstraints = false
+        self.bgView.backgroundColor = UIColorManager.InteractionWeak
+        self.contactTitleLabel.textColor = UIColorManager.TextNorm
         
         #if DEBUG_BORDERS
         self.contactTitleLabel.layer.borderColor = UIColor(hexColorCode: "0x6789AB").cgColor
@@ -89,14 +89,18 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         set {
             _pickerFocused = newValue
             if self._pickerFocused {
-                self.contactTitleLabel.textColor = UIColor.white
-                //self.contactTitleLabel.backgroundColor = self.tintColor
-                self.bgView.backgroundColor = self.tintColor
+                self.contactTitleLabel.textColor = UIColorManager.TextInverted
+                self.lockImage.tintColor = UIColorManager.IconInverted
+                self.bgView.backgroundColor = UIColorManager.InteractionNorm
             }
             else {
-                self.contactTitleLabel.textColor = self.tintColor
-                //self.contactTitleLabel.backgroundColor = UIColor(red: 0.9214, green: 0.9215, blue: 0.9214, alpha: 1.0)
-                self.bgView.backgroundColor = UIColor(red: 0.9214, green: 0.9215, blue: 0.9214, alpha: 1.0)
+                if isError {
+                    self.bgView.backgroundColor = UIColorManager.NotificationError
+                    self.contactTitleLabel.textColor = .white
+                } else {
+                    self.bgView.backgroundColor = UIColorManager.InteractionWeak
+                    self.contactTitleLabel.textColor = UIColorManager.TextNorm
+                }
             }
         }
     }
@@ -109,7 +113,10 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             self._model = newValue
             
             if let _ = self._model as? ContactVO {
-                self.contactTitleLabel.text = self._model.contactTitle;
+                let title = self._model.contactTitle
+                let subTitle = self._model.contactSubtitle ?? ""
+                let text = title == subTitle ? title : "\(title) <\(subTitle)>"
+                self.contactTitleLabel.attributedText = text.apply(style: FontManager.Caption.lineBreakMode(.byTruncatingMiddle));
                 
                 {
                     self.checkLock(caller: self.model)
@@ -124,7 +131,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         if let contactGroup = self._model as? ContactGroupVO {
             
             let (selectedCount, totalCount, color) = contactGroup.getGroupInformation()
-            self.contactTitleLabel.text = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
+            let text = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
+            self.contactTitleLabel.attributedText = text.apply(style: FontManager.Caption.lineBreakMode(.byTruncatingMiddle))
             self.contactTitleLabel.textAlignment = .left
             self.lockImage.image = UIImage.init(named: "contact_groups_icon")
             self.lockImage.setupImage(scale: 0.8,
@@ -136,31 +144,31 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     
     private func checkLock(caller: ContactPickerModelProtocol) {
         self.delegate?.collectionContactCell(lockCheck: self.model, progress: {
-            self.leftConstant.constant = 4
-            self.widthConstant.constant = 14
+            self.leftConstant.constant = 8
+            self.widthConstant.constant = 16
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
         }, complete: { image, type in
             guard caller.equals(self.model) else {
                 return
             }
-            
+            self.activityView.stopAnimating()
             self._model.setType(type: type)
-            self.isEmailVerified(type: type)
+            guard self.isEmailVerified(type: type) else { return }
             self.lockImage.backgroundColor = nil
             self.lockImage.tintColor = nil
             if let img = image {
                 self.lockImage.image = img
                 self.lockImage.isHidden = false
-                self.leftConstant.constant = 4
-                self.widthConstant.constant = 14
+                self.leftConstant.constant = 8
+                self.widthConstant.constant = 16
                 
                 self.contactTitleLabel.textAlignment = .left
             } else if let lock = self.model.lock {
                 self.lockImage.image = lock
                 self.lockImage.isHidden = false
-                self.leftConstant.constant = 4
-                self.widthConstant.constant = 14
+                self.leftConstant.constant = 8
+                self.widthConstant.constant = 16
                 
                 self.contactTitleLabel.textAlignment = .left
             } else {
@@ -171,39 +179,38 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 
                 self.contactTitleLabel.textAlignment = .center
             }
-            self.activityView.stopAnimating()
         })
     }
     
     private func checkMails(in group: ContactGroupVO) {
         self.delegate?.checkMails(in: group, progress: { [weak self] in
-            self?.leftConstant.constant = 4
-            self?.widthConstant.constant = 14
+            self?.leftConstant.constant = 8
+            self?.widthConstant.constant = 16
             self?.lockImage.isHidden = true
             self?.activityView.isHidden = false
             self?.activityView.startAnimating()
         }, complete: { [weak self](_, type) in
-            let (_, _, color) = group.getGroupInformation()
-            self?.isEmailVerified(type: type)
-            self?.lockImage.image = UIImage.init(named: "contact_groups_icon")
-            self?.lockImage.setupImage(scale: 0.8,
-                                      tintColor: UIColor.white,
-                                      backgroundColor: UIColor.init(hexString: color, alpha: 1))
-            self?.lockImage.isHidden = false
+            let (_, _, _) = group.getGroupInformation()
+            
             self?.activityView.isHidden = true
             self?.activityView.stopAnimating()
+            self?._model.setType(type: type)
+            guard self?.isEmailVerified(type: type) ?? true else { return }
+            // FIXME: use Asset
+            self?.lockImage.image = UIImage(named: "ic-contact-groups-filled")
+            self?.lockImage.tintColor = UIColorManager.IconNorm
+            self?.lockImage.backgroundColor = .clear
+            self?.lockImage.isHidden = false
         })
     }
     
     func widthForCell() -> CGFloat {
-        var size = self._model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h5.light])
-        if let _ = self._model as? ContactGroupVO {
-            if let estimation = self.contactTitleLabel.text?.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h5.light]) {
-                size = estimation
-            }
-        }
-        let offset = self.widthConstant.constant == 0 ? 0 : 14
-        return size.width.rounded(.up) + 20 + CGFloat(offset) //34 // 20 + self.contactTitleLabel.frame.height + 6
+        let text = self.contactTitleLabel.text ?? self._model.contactTitle
+        let font = self.font ?? Fonts.h5.light
+        let size = text.size(withAttributes: [NSAttributedString.Key.font: font])
+        let offset = self.widthConstant.constant == 0 ? 8: 28
+        let rightPadding: CGFloat = 8
+        return size.width.rounded(.up) + CGFloat(offset) + rightPadding
     }
     
     func widthForCellWithContact(model: ContactPickerModelProtocol) -> CGFloat {
@@ -219,12 +226,20 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         return size.width.rounded(.up) + 20 + 14 //34 //20 + self.contactTitleLabel.frame.height + 6
     }
     
-    private func isEmailVerified(type: Int) {
+    private func isEmailVerified(type: Int) -> Bool {
+        self.isError = false
         // Code=33101 "Email address failed validation"
         // Code=33102 "Recipient could not be found"
         let isBadMail = [33101, 33102].contains(type)
-        let color = isBadMail ? UIColor.red.cgColor: UIColor.clear.cgColor
-        self.bgView.layer.borderColor = color
-        self.bgView.layer.borderWidth = 1
+        guard isBadMail else { return true }
+        self.isError = true
+        self.bgView.backgroundColor = UIColorManager.NotificationError
+        self.contactTitleLabel.textColor = .white
+        // FIXME: use Asset
+        self.lockImage.image = UIImage(named: "ic-exclamation-circle")
+        self.lockImage.tintColor = .white
+        self.lockImage.backgroundColor = .clear
+        self.lockImage.isHidden = false
+        return false
     }
 }

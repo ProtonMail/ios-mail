@@ -23,7 +23,7 @@
 
 import UIKit
 import TrustKit
-import PMCommon
+import ProtonCore_Services
 
 class HorizontallyScrollableWebViewContainer: UIViewController {
     internal var webView: PMWebView!
@@ -81,6 +81,7 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         self.webView.navigationDelegate = self
         self.webView.uiDelegate = self
         self.webView.scrollView.delegate = self
+        self.webView.scrollView.contentInsetAdjustmentBehavior = .never
         self.webView.scrollView.bounces = false // otherwise 1px margin will make contents horizontally scrollable
         self.webView.scrollView.bouncesZoom = false
         self.webView.scrollView.isDirectionalLockEnabled = false

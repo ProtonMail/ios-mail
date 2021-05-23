@@ -23,7 +23,8 @@
 
 import Foundation
 import Crypto
-import PMCommon
+import ProtonCore_Networking
+import ProtonCore_Services
 
 extension PMAPIService {
     fileprivate struct DevicePath {

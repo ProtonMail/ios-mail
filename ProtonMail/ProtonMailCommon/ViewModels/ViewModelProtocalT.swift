@@ -28,7 +28,7 @@ import Foundation
 /// reason: everytime access viewModel needs to go thorugh this wrapper which is not good.
 
 private var viewModelKey: UInt8 = 0
-public protocol ViewModelOwner: class {
+public protocol ViewModelOwner: AnyObject {
     associatedtype ViewModelType
     var viewModel: ViewModelType { get set }
     func viewModelDidSet(viewModel: ViewModelType)

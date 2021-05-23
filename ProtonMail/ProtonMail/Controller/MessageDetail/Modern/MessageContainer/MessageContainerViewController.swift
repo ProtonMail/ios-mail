@@ -58,16 +58,41 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
                                                                                 action: self.goTroubleshoot)
         
         // navigation bar buttons
-        let moreButton = UIBarButtonItem(image: UIImage.Top.more, style: .plain, target: self, action: #selector(topMoreButtonTapped))
+        let moreButton = UIBarButtonItem(
+            image: Asset.topMore.image,
+            style: .plain,
+            target: self,
+            action: #selector(topMoreButtonTapped)
+        )
         moreButton.accessibilityLabel = LocalString._general_more
-        let trashButton = UIBarButtonItem(image: UIImage.Top.trash, style: .plain, target: self, action: #selector(topTrashButtonTapped))
+        let trashButton = UIBarButtonItem(
+            image: Asset.trash.image,
+            style: .plain,
+            target: self,
+            action: #selector(topTrashButtonTapped)
+        )
         trashButton.accessibilityLabel = LocalString._menu_trash_title
-        let folderButton = UIBarButtonItem(image: UIImage.Top.folder, style: .plain, target: self, action: #selector(topFolderButtonTapped))
+        let folderButton = UIBarButtonItem(
+            image: Asset.topFolder.image,
+            style: .plain,
+            target: self,
+            action: #selector(topFolderButtonTapped)
+        )
         folderButton.accessibilityLabel = LocalString._move_to_
-        let labelButton = UIBarButtonItem(image: UIImage.Top.label, style: .plain, target: self, action: #selector(topLabelButtonTapped))
+        let labelButton = UIBarButtonItem(
+            image: Asset.topLabel.image,
+            style: .plain,
+            target: self,
+            action: #selector(topLabelButtonTapped)
+        )
         labelButton.accessibilityLabel = LocalString._label_as_
-        let unreadButton = UIBarButtonItem(image: UIImage.Top.unread, style: .plain, target: self, action: #selector(topUnreadButtonTapped))
-        unreadButton.accessibilityLabel = LocalString._mark_as_unread
+        let unreadButton = UIBarButtonItem(
+            image: Asset.topUnread.image,
+            style: .plain,
+            target: self,
+            action: #selector(topUnreadButtonTapped)
+        )
+        unreadButton.accessibilityLabel = LocalString._mark_as_unread_read
         self.navigationItem.setRightBarButtonItems([moreButton, trashButton, folderButton, labelButton, unreadButton], animated: true)
         self.navigationItem.assignNavItemIndentifiers()
         
@@ -84,11 +109,11 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         internetConnectionStatusProvider.getConnectionStatuses { [weak self] _ in
             self?.setUpBottomButtonsState()
         }
-
-        self.viewModel.isWebViewBodyLoadedNotifier = { [weak self] isLoaded in
-            self?.isWebBodyLoaded = isLoaded
-            self?.setUpBottomButtonsState()
-        }
+// Anson rebase check, ignored, since the single message view is developing
+//        self.viewModel.isWebViewBodyLoadedNotifier = { [weak self] isLoaded in
+//            self?.isWebBodyLoaded = isLoaded
+//            self?.setUpBottomButtonsState()
+//        }
     }
 
     private var areBottomButtonEnabled: Bool {
@@ -184,7 +209,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         self.coordinator.go(to: .labels)
     }
     @objc func topUnreadButtonTapped(_ sender: UIBarButtonItem) {
-        self.viewModel.markThread(read: false)
+        self.viewModel.markThread(read: false, labelID: self.viewModel.labelID)
         self.coordinator.dismiss()
     }
     

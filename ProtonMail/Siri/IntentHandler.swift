@@ -19,9 +19,9 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
-import PMKeymaker
+
 import Intents
+import ProtonCore_Keymaker
 
 @available(iOS 12.0, *)
 class IntentHandler: INExtension {

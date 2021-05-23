@@ -22,7 +22,8 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
+import ProtonCore_Services
 
 public class BugDataService: Service {
     private let apiService : APIService
@@ -32,8 +33,8 @@ public class BugDataService: Service {
     
     func reportPhishing(messageID : String, messageBody : String, completion: ((NSError?) -> Void)?) {
         let route = ReportPhishing(msgID: messageID, mimeType: "text/html", body: messageBody)
-        self.apiService.exec(route: route) { (res) in
-            completion?(res.error)
+        self.apiService.exec(route: route) { (res: Response) in
+            completion?(res.error?.toNSError)
         }
     }
     
@@ -50,8 +51,8 @@ public class BugDataService: Service {
                                       desc: bug,
                                       userName: username,
                                       email: useremail)
-        self.apiService.exec(route: route) { (res) in
-            completion?(res.error)
+        self.apiService.exec(route: route) { (res: Response) in
+            completion?(res.error?.toNSError)
         }
     }
 }

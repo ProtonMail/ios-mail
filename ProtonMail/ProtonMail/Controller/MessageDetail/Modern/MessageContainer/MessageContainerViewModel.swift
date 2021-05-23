@@ -23,7 +23,7 @@
 
 import Foundation
 import CoreData
-import PMCommon
+
 
 extension MessageContainerViewModel {
     struct StatesKey {
@@ -67,12 +67,9 @@ class MessageContainerViewModel: TableContainerViewModel {
     
     private let messageService : MessageDataService
     internal let user: UserManager
-    private let coreDataService: CoreDataService
-
-    var isWebViewBodyLoadedNotifier: ((Bool) -> Void)?
-
     /// States from deeplink
     private let states: [String: Any]?
+    let labelID: String
     
     // model - viewModel connections
     @objc private(set) dynamic var thread: [MessageViewModel]
@@ -88,14 +85,14 @@ class MessageContainerViewModel: TableContainerViewModel {
         return self.thread[section].divisionsCount
     }
 
-    init(conversation messages: [Message], msgService: MessageDataService, user: UserManager, coreDataService: CoreDataService, states: [String: Any]? = nil) {
+    init(conversation messages: [Message], msgService: MessageDataService, user: UserManager, labelID: String, states: [String: Any]? = nil) {
 
         self.thread = []
         self.messageService = msgService
         self.messages = messages
         self.user = user
-        self.coreDataService = coreDataService
         self.states = states
+        self.labelID = labelID
         super.init()
         
         
@@ -129,8 +126,8 @@ class MessageContainerViewModel: TableContainerViewModel {
         }
     }
     
-    convenience init(message: Message, msgService: MessageDataService, user: UserManager, coreDataService: CoreDataService, states: [String: Any]? = nil) {
-        self.init(conversation: [message], msgService: msgService, user: user, coreDataService: coreDataService, states: states)
+    convenience init(message: Message, msgService: MessageDataService, user: UserManager, labelID: String, states: [String: Any]? = nil) {
+        self.init(conversation: [message], msgService: msgService, user: user, labelID: labelID, states: states)
     }
     
     deinit {
@@ -148,10 +145,9 @@ class MessageContainerViewModel: TableContainerViewModel {
     }
     
     internal func moveThread(to location: Message.Location) {
-        messages.forEach { message in
-            guard let label = message.firstValidFolder() else { return }
-            self.messageService.move(message: message, from: label, to: location.rawValue)
-        }
+        let messages = self.messages.filter { $0.firstValidFolder() != nil }
+        let labels = messages.compactMap { $0.firstValidFolder() }
+        self.messageService.move(messages: messages, from: labels, to: location.rawValue)
     }
     
     internal func reload(message: Message) {
@@ -164,10 +160,8 @@ class MessageContainerViewModel: TableContainerViewModel {
         standalone?.body = bodyPlaceholder
     }
     
-    internal func markThread(read: Bool) {
-        self.messages.forEach {
-            self.messageService.mark(message: $0, unRead: !read)
-        }
+    internal func markThread(read: Bool, labelID: String) {
+        self.messageService.mark(messages: self.messages, labelID: labelID, unRead: !read)
     }
     
     internal func isRemoveIrreversible() -> Bool { // TODO: validation logic should be different for threads
@@ -176,16 +170,22 @@ class MessageContainerViewModel: TableContainerViewModel {
     
     internal func removeThread() { // TODO: remove logic should be different for threads
         self.unsubscribeFromUpdatesOfChildren()
-        self.messages.forEach { message in
-            if message.contains(label: .trash) || message.contains(label: .spam) {
-                let label: Message.Location = message.contains(label: .trash) ? .trash : .spam
-                self.messageService.delete(message: message, label: label.rawValue)
-            } else {
+        
+        let removed = self.messages
+            .filter { $0.contains(label: .trash) || $0.contains(label: .spam) }
+        self.messageService.delete(messages: removed, label: Message.Location.trash.rawValue)
+        
+        var moveMessages: [Message] = []
+        var labelIDs: [String] = []
+        self.messages
+            .filter {!$0.contains(label: .trash) && !$0.contains(label: .spam)}
+            .forEach { message in
                 if let label = message.firstValidFolder() {
-                    self.messageService.move(message: message, from: label, to: Message.Location.trash.rawValue)
+                    labelIDs.append(label)
+                    moveMessages.append(message)
                 }
             }
-        }
+        self.messageService.move(messages: moveMessages, from: labelIDs, to: Message.Location.trash.rawValue)
     }
     
     internal func headersTemporaryUrl() -> URL? { // TODO: this one will not work for threads
@@ -303,7 +303,7 @@ class MessageContainerViewModel: TableContainerViewModel {
     internal func children() -> [ChildViewModelPack] {
         let children = self.thread.compactMap { standalone -> ChildViewModelPack? in
             guard let message = self.message(for: standalone) else { return nil }
-            let head = MessageHeaderViewModel(parentViewModel: standalone, message: message, coreDataService: self.coreDataService)
+            let head = MessageHeaderViewModel(parentViewModel: standalone, message: message)
             let attachments = MessageAttachmentsViewModel(parentViewModel: standalone)
             let body = MessageBodyViewModel(parentViewModel: standalone)
             return (head, body, attachments)
@@ -339,9 +339,10 @@ class MessageContainerViewModel: TableContainerViewModel {
             self.observationsBody.append(bodyObservation)
 
             let isWebViewLoadingBodyObservation = child.body.observe(\.isWebViewBodyLoaded, options: [.new])
-            { [weak self] _, observation in
-                guard let isWebViewLoadingBody = observation.newValue else { return }
-                self?.isWebViewBodyLoadedNotifier?(isWebViewLoadingBody)
+            { _, _ in //[weak self] _, _ in
+//                guard let isWebViewLoadingBody = observation.newValue else { return }
+                // Anson rebase, ignored, since single message view is developing 
+//                self?.isWebViewBodyLoadedNotifier?(isWebViewLoadingBody)
             }
 
             self.observationsBody.append(isWebViewLoadingBodyObservation)
@@ -356,7 +357,7 @@ class MessageContainerViewModel: TableContainerViewModel {
     
     internal func downloadThreadDetails() {
         self.messages.forEach { message in
-            self.messageService.fetchMessageDetailForMessage(message) { (_, _, _, error) in
+            self.messageService.fetchMessageDetailForMessage(message, labelID: self.labelID) { (_, _, _, error) in
                 guard error == nil else {
                     self.errorWhileReloading(message: message, error: error!)
                     return

@@ -24,6 +24,7 @@
 import Foundation
 import XCTest
 import Crypto
+import OpenPGP
 
 class OpenPGPTests: XCTestCase {
     

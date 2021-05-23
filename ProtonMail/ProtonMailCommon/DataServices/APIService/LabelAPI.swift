@@ -22,12 +22,14 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
 
 //Labels API
 //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_labels.md
 struct LabelAPI {
     static let path :String = "/labels"
+    
+    static let versionPrefix: String = "/v4"
     
     /// Get user's labels [GET]
     static let v_get_user_labels : Int = 3
@@ -46,19 +48,18 @@ struct LabelAPI {
     static let v_order_labels : Int = 3
 }
 
-/// Get user's labels/contact groups in the order to be displayed from the server
-final class GetLabelsRequest : Request { //GetLabelsResponse> {
-    var type: Int = 1
-    init(type: Int = 1) {
-        self.type = type
+final class GetV4LabelsRequest: Request {
+    private let type: Int
+    init(type: PMLabelType) {
+        self.type = type.rawValue
     }
     
     var path: String {
-        return LabelAPI.path
+        return LabelAPI.versionPrefix + LabelAPI.path + "?Type=\(self.type)"
     }
         
     var parameters: [String : Any]? {
-        return ["Type" : type]
+        return nil
     }
 }
 
@@ -73,29 +74,38 @@ final class GetLabelsResponse : Response {
 
 /// Create a label/contact group on the server -- CreateLabelRequestResponse
 final class CreateLabelRequest : Request {
-    var labelName: String
-    var color: String
-    var exclusive: Bool = false
-    var type: Int = 1
+    private let name: String
+    private let color: String
+    private let type: Int
+    private let parentID: String?
+    private let notify: Int
+    private let expanded: Int
     
-    init(name: String, color: String, exclusive: Bool = false, type: Int = 1) {
-        self.labelName = name
+    init(name: String, color: String, type: PMLabelType, parentID: String? = nil, notify: Bool, expanded: Bool = true) {
+        self.name = name
         self.color = color
-        self.exclusive = exclusive
-        self.type = type
+        self.type = type.rawValue
+        if let id = parentID, !id.isEmpty {
+            self.parentID = id
+        } else {
+            self.parentID = nil
+        }
+        self.notify = notify ? 1: 0
+        self.expanded = expanded ? 1: 0
     }
     
     var parameters: [String : Any]? {
         
         var out : [String : Any] = [
-            "Name": self.labelName,
+            "Name": self.name,
             "Color": self.color,
-            "Display": type == 1 ? 0 : 1, /* Don't show the contact group on the side bar */
             "Type": self.type,
+            "Notify": self.notify,
+            "Expanded": self.expanded
         ]
         
-        if type == 1 {
-            out["Exclusive"] = self.exclusive ? 1 : 0
+        if let id = self.parentID {
+            out["ParentID"] = id
         }
 
         return out
@@ -106,7 +116,7 @@ final class CreateLabelRequest : Request {
     }
     
     var path: String {
-        return LabelAPI.path
+        return LabelAPI.versionPrefix + LabelAPI.path
     }
 }
 
@@ -126,22 +136,34 @@ final class CreateLabelRequestResponse : Response {
  Type don't need to be specified here since we have the exact labelID to work with
 */
 final class UpdateLabelRequest : Request {  //CreateLabelRequestResponse
-    var labelID : String
-    var labelName: String
-    var color:String
+    private let labelID : String
+    private let labelName: String
+    private let color:String
+    private let parentID: String?
+    private let notify: Int
     
-    init(id:String, name:String, color:String) {
+    
+    init(id:String, name:String, color:String, parentID: String? = nil, notify: Bool = false) {
         self.labelID = id
         self.labelName = name
         self.color = color
+        if let id = parentID, !id.isEmpty {
+            self.parentID = id
+        } else {
+            self.parentID = nil
+        }
+        self.notify = notify ? 1: 0
     }
     
     var parameters: [String : Any]? {
-        let out : [String : Any] = [
+        var out : [String : Any] = [
             "Name": self.labelName,
             "Color": self.color,
-            "Display": 0
+            "Notify": self.notify
         ]
+        if let id = self.parentID {
+            out["ParentID"] = id
+        }
         return out
     }
     
@@ -150,7 +172,7 @@ final class UpdateLabelRequest : Request {  //CreateLabelRequestResponse
     }
     
     var path: String {
-        return LabelAPI.path + "/\(labelID)"
+        return LabelAPI.versionPrefix + LabelAPI.path + "/\(labelID)"
     }
 }
 
@@ -170,7 +192,7 @@ final class UpdateLabelRequestResponse: Response {
  Type don't need to be specified here since we have the exact labelID to work with
 */
 final class DeleteLabelRequest : Request { //DeleteLabelRequestResponse
-    var labelID: String
+    private let labelID: String
     init(lable_id: String) {
         labelID = lable_id
     }
@@ -180,7 +202,7 @@ final class DeleteLabelRequest : Request { //DeleteLabelRequestResponse
     }
     
     var path: String {
-        return LabelAPI.path + "/\(labelID)"
+        return LabelAPI.versionPrefix + LabelAPI.path + "/\(labelID)"
     }
 }
 
@@ -194,4 +216,33 @@ final class DeleteLabelRequestResponse: Response {
     }
 }
 
-
+final class LabelOrderRequest: Request {
+    private let siblingLabelID: [String]
+    private let parentID: String?
+    private let type: PMLabelType
+    
+    init(siblingLabelID: [String], parentID: String?, type: PMLabelType) {
+        self.siblingLabelID = siblingLabelID
+        self.parentID = parentID
+        self.type = type
+    }
+    
+    var parameters: [String : Any]? {
+        var out: [String : Any] = ["LabelIDs": self.siblingLabelID,
+                                   "Type": self.type.rawValue]
+        if let id = self.parentID {
+            out["ParentID"] = id
+        } else {
+            out["ParentID"] = 0
+        }
+        return out
+    }
+    
+    var method: HTTPMethod {
+        return .put
+    }
+    
+    var path: String {
+        return LabelAPI.versionPrefix + LabelAPI.path + "/order"
+    }
+}

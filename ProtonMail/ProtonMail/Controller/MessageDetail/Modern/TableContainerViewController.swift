@@ -23,7 +23,7 @@
 
 import UIKit
 
-protocol ScrollableContainer: class {
+protocol ScrollableContainer: AnyObject {
     func propogate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
     var scroller: UIScrollView { get }
     
@@ -36,10 +36,6 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
 
     @IBOutlet weak var tableView: UITableView!
     
-    // base protocols
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
     @IBOutlet weak var menuButton: UIBarButtonItem!
     func configureNavigationBar() {
         ProtonMailViewController.configureNavigationBar(self)

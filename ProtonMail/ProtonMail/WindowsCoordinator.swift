@@ -22,10 +22,7 @@
 
 
 import Foundation
-import PMKeymaker
-
-import SWRevealViewController // for state restoration
-
+import ProtonCore_Keymaker
 
 // this view controller is placed into AppWindow only until it is correctly loaded from storyboard or correctly restored with use of MainKey
 fileprivate class PlaceholderVC: UIViewController {
@@ -113,8 +110,7 @@ class WindowsCoordinator: CoordinatorNew {
         //some cache may need user to unlock first. so this need to move to after windows showup
         let usersManager : UsersManager = self.services.get()
         usersManager.launchCleanUpIfNeeded()
-        //        usersManager.tryRestore()
-        //sharedUserDataService.delegate = self
+//        usersManager.tryRestore()
         
         //we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
         // clean this up later.
@@ -161,7 +157,7 @@ class WindowsCoordinator: CoordinatorNew {
             return
         }
         if usersManager.count <= 0 {
-            usersManager.clean()
+            _ = usersManager.clean()
             self.go(dest: .signInWindow)
         } else {
             self.go(dest: .appWindow)
@@ -170,11 +166,12 @@ class WindowsCoordinator: CoordinatorNew {
     
     @objc func didReceiveTokenRevoke(uid: String) {
         let usersManager: UsersManager = services.get()
+        let queueManager: QueueManager = services.get()
         
         if let user = usersManager.getUser(bySessionID: uid) {
             let shouldShowBadTokenAlert = usersManager.count == 1
-//            let isPrimaryAccountLoggingOut = user.userinfo.userId == usersManager.firstUser?.userinfo.userId
-            
+
+            queueManager.unregisterHandler(user.messageService)
             usersManager.logout(user: user, shouldShowAccountSwitchAlert: true).done { [weak self] (_) in
                 guard let self = self else { return }
                 
@@ -185,7 +182,7 @@ class WindowsCoordinator: CoordinatorNew {
                         if let menu = controller as? MenuViewController {
                             //Work Around: trigger viewDidLoad of menu view controller
                             _ = menu.view
-                            menu.toInbox()
+                            menu.navigateTo(label: MenuLabel(location: .inbox))
                         }
                     }
                 }
@@ -226,10 +223,8 @@ class WindowsCoordinator: CoordinatorNew {
                     let deeplink = self.deeplink
                 {
                     self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-                        if let menu = controller as? MenuViewController,
-                            let coordinator = menu.getCoordinator() as? MenuCoordinatorNew
-                        {
-                            coordinator.follow(deeplink)
+                        if let menu = controller as? MenuViewController {
+                            menu.coordinator.follow(deeplink)
                             stop = true
                         }
                     }
@@ -279,8 +274,9 @@ class WindowsCoordinator: CoordinatorNew {
             
             // this will let us restore correct user starting from MenuViewModel and transfer it down the hierarchy later
             // mostly relevant in multiuser environment when two or more windows with defferent users in each one
-            if let menu = controller as? MenuViewController, let user = menu.viewModel.currentUser {
-                let userNode = DeepLink.Node(name: MenuCoordinatorNew.Setup.switchUser.rawValue, value: user.auth.sessionID)
+            if let menu = controller as? MenuViewController,
+               let user = menu.viewModel.currentUser {
+                let userNode = DeepLink.Node(name: MenuCoordinator.Setup.switchUser.rawValue, value: user.auth.sessionID)
                 deeplink.append(userNode)
             }
         }

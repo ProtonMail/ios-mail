@@ -55,4 +55,10 @@ enum MessageAction: String {
     case label = "applyLabel"
     case unlabel = "unapplyLabel"
     case folder = "moveToFolder"
+    
+    case updateLabel = "updateLabel"
+    case createLabel = "createLabel"
+    case deleteLabel = "deleteLabel"
+    case signout = "signout"
+    case signin = "signin"
 }

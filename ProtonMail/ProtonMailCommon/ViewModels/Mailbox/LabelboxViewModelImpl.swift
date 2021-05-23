@@ -26,9 +26,9 @@ import CoreData
 
 class LabelboxViewModelImpl : MailboxViewModel {
     private let label : Label
-    init(label : Label, userManager: UserManager, usersManager: UsersManager, pushService: PushNotificationService, coreDataService: CoreDataService) {
+    init(label : Label, userManager: UserManager, usersManager: UsersManager, pushService: PushNotificationService, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, queueManager: QueueManager) {
         self.label = label
-        super.init(labelID: self.label.labelID, userManager: userManager, usersManager: usersManager, pushService: pushService, coreDataService: coreDataService)
+        super.init(labelID: self.label.labelID, userManager: userManager, usersManager: usersManager, pushService: pushService, coreDataService: coreDataService, lastUpdatedStore: lastUpdatedStore, queueManager: queueManager)
     }
 
     override func showLocation () -> Bool {
@@ -36,7 +36,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     override func ignoredLocationTitle() -> String {
-        return self.label.exclusive ? self.label.name : ""
+        return self.label.type == 3 ? self.label.name : ""
     }
     
     override var localizedNavigationTitle: String {
@@ -56,7 +56,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
     
     override func delete(message: Message) -> (SwipeResponse, UndoMessage?) {
         if let fLabel = message.firstValidFolder() {
-            if messageService.move(message: message, from: fLabel, to: Message.Location.trash.rawValue) {
+            if messageService.move(messages: [message], from: [fLabel], to: Message.Location.trash.rawValue) {
                 if self.label.labelID != fLabel {
                     return (.showGeneral, nil)
                 }
@@ -70,7 +70,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
     override func archive(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
             if let fLabel = message.firstValidFolder() {
-                if messageService.move(message: message, from: fLabel, to: Message.Location.archive.rawValue) {
+                if messageService.move(messages: [message], from: [fLabel], to: Message.Location.archive.rawValue) {
                     if self.label.labelID != fLabel {
                         return (.showGeneral, nil)
                     }
@@ -84,7 +84,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
     override func spam(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
             if let fLabel = message.firstValidFolder() {
-                if messageService.move(message: message, from: fLabel, to: Message.Location.spam.rawValue) {
+                if messageService.move(messages: [message], from: [fLabel], to: Message.Location.spam.rawValue) {
                     if self.label.labelID != fLabel {
                         return (.showGeneral, nil)
                     }
