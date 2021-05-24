@@ -592,6 +592,7 @@ class UserDataService : Service, HasLocalStorage {
                                                                         authCredential: oldAuthCredential)
                             let update_res = try `await`(self.apiService.run(route: updatePrivkey))
                             // Anson Rebase need to check
+                            // Kris: Looks right to me
 //                            guard update_res.code == 1000 else {
 //                                throw UpdatePasswordError.default.error
 //                            }
@@ -721,6 +722,7 @@ class UserDataService : Service, HasLocalStorage {
                                                                                                           auth: authPacket,
                                                                                                           authCredential: oldAuthCredential)))
                             // Anson Rebase need to check
+                            // Kris: Looks right to me
 //                            guard update_res.code == 1000 else {
 //                                throw UpdatePasswordError.default.error
 //                            }
