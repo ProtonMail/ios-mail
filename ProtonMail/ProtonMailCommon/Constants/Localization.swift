@@ -703,7 +703,7 @@ class LocalizedString {
     lazy var _general_use_web_reset_pwd = NSLocalizedString("Please use the web version of ProtonMail to change your passwords!", comment: "Alert")
 
     /// "Resetting message cache …"
-    lazy var _settings_resetting_cache = NSLocalizedString("Resetting message cache …", comment: "Title")
+    lazy var _settings_resetting_cache = NSLocalizedString("Resetting message cache…", comment: "Title")
 
     /// "This preference will fallback to Safari if the browser of choice will be uninstalled."
     lazy var _settings_browser_disclaimer = NSLocalizedString("This preference will fallback to Safari if the browser of choice will be uninstalled.", comment: "Title")
@@ -1013,7 +1013,7 @@ class LocalizedString {
     lazy var _privacy_policy = NSLocalizedString("privacy policy.", comment: "agree check box privacy")
 
     /// "Checking …."
-    lazy var _checking_ = NSLocalizedString("Checking …", comment: "loading message")
+    lazy var _checking_ = NSLocalizedString("Checking…", comment: "loading message")
 
     /// "User is available!"
     lazy var _user_is_available = NSLocalizedString("User is available!", comment: "")
@@ -1055,7 +1055,7 @@ class LocalizedString {
     lazy var _clear_local_message_cache = NSLocalizedString("Clear Local Message Cache", comment: "settings general section title")
     /// "Auto Show Images"
     lazy var _auto_show_images = NSLocalizedString("Auto show remote content", comment: "settings general section title")
-    lazy var _auto_show_embedded_images = NSLocalizedString("Auto load embedded images", comment: "settings general section title")
+    lazy var _auto_show_embedded_images = NSLocalizedString("Auto-load embedded images", comment: "settings general section title")
     /// "Swipe Left to Right"
     lazy var _swipe_left_to_right = NSLocalizedString("Left to Right", comment: "settings swipe actions section title")
     /// "Swipe Right to Left"
@@ -1351,7 +1351,7 @@ class LocalizedString {
 
     lazy var _attachment_limit = NSLocalizedString("Attachment limit", comment: "Alert title")
     /// "The total attachment size cannot exceed 25MB"
-    lazy var _the_total_attachment_size_cant_be_bigger_than_25mb = NSLocalizedString("The size limit for attachments is 25 Mbs.", comment: "Description")
+    lazy var _the_total_attachment_size_cant_be_bigger_than_25mb = NSLocalizedString("The size limit for attachments is 25 MB.", comment: "Description")
 
     /// "Can't load the file"
     lazy var _cant_load_the_file = NSLocalizedString("Can't load the file", comment: "Error")
@@ -1602,7 +1602,7 @@ class LocalizedString {
     lazy var _please_add_a_password_for_the_following_recipients = NSLocalizedString("Please add a password for the following recipients.", comment: "alert description")
     /// "Please disable PGP sending for following addresses"
     lazy var _please_disable_pgp_sending_for_following_addresses = NSLocalizedString("Please disable PGP Sending for following addresses.", comment: "alert description")
-    lazy var _expiration_non_supported = NSLocalizedString("Expiration non supported", comment: "alert title")
+    lazy var _expiration_not_supported = NSLocalizedString("Expiration not supported", comment: "alert title")
     lazy var _we_recommend_setting_up_a_password = NSLocalizedString("We recommend setting up a password instead for the following recipients:", comment: "alert body before list of addresses")
     lazy var _we_recommend_setting_up_a_password_or_disabling_pgp = NSLocalizedString("We recommend setting up a password instead, or disabling PGP for the following recipients:", comment: "alert body before list of addresses")
 
@@ -1967,7 +1967,7 @@ class LocalizedString {
     lazy var _messages_validation_failed_try_again = NSLocalizedString("Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.", comment: "message shown in the notification when the recipient validation is failed while sending")
     lazy var _ignore_IAP_error_descrption = NSLocalizedString("Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?", comment: "Alert message")
 
-    lazy var _message_of_unavailable_to_upgrade_account = NSLocalizedString("It's not possible to swicth to another plan within the app. %1$@", comment: "")
+    lazy var _message_of_unavailable_to_upgrade_account = NSLocalizedString("It's not possible to switch to another plan within the app. %1$@", comment: "The string used to show in the plan update page when the user not able to upgrade the account")
     lazy var _message_of_unavailable_to_upgrade_url = NSLocalizedString("Plans can be edited on the web version.", comment: "")
     lazy var _week = NSLocalizedString("week", comment: "week")
     lazy var _day = NSLocalizedString("day", comment: "day")
