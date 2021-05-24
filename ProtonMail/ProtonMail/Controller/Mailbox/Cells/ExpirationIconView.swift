@@ -67,7 +67,7 @@ class ExpirationIconView: PMView {
             expirationLabel.text = "\(hour) " + (hour > 1 ? LocalString._hours : LocalString._hour)
         } else {
             let minute = Int(distance / 60)
-            expirationLabel.text = "\(minute) " + (minute > 1 ? LocalString._minutes : LocalString._minute)
+            expirationLabel.text = String.localizedStringWithFormat(LocalString._minute, minute)
         }
     }
 }
