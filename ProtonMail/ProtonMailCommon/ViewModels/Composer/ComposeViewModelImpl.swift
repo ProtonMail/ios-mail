@@ -349,6 +349,10 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(c.lock, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { (error) in
             // Anson Rebase need to check
+            // Kris: I'm not sure about this one. It will never call the completion block if the error is not ResponseError.
+            //       I think it will break the assumptions of the client — completion block should always be called.
+            //       I believe it should call completion block with some default error code like -1 instead:
+            //    guard let error = error as? ResponseError else { complete?(nil, -1); return }
             guard let error = error as? ResponseError else { return }
             PMLog.D(error.localizedDescription)
             defer {
@@ -386,6 +390,10 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(nil, 0)
         }.catch(policy: .allErrors) { (error) in
             // Anson Rebase need to check
+            // Kris: I'm not sure about this one. It will never call the completion block if the error is not ResponseError.
+            //       I think it will break the assumptions of the client — completion block should always be called.
+            //       I believe it should call completion block with some default error code like -1 instead:
+            //    guard let error = error as? ResponseError else { complete?(nil, -1); return }
             guard let error = error as? ResponseError else { return }
             PMLog.D(error.localizedDescription)
             defer {

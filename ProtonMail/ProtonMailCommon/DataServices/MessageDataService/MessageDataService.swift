@@ -218,6 +218,9 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     // Anson Rebase need to check
+    // Kris: looks fine to me. You are not checking the response.error in the completion block of
+    //       self.apiService.exec(route: getLatestEventID), but it is also not checked on develop branch,
+    //       so the logic seems to not require it
     func fetchMessagesOnlyWithReset(byLabel labelID: String, time: Int, completion: CompletionBlock?) {
         self.queueManager?.queue { [weak self] in
             guard let self = self else { return }
@@ -1501,6 +1504,7 @@ class MessageDataService : Service, HasLocalStorage {
                 status.insert(SendStatus.exceptionCatched)
                 
                 // Anson Rebase need to check
+                // Kris: Looks like a proper casting and unpacking of the error to me, so it should work as on develop
                 guard let err = error as? ResponseError,
                       let responseCode = err.responseCode else {
                     NSError.alertMessageSentError(details: error.localizedDescription)
