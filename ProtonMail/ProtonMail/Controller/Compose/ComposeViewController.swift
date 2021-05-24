@@ -677,7 +677,7 @@ extension ComposeViewController {
             message.append(pgpEmails.joined(separator: ","))
             message.append("\n")
         }
-        let alertController = UIAlertController(title: LocalString._expiration_non_supported, message: message, preferredStyle: .alert)
+        let alertController = UIAlertController(title: LocalString._expiration_not_supported, message: message, preferredStyle: .alert)
         let sendAnywayAction = UIAlertAction(title: LocalString._send_anyway, style: .destructive) { [weak self] _ in
             self?.sendMessageStepTwo()
         }
