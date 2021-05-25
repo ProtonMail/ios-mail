@@ -348,18 +348,17 @@ class ComposeViewModelImpl : ComposeViewModel {
             }
             complete?(c.lock, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { (error) in
-            // Anson Rebase need to check
-            // Kris: I'm not sure about this one. It will never call the completion block if the error is not ResponseError.
-            //       I think it will break the assumptions of the client — completion block should always be called.
-            //       I believe it should call completion block with some default error code like -1 instead:
-            //    guard let error = error as? ResponseError else { complete?(nil, -1); return }
-            guard let error = error as? ResponseError else { return }
+            var errCode: Int
+            if let error = error as? ResponseError {
+                errCode = error.responseCode ?? -1
+            } else {
+                let error = error as NSError
+                errCode = error.code
+            }
             PMLog.D(error.localizedDescription)
             defer {
                 complete?(nil, errCode)
             }
-            
-            var errCode = error.responseCode ?? -1
             
             if errCode == 33101 {
                 c.pgpType = .failed_server_validation
@@ -389,18 +388,17 @@ class ComposeViewModelImpl : ComposeViewModel {
         when(fulfilled: reqs).done { (_) in
             complete?(nil, 0)
         }.catch(policy: .allErrors) { (error) in
-            // Anson Rebase need to check
-            // Kris: I'm not sure about this one. It will never call the completion block if the error is not ResponseError.
-            //       I think it will break the assumptions of the client — completion block should always be called.
-            //       I believe it should call completion block with some default error code like -1 instead:
-            //    guard let error = error as? ResponseError else { complete?(nil, -1); return }
-            guard let error = error as? ResponseError else { return }
+            var errCode: Int
+            if let error = error as? ResponseError {
+                errCode = error.responseCode ?? -1
+            } else {
+                let error = error as NSError
+                errCode = error.code
+            }
             PMLog.D(error.localizedDescription)
             defer {
                 complete?(nil, errCode)
             }
-            
-            var errCode = error.responseCode ?? -1
 
             // Code=33102 "Recipient could not be found"
             if errCode == 33102 {

@@ -341,7 +341,6 @@ class MessageContainerViewModel: TableContainerViewModel {
             let isWebViewLoadingBodyObservation = child.body.observe(\.isWebViewBodyLoaded, options: [.new])
             { _, _ in //[weak self] _, _ in
 //                guard let isWebViewLoadingBody = observation.newValue else { return }
-                // Anson rebase, ignored, since single message view is developing 
 //                self?.isWebViewBodyLoadedNotifier?(isWebViewLoadingBody)
             }
 
