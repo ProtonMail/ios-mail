@@ -986,7 +986,7 @@
 "Go to login" = "Conectați-vă";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "Accesați setările";
+"Go to settings" = "Accesare setări";
 
 /* network troubleshot cell title */
 "Government block" = "Blocare națională";
@@ -2297,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Actualizare e-mail de notificare";
-
-/* title */
-"Update Now" = "Actualizați acum";
-
-/* title */
-"Update Required" = "Actualizare necesară";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Treceți la un plan plătit pentru a beneficia de mai multe funcții";

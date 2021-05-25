@@ -173,7 +173,7 @@
 "All Mail" = "所有邮件";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "所有保护设置将在登出应用程序时被重置和清除。";
+"All protection settings will be reset and wiped upon logging out of the app." = "退出账户后所有账户防护设置都将被清除。";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "允许使用备用线路";
@@ -249,7 +249,7 @@
 "At least one recipient email address is improperly formatted, please double check them." = "至少有一个收件人的电子邮件地址格式不正确，请重新检查。";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "至少有一个收件人电子邮件地址/域不存在或格式不正确。信件已移动到草稿箱。";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "部分收件人的邮箱地址或域名不存在或格式不正确，因此邮件已被存为草稿。";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "附件已导入";
@@ -1128,7 +1128,7 @@
 "It is not possible to switch to %@ within our iOS app." = "不支持在 iOS 程序中开通 %@。";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "It's not possible to swicth to another plan within the app. %1$@";
+"It's not possible to swicth to another plan within the app. %1$@" = "App 中无法调整账户等级。%1$@";
 
 /* Title */
 "Keep me updated about new features" = "有新功能时通知我";
@@ -1289,7 +1289,7 @@
 "Message %@" = "邮件 %@";
 
 /* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "无法发送信件。至少有一个收件人电子邮件地址/域不存在或格式不正确。";
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "部分收件人的邮箱地址或域名不存在或格式不正确，因此无法发送邮件。";
 
 /* *
  *  Expiration View */
@@ -1564,7 +1564,7 @@
 "Pin code can't be empty." = "口令不能为空。";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
+"Plans can be edited on the web version." = "账户等级可以在网页版中更改。";
 
 /* alert description */
 "Please add a password for the following recipients." = "请为下列收件人设置邮件密码。";
@@ -2056,7 +2056,7 @@
 "The new password does not match." = "密码不一致。";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "新密码长度应至少为 8 个字符";
+"The new password needs to be at least 8 characters long" = "新密码长度至少应达到 8 个字符";
 
 /* (No Comment) */
 "The new password not match" = "密码不一致";
@@ -2297,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "更改通知邮箱";
-
-/* title */
-"Update Now" = "立即更新";
-
-/* title */
-"Update Required" = "需要更新";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "开通付费账户可使用更多功能";

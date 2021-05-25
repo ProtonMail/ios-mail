@@ -944,7 +944,7 @@
 "For power users and groups of people that value full anonymity and privacy" = "Voor gevorderde gebruikers en groepen die volledige anonimiteit en privacy waarderen";
 
 /* login page forgot pwd */
-"FORGOT PASSWORD?" = "WACHTWOORD VERGETEN?";
+"FORGOT PASSWORD?" = "Wachtwoord vergeten?";
 
 /* forward action */
 "Forward" = "Doorsturen";
@@ -1405,7 +1405,7 @@
 "No Messages" = "Geen berichten";
 
 /* no object error, local only , this could be not translated! */
-"no object" = "no object";
+"no object" = "geen object";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another ProtonMail account" = "Nee, voor een ander ProtonMail-account";
@@ -1470,7 +1470,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "Op EE d MMM yyyy om %1$@, schreef %2$@:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Negeer alleen de aankoopactivatie als je zeker weet dat al je abonnementen up-to-date zijn. Voor verdere hulp, neem contact op met klantenondersteuning. \r\n\r\n Weet u zeker dat u de activering wilt negeren?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Negeer alleen de aankoopactivatie als u zeker weet dat al uw abonnementen up-to-date zijn. Voor verdere hulp, neem contact op met klantenondersteuning. \r\n\r\n Weet u zeker dat u de activering wilt negeren?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Er kan slechts één gratis account worden toegevoegd";
@@ -2298,12 +2298,6 @@
 /* update notification email error title */
 "Update Notification Email" = "Notificatie-e-mailadres bijwerken";
 
-/* title */
-"Update Now" = "Nu updaten";
-
-/* title */
-"Update Required" = "Update vereist";
-
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Upgrade naar een betaald abonnement om te profiteren van aanvullende functies";
 
@@ -2387,7 +2381,7 @@
 "We will send a verification code to the email address above." = "Wij zullen een verificatiecode sturen naar bovenstaand e-mailadres.";
 
 /* The body of the iOS 10 upgrate alert */
-"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "We zullen binnenkort de ondersteuning voor iOS 10 apparaten stopzetten. Update het besturingssysteem van je apparaat om in de toekomst updates te blijven ontvangen.";
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "We zullen binnenkort de ondersteuning voor iOS 10-apparaten stopzetten. Update het besturingssysteem van uw apparaat om in de toekomst updates te blijven ontvangen.";
 
 /* Title */
 "We would like to know what we can do better." = "Wij horen graag wat wij kunnen verbeteren.";

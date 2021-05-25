@@ -1128,7 +1128,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Неможливо перемкнутися на %@ в нашій програмі для iOS.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Неможливо змінити тарифний план через програму. %1$@";
+"It's not possible to swicth to another plan within the app. %1$@" = "Неможливо змінити тарифний план у програмі. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Повідомляти про нові можливості";
@@ -2056,7 +2056,7 @@
 "The new password does not match." = "Паролі відрізняються.";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "Новий пароль має містити щонайменше 6 символів";
+"The new password needs to be at least 8 characters long" = "Новий пароль має містити щонайменше 8 символів";
 
 /* (No Comment) */
 "The new password not match" = "Паролі відрізняються";
@@ -2297,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Оновити адресу для сповіщень";
-
-/* title */
-"Update Now" = "Оновити зараз";
-
-/* title */
-"Update Required" = "Необхідно оновити";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Перейдіть на платний тарифний план, щоб отримати більше можливостей";

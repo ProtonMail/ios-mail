@@ -173,7 +173,7 @@
 "All Mail" = "Todos";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "All protection settings will be reset and wiped upon logging out of the app.";
+"All protection settings will be reset and wiped upon logging out of the app." = "Todos los ajustes de protección se restablecerán y se borrarán al salir de la aplicación.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Permitir el enrutado alternativo";
@@ -1128,7 +1128,7 @@
 "It is not possible to switch to %@ within our iOS app." = "No es posible cambiar a %@ dentro de nuestra aplicación iOS.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "It's not possible to swicth to another plan within the app. %1$@";
+"It's not possible to swicth to another plan within the app. %1$@" = "No es posible cambiar a otro plan dentro de la aplicación. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Mantenerme actualizado acerca de nuevas funciones";
@@ -1564,7 +1564,7 @@
 "Pin code can't be empty." = "El código PIN no puede estar vacío.";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
+"Plans can be edited on the web version." = "Los planes pueden editarse en la versión web.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Por favor añade una contraseña para los siguientes destinatarios.";
@@ -2056,7 +2056,7 @@
 "The new password does not match." = "La nueva contraseña no coincide.";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+"The new password needs to be at least 8 characters long" = "La nueva contraseña debe tener al menos 8 caracteres";
 
 /* (No Comment) */
 "The new password not match" = "Las contraseñas no coinciden";
@@ -2195,10 +2195,10 @@
 "Turn Off" = "Desactivar";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Activa esta función para bloquear automáticamente tu aplicación y utilizar un código PIN o FaceID para desbloquearla.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Activa esta función para bloquear automáticamente tu aplicación y utilizar un código PIN o huella dactilar para desbloquearla.";
 
 /* Title */
 "Tweet about ProtonMail" = "Tweetear acerca de ProtonMail";
@@ -2297,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Actualizar correo de notificación";
-
-/* title */
-"Update Now" = "Actualizar ahora";
-
-/* title */
-"Update Required" = "Actualización requerida";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Actualice a un plan de pago para obtener más beneficios";

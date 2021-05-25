@@ -2476,9 +2476,6 @@
 		379A95E7F50DC578342DE3A3EA92FF7D /* Pods-Siri.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Siri.release.xcconfig"; path = "Pods/Target Support Files/Pods-Siri/Pods-Siri.release.xcconfig"; sourceTree = "<group>"; };
 		37B7AF00264BFEAE0009E33F /* HumanVerificationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = HumanVerificationTests.xctestplan; sourceTree = "<group>"; };
 		37B7AF01264C01A00009E33F /* ForceUpgradeTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ForceUpgradeTests.xctestplan; sourceTree = "<group>"; };
-		37DA6BD5262973DB00D01F55 /* HumanVerificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationManager.swift; sourceTree = "<group>"; };
-		37DA6CAD2629893500D01F55 /* ForceUpgradeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceUpgradeManager.swift; sourceTree = "<group>"; };
-		37DA6CFB2629B76700D01F55 /* HumanVerificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationTests.swift; sourceTree = "<group>"; };
 		38144BF07B75CAB6D3B53E8148AC747B /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		3837129A19F297C0079CE5AF3176490A /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
 		38CCA3B1062F0427A8266881B161951C /* SpamScoreWarningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpamScoreWarningView.xib; sourceTree = "<group>"; };
@@ -3452,6 +3449,14 @@
 			path = AttachmentProviders;
 			sourceTree = "<group>";
 		};
+		01E25AA7A544F657747507CCD7A7FE22 /* HumanVerification */ = {
+			isa = PBXGroup;
+			children = (
+				1F90D6FAF4BED65BC239834A9A46418E /* HumanVerificationRobot.swift */,
+			);
+			path = HumanVerification;
+			sourceTree = "<group>";
+		};
 		02423C8683D1F61352E4CB6C1F49AB36 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -3917,30 +3922,6 @@
 				04CAE4733926A58198B65D2DC1B50F00 /* ContactGroupViewModelImpl.swift */,
 			);
 			path = ContactGroup;
-			sourceTree = "<group>";
-		};
-		01E25AA7A544F657747507CCD7A7FE22 /* HumanVerification */ = {
-			isa = PBXGroup;
-			children = (
-				1F90D6FAF4BED65BC239834A9A46418E /* HumanVerificationRobot.swift */,
-			);
-			path = HumanVerification;
-			sourceTree = "<group>";
-		};
-		B516AAEF508B0C70FAD271F2A385E20C /* ForceUpgrade */ = {
-			isa = PBXGroup;
-			children = (
-				E47766CA349BFE22B92120E6D8B41889 /* ForceUpgradeTests.swift */,
-			);
-			path = ForceUpgrade;
-			sourceTree = "<group>";
-		};
-		CA165A78D1719AFCC0E3317C159965C3 /* HumanVerification */ = {
-			isa = PBXGroup;
-			children = (
-				850C839A90180EF329A196905032A668 /* HumanVerificationTests.swift */,
-			);
-			path = HumanVerification;
 			sourceTree = "<group>";
 		};
 		395DB8FC12730E6D4CE4A2F11AEF5DC0 /* PushService */ = {
@@ -4886,6 +4867,14 @@
 			path = AccountManager;
 			sourceTree = "<group>";
 		};
+		B516AAEF508B0C70FAD271F2A385E20C /* ForceUpgrade */ = {
+			isa = PBXGroup;
+			children = (
+				E47766CA349BFE22B92120E6D8B41889 /* ForceUpgradeTests.swift */,
+			);
+			path = ForceUpgrade;
+			sourceTree = "<group>";
+		};
 		B6FD76AB266683499B9986D35CAD0B10 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -5102,6 +5091,14 @@
 				28FA25E2EEE3FC1EFAACBC1CA95424E9 /* ReportBugsViewController.swift */,
 			);
 			path = Bugs;
+			sourceTree = "<group>";
+		};
+		CA165A78D1719AFCC0E3317C159965C3 /* HumanVerification */ = {
+			isa = PBXGroup;
+			children = (
+				850C839A90180EF329A196905032A668 /* HumanVerificationTests.swift */,
+			);
+			path = HumanVerification;
 			sourceTree = "<group>";
 		};
 		CA606DAC9EE0274B8332C64D2C79C415 /* General */ = {
@@ -6559,24 +6556,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FD69D6C7B0EBFBFD87338C14572B81DA /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/PMCoreTranslation/PMCoreTranslation.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCoreTranslation.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		B72357FB89BB57B686695C3F5724852D /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6808,6 +6787,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n";
+		};
+		FD69D6C7B0EBFBFD87338C14572B81DA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/PMCoreTranslation/PMCoreTranslation.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCoreTranslation.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 

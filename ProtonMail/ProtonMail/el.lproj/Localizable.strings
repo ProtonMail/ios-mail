@@ -2298,12 +2298,6 @@
 /* update notification email error title */
 "Update Notification Email" = "Ενημέρωση E-mail ειδοποίησης";
 
-/* title */
-"Update Now" = "Ενημέρωση Τώρα";
-
-/* title */
-"Update Required" = "Απαιτείται Ενημέρωση";
-
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Αναβαθμίστε σε ένα λογαριασμό επί πληρωμής για να επωφεληθείτε από περισσότερες λειτουργίες";
 

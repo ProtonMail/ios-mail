@@ -2298,12 +2298,6 @@
 /* update notification email error title */
 "Update Notification Email" = "Benachrichtigungs-E-Mail-Adresse aktualisieren";
 
-/* title */
-"Update Now" = "Jetzt aktualisieren";
-
-/* title */
-"Update Required" = "Aktualisierung erforderlich";
-
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Auf ein kostenpflichtiges Abonnement umsteigen, um weiteren Funktionen nutzen zu können.";
 
@@ -2467,7 +2461,7 @@
 "You're going to delete the message irreversibly. Are you sure?" = "Die Nachricht wird unwiderruflich gelöscht. Sind Sie sicher?";
 
 /* view top title */
-"Your Country Code" = "Ihre Länder-Vorwahl";
+"Your Country Code" = "Ihre Landeskennung";
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ihr Land sperrt möglicherweise den Zugang zu Proton. Versuchen Sie, mit %1$@ (oder einem anderen VPN) oder %2$@ auf Proton zuzugreifen.";

@@ -173,7 +173,7 @@
 "All Mail" = "Všechna pošta";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "All protection settings will be reset and wiped upon logging out of the app.";
+"All protection settings will be reset and wiped upon logging out of the app." = "Po odhlášení z aplikace se všechna nastavení ochrany resetují a vymažou.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Povolit alternativní směrování";
@@ -246,10 +246,10 @@
 "At least one email address in the group could not be found" = "Alespoň jedna e-mailová adresa ve skupině nebyla nalezena";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "At least one recipient email address is improperly formatted, please double check them.";
+"At least one recipient email address is improperly formatted, please double check them." = "Nejméně jedna e-mailová adresa příjemce je nesprávně naformátovaná, zkontrolujte ji prosím.";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Alespoň jedna e-mailová adresa/doména příjemce neexistuje nebo je špatně naformátovaná. Zpráva byla přesunuta do návrhů.";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Příloha byla importována";
@@ -330,7 +330,7 @@
 "Buy More Credits" = "Koupit víc kreditů";
 
 /* Alert for removing disconnected accounts */
-"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?";
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "Odebráním tohoto účtu k němu již nebudete mít z tohoto zařízení přístup, pokud jej znovu nepřidáte.\n\nChcete tento účet přesto odebrat?";
 
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "Užíváním protonmailu souhlasíte s našimi";
@@ -379,7 +379,7 @@
 "Can't find the selected message. Please try again." = "Nelze nalézt označenou zprávu. Zkuste to prosím znova.";
 
 /* Description */
-"Can't find the value from the response body" = "Can't find the value from the response body";
+"Can't find the value from the response body" = "Nelze najít hodnotu z odpovědi";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Nelze najít tuto přílohu!";
@@ -480,7 +480,7 @@
 "Clear Local Message Cache" = "Vyčisti mezipaměť místních zpráv";
 
 /* Menu action to remove text formatting */
-"Clear Style" = "Clear Style";
+"Clear Style" = "Smazat styl";
 
 /* general close action */
 "Close" = "Zavřít";
@@ -492,7 +492,7 @@
 "Closing" = "Zavírání";
 
 /* cell title in device settings */
-"Combined Contacts" = "Combined Contacts";
+"Combined Contacts" = "Sloučené kontakty";
 
 /* *
  *  Composer Email view controller */
@@ -716,7 +716,7 @@
 "Draft" = "Koncept";
 
 /* title of toast message that user taps the message which is uploading */
-"Draft is still uploading..." = "Draft is still uploading...";
+"Draft is still uploading..." = "Koncept se stále nahrává...";
 
 /* menu title */
 "Drafts" = "Koncepty";
@@ -763,7 +763,7 @@
 "Email address invalid" = "E-mailová adresa je neplatná";
 
 /* The error message is shown in composer */
-"Email address is invalid" = "Email address is invalid";
+"Email address is invalid" = "E-mailová adresa je neplatná";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "E-mailové adresy";
@@ -781,13 +781,13 @@
 "Email Verification" = "Ověření e-mailu";
 
 /* cell title in device setting */
-"Empty Cache" = "Empty Cache";
+"Empty Cache" = "Vyprázdnit mezipaměť";
 
 /* "Cancel" */
 "Empty Folder" = "Vyprázdnit složku";
 
 /* it is an option to empty the label */
-"Empty Label" = "Empty Label";
+"Empty Label" = "Vyprázdnit štítek";
 
 /* Title */
 "Enable Default Signature" = "Povolit výchozí podpis";
@@ -808,10 +808,10 @@
 "Enable Pin Protection" = "Zapnout ochranu PIN kódem";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Enable PIN/FaceID";
+"Enable PIN/FaceID" = "Zapnout PIN/FaceID";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Enable PIN/TouchID";
+"Enable PIN/TouchID" = "Zapnout PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Povolit TouchID";
@@ -886,7 +886,7 @@
 "Error occured" = "Došlo k chybě";
 
 /* incorrect email format error in composer */
-"Error sending" = "Error sending";
+"Error sending" = "Chyba při odesílání";
 
 /* lock app option */
 "Every time enter app" = "Při každém spuštění aplikace";
@@ -977,7 +977,7 @@
 "Get more information" = "Získat více informací";
 
 /* title of alert acton of incorrect email format error */
-"Go to drafts" = "Go to drafts";
+"Go to drafts" = "Přejít do konceptů";
 
 /* Action */
 "Go to inbox" = "Přejít do složky Doručené";
@@ -1180,7 +1180,7 @@
 "Learn more here" = "Více informací zde";
 
 /* Title of alert when the free account limit is reached */
-"Limit reached" = "Limit reached";
+"Limit reached" = "Limit dosažen";
 
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "Omezeno na 150 odeslaných zpráv/den";
@@ -1195,10 +1195,10 @@
 "Local cache can't find mailbox password" = "Místní mezipaměť nemůže najít heslo poštovní schránky";
 
 /* cell title in device settings */
-"Local Cache Management" = "Local Cache Management";
+"Local Cache Management" = "Správa mezipaměti";
 
 /* cell title in device settings */
-"Local storage limit" = "Local storage limit";
+"Local storage limit" = "Limit místního úložiště";
 
 /* *
  *  file string type */
@@ -1211,13 +1211,13 @@
 "Log in to your ProtonMail account" = "Přihlásit se do Vašeho ProtonMail účtu";
 
 /* comment */
-"Log out" = "Log out";
+"Log out" = "Odhlásit se";
 
 /* Alert title when logout non-primary account from account manager */
-"Log out %@?" = "Log out %@?";
+"Log out %@?" = "Odhlásit %@?";
 
 /* Action */
-"Log Out All" = "Log Out All";
+"Log Out All" = "Odhlásit vše";
 
 /* Alert when auth token is revoked and switch to another */
 "Logged out from %@ and signed in with %@" = "Logged out from %1$@ and signed in with %2$@";
@@ -1259,10 +1259,10 @@
 "Mailbox password doesn't match" = "Hesla k e-mailové schránce se neshodují";
 
 /* cell title in device settings */
-"Mailbox size" = "Mailbox size";
+"Mailbox size" = "Velikost e-mailové schránky";
 
 /* menu title */
-"Manage accounts" = "Manage accounts";
+"Manage accounts" = "Spravovat účty";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Spravovat Adresy";
@@ -1381,7 +1381,7 @@
 "NEED AN ACCOUNT? SIGN UP." = "POTŘEBUJETE ÚČET? REGISTRUJTE SE.";
 
 /* section title */
-"Networking" = "Networking";
+"Networking" = "Sítě";
 
 /* Title */
 "New login password" = "Nové přihlašovací heslo";
@@ -1399,7 +1399,7 @@
 "No connectivity detected..." = "Bez připojení...";
 
 /* network troubleshot cell title */
-"No internet connection" = "No internet connection";
+"No internet connection" = "Bez připojení k Internetu";
 
 /* message when mailbox doesnt have emailsß */
 "No Messages" = "Žádné zprávy";
@@ -1473,10 +1473,10 @@
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Only one free account can be added";
+"Only one free account can be added" = "Lze přidat pouze jeden bezplatný účet";
 
 /* Open action */
-"Open" = "Open";
+"Open" = "Otevřít";
 
 /* (No Comment) */
 "OpenDraft" = "Otevřít rozepsaný";
@@ -1485,7 +1485,7 @@
 "Organization" = "Organizace";
 
 /* The title of the iOS 10 upgrate alert */
-"OS compatibility" = "OS compatibility";
+"OS compatibility" = "Kompatibilita s OS";
 
 /* default vcard types */
 "Other" = "Ostatní";
@@ -1564,7 +1564,7 @@
 "Pin code can't be empty." = "PIN kód nemůže být prázdný.";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
+"Plans can be edited on the web version." = "Plány mohou být editovány ve webové verzi.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Prosím, přidejte heslo pro následující příjemce.";
@@ -1657,7 +1657,7 @@
 "privacy policy." = "zásady ochrany osobních údajů.";
 
 /* Local notification title */
-"Problem sending message" = "Problem sending message";
+"Problem sending message" = "Problém při odesílání zprávy";
 
 /* Title */
 "Protection" = "Ochrana";
@@ -1666,7 +1666,7 @@
 "Protection Entire App" = "Ochrana celé aplikace";
 
 /* network troubleshot cell title */
-"Proton is down" = "Proton is down";
+"Proton is down" = "Proton je offline";
 
 /* network troubleshot cell title */
 "Proton Status" = "Stav Protonu";
@@ -1702,7 +1702,7 @@
 "Proxy/Firewall interference" = "Rušení proxy/firewall";
 
 /* cell title in device settings */
-"Push Notifications" = "Push Notifications";
+"Push Notifications" = "Oznámení";
 
 /* Title */
 "Quick swipe actions" = "Akce rychlého přetažení";
@@ -1739,7 +1739,7 @@
 "Remove" = "Odstranit";
 
 /* account right bar item title */
-"Remove All" = "Remove All";
+"Remove All" = "Odebrat vše";
 
 /* Settings row */
 "Remove image meta-data" = "Remove image meta-data";
@@ -2297,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "E-mailové oznámení o aktualizaci";
-
-/* title */
-"Update Now" = "Aktualizovat nyní";
-
-/* title */
-"Update Required" = "Je vyžadována aktualizace";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Přejděte na placenou verzi a získejte více funkcí";

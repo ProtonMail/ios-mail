@@ -170,7 +170,7 @@
 /* mail location desc
    mail location title
    menu title */
-"All Mail" = "Alle e-mails";
+"All Mail" = "Alle mails";
 
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Alle beskyttelsesindstillinger vil blive nulstillet og slettet ved log ud af appen.";
@@ -1752,16 +1752,16 @@
 
 /* *
  *  Controller Defined */
-"Reply" = "Besvar";
+"Reply" = "Svar";
 
 /* reply all action */
-"Reply All" = "Besvar alle";
+"Reply All" = "Svar alle";
 
 /* composer view model impl */
 "Reply message" = "Svar på besked";
 
 /* (No Comment) */
-"ReplyAll" = "Svar på alle";
+"ReplyAll" = "Svar alle";
 
 /* menu title */
 "Report Bugs" = "Anmeld fejl";
@@ -1846,10 +1846,10 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Afsendelse af beskeder fra en %1$@-adresse er en betalingsfunktion. Din besked afsendes via din standardadresse %2$@";
 
 /* menu title */
-"Sent" = "Afsendt";
+"Sent" = "Sendt";
 
 /* mail location title */
-"SENT" = "AFSENDT";
+"SENT" = "Sendt";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "Afsendt af ProtonMail med nuladgangskryptering";
@@ -1937,7 +1937,7 @@
 "Starred" = "Stjernemarkeret";
 
 /* "INBOX" */
-"STARRED" = "STJERNEMARKERET";
+"STARRED" = "Stjernemarkeret";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Starttidspunkt";
@@ -2297,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Opdatér notifikations-e-mail";
-
-/* title */
-"Update Now" = "Opdatér nu";
-
-/* title */
-"Update Required" = "Opdatering kræves";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Opgradér til et abonnement for at udnytte flere funktioner";

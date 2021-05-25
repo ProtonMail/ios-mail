@@ -2298,12 +2298,6 @@
 /* update notification email error title */
 "Update Notification Email" = "Atualizar e-mail de notificação";
 
-/* title */
-"Update Now" = "Atualize agora";
-
-/* title */
-"Update Required" = "Atualização necessária";
-
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Atualize para um plano pago para se beneficiar de mais recursos";
 

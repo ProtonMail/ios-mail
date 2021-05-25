@@ -2198,7 +2198,7 @@
 "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Kveiktu á þessum eiginleika til að læsa\\nforritinu sjálfvirkt og nota PIN-kóða eða fingrafar til að aflæsa því.";
 
 /* Title */
 "Tweet about ProtonMail" = "Tístu um ProtonMail";
@@ -2297,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Uppfæra tilkynningapóst";
-
-/* title */
-"Update Now" = "Uppfæra núna";
-
-/* title */
-"Update Required" = "Uppfærsla nauðsynleg";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Uppfærðu í greidda áskrift til að nýta þér fleiri eiginleika";

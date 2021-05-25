@@ -173,7 +173,7 @@
 "All Mail" = "Sva pošta";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "All protection settings will be reset and wiped upon logging out of the app.";
+"All protection settings will be reset and wiped upon logging out of the app." = "Sve postavke zaštite poništiti će se i izbrisati nakon odjave iz aplikacije.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Omogući alternativno usmjeravanje";
@@ -297,7 +297,7 @@
 "Back" = "Natrag";
 
 /* Error */
-"Bad auth cache" = "Bad auth cache";
+"Bad auth cache" = "Loša predmemorija autentikacije";
 
 /* title */
 "Bad parameter" = "Loš parametar";
@@ -793,7 +793,7 @@
 "Enable Default Signature" = "Omogući zadani potpis e-pošte";
 
 /* settings protection section title */
-"Enable FaceID" = "Omogući FaceID";
+"Enable FaceID" = "Omogući Face ID";
 
 /* Title */
 "Enable Mobile Signature" = "Omogući potpis na mobilnim uređajima";
@@ -808,7 +808,7 @@
 "Enable Pin Protection" = "Omogući PIN zaštitu";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Omogući PIN/FaceID";
+"Enable PIN/FaceID" = "Omogući PIN/Face ID";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN/TouchID" = "Omogući PIN/TouchID";
@@ -1016,7 +1016,7 @@
 "Hide Details" = "Sakrij detalje";
 
 /* Key size checkbox */
-"High Security" = "Velika sigurnost";
+"High Security" = "Visoka sigurnost";
 
 /* (No Comment) */
 "hours" = "Sati";
@@ -1128,7 +1128,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Nije moguće prebaciti se na %@ unutar naše iOS aplikacije.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "It's not possible to swicth to another plan within the app. %1$@";
+"It's not possible to swicth to another plan within the app. %1$@" = "Nije moguće prebaciti se na drugi plan unutar aplikacije. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Informirajte me o novim značajkama";
@@ -1555,7 +1555,7 @@
 "PIN" = "PIN";
 
 /* device settings auto lock type title */
-"PIN & FaceID" = "PIN i FaceID";
+"PIN & FaceID" = "PIN i Face ID";
 
 /* device settings auto lock type title */
 "PIN & TouchID" = "PIN i TouchID";
@@ -1564,7 +1564,7 @@
 "Pin code can't be empty." = "PIN ne može biti prazan.";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
+"Plans can be edited on the web version." = "Planovi se mogu mijenjati u web verziji aplikacije.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Molimo dodajte lozinku za sljedeće primatelje.";
@@ -2056,7 +2056,7 @@
 "The new password does not match." = "Nova lozinka se ne podudara.";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+"The new password needs to be at least 8 characters long" = "Nova lozinka mora imati najmanje 8 znakova";
 
 /* (No Comment) */
 "The new password not match" = "Lozinke se ne poklapaju";
@@ -2195,10 +2195,10 @@
 "Turn Off" = "Isključi";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Uključite ovu značajku za automatsko zaključavanje aplikacije i upotrijebite PIN kôd, Face ID ili otisak otiska.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Uključite ovu značajku za automatsko zaključavanje aplikacije i upotrijebite PIN kôd ili otisak otiska.";
 
 /* Title */
 "Tweet about ProtonMail" = "Tweetaj o ProtonMailu";
@@ -2297,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Ažuriranje obavijesti e-pošte";
-
-/* title */
-"Update Now" = "Ažuriraj sada";
-
-/* title */
-"Update Required" = "Potrebno ažuriranje";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Nadogradite na plaćeni plan kako biste imali koristi od više značajki";
@@ -2435,7 +2429,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Ne možete postaviti %@ adresu kao zadanu jer je to plaćena značajka.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Onemogućili ste FaceID u postavkama sustava. FaceID je bio korišten za zaštitu važnih podataka računa. Da biste pristupili svom računu, idite u postavke i ponovno aktivirajte FaceID ili se ponovno prijavite.";
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Onemogućili ste FaceID u postavkama sustava. Face ID je bio korišten za zaštitu važnih podataka računa. Da biste pristupili svom računu, idite u postavke i ponovno aktivirajte FaceID ili se ponovno prijavite.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Omogućili ste vremenski istek poruke, ali to ne podržavaju svi primatelji. Dodajte lozinku i/ili onemogućite PGP slanje za korištenje isteka za sve primatelje.";

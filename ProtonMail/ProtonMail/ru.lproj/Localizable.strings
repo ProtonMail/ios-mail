@@ -2298,12 +2298,6 @@
 /* update notification email error title */
 "Update Notification Email" = "Обновить адрес эл. почты для уведомлений";
 
-/* title */
-"Update Now" = "Обновить сейчас";
-
-/* title */
-"Update Required" = "Требуется обновление";
-
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Перейдите на платный тариф, чтобы получить преимущества от большего количества функций";
 

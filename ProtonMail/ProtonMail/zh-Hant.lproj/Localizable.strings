@@ -173,7 +173,7 @@
 "All Mail" = "所有郵件";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "All protection settings will be reset and wiped upon logging out of the app.";
+"All protection settings will be reset and wiped upon logging out of the app." = "登出應用程式後，所有保護設定將會被重設。";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "允許替代路由";
@@ -1128,7 +1128,7 @@
 "It is not possible to switch to %@ within our iOS app." = "在我們的 iOS 程式中是不可能去切換成 %@ 的。";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "It's not possible to swicth to another plan within the app. %1$@";
+"It's not possible to swicth to another plan within the app. %1$@" = "無法在應用程式中切換到其他方案。%1$@";
 
 /* Title */
 "Keep me updated about new features" = "讓我收到有關新功能的通知";
@@ -1564,7 +1564,7 @@
 "Pin code can't be empty." = "Pin 碼欄位不能為空。";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
+"Plans can be edited on the web version." = "可在網頁版本中編輯方案。";
 
 /* alert description */
 "Please add a password for the following recipients." = "請為以下收件者設定密碼";
@@ -2056,7 +2056,7 @@
 "The new password does not match." = "輸入的新密碼不一致。";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+"The new password needs to be at least 8 characters long" = "新密碼長度至少要有八個字元";
 
 /* (No Comment) */
 "The new password not match" = "密碼不相符";
@@ -2195,10 +2195,10 @@
 "Turn Off" = "關閉";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "啟用此功能以自動鎖定您的應用程式並使用 PIN 碼或指紋來解鎖。";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "啟用此功能以自動鎖定您的應用程式並使用 PIN 碼或指紋來解鎖。";
 
 /* Title */
 "Tweet about ProtonMail" = "推文分享ProtonMail";
@@ -2297,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "更新通知用電子郵件";
-
-/* title */
-"Update Now" = "立即更新";
-
-/* title */
-"Update Required" = "需要更新";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "升級到付費計畫以享受更多功能";
