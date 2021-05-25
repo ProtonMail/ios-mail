@@ -143,11 +143,6 @@ class KeyManager : Service {
                                                    authCredential: authCredential)
         
         let update_res = try `await`(self.apiService.run(route: uploadKeyApi))
-        // Anson Rebase need to check
-        // Kris: looks right to me
-//        guard update_res.code == 1000 else {
-//            throw UpdatePasswordError.default.error
-//        }
         guard update_res.responseCode == 1000 else {
             throw UpdatePasswordError.default.error
         }
@@ -388,11 +383,7 @@ class KeyManager : Service {
                                                                         auth: authPacket,
                                                                         authCredential: oldAuthCredential)
                             let update_res: Response = try `await`(self.apiService.run(route: updatePrivkey))
-                            // Anson Rebase need to check
-                            // Kris: Looks right to me
-//                            guard update_res.code == 1000 else {
-//                                throw UpdatePasswordError.default.error
-//                            }
+
                             guard update_res.responseCode == 1000 else {
                                 throw UpdatePasswordError.default.error
                             }
@@ -518,10 +509,8 @@ class KeyManager : Service {
                                                                                                           orgKey: new_org_key, userKeys: nil,
                                                                                                           auth: authPacket,
                                                                                                           authCredential: oldAuthCredential)))
-                            // Anson Rebase need to check
-                            // Kris: I think it should be checking if responseCode is 1000. It was doing it on develop
-                            //       Or alternatively, it should be checking if error is nil
-                            guard update_res.responseCode == nil else {
+  
+                            guard update_res.responseCode == 1000 else {
                                 throw UpdatePasswordError.default.error
                             }
                             //update local keys

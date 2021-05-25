@@ -109,11 +109,6 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         internetConnectionStatusProvider.getConnectionStatuses { [weak self] _ in
             self?.setUpBottomButtonsState()
         }
-// Anson rebase check, ignored, since the single message view is developing
-//        self.viewModel.isWebViewBodyLoadedNotifier = { [weak self] isLoaded in
-//            self?.isWebBodyLoaded = isLoaded
-//            self?.setUpBottomButtonsState()
-//        }
     }
 
     private var areBottomButtonEnabled: Bool {

@@ -454,7 +454,6 @@ extension MessageDataService {
     }
     
     private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
-        // Anson rebase check, combine develop and v4
         let context = self.coreDataService.operationContext
         self.coreDataService.enqueue(context: context) { (context) in
             guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(managedObjectID),
