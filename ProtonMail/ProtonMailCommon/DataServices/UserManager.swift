@@ -206,6 +206,7 @@ class UserManager : Service, HasLocalStorage {
         return sharedServices.get(by: LastUpdatedStore.self)
     }
     
+    let eventsService = ServiceFactory.default.get(by: EventsService.self)
     #if !APP_EXTENSION
     public lazy var sevicePlanService: ServicePlanDataService = { [unowned self] in
         let service = ServicePlanDataService(localStorage: userCachedStatus, apiService: self.apiService) // FIXME: SHOULD NOT BE ONE STORAGE FOR ALL
@@ -219,6 +220,7 @@ class UserManager : Service, HasLocalStorage {
         self.apiService = api
         self.apiService.authDelegate = self
         self.parentManager = parent
+        eventsService.configure(userManager: self, messageDataService: messageService, conversationDataService: messageService, apiService: apiService, contactDataService: contactService)
         self.messageService.signin()
     }
 
@@ -226,6 +228,7 @@ class UserManager : Service, HasLocalStorage {
         self.userinfo = UserInfo.getDefault()
         self.auth = AuthCredential.none
         self.apiService = api
+        eventsService.configure(userManager: self, messageDataService: messageService, conversationDataService: messageService, apiService: apiService, contactDataService: contactService)
         self.apiService.authDelegate = self
     }
     
