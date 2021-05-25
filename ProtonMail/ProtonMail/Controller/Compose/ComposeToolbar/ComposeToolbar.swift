@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol ComposeToolbarDelegate: AnyObject {
     func showEncryptOutsideView()
@@ -50,13 +50,13 @@ final class ComposeToolbar: UIView {
     }
 
     func setLockStatus(isLock: Bool) {
-        // FIXME: use asset
+        // swiftlint:disable:next object_literal
         let icon = isLock ? UIImage(named: "ic_Lock_check") : UIImage(named: "ic_lock_no_ckeck")
         self.lockButton.setImage(icon, for: .normal)
     }
 
     func setExpirationStatus(isSetting: Bool) {
-        // FIXME: use asset
+        // swiftlint:disable:next object_literal
         let icon = isSetting ? UIImage(named: "ic_hourglass_check") : UIImage(named: "ic_hourglass_no_check")
         self.hourButton.setImage(icon, for: .normal)
     }

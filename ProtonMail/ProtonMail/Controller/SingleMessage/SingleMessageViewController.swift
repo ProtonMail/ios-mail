@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import SafariServices
 import ProtonCore_UIFoundations
+import SafariServices
 import UIKit
 
 class SingleMessageViewController: UIViewController, UIScrollViewDelegate, ComposeSaveHintProtocol {
@@ -259,6 +259,33 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         starBarButton.tintColor = starred ? UIColorManager.NotificationWarning : UIColorManager.IconWeak
     }
 
+    private func isHeaderContainerHidden(_ isHidden: Bool) {
+        customView.messageHeaderContainer.contentContainer.isHidden = isHidden
+        customView.messageHeaderContainer.contentContainer.alpha = isHidden ? 0 : 1
+    }
+
+    private func manageHeaderViewControllers(oldController: UIViewController, newController: UIViewController) {
+        unembed(oldController)
+        embed(newController, inside: self.customView.messageHeaderContainer.contentContainer)
+    }
+
+    @objc
+    private func networkStatusUpdated(_ note: Notification) {
+        guard let currentReachability = note.object as? Reachability else { return }
+        if currentReachability.currentReachabilityStatus() == .NotReachable && viewModel.message.body.isEmpty {
+            messageBodyViewController.showReloadError()
+        } else if currentReachability.currentReachabilityStatus() != .NotReachable && viewModel.message.body.isEmpty {
+            viewModel.downloadDetails()
+        }
+    }
+
+    required init?(coder: NSCoder) {
+        nil
+    }
+}
+
+// MARK: - Actions
+private extension SingleMessageViewController {
     @objc
     private func starButtonTapped() {
         viewModel.starTapped()
@@ -405,31 +432,6 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
             }
         )
     }
-
-    private func isHeaderContainerHidden(_ isHidden: Bool) {
-        customView.messageHeaderContainer.contentContainer.isHidden = isHidden
-        customView.messageHeaderContainer.contentContainer.alpha = isHidden ? 0 : 1
-    }
-
-    private func manageHeaderViewControllers(oldController: UIViewController, newController: UIViewController) {
-        unembed(oldController)
-        embed(newController, inside: self.customView.messageHeaderContainer.contentContainer)
-    }
-
-    @objc
-    private func networkStatusUpdated(_ note: Notification) {
-        guard let currentReachability = note.object as? Reachability else { return }
-        if currentReachability.currentReachabilityStatus() == .NotReachable && viewModel.message.body.isEmpty {
-            messageBodyViewController.showReloadError()
-        } else if currentReachability.currentReachabilityStatus() != .NotReachable && viewModel.message.body.isEmpty {
-            viewModel.downloadDetails()
-        }
-    }
-
-    required init?(coder: NSCoder) {
-        nil
-    }
-
 }
 
 private extension SingleMessageViewController {

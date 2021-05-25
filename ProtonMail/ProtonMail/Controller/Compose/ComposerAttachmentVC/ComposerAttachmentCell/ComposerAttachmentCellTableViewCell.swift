@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol ComposerAttachmentCellDelegate: AnyObject {
     func clickDeleteButton(for objectID: String)
@@ -48,14 +48,13 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         self.containerView.layer.borderColor = UIColorManager.IconDisabled.cgColor
     }
 
-    func config(
-        objectID: String,
-        name: String,
-        size: Int,
-        mime: String,
-        isUploading: Bool,
-        delegate: ComposerAttachmentCellDelegate?
-    ) {
+    // swiftlint:disable:next function_parameter_count
+    func config(objectID: String,
+                name: String,
+                size: Int,
+                mime: String,
+                isUploading: Bool,
+                delegate: ComposerAttachmentCellDelegate?) {
         self.objectID = objectID
         self.deleteButton.tintColor = UIColorManager.IconNorm
         self.delegate = delegate

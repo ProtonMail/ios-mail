@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol ComposeExpirationDelegate: AnyObject {
     func update(expiration: TimeInterval)
@@ -131,7 +131,7 @@ extension ComposeExpirationVC {
         setButton.setTitleTextAttributes(attr, for: .normal)
         self.navigationItem.rightBarButtonItem = setButton
 
-        // FIXME: use asset
+        // swiftlint:disable:next object_literal
         let arrowIcon = UIImage(named: "back-arrow")
         guard let backBtn = arrowIcon?.toUIBarButtonItem(target: self, action: #selector(self.clickBackButton)) else {
             return

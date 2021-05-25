@@ -172,7 +172,7 @@ final class AddressKey : Package {
         var out : [String : Any] = [
             "AddressID": self.addressID,
             "PrivateKey": self.privateKey,
-            "SignedKeyList": self.signedKeyList.parameters
+            "SignedKeyList": self.signedKeyList.parameters as Any
         ]
         
         if let t = self.token, let s = self.signature {

@@ -21,8 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 class PinCodeConfirmationViewController: ProtonMailViewController {
     @IBOutlet private weak var passwordTextField: PMTextField!
