@@ -102,7 +102,7 @@ class CreateNewUser : Request {
             "Username" : self.userName,
             "Email" : self.email,
             "Token" : self.recaptchaToken,
-            "Auth" : self.passwordAuth.parameters,
+            "Auth" : self.passwordAuth.parameters as Any,
             "Type" : 1,   //hard code to 1 for mail
             "Payload": payload
         ]

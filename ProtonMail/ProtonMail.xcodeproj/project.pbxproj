@@ -1357,7 +1357,7 @@
 		83EBC3DC6638F49E0EC2354B009D984B /* MessageQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B142492E7764F95AE62A0DC0372EAB /* MessageQueue.swift */; };
 		83F7F619BCD60251AEFA381A40B76F36 /* ContactGroupsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4EE54A268109D2981B1AF1C57F7040 /* ContactGroupsViewCell.swift */; };
 		8456B74CA4800147CE7F505FFFAFFC2F /* SwipeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C325968088FD68E27D9274AE99D4BB /* SwipeAction.swift */; };
-		846D61FCAC86FD844B32389B6F045363 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC990A68344405820E5524C88895B6CB /* MimeType.swift */; };
+		846D61FCAC86FD844B32389B6F045363 /* MIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC990A68344405820E5524C88895B6CB /* MIMEType.swift */; };
 		848A0AB1B9F860E135BE8A0A512293F5 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D329B904F35B11133082B8BEE4C46C /* App.swift */; };
 		84951B6CDBDA98B6C74E39CC3E7360DD /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CBA02BF9DB736BD0BEC50861416E0D /* PushSubscriptionSettings.swift */; };
 		849BAE4951E24817656B06523AACA44E /* NewMessageBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E923ABE77AD5E832ACA4AD6826499 /* NewMessageBodyViewController.swift */; };
@@ -1783,7 +1783,7 @@
 		B0C9EFCA9BF46A186213F4C92E252C2A /* UIDevice+InfoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9113A2EDD8A5974F8A575AEA948D8275 /* UIDevice+InfoExtension.swift */; };
 		B0CB11F19F4832FCF4697507D88BD275 /* MessageDataService+QueueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932881FC7299BFF7B747FD0C6CDF9F9 /* MessageDataService+QueueHandler.swift */; };
 		B0FAF8EBD5B30BD88186C1E618DCFB47 /* PMActionSheet+MessageDetailsContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF252E8057DA29FF18FD8A935B18550 /* PMActionSheet+MessageDetailsContact.swift */; };
-		B106E62013BAD9E664D371103A5796C9 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC990A68344405820E5524C88895B6CB /* MimeType.swift */; };
+        B106E62013BAD9E664D371103A5796C9 /* MIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC990A68344405820E5524C88895B6CB /* MIMEType.swift */; };
 		B1144FC4CB01EB1E9540B1D2327ADEE5 /* ConversationFeatureFlagRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E33A150BBE4AA3B64CB15496BC81007 /* ConversationFeatureFlagRequest.swift */; };
 		B15303EDE7A8F7741B7B5E15465ECA65 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D60B6D85977FFFD73600A15D7884B641 /* libc++.tbd */; };
 		B183086FB1922468D48C3BA7A91CE383 /* CoordinatorNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */; };
@@ -2231,7 +2231,7 @@
 		D9C99E7AD390A70139922A2F0D4C9D38 /* LabelInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16F0F1D340DFD0D7B88605704432B1D /* LabelInfoCell.swift */; };
 		D9E9E6AD719E15FFB94955ABF452F308 /* RecipientCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46511E284393F2C9530ED66B13614B12 /* RecipientCell.xib */; };
 		DA17BF8C926357204AC2D951BE51BEEF /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFE3868B0060D33182C2D17832CAF5F /* APIService.swift */; };
-		DA447F0DE36C5FC698690EBAE787B05F /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC990A68344405820E5524C88895B6CB /* MimeType.swift */; };
+		DA447F0DE36C5FC698690EBAE787B05F /* MIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC990A68344405820E5524C88895B6CB /* MIMEType.swift */; };
 		DA67E7CB367233596A58810E0E4D0282 /* APIService+ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7E1E9A56A7D74BBF9EFBB27C845267 /* APIService+ContactExtension.swift */; };
 		DA7319F2CFC62D1AB70EAF183DBAF47B /* CameraAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3FFB4D121498650CDD8BDAAFC74E192 /* CameraAttachmentProvider.swift */; };
 		DA85C9ED3C95A13B2E02FFE6FEFDC4A1 /* AttachmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101661881D7FB420D42942739767CA06 /* AttachmentViewModel.swift */; };
@@ -2333,7 +2333,7 @@
 		E220C6628D12932CB1B103FB1D541093 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B8D056C5CE08382D71EDBD635B6A5 /* Label.swift */; };
 		E2262DD9802E8E9A5098D0422C7F5E7C /* HtmlEditorBehaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B4F42BCC35342AD0794E4523B1C56C /* HtmlEditorBehaviour.swift */; };
 		E262B52EF4BE6F01FE5544DC06EE5670 /* ContactEditUpgradeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F5E85AF3C943547102D7BC136F381 /* ContactEditUpgradeCell.swift */; };
-		E265E121AF89CBFEE707F26714C89102 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC990A68344405820E5524C88895B6CB /* MimeType.swift */; };
+		E265E121AF89CBFEE707F26714C89102 /* MIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC990A68344405820E5524C88895B6CB /* MIMEType.swift */; };
 		E284B4562F53B10809F4378ADBF701CC /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		E28CAEF80C9EB5192FBE45F271AA4BC8 /* OrganizationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8C88CF997A748C2D11C0419571595A /* OrganizationsAPI.swift */; };
 		E2963D3C56022BB4C2C78202E5E07682 /* Storefront.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E431F81A077FD137760B6D07EB572 /* Storefront.swift */; };
@@ -3859,7 +3859,7 @@
 		DC0BEEB1B5405BB6AC205ABA989BA6E0 /* MessageContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContainerViewController.swift; sourceTree = "<group>"; };
 		DC2125977F28202546D7525E9847C704 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DC6B6DA72FC64376C0F63D8E75593A09 /* DomainAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainAPI.swift; sourceTree = "<group>"; };
-		DC990A68344405820E5524C88895B6CB /* MimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
+		DC990A68344405820E5524C88895B6CB /* MIMEType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIMEType.swift; sourceTree = "<group>"; };
 		DCAB5DB98BC9590C78EF30CF1746F200 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCE768E01460E662EE4753FC606C42F3 /* ActivityIndicatorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorHelper.swift; sourceTree = "<group>"; };
 		DD1B387241108A625C900C31BA86EE35 /* TagsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsPresenter.swift; sourceTree = "<group>"; };
@@ -5266,7 +5266,7 @@
 		71A2A3CBD3CB3F0C680D151AC7021736 /* Attachments */ = {
 			isa = PBXGroup;
 			children = (
-				DC990A68344405820E5524C88895B6CB /* MimeType.swift */,
+				DC990A68344405820E5524C88895B6CB /* MIMEType.swift */,
 			);
 			path = Attachments;
 			sourceTree = "<group>";
@@ -7182,7 +7182,7 @@
 			attributes = {
 				LastSwiftMigration = 0720;
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = ProtonMail;
 				TargetAttributes = {
 					10AE226907E28369B3D152C04DA2B0D9 = {
@@ -8974,7 +8974,7 @@
 				B329B38AF2E3BE6D11CA3E6674801F86 /* MessageViewActionSheetViewModel.swift in Sources */,
 				2CF63D0449096D4881B56505B3C57831 /* MessageViewModel.swift in Sources */,
 				EAFCD103D4EE4E4076C7C1A1DF292E81 /* Migrate.swift in Sources */,
-				DA447F0DE36C5FC698690EBAE787B05F /* MimeType.swift in Sources */,
+				DA447F0DE36C5FC698690EBAE787B05F /* MIMEType.swift in Sources */,
 				CD07E383A2BDFF942800966A006F8BFB /* MimeTypes.swift in Sources */,
 				99A4ABB9ED3A00900121AD192A000717 /* MonitorSavesDataService+Extension.swift in Sources */,
 				513E0EAA2D2B0A9AD58188ABD1BACE75 /* MonitorSavesDataService.swift in Sources */,
@@ -9721,7 +9721,7 @@
 				9D43124DE2CC6A7381C6D465031B14EB /* MessageViewActionSheetViewModel.swift in Sources */,
 				BDB02B1E012177DCF1EA0635AD3A8BAE /* MessageViewModel.swift in Sources */,
 				741A15D28D9D078AC7A80A656C16A808 /* Migrate.swift in Sources */,
-				E265E121AF89CBFEE707F26714C89102 /* MimeType.swift in Sources */,
+				E265E121AF89CBFEE707F26714C89102 /* MIMEType.swift in Sources */,
 				CDD1059413217A7AE3A6975A5873E7FF /* MimeTypes.swift in Sources */,
 				F4EF8D76F44033244254F81380805D58 /* MonitorSavesDataService+Extension.swift in Sources */,
 				750A31A0E6FD65B566C44AC57286CC5E /* MonitorSavesDataService.swift in Sources */,
@@ -10287,7 +10287,7 @@
 				ED1F88B6C52DCEE694B6C3D53963435A /* MessageDataService.swift in Sources */,
 				F2D4F1D95C15551E13635847B63412A1 /* MessageQueue.swift in Sources */,
 				A0DB4D568FF94A1600F9B7BB159A143F /* Migrate.swift in Sources */,
-				846D61FCAC86FD844B32389B6F045363 /* MimeType.swift in Sources */,
+				846D61FCAC86FD844B32389B6F045363 /* MIMEType.swift in Sources */,
 				DB86C5A30869359ABE14B4AC9980C7EC /* MimeTypes.swift in Sources */,
 				678730A70778FD28F1D57C59CF2DDDF3 /* MonitorSavesDataService+Extension.swift in Sources */,
 				1599A0BD95566B4A87A1AD3E247750CD /* MonitorSavesDataService.swift in Sources */,
@@ -10627,7 +10627,7 @@
 				EEF189F5EFECE76E25CCD498FDACBD75 /* MessageDataService.swift in Sources */,
 				B68EF49E2501E85E528158875D7C477E /* MessageQueue.swift in Sources */,
 				5C51567BC587E14B368F0FF5D7E09559 /* Migrate.swift in Sources */,
-				B106E62013BAD9E664D371103A5796C9 /* MimeType.swift in Sources */,
+				B106E62013BAD9E664D371103A5796C9 /* MIMEType.swift in Sources */,
 				D4E6F863492709D4DBAA8EBD483308FE /* MimeTypes.swift in Sources */,
 				3FC009592FCFF1270C0CD3CC67656F9B /* MonitorSavesDataService+Extension.swift in Sources */,
 				0696394104C3C38308A216E266021717 /* MonitorSavesDataService.swift in Sources */,

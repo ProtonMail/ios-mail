@@ -1,5 +1,5 @@
 //
-//  MimeType.swift
+//  MIMEType.swift
 //  ProtonMail
 //
 //
@@ -75,6 +75,7 @@ enum MIMEType {
     static let epubMIME = ["application/epub+zip"]
     static let icsMIME = ["text/calendar"]
 
+    // swiftlint:disable cyclomatic_complexity
     init(rawValue: String) {
         if rawValue == "image/jpeg" || rawValue == "image/jpg" {
             self = .jpg
@@ -104,9 +105,10 @@ enum MIMEType {
             self = .unknowFile
         }
     }
+    // swiftlint:enable cyclomatic_complexity
 
-    // FIXME: use asset
     /// Icon for composer
+    // swiftlint:disable object_literal
     var icon: UIImage? {
         switch self {
         case .jpg:
@@ -170,4 +172,5 @@ enum MIMEType {
             return UIImage(named: "mail_attachment_file_general")
         }
     }
+    // swiftlint:enable object_literal
 }

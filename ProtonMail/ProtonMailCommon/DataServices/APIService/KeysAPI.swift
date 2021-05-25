@@ -352,7 +352,7 @@ extension Array where Element: Package {
     var parameters: [Any]? {
         var out : [Any] = []
         for item in self {
-            out.append(item.parameters)
+            out.append(item.parameters as Any)
         }
         return  out
     }

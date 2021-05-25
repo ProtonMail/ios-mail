@@ -22,8 +22,8 @@
 
 import AwaitKit
 import PromiseKit
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol ComposeContainerUIProtocol: AnyObject {
     func updateSendButton()

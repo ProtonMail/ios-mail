@@ -34,7 +34,7 @@ import UIKit
 class SettingsGeneralCell: UITableViewCell {
     @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var stackViewTrailingConstraintWithIconView: NSLayoutConstraint!
-    @IBOutlet private weak var stackViewtrailingConstraintWithContainerView: NSLayoutConstraint!
+    @IBOutlet private weak var stackViewTrailingConstraintWithContainer: NSLayoutConstraint!
     @IBOutlet private weak var leftText: UILabel!
     @IBOutlet private weak var rightText: UILabel!
     @IBOutlet private weak var rightArrowImage: UIImageView!
@@ -66,7 +66,7 @@ class SettingsGeneralCell: UITableViewCell {
         rightArrowImage.isHidden = false
         stackView.distribution = .equalSpacing
         stackViewTrailingConstraintWithIconView.priority = .required
-        stackViewtrailingConstraintWithContainerView.priority = .defaultLow
+        stackViewTrailingConstraintWithContainer.priority = .defaultLow
     }
 
     func configureCell(left: String?, right: String?, imageType: ImageType) {
@@ -91,7 +91,7 @@ class SettingsGeneralCell: UITableViewCell {
         if imageType == .none {
             self.rightArrowImage.isHidden = true
             stackViewTrailingConstraintWithIconView.priority = .defaultLow
-            stackViewtrailingConstraintWithContainerView.priority = .required
+            stackViewTrailingConstraintWithContainer.priority = .required
         } else {
             self.rightArrowImage.image = imageType.image
         }

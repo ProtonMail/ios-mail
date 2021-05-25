@@ -199,7 +199,7 @@ extension MessageDataService {
             var key: Key?
             if let address_id = message.addressID,
                 let userinfo = self.userDataSource?.userInfo,
-                let addr = userinfo.userAddresses.indexOfAddress(address_id) {
+                let addr = userinfo.userAddresses.address(byID: address_id) {
                 key = addr.keys.first
             }
             
