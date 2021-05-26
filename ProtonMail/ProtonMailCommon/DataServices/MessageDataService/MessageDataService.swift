@@ -939,7 +939,7 @@ class MessageDataService : Service, HasLocalStorage {
      
      :returns: NSFetchedResultsController
      */
-    func fetchedResults(by labelID: String, viewMode: UserInfo.ViewMode, isUnread: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func fetchedResults(by labelID: String, viewMode: ViewMode, isUnread: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult>? {
         switch viewMode {
         case .singleMessage:
             let moc = self.coreDataService.mainContext
@@ -2460,7 +2460,7 @@ class MessageDataService : Service, HasLocalStorage {
     func defaultAddress(_ message: Message) -> Address? {
         let userInfo = self.userDataSource!.userInfo
         if let addressID = message.addressID, !addressID.isEmpty {
-            if let add = userInfo.userAddresses.address(byID: addressID), add.send == 1 {
+            if let add = userInfo.userAddresses.address(byID: addressID), add.send.rawValue == 1 {
                 return add
             } else {
                 if let add = userInfo.userAddresses.defaultSendAddress() {

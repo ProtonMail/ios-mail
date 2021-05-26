@@ -79,19 +79,31 @@ final class AddressesResponse : Response {
 
         guard let ID = res["ID"] as? String else { return false }
 
+        let sendValue = res["Send"] as? Int ?? 0
+        let receiveValue = res["Receive"] as? Int ?? 0
+        let statusValue = res["Status"] as? Int ?? 0
+        let typeValue = res["Type"] as? Int ?? 0
+
+        let send = Address.AddressSendReceive(rawValue: sendValue) ?? .inactive
+        let receive = Address.AddressSendReceive(rawValue: receiveValue) ?? .inactive
+        let status = Address.AddressStatus(rawValue: statusValue) ?? .disabled
+        let type = Address.AddressType(rawValue: typeValue) ?? .protonDomain
+
         addresses.append(
-            Address(addressID: ID,
-                    domainID: res["DomainID"] as? String,
-                    email: res["Email"] as? String ?? "",
-                    send: res["Send"] as? Int ?? 0,
-                    receive: res["Receive"] as? Int ?? 0,
-                    status: res["Status"] as? Int ?? 0,
-                    type: res["Type"] as? Int ?? 0,
-                    order: res["Order"] as? Int ?? 0,
-                    displayName: res["DisplayName"] as? String ?? "",
-                    signature: res["Signature"] as? String ?? "",
-                    hasKeys: keys.isEmpty ? 0 : 1,
-                    keys: keys)
+            Address(
+                addressID: ID,
+                domainID: res["DomainID"] as? String,
+                email: res["Email"] as? String ?? "",
+                send: send,
+                receive: receive,
+                status: status,
+                type: type,
+                order: res["Order"] as? Int ?? 0,
+                displayName: res["DisplayName"] as? String ?? "",
+                signature: res["Signature"] as? String ?? "",
+                hasKeys: keys.isEmpty ? 0 : 1,
+                keys: keys
+            )
         )
 
         return true

@@ -2164,4 +2164,8 @@ class LocalizedString {
 
     lazy var _dmarc_failed_banner_message = NSLocalizedString("This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!", comment: "")
     lazy var _discard_warning = NSLocalizedString("Do you want to discard the changes?", comment: "Warning message")
+
+    lazy var _conversation_settings_row_title = NSLocalizedString("Enable conversations", comment: "")
+    lazy var _conversation_settings_screen_top_title = NSLocalizedString("Conversation mode", comment: "")
+    lazy var _account_settings_conversation_row_title = NSLocalizedString("Conversation", comment: "")
 }

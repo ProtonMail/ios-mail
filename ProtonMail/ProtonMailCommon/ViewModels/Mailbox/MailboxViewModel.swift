@@ -101,7 +101,7 @@ class MailboxViewModel: StorageLimit {
         }
     }
     
-    var viewMode: UserInfo.ViewMode {
+    var viewMode: ViewMode {
         let singleMessageOnlyLabels: [Message.Location] = [.draft, .sent]
         if let location = Message.Location.init(rawValue: self.labelID),
            singleMessageOnlyLabels.contains(location),

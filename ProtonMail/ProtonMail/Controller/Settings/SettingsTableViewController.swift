@@ -691,11 +691,11 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         let defaultAddress : Address? = multi_domains.defaultAddress()
                         let copy_multi_domains = multi_domains!
                         for index in copy_multi_domains.indices {
-                            if multi_domains[index].status == 1 && multi_domains[index].receive == 1 {
+                            if multi_domains[index].status == .enabled && multi_domains[index].receive == .active {
                                 if defaultAddress != multi_domains[index] {
                                     needsShow = true
                                     alertController.addAction(UIAlertAction(title: multi_domains[index].email, style: .default, handler: { (action) -> Void in
-                                        if self.multi_domains[index].send == 0 {
+                                        if self.multi_domains[index].send == .inactive {
                                             if self.multi_domains[index].email.lowercased().range(of: "@pm.me") != nil {
                                                 let msg = String(format: LocalString._settings_change_paid_address_warning, self.multi_domains[index].email)
                                                 let alertController = msg.alertController()

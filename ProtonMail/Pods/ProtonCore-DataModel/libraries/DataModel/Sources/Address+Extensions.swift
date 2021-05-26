@@ -28,7 +28,7 @@ extension Array where Element: Address {
     /// - Returns: address | nil
     public func defaultAddress() -> Address? {
         for addr in self {
-            if addr.status == 1 && addr.receive == 1 {
+            if addr.status == .enabled && addr.receive == .active {
                 return addr
             }
         }
@@ -39,7 +39,7 @@ extension Array where Element: Address {
     /// - Returns: address | nil
     public func defaultSendAddress() -> Address? {
         for addr in self {
-            if addr.status == 1 && addr.receive == 1 && addr.send == 1 {
+            if addr.status == .enabled && addr.receive == .active && addr.send == .active {
                 return addr
             }
         }
@@ -51,7 +51,7 @@ extension Array where Element: Address {
     /// - Returns: address | nil
     public func address(byID addressID: String) -> Address? {
         for addr in self {
-            if addr.status == 1 && addr.receive == 1 && addr.addressID == addressID {
+            if addr.status == .enabled && addr.receive == .active && addr.addressID == addressID {
                 return addr
             }
         }
@@ -61,7 +61,7 @@ extension Array where Element: Address {
     @available(*, deprecated, renamed: "address(byID:)")
     public func indexOfAddress(_ addressid: String) -> Address? {
         for addr in self {
-            if addr.status == 1 && addr.receive == 1 && addr.addressID == addressid {
+            if addr.status == .enabled && addr.receive == .active && addr.addressID == addressid {
                 return addr
             }
         }

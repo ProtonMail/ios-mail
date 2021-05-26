@@ -295,6 +295,8 @@ extension PushNotificationServiceTests {
         func set(_ data: Data, forKey key: String) { }
         func data(forKey key: String) -> Data? { return nil }
         func remove(forKey key: String) { }
+        func bool(forKey defaultName: String) -> Bool { return false }
+        func set(_ value: Bool, forKey defaultName: String) {}
     }
     
     private struct SessionIDMock: SessionIdProvider {

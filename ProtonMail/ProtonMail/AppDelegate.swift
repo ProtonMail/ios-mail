@@ -380,13 +380,14 @@ extension AppDelegate: UIApplicationDelegate {
             let _ = rootContext.saveUpstreamIfNeeded()
         }
     }
-    
+
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.currentState = .active
         let users: UsersManager = sharedServices.get()
         let queueManager = sharedServices.get(by: QueueManager.self)
         if users.firstUser != nil {
             queueManager.enterForeground()
+            users.firstUser?.refreshFeatureFlags()
         }
     }
     

@@ -306,7 +306,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         var isFromValid = true
         self.headerView.updateFromValue(addr.email, pickerEnabled: true)
         if let origAddr = self.viewModel.fromAddress() {
-            if origAddr.send == 0 {
+            if origAddr.send == .inactive {
                 self.viewModel.updateAddressID(addr.addressID).done {
                     //
                 }.catch({ (_) in
@@ -708,14 +708,14 @@ extension ComposeViewController : ComposeViewDelegate {
         let defaultAddr = self.viewModel.getDefaultSendAddress()
         var actions: [UIAction] = []
         for addr in multi_domains {
-            guard addr.status == 1 && addr.receive == 1 else {
+            guard addr.status == .enabled && addr.receive == .active else {
                 continue
             }
 
             let state: UIMenuElement.State = defaultAddr == addr ? .on: .off
             let item = UIAction(title: addr.email, state: state) { (action) in
                 guard action.state == .off else { return }
-                if addr.send == 0 {
+                if addr.send == .inactive {
                     let alertController = String(format: LocalString._composer_change_paid_plan_sender_error, addr.email).alertController()
                     alertController.addOKAction()
                     self.present(alertController, animated: true, completion: nil)
@@ -750,13 +750,13 @@ extension ComposeViewController : ComposeViewDelegate {
         multi_domains.sort(by: { $0.order < $1.order })
         let defaultAddr = self.viewModel.getDefaultSendAddress()
         for addr in multi_domains {
-            guard addr.status == 1 && addr.receive == 1 else {
+            guard addr.status == .enabled && addr.receive == .active else {
                 continue
             }
             needsShow = true
             let selectEmail = UIAlertAction(title: addr.email, style: .default) { action in
                 guard action.title != defaultAddr?.email else { return }
-                if addr.send == 0 {
+                if addr.send == .inactive {
                     let alertController = String(format: LocalString._composer_change_paid_plan_sender_error, addr.email).alertController()
                     alertController.addOKAction()
                     self.present(alertController, animated: true, completion: nil)

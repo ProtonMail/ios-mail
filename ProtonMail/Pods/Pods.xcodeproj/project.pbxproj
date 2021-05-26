@@ -3864,7 +3864,7 @@
 		1A9E7BEE040097C83EB9E2FEBC6F9037 /* DKPopoverViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DKPopoverViewController.swift; path = Sources/DKImagePickerController/DKPopoverViewController.swift; sourceTree = "<group>"; };
 		1AB4DD4F1BB445DEF4669D7BC11748DA /* ProtonCore-UIFoundations.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "ProtonCore-UIFoundations.release.xcconfig"; sourceTree = "<group>"; };
 		1ACD591B46D559B539F9FB076D3CA1BF /* UIViewController+AnyPromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIViewController+AnyPromise.h"; path = "Extensions/UIKit/Sources/UIViewController+AnyPromise.h"; sourceTree = "<group>"; };
-		1AE58C7BDB4078F70EB73E7452559013 /* ProtonCore-Common-Unit-Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ProtonCore-Common-Unit-Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AE58C7BDB4078F70EB73E7452559013 /* ProtonCore-Common-Unit-Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-Common-Unit-Tests"; path = "ProtonCore-Common-Unit-Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B0B6A8479D7E9AAA4342ADB4A608D92 /* ProtonCore-SRP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "ProtonCore-SRP.release.xcconfig"; sourceTree = "<group>"; };
 		1B2F7C5498881CFF5A4237928743E70D /* SentryAutoSessionTrackingIntegration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryAutoSessionTrackingIntegration.h; path = Sources/Sentry/include/SentryAutoSessionTrackingIntegration.h; sourceTree = "<group>"; };
 		1B727E4DD9D829FB4EF727700FA0E009 /* SDImageLoadersManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDImageLoadersManager.m; path = SDWebImage/Core/SDImageLoadersManager.m; sourceTree = "<group>"; };
@@ -4908,7 +4908,7 @@
 		C55A128DA948F1BE796DB876960877AA /* ProtonCore_Crypto.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ProtonCore_Crypto.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5924F232004188712B2ED288171D0C7 /* DKImageExtensionGallery.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DKImageExtensionGallery.swift; path = Sources/Extensions/DKImageExtensionGallery.swift; sourceTree = "<group>"; };
 		C59FA37A46CC7DD3BB7E047D0EA8A1A1 /* Pods-ProtonMailTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ProtonMailTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		C5A5A06DB679552D42F47B8560BE37F0 /* ProtonCore-Authentication-Unit-Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ProtonCore-Authentication-Unit-Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5A5A06DB679552D42F47B8560BE37F0 /* ProtonCore-Authentication-Unit-Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "ProtonCore-Authentication-Unit-Tests"; path = "ProtonCore-Authentication-Unit-Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5DE67F0C4D5748156696EC8017042CC /* AFNetworking-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AFNetworking-Info.plist"; sourceTree = "<group>"; };
 		C5E5209860BE1850111B42244BDE84CC /* CountryPickerViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CountryPickerViewController.swift; path = libraries/UIFoundations/Sources/PMCountryPickerViewController/ViewControllers/CountryPickerViewController.swift; sourceTree = "<group>"; };
 		C63766928BF73624E1BED8915709A209 /* fwd.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = fwd.h; path = Sources/fwd.h; sourceTree = "<group>"; };
@@ -6737,8 +6737,8 @@
 				556732A59E1F1D8AA77C7A4FE765BFFE /* Pods_Siri.framework */,
 				047E8645074185B3BF99BA66ECF463F9 /* Pods_SiriDev.framework */,
 				002B1E88BA14EBF633CD66EBFBA107E9 /* PromiseKit.framework */,
-				C5A5A06DB679552D42F47B8560BE37F0 /* ProtonCore-Authentication-Unit-Tests.xctest */,
-				1AE58C7BDB4078F70EB73E7452559013 /* ProtonCore-Common-Unit-Tests.xctest */,
+				C5A5A06DB679552D42F47B8560BE37F0 /* ProtonCore-Authentication-Unit-Tests */,
+				1AE58C7BDB4078F70EB73E7452559013 /* ProtonCore-Common-Unit-Tests */,
 				473C89BC69BA7C6449A13F37FBA21E98 /* ProtonCore_AccountSwitcher.framework */,
 				B85A86A368BFD28A2DDD1DDBBA7BA543 /* ProtonCore_APIClient.framework */,
 				02F0716AD05F8F9B4F17132BDE97A98D /* ProtonCore_Authentication.framework */,
@@ -9517,7 +9517,7 @@
 			);
 			name = "ProtonCore-Authentication-Unit-Tests";
 			productName = "ProtonCore-Authentication-Unit-Tests";
-			productReference = C5A5A06DB679552D42F47B8560BE37F0 /* ProtonCore-Authentication-Unit-Tests.xctest */;
+			productReference = C5A5A06DB679552D42F47B8560BE37F0 /* ProtonCore-Authentication-Unit-Tests */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		34CC7BDE5CE5A935DE32E614B32DD123 /* ProtonCore-Payments */ = {
@@ -10637,7 +10637,7 @@
 			);
 			name = "ProtonCore-Common-Unit-Tests";
 			productName = "ProtonCore-Common-Unit-Tests";
-			productReference = 1AE58C7BDB4078F70EB73E7452559013 /* ProtonCore-Common-Unit-Tests.xctest */;
+			productReference = 1AE58C7BDB4078F70EB73E7452559013 /* ProtonCore-Common-Unit-Tests */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		EB7660944F1CA0C2BB60B2B0A3DB212C /* ProtonCore-Doh */ = {

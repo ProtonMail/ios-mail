@@ -34,6 +34,7 @@ import ProtonCore_UIFoundations
     override func awakeFromNib() {
         super.awakeFromNib()
         switchView.onTintColor = UIColorManager.BrandNorm
+        selectionStyle = .none
     }
     
     var callback : switchActionBlock?

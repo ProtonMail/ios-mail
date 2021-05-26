@@ -122,16 +122,23 @@ class UserManager : Service, HasLocalStorage {
 
     var isUserSelectedUnreadFilterInInbox = false
     //TODO:: add a user status. logging in, expired, no key etc...
-    
-    var viewMode: UserInfo.ViewMode {
-        return userinfo.viewMode
-    }
 
     //public let user
+
+    public lazy var conversationStateService: ConversationStateService = { [unowned self] in
+        let conversationFeatureFlagService = ConversationFeatureFlagService(apiService: self.apiService)
+        return ConversationStateService(
+            conversationFeatureFlagService: conversationFeatureFlagService,
+            userDefaults: SharedCacheBase.getDefault(),
+            viewMode: self.userinfo.viewMode
+        )
+    }()
+
     public lazy var reportService: BugDataService = { [unowned self] in
         let service = BugDataService(api: self.apiService)
         return service
     }()
+
     public lazy var contactService: ContactDataService = { [unowned self] in
         let service = ContactDataService(api: self.apiService,
                                          labelDataService: self.labelService,
@@ -236,6 +243,7 @@ class UserManager : Service, HasLocalStorage {
     }
     
     func save() {
+        self.conversationStateService.userInfoHasChanged(viewMode: self.userinfo.viewMode)
         self.delegate?.onSave(userManger: self)
     }
 
@@ -246,6 +254,11 @@ class UserManager : Service, HasLocalStorage {
             self?.save()
         }
     }
+
+    func refreshFeatureFlags() {
+        conversationStateService.refreshFlag()
+    }
+
 }
 
 extension UserManager : AuthDelegate {
@@ -510,7 +523,7 @@ extension UserManager {
 }
 
 extension UserManager: ViewModeDataSource {
-    func getCurrentViewMode() -> UserInfo.ViewMode {
+    func getCurrentViewMode() -> ViewMode {
         return self.userinfo.viewMode
     }
 }

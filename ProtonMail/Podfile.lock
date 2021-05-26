@@ -344,7 +344,7 @@ CHECKOUT OPTIONS:
     :commit: 763df6342dbdcdc97b54a71e811bf3ea16330f58
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-DataModel:
-    :commit: 763df6342dbdcdc97b54a71e811bf3ea16330f58
+    :commit: 7796e85fee6a914a7194147db1c722f4d9f79761
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Doh:
     :commit: 763df6342dbdcdc97b54a71e811bf3ea16330f58
@@ -413,7 +413,7 @@ SPEC CHECKSUMS:
   ProtonCore-Common: dea567eeb11b545dea0eb177301672cf31bc2926
   ProtonCore-CoreTranslation: 5944dc628c1d20e7b69cd242da746e7a6766d3c7
   ProtonCore-Crypto: aea00497282afd8124b138771ff98caa73f7ee38
-  ProtonCore-DataModel: 41b03aa6c0b56af87597face49164ecef88a3a06
+  ProtonCore-DataModel: 68a18dcf4c1bc164cbf596327cff68cd497cec22
   ProtonCore-Doh: 739075dba137fcc13c98a5462685f30938c9ad1e
   ProtonCore-ForceUpgrade: f6e9e7933e7455747295feae9ce301ece4f55f40
   ProtonCore-Foundations: 2eed08744ec3444378efb2909f8643d89c445ffb

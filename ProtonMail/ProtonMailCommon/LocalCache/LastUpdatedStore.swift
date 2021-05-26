@@ -41,16 +41,16 @@ protocol LastUpdatedStoreProtocol {
     func lastEvent(userID: String, context: NSManagedObjectContext) -> UserEvent
     func lastEventUpdateTime(userID: String) -> Date?
     
-    func lastUpdate(by labelID : String, userID: String, context: NSManagedObjectContext, type: UserInfo.ViewMode) -> LabelCount?
-    func lastUpdateDefault(by labelID : String, userID: String, context: NSManagedObjectContext, type: UserInfo.ViewMode) -> LabelCount
-    func unreadCount(by labelID : String, userID: String, type: UserInfo.ViewMode) -> Promise<Int>
-    func unreadCount(by labelID : String, userID: String, type: UserInfo.ViewMode) -> Int
-    func updateUnreadCount(by labelID : String, userID: String, count: Int, type: UserInfo.ViewMode, shouldSave: Bool)
-    func removeUpdateTime(by userID: String, type: UserInfo.ViewMode)
+    func lastUpdate(by labelID : String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount?
+    func lastUpdateDefault(by labelID : String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount
+    func unreadCount(by labelID : String, userID: String, type: ViewMode) -> Promise<Int>
+    func unreadCount(by labelID : String, userID: String, type: ViewMode) -> Int
+    func updateUnreadCount(by labelID : String, userID: String, count: Int, type: ViewMode, shouldSave: Bool)
+    func removeUpdateTime(by userID: String, type: ViewMode)
 }
 
 final class LastUpdatedStore : SharedCacheBase, HasLocalStorage, LastUpdatedStoreProtocol, Service {
-    typealias LabelType = UserInfo.ViewMode
+    typealias LabelType = ViewMode
     
     fileprivate struct Key {
         
@@ -221,7 +221,7 @@ extension LastUpdatedStore {
 // MARK: - Conversation/Message Counts
 extension LastUpdatedStore {
     
-    func lastUpdate(by labelID : String, userID: String, context: NSManagedObjectContext, type: UserInfo.ViewMode) -> LabelCount? {
+    func lastUpdate(by labelID : String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount? {
         //TODO:: fix me fetch everytime is expensive
         switch type {
         case .singleMessage:
@@ -231,7 +231,7 @@ extension LastUpdatedStore {
         }
     }
     
-    func lastUpdateDefault(by labelID : String, userID: String, context: NSManagedObjectContext, type: UserInfo.ViewMode) -> LabelCount {
+    func lastUpdateDefault(by labelID : String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount {
         switch type {
         case .singleMessage:
             if let update = LabelUpdate.lastUpdate(by: labelID, userID: userID, inManagedObjectContext: context) {
@@ -247,7 +247,7 @@ extension LastUpdatedStore {
         
     }
     
-    func unreadCount(by labelID : String, userID: String, type: UserInfo.ViewMode) -> Promise<Int> {
+    func unreadCount(by labelID : String, userID: String, type: ViewMode) -> Promise<Int> {
         return Promise { seal in
             var unreadCount: Int32?
             self.coreDataService.enqueue(context: context) { (context) in
@@ -263,7 +263,7 @@ extension LastUpdatedStore {
         }
     }
     
-    func unreadCount(by labelID : String, userID: String, type: UserInfo.ViewMode) -> Int {
+    func unreadCount(by labelID : String, userID: String, type: ViewMode) -> Int {
         var unreadCount: Int32?
 
         context.performAndWait {
@@ -278,7 +278,7 @@ extension LastUpdatedStore {
     }
     
     
-    func updateUnreadCount(by labelID : String, userID: String, count: Int, type: UserInfo.ViewMode, shouldSave: Bool) {
+    func updateUnreadCount(by labelID : String, userID: String, count: Int, type: ViewMode, shouldSave: Bool) {
         context.performAndWait {
             let update = self.lastUpdateDefault(by: labelID, userID: userID, context: context, type: type)
             update.unread = Int32(count)
@@ -296,7 +296,7 @@ extension LastUpdatedStore {
     }
     
     //remove all updates for a user
-    func removeUpdateTime(by userID: String, type: UserInfo.ViewMode) {
+    func removeUpdateTime(by userID: String, type: ViewMode) {
         self.coreDataService.enqueue(context: context) { (context) in
             switch type {
             case .singleMessage:
