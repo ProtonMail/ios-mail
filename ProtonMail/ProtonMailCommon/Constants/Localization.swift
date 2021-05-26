@@ -1976,8 +1976,7 @@ class LocalizedString {
     lazy var _hour = NSLocalizedString("hour", comment: "hour")
     lazy var _hours = NSLocalizedString("hours", comment: "hours")
     
-    lazy var _minute = NSLocalizedString("min", comment: "minute")
-    lazy var _minutes = NSLocalizedString("mins", comment: "minutes")
+    lazy var _minute = NSLocalizedString("%d min", comment: "minute")
     
     lazy var _unread_action = NSLocalizedString("unread", comment: "The unread title of unread action button in mailbox view")
     

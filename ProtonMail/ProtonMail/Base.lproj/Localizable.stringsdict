@@ -18,5 +18,21 @@
 			<string>Updated %d mins ago</string>
 		</dict>
 	</dict>
+	<key>%d min</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d min</string>
+			<key>other</key>
+			<string>%d mins</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
