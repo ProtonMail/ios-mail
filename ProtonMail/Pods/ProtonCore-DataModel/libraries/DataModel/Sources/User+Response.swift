@@ -91,6 +91,7 @@ extension UserInfo {
             self.sign = settings["Sign"] as? Int ?? 0
             self.enableFolderColor = settings["EnableFolderColor"] as? Int ?? 0
             self.inheritParentFolderColor = settings["InheritParentFolderColor"] as? Int ?? 0
+            self.groupingMode = settings["ViewMode"] as? Int ?? 0
         }
     }
 }

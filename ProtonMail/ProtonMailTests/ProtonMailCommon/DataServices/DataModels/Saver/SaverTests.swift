@@ -41,6 +41,11 @@ class SaverTests: XCTestCase {
             log += "g-key"
             return cachedData[key] as? Int
         }
+
+        func bool(forKey defaultName: String) -> Bool {
+            log += "g-key"
+            return cachedData[defaultName] as? Bool ?? false
+        }
         
         func set(_ intValue: Int, forKey key: String) {
             log += "s-key"
@@ -50,6 +55,11 @@ class SaverTests: XCTestCase {
         func set(_ data: Data, forKey key: String) {
             log += "s-key"
             cachedData[key] = data
+        }
+
+        func set(_ value: Bool, forKey defaultName: String) {
+            log += "s-key"
+            cachedData[defaultName] = value
         }
         
         func remove(forKey key: String) {
