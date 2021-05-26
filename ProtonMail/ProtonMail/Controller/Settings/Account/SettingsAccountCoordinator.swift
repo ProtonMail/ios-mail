@@ -27,7 +27,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
 
     typealias VC = SettingsAccountViewController
     
-    let viewModel : SettingsAccountViewModel
+    let viewModel: SettingsAccountViewModel
     var services: ServiceFactory
     
     internal weak var viewController: SettingsAccountViewController?
@@ -65,6 +65,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         case privacy = "setting_privacy"
         case labels = "labels_management"
         case folders = "folders_management"
+        case conversation
     }
     
     init?(dest: UIViewController, vm: SettingsAccountViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
@@ -89,6 +90,8 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             openFolderManagement(type: .label)
         case .folders:
             openFolderManagement(type: .folder)
+        case .conversation:
+            openConversationSettings()
         default:
             self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
         }
@@ -174,7 +177,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             }
             let users: UsersManager = services.get()
             next.setViewModel(ChangeSinglePasswordViewModel(user: users.firstUser!))
-        case .privacy, .labels, .folders:
+        case .privacy, .labels, .folders, .conversation:
             break
         }
         return true
@@ -198,5 +201,17 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         coor.start()
         self.viewController?.navigationController?.show(vc, sender: nil)
     }
+
+    private func openConversationSettings() {
+        let users: UsersManager = services.get()
+        guard let user = users.firstUser else { return }
+        let viewModel = SettingsConversationViewModel(
+            conversationStateService: user.conversationStateService,
+            updateViewModeService: UpdateViewModeService(apiService: user.apiService)
+        )
+        let viewController = SettingsConversationViewController(viewModel: viewModel)
+        self.viewController?.navigationController?.pushViewController(viewController, animated: true)
+    }
+
 }
 

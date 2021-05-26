@@ -54,6 +54,10 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
         super.viewDidLoad()
         updateTitle()
 
+        viewModel.reloadTable = { [weak self] in
+            self?.tableView.reloadData()
+        }
+
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: CellKey.headerCell)
         tableView.register(SettingsGeneralCell.self)
         tableView.register(SettingsTwoLinesCell.self)
@@ -231,6 +235,8 @@ extension SettingsAccountViewController {
             switch item {
             case .privacy:
                 cellToUpdate.configure(right: "")
+            case .conversation:
+                cellToUpdate.configure(right: "")
             case .search:
                 cellToUpdate.configure(right: "off")
             case .labels:
@@ -276,7 +282,7 @@ extension SettingsAccountViewController {
             for address in addresses {
                 alertController.addAction(UIAlertAction(title: address.email, style: .default, handler: { _ in
 
-                    if address.send == 0 {
+                    if address.send == .inactive {
                         if address.email.lowercased().range(of: "@pm.me") != nil {
                             let msg = String(format: LocalString._settings_change_paid_address_warning, address.email)
                             let alertController = msg.alertController()
@@ -328,6 +334,8 @@ extension SettingsAccountViewController {
             self.coordinator?.go(to: .folders)
         case .storage:
             break
+        case .conversation:
+            self.coordinator?.go(to: .conversation)
         }
     }
 }

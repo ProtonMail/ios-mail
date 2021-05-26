@@ -56,10 +56,10 @@ extension Address: NSCoding {
         self.init(addressID: aDecoder.string(forKey: CoderKey.addressID) ?? "",
                   domainID: aDecoder.string(forKey: CoderKey.domainID) ?? "",
                   email: aDecoder.string(forKey: CoderKey.email) ?? "",
-                  send: aDecoder.decodeInteger(forKey: CoderKey.addressSend),
-                  receive: aDecoder.decodeInteger(forKey: CoderKey.receive),
-                  status: aDecoder.decodeInteger(forKey: CoderKey.addressStatus),
-                  type: aDecoder.decodeInteger(forKey: CoderKey.addressType),
+                  send: Address.AddressSendReceive(rawValue: aDecoder.decodeInteger(forKey: CoderKey.addressSend)) ?? .inactive,
+                  receive: Address.AddressSendReceive(rawValue: aDecoder.decodeInteger(forKey: CoderKey.receive)) ?? .inactive,
+                  status: Address.AddressStatus(rawValue: aDecoder.decodeInteger(forKey: CoderKey.addressStatus)) ?? .disabled,
+                  type: AddressType(rawValue: aDecoder.decodeInteger(forKey: CoderKey.addressType)) ?? .protonDomain,
                   order: aDecoder.decodeInteger(forKey: CoderKey.order),
                   displayName: aDecoder.string(forKey: CoderKey.displayName) ?? "",
                   signature: aDecoder.string(forKey: CoderKey.signature) ?? "",
@@ -71,16 +71,16 @@ extension Address: NSCoding {
         aCoder.encode(addressID, forKey: CoderKey.addressID)
         aCoder.encode(email, forKey: CoderKey.email)
         aCoder.encode(order, forKey: CoderKey.order)
-        aCoder.encode(receive, forKey: CoderKey.receive)
+        aCoder.encode(receive.rawValue, forKey: CoderKey.receive)
         aCoder.encode(displayName, forKey: CoderKey.displayName)
         aCoder.encode(signature, forKey: CoderKey.signature)
         aCoder.encode(keys, forKey: CoderKey.keys)
-        
-        aCoder.encode(status, forKey: CoderKey.addressStatus)
-        aCoder.encode(type, forKey: CoderKey.addressType)
-        
-        aCoder.encode(send, forKey: CoderKey.addressSend)
-        
+
+        aCoder.encode(status.rawValue, forKey: CoderKey.addressStatus)
+        aCoder.encode(type.rawValue, forKey: CoderKey.addressType)
+
+        aCoder.encode(send.rawValue, forKey: CoderKey.addressSend)
+
         aCoder.encode(domainID, forKey: CoderKey.domainID)
         aCoder.encode(hasKeys, forKey: CoderKey.hasKeys)
     }

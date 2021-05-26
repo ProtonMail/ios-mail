@@ -416,7 +416,7 @@ extension CacheService {
 
 // MARK: - Counter related functions
 extension CacheService {
-    func updateLastUpdatedTime(labelID: String, isUnread: Bool, startTime: Date, endTime: Date, msgCount: Int, msgType: UserInfo.ViewMode) {
+    func updateLastUpdatedTime(labelID: String, isUnread: Bool, startTime: Date, endTime: Date, msgCount: Int, msgType: ViewMode) {
         context.performAndWait {
             let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID, userID: self.userID, context: context, type: msgType)
             if isUnread {

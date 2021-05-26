@@ -24,10 +24,10 @@ import Foundation
 import ProtonCore_DataModel
 
 public enum SettingAccountSection : Int, CustomStringConvertible {
-    case account = 0
-    case addresses = 1
-    case snooze = 2
-    case mailbox = 3
+    case account
+    case addresses
+    case snooze
+    case mailbox
     
     public var description : String {
         switch(self){
@@ -44,11 +44,11 @@ public enum SettingAccountSection : Int, CustomStringConvertible {
 }
 
 public enum AccountItem : Int, CustomStringConvertible {
-    case singlePassword = 0
-    case loginPassword = 1
-    case mailboxPassword = 2
-    case recovery = 3
-    case storage = 4
+    case singlePassword
+    case loginPassword
+    case mailboxPassword
+    case recovery
+    case storage
     
     public var description : String {
         switch(self){
@@ -67,10 +67,10 @@ public enum AccountItem : Int, CustomStringConvertible {
 }
 
 public enum AddressItem : Int, CustomStringConvertible {
-    case addr = 0
-    case displayName = 1
-    case signature = 2
-    case mobileSignature = 3
+    case addr
+    case displayName
+    case signature
+    case mobileSignature
     
     public var description : String {
         switch(self){
@@ -88,10 +88,10 @@ public enum AddressItem : Int, CustomStringConvertible {
 
 
 public enum SnoozeItem : Int, CustomStringConvertible {
-    case autolock = 0
-    case language = 1
-    case combinContacts = 2
-    case cleanCache = 3
+    case autolock
+    case language
+    case combinContacts
+    case cleanCache
     
     public var description : String {
         switch(self){
@@ -107,17 +107,20 @@ public enum SnoozeItem : Int, CustomStringConvertible {
     }
 }
 
-public enum MailboxItem : Int, CustomStringConvertible {
-    case privacy = 0
-    case search = 1
-    case labels = 2
-    case folders = 3
-    case storage = 4
+public enum MailboxItem : Int, CustomStringConvertible, Equatable {
+    case privacy
+    case conversation
+    case search
+    case labels
+    case folders
+    case storage
     
     public var description : String {
         switch(self){
         case .privacy:
             return LocalString._privacy
+        case .conversation:
+            return LocalString._account_settings_conversation_row_title
         case .search:
             return LocalString._general_search_placeholder
         case .labels:
@@ -153,6 +156,8 @@ protocol SettingsAccountViewModel : AnyObject {
     
     func updateItems()
     func updateDefaultAddress(with address: Address, completion: (() -> Void)?)
+
+    var reloadTable: (() -> Void)? { get set }
 }
 
 class SettingsAccountViewModelImpl : SettingsAccountViewModel {
@@ -165,9 +170,13 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
                                                             .star, .archive, .unread]
     var userManager: UserManager
+
+    var reloadTable: (() -> Void)?
     
-    init(user : UserManager) {
+    init(user: UserManager) {
         self.userManager = user
+        user.conversationStateService.add(delegate: self)
+        addConversationRowIfFeatureEnabled()
     }
     
     func updateItems() {
@@ -232,7 +241,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var allSendingAddresses: [Address] {
         let defaultAddress: Address? = userManager.addresses.defaultAddress()
         return userManager.addresses.filter { address in
-            address.status == 1 && address.receive == 1 && address != defaultAddress
+            address.status.rawValue == 1 && address.receive.rawValue == 1 && address != defaultAddress
         }
     }
 
@@ -267,4 +276,25 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
             }
         }
     }
+
+    private func addConversationRowIfFeatureEnabled() {
+        guard userManager.conversationStateService.isConversationFeatureEnabled else { return }
+        mailboxItems.insert(.conversation, at: 1)
+    }
+
+}
+
+extension SettingsAccountViewModelImpl: ConversationStateServiceDelegate {
+
+    func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
+        if isFeatureEnabled && !mailboxItems.contains(.conversation) {
+            mailboxItems.insert(.conversation, at: 1)
+        } else {
+            mailboxItems.removeAll(where: { $0 == .conversation })
+        }
+        reloadTable?()
+    }
+
+    func viewModeHasChanged(viewMode: ViewMode) {}
+
 }

@@ -26,17 +26,6 @@ import Crypto
 import ProtonCore_DataModel
 
 extension UserInfo {
-    static let viewMode = "viewMode"
-    enum ViewMode: Int {
-        case conversation = 0
-        case singleMessage = 1
-    }
-    
-    var viewMode: ViewMode {
-        // Rebase TODO: viewmode related things
-        // Archive(), unarchive() ... etc
-        return .singleMessage
-    }
     
     var addressPrivateKeys : Data {
         var out = Data()

@@ -68,11 +68,11 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         return nil
     }
     
-    func lastUpdate(by labelID: String, userID: String, context: NSManagedObjectContext, type: UserInfo.ViewMode) -> LabelCount? {
+    func lastUpdate(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount? {
         return self.labelUpdate[labelID]
     }
     
-    func lastUpdateDefault(by labelID: String, userID: String, context: NSManagedObjectContext, type: UserInfo.ViewMode) -> LabelCount {
+    func lastUpdateDefault(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount {
         if let data = self.labelUpdate[labelID] {
             return data
         }
@@ -81,7 +81,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         return newData
     }
     
-    func unreadCount(by labelID: String, userID: String, type: UserInfo.ViewMode) -> Promise<Int> {
+    func unreadCount(by labelID: String, userID: String, type: ViewMode) -> Promise<Int> {
         var count = 0
         switch type {
         case .singleMessage:
@@ -92,7 +92,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         return Promise.value(count)
     }
     
-    func unreadCount(by labelID: String, userID: String, type: UserInfo.ViewMode) -> Int {
+    func unreadCount(by labelID: String, userID: String, type: ViewMode) -> Int {
         switch type {
         case .singleMessage:
             return self.msgUnreadData[labelID] ?? 0
@@ -101,7 +101,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         }
     }
     
-    func updateUnreadCount(by labelID: String, userID: String, count: Int, type: UserInfo.ViewMode, shouldSave: Bool) {
+    func updateUnreadCount(by labelID: String, userID: String, count: Int, type: ViewMode, shouldSave: Bool) {
         switch type {
         case .singleMessage:
             self.msgUnreadData[labelID] = count
@@ -110,7 +110,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         }
     }
     
-    func removeUpdateTime(by userID: String, type: UserInfo.ViewMode) {
+    func removeUpdateTime(by userID: String, type: ViewMode) {
         
     }
 }

@@ -26,19 +26,30 @@ import Foundation
     
     @available(*, deprecated, renamed: "String")
     public typealias AddressID = String
+    public enum AddressType: Int, Codable {
+        case protonDomain = 1       // First address the user created using a ProtonMail domain
+        case protonAlias = 2        // Subsequent addresses created using a ProtonMail domain.
+        case customDomain = 3       // Custom domain address.
+        case premiumDomain = 4      // Premium "pm.me" domain.
+        case externalAddress = 5    // External address
+    }
+    public enum AddressSendReceive: Int, Codable {
+        case inactive = 0   // inactive - cannot send or receive, pm.me addresses have inactive for free users
+        case active = 1     // active address (Status = 1 and has key)
+    }
+    public enum AddressStatus: Int, Codable {
+        case disabled = 0   // disabled
+        case enabled = 1    // enabled, can be set by user
+    }
     
     public let addressID: String
     public let domainID: String?
     // email address name
     public let email: String
-    // 0 means you can’t send with it 1 means you can -- pm.me addresses have Send 0 for free users, for instance so do addresses without keys
-    public let send: Int
-    // 1 is active address (Status =1 and has key), 0 is inactive (cannot send or receive)
-    public let receive: Int
-    // 0 is disabled, 1 is enabled, can be set by user
-    public let status: Int
-    // 1 is original PM, 2 is PM alias, 3 is custom domain address
-    public let type: Int
+    public let send: AddressSendReceive
+    public let receive: AddressSendReceive
+    public let status: AddressStatus
+    public let type: AddressType
     // address order
     public let order: Int
     public let displayName: String
@@ -47,8 +58,7 @@ import Foundation
     public let keys: [Key]
     
     public init(addressID: String, domainID: String?, email: String,
-                send: Int, receive: Int, status: Int, type: Int, order: Int,
-                displayName: String, signature: String, hasKeys: Int, keys: [Key]) {
+                send: AddressSendReceive, receive: AddressSendReceive, status: AddressStatus, type: AddressType, order: Int, displayName: String, signature: String, hasKeys: Int, keys: [Key]) {
         self.addressID = addressID
         self.domainID = domainID
         self.email = email
@@ -68,10 +78,10 @@ import Foundation
         addressID = try values.decode(String.self, forKey: .addressID)
         domainID = try values.decodeIfPresent(String.self, forKey: .domainID)
         email = try values.decode(String.self, forKey: .email)
-        send = try values.decode(Int.self, forKey: .send)
-        receive = try values.decode(Int.self, forKey: .receive)
-        status = try values.decode(Int.self, forKey: .status)
-        type = try values.decode(Int.self, forKey: .type)
+        send = try values.decode(AddressSendReceive.self, forKey: .send)
+        receive = try values.decode(AddressSendReceive.self, forKey: .receive)
+        status = try values.decode(AddressStatus.self, forKey: .status)
+        type = try values.decode(AddressType.self, forKey: .type)
         order = try values.decode(Int.self, forKey: .order)
         displayName = try values.decodeIfPresent(String.self, forKey: .displayName) ?? ""
         signature = try values.decodeIfPresent(String.self, forKey: .signature) ?? ""

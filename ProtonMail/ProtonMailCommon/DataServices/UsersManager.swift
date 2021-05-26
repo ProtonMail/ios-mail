@@ -222,6 +222,7 @@ class UsersManager : Service, Migrate {
         let user = self.users.remove(at: index)
         self.users.insert(user, at: 0)
         self.save()
+        self.firstUser?.refreshFeatureFlags()
     }
     
     func active(index: Int) {
