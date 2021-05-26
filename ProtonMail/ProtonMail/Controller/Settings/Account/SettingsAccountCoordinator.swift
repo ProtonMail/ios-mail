@@ -52,7 +52,6 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         case displayName   = "setting_displayname"
         case signature     = "setting_signature"
         case mobileSignature = "setting_mobile_signature"
-        case lableManager    = "toManagerLabelsSegue"
         
 //        case notification    = "setting_notification"
 //        case debugQueue      = "setting_debug_queue_segue"
@@ -134,14 +133,6 @@ class SettingsAccountCoordinator: DefaultCoordinator {
 //                return false
 //            }
 //            next.viewModel = SetPinCodeModelImpl()
-        case .lableManager:
-            guard let next = destination as? LabelsViewController else {
-                return false
-            }
-            
-            let users : UsersManager = services.get()
-            let user = users.firstUser!
-            next.viewModel = LabelManagerViewModelImpl(apiService: user.apiService, labelService: user.labelService, messageService: user.messageService)
 //        case .loginPwd:
 //            guard let next = destination as? ChangePasswordViewController else {
 //                return false

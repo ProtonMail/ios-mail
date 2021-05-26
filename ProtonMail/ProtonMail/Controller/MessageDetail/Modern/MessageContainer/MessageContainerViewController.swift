@@ -72,20 +72,6 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
             action: #selector(topTrashButtonTapped)
         )
         trashButton.accessibilityLabel = LocalString._menu_trash_title
-        let folderButton = UIBarButtonItem(
-            image: Asset.topFolder.image,
-            style: .plain,
-            target: self,
-            action: #selector(topFolderButtonTapped)
-        )
-        folderButton.accessibilityLabel = LocalString._move_to_
-        let labelButton = UIBarButtonItem(
-            image: Asset.topLabel.image,
-            style: .plain,
-            target: self,
-            action: #selector(topLabelButtonTapped)
-        )
-        labelButton.accessibilityLabel = LocalString._label_as_
         let unreadButton = UIBarButtonItem(
             image: Asset.topUnread.image,
             style: .plain,
@@ -93,7 +79,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
             action: #selector(topUnreadButtonTapped)
         )
         unreadButton.accessibilityLabel = LocalString._mark_as_unread_read
-        self.navigationItem.setRightBarButtonItems([moreButton, trashButton, folderButton, labelButton, unreadButton], animated: true)
+        self.navigationItem.setRightBarButtonItems([moreButton, trashButton, unreadButton], animated: true)
         self.navigationItem.assignNavItemIndentifiers()
         
         // others
@@ -196,12 +182,6 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         [yes, cancel].forEach(alert.addAction)
         
         self.present(alert, animated: true, completion: nil)
-    }
-    @objc func topFolderButtonTapped(_ sender: UIBarButtonItem) {
-        self.coordinator.go(to: .folders)
-    }
-    @objc func topLabelButtonTapped() {
-        self.coordinator.go(to: .labels)
     }
     @objc func topUnreadButtonTapped(_ sender: UIBarButtonItem) {
         self.viewModel.markThread(read: false, labelID: self.viewModel.labelID)

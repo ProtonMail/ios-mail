@@ -48,8 +48,8 @@ final class LabelManagerCoordinator: DefaultCoordinator {
         guard let user = self.viewModel?.user,
               let type = self.viewModel?.type,
               let data = self.viewModel?.data else { return }
-        let labelVM = NEWLabelEditViewModel(user: user, label: label, type: type, labels: data)
-        let labelVC = NEWLabelEditViewController.instance()
+        let labelVM = LabelEditViewModel(user: user, label: label, type: type, labels: data)
+        let labelVC = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: self.services,
                                                viewController: labelVC,
                                                viewModel: labelVM)
