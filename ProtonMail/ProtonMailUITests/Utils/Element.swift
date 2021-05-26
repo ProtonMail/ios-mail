@@ -187,7 +187,7 @@ struct Element {
         @discardableResult
         class func swipeLeftByIdentifier(_ identifier: String) -> XCUIElement {
             let element = app.staticTexts[identifier].firstMatch
-            element.swipeLeft()
+            element.longSwipe(.left)
             return element
         }
         
@@ -467,4 +467,28 @@ extension XCUIElement {
     func forceTap() {
         coordinate(withNormalizedOffset: .zero).tap()
     }
+}
+
+extension XCUIElement {
+    enum SwipeDirection {
+            case left, right
+        }
+
+    func longSwipe(_ direction : SwipeDirection) {
+            let startOffset: CGVector
+            let endOffset: CGVector
+
+            switch direction {
+            case .right:
+                startOffset = CGVector.zero
+                endOffset = CGVector(dx: 0.6, dy: 0.0)
+            case .left:
+                startOffset = CGVector(dx: 0.6, dy: 0.0)
+                endOffset = CGVector.zero
+            }
+
+            let startPoint = self.coordinate(withNormalizedOffset: startOffset)
+            let endPoint = self.coordinate(withNormalizedOffset: endOffset)
+            startPoint.press(forDuration: 0, thenDragTo: endPoint)
+        }
 }
