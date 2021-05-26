@@ -425,8 +425,7 @@ public enum SettingSections: Int, CustomStringConvertible {
     case swipeAction = 5
     case protection = 6
     case language = 7
-    case labels = 8
-    case network = 9
+    case network = 8
     
     public var description : String {
         switch(self){
@@ -446,8 +445,6 @@ public enum SettingSections: Int, CustomStringConvertible {
             return LocalString._protection
         case .language:
             return LocalString._language
-        case .labels:
-            return LocalString._labels_folders
         case .network:
             return LocalString._networking
         }

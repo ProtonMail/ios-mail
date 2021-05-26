@@ -213,8 +213,8 @@ class SingleMessageCoordinator: NSObject {
     }
 
     private func presentCreateFolder(type: PMLabelType) {
-        let viewModel = NEWLabelEditViewModel(user: user, label: nil, type: type, labels: [])
-        let viewController = NEWLabelEditViewController.instance()
+        let viewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: [])
+        let viewController = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: sharedServices,
                                                viewController: viewController,
                                                viewModel: viewModel)

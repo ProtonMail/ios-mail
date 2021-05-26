@@ -84,8 +84,6 @@ class MailboxCoordinator : DefaultCoordinator {
         case feedback          = "to_feedback_segue"
         case feedbackView      = "to_feedback_view_segue"
         case humanCheck        = "toHumanCheckView"
-        case folder            = "toMoveToFolderSegue"
-        case labels            = "toApplyLabelsSegue"
         case troubleShoot      = "toTroubleShootSegue"
         case newFolder = "toNewFolder"
         case newLabel = "toNewLabel"
@@ -102,8 +100,6 @@ class MailboxCoordinator : DefaultCoordinator {
             case "to_feedback_segue": self = .feedback
             case "to_feedback_view_segue": self = .feedbackView
             case "toHumanCheckView": self = .humanCheck
-            case "toMoveToFolderSegue": self = .folder
-            case "toApplyLabelsSegue": self = .labels
             case "toTroubleShootSegue": self = .troubleShoot
             default: return nil
             }
@@ -184,30 +180,6 @@ class MailboxCoordinator : DefaultCoordinator {
             let user = self.viewModel.user
             next.viewModel = CaptchaViewModelImpl(api: user.apiService)
             next.delegate = self.viewController
-        case .folder:
-            guard let next = destination as? LabelsViewController else {
-                return false
-            }
-            
-            guard let messages = sender as? [Message] else {
-                return false
-            }
-
-            let user = self.viewModel.user
-            next.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService)
-            next.delegate = self.viewController
-        case .labels:
-            guard let next = destination as? LabelsViewController else {
-                return false
-            }
-            guard let messages = sender as? [Message] else {
-                return false
-            }
-            
-            let user = self.viewModel.user
-            next.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService, cacheService: user.cacheService)
-            next.delegate = self.viewController
-            
         case .troubleShoot:
             guard let nav = destination as? UINavigationController else
             {
@@ -241,8 +213,8 @@ class MailboxCoordinator : DefaultCoordinator {
 
     private func presentCreateFolder(type: PMLabelType) {
         let user = viewModel.user
-        let vm = NEWLabelEditViewModel(user: user, label: nil, type: type, labels: [])
-        let vc = NEWLabelEditViewController.instance()
+        let vm = LabelEditViewModel(user: user, label: nil, type: type, labels: [])
+        let vc = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: self.services,
                                                viewController: vc,
                                                viewModel: vm,

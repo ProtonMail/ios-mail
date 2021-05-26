@@ -1625,23 +1625,6 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
     }
 }
 
-// MARK: - LablesViewControllerDelegate
-extension MailboxViewController : LabelsViewControllerDelegate {
-    func dismissed() {
-    }
-    
-    func apply(type: LabelFetchType) {
-        self.cancelButtonTapped() // this will finish multiselection mode
-        
-        if type == .label {
-            showMessageMoved(title: LocalString._messages_labels_applied)
-        } else if type == .folder {
-            showMessageMoved(title: LocalString._messages_has_been_moved)
-        }
-        self.showNoResultLabel()
-    }
-}
-
 // MARK: - MailboxCaptchaVCDelegate
 extension MailboxViewController : MailboxCaptchaVCDelegate {
     

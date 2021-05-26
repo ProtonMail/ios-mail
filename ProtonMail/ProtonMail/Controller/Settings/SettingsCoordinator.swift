@@ -53,7 +53,6 @@ class SettingsCoordinator: SideMenuCoordinator {
         case mobileSignature = "setting_mobile_signature"
         case debugQueue      = "setting_debug_queue_segue"
         case pinCode         = "setting_setup_pingcode"
-        case lableManager    = "toManagerLabelsSegue"
         case loginPwd        = "setting_login_pwd"
         case mailboxPwd      = "setting_mailbox_pwd"
         case singlePwd       = "setting_single_password_segue"
@@ -112,13 +111,6 @@ class SettingsCoordinator: SideMenuCoordinator {
                 return false
             }
             next.viewModel = SetPinCodeModelImpl()
-        case .lableManager:
-            guard let next = destination as? LabelsViewController else {
-                return false
-            }
-            
-            let user = services.get(by: UsersManager.self).firstUser!
-            next.viewModel = LabelManagerViewModelImpl(apiService: user.apiService, labelService: user.labelService, messageService: user.messageService)
         case .loginPwd:
             guard let next = destination as? ChangePasswordViewController else {
                 return false

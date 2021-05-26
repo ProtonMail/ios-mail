@@ -24,14 +24,14 @@ import Foundation
 final class LabelEditCoordinator: DefaultCoordinator {
     var services: ServiceFactory
 
-    typealias VC = NEWLabelEditViewController
+    typealias VC = LabelEditViewController
 
     weak var viewController: VC?
     private weak var viewModel: LabelEditVMProtocol?
     private weak var mailboxCoordinator: MailboxCoordinator?
 
     init(services: ServiceFactory,
-         viewController: NEWLabelEditViewController,
+         viewController: LabelEditViewController,
          viewModel: LabelEditVMProtocol,
          mailboxCoordinator: MailboxCoordinator? = nil) {
         self.services = services
