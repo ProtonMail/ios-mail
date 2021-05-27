@@ -7,17 +7,19 @@ class UnsubscribeService {
     private let labelId: String
     private let apiService: APIService
     private let messageDataService: MessageDataService
-
-    init(labelId: String, apiService: APIService, messageDataService: MessageDataService) {
+    private let eventsService: EventsService
+    
+    init(labelId: String, apiService: APIService, messageDataService: MessageDataService, eventsService: EventsService) {
         self.labelId = labelId
         self.apiService = apiService
         self.messageDataService = messageDataService
+        self.eventsService = eventsService
     }
 
     func oneClickUnsubscribe(messageId: String) {
         apiService.exec(route: OneClickUnsubscribe(messageId: messageId))
             .then { [weak self] _ in self?.markAsUnsubscribed(messageId: messageId) ?? .brokenPromise() }
-            .done { [weak self, labelId] _ in self?.messageDataService.fetchEvents(labelID: labelId) }
+            .done { [weak self, labelId] _ in self?.eventsService.fetchEvents(labelID: labelId) }
             .catch { _ in }
     }
 
