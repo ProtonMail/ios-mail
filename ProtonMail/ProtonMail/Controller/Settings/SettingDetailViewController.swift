@@ -133,7 +133,7 @@ class SettingDetailViewController: UIViewController {
             textFiledSectionTitle.isHidden = true
         }
 
-        passwordTextField.placeholder = LocalString._login_password
+        passwordTextField.placeholder = LocalString._signin_password
 
         passwordView.isHidden = true
         

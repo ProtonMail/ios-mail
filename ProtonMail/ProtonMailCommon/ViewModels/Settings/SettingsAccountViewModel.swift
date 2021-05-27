@@ -55,7 +55,7 @@ public enum AccountItem : Int, CustomStringConvertible {
         case .singlePassword:
             return LocalString._single_password
         case .loginPassword:
-            return LocalString._login_password
+            return LocalString._signin_password
         case .mailboxPassword:
             return LocalString._mailbox_password
         case .recovery:

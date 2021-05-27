@@ -361,8 +361,8 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     }
     
     internal func setupTextFields() {
-        PMLog.D(LocalString._user_login)
-        signInTitle.text = LocalString._user_login
+        PMLog.D(LocalString._user_signin)
+        signInTitle.text = LocalString._user_signin
         usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,
                                                                      attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#cecaca")])
         passwordTextField.attributedPlaceholder = NSAttributedString(string: LocalString._password,
@@ -376,7 +376,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         onePasswordButton.layer.borderColor = UIColor.white.cgColor
         onePasswordButton.layer.borderWidth = 2
         
-        signInButton.setTitle(LocalString._general_login, for: .normal)
+        signInButton.setTitle(LocalString._general_signin, for: .normal)
         
         signUpButton.setTitle(LocalString._need_an_account_sign_up, for: .normal)
         forgotPwdButton.setTitle(LocalString._forgot_password, for: .normal)        
