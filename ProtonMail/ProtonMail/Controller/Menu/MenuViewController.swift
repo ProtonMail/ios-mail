@@ -110,21 +110,21 @@ extension MenuViewController {
     
     private func showSignupAlarm(_ sender: UIView?) {
         let shouldDeleteMessageInQueue = self.viewModel.isCurrentUserHasQueuedMessage()
-        var message = LocalString._logout_confirmation
+        var message = LocalString._signout_confirmation
         
         if shouldDeleteMessageInQueue {
-            message = LocalString._logout_confirmation_having_pending_message
+            message = LocalString._signout_confirmation_having_pending_message
         } else {
             if let user = self.viewModel.currentUser {
                 if let nextUser = self.viewModel.secondUser {
-                    message = String(format: LocalString._logout_confirmation, nextUser.defaultEmail)
+                    message = String(format: LocalString._signout_confirmation, nextUser.defaultEmail)
                 } else {
-                    message = String(format: LocalString._logout_confirmation_one_account, user.defaultEmail)
+                    message = String(format: LocalString._signout_confirmation_one_account, user.defaultEmail)
                 }
             }
         }
         
-        let alertController = UIAlertController(title: LocalString._logout_title, message: message, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: LocalString._signout_title, message: message, preferredStyle: .actionSheet)
         
         alertController.addAction(UIAlertAction(title: LocalString._sign_out, style: .destructive, handler: { (action) -> Void in
             if shouldDeleteMessageInQueue {

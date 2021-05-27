@@ -294,7 +294,7 @@ public enum SGItems: Int, CustomStringConvertible {
         case .notifyEmail:
             return LocalString._settings_notification_email
         case .loginPWD:
-            return LocalString._login_password
+            return LocalString._signin_password
         case .mbp:
             return LocalString._mailbox_password
         case .singlePWD:

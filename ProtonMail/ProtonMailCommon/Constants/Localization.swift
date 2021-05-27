@@ -41,8 +41,8 @@ class LocalizedString {
     lazy var _signup_key_4096_size   = NSLocalizedString("(4096 bit)", comment: "Key size text when setup key")
     /// "*OPTIONAL"
     lazy var _signup_optional_text   = NSLocalizedString("*OPTIONAL", comment: "optional text field")
-    /// "2fa Authentication failed please try to login again"
-    lazy var _signup_2fa_auth_failed = NSLocalizedString("2FA failed. Please try to login again.", comment: "2fa verification failed")
+    /// "2fa Authentication failed please try to signin again"
+    lazy var _signup_2fa_auth_failed = NSLocalizedString("2FA failed. Please try to sign in again.", comment: "2fa verification failed")
 
     // Mark Link Opening Confirmaiton
     lazy var _about_to_open_link = NSLocalizedString("You are about to launch the web browser and navigate to", comment: "link opeining confirmation")
@@ -131,7 +131,7 @@ class LocalizedString {
     lazy var _menu_contact_group_title = NSLocalizedString("Groups", comment: "menu title (contact groups)")
     /// "Settings"
     lazy var _menu_settings_title =  NSLocalizedString("Settings", comment: "menu title")
-    /// "Logout"
+    /// "Sign out"
     lazy var _menu_signout_title  =  NSLocalizedString("Sign out", comment: "menu title")
     /// "Feedback"
     lazy var _menu_feedback_title =  NSLocalizedString("Feedback", comment: "menu title")
@@ -664,8 +664,8 @@ class LocalizedString {
     /// "Create Account"
     lazy var _signup_create_account_action = NSLocalizedString("Create Account", comment: "Create account button")
 
-    /// "Login password doesn't match"
-    lazy var _signup_pwd_doesnt_match = NSLocalizedString("Login password doesn't match", comment: "Error")
+    /// "Sigin in password doesn't match"
+    lazy var _signup_pwd_doesnt_match = NSLocalizedString("Sign-in password doesn't match", comment: "Error")
 
     /// "Human Check Warning"
     lazy var _signup_human_check_warning_title = NSLocalizedString("Human Check Warning", comment: "human check warning title")
@@ -780,8 +780,8 @@ class LocalizedString {
     /// "Delete Contact"
     lazy var _delete_contact = NSLocalizedString("Delete contact", comment: "Title-Contacts")
 
-    /// "Login"
-    lazy var _general_login = NSLocalizedString("Login", comment: "Title")
+    /// "signin"
+    lazy var _general_signin = NSLocalizedString("Sign in", comment: "Title")
 
 
     /// "Authentication was cancelled by the system"
@@ -805,8 +805,8 @@ class LocalizedString {
     /// "Key generation failed please try again"
     lazy var _key_generation_failed_please_try_again = NSLocalizedString("Key generation failed. Please try again.", comment: "Error")
 
-    /// "Authentication failed please try to login again"
-    lazy var _authentication_failed_pls_try_again = NSLocalizedString("Authentication failed. Please try to login again.", comment: "Error")
+    /// "Authentication failed please try to signin again"
+    lazy var _authentication_failed_pls_try_again = NSLocalizedString("Authentication failed. Please try to sign in again.", comment: "Error")
 
     /// "Unknown Error"
     lazy var _unknown_error = NSLocalizedString("Unknown Error", comment: "Error")
@@ -834,17 +834,17 @@ class LocalizedString {
 
     lazy var _setting_change_password = NSLocalizedString("Change Password", comment: "title")
 
-    /// "Change Login Password"
-    lazy var _change_login_password = NSLocalizedString("Change Login Password", comment: "change password input label")
+    /// "Change Signin Password"
+    lazy var _change_signin_password = NSLocalizedString("Change sign-in Password", comment: "change password input label")
 
-    /// "Current login password"
-    lazy var _current_login_password = NSLocalizedString("Current login password", comment: "Title")
+    /// "Current signin password"
+    lazy var _current_signin_password = NSLocalizedString("Current sign-in Password", comment: "Title")
 
-    /// "New login password"
-    lazy var _new_login_password = NSLocalizedString("New login password", comment: "Title")
+    /// "New signin password"
+    lazy var _new_signin_password = NSLocalizedString("New sign-in password", comment: "Title")
 
-    /// "Confirm new login password"
-    lazy var _confirm_new_login_password = NSLocalizedString("Confirm new login password", comment: "Title")
+    /// "Confirm new signin password"
+    lazy var _confirm_new_signin_password = NSLocalizedString("Confirm new sign-in password", comment: "Title")
 
     /// "Change Mailbox Password"
     lazy var _change_mailbox_password = NSLocalizedString("Change Mailbox Password", comment: "Title")
@@ -1045,8 +1045,8 @@ class LocalizedString {
     /// "Error Logs"
     lazy var _error_logs = NSLocalizedString("Error Logs", comment: "settings debug section title")
 
-    /// "Login Password"
-    lazy var _login_password = NSLocalizedString("Change account password", comment: "settings general section title")
+    /// "signin Password"
+    lazy var _signin_password = NSLocalizedString("Change account password", comment: "settings general section title")
     /// "Mailbox Password"
     lazy var _mailbox_password = NSLocalizedString("Change mailbox password", comment: "settings general section title")
     /// "Single Password"
@@ -1087,7 +1087,7 @@ class LocalizedString {
 
     lazy var _go_to_settings = NSLocalizedString("Go to settings", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
     
-    lazy var _go_to_login = NSLocalizedString("Go to login", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
+    lazy var _go_to_signin = NSLocalizedString("Go to sign-in", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
     // Mark Settings section title
 
@@ -1286,8 +1286,8 @@ class LocalizedString {
     /// "When you send an email, this is the name that appears in the sender field."
     lazy var _send_an_email_this_name_that_appears_in_sender_field = NSLocalizedString("When you send an email, this is the name that appears in the sender field.", comment: "display name notes")
 
-    /// "The optional recovery email address allows you to reset your login password if you forget it."
-    lazy var _the_optional_recovery_email_address_allows_you_to_reset_your_login_password_if_you_forget_it = NSLocalizedString("The optional recovery email address allows you to reset your login password if you forget it.", comment: "recovery email notes")
+    /// "The optional recovery email address allows you to reset your signin password if you forget it."
+    lazy var _the_optional_recovery_email_address_allows_you_to_reset_your_signin_password_if_you_forget_it = NSLocalizedString("The optional recovery email address allows you to reset your sign-in password if you forget it.", comment: "recovery email notes")
 
     /// "Keep me updated about new features"
     lazy var _keep_me_updated_about_new_features = NSLocalizedString("Keep me updated about new features", comment: "Title")
@@ -1415,7 +1415,7 @@ class LocalizedString {
     
     
     /// "Log  Out all"
-    lazy var _sign_out_all = NSLocalizedString("Log Out All", comment: "Action")
+    lazy var _sign_out_all = NSLocalizedString("Sign Out All", comment: "Action")
 
     /// "Rate & Review"
     lazy var _rate_review = NSLocalizedString("Rate & Review", comment: "Title")
@@ -1442,14 +1442,14 @@ class LocalizedString {
     lazy var _we_would_like_to_know_what_we_can_do_better = NSLocalizedString("We would like to know what we can do better.", comment: "Title")
 
 
-    /// "USER LOGIN"
-    lazy var _user_login = NSLocalizedString("USER LOGIN", comment: "Title")
+    /// "USER sign in"
+    lazy var _user_signin = NSLocalizedString("USER SIGN-IN", comment: "Title")
 
     /// "NEED AN ACCOUNT? SIGN UP."
     lazy var _need_an_account_sign_up = NSLocalizedString("NEED AN ACCOUNT? SIGN UP.", comment: "Action")
 
     /// "FORGOT PASSWORD?"
-    lazy var _forgot_password = NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd")
+    lazy var _forgot_password = NSLocalizedString("FORGOT PASSWORD?", comment: "signin page forgot pwd")
     
     /// "Create new account"
     lazy var _create_new_account = NSLocalizedString("Create new account", comment: "title of button in account connect page")
@@ -1535,8 +1535,8 @@ class LocalizedString {
     /// "Unsupported file type"
     lazy var _unsupported_file = NSLocalizedString("Unsupported file type", comment: "Error message")
 
-    /// "Please use ProtonMail App login first"
-    lazy var _please_use_protonmail_app_login_first = NSLocalizedString("Please use ProtonMail App login first.", comment: "Description")
+    /// "Please use ProtonMail App signin first"
+    lazy var _please_use_protonmail_app_signin_first = NSLocalizedString("Please use ProtonMail App sign-in first.", comment: "Description")
 
     /// "Can't copy the file"
     lazy var _cant_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
@@ -1721,7 +1721,7 @@ class LocalizedString {
 
     lazy var _yes_bypass_validation = NSLocalizedString("Yes, activate it for ", comment: "Warning message option to bypass validation and activate plan for current username")
     
-    lazy var _no_dont_bypass_validation = NSLocalizedString("No, for another ProtonMail account", comment: "Warning message option when user want to relogin to another account")
+    lazy var _no_dont_bypass_validation = NSLocalizedString("No, for another ProtonMail account", comment: "Warning message option when user want to resignin to another account")
     
     lazy var _iap_bugreport_title = NSLocalizedString("Is this bug report about an in-app purchase?", comment: "Error message")
     
@@ -1811,27 +1811,27 @@ class LocalizedString {
     
     lazy var _message_not_sent_message = NSLocalizedString("We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app.", comment: "Local notification text")
     
-    /// Logout
-    lazy var _logout_title = NSLocalizedString("Logout", comment: "Alert title to confirm logout")
-    lazy var _logout_confirmation = NSLocalizedString("You will be switched to %@", comment: "Alert to confirm logout")
-    lazy var _logout_confirmation_in_bio = NSLocalizedString("Are you sure you want to logout?", comment: "Alert to confirm logout")
-    lazy var _logout_confirmation_one_account = NSLocalizedString("Are you sure you want to logout %@?", comment: "Alert to confirm logout when only one account logged in")
-    lazy var _logout_confirmation_having_pending_message = NSLocalizedString("There are unsent messages that will be lost if you log out", comment: "Alert to confirm logout with pending message in the queue")
+    /// Signout
+    lazy var _signout_title = NSLocalizedString("Sign out", comment: "Alert title to confirm signout")
+    lazy var _signout_confirmation = NSLocalizedString("You will be switched to %@", comment: "Alert to confirm signout")
+    lazy var _signout_confirmation_in_bio = NSLocalizedString("Are you sure you want to sign out?", comment: "Alert to confirm sign out")
+    lazy var _signout_confirmation_one_account = NSLocalizedString("Are you sure you want to sign out %@?", comment: "Alert to confirm sign out when only one account signed in")
+    lazy var _signout_confirmation_having_pending_message = NSLocalizedString("There are unsent messages that will be lost if you sign out", comment: "Alert to confirm signout with pending message in the queue")
     
     
     
     lazy var _message_list_no_email_selected = NSLocalizedString("Please select at least one email",
                                                                    comment: "The message will show up when the user attempts to apply label/folder in inbox without select any emails")
     
-    lazy var _logout_account_switched_when_token_revoked = NSLocalizedString("Logged out from %@ and signed in with %@", comment: "Alert when auth token is revoked and switch to another")
+    lazy var _signout_account_switched_when_token_revoked = NSLocalizedString("Signed out from %@ and signed in with %@", comment: "Alert when auth token is revoked and switch to another")
     
-    lazy var _logout_primary_account_from_manager_account_title = NSLocalizedString("Logout", comment: "Alert title when logout primary account from account manager")
+    lazy var _signout_primary_account_from_manager_account_title = NSLocalizedString("Sign out", comment: "Alert title when sign out primary account from account manager")
     
-    lazy var _logout_primary_account_from_manager_account = NSLocalizedString("You will be switched to %@", comment: "Alert when logout primary account from account manager")
+    lazy var _signout_primary_account_from_manager_account = NSLocalizedString("You will be switched to %@", comment: "Alert when signout primary account from account manager")
     
-    lazy var _logout_secondary_account_from_manager_account_title = NSLocalizedString("Log out %@?", comment: "Alert title when logout non-primary account from account manager")
+    lazy var _signout_secondary_account_from_manager_account_title = NSLocalizedString("Sign out %@?", comment: "Alert title when sign out non-primary account from account manager")
     
-    lazy var _logout_secondary_account_from_manager_account = NSLocalizedString("Are you sure you want to log out?", comment: "Alert when logout non-primary account from account manager")
+    lazy var _signout_secondary_account_from_manager_account = NSLocalizedString("Are you sure you want to sign out?", comment: "Alert when sign out non-primary account from account manager")
     
     // Switch Account
     lazy var _switch_account_by_click_notification = NSLocalizedString("Switched to account '%@'", comment: "Alert when switched account by clicking notification of another account")
@@ -1859,7 +1859,7 @@ class LocalizedString {
     
     lazy var _connect_account = NSLocalizedString("Connect Account", comment: "Account manager title")
     
-    lazy var _login_to_pm_act = NSLocalizedString("Log in to your ProtonMail account", comment: "Account manager title")
+    lazy var _signin_to_pm_act = NSLocalizedString("Sign in to your ProtonMail account", comment: "Account manager title")
     lazy var _duplicate_logged_in = NSLocalizedString("The user is already logged in", comment: "Alert when the account is already logged in")
     
     lazy var _free_account_limit_reached_title = NSLocalizedString("Limit reached", comment: "Title of alert when the free account limit is reached")
@@ -1940,7 +1940,7 @@ class LocalizedString {
     lazy var _emaile_ = NSLocalizedString("email", comment: "network troubleshot cell title")
     lazy var _twitter = NSLocalizedString("Twitter", comment: "network troubleshot cell title")
     
-    lazy var _there_are_still_some_messages_in_queue_ = NSLocalizedString("There are still some messages in queue. If you log out, the draft will be deleted.", comment: "alert when logout user if in queue still have tasks")
+    lazy var _there_are_still_some_messages_in_queue_ = NSLocalizedString("There are still some messages in queue. If you sign out, the draft will be deleted.", comment: "alert when sign out user if in queue still have tasks")
     
     lazy var _pin = NSLocalizedString("PIN", comment: "device settings auto lock type title")
     lazy var _enable_pin = NSLocalizedString("Enable PIN", comment: "device settings auto lock type title toggle text")

@@ -34,7 +34,7 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
             let settings = UIAlertAction(title: LocalString._go_to_settings, style: .cancel) { _ in
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
             }
-            let logout = UIAlertAction(title: LocalString._go_to_login, style: .default) { _ in
+            let logout = UIAlertAction(title: LocalString._go_to_signin, style: .default) { _ in
                 self.logout()
             }
             [settings, logout].forEach(alert.addAction)
@@ -113,7 +113,7 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
     
     @objc func logoutButtonTapped() {
         
-        let alert = UIAlertController(title: nil, message: LocalString._logout_confirmation_in_bio, preferredStyle: .alert)
+        let alert = UIAlertController(title: nil, message: LocalString._signout_confirmation_in_bio, preferredStyle: .alert)
         let logout = UIAlertAction(title: LocalString._sign_out, style: .destructive) { _ in
             self.logout()
         }
