@@ -492,7 +492,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             guard let message: Message = self.viewModel.item(index: indexPath) else {
                 return
             }
-            let viewModel = buildNewMailboxMessageViewModel(message: message, customFolderLabels: viewModel.customFolders)
+            let viewModel = buildNewMailboxMessageViewModel(message: message, customFolderLabels: self.viewModel.customFolders)
             mailboxCell.id = message.messageID
             mailboxCell.cellDelegate = self
             messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
@@ -506,7 +506,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             guard let conversation = self.viewModel.itemOfConversation(index: indexPath) else {
                 return
             }
-            let viewModel = buildNewMailboxMessageViewModel(conversation: conversation, customFolderLabels: viewModel.customFolders)
+            let viewModel = buildNewMailboxMessageViewModel(conversation: conversation, customFolderLabels: self.viewModel.customFolders)
             mailboxCell.id = conversation.conversationID
             mailboxCell.cellDelegate = self
             messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
