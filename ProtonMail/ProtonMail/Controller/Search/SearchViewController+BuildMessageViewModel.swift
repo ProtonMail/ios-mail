@@ -22,15 +22,13 @@
 
 extension SearchViewController {
 
-    func buildViewModel(message: Message) -> NewMailboxMessageViewModel {
+    func buildViewModel(message: Message, customFolderLabels: [Label]) -> NewMailboxMessageViewModel {
         let initial = message.initial(replacingEmails: replacingEmails)
         let sender = message.sender(replacingEmails: replacingEmails)
 
         return .init(
             location: nil,
-            isLabelLocation: false,
-            messageLocation: message.messageLocation,
-            isCustomFolderLocation: false,
+            isLabelLocation: true, // to show origin location icons
             style: .normal,
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
@@ -42,7 +40,9 @@ extension SearchViewController {
             topic: message.subject,
             isStarred: message.starred,
             hasAttachment: message.numAttachments.intValue > 0,
-            tags: message.createTags
+            tags: message.createTags,
+            messageCount: 0,
+            folderIcons: message.getFolderIcons(customFolderLabels: customFolderLabels)
         )
     }
 

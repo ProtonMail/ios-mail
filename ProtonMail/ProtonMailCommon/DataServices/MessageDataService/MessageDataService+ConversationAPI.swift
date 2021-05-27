@@ -24,6 +24,7 @@ import Foundation
 import CoreData
 import Groot
 import ProtonCore_Services
+import PromiseKit
 
 extension MessageDataService {
     func fetchConversations(by iDs: [String], completion: CompletionBlock?) {
@@ -33,12 +34,16 @@ extension MessageDataService {
         let request = ConversationsRequest(para)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
-                completion?(task, responseDict, err)
+                DispatchQueue.main.async {
+                    completion?(task, responseDict, err)
+                }
             } else {
                 let response = ConversationsResponse()
                 guard response.ParseResponse(responseDict) else {
                     let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                    completion?(task, responseDict, err)
+                    DispatchQueue.main.async {
+                        completion?(task, responseDict, err)
+                    }
                     return
                 }
                 
@@ -48,8 +53,9 @@ extension MessageDataService {
                         var conversationsDict = response.conversationsDict
                         
                         guard !conversationsDict.isEmpty else {
-                            let err = NSError.protonMailError(1000, localizedDescription: "Data not found")
-                            completion?(task, responseDict, err)
+                            DispatchQueue.main.async {
+                                completion?(task, responseDict, nil)
+                            }
                             return
                         }
                         
@@ -96,16 +102,21 @@ extension MessageDataService {
         para.limit = 50
         para.sort = "Time"
         para.desc = 1
+        para.labelID = labelID
         
         let request = ConversationsRequest(para)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
-                completion?(task, responseDict, err)
+                DispatchQueue.main.async {
+                    completion?(task, responseDict, err)
+                }
             } else {
                 let response = ConversationsResponse()
                 guard response.ParseResponse(responseDict) else {
                     let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                    completion?(task, responseDict, err)
+                    DispatchQueue.main.async {
+                        completion?(task, responseDict, err)
+                    }
                     return
                 }
                 
@@ -116,8 +127,9 @@ extension MessageDataService {
                         var conversationsDict = response.conversationsDict
                         
                         guard !conversationsDict.isEmpty else {
-                            let err = NSError.protonMailError(1000, localizedDescription: "Data not found")
-                            completion?(task, responseDict, err)
+                            DispatchQueue.main.async {
+                                completion?(task, responseDict, nil)
+                            }
                             return
                         }
                         
@@ -161,11 +173,11 @@ extension MessageDataService {
                                 }
                             }
                         }
-                            
+
                         DispatchQueue.main.async {
-//                            let conversaionIDs = conversationsDict.compactMap { (value) -> String? in
-//                                return value["ID"] as? String
-//                            }
+                            //                            let conversaionIDs = conversationsDict.compactMap { (value) -> String? in
+                            //                                return value["ID"] as? String
+                            //                            }
                             completion?(task, responseDict, error)
                         }
                     } catch {
@@ -178,8 +190,79 @@ extension MessageDataService {
             }
         }
     }
+
+    func fetchConversationsWithReset(byLabel labelID: String,
+                                     time: Int,
+                                     completion: CompletionBlock?) {
+        let getLatestEventID = EventLatestIDRequest()
+        apiService.exec(route: getLatestEventID) { (task, response: EventLatestIDResponse) in
+            if !response.eventID.isEmpty {
+                let completionWrapper: CompletionBlock = { _, responseDict, error in
+                    if error == nil {
+                        self.lastUpdatedStore.clear()
+                        _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
+                            completion?(task, responseDict, error)
+                        }
+                    } else {
+                        completion?(task, responseDict, error)
+                    }
+                }
+
+                self.cleanMessage().then { _ -> Promise<Void> in
+                    self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
+                    self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
+                    return self.contactDataService.cleanUp()
+                }.ensure {
+                    self.fetchConversations(by: labelID,
+                                            time: time,
+                                            forceClean: false,
+                                            isUnread: false,
+                                            completion: completionWrapper)
+                    self.contactDataService.fetchContacts(completion: nil)
+                    _ = self.labelDataService.fetchV4Labels()
+                }.cauterize()
+            } else {
+                completion?(task, nil, nil)
+            }
+        }
+    }
+
+    func fetchConversationsOnlyWithReset(byLabel labelID: String,
+                                         time: Int,
+                                         completion: CompletionBlock?) {
+        let getLatestEventID = EventLatestIDRequest()
+        apiService.exec(route: getLatestEventID) { (task, response: EventLatestIDResponse) in
+            if !response.eventID.isEmpty {
+                let completionWrapper: CompletionBlock = { _, responseDict, error in
+                    if error == nil {
+                        self.lastUpdatedStore.clear()
+                        _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
+                            completion?(task, responseDict, error)
+                        }
+                    } else {
+                        completion?(task, responseDict, error)
+                    }
+                }
+
+                self.cleanMessage().then { _ -> Promise<Void> in
+                    self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
+                    self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
+                    return Promise<Void>()
+                }.ensure {
+                    self.fetchConversations(by: labelID,
+                                            time: time,
+                                            forceClean: false,
+                                            isUnread: false,
+                                            completion: completionWrapper)
+                    _ = self.labelDataService.fetchV4Labels()
+                }.cauterize()
+            } else {
+                completion?(task, nil, nil)
+            }
+        }
+    }
     
-    func fetchConversationDetail(by conversationID: String, completion: ((Result<[String], Error>) -> Void)?) {
+    func fetchConversationDetail(by conversationID: String, completion: ((Swift.Result<[String], Error>) -> Void)?) {
         let request = ConversationDetailsRequest(conversationID: conversationID, messageID: nil)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
@@ -230,7 +313,7 @@ extension MessageDataService {
         }
     }
     
-    func markConversationAsUnread(by conversationIDs: [String], currentLabelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
+    func markConversationAsUnread(by conversationIDs: [String], currentLabelID: String, completion: ((Swift.Result<Bool, Error>) -> Void)?) {
         let request = ConversationUnreadRequest(conversationIDs: conversationIDs, labelID: currentLabelID)
         self.apiService.exec(route: request) { (task, response: ConversationUnreadResponse) in
             if let err = response.error {
@@ -247,7 +330,7 @@ extension MessageDataService {
         }
     }
     
-    func markConversationAsRead(by conversationIDs: [String], completion: ((Result<Bool, Error>) -> Void)?) {
+    func markConversationAsRead(by conversationIDs: [String], completion: ((Swift.Result<Bool, Error>) -> Void)?) {
         let request = ConversationReadRequest(conversationIDs: conversationIDs)
         self.apiService.exec(route: request) { (task, response: ConversationReadResponse) in
             if let err = response.error {
@@ -263,7 +346,7 @@ extension MessageDataService {
         }
     }
     
-    func fetchConversationsCount(addressID: String? = nil, completion: ((Result<[ConversationCountData], Error>) -> Void)?) {
+    func fetchConversationsCount(addressID: String? = nil, completion: ((Swift.Result<[ConversationCountData], Error>) -> Void)?) {
         let request = ConversationCountRequest(addressID: addressID)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
@@ -280,7 +363,7 @@ extension MessageDataService {
         }
     }
     
-    func labelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
+    func labelConversations(conversationIDs: [String], labelID: String, completion: ((Swift.Result<Bool, Error>) -> Void)?) {
         let request = ConversationLabelRequest(conversationIDs: conversationIDs, labelID: labelID)
         self.apiService.exec(route: request) { (task, response: ConversationLabelResponse) in
             if let err = response.error {
@@ -297,7 +380,7 @@ extension MessageDataService {
         }
     }
     
-    func unlabelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
+    func unlabelConversations(conversationIDs: [String], labelID: String, completion: ((Swift.Result<Bool, Error>) -> Void)?) {
         let request = ConversationUnlabelRequest(conversationIDs: conversationIDs, labelID: labelID)
         self.apiService.exec(route: request) { (task, response: ConversationUnlabelResponse) in
             if let err = response.error {
@@ -315,7 +398,7 @@ extension MessageDataService {
     }
     
     ///labelID: where the conversation is at.
-    func deleteConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
+    func deleteConversations(conversationIDs: [String], labelID: String, completion: ((Swift.Result<Bool, Error>) -> Void)?) {
         let request = ConversationDeleteRequest(conversationIDs: conversationIDs, labelID: labelID)
         self.apiService.exec(route: request) { (task, response: ConversationDeleteResponse) in
             if let err = response.error {

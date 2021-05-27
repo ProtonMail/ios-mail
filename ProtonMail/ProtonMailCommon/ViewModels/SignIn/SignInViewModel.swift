@@ -105,9 +105,5 @@ class SignInViewModel : NSObject {
     func shouldShowUpdateAlert() -> Bool {
         return false
     }
-    
-    func setiOS10AlertIsShown() {
-        userCachedStatus.iOS10AlertIsShown = true
-    }
 }
 

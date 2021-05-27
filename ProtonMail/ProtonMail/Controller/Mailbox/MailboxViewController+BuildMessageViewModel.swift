@@ -26,17 +26,15 @@ import UIKit
 
 extension MailboxViewController {
 
-    func buildNewMailboxMessageViewModel(message: Message) -> NewMailboxMessageViewModel {
+    func buildNewMailboxMessageViewModel(message: Message, customFolderLabels: [Label]) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID)
         let initial = message.initial(replacingEmails: replacingEmails)
         let sender = message.sender(replacingEmails: replacingEmails)
 
-        return NewMailboxMessageViewModel(
+        var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(rawValue: viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
-            messageLocation: message.messageLocation,
-            isCustomFolderLocation: message.isCustomFolder,
             style: listEditing ? .selection(isSelected: isSelected) : .normal,
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
@@ -48,8 +46,44 @@ extension MailboxViewController {
             topic: message.subject,
             isStarred: message.starred,
             hasAttachment: message.numAttachments.intValue > 0,
-            tags: message.createTags
+            tags: message.createTags,
+            messageCount: 0,
+            folderIcons: []
         )
+        if mailboxViewModel.displayOriginIcon {
+            mailboxViewModel.folderIcons = message.getFolderIcons(customFolderLabels: customFolderLabels)
+        }
+        return mailboxViewModel
     }
 
+    func buildNewMailboxMessageViewModel(conversation: Conversation, customFolderLabels: [Label]) -> NewMailboxMessageViewModel {
+        let labelId = viewModel.labelID
+        let isSelected = self.viewModel.selectionContains(id: conversation.conversationID)
+        let sender = conversation.getSendersName(replacingEmails)
+        let initial = conversation.initial(replacingEmails)
+        let messageCount = conversation.numMessages.intValue
+        let isInCustomFolder = customFolderLabels.map({ $0.labelID }).contains(labelId)
+
+        var mailboxViewModel = NewMailboxMessageViewModel(
+            location: Message.Location(rawValue: viewModel.labelID),
+            isLabelLocation: Message.Location(rawValue: viewModel.labelId) == nil && !isInCustomFolder ,
+            style: listEditing ? .selection(isSelected: isSelected) : .normal,
+            initial: initial.apply(style: FontManager.body3RegularNorm),
+            isRead: conversation.getNumUnread(labelID: labelId) <= 0,
+            sender: sender,
+            time: conversation.getTimeString(labelId: labelId),
+            isForwarded: false,
+            isReply: false,
+            isReplyAll: false,
+            topic: conversation.subject,
+            isStarred: conversation.starred,
+            hasAttachment: conversation.numAttachments.intValue > 0,
+            tags: conversation.createTags(),
+            messageCount: messageCount > 0 ? messageCount : 0,
+            folderIcons: [])
+        if mailboxViewModel.displayOriginIcon {
+            mailboxViewModel.folderIcons = conversation.getFolderIcons(customFolderLabels: customFolderLabels)
+        }
+        return mailboxViewModel
+    }
 }

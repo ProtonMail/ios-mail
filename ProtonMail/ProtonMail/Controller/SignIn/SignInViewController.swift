@@ -292,8 +292,6 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         if UIDevice.current.isLargeScreen() && !isRemembered {
             usernameTextField.becomeFirstResponder()
         }
-        
-        self.handleUpdateAlert()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -326,16 +324,6 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     }
     
     // MARK: - Private methods
-    
-    private func handleUpdateAlert() {
-        if self.viewModel.shouldShowUpdateAlert() {
-            let alertVC = UIAlertController(title: LocalString._ios10_update_title, message: LocalString._ios10_update_body, preferredStyle: .alert)
-            alertVC.addOKAction { (_) in
-                self.viewModel.setiOS10AlertIsShown()
-            }
-            self.present(alertVC, animated: true, completion: nil)
-        }
-    }
     
     internal func hideLoginViews() {
         self.usernameView.alpha      = 0.0

@@ -334,6 +334,34 @@ struct FontManager {
         return attributes
     }()
 
+    static let OverlineSemiBoldText: [NSAttributedString.Key: Any] = {
+        let font = UIFont.systemFont(ofSize: 11.0, weight: .semibold)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.07
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .kern: 0.07,
+            .font: font,
+            .foregroundColor: UIColorManager.TextNorm,
+            .paragraphStyle: paragraphStyle
+        ]
+        return attributes
+    }()
+
+    static let OverlineSemiBoldTextWeak: [NSAttributedString.Key: Any] = {
+        let font = UIFont.systemFont(ofSize: 11.0, weight: .semibold)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.07
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .kern: 0.07,
+            .font: font,
+            .foregroundColor: UIColorManager.TextWeak,
+            .paragraphStyle: paragraphStyle
+        ]
+        return attributes
+    }()
+
     static let OverlineRegularInteractionStrong: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 11.0)
         var paragraphStyle = NSMutableParagraphStyle()

@@ -103,12 +103,12 @@ class MailboxViewModel: StorageLimit {
     
     var viewMode: ViewMode {
         let singleMessageOnlyLabels: [Message.Location] = [.draft, .sent]
-        if let location = Message.Location.init(rawValue: self.labelID),
+        if let location = Message.Location.init(rawValue: labelID),
            singleMessageOnlyLabels.contains(location),
-           self.user.userinfo.viewMode == .conversation {
+           user.conversationStateService.viewMode == .conversation {
             return .singleMessage
         }
-        return self.user.userInfo.viewMode
+        return user.conversationStateService.viewMode
     }
     
     var isRequiredHumanCheck: Bool {
@@ -137,6 +137,10 @@ class MailboxViewModel: StorageLimit {
         fetchedResultsController?.fetchedObjects?
             .compactMap { $0 as? Message }
             .filter { selectedIDs.contains($0.messageID) } ?? []
+    }
+
+    var customFolders: [Label] {
+        return user.labelService.getAllLabels(of: .folder, context: coreDataService.mainContext)
     }
 
     func allEmails() -> [Email] {
@@ -457,12 +461,12 @@ class MailboxViewModel: StorageLimit {
         self.pushService.processCachedLaunchOptions()
     }
     
-    ///
+
     func selectedMessages(selected: NSMutableSet) -> [Message] {
         return messageService.fetchMessages(withIDs: selected, in: self.coreDataService.mainContext)
     }
     
-    ///
+
     func message(by messageID: String) -> Message? {
         if let context = self.fetchedResultsController?.managedObjectContext {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
@@ -471,7 +475,7 @@ class MailboxViewModel: StorageLimit {
         }
         return nil
     }
-    ///
+
     func object(by object: NSManagedObjectID) -> Message? {
         if let obj = self.fetchedResultsController?.managedObjectContext.object(with: object) as? Message {
             return obj
@@ -527,63 +531,6 @@ class MailboxViewModel: StorageLimit {
     func emptyFolder() {
         
     }
-    
-    func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: CompletionBlock?) {
-        switch self.viewMode {
-        case .singleMessage:
-            messageService.fetchMessages(byLabel: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, completion: completion)
-        case .conversation:
-            messageService.fetchConversations(by: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, completion: completion)
-        }
-    }
-    
-    func fetchConversationDetail(converstaionID: String, completion: ((Result<[String], Error>) -> Void)?) {
-        messageService.fetchConversationDetail(by: converstaionID, completion: completion)
-    }
-    
-    func markConversationAsUnread(conversationIDs: [String], currentLabelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.markConversationAsUnread(by: conversationIDs, currentLabelID: currentLabelID, completion: completion)
-    }
-    
-    func markConversationAsRead(conversationIDs: [String], completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.markConversationAsRead(by: conversationIDs, completion: completion)
-    }
-    
-    func fetchConversationCount(completion: ((Result<[ConversationCountData], Error>) -> Void)?) {
-        messageService.fetchConversationsCount(completion: completion)
-    }
-    
-    func labelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.labelConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
-    }
-    
-    func unlabelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.unlabelConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
-    }
-    
-    func deleteConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.deleteConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
-    }
-    
-    func fetchEvents(time: Int, notificationMessageID:String?, completion: CompletionBlock?) {
-        messageService.fetchEvents(byLabel: self.labelID,
-                                   notificationMessageID: notificationMessageID,
-                                   completion: completion)
-    }
-    
-    /// fetch messages and reset events
-    ///
-    /// - Parameters:
-    ///   - time: the latest mailbox cached time
-    ///   - completion: aync complete handler
-    func fetchMessageWithReset(time: Int, completion: CompletionBlock?) {
-        messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
-    }
-    
-    func fetchMessageOnlyWithReset(time: Int, completion: CompletionBlock?) {
-        messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
-    }
-    
     func isEventIDValid() -> Bool {
         return messageService.isEventIDValid(context: self.coreDataService.mainContext)
     }
@@ -618,11 +565,6 @@ class MailboxViewModel: StorageLimit {
     
     func label(msg message : Message, with labelID: String, apply: Bool = true) {
         messageService.label(messages: [message], label: labelID, apply: apply)
-    }
-    
-    //TODO: - v4 need refactor
-    func move(IDs messageIDs : NSMutableSet, to tLabel: String) {
-        self.move(IDs: messageIDs, from: self.labelID, to: tLabel)
     }
     
     func undo(_ undo: UndoMessage) {
@@ -675,14 +617,6 @@ class MailboxViewModel: StorageLimit {
         let maxStorageSpace = self.user.userInfo.maxSpace
         checkSpace(usedStorageSpace, maxSpace: maxStorageSpace, user: self.user)
     }
-    
-    func shouldShowUpdateAlert() -> Bool {
-        return false
-    }
-    
-    func setiOS10AlertIsShown() {
-        userCachedStatus.iOS10AlertIsShown = true
-    }
 
     func handleActionSheetAction(_ action: MailListSheetAction) {
         switch action {
@@ -714,16 +648,31 @@ class MailboxViewModel: StorageLimit {
         }
     }
 
+    func getTimeOfItem(at indexPath: IndexPath) -> Date? {
+        switch viewMode {
+        case .singleMessage:
+            return item(index: indexPath)?.time
+        case .conversation:
+            return itemOfConversation(index: indexPath)?.getTime(labelID: labelID)
+        }
+    }
+
     private func handleMoveToInboxAction() {
-        move(IDs: NSMutableSet(set: selectedIDs), to: Message.Location.inbox.rawValue)
+        move(IDs: NSMutableSet(set: selectedIDs),
+             from: labelID,
+             to: Message.Location.inbox.rawValue)
     }
 
     private func handleMoveToArchiveAction() {
-        move(IDs: NSMutableSet(set: selectedIDs), to: Message.Location.archive.rawValue)
+        move(IDs: NSMutableSet(set: selectedIDs),
+             from: labelID,
+             to: Message.Location.archive.rawValue)
     }
 
     private func handleMoveToSpamAction() {
-        move(IDs: NSMutableSet(set: selectedIDs), to: Message.Location.spam.rawValue)
+        move(IDs: NSMutableSet(set: selectedIDs),
+             from: labelID,
+             to: Message.Location.spam.rawValue)
     }
 
     private func handleUnstarAction() {
@@ -755,7 +704,9 @@ class MailboxViewModel: StorageLimit {
     }
 
     private func handleRemoveAction() {
-        move(IDs: NSMutableSet(set: selectedIDs), to: Message.Location.trash.rawValue)
+        move(IDs: NSMutableSet(set: selectedIDs),
+             from: labelID,
+             to: Message.Location.trash.rawValue)
     }
 
     private var shouldDisplayRemoveAction: Bool {
@@ -780,8 +731,45 @@ class MailboxViewModel: StorageLimit {
 
 }
 
+// MARK: - Data fethching methods
+extension MailboxViewModel {
+    func fetchEvents(time: Int, notificationMessageID:String?, completion: CompletionBlock?) {
+        messageService.fetchEvents(byLabel: self.labelID,
+                                   notificationMessageID: notificationMessageID,
+                                   completion: completion)
+    }
+
+    func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: CompletionBlock?) {
+        switch self.viewMode {
+        case .singleMessage:
+            messageService.fetchMessages(byLabel: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, completion: completion)
+        case .conversation:
+            messageService.fetchConversations(by: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, completion: completion)
+        }
+    }
+
+    func fetchDataWithReset(time: Int, completion: CompletionBlock?) {
+        switch viewMode {
+        case .singleMessage:
+            messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
+        case .conversation:
+            messageService.fetchConversationsWithReset(byLabel: self.labelID, time: time, completion: completion)
+        }
+    }
+
+    func fetchDataOnlyWithReset(time: Int, completion: CompletionBlock?) {
+        switch viewMode {
+        case .singleMessage:
+            messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
+        case .conversation:
+            messageService.fetchConversationsOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
+        }
+    }
+}
+
 // MARK: Message Actions
 extension MailboxViewModel {
+
     func checkToUseReadOrUnreadAction(messageIDs: NSMutableSet, labelID: String) -> Bool {
         var readCount = 0
         coreDataService.mainContext.performAndWait {
