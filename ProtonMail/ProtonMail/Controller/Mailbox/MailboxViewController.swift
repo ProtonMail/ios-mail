@@ -1734,7 +1734,8 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard self.presentedViewController == nil else {
+        if let presentedVC = self.presentedViewController,
+           let _ = presentedVC as? ComposerNavigationController {
             // Ignore event when composer is presented
             // Or the main thread will block when attachment uploading
             // the app will crash
@@ -1760,12 +1761,14 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard self.presentedViewController == nil else {
+        if let presentedVC = self.presentedViewController,
+           let _ = presentedVC as? ComposerNavigationController {
             // Ignore event when composer is presented
             // Or the main thread will block when attachment uploading
             // the app will crash
             return
         }
+        
         if controller == self.viewModel.labelFetchedResults || controller == self.viewModel.unreadFetchedResult {
             return
         }
@@ -1783,7 +1786,8 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        guard self.presentedViewController == nil else {
+        if let presentedVC = self.presentedViewController,
+           let _ = presentedVC as? ComposerNavigationController {
             // Ignore event when composer is presented
             // Or the main thread will block when attachment uploading
             // the app will crash
@@ -1804,7 +1808,8 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        guard self.presentedViewController == nil else {
+        if let presentedVC = self.presentedViewController,
+           let _ = presentedVC as? ComposerNavigationController {
             // Ignore event when composer is presented
             // Or the main thread will block when attachment uploading
             // the app will crash
