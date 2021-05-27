@@ -39,6 +39,20 @@ struct FontManager {
         return attributes
     }()
 
+    static let MessageHeader: [NSAttributedString.Key: Any] = {
+        let font = UIFont.boldSystemFont(ofSize: 20)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.07
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .kern: 0.35,
+            .font: font,
+            .foregroundColor: UIColorManager.TextNorm,
+            .paragraphStyle: paragraphStyle
+        ]
+        return attributes
+    }()
+
     static let HeadlineHint: [NSAttributedString.Key: Any] = {
         let font = UIFont.boldSystemFont(ofSize: 22)
         var paragraphStyle = NSMutableParagraphStyle()
@@ -465,6 +479,18 @@ extension Dictionary where Key == NSAttributedString.Key, Value == Any {
     func foregroundColor(_ color: UIColor) -> Self {
         var attributes = self
         attributes[.foregroundColor] = color
+        return attributes
+    }
+
+    func alignment(_ alignment: NSTextAlignment) -> Self {
+        var attributes = self
+        if let style = attributes[NSAttributedString.Key.paragraphStyle] as? NSMutableParagraphStyle {
+            style.alignment = alignment
+        } else {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = alignment
+            attributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
+        }
         return attributes
     }
 

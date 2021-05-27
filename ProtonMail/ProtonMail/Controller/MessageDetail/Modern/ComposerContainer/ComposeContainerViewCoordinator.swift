@@ -140,7 +140,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             attachmentSize = size
             semaphore.signal()
         })
-        semaphore.wait(timeout: .distantFuture)
+        _ = semaphore.wait(timeout: .distantFuture)
         return attachmentSize
     }
     

@@ -137,7 +137,7 @@ enum MIMEType {
             return UIImage(named: "mail_attachment_general")
         }
     }
-    
+
     /// Icon for message detail
     var bigIcon: UIImage? {
         switch self {

@@ -21,9 +21,9 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PassKit
+import ProtonCore_UIFoundations
 import QuickLook
 import UIKit
-import ProtonCore_UIFoundations
 
 class AttachmentListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let viewModel: AttachmentListViewModel

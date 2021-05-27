@@ -150,6 +150,18 @@ included:
   - ${PWD}/ProtonMail/Controller/Search/SearchBarView.swift
   - ${PWD}/ProtonMail/Controller/Search/SearchViewController+BuildMessageViewModel.swift
   - ${PWD}/ProtonMailCommon/Extensions/Date+CountExpirationTime.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/Cells/ConversationViewHeaderCell.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/Cells/ConversationViewHeaderView.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationCoordinator.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationNavigationDetaildView.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationNavigationSimpleView.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationNavigationViewPresenter.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationView.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationViewController.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationViewItemType.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationViewModel.swift
+  - ${PWD}/ProtonMailCommon/Extensions/UIBarButtonItem+Plain.swift
+  - ${PWD}/ProtonMailCommon/Extensions/UITableViewCell+ReuseIdentifier.swift
 
 excluded:
   - ${PWD}/Pods

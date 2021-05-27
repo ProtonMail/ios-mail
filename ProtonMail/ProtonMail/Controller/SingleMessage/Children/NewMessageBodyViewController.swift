@@ -21,9 +21,9 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import TrustKit
-import UIKit
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol NewMessageBodyViewControllerDelegate: AnyObject {
     func openUrl(_ url: URL)
