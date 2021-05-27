@@ -71,12 +71,16 @@ class LoginRobot {
     }
     
     private func username(_ username: String) -> LoginRobot {
-        Element.wait.forTextFieldWithIdentifier(usernameIdentifier).typeText(username)
+        let element = Element.wait.forTextFieldWithIdentifier(usernameIdentifier)
+        element.tap()
+        element.typeText(username)
         return self
     }
     
     private func password(_ password: String) -> LoginRobot {
-        Element.secureTextField.tapByIdentifier(passwordIdentifier).typeText(password)
+        let element = Element.secureTextField.tapByIdentifier(passwordIdentifier)
+        element.tap()
+        element.typeText(password)
         return self
     }
     

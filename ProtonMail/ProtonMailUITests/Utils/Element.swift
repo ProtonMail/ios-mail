@@ -83,7 +83,7 @@ struct Element {
         }
         
         class func swipeLefyByIdentifier(_ identifier: String) {
-            app.cells[identifier].firstMatch.swipeLeft()
+            app.cells[identifier].firstMatch.longSwipe(.left)
         }
         
         class func longClickByPosition(_ index: Int) {
@@ -480,11 +480,11 @@ extension XCUIElement {
 
             switch direction {
             case .right:
-                startOffset = CGVector.zero
-                endOffset = CGVector(dx: 0.6, dy: 0.0)
+                startOffset = CGVector(dx: 0.1, dy: 0.0)
+                endOffset = CGVector(dx: 0.9, dy: 0.0)
             case .left:
-                startOffset = CGVector(dx: 0.6, dy: 0.0)
-                endOffset = CGVector.zero
+                startOffset = CGVector(dx: 0.9, dy: 0.0)
+                endOffset = CGVector(dx: 0.1, dy: 0.0)
             }
 
             let startPoint = self.coordinate(withNormalizedOffset: startOffset)

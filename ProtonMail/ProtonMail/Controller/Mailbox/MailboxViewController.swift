@@ -91,6 +91,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var fetchingStopped : Bool! = true
     private var needToShowNewMessage : Bool = false
     private var newMessageCount = 0
+    private var hasNetworking = true
     
     // MAKR : - Private views
     private var refreshControl: UIRefreshControl!
@@ -772,7 +773,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard !tableView.isDragging else {
             return
         }
-
+        guard self.hasNetworking else {
+            self.refreshControl.endRefreshing()
+            return
+        }
+        
         forceRefreshAllMessages()
     }
     
@@ -868,6 +873,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     @objc internal func getLatestMessages() {
         self.getLatestMessagesRaw() { [weak self] _ in
             self?.deleteExpiredMessages()
+            
+            self?.viewModel.fetchMessages(time: 0, foucsClean: false) { [weak self] task, res, error in
+                self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: false, completeIsFetch: nil)
+            }
         }
     }
     
@@ -878,12 +887,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.beginRefreshingManually(animated: self.viewModel.rowCount(section: 0) < 1 ? true : false)
             var handleNoResultLabel: Bool = true
             self.showRefreshController()
-            if let updateTime = viewModel.lastUpdateTime(), updateTime.isNew == false, viewModel.isEventIDValid() {
+            if viewModel.isEventIDValid() {
                 // let response of checkEmptyMailbox decide show label or not.
                 handleNoResultLabel = false
                 //fetch
                 self.needToShowNewMessage = true
-                viewModel.fetchEvents(time: Int(updateTime.startTime.timeIntervalSince1970),
+                viewModel.fetchEvents(time: 0,
                                       notificationMessageID: self.viewModel.notificationMessageID) { [weak self] task, res, error in
                     self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: handleNoResultLabel, completeIsFetch: completeIsFetch)
                 }
@@ -1304,8 +1313,10 @@ extension MailboxViewController {
                 PMLog.D("\(status)")
                 if status == 0 { //time out
                     showTimeOutErrorMessage()
+                    self.hasNetworking = false
                 } else if status == 1 { //not reachable
                     showNoInternetErrorMessage()
+                    self.hasNetworking = false
                 }
             }
         }
@@ -1316,15 +1327,17 @@ extension MailboxViewController {
         case .NotReachable:
             PMLog.D("Access Not Available")
             self.showNoInternetErrorMessage()
-            
+            self.hasNetworking = false
         case .ReachableViaWWAN:
             PMLog.D("Reachable WWAN")
             self.hideTopMessage()
             self.afterNetworkChange(status: netStatus)
+            self.hasNetworking = true
         case .ReachableViaWiFi:
             PMLog.D("Reachable WiFi")
             self.hideTopMessage()
             self.afterNetworkChange(status: netStatus)
+            self.hasNetworking = true
         default:
             PMLog.D("Reachable default unknow")
         }

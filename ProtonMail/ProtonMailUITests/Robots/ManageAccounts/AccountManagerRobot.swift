@@ -53,22 +53,20 @@ class AccountManagerRobot {
     }
     
     private func swipeLeft(_ email: String) -> AccountManagerRobot {
-        Element.wait.forCellWithIdentifier(userAccountCellIdentifier(email), file: #file, line: #line).swipeLeft()
+        Element.wait.forCellWithIdentifier(userAccountCellIdentifier(email), file: #file, line: #line).longSwipe(.left)
         return AccountManagerRobot()
     }
     
     private func swipeLeftToDelete(_ email: String) -> AccountManagerRobot {
-        Element.wait.forCellWithIdentifier(loggedOutUserAccountCellIdentifier(email), file: #file, line: #line).swipeLeft()
+        Element.wait.forCellWithIdentifier(loggedOutUserAccountCellIdentifier(email), file: #file, line: #line).longSwipe(.left)
         return AccountManagerRobot()
     }
 
     private func logout() -> LogoutAccountAlertRobot {
-        Element.wait.forButtonWithIdentifier(swipeUserCellLogoutButtonIdentifier, file: #file, line: #line).tap()
         return LogoutAccountAlertRobot()
     }
 
     private func remove() -> RemoveAccountAlertRobot {
-        Element.button.tapByIdentifier(swipeUserCellDeleteButtonIdentifier)
         return RemoveAccountAlertRobot()
     }
 

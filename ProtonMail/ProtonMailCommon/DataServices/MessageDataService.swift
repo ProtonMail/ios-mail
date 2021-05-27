@@ -394,7 +394,15 @@ class MessageDataService : Service, HasLocalStorage {
                                 for message in messages {
                                     // the matedata set, mark the status
                                     message.messageStatus = 1
+                                    
+                                    if let attachments = message.attachments.allObjects as? [Attachment] {
+                                        // Add uploading files
+                                        let uploading = attachments.filter { $0.attachmentID == "0" }
+                                        let oldNum = message.numAttachments.intValue
+                                        message.numAttachments = NSNumber(integerLiteral: oldNum + uploading.count)
+                                    }
                                 }
+                                
                                 if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D(" error: \(error)")
                                 }
@@ -503,7 +511,7 @@ class MessageDataService : Service, HasLocalStorage {
                         completion?(task, responseDict, error)
                     }
                     
-                    self.cleanMessage().then { (_) -> Promise<Void> in
+                    self.cleanMessage(removeDraft: false).then { (_) -> Promise<Void> in
                         lastUpdatedStore.removeUpdateTime(by: self.userID, context: self.managedObjectContext)
                         return Promise<Void>()
                     }.ensure {
@@ -1273,7 +1281,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    fileprivate func cleanMessage() -> Promise<Void> {
+    fileprivate func cleanMessage(removeDraft: Bool = true) -> Promise<Void> {
         return Promise { seal in
             self.coreDataService.enqueue(context: self.coreDataService.mainManagedObjectContext) { (context) in
                 if #available(iOS 12, *) {
@@ -1282,17 +1290,49 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
                 fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
-                let request = NSBatchDeleteRequest(fetchRequest: fetch)
-                request.resultType = .resultTypeObjectIDs
-
-                if let result = try? context.execute(request) as? NSBatchDeleteResult,
-                   let objectIdArray = result.result as? [NSManagedObjectID] {
+                if removeDraft {
+                    let request = NSBatchDeleteRequest(fetchRequest: fetch)
+                    request.resultType = .resultTypeObjectIDs
+     
+                    if let result = try? context.execute(request) as? NSBatchDeleteResult,
+                       let objectIdArray = result.result as? [NSManagedObjectID] {
+                        let changes = [NSDeletedObjectsKey: objectIdArray]
+                        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+                    }
+                    UIApplication.setBadge(badge: 0)
+                    seal.fulfill_()
+                } else {
+                    let draftID = Message.Location.draft.rawValue
+                    let results = (try? fetch.execute()) ?? []
+                    var objectIdArray: [NSManagedObjectID] = []
+                    for obj in results {
+                        guard let message = obj as? Message else { continue }
+                        if let labels = message.labels.allObjects as? [Label],
+                           labels.contains(where: { $0.labelID == draftID }) {
+                            
+                            if let attachments = message.attachments.allObjects as? [Attachment],
+                               attachments.contains(where: { $0.attachmentID == "0" }) {
+                                // If the draft is uploading attachments, don't delete it
+                                continue
+                            } else if message.isSending {
+                                // If the draft is sending, don't delete it
+                                continue
+                            } else if let _ = UUID(uuidString: message.messageID) {
+                                // If the message ID is UUiD, means hasn't created draft, don't delete it
+                                continue
+                            }
+                            
+                        }
+                        if let dataObject = obj as? NSManagedObject {
+                            context.delete(dataObject)
+                            objectIdArray.append(dataObject.objectID)
+                        }
+                    }
                     let changes = [NSDeletedObjectsKey: objectIdArray]
                     NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+                    seal.fulfill_()
+                    return
                 }
-
-                UIApplication.setBadge(badge: 0)
-                seal.fulfill_()
             }
         }
     }

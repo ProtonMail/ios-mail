@@ -55,7 +55,7 @@ function getMessage() {
     echo "$message"
 }
 
-xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=14.4" -testPlan "$TEST_PLAN" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "$NUMBER_OF_DEVICES" -quiet test | tee xcodebuild.log | xcpretty
+xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=14.5" -testPlan "$TEST_PLAN" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "$NUMBER_OF_DEVICES" -quiet test | tee xcodebuild.log | xcpretty
 
 test_result=${PIPESTATUS[0]}
 echo "Test result: $test_result"
