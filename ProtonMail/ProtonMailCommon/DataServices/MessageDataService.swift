@@ -1486,7 +1486,18 @@ class MessageDataService : Service, HasLocalStorage {
                     
                     guard let messageID = mess["ID"] as? String else {
                         // error: not ID field in response
-                        completion?(task, nil, error)
+                        let keys = Array(mess.keys)
+                        let messageIDError = NSError.badParameter("messageID")
+                        Analytics.shared.error(message: .saveDraftError,
+                                               error: messageIDError,
+                                               extra: ["dicKeys": keys],
+                                               user: self.usersManager?.firstUser)
+                        // The error is messageID missing from the response
+                        // But this is meanless to users
+                        // I think parse error is more understandable
+                        let parseError = NSError.unableToParseResponse("messageID")
+                        NSError.alertSavingDraftError(details: parseError.localizedDescription)
+                        completion?(task, nil, parseError)
                         return
                     }
                     
@@ -1561,7 +1572,7 @@ class MessageDataService : Service, HasLocalStorage {
                     }
                 }
                 
-                if message.isDetailDownloaded && message.messageID != "0" {
+                if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
                     let addr = userManager.messageService.fromAddress(message) ?? message.cachedAddress ?? userManager.messageService.defaultAddress(message)
                     let api = UpdateDraft(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
                     self.apiService.exec(route: api) { (task, response: UpdateDraftResponse) in
@@ -2120,8 +2131,17 @@ class MessageDataService : Service, HasLocalStorage {
                                                    "HasPlainText": sendBuilder.hasPlainText,
                                                    "HasMIME": sendBuilder.hasMime,
                                                    "HasAtt": attachments.count != 0],
-                                           user: self.usersManager?.firstUser)
+                                           user: self.usersManager?.getUser(byUserId: self.userID))
                 }
+                
+                if let _ = UUID(uuidString: message.messageID) {
+                    // Draft saved failed, can't send this message
+                    let parseError = NSError(domain: APIServiceErrorDomain,
+                                             code: APIErrorCode.badParameter,
+                                             localizedDescription: "Invalid ID")
+                    throw parseError
+                }
+                
                 
                 let sendApi = SendMessage(messageID: message.messageID,
                                           expirationTime: message.expirationOffset,
@@ -2186,7 +2206,6 @@ class MessageDataService : Service, HasLocalStorage {
                 }
                 completion?(nil, nil, error)
             }.catch(policy: .allErrors) { (error) in
-                status.insert(SendStatus.exceptionCatched)
                 
                 let err = error as NSError
                 PMLog.D(error.localizedDescription)
