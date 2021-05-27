@@ -39,6 +39,10 @@ class ConversationReadRequest: Request {
         return ConversationsAPI.path + "/read"
     }
 
+    var method: HTTPMethod {
+        return .put
+    }
+
     var parameters: [String : Any]? {
         return ["IDs": conversationIDs]
     }

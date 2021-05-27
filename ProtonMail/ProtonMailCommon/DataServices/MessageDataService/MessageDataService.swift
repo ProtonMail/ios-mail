@@ -237,10 +237,8 @@ class MessageDataService : Service, HasLocalStorage {
                     }
                     
                     self.cleanMessage().then { (_) -> Promise<Void> in
-                        guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
-                            return Promise<Void>()
-                        }
-                        self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: viewMode)
+                        self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
+                        self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
                         return Promise<Void>()
                     }.ensure {
                         self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: false, completion: completionWrapper)
@@ -1028,7 +1026,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    fileprivate func cleanMessage() -> Promise<Void> {
+    func cleanMessage() -> Promise<Void> {
         return Promise { seal in
             self.coreDataService.enqueue(context: self.coreDataService.operationContext) { (context) in
                 if #available(iOS 12, *) {
@@ -2009,32 +2007,7 @@ class MessageDataService : Service, HasLocalStorage {
                                     PMLog.D(" error: \(String(describing: error))")
                                 }
                             }
-                        case IncrementalUpdateType.insert: // treat it as same as update
-                            if Conversation.conversationForConversationID(conversationEvent.ID, inManagedObjectContext: context) != nil {
-                                continue
-                            }
-                            do {
-                                if let conversationObject = try GRTJSONSerialization.object(withEntityName: Conversation.Attributes.entityName, fromJSONDictionary: conversationEvent.conversation, in: context) as? Conversation {
-                                    conversationObject.userID = self.userID
-                                }
-                                error = context.saveUpstreamIfNeeded()
-                                if error != nil {
-                                    Analytics.shared.error(message: .coreDataError,
-                                                           error: error!,
-                                                           extra: [Analytics.Reason.status: "Insert"],
-                                                           user: self.parent)
-                                    PMLog.D(" error: \(String(describing: error))")
-                                    conversationsNeedRefetch.append(conversationEvent.ID)
-                                }
-                            } catch {
-                                //Refetch after insert failed
-                                conversationsNeedRefetch.append(conversationEvent.ID)
-                                Analytics.shared.error(message: .grtJSONSerialization,
-                                                       error: error,
-                                                       extra: [Analytics.Reason.status: "Insert"],
-                                                       user: self.parent)
-                            }
-                        case IncrementalUpdateType.update_draft, IncrementalUpdateType.update_flags:
+                        case IncrementalUpdateType.update_draft, IncrementalUpdateType.update_flags, IncrementalUpdateType.insert:
                             do {
                                 var conversationData = conversationEvent.conversation
                                 conversationData["ID"] = conDict["ID"] as? String

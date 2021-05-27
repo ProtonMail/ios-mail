@@ -287,9 +287,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         FileManager.default.cleanCachedAttsLegacy()
 
-        if checkHuman() {
-            self.handleUpdateAlert()
-        }
+        checkHuman()
     }
     
     override func viewDidLayoutSubviews() {
@@ -493,7 +491,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             guard let message: Message = self.viewModel.item(index: indexPath) else {
                 return
             }
-            let viewModel = buildNewMailboxMessageViewModel(message: message)
+            let viewModel = buildNewMailboxMessageViewModel(message: message, customFolderLabels: viewModel.customFolders)
             mailboxCell.id = message.messageID
             mailboxCell.cellDelegate = self
             messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
@@ -504,9 +502,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
             configureSwipeAction(mailboxCell, indexPath: indexPath, message: message)
         case .conversation:
-            guard let _ = self.viewModel.itemOfConversation(index: indexPath) else {
+            guard let conversation = self.viewModel.itemOfConversation(index: indexPath) else {
                 return
             }
+            let viewModel = buildNewMailboxMessageViewModel(conversation: conversation, customFolderLabels: viewModel.customFolders)
+            mailboxCell.id = conversation.conversationID
+            mailboxCell.cellDelegate = self
+            messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
+
+            // TODO: swipe action
         }
     }
 
@@ -795,82 +799,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         forceRefreshAllMessages()
     }
     
-    private func fetchNewMessage() {
-        viewModel.fetchMessages(time: 0, forceClean: false, isUnread: self.isShowingUnreadMessageOnly) { (task, res, error) in
-            self.showNoResultLabel()
-        }
-        
-//        viewModel.fetchConversations() { task, res, error  in
-//            switch result {
-//            case .success(let conversationIDs):
-//                let conversationID = conversationIDs.first!
-//                self.viewModel.fetchConversationDetail(converstaionID: conversationID) { result in
-//                    switch result {
-//                    case .success(let msgIDs):
-//                        print(msgIDs)
-//                    case .failure(let error):
-//                        print(error)
-//                    }
-//                }
-                
-//                self.viewModel.markConversationAsUnread(conversationIDs: [conversationIDs.first!], currentLabelID: "0") { (result) in
-//                    switch result {
-//                    case .success(let result):
-//                        print(result)
-//                    case .failure(let error):
-//                        print(error)
-//                    }
-//                }
-//                self.viewModel.markConversationAsRead(conversationIDs: [conversationIDs.first!]) { (result) in
-//                    switch result {
-//                    case .success(let result):
-//                        print(result)
-//                    case .failure(let error):
-//                        print(error)
-//                    }
-//                }
-//                self.viewModel.fetchConversationCount { (result) in
-//                    switch result {
-//                    case .success(let counts):
-//                        print(counts)
-//                    case .failure(let error):
-//                        print(error)
-//                    }
-//                }
-                
-//                self.viewModel.labelConversations(conversationIDs: [conversationIDs.first!], labelID: Message.Location.starred.rawValue) { (result) in
-//                    switch result {
-//                    case .success(let result):
-//                        print(result)
-//                    case .failure(let error):
-//                        print(error)
-//                    }
-//                }
-                
-//                self.viewModel.unlabelConversations(conversationIDs: [conversationIDs.first!], labelID: Message.Location.starred.rawValue) { (result) in
-//                    switch result {
-//                    case .success(let result):
-//                        print(result)
-//                    case .failure(let error):
-//                        print(error)
-//                    }
-//                }
-//
-//                self.viewModel.deleteConversations(conversationIDs: [conversationIDs.first!], labelID: "3") { (result) in
-//                    switch result {
-//                    case .success(let result):
-//                        print(result)
-//                    case .failure(let error):
-//                        print(error)
-//                    }
-//                }
-                
-//            case .failure(let error):
-//                break
-//            }
-//        }
-    }
-    
     @objc private func goTroubleshoot() {
         self.coordinator?.go(to: .troubleShoot)
     }
@@ -978,7 +906,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 }
             } else {// this new
                 if !viewModel.isEventIDValid() { //if event id is not valid reset
-                    viewModel.fetchMessageWithReset(time: 0) { [weak self] task, res, error in
+                    viewModel.fetchDataWithReset(time: 0) { [weak self] task, res, error in
                         self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: handleNoResultLabel, completeIsFetch: completeIsFetch)
                     }
                 }
@@ -998,7 +926,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     private func forceRefreshAllMessages() {
         stopAutoFetch()
-        viewModel.fetchMessageOnlyWithReset(time: 0) { [weak self] task, res, error in
+        viewModel.fetchDataOnlyWithReset(time: 0) { [weak self] task, res, error in
             self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: true, completeIsFetch: nil)
             self?.startAutoFetch()
         }
@@ -1058,8 +986,20 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.messageTapped = status
         }
     }
+
+    private func tapped(at indexPath: IndexPath) {
+        switch viewModel.viewMode {
+        case .singleMessage:
+            if let message = viewModel.item(index: indexPath) {
+                tappedMessage(message)
+            }
+        case .conversation:
+            // TODO: navigate to conversation view
+            break
+        }
+    }
     
-    private func tappedMassage(_ message: Message) {
+    private func tappedMessage(_ message: Message) {
         if getTapped() == false {
             guard viewModel.isDrafts() || message.draft else {
                 self.coordinator?.go(to: .details)
@@ -1230,16 +1170,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             search.user = self.viewModel.user
         }
         super.prepare(for: segue, sender: sender)
-    }
-    
-    private func handleUpdateAlert() {
-        if self.viewModel.shouldShowUpdateAlert() {
-            let alertVC = UIAlertController(title: LocalString._ios10_update_title, message: LocalString._ios10_update_body, preferredStyle: .alert)
-            alertVC.addOKAction { (_) in
-                self.viewModel.setiOS10AlertIsShown()
-            }
-            self.present(alertVC, animated: true, completion: nil)
-        }
     }
     
     private func retry(delay: Double = 0) {
@@ -1928,11 +1858,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 extension MailboxViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let current = self.viewModel.item(index: indexPath) else {
-            return
-        }
-        
-        if let updateTime = viewModel.lastUpdateTime(), let currentTime = current.time {
+        if let updateTime = viewModel.lastUpdateTime(), let currentTime = viewModel.getTimeOfItem(at: indexPath) {
             
             let endTime = self.isShowingUnreadMessageOnly ? updateTime.unreadEndTime : updateTime.endTime
             let totalMessage = self.isShowingUnreadMessageOnly ? Int(updateTime.unread) : Int(updateTime.total)
@@ -2005,7 +1931,7 @@ extension MailboxViewController: UITableViewDelegate {
             self.setupNavigationTitle(true)
         } else {
             self.indexPathForSelectedRow = indexPath
-            self.tappedMassage(message)
+            self.tapped(at: indexPath)
         }
     }
 
