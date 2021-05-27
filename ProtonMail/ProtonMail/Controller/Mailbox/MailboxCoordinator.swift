@@ -225,7 +225,7 @@ class MailboxCoordinator : DefaultCoordinator {
     func go(to dest: Destination, sender: Any? = nil) {
         switch dest {
         case .details:
-            presentSingleMessageViewController()
+            viewModel.viewMode == .conversation ? presentConversation() : presentSingleMessage()
         case .newFolder:
             presentCreateFolder(type: .folder)
         case .newLabel:
@@ -259,7 +259,7 @@ class MailboxCoordinator : DefaultCoordinator {
         pendingActionAfterDismissal = nil
     }
 
-    private func presentSingleMessageViewController() {
+    private func presentSingleMessage() {
         guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
             let message = self.viewModel.item(index: indexPathForSelectedRow),
             let navigationController = viewController?.navigationController else { return }
@@ -268,6 +268,17 @@ class MailboxCoordinator : DefaultCoordinator {
             labelId: viewModel.labelID,
             message: message,
             user: viewModel.user
+        )
+        coordinator.start()
+    }
+
+    private func presentConversation() {
+        guard let navigationController = viewController?.navigationController,
+              let selectedRowIndexPath = viewController?.tableView.indexPathForSelectedRow,
+              let conversation = viewModel.itemOfConversation(index: selectedRowIndexPath) else { return }
+        let coordinator = ConversationCoordinator(
+            navigationController: navigationController,
+            conversation: conversation
         )
         coordinator.start()
     }

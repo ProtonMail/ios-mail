@@ -566,6 +566,8 @@ class LocalizedString {
     lazy var _general_create_action = NSLocalizedString("Create", comment: "top right action text")
     
     lazy var _general_ignore_action = NSLocalizedString("Ignore", comment: "Alarm action")
+
+    lazy var _general_message = NSLocalizedString("general_message", comment: "message number")
     
     /// "iOS 10 update error title"
     lazy var _ios10_update_title = NSLocalizedString("OS compatibility", comment: "The title of the iOS 10 upgrate alert")

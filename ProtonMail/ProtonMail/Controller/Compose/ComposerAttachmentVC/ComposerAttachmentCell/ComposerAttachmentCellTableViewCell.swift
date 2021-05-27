@@ -48,7 +48,14 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         self.containerView.layer.borderColor = UIColorManager.IconDisabled.cgColor
     }
 
-    func config(objectID: String, name: String, size: Int, mime: String, isUploading: Bool, delegate: ComposerAttachmentCellDelegate?) {
+    func config(
+        objectID: String,
+        name: String,
+        size: Int,
+        mime: String,
+        isUploading: Bool,
+        delegate: ComposerAttachmentCellDelegate?
+    ) {
         self.objectID = objectID
         self.deleteButton.tintColor = UIColorManager.IconNorm
         self.delegate = delegate
@@ -66,8 +73,8 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         isUploading ? self.activityIndicator.startAnimating(): self.activityIndicator.stopAnimating()
     }
 
-    @IBAction
-    private func clickDeleteButton(_ sender: Any) {
+    @IBAction private func clickDeleteButton(_ sender: Any) {
         self.delegate?.clickDeleteButton(for: self.objectID)
     }
+
 }

@@ -98,7 +98,7 @@ class SingleMessageViewModel {
     }
 
     var messageTitle: NSAttributedString {
-        message.title.apply(style: .titleAttributes)
+        message.title.apply(style: FontManager.MessageHeader.alignment(.center))
     }
 
     func viewDidLoad() {
@@ -323,25 +323,6 @@ private extension MessageDataService {
 
     func fetchMessage(messageId: String) -> Message? {
         fetchMessages(withIDs: .init(array: [messageId]), in: CoreDataService.shared.mainContext).first
-    }
-
-}
-
-private extension Dictionary where Key == NSAttributedString.Key, Value == Any {
-
-    static var titleAttributes: [Key: Value] {
-        let font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.17
-        paragraphStyle.lineBreakMode = .byTruncatingTail
-        paragraphStyle.alignment = .center
-
-        return [
-            .kern: 0.35,
-            .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
-            .paragraphStyle: paragraphStyle
-        ]
     }
 
 }

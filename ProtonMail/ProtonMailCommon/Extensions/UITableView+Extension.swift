@@ -62,11 +62,23 @@ extension UITableView {
     }
 }
 
-
-
 extension UITableView {
     
     func RegisterCell(_ cellID : String) {
         self.register(UINib(nibName: cellID, bundle: nil), forCellReuseIdentifier: cellID)
     }
+
+
+    func dequeue<T: UITableViewCell>(cellType: T.Type) -> T {
+        guard let cell = dequeueReusableCell(withIdentifier: cellType.reuseIdentifier) as? T else {
+            fatalError("Could not dequeue cell with reuse identifier: \(cellType.reuseIdentifier)")
+        }
+
+        return cell
+    }
+
+    func register<T: UITableViewCell>(cellType: T.Type) {
+        register(cellType, forCellReuseIdentifier: cellType.reuseIdentifier)
+    }
+
 }

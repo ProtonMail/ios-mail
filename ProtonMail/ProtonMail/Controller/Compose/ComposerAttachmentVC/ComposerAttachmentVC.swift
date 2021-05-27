@@ -29,8 +29,7 @@ protocol ComposerAttachmentVCDelegate: AnyObject {
 final class ComposerAttachmentVC: UIViewController {
 
     private var tableView: UITableView?
-    @objc dynamic
-    private(set) var tableHeight: CGFloat = 0
+    @objc dynamic private(set) var tableHeight: CGFloat = 0
     private(set) var datas: [Attachment] = []
     private weak var delegate: ComposerAttachmentVCDelegate?
     private let queue: OperationQueue = {
@@ -171,7 +170,8 @@ extension ComposerAttachmentVC {
         self.queue.addOperation {
             guard let objectID = noti.userInfo?["objectID"] as? String,
                   let attachmentID = noti.userInfo?["attachmentID"] as? String,
-                  let index = self.datas.firstIndex(where: { $0.objectID.uriRepresentation().absoluteString == objectID }) else {
+                  let index = self.datas
+                    .firstIndex(where: { $0.objectID.uriRepresentation().absoluteString == objectID }) else {
                 return
             }
             let attachment = self.datas[index]

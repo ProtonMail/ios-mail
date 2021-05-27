@@ -20,9 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import SwipyCell
 import UIKit
-import ProtonCore_UIFoundations
 
 protocol NewMailboxMessageCellDelegate: AnyObject {
     func didSelectButtonStatusChange(id: String?)
