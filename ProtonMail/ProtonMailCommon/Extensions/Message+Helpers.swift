@@ -146,6 +146,7 @@ extension Message {
     func displaySender(_ replacingEmails: [Email]) -> String {
         guard let sender = senderContactVO else {
             assert(false, "Sender with no name or address")
+            return ""
         }
 
         // will this be deadly slow?
