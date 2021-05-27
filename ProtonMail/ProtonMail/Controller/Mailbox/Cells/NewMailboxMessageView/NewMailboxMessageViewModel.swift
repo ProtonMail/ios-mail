@@ -23,8 +23,6 @@
 struct NewMailboxMessageViewModel {
     let location: Message.Location?
     let isLabelLocation: Bool
-    let messageLocation: Message.Location?
-    let isCustomFolderLocation: Bool
     let style: NewMailboxMessageViewStyle
     let initial: NSAttributedString
     let isRead: Bool
@@ -37,4 +35,6 @@ struct NewMailboxMessageViewModel {
     let isStarred: Bool
     let hasAttachment: Bool
     let tags: [TagViewModel]
+    let messageCount: Int
+    var folderIcons: [UIImage]
 }

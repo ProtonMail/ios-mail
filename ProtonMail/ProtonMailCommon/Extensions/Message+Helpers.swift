@@ -120,7 +120,7 @@ extension Message {
     func isLabelLocation(labelId: String) -> Bool {
         labels
             .compactMap { $0 as? Label }
-            .filter { !$0.exclusive }
+            .filter { $0.type.intValue == 1 }
             .map(\.labelID)
             .filter { Message.Location(rawValue: $0) == nil }
             .contains(labelId)
@@ -141,6 +141,30 @@ extension Message {
             .compactMap { $0 as? Label }
             .filter { $0.type == 1 }
             .sorted(by: { $0.order.intValue < $1.order.intValue })
+    }
+
+    func displaySender(_ replacingEmails: [Email]) -> String {
+        guard let sender = senderContactVO else {
+            assert(false, "Sender with no name or address")
+        }
+
+        // will this be deadly slow?
+        let email = replacingEmails.first { $0.email == sender.email }
+        if let contact = email?.contact {
+            return contact.name
+        }
+
+        return sender.name.isEmpty ? sender.email : sender.name
+    }
+
+    func allEmailAddresses(_ replacingEmails: [Email]) -> String {
+        let lists: [String] = self.allEmails.map { address in
+            replacingEmails.first(where: { $0.email == address })?.name ?? address
+        }
+        if lists.isEmpty {
+            return ""
+        }
+        return lists.joined(separator: ", ")
     }
 
 }

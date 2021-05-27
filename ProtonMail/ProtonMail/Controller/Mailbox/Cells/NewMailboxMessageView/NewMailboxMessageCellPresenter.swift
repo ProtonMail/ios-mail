@@ -86,24 +86,38 @@ class NewMailboxMessageCellPresenter {
 
         view.draftImageView.isHidden = viewModel.location != .draft
 
+        let colorForCount = viewModel.isRead ? FontManager.OverlineSemiBoldTextWeak : FontManager.OverlineSemiBoldText
+        let count = viewModel.messageCount > 1 ? "\(viewModel.messageCount)".apply(style: colorForCount) : nil
+        view.messageCountLabel.isHidden = count == nil
+        view.messageCountLabel.attributedText = count
+        view.messageCountLabel.layer.borderColor = viewModel.isRead ?
+            UIColorManager.TextWeak.cgColor : UIColorManager.TextNorm.cgColor
+
         if viewModel.displayOriginIcon {
-            let isOriginHidden = viewModel.messageLocation?.originImage == nil && !viewModel.isCustomFolderLocation
-            view.originImageView.isHidden = isOriginHidden
-            let originImage = viewModel.isCustomFolderLocation ?
-                Asset.mailCustomFolder.image : viewModel.messageLocation?.originImage
-            view.originImageView.image = originImage
-            view.originImageView.tintColor = viewModel.isRead ? UIColorManager.IconWeak : UIColorManager.IconNorm
+            viewModel.folderIcons.forEach { image in
+                addOriginalImage(image, isRead: viewModel.isRead, in: view)
+            }
         } else {
-            view.originImageView.isHidden = true
+            view.removeOriginImages()
         }
     }
 
+    private func addOriginalImage(_ image: UIImage, isRead: Bool, in view: NewMailboxMessageContentView) {
+        view.originalImagesStackView.addArrangedSubview(makeOriginalImageView(image, isRead: isRead))
+    }
+
+    private func makeOriginalImageView(_ image: UIImage, isRead: Bool) -> UIImageView {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = image
+        imageView.tintColor = isRead ? UIColorManager.IconWeak : UIColorManager.IconNorm
+        return imageView
+    }
 }
 
 extension NewMailboxMessageViewModel {
-
     var displayOriginIcon: Bool {
-        location == .allmail || location == .starred || isLabelLocation || location == nil
+        location == .allmail || location == .starred || isLabelLocation
     }
 
 }

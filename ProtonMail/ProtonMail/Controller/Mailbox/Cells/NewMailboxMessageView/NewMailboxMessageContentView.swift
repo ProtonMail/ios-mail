@@ -31,7 +31,6 @@ class NewMailboxMessageContentView: UIView {
     let replyAllImageView = SubviewsFactory.replyAllImageView
     let forwardImageView = SubviewsFactory.forwardImageView
     let draftImageView = SubviewsFactory.draftImageView
-    let originImageView = SubviewsFactory.originImageView
     let senderLabel = SubviewsFactory.senderLabel
     let timeLabel = UILabel(frame: .zero)
     let secondLineStackView = SubviewsFactory.horizontalStackView
@@ -39,6 +38,8 @@ class NewMailboxMessageContentView: UIView {
     let attachmentImageView = SubviewsFactory.attachmentImageView
     let starImageView = SubviewsFactory.startImageView
     let tagsView = SingleRowTagsView()
+    let messageCountLabel = SubviewsFactory.messageCountLabel
+    let originalImagesStackView = SubviewsFactory.horizontalStackView
 
     init() {
         super.init(frame: .zero)
@@ -54,6 +55,11 @@ class NewMailboxMessageContentView: UIView {
         contentStackView.removeArrangedSubview(tagsView)
     }
 
+    func removeOriginImages() {
+        originalImagesStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
+        originalImagesStackView.addArrangedSubview(SubviewsFactory.selfHuggedView())
+    }
+
     private func addSubviews() {
         addSubview(contentStackView)
 
@@ -67,8 +73,10 @@ class NewMailboxMessageContentView: UIView {
         firstLineStackView.addArrangedSubview(StackViewContainer(view: timeLabel, bottom: -2))
 
         contentStackView.addArrangedSubview(secondLineStackView)
-        secondLineStackView.addArrangedSubview(originImageView)
+        secondLineStackView.addArrangedSubview(originalImagesStackView)
+        originalImagesStackView.addArrangedSubview(SubviewsFactory.selfHuggedView())
         secondLineStackView.addArrangedSubview(StackViewContainer(view: titleLabel, bottom: -2))
+        secondLineStackView.addArrangedSubview(messageCountLabel)
         secondLineStackView.addArrangedSubview(UIView())
         secondLineStackView.addArrangedSubview(attachmentImageView)
         secondLineStackView.addArrangedSubview(starImageView)
@@ -89,12 +97,14 @@ class NewMailboxMessageContentView: UIView {
             view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         }
 
+        [messageCountLabel.heightAnchor.constraint(equalToConstant: 20.0)].activate()
+
         [
+            originalImagesStackView,
             timeLabel,
             replyImageView,
             forwardImageView,
             draftImageView,
-            originImageView,
             attachmentImageView,
             starImageView
         ].forEach { view in
@@ -167,11 +177,25 @@ private enum SubviewsFactory {
         return imageView
     }
 
-    private static func imageView(_ image: UIImage) -> UIImageView {
+    static func imageView(_ image: UIImage) -> UIImageView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
         return imageView
     }
 
+    static func selfHuggedView() -> UIView {
+        let view = UIView()
+        view.setContentHuggingPriority(.required, for: .horizontal)
+        [view.widthAnchor.constraint(equalToConstant: 0)].activate()
+        return view
+    }
+
+    static var messageCountLabel: PaddingLabel {
+        let label = PaddingLabel(withInsets: 0, 0, 6, 6)
+        label.layer.cornerRadius = 3
+        label.layer.borderWidth = 1
+        label.layer.borderColor = UIColorManager.TextNorm.cgColor
+        return label
+    }
 }

@@ -88,9 +88,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         
         //new value to check new messages
         static let newMessageFromNotification = "new_message_from_notification"
-        
-        //check if the iOS 10 alert is shown
-        static let iOS10AlertIsShown = "ios_10_alert_is_shown"
 
         static let leftToRightSwipeAction = "leftToRightSwipeAction"
         static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
@@ -143,26 +140,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
             setValue(newValue, forKey: Key.combineContactFlag)
         }
     }
-    
-    var iOS10AlertIsShown: Bool {
-        get {
-            if getShared().object(forKey: Key.iOS10AlertIsShown) == nil {
-                return false
-            }
-            return getShared().bool(forKey: Key.iOS10AlertIsShown)
-        }
-        set {
-            setValue(newValue, forKey: Key.iOS10AlertIsShown)
-        }
-    }
-//    var neverShowDohWarning: Bool {
-//        get {
-//            return getShared().bool(forKey: Key.dohWarningAsk)
-//        }
-//        set {
-//            setValue(newValue, forKey: Key.dohWarningAsk)
-//        }
-//    }
     
     struct CoderKey {//Conflict with Key object
            static let mailboxPassword           = "UsersManager.AtLeastoneLoggedIn"

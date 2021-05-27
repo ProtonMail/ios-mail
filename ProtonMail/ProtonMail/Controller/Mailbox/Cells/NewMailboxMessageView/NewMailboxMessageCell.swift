@@ -69,8 +69,8 @@ class NewMailboxMessageCell: SwipyCell {
         customView.messageContentView.starImageView.isHidden = false
         customView.messageContentView.titleLabel.attributedText = nil
         customView.messageContentView.draftImageView.isHidden = false
-        customView.messageContentView.originImageView.isHidden = false
-        customView.messageContentView.originImageView.image = nil
+        customView.messageContentView.removeOriginImages()
+        customView.messageContentView.messageCountLabel.isHidden = false
     }
 
     func startUpdateExpiration() {

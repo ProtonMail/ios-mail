@@ -115,7 +115,7 @@ extension MailboxViewModel {
     func handleBarActions(_ action: ActionTypes, selectedIDs: NSMutableSet) {
         switch action {
         case .archive:
-            self.move(IDs: selectedIDs, to: Message.Location.archive.rawValue)
+            self.move(IDs: selectedIDs, from: labelID, to: Message.Location.archive.rawValue)
         case .readUnread:
             //if all unread -> read
             //if all read -> unread
@@ -123,7 +123,7 @@ extension MailboxViewModel {
             let isAnyReadMessage = checkToUseReadOrUnreadAction(messageIDs: selectedIDs, labelID: labelID)
             self.mark(IDs: selectedIDs, unread: isAnyReadMessage)
         case .trash:
-            self.move(IDs: selectedIDs, to: Message.Location.trash.rawValue)
+            self.move(IDs: selectedIDs, from: labelID, to: Message.Location.trash.rawValue)
         case .delete:
             self.delete(IDs: selectedIDs)
         case .spam:
