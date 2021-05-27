@@ -219,6 +219,15 @@ class UserManager : Service, HasLocalStorage {
     func save() {
         self.delegate?.onSave(userManger: self)
     }
+    
+    func fetchUserInfo() {
+        _ = self.userService.fetchUserInfo(auth: self.auth).done { [weak self] info in
+            guard let info = info else { return }
+            self?.userinfo = info
+            self?.save()
+        }
+    }
+
 }
 
 extension UserManager : AuthDelegate {
