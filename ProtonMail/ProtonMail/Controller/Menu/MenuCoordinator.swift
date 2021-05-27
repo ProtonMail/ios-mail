@@ -372,8 +372,8 @@ extension MenuCoordinator {
         guard let user = self.vm.currentUser else { return }
         // The add button is shown when the labels data is empty
         // So just send empty array is fine
-        let vm = NEWLabelEditViewModel(user: user, label: nil, type: type, labels: [])
-        let vc = NEWLabelEditViewController.instance()
+        let vm = LabelEditViewModel(user: user, label: nil, type: type, labels: [])
+        let vc = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: self.services,
                                                viewController: vc,
                                                viewModel: vm)

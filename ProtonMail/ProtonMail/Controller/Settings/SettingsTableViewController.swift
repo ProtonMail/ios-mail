@@ -46,7 +46,6 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     ///
     var setting_headers : [SettingSections]              = [.general,
                                                             .protection,
-                                                            .labels,
                                                             .multiDomain,
                                                             .swipeAction,
                                                             .language,
@@ -193,8 +192,6 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 return setting_protection_items.count
             case .language:
                 return 1
-            case .labels:
-                return setting_labels_items.count
             case .network:
                 return setting_network_items.count
             }
@@ -388,14 +385,6 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     }
-                }
-            case .labels:
-                if setting_labels_items.count > indexPath.row {
-                    let label_item = setting_labels_items[indexPath.row]
-                    let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
-                    cell.configCell(label_item.description, right: "")
-                    cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
-                    cellout = cell
                 }
             case .multiDomain:
                 if setting_addresses_items.count > indexPath.row {
@@ -750,8 +739,6 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 }
             case .swipeAction:
                 break
-            case .labels:
-                self.coordinator?.go(to: .lableManager)
             case .language:
                 #if targetEnvironment(simulator)
                 self.inAppLanguage(indexPath)
