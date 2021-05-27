@@ -646,7 +646,7 @@ extension MessageDataService {
         let api = ApplyLabelToMessages(labelID: labelID, messages: messageIDs)
         // rebase TODO: need review
         self.apiService.exec(route: api) { [weak self](task, response: Response) in
-            self?.fetchEvents(labelID: labelID)
+            self?.parent?.eventsService.fetchEvents(labelID: labelID)
             completion?(task, nil, response.error?.toNSError)
         }
     }
@@ -660,7 +660,7 @@ extension MessageDataService {
         let api = RemoveLabelFromMessages(labelID: labelID, messages: messageIDs)
         // rebase TODO: need review
         self.apiService.exec(route: api) { [weak self] (task, response: Response) in
-            self?.fetchEvents(labelID: labelID)
+            self?.parent?.eventsService.fetchEvents(labelID: labelID)
             completion?(task, nil, response.error?.toNSError)
         }
     }
@@ -682,7 +682,7 @@ extension MessageDataService {
     private func updateLabel(labelID: String, name: String, color: String, completion: CompletionBlock?) {
         let api = UpdateLabelRequest(id: labelID, name: name, color: color)
         self.apiService.exec(route: api) { [weak self] (task, response: Response) in
-            self?.fetchEvents(labelID: labelID)
+            self?.parent?.eventsService.fetchEvents(labelID: labelID)
             completion?(task, nil, response.error?.toNSError)
         }
     }

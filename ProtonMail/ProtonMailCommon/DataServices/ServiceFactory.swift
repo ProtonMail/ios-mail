@@ -49,8 +49,6 @@ let sharedServices: ServiceFactory = {
     helper.add(AddressBookService.self, for: AddressBookService())
     helper.add(BugDataService.self, for: BugDataService(api: PMAPIService.unauthorized))
     
-    // event service
-    helper.add(EventsService.self, for: EventsService())
     #endif
     
     return helper

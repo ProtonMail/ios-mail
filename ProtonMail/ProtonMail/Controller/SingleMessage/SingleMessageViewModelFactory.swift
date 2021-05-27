@@ -48,12 +48,14 @@ class SingleMessageViewModelFactory {
         let unsubscribeService = UnsubscribeService(
             labelId: labelId,
             apiService: user.apiService,
-            messageDataService: user.messageService
+            messageDataService: user.messageService,
+            eventsService: user.eventsService
         )
         let markLegitimateService = MarkLegitimateService(
             labelId: labelId,
             apiService: user.apiService,
-            messageDataService: user.messageService
+            messageDataService: user.messageService,
+            eventsService: user.eventsService
         )
         return .init(
             message: message,

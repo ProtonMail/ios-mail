@@ -197,6 +197,11 @@ class UserManager : Service, HasLocalStorage {
         return service
     }()
     
+    public lazy var eventsService: EventsService = { [unowned self] in
+        let service = EventsService(userManager: self)
+        return service
+    }()
+    
     private var lastUpdatedStore: LastUpdatedStoreProtocol {
         return sharedServices.get(by: LastUpdatedStore.self)
     }
