@@ -22,7 +22,6 @@
 
 import Foundation
 
-
 protocol SettingsGestureViewModel: AnyObject {
     var settingSwipeActionItems: [SwipeActionItems] { get set }
     var settingSwipeActions: [SwipeActionSettingType] { get set }

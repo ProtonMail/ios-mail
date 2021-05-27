@@ -85,7 +85,7 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
         } else if newpwd.count < 8 {
             complete(false, UpdatePasswordError.minimumLengthError.error)
         } else if newpwd != confirmpwd {
-            complete(false, UpdatePasswordError.newNotMatch.error);
+            complete(false, UpdatePasswordError.newNotMatch.error)
         } else {
             self.userManager.userService.updatePassword(auth: userManager.auth,
                                                         user: userManager.userInfo,

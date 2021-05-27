@@ -1993,6 +1993,15 @@ extension MailboxViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch viewModel.viewMode {
+        case .singleMessage:
+            handleMessageSelection(indexPath: indexPath)
+        case .conversation:
+            handleConversationSelection(indexPath: indexPath)
+        }
+    }
+
+    private func handleMessageSelection(indexPath: IndexPath) {
         guard let message = viewModel.item(index: indexPath) else { return }
         if listEditing {
             let messageAlreadySelected = self.viewModel.selectionContains(id: message.messageID)
@@ -2021,6 +2030,11 @@ extension MailboxViewController: UITableViewDelegate {
             self.indexPathForSelectedRow = indexPath
             self.tappedMassage(message)
         }
+    }
+
+    private func handleConversationSelection(indexPath: IndexPath) {
+        guard viewModel.itemOfConversation(index: indexPath) != nil else { return }
+        self.coordinator?.go(to: .details)
     }
 
 }

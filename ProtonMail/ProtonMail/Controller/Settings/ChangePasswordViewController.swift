@@ -21,8 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 class ChangePasswordViewController: UIViewController {
 

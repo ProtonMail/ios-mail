@@ -382,7 +382,8 @@ class MailboxViewModel: StorageLimit {
         guard rows > index.row else {
             return nil
         }
-        return fetchedResultsController?.object(at: index) as? Conversation
+        let contextLabel = fetchedResultsController?.object(at: index) as? ContextLabel
+        return contextLabel?.conversations.allObjects.first as? Conversation
     }
     
     // MARK: - operations

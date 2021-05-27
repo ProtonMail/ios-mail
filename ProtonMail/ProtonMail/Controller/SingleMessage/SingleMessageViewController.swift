@@ -21,8 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import SafariServices
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 class SingleMessageViewController: UIViewController, UIScrollViewDelegate, ComposeSaveHintProtocol {
 

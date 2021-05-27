@@ -83,9 +83,11 @@ extension SingleMessageViewController: RecipientViewDelegate {
     func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol) {}
     func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol) {}
 
-    func recipientView(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
+    func recipientView(
+        lockCheck model: ContactPickerModelProtocol,
+        progress: () -> Void,
+        complete: LockCheckComplete?) {
         self.viewModel.nonExapndedHeaderViewModel?.lockIcon(complete: complete)
     }
 
 }
-
