@@ -28,17 +28,18 @@ class MarkLegitimateService {
     private let labelId: String
     private let apiService: APIService
     private let messageDataService: MessageDataService
-
-    init(labelId: String, apiService: APIService, messageDataService: MessageDataService) {
+    private let eventsService: EventsService
+    init(labelId: String, apiService: APIService, messageDataService: MessageDataService, eventsService: EventsService) {
         self.labelId = labelId
         self.apiService = apiService
         self.messageDataService = messageDataService
+        self.eventsService = eventsService
     }
 
     func markAsLegitimate(messageId: String) {
         _ = apiService.exec(route: MarkLegitimate(messageId: messageId))
             .done { [weak self, labelId] _ in
-                self?.messageDataService.fetchEvents(labelID: labelId)
+                self?.eventsService.fetchEvents(labelID: labelId)
             }
     }
 

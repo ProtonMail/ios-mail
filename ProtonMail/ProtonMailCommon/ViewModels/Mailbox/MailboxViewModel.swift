@@ -85,7 +85,7 @@ class MailboxViewModel: StorageLimit {
         self.labelID = labelID
         self.user = userManager
         self.messageService = userManager.messageService
-        self.eventsService = ServiceFactory.default.get(by: EventsService.self)
+        self.eventsService = userManager.eventsService
         self.contactService = userManager.contactService
         self.coreDataService = coreDataService
         self.pushService = pushService
@@ -182,7 +182,7 @@ class MailboxViewModel: StorageLimit {
                 
                 if let updateTime = self.lastUpdatedStore.lastUpdate(by: self.labelID, userID: secondUser.userInfo.userId, context: self.coreDataService.mainContext, type: .singleMessage),
                    updateTime.isNew == false, secondUser.messageService.isEventIDValid(context: self.coreDataService.mainContext) {
-                    secondUser.messageService.fetchEvents(byLabel: self.labelID,
+                    secondUser.eventsService.fetchEvents(byLabel: self.labelID,
                                                           notificationMessageID: nil,
                                                           completion: secondComplete)
                 } else {// this new
@@ -531,6 +531,48 @@ class MailboxViewModel: StorageLimit {
     func emptyFolder() {
         
     }
+    
+    func fetchConversationDetail(converstaionID: String, completion: ((Result<[String], Error>) -> Void)?) {
+        messageService.fetchConversationDetail(by: converstaionID, completion: completion)
+    }
+    
+    func markConversationAsUnread(conversationIDs: [String], currentLabelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
+        messageService.markConversationAsUnread(by: conversationIDs, currentLabelID: currentLabelID, completion: completion)
+    }
+    
+    func markConversationAsRead(conversationIDs: [String], completion: ((Result<Bool, Error>) -> Void)?) {
+        messageService.markConversationAsRead(by: conversationIDs, completion: completion)
+    }
+    
+    func fetchConversationCount(completion: ((Result<[ConversationCountData], Error>) -> Void)?) {
+        messageService.fetchConversationsCount(completion: completion)
+    }
+    
+    func labelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
+        messageService.labelConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
+    }
+    
+    func unlabelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
+        messageService.unlabelConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
+    }
+    
+    func deleteConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
+        messageService.deleteConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
+    }
+    
+    /// fetch messages and reset events
+    ///
+    /// - Parameters:
+    ///   - time: the latest mailbox cached time
+    ///   - completion: aync complete handler
+    func fetchMessageWithReset(time: Int, completion: CompletionBlock?) {
+        messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
+    }
+    
+    func fetchMessageOnlyWithReset(time: Int, completion: CompletionBlock?) {
+        messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
+    }
+    
     func isEventIDValid() -> Bool {
         return messageService.isEventIDValid(context: self.coreDataService.mainContext)
     }
@@ -734,7 +776,7 @@ class MailboxViewModel: StorageLimit {
 // MARK: - Data fethching methods
 extension MailboxViewModel {
     func fetchEvents(time: Int, notificationMessageID:String?, completion: CompletionBlock?) {
-        messageService.fetchEvents(byLabel: self.labelID,
+        eventsService.fetchEvents(byLabel: self.labelID,
                                    notificationMessageID: notificationMessageID,
                                    completion: completion)
     }
