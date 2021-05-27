@@ -82,6 +82,7 @@ final class ComposerAttachmentVC: UIViewController {
     }
 
     func removeNotificationObserver() {
+        // swiftlint:disable:next notification_center_detachment
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -102,6 +103,7 @@ final class ComposerAttachmentVC: UIViewController {
             let attachments = attachments
                 .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) }
 
+            // swiftlint:disable:next todo
             // FIXME: insert function for better UX
             // the insert function could break in the concurrency
             self.datas += attachments
@@ -201,7 +203,8 @@ extension ComposerAttachmentVC: UITableViewDataSource, UITableViewDelegate, Comp
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellID = ComposerAttachmentCellTableViewCell.defaultID()
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? ComposerAttachmentCellTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
+                as? ComposerAttachmentCellTableViewCell else {
             return ComposerAttachmentCellTableViewCell()
         }
 

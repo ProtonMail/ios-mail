@@ -245,7 +245,7 @@ class ComposeViewModelImpl : ComposeViewModel {
     override func updateAddressID(_ address_id: String) -> Promise<Void> {
         return Promise { seal in
             let userinfo = self.user.userInfo
-            guard let addr = userinfo.userAddresses.indexOfAddress(address_id),
+            guard let addr = userinfo.userAddresses.address(byID: address_id),
                   let key = addr.keys.first else {
                 throw RuntimeError.no_address.error
             }
@@ -436,7 +436,7 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func getCurrrentSignature(_ addr_id : String) -> String? {
-        if let addr = self.user.userInfo.userAddresses.indexOfAddress(addr_id) {
+        if let addr = self.user.userInfo.userAddresses.address(byID: addr_id) {
             return addr.signature
         }
         return nil

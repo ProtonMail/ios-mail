@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol ComposePasswordDelegate: AnyObject {
     func apply(password: String, confirmPassword: String, hint: String)
@@ -122,7 +122,7 @@ extension ComposePasswordVC {
     private func setupNavigation() {
         self.title = LocalString._composer_set_password
 
-        // FIXME: use asset
+        // swiftlint:disable:next object_literal
         let arrowIcon = UIImage(named: "back-arrow")
         guard let backBtn = arrowIcon?.toUIBarButtonItem(target: self, action: #selector(self.clickBackButton)) else {
             return

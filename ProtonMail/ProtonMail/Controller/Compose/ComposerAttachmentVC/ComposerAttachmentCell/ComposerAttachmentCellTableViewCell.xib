@@ -21,7 +21,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C1D-ci-xg9" userLabel="containerView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
                         <subviews>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="CGX-FH-ldQ">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="CGX-FH-ldQ">
                                 <rect key="frame" x="10" y="10" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="BFn-bO-u5B"/>

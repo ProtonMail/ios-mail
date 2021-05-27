@@ -23,8 +23,8 @@
 
 import Foundation
 import Masonry
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 final class ComposeHeaderViewController: UIViewController, AccessibleView {
     private var height: NSLayoutConstraint!
