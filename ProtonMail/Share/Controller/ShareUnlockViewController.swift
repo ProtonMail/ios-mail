@@ -99,7 +99,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                     return
                 }
                 guard sharedServices.get(by: UsersManager.self).hasUsers() else {
-                    self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
+                    self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_signin_first)
                     return
                 }
                 self.loginCheck()

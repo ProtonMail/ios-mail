@@ -52,19 +52,19 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
     }
 
     public func getSectionTitle() -> String {
-        return LocalString._change_login_password
+        return LocalString._change_signin_password
     }
 
     public func getCurrentPasswordEditorTitle() -> String {
-        return LocalString._current_login_password
+        return LocalString._current_signin_password
     }
 
     public func getNewPasswordEditorTitle() -> String {
-        return LocalString._new_login_password
+        return LocalString._new_signin_password
     }
 
     public func getConfirmPasswordEditorTitle() -> String {
-        return LocalString._confirm_new_login_password
+        return LocalString._confirm_new_signin_password
     }
 
     public func needAsk2FA() -> Bool {
@@ -117,7 +117,7 @@ class ChangeMailboxPWDViewModel: ChangePasswordViewModel {
     }
 
     func getCurrentPasswordEditorTitle() -> String {
-        return LocalString._current_login_password
+        return LocalString._current_signin_password
     }
 
     func getNewPasswordEditorTitle() -> String {

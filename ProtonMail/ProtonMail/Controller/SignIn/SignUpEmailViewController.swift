@@ -79,7 +79,7 @@ class SignUpEmailViewController: UIViewController {
         displayNameNoteLabel.text = LocalString._send_an_email_this_name_that_appears_in_sender_field
         optionalTwoLabel.text = LocalString._signup_optional_text
         
-        recoveryEmailNoteLabel.text = LocalString._the_optional_recovery_email_address_allows_you_to_reset_your_login_password_if_you_forget_it
+        recoveryEmailNoteLabel.text = LocalString._the_optional_recovery_email_address_allows_you_to_reset_your_signin_password_if_you_forget_it
         checkButton.setTitle(LocalString._keep_me_updated_about_new_features, for: .normal)
         goInboxButton.setTitle(LocalString._go_to_inbox, for: .normal)
         

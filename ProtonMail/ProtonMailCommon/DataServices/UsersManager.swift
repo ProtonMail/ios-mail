@@ -493,7 +493,7 @@ extension UsersManager {
             if self.users.isEmpty {
                 return self.clean()
             } else if shouldShowAccountSwitchAlert {
-                String(format: LocalString._logout_account_switched_when_token_revoked,
+                String(format: LocalString._signout_account_switched_when_token_revoked,
                        arguments: [user.defaultEmail,
                                    self.users.first!.defaultEmail]).alertToast()
             }

@@ -160,7 +160,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     }
     
     internal func setupTextFields() {
-        signInTitle.text = LocalString._login_to_pm_act
+        signInTitle.text = LocalString._signin_to_pm_act
         usernameTextField.text = self.viewModel.username
         usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,
                                                                      attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#cecaca")])
@@ -172,7 +172,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         signInButton.layer.borderColor      = UIColor.ProtonMail.Login_Button_Border_Color.cgColor
         signInButton.alpha                  = buttonDisabledAlpha
         
-        signInButton.setTitle(LocalString._general_login, for: .normal)
+        signInButton.setTitle(LocalString._general_signin, for: .normal)
         forgotPwdButton.setTitle(LocalString._forgot_password, for: .normal)
         createNewUserButton.setTitle(LocalString._create_new_account, for: .normal)
     }
