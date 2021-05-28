@@ -24,16 +24,17 @@
 // THE SOFTWARE.
 //
 
-#import "SentryCrashMonitor_NSException.h"
 #import "SentryCrash.h"
-#include "SentryCrashID.h"
-#include "SentryCrashMonitorContext.h"
+#import "SentryCrashMonitor_NSException.h"
 #import "SentryCrashStackCursor_Backtrace.h"
+#include "SentryCrashMonitorContext.h"
+#include "SentryCrashID.h"
 #include "SentryCrashThread.h"
 #import <Foundation/Foundation.h>
 
 //#define SentryCrashLogger_LocalLevel TRACE
 #import "SentryCrashLogger.h"
+
 
 // ============================================================================
 #pragma mark - Globals -
@@ -44,7 +45,8 @@ static volatile bool g_isEnabled = 0;
 static SentryCrash_MonitorContext g_monitorContext;
 
 /** The exception handler that was in place before we installed ours. */
-static NSUncaughtExceptionHandler *g_previousUncaughtExceptionHandler;
+static NSUncaughtExceptionHandler* g_previousUncaughtExceptionHandler;
+
 
 // ============================================================================
 #pragma mark - Callbacks -
@@ -56,19 +58,19 @@ static NSUncaughtExceptionHandler *g_previousUncaughtExceptionHandler;
  * @param exception The exception that was raised.
  */
 
-static void
-handleException(NSException *exception, BOOL currentSnapshotUserReported)
-{
+static void handleException(NSException* exception, BOOL currentSnapshotUserReported) {
     SentryCrashLOG_DEBUG(@"Trapped exception %@", exception);
-    if (g_isEnabled) {
+    if(g_isEnabled)
+    {
         sentrycrashmc_suspendEnvironment();
         sentrycrashcm_notifyFatalExceptionCaptured(false);
 
         SentryCrashLOG_DEBUG(@"Filling out context.");
-        NSArray *addresses = [exception callStackReturnAddresses];
+        NSArray* addresses = [exception callStackReturnAddresses];
         NSUInteger numFrames = addresses.count;
-        uintptr_t *callstack = malloc(numFrames * sizeof(*callstack));
-        for (NSUInteger i = 0; i < numFrames; i++) {
+        uintptr_t* callstack = malloc(numFrames * sizeof(*callstack));
+        for(NSUInteger i = 0; i < numFrames; i++)
+        {
             callstack[i] = (uintptr_t)[addresses[i] unsignedLongLongValue];
         }
 
@@ -79,15 +81,14 @@ handleException(NSException *exception, BOOL currentSnapshotUserReported)
         SentryCrashStackCursor cursor;
         sentrycrashsc_initWithBacktrace(&cursor, callstack, (int)numFrames, 0);
 
-        SentryCrash_MonitorContext *crashContext = &g_monitorContext;
+        SentryCrash_MonitorContext* crashContext = &g_monitorContext;
         memset(crashContext, 0, sizeof(*crashContext));
         crashContext->crashType = SentryCrashMonitorTypeNSException;
         crashContext->eventID = eventID;
         crashContext->offendingMachineContext = machineContext;
         crashContext->registersAreValid = false;
         crashContext->NSException.name = [[exception name] UTF8String];
-        crashContext->NSException.userInfo =
-            [[NSString stringWithFormat:@"%@", exception.userInfo] UTF8String];
+        crashContext->NSException.userInfo = [[NSString stringWithFormat:@"%@", exception.userInfo] UTF8String];
         crashContext->exceptionName = crashContext->NSException.name;
         crashContext->crashReason = [[exception reason] UTF8String];
         crashContext->stackCursor = &cursor;
@@ -100,22 +101,19 @@ handleException(NSException *exception, BOOL currentSnapshotUserReported)
         if (currentSnapshotUserReported) {
             sentrycrashmc_resumeEnvironment();
         }
-        if (g_previousUncaughtExceptionHandler != NULL) {
+        if (g_previousUncaughtExceptionHandler != NULL)
+        {
             SentryCrashLOG_DEBUG(@"Calling original exception handler.");
             g_previousUncaughtExceptionHandler(exception);
         }
     }
 }
 
-static void
-handleCurrentSnapshotUserReportedException(NSException *exception)
-{
+static void handleCurrentSnapshotUserReportedException(NSException* exception) {
     handleException(exception, true);
 }
 
-static void
-handleUncaughtException(NSException *exception)
-{
+static void handleUncaughtException(NSException* exception) {
     handleException(exception, false);
 }
 
@@ -123,36 +121,40 @@ handleUncaughtException(NSException *exception)
 #pragma mark - API -
 // ============================================================================
 
-static void
-setEnabled(bool isEnabled)
+static void setEnabled(bool isEnabled)
 {
-    if (isEnabled != g_isEnabled) {
+    if(isEnabled != g_isEnabled)
+    {
         g_isEnabled = isEnabled;
-        if (isEnabled) {
+        if(isEnabled)
+        {
             SentryCrashLOG_DEBUG(@"Backing up original handler.");
             g_previousUncaughtExceptionHandler = NSGetUncaughtExceptionHandler();
 
             SentryCrashLOG_DEBUG(@"Setting new handler.");
             NSSetUncaughtExceptionHandler(&handleUncaughtException);
             SentryCrash.sharedInstance.uncaughtExceptionHandler = &handleUncaughtException;
-            SentryCrash.sharedInstance.currentSnapshotUserReportedExceptionHandler
-                = &handleCurrentSnapshotUserReportedException;
-        } else {
+            SentryCrash.sharedInstance.currentSnapshotUserReportedExceptionHandler = &handleCurrentSnapshotUserReportedException;
+        }
+        else
+        {
             SentryCrashLOG_DEBUG(@"Restoring original handler.");
             NSSetUncaughtExceptionHandler(g_previousUncaughtExceptionHandler);
         }
     }
 }
 
-static bool
-isEnabled()
+static bool isEnabled()
 {
     return g_isEnabled;
 }
 
-SentryCrashMonitorAPI *
-sentrycrashcm_nsexception_getAPI()
+SentryCrashMonitorAPI* sentrycrashcm_nsexception_getAPI()
 {
-    static SentryCrashMonitorAPI api = { .setEnabled = setEnabled, .isEnabled = isEnabled };
+    static SentryCrashMonitorAPI api =
+    {
+        .setEnabled = setEnabled,
+        .isEnabled = isEnabled
+    };
     return &api;
 }

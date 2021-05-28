@@ -24,6 +24,7 @@
 // THE SOFTWARE.
 //
 
+
 #ifndef HDR_SentryCrashObjC_h
 #define HDR_SentryCrashObjC_h
 
@@ -31,17 +32,21 @@
 extern "C" {
 #endif
 
+
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef enum {
+
+typedef enum
+{
     SentryCrashObjCTypeUnknown = 0,
     SentryCrashObjCTypeClass,
     SentryCrashObjCTypeObject,
     SentryCrashObjCTypeBlock,
 } SentryCrashObjCType;
 
-typedef enum {
+typedef enum
+{
     SentryCrashObjCClassTypeUnknown = 0,
     SentryCrashObjCClassTypeString,
     SentryCrashObjCClassTypeDate,
@@ -52,11 +57,13 @@ typedef enum {
     SentryCrashObjCClassTypeException,
 } SentryCrashObjCClassType;
 
-typedef struct {
-    const char *name;
-    const char *type;
+typedef struct
+{
+    const char* name;
+    const char* type;
     int index;
 } SentryCrashObjCIvar;
+
 
 //======================================================================
 #pragma mark - Basic Objective-C Queries -
@@ -67,14 +74,14 @@ typedef struct {
  * @param pointer The pointer to check.
  * @return true if it's a tagged pointer.
  */
-bool sentrycrashobjc_isTaggedPointer(const void *const pointer);
+bool sentrycrashobjc_isTaggedPointer(const void* const pointer);
 
 /** Check if a pointer is a valid tagged pointer.
  *
  * @param pointer The pointer to check.
  * @return true if it's a valid tagged pointer.
  */
-bool sentrycrashobjc_isValidTaggedPointer(const void *const pointer);
+bool sentrycrashobjc_isValidTaggedPointer(const void* const pointer);
 
 /** Query a pointer to see what kind of object it points to.
  * If the pointer points to a class, this method will verify that its basic
@@ -85,16 +92,15 @@ bool sentrycrashobjc_isValidTaggedPointer(const void *const pointer);
  *
  * Warning: In order to ensure that an object is both valid and accessible,
  *          always call this method on an object or class pointer (including
- *          those returned by sentrycrashobjc_isaPointer() and
- * sentrycrashobjc_superclass()) BEFORE calling any other function in this
- * module.
+ *          those returned by sentrycrashobjc_isaPointer() and sentrycrashobjc_superclass())
+ *          BEFORE calling any other function in this module.
  *
  * @param objectOrClassPtr Pointer to something that may be an object or class.
  *
- * @return The type of object, or SentryCrashObjCTypeNone if it was not an
- * object or was inaccessible.
+ * @return The type of object, or SentryCrashObjCTypeNone if it was not an object or
+ *         was inaccessible.
  */
-SentryCrashObjCType sentrycrashobjc_objectType(const void *objectOrClassPtr);
+SentryCrashObjCType sentrycrashobjc_objectType(const void* objectOrClassPtr);
 
 /** Check that an object contains valid data.
  * If the object is of a recognized type (string, date, array, etc),
@@ -106,7 +112,7 @@ SentryCrashObjCType sentrycrashobjc_objectType(const void *objectOrClassPtr);
  *
  * @return true if the object is valid.
  */
-bool sentrycrashobjc_isValidObject(const void *object);
+bool sentrycrashobjc_isValidObject(const void* object);
 
 /** Fetch the isa pointer from an object or class.
  *
@@ -114,7 +120,7 @@ bool sentrycrashobjc_isValidObject(const void *object);
  *
  * @return The isa pointer.
  */
-const void *sentrycrashobjc_isaPointer(const void *objectOrClassPtr);
+const void* sentrycrashobjc_isaPointer(const void* objectOrClassPtr);
 
 /** Fetch the super class pointer from a class.
  *
@@ -122,7 +128,7 @@ const void *sentrycrashobjc_isaPointer(const void *objectOrClassPtr);
  *
  * @return the super class.
  */
-const void *sentrycrashobjc_superClass(const void *classPtr);
+const void* sentrycrashobjc_superClass(const void* classPtr);
 
 /** Get the base class this class is derived from.
  * It will always return the highest level non-root class in the hierarchy
@@ -133,7 +139,7 @@ const void *sentrycrashobjc_superClass(const void *classPtr);
  *
  * @return The base class.
  */
-const void *sentrycrashobjc_baseClass(const void *const classPtr);
+const void* sentrycrashobjc_baseClass(const void* const classPtr);
 
 /** Check if a class is a meta class.
  *
@@ -141,7 +147,7 @@ const void *sentrycrashobjc_baseClass(const void *const classPtr);
  *
  * @return true if the class is a meta class.
  */
-bool sentrycrashobjc_isMetaClass(const void *classPtr);
+bool sentrycrashobjc_isMetaClass(const void* classPtr);
 
 /** Check if a class is a root class.
  *
@@ -149,7 +155,7 @@ bool sentrycrashobjc_isMetaClass(const void *classPtr);
  *
  * @return true if the class is a root class.
  */
-bool sentrycrashobjc_isRootClass(const void *classPtr);
+bool sentrycrashobjc_isRootClass(const void* classPtr);
 
 /** Get the name of a class.
  *
@@ -157,7 +163,7 @@ bool sentrycrashobjc_isRootClass(const void *classPtr);
  *
  * @return the name, or NULL if the name inaccessible.
  */
-const char *sentrycrashobjc_className(const void *classPtr);
+const char* sentrycrashobjc_className(const void* classPtr);
 
 /** Get the name of an object's class.
  * This also handles tagged pointers.
@@ -166,7 +172,7 @@ const char *sentrycrashobjc_className(const void *classPtr);
  *
  * @return the name, or NULL if the name is inaccessible.
  */
-const char *sentrycrashobjc_objectClassName(const void *objectPtr);
+const char* sentrycrashobjc_objectClassName(const void* objectPtr);
 
 /** Check if a class has a specific name.
  *
@@ -176,20 +182,18 @@ const char *sentrycrashobjc_objectClassName(const void *objectPtr);
  *
  * @return true if the class has the specified name.
  */
-bool sentrycrashobjc_isClassNamed(const void *const classPtr, const char *const className);
+bool sentrycrashobjc_isClassNamed(const void* const classPtr, const char* const className);
 
 /** Check if a class is of the specified type or a subclass thereof.
- * Note: This function is considerably slower than
- * sentrycrashobjc_baseClassName().
+ * Note: This function is considerably slower than sentrycrashobjc_baseClassName().
  *
  * @param classPtr Pointer to a valid class.
  *
  * @param className The class name to compare against.
  *
- * @return true if the class is of the specified type or a subclass of that
- * type.
+ * @return true if the class is of the specified type or a subclass of that type.
  */
-bool sentrycrashobjc_isKindOfClass(const void *classPtr, const char *className);
+bool sentrycrashobjc_isKindOfClass(const void* classPtr, const char* className);
 
 /** Get the number of ivars registered with a class.
  *
@@ -197,7 +201,7 @@ bool sentrycrashobjc_isKindOfClass(const void *classPtr, const char *className);
  *
  * @return The number of ivars.
  */
-int sentrycrashobjc_ivarCount(const void *classPtr);
+int sentrycrashobjc_ivarCount(const void* classPtr);
 
 /** Get information about ivars in a class.
  *
@@ -209,7 +213,7 @@ int sentrycrashobjc_ivarCount(const void *classPtr);
  *
  * @return The number of ivars copied.
  */
-int sentrycrashobjc_ivarList(const void *classPtr, SentryCrashObjCIvar *dstIvars, int ivarsCount);
+int sentrycrashobjc_ivarList(const void* classPtr, SentryCrashObjCIvar* dstIvars, int ivarsCount);
 
 /** Get ivar information by name/
  *
@@ -221,8 +225,7 @@ int sentrycrashobjc_ivarList(const void *classPtr, SentryCrashObjCIvar *dstIvars
  *
  * @return true if the operation was successful.
  */
-bool sentrycrashobjc_ivarNamed(
-    const void *const classPtr, const char *name, SentryCrashObjCIvar *dst);
+bool sentrycrashobjc_ivarNamed(const void* const classPtr, const char* name, SentryCrashObjCIvar* dst);
 
 /** Get the value of an ivar in an object.
  *
@@ -234,7 +237,7 @@ bool sentrycrashobjc_ivarNamed(
  *
  * @return true if the operation was successful.
  */
-bool sentrycrashobjc_ivarValue(const void *objectPtr, int ivarIndex, void *dst);
+bool sentrycrashobjc_ivarValue(const void* objectPtr, int ivarIndex, void* dst);
 
 /* Get the payload from a tagged pointer.
  *
@@ -242,7 +245,7 @@ bool sentrycrashobjc_ivarValue(const void *objectPtr, int ivarIndex, void *dst);
  *
  * @return the payload value.
  */
-uintptr_t sentrycrashobjc_taggedPointerPayload(const void *taggedObjectPtr);
+uintptr_t sentrycrashobjc_taggedPointerPayload(const void* taggedObjectPtr);
 
 /** Generate a description of an object.
  *
@@ -262,7 +265,7 @@ uintptr_t sentrycrashobjc_taggedPointerPayload(const void *taggedObjectPtr);
  *
  * @return the number of bytes copied (not including null terminator).
  */
-int sentrycrashobjc_getDescription(void *object, char *buffer, int bufferLength);
+int sentrycrashobjc_getDescription(void* object, char* buffer, int bufferLength);
 
 /** Get the class type of an object.
  * There are a number of common class types that SentryCrashObjC understamds,
@@ -270,10 +273,10 @@ int sentrycrashobjc_getDescription(void *object, char *buffer, int bufferLength)
  *
  * @param object The object to query.
  *
- * @return The class type, or SentryCrashObjCClassTypeUnknown if it couldn't be
- * determined.
+ * @return The class type, or SentryCrashObjCClassTypeUnknown if it couldn't be determined.
  */
-SentryCrashObjCClassType sentrycrashobjc_objectClassType(const void *object);
+SentryCrashObjCClassType sentrycrashobjc_objectClassType(const void* object);
+
 
 //======================================================================
 #pragma mark - Object-Specific Queries -
@@ -284,14 +287,14 @@ SentryCrashObjCClassType sentrycrashobjc_objectClassType(const void *object);
  * @param object The number to query.
  * @return true if the number is floating point.
  */
-bool sentrycrashobjc_numberIsFloat(const void *object);
+bool sentrycrashobjc_numberIsFloat(const void* object);
 
 /** Get the contents of a number as a floating point value.
  *
  * @param object The number.
  * @return The value.
  */
-double sentrycrashobjc_numberAsFloat(const void *object);
+double sentrycrashobjc_numberAsFloat(const void* object);
 
 /** Get the contents of a number as an integer value.
  * If the number was stored as floating point, it will be
@@ -300,7 +303,7 @@ double sentrycrashobjc_numberAsFloat(const void *object);
  * @param object The number.
  * @return The value.
  */
-int64_t sentrycrashobjc_numberAsInteger(const void *object);
+int64_t sentrycrashobjc_numberAsInteger(const void* object);
 
 /** Copy the contents of a date object.
  *
@@ -308,7 +311,7 @@ int64_t sentrycrashobjc_numberAsInteger(const void *object);
  *
  * @return Time interval since Jan 1 2001 00:00:00 GMT.
  */
-double sentrycrashobjc_dateContents(const void *datePtr);
+double sentrycrashobjc_dateContents(const void* datePtr);
 
 /** Copy the contents of a URL object.
  *
@@ -323,7 +326,7 @@ double sentrycrashobjc_dateContents(const void *datePtr);
  *
  * @return the number of bytes copied (not including null terminator).
  */
-int sentrycrashobjc_copyURLContents(const void *nsurl, char *dst, int maxLength);
+int sentrycrashobjc_copyURLContents(const void* nsurl, char* dst, int maxLength);
 
 /** Get the length of a string in characters.
  *
@@ -331,7 +334,7 @@ int sentrycrashobjc_copyURLContents(const void *nsurl, char *dst, int maxLength)
  *
  * @return The length of the string.
  */
-int sentrycrashobjc_stringLength(const void *const stringPtr);
+int sentrycrashobjc_stringLength(const void* const stringPtr);
 
 /** Copy the contents of a string object.
  *
@@ -346,7 +349,7 @@ int sentrycrashobjc_stringLength(const void *const stringPtr);
  *
  * @return the number of bytes copied (not including null terminator).
  */
-int sentrycrashobjc_copyStringContents(const void *string, char *dst, int maxLength);
+int sentrycrashobjc_copyStringContents(const void* string, char* dst, int maxLength);
 
 /** Get an NSArray's count.
  *
@@ -354,7 +357,7 @@ int sentrycrashobjc_copyStringContents(const void *string, char *dst, int maxLen
  *
  * @return The array's count.
  */
-int sentrycrashobjc_arrayCount(const void *arrayPtr);
+int sentrycrashobjc_arrayCount(const void* arrayPtr);
 
 /** Get an NSArray's contents.
  *
@@ -366,7 +369,8 @@ int sentrycrashobjc_arrayCount(const void *arrayPtr);
  *
  * @return The number of items copied.
  */
-int sentrycrashobjc_arrayContents(const void *arrayPtr, uintptr_t *contents, int count);
+int sentrycrashobjc_arrayContents(const void* arrayPtr, uintptr_t* contents, int count);
+
 
 //======================================================================
 #pragma mark - Broken/Unimplemented Stuff -
@@ -384,11 +388,12 @@ int sentrycrashobjc_arrayContents(const void *arrayPtr, uintptr_t *contents, int
  *
  * @return true if the operation was successful.
  */
-bool sentrycrashobjc_dictionaryFirstEntry(const void *dict, uintptr_t *key, uintptr_t *value);
+bool sentrycrashobjc_dictionaryFirstEntry(const void* dict, uintptr_t* key, uintptr_t* value);
 
 /** UNIMPLEMENTED
  */
-int sentrycrashobjc_dictionaryCount(const void *dict);
+int sentrycrashobjc_dictionaryCount(const void* dict);
+
 
 #ifdef __cplusplus
 }

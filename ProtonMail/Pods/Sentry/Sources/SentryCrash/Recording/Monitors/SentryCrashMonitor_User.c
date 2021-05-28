@@ -23,10 +23,10 @@
 //
 
 #include "SentryCrashMonitor_User.h"
-#include "SentryCrashID.h"
 #include "SentryCrashMonitorContext.h"
-#include "SentryCrashStackCursor_SelfThread.h"
+#include "SentryCrashID.h"
 #include "SentryCrashThread.h"
+#include "SentryCrashStackCursor_SelfThread.h"
 
 //#define SentryCrashLogger_LocalLevel TRACE
 #include "SentryCrashLogger.h"
@@ -34,22 +34,32 @@
 #include <memory.h>
 #include <stdlib.h>
 
+
 /** Context to fill with crash information. */
 
 static volatile bool g_isEnabled = false;
 
-void
-sentrycrashcm_reportUserException(const char *name, const char *reason, const char *language,
-    const char *lineOfCode, const char *stackTrace, bool logAllThreads, bool terminateProgram)
+
+void sentrycrashcm_reportUserException(const char* name,
+                              const char* reason,
+                              const char* language,
+                              const char* lineOfCode,
+                              const char* stackTrace,
+                              bool logAllThreads,
+                              bool terminateProgram)
 {
-    if (!g_isEnabled) {
-        SentryCrashLOG_WARN("User-reported exception monitor is not installed. "
-                            "Exception has not been recorded.");
-    } else {
-        if (logAllThreads) {
+    if(!g_isEnabled)
+    {
+        SentryCrashLOG_WARN("User-reported exception monitor is not installed. Exception has not been recorded.");
+    }
+    else
+    {
+        if(logAllThreads)
+        {
             sentrycrashmc_suspendEnvironment();
         }
-        if (terminateProgram) {
+        if(terminateProgram)
+        {
             sentrycrashcm_notifyFatalExceptionCaptured(false);
         }
 
@@ -59,6 +69,7 @@ sentrycrashcm_reportUserException(const char *name, const char *reason, const ch
         sentrycrashmc_getContextForThread(sentrycrashthread_self(), machineContext, true);
         SentryCrashStackCursor stackCursor;
         sentrycrashsc_initSelfThread(&stackCursor, 0);
+
 
         SentryCrashLOG_DEBUG("Filling out context.");
         SentryCrash_MonitorContext context;
@@ -76,30 +87,33 @@ sentrycrashcm_reportUserException(const char *name, const char *reason, const ch
 
         sentrycrashcm_handleException(&context);
 
-        if (logAllThreads) {
+        if(logAllThreads)
+        {
             sentrycrashmc_resumeEnvironment();
         }
-        if (terminateProgram) {
+        if(terminateProgram)
+        {
             abort();
         }
     }
 }
 
-static void
-setEnabled(bool isEnabled)
+static void setEnabled(bool isEnabled)
 {
     g_isEnabled = isEnabled;
 }
 
-static bool
-isEnabled()
+static bool isEnabled()
 {
     return g_isEnabled;
 }
 
-SentryCrashMonitorAPI *
-sentrycrashcm_user_getAPI()
+SentryCrashMonitorAPI* sentrycrashcm_user_getAPI()
 {
-    static SentryCrashMonitorAPI api = { .setEnabled = setEnabled, .isEnabled = isEnabled };
+    static SentryCrashMonitorAPI api =
+    {
+        .setEnabled = setEnabled,
+        .isEnabled = isEnabled
+    };
     return &api;
 }

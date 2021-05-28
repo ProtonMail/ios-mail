@@ -24,8 +24,10 @@
 // THE SOFTWARE.
 //
 
+
 /* Utility functions for querying the mach kernel.
  */
+
 
 #ifndef HDR_sentrycrashmemory_h
 #define HDR_sentrycrashmemory_h
@@ -34,7 +36,9 @@
 extern "C" {
 #endif
 
+
 #include <stdbool.h>
+
 
 /** Test if the specified memory is safe to read from.
  *
@@ -43,7 +47,7 @@ extern "C" {
  *
  * @return True if the memory can be safely read.
  */
-bool sentrycrashmem_isMemoryReadable(const void *const memory, const int byteCount);
+bool sentrycrashmem_isMemoryReadable(const void* const memory, const int byteCount);
 
 /** Test how much memory is readable from the specified pointer.
  *
@@ -52,7 +56,7 @@ bool sentrycrashmem_isMemoryReadable(const void *const memory, const int byteCou
  *
  * @return The number of bytes that are readable from that address.
  */
-int sentrycrashmem_maxReadableBytes(const void *const memory, const int tryByteCount);
+int sentrycrashmem_maxReadableBytes(const void* const memory, const int tryByteCount);
 
 /** Copy memory safely. If the memory is not accessible, returns false
  * rather than crashing.
@@ -65,8 +69,7 @@ int sentrycrashmem_maxReadableBytes(const void *const memory, const int tryByteC
  *
  * @return true if successful.
  */
-bool sentrycrashmem_copySafely(
-    const void *restrict const src, void *restrict const dst, int byteCount);
+bool sentrycrashmem_copySafely(const void* restrict const src, void* restrict const dst, int byteCount);
 
 /** Copies up to numBytes of data from src to dest, stopping if memory
  * becomes inaccessible.
@@ -79,8 +82,7 @@ bool sentrycrashmem_copySafely(
  *
  * @return The number of bytes actually copied.
  */
-int sentrycrashmem_copyMaxPossible(
-    const void *restrict const src, void *restrict const dst, int byteCount);
+int sentrycrashmem_copyMaxPossible(const void* restrict const src, void* restrict const dst, int byteCount);
 
 #ifdef __cplusplus
 }

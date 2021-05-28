@@ -24,6 +24,7 @@
 // THE SOFTWARE.
 //
 
+
 /* Poor man's zombie tracking.
  *
  * Benefits:
@@ -33,9 +34,8 @@
  * Limitations:
  * - Not guaranteed to catch all zombies.
  * - Can generate false positives or incorrect class names.
- * - SentryCrashZombie itself must be compiled with ARC disabled. You can enable
- * ARC in your app, but SentryCrashZombie must be compiled in a separate library
- * if you do.
+ * - SentryCrashZombie itself must be compiled with ARC disabled. You can enable ARC in
+ *   your app, but SentryCrashZombie must be compiled in a separate library if you do.
  */
 
 #ifndef HDR_SentryCrashZombie_h
@@ -48,17 +48,19 @@ extern "C" {
 #include "SentryCrashMonitor.h"
 #include <stdbool.h>
 
+
 /** Get the class of a deallocated object pointer, if it was tracked.
  *
  * @param object A pointer to a deallocated object.
  *
  * @return The object's class name, or NULL if it wasn't found.
  */
-const char *sentrycrashzombie_className(const void *object);
+const char* sentrycrashzombie_className(const void* object);
 
 /** Access the Monitor API.
  */
-SentryCrashMonitorAPI *sentrycrashcm_zombie_getAPI(void);
+SentryCrashMonitorAPI* sentrycrashcm_zombie_getAPI(void);
+
 
 #ifdef __cplusplus
 }
