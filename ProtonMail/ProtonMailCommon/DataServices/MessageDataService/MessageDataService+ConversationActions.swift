@@ -96,18 +96,3 @@ extension MessageDataService {
         return true
     }
 }
-
-extension MessageDataService {
-    func fetchConversations(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Conversation] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K in %@", Conversation.Attributes.conversationID, selected)
-        do {
-            if let conversations = try context.fetch(fetchRequest) as? [Conversation] {
-                return conversations
-            }
-        } catch let ex as NSError {
-            PMLog.D("fetch error: \(ex)")
-        }
-        return []
-    }
-}

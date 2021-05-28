@@ -58,7 +58,7 @@ final class EventsService: Service, EventsFetching {
     private lazy var lastUpdatedStore = ServiceFactory.default.get(by: LastUpdatedStore.self)
     private weak var messageDataService: MessageDataService!
     #warning("TODO (Mustapha): - Property below should later be of type ConversationDataService when fetchConversations is properly migrated")
-    private weak var conversationDataService: MessageDataService!
+    private weak var conversationDataService: ConversationDataService!
     private let apiService: APIService!
     private weak var contactDataService: ContactDataService!
     private weak var userManager: UserManager!
@@ -67,7 +67,7 @@ final class EventsService: Service, EventsFetching {
     init(userManager: UserManager) {
         self.userManager = userManager
         self.messageDataService = userManager.messageService
-        self.conversationDataService = userManager.messageService
+        self.conversationDataService = userManager.conversationService
         self.apiService = userManager.apiService
         self.contactDataService = userManager.contactService
     }
@@ -168,13 +168,23 @@ extension EventsService {
                             }
                             completion?(task, responseDict, error)
                         }
-                        self.messageDataService.cleanMessage().then { _ in
-                            self.conversationDataService.cleanMessage()
-                        }.then {
+                        self.conversationDataService.cleanAll()
+                        self.messageDataService.cleanMessage().then {
                             return self.contactDataService.cleanUp()
                         }.ensure {
-                            #warning("TODO (Mustapha): - Make sure we call fetchConversation OR fetchMessages on their respective services according to the current viewMode")
-                            self.messageDataService.fetchMessages(byLabel: labelID, time: 0, forceClean: false, isUnread: false, completion: completionWrapper)
+                            switch self.userManager.getCurrentViewMode() {
+                            case .conversation:
+                                self.conversationDataService.fetchConversations(for: labelID, before: 0, unreadOnly: false, shouldReset: false) { result in
+                                    switch result {
+                                    case .success:
+                                        completionWrapper(nil, nil, nil)
+                                    case .failure(let error):
+                                        completionWrapper(nil, nil, error as NSError)
+                                    }
+                                }
+                            case .singleMessage:
+                                self.messageDataService.fetchMessages(byLabel: labelID, time: 0, forceClean: false, isUnread: false, completion: completionWrapper)
+                            }
                             self.contactDataService.fetchContacts(completion: nil)
                             self.messageDataService.labelDataService.fetchV4Labels().cauterize()
                         }.cauterize()
@@ -624,7 +634,7 @@ extension EventsService {
                         }
                     }
                     
-                    self.conversationDataService.fetchConversations(by: conversationsNeedRefetch, completion: nil)
+                    self.conversationDataService.fetchConversations(with: conversationsNeedRefetch, completion: nil)
                 }
             }
         }

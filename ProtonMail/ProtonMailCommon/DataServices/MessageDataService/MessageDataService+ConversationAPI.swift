@@ -27,69 +27,6 @@ import ProtonCore_Services
 import PromiseKit
 
 extension MessageDataService {
-    func fetchConversations(by iDs: [String], completion: CompletionBlock?) {
-        var para = ConversationsRequest.Parameters()
-        para.IDs = iDs
-        
-        let request = ConversationsRequest(para)
-        self.apiService.GET(request) { (task, responseDict, error) in
-            if let err = error {
-                DispatchQueue.main.async {
-                    completion?(task, responseDict, err)
-                }
-            } else {
-                let response = ConversationsResponse()
-                guard response.ParseResponse(responseDict) else {
-                    let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                    DispatchQueue.main.async {
-                        completion?(task, responseDict, err)
-                    }
-                    return
-                }
-                
-                let context = self.coreDataService.rootSavingContext
-                self.coreDataService.enqueue(context: context) { (context) in
-                    do {
-                        var conversationsDict = response.conversationsDict
-                        
-                        guard !conversationsDict.isEmpty else {
-                            DispatchQueue.main.async {
-                                completion?(task, responseDict, nil)
-                            }
-                            return
-                        }
-                        
-                        for (index, _) in conversationsDict.enumerated() {
-                            conversationsDict[index]["UserID"] = self.userID
-                            let conversationID = conversationsDict[index]["ID"]
-                            if var labels = conversationsDict[index]["Labels"] as? [[String: Any]] {
-                                for (index, _) in labels.enumerated() {
-                                    labels[index]["UserID"] = self.userID
-                                    labels[index]["ConversationID"] = conversationID
-                                }
-                                conversationsDict[index]["Labels"] = labels
-                            }
-                        }
-                        
-                        if (try GRTJSONSerialization.objects(withEntityName: Conversation.Attributes.entityName, fromJSONArray: conversationsDict, in: context) as? [Conversation]) != nil {
-                            if let error = context.saveUpstreamIfNeeded() {
-                                PMLog.D(" error: \(error)")
-                            }
-                        }
-                        DispatchQueue.main.async {
-                            completion?(task, responseDict, error)
-                        }
-                    } catch {
-                        PMLog.D("error: \(error)")
-                        DispatchQueue.main.async {
-                            completion?(task, responseDict, error as NSError)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
     func fetchConversationDetail(by conversationID: String, completion: ((Swift.Result<[String], Error>) -> Void)?) {
         let request = ConversationDetailsRequest(conversationID: conversationID, messageID: nil)
         self.apiService.GET(request) { (task, responseDict, error) in
