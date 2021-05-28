@@ -26,58 +26,7 @@ import Groot
 import ProtonCore_Services
 import PromiseKit
 
-extension MessageDataService {
-    func fetchConversationDetail(by conversationID: String, completion: ((Swift.Result<[String], Error>) -> Void)?) {
-        let request = ConversationDetailsRequest(conversationID: conversationID, messageID: nil)
-        self.apiService.GET(request) { (task, responseDict, error) in
-            if let err = error {
-                completion?(.failure(err))
-            } else {
-                let response = ConversationDetailsResponse()
-                guard response.ParseResponse(responseDict) else {
-                    let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                    completion?(.failure(err))
-                    return
-                }
-                
-                let context = self.coreDataService.rootSavingContext
-                self.coreDataService.enqueue(context: context) { (context) in
-                    do {
-                        guard var conversationDict = response.conversation, var messagesDict = response.messages else {
-                            let err = NSError.protonMailError(1000, localizedDescription: "Data not found")
-                            completion?(.failure(err))
-                            return
-                        }
-                        
-                        conversationDict["UserID"] = self.userID
-                        try GRTJSONSerialization.object(withEntityName: Conversation.Attributes.entityName, fromJSONDictionary: conversationDict, in: context)
-                        
-                        for (index, _) in messagesDict.enumerated() {
-                            messagesDict[index]["UserID"] = self.userID
-                        }
-                        try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesDict, in: context)
-                        
-                        if let error = context.saveUpstreamIfNeeded() {
-                            throw error
-                        }
-                        
-                        DispatchQueue.main.async {
-                            let msgIDs = messagesDict.compactMap({ (value) -> String? in
-                                return value["ID"] as? String
-                            })
-                            completion?(.success(msgIDs))
-                        }
-                    } catch {
-                        PMLog.D("error: \(error)")
-                        DispatchQueue.main.async {
-                            completion?(.failure(error))
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
+extension MessageDataService {    
     func markConversationAsUnread(by conversationIDs: [String], currentLabelID: String, completion: ((Swift.Result<Bool, Error>) -> Void)?) {
         let request = ConversationUnreadRequest(conversationIDs: conversationIDs, labelID: currentLabelID)
         self.apiService.exec(route: request) { (task, response: ConversationUnreadResponse) in

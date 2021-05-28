@@ -534,8 +534,8 @@ class MailboxViewModel: StorageLimit {
         
     }
     
-    func fetchConversationDetail(converstaionID: String, completion: ((Result<[String], Error>) -> Void)?) {
-        messageService.fetchConversationDetail(by: converstaionID, completion: completion)
+    func fetchConversationDetail(conversationID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.fetchConversation(with: conversationID, includeBodyOf: nil, completion: completion)
     }
     
     func markConversationAsUnread(conversationIDs: [String], currentLabelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
