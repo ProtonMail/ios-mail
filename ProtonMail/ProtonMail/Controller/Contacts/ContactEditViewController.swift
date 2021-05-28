@@ -499,7 +499,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditCellphoneCell, for: indexPath) as! ContactEditPhoneCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getCells()[row], paid: viewModel.paidUser(), callback: self, becomeFirstResponder: firstResponder)
+                cell.configCell(obj: viewModel.getCells()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .home_address:
@@ -512,7 +512,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddressCell, for: indexPath) as! ContactEditAddressCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getAddresses()[row], paid: viewModel.paidUser(), callback: self, becomeFirstResponder: firstResponder)
+                cell.configCell(obj: viewModel.getAddresses()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .url:
@@ -525,7 +525,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditUrlCell, for: indexPath) as! ContactEditUrlCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getUrls()[row], paid: viewModel.paidUser(), callback: self, becomeFirstResponder: firstResponder)
+                cell.configCell(obj: viewModel.getUrls()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .information:
@@ -538,7 +538,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditCellInfoCell, for: indexPath) as! ContactEditInformationCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getInformations()[row], paid: viewModel.paidUser(), callback: self, becomeFirstResponder: firstResponder)
+                cell.configCell(obj: viewModel.getInformations()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .custom_field:
@@ -551,12 +551,12 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditFieldCell, for: indexPath) as! ContactEditFieldCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getFields()[row], paid: viewModel.paidUser(), callback: self, becomeFirstResponder: firstResponder)
+                cell.configCell(obj: viewModel.getFields()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .notes:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditTextViewCell, for: indexPath) as! ContactEditTextViewCell
-            cell.configCell(obj: viewModel.getNotes(), paid: self.viewModel.paidUser(), callback: self)
+            cell.configCell(obj: viewModel.getNotes(), paid: true, callback: self)
             cell.selectionStyle = .none
             outCell = cell
         case .delete:
@@ -658,16 +658,6 @@ extension ContactEditViewController: UITableViewDataSource {
         let row = indexPath.row
         let sections = self.viewModel.getSections()
         let s = sections[section]
-        
-        switch s {
-        case .emails:
-            break
-        default:
-            guard self.viewModel.paidUser() else {
-                self.upgrade()
-                return
-            }
-        }
         
         if editingStyle == . insert {
             switch s {
@@ -831,20 +821,6 @@ extension ContactEditViewController: UITableViewDelegate {
         let section = indexPath.section
         let row = indexPath.row
         let s = sections[section]
-        
-        switch s {
-        case .upgrade, .share,
-             .email_header, .display_name, .encrypted_header, .notes,
-             .type2_warning, .type3_error, .type3_warning, .debuginfo,
-             .emails, .delete:
-            break
-            
-        default:
-            guard self.viewModel.paidUser() else {
-                self.upgrade()
-                return
-            }
-        }
         
         switch s {
         case .email_header, .display_name, .encrypted_header, .notes,

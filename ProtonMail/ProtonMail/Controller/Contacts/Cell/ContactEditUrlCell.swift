@@ -33,7 +33,6 @@ final class ContactEditUrlCell: UITableViewCell {
     
     @IBOutlet weak var sepratorView: UIView!
     
-    fileprivate var isPaid : Bool = false
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
@@ -47,9 +46,8 @@ final class ContactEditUrlCell: UITableViewCell {
         sepratorView.gradient()
     }
     
-    func configCell(obj : ContactEditUrl, paid: Bool, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+    func configCell(obj : ContactEditUrl, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.url = obj
-        self.isPaid = paid
         self.delegate = callback
         
         typeLabel.attributedText = NSAttributedString(string: self.url.newType.title,
@@ -57,20 +55,14 @@ final class ContactEditUrlCell: UITableViewCell {
         valueField.attributedText = NSAttributedString(string: self.url.newUrl,
                                                        attributes: FontManager.Default)
 
-        if self.isPaid {
-            if becomeFirstResponder {
-                delay(0.25, closure: {
-                    self.valueField.becomeFirstResponder()
-                })
-            }
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
         }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return
-        }
         delegate?.pick(typeInterface: url, sender: self)
     }
 }
@@ -80,10 +72,6 @@ extension ContactEditUrlCell: UITextFieldDelegate {
         return true
     }
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return false
-        }
         return true
     }
     
@@ -92,10 +80,6 @@ extension ContactEditUrlCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return
-        }
         url.newUrl = valueField.attributedText?.string ?? ""
     }
 }

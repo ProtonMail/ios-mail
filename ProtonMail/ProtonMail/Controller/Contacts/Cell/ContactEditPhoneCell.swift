@@ -32,8 +32,6 @@ final class ContactEditPhoneCell: UITableViewCell {
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
     
-    fileprivate var isPaid: Bool = false
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
@@ -46,9 +44,8 @@ final class ContactEditPhoneCell: UITableViewCell {
         sepratorView.gradient()
     }
     
-    func configCell(obj : ContactEditPhone, paid: Bool, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+    func configCell(obj : ContactEditPhone, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.phone = obj
-        self.isPaid = paid
         self.delegate = callback
         
         typeLabel.attributedText = NSAttributedString(string: self.phone.newType.title,
@@ -56,20 +53,14 @@ final class ContactEditPhoneCell: UITableViewCell {
         valueField.attributedText = NSAttributedString(string: self.phone.newPhone,
                                                        attributes: FontManager.Default)
 
-        if self.isPaid {
-            if becomeFirstResponder {
-                delay(0.25, closure: {
-                    self.valueField.becomeFirstResponder()
-                })
-            }
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
         }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {
-        guard self.isPaid else {
-            delegate?.featureBlocked()
-            return
-        }
         delegate?.pick(typeInterface: phone, sender: self)
     }
 }
@@ -80,10 +71,6 @@ extension ContactEditPhoneCell: UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return false
-        }
         return true
     }
     
@@ -92,9 +79,6 @@ extension ContactEditPhoneCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
-        guard self.isPaid else {
-            return
-        }
         phone.newPhone = valueField.attributedText?.string ?? ""
     }
 }
