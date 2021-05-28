@@ -1,5 +1,5 @@
 //
-//  MessageDataService+ConversationAPI.swift
+//  ConversationDataService+Actions.swift
 //  ProtonMail
 //
 //
@@ -21,81 +21,9 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import CoreData
-import Groot
-import ProtonCore_Services
-import PromiseKit
 
-extension MessageDataService {    
-    func markConversationAsUnread(by conversationIDs: [String], currentLabelID: String, completion: ((Swift.Result<Bool, Error>) -> Void)?) {
-        let request = ConversationUnreadRequest(conversationIDs: conversationIDs, labelID: currentLabelID)
-        self.apiService.exec(route: request) { (task, response: ConversationUnreadResponse) in
-            if let err = response.error {
-                completion?(.failure(err))
-                return
-            }
-            
-            guard response.results != nil else {
-                let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                completion?(.failure(err))
-                return
-            }
-            completion?(.success(true))
-        }
-    }
-    
-    func markConversationAsRead(by conversationIDs: [String], completion: ((Swift.Result<Bool, Error>) -> Void)?) {
-        let request = ConversationReadRequest(conversationIDs: conversationIDs)
-        self.apiService.exec(route: request) { (task, response: ConversationReadResponse) in
-            if let err = response.error {
-                completion?(.failure(err))
-                return
-            }
-            guard response.results != nil else {
-                let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                completion?(.failure(err))
-                return
-            }
-            completion?(.success(true))
-        }
-    }
-    
-    func labelConversations(conversationIDs: [String], labelID: String, completion: ((Swift.Result<Bool, Error>) -> Void)?) {
-        let request = ConversationLabelRequest(conversationIDs: conversationIDs, labelID: labelID)
-        self.apiService.exec(route: request) { (task, response: ConversationLabelResponse) in
-            if let err = response.error {
-                completion?(.failure(err))
-                return
-            }
-            
-            guard response.results != nil else {
-                let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                completion?(.failure(err))
-                return
-            }
-            completion?(.success(true))
-        }
-    }
-    
-    func unlabelConversations(conversationIDs: [String], labelID: String, completion: ((Swift.Result<Bool, Error>) -> Void)?) {
-        let request = ConversationUnlabelRequest(conversationIDs: conversationIDs, labelID: labelID)
-        self.apiService.exec(route: request) { (task, response: ConversationUnlabelResponse) in
-            if let err = response.error {
-                completion?(.failure(err))
-                return
-            }
-            
-            guard response.results != nil else {
-                let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                completion?(.failure(err))
-                return
-            }
-            completion?(.success(true))
-        }
-    }
-    
-    ///labelID: where the conversation is at.
-    func deleteConversations(conversationIDs: [String], labelID: String, completion: ((Swift.Result<Bool, Error>) -> Void)?) {
+extension ConversationDataService {
+    func deleteConversations(with conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
         let request = ConversationDeleteRequest(conversationIDs: conversationIDs, labelID: labelID)
         self.apiService.exec(route: request) { (task, response: ConversationDeleteResponse) in
             if let err = response.error {
@@ -108,7 +36,74 @@ extension MessageDataService {
                 completion?(.failure(err))
                 return
             }
-            completion?(.success(true))
+            completion?(.success(()))
+        }
+    }
+
+    func markAsRead(conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
+        let request = ConversationReadRequest(conversationIDs: conversationIDs)
+        self.apiService.exec(route: request) { (task, response: ConversationReadResponse) in
+            if let err = response.error {
+                completion?(.failure(err))
+                return
+            }
+            guard response.results != nil else {
+                let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
+                completion?(.failure(err))
+                return
+            }
+            completion?(.success(()))
+        }
+    }
+
+    func markAsUnread(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        let request = ConversationUnreadRequest(conversationIDs: conversationIDs, labelID: labelID)
+        self.apiService.exec(route: request) { (task, response: ConversationUnreadResponse) in
+            if let err = response.error {
+                completion?(.failure(err))
+                return
+            }
+            
+            guard response.results != nil else {
+                let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
+                completion?(.failure(err))
+                return
+            }
+            completion?(.success(()))
+        }
+    }
+
+    func label(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        let request = ConversationLabelRequest(conversationIDs: conversationIDs, labelID: labelID)
+        self.apiService.exec(route: request) { (task, response: ConversationLabelResponse) in
+            if let err = response.error {
+                completion?(.failure(err))
+                return
+            }
+            
+            guard response.results != nil else {
+                let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
+                completion?(.failure(err))
+                return
+            }
+            completion?(.success(()))
+        }
+    }
+
+    func unlabel(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        let request = ConversationUnlabelRequest(conversationIDs: conversationIDs, labelID: labelID)
+        self.apiService.exec(route: request) { (task, response: ConversationUnlabelResponse) in
+            if let err = response.error {
+                completion?(.failure(err))
+                return
+            }
+            
+            guard response.results != nil else {
+                let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
+                completion?(.failure(err))
+                return
+            }
+            completion?(.success(()))
         }
     }
 }

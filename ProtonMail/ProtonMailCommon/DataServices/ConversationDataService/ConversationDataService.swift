@@ -41,10 +41,11 @@ protocol ConversationProvider {
     // MARK: - Single item fetching
     func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Operations
-    func deleteConversation(with conversationID: String, completion: ((Result<Void, Error>) -> Void)?)
-    func mark(conversationIDs: [String], as state: ReadState, completion: ((Result<Void, Error>) -> Void)?)
-    func label(conversationIDs: [String], as label: String, completion: ((Result<Void, Error>) -> Void)?)
-    func unlabel(conversationIDs: [String], as label: String, completion: ((Result<Void, Error>) -> Void)?)
+    func deleteConversations(with conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?)
+    func markAsRead(conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?)
+    func markAsUnread(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?)
+    func label(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?)
+    func unlabel(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Clean up
     func cleanAll()
 
@@ -76,22 +77,6 @@ final class ConversationDataService: Service, ConversationProvider {
         self.eventsService = eventsService
         self.viewModeDataSource = viewModeDataSource
         self.queueManager = queueManager
-    }
-
-    func deleteConversation(with conversationID: String, completion: ((Result<Void, Error>) -> Void)?) {
-        fatalError("Not implemented")
-    }
-
-    func mark(conversationIDs: [String], as state: ReadState, completion: ((Result<Void, Error>) -> Void)?) {
-        fatalError("Not implemented")
-    }
-
-    func label(conversationIDs: [String], as label: String, completion: ((Result<Void, Error>) -> Void)?) {
-        fatalError("Not implemented")
-    }
-
-    func unlabel(conversationIDs: [String], as label: String, completion: ((Result<Void, Error>) -> Void)?) {
-        fatalError("Not implemented")
     }
 }
 

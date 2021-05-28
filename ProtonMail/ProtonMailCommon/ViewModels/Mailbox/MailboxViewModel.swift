@@ -538,28 +538,28 @@ class MailboxViewModel: StorageLimit {
         conversationService.fetchConversation(with: conversationID, includeBodyOf: nil, completion: completion)
     }
     
-    func markConversationAsUnread(conversationIDs: [String], currentLabelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.markConversationAsUnread(by: conversationIDs, currentLabelID: currentLabelID, completion: completion)
+    func markConversationAsUnread(conversationIDs: [String], currentLabelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.markAsUnread(conversationIDs: conversationIDs, labelID: currentLabelID, completion: completion)
     }
     
-    func markConversationAsRead(conversationIDs: [String], completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.markConversationAsRead(by: conversationIDs, completion: completion)
+    func markConversationAsRead(conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.markAsRead(conversationIDs: conversationIDs, completion: completion)
     }
     
     func fetchConversationCount(completion: ((Result<Void, Error>) -> Void)?) {
         conversationService.fetchConversationCounts(addressID: nil, completion: completion)
     }
     
-    func labelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.labelConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
+    func labelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.label(conversationIDs: conversationIDs, as: labelID, completion: completion)
     }
     
-    func unlabelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.unlabelConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
+    func unlabelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.unlabel(conversationIDs: conversationIDs, as: labelID, completion: completion)
     }
     
-    func deleteConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.deleteConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
+    func deleteConversations(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.deleteConversations(with: conversationIDs, labelID: labelID, completion: completion)
     }
     
     /// fetch messages and reset events
