@@ -840,7 +840,7 @@ extension MailboxViewModel {
         coreDataService.mainContext.performAndWait {
             switch self.viewMode {
             case .conversation:
-                let conversations = self.messageService.fetchConversations(withIDs: messageIDs, in: coreDataService.mainContext)
+                let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.mainContext)
                 readCount = conversations.reduce(0) { (result, next) -> Int in
                     if next.getNumUnread(labelID: labelID) == 0 {
                         return result + 1
@@ -868,7 +868,7 @@ extension MailboxViewModel {
             let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
             messageService.label(messages: messages, label: labelID, apply: apply)
         case .conversation:
-            let conversations = self.messageService.fetchConversations(withIDs: messageIDs, in: coreDataService.mainContext)
+            let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.mainContext)
             messageService.label(conversations: conversations, label: labelID, apply: apply)
         }
     }
@@ -879,7 +879,7 @@ extension MailboxViewModel {
             let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
             messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
         case .conversation:
-            let conversations = self.messageService.fetchConversations(withIDs: messageIDs, in: coreDataService.operationContext)
+            let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.operationContext)
             messageService.mark(conversations: conversations, labelID: self.labelID, unRead: unread)
         }
     }
@@ -895,7 +895,7 @@ extension MailboxViewModel {
             }
             messageService.move(messages: messages, from: fLabels, to: tLabel)
         case .conversation:
-            let conversations = self.messageService.fetchConversations(withIDs: messageIDs, in: coreDataService.operationContext)
+            let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.operationContext)
             #warning("TODO: - v4 Check From label is valid or not")
             messageService.move(conversations: conversations, from: fLabel, to: tLabel)
             break

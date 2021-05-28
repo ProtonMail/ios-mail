@@ -41,6 +41,7 @@ protocol ConversationProvider {
     func mark(conversationIDs: [String], as state: ReadState, completion: ((Result<Void, Error>) -> Void)?)
     func label(conversationIDs: [String], as label: String, completion: ((Result<Void, Error>) -> Void)?)
     func unlabel(conversationIDs: [String], as label: String, completion: ((Result<Void, Error>) -> Void)?)
+    func cleanAll()
 
 }
 
@@ -205,7 +206,66 @@ final class ConversationDataService: Service, ConversationProvider {
     }
 
     func fetchConversations(with ids: [String], completion: ((Result<Void, Error>) -> Void)?) {
-        fatalError("Not implemented")
+        var para = ConversationsRequest.Parameters()
+        para.IDs = ids
+        
+        let request = ConversationsRequest(para)
+        self.apiService.GET(request) { (task, responseDict, error) in
+            if let err = error {
+                DispatchQueue.main.async {
+                    completion?(.failure(err))
+                }
+            } else {
+                let response = ConversationsResponse()
+                guard response.ParseResponse(responseDict) else {
+                    let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
+                    DispatchQueue.main.async {
+                        completion?(.failure(err))
+                    }
+                    return
+                }
+                
+                let context = self.coreDataService.rootSavingContext
+                self.coreDataService.enqueue(context: context) { (context) in
+                    do {
+                        var conversationsDict = response.conversationsDict
+                        
+                        guard !conversationsDict.isEmpty else {
+                            DispatchQueue.main.async {
+                                completion?(.failure(NSError.protonMailError(1000, localizedDescription: "Data not found")))
+                            }
+                            return
+                        }
+                        
+                        for index in conversationsDict.indices {
+                            conversationsDict[index]["UserID"] = self.userID
+                            let conversationID = conversationsDict[index]["ID"]
+                            if var labels = conversationsDict[index]["Labels"] as? [[String: Any]] {
+                                for (index, _) in labels.enumerated() {
+                                    labels[index]["UserID"] = self.userID
+                                    labels[index]["ConversationID"] = conversationID
+                                }
+                                conversationsDict[index]["Labels"] = labels
+                            }
+                        }
+                        
+                        if (try GRTJSONSerialization.objects(withEntityName: Conversation.Attributes.entityName, fromJSONArray: conversationsDict, in: context) as? [Conversation]) != nil {
+                            if let error = context.saveUpstreamIfNeeded() {
+                                PMLog.D(" error: \(error)")
+                            }
+                        }
+                        DispatchQueue.main.async {
+                            completion?(.success(()))
+                        }
+                    } catch {
+                        PMLog.D("error: \(error)")
+                        DispatchQueue.main.async {
+                            completion?(.failure(error as NSError))
+                        }
+                    }
+                }
+            }
+        }
     }
 
     func deleteConversation(with id: String, completion: ((Result<Void, Error>) -> Void)?) {
@@ -226,7 +286,7 @@ final class ConversationDataService: Service, ConversationProvider {
 }
 
 extension ConversationDataService {
-    private func cleanAll() {
+    func cleanAll() {
         let context = coreDataService.mainContext
         let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
         conversationFetch.predicate = NSPredicate(format: "%K == %@", Conversation.Attributes.userID, self.userID)
@@ -249,5 +309,20 @@ extension ConversationDataService {
             let changes = [NSDeletedObjectsKey: objectIdArray]
             NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
         }
+    }
+}
+
+extension ConversationDataService {
+    func fetchLocalConversations(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Conversation] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K in %@", Conversation.Attributes.conversationID, selected)
+        do {
+            if let conversations = try context.fetch(fetchRequest) as? [Conversation] {
+                return conversations
+            }
+        } catch let ex as NSError {
+            PMLog.D("fetch error: \(ex)")
+        }
+        return []
     }
 }
