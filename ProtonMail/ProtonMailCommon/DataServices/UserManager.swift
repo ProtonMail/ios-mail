@@ -180,7 +180,7 @@ class UserManager : Service, HasLocalStorage {
         let service = ConversationDataService(api: apiService,
                                               userID: userinfo.userId,
                                               coreDataService: sharedServices.get(by: CoreDataService.self),
-                                              lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+                                              lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), eventsService: eventsService,
                                               viewModeDataSource: self,
                                               queueManager: sharedServices.get(by: QueueManager.self))
         return service
