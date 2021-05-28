@@ -39,6 +39,7 @@ protocol ConversationProvider {
                             completion: ((Result<Void, Error>) -> Void)?)
     func fetchConversations(with conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Single item fetching
+    func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Operations
     func deleteConversation(with conversationID: String, completion: ((Result<Void, Error>) -> Void)?)
     func mark(conversationIDs: [String], as state: ReadState, completion: ((Result<Void, Error>) -> Void)?)
