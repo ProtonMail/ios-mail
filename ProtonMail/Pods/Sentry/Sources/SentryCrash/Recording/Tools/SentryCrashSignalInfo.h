@@ -24,8 +24,10 @@
 // THE SOFTWARE.
 //
 
+
 /* Information about the signals we are interested in for a crash reporter.
  */
+
 
 #ifndef HDR_SentryCrashSignalInfo_h
 #define HDR_SentryCrashSignalInfo_h
@@ -34,7 +36,9 @@
 extern "C" {
 #endif
 
+
 #include <stdint.h>
+
 
 /** Get the name of a signal.
  *
@@ -42,7 +46,7 @@ extern "C" {
  *
  * @return The signal's name or NULL if not found.
  */
-const char *sentrycrashsignal_signalName(int signal);
+const char* sentrycrashsignal_signalName(int signal);
 
 /** Get the name of a signal's subcode.
  *
@@ -52,19 +56,20 @@ const char *sentrycrashsignal_signalName(int signal);
  *
  * @return The code's name or NULL if not found.
  */
-const char *sentrycrashsignal_signalCodeName(int signal, int code);
+const char* sentrycrashsignal_signalCodeName(int signal, int code);
 
 /** Get a list of fatal signals.
  *
  * @return A list of fatal signals.
  */
-const int *sentrycrashsignal_fatalSignals(void);
+const int* sentrycrashsignal_fatalSignals(void);
 
 /** Get the size of the fatal signals list.
  *
  * @return The size of the fatal signals list.
  */
 int sentrycrashsignal_numFatalSignals(void);
+
 
 #ifdef __cplusplus
 }

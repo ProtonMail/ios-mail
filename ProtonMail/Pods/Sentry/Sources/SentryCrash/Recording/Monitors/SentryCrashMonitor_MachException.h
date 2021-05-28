@@ -24,8 +24,10 @@
 // THE SOFTWARE.
 //
 
+
 /* Catches mach exceptions.
  */
+
 
 #ifndef HDR_SentryCrashMonitor_MachException_h
 #define HDR_SentryCrashMonitor_MachException_h
@@ -37,9 +39,11 @@ extern "C" {
 #include "SentryCrashMonitor.h"
 #include <stdbool.h>
 
+
 /** Access the Monitor API.
  */
-SentryCrashMonitorAPI *sentrycrashcm_machexception_getAPI(void);
+SentryCrashMonitorAPI* sentrycrashcm_machexception_getAPI(void);
+
 
 #ifdef __cplusplus
 }

@@ -1,13 +1,23 @@
+//
+//  SentryCrashInstallation.h
+//  Sentry
+//
+//  Created by Daniel Griesser on 10/05/2017.
+//  Copyright © 2017 Sentry. All rights reserved.
+//
+
 #import <Foundation/Foundation.h>
 
-#import "SentryDefines.h"
+#if __has_include(<Sentry/Sentry.h>)
+#import <Sentry/SentryCrash.h>
+#import <Sentry/SentryCrashInstallation.h>
+#else
+#import "SentryCrash.h"
+#import "SentryCrashInstallation.h"
+#endif
 
-NS_ASSUME_NONNULL_BEGIN
+@interface SentryInstallation : SentryCrashInstallation
 
-@interface SentryInstallation : NSObject
-
-+ (NSString *)id;
+- (void)sendAllReports;
 
 @end
-
-NS_ASSUME_NONNULL_END

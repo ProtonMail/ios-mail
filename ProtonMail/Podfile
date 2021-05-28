@@ -85,7 +85,7 @@ def common_pods
   pod 'PromiseKit', '6.13.1'
   pod 'AwaitKit', '5.0.1'
   pod 'MCSwipeTableViewCell', '2.1.4'
-  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '5.2.2'
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '4.5.0'
   pod 'MBProgressHUD' , '1.1.0'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
   pod 'SwiftGen', '~> 6.0'

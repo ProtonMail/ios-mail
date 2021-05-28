@@ -24,6 +24,7 @@
 // THE SOFTWARE.
 //
 
+
 /** Deep key search based methods for hierarchical container structures.
  *
  * A deep key search works like a normal search, except that the "key" is
@@ -50,7 +51,9 @@
  *    result = [result objectAtIndex:[currentKey intValue]];
  */
 
+
 #import <Foundation/Foundation.h>
+
 
 #pragma mark - NSDictionary -
 
@@ -68,7 +71,8 @@
  *
  * @param deepKey A set of keys to drill down with.
  */
-- (id)sentry_objectForDeepKey:(NSArray *)deepKey;
+- (id) objectForDeepKey:(NSArray*) deepKey;
+
 
 /** Do a deep search using the specified keys.
  *
@@ -77,7 +81,8 @@
  *
  * @param keyPath A full key path, separated by slash (e.g. @"a/b/c")
  */
-- (id)sentry_objectForKeyPath:(NSString *)keyPath;
+- (id) objectForKeyPath:(NSString*) keyPath;
+
 
 #pragma mark - Mutators
 
@@ -90,7 +95,7 @@
  * If the lookup fails at any level, it will throw an exception describing which
  * object in the hierarchy did not respond to any object accessor methods.
  */
-- (void)sentry_setObject:(id)anObject forDeepKey:(NSArray *)deepKey;
+- (void) setObject:(id) anObject forDeepKey:(NSArray*) deepKey;
 
 /** Set an associated object at the specified key path.
  *
@@ -101,7 +106,7 @@
  * If the lookup fails at any level, it will throw an exception describing which
  * object in the hierarchy did not respond to any object accessor methods.
  */
-- (void)sentry_setObject:(id)anObject forKeyPath:(NSString *)keyPath;
+- (void) setObject:(id) anObject forKeyPath:(NSString*) keyPath;
 
 /** Remove an associated object at the specified deep key.
  *
@@ -112,7 +117,7 @@
  * If the lookup fails at any level, it will throw an exception describing which
  * object in the hierarchy did not respond to any object accessor methods.
  */
-- (void)sentry_removeObjectForDeepKey:(NSArray *)deepKey;
+- (void) removeObjectForDeepKey:(NSArray*) deepKey;
 
 /** Remove an associated object at the specified key path.
  *
@@ -123,9 +128,10 @@
  * If the lookup fails at any level, it will throw an exception describing which
  * object in the hierarchy did not respond to any object accessor methods.
  */
-- (void)sentry_removeObjectForKeyPath:(NSString *)keyPath;
+- (void) removeObjectForKeyPath:(NSString*) keyPath;
 
 @end
+
 
 #pragma mark - NSArray -
 
@@ -143,7 +149,8 @@
  *
  * @param deepKey A set of keys to drill down with.
  */
-- (id)sentry_objectForDeepKey:(NSArray *)deepKey;
+- (id) objectForDeepKey:(NSArray*) deepKey;
+
 
 /** Do a deep search using the specified keys.
  *
@@ -152,7 +159,8 @@
  *
  * @param keyPath A full key path, separated by slash (e.g. @"a/b/c")
  */
-- (id)sentry_objectForKeyPath:(NSString *)keyPath;
+- (id) objectForKeyPath:(NSString*) keyPath;
+
 
 #pragma mark - Mutators
 
@@ -165,7 +173,7 @@
  * If the lookup fails at any level, it will throw an exception describing which
  * object in the hierarchy did not respond to any object accessor methods.
  */
-- (void)sentry_setObject:(id)anObject forDeepKey:(NSArray *)deepKey;
+- (void) setObject:(id) anObject forDeepKey:(NSArray*) deepKey;
 
 /** Set an associated object at the specified key path.
  *
@@ -176,7 +184,7 @@
  * If the lookup fails at any level, it will throw an exception describing which
  * object in the hierarchy did not respond to any object accessor methods.
  */
-- (void)sentry_setObject:(id)anObject forKeyPath:(NSString *)keyPath;
+- (void) setObject:(id) anObject forKeyPath:(NSString*) keyPath;
 
 /** Remove an associated object at the specified deep key.
  *
@@ -187,7 +195,7 @@
  * If the lookup fails at any level, it will throw an exception describing which
  * object in the hierarchy did not respond to any object accessor methods.
  */
-- (void)sentry_removeObjectForDeepKey:(NSArray *)deepKey;
+- (void) removeObjectForDeepKey:(NSArray*) deepKey;
 
 /** Remove an associated object at the specified key path.
  *
@@ -198,6 +206,6 @@
  * If the lookup fails at any level, it will throw an exception describing which
  * object in the hierarchy did not respond to any object accessor methods.
  */
-- (void)sentry_removeObjectForKeyPath:(NSString *)keyPath;
+- (void) removeObjectForKeyPath:(NSString*) keyPath;
 
 @end

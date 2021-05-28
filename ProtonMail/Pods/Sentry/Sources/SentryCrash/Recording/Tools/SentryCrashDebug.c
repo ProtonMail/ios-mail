@@ -24,6 +24,7 @@
 // THE SOFTWARE.
 //
 
+
 #include "SentryCrashDebug.h"
 
 //#define SentryCrashLogger_LocalLevel TRACE
@@ -34,18 +35,19 @@
 #include <sys/sysctl.h>
 #include <unistd.h>
 
+
 /** Check if the current process is being traced or not.
  *
  * @return true if we're being traced.
  */
-bool
-sentrycrashdebug_isBeingTraced(void)
+bool sentrycrashdebug_isBeingTraced(void)
 {
     struct kinfo_proc procInfo;
     size_t structSize = sizeof(procInfo);
-    int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid() };
+    int mib[] = {CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()};
 
-    if (sysctl(mib, sizeof(mib) / sizeof(*mib), &procInfo, &structSize, NULL, 0) != 0) {
+    if(sysctl(mib, sizeof(mib)/sizeof(*mib), &procInfo, &structSize, NULL, 0) != 0)
+    {
         SentryCrashLOG_ERROR("sysctl: %s", strerror(errno));
         return false;
     }

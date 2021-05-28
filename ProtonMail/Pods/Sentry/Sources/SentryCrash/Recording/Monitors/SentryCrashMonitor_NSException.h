@@ -24,8 +24,10 @@
 // THE SOFTWARE.
 //
 
+
 /* Catches Objective-C exceptions.
  */
+
 
 #ifndef HDR_SentryCrashMonitor_NSException_h
 #define HDR_SentryCrashMonitor_NSException_h
@@ -34,11 +36,14 @@
 extern "C" {
 #endif
 
+
 #include "SentryCrashMonitor.h"
+
 
 /** Access the Monitor API.
  */
-SentryCrashMonitorAPI *sentrycrashcm_nsexception_getAPI(void);
+SentryCrashMonitorAPI* sentrycrashcm_nsexception_getAPI(void);
+
 
 #ifdef __cplusplus
 }
