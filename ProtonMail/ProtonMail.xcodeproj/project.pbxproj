@@ -5734,15 +5734,6 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
-		AC32A6C15A576438B1EF56289E166D03 /* ConversationDataService */ = {
-			isa = PBXGroup;
-			children = (
-				A7B52689B554EBDBD866C8832A680C4B /* ConversationDataService+CollectionFetching.swift */,
-				6CB9C874239834B5F1B59146FB97B46A /* ConversationDataService.swift */,
-			);
-			path = ConversationDataService;
-			sourceTree = "<group>";
-		};
 		90D88B944A8C92EEF7B1B59A24D3D46A /* SwipeActionActionSheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -6108,6 +6099,15 @@
 				8D63E722A24AF52CA417EEC2F60DD5FE /* ShareUnlockViewModel.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		AC32A6C15A576438B1EF56289E166D03 /* ConversationDataService */ = {
+			isa = PBXGroup;
+			children = (
+				A7B52689B554EBDBD866C8832A680C4B /* ConversationDataService+CollectionFetching.swift */,
+				6CB9C874239834B5F1B59146FB97B46A /* ConversationDataService.swift */,
+			);
+			path = ConversationDataService;
 			sourceTree = "<group>";
 		};
 		AC611CB84D8D805178BD7D0FC369C4A8 /* ConversationView */ = {

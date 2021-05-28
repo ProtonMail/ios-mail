@@ -31,16 +31,16 @@ enum ReadState {
 
 protocol ConversationProvider {
     // MARK: - Collection fetching
-    func fetchConversationCounts(addressId: String?, completion: ((Result<Void, Error>) -> Void)?)
+    func fetchConversationCounts(addressID: String?, completion: ((Result<Void, Error>) -> Void)?)
     func fetchConversations(for labelID: String,
                             before timestamp: Int,
                             unreadOnly: Bool,
                             shouldReset: Bool,
                             completion: ((Result<Void, Error>) -> Void)?)
-    func fetchConversations(with ids: [String], completion: ((Result<Void, Error>) -> Void)?)
+    func fetchConversations(with conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Single item fetching
     // MARK: - Operations
-    func deleteConversation(with id: String, completion: ((Result<Void, Error>) -> Void)?)
+    func deleteConversation(with conversationID: String, completion: ((Result<Void, Error>) -> Void)?)
     func mark(conversationIDs: [String], as state: ReadState, completion: ((Result<Void, Error>) -> Void)?)
     func label(conversationIDs: [String], as label: String, completion: ((Result<Void, Error>) -> Void)?)
     func unlabel(conversationIDs: [String], as label: String, completion: ((Result<Void, Error>) -> Void)?)
@@ -77,7 +77,7 @@ final class ConversationDataService: Service, ConversationProvider {
         self.queueManager = queueManager
     }
 
-    func deleteConversation(with id: String, completion: ((Result<Void, Error>) -> Void)?) {
+    func deleteConversation(with conversationID: String, completion: ((Result<Void, Error>) -> Void)?) {
         fatalError("Not implemented")
     }
 

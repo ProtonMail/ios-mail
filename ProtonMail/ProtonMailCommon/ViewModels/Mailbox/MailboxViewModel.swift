@@ -547,7 +547,7 @@ class MailboxViewModel: StorageLimit {
     }
     
     func fetchConversationCount(completion: ((Result<Void, Error>) -> Void)?) {
-        conversationService.fetchConversationCounts(addressId: nil, completion: completion)
+        conversationService.fetchConversationCounts(addressID: nil, completion: completion)
     }
     
     func labelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {

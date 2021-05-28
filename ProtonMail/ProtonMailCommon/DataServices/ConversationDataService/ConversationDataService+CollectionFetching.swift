@@ -25,8 +25,8 @@ import Groot
 
 // MARK: - Collection fetching
 extension ConversationDataService {
-    func fetchConversationCounts(addressId: String?, completion: ((Result<Void, Error>) -> Void)?) {
-        let conversationCountRequest = ConversationCountRequest(addressID: addressId)
+    func fetchConversationCounts(addressID: String?, completion: ((Result<Void, Error>) -> Void)?) {
+        let conversationCountRequest = ConversationCountRequest(addressID: addressID)
         self.apiService.GET(conversationCountRequest) { _, response, error in
             if let error = error {
                 completion?(.failure(error))
@@ -157,9 +157,9 @@ extension ConversationDataService {
         }
     }
 
-    func fetchConversations(with ids: [String], completion: ((Result<Void, Error>) -> Void)?) {
+    func fetchConversations(with conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
         var para = ConversationsRequest.Parameters()
-        para.IDs = ids
+        para.IDs = conversationIDs
         
         let request = ConversationsRequest(para)
         self.apiService.GET(request) { (task, responseDict, error) in
