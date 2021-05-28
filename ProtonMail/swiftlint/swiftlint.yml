@@ -117,7 +117,7 @@ included:
   - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/AttachmentViewModel.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Attachment/AttachmentViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/AttachmentList/AttachmentListViewController.swift
-  - ${PWD}/ProtonMail/Controller/SingleMessage/AttachmentList/AttachmentLIstTableViewCell.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/AttachmentList/AttachmentListTableViewCell.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/QuickViewViewController.swift
   - ${PWD}/ProtonMail/Components/TagsView/MultiRowsTagsView.swift
   - ${PWD}/ProtonMail/Components/TagsView/StackViewContainer.swift
@@ -144,7 +144,7 @@ included:
   - ${PWD}/ProtonMail/Controller/Compose/ComposerAttachmentVC/ComposerAttachmentHandlerProtocol.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposerAttachmentVC/ComposerAttachmentVC.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposerAttachmentVC/ComposerAttachmentCell/ComposerAttachmentCellTableViewCell.swift
-  - ${PWD}/ProtonMailCommon/ViewModels/Attachments/MimeType.swift
+  - ${PWD}/ProtonMailCommon/ViewModels/Attachments/MIMEType.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/SingleMessageViewController+Print.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyViewController+Print.swift
   - ${PWD}/ProtonMail/Controller/Search/SearchBarView.swift

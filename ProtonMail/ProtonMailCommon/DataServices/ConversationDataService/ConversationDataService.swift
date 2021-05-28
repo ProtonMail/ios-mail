@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Services
 
@@ -31,7 +30,10 @@ enum ReadState {
 
 protocol ConversationProvider {
     func fetchConversationCounts(addressId: String?, completion: ((Result<Void, Error>) -> Void)?)
-    func fetchConversations(for label: String, beforeTimestamp: Int, unreadOnly: Bool, completion: ((Result<Void, Error>) -> Void)?)
+    func fetchConversations(for label: String,
+                            beforeTimestamp: Int,
+                            unreadOnly: Bool,
+                            completion: ((Result<Void, Error>) -> Void)?)
     func fetchConversations(with ids: [String], completion: ((Result<Void, Error>) -> Void)?)
     func deleteConversation(with id: String, completion: ((Result<Void, Error>) -> Void)?)
     func mark(conversationIDs: [String], as state: ReadState, completion: ((Result<Void, Error>) -> Void)?)
@@ -41,14 +43,14 @@ protocol ConversationProvider {
 }
 
 final class ConversationDataService: Service, ConversationProvider {
-    private let apiService : APIService
-    private let userID : String
+    private let apiService: APIService
+    private let userID: String
     private let coreDataService: CoreDataService
     private let lastUpdatedStore: LastUpdatedStoreProtocol
     private weak var eventsService: EventsService?
     private weak var viewModeDataSource: ViewModeDataSource?
     private weak var queueManager: QueueManager?
-    
+
     init(api: APIService,
          userID: String,
          coreDataService: CoreDataService,
@@ -67,7 +69,7 @@ final class ConversationDataService: Service, ConversationProvider {
 
     func fetchConversationCounts(addressId: String?, completion: ((Result<Void, Error>) -> Void)?) {
         let conversationCountRequest = ConversationCountRequest(addressID: addressId)
-        self.apiService.GET(conversationCountRequest) { (_, response, error) in
+        self.apiService.GET(conversationCountRequest) { _, response, error in
             if let error = error {
                 completion?(.failure(error))
                 return
@@ -78,28 +80,31 @@ final class ConversationDataService: Service, ConversationProvider {
             }
         }
     }
-    
-    func fetchConversations(for label: String, beforeTimestamp: Int, unreadOnly: Bool, completion: ((Result<Void, Error>) -> Void)?) {
-        fatalError()
+
+    func fetchConversations(for label: String,
+                            beforeTimestamp: Int,
+                            unreadOnly: Bool,
+                            completion: ((Result<Void, Error>) -> Void)?) {
+        fatalError("Not implemented")
     }
-    
+
     func fetchConversations(with ids: [String], completion: ((Result<Void, Error>) -> Void)?) {
-        fatalError()
+        fatalError("Not implemented")
     }
-    
+
     func deleteConversation(with id: String, completion: ((Result<Void, Error>) -> Void)?) {
-        fatalError()
+        fatalError("Not implemented")
     }
-    
+
     func mark(conversationIDs: [String], as state: ReadState, completion: ((Result<Void, Error>) -> Void)?) {
-        fatalError()
+        fatalError("Not implemented")
     }
-    
+
     func label(conversationIDs: [String], as label: String, completion: ((Result<Void, Error>) -> Void)?) {
-        fatalError()
+        fatalError("Not implemented")
     }
-    
+
     func unlabel(conversationIDs: [String], as label: String, completion: ((Result<Void, Error>) -> Void)?) {
-        fatalError()
+        fatalError("Not implemented")
     }
 }
