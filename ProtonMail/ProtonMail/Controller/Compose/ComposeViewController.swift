@@ -191,6 +191,18 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         generateAccessibilityIdentifiers()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        #if !APP_EXTENSION
+        let actionToFilter: [ComposeMessageAction] = [.reply, .replyAll]
+        if !actionToFilter.contains(viewModel.messageAction) {
+            _ = headerView.toContactPicker.becomeFirstResponder()
+        }
+        #endif
+        
+    }
+
     private func retrieveAllContacts() -> Promise<Void> {
         return Promise { seal in
             let service = self.viewModel.getUser().contactService
