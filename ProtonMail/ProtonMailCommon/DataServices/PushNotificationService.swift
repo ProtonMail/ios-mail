@@ -244,9 +244,13 @@ public class PushNotificationService: NSObject, Service {
                 link.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.draft.rawValue))
                 NotificationCenter.default.post(name: .switchView, object: link)
             default:
+                let coreDataService = sharedServices.get(by: CoreDataService.self)
+                let message = Message.messageForMessageID(messageid, inManagedObjectContext: coreDataService.mainContext)
+                let firstValidFolder = message?.firstValidFolder()
+
                 user.messageService.pushNotificationMessageID = messageid
                 let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
-                link.append(.init(name: String(describing: MailboxViewController.self)))
+                link.append(.init(name: String(describing: MailboxViewController.self), value: firstValidFolder))
                 link.append(.init(name: MailboxCoordinator.Destination.details.rawValue, value: messageid))
                 NotificationCenter.default.post(name: .switchView, object: link)
             }
