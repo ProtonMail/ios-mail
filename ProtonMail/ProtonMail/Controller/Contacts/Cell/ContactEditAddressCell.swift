@@ -43,8 +43,6 @@ final class ContactEditAddressCell: UITableViewCell {
     @IBOutlet weak var vline5: UIView!
     @IBOutlet weak var vline6: UIView!
     
-    fileprivate var isPaid : Bool = false
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
@@ -81,9 +79,8 @@ final class ContactEditAddressCell: UITableViewCell {
         vline6.gradient()
     }
     
-    func configCell(obj : ContactEditAddress, paid: Bool, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+    func configCell(obj : ContactEditAddress, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.addr = obj
-        self.isPaid = paid
         self.delegate = callback
         
         typeLabel.attributedText = NSAttributedString(string: self.addr.newType.title,
@@ -101,20 +98,14 @@ final class ContactEditAddressCell: UITableViewCell {
         countyField.attributedText = NSAttributedString(string: self.addr.newCountry,
                                                         attributes: FontManager.Default)
             
-        if self.isPaid {
-            if becomeFirstResponder {
-                delay(0.25, closure: {
-                    self.valueField.becomeFirstResponder()
-                })
-            }
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
         }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return
-        }
         delegate?.pick(typeInterface: addr, sender: self)
     }
 }
@@ -125,10 +116,6 @@ extension ContactEditAddressCell: UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return false
-        }
         return true
     }
     
@@ -137,10 +124,6 @@ extension ContactEditAddressCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return
-        }
         if textField == valueField {
             addr.newStreet = valueField.attributedText?.string ?? ""
         }
