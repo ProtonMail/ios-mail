@@ -56,20 +56,11 @@ final class EventsService: Service, EventsFetching {
     private var timer: Timer?
     private lazy var coreDataService: CoreDataService = ServiceFactory.default.get(by: CoreDataService.self)
     private lazy var lastUpdatedStore = ServiceFactory.default.get(by: LastUpdatedStore.self)
-    private weak var messageDataService: MessageDataService!
-    #warning("TODO (Mustapha): - Property below should later be of type ConversationDataService when fetchConversations is properly migrated")
-    private weak var conversationDataService: ConversationDataService!
-    private let apiService: APIService!
-    private weak var contactDataService: ContactDataService!
     private weak var userManager: UserManager!
     private lazy var queueManager = ServiceFactory.default.get(by: QueueManager.self)
     
     init(userManager: UserManager) {
         self.userManager = userManager
-        self.messageDataService = userManager.messageService
-        self.conversationDataService = userManager.conversationService
-        self.apiService = userManager.apiService
-        self.contactDataService = userManager.contactService
     }
     
     func start() {
@@ -135,18 +126,18 @@ extension EventsService {
         }
         self.queueManager.queue {
             let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userManager.userInfo.userId))
-            self.apiService.exec(route: eventAPI) { (task, response: EventCheckResponse) in
+            self.userManager.apiService.exec(route: eventAPI) { (task, response: EventCheckResponse) in
                 
                 let eventsRes = response
                 if eventsRes.refresh.contains(.contacts) {
-                    _ = self.contactDataService.cleanUp().ensure {
-                        self.contactDataService.fetchContacts(completion: nil)
+                    _ = self.userManager.contactService.cleanUp().ensure {
+                        self.userManager.contactService.fetchContacts(completion: nil)
                     }
                 }
 
                 if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
                     let getLatestEventID = EventLatestIDRequest()
-                    self.apiService.exec(route: getLatestEventID) { (task, eventIDResponse: EventLatestIDResponse) in
+                    self.userManager.apiService.exec(route: getLatestEventID) { (task, eventIDResponse: EventLatestIDResponse) in
                         if let err = eventIDResponse.error {
                             completion?(task, nil, err.toNSError)
                             return
@@ -168,13 +159,13 @@ extension EventsService {
                             }
                             completion?(task, responseDict, error)
                         }
-                        self.conversationDataService.cleanAll()
-                        self.messageDataService.cleanMessage().then {
-                            return self.contactDataService.cleanUp()
+                        self.userManager.conversationService.cleanAll()
+                        self.userManager.messageService.cleanMessage().then {
+                            return self.userManager.contactService.cleanUp()
                         }.ensure {
                             switch self.userManager.getCurrentViewMode() {
                             case .conversation:
-                                self.conversationDataService.fetchConversations(for: labelID, before: 0, unreadOnly: false, shouldReset: false) { result in
+                                self.userManager.conversationService.fetchConversations(for: labelID, before: 0, unreadOnly: false, shouldReset: false) { result in
                                     switch result {
                                     case .success:
                                         completionWrapper(nil, nil, nil)
@@ -183,10 +174,10 @@ extension EventsService {
                                     }
                                 }
                             case .singleMessage:
-                                self.messageDataService.fetchMessages(byLabel: labelID, time: 0, forceClean: false, isUnread: false, completion: completionWrapper)
+                                self.userManager.messageService.fetchMessages(byLabel: labelID, time: 0, forceClean: false, isUnread: false, completion: completionWrapper)
                             }
-                            self.contactDataService.fetchContacts(completion: nil)
-                            self.messageDataService.labelDataService.fetchV4Labels().cauterize()
+                            self.userManager.contactService.fetchContacts(completion: nil)
+                            self.userManager.messageService.labelDataService.fetchV4Labels().cauterize()
                         }.cauterize()
                     }
                 } else if let messageEvents = eventsRes.messages {
@@ -508,7 +499,7 @@ extension EventsService {
                     }
                 }
 
-                self.messageDataService.fetchMessageInBatches(messageIDs: messagesNoCache)
+                self.userManager.messageService.fetchMessageInBatches(messageIDs: messagesNoCache)
 
                 DispatchQueue.main.async {
                     completion?(task, nil, error)
@@ -634,7 +625,7 @@ extension EventsService {
                         }
                     }
                     
-                    self.conversationDataService.fetchConversations(with: conversationsNeedRefetch, completion: nil)
+                    self.userManager.conversationService.fetchConversations(with: conversationsNeedRefetch, completion: nil)
                 }
             }
         }
