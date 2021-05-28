@@ -1580,7 +1580,8 @@ class MessageDataService : Service, HasLocalStorage {
                 case .singleMessage:
                     self.fetchMessages(byLabel: Message.Location.inbox.rawValue, time: 0, forceClean: false, isUnread: false, completion: completionBlock)
                 case .conversation:
-                    self.fetchConversations(by: Message.Location.inbox.rawValue, time: 0, forceClean: false, isUnread: false, completion: completionBlock)
+                    // ConversationDataService.cleanAll() should be called instead
+                    break
                 }
             }.cauterize()
         }

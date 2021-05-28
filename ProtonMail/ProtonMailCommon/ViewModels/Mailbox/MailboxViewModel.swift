@@ -55,6 +55,7 @@ class MailboxViewModel: StorageLimit {
     /// message service
     internal let user: UserManager
     internal let messageService : MessageDataService
+    internal let conversationService : ConversationDataService
     internal let eventsService: EventsService
     private let pushService : PushNotificationService
     /// fetch controller
@@ -85,6 +86,7 @@ class MailboxViewModel: StorageLimit {
         self.labelID = labelID
         self.user = userManager
         self.messageService = userManager.messageService
+        self.conversationService = userManager.conversationService
         self.eventsService = userManager.eventsService
         self.contactService = userManager.contactService
         self.coreDataService = coreDataService
@@ -544,8 +546,8 @@ class MailboxViewModel: StorageLimit {
         messageService.markConversationAsRead(by: conversationIDs, completion: completion)
     }
     
-    func fetchConversationCount(completion: ((Result<[ConversationCountData], Error>) -> Void)?) {
-        messageService.fetchConversationsCount(completion: completion)
+    func fetchConversationCount(completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.fetchConversationCounts(addressId: nil, completion: completion)
     }
     
     func labelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
@@ -786,7 +788,14 @@ extension MailboxViewModel {
         case .singleMessage:
             messageService.fetchMessages(byLabel: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, completion: completion)
         case .conversation:
-            messageService.fetchConversations(by: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, completion: completion)
+            conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: isUnread, shouldReset: forceClean) { result in
+                switch result {
+                case .success:
+                    completion?(nil, nil, nil)
+                case .failure(let error):
+                    completion?(nil, nil, error as NSError)
+                }
+            }
         }
     }
 
@@ -795,7 +804,14 @@ extension MailboxViewModel {
         case .singleMessage:
             messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
         case .conversation:
-            messageService.fetchConversationsWithReset(byLabel: self.labelID, time: time, completion: completion)
+            conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: false, shouldReset: true) { result in
+                switch result {
+                case .success:
+                    completion?(nil, nil, nil)
+                case .failure(let error):
+                    completion?(nil, nil, error as NSError)
+                }
+            }
         }
     }
 
@@ -804,7 +820,14 @@ extension MailboxViewModel {
         case .singleMessage:
             messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
         case .conversation:
-            messageService.fetchConversationsOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
+            conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: false, shouldReset: true) { result in
+                switch result {
+                case .success:
+                    completion?(nil, nil, nil)
+                case .failure(let error):
+                    completion?(nil, nil, error as NSError)
+                }
+            }
         }
     }
 }
