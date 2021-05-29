@@ -29,7 +29,7 @@ enum ReadState {
     case read
 }
 
-protocol ConversationProvider {
+protocol ConversationProvider: AnyObject {
     // MARK: - Collection fetching
     func fetchConversationCounts(addressID: String?, completion: ((Result<Void, Error>) -> Void)?)
     func fetchConversations(for labelID: String,
@@ -48,7 +48,8 @@ protocol ConversationProvider {
     func unlabel(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Clean up
     func cleanAll()
-
+    // MARK: - Local for legacy reasons
+    func fetchLocalConversations(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Conversation]
 }
 
 final class ConversationDataService: Service, ConversationProvider {
