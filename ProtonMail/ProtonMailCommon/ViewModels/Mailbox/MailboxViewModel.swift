@@ -55,7 +55,7 @@ class MailboxViewModel: StorageLimit {
     /// message service
     internal let user: UserManager
     internal let messageService : MessageDataService
-    internal let conversationService : ConversationDataService
+    internal let conversationService : ConversationProvider
     internal let eventsService: EventsService
     private let pushService : PushNotificationService
     /// fetch controller

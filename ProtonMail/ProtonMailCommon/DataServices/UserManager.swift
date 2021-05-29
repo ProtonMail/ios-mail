@@ -176,7 +176,7 @@ class UserManager : Service, HasLocalStorage {
         return service
     }()
     
-    public lazy var conversationService: ConversationDataService = { [unowned self] in
+    public lazy var conversationService: ConversationProvider = { [unowned self] in
         let service = ConversationDataService(api: apiService,
                                               userID: userinfo.userId,
                                               coreDataService: sharedServices.get(by: CoreDataService.self),
