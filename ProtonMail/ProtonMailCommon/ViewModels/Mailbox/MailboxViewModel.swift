@@ -56,7 +56,7 @@ class MailboxViewModel: StorageLimit {
     internal let user: UserManager
     internal let messageService : MessageDataService
     internal let conversationService : ConversationProvider
-    internal let eventsService: EventsService
+    internal let eventsService: EventsFetching
     private let pushService : PushNotificationService
     /// fetch controller
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?

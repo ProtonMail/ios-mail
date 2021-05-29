@@ -28,8 +28,8 @@ class MarkLegitimateService {
     private let labelId: String
     private let apiService: APIService
     private let messageDataService: MessageDataService
-    private let eventsService: EventsService
-    init(labelId: String, apiService: APIService, messageDataService: MessageDataService, eventsService: EventsService) {
+    private let eventsService: EventsFetching
+    init(labelId: String, apiService: APIService, messageDataService: MessageDataService, eventsService: EventsFetching) {
         self.labelId = labelId
         self.apiService = apiService
         self.messageDataService = messageDataService

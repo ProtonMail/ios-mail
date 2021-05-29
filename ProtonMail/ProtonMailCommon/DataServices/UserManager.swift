@@ -209,7 +209,7 @@ class UserManager : Service, HasLocalStorage {
         return service
     }()
     
-    public lazy var eventsService: EventsService = { [unowned self] in
+    public lazy var eventsService: EventsFetching = { [unowned self] in
         let service = EventsService(userManager: self)
         return service
     }()
