@@ -58,7 +58,7 @@ final class ConversationDataService: Service, ConversationProvider {
     let coreDataService: CoreDataService
     let labelDataService: LabelsDataService
     let lastUpdatedStore: LastUpdatedStoreProtocol
-    private(set) weak var eventsService: EventsService?
+    private(set) weak var eventsService: EventsFetching?
     private weak var viewModeDataSource: ViewModeDataSource?
     private weak var queueManager: QueueManager?
 
@@ -67,7 +67,7 @@ final class ConversationDataService: Service, ConversationProvider {
          coreDataService: CoreDataService,
          labelDataService: LabelsDataService,
          lastUpdatedStore: LastUpdatedStoreProtocol,
-         eventsService: EventsService,
+         eventsService: EventsFetching,
          viewModeDataSource: ViewModeDataSource?,
          queueManager: QueueManager?) {
         self.apiService = api

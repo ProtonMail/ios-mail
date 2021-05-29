@@ -34,7 +34,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     private let contactGroupService: ContactGroupsDataService
     private let labelDataService: LabelsDataService
     private let messageService: MessageDataService
-    private let eventsService :EventsService
+    private let eventsService: EventsFetching
     
     private var selectedGroupIDs: Set<String> = Set<String>()
     

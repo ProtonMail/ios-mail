@@ -26,12 +26,27 @@ import Groot
 import PromiseKit
 import ProtonCore_Services
 
-protocol EventsFetching {
+enum EventsFetchingStatus {
+    case idle
+    case started
+    case running
+}
+
+protocol EventsFetching: AnyObject {
+    var status: EventsFetchingStatus { get }
     func start()
     func pause()
     func resume()
     func stop()
     func call()
+
+    func begin(subscriber: EventsConsumer)
+
+    func fetchEvents(byLabel labelID: String, notificationMessageID : String?, completion: CompletionBlock?)
+    func fetchEvents(labelID: String)
+    func processEvents(counts: [[String : Any]]?)
+    func processEvents(conversationCounts: [[String: Any]]?)
+    func processEvents(mailSettings: [String : Any]?)
 }
 
 protocol EventsConsumer: AnyObject {
@@ -43,15 +58,10 @@ enum EventError: Error {
 }
 
 final class EventsService: Service, EventsFetching {
-    enum Status {
-        case idle
-        case started
-        case running
-    }
     private static let defaultPollingInterval: TimeInterval = 30
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
     private typealias EventsObservation = (() -> Void?)?
-    private(set) var status: Status = .idle
+    private(set) var status: EventsFetchingStatus = .idle
     private var subscribers: [EventsObservation] = []
     private var timer: Timer?
     private lazy var coreDataService: CoreDataService = ServiceFactory.default.get(by: CoreDataService.self)
@@ -291,7 +301,7 @@ extension EventsService {
      :param: task       NSURL session task
      :param: completion complete call back
      */
-    func processEvents(messages: [[String : Any]], notificationMessageID: String?, task: URLSessionDataTask!, completion: CompletionBlock?) {
+    fileprivate func processEvents(messages: [[String : Any]], notificationMessageID: String?, task: URLSessionDataTask!, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -509,7 +519,7 @@ extension EventsService {
         }
     }
     
-    func processEvents(conversations: [[String: Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(conversations: [[String: Any]]?) -> Promise<Void> {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -634,7 +644,7 @@ extension EventsService {
     /// Process contacts from event logs
     ///
     /// - Parameter contacts: contact events
-    func processEvents(contacts: [[String : Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(contacts: [[String : Any]]?) -> Promise<Void> {
         guard let contacts = contacts else {
             return Promise()
         }
@@ -690,7 +700,7 @@ extension EventsService {
     /// Process contact emails this is like metadata update
     ///
     /// - Parameter contactEmails: contact email events
-    func processEvents(contactEmails: [[String : Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(contactEmails: [[String : Any]]?) -> Promise<Void> {
         guard let emails = contactEmails else {
             return Promise()
         }
@@ -744,7 +754,7 @@ extension EventsService {
     /// Process Labels include Folders and Labels.
     ///
     /// - Parameter labels: labels events
-    func processEvents(labels: [[String : Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(labels: [[String : Any]]?) -> Promise<Void> {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -797,13 +807,13 @@ extension EventsService {
     /// Process User information
     ///
     /// - Parameter userInfo: User dict
-    func processEvents(user: [String : Any]?) {
+    fileprivate func processEvents(user: [String : Any]?) {
         guard let userEvent = user else {
             return
         }
         self.userManager?.updateFromEvents(userInfoRes: userEvent)
     }
-    func processEvents(userSettings: [String : Any]?) {
+    fileprivate func processEvents(userSettings: [String : Any]?) {
         guard let userSettingEvent = userSettings else {
             return
         }
@@ -816,7 +826,7 @@ extension EventsService {
         self.userManager?.updateFromEvents(mailSettingsRes: mailSettingEvent)
     }
     
-    func processEvents(addresses: [[String : Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(addresses: [[String : Any]]?) -> Promise<Void> {
         guard let addrEvents = addresses else {
             return Promise()
         }
@@ -930,7 +940,7 @@ extension EventsService {
     }
     
     
-    func processEvents(space usedSpace : Int64?) {
+    fileprivate func processEvents(space usedSpace : Int64?) {
         guard let usedSpace = usedSpace else {
             return
         }
