@@ -2811,6 +2811,7 @@
 		07132CCDB640950FFC158BF1015750F0 /* SettingsContactCombineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContactCombineViewController.swift; sourceTree = "<group>"; };
 		071D95DF15DABDE11AA01F54CF66CCC9 /* Pods-KeymakerTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeymakerTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-KeymakerTests/Pods-KeymakerTests.distribution.xcconfig"; sourceTree = "<group>"; };
 		07485BF822F9851BDFC28AE2401632AB /* LabelboxViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelboxViewModelImpl.swift; sourceTree = "<group>"; };
+		079B8EA6518FBF74242E1F66E4D2BDAE /* 2.0.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.2.xcdatamodel; sourceTree = "<group>"; };
 		07A8B3BD82B99F6C02CFD8325039C53D /* ProtonMailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtonMailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		07B056EBF53B06599D9AFD58EFF16608 /* Test Failed Htmls.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "Test Failed Htmls.bundle"; sourceTree = "<group>"; };
 		07B19F69ACC56F66D3D9DCAB37BBAC68 /* Bundle+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
@@ -12781,6 +12782,7 @@
 				A810150A86D738450D5233E2834055BF /* 1.12.5.xcdatamodel */,
 				CC4CDB6401C97884FDAC9AAC06E88BA9 /* 2.0.0.xcdatamodel */,
 				C6FC2D303C438A6A11045E7AFA6C2335 /* 2.0.1.xcdatamodel */,
+				079B8EA6518FBF74242E1F66E4D2BDAE /* 2.0.2.xcdatamodel */,
 				4AC8B46F567BE34418EFC96C5472E216 /* ProtonMail.xcdatamodel */,
 			);
 			currentVersion = C6FC2D303C438A6A11045E7AFA6C2335 /* 2.0.1.xcdatamodel */;
