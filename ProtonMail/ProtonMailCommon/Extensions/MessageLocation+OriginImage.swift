@@ -23,12 +23,12 @@
 
 extension Message.Location {
 
-    var originImage: UIImage? {
+    func originImage(viewMode: ViewMode = .singleMessage) -> UIImage? {
         switch self {
         case .archive:
             return Asset.mailArchiveIcon.image
         case .draft:
-            return Asset.mailDraftIcon.image
+            return viewMode.originImage
         case .sent:
             return Asset.mailSendIcon.image
         case .spam:
@@ -39,6 +39,19 @@ extension Message.Location {
             return Asset.mailInboxIcon.image
         case .starred, .allmail:
             return nil
+        }
+    }
+
+}
+
+private extension ViewMode {
+
+    var originImage: UIImage {
+        switch self {
+        case .singleMessage:
+            return Asset.mailDraftIcon.image
+        case .conversation:
+            return Asset.mailConversationDraft.image
         }
     }
 

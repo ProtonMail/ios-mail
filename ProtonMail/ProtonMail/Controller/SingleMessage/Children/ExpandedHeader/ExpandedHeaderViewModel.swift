@@ -63,7 +63,7 @@ class ExpandedHeaderViewModel {
     }
 
     var originImage: UIImage? {
-        if let image = message.messageLocation?.originImage {
+        if let image = message.messageLocation?.originImage() {
             return image
         }
         return message.isCustomFolder ? Asset.mailCustomFolder.image : nil

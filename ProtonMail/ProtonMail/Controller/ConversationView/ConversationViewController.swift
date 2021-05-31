@@ -5,6 +5,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UIScr
 
     private let viewModel: ConversationViewModel
     private let conversationNavigationViewPresenter = ConversationNavigationViewPresenter()
+    private let conversationMessageCellPresenter = ConversationMessageCellPresenter()
 
     private lazy var starBarButton = UIBarButtonItem.plain(target: self, action: #selector(starButtonTapped))
 
@@ -27,6 +28,12 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UIScr
         starButtonSetUp(starred: false)
         conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
         customView.separator.isHidden = true
+
+        viewModel.reloadTableView = { [weak self] in
+            self?.customView.tableView.reloadData()
+        }
+
+        viewModel.fetchConversationDetails()
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -45,6 +52,13 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UIScr
             let style = FontManager.MessageHeader.alignment(.center)
             cell.customView.titleLabel.attributedText = subject.apply(style: style)
             return cell
+        case .message(let viewModel):
+            switch viewModel.state {
+            case .collapsed(let viewModel):
+                let cell = tableView.dequeue(cellType: ConversationMessageCell.self)
+                conversationMessageCellPresenter.present(model: viewModel.model, in: cell.customView)
+                return cell
+            }
         }
     }
 
@@ -57,6 +71,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UIScr
             let separatorConvertedFrame = cell.convert(cell.customView.separator.frame, to: customView.tableView)
             let shouldShowSeparator = customView.tableView.contentOffset.y >= separatorConvertedFrame.maxY
             customView.separator.isHidden = !shouldShowSeparator
+
+            cell.customView.topSpace = scrollView.contentOffset.y < 0 ? scrollView.contentOffset.y : 0
         } else {
             presentDetailedNavigationTitle()
             customView.separator.isHidden = false
@@ -84,6 +100,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UIScr
         customView.tableView.dataSource = self
         customView.tableView.delegate = self
         customView.tableView.register(cellType: ConversationViewHeaderCell.self)
+        customView.tableView.register(cellType: ConversationMessageCell.self)
     }
 
     required init?(coder: NSCoder) {
