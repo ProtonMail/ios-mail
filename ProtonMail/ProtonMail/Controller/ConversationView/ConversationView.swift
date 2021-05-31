@@ -45,7 +45,7 @@ private enum SubviewsFactory {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = UIColorManager.BackgroundSecondary
         return tableView
     }
 

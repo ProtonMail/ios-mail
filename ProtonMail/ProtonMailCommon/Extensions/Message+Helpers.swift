@@ -134,7 +134,7 @@ extension Message {
         }
     }
 
-    private var orderedLabels: [Label] {
+    var orderedLabels: [Label] {
         let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
         let allLabels = labels.filtered(using: predicate)
         return allLabels

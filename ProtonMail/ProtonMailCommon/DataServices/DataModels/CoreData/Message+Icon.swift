@@ -45,7 +45,7 @@ extension Message {
         }.compactMap { lableId in
             if standardFolders.contains(lableId) {
                 if let location = Message.Location.init(rawValue: lableId) {
-                    return location.originImage
+                    return location.originImage()
                 } else {
                     return nil
                 }

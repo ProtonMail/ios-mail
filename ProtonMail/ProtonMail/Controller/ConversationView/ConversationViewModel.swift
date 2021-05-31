@@ -1,8 +1,12 @@
 class ConversationViewModel {
 
-    var dataSource: [ConversationViewItemType] {
-        [.header(subject: conversation.subject)]
+    var dataSource: [ConversationViewItemType] = [] {
+        didSet {
+            reloadTableView?()
+        }
     }
+
+    var reloadTableView: (() -> Void)?
 
     var messagesTitle: String {
         .localizedStringWithFormat(LocalString._general_message, conversation.numMessages.intValue)
@@ -20,9 +24,36 @@ class ConversationViewModel {
     }
 
     private let conversation: Conversation
+    private let conversationMessagesProvider: ConversationMessagesProvider
+    private let messageService: MessageDataService
+    private let contactService: ContactDataService
 
-    init(conversation: Conversation) {
+    private var header: ConversationViewItemType {
+        .header(subject: conversation.subject)
+    }
+
+    init(conversation: Conversation, messageService: MessageDataService, contactService: ContactDataService) {
         self.conversation = conversation
+        self.messageService = messageService
+        self.contactService = contactService
+        self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
+        observeConversationMessages()
+    }
+
+    func fetchConversationDetails() {
+        messageService.fetchConversationDetail(by: conversation.conversationID) { _ in }
+    }
+
+    func observeConversationMessages() {
+        conversationMessagesProvider.observe { [weak self] messages in
+            self?.refreshDataSource(with: messages)
+        }
+    }
+
+    func refreshDataSource(with messages: [Message]) {
+        dataSource = [header] + messages.map {
+            .message(viewModel: .init(message: $0, messageService: messageService, contactService: contactService))
+        }
     }
 
 }
