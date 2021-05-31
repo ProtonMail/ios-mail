@@ -37,6 +37,7 @@ class ContextLabel: NSManagedObject {
         static let entityName = String(describing: ContextLabel.self)
         static let userID = "userID"
         static let labelID = "labelID"
+        static let unreadCount = "unreadCount"
     }
 
     class func deleteAll(inContext context: NSManagedObjectContext) {

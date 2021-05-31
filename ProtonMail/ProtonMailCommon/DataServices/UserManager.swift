@@ -529,6 +529,6 @@ extension UserManager {
 
 extension UserManager: ViewModeDataSource {
     func getCurrentViewMode() -> ViewMode {
-        return self.userinfo.viewMode
+        return conversationStateService.viewMode
     }
 }

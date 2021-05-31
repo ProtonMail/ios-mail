@@ -1935,28 +1935,7 @@ extension MailboxViewController: UITableViewDelegate {
     private func handleMessageSelection(indexPath: IndexPath) {
         guard let message = viewModel.item(index: indexPath) else { return }
         if listEditing {
-            let messageAlreadySelected = self.viewModel.selectionContains(id: message.messageID)
-            let selectionAction = messageAlreadySelected ? viewModel.removeSelected : viewModel.select
-            selectionAction(message.messageID)
-
-            if viewModel.selectedIDs.isEmpty {
-                hideActionBar()
-            }
-
-            if !viewModel.selectedIDs.isEmpty, mailActionBar == nil {
-                showActionBar()
-            }
-
-            // update checkbox state
-            if let mailboxCell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell {
-                messageCellPresenter.presentSelectionStyle(
-                    style: .selection(isSelected: !messageAlreadySelected),
-                    in: mailboxCell.customView
-                )
-            }
-
-            tableView.deselectRow(at: indexPath, animated: true)
-            self.setupNavigationTitle(true)
+            handleEditingDataSelection(of: message.messageID, indexPath: indexPath)
         } else {
             self.indexPathForSelectedRow = indexPath
             self.tapped(at: indexPath)
@@ -1964,10 +1943,36 @@ extension MailboxViewController: UITableViewDelegate {
     }
 
     private func handleConversationSelection(indexPath: IndexPath) {
-        guard viewModel.itemOfConversation(index: indexPath) != nil else { return }
-        self.coordinator?.go(to: .details)
+        guard let conversation = viewModel.itemOfConversation(index: indexPath) else { return }
+        if listEditing {
+            handleEditingDataSelection(of: conversation.conversationID, indexPath: indexPath)
+        } else {
+            self.coordinator?.go(to: .details)
+        }
     }
 
+    private func handleEditingDataSelection(of id: String, indexPath: IndexPath) {
+        let itemAlreadySelected = viewModel.selectionContains(id: id)
+        let selectionAction = itemAlreadySelected ? viewModel.removeSelected : viewModel.select
+        selectionAction(id)
+
+        if viewModel.selectedIDs.isEmpty {
+            hideActionBar()
+        } else {
+            showActionBar()
+        }
+
+        // update checkbox state
+        if let mailboxCell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell {
+            messageCellPresenter.presentSelectionStyle(
+                style: .selection(isSelected: !itemAlreadySelected),
+                in: mailboxCell.customView
+            )
+        }
+
+        tableView.deselectRow(at: indexPath, animated: true)
+        self.setupNavigationTitle(true)
+    }
 }
 
 extension MailboxViewController: NewMailboxMessageCellDelegate {
