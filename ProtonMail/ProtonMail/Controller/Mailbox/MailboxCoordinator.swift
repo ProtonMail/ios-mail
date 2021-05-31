@@ -250,7 +250,8 @@ class MailboxCoordinator : DefaultCoordinator {
               let conversation = viewModel.itemOfConversation(index: selectedRowIndexPath) else { return }
         let coordinator = ConversationCoordinator(
             navigationController: navigationController,
-            conversation: conversation
+            conversation: conversation,
+            user: self.viewModel.user
         )
         coordinator.start()
     }

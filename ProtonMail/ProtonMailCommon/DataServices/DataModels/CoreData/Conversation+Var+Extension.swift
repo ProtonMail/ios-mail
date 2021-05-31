@@ -100,7 +100,7 @@ extension Conversation {
             var icon: UIImage?
             if standardFolders.contains(lableId) {
                 if let location = Message.Location.init(rawValue: lableId) {
-                    icon = location.originImage
+                    icon = location.originImage()
                 }
             } else if !isCustomFolderIconAdded {
                 isCustomFolderIconAdded = true

@@ -162,6 +162,14 @@ included:
   - ${PWD}/ProtonMail/Controller/ConversationView/ConversationViewModel.swift
   - ${PWD}/ProtonMailCommon/Extensions/UIBarButtonItem+Plain.swift
   - ${PWD}/ProtonMailCommon/Extensions/UITableViewCell+ReuseIdentifier.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/Cells/ConversationMessageCell.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationCollapsedMessageViewModel.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationMessageCellPresenter.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationMessageModel.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationMessageState.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationMessageViewModel.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationMessageViewTags.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationMessagesProvider.swift
 
 excluded:
   - ${PWD}/Pods
