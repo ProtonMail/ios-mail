@@ -34,7 +34,7 @@ extension Crypto {
         for okey in old_keys {
             do {
                 let new_private_key = try self.updatePassphrase(privateKey: okey.privateKey, oldPassphrase: old_pass, newPassphrase: new_pass)
-                let newK = Key(keyID: okey.keyID, privateKey: new_private_key)
+                let newK = Key(keyID: okey.keyID, privateKey: new_private_key, isUpdated: true)
                 outKeys.append(newK)
             } catch {
                 let newK = Key(keyID: okey.keyID, privateKey: okey.privateKey)
