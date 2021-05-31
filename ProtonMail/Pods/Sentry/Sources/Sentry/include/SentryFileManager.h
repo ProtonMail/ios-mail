@@ -1,48 +1,44 @@
+//
+//  SentryFileManager.h
+//  Sentry
+//
+//  Created by Daniel Griesser on 23/05/2017.
+//  Copyright © 2017 Sentry. All rights reserved.
+//
+
 #import <Foundation/Foundation.h>
 
-#import "SentryCurrentDateProvider.h"
+#if __has_include(<Sentry/Sentry.h>)
+#import <Sentry/SentryDefines.h>
+#else
 #import "SentryDefines.h"
-#import "SentrySession.h"
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SentryEvent, SentryDsn, SentryEnvelope, SentryFileContents;
+@class SentryEvent, SentryBreadcrumb, SentryDsn;
 
-NS_SWIFT_NAME(SentryFileManager)
 @interface SentryFileManager : NSObject
 SENTRY_NO_INIT
 
-- (_Nullable instancetype)initWithDsn:(SentryDsn *)dsn
-               andCurrentDateProvider:(id<SentryCurrentDateProvider>)currentDateProvider
-                     didFailWithError:(NSError **)error NS_DESIGNATED_INITIALIZER;
+- (_Nullable instancetype)initWithDsn:(SentryDsn *)dsn didFailWithError:(NSError **)error;
 
 - (NSString *)storeEvent:(SentryEvent *)event;
-- (NSString *)storeEnvelope:(SentryEnvelope *)envelope;
 
-- (void)storeCurrentSession:(SentrySession *)session;
-- (SentrySession *_Nullable)readCurrentSession;
-- (void)deleteCurrentSession;
-
-- (void)storeTimestampLastInForeground:(NSDate *)timestamp;
-- (NSDate *_Nullable)readTimestampLastInForeground;
-- (void)deleteTimestampLastInForeground;
+- (NSString *)storeBreadcrumb:(SentryBreadcrumb *)crumb;
+- (NSString *)storeBreadcrumb:(SentryBreadcrumb *)crumb maxCount:(NSUInteger)maxCount;
 
 + (BOOL)createDirectoryAtPath:(NSString *)path withError:(NSError **)error;
 
-- (void)deleteAllStoredEventsAndEnvelopes;
+- (void)deleteAllStoredEvents;
+
+- (void)deleteAllStoredBreadcrumbs;
 
 - (void)deleteAllFolders;
 
-/**
- In a previous version of SentryFileManager envelopes were stored in the same
- path as events. Now events and envelopes are stored in two different paths. We
- decided that there is no need for a migration strategy, because in worst case
- only a few envelopes get lost and this is not worth the effort. Since there is
- no migration strategy this method could also return envelopes.
- */
-- (NSArray<SentryFileContents *> *)getAllEventsAndMaybeEnvelopes;
-- (NSArray<SentryFileContents *> *)getAllEnvelopes;
-- (NSArray<SentryFileContents *> *)getAllStoredEventsAndEnvelopes;
+- (NSArray<NSDictionary<NSString *, id> *> *)getAllStoredEvents;
+
+- (NSArray<NSDictionary<NSString *, id> *> *)getAllStoredBreadcrumbs;
 
 - (BOOL)removeFileAtPath:(NSString *)path;
 
@@ -50,8 +46,8 @@ SENTRY_NO_INIT
 
 - (NSString *)storeDictionary:(NSDictionary *)dictionary toPath:(NSString *)path;
 
-@property (nonatomic, assign) NSUInteger maxEvents;
-@property (nonatomic, assign) NSUInteger maxEnvelopes;
+@property(nonatomic, assign) NSUInteger maxEvents;
+@property(nonatomic, assign) NSUInteger maxBreadcrumbs;
 
 @end
 

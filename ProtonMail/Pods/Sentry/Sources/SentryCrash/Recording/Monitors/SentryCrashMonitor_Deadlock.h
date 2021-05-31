@@ -27,6 +27,7 @@
 /* Catches deadlocks in threads and queues.
  */
 
+
 #ifndef HDR_SentryCrashMonitor_Deadlock_h
 #define HDR_SentryCrashMonitor_Deadlock_h
 
@@ -34,9 +35,11 @@
 extern "C" {
 #endif
 
+
 #include "SentryCrashMonitor.h"
 
 #include <stdbool.h>
+
 
 /** Set the interval between watchdog checks on the main thread.
  * Default is 5 seconds.
@@ -47,7 +50,8 @@ void sentrycrashcm_setDeadlockHandlerWatchdogInterval(double value);
 
 /** Access the Monitor API.
  */
-SentryCrashMonitorAPI *sentrycrashcm_deadlock_getAPI(void);
+SentryCrashMonitorAPI* sentrycrashcm_deadlock_getAPI(void);
+
 
 #ifdef __cplusplus
 }

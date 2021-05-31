@@ -159,9 +159,9 @@ PODS:
   - SDWebImage (5.11.0):
     - SDWebImage/Core (= 5.11.0)
   - SDWebImage/Core (5.11.0)
-  - Sentry (5.2.2):
-    - Sentry/Core (= 5.2.2)
-  - Sentry/Core (5.2.2)
+  - Sentry (4.5.0):
+    - Sentry/Core (= 4.5.0)
+  - Sentry/Core (4.5.0)
   - SideMenuSwift (2.0.6)
   - SkeletonView (1.11.0)
   - SwiftGen (6.4.0)
@@ -208,7 +208,7 @@ DEPENDENCIES:
   - "ProtonCore-SRP (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, branch `main`)"
   - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, branch `main`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, branch `main`)"
-  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `5.2.2`)
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `4.5.0`)
   - SideMenuSwift (= 2.0.6)
   - SkeletonView (= 1.11.0)
   - SwiftGen (~> 6.0)
@@ -310,7 +310,7 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
-    :tag: 5.2.2
+    :tag: 4.5.0
   TrustKit:
     :branch: master
     :git: https://github.com/ProtonMail/TrustKit.git
@@ -387,7 +387,7 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
-    :tag: 5.2.2
+    :tag: 4.5.0
   TrustKit:
     :commit: 838fba789e01c9cabff77acea3fb7135f71a220f
     :git: https://github.com/ProtonMail/TrustKit.git
@@ -429,7 +429,7 @@ SPEC CHECKSUMS:
   ProtonCore-Utilities: b17871a793cca64abeedbd3dbb2d28a25854ad8f
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: 7acbb57630ac7db4a495547fb73916ff3e432f6b
-  Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
+  Sentry: ab6c209f23700d1460691dbc90e19ed0a05d496b
   SideMenuSwift: f12ca1b11faad909bfc2878df37e0a1c40fa4570
   SkeletonView: cc84ce90a804dd0dd7198dd802833411c8a64eaf
   SwiftGen: 67860cc7c3cfc2ed25b9b74cfd55495fc89f9108
@@ -438,6 +438,6 @@ SPEC CHECKSUMS:
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 542dd9cf229e630bf80a31063d6f35dc8885dd1b
+PODFILE CHECKSUM: 42d50564098d95d766c32569c9e9144a4ba1a430
 
 COCOAPODS: 1.10.1

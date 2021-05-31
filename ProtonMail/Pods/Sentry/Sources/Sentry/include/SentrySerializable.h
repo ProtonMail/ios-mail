@@ -1,11 +1,19 @@
-#import <Foundation/Foundation.h>
+//
+//  SentrySerializable.h
+//  Sentry
+//
+//  Created by Daniel Griesser on 08/05/2017.
+//  Copyright © 2017 Sentry. All rights reserved.
+//
 
-#import "SentryDefines.h"
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol SentrySerializable <NSObject>
-SENTRY_NO_INIT
+
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 - (NSDictionary<NSString *, id> *)serialize;
 

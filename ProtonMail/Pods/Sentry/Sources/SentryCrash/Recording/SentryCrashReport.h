@@ -24,8 +24,10 @@
 // THE SOFTWARE.
 //
 
+
 /* Writes a crash report to disk.
  */
+
 
 #ifndef HDR_SentryCrashReport_h
 #define HDR_SentryCrashReport_h
@@ -34,10 +36,11 @@
 extern "C" {
 #endif
 
-#import "SentryCrashMonitorContext.h"
 #import "SentryCrashReportWriter.h"
+#import "SentryCrashMonitorContext.h"
 
 #include <stdbool.h>
+
 
 // ============================================================================
 #pragma mark - Configuration -
@@ -47,7 +50,7 @@ extern "C" {
  *
  * @param userInfoJSON The user information, in JSON format.
  */
-void sentrycrashreport_setUserInfoJSON(const char *const userInfoJSON);
+void sentrycrashreport_setUserInfoJSON(const char* const userInfoJSON);
 
 /** Configure whether to introspect any interesting memory locations.
  *  This can find things like strings or Objective-C classes.
@@ -61,16 +64,16 @@ void sentrycrashreport_setIntrospectMemory(bool shouldIntrospectMemory);
  * @param doNotIntrospectClasses Array of class names.
  * @param length Length of the array.
  */
-void sentrycrashreport_setDoNotIntrospectClasses(const char **doNotIntrospectClasses, int length);
+void sentrycrashreport_setDoNotIntrospectClasses(const char** doNotIntrospectClasses, int length);
 
 /** Set the function to call when writing the user section of the report.
- *  This allows the user to add more fields to the user section at the time of
- * the crash. Note: Only async-safe functions are allowed in the callback.
+ *  This allows the user to add more fields to the user section at the time of the crash.
+ *  Note: Only async-safe functions are allowed in the callback.
  *
  * @param userSectionWriteCallback The user section write callback.
  */
-void sentrycrashreport_setUserSectionWriteCallback(
-    const SentryCrashReportWriteCallback userSectionWriteCallback);
+void sentrycrashreport_setUserSectionWriteCallback(const SentryCrashReportWriteCallback userSectionWriteCallback);
+
 
 // ============================================================================
 #pragma mark - Main API -
@@ -83,8 +86,8 @@ void sentrycrashreport_setUserSectionWriteCallback(
  *
  * @param path The file to write to.
  */
-void sentrycrashreport_writeStandardReport(
-    const struct SentryCrash_MonitorContext *const monitorContext, const char *path);
+void sentrycrashreport_writeStandardReport(const struct SentryCrash_MonitorContext* const monitorContext,
+                                       const char* path);
 
 /** Write a minimal crash report to a file.
  *
@@ -93,8 +96,9 @@ void sentrycrashreport_writeStandardReport(
  *
  * @param path The file to write to.
  */
-void sentrycrashreport_writeRecrashReport(
-    const struct SentryCrash_MonitorContext *const monitorContext, const char *path);
+void sentrycrashreport_writeRecrashReport(const struct SentryCrash_MonitorContext* const monitorContext,
+                                      const char* path);
+
 
 #ifdef __cplusplus
 }
