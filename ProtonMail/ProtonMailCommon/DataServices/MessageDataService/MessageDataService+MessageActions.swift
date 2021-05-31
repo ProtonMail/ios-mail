@@ -117,7 +117,7 @@ extension MessageDataService {
     }
     
     @discardableResult
-    func label(messages: [Message], label: String, apply: Bool) -> Bool {
+    func label(messages: [Message], label: String, apply: Bool, shouldFetchEvent: Bool = true) -> Bool {
         guard !messages.isEmpty else {
             return false
         }
@@ -125,7 +125,8 @@ extension MessageDataService {
         _ = self.cacheService.label(messages: messages, label: label, apply: apply)
 
         let messagesIds = messages.map(\.messageID)
-        self.queue(apply ? .label : .unlabel, isConversation: false, data1: label, data2: "", otherData: messagesIds)
+        let data2 = shouldFetchEvent ? "1" : "0"
+        self.queue(apply ? .label : .unlabel, isConversation: false, data1: label, data2: data2, otherData: messagesIds)
         return true
     }
 

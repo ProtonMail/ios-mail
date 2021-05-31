@@ -107,14 +107,14 @@ extension MessageDataService: QueueHandler {
                 self.messageDelete(ids, writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
             case .label:
                 let ids = (otherData as? [String]) ?? [messageID]
-                self.labelMessage(data1, messageIDs: ids, UID: UID, completion: completeHandler)
+                self.labelMessage(data1, messageIDs: ids, UID: UID, shouldFetchEvent: data2 == "1", completion: completeHandler)
             case .unlabel:
                 let ids = (otherData as? [String]) ?? [messageID]
-                self.unLabelMessage(data1, messageIDs: ids, UID: UID, completion: completeHandler)
+                self.unLabelMessage(data1, messageIDs: ids, UID: UID, shouldFetchEvent: data2 == "1", completion: completeHandler)
             case .folder:
                 //later use data 1 to handle the failure
                 let ids = (otherData as? [String]) ?? [messageID]
-                self.labelMessage(data2, messageIDs: ids, UID: UID, completion: completeHandler)
+                self.labelMessage(data2, messageIDs: ids, UID: UID, shouldFetchEvent: true, completion: completeHandler)
             case .updateLabel:
                 let color: String = (otherData as? String) ?? "#5ec7b7"
                 self.updateLabel(labelID: data1, name: data2, color: color, completion: completeHandler)
@@ -637,7 +637,7 @@ extension MessageDataService {
         }
     }
     
-    fileprivate func labelMessage(_ labelID: String, messageIDs: [String], UID: String, completion: CompletionBlock?) {
+    fileprivate func labelMessage(_ labelID: String, messageIDs: [String], UID: String, shouldFetchEvent: Bool, completion: CompletionBlock?) {
         guard let userManager = self.parent, userManager.userinfo.userId == UID else {
             completion!(nil, nil, NSError.userLoggedOut())
             return
@@ -646,12 +646,14 @@ extension MessageDataService {
         let api = ApplyLabelToMessages(labelID: labelID, messages: messageIDs)
         // rebase TODO: need review
         self.apiService.exec(route: api) { [weak self](task, response: Response) in
-            self?.parent?.eventsService.fetchEvents(labelID: labelID)
+            if shouldFetchEvent {
+                self?.parent?.eventsService.fetchEvents(labelID: labelID)
+            }
             completion?(task, nil, response.error?.toNSError)
         }
     }
     
-    fileprivate func unLabelMessage(_ labelID: String, messageIDs: [String], UID: String, completion: CompletionBlock?) {
+    fileprivate func unLabelMessage(_ labelID: String, messageIDs: [String], UID: String, shouldFetchEvent: Bool, completion: CompletionBlock?) {
         guard let userManager = self.parent, userManager.userinfo.userId == UID else {
             completion!(nil, nil, NSError.userLoggedOut())
             return
@@ -660,7 +662,9 @@ extension MessageDataService {
         let api = RemoveLabelFromMessages(labelID: labelID, messages: messageIDs)
         // rebase TODO: need review
         self.apiService.exec(route: api) { [weak self] (task, response: Response) in
-            self?.parent?.eventsService.fetchEvents(labelID: labelID)
+            if shouldFetchEvent {
+                self?.parent?.eventsService.fetchEvents(labelID: labelID)
+            }
             completion?(task, nil, response.error?.toNSError)
         }
     }

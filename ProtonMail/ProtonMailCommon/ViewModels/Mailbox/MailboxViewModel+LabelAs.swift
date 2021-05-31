@@ -32,14 +32,18 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
                 let messageToApply = messages.filter({ !$0.contains(label: label.location.labelID )})
                 messageService.label(messages: messageToApply,
                                      label: label.location.labelID,
-                                     apply: true)
+                                     apply: true,
+                                     shouldFetchEvent: false)
             } else if markType != .dash { // Ignore the option in dash
                 let messageToRemove = messages.filter({ $0.contains(label: label.location.labelID )})
                 messageService.label(messages: messageToRemove,
                                      label: label.location.labelID,
-                                     apply: false)
+                                     apply: false,
+                                     shouldFetchEvent: false)
             }
         }
+
+        user.eventsService.fetchEvents(labelID: labelID)
 
         selectedLabelAsLabels.removeAll()
 
