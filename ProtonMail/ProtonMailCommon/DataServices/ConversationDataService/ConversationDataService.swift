@@ -84,27 +84,29 @@ final class ConversationDataService: Service, ConversationProvider {
 // MARK: - Clean up
 extension ConversationDataService {
     func cleanAll() {
-        let context = coreDataService.mainContext
-        let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
-        conversationFetch.predicate = NSPredicate(format: "%K == %@", Conversation.Attributes.userID, self.userID)
-        let conversationRequest = NSBatchDeleteRequest(fetchRequest: conversationFetch)
-        conversationRequest.resultType = .resultTypeObjectIDs
-        
-        if let conversationResult = try? context.execute(conversationRequest) as? NSBatchDeleteResult,
-           let objectIdArray = conversationResult.result as? [NSManagedObjectID] {
-            let changes = [NSDeletedObjectsKey: objectIdArray]
-            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
-        }
-        
-        let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
-        contextLabelFetch.predicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, self.userID)
-        let contextLabelRequest = NSBatchDeleteRequest(fetchRequest: contextLabelFetch)
-        contextLabelRequest.resultType = .resultTypeObjectIDs
-        
-        if let contextLabelResult = try? context.execute(contextLabelRequest) as? NSBatchDeleteResult,
-           let objectIdArray = contextLabelResult.result as? [NSManagedObjectID] {
-            let changes = [NSDeletedObjectsKey: objectIdArray]
-            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+        let context = coreDataService.rootSavingContext
+        context.performAndWait {
+            let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
+            conversationFetch.predicate = NSPredicate(format: "%K == %@", Conversation.Attributes.userID, self.userID)
+            let conversationRequest = NSBatchDeleteRequest(fetchRequest: conversationFetch)
+            conversationRequest.resultType = .resultTypeObjectIDs
+
+            if let conversationResult = try? context.execute(conversationRequest) as? NSBatchDeleteResult,
+               let objectIdArray = conversationResult.result as? [NSManagedObjectID] {
+                let changes = [NSDeletedObjectsKey: objectIdArray]
+                NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+            }
+
+            let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
+            contextLabelFetch.predicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, self.userID)
+            let contextLabelRequest = NSBatchDeleteRequest(fetchRequest: contextLabelFetch)
+            contextLabelRequest.resultType = .resultTypeObjectIDs
+
+            if let contextLabelResult = try? context.execute(contextLabelRequest) as? NSBatchDeleteResult,
+               let objectIdArray = contextLabelResult.result as? [NSManagedObjectID] {
+                let changes = [NSDeletedObjectsKey: objectIdArray]
+                NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+            }
         }
     }
 }
