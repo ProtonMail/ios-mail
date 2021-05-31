@@ -389,7 +389,7 @@ class MailboxViewModel: StorageLimit {
             return nil
         }
         let contextLabel = fetchedResultsController?.object(at: index) as? ContextLabel
-        return contextLabel?.conversations.allObjects.first as? Conversation
+        return contextLabel?.conversation
     }
     
     // MARK: - operations
