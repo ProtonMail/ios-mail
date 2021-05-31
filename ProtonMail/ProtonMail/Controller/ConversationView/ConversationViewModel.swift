@@ -26,22 +26,27 @@ class ConversationViewModel {
     private let conversation: Conversation
     private let conversationMessagesProvider: ConversationMessagesProvider
     private let messageService: MessageDataService
+    private let conversationService: ConversationProvider
     private let contactService: ContactDataService
 
     private var header: ConversationViewItemType {
         .header(subject: conversation.subject)
     }
 
-    init(conversation: Conversation, messageService: MessageDataService, contactService: ContactDataService) {
+    init(conversation: Conversation,
+         messageService: MessageDataService,
+         conversationService: ConversationProvider,
+         contactService: ContactDataService) {
         self.conversation = conversation
         self.messageService = messageService
+        self.conversationService = conversationService
         self.contactService = contactService
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
         observeConversationMessages()
     }
 
     func fetchConversationDetails() {
-        messageService.fetchConversationDetail(by: conversation.conversationID) { _ in }
+        conversationService.fetchConversation(with: conversation.conversationID, includeBodyOf: nil) { _ in }
     }
 
     func observeConversationMessages() {
