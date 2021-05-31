@@ -347,7 +347,9 @@ extension QueueManager {
         guard !isMessageRunning && allowedToDequeue() else { return }
 
         guard let task = self.nextTask(from: self.messageQueue) else {
-            self.dequeueReadQueue()
+            if self.miscQueue.count == 0 {
+                self.dequeueReadQueue()
+            }
             return
         }
 
@@ -399,7 +401,9 @@ extension QueueManager {
         guard !self.isMiscRunning && self.allowedToDequeue() else {return}
 
         guard let task = self.nextTask(from: self.miscQueue) else {
-            self.dequeueReadQueue()
+            if self.messageQueue.count == 0 {
+                self.dequeueReadQueue()
+            }
             return
         }
 
