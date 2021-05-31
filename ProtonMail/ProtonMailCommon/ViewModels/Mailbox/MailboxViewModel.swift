@@ -869,7 +869,11 @@ extension MailboxViewModel {
             messageService.label(messages: messages, label: labelID, apply: apply)
         case .conversation:
             let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.mainContext)
-            messageService.label(conversations: conversations, label: labelID, apply: apply)
+            if apply {
+                conversationService.label(conversationIDs: conversations.map(\.conversationID), as: labelID, completion: nil)
+            } else {
+                conversationService.unlabel(conversationIDs: conversations.map(\.conversationID), as: labelID, completion: nil)
+            }
         }
     }
     
@@ -880,7 +884,11 @@ extension MailboxViewModel {
             messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
         case .conversation:
             let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.operationContext)
-            messageService.mark(conversations: conversations, labelID: self.labelID, unRead: unread)
+            if unread {
+                conversationService.markAsUnread(conversationIDs: conversations.map(\.conversationID), labelID: self.labelID, completion: nil)
+            } else {
+                conversationService.markAsRead(conversationIDs: conversations.map(\.conversationID), completion: nil)
+            }
         }
     }
     
@@ -896,9 +904,14 @@ extension MailboxViewModel {
             messageService.move(messages: messages, from: fLabels, to: tLabel)
         case .conversation:
             let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.operationContext)
-            #warning("TODO: - v4 Check From label is valid or not")
-            messageService.move(conversations: conversations, from: fLabel, to: tLabel)
-            break
+            conversationService.unlabel(conversationIDs: conversations.map(\.conversationID), as: fLabel) { [weak self] result in
+                switch result {
+                case .success:
+                    self?.conversationService.label(conversationIDs: conversations.map(\.conversationID), as: tLabel, completion: nil)
+                case .failure:
+                    break
+                }
+            }
         }
     }
 }
