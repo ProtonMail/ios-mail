@@ -16,6 +16,7 @@ class ConversationCoordinator {
         let viewModel = ConversationViewModel(
             conversation: conversation,
             messageService: user.messageService,
+            conversationService: user.conversationService,
             contactService: user.contactService
         )
         let viewController = ConversationViewController(viewModel: viewModel)
