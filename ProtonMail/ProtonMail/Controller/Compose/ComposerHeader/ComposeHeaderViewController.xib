@@ -22,7 +22,7 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="145"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aWx-4S-hlX" userLabel="To Contact Picker Placeholder">
@@ -136,6 +136,7 @@
                 <constraint firstItem="aWx-4S-hlX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="H8G-DQ-rjr"/>
                 <constraint firstAttribute="trailing" secondItem="aWx-4S-hlX" secondAttribute="trailing" id="KGx-QJ-TrU"/>
                 <constraint firstAttribute="trailing" secondItem="kJd-U5-xJL" secondAttribute="trailing" id="KLV-mt-c8a"/>
+                <constraint firstAttribute="bottom" secondItem="kJd-U5-xJL" secondAttribute="bottom" id="MUf-mX-3ft"/>
                 <constraint firstItem="aWx-4S-hlX" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="bottom" id="N9x-xo-nRQ"/>
                 <constraint firstItem="lId-3P-n4a" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="UZV-dJ-o9P"/>
                 <constraint firstItem="chC-fW-E4g" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="bottom" id="V63-QO-KeO"/>
@@ -146,7 +147,8 @@
                 <constraint firstItem="6W7-2D-2Lf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="yfs-VQ-XKu"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
-            <point key="canvasLocation" x="240.80000000000001" y="366.56671664167919"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="240.80000000000001" y="131.78410794602701"/>
         </view>
     </objects>
     <resources>
