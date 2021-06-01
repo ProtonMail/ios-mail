@@ -246,16 +246,19 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
         userCachedStatus.lastDraftMessageID = messageID
         
-        guard let presentingVC = presentingVC as? SideMenuController else {
-            return nil
-        }
-        let contentVC = presentingVC.contentViewController
+        var contentVC: UIViewController?
         var navigationController: UINavigationController?
+        
+        if let presentingVC = presentingVC as? SideMenuController {
+            contentVC = presentingVC.contentViewController
+        } else if let presentingVC = presentingVC as? UINavigationController {
+            navigationController = presentingVC
+        }
         
         if let contactTabbar = contentVC as? ContactTabBarViewController {
             navigationController = contactTabbar.selectedViewController as? UINavigationController
-        } else {
-            navigationController = contentVC as? UINavigationController
+        } else if let navController = contentVC as? UINavigationController  {
+            navigationController = navController
         }
         let topVC = navigationController?.topViewController as? ComposeSaveHintProtocol
         return topVC
@@ -295,8 +298,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
 
     private func dismissKeyboard() {
-        self.headerView.subject.becomeFirstResponder()
-        self.headerView.subject.resignFirstResponder()
+        self.headerView?.subject.becomeFirstResponder()
+        self.headerView?.subject.resignFirstResponder()
     }
 
     private func updateMessageView() {
