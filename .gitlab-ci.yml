@@ -204,6 +204,8 @@ build-enterprise-app-and-upload:
     - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
     - base64 -D -o PushService.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_PUSHSERVICE_PROVISIONPROFILE
     - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
+    - SENTRY_PROJECT=$SENTRY_PROJECT_ENTERPRISE
+    - SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN_ENTERPRISE
     - fastlane ios enterprise
   tags:
     - iOS
