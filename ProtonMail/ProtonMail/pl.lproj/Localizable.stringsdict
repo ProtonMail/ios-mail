@@ -2,21 +2,45 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Updated %d min ago</key>
+	<key>%d min</key>
 	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
 		<key>MINUTE</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>few</key>
+			<string>%d minuty</string>
+			<key>many</key>
+			<string>%d minut</string>
 			<key>one</key>
-			<string>Updated %d min ago</string>
+			<string>%d minuta</string>
 			<key>other</key>
-			<string>Updated %d mins ago</string>
+			<string>%d minuty</string>
 		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+	</dict>
+	<key>Updated %d min ago</key>
+	<dict>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>Zaktualizowano %d minuty temu</string>
+			<key>many</key>
+			<string>Zaktualizowano %d minut temu</string>
+			<key>one</key>
+			<string>Zaktualizowano minutę temu</string>
+			<key>other</key>
+			<string>Zaktualizowano %d minuty temu</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
 	</dict>
 	<key>general_message</key>
 	<dict>
@@ -24,14 +48,18 @@
 		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u wiadomości</string>
+			<key>many</key>
+			<string>%u wiadomości</string>
 			<key>one</key>
-			<string>%u message</string>
+			<string>%u wiadomość</string>
 			<key>other</key>
-			<string>%u messages</string>
+			<string>%u wiadomości</string>
 		</dict>
 	</dict>
 </dict>

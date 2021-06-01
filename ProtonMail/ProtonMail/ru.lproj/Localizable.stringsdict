@@ -2,21 +2,45 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Updated %d min ago</key>
+	<key>%d min</key>
 	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
 		<key>MINUTE</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>few</key>
+			<string>%d mins</string>
+			<key>many</key>
+			<string>%d mins</string>
 			<key>one</key>
-			<string>Updated %d min ago</string>
+			<string>%d min</string>
 			<key>other</key>
-			<string>Updated %d mins ago</string>
+			<string>%d mins</string>
 		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+	</dict>
+	<key>Updated %d min ago</key>
+	<dict>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>Обновлено %d минуты назад</string>
+			<key>many</key>
+			<string>Обновлено %d минут назад</string>
+			<key>one</key>
+			<string>Обновлено %d минуту назад</string>
+			<key>other</key>
+			<string>Обновлено %d минут назад</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
 	</dict>
 	<key>general_message</key>
 	<dict>
@@ -24,14 +48,18 @@
 		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u сообщения</string>
+			<key>many</key>
+			<string>%u сообщений</string>
 			<key>one</key>
-			<string>%u message</string>
+			<string>%u сообщение</string>
 			<key>other</key>
-			<string>%u messages</string>
+			<string>%u сообщений</string>
 		</dict>
 	</dict>
 </dict>

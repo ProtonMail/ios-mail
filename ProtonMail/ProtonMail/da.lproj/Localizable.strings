@@ -40,6 +40,9 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d beskeder";
 
+/* minute */
+"%d min" = "%d min";
+
 /* auto lock time format */
 "%d Minute" = "%d minut";
 
@@ -62,7 +65,7 @@
 "<no object>" = "<no object>";
 
 /* 2fa verification failed */
-"2FA failed. Please try to login again." = "2FA mislykkedes, prøv at logge ind igen.";
+"2FA failed. Please try to sign in again." = "2FA mislykkedes. Prøv venligst at logge ind igen.";
 
 /* Placeholder */
 "8 to 21 characters long" = "8 til 21 tegn lang";
@@ -110,11 +113,17 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Tilføj årsdag";
 
+/* menu title */
+"Add attachment" = "Tilføj vedhæftning";
+
 /* new contacts add Birthday */
 "Add birthday" = "Tilføj fødselsdag";
 
 /* Contacts add new contact */
 "Add Contact" = "Tilføj kontakt";
+
+/* The title for the view where user can manage emails in the contact group */
+"Add contacts" = "Tilføj kontakter";
 
 /* add custom label type action */
 "Add custom label" = "Tilføj tilpasset etiket";
@@ -193,9 +202,6 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Alle beskyttelsesindstillinger vil blive nulstillet og slettet ved log ud af appen.";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Alle beskyttelsesindstillinger vil blive nulstillet og slettet ved log ud af appen.";
-
 /* network troubleshot cell title */
 "Allow alternative routing" = "Tillad alternativ routing";
 
@@ -221,7 +227,7 @@
 "Any unsaved changes will be lost." = "Alle ikke-gemte ændringer vil gå tabt.";
 
 /* when server not reachable */
-"API Server not reachable..." = "API-server utilgængelig...";
+"API Server not reachable…" = "API-server ikke tilgængelig…";
 
 /* section title in settings */
 "APP INFORMATION" = "OPLYSNINGER OM APP";
@@ -255,20 +261,18 @@
 /* Description */
 "Archived" = "Arkiveret";
 
-/* Message of message permanent deletion alert */
+/* Message of message permanent deletion alert, plural */
 "Are you sure you want to delete permanently these %d messages?" = "Er du sikker på, at du vil slette disse %d beskeder permanent?";
 
-/* Message of message permanent deletion alert */
-"Are you sure you want to delete permanently this %d message?" = "Er du sikker på, at du vil slette denne %d besked permanent?";
+/* Message of message permanent deletion alert, singular */
+"Are you sure you want to delete permanently this message?" = "Er du sikker på, at du vil slette denne besked permanent?";
 
-/* Alert when logout non-primary account from account manager */
-"Are you sure you want to log out?" = "Sikker på, at du vil logge ud?";
+/* Alert to confirm sign out when only one account signed in */
+"Are you sure you want to sign out %@?" = "Er du sikker på, at du vil logge ud %@?";
 
-/* Alert to confirm logout when only one account logged in */
-"Are you sure you want to logout %@?" = "Sikker på, at du vil logge ud %@?";
-
-/* Alert to confirm logout */
-"Are you sure you want to logout?" = "Sikker på, at du vil logge ud?";
+/* Alert to confirm sign out
+   Alert when sign out non-primary account from account manager */
+"Are you sure you want to sign out?" = "Er du sikker på, at du vil logge ud?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Sikker? Handlingen kan ikke fortrydes.";
@@ -278,6 +282,9 @@
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "Mindst én e-mailadresse i gruppen kunne ikke findes";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found." = "Mindst én e-mailadresse i gruppen kunne ikke findes.";
 
 /* incorrect email format error in composer */
 "At least one recipient email address is improperly formatted, please double check them." = "Mindst én modtagers e-mailadresse er forkert formateret, dobbelttjek dem venligst.";
@@ -293,6 +300,9 @@
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Vedhæftning importeret";
+
+/* Alert title */
+"Attachment limit" = "Vedhæftningsgrænse";
 
 /* No comment provided by engineer. */
 "attachments" = "vedhæftninger";
@@ -319,16 +329,13 @@
 "Authentication Failed Wrong username or password" = "Godkendelse mislykkedes: Forkert brugernavn eller adgangskode";
 
 /* Error */
-"Authentication failed. Please try to login again." = "Godkendelse mislykkedes, prøv at logge ind igen.";
+"Authentication failed. Please try to sign in again." = "Godkendelse mislykkedes. Prøv at logge ind igen.";
 
 /* Description */
 "Authentication token is not accessible because the app is locked" = "Godkendelsestoken er utilgængeligt, da app'en er låst";
 
 /* Description */
 "Authentication was cancelled by the system" = "Godkendelse blev annulleret af systemet";
-
-/* settings general section title */
-"Auto load embedded image" = "Indlæs automatisk indlejret billede";
 
 /* Title */
 "Auto Lock Time" = "Auto-låsetid";
@@ -338,6 +345,9 @@
 
 /* settings general section title */
 "Auto show remote content" = "Vis automatisk eksternt indhold";
+
+/* settings general section title */
+"Auto-load embedded images" = "Auto-indlæs indlejrede billeder";
 
 /* section title in settings */
 "Auto-lock" = "Autolås";
@@ -382,10 +392,10 @@
 "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "Ved at fjerne denne konto vil du ikke længere kunne få adgang til den fra denne enhed, medmindre du tilføjer den igen.\n\nVil du fjerne denne konto alligevel?";
 
 /* agree check box first part words */
-"By using protonmail, you agree to our" = "Ved at benytte ProtonMail, accepterer du vores";
+"By using ProtonMail, you agree to our" = "Ved at benytte ProtonMail, accepterer du vores";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Ved at benytte ProtonMail accepterer du vores %1$@ og %2$@.";
+"By using ProtonMail, you agree to our %@ and %@." = "Ved at benytte ProtonMail accepterer du vores %1$@ og %2$@.";
 
 /* Call the contact (button title text) */
 "Call contact" = "Ring til kontakt";
@@ -438,7 +448,10 @@
 "Can't get a Moduls ID!" = "Kan ikke hente et Modulus-ID!";
 
 /* update password error = typo:Modulus */
-"Can't get a Moduls!" = "Kan ikke hente et Modulus!";
+"Can't get a Modulus ID!" = "Kan ikke hente et Modulus-ID!";
+
+/* update password error = typo:Modulus */
+"Can't get a Modulus!" = "Kan ikke hente et Modulus!";
 
 /* update password error */
 "Can't get user auth info" = "Kan ikke hente brugergodkendelsesinfo";
@@ -491,9 +504,6 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Skift venstre-stryg handling";
 
-/* change password input label */
-"Change Login Password" = "Skift Log ind-dgangskode";
-
 /* settings general section title */
 "Change mailbox password" = "Skift adgangskode til postkasse";
 
@@ -506,17 +516,23 @@
 /* title */
 "Change Password" = "Skift adgangskode";
 
-/* settings protection section title */
+/* (No Comment) */
 "Change Pin" = "Skift Pin";
 
-/* The title of change pin code option in security settings */
-"Change Pin code" = "Skift pinkode";
+/* settings protection section title */
+"Change PIN" = "Skift PIN";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Skift pinkode";
 
 /* settings swipe actions section action description */
 "Change right swipe action" = "Skift højre-stryg handling";
 
 /* Title */
 "Change sender address to .." = "Skift afsenderadresse til..";
+
+/* change password input label */
+"Change sign-in Password" = "Skift login-adgangskode";
 
 /* Title */
 "Change Single Password" = "Skift enkelststående adgangskode";
@@ -529,6 +545,9 @@
 
 /* "Username" */
 "Checking ...." = "Tjekker....";
+
+/* loading message */
+"Checking…" = "Kontrollerer…";
 
 /* place holder */
 "Choose a Password" = "Vælg en adgangskode";
@@ -578,13 +597,13 @@
 "Confirm Mailbox Password" = "Bekræft postkasseadgangskode";
 
 /* Title */
-"Confirm new login password" = "Bekræft ny log ind-adgangskode";
-
-/* Title */
 "Confirm new mailbox password" = "Bekræft ny postkasseadgangskode";
 
 /* Placeholder */
 "Confirm new password" = "Bekræft ny adgangskode";
+
+/* Title */
+"Confirm new sign-in password" = "Bekræft ny login-adgangskode";
 
 /* Placeholder */
 "Confirm Password" = "Bekræft adgangskode";
@@ -615,11 +634,17 @@
 "Contacts" = "Kontakter";
 
 /* Action
-   The title of button of pin code setup1 */
+   The title of button of PIN code setup1 */
 "Continue" = "Fortsæt";
 
 /* Action */
 "Continue and Don't ask again" = "Fortsæt, og spørg ikke igen";
+
+/* No comment provided by engineer. */
+"Conversation" = "Samtale";
+
+/* No comment provided by engineer. */
+"Conversation mode" = "Samtaletilstand";
 
 /* Title */
 "Copy address" = "Kopiér addresse";
@@ -663,14 +688,14 @@
 /* Change language title */
 "Current Language is: " = "Nuværende sprog er: ";
 
-/* Title */
-"Current login password" = "Aktuel log ind-adgangskode";
-
 /* Placeholder */
 "Current password" = "Aktuel adgangskode";
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "Nuværende gendannelses-e-mail";
+
+/* Title */
+"Current sign-in Password" = "Aktuel login-adgangskode";
 
 /* action sheet option
    contacts default label type
@@ -730,10 +755,7 @@
  *  Contacts View Controller */
 "Delete" = "Slet";
 
-/* Title of message permanent deletion alert */
-"Delete %d Message" = "Slet %d besked";
-
-/* Title of message permanent deletion alert */
+/* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Slet %d beskeder";
 
 /* emptify folder/label confirmation alert */
@@ -750,6 +772,9 @@
 
 /* The title of delete label button */
 "Delete label" = "Slet etiket";
+
+/* Title of message permanent deletion alert, singular */
+"Delete message" = "Slet besked";
 
 /* mail location desc */
 "Deleted" = "Slettet";
@@ -786,6 +811,9 @@
 /* Title in display name settings */
 "DisplayName" = "Vis navn";
 
+/* No comment provided by engineer. */
+"Do you really want to remove this file from attachments?" = "Vil du virkelig fjerne denne fil fra vedhæftninger?";
+
 /* Description */
 "Do you want to cancel the process?" = "Annullér processen?";
 
@@ -815,7 +843,7 @@
 "Draft" = "Kladde";
 
 /* title of toast message that user taps the message which is uploading */
-"Draft is still uploading..." = "Kladde uploader stadig...";
+"Draft is still uploading…" = "Kladde uploader stadig…";
 
 /* hint message */
 "Draft moved to trash" = "Kladde flyttet til papirkurv";
@@ -836,7 +864,7 @@
 "Edit" = "Redigér";
 
 /* The title for the view where user can select the color for the group */
-"Edit avartar" = "Rediger avartar";
+"Edit avatar" = "Rediger avatar";
 
 /* *
  *  Edit Contact view controller */
@@ -909,6 +937,9 @@
 /* it is an option to empty the label */
 "Empty Label" = "Tøm etiket";
 
+/* No comment provided by engineer. */
+"Enable conversations" = "Aktivér samtaler";
+
 /* Title */
 "Enable email notices" = "Aktiver e-mail-meddelelser";
 
@@ -918,8 +949,11 @@
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "Aktivér PIN-kode";
 
-/* settings protection section title */
+/* (No Comment) */
 "Enable Pin Protection" = "Aktivere PIN-beskyttelse";
+
+/* settings protection section title */
+"Enable PIN Protection" = "Aktivér PIN-beskyttelse";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN/FaceID" = "Aktivér PIN/FaceID";
@@ -981,11 +1015,11 @@
 /* Action in 2fa popup view */
 "Enter" = "Angiv";
 
-/* The assistive text of textfield of pin code setup1 */
-"Enter a pin code with min 4 characters and max 21 characters." = "Indtast en pinkode med min 4 tegn og max 21 tegn.";
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Indtast en pinkode med min 4 tegn og maks 21 tegn.";
 
-/* The title of textfield of pin code setup1 */
-"Enter pin code" = "Indtast Pin-kode";
+/* The title of textfield of PIN code setup1 */
+"Enter PIN code" = "Indtast PIN-kode";
 
 /* Title */
 "Enter Verification Code" = "Angiv bekræftelseskode";
@@ -1002,7 +1036,7 @@
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Angiv din adgangskode for at foretage ændringer";
 
-/* set pin title */
+/* set PIN title */
 "Enter your PIN" = "Angiv din PIN-kode";
 
 /* Title */
@@ -1022,6 +1056,9 @@
 
 /* lock app option */
 "Every time enter app" = "Ved enhver app-tilgang";
+
+/* alert title */
+"Expiration not supported" = "Udløb ikke understøttet";
 
 /* VoiceOver: email can expire */
 "Expires" = "Udløber";
@@ -1078,7 +1115,7 @@
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "For superbrugere og persongrupper, som værdsætter fuld anonymitet og privatliv";
 
-/* login page forgot pwd */
+/* signin page forgot pwd */
 "FORGOT PASSWORD?" = "GLEMT ADGANGSKODE?";
 
 /* forward action */
@@ -1089,6 +1126,9 @@
 
 /* Title */
 "From" = "Fra";
+
+/* Title */
+"From your photo library" = "Fra dit billedgalleri";
 
 /* message From: field text */
 "From:" = "Fra:";
@@ -1108,6 +1148,9 @@
 /* Title */
 "General Settings" = "Generelle Indstillinger";
 
+/* message number */
+"general_message" = "general_message";
+
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Bliv %@";
 
@@ -1121,10 +1164,10 @@
 "Go to inbox" = "Gå til Indbakke";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to login" = "Gå til login";
+"Go to settings" = "Gå til indstillinger";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "Gå til indstillinger";
+"Go to sign-in" = "Gå til log ind";
 
 /* network troubleshot cell title */
 "Government block" = "Regeringsblokering";
@@ -1186,8 +1229,14 @@
 /* Action */
 "Import Error" = "Importfejl";
 
-/* Title */
+/* (No Comment) */
 "Import File From..." = "Importér fil fra...";
+
+/* Title */
+"Import File From…" = "Importér fil fra…";
+
+/* Title */
+"Import from…" = "Importér fra…";
 
 /* Downloading attachments from cloud */
 "Importing" = "Importerer";
@@ -1230,11 +1279,14 @@
 /* Title */
 "inline attachments" = "integrerede vedhæftninger";
 
-/* place holder */
+/* (No Comment) */
 "Input Display Name ..." = "Angiv visningsnavn...";
 
 /* place holder */
-"Input Notification Email ..." = "Angiv notifikations-e-mail...";
+"Input Display Name …" = "Angiv visningsnavn…";
+
+/* place holder */
+"Input Notification Email …" = "Angiv notifikations-e-mail…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Usikker forbindelse";
@@ -1273,7 +1325,7 @@
 "Invalid UserName" = "Ugyldigt brugernavn";
 
 /* Error message */
-"Invalid UserName!" = "Ugyldigt brugernavn!";
+"Invalid username!" = "Ugyldigt brugernavn!";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Omhandler denne fejlanmeldelse In-app køb?";
@@ -1281,8 +1333,8 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Det er ikke muligt at skifte til %@ i iOS-app'en.";
 
-/* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Det er ikke muligt at svinge til et andet abonnement i appen. %1$@";
+/* The string used to show in the plan update page when the user not able to upgrade the account */
+"It's not possible to switch to another plan within the app. %1$@" = "Det er ikke muligt at skifte til et andet abonnement i appen. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Hold mig unnderrettet om nye funktioner";
@@ -1299,12 +1351,13 @@
 /* No comment provided by engineer. */
 "Label as" = "Tilføj etiket";
 
-/* The title of the label as action in action sheet */
-"Label as.." = "Tilføj etiket..";
-
 /* *
  *  MoreOptionsView */
 "Label as..." = "Kategorisér som...";
+
+/* The title of the label as action in action sheet
+   Title */
+"Label as…" = "Anvend etiketten…";
 
 /* Title */
 "Label Management" = "Etikethåndtering";
@@ -1362,6 +1415,9 @@
 /* (No Comment) */
 "Loading..." = "Indlæser...";
 
+/* No comment provided by engineer. */
+"Loading…" = "Indlæser…";
+
 /* Description */
 "Local cache can't find mailbox password" = "Postkasseadgangskodes findes ikke i den lokale cache";
 
@@ -1378,23 +1434,8 @@
 /* menu title */
 "Lock The App" = "Lås app'en";
 
-/* Account manager title */
-"Log in to your ProtonMail account" = "Log ind på din ProtonMail-konto";
-
 /* comment */
 "Log out" = "Log ud";
-
-/* Alert title when logout non-primary account from account manager */
-"Log out %@?" = "Log %@ ud?";
-
-/* Action */
-"Log Out All" = "Log alle ud";
-
-/* Alert when auth token is revoked and switch to another */
-"Logged out from %@ and signed in with %@" = "Logget ud fra %1$@ og logget ind med %2$@";
-
-/* Title */
-"Login" = "Log ind";
 
 /* (No Comment) */
 "LOGIN" = "Log ind";
@@ -1402,12 +1443,8 @@
 /* (No Comment) */
 "Login Password" = "Log ind-adgangskode";
 
-/* Error */
+/* (No Comment) */
 "Login password doesn't match" = "Log ind-adgangskode matcher ikke";
-
-/* Alert title to confirm logout
-   Alert title when logout primary account from account manager */
-"Logout" = "Log ud";
 
 /* error title */
 "Logs" = "Logger";
@@ -1452,11 +1489,11 @@
 /* The title of the read action in action sheet */
 "Mark as read" = "Markér som Læst";
 
+/* Action */
+"Mark as read/unread" = "Markér som læst/ulæst";
+
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Markér som ulæst";
-
-/* Action */
-"Mark as unread/read" = "Marker som læst/ulæst";
 
 /* mark message as read action */
 "Mark Read" = "Markér som Læst";
@@ -1477,7 +1514,7 @@
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Besked kunne ikke sendes. Mindst én modtager e-mailadresse/domæne findes ikke eller er fejlagtigt formateret.";
 
 /* Composer expiration page title */
-"message expiration" = "besked udløb";
+"Message expiration" = "Beskedudløb";
 
 /* *
  *  Expiration View */
@@ -1515,12 +1552,6 @@
 
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Beskeder, du afsender, kan indstilles til auto-sletning efter et forudbestemt tidsinterval.";
-
-/* minute */
-"min" = "min";
-
-/* minutes */
-"mins" = "minutter";
 
 /* default vcard types */
 "Mobile" = "Mobil";
@@ -1581,11 +1612,12 @@
 /* move action */
 "Move to Trash" = "Flyt til Papirkurv";
 
-/* The title of the move to action in action sheet */
-"Move to.." = "Flyt til..";
-
-/* Title */
+/* (No Comment) */
 "Move to..." = "Flyt til...";
+
+/* The title of the move to action in action sheet
+   Title */
+"Move to…" = "Flyt til…";
 
 /* Title */
 "Multiple Addresses" = "Flere adresser";
@@ -1619,19 +1651,19 @@
 "New Label" = "Ny etiket";
 
 /* Title */
-"New login password" = "Ny login-adgangskode";
-
-/* Title */
 "New mailbox password" = "Ny postkasseadgangskode";
 
 /* Placeholder */
 "New password" = "Ny adgangskode";
 
+/* Title */
+"New sign-in password" = "Ny login-adgangskode";
+
 /* contacts talbe cell Nickname title */
 "Nickname" = "Kaldenavn";
 
 /* Title */
-"No connectivity detected..." = "Ingen tilgængelig konnektivitet...";
+"No connectivity detected…" = "Ingen forbindelse fundet…";
 
 /* network troubleshot cell title */
 "No internet connection" = "Ingen internetforbindelse";
@@ -1645,7 +1677,7 @@
 /* Placeholder if message sender is empty */
 "No Recipient" = "Ingen modtager";
 
-/* Warning message option when user want to relogin to another account */
+/* Warning message option when user want to resignin to another account */
 "No, for another ProtonMail account" = "Nej, til en anden ProtonMail-konto";
 
 /* Error message */
@@ -1823,16 +1855,16 @@
 "Photo Library" = "Fotomappe";
 
 /* device settings auto lock type title */
-"Pin" = "Pin";
+"PIN" = "PIN";
 
 /* Description */
-"Pin code can't be empty." = "PIN-kode er obligatorisk.";
+"PIN code can't be empty." = "Pinkode skal udfyldes.";
 
 /* device settings auto lock type title */
-"Pin/Face ID" = "Pin/Ansigts-ID";
+"PIN/Face ID" = "Pin/Ansigts-ID";
 
 /* device settings auto lock type title */
-"Pin/Touch ID" = "Pin/Touch ID";
+"PIN/Touch ID" = "Pin/Touch ID";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Abonnementer kan redigeres på webversionen.";
@@ -1901,13 +1933,13 @@
 "Please try again." = "Forsøg igen";
 
 /* Alert message */
-"Please uprade to a paid plan to use more than 3 folders" = "Opgradér til et betalt abonnement for at bruge mere end 3 mapper";
+"Please upgrade to a paid plan to use more than 3 folders" = "Opgradér til et betalt abonnement for at bruge mere end 3 mapper";
 
 /* Alert message */
-"Please uprade to a paid plan to use more than 3 labels" = "Opgradér til et betalt abonnement for at bruge mere end 3 etiketter";
+"Please upgrade to a paid plan to use more than 3 labels" = "Opgradér til et betalt abonnement for at bruge mere end 3 etiketter";
 
 /* Description */
-"Please use ProtonMail App login first." = "Benyt først ProtonMails App-login.";
+"Please use ProtonMail App sign-in first." = "Benyt først ProtonMail App-login.";
 
 /* Alert */
 "Please use the web application to reset your password." = "Benyt webprogrammet til at nulstille din adgangskode.";
@@ -1967,7 +1999,7 @@
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail er pt. offline. Tjek dens aktuelle status via Twitter: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline..." = "ProtonMail er pt. offline...";
+"ProtonMail is currently offline…" = "ProtonMail er i øjeblikket offline…";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus kræves for at tilpasse din mobilsignatur";
@@ -1993,7 +2025,7 @@
 /* The title of re auth alert */
 "Re-authenticate" = "Godkend igen";
 
-/* set pin title */
+/* set PIN title */
 "Re-Enter your PIN" = "Angiv din PIN-kode igen";
 
 /* abbreviation of reply: */
@@ -2003,7 +2035,7 @@
 "Read" = "Læst";
 
 /* Title */
-"Reading device contacts data..." = "Læser enhedens kontaktdata...";
+"Reading device contacts data…" = "Læser enheds kontaktdata…";
 
 /* No comment provided by engineer. */
 "Recipient details" = "Modtageroplysninger";
@@ -2057,9 +2089,9 @@
 /* textview title */
 "Repeat password" = "Gentag kodeord";
 
-/* The title of pin code setup2 view 
-   The title of textfield of pin code setup2 */
-"Repeat pin code" = "Gentag pinkode";
+/* The title of PIN code setup2 view 
+   The title of textfield of PIN code setup2 */
+"Repeat PIN code" = "Gentag pinkode";
 
 /* *
  *  Controller Defined */
@@ -2096,7 +2128,7 @@
 "RESET MAILBOX PASSWORD" = "NULSTIL POSTKASSEADGANGSKODE";
 
 /* Title */
-"Resetting message cache ..." = "Nulstiller besked-cache...";
+"Resetting message cache…" = "Nulstiller besked-cache…";
 
 /* Action */
 "Retry" = "Forsøg igen";
@@ -2148,7 +2180,7 @@
 "Send message without subject?" = "Afsend besked uden emneindhold?";
 
 /* Title */
-"Send plain but stored enc" = "Afsend som simpel, men gem krypt.";
+"Send plain but stored encrypted" = "Send som simpel, men gem som krypteret";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "Send til arkiv?";
@@ -2172,7 +2204,7 @@
 "Sending Message" = "Sender besked";
 
 /* content of the sending mesage that will display this text on the date label */
-"Sending message..." = "Sender besked...";
+"Sending message…" = "Sender besked…";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Afsendelse af beskeder fra en %1$@-adresse er en betalingsfunktion. Din besked afsendes via din standardadresse %2$@";
@@ -2207,8 +2239,8 @@
 /* Signup passwords top title */
 "Set passwords" = "Indstil adgangskoder";
 
-/* The title of pin code setup1 view */
-"Set pin code" = "Angiv pinkode";
+/* The title of PIN code setup1 view */
+"Set PIN code" = "Angiv pinkode";
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Indstil strygebevægelser som adgang til de mest brugte handlinger.";
@@ -2225,11 +2257,28 @@
 /* Title */
 "Share it with your friends" = "Del med dine venner";
 
-/* menu title */
+/* Title */
+"Sign in" = "Log ind";
+
+/* Account manager title */
+"Sign in to your ProtonMail account" = "Log ind på din ProtonMail-konto";
+
+/* Alert title to confirm signout
+   Alert title when sign out primary account from account manager
+   menu title */
 "Sign out" = "Log ud";
 
 /* Action */
 "Sign Out" = "Log ud";
+
+/* Alert title when sign out non-primary account from account manager */
+"Sign out %@?" = "Log ud %@?";
+
+/* Action */
+"Sign Out All" = "Log alle ud";
+
+/* Error */
+"Sign-in password doesn't match" = "Login-adgangskode matcher ikke";
 
 /* Title in signature settings */
 "Signature" = "Signatur";
@@ -2239,6 +2288,9 @@
 
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Logget på som %@";
+
+/* Alert when auth token is revoked and switch to another */
+"Signed out from %@ and signed in with %@" = "Logget ud fra %1$@ og logget ind med %2$@";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Udsæt";
@@ -2270,6 +2322,9 @@
 
 /* Error */
 "SRP Server" = "SRP-server";
+
+/* Description */
+"SRP single password keysalt invalid!" = "SRP enkelt-adgangskode keysalt ugyldig!";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp enkelt adgangskode keysalt ugyldig!";
@@ -2354,6 +2409,9 @@
 /* Title */
 "Take a Photo" = "Tag et foto";
 
+/* Title */
+"Take new photo" = "Tag nyt billede";
+
 /* No comment provided by engineer. */
 "Tap here to set" = "Tryk hér for at indstille";
 
@@ -2422,7 +2480,7 @@
 "The new password not match" = "Adgangskoder matcher ikke";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your login password if you forget it." = "Den valgfrie genoprettelses-e-mail muliggør at nulstille din loginadgangskode, hvis du glemmer den.";
+"The optional recovery email address allows you to reset your sign-in password if you forget it." = "Den valgfrie gendannelses-e-mail giver dig mulighed for at nulstille din login-adgangskode, hvis du glemmer den.";
 
 /* update password error */
 "The Password is wrong." = "Forkert adgangskode.";
@@ -2437,7 +2495,7 @@
 "The passwords you entered do not match." = "De angivne adgangskoder matcher ikke.";
 
 /* The error message of entering an invalid password */
-"The pin codes must match!" = "PIN-koderne skal matche!";
+"The PIN codes must match!" = "Pinkoderne skal matche!";
 
 /* update password error */
 "The private key update failed." = "Privatnøgleopdateringen mislykkedes.";
@@ -2445,11 +2503,11 @@
 /* Title */
 "The request timed out." = "Forespørgslen fik timeout.";
 
+/* Description */
+"The size limit for attachments is 25 MB." = "Størrelsesgrænsen for vedhæftede filer er 25 MB.";
+
 /* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "Den samlede vedhæftningsstørrelse kan ikke overstige 25 MB";
-
-/* Description */
-"The total attachment size cannot exceed 25MB" = "Samlede vedhæftningsstørrelse er maks. 25 MB";
 
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL'en, du forsøger at få adgang til, er ikke standard og kan måske ikke indlæses korrekt. Vil du åbne den ved hjælp af din enheds standardbrowser?";
@@ -2467,11 +2525,11 @@
  *  RecaptchaViewController */
 "The verification failed!" = "Bekræftelsen mislykkedes!";
 
-/* alert when logout user if in queue still have tasks */
-"There are still some messages in queue. If you log out, the draft will be deleted." = "Der er stadig nogle beskeder i kø. Hvis du logger ud, vil kladden blive slettet.";
+/* alert when sign out user if in queue still have tasks */
+"There are still some messages in queue. If you sign out, the draft will be deleted." = "Der er stadig nogle beskeder i kø. Hvis du logger ud, vil kladden blive slettet.";
 
-/* Alert to confirm logout with pending message in the queue */
-"There are unsent messages that will be lost if you log out" = "Der er usendte beskeder, der vil gå tabt, hvis du logger ud";
+/* Alert to confirm signout with pending message in the queue */
+"There are unsent messages that will be lost if you sign out" = "Der er usendte beskeder, der vil gå tabt, hvis du logger ud";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "En fejl opstod under oprettelse eller indlæsning af app'ens gemte data.";
@@ -2570,14 +2628,14 @@
 /* mail location title */
 "TRASH" = "Papirkurv";
 
-/* Title */
-"Trouble shooting guide" = "Fejlfindingsguide";
-
 /* troubleshooting view button */
 "Troubleshoot" = "Fejlfind";
 
 /* network troubleshot view title */
-"TroubleShooting" = "Fejlfinding";
+"Troubleshooting" = "Fejlfinding";
+
+/* Title */
+"Troubleshooting guide" = "Fejlfindingsguide";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Prøv at forbinde til Proton fra et andet netværk (eller brug ProtonVPN eller Tor).";
@@ -2700,12 +2758,6 @@
 /* update notification email error title */
 "Update Notification Email" = "Opdatér notifikations-e-mail";
 
-/* title */
-"Update Now" = "Opdatér nu";
-
-/* title */
-"Update Required" = "Opdatering kræves";
-
 /* The title of last update status of updated time */
 "Updated %d min ago" = "Opdateret for %d min siden";
 
@@ -2745,7 +2797,7 @@
 /* (No Comment) */
 "User is available!" = "Brugernavn er ledigt";
 
-/* Title */
+/* (No Comment) */
 "USER LOGIN" = "BRUGERLOGIN";
 
 /* title */
@@ -2753,6 +2805,9 @@
 
 /* alert title */
 "User name invalid" = "Ugyldigt brugernavn";
+
+/* Title */
+"USER SIGN-IN" = "BRUGER-LOGIN";
 
 /* *
  *  Login View */
@@ -2799,6 +2854,12 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Vi har problemer med at forbinde til serverne. Genopret venligst forbindelsen.";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead for the following recipients:" = "Vi anbefaler at oprette en adgangskode i stedet for følgende modtagere:";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Vi anbefaler at opsætte en adgangskode i stedet for eller deaktivere PGP for følgende modtagere:";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Du får tilsendt en bekræftelseskode til ovenstående mobilnummer.";
@@ -2878,6 +2939,12 @@
 /* Title */
 "You have a new email!" = "Du har en ny e-mail!";
 
+/* incorrect email format error while sending */
+"You have entered at least one invalid email address. Please verify your recipients." = "Du har indtastet mindst en ugyldig e-mailadresse. Bekræft venligst dine modtagere.";
+
+/* incorrect email format error while sending */
+"You have entered at least one unknown recipient. Please verify your recipients." = "Du har indtastet mindst en ukendt modtager. Bekræft venligst dine modtagere.";
+
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Du har ugemte ændringer. Vil du gemme nu?";
 
@@ -2891,8 +2958,8 @@
 /* "Alert" */
 "You need at least one recipient to send" = "Minimum én adressat kræves for at kunne afsende";
 
-/* Alert to confirm logout
-   Alert when logout primary account from account manager */
+/* Alert to confirm signout
+   Alert when signout primary account from account manager */
 "You will be switched to %@" = "Du vil blive skiftet til %@";
 
 /* Confirmation message before deleting a message */
