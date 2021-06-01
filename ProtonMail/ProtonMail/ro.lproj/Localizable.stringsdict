@@ -2,21 +2,41 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Updated %d min ago</key>
+	<key>%d min</key>
 	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
 		<key>MINUTE</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>few</key>
+			<string>%d minute</string>
 			<key>one</key>
-			<string>Updated %d min ago</string>
+			<string>%d min</string>
 			<key>other</key>
-			<string>Updated %d mins ago</string>
+			<string>%d de minute</string>
 		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+	</dict>
+	<key>Updated %d min ago</key>
+	<dict>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>Actualizat în urmă cu %d minute</string>
+			<key>one</key>
+			<string>Actualizat în urmă cu un minut</string>
+			<key>other</key>
+			<string>Actualizat în urmă cu %d de minute</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
 	</dict>
 	<key>general_message</key>
 	<dict>
@@ -24,14 +44,16 @@
 		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u mesaje</string>
 			<key>one</key>
-			<string>%u message</string>
+			<string>%u mesaj</string>
 			<key>other</key>
-			<string>%u messages</string>
+			<string>%u de mesaje</string>
 		</dict>
 	</dict>
 </dict>
