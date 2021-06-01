@@ -23,11 +23,6 @@ API_KEY_DURATION = 1200 # seconds
 APP_IDENTIFIER = "ch.protonmail.protonmail"
 
 
-def clean_data
-  xcode_select("/Applications/Xcode.app")
-  clear_derived_data
-end
-
 def set_up_keychain
   create_keychain(
       name: DEVELOPER_KEYCHAIN_NAME,
@@ -150,7 +145,7 @@ end
 platform :ios do 
   desc "Build app"
   lane :build do |options|
-    clean_data
+    xcode_select("/Applications/Xcode.app")
     set_up_keychain
 
     api_key = set_up_app_store_api_key
