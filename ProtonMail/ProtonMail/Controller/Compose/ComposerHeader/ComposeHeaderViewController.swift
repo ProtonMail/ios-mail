@@ -379,9 +379,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         
         self.toContactPickerHeight = toContactPicker.heightAnchor.constraint(equalToConstant: 44)
         self.toContactPickerHeight.isActive = true
-        #if !APP_EXTENSION
-        _ = self.toContactPicker.becomeFirstResponder()
-        #endif
     }
     
     fileprivate func configureCcContactPicker() {
