@@ -35,6 +35,11 @@
     {
       "name": "Tests",
       "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-TestingToolkit/UnitTests/DataModel": [
+
+        ]
+      },
       "source_files": "libraries/DataModel/Tests/**/*"
     }
   ],

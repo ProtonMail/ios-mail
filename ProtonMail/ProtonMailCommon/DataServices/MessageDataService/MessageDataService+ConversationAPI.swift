@@ -285,6 +285,13 @@ extension MessageDataService {
                         }
                         
                         conversationDict["UserID"] = self.userID
+                        if var labels = conversationDict["Labels"] as? [[String: Any]] {
+                            for (index, _) in labels.enumerated() {
+                                labels[index]["UserID"] = self.userID
+                                labels[index]["ConversationID"] = conversationID
+                            }
+                            conversationDict["Labels"] = labels
+                        }
                         try GRTJSONSerialization.object(withEntityName: Conversation.Attributes.entityName, fromJSONDictionary: conversationDict, in: context)
                         
                         for (index, _) in messagesDict.enumerated() {

@@ -884,25 +884,18 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
                 fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
-                let request = NSBatchDeleteRequest(fetchRequest: fetch)
-                request.resultType = .resultTypeObjectIDs
-                
-                if let result = try? context.execute(request) as? NSBatchDeleteResult,
-                   let objectIdArray = result.result as? [NSManagedObjectID] {
-                    let changes = [NSDeletedObjectsKey: objectIdArray]
-                    NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+                if let messages = try? context.fetch(fetch) as? [NSManagedObject] {
+                    messages.forEach{ context.delete($0) }
                 }
-
                 
                 let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
                 conversationFetch.predicate = NSPredicate(format: "%K == %@", Conversation.Attributes.userID, self.userID)
-                let conversationRequest = NSBatchDeleteRequest(fetchRequest: conversationFetch)
-                conversationRequest.resultType = .resultTypeObjectIDs
-                
-                if let conversationResult = try? context.execute(conversationRequest) as? NSBatchDeleteResult,
-                   let objectIdArray = conversationResult.result as? [NSManagedObjectID] {
-                    let changes = [NSDeletedObjectsKey: objectIdArray]
-                    NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+                if let conversations = try? context.fetch(conversationFetch) as? [NSManagedObject] {
+                    conversations.forEach{ context.delete($0) }
+                }
+
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
                 }
 
                 UIApplication.setBadge(badge: 0)
