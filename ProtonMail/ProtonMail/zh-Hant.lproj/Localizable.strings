@@ -40,6 +40,9 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d 封郵件";
 
+/* minute */
+"%d min" = "%d分鐘";
+
 /* auto lock time format */
 "%d Minute" = "%d 分鐘";
 
@@ -62,7 +65,7 @@
 "<no object>" = "<無物件>";
 
 /* 2fa verification failed */
-"2FA failed. Please try to login again." = "2FA 驗證失敗。請嘗試重新登入。";
+"2FA failed. Please try to sign in again." = "2FA 驗證失敗。請嘗試重新登入。";
 
 /* Placeholder */
 "8 to 21 characters long" = "長度為 8 至 21 個字元";
@@ -110,11 +113,17 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "新增紀念日";
 
+/* menu title */
+"Add attachment" = "新增附件";
+
 /* new contacts add Birthday */
 "Add birthday" = "新增生日";
 
 /* Contacts add new contact */
 "Add Contact" = "新增聯絡人";
+
+/* The title for the view where user can manage emails in the contact group */
+"Add contacts" = "新增聯絡人";
 
 /* add custom label type action */
 "Add custom label" = "新增自定義標籤";
@@ -218,7 +227,7 @@
 "Any unsaved changes will be lost." = "未儲存的變更將會消失。";
 
 /* when server not reachable */
-"API Server not reachable..." = "無法連接到 API 伺服器…";
+"API Server not reachable…" = "無法連線到 API 伺服器…";
 
 /* section title in settings */
 "APP INFORMATION" = "應用程式資訊";
@@ -252,20 +261,18 @@
 /* Description */
 "Archived" = "已封存";
 
-/* Message of message permanent deletion alert */
+/* Message of message permanent deletion alert, plural */
 "Are you sure you want to delete permanently these %d messages?" = "您確定要永久刪除這 %d 封郵件嗎？";
 
-/* Message of message permanent deletion alert */
-"Are you sure you want to delete permanently this %d message?" = "您確定要永久刪除這 %d 封郵件嗎？";
+/* Message of message permanent deletion alert, singular */
+"Are you sure you want to delete permanently this message?" = "您確定要永久刪除這封郵件嗎？";
 
-/* Alert when logout non-primary account from account manager */
-"Are you sure you want to log out?" = "您確定要登出？";
+/* Alert to confirm sign out when only one account signed in */
+"Are you sure you want to sign out %@?" = "您確定要登出 %@ 嗎？";
 
-/* Alert to confirm logout when only one account logged in */
-"Are you sure you want to logout %@?" = "您確定要登出 %@ 嗎？";
-
-/* Alert to confirm logout */
-"Are you sure you want to logout?" = "您確定要登出嗎？";
+/* Alert to confirm sign out
+   Alert when sign out non-primary account from account manager */
+"Are you sure you want to sign out?" = "您確定要登出嗎？";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "您確定嗎？這將無法恢復。";
@@ -275,6 +282,9 @@
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "該群組之中至少有一個電子郵件地址找不到";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found." = "該群組之中有至少一個電子郵件地址找不到。";
 
 /* incorrect email format error in composer */
 "At least one recipient email address is improperly formatted, please double check them." = "至少有一個收件人電子郵件地址格式不正確，請仔細檢查。";
@@ -290,6 +300,9 @@
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "附件已匯入";
+
+/* Alert title */
+"Attachment limit" = "附件上限";
 
 /* No comment provided by engineer. */
 "attachments" = "個附件";
@@ -316,16 +329,13 @@
 "Authentication Failed Wrong username or password" = "登入失敗！使用者名稱或密碼錯誤";
 
 /* Error */
-"Authentication failed. Please try to login again." = "驗證失敗，請重新登入。";
+"Authentication failed. Please try to sign in again." = "驗證失敗，請重新登入。";
 
 /* Description */
 "Authentication token is not accessible because the app is locked" = "無法訪問身份驗證權杖, 因為應用程式已鎖定";
 
 /* Description */
 "Authentication was cancelled by the system" = "系統已取消驗證";
-
-/* settings general section title */
-"Auto load embedded image" = "自動載入嵌入圖片";
 
 /* Title */
 "Auto Lock Time" = "自動鎖定時間";
@@ -335,6 +345,9 @@
 
 /* settings general section title */
 "Auto show remote content" = "自動載入遠端內容";
+
+/* settings general section title */
+"Auto-load embedded images" = "自動載入內嵌圖片";
 
 /* section title in settings */
 "Auto-lock" = "自動鎖定";
@@ -379,10 +392,10 @@
 "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "此帳號一旦移除，您將無法再從此裝置上存取，除非您再次新增。\n\n您要移除此帳號嗎？";
 
 /* agree check box first part words */
-"By using protonmail, you agree to our" = "使用 ProtonMail，您將同意我們的";
+"By using ProtonMail, you agree to our" = "使用 ProtonMail 即表示您同意我們的";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "使用 ProtonMail 即表示您同意我們的 %1$@ 和 %2$@。";
+"By using ProtonMail, you agree to our %@ and %@." = "使用 ProtonMail 即表示您同意我們的 %1$@ 和 %2$@。";
 
 /* Call the contact (button title text) */
 "Call contact" = "去電聯絡人";
@@ -435,7 +448,10 @@
 "Can't get a Moduls ID!" = "找不到模組 ID！";
 
 /* update password error = typo:Modulus */
-"Can't get a Moduls!" = "找不到模組！";
+"Can't get a Modulus ID!" = "無法取得模數 ID！";
+
+/* update password error = typo:Modulus */
+"Can't get a Modulus!" = "無法取得模數！";
 
 /* update password error */
 "Can't get user auth info" = "無法獲取使用者認證資訊";
@@ -488,9 +504,6 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "更改往左滑動操作";
 
-/* change password input label */
-"Change Login Password" = "更改登入密碼";
-
 /* settings general section title */
 "Change mailbox password" = "更改信箱密碼";
 
@@ -503,17 +516,23 @@
 /* title */
 "Change Password" = "更改密碼";
 
-/* settings protection section title */
+/* (No Comment) */
 "Change Pin" = "變更 Pin 碼";
 
-/* The title of change pin code option in security settings */
-"Change Pin code" = "變更 Pin 碼";
+/* settings protection section title */
+"Change PIN" = "變更 PIN 碼";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "變更 PIN 碼";
 
 /* settings swipe actions section action description */
 "Change right swipe action" = "更改往右滑動操作";
 
 /* Title */
 "Change sender address to .." = "更改寄件人地址為‧‧";
+
+/* change password input label */
+"Change sign-in Password" = "變更登入密碼";
 
 /* Title */
 "Change Single Password" = "修改密碼";
@@ -526,6 +545,9 @@
 
 /* "Username" */
 "Checking ...." = "正在檢查 ‧‧‧‧";
+
+/* loading message */
+"Checking…" = "正在檢查……";
 
 /* place holder */
 "Choose a Password" = "設置一個密碼";
@@ -575,13 +597,13 @@
 "Confirm Mailbox Password" = "確認郵箱密碼";
 
 /* Title */
-"Confirm new login password" = "確認新密碼";
-
-/* Title */
 "Confirm new mailbox password" = "確認新的郵箱密碼";
 
 /* Placeholder */
 "Confirm new password" = "確認新密碼";
+
+/* Title */
+"Confirm new sign-in password" = "確認新密碼";
 
 /* Placeholder */
 "Confirm Password" = "確認密碼";
@@ -612,11 +634,17 @@
 "Contacts" = "通訊錄";
 
 /* Action
-   The title of button of pin code setup1 */
+   The title of button of PIN code setup1 */
 "Continue" = "繼續";
 
 /* Action */
 "Continue and Don't ask again" = "繼續並且不要再詢問";
+
+/* No comment provided by engineer. */
+"Conversation" = "會話";
+
+/* No comment provided by engineer. */
+"Conversation mode" = "會話模式";
 
 /* Title */
 "Copy address" = "複製郵箱地址";
@@ -660,14 +688,14 @@
 /* Change language title */
 "Current Language is: " = "當前語言為： ";
 
-/* Title */
-"Current login password" = "現有的登入密碼";
-
 /* Placeholder */
 "Current password" = "現在密碼";
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "目前的備援電子郵件地址";
+
+/* Title */
+"Current sign-in Password" = "目前登入密碼";
 
 /* action sheet option
    contacts default label type
@@ -727,10 +755,7 @@
  *  Contacts View Controller */
 "Delete" = "刪除";
 
-/* Title of message permanent deletion alert */
-"Delete %d Message" = "刪除 %d 則郵件";
-
-/* Title of message permanent deletion alert */
+/* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "刪除 %d 則郵件";
 
 /* emptify folder/label confirmation alert */
@@ -747,6 +772,9 @@
 
 /* The title of delete label button */
 "Delete label" = "刪除標籤";
+
+/* Title of message permanent deletion alert, singular */
+"Delete message" = "刪除郵件";
 
 /* mail location desc */
 "Deleted" = "已刪除";
@@ -783,6 +811,9 @@
 /* Title in display name settings */
 "DisplayName" = "顯示名稱";
 
+/* No comment provided by engineer. */
+"Do you really want to remove this file from attachments?" = "您確定要從附件中移除此檔案嗎？";
+
 /* Description */
 "Do you want to cancel the process?" = "您是否要取消此程序？";
 
@@ -812,7 +843,7 @@
 "Draft" = "草稿";
 
 /* title of toast message that user taps the message which is uploading */
-"Draft is still uploading..." = "仍在上傳草稿……";
+"Draft is still uploading…" = "草稿仍在上載中…";
 
 /* hint message */
 "Draft moved to trash" = "草稿已移動至垃圾桶";
@@ -833,7 +864,7 @@
 "Edit" = "編輯";
 
 /* The title for the view where user can select the color for the group */
-"Edit avartar" = "編輯頭像";
+"Edit avatar" = "編輯頭像";
 
 /* *
  *  Edit Contact view controller */
@@ -906,6 +937,9 @@
 /* it is an option to empty the label */
 "Empty Label" = "清空標籤";
 
+/* No comment provided by engineer. */
+"Enable conversations" = "啟用會話";
+
 /* Title */
 "Enable email notices" = "啟用電子郵件通告";
 
@@ -915,8 +949,11 @@
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "開啟VPN";
 
-/* settings protection section title */
+/* (No Comment) */
 "Enable Pin Protection" = "啟用 PIN 碼保護";
+
+/* settings protection section title */
+"Enable PIN Protection" = "啟用 PIN 碼保護";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN/FaceID" = "開啟 FaceID";
@@ -978,11 +1015,11 @@
 /* Action in 2fa popup view */
 "Enter" = "鍵入";
 
-/* The assistive text of textfield of pin code setup1 */
-"Enter a pin code with min 4 characters and max 21 characters." = "請輸入一個 PIN 碼，最短 4 個字元，最長 21 個字元。";
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "請輸入一個 PIN 碼，最短 4 個字元，最長 21 個字元。";
 
-/* The title of textfield of pin code setup1 */
-"Enter pin code" = "輸入 PIN 碼";
+/* The title of textfield of PIN code setup1 */
+"Enter PIN code" = "輸入 PIN 碼";
 
 /* Title */
 "Enter Verification Code" = "輸入驗證碼";
@@ -999,7 +1036,7 @@
 /* The content of the re auth alert */
 "Enter your password to make changes" = "輸入您的密碼以作變更";
 
-/* set pin title */
+/* set PIN title */
 "Enter your PIN" = "請輸入您的PIN碼";
 
 /* Title */
@@ -1019,6 +1056,9 @@
 
 /* lock app option */
 "Every time enter app" = "每次進入 App 時";
+
+/* alert title */
+"Expiration not supported" = "不支援到期日";
 
 /* VoiceOver: email can expire */
 "Expires" = "有效期限";
@@ -1075,7 +1115,7 @@
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "適合極為著重匿名及隱私的高階使用者和群組";
 
-/* login page forgot pwd */
+/* signin page forgot pwd */
 "FORGOT PASSWORD?" = "忘記密碼？";
 
 /* forward action */
@@ -1086,6 +1126,9 @@
 
 /* Title */
 "From" = "從";
+
+/* Title */
+"From your photo library" = "從您的相片圖庫挑選";
 
 /* message From: field text */
 "From:" = "寄件人：";
@@ -1105,6 +1148,9 @@
 /* Title */
 "General Settings" = "一般設定";
 
+/* message number */
+"general_message" = "general_message";
+
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "取得 %@";
 
@@ -1118,10 +1164,10 @@
 "Go to inbox" = "回到收件匣";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to login" = "前往登入畫面";
+"Go to settings" = "前往設定頁面";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "前往設定頁面";
+"Go to sign-in" = "登入";
 
 /* network troubleshot cell title */
 "Government block" = "遭政府封鎖";
@@ -1183,8 +1229,14 @@
 /* Action */
 "Import Error" = "匯入錯誤";
 
-/* Title */
+/* (No Comment) */
 "Import File From..." = "從‧‧‧匯入";
+
+/* Title */
+"Import File From…" = "匯入檔案自…";
+
+/* Title */
+"Import from…" = "匯入自…";
 
 /* Downloading attachments from cloud */
 "Importing" = "重要";
@@ -1227,11 +1279,14 @@
 /* Title */
 "inline attachments" = "內嵌附件";
 
-/* place holder */
+/* (No Comment) */
 "Input Display Name ..." = "輸入顯示名稱 ...";
 
 /* place holder */
-"Input Notification Email ..." = "輸入通知電子郵件 ...";
+"Input Display Name …" = "輸入顯示名稱 …";
+
+/* place holder */
+"Input Notification Email …" = "輸入通知電子郵件 …";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "不安全的連線";
@@ -1270,7 +1325,7 @@
 "Invalid UserName" = "無效的使用者名稱";
 
 /* Error message */
-"Invalid UserName!" = "無效的使用者名稱";
+"Invalid username!" = "無效的使用者名稱！";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "這是關於應用內購買的錯誤回報嗎？";
@@ -1278,8 +1333,8 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "在我們的 iOS 程式中是不可能去切換成 %@ 的。";
 
-/* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "It's not possible to swicth to another plan within the app. %1$@";
+/* The string used to show in the plan update page when the user not able to upgrade the account */
+"It's not possible to switch to another plan within the app. %1$@" = "無法在應用程式中切換到其他方案。%1$@";
 
 /* Title */
 "Keep me updated about new features" = "讓我收到有關新功能的通知";
@@ -1296,12 +1351,13 @@
 /* No comment provided by engineer. */
 "Label as" = "加上標籤";
 
-/* The title of the label as action in action sheet */
-"Label as.." = "加上標籤..";
-
 /* *
  *  MoreOptionsView */
 "Label as..." = "標為‧‧‧";
+
+/* The title of the label as action in action sheet
+   Title */
+"Label as…" = "加上標籤…";
 
 /* Title */
 "Label Management" = "管理標籤";
@@ -1359,6 +1415,9 @@
 /* (No Comment) */
 "Loading..." = "載入中‧‧‧";
 
+/* No comment provided by engineer. */
+"Loading…" = "正在載入…";
+
 /* Description */
 "Local cache can't find mailbox password" = "本機快取找不到郵箱密碼";
 
@@ -1375,23 +1434,8 @@
 /* menu title */
 "Lock The App" = "鎖定應用程式";
 
-/* Account manager title */
-"Log in to your ProtonMail account" = "登入您的 ProtonMail 帳號";
-
 /* comment */
 "Log out" = "登出";
-
-/* Alert title when logout non-primary account from account manager */
-"Log out %@?" = "登出 %@？";
-
-/* Action */
-"Log Out All" = "全部登出";
-
-/* Alert when auth token is revoked and switch to another */
-"Logged out from %@ and signed in with %@" = "登出 %1$@ 並登入 %2$@";
-
-/* Title */
-"Login" = "登入";
 
 /* (No Comment) */
 "LOGIN" = "登入";
@@ -1399,12 +1443,8 @@
 /* (No Comment) */
 "Login Password" = "登錄密碼";
 
-/* Error */
+/* (No Comment) */
 "Login password doesn't match" = "密碼不相符";
-
-/* Alert title to confirm logout
-   Alert title when logout primary account from account manager */
-"Logout" = "登出";
 
 /* error title */
 "Logs" = "日誌";
@@ -1449,11 +1489,11 @@
 /* The title of the read action in action sheet */
 "Mark as read" = "標示已讀";
 
+/* Action */
+"Mark as read/unread" = "標記為已讀/未讀";
+
 /* The title of the unread action in action sheet */
 "Mark as unread" = "標示為未讀";
-
-/* Action */
-"Mark as unread/read" = "標記為未讀/已讀";
 
 /* mark message as read action */
 "Mark Read" = "標示已讀";
@@ -1474,7 +1514,7 @@
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "無法傳送郵件。至少一個收件人的電子郵件地址/網域不存在或格式不良。";
 
 /* Composer expiration page title */
-"message expiration" = "郵件期限";
+"Message expiration" = "郵件期限";
 
 /* *
  *  Expiration View */
@@ -1512,12 +1552,6 @@
 
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "您所發送的郵件可以設置為在特定時間段後自動刪除。";
-
-/* minute */
-"min" = "分";
-
-/* minutes */
-"mins" = "分";
 
 /* default vcard types */
 "Mobile" = "行動裝置";
@@ -1578,11 +1612,12 @@
 /* move action */
 "Move to Trash" = "移動到垃圾筒";
 
-/* The title of the move to action in action sheet */
-"Move to.." = "移動至..";
-
-/* Title */
+/* (No Comment) */
 "Move to..." = "移到‧‧‧";
+
+/* The title of the move to action in action sheet
+   Title */
+"Move to…" = "移動至…";
 
 /* Title */
 "Multiple Addresses" = "多個地址";
@@ -1616,19 +1651,19 @@
 "New Label" = "新增標籤";
 
 /* Title */
-"New login password" = "新的登入密碼";
-
-/* Title */
 "New mailbox password" = "新的郵箱密碼";
 
 /* Placeholder */
 "New password" = "新密碼";
 
+/* Title */
+"New sign-in password" = "新的登入密碼";
+
 /* contacts talbe cell Nickname title */
 "Nickname" = "暱稱";
 
 /* Title */
-"No connectivity detected..." = "沒有偵測到網路連線...";
+"No connectivity detected…" = "未偵測到網際網路連線…";
 
 /* network troubleshot cell title */
 "No internet connection" = "無網路連線";
@@ -1642,7 +1677,7 @@
 /* Placeholder if message sender is empty */
 "No Recipient" = "無收件人";
 
-/* Warning message option when user want to relogin to another account */
+/* Warning message option when user want to resignin to another account */
 "No, for another ProtonMail account" = "否，換另一個 ProtonMail 帳號";
 
 /* Error message */
@@ -1820,19 +1855,19 @@
 "Photo Library" = "相片集";
 
 /* device settings auto lock type title */
-"Pin" = "PIN 碼";
+"PIN" = "PIN 碼";
 
 /* Description */
-"Pin code can't be empty." = "Pin 碼欄位不能為空。";
+"PIN code can't be empty." = "PIN 碼不能為空。";
 
 /* device settings auto lock type title */
-"Pin/Face ID" = "PIN 碼/Face ID";
+"PIN/Face ID" = "PIN 碼/Face ID";
 
 /* device settings auto lock type title */
-"Pin/Touch ID" = "PIN 碼/Touch ID";
+"PIN/Touch ID" = "PIN 碼/Touch ID";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
+"Plans can be edited on the web version." = "可在網頁版本中編輯方案。";
 
 /* alert description */
 "Please add a password for the following recipients." = "請為以下收件者設定密碼";
@@ -1898,13 +1933,13 @@
 "Please try again." = "請再試一次";
 
 /* Alert message */
-"Please uprade to a paid plan to use more than 3 folders" = "請升級至付費方案以使用超過 3 個資料夾";
+"Please upgrade to a paid plan to use more than 3 folders" = "請升級至付費方案以使用超過 3 個資料夾";
 
 /* Alert message */
-"Please uprade to a paid plan to use more than 3 labels" = "請升級至付費方案以使用超過 3 個標籤";
+"Please upgrade to a paid plan to use more than 3 labels" = "請升級至付費方案以使用超過 3 個標籤";
 
 /* Description */
-"Please use ProtonMail App login first." = "請先使用 protonmail 應用程式登錄。";
+"Please use ProtonMail App sign-in first." = "請先使用 protonmail 應用程式登入。";
 
 /* Alert */
 "Please use the web application to reset your password." = "請使用網頁版重新設定您的密碼";
@@ -1964,7 +1999,7 @@
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail 目前處於離線狀態，請到 Twitter 查看最新狀況：https://twitter.com/ProtonMail";
 
 /* Title */
-"ProtonMail is currently offline..." = "ProtonMail 處於離線狀態...";
+"ProtonMail is currently offline…" = "ProtonMail 現正離線…";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "成為ProtonMail Plus用戶來更改您的行動版簽名檔";
@@ -1990,7 +2025,7 @@
 /* The title of re auth alert */
 "Re-authenticate" = "重新認證";
 
-/* set pin title */
+/* set PIN title */
 "Re-Enter your PIN" = "重新輸入您的PIN碼";
 
 /* abbreviation of reply: */
@@ -2000,7 +2035,7 @@
 "Read" = "已讀";
 
 /* Title */
-"Reading device contacts data..." = "正在讀取裝置上的聯絡人資料...";
+"Reading device contacts data…" = "正在讀取裝置通訊錄資料…";
 
 /* No comment provided by engineer. */
 "Recipient details" = "收件人詳細資訊";
@@ -2054,9 +2089,9 @@
 /* textview title */
 "Repeat password" = "重複輸入密碼";
 
-/* The title of pin code setup2 view 
-   The title of textfield of pin code setup2 */
-"Repeat pin code" = "重複輸入 PIN 碼";
+/* The title of PIN code setup2 view 
+   The title of textfield of PIN code setup2 */
+"Repeat PIN code" = "重複輸入 PIN 碼";
 
 /* *
  *  Controller Defined */
@@ -2093,7 +2128,7 @@
 "RESET MAILBOX PASSWORD" = "重新設置郵箱密碼";
 
 /* Title */
-"Resetting message cache ..." = "正在重置訊息緩存 ...";
+"Resetting message cache…" = "正在重設郵件快取……";
 
 /* Action */
 "Retry" = "重試";
@@ -2145,7 +2180,7 @@
 "Send message without subject?" = "是否傳送沒有主旨的信件？";
 
 /* Title */
-"Send plain but stored enc" = "明文寄送但以加密方式儲存";
+"Send plain but stored encrypted" = "明文寄送但以加密方式儲存";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "要送歸封存嗎？";
@@ -2169,7 +2204,7 @@
 "Sending Message" = "發送訊息";
 
 /* content of the sending mesage that will display this text on the date label */
-"Sending message..." = "正在傳送郵件……";
+"Sending message…" = "正在傳送郵件…";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "從 %1$@ 寄送郵件是付費功能，您的郵件將會從預設地址 %2$@ 寄出。";
@@ -2204,8 +2239,8 @@
 /* Signup passwords top title */
 "Set passwords" = "設定密碼";
 
-/* The title of pin code setup1 view */
-"Set pin code" = "設定 PIN 碼";
+/* The title of PIN code setup1 view */
+"Set PIN code" = "設定 PIN 碼";
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "設定撥動手勢以存取最常用動作。";
@@ -2222,11 +2257,28 @@
 /* Title */
 "Share it with your friends" = "與您的朋友們分享";
 
-/* menu title */
+/* Title */
+"Sign in" = "登入";
+
+/* Account manager title */
+"Sign in to your ProtonMail account" = "登入您的 ProtonMail 帳號";
+
+/* Alert title to confirm signout
+   Alert title when sign out primary account from account manager
+   menu title */
 "Sign out" = "登出";
 
 /* Action */
 "Sign Out" = "登出";
+
+/* Alert title when sign out non-primary account from account manager */
+"Sign out %@?" = "登出 %@？";
+
+/* Action */
+"Sign Out All" = "全部登出";
+
+/* Error */
+"Sign-in password doesn't match" = "登入密碼不相符";
 
 /* Title in signature settings */
 "Signature" = "簽名檔";
@@ -2236,6 +2288,9 @@
 
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "已使用 %@ 登入";
+
+/* Alert when auth token is revoked and switch to another */
+"Signed out from %@ and signed in with %@" = "登出 %1$@ 並登入 %2$@";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "延遲提醒";
@@ -2267,6 +2322,9 @@
 
 /* Error */
 "SRP Server" = "SRP伺服器";
+
+/* Description */
+"SRP single password keysalt invalid!" = "SRP 單一密碼 Keysalt 無效！";
 
 /* Description */
 "Srp single password keyslat invalid!" = "SRP 單一密碼 Keysalt 無效！";
@@ -2351,6 +2409,9 @@
 /* Title */
 "Take a Photo" = "拍張照片";
 
+/* Title */
+"Take new photo" = "拍攝新相片";
+
 /* No comment provided by engineer. */
 "Tap here to set" = "點按此處以設定";
 
@@ -2413,13 +2474,13 @@
 "The new password does not match." = "輸入的新密碼不一致。";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+"The new password needs to be at least 8 characters long" = "新密碼長度至少要有八個字元";
 
 /* (No Comment) */
 "The new password not match" = "密碼不相符";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your login password if you forget it." = "備援信箱可幫助您重置登入密碼。";
+"The optional recovery email address allows you to reset your sign-in password if you forget it." = "備援信箱可幫助您重設登入密碼。";
 
 /* update password error */
 "The Password is wrong." = "密碼錯誤。";
@@ -2434,7 +2495,7 @@
 "The passwords you entered do not match." = "密碼與密碼確認欄位不一致";
 
 /* The error message of entering an invalid password */
-"The pin codes must match!" = "PIN 碼必須匹配！";
+"The PIN codes must match!" = "PIN 碼必須相符！";
 
 /* update password error */
 "The private key update failed." = "私鑰更新失敗。";
@@ -2442,11 +2503,11 @@
 /* Title */
 "The request timed out." = "要求逾時。";
 
+/* Description */
+"The size limit for attachments is 25 MB." = "附件大小上限為 25 Mb。。";
+
 /* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "附件檔案大小總和不能超過 25MB";
-
-/* Description */
-"The total attachment size cannot exceed 25MB" = "附件檔案大小總和不能超過 25MB";
 
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "您所要開啟的網址可能未符合標準規範，因此可能跑版或運作不正常。\n是否仍然要用預設瀏覽器開啟？";
@@ -2464,11 +2525,11 @@
  *  RecaptchaViewController */
 "The verification failed!" = "驗證失敗！";
 
-/* alert when logout user if in queue still have tasks */
-"There are still some messages in queue. If you log out, the draft will be deleted." = "佇列中仍有未處理的訊息。登出將刪除草稿。";
+/* alert when sign out user if in queue still have tasks */
+"There are still some messages in queue. If you sign out, the draft will be deleted." = "佇列中仍有未處理的訊息。登出將刪除草稿。";
 
-/* Alert to confirm logout with pending message in the queue */
-"There are unsent messages that will be lost if you log out" = "仍有未送出的訊息，若登出將遺失這些訊息";
+/* Alert to confirm signout with pending message in the queue */
+"There are unsent messages that will be lost if you sign out" = "仍有未送出的訊息，若登出將遺失這些訊息";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "建立或載入程式的儲存資料過程中發生錯誤。";
@@ -2567,14 +2628,14 @@
 /* mail location title */
 "TRASH" = "垃圾桶";
 
-/* Title */
-"Trouble shooting guide" = "疑難解答";
-
 /* troubleshooting view button */
 "Troubleshoot" = "疑難排解";
 
 /* network troubleshot view title */
-"TroubleShooting" = "疑難排解";
+"Troubleshooting" = "疑難排解";
+
+/* Title */
+"Troubleshooting guide" = "疑難排解指南";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "嘗試以不同的網路連線至 Proton（或使用 ProtonVPN 或 Tor）。";
@@ -2582,13 +2643,6 @@
 /* action sheet option */
 "Turn Off" = "關閉";
 
-<<<<<<< HEAD
-/* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.";
-
-/* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.";
-=======
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "啟用此功能以使用您所有已登入的帳號中的聯絡人來自動完成電子郵件地址。";
 
@@ -2597,7 +2651,6 @@
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "啟用此功能以自動鎖定您的應用程式並使用 PIN 碼或指紋來解鎖。";
->>>>>>> 60d3ed246 (V4 rebase - after releasing alpha)
 
 /* Title */
 "Tweet about ProtonMail" = "推文分享ProtonMail";
@@ -2705,12 +2758,6 @@
 /* update notification email error title */
 "Update Notification Email" = "更新通知用電子郵件";
 
-/* title */
-"Update Now" = "立即更新";
-
-/* title */
-"Update Required" = "需要更新";
-
 /* The title of last update status of updated time */
 "Updated %d min ago" = "%d 分鐘前更新";
 
@@ -2750,7 +2797,7 @@
 /* (No Comment) */
 "User is available!" = "可以使用的名稱！";
 
-/* Title */
+/* (No Comment) */
 "USER LOGIN" = "使用者登入";
 
 /* title */
@@ -2758,6 +2805,9 @@
 
 /* alert title */
 "User name invalid" = "無效的使用者名稱";
+
+/* Title */
+"USER SIGN-IN" = "使用者登入";
 
 /* *
  *  Login View */
@@ -2804,6 +2854,12 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "連線到伺服器時發生問題。請重新連線。";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead for the following recipients:" = "我們建議為下列收件人改為設定一個密碼：";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "我們建議為下列收件人改為設定一個密碼，又或者停用 PGP：";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "我們會傳送驗證碼至上述的手機號碼。";
@@ -2883,6 +2939,12 @@
 /* Title */
 "You have a new email!" = "您有一封新郵件！";
 
+/* incorrect email format error while sending */
+"You have entered at least one invalid email address. Please verify your recipients." = "您輸入了至少一個無效的電子郵件地址。請驗證您的收件人。";
+
+/* incorrect email format error while sending */
+"You have entered at least one unknown recipient. Please verify your recipients." = "您輸入了至少一個未知的收件人。請驗證您的收件人。";
+
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "您有尚未儲存的更動，是否要存檔？";
 
@@ -2896,8 +2958,8 @@
 /* "Alert" */
 "You need at least one recipient to send" = "至少需有一位收件人";
 
-/* Alert to confirm logout
-   Alert when logout primary account from account manager */
+/* Alert to confirm signout
+   Alert when signout primary account from account manager */
 "You will be switched to %@" = "您將切換為 %@";
 
 /* Confirmation message before deleting a message */
