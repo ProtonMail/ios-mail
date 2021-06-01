@@ -161,7 +161,8 @@ public final class UserInfo: NSObject {
         twoFA: Int?,
         enableFolderColor: Int?,
         inheritParentFolderColor: Int?,
-        subscribed: Int?) {
+        subscribed: Int?,
+        groupingMode: Int?) {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
         self.language = language ?? "en_US"
@@ -198,6 +199,7 @@ public final class UserInfo: NSObject {
         self.enableFolderColor = enableFolderColor ?? 0
         self.inheritParentFolderColor = inheritParentFolderColor ?? 0
         self.subscribed = subscribed ?? 0
+        self.groupingMode = groupingMode ?? 1
         
         if let value = linkConfirmation, let mode = LinkOpeningMode(rawValue: value) {
             self.linkConfirmation = mode

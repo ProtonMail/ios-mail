@@ -65,6 +65,7 @@ extension UserInfo: NSCoding {
         
         static let enableFolderColor = "enableFolderColor"
         static let inheritParentFolderColor = "inheritParentFolderColor"
+        static let groupingMode = "groupingMode"
     }
     
     public convenience init(coder aDecoder: NSCoder) {
@@ -103,7 +104,8 @@ extension UserInfo: NSCoding {
             twoFA: aDecoder.decodeInteger(forKey: CoderKey.twoFA),
             enableFolderColor: aDecoder.decodeInteger(forKey: CoderKey.enableFolderColor),
             inheritParentFolderColor: aDecoder.decodeInteger(forKey: CoderKey.inheritParentFolderColor),
-            subscribed: aDecoder.decodeInteger(forKey: CoderKey.subscribed)
+            subscribed: aDecoder.decodeInteger(forKey: CoderKey.subscribed),
+            groupingMode: aDecoder.decodeInteger(forKey: CoderKey.groupingMode)
         )
     }
     
@@ -143,6 +145,7 @@ extension UserInfo: NSCoding {
         
         aCoder.encode(passwordMode, forKey: CoderKey.pwdMode)
         aCoder.encode(twoFactor, forKey: CoderKey.twoFA)
+        aCoder.encode(groupingMode, forKey: CoderKey.groupingMode)
     }
 }
 
