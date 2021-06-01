@@ -806,10 +806,10 @@ class MessageDataService : Service, HasLocalStorage {
             let moc = self.coreDataService.mainContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
             if isUnread {
-                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversations.@count != 0) AND (%K > 0)",
+                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil) AND (%K > 0)",
                                                      ContextLabel.Attributes.labelID, labelID, ContextLabel.Attributes.userID, self.userID, ContextLabel.Attributes.unreadCount)
             } else {
-                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversations.@count != 0)",
+                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil)",
                                                                 ContextLabel.Attributes.labelID, labelID, ContextLabel.Attributes.userID, self.userID)
             }
             fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: false)]
