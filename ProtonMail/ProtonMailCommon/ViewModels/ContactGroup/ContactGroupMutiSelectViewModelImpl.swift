@@ -41,7 +41,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private let messageService: MessageDataService
     private(set) var user: UserManager
     let coreDataService: CoreDataService
-    private let eventsService :EventsService
+    private let eventsService: EventsFetching
     /**
      Init the view model with state
      

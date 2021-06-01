@@ -55,7 +55,8 @@ class MailboxViewModel: StorageLimit {
     /// message service
     internal let user: UserManager
     internal let messageService : MessageDataService
-    internal let eventsService: EventsService
+    internal let conversationService : ConversationProvider
+    internal let eventsService: EventsFetching
     private let pushService : PushNotificationService
     /// fetch controller
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
@@ -85,6 +86,7 @@ class MailboxViewModel: StorageLimit {
         self.labelID = labelID
         self.user = userManager
         self.messageService = userManager.messageService
+        self.conversationService = userManager.conversationService
         self.eventsService = userManager.eventsService
         self.contactService = userManager.contactService
         self.coreDataService = coreDataService
@@ -387,7 +389,7 @@ class MailboxViewModel: StorageLimit {
             return nil
         }
         let contextLabel = fetchedResultsController?.object(at: index) as? ContextLabel
-        return contextLabel?.conversations.allObjects.first as? Conversation
+        return contextLabel?.conversation
     }
     
     // MARK: - operations
@@ -532,32 +534,32 @@ class MailboxViewModel: StorageLimit {
         
     }
     
-    func fetchConversationDetail(converstaionID: String, completion: ((Result<[String], Error>) -> Void)?) {
-        messageService.fetchConversationDetail(by: converstaionID, completion: completion)
+    func fetchConversationDetail(conversationID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.fetchConversation(with: conversationID, includeBodyOf: nil, completion: completion)
     }
     
-    func markConversationAsUnread(conversationIDs: [String], currentLabelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.markConversationAsUnread(by: conversationIDs, currentLabelID: currentLabelID, completion: completion)
+    func markConversationAsUnread(conversationIDs: [String], currentLabelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.markAsUnread(conversationIDs: conversationIDs, labelID: currentLabelID, completion: completion)
     }
     
-    func markConversationAsRead(conversationIDs: [String], completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.markConversationAsRead(by: conversationIDs, completion: completion)
+    func markConversationAsRead(conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.markAsRead(conversationIDs: conversationIDs, completion: completion)
     }
     
-    func fetchConversationCount(completion: ((Result<[ConversationCountData], Error>) -> Void)?) {
-        messageService.fetchConversationsCount(completion: completion)
+    func fetchConversationCount(completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.fetchConversationCounts(addressID: nil, completion: completion)
     }
     
-    func labelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.labelConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
+    func labelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.label(conversationIDs: conversationIDs, as: labelID, completion: completion)
     }
     
-    func unlabelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.unlabelConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
+    func unlabelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.unlabel(conversationIDs: conversationIDs, as: labelID, completion: completion)
     }
     
-    func deleteConversations(conversationIDs: [String], labelID: String, completion: ((Result<Bool, Error>) -> Void)?) {
-        messageService.deleteConversations(conversationIDs: conversationIDs, labelID: labelID, completion: completion)
+    func deleteConversations(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.deleteConversations(with: conversationIDs, labelID: labelID, completion: completion)
     }
     
     /// fetch messages and reset events
@@ -786,7 +788,14 @@ extension MailboxViewModel {
         case .singleMessage:
             messageService.fetchMessages(byLabel: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, completion: completion)
         case .conversation:
-            messageService.fetchConversations(by: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, completion: completion)
+            conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: isUnread, shouldReset: forceClean) { result in
+                switch result {
+                case .success:
+                    completion?(nil, nil, nil)
+                case .failure(let error):
+                    completion?(nil, nil, error as NSError)
+                }
+            }
         }
     }
 
@@ -795,7 +804,14 @@ extension MailboxViewModel {
         case .singleMessage:
             messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
         case .conversation:
-            messageService.fetchConversationsWithReset(byLabel: self.labelID, time: time, completion: completion)
+            conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: false, shouldReset: true) { result in
+                switch result {
+                case .success:
+                    completion?(nil, nil, nil)
+                case .failure(let error):
+                    completion?(nil, nil, error as NSError)
+                }
+            }
         }
     }
 
@@ -804,7 +820,14 @@ extension MailboxViewModel {
         case .singleMessage:
             messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
         case .conversation:
-            messageService.fetchConversationsOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
+            conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: false, shouldReset: true) { result in
+                switch result {
+                case .success:
+                    completion?(nil, nil, nil)
+                case .failure(let error):
+                    completion?(nil, nil, error as NSError)
+                }
+            }
         }
     }
 }
@@ -817,7 +840,7 @@ extension MailboxViewModel {
         coreDataService.mainContext.performAndWait {
             switch self.viewMode {
             case .conversation:
-                let conversations = self.messageService.fetchConversations(withIDs: messageIDs, in: coreDataService.mainContext)
+                let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.mainContext)
                 readCount = conversations.reduce(0) { (result, next) -> Int in
                     if next.getNumUnread(labelID: labelID) == 0 {
                         return result + 1
@@ -845,8 +868,12 @@ extension MailboxViewModel {
             let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
             messageService.label(messages: messages, label: labelID, apply: apply)
         case .conversation:
-            let conversations = self.messageService.fetchConversations(withIDs: messageIDs, in: coreDataService.mainContext)
-            messageService.label(conversations: conversations, label: labelID, apply: apply)
+            let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.mainContext)
+            if apply {
+                conversationService.label(conversationIDs: conversations.map(\.conversationID), as: labelID, completion: nil)
+            } else {
+                conversationService.unlabel(conversationIDs: conversations.map(\.conversationID), as: labelID, completion: nil)
+            }
         }
     }
     
@@ -856,8 +883,12 @@ extension MailboxViewModel {
             let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
             messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
         case .conversation:
-            let conversations = self.messageService.fetchConversations(withIDs: messageIDs, in: coreDataService.operationContext)
-            messageService.mark(conversations: conversations, labelID: self.labelID, unRead: unread)
+            let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.operationContext)
+            if unread {
+                conversationService.markAsUnread(conversationIDs: conversations.map(\.conversationID), labelID: self.labelID, completion: nil)
+            } else {
+                conversationService.markAsRead(conversationIDs: conversations.map(\.conversationID), completion: nil)
+            }
         }
     }
     
@@ -872,10 +903,15 @@ extension MailboxViewModel {
             }
             messageService.move(messages: messages, from: fLabels, to: tLabel)
         case .conversation:
-            let conversations = self.messageService.fetchConversations(withIDs: messageIDs, in: coreDataService.operationContext)
-            #warning("TODO: - v4 Check From label is valid or not")
-            messageService.move(conversations: conversations, from: fLabel, to: tLabel)
-            break
+            let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.operationContext)
+            conversationService.unlabel(conversationIDs: conversations.map(\.conversationID), as: fLabel) { [weak self] result in
+                switch result {
+                case .success:
+                    self?.conversationService.label(conversationIDs: conversations.map(\.conversationID), as: tLabel, completion: nil)
+                case .failure:
+                    break
+                }
+            }
         }
     }
 }

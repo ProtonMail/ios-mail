@@ -59,6 +59,7 @@ protocol UserManagerSave: AnyObject {
 class UserManager : Service, HasLocalStorage {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
+            self.eventsService.stop()
             var wait = Promise<Void>()
             var promises = [
                 self.messageService.cleanUp(),
@@ -175,6 +176,17 @@ class UserManager : Service, HasLocalStorage {
         return service
     }()
     
+    public lazy var conversationService: ConversationProvider = { [unowned self] in
+        let service = ConversationDataService(api: apiService,
+                                              userID: userinfo.userId,
+                                              coreDataService: sharedServices.get(by: CoreDataService.self),
+                                              labelDataService: labelService,
+                                              lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), eventsService: eventsService,
+                                              viewModeDataSource: self,
+                                              queueManager: sharedServices.get(by: QueueManager.self))
+        return service
+    }()
+
     public lazy var labelService: LabelsDataService = { [unowned self] in
         let service = LabelsDataService(api: self.apiService, userID: self.userinfo.userId, coreDataService: sharedServices.get(by: CoreDataService.self), lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), cacheService: self.cacheService)
         service.viewModeDataSource = self
@@ -197,7 +209,7 @@ class UserManager : Service, HasLocalStorage {
         return service
     }()
     
-    public lazy var eventsService: EventsService = { [unowned self] in
+    public lazy var eventsService: EventsFetching = { [unowned self] in
         let service = EventsService(userManager: self)
         return service
     }()
@@ -277,6 +289,7 @@ extension UserManager : AuthDelegate {
     
     func onLogout(sessionUID uid: String) {
         //TODO:: Since the user manager can directly catch the onLogOut event. we can improve this logic to not use the NotificationCenter.
+        eventsService.stop()
         NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": uid])
     }
     

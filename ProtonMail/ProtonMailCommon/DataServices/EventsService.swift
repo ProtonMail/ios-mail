@@ -26,12 +26,27 @@ import Groot
 import PromiseKit
 import ProtonCore_Services
 
-protocol EventsFetching {
+enum EventsFetchingStatus {
+    case idle
+    case started
+    case running
+}
+
+protocol EventsFetching: AnyObject {
+    var status: EventsFetchingStatus { get }
     func start()
     func pause()
     func resume()
     func stop()
     func call()
+
+    func begin(subscriber: EventsConsumer)
+
+    func fetchEvents(byLabel labelID: String, notificationMessageID : String?, completion: CompletionBlock?)
+    func fetchEvents(labelID: String)
+    func processEvents(counts: [[String : Any]]?)
+    func processEvents(conversationCounts: [[String: Any]]?)
+    func processEvents(mailSettings: [String : Any]?)
 }
 
 protocol EventsConsumer: AnyObject {
@@ -43,33 +58,19 @@ enum EventError: Error {
 }
 
 final class EventsService: Service, EventsFetching {
-    enum Status {
-        case idle
-        case started
-        case running
-    }
     private static let defaultPollingInterval: TimeInterval = 30
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
     private typealias EventsObservation = (() -> Void?)?
-    private(set) var status: Status = .idle
+    private(set) var status: EventsFetchingStatus = .idle
     private var subscribers: [EventsObservation] = []
     private var timer: Timer?
     private lazy var coreDataService: CoreDataService = ServiceFactory.default.get(by: CoreDataService.self)
     private lazy var lastUpdatedStore = ServiceFactory.default.get(by: LastUpdatedStore.self)
-    private weak var messageDataService: MessageDataService!
-    #warning("TODO (Mustapha): - Property below should later be of type ConversationDataService when fetchConversations is properly migrated")
-    private weak var conversationDataService: MessageDataService!
-    private let apiService: APIService!
-    private weak var contactDataService: ContactDataService!
     private weak var userManager: UserManager!
     private lazy var queueManager = ServiceFactory.default.get(by: QueueManager.self)
     
     init(userManager: UserManager) {
         self.userManager = userManager
-        self.messageDataService = userManager.messageService
-        self.conversationDataService = userManager.messageService
-        self.apiService = userManager.apiService
-        self.contactDataService = userManager.contactService
     }
     
     func start() {
@@ -135,18 +136,18 @@ extension EventsService {
         }
         self.queueManager.queue {
             let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userManager.userInfo.userId))
-            self.apiService.exec(route: eventAPI) { (task, response: EventCheckResponse) in
+            self.userManager.apiService.exec(route: eventAPI) { (task, response: EventCheckResponse) in
                 
                 let eventsRes = response
                 if eventsRes.refresh.contains(.contacts) {
-                    _ = self.contactDataService.cleanUp().ensure {
-                        self.contactDataService.fetchContacts(completion: nil)
+                    _ = self.userManager.contactService.cleanUp().ensure {
+                        self.userManager.contactService.fetchContacts(completion: nil)
                     }
                 }
 
                 if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
                     let getLatestEventID = EventLatestIDRequest()
-                    self.apiService.exec(route: getLatestEventID) { (task, eventIDResponse: EventLatestIDResponse) in
+                    self.userManager.apiService.exec(route: getLatestEventID) { (task, eventIDResponse: EventLatestIDResponse) in
                         if let err = eventIDResponse.error {
                             completion?(task, nil, err.toNSError)
                             return
@@ -168,15 +169,25 @@ extension EventsService {
                             }
                             completion?(task, responseDict, error)
                         }
-                        self.messageDataService.cleanMessage().then { _ in
-                            self.conversationDataService.cleanMessage()
-                        }.then {
-                            return self.contactDataService.cleanUp()
+                        self.userManager.conversationService.cleanAll()
+                        self.userManager.messageService.cleanMessage().then {
+                            return self.userManager.contactService.cleanUp()
                         }.ensure {
-                            #warning("TODO (Mustapha): - Make sure we call fetchConversation OR fetchMessages on their respective services according to the current viewMode")
-                            self.messageDataService.fetchMessages(byLabel: labelID, time: 0, forceClean: false, isUnread: false, completion: completionWrapper)
-                            self.contactDataService.fetchContacts(completion: nil)
-                            self.messageDataService.labelDataService.fetchV4Labels().cauterize()
+                            switch self.userManager.getCurrentViewMode() {
+                            case .conversation:
+                                self.userManager.conversationService.fetchConversations(for: labelID, before: 0, unreadOnly: false, shouldReset: false) { result in
+                                    switch result {
+                                    case .success:
+                                        completionWrapper(nil, nil, nil)
+                                    case .failure(let error):
+                                        completionWrapper(nil, nil, error as NSError)
+                                    }
+                                }
+                            case .singleMessage:
+                                self.userManager.messageService.fetchMessages(byLabel: labelID, time: 0, forceClean: false, isUnread: false, completion: completionWrapper)
+                            }
+                            self.userManager.contactService.fetchContacts(completion: nil)
+                            self.userManager.messageService.labelDataService.fetchV4Labels().cauterize()
                         }.cauterize()
                     }
                 } else if let messageEvents = eventsRes.messages {
@@ -290,7 +301,7 @@ extension EventsService {
      :param: task       NSURL session task
      :param: completion complete call back
      */
-    func processEvents(messages: [[String : Any]], notificationMessageID: String?, task: URLSessionDataTask!, completion: CompletionBlock?) {
+    fileprivate func processEvents(messages: [[String : Any]], notificationMessageID: String?, task: URLSessionDataTask!, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -498,7 +509,7 @@ extension EventsService {
                     }
                 }
 
-                self.messageDataService.fetchMessageInBatches(messageIDs: messagesNoCache)
+                self.userManager.messageService.fetchMessageInBatches(messageIDs: messagesNoCache)
 
                 DispatchQueue.main.async {
                     completion?(task, nil, error)
@@ -508,7 +519,7 @@ extension EventsService {
         }
     }
     
-    func processEvents(conversations: [[String: Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(conversations: [[String: Any]]?) -> Promise<Void> {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -624,7 +635,7 @@ extension EventsService {
                         }
                     }
                     
-                    self.conversationDataService.fetchConversations(by: conversationsNeedRefetch, completion: nil)
+                    self.userManager.conversationService.fetchConversations(with: conversationsNeedRefetch, completion: nil)
                 }
             }
         }
@@ -633,7 +644,7 @@ extension EventsService {
     /// Process contacts from event logs
     ///
     /// - Parameter contacts: contact events
-    func processEvents(contacts: [[String : Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(contacts: [[String : Any]]?) -> Promise<Void> {
         guard let contacts = contacts else {
             return Promise()
         }
@@ -689,7 +700,7 @@ extension EventsService {
     /// Process contact emails this is like metadata update
     ///
     /// - Parameter contactEmails: contact email events
-    func processEvents(contactEmails: [[String : Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(contactEmails: [[String : Any]]?) -> Promise<Void> {
         guard let emails = contactEmails else {
             return Promise()
         }
@@ -743,7 +754,7 @@ extension EventsService {
     /// Process Labels include Folders and Labels.
     ///
     /// - Parameter labels: labels events
-    func processEvents(labels: [[String : Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(labels: [[String : Any]]?) -> Promise<Void> {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -796,13 +807,13 @@ extension EventsService {
     /// Process User information
     ///
     /// - Parameter userInfo: User dict
-    func processEvents(user: [String : Any]?) {
+    fileprivate func processEvents(user: [String : Any]?) {
         guard let userEvent = user else {
             return
         }
         self.userManager?.updateFromEvents(userInfoRes: userEvent)
     }
-    func processEvents(userSettings: [String : Any]?) {
+    fileprivate func processEvents(userSettings: [String : Any]?) {
         guard let userSettingEvent = userSettings else {
             return
         }
@@ -815,7 +826,7 @@ extension EventsService {
         self.userManager?.updateFromEvents(mailSettingsRes: mailSettingEvent)
     }
     
-    func processEvents(addresses: [[String : Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(addresses: [[String : Any]]?) -> Promise<Void> {
         guard let addrEvents = addresses else {
             return Promise()
         }
@@ -929,7 +940,7 @@ extension EventsService {
     }
     
     
-    func processEvents(space usedSpace : Int64?) {
+    fileprivate func processEvents(space usedSpace : Int64?) {
         guard let usedSpace = usedSpace else {
             return
         }
