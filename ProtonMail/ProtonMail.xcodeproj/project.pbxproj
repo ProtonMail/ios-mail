@@ -12823,7 +12823,7 @@
 				079B8EA6518FBF74242E1F66E4D2BDAE /* 2.0.2.xcdatamodel */,
 				4AC8B46F567BE34418EFC96C5472E216 /* ProtonMail.xcdatamodel */,
 			);
-			currentVersion = C6FC2D303C438A6A11045E7AFA6C2335 /* 2.0.1.xcdatamodel */;
+			currentVersion = 079B8EA6518FBF74242E1F66E4D2BDAE /* 2.0.2.xcdatamodel */;
 			name = ProtonMail.xcdatamodeld;
 			path = ProtonMail/ProtonMail.xcdatamodeld;
 			sourceTree = SOURCE_ROOT;
