@@ -44,8 +44,9 @@ class NewMessageBodyViewModel {
 
     var embeddedContentPolicy: WebContents.EmbeddedContentPolicy {
         didSet {
-            reload(from: message)
-            delegate?.reloadWebView()
+            if reload(from: message) {
+                delegate?.reloadWebView()
+            }
         }
     }
 
@@ -111,9 +112,11 @@ class NewMessageBodyViewModel {
         self.message = message
     }
 
-    private func reload(from message: Message) {
+    /// - Returns: Should reload webView or not
+    @discardableResult
+    private func reload(from message: Message) -> Bool {
         guard let remoteContentMode = WebContents.RemoteContentPolicy(rawValue: self.remoteContentPolicy) else {
-            return
+            return true
         }
         if let decryptedBody = decryptBody(from: message) {
             body = decryptedBody
@@ -121,12 +124,13 @@ class NewMessageBodyViewModel {
             checkBannerStatus(decryptedBody)
 
             if embeddedContentPolicy == .allowed {
-                showEmbedImage(message, body: decryptedBody) {
-                    self.contents = WebContents(
-                        body: self.body ?? "",
-                        remoteContentMode: remoteContentMode
+                showEmbedImage(message, body: decryptedBody) { [weak self] in
+                    self?.contents = WebContents(
+                        body: self?.body ?? "",
+                        remoteContentMode: .allowed
                     )
                 }
+                return false
             } else {
                 self.contents = WebContents(body: self.body ?? "",
                                             remoteContentMode:
@@ -138,6 +142,7 @@ class NewMessageBodyViewModel {
                                         remoteContentMode:
                                             remoteContentMode)
         }
+        return true
     }
 
     private(set) var shouldShowRemoteBanner = false
