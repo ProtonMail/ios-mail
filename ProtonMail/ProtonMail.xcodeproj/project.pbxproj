@@ -7150,7 +7150,7 @@
 				9FFE53FEB9AD7785DB2F6CA596BE2868 /* [CP] Embed Pods Frameworks */,
 				32FD8B84ACCEDCB9E7DCC6348BF41D03 /* Embed App Extensions */,
 				6EE58F9A6C6CBD84F7F37695EBB06601 /* Embed Frameworks */,
-				FF0705CA266504EA00AF2D8E /* Sentry Upload */,
+				DE7C5F547BAF810BD37500B2550EA37E /* Sentry Upload */,
 			);
 			buildRules = (
 			);
@@ -7176,7 +7176,7 @@
 				74DAC7A39D03830847662B2CA23938FC /* Resources */,
 				B7EBEAA51F130EAAA1213E69D9E40DBD /* [CP] Embed Pods Frameworks */,
 				E04C8B5D7BBBD207F1F503EE464CC7BE /* Embed App Extensions */,
-				FF0705C9266504BB00AF2D8E /* Sentry Upload */,
+				F3EAD2CB32C6DEB9AD3C1954EACCC8E4 /* Sentry Upload */,
 			);
 			buildRules = (
 			);
@@ -8460,7 +8460,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FF0705C9266504BB00AF2D8E /* Sentry Upload */ = {
+		F3EAD2CB32C6DEB9AD3C1954EACCC8E4 /* Sentry Upload */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
 			files = (
@@ -8478,7 +8478,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if which sentry-cli >/dev/null; then\n    source ~/.bashrc\n    ERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\n    echo \"warning: sentry-cli - $ERROR\"\nfi\nelse\n    echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
 		};
-		FF0705CA266504EA00AF2D8E /* Sentry Upload */ = {
+		DE7C5F547BAF810BD37500B2550EA37E /* Sentry Upload */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
 			files = (
