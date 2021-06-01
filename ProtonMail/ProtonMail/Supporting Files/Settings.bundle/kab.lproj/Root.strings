@@ -1,11 +1,11 @@
 /* (No Comment) */
-"Enabled" = "Irmed";
+"Enabled" = "Enabled";
 
 /* A single strings file, whose title is specified in your preferences schema. The strings files provide the localized content to display to the user for each of your preferences. */
 "Group" = "Group";
 
 /* (No Comment) */
-"Name" = "Isem";
+"Name" = "Name";
 
 /* (No Comment) */
 "none given" = "ur yelli kra";

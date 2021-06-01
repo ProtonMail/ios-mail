@@ -438,7 +438,7 @@
 "Change default address to .." = "Zmień domyślny adres na...";
 
 /* settings swipe actions section action description */
-"Change left swipe action" = "Zmień gest przesuwania w lewo";
+"Change left swipe action" = "Zmień gest przesunięcia w lewo";
 
 /* change password input label */
 "Change Login Password" = "Zmień hasło logowania";
@@ -453,7 +453,7 @@
 "Change Pin" = "Zmień kod PIN";
 
 /* settings swipe actions section action description */
-"Change right swipe action" = "Zmień gest przesuwania w prawo";
+"Change right swipe action" = "Zmień gest przesunięcia w prawo";
 
 /* Title */
 "Change sender address to .." = "Zmień adres nadawcy na...";

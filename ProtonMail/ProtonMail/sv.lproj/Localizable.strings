@@ -1037,7 +1037,7 @@
 "Ignore" = "Ignorera";
 
 /* Service plan capability */
-"IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP stöd via ProtonMail Bridge";
+"IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP-stöd via ProtonMail Bridge";
 
 /* Action */
 "Import Error" = "Fel vid importeringen";
@@ -2302,7 +2302,7 @@
 "Upgrade to a paid plan to benefit from more features" = "Uppgradera till betalabonnemang för fler funktioner";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Uppgradera till en betald abonnemangsplan för att skicka från din %@-adress";
+"Upgrade to a paid plan to send from your %@ address" = "Uppgradera till en betald plan för att skicka från din %@-adress";
 
 /* alert description */
 "Upgrade to get all paid features." = "Uppgradera för att få tillgång till alla funktioner.";
