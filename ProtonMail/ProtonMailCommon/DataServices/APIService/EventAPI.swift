@@ -63,7 +63,6 @@ final class EventLatestIDRequest : Request{
 final class EventLatestIDResponse : Response {
     var eventID : String = ""
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        PMLog.D(response.json(prettyPrinted: true))
         self.eventID = response["EventID"] as? String ?? ""
         return true
     }
@@ -113,7 +112,6 @@ final class EventCheckResponse : Response {
     var notices : [String]?
     
     override func ParseResponse(_ response: [String : Any]) -> Bool {
-        PMLog.D(response.json(prettyPrinted: true))
         self.eventID = response["EventID"] as? String ?? ""
         self.refresh = RefreshStatus(rawValue: response["Refresh"] as? Int ?? 0)
         self.more    = response["More"] as? Int ?? 0

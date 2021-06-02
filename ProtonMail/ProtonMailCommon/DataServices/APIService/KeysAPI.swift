@@ -397,7 +397,6 @@ final class ActivateKey : Request {
             "PrivateKey" : self.privateKey,
             "SignedKeyList" : self.signedKeyList
         ]
-        PMLog.D(out.json(prettyPrinted: true))
         return out
     }
     

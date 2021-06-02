@@ -232,8 +232,6 @@ final class SetupKeyRequest : Request {
             "AddressKeys" : self.addressKeys.parameters ?? [:],
             "Auth" : self.passwordAuth.parameters ?? [:]   //"Auth": { 4 params }
         ]
-
-        PMLog.D(out.json(prettyPrinted: true))
         return out
     }
     

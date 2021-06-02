@@ -792,32 +792,6 @@ extension UsersManager {
             return []
         }
         return loggedOutUserHandles
-        
-        
-//        var disconnectedUsers: Array<DisconnectedUserHandle> {
-//            get {
-//                // TODO: this locking/unlocking can be refactored to be @propertyWrapper on iOS 5.1
-//                guard let mainKey = keymaker.mainKey,
-//                    let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.disconnectedUsers),
-//                    case let locked = Locked<Data>(encryptedValue: encryptedData),
-//                    let data = try? locked.unlock(with: mainKey, new: true),
-//                    let loggedOutUserHandles = try? JSONDecoder().decode(Array<DisconnectedUserHandle>.self, from: data) else
-//                {
-//                    return []
-//                }
-//                return loggedOutUserHandles
-//            }
-//            set {
-//                guard let mainKey = keymaker.mainKey,
-//                    let data = try? JSONEncoder().encode(newValue),
-//                    let locked = try? Locked(clearValue: data, with: mainKey) else
-//                {
-//                    PMLog.D("Failed to save disconnectedUsers to keychain")
-//                    return
-//                }
-//                KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)
-//            }
-//        }
     }
     
 }

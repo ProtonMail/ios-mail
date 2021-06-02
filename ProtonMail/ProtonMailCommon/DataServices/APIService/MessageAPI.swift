@@ -180,7 +180,6 @@ final class FetchMessages : Request {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
-        PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
     
@@ -238,7 +237,6 @@ final class FetchMessagesByLabel : Request {
         if let unread = self.isUnread, unread {
             out["Unread"] = 1
         }
-        PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
     
@@ -299,8 +297,6 @@ class CreateDraft : Request {
             }
             out["AttachmentKeyPackets"] = atts
         }
-        
-        //PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
     
@@ -566,8 +562,6 @@ final class SendMessage : Request {
             packages.append(mimeAddress)
         }
         out["Packages"] = packages
-        //PMLog.D( out.json(prettyPrinted: true) )
-        PMLog.D( "API toDict done" )
         return out
     }
     

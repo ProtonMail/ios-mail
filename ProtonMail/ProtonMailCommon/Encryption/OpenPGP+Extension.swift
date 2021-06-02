@@ -180,7 +180,7 @@ extension Data {
             do {
                 if let token = key.token, let signature = key.signature { //have both means new schema. key is
                     if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        PMLog.D(signature)
+//                        PMLog.D(signature)
                         return try Crypto().decryptAttachment(keyPacket: keyPackage,
                                                               dataPacket: self,
                                                               privateKey: key.privateKey,
@@ -253,7 +253,7 @@ extension Data {
             do {
                 if let token = key.token, let signature = key.signature { //have both means new schema. key is
                     if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        PMLog.D(signature)
+//                        PMLog.D(signature)
                         return try Crypto().getSession(keyPacket: self, privateKey: key.privateKey, passphrase: plainToken)
                     }
                 } else if let token = key.token { //old schema with token - subuser. key is embed singed
