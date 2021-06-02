@@ -57,6 +57,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         let vc = UIStoryboard.Storyboard.composer.storyboard.instantiateInitialViewController() as? UINavigationController
         self.viewController = vc
         self.controller = vc?.viewControllers.first as? ComposeContainerViewController
+        viewModel.uiDelegate = self.controller
         self.controller?.set(viewModel: viewModel)
     }
     
