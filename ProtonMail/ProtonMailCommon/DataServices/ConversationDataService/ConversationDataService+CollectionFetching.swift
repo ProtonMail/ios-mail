@@ -83,13 +83,6 @@ extension ConversationDataService {
                     do {
                         var conversationsDict = response.conversationsDict
 
-                        guard !conversationsDict.isEmpty else {
-                            DispatchQueue.main.async {
-                                completion?(.failure(NSError.protonMailError(1000, localizedDescription: "Data not found")))
-                            }
-                            return
-                        }
-
                         for index in conversationsDict.indices {
                             conversationsDict[index]["UserID"] = self.userID
                             let conversationID = conversationsDict[index]["ID"]
