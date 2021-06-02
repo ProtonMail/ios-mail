@@ -32,7 +32,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
     internal lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
     internal let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
     private var contactChanged: NSKeyValueObservation!
-    private weak var uiDelegate: ComposeContainerUIProtocol?
+    weak var uiDelegate: ComposeContainerUIProtocol?
 
     init(editorViewModel: ContainableComposeViewModel,
          uiDelegate: ComposeContainerUIProtocol?) {

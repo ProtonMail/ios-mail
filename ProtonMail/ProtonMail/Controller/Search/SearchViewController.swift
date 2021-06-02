@@ -407,49 +407,20 @@ class SearchViewController: ProtonMailViewController {
     }
     
     private func showComposer(message: Message) {
-        // open drafts in Composer
         let viewModel = ContainableComposeViewModel(msg: message,
                                                     action: .openDraft,
                                                     msgService: user.messageService,
                                                     user: user,
-                                                    coreDataService: CoreDataService.shared)//FIXME
-        let board = UIStoryboard.Storyboard.composer.storyboard
-        if let navigationController = self.navigationController,
-           let next = board.instantiateViewController(withIdentifier: "ComposeContainerViewController") as? ComposeContainerViewController {
+                                                    coreDataService: CoreDataService.shared)
+        if let navigationController = self.navigationController {
             let composerVM = ComposeContainerViewModel(editorViewModel: viewModel,
-                                                      uiDelegate: next)
-            let composer = ComposeContainerViewCoordinator(nav: navigationController,
-                                                           viewModel: composerVM,
-                                                           services: ServiceFactory.default)
-            
-            next.set(viewModel: composerVM)
-            next.set(coordinator: composer)
-            // this will present composer in a modal which is discouraged
-            // TODO: refactor when implementing enc search
-            composer.start()
-//            if #available(iOS 13.0, *) {
-//                next.isModalInPresentation = false
-//            }
-            self.present(next, animated: true, completion: nil)
+                                                      uiDelegate: nil)
+            let coordinator = ComposeContainerViewCoordinator(nav: navigationController,
+                                                              viewModel: composerVM,
+                                                              services: ServiceFactory.default)
+            coordinator.start()
         }
     }
-
-    // FIXME: - To remove
-
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if (segue.identifier == kSegueToMessageDetailController) {
-//            let messageDetailViewController = segue.destination as! MessageContainerViewController
-//            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
-//            if let indexPathForSelectedRow = indexPathForSelectedRow {
-//                //FIXME
-//                #warning("v4 refactor the labelID")
-//                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user, labelID: ""))
-//                messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
-//            } else {
-//                PMLog.D("No selected row.")
-//            }
-//        }
-//    }
 }
 
 // MARK: - UITableViewDataSource
