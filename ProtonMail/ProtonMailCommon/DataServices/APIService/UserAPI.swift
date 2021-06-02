@@ -242,8 +242,7 @@ class CheckUserExistResponse : Response {
     
     func ParseHttpError(_ error: NSError, response: [String : Any]?) {
         guard let response = response else { return }
-        
-        PMLog.D(response.json(prettyPrinted: true))
+
         guard let statusRaw = response["Code"] as? Int else {
             return
         }
@@ -257,7 +256,6 @@ class CheckUserExistResponse : Response {
     }
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        PMLog.D(response.json(prettyPrinted: true))
         self.availabilityStatus = AvailabilityStatus.available
         return true
     }
@@ -278,7 +276,6 @@ class DirectResponse : Response {
     var isSignUpAvailable : Int = 1
     var signupFunctions : [String]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        PMLog.D(response.json(prettyPrinted: true))
         isSignUpAvailable =  response["Direct"] as? Int ?? 1
         
         if let functions = response["VerifyMethods"] as? [String] {

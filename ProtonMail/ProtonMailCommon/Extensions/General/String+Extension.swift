@@ -136,7 +136,7 @@ extension String {
             return [];
         }
         
-        PMLog.D(self)
+//        PMLog.D(self)
         do {
             if let data = self.data(using: String.Encoding.utf8) {
                 let decoded = try JSONSerialization.jsonObject(with: data, options: []) as? [[String : Any]]
@@ -369,7 +369,7 @@ extension String {
     func decodeBase64() -> String {
         let decodedData = Data(base64Encoded: self, options: NSData.Base64DecodingOptions(rawValue: 0))
         let decodedString = NSString(data: decodedData!, encoding: String.Encoding.utf8.rawValue)
-        PMLog.D(any: decodedString!) // foo
+//        PMLog.D(any: decodedString!)
         
         return decodedString! as String
     }
