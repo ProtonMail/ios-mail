@@ -311,11 +311,11 @@ class MessageDataService : Service, HasLocalStorage {
     
     typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
     func base64AttachmentData(att: Attachment, _ complete : @escaping base64AttachmentDataComplete) {
-        guard let user = self.userDataSource, let context = att.managedObjectContext else {
+        guard let user = self.userDataSource else {
             complete("")
             return
         }
-        
+        let context = self.coreDataService.mainContext
         context.perform {
             if let localURL = att.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
                 complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
@@ -328,9 +328,20 @@ class MessageDataService : Service, HasLocalStorage {
             }
             
             att.localURL = nil
-            self.fetchAttachmentForAttachment(att, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
-                context.perform {
-                    complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
+            self.fetchAttachmentForAttachment(att, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { [weak self] (_, url, error) -> Void in
+                guard let self = self else {
+                    complete("")
+                    return
+                }
+                self.coreDataService.enqueue(context: self.coreDataService.mainContext) { context in
+                    guard let attachment = try? context.existingObject(with: att.objectID) as? Attachment else {
+                        complete("")
+                        return
+                    }
+                    if attachment.localURL == nil {
+                        attachment.localURL = url
+                    }
+                    complete( attachment.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
                     if error != nil {
                         PMLog.D("\(String(describing: error))")
                     }
