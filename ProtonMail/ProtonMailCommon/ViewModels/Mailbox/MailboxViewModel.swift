@@ -227,8 +227,7 @@ class MailboxViewModel: StorageLimit {
                         self.fetchingMessageForOhters = false
                     }
                 }
-                
-                secondUser.messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: 0, completion: secondComplete)
+                secondUser.messageService.fetchMessagesWithReset(byLabel: self.labelID, time: 0, cleanContact: false, completion: secondComplete)
             }
         }
     }
@@ -566,13 +565,10 @@ class MailboxViewModel: StorageLimit {
     ///
     /// - Parameters:
     ///   - time: the latest mailbox cached time
+    ///   - cleanContact: Clean contact data or not
     ///   - completion: aync complete handler
-    func fetchMessageWithReset(time: Int, completion: CompletionBlock?) {
-        messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
-    }
-    
-    func fetchMessageOnlyWithReset(time: Int, completion: CompletionBlock?) {
-        messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
+    func fetchMessageWithReset(time: Int, cleanContact: Bool = true, completion: CompletionBlock?) {
+        messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: cleanContact, completion: completion)
     }
     
     func isEventIDValid() -> Bool {
@@ -818,7 +814,7 @@ extension MailboxViewModel {
     func fetchDataOnlyWithReset(time: Int, completion: CompletionBlock?) {
         switch viewMode {
         case .singleMessage:
-            messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
+            messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: false, completion: completion)
         case .conversation:
             conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: false, shouldReset: true) { result in
                 switch result {

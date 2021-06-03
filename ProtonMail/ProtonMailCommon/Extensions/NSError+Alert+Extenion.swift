@@ -93,16 +93,7 @@ extension NSError {
     }
     
     public class func alertMessageSendingToast() ->Void {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
-            return
-        }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = LocalString._messages_sending_message
-        hud.removeFromSuperViewOnHide = true
-        hud.margin = 10
-        hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 1)
+        LocalString._messages_sending_message.alertToastBottom()
     }
     
     public class func sendingToast(at view: UIView) ->Void {
@@ -146,16 +137,7 @@ extension NSError {
     
     
     public class func alertSavingDraftError(details : String) -> Void {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
-            return
-        }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = details
-        hud.removeFromSuperViewOnHide = true
-        hud.margin = 10
-        hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 4)
+        details.alertToastBottom()
     }
 
 }

@@ -105,6 +105,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var fetchingStopped : Bool! = true
     private var needToShowNewMessage : Bool = false
     private var newMessageCount = 0
+    private var hasNetworking = true
     
     // MAKR : - Private views
     private var refreshControl: UIRefreshControl!
@@ -793,6 +794,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     @objc private func pullDown() {
         guard !tableView.isDragging else {
+            return
+        }
+        
+        guard self.hasNetworking else {
+            self.refreshControl.endRefreshing()
             return
         }
 
@@ -1631,8 +1637,10 @@ extension MailboxViewController {
                 DispatchQueue.main.async {
                     if status == 0 { //time out
                         self.showTimeOutErrorMessage()
+                        self.hasNetworking = false
                     } else if status == 1 { //not reachable
                         self.showNoInternetErrorMessage()
+                        self.hasNetworking = false
                     }
                 }
             }
@@ -1645,14 +1653,17 @@ extension MailboxViewController {
         case .NotReachable:
             PMLog.D("Access Not Available")
             self.showInternetConnectionBanner()
+            self.hasNetworking = false
         case .ReachableViaWWAN:
             PMLog.D("Reachable WWAN")
             self.hideInternetConnectionBanner()
             self.afterNetworkChange(status: netStatus)
+            self.hasNetworking = true
         case .ReachableViaWiFi:
             PMLog.D("Reachable WiFi")
             self.hideInternetConnectionBanner()
             self.afterNetworkChange(status: netStatus)
+            self.hasNetworking = true
         default:
             PMLog.D("Reachable default unknow")
         }
