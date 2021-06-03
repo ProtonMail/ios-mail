@@ -93,10 +93,17 @@ extension NSError {
     }
     
     public class func badParameter(_ parameter: Any?) -> NSError {
+        let desc: String
+        if let parameter = parameter {
+            desc = String(describing: parameter)
+        } else {
+            desc = .empty
+        }
+
         return apiServiceError(
             code: APIErrorCode.badParameter,
             localizedDescription: LocalString._error_bad_parameter_title,
-            localizedFailureReason: String(format: LocalString._error_bad_parameter_desc, "\(String(describing: parameter))"))
+            localizedFailureReason: String(format: LocalString._error_bad_parameter_desc, "\(desc)"))
     }
     
     public class func badResponse() -> NSError {

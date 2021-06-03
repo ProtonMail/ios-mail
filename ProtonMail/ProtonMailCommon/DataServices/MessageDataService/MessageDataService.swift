@@ -182,70 +182,49 @@ class MessageDataService : Service, HasLocalStorage {
     /// - Parameters:
     ///   - labelID: labelid, location id, forlder id
     ///   - time: the latest update time
+    ///   - cleanContact: Clean contact data or not
     ///   - completion: async complete handler
-    func fetchMessagesWithReset(byLabel labelID: String, time: Int, completion: CompletionBlock?) {
+    func fetchMessagesWithReset(byLabel labelID: String,
+                                time: Int,
+                                cleanContact: Bool = true,
+                                completion: CompletionBlock?) {
         self.queueManager?.queue {
             let getLatestEventID = EventLatestIDRequest()
-            self.apiService.exec(route: getLatestEventID) { (task, IDRes: EventLatestIDResponse) in
-                if !IDRes.eventID.isEmpty {
-                    let completionWrapper: CompletionBlock = { task, responseDict, error in
-                        if error == nil {
-                            self.lastUpdatedStore.clear()
-                            _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID).ensure {
-                                completion?(task, responseDict, error)
-                            }
-                            return
-                            //lastUpdatedStore.lastEventID = IDRes.eventID
-                        }
-                        completion?(task, responseDict, error)
-                    }
-                    
-                    self.cleanMessage().then { (_) -> Promise<Void> in
-                        self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
-                        self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
-                        return self.contactDataService.cleanUp()
-                    }.ensure {
-                        self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: false, completion: completionWrapper)
-                        self.contactDataService.fetchContacts(completion: nil)
-                        self.labelDataService.fetchV4Labels().cauterize()
-                    }.cauterize()
-                }  else {
-                    completion?(task, nil, nil)
-                }
-            }
-        }
-    }
-    
-    func fetchMessagesOnlyWithReset(byLabel labelID: String, time: Int, completion: CompletionBlock?) {
-        self.queueManager?.queue { [weak self] in
-            guard let self = self else { return }
-            let getLatestEventID = EventLatestIDRequest()
             self.apiService.exec(route: getLatestEventID) { [weak self] (task, IDRes: EventLatestIDResponse) in
-                guard let self = self else { return }
-                if !IDRes.eventID.isEmpty {
-                    let completionWrapper: CompletionBlock = { task, responseDict, error in
-                        if error == nil {
-                            self.lastUpdatedStore.clear()
-                            _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID).ensure {
-                                completion?(task, responseDict, error)
-                            }
-                            return
-                            //lastUpdatedStore.lastEventID = IDRes.eventID
-                        }
+                guard !IDRes.eventID.isEmpty,
+                      let self = self else {
+                    completion?(task, nil, nil)
+                    return
+                }
+                
+                let completionWrapper: CompletionBlock = { task, responseDict, error in
+                    guard error == nil else {
+                        completion?(task, responseDict, error)
+                        return
+                    }
+                    self.lastUpdatedStore.clear()
+                    _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID).ensure {
                         completion?(task, responseDict, error)
                     }
-                    
-                    self.cleanMessage().then { (_) -> Promise<Void> in
-                        self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
-                        self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
-                        return Promise<Void>()
-                    }.ensure {
-                        self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: false, completion: completionWrapper)
-                        _ = self.labelDataService.fetchV4Labels()
-                    }.cauterize()
-                }  else {
-                    completion?(task, nil, nil)
                 }
+                
+                self.cleanMessage().then { (_) -> Promise<Void> in
+                    self.lastUpdatedStore.removeUpdateTime(by: self.userID,
+                                                           type: .singleMessage)
+                    self.lastUpdatedStore.removeUpdateTime(by: self.userID,
+                                                           type: .conversation)
+                    if cleanContact {
+                        return self.contactDataService.cleanUp()
+                    } else {
+                        return Promise<Void>()
+                    }
+                }.ensure {
+                    self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: false, completion: completionWrapper)
+                    if cleanContact {
+                        self.contactDataService.fetchContacts(completion: nil)
+                    }
+                    self.labelDataService.fetchV4Labels().cauterize()
+                }.cauterize()
             }
         }
     }
@@ -886,19 +865,14 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    func cleanMessage() -> Promise<Void> {
+    func cleanMessage(removeAllDraft: Bool = true) -> Promise<Void> {
         return Promise { seal in
             self.coreDataService.enqueue(context: self.coreDataService.operationContext) { (context) in
                 if #available(iOS 12, *) {
                     self.isFirstTimeSaveAttData = true
                 }
-                
-                let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-                fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
-                if let messages = try? context.fetch(fetch) as? [NSManagedObject] {
-                    messages.forEach{ context.delete($0) }
-                }
-                
+                self.removeMessageFromDB(context: context, removeAllDraft: removeAllDraft)
+
                 let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
                 conversationFetch.predicate = NSPredicate(format: "%K == %@", Conversation.Attributes.userID, self.userID)
                 if let conversations = try? context.fetch(conversationFetch) as? [NSManagedObject] {
@@ -909,6 +883,45 @@ class MessageDataService : Service, HasLocalStorage {
                 }
                 UIApplication.setBadge(badge: 0)
                 seal.fulfill_()
+            }
+        }
+    }
+    
+    // Remove message from db
+    // In some conditions, some of the messages can't be deleted
+    private func removeMessageFromDB(context: NSManagedObjectContext, removeAllDraft: Bool = true) {
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
+        
+        guard let results = try? context.fetch(fetch) as? [NSManagedObject] else {
+            return
+        }
+        
+        if removeAllDraft {
+            results.forEach{ context.delete($0) }
+            return
+        }
+        
+        // The remove is triggered by pull down to refresh
+        // So if the messages correspond to some conditions, can't delete it
+        let draftID = Message.Location.draft.rawValue
+        for obj in results {
+            guard let message = obj as? Message else { continue }
+            if let labels = message.labels.allObjects as? [Label],
+               labels.contains(where: { $0.labelID == draftID }) {
+                
+                if let attachments = message.attachments.allObjects as? [Attachment],
+                   attachments.contains(where: { $0.attachmentID == "0" }) {
+                    // If the draft is uploading attachments, don't delete it
+                    continue
+                } else if message.isSending {
+                    // If the draft is sending, don't delete it
+                    continue
+                } else if let _ = UUID(uuidString: message.messageID) {
+                    // If the message ID is UUiD, means hasn't created draft, don't delete it
+                    continue
+                }
+                context.delete(obj)
             }
         }
     }
@@ -1280,6 +1293,14 @@ class MessageDataService : Service, HasLocalStorage {
                                            user: userManager)
                 }
                 
+                if let _ = UUID(uuidString: message.messageID) {
+                    // Draft saved failed, can't send this message
+                    let parseError = NSError(domain: APIServiceErrorDomain,
+                                             code: APIErrorCode.badParameter,
+                                             localizedDescription: "Invalid ID")
+                    throw parseError
+                }
+                
                 let sendApi = SendMessage(messageID: message.messageID,
                                           expirationTime: message.expirationOffset,
                                           messagePackage: msgs,
@@ -1293,7 +1314,6 @@ class MessageDataService : Service, HasLocalStorage {
                 return userManager.apiService.run(route: sendApi)
             }.done { (res) in
                 //Debug info
-                status.insert(SendStatus.done)
                 
                 let error = res.error
                 if error == nil {

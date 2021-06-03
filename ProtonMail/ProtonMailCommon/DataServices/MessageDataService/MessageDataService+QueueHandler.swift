@@ -330,6 +330,17 @@ extension MessageDataService {
                     
                     guard let messageID = mess["ID"] as? String else {
                         // error: not ID field in response
+                        let keys = Array(mess.keys)
+                        let messageIDError = NSError.badParameter("messageID")
+                        Analytics.shared.error(message: .saveDraftError,
+                                               error: messageIDError,
+                                               extra: ["dicKeys": keys],
+                                               user: self.parent)
+                        // The error is messageID missing from the response
+                        // But this is meanless to users
+                        // I think parse error is more understandable
+                        let parseError = NSError.unableToParseResponse("messageID")
+                        NSError.alertSavingDraftError(details: parseError.localizedDescription)
                         completion?(task, nil, error)
                         return
                     }
@@ -405,7 +416,7 @@ extension MessageDataService {
                     }
                 }
                 
-                if message.isDetailDownloaded && message.messageID != "0" {
+                if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
                     let addr = self.fromAddress(message) ?? message.cachedAddress ?? self.defaultAddress(message)
                     let api = UpdateDraft(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
                     self.apiService.exec(route: api) { (task, response: UpdateDraftResponse) in
