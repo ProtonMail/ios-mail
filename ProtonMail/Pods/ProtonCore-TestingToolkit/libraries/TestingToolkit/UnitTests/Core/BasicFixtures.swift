@@ -7,3 +7,7 @@ public enum Dummy {
 public extension String {
     static var empty: String { "" }
 }
+
+public extension Array {
+    static var empty: Array { [] }
+}

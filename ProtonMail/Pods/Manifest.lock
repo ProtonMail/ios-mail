@@ -379,73 +379,73 @@ CHECKOUT OPTIONS:
     :commit: 6835811724fb9ff6a939a453c0eb1d6abeb2fb83
     :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
   ProtonCore-AccountSwitcher:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-APIClient:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Authentication:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Challenge:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Common:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-CoreTranslation:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Crypto:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-DataModel:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Doh:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-ForceUpgrade:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Foundations:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-HumanVerification:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Keymaker:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Log:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Login:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Networking:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-OpenPGP:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Payments:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Services:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-SRP:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-TestingToolkit:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-UIFoundations:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   ProtonCore-Utilities:
-    :commit: ada74dca1fea05b160e63a1c72d3d904e1906deb
+    :commit: 18b42fe38071812a1f08bb6d1e699aa84f8fe58f
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
