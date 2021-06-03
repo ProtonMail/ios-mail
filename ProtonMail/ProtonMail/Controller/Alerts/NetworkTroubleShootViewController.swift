@@ -231,6 +231,8 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
     
     //
     @IBOutlet var settingTableView: UITableView!
+
+    var onDismiss: () -> Void = { }
     
     //
     override func viewDidLoad() {
@@ -257,7 +259,7 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
     
     @objc func back(sender: UIBarButtonItem) {
         if self.presentingViewController != nil {
-            self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true, completion: onDismiss)
         } else {
             let _ = self.navigationController?.popViewController(animated: true)
         }

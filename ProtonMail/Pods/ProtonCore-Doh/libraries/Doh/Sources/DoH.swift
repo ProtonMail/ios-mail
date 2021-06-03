@@ -89,7 +89,7 @@ public extension ServerConfig {
     }
 }
 
-protocol DoHInterface {
+public protocol DoHInterface {
     func getHostUrl() -> String
     func getCaptchaHostUrl() -> String
     func handleError(host: String, error: Error?) -> Bool
@@ -420,8 +420,4 @@ open class DoH: DoHInterface {
 
         return true
     }
-}
-
-protocol test {
-
 }

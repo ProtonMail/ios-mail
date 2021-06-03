@@ -25,8 +25,8 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="euH-8D-gOz">
-                        <rect key="frame" x="53.5" y="21.5" width="213" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="53" y="23" width="214" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -43,13 +43,15 @@
                     <constraint firstAttribute="trailing" secondItem="ztN-Z9-3hW" secondAttribute="trailing" constant="16" id="5gg-e1-WMC"/>
                     <constraint firstItem="ztN-Z9-3hW" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="9Q8-o8-zhU"/>
                     <constraint firstItem="1aK-b2-K7L" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="JIx-wy-ysn"/>
-                    <constraint firstItem="euH-8D-gOz" firstAttribute="leading" secondItem="1aK-b2-K7L" secondAttribute="trailing" constant="13.5" id="eeh-YQ-Lvv"/>
+                    <constraint firstItem="ztN-Z9-3hW" firstAttribute="leading" secondItem="euH-8D-gOz" secondAttribute="trailing" constant="13" id="dVN-6U-IMg" userLabel="Title Right To Icon"/>
+                    <constraint firstItem="euH-8D-gOz" firstAttribute="leading" secondItem="1aK-b2-K7L" secondAttribute="trailing" constant="13" id="eeh-YQ-Lvv"/>
                     <constraint firstItem="euH-8D-gOz" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="j8b-xs-h8a"/>
-                    <constraint firstAttribute="trailing" secondItem="euH-8D-gOz" secondAttribute="trailing" constant="53.5" id="jWl-mL-PVX"/>
+                    <constraint firstAttribute="trailing" secondItem="euH-8D-gOz" secondAttribute="trailing" constant="16" id="jWl-mL-PVX" userLabel="Title Right To Super View"/>
                     <constraint firstItem="euH-8D-gOz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="sWS-NP-OcA"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
+                        <exclude reference="jWl-mL-PVX"/>
                         <exclude reference="sWS-NP-OcA"/>
                     </mask>
                 </variation>
@@ -62,6 +64,8 @@
                 <outlet property="titleLabel" destination="euH-8D-gOz" id="lFY-iS-xd7"/>
                 <outlet property="titleLeftToIcon" destination="eeh-YQ-Lvv" id="uYh-jq-yc8"/>
                 <outlet property="titleLeftToSuperView" destination="sWS-NP-OcA" id="Te4-uz-SVb"/>
+                <outlet property="titleRightToIcon" destination="dVN-6U-IMg" id="FpT-QH-ITg"/>
+                <outlet property="titleRightToSuperView" destination="jWl-mL-PVX" id="su5-1B-ASc"/>
             </connections>
             <point key="canvasLocation" x="86.956521739130437" y="105.80357142857143"/>
         </tableViewCell>

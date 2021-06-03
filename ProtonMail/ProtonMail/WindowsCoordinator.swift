@@ -23,6 +23,7 @@
 
 import Foundation
 import ProtonCore_Keymaker
+import ProtonCore_Networking
 
 // this view controller is placed into AppWindow only until it is correctly loaded from storyboard or correctly restored with use of MainKey
 fileprivate class PlaceholderVC: UIViewController {
@@ -59,7 +60,8 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     enum Destination {
-        case lockWindow, appWindow, signInWindow
+        enum SignInDestination: String { case form, mailboxPassword }
+        case lockWindow, appWindow, signInWindow(SignInDestination)
     }
     
     internal var scene: AnyObject? {
@@ -114,6 +116,7 @@ class WindowsCoordinator: CoordinatorNew {
         
         //we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
         // clean this up later.
+
         let unlockManager: UnlockManager = self.services.get()
         let flow = unlockManager.getUnlockFlow()
         if flow == .requireTouchID || flow == .requirePin {
@@ -142,7 +145,7 @@ class WindowsCoordinator: CoordinatorNew {
     @objc func lock() {
         guard sharedServices.get(by: UsersManager.self).hasUsers() else {
             keymaker.wipeMainKey()
-            self.go(dest: .signInWindow)
+            self.go(dest: .signInWindow(.form))
             return
         }
         self.go(dest: .lockWindow)
@@ -153,12 +156,12 @@ class WindowsCoordinator: CoordinatorNew {
         let usersManager : UsersManager = self.services.get()
         
         guard usersManager.hasUsers() else {
-            self.go(dest: .signInWindow)
+            self.go(dest: .signInWindow(.form))
             return
         }
         if usersManager.count <= 0 {
             _ = usersManager.clean()
-            self.go(dest: .signInWindow)
+            self.go(dest: .signInWindow(.form))
         } else {
             self.go(dest: .appWindow)
         }
@@ -197,22 +200,75 @@ class WindowsCoordinator: CoordinatorNew {
     func go(dest: Destination) {
         DispatchQueue.main.async { // cuz
             switch dest {
-            case .signInWindow:
+            case .signInWindow(let signInDestination):
+                // just restart coordinator in case it's already displayed with right configuration
+                if let signInVC = self.currentWindow.rootViewController as? SignInCoordinator.VC,
+                   signInVC.coordinator.startingPoint == signInDestination {
+                    signInVC.coordinator.start()
+                    return
+                }
+                self.lockWindow = nil
                 self.appWindow = nil
-                let newWindow = UIWindow(storyboard: .signIn, scene: self.scene)
-                let vm = SignInViewModel(usersManager: sharedServices.get())
-                let coordinator = SignInCoordinator(destination: newWindow, vm: vm, services: sharedServices)
-                coordinator.start()
-                self.navigate(from: self.currentWindow, to: newWindow)
+                let signInEnvironment = SignInCoordinatorEnvironment.live(
+                    services: sharedServices, forceUpgradeDelegate: ForceUpgradeManager.shared.forceUpgradeHelper
+                )
+                let coordinator: SignInCoordinator = .loginFlowForFirstAccount(
+                    startingPoint: signInDestination, environment: signInEnvironment
+                ) { [weak self] flowResult in
+                    switch flowResult {
+                    case .succeeded:
+                        self?.go(dest: .appWindow)
+                    case .userWantsToGoToTroubleshooting:
+                        let troubleshootingVC = UIStoryboard.Storyboard.alert.storyboard.make(NetworkTroubleShootViewController.self)
+                        troubleshootingVC.onDismiss = { [weak self] in
+                            // restart the process after user returns from troubleshooting
+                            self?.go(dest: .signInWindow(signInDestination))
+                        }
+                        let navigationVC = UINavigationController(rootViewController: troubleshootingVC)
+                        navigationVC.modalPresentationStyle = .fullScreen
+                        self?.currentWindow.rootViewController?.present(navigationVC, animated: true, completion: nil)
+                    case .alreadyLoggedIn, .loggedInFreeAccountsLimitReached, .errored:
+                        // not sure what else I can do here instead of restarting the process
+                        self?.go(dest: .signInWindow(.form))
+                    case .dismissed:
+                        assertionFailure("this should never happen as the loginFlowForFirstAccount is not dismissable")
+                        self?.go(dest: .signInWindow(.form))
+                    }
+                }
+                let newWindow = UIWindow(root: coordinator.actualViewController, scene: self.scene)
+                self.navigate(from: self.currentWindow, to: newWindow) {
+                    coordinator.start()
+                }
+
             case .lockWindow:
-                let lock = self.lockWindow ?? UIWindow(storyboard: .signIn, scene: self.scene)
-                let vm = SignInViewModel(usersManager: sharedServices.get())
-                let coordinator = SignInCoordinator(destination: lock, vm: vm, services: sharedServices)
-                coordinator.start()
-                self.navigate(from: self.currentWindow, to: lock)
+                guard self.lockWindow == nil else {
+                    guard let lockVC = self.currentWindow.rootViewController as? LockCoordinator.VC,
+                          lockVC.coordinator.startedOrSheduledForAStart == false
+                    else { return }
+                    lockVC.coordinator.start()
+                    return
+                }
+                self.appWindow = nil
+                let coordinator = LockCoordinator(services: sharedServices) { [weak self] flowResult in
+                    switch flowResult {
+                    case .mailbox: self?.go(dest: .appWindow)
+                    case .mailboxPassword: self?.go(dest: .signInWindow(.mailboxPassword))
+                    case .signIn: self?.go(dest: .signInWindow(.form))
+                    }
+                }
+                let lock = UIWindow(root: coordinator.actualViewController, scene: self.scene)
                 self.lockWindow = lock
-                
+                coordinator.startedOrSheduledForAStart = true
+                self.navigate(from: self.currentWindow, to: lock) { [weak coordinator] in
+                    if UIApplication.shared.applicationState != .background {
+                        coordinator?.start()
+                    } else {
+                        coordinator?.startedOrSheduledForAStart = false
+                    }
+                }
+
             case .appWindow:
+                self.lockWindow = nil
                 if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderVC {
                     self.appWindow = UIWindow(storyboard: .inbox, scene: self.scene)
                 }
@@ -233,7 +289,7 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
     
-    @discardableResult func navigate(from source: UIWindow?, to destination: UIWindow) -> Bool {
+    @discardableResult func navigate(from source: UIWindow?, to destination: UIWindow, completion: (() -> Void)? = nil) -> Bool {
         guard source != destination, source?.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else {
             return false
         }
@@ -258,6 +314,7 @@ class WindowsCoordinator: CoordinatorNew {
                 topDestination.viewWillAppear(false)
                 topDestination.viewDidAppear(false)
             }
+            completion?()
         })
         self.currentWindow = destination
         return true

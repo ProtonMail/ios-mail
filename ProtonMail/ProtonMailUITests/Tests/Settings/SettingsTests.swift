@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 class SettingsTests : BaseTestCase {
     
     let correctPins = [0,0,0]

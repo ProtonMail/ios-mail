@@ -35,6 +35,11 @@ class PinCodeViewController : UIViewController, BioAuthenticating, AccessibleVie
     weak var delegate : PinCodeViewControllerDelegate?
     
     @IBOutlet weak var pinCodeView: PinCodeView!
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layoutIfNeeded()

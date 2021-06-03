@@ -9,6 +9,8 @@
 import Foundation
 import XCTest
 
+import ProtonCore_TestingToolkit
+
 class ReplyToMessageTests: BaseTestCase {
     
     let folder = "TestAutomationFolder"
@@ -46,7 +48,6 @@ class ReplyToMessageTests: BaseTestCase {
         
         LoginRobot()
             .loginTwoPasswordUser(user)
-            .decryptMailbox(user.mailboxPassword)
             .menuDrawer()
             .folderOrLabel(folder)
             .clickMessageBySubject(subject)

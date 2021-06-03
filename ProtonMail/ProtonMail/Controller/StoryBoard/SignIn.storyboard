@@ -1576,7 +1576,7 @@
         <!--Pin View-->
         <scene sceneID="fxK-BO-32Y">
             <objects>
-                <viewController title="Pin View" extendedLayoutIncludesOpaqueBars="YES" id="sjf-fW-VP9" customClass="PinCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PinCodeViewController" title="Pin View" extendedLayoutIncludesOpaqueBars="YES" id="sjf-fW-VP9" customClass="PinCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SJz-6C-Ach"/>
                         <viewControllerLayoutGuide type="bottom" id="g1e-fN-FVI"/>
@@ -3105,7 +3105,7 @@ we need to verify that you are human.</string>
         <!--Bio Code View Controller-->
         <scene sceneID="Ky2-6m-anC">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="dsK-H2-wqM" customClass="BioCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BioCodeViewController" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="dsK-H2-wqM" customClass="BioCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PAl-y7-ck9"/>
                         <viewControllerLayoutGuide type="bottom" id="8El-oc-ZLC"/>
@@ -3148,7 +3148,7 @@ we need to verify that you are human.</string>
     <inferredMetricsTieBreakers>
         <segue reference="BQ1-JS-Xpb"/>
         <segue reference="gcc-KK-q6e"/>
-        <segue reference="lvd-zK-Trc"/>
+        <segue reference="C54-0t-rzM"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Logo" width="228" height="36.5"/>

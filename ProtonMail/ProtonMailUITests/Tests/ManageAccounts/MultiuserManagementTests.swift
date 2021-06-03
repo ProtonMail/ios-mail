@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 class MultiuserManagementTests : BaseTestCase {
 
     private let loginRobot = LoginRobot()
@@ -15,7 +17,6 @@ class MultiuserManagementTests : BaseTestCase {
         let twoPassUser = testData.twoPassUser
         loginRobot
             .loginTwoPasswordUser(twoPassUser)
-            .decryptMailbox(twoPassUser.mailboxPassword)
             .menuDrawer()
             .accountsList()
             .manageAccounts()
@@ -79,7 +80,7 @@ class MultiuserManagementTests : BaseTestCase {
             .accountsList()
             .manageAccounts()
             .removeAllAccounts()
-            .verify.loginScreenDisplayed()
+            .verify.loginScreenIsShown()
     }
 
     func testLogoutPrimaryAccount() {
@@ -172,7 +173,6 @@ class MultiuserManagementTests : BaseTestCase {
         let onePassUserWith2Fa = testData.onePassUserWith2Fa
         loginRobot
             .loginTwoPasswordUserWithTwoFA(twoPassUserWith2Fa)
-            .decryptMailbox(twoPassUserWith2Fa.mailboxPassword)
             .menuDrawer()
             .accountsList()
             .manageAccounts()

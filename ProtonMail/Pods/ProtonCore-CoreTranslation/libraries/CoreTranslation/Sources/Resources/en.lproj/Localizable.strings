@@ -230,6 +230,7 @@
 "Create user failed" = "Create user failed";
 "Invalid hashed password" = "Invalid hashed password";
 "Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
+"Password is too short. Should have at least %@ characters.\nPlease try again." = "Password is too short. Should have at least %@ characters.\nPlease try again.";
 "Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
 "Email address already used." = "Email address already used.";
 "Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
