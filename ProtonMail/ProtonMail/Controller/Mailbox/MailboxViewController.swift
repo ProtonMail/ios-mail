@@ -1663,6 +1663,7 @@ extension MailboxViewController {
             self.showNoInternetErrorMessage()
             self.hasNetworking = false
             self.showInternetConnectionBanner()
+            self.hasNetworking = false
         case .ReachableViaWWAN:
             PMLog.D("Reachable WWAN")
             self.hideInternetConnectionBanner()
