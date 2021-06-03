@@ -121,7 +121,7 @@ extension LoginService {
             completion(.failure(.invalidState))
 
         case .external:
-            fetchEncryptionDataForExternalAccountRequirementPerformingAutomaticAccountMigrationIfNeeded(
+            fetchEncryptionDataEnsuringAllAddressesHaveKeys(
                 addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion
             )
 
@@ -160,6 +160,12 @@ extension LoginService {
             completion(.failure(.invalidState))
 
         case .internal:
+            guard user.isInternal else {
+                // there is no address but the user is external, so we cannot automatically create one. let's finish with an invalid state
+                completion(.failure(.invalidState))
+                return
+            }
+
             // create internal address because there is none while it's required by minimumAccountType == .internal to have at least one
             self.createAddress { result in
                 switch result {
@@ -206,15 +212,6 @@ extension LoginService {
         }
     }
 
-    private func fetchEncryptionDataForExternalAccountRequirementPerformingAutomaticAccountMigrationIfNeeded(
-        addresses: [Address], user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
-    ) {
-        let address = addresses.firstInternal ?? addresses.firstExternal
-        fetchEncryptionDataEnsuringDesignatedAddressHasKeys(
-            designatedAddress: address, addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion
-        )
-    }
-
     private func fetchEncryptionDataForInternalAccountRequirementPerformingAutomaticAccountMigrationIfNeeded(
         addresses: [Address], user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
@@ -240,9 +237,8 @@ extension LoginService {
             return
         }
 
-        let address = addresses.firstInternal
-        fetchEncryptionDataEnsuringDesignatedAddressHasKeys(
-            designatedAddress: address, addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion
+        fetchEncryptionDataEnsuringAllAddressesHaveKeys(
+            addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion
         )
     }
 
@@ -283,17 +279,17 @@ extension LoginService {
         }
     }
 
-    private func fetchEncryptionDataEnsuringDesignatedAddressHasKeys(
-        designatedAddress: Address?, addresses: [Address], user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
+    private func fetchEncryptionDataEnsuringAllAddressesHaveKeys(
+        addresses: [Address], user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
 
-        guard let address = designatedAddress, addresses.contains(address) else {
+        guard addresses.isEmpty == false else {
             assertionFailure("You should not call this method when there is no address. Check at the call site")
             completion(.failure(.invalidState))
             return
         }
 
-        guard address.hasKeys == 1 else {
+        if let address = addresses.first(where: { $0.hasKeys == 0 || $0.keys.isEmpty }) {
             createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, completion: completion)
             return
         }
