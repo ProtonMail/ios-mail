@@ -153,7 +153,7 @@ extension Conversation {
     /// This method will return a string that contains the name of all senders with ',' between them.
     /// e.g Georage, Paul, Ringo
     /// - Returns: String of all name of the senders.
-    func getSendersName(_ replacingEmails: [Email]) -> String {
+    func getJoinedSendersName(_ replacingEmails: [Email]) -> String {
         let lists: [String] = self.getSenders().map { contact in
             if let name = replacingEmails.first(where: {$0.email == contact.Address})?.name {
                 return name
@@ -167,6 +167,18 @@ extension Conversation {
             return ""
         }
         return lists.joined(separator: ", ")
+    }
+
+    func getSendersName(_ replacingEmails: [Email]) -> [String] {
+        return self.getSenders().map { contact in
+            if let name = replacingEmails.first(where: {$0.email == contact.Address})?.name {
+                return name
+            } else if !contact.Name.isEmpty {
+                return contact.Name
+            } else {
+                return contact.Address
+            }
+        }
     }
     
     func getRecipients() -> [Contact] {
