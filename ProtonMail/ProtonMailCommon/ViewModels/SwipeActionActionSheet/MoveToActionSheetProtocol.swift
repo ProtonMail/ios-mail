@@ -28,6 +28,7 @@ protocol MoveToActionSheetProtocol {
     var selectedMoveToFolder: MenuLabel? { get }
 
     func handleMoveToAction(messages: [Message])
+    func handleMoveToAction(conversations: [Conversation])
     func updateSelectedMoveToDestination(menuLabel: MenuLabel?, isOn: Bool)
 }
 
