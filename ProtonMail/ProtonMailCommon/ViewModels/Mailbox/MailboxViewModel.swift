@@ -132,7 +132,8 @@ class MailboxViewModel: StorageLimit {
     }
 
     var actionSheetViewModel: MailListActionSheetViewModel {
-        return .init(labelId: labelId, title: .actionSheetTitle(selectedCount: selectedIDs.count))
+        return .init(labelId: labelId,
+                     title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: viewMode))
     }
 
     var selectedMessages: [Message] {
@@ -990,11 +991,12 @@ extension MailboxViewModel {
 
 private extension String {
 
-    static func actionSheetTitle(selectedCount: Int) -> String {
-        if selectedCount > 1 {
-            return String(format: LocalString._title_of_multiple_messages_action_sheet, selectedCount)
-        } else {
-            return String(format: LocalString._title_of_single_message_action_sheet, selectedCount)
+    static func actionSheetTitle(selectedCount: Int, viewMode: ViewMode) -> String {
+        switch viewMode {
+        case .singleMessage:
+            return .localizedStringWithFormat(LocalString._general_message, selectedCount)
+        case .conversation:
+            return .localizedStringWithFormat(LocalString._general_conversation, selectedCount)
         }
     }
 

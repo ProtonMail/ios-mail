@@ -59,7 +59,7 @@ extension MailboxViewController {
     func buildNewMailboxMessageViewModel(conversation: Conversation, customFolderLabels: [Label]) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: conversation.conversationID)
-        let sender = conversation.getSendersName(replacingEmails)
+        let sender = conversation.getJoinedSendersName(replacingEmails)
         let initial = conversation.initial(replacingEmails)
         let messageCount = conversation.numMessages.intValue
         let isInCustomFolder = customFolderLabels.map({ $0.labelID }).contains(labelId)

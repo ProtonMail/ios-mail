@@ -32,8 +32,10 @@ extension Conversation {
     }
 
     func initial(_ replacingEmails: [Email]) -> String {
-        let senderName = getSendersName(replacingEmails)
-        return senderName.isEmpty ? "?" : senderName.shortName()
+        guard let senderName = getSendersName(replacingEmails).first else {
+            return "?"
+        }
+        return senderName.shortName()
     }
 
     func getTimeString(labelId: String) -> String {
