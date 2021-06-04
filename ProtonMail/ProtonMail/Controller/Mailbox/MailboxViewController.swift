@@ -184,10 +184,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         assert(self.viewModel != nil)
         assert(self.coordinator != nil)
 
+        self.viewModel.viewModeIsChanged = { [weak self] in
+            self?.handleViewModeIsChanged()
+        }
+
         self.viewModel.setupFetchController(self,
                                             isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
-        if viewModel.isCurrentUserSelectedUnreadFilterInInbox && viewModel.countOfFetchedObjects == 0 {
-            self.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: true, completion: nil)
+        if viewModel.countOfFetchedObjects == 0 {
+            self.viewModel.fetchMessages(time: 0,
+                                         forceClean: false,
+                                         isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox,
+                                         completion: nil)
         }
         
         self.undoButton.setTitle(LocalString._messages_undo_action, for: .normal)
@@ -425,6 +432,25 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     // MARK: - Private methods
+
+    private func handleViewModeIsChanged() {
+        // Cancel selected items
+        cancelButtonTapped()
+
+        viewModel.setupFetchController(self,
+                                       isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
+        tableView.reloadData()
+
+        if viewModel.countOfFetchedObjects == 0 {
+            viewModel.fetchMessages(time: 0,
+                                    forceClean: false,
+                                    isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox,
+                                    completion: nil)
+        }
+
+        updateUnreadButton()
+        showNoResultLabel()
+    }
     
     // MARK: Auto refresh methods
     private func startAutoFetch(_ run : Bool = true) {
