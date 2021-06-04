@@ -151,6 +151,10 @@ extension ConversationDataService {
     }
 
     func fetchConversations(with conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
+        guard !conversationIDs.isEmpty else {
+            completion?(.failure(ConversationError.emptyConversationIDS))
+            return
+        }
         var para = ConversationsRequest.Parameters()
         para.IDs = conversationIDs
         

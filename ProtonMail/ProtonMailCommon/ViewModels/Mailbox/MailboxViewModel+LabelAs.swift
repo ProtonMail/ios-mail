@@ -53,6 +53,29 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
                                 queue: true)
         }
     }
+    
+    func handleLabelAsAction(conversations: [Conversation], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+        for (label, markType) in currentOptionsStatus {
+            if selectedLabelAsLabels
+                .contains(where: { $0.labelID == label.location.labelID}) {
+                // Add to message which does not have this label
+                let conversationsToApply = conversations.filter({ !$0.getLabelIds().contains(label.location.labelID )})
+                conversationService.label(conversationIDs: conversationsToApply.map(\.conversationID),
+                                          as: label.location.labelID) { _ in }
+            } else if markType != .dash { // Ignore the option in dash
+                let conversationsToRemove = conversations.filter({ $0.getLabelIds().contains(label.location.labelID )})
+                conversationService.unlabel(conversationIDs: conversationsToRemove.map(\.conversationID),
+                                            as: label.location.labelID) { _ in }
+            }
+        }
+
+        selectedLabelAsLabels.removeAll()
+
+        if shouldArchive {
+            conversationService.move(conversationIDs: conversations.map(\.conversationID), from: "",
+                                     to: Message.Location.archive.rawValue) { _ in }
+        }
+    }
 
     func updateSelectedLabelAsDestination(menuLabel: MenuLabel?, isOn: Bool) {
         if let label = menuLabel {

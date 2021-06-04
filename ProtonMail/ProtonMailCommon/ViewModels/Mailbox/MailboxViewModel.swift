@@ -140,6 +140,13 @@ class MailboxViewModel: StorageLimit {
             .compactMap { $0 as? Message }
             .filter { selectedIDs.contains($0.messageID) } ?? []
     }
+    
+    var selectedConversations: [Conversation] {
+        fetchedResultsController?.fetchedObjects?
+            .compactMap { $0 as? ContextLabel }
+            .filter { selectedIDs.contains($0.conversation.conversationID) }
+            .map(\.conversation) ?? []
+    }
 
     var customFolders: [Label] {
         return user.labelService.getAllLabels(of: .folder, context: coreDataService.mainContext)
@@ -463,11 +470,6 @@ class MailboxViewModel: StorageLimit {
     }
     
 
-    func selectedMessages(selected: NSMutableSet) -> [Message] {
-        return messageService.fetchMessages(withIDs: selected, in: self.coreDataService.mainContext)
-    }
-    
-
     func message(by messageID: String) -> Message? {
         if let context = self.fetchedResultsController?.managedObjectContext {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
@@ -608,21 +610,35 @@ class MailboxViewModel: StorageLimit {
     }
     
     func undo(_ undo: UndoMessage) {
-        let messages = self.messageService.fetchMessages(withIDs: [undo.messageID], in: self.coreDataService.mainContext)
-        let fLabels: [String] = .init(repeating: undo.newLabels, count: messages.count)
-        messageService.move(messages: messages, from: fLabels, to: undo.origLabels)
+        switch viewMode {
+        case .conversation:
+            conversationService.move(conversationIDs: [undo.messageID],
+                                     from: undo.newLabels,
+                                     to: undo.origLabels) { _ in }
+        case .singleMessage:
+            let messages = self.messageService.fetchMessages(withIDs: [undo.messageID], in: self.coreDataService.mainContext)
+            let fLabels: [String] = .init(repeating: undo.newLabels, count: messages.count)
+            messageService.move(messages: messages, from: fLabels, to: undo.origLabels)
+        }
     }
     
     final func delete(IDs: NSMutableSet) {
-        let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataService.mainContext)
-        for msg in messages {
-            let _ = self.delete(message: msg)
+        switch viewMode {
+        case .conversation:
+            _ = self.delete(conversationIDs: IDs.asArrayOfStrings)
+        case .singleMessage:
+            let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataService.mainContext)
+            for msg in messages {
+                let _ = self.delete(message: msg)
+            }
         }
     }
     
     final func delete(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
             return self.delete(message: message)
+        } else if let conversation = self.itemOfConversation(index: index) {
+            return self.delete(conversationIDs: [conversation.conversationID])
         }
         return (.nothing, nil)
     }
@@ -633,12 +649,28 @@ class MailboxViewModel: StorageLimit {
         }
         return (.nothing, nil)
     }
+
+    func delete(conversationIDs: [String]) -> (SwipeResponse, UndoMessage?) {
+        if [Message.Location.draft.rawValue, Message.Location.spam.rawValue, Message.Location.trash.rawValue].contains(labelID) {
+            conversationService.deleteConversations(with: conversationIDs, labelID: labelID) { _ in }
+        } else {
+            conversationService.move(conversationIDs: conversationIDs,
+                                     from: self.labelID,
+                                     to: Message.Location.trash.rawValue) { _ in }
+        }
+        return (.nothing, nil)
+    }
     
     func archive(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
             if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.archive.rawValue) {
                 return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, newLabels: Message.Location.archive.rawValue))
             }
+        } else if let conversation = self.itemOfConversation(index: index) {
+            conversationService.move(conversationIDs: [conversation.conversationID],
+                                     from: self.labelID,
+                                     to: Message.Location.archive.rawValue) { _ in }
+            return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: self.labelID, newLabels: Message.Location.archive.rawValue))
         }
         return (.nothing, nil)
     }
@@ -648,6 +680,11 @@ class MailboxViewModel: StorageLimit {
             if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.spam.rawValue) {
                 return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, newLabels: Message.Location.spam.rawValue))
             }
+        } else if let conversation = self.itemOfConversation(index: index) {
+            conversationService.move(conversationIDs: [conversation.conversationID],
+                                     from: self.labelID,
+                                     to: Message.Location.spam.rawValue) { _ in }
+            return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: self.labelID, newLabels: Message.Location.archive.rawValue))
         }
         return (.nothing, nil)
     }
@@ -716,31 +753,63 @@ class MailboxViewModel: StorageLimit {
     }
 
     private func handleUnstarAction() {
-        let starredMessagesIds = selectedMessages
-            .filter { $0.starred }
-            .map(\.messageID)
-        label(IDs: NSMutableSet(array: starredMessagesIds), with: Message.Location.starred.rawValue, apply: false)
+        let starredItemsIds: [String]
+        switch viewMode {
+        case .conversation:
+            starredItemsIds = selectedConversations
+                .filter { $0.starred }
+                .map(\.conversationID)
+        case .singleMessage:
+            starredItemsIds = selectedMessages
+                .filter { $0.starred }
+                .map(\.messageID)
+        }
+        label(IDs: NSMutableSet(array: starredItemsIds), with: Message.Location.starred.rawValue, apply: false)
     }
 
     private func handleStarAction() {
-        let unstaredMessagesIds = selectedMessages
-            .filter { !$0.starred }
-            .map(\.messageID)
-        label(IDs: NSMutableSet(array: unstaredMessagesIds), with: Message.Location.starred.rawValue, apply: true)
+        let unstarredItemsIds: [String]
+        switch viewMode {
+        case .conversation:
+            unstarredItemsIds = selectedConversations
+                .filter { !$0.starred }
+                .map(\.conversationID)
+        case .singleMessage:
+            unstarredItemsIds = selectedMessages
+                .filter { !$0.starred }
+                .map(\.messageID)
+        }
+        label(IDs: NSMutableSet(array: unstarredItemsIds), with: Message.Location.starred.rawValue, apply: true)
     }
 
     private func handleMarkReadAction() {
-        let unreadMessagesIds = selectedMessages
-            .filter { $0.unRead }
-            .map(\.messageID)
-        mark(IDs: NSMutableSet(array: unreadMessagesIds), unread: false)
+        let unreadItemsIds: [String]
+        switch viewMode {
+        case .conversation:
+            unreadItemsIds = selectedConversations
+                .filter { $0.isUnread(labelID: labelID) }
+                .map(\.conversationID)
+        case .singleMessage:
+            unreadItemsIds = selectedMessages
+                .filter { $0.unRead }
+                .map(\.messageID)
+        }
+        mark(IDs: NSMutableSet(array: unreadItemsIds), unread: false)
     }
 
     private func handleMarkUnreadAction() {
-        let readMessagesIds = selectedMessages
-            .filter { !$0.unRead }
-            .map(\.messageID)
-        mark(IDs: NSMutableSet(array: readMessagesIds), unread: true)
+        let unreadItemsIds: [String]
+        switch viewMode {
+        case .conversation:
+            unreadItemsIds = selectedConversations
+                .filter { !$0.isUnread(labelID: labelID) }
+                .map(\.conversationID)
+        case .singleMessage:
+            unreadItemsIds = selectedMessages
+                .filter { !$0.unRead }
+                .map(\.messageID)
+        }
+        mark(IDs: NSMutableSet(array: unreadItemsIds), unread: true)
     }
 
     private func handleRemoveAction() {
@@ -771,7 +840,7 @@ class MailboxViewModel: StorageLimit {
 
 }
 
-// MARK: - Data fethching methods
+// MARK: - Data fetching methods
 extension MailboxViewModel {
     func fetchEvents(time: Int, notificationMessageID:String?, completion: CompletionBlock?) {
         eventsService.fetchEvents(byLabel: self.labelID,
@@ -864,11 +933,10 @@ extension MailboxViewModel {
             let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
             messageService.label(messages: messages, label: labelID, apply: apply)
         case .conversation:
-            let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.mainContext)
             if apply {
-                conversationService.label(conversationIDs: conversations.map(\.conversationID), as: labelID, completion: nil)
+                conversationService.label(conversationIDs: messageIDs.asArrayOfStrings, as: labelID, completion: nil)
             } else {
-                conversationService.unlabel(conversationIDs: conversations.map(\.conversationID), as: labelID, completion: nil)
+                conversationService.unlabel(conversationIDs: messageIDs.asArrayOfStrings, as: labelID, completion: nil)
             }
         }
     }
@@ -879,11 +947,10 @@ extension MailboxViewModel {
             let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
             messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
         case .conversation:
-            let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.operationContext)
             if unread {
-                conversationService.markAsUnread(conversationIDs: conversations.map(\.conversationID), labelID: self.labelID, completion: nil)
+                conversationService.markAsUnread(conversationIDs: messageIDs.asArrayOfStrings, labelID: self.labelID, completion: nil)
             } else {
-                conversationService.markAsRead(conversationIDs: conversations.map(\.conversationID), completion: nil)
+                conversationService.markAsRead(conversationIDs: messageIDs.asArrayOfStrings, completion: nil)
             }
         }
     }
@@ -899,15 +966,9 @@ extension MailboxViewModel {
             }
             messageService.move(messages: messages, from: fLabels, to: tLabel)
         case .conversation:
-            let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.operationContext)
-            conversationService.unlabel(conversationIDs: conversations.map(\.conversationID), as: fLabel) { [weak self] result in
-                switch result {
-                case .success:
-                    self?.conversationService.label(conversationIDs: conversations.map(\.conversationID), as: tLabel, completion: nil)
-                case .failure:
-                    break
-                }
-            }
+            conversationService.move(conversationIDs: messageIDs.asArrayOfStrings,
+                                     from: fLabel,
+                                     to: tLabel) { _ in }
         }
     }
 }

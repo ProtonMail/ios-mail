@@ -24,6 +24,10 @@ import Foundation
 
 extension ConversationDataService {
     func deleteConversations(with conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        guard !conversationIDs.isEmpty else {
+            completion?(.failure(ConversationError.emptyConversationIDS))
+            return
+        }
         let request = ConversationDeleteRequest(conversationIDs: conversationIDs, labelID: labelID)
         self.apiService.exec(route: request) { (task, response: ConversationDeleteResponse) in
             if let err = response.error {
@@ -41,6 +45,10 @@ extension ConversationDataService {
     }
 
     func markAsRead(conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
+        guard !conversationIDs.isEmpty else {
+            completion?(.failure(ConversationError.emptyConversationIDS))
+            return
+        }
         let request = ConversationReadRequest(conversationIDs: conversationIDs)
         self.apiService.exec(route: request) { (task, response: ConversationReadResponse) in
             if let err = response.error {
@@ -57,6 +65,10 @@ extension ConversationDataService {
     }
 
     func markAsUnread(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        guard !conversationIDs.isEmpty else {
+            completion?(.failure(ConversationError.emptyConversationIDS))
+            return
+        }
         let request = ConversationUnreadRequest(conversationIDs: conversationIDs, labelID: labelID)
         self.apiService.exec(route: request) { (task, response: ConversationUnreadResponse) in
             if let err = response.error {
@@ -74,6 +86,10 @@ extension ConversationDataService {
     }
 
     func label(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        guard !conversationIDs.isEmpty else {
+            completion?(.failure(ConversationError.emptyConversationIDS))
+            return
+        }
         let request = ConversationLabelRequest(conversationIDs: conversationIDs, labelID: labelID)
         self.apiService.exec(route: request) { (task, response: ConversationLabelResponse) in
             if let err = response.error {
@@ -91,6 +107,10 @@ extension ConversationDataService {
     }
 
     func unlabel(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        guard !conversationIDs.isEmpty else {
+            completion?(.failure(ConversationError.emptyConversationIDS))
+            return
+        }
         let request = ConversationUnlabelRequest(conversationIDs: conversationIDs, labelID: labelID)
         self.apiService.exec(route: request) { (task, response: ConversationUnlabelResponse) in
             if let err = response.error {
@@ -104,6 +124,22 @@ extension ConversationDataService {
                 return
             }
             completion?(.success(()))
+        }
+    }
+
+    func move(conversationIDs: [String], from previousFolderLabel: String, to nextFolderLabel: String, completion: ((Result<Void, Error>) -> Void)?) {
+        guard !conversationIDs.isEmpty else {
+            completion?(.failure(ConversationError.emptyConversationIDS))
+            return
+        }
+        let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs), in: coreDataService.operationContext)
+        unlabel(conversationIDs: conversations.map(\.conversationID), as: previousFolderLabel) { [weak self] result in
+            switch result {
+            case .success:
+                self?.label(conversationIDs: conversations.map(\.conversationID), as: nextFolderLabel, completion: nil)
+            case .failure:
+                break
+            }
         }
     }
 }

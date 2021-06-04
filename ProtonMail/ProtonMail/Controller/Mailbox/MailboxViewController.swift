@@ -600,17 +600,25 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
 
     private func labelAs(_ index: IndexPath) {
-        guard let message = viewModel.item(index: index) else { return }
-        showLabelAsActionSheet(messages: [message])
+        if let message = viewModel.item(index: index) {
+            showLabelAsActionSheet(messages: [message])
+        } else if let conversation = viewModel.itemOfConversation(index: index) {
+            showLabelAsActionSheet(conversations: [conversation])
+        }
     }
 
     private func moveTo(_ index: IndexPath) {
-        guard let message = viewModel.item(index: index) else { return }
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
-        showMoveToActionSheet(messages: [message],
-                              isEnableColor: isEnableColor,
-                              isInherit: isInherit)
+        if let message = viewModel.item(index: index) {
+            showMoveToActionSheet(messages: [message],
+                                  isEnableColor: isEnableColor,
+                                  isInherit: isInherit)
+        } else if let conversation = viewModel.itemOfConversation(index: index) {
+            showMoveToActionSheet(conversations: [conversation],
+                                  isEnableColor: isEnableColor,
+                                  isInherit: isInherit)
+        }
     }
     
     private func archive(_ index: IndexPath) {
@@ -650,23 +658,38 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     private func star(_ indexPath: IndexPath) {
-        guard let message = self.viewModel.item(index: indexPath) else { return }
-        self.viewModel.label(msg: message, with: Message.Location.starred.rawValue)
+        if let message = self.viewModel.item(index: indexPath) {
+            self.viewModel.label(msg: message, with: Message.Location.starred.rawValue)
+        } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
+            viewModel.labelConversations(conversationIDs: [conversation.conversationID],
+                                         labelID: Message.Location.starred.rawValue) { _ in }
+        }
     }
 
     private func unstar(_ indexPath: IndexPath) {
-        guard let message = self.viewModel.item(index: indexPath) else { return }
-        self.viewModel.label(msg: message, with: Message.Location.starred.rawValue, apply: false)
+        if let message = self.viewModel.item(index: indexPath) {
+            self.viewModel.label(msg: message, with: Message.Location.starred.rawValue, apply: false)
+        } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
+            viewModel.unlabelConversations(conversationIDs: [conversation.conversationID],
+                                         labelID: Message.Location.starred.rawValue) { _ in }
+        }
     }
 
     private func unread(_ indexPath: IndexPath) {
-        guard let message = self.viewModel.item(index: indexPath) else { return }
-        self.viewModel.mark(messages: [message])
+        if let message = self.viewModel.item(index: indexPath) {
+            self.viewModel.mark(messages: [message])
+        } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
+            viewModel.markConversationAsUnread(conversationIDs: [conversation.conversationID],
+                                               currentLabelID: viewModel.labelID) { _ in }
+        }
     }
 
     private func read(_ indexPath: IndexPath) {
-        guard let message = self.viewModel.item(index: indexPath) else { return }
-        self.viewModel.mark(messages: [message], unread: false)
+        if let message = self.viewModel.item(index: indexPath) {
+            self.viewModel.mark(messages: [message], unread: false)
+        } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
+            viewModel.markConversationAsRead(conversationIDs: [conversation.conversationID]) { _ in }
+        }
     }
 
     private func makeSwipeView(messageSwipeAction: MessageSwipeAction) -> UIView {
@@ -1433,13 +1456,17 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
             showNoEmailSelected(title: LocalString._apply_labels)
             return
         }
-
-        showLabelAsActionSheet(messages: viewModel.selectedMessages)
+        switch viewModel.viewMode {
+        case .conversation:
+            showLabelAsActionSheet(conversations: viewModel.selectedConversations)
+        case .singleMessage:
+            showLabelAsActionSheet(messages: viewModel.selectedMessages)
+        }
     }
 
     private func showLabelAsActionSheet(messages: [Message]) {
-        let labelAsViewModel = LabelAsActionSheetViewModel(menuLabels: labelAsActionHandler.getLabelMenuItems(),
-                                                           messages: messages)
+        let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: labelAsActionHandler.getLabelMenuItems(),
+                                                                   messages: messages)
 
         labelAsActionSheetPresenter
             .present(on: self.navigationController ?? self,
@@ -1472,6 +1499,42 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                         self?.cancelButtonTapped()
                      })
     }
+    
+    private func showLabelAsActionSheet(conversations: [Conversation]) {
+        let labelAsViewModel = LabelAsActionSheetViewModelConversations(menuLabels: labelAsActionHandler.getLabelMenuItems(),
+                                                                        conversations: conversations)
+
+        labelAsActionSheetPresenter
+            .present(on: self.navigationController ?? self,
+                     viewModel: labelAsViewModel,
+                     addNewLabel: { [weak self] in
+                        self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
+                            self?.showLabelAsActionSheet(conversations: conversations)
+                        }
+                        self?.coordinator?.go(to: .newLabel)
+                     },
+                     selected: { [weak self] menuLabel, isOn in
+                        self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
+                     },
+                     cancel: { [weak self] isHavingUnsavedChanges in
+                        if isHavingUnsavedChanges {
+                            self?.showDiscardAlert(handleDiscard: {
+                                self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
+                                self?.dismissActionSheet()
+                            })
+                        } else {
+                            self?.dismissActionSheet()
+                        }
+                     },
+                     done: { [weak self] isArchive, currentOptionsStatus in
+                        self?.labelAsActionHandler
+                            .handleLabelAsAction(conversations: conversations,
+                                                 shouldArchive: isArchive,
+                                                 currentOptionsStatus: currentOptionsStatus)
+                        self?.dismissActionSheet()
+                        self?.cancelButtonTapped()
+                     })
+    }
 }
 
 extension MailboxViewController: MoveToActionSheetPresentProtocol {
@@ -1494,11 +1557,11 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
 
     private func showMoveToActionSheet(messages: [Message], isEnableColor: Bool, isInherit: Bool) {
         let moveToViewModel =
-            MoveToActionSheetViewModel(menuLabels: moveToActionHandler.getFolderMenuItems(),
-                                       messages: messages,
-                                       isEnableColor: isEnableColor,
-                                       isInherit: isInherit,
-                                       labelId: viewModel.labelId)
+            MoveToActionSheetViewModelMessages(menuLabels: moveToActionHandler.getFolderMenuItems(),
+                                               messages: messages,
+                                               isEnableColor: isEnableColor,
+                                               isInherit: isInherit,
+                                               labelId: viewModel.labelId)
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,
@@ -1530,6 +1593,47 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                             return
                         }
                         self?.moveToActionHandler.handleMoveToAction(messages: messages)
+                     })
+    }
+
+    private func showMoveToActionSheet(conversations: [Conversation], isEnableColor: Bool, isInherit: Bool) {
+        let moveToViewModel =
+            MoveToActionSheetViewModelConversations(menuLabels: moveToActionHandler.getFolderMenuItems(),
+                                                    conversations: conversations,
+                                                    isEnableColor: isEnableColor,
+                                                    isInherit: isInherit,
+                                                    labelId: viewModel.labelId)
+        moveToActionSheetPresenter
+            .present(on: self.navigationController ?? self,
+                     viewModel: moveToViewModel,
+                     addNewFolder: { [weak self] in
+                        self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
+                            self?.showMoveToActionSheet(conversations: conversations, isEnableColor: isEnableColor, isInherit: isInherit)
+                        }
+                        self?.coordinator?.go(to: .newFolder)
+                     },
+                     selected: { [weak self] menuLabel, isOn in
+                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+                     },
+                     cancel: { [weak self] isHavingUnsavedChanges in
+                        if isHavingUnsavedChanges {
+                            self?.showDiscardAlert(handleDiscard: {
+                                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
+                                self?.dismissActionSheet()
+                            })
+                        } else {
+                            self?.dismissActionSheet()
+                        }
+                     },
+                     done: { [weak self] isHavingUnsavedChanges in
+                        defer {
+                            self?.dismissActionSheet()
+                            self?.cancelButtonTapped()
+                        }
+                        guard isHavingUnsavedChanges else {
+                            return
+                        }
+                        self?.moveToActionHandler.handleMoveToAction(conversations: conversations)
                      })
     }
 

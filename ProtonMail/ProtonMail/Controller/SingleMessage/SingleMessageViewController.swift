@@ -504,8 +504,8 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
     }
 
     func showLabelAsActionSheet() {
-        let labelAsViewModel = LabelAsActionSheetViewModel(menuLabels: labelAsActionHandler.getLabelMenuItems(),
-                                                           messages: [viewModel.message])
+        let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: labelAsActionHandler.getLabelMenuItems(),
+                                                                   messages: [viewModel.message])
 
         labelAsActionSheetPresenter
             .present(on: self.navigationController ?? self,
@@ -548,11 +548,11 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
         let moveToViewModel =
-            MoveToActionSheetViewModel(menuLabels: viewModel.getFolderMenuItems(),
-                                       messages: [viewModel.message],
-                                       isEnableColor: isEnableColor,
-                                       isInherit: isInherit,
-                                       labelId: viewModel.labelId)
+            MoveToActionSheetViewModelMessages(menuLabels: viewModel.getFolderMenuItems(),
+                                               messages: [viewModel.message],
+                                               isEnableColor: isEnableColor,
+                                               isInherit: isInherit,
+                                               labelId: viewModel.labelId)
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,

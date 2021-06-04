@@ -22,7 +22,33 @@
 
 import ProtonCore_UIFoundations
 
-struct MoveToActionSheetViewModel {
+protocol MoveToActionSheetViewModel {
+    var menuLabels: [MenuLabel] { get }
+    var isEnableColor: Bool { get }
+    var isInherit: Bool { get }
+    var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] { get }
+    func getColor(of label: MenuLabel) -> UIColor
+}
+
+extension MoveToActionSheetViewModel {
+    func getColor(of label: MenuLabel) -> UIColor {
+        guard label.location.icon == nil else {
+            return UIColorManager.IconNorm
+        }
+
+        guard isEnableColor else { return UIColorManager.IconNorm }
+        if isInherit {
+            guard let parent = menuLabels.getRootItem(of: label) else {
+                return UIColor(hexColorCode: "#FFFFFF")
+            }
+            return UIColor(hexColorCode: parent.iconColor)
+        } else {
+            return UIColor(hexColorCode: label.iconColor)
+        }
+    }
+}
+
+struct MoveToActionSheetViewModelMessages: MoveToActionSheetViewModel {
     let menuLabels: [MenuLabel]
     let isEnableColor: Bool
     let isInherit: Bool
@@ -68,20 +94,52 @@ struct MoveToActionSheetViewModel {
             }
         }
     }
+}
 
-    func getColor(of label: MenuLabel) -> UIColor {
-        guard label.location.icon == nil else {
-            return UIColorManager.IconNorm
+struct MoveToActionSheetViewModelConversations: MoveToActionSheetViewModel {
+    let menuLabels: [MenuLabel]
+    let isEnableColor: Bool
+    let isInherit: Bool
+    let labelId: String
+    private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
+    private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
+
+    init(menuLabels: [MenuLabel],
+         conversations: [Conversation],
+         isEnableColor: Bool,
+         isInherit: Bool,
+         labelId: String) {
+        self.isInherit = isInherit
+        self.isEnableColor = isEnableColor
+        self.labelId = labelId
+        self.menuLabels = menuLabels
+
+        let labelCount = menuLabels.getNumberOfRows()
+        for i in 0..<labelCount {
+            let indexPath = IndexPath(row: i, section: 0)
+            if let label = menuLabels.getFolderItem(by: indexPath) {
+                initialLabelSelectionCount[label] = 0
+            }
         }
 
-        guard isEnableColor else { return UIColorManager.IconNorm }
-        if isInherit {
-            guard let parent = menuLabels.getRootItem(of: label) else {
-                return UIColor(hexColorCode: "#FFFFFF")
+        initialLabelSelectionCount.forEach { (label, _) in
+            for conversation in conversations where conversation.getLabels().contains(label.location.labelID) {
+                if let labelCount = initialLabelSelectionCount[label] {
+                    initialLabelSelectionCount[label] = labelCount + 1
+                } else {
+                    initialLabelSelectionCount[label] = 1
+                }
             }
-            return UIColor(hexColorCode: parent.iconColor)
-        } else {
-            return UIColor(hexColorCode: label.iconColor)
+        }
+
+        initialLabelSelectionCount.forEach { (key, value) in
+            if value == conversations.count {
+                initialLabelSelectionStatus[key] = .checkMark
+            } else if value < conversations.count && value > 0 {
+                initialLabelSelectionStatus[key] = .dash
+            } else {
+                initialLabelSelectionStatus[key] = PMActionSheetPlainItem.MarkType.none
+            }
         }
     }
 }
