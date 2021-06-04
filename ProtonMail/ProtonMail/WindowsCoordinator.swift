@@ -244,7 +244,10 @@ class WindowsCoordinator: CoordinatorNew {
                 guard self.lockWindow == nil else {
                     guard let lockVC = self.currentWindow.rootViewController as? LockCoordinator.VC,
                           lockVC.coordinator.startedOrSheduledForAStart == false
-                    else { return }
+                    else {
+                        self.lockWindow = nil
+                        return
+                    }
                     lockVC.coordinator.start()
                     return
                 }

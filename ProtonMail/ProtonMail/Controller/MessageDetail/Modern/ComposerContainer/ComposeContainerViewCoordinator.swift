@@ -69,7 +69,6 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         guard let viewController = viewController else {
             return
         }
-        viewController.modalPresentationStyle = .fullScreen
         self.controller?.set(coordinator: self)
         navigationController?.present(viewController, animated: true, completion: nil)
     }
@@ -161,6 +160,8 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     func navigateToPassword() {
+        self.editor.autoSaveTimer()
+
         let password = self.editor.encryptionPassword
         let confirm = self.editor.encryptionConfirmPassword
         let hint = self.editor.encryptionPasswordHint
@@ -172,6 +173,8 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     func navigateToExpiration() {
+        self.editor.autoSaveTimer()
+
         let time = self.header.expirationTimeInterval
         let expirationVC = ComposeExpirationVC(expiration: time, delegate: self)
         guard let navigationController = self.controller.navigationController else {
