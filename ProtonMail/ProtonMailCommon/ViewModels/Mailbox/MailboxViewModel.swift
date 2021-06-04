@@ -76,6 +76,10 @@ class MailboxViewModel: StorageLimit {
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
 
     weak var users: UsersManager?
+
+    private let conversationStateService: ConversationStateService
+
+    var viewModeIsChanged: (() -> Void)?
     
     /// mailbox viewModel
     ///
@@ -94,6 +98,8 @@ class MailboxViewModel: StorageLimit {
         self.users = usersManager
         self.lastUpdatedStore = lastUpdatedStore
         self.queueManager = queueManager
+        self.conversationStateService = userManager.conversationStateService
+        self.conversationStateService.add(delegate: self)
     }
     
     /// localized navigation title. overrride it or return label name
@@ -107,10 +113,10 @@ class MailboxViewModel: StorageLimit {
         let singleMessageOnlyLabels: [Message.Location] = [.draft, .sent]
         if let location = Message.Location.init(rawValue: labelID),
            singleMessageOnlyLabels.contains(location),
-           user.conversationStateService.viewMode == .conversation {
+           self.conversationStateService.viewMode == .conversation {
             return .singleMessage
         }
-        return user.conversationStateService.viewMode
+        return self.conversationStateService.viewMode
     }
     
     var isRequiredHumanCheck: Bool {
@@ -1046,6 +1052,16 @@ extension MailboxViewModel {
         case .moveTo:
             return .moveTo
         }
+    }
+}
+
+extension MailboxViewModel: ConversationStateServiceDelegate {
+    func viewModeHasChanged(viewMode: ViewMode) {
+        viewModeIsChanged?()
+    }
+
+    func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
+
     }
 }
 
