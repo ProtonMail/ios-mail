@@ -57,6 +57,7 @@ class SingleMessageViewModel {
     private(set) lazy var userActivity: NSUserActivity = .messageDetailsActivity(messageId: message.messageID)
 
     private let messageService: MessageDataService
+    private var isDetailedDownloaded: Bool?
     let user: UserManager
     let labelId: String
     private let messageObserver: MessageObserver
@@ -103,7 +104,13 @@ class SingleMessageViewModel {
 
     func viewDidLoad() {
         messageObserver.observe { [weak self] in
-            self?.message = $0
+            guard let self = self else { return }
+            self.message = $0
+            if self.isDetailedDownloaded != $0.isDetailDownloaded &&
+                $0.isDetailDownloaded {
+                self.isDetailedDownloaded = true
+                self.messageBodyViewModel.messageHasChanged(message: self.message)
+            }
         }
         downloadDetails()
     }
@@ -128,6 +135,7 @@ class SingleMessageViewModel {
 
     func downloadDetails() {
         let shouldLoadBody = message.body.isEmpty
+        self.isDetailedDownloaded = !shouldLoadBody
         guard internetStatusProvider.currentStatus != .NotReachable else {
             self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
             return
