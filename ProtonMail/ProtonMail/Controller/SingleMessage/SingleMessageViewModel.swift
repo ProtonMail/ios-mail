@@ -112,6 +112,8 @@ class SingleMessageViewModel {
                 self.messageBodyViewModel.messageHasChanged(message: self.message)
             }
         }
+        // Load message in cache
+        messageBodyViewModel.messageHasChanged(message: self.message, isError: false)
         downloadDetails()
     }
 
