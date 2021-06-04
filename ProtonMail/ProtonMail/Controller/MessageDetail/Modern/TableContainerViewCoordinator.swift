@@ -53,7 +53,15 @@ class TableContainerViewCoordinator: NSObject, CoordinatorNew {
         // add child to new parent
         controller.addChild(child)
         child.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(child.view)
+        if view.subviews.isEmpty {
+            view.addSubview(child.view)
+        } else if let existedView = view.subviews.first {
+            if existedView != child.view {
+                existedView.removeFromSuperview()
+                view.addSubview(child.view)
+            }
+        }
+        
         child.didMove(toParent: controller)
         
         // autolayout guides priority: parameter, safeArea, no guide
