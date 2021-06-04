@@ -22,7 +22,19 @@
 
 import ProtonCore_UIFoundations
 
-struct LabelAsActionSheetViewModel {
+protocol LabelAsActionSheetViewModel {
+    var menuLabels: [MenuLabel] { get }
+    var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] { get }
+    func getColor(of label: MenuLabel) -> UIColor
+}
+
+extension LabelAsActionSheetViewModel {
+    func getColor(of label: MenuLabel) -> UIColor {
+        return UIColor(hexColorCode: label.iconColor)
+    }
+}
+
+struct LabelAsActionSheetViewModelMessages: LabelAsActionSheetViewModel {
     let menuLabels: [MenuLabel]
     private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
     private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
@@ -50,8 +62,34 @@ struct LabelAsActionSheetViewModel {
             }
         }
     }
+}
 
-    func getColor(of label: MenuLabel) -> UIColor {
-        return UIColor(hexColorCode: label.iconColor)
+struct LabelAsActionSheetViewModelConversations: LabelAsActionSheetViewModel {
+    let menuLabels: [MenuLabel]
+    private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
+    private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
+
+    init(menuLabels: [MenuLabel], conversations: [Conversation]) {
+        self.menuLabels = menuLabels
+        menuLabels.forEach { initialLabelSelectionCount[$0] = 0 }
+        initialLabelSelectionCount.forEach { (label, _) in
+            for conv in conversations where conv.getLabelIds().contains(label.location.labelID) {
+                if let labelCount = initialLabelSelectionCount[label] {
+                    initialLabelSelectionCount[label] = labelCount + 1
+                } else {
+                    initialLabelSelectionCount[label] = 1
+                }
+            }
+        }
+
+        initialLabelSelectionCount.forEach { (key, value) in
+            if value == conversations.count {
+                initialLabelSelectionStatus[key] = .checkMark
+            } else if value < conversations.count && value > 0 {
+                initialLabelSelectionStatus[key] = .dash
+            } else {
+                initialLabelSelectionStatus[key] = PMActionSheetPlainItem.MarkType.none
+            }
+        }
     }
 }

@@ -32,6 +32,18 @@ extension MailboxViewModel: MoveToActionSheetProtocol {
         selectedMoveToFolder = nil
     }
 
+    func handleMoveToAction(conversations: [Conversation]) {
+        guard let destination = selectedMoveToFolder else { return }
+        conversationService.move(conversationIDs: conversations.map(\.conversationID),
+                                 from: "",
+                                 to: destination.location.labelID) { _ in }
+        /*
+         We pass the empty string because we don't have the source folder here
+         The same is done for messages in `move(messages: [Message], to tLabel: String, queue: Bool = true)`
+        */
+        selectedMoveToFolder = nil
+    }
+
     func updateSelectedMoveToDestination(menuLabel: MenuLabel?, isOn: Bool) {
         selectedMoveToFolder = isOn ? menuLabel : nil
     }

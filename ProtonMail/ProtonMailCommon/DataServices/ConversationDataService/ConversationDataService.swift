@@ -29,6 +29,10 @@ enum ReadState {
     case read
 }
 
+enum ConversationError: Error {
+    case emptyConversationIDS
+}
+
 protocol ConversationProvider: AnyObject {
     // MARK: - Collection fetching
     func fetchConversationCounts(addressID: String?, completion: ((Result<Void, Error>) -> Void)?)
@@ -46,6 +50,10 @@ protocol ConversationProvider: AnyObject {
     func markAsUnread(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?)
     func label(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?)
     func unlabel(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?)
+    func move(conversationIDs: [String],
+              from previousFolderLabel: String,
+              to nextFolderLabel: String,
+              completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Clean up
     func cleanAll()
     // MARK: - Local for legacy reasons
