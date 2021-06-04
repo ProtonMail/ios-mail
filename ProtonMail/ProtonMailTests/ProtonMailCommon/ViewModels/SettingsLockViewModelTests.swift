@@ -43,10 +43,9 @@ class SettingsLockViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.sections.count, 1)
         XCTAssertEqual(sut.sections[0], .enableProtection)
-        XCTAssertEqual(sut.bioLockItems.count, 0)
     }
 
-    func testUpdateProtectionItemWithLockOnAndNoneBiometric() throws {
+    func testUpdateProtectionItemWithPINCodeOn() throws {
         biometricStub.biometricTypeStub = .none
         userCacheStatusStub.isPinCodeEnabledStub = true
 
@@ -56,39 +55,28 @@ class SettingsLockViewModelTests: XCTestCase {
         XCTAssertEqual(sut.sections[0], .enableProtection)
         XCTAssertEqual(sut.sections[1], .changePin)
         XCTAssertEqual(sut.sections[2], .timing)
-        XCTAssertEqual(sut.bioLockItems.count, 0)
     }
 
-    func testUpdateProtectionItemWithLockOnAndTouchID() throws {
+    func testUpdateProtectionItemWithTouchIDOn() throws {
         biometricStub.biometricTypeStub = .touchID
-        userCacheStatusStub.isPinCodeEnabledStub = true
+        userCacheStatusStub.isTouchIDEnabledStub = true
 
         sut.updateProtectionItems()
 
-        XCTAssertEqual(sut.sections.count, 4)
+        XCTAssertEqual(sut.sections.count, 2)
         XCTAssertEqual(sut.sections[0], .enableProtection)
-        XCTAssertEqual(sut.sections[1], .changePin)
-        XCTAssertEqual(sut.sections[2], .bioProtection)
-        XCTAssertEqual(sut.sections[3], .timing)
-
-        XCTAssertEqual(sut.bioLockItems.count, 1)
-        XCTAssertEqual(sut.bioLockItems[0], .touchid)
+        XCTAssertEqual(sut.sections[1], .timing)
     }
 
-    func testUpdateProtectionItemWithLockOnAndFaceID() throws {
+    func testUpdateProtectionItemWithFaceIDOn() throws {
         biometricStub.biometricTypeStub = .faceID
-        userCacheStatusStub.isPinCodeEnabledStub = true
+        userCacheStatusStub.isTouchIDEnabledStub = true
 
         sut.updateProtectionItems()
 
-        XCTAssertEqual(sut.sections.count, 4)
+        XCTAssertEqual(sut.sections.count, 2)
         XCTAssertEqual(sut.sections[0], .enableProtection)
-        XCTAssertEqual(sut.sections[1], .changePin)
-        XCTAssertEqual(sut.sections[2], .bioProtection)
-        XCTAssertEqual(sut.sections[3], .timing)
-
-        XCTAssertEqual(sut.bioLockItems.count, 1)
-        XCTAssertEqual(sut.bioLockItems[0], .faceid)
+        XCTAssertEqual(sut.sections[1], .timing)
     }
 
     func testBiometricType() {

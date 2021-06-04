@@ -68,6 +68,7 @@ class UnlockManager: Service {
     }
     
     internal func getUnlockFlow() -> SignInUIFlow {
+        migrateProtectionSetting()
         if cacheStatus.isPinCodeEnabled {
             return SignInUIFlow.requirePin
         }
@@ -91,6 +92,12 @@ class UnlockManager: Service {
             }
             self.cacheStatus.pinFailedCount = 0;
             completion(true)
+        }
+    }
+
+    private func migrateProtectionSetting() {
+        if cacheStatus.isPinCodeEnabled && cacheStatus.isTouchIDEnabled {
+            keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
         }
     }
 

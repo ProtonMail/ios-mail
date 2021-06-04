@@ -2170,4 +2170,9 @@ class LocalizedString {
     lazy var _conversation_settings_row_title = NSLocalizedString("Enable conversations", comment: "")
     lazy var _conversation_settings_screen_top_title = NSLocalizedString("Conversation mode", comment: "")
     lazy var _account_settings_conversation_row_title = NSLocalizedString("Conversation", comment: "")
+
+    lazy var _security_protection_title_none = NSLocalizedString("None", comment: "The protection title of None protection")
+    lazy var _security_protection_title_pin = NSLocalizedString("PIN Code", comment: "The protection title of PIN Code protection")
+    lazy var _security_protection_title_faceid = NSLocalizedString("Face ID", comment: "The protection title of Face ID protection")
+    lazy var _security_protection_title_touchid = NSLocalizedString("Touch ID", comment: "The protection title of Touch ID protection")
 }

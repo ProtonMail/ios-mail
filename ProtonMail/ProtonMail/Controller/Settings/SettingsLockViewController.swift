@@ -89,7 +89,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    internal func updateTableProtectionSection() {
+    private func updateTableProtectionSection() {
         self.viewModel.updateProtectionItems()
         self.tableView.reloadData()
     }
@@ -109,8 +109,6 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             return self.viewModel.protectionItems.count
         case .changePin:
             return 1
-        case .bioProtection:
-            return self.viewModel.bioLockItems.count
         case .timing:
             return 1
         }
@@ -128,10 +126,15 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             case .none:
                 cell.accessoryType = self.viewModel.lockOn ? .none : .checkmark
             case .pinCode:
-                cell.accessoryType = self.viewModel.lockOn ? .checkmark : .none
+                cell.accessoryType = self.viewModel.isPinCodeEnabled ? .checkmark : .none
+            case .faceId:
+                cell.accessoryType = self.viewModel.isTouchIDEnabled ? .checkmark : .none
             }
+
+            let title = (item == .faceId ? viewModel.getBioProtectionTitle() : item.description)
+            cell.textLabel?.attributedText = NSAttributedString(string: title,
+                                                                attributes: FontManager.Default)
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            cell.textLabel?.attributedText = NSAttributedString(string: item.description, attributes: FontManager.Default)
             cell.textLabel?.translatesAutoresizingMaskIntoConstraints = false
             cell.textLabel?.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16.0).isActive = true
             cell.textLabel?.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor).isActive = true
@@ -142,36 +145,6 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             attribute[.foregroundColor] = UIColorManager.InteractionNorm
             cell.textLabel?.attributedText = NSAttributedString(string: LocalString._settings_change_pin_code_title, attributes: attribute)
             return cell
-        case .bioProtection:
-            let item = self.viewModel.bioLockItems[row]
-            switch item {
-            case .touchid, .faceid:
-                let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
-                if let c = cell as? SwitchTableViewCell {
-                    c.switchView.onTintColor = UIColorManager.InteractionNorm
-                    c.configCell(item.description, bottomLine: "", status: self.viewModel.isTouchIDEnabled, complete: { (cell, newStatus, feedback) -> Void in
-                        if let indexp = tableView.indexPath(for: cell!) {
-                            if indexPath == indexp {
-                                if !self.viewModel.isTouchIDEnabled {
-                                    // Enable Bio
-                                    keymaker.activate(BioProtection()) { _ in
-                                        self.updateTableProtectionSection()
-                                    }
-                                } else {
-                                    // Disable Bio
-                                    keymaker.deactivate(BioProtection())
-                                    self.updateTableProtectionSection()
-                                }
-                            } else {
-                                feedback(false)
-                            }
-                        } else {
-                            feedback(false)
-                        }
-                    })
-                }
-                return cell
-            }
         case .timing:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath) as! SettingsGeneralCell
             
@@ -200,13 +173,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         
         if let headerCell = header {
             let textLabel = UILabel()
-
-            var title = eSection.description
-            if eSection == .bioProtection, let bioTitle = self.viewModel.getBioProtectionSectionTitle() {
-                title = bioTitle
-            }
-            textLabel.attributedText = title
-            
+            textLabel.attributedText = eSection.description
             textLabel.translatesAutoresizingMaskIntoConstraints = false
             textLabel.numberOfLines = 0
             headerCell.contentView.addSubview(textLabel)
@@ -224,8 +191,6 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         let section = indexPath.section
         let eSection = self.viewModel.sections[section]
         switch eSection {
-        case .bioProtection:
-            break
         case .enableProtection:
             let item = self.viewModel.protectionItems[indexPath.row]
             switch item {
@@ -234,8 +199,12 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
                 self.updateTableProtectionSection()
             case .pinCode:
                 self.coordinator?.go(to: .pinCodeSetup)
+                //add call back or check in view will appear
+            case .faceId:
+                self.viewModel.enableBioProtection { [weak self] in
+                    self?.updateTableProtectionSection()
+                }
             }
-            self.updateTableProtectionSection()
         case .changePin:
             self.coordinator?.go(to: .pinCodeSetup)
         case .timing:
