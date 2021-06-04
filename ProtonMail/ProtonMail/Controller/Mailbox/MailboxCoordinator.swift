@@ -278,32 +278,28 @@ class MailboxCoordinator : DefaultCoordinator {
             viewModel.resetNotificationMessage()
         case .composeShow where path.value != nil:
             let coreDataService = self.services.get(by: CoreDataService.self)
-            
             if let messageID = path.value,
-                let nav = self.navigation,
-                let next = nav.viewControllers.first as? ComposeContainerViewController,
-                case let user = self.viewModel.user,
-                case let msgService = user.messageService,
-                let message = msgService.fetchMessages(withIDs: [messageID], in: coreDataService.mainContext).first
-            {
+               let nav = self.navigation,
+               case let user = self.viewModel.user,
+               case let msgService = user.messageService,
+               let message = msgService.fetchMessages(withIDs: [messageID], in: coreDataService.mainContext).first {
+
                 let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: msgService, user: user, coreDataService: coreDataService)
-                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next), services: services)
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: nil), services: services)
                 composer.start()
                 composer.follow(deeplink)
             }
             
         case .composeShow where path.value == nil:
-            if let nav = self.navigation,
-               let next = nav.viewControllers.first as? ComposeContainerViewController {
+            if let nav = self.navigation {
                 let user = self.viewModel.user
                 let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user, coreDataService: self.services.get(by: CoreDataService.self))
-                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next), services: services)
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: nil), services: services)
                 composer.start()
                 composer.follow(deeplink)
             }
         case .composeMailto where path.value != nil:
             if let nav = self.navigation,
-               let next = nav.viewControllers.first as? ComposeContainerViewController,
                let value = path.value {
                 let user = self.viewModel.user
                 let mailToURL = URL(string: value)!
@@ -333,7 +329,7 @@ class MailboxCoordinator : DefaultCoordinator {
                     }
                 }
                     
-                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next), services: services)
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: nil), services: services)
                 composer.start()
                 composer.follow(deeplink)
             }
