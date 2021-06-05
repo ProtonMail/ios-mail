@@ -95,12 +95,6 @@ class NewMessageBodyViewModel {
             WebContents.RemoteContentPolicy.allowed.rawValue :
             WebContents.RemoteContentPolicy.disallowed.rawValue
         embeddedContentPolicy = shouldAutoLoadEmbeddedImages ? .allowed : .disallowed
-
-        guard message.isDetailDownloaded else {
-            return
-        }
-
-        reload(from: message)
     }
 
     func messageHasChanged(message: Message, isError: Bool = false) {

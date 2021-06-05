@@ -113,6 +113,8 @@ class NewMessageBodyViewController: UIViewController {
     }
 
     func prepareWebView(with loader: WebContentsSecureLoader? = nil) {
+        view.removeConstraints(view.constraints.filter({ $0.firstAnchor == view.heightAnchor }))
+
         let heightConstraint = view.heightAnchor.constraint(equalToConstant: 50)
         heightConstraint.priority = .init(999.0)
         [heightConstraint].activate()
