@@ -201,13 +201,13 @@ class NewMessageBodyViewController: UIViewController {
                          options: [.old, .new]) { [weak self] pixel, change in
                     guard pixel.superview != nil else { return }
                     guard let new = change.newValue, let old = change.oldValue else { return }
-                    self?.scrollViewContainer.propogate(scrolling: .init(x: new.x - old.x, y: new.y - old.y),
+                    self?.scrollViewContainer.propagate(scrolling: .init(x: new.x - old.x, y: new.y - old.y),
                                                         boundsTouchedHandler: pixel.removeFromSuperview)
                 }
 
         default:
             let translation = gesture.translation(in: self.webView)
-            self.scrollViewContainer.propogate(scrolling: CGPoint(x: 0, y: self.gestureInitialOffset.y - translation.y),
+            self.scrollViewContainer.propagate(scrolling: CGPoint(x: 0, y: self.gestureInitialOffset.y - translation.y),
                                                boundsTouchedHandler: { /* nothing */ })
             self.gestureInitialOffset = translation
         }
@@ -358,7 +358,7 @@ extension NewMessageBodyViewController: UIScrollViewDelegate {
 
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         let united = CGPoint(x: 0, y: self.lastContentOffset.y + self.scrollViewContainer.scroller.contentOffset.y)
-        self.scrollViewContainer.propogate(scrolling: self.lastContentOffset, boundsTouchedHandler: {
+        self.scrollViewContainer.propagate(scrolling: self.lastContentOffset, boundsTouchedHandler: {
             /* Sometimes offset after zoom can exceed tableView's heigth
                 (usually when pinch center is close to the bottom of the cell
                 and cell after zoom should be much bigger than before).

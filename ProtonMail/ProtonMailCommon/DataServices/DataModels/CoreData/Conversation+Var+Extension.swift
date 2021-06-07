@@ -45,6 +45,18 @@ extension Conversation {
         self.labels.compactMap({ $0 as? ContextLabel }).map({ $0.labelID })
     }
 
+    func firstValidFolder() -> String? {
+        for labelId in getLabelIds() {
+            if !labelId.preg_match ("(?!^\\d+$)^.+$") {
+                if labelId != "1", labelId != "2", labelId != "10", labelId != "5" {
+                    return labelId
+                }
+            }
+        }
+        
+        return nil
+    }
+
     func getFolderIcons(customFolderLabels: [Label]) -> [UIImage] {
         let labelIds = getLabelIds()
         let standardFolders: [String] = [

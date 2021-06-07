@@ -26,7 +26,7 @@ import SideMenuSwift
 import ProtonCore_AccountSwitcher
 import ProtonCore_Networking
 
-final class MenuCoordinator: DefaultCoordinator {
+final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     
     enum Setup: String {
         case switchUser = "USER"
@@ -50,7 +50,8 @@ final class MenuCoordinator: DefaultCoordinator {
     private let coreDataService: CoreDataService
     private let lastUpdatedStore:LastUpdatedStoreProtocol
     private let usersManager: UsersManager
-    
+    var pendingActionAfterDismissal: (() -> Void)?
+
     // todo: that would be better if vc is protocol
     init(services: ServiceFactory,
          vmService: ViewModelService,
@@ -410,7 +411,8 @@ extension MenuCoordinator {
         let vc = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: self.services,
                                                viewController: vc,
-                                               viewModel: vm)
+                                               viewModel: vm,
+                                               coordinatorDismissalObserver: self)
         coordinator.start()
         guard let sideMenu = self.viewController?.sideMenuController,
               let nvc = vc.navigationController else { return }

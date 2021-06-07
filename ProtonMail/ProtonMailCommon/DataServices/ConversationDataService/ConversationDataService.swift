@@ -31,6 +31,7 @@ enum ReadState {
 
 enum ConversationError: Error {
     case emptyConversationIDS
+    case emptyLabel
 }
 
 protocol ConversationProvider: AnyObject {

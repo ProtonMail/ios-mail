@@ -24,7 +24,7 @@ import QuickLook
 import SafariServices
 import UIKit
 
-class SingleMessageCoordinator: NSObject {
+class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 
     weak var viewController: SingleMessageViewController?
 
@@ -32,6 +32,7 @@ class SingleMessageCoordinator: NSObject {
     private let message: Message
     private let user: UserManager
     private let navigationController: UINavigationController
+    var pendingActionAfterDismissal: (() -> Void)?
 
     init(navigationController: UINavigationController, labelId: String, message: Message, user: UserManager) {
         self.navigationController = navigationController
@@ -41,8 +42,8 @@ class SingleMessageCoordinator: NSObject {
     }
 
     func start() {
-        let singleMessageViewModelFacory = SingleMessageViewModelFactory()
-        let viewModel = singleMessageViewModelFacory.createViewModel(labelId: labelId, message: message, user: user)
+        let singleMessageViewModelFactory = SingleMessageViewModelFactory()
+        let viewModel = singleMessageViewModelFactory.createViewModel(labelId: labelId, message: message, user: user)
         let viewController = SingleMessageViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
         navigationController.pushViewController(viewController, animated: true)
@@ -61,14 +62,14 @@ class SingleMessageCoordinator: NSObject {
         case .reply, .replyAll, .forward:
             presentCompose(action: navigationAction)
         case .attachmentList:
-            presentAttachmnetListView()
+            presentAttachmentListView()
         case .url(url: let url):
             presentWebView(url: url)
         case .mailToUrl(let url):
             presentCompose(mailToURL: url)
         case .inAppSafari(url: let url):
             presentInAppSafari(url: url)
-        case .addNewFoler:
+        case .addNewFolder:
             presentCreateFolder(type: .folder)
         case .addNewLabel:
             presentCreateFolder(type: .label)
@@ -150,7 +151,7 @@ class SingleMessageCoordinator: NSObject {
 
     }
 
-    private func presentAttachmnetListView() {
+    private func presentAttachmentListView() {
         let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
             .map(AttachmentNormal.init) + (message.tempAtts ?? [])
 
@@ -187,16 +188,16 @@ class SingleMessageCoordinator: NSObject {
                                                     user: user,
                                                     coreDataService: sharedServices.get(by: CoreDataService.self))
 
-        mailToData.to.forEach { receipient in
-            viewModel.addToContacts(ContactVO(name: receipient, email: receipient))
+        mailToData.to.forEach { recipient in
+            viewModel.addToContacts(ContactVO(name: recipient, email: recipient))
         }
 
-        mailToData.cc.forEach { receipient in
-            viewModel.addCcContacts(ContactVO(name: receipient, email: receipient))
+        mailToData.cc.forEach { recipient in
+            viewModel.addCcContacts(ContactVO(name: recipient, email: recipient))
         }
 
-        mailToData.bcc.forEach { receipient in
-            viewModel.addBccContacts(ContactVO(name: receipient, email: receipient))
+        mailToData.bcc.forEach { recipient in
+            viewModel.addBccContacts(ContactVO(name: recipient, email: recipient))
         }
 
         if let subject = mailToData.subject {
@@ -217,7 +218,8 @@ class SingleMessageCoordinator: NSObject {
         let viewController = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: sharedServices,
                                                viewController: viewController,
-                                               viewModel: viewModel)
+                                               viewModel: viewModel,
+                                               coordinatorDismissalObserver: self)
         coordinator.start()
         if let navigation = viewController.navigationController {
             self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)

@@ -22,10 +22,10 @@
 
 import Foundation
 
-protocol MoveToActionSheetProtocol {
+protocol MoveToActionSheetProtocol: AnyObject {
     var user: UserManager { get }
     var labelId: String { get }
-    var selectedMoveToFolder: MenuLabel? { get }
+    var selectedMoveToFolder: MenuLabel? { get set }
 
     func handleMoveToAction(messages: [Message])
     func handleMoveToAction(conversations: [Conversation])
@@ -54,5 +54,9 @@ extension MoveToActionSheetProtocol {
         let datas: [MenuLabel] = Array(labels: folders, previousRawData: [])
         let (_, folderItems) = datas.sortoutData()
         return folderItems
+    }
+
+    func updateSelectedMoveToDestination(menuLabel: MenuLabel?, isOn: Bool) {
+        selectedMoveToFolder = isOn ? menuLabel : nil
     }
 }

@@ -133,10 +133,21 @@ extension ConversationDataService {
             return
         }
         let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs), in: coreDataService.operationContext)
-        unlabel(conversationIDs: conversations.map(\.conversationID), as: previousFolderLabel) { [weak self] result in
+        let labelAction = { [weak self] in
+            guard !nextFolderLabel.isEmpty else {
+                completion?(.failure(ConversationError.emptyLabel))
+                return
+            }
+            self?.label(conversationIDs: conversations.map(\.conversationID), as: nextFolderLabel, completion: completion)
+        }
+        guard !previousFolderLabel.isEmpty else {
+            labelAction()
+            return
+        }
+        unlabel(conversationIDs: conversations.map(\.conversationID), as: previousFolderLabel) { result in
             switch result {
             case .success:
-                self?.label(conversationIDs: conversations.map(\.conversationID), as: nextFolderLabel, completion: nil)
+                labelAction()
             case .failure:
                 break
             }
