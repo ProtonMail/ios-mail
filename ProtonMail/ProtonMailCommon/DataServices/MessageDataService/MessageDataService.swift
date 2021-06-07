@@ -183,10 +183,12 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - labelID: labelid, location id, forlder id
     ///   - time: the latest update time
     ///   - cleanContact: Clean contact data or not
+    ///   - removeAllDraft: Remove all draft or not, including sending draft...etc
     ///   - completion: async complete handler
     func fetchMessagesWithReset(byLabel labelID: String,
                                 time: Int,
                                 cleanContact: Bool = true,
+                                removeAllDraft: Bool = false,
                                 completion: CompletionBlock?) {
         self.queueManager?.queue {
             let getLatestEventID = EventLatestIDRequest()
@@ -208,7 +210,7 @@ class MessageDataService : Service, HasLocalStorage {
                     }
                 }
                 
-                self.cleanMessage().then { (_) -> Promise<Void> in
+                self.cleanMessage(removeAllDraft: removeAllDraft).then { (_) -> Promise<Void> in
                     self.lastUpdatedStore.removeUpdateTime(by: self.userID,
                                                            type: .singleMessage)
                     self.lastUpdatedStore.removeUpdateTime(by: self.userID,
