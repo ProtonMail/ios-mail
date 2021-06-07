@@ -29,7 +29,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
     let viewModel: SingleMessageViewModel
 
     private lazy var navigationTitleLabel = SingleMessageNavigationHeaderView()
-    private var contentOffsetToPerserve: CGPoint = .zero
+    private var contentOffsetToPreserve: CGPoint = .zero
 
     private let coordinator: SingleMessageCoordinator
     private lazy var starBarButton = UIBarButtonItem(
@@ -511,7 +511,10 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
             .present(on: self.navigationController ?? self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
-                        self?.coordinator.navigate(to: .addNewFoler)
+                        self?.coordinator.pendingActionAfterDismissal = { [weak self] in
+                            self?.showLabelAsActionSheet()
+                        }
+                        self?.coordinator.navigate(to: .addNewLabel)
                      },
                      selected: { [weak self] menuLabel, isOn in
                         self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
@@ -557,7 +560,10 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
-                        self?.coordinator.navigate(to: .addNewFoler)
+                        self?.coordinator.pendingActionAfterDismissal = { [weak self] in
+                            self?.showMoveToActionSheet()
+                        }
+                        self?.coordinator.navigate(to: .addNewFolder)
                      },
                      selected: { [weak self] menuLabel, isOn in
                         self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
@@ -601,7 +607,7 @@ extension SingleMessageViewController: ScrollableContainer {
         return self.customView.scrollView
     }
 
-    func propogate(scrolling delta: CGPoint, boundsTouchedHandler: () -> Void) {
+    func propagate(scrolling delta: CGPoint, boundsTouchedHandler: () -> Void) {
         let scrollView = customView.scrollView
         UIView.animate(withDuration: 0.001) { // hackish way to show scrolling indicators on tableView
             scrollView.flashScrollIndicators()
@@ -624,12 +630,12 @@ extension SingleMessageViewController: ScrollableContainer {
 
     @objc
     func saveOffset() {
-        self.contentOffsetToPerserve = scroller.contentOffset
+        self.contentOffsetToPreserve = scroller.contentOffset
     }
 
     @objc
     func restoreOffset() {
-        scroller.setContentOffset(self.contentOffsetToPerserve, animated: false)
+        scroller.setContentOffset(self.contentOffsetToPreserve, animated: false)
     }
 }
 

@@ -176,7 +176,7 @@ extension Data {
         var firstError : Error?
         for key in keys {
             do {
-                if let token = key.token, let signature = key.signature { //have both means new schema. key is
+                if let token = key.token, let _ = key.signature { //have both means new schema. key is
                     if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
 //                        PMLog.D(signature)
                         return try Crypto().decryptAttachment(keyPacket: keyPackage,
@@ -249,7 +249,7 @@ extension Data {
         var firstError : Error?
         for key in keys {
             do {
-                if let token = key.token, let signature = key.signature { //have both means new schema. key is
+                if let token = key.token, let _ = key.signature { //have both means new schema. key is
                     if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
 //                        PMLog.D(signature)
                         return try Crypto().getSession(keyPacket: self, privateKey: key.privateKey, passphrase: plainToken)

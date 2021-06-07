@@ -1,6 +1,6 @@
 class ConversationMessageViewModel {
 
-    private let message: Message
+    let message: Message
 
     var state: ConversationMessageState
 

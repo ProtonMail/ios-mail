@@ -22,10 +22,10 @@
 
 import ProtonCore_UIFoundations
 
-protocol LabelAsActionSheetProtocol {
+protocol LabelAsActionSheetProtocol: AnyObject {
     var user: UserManager { get }
     var labelId: String { get }
-    var selectedLabelAsLabels: Set<LabelLocation> { get }
+    var selectedLabelAsLabels: Set<LabelLocation> { get set }
 
     func handleLabelAsAction(messages: [Message], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType])
     func handleLabelAsAction(conversations: [Conversation], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType])
@@ -40,5 +40,17 @@ extension LabelAsActionSheetProtocol {
         let datas: [MenuLabel] = Array(labels: folders, previousRawData: [])
         let (labelItems, _) = datas.sortoutData()
         return labelItems
+    }
+
+    func updateSelectedLabelAsDestination(menuLabel: MenuLabel?, isOn: Bool) {
+        if let label = menuLabel {
+            if isOn {
+                selectedLabelAsLabels.insert(label.location)
+            } else {
+                selectedLabelAsLabels.remove(label.location)
+            }
+        } else {
+            selectedLabelAsLabels.removeAll()
+        }
     }
 }

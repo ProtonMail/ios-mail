@@ -32,6 +32,6 @@ enum SingleMessageNavigationAction: Equatable {
     case url(url: URL)
     case inAppSafari(url: URL)
     case mailToUrl(url: URL)
-    case addNewFoler
+    case addNewFolder
     case addNewLabel
 }

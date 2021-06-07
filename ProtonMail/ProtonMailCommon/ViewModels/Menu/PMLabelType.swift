@@ -26,5 +26,5 @@ enum PMLabelType: Int {
     case label = 1
     case contactGroup = 2
     case folder = 3
-    case unknow = -999
+    case unknown = -999
 }

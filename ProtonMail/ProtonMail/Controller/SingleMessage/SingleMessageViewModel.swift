@@ -57,7 +57,7 @@ class SingleMessageViewModel {
     private(set) lazy var userActivity: NSUserActivity = .messageDetailsActivity(messageId: message.messageID)
 
     private let messageService: MessageDataService
-    private var isDetailedDownloaded: Bool?
+    private var isDetailedDownloaded: Bool = false
     let user: UserManager
     let labelId: String
     private let messageObserver: MessageObserver
@@ -68,8 +68,8 @@ class SingleMessageViewModel {
     var embedExpandedHeader: ((ExpandedHeaderViewModel) -> Void)?
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
 
-    private(set) var selectedMoveToFolder: MenuLabel?
-    private(set) var selectedLabelAsLabels: Set<LabelLocation> = Set()
+    var selectedMoveToFolder: MenuLabel?
+    var selectedLabelAsLabels: Set<LabelLocation> = Set()
     private let internetStatusProvider: InternetConnectionStatusProvider
 
     private lazy var dateFormatter: DateFormatter = {
@@ -279,10 +279,6 @@ extension SingleMessageViewModel: MoveToActionSheetProtocol {
     func handleMoveToAction(conversations: [Conversation]) {
         fatalError("Not implemented")
     }
-
-    func updateSelectedMoveToDestination(menuLabel: MenuLabel?, isOn: Bool) {
-        selectedMoveToFolder = isOn ? menuLabel : nil
-    }
 }
 
 // MARK: - Label as functions
@@ -324,18 +320,6 @@ extension SingleMessageViewModel: LabelAsActionSheetProtocol {
                              shouldArchive: Bool,
                              currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
         fatalError("Not implemented")
-    }
-
-    func updateSelectedLabelAsDestination(menuLabel: MenuLabel?, isOn: Bool) {
-        if let label = menuLabel {
-            if isOn {
-                selectedLabelAsLabels.insert(label.location)
-            } else {
-                selectedLabelAsLabels.remove(label.location)
-            }
-        } else {
-            selectedLabelAsLabels.removeAll()
-        }
     }
 }
 

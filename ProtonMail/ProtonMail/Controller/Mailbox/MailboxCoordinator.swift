@@ -24,7 +24,7 @@
 import Foundation
 import SideMenuSwift
 
-class MailboxCoordinator : DefaultCoordinator {
+class MailboxCoordinator : DefaultCoordinator, CoordinatorDismissalObserver {
     typealias VC = MailboxViewController
     
     let viewModel : MailboxViewModel
@@ -218,17 +218,12 @@ class MailboxCoordinator : DefaultCoordinator {
         let coordinator = LabelEditCoordinator(services: self.services,
                                                viewController: vc,
                                                viewModel: vm,
-                                               mailboxCoordinator: self)
+                                               coordinatorDismissalObserver: self)
         coordinator.start()
         // We want to call back when navController is dismissed to show sheet again
         if let navigation = vc.navigationController {
             viewController?.navigationController?.present(navigation, animated: true, completion: nil)
         }
-    }
-
-    func labelEditCoordinatorDidDismiss() {
-        pendingActionAfterDismissal?()
-        pendingActionAfterDismissal = nil
     }
 
     private func presentSingleMessage() {
@@ -250,6 +245,7 @@ class MailboxCoordinator : DefaultCoordinator {
               let conversation = viewModel.itemOfConversation(index: selectedRowIndexPath) else { return }
         let coordinator = ConversationCoordinator(
             navigationController: navigationController,
+            labelId: viewModel.labelId,
             conversation: conversation,
             user: self.viewModel.user
         )

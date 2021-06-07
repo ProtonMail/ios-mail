@@ -21,13 +21,14 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-final class LabelManagerCoordinator: DefaultCoordinator {
+final class LabelManagerCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     var services: ServiceFactory
 
     typealias VC = LabelManagerViewController
 
     weak var viewController: VC?
     private weak var viewModel: LabelManagerProtocol?
+    var pendingActionAfterDismissal: (() -> Void)?
 
     init(services: ServiceFactory,
          viewController: LabelManagerViewController,
@@ -52,7 +53,8 @@ final class LabelManagerCoordinator: DefaultCoordinator {
         let labelVC = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: self.services,
                                                viewController: labelVC,
-                                               viewModel: labelVM)
+                                               viewModel: labelVM,
+                                               coordinatorDismissalObserver: self)
         coordinator.start()
         guard let nvc = labelVC.navigationController else { return }
         self.viewController?.navigationController?.present(nvc, animated: true, completion: nil)
