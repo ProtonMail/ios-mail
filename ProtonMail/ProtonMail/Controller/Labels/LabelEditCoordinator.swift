@@ -21,6 +21,20 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+
+protocol CoordinatorDismissalObserver: AnyObject {
+    var pendingActionAfterDismissal: (() -> Void)? { get set }
+
+    func labelEditCoordinatorDidDismiss()
+}
+
+extension CoordinatorDismissalObserver {
+    func labelEditCoordinatorDidDismiss() {
+        pendingActionAfterDismissal?()
+        pendingActionAfterDismissal = nil
+    }
+}
+
 final class LabelEditCoordinator: DefaultCoordinator {
     var services: ServiceFactory
 
@@ -28,16 +42,16 @@ final class LabelEditCoordinator: DefaultCoordinator {
 
     weak var viewController: VC?
     private weak var viewModel: LabelEditVMProtocol?
-    private weak var mailboxCoordinator: MailboxCoordinator?
+    private weak var coordinatorDismissalObserver: CoordinatorDismissalObserver?
 
     init(services: ServiceFactory,
          viewController: LabelEditViewController,
          viewModel: LabelEditVMProtocol,
-         mailboxCoordinator: MailboxCoordinator? = nil) {
+         coordinatorDismissalObserver: CoordinatorDismissalObserver) {
         self.services = services
         self.viewController = viewController
         self.viewModel = viewModel
-        self.mailboxCoordinator = mailboxCoordinator
+        self.coordinatorDismissalObserver = coordinatorDismissalObserver
     }
 
     func start() {
@@ -63,7 +77,7 @@ final class LabelEditCoordinator: DefaultCoordinator {
     }
 
     func viewControllerDidDismiss() {
-        mailboxCoordinator?.labelEditCoordinatorDidDismiss()
+        coordinatorDismissalObserver?.labelEditCoordinatorDidDismiss()
     }
 }
 

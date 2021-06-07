@@ -24,7 +24,7 @@
 import UIKit
 
 protocol ScrollableContainer: AnyObject {
-    func propogate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
+    func propagate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
     var scroller: UIScrollView { get }
     
     func saveOffset()
@@ -125,7 +125,7 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
         self.tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: true)
     }
     
-    func propogate(scrolling delta: CGPoint, boundsTouchedHandler: ()->Void) {
+    func propagate(scrolling delta: CGPoint, boundsTouchedHandler: ()->Void) {
         UIView.animate(withDuration: 0.001) { // hackish way to show scrolling indicators on tableView
             self.tableView.flashScrollIndicators()
         }

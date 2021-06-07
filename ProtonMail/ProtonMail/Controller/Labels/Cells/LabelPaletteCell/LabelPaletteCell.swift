@@ -34,7 +34,7 @@ final class LabelPaletteCell: UITableViewCell {
     private weak var delegate: LabelPaletteCellDelegate?
     private var colors: [String] = []
     private var selectedColor: String = ""
-    private var type: PMLabelType = .unknow
+    private var type: PMLabelType = .unknown
     private let itemSize = CGSize(width: 48, height: 48)
 
     override func awakeFromNib() {

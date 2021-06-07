@@ -22,7 +22,7 @@
 
 import ProtonCore_UIFoundations
 
-// MARK: - Label as functinos
+// MARK: - Label as functions
 extension MailboxViewModel: LabelAsActionSheetProtocol {
     func handleLabelAsAction(messages: [Message], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
         for (label, markType) in currentOptionsStatus {
@@ -74,18 +74,6 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
         if shouldArchive {
             conversationService.move(conversationIDs: conversations.map(\.conversationID), from: "",
                                      to: Message.Location.archive.rawValue) { _ in }
-        }
-    }
-
-    func updateSelectedLabelAsDestination(menuLabel: MenuLabel?, isOn: Bool) {
-        if let label = menuLabel {
-            if isOn {
-                selectedLabelAsLabels.insert(label.location)
-            } else {
-                selectedLabelAsLabels.remove(label.location)
-            }
-        } else {
-            selectedLabelAsLabels.removeAll()
         }
     }
 }

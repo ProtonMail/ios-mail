@@ -43,8 +43,4 @@ extension MailboxViewModel: MoveToActionSheetProtocol {
         */
         selectedMoveToFolder = nil
     }
-
-    func updateSelectedMoveToDestination(menuLabel: MenuLabel?, isOn: Bool) {
-        selectedMoveToFolder = isOn ? menuLabel : nil
-    }
 }

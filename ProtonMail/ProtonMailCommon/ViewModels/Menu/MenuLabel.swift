@@ -85,7 +85,7 @@ final class MenuLabel: NSObject {
         self.parentID = parentID
         self.textColor = textColor
         self.iconColor = iconColor
-        self.type = PMLabelType(rawValue: type) ?? .unknow
+        self.type = PMLabelType(rawValue: type) ?? .unknown
         self.order = order
         self.notify = notify
     }
