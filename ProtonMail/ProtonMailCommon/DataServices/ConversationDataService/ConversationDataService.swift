@@ -97,24 +97,18 @@ extension ConversationDataService {
         context.performAndWait {
             let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
             conversationFetch.predicate = NSPredicate(format: "%K == %@", Conversation.Attributes.userID, self.userID)
-            let conversationRequest = NSBatchDeleteRequest(fetchRequest: conversationFetch)
-            conversationRequest.resultType = .resultTypeObjectIDs
-
-            if let conversationResult = try? context.execute(conversationRequest) as? NSBatchDeleteResult,
-               let objectIdArray = conversationResult.result as? [NSManagedObjectID] {
-                let changes = [NSDeletedObjectsKey: objectIdArray]
-                NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+            if let conversations = try? context.fetch(conversationFetch) as? [NSManagedObject] {
+                conversations.forEach{ context.delete($0) }
             }
 
             let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
             contextLabelFetch.predicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, self.userID)
-            let contextLabelRequest = NSBatchDeleteRequest(fetchRequest: contextLabelFetch)
-            contextLabelRequest.resultType = .resultTypeObjectIDs
+            if let contextlabels = try? context.fetch(contextLabelFetch) as? [NSManagedObject] {
+                contextlabels.forEach{ context.delete($0) }
+            }
 
-            if let contextLabelResult = try? context.execute(contextLabelRequest) as? NSBatchDeleteResult,
-               let objectIdArray = contextLabelResult.result as? [NSManagedObjectID] {
-                let changes = [NSDeletedObjectsKey: objectIdArray]
-                NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(error)")
             }
         }
     }
