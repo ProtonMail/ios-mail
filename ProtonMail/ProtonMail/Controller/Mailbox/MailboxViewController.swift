@@ -961,7 +961,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 }
             } else {// this new
                 if !viewModel.isEventIDValid() { //if event id is not valid reset
-                    viewModel.fetchDataWithReset(time: 0) { [weak self] task, res, error in
+                    viewModel.fetchDataWithReset(time: 0, cleanContact: false, removeAllDraft: false) { [weak self] task, res, error in
                         self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: handleNoResultLabel, completeIsFetch: completeIsFetch)
                     }
                 }
@@ -981,7 +981,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     private func forceRefreshAllMessages() {
         stopAutoFetch()
-        viewModel.fetchDataOnlyWithReset(time: 0) { [weak self] task, res, error in
+        viewModel.fetchDataWithReset(time: 0, cleanContact: true, removeAllDraft: false) { [weak self] task, res, error in
             self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: true, completeIsFetch: nil)
             self?.startAutoFetch()
         }

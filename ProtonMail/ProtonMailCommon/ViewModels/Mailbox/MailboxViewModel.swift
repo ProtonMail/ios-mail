@@ -570,16 +570,6 @@ class MailboxViewModel: StorageLimit {
         conversationService.deleteConversations(with: conversationIDs, labelID: labelID, completion: completion)
     }
     
-    /// fetch messages and reset events
-    ///
-    /// - Parameters:
-    ///   - time: the latest mailbox cached time
-    ///   - cleanContact: Clean contact data or not
-    ///   - completion: aync complete handler
-    func fetchMessageWithReset(time: Int, cleanContact: Bool = true, completion: CompletionBlock?) {
-        messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: cleanContact, completion: completion)
-    }
-    
     func isEventIDValid() -> Bool {
         return messageService.isEventIDValid(context: self.coreDataService.mainContext)
     }
@@ -871,26 +861,10 @@ extension MailboxViewModel {
         }
     }
 
-    func fetchDataWithReset(time: Int, completion: CompletionBlock?) {
+    func fetchDataWithReset(time: Int, cleanContact: Bool, removeAllDraft: Bool, completion: CompletionBlock?) {
         switch viewMode {
         case .singleMessage:
-            messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
-        case .conversation:
-            conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: false, shouldReset: true) { result in
-                switch result {
-                case .success:
-                    completion?(nil, nil, nil)
-                case .failure(let error):
-                    completion?(nil, nil, error as NSError)
-                }
-            }
-        }
-    }
-
-    func fetchDataOnlyWithReset(time: Int, completion: CompletionBlock?) {
-        switch viewMode {
-        case .singleMessage:
-            messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: false, completion: completion)
+            messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: cleanContact, removeAllDraft: removeAllDraft, completion: completion)
         case .conversation:
             conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: false, shouldReset: true) { result in
                 switch result {
