@@ -52,6 +52,11 @@ final class MenuViewController: UIViewController, AccessibleView {
         self.viewInit()
         
         generateAccessibilityIdentifiers()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.appDidEnterBackground),
+                                               name: UIApplication.didEnterBackgroundNotification,
+                                               object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -162,6 +167,13 @@ extension MenuViewController {
     private func showTempMsg(msg: String) {
         msg.alertToast()
     }
+
+    @objc
+    func appDidEnterBackground() {
+        if let sideMenu = self.sideMenuController {
+            AccountSwitcher.dismiss(from: sideMenu)
+        }
+    }
 }
 
 // MARK: MenuUIProtocol
@@ -227,7 +239,9 @@ extension MenuViewController: MenuUIProtocol {
     }
     
     func navigateTo(label: MenuLabel) {
-        AccountSwitcher.dismiss(from: self)
+        if let sideMenu = self.sideMenuController {
+            AccountSwitcher.dismiss(from: sideMenu)
+        }
         self.coordinator.go(to: label)
     }
     
