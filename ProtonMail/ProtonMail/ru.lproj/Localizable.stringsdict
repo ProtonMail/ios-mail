@@ -62,5 +62,21 @@
 			<string>%u сообщений</string>
 		</dict>
 	</dict>
+	<key>general_conversation</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CONVERSATION@</string>
+		<key>CONVERSATION</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u conversation</string>
+			<key>other</key>
+			<string>%u conversations</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
