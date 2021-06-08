@@ -34,6 +34,22 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
+	<key>general_conversation</key>
+	<dict>
+		<key>CONVERSATION</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u conversación</string>
+			<key>other</key>
+			<string>%u conversaciones</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CONVERSATION@</string>
+	</dict>
 	<key>general_message</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

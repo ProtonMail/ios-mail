@@ -41,7 +41,7 @@
 "%d messages" = "%d messages";
 
 /* minute */
-"%d min" = "%d min";
+"%d min" = "%d мин";
 
 /* auto lock time format */
 "%d Minute" = "%d минута";
@@ -347,7 +347,7 @@
 "Auto show remote content" = "Auto show remote content";
 
 /* settings general section title */
-"Auto-load embedded images" = "Auto-load embedded images";
+"Auto-load embedded images" = "Автозагрузка встроенных изображений";
 
 /* section title in settings */
 "Auto-lock" = "Автоблокировка";
@@ -547,7 +547,7 @@
 "Checking ...." = "Проверка...";
 
 /* loading message */
-"Checking…" = "Checking…";
+"Checking…" = "Проверка…";
 
 /* place holder */
 "Choose a Password" = "Задайте пароль";
@@ -641,10 +641,10 @@
 "Continue and Don't ask again" = "Продолжить и больше не спрашивать";
 
 /* No comment provided by engineer. */
-"Conversation" = "Conversation";
+"Conversation" = "Цепочка писем";
 
 /* No comment provided by engineer. */
-"Conversation mode" = "Conversation mode";
+"Conversation mode" = "Режим диалога";
 
 /* Title */
 "Copy address" = "Копировать адрес";
@@ -938,7 +938,7 @@
 "Empty Label" = "Очистить ярлык";
 
 /* No comment provided by engineer. */
-"Enable conversations" = "Enable conversations";
+"Enable conversations" = "Включить цепочки";
 
 /* Title */
 "Enable email notices" = "Enable email notices";
@@ -1058,7 +1058,7 @@
 "Every time enter app" = "При каждом входе в приложение";
 
 /* alert title */
-"Expiration not supported" = "Expiration not supported";
+"Expiration not supported" = "Истечение срока действия не поддерживается";
 
 /* VoiceOver: email can expire */
 "Expires" = "Истекает";
@@ -1147,6 +1147,9 @@
 
 /* Title */
 "General Settings" = "Основные настройки";
+
+/* conversation number */
+"general_conversation" = "general_conversation";
 
 /* message number */
 "general_message" = "general_message";
@@ -1334,7 +1337,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Невозможно переключиться на %@ через наше приложение iOS.";
 
 /* The string used to show in the plan update page when the user not able to upgrade the account */
-"It's not possible to switch to another plan within the app. %1$@" = "It's not possible to switch to another plan within the app. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Невозможно перейти на другой план в приложении. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Сообщайте мне о новых функциях";
@@ -1867,7 +1870,7 @@
 "PIN/Touch ID" = "PIN / Touch ID";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
+"Plans can be edited on the web version." = "Планы можно редактировать в веб-версии.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Пожалуйста, добавьте пароль для следующих получателей.";
@@ -2128,7 +2131,7 @@
 "RESET MAILBOX PASSWORD" = "СБРОСИТЬ ПАРОЛЬ ПОЧТОВОГО ЯЩИКА";
 
 /* Title */
-"Resetting message cache…" = "Resetting message cache…";
+"Resetting message cache…" = "Сброс кэша сообщений…";
 
 /* Action */
 "Retry" = "Повторить";
@@ -2474,7 +2477,7 @@
 "The new password does not match." = "Новый пароль и его подтверждение не совпадают.";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+"The new password needs to be at least 8 characters long" = "Длина пароля должна быть не менее 8 символов";
 
 /* (No Comment) */
 "The new password not match" = "Пароли не совпадают";
@@ -2504,7 +2507,7 @@
 "The request timed out." = "Истекло время ожидания запроса.";
 
 /* Description */
-"The size limit for attachments is 25 MB." = "The size limit for attachments is 25 MB.";
+"The size limit for attachments is 25 MB." = "Максимальный размер вложений - 25 МБ.";
 
 /* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "Общий объём вложений не может превышать 25МБ";

@@ -2,20 +2,20 @@
 "CFBundleDisplayName" = "ProtonMail";
 
 /* Privacy - Media Library Usage Description */
-"NSAppleMusicUsageDescription" = "Required for attaching media to the email.";
+"NSAppleMusicUsageDescription" = "Necessário para anexar multimédia ao correio.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Required for attaching photos to the email.";
+"NSCameraUsageDescription" = "Necessário para anexar fotografias ao correio.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Used for accessing email addresses for contacts saved on the device so they can be used when composing a message or when manually uploading the device contacts to your account. Contact information is not uploaded to our servers without an explicit action to do so.";
+"NSContactsUsageDescription" = "Usado para aceder a endereços de email de contactos no dispositivo, para os disponibilizar ao compor uma mensagem ou ao enviar manualmente os contactos do dispositivo para a sua conta. A informação do contacto não é enviada aos nossos servidores sem que tome uma acção explícita para tal.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Allows you quick and secure to unlock your application.";
+"NSFaceIDUsageDescription" = "Permite desbloquear a aplicação de forma rápida e segura.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Required for saving image attachments to photo library.";
+"NSPhotoLibraryAddUsageDescription" = "Necessário para gravar imagens anexadas na biblioteca de fotografias.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Required for attaching photos to the email.";
+"NSPhotoLibraryUsageDescription" = "Necessário para anexar fotografias ao correio.";
 

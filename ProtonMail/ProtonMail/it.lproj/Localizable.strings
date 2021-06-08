@@ -833,7 +833,7 @@
 "Don't Show Again" = "Non visualizzare più";
 
 /* Done action */
-"Done" = "Completato";
+"Done" = "Fatto";
 
 /* VoiceOver action description */
 "Double tap to setup" = "Doppio tocco per configurare";
@@ -1147,6 +1147,9 @@
 
 /* Title */
 "General Settings" = "Impostazioni generali";
+
+/* conversation number */
+"general_conversation" = "general_conversation";
 
 /* message number */
 "general_message" = "general_message";
@@ -2290,7 +2293,7 @@
 "Signed in as %@" = "Acceduto come %@";
 
 /* Alert when auth token is revoked and switch to another */
-"Signed out from %@ and signed in with %@" = "Signed out from %1$@ and signed in with %2$@";
+"Signed out from %@ and signed in with %@" = "Disconnesso da %1$@ e connesso con %2$@";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Posticipa";
@@ -2480,7 +2483,7 @@
 "The new password not match" = "Le password non corrispondono";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your sign-in password if you forget it." = "The optional recovery email address allows you to reset your sign-in password if you forget it.";
+"The optional recovery email address allows you to reset your sign-in password if you forget it." = "L'indirizzo email di recupero opzionale ti consente di reimpostare la password di accesso se la dimentichi.";
 
 /* update password error */
 "The Password is wrong." = "La password è sbagliata.";
@@ -2807,7 +2810,7 @@
 "User name invalid" = "Nome utente non valido";
 
 /* Title */
-"USER SIGN-IN" = "USER SIGN-IN";
+"USER SIGN-IN" = "ACCESSO UTENTE";
 
 /* *
  *  Login View */

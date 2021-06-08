@@ -1107,7 +1107,7 @@
 "For individuals that need more capacity, customization and advanced features" = "適合需要更多儲存空間、自訂化及進階功能的個人";
 
 /* Buy button second line */
-"for one year" = "1年";
+"for one year" = "為期一年";
 
 /* Service Plan description */
 "For organizations that need multi-user support and additional productivity features" = "適合需要多使用者支援和額外生產力功能的組織";
@@ -1147,6 +1147,9 @@
 
 /* Title */
 "General Settings" = "一般設定";
+
+/* conversation number */
+"general_conversation" = "general_conversation";
 
 /* message number */
 "general_message" = "general_message";
@@ -1969,7 +1972,7 @@
 "Privacy" = "隱私";
 
 /* agree check box privacy */
-"privacy policy." = "隱私政策。";
+"privacy policy." = "隱私權政策。";
 
 /* Local notification title */
 "Problem sending message" = "傳送訊息時發生錯誤";
@@ -2838,7 +2841,7 @@
 "View HTML" = "以HTML瀏覽";
 
 /* Action */
-"View Plans" = "檢視計畫";
+"View Plans" = "檢視方案";
 
 /* Title */
 "Warning" = "警告";
