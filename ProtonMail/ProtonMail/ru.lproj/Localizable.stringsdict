@@ -11,13 +11,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d mins</string>
+			<string>%d мин</string>
 			<key>many</key>
-			<string>%d mins</string>
+			<string>%d мин</string>
 			<key>one</key>
-			<string>%d min</string>
+			<string>%d мин</string>
 			<key>other</key>
-			<string>%d mins</string>
+			<string>%d мин</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -41,6 +41,26 @@
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
+	</dict>
+	<key>general_conversation</key>
+	<dict>
+		<key>CONVERSATION</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u conversations</string>
+			<key>many</key>
+			<string>%u conversations</string>
+			<key>one</key>
+			<string>%u conversation</string>
+			<key>other</key>
+			<string>%u conversations</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CONVERSATION@</string>
 	</dict>
 	<key>general_message</key>
 	<dict>

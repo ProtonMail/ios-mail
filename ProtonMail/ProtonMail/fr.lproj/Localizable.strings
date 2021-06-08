@@ -1148,6 +1148,9 @@
 /* Title */
 "General Settings" = "Paramètres généraux";
 
+/* conversation number */
+"general_conversation" = "general_conversation";
+
 /* message number */
 "general_message" = "message_général";
 

@@ -448,7 +448,7 @@
 "Can't get a Moduls ID!" = "Fehler beim Laden der Modulkennung!";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus ID!" = "Can't get a Modulus ID!";
+"Can't get a Modulus ID!" = "Fehler beim Laden der Modulkennung!";
 
 /* update password error = typo:Modulus */
 "Can't get a Modulus!" = "Kann keinen Modulus bekommen!";
@@ -1147,6 +1147,9 @@
 
 /* Title */
 "General Settings" = "Allgemeine Einstellungen";
+
+/* conversation number */
+"general_conversation" = "general_conversation";
 
 /* message number */
 "general_message" = "allgemeine Nachricht";

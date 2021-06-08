@@ -1148,6 +1148,9 @@
 /* Title */
 "General Settings" = "Configuración general";
 
+/* conversation number */
+"general_conversation" = "general_conversation";
+
 /* message number */
 "general_message" = "general_message";
 
@@ -1876,7 +1879,7 @@
 "Please check your cell phone for the verification code." = "Por favor revisa tu teléfono para obtener el código de verificación.";
 
 /* error message */
-"Please check your email for the verification code." = "Por favor revisa tu correo electrónico para obtener el código de verificación.";
+"Please check your email for the verification code." = "Por favor, revisa tu correo electrónico para obtener el código de verificación.";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Por favor, conéctate y vuelve a intentarlo";
@@ -1888,7 +1891,7 @@
 "Please input a valid cell phone number." = "Introduce un número de teléfono válido.";
 
 /* error message */
-"Please input a valid email address." = "Por favor, introduce una dirección de correo válida.";
+"Please input a valid email address." = "Por favor, introduce una dirección de correo electrónico válida.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Por favor, asegúrate de que tu conexión a internet funciona.";
@@ -2110,7 +2113,7 @@
 "ReplyAll" = "Responder a todos";
 
 /* menu title */
-"Report a bug" = "Notificar un fallo";
+"Report a bug" = "Notificar un error";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Notificar suplantación de identidad";

@@ -1148,6 +1148,9 @@
 /* Title */
 "General Settings" = "Opće postavke";
 
+/* conversation number */
+"general_conversation" = "opceniti_razgovor";
+
 /* message number */
 "general_message" = "opcenita_poruka";
 
