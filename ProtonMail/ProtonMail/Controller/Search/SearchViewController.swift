@@ -24,7 +24,7 @@ import UIKit
 import CoreData
 import ProtonCore_UIFoundations
 
-class SearchViewController: ProtonMailViewController {
+class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
     
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var tableView: UITableView!

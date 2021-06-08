@@ -1,7 +1,9 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class ConversationViewController: UIViewController, UITableViewDataSource, UIScrollViewDelegate, UITableViewDelegate {
+class ConversationViewController: UIViewController,
+                                  UITableViewDataSource, UITableViewDelegate,
+                                  UIScrollViewDelegate, ComposeSaveHintProtocol {
 
     private var actionBar: PMActionBar?
     let viewModel: ConversationViewModel
