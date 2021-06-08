@@ -54,15 +54,6 @@ struct Wait {
         return waitForCondition(element, Condition.doesNotExist, file, line)
     }
     
-    func wait(timeInterval: TimeInterval) {
-        let testCase = XCTestCase()
-        let waitExpectation = testCase.expectation(description: "Waiting")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + timeInterval) {
-            waitExpectation.fulfill()
-        }
-        testCase.waitForExpectations(timeout: timeInterval + 0.5)
-    }
-    
     private func waitForCondition(_ element: XCUIElement, _ expression: String, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
         let condition = NSPredicate(format: expression)
         let expectation = XCTNSPredicateExpectation(predicate: condition, object: element)

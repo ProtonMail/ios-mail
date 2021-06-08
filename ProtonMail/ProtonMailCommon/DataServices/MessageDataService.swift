@@ -1475,7 +1475,7 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 let completionWrapper: CompletionBlock = { task, response, error in
                     guard let mess = response else {
-                        if let err = error, !err.isBadVersionError {
+                        if let err = error {
                             Analytics.shared.error(message: .saveDraftError, error: err, user: self.usersManager?.firstUser)
                             NSError.alertSavingDraftError(details: err.localizedDescription)
                         }
@@ -2186,9 +2186,13 @@ class MessageDataService : Service, HasLocalStorage {
                     //Debug info
                     status.insert(SendStatus.doneWithError)
                     
-                    if error?.code == 15198 {
+                    if error?.code == 9001 {
+                        //here need let user to show the human check.
+                        sharedMessageQueue.isRequiredHumanCheck = true
                         error?.alertSentErrorToast()
-                    } else if error?.code != 9001 {
+                    } else if error?.code == 15198 {
+                        error?.alertSentErrorToast()
+                    }  else {
                         error?.alertErrorToast()
                     }
                     NSError.alertMessageSentErrorToast()
@@ -2209,7 +2213,11 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 let err = error as NSError
                 PMLog.D(error.localizedDescription)
-                if err.code == 15198 {
+                if err.code == 9001 {
+                    //here need let user to show the human check.
+                    sharedMessageQueue.isRequiredHumanCheck = true
+                    NSError.alertMessageSentError(details: err.localizedDescription)
+                } else if err.code == 15198 {
                     NSError.alertMessageSentError(details: err.localizedDescription)
                 } else if err.code == 15004 {
                     // this error means the message has already been sent
@@ -2235,7 +2243,7 @@ class MessageDataService : Service, HasLocalStorage {
                     self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
                     completion?(nil, nil, nil)
                     return
-                } else if err.code != 9001 {
+                } else {
                     NSError.alertMessageSentError(details: err.localizedDescription)
                 }
                 

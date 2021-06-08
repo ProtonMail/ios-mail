@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import PMCoreTranslation
 
 private let logoutCell = "MenuTableViewCell.\(LocalString._logout_title)"
 private let logoutConfirmButton = NSLocalizedString("Log out", comment: "comment")
@@ -16,18 +15,11 @@ private let contactsStaticText = "MenuTableViewCell.\(LocalString._menu_contacts
 private let draftsStaticText = "MenuTableViewCell.\(LocalString._menu_drafts_title)"
 private let inboxStaticText = "MenuTableViewCell.\(LocalString._menu_inbox_title)"
 private let settingsStaticText = "MenuTableViewCell.\(LocalString._menu_settings_title)"
-private let subscriptionStaticText = "MenuTableViewCell.\(LocalString._menu_service_plan_title)"
 private let reportBugStaticText = "MenuTableViewCell.Report_Bugs"
 private let spamStaticText = "MenuTableViewCell.\(LocalString._menu_spam_title)"
 private let trashStaticText = "MenuTableViewCell.\(LocalString._menu_trash_title)"
 private let sidebarHeaderViewOtherIdentifier = "MenuViewController.headerView"
 private let manageAccountsStaticTextIdentifier = "MenuButtonViewCell.\(LocalString._menu_manage_accounts.replaceSpaces())"
-private let iapErrorAlertTitle = LocalString._general_alert_title
-private let iapErrorAlertMessage = LocalString._iap_unavailable
-private let forceUpgrateAlertTitle = CoreString._fu_alert_title
-private let forceUpgrateAlertMessage = "Test error description"
-private let forceUpgrateLearnMoreButton = CoreString._fu_alert_learn_more_button
-private let forceUpgrateUpdateButton = CoreString._fu_alert_update_button
 private func userAccountCellIdentifier(_ email: String) -> String { return "MenuUserViewCell.\(email)" }
 private func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
 private func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
@@ -53,19 +45,6 @@ class MenuRobot {
     func contacts() -> ContactsRobot {
         Element.wait.forCellWithIdentifier(contactsStaticText, file: #file, line: #line).tap()
         return ContactsRobot()
-    }
-    
-    @discardableResult
-    func subscriptionAsHumanVerification() -> HumanVerificationRobot {
-        // fake subscription item leads to human verification (by http mock)
-        Element.wait.forCellWithIdentifier(subscriptionStaticText).tap()
-        return HumanVerificationRobot()
-    }
-    
-    func subscriptionAsForceUpgrade() -> MenuRobot{
-        // fake subscription item leads to force upgrade (by http mock)
-        Element.wait.forCellWithIdentifier(subscriptionStaticText).tap()
-        return MenuRobot()
     }
     
     func drafts() -> DraftsRobot {
@@ -155,64 +134,6 @@ class MenuRobot {
                 Element.wait.forStaticTextFieldWithIdentifier(shortNameStaticTextdentifier(user.email), file: #file, line: #line)
                     .assertWithLabel(shortName)
             }
-        }
-    }
-    
-    @discardableResult
-    func paymentsErrorDialog() -> PaymentsErrorDialogRobot {
-        return PaymentsErrorDialogRobot()
-    }
-    
-    class PaymentsErrorDialogRobot {
-        
-        let verify = Verify()
-        
-        class Verify {
-            func invalidCredentialDialogDisplay() {
-                Element.wait.forStaticTextFieldWithIdentifier(iapErrorAlertTitle)
-                Element.wait.forStaticTextFieldWithIdentifier(iapErrorAlertMessage)
-            }
-        }
-    }
-    
-    @discardableResult
-    func forceUpgradeDialog() -> ForceUpgradeDialogRobot {
-        return ForceUpgradeDialogRobot()
-    }
-    
-    class ForceUpgradeDialogRobot {
-        
-        let verify = Verify()
-        
-        class Verify {
-            @discardableResult
-            func checkDialog() -> ForceUpgradeDialogRobot {
-                Element.wait.forStaticTextFieldWithIdentifier(forceUpgrateAlertTitle)
-                Element.wait.forStaticTextFieldWithIdentifier(forceUpgrateAlertMessage)
-                return ForceUpgradeDialogRobot()
-            }
-        }
-
-        @discardableResult
-        func learnMoreButtonTap() -> ForceUpgradeDialogRobot {
-            Element.wait.forButtonWithIdentifier(forceUpgrateLearnMoreButton).tap()
-            return ForceUpgradeDialogRobot()
-        }
-
-        @discardableResult
-        func upgradeButtonTap() -> ForceUpgradeDialogRobot {
-            Element.wait.forButtonWithIdentifier(forceUpgrateUpdateButton).tap()
-            return ForceUpgradeDialogRobot()
-        }
-
-        func back() -> ForceUpgradeDialogRobot {
-            XCUIApplication().activate()
-            return ForceUpgradeDialogRobot()
-        }
-        
-        func wait(timeInterval: TimeInterval) -> ForceUpgradeDialogRobot {
-            Wait().wait(timeInterval: timeInterval)
-            return ForceUpgradeDialogRobot()
         }
     }
 }

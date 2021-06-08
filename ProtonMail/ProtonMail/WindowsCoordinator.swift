@@ -50,6 +50,7 @@ class WindowsCoordinator: CoordinatorNew {
     private lazy var snapshot = Snapshot()
     
     private var deeplink: DeepLink?
+    private var upgradeView: ForceUpgradeView?
     private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(color: .red), scene: nil)
     private var lockWindow: UIWindow?
     
@@ -78,6 +79,7 @@ class WindowsCoordinator: CoordinatorNew {
     
     init(services: ServiceFactory) {
         defer {
+            NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.Const.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
             NotificationCenter.default.addObserver(forName: .didRevoke, object: nil, queue: .main) { [weak self] (noti) in
@@ -328,5 +330,61 @@ class WindowsCoordinator: CoordinatorNew {
         self.deeplink = deeplink
         _ = deeplink.popFirst
         
+    }
+}
+
+// This logic is taken from AppDelegate as-is, not refactored
+extension WindowsCoordinator: ForceUpgradeViewDelegate {
+    @objc func performForceUpgrade(_ notification: Notification) {
+        guard let keywindow = UIApplication.shared.keyWindow else {
+            return
+        }
+        
+        if let exsitView = upgradeView {
+            keywindow.bringSubviewToFront(exsitView)
+            return
+        }
+        
+        let view = ForceUpgradeView(frame: keywindow.bounds)
+        self.upgradeView = view
+        if let msg = notification.object as? String {
+            view.messageLabel.text = msg
+        }
+        view.delegate = self
+        UIView.transition(with: keywindow, duration: 0.25,
+                          options: .transitionCrossDissolve, animations: {
+                            keywindow.addSubview(view)
+        }, completion: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+    
+    @objc func rotated() {
+        if let view = self.upgradeView {
+            guard let keywindow = UIApplication.shared.keyWindow else {
+                return
+            }
+            
+            UIView.animate(withDuration: 0.25, delay: 0.0,
+                           options: UIView.AnimationOptions.layoutSubviews, animations: {
+                            view.frame = keywindow.frame
+                            view.layoutIfNeeded()
+            }, completion: nil)
+        }
+    }
+    
+    func learnMore() {
+        if UIApplication.shared.canOpenURL(.forceUpgrade) {
+            UIApplication.shared.open(.forceUpgrade) { (ok) in
+                
+            }
+        }
+    }
+    func update() {
+        if UIApplication.shared.canOpenURL(.appleStore) {
+            UIApplication.shared.open(.appleStore) { (ok) in
+                
+            }
+        }
     }
 }

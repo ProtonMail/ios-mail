@@ -73,7 +73,6 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
     fileprivate var stopLoading : Bool = false
     fileprivate var agreePolicy : Bool = true
     fileprivate var moveAfterCheck : Bool = false
-    fileprivate var startCreateAccount = false
     
     var viewModel : SignupViewModel!
     
@@ -200,10 +199,6 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
     }
     
     @IBAction func createAccountAction(_ sender: UIButton) {
-        defer {
-            startCreateAccount = false
-        }
-        startCreateAccount = true
         dismissKeyboard()
         MBProgressHUD.showAdded(to: view, animated: true)
         if agreePolicy {
@@ -335,9 +330,7 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
     }
     
     @IBAction func editEnd(_ sender: UITextField) {
-        if !startCreateAccount {
-            checkUserName()
-        }
+        checkUserName();
     }
     
     func checkUserName() {

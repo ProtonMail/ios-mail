@@ -27,9 +27,7 @@ import AFNetworking
 import TrustKit
 import PMCommon
 import PMAuthentication
-#if !APP_EXTENSION
-import PMHumanVerification
-#endif
+
 
 extension PMAPIService {
     public static var unauthorized: PMAPIService = {
@@ -51,10 +49,6 @@ extension PMAPIService {
             return user.apiService
         }
         // TODO: Should we have unauthorized calls here at all?
-        #if !APP_EXTENSION
-        self.unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: unauthorized)
-        self.unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-        #endif
         return self.unauthorized
     }
 }

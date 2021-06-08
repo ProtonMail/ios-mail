@@ -29,6 +29,11 @@ extension URL {
         return URL(string: "itms-apps://itunes.apple.com/app/id979659905")!
     }
     
+    // kb for force upgrade
+    static var forceUpgrade : URL {
+        return URL(string: "https://protonmail.com/support/knowledge-base/update-required")!
+    }
+    
     // leanr more about encrypt outside - composer view
     static var eoLearnMore : URL {
         return URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
