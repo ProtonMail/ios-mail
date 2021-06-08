@@ -87,12 +87,6 @@
          <TestPlanReference
             reference = "container:ProtonMailUITests/Tests/TestPlans/SearchTests.xctestplan">
          </TestPlanReference>
-         <TestPlanReference
-            reference = "container:ProtonMailUITests/Tests/TestPlans/HumanVerificationTests.xctestplan">
-         </TestPlanReference>
-         <TestPlanReference
-            reference = "container:ProtonMailUITests/Tests/TestPlans/ForceUpgradeTests.xctestplan">
-         </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference
