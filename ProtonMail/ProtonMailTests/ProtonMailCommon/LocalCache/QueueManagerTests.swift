@@ -394,38 +394,6 @@ class QueueManagerTests: XCTestCase {
         XCTAssertEqual(self.miscQueue.count, 0)
     }
     
-    func testRmoveDoubleSent() {
-        self.handlerMock.setResult(to: .removeDoubleSent(("messageID3", [.send])))
-        let task1 = QueueManager.newTask()
-        task1.actionString = MessageAction.send.rawValue
-        task1.userID = "userID1"
-        task1.messageID = "messageID3"
-        self.loadedTaskUUIDs.append(task1.uuid)
-        XCTAssertTrue(sut.addTask(task1, autoExecute: false))
-        
-        let task2 = QueueManager.newTask()
-        task2.actionString = MessageAction.send.rawValue
-        task2.userID = "userID1"
-        task2.messageID = "messageID3"
-        XCTAssertTrue(sut.addTask(task2, autoExecute: false))
-        
-        let task3 = QueueManager.newTask()
-        task3.actionString = MessageAction.send.rawValue
-        task3.userID = "userID1"
-        task3.messageID = "messageID3"
-        XCTAssertTrue(sut.addTask(task3, autoExecute: false))
-        
-        let finish = expectation(description: "Notification Raised")
-        let time = Date().timeIntervalSince1970 + 999
-        sut.backgroundFetch(allowedTime: time) {
-            finish.fulfill()
-        }
-        
-        wait(for: [finish], timeout: 5.0)
-        XCTAssertEqual(self.handlerMock.handleCount, 1)
-        checkExcuteSequence()
-    }
-    
     func testRemoveRelated() {
         self.handlerMock.setResult(to: .removeRelated)
         let task1 = QueueManager.newTask()

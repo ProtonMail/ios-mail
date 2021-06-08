@@ -140,11 +140,6 @@ extension MessageDataService: QueueHandler {
                     if action == .delete {
                         _ = self.cacheService.deleteMessage(by: queueTask.messageID)
                     }
-                    
-                    if action == .send {
-                        //after sent, clean the other actions with same messageID from write queue (save and send)
-                        taskResult.action = QueueManager.TaskAction.removeDoubleSent((queueTask.messageID, [.saveDraft, .send]))
-                    }
                 }
                 notifyQueueManager(queueTask, taskResult)
                 return
