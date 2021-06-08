@@ -81,11 +81,7 @@ class MessageQueue: PersistentQueue {
         }
         return Array(Set(ids))
     }
-    
-    func removeDoubleSent(messageID : String, actions: [String]) {
-        self.removeDuplicated(messageID, key: Key.id, actionKey: Key.action, actions: actions)
-    }
-    
+
     func isAnyQueuedMessage(userID: String) -> Bool {
         let msgs = self.queue.compactMap { (entryOfQueue) -> String? in
             guard let object = entryOfQueue as? [String: Any],
