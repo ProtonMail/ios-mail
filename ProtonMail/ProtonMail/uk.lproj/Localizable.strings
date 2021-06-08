@@ -1148,6 +1148,9 @@
 /* Title */
 "General Settings" = "Загальні параметри";
 
+/* conversation number */
+"general_conversation" = "general_conversation";
+
 /* message number */
 "general_message" = "звичайне_повідомлення";
 
@@ -1410,7 +1413,7 @@
 "Load images" = "Завантажити зображення";
 
 /* Action */
-"Load remote content" = "Звантажити зовнішній вміст";
+"Load remote content" = "Завантажити віддалений вміст";
 
 /* (No Comment) */
 "Loading..." = "Завантаження...";

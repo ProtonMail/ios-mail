@@ -114,7 +114,7 @@
 "Add anniversary" = "Adăugare aniversare";
 
 /* menu title */
-"Add attachment" = "Add attachment";
+"Add attachment" = "Adăugare atașament";
 
 /* new contacts add Birthday */
 "Add birthday" = "Adăugare dată naștere";
@@ -123,7 +123,7 @@
 "Add Contact" = "Adăugare contact";
 
 /* The title for the view where user can manage emails in the contact group */
-"Add contacts" = "Add contacts";
+"Add contacts" = "Adăugare contacte";
 
 /* add custom label type action */
 "Add custom label" = "Adăugare etichetă personală";
@@ -272,7 +272,7 @@
 
 /* Alert to confirm sign out
    Alert when sign out non-primary account from account manager */
-"Are you sure you want to sign out?" = "Are you sure you want to sign out?";
+"Are you sure you want to sign out?" = "Sigur doriți să vă deconectați?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Sigur continuați? Această acțiune nu poate fi anulată.";
@@ -347,7 +347,7 @@
 "Auto show remote content" = "Autoîncărcare conținut extern";
 
 /* settings general section title */
-"Auto-load embedded images" = "Auto-load embedded images";
+"Auto-load embedded images" = "Autoîncarcare imagini încorporate";
 
 /* section title in settings */
 "Auto-lock" = "Autoblocare";
@@ -445,13 +445,13 @@
 
 /* sign up user error when can't get moduls id
  update password error */
-"Can't get a Moduls ID!" = "Nu se poate obține valoarea absolută pentru ID!";
+"Can't get a Moduls ID!" = "Nu se poate obține ID modul!";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus ID!" = "Can't get a Modulus ID!";
+"Can't get a Modulus ID!" = "Nu se poate obține ID modul!";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus!" = "Nu se poate obține valoarea absolută pentru ID!";
+"Can't get a Modulus!" = "Nu se poate obține un modul!";
 
 /* update password error */
 "Can't get user auth info" = "Nu se pot obține informațiile de autentificare pentru utilizator.";
@@ -520,10 +520,10 @@
 "Change Pin" = "Schimbare PIN";
 
 /* settings protection section title */
-"Change PIN" = "Change PIN";
+"Change PIN" = "Schimbare PIN";
 
 /* The title of change PIN code option in security settings */
-"Change PIN code" = "Change PIN code";
+"Change PIN code" = "Schimbare cod PIN";
 
 /* settings swipe actions section action description */
 "Change right swipe action" = "Schimbare acțiune glisare spre dreapta";
@@ -641,7 +641,7 @@
 "Continue and Don't ask again" = "Continuare și nu mă mai întreba";
 
 /* No comment provided by engineer. */
-"Conversation" = "Conversation";
+"Conversation" = "Conversație";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Mod conversație";
@@ -774,7 +774,7 @@
 "Delete label" = "Ștergere etichetă";
 
 /* Title of message permanent deletion alert, singular */
-"Delete message" = "Delete message";
+"Delete message" = "Ștergere mesaj";
 
 /* mail location desc */
 "Deleted" = "Șters";
@@ -1148,6 +1148,9 @@
 /* Title */
 "General Settings" = "Setări generale";
 
+/* conversation number */
+"general_conversation" = "general_conversation";
+
 /* message number */
 "general_message" = "general_message";
 
@@ -1357,7 +1360,7 @@
 
 /* The title of the label as action in action sheet
    Title */
-"Label as…" = "Label as…";
+"Label as…" = "Etichetare ca…";
 
 /* Title */
 "Label Management" = "Gestionare etichete";
@@ -1490,7 +1493,7 @@
 "Mark as read" = "Marcare ca citit";
 
 /* Action */
-"Mark as read/unread" = "Mark as read/unread";
+"Mark as read/unread" = "Marcare ca citit/necitit";
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Marcare ca necitit";
@@ -1617,7 +1620,7 @@
 
 /* The title of the move to action in action sheet
    Title */
-"Move to…" = "Move to…";
+"Move to…" = "Mutare în…";
 
 /* Title */
 "Multiple Addresses" = "Adrese multiple";
@@ -1867,7 +1870,7 @@
 "PIN/Touch ID" = "ID PIN/Amprentă";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
+"Plans can be edited on the web version." = "Planurile pot fi editate pe versiunea web.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Adăugați o parolă pentru pentru următorii destinatari.";
@@ -2258,7 +2261,7 @@
 "Share it with your friends" = "Partajați-l cu prietenii";
 
 /* Title */
-"Sign in" = "Sign in";
+"Sign in" = "Autentificare";
 
 /* Account manager title */
 "Sign in to your ProtonMail account" = "Conectare la contul ProtonMail";
@@ -2474,7 +2477,7 @@
 "The new password does not match." = "Parolele noi nu sunt identice.";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+"The new password needs to be at least 8 characters long" = "Parola nouă trebuie să aibă cel puțin 8 caractere";
 
 /* (No Comment) */
 "The new password not match" = "Parolele nu coincid.";

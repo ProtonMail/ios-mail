@@ -65,7 +65,7 @@
 "<no object>" = "<ulac asentel>";
 
 /* 2fa verification failed */
-"2FA failed. Please try to sign in again." = "2FA failed. Please try to sign in again.";
+"2FA failed. Please try to sign in again." = "2FA yecceḍ. Ma ulac uɣilif ɛreḍ ad teqqneḍ tikelt nniḍen.";
 
 /* Placeholder */
 "8 to 21 characters long" = "8 ar 21 n yisekkilen";
@@ -114,7 +114,7 @@
 "Add anniversary" = "Rnu amulli";
 
 /* menu title */
-"Add attachment" = "Add attachment";
+"Add attachment" = "Rnu afaylu yeddan";
 
 /* new contacts add Birthday */
 "Add birthday" = "Rnu azemz n tlalit";
@@ -123,7 +123,7 @@
 "Add Contact" = "Rnu anermis";
 
 /* The title for the view where user can manage emails in the contact group */
-"Add contacts" = "Add contacts";
+"Add contacts" = "Rnu inermisen";
 
 /* add custom label type action */
 "Add custom label" = "Rnu tabzimt tudmawant";
@@ -268,11 +268,11 @@
 "Are you sure you want to delete permanently this message?" = "Tebɣiḍ s tidet ad tekkseḍ i lebda izen-agi?";
 
 /* Alert to confirm sign out when only one account signed in */
-"Are you sure you want to sign out %@?" = "Are you sure you want to sign out %@?";
+"Are you sure you want to sign out %@?" = "Tebɣiḍ ad teffɣeḍ%@?";
 
 /* Alert to confirm sign out
    Alert when sign out non-primary account from account manager */
-"Are you sure you want to sign out?" = "Are you sure you want to sign out?";
+"Are you sure you want to sign out?" = "Titedt tebɣiḍ ad teffɣeḍ?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "S tidet? Ulac tuɣalin ar deffir.";
@@ -302,7 +302,7 @@
 "Attachment imported" = "Afaylu yeddan ittwaktren";
 
 /* Alert title */
-"Attachment limit" = "Attachment limit";
+"Attachment limit" = "Tilist n ufaylu yeddan";
 
 /* No comment provided by engineer. */
 "attachments" = "ifuyla yeddan";
@@ -329,7 +329,7 @@
 "Authentication Failed Wrong username or password" = "Asesteb yecceḍ, yir isem n useqdac neɣ awal uffir.";
 
 /* Error */
-"Authentication failed. Please try to sign in again." = "Authentication failed. Please try to sign in again.";
+"Authentication failed. Please try to sign in again." = "Yecceḍ usesteb. Ɛreḍ ad teqqneḍ-tikkelt nniḍen.";
 
 /* Description */
 "Authentication token is not accessible because the app is locked" = "Ulac anekcum ɣer ujiṭun n usesteb acku asnas yewḥel";
@@ -347,7 +347,7 @@
 "Auto show remote content" = "Sken s wudem awurman agbur anmeggag";
 
 /* settings general section title */
-"Auto-load embedded images" = "Auto-load embedded images";
+"Auto-load embedded images" = "Sali tugniwin tusliɣin s wudem awurman";
 
 /* section title in settings */
 "Auto-lock" = "Asekkeṛ awurman";
@@ -448,7 +448,7 @@
 "Can't get a Moduls ID!" = "Ur izmir ara ad d-yawi asulay Moduls!";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus ID!" = "Can't get a Modulus ID!";
+"Can't get a Modulus ID!" = "Ur izmir ara ad d-yawi asulay Moduls!";
 
 /* update password error = typo:Modulus */
 "Can't get a Modulus!" = "Ur izmir ara ad d-yawi Moduls!";
@@ -520,10 +520,10 @@
 "Change Pin" = "Snifel Pin";
 
 /* settings protection section title */
-"Change PIN" = "Change PIN";
+"Change PIN" = "Beddel tangalt PIN";
 
 /* The title of change PIN code option in security settings */
-"Change PIN code" = "Change PIN code";
+"Change PIN code" = "Beddel tangalt n PIN";
 
 /* settings swipe actions section action description */
 "Change right swipe action" = "Beddel tigawt n uzuɣer s ayeffus";
@@ -532,7 +532,7 @@
 "Change sender address to .." = "Beddel tansa n umazan ɣer..";
 
 /* change password input label */
-"Change sign-in Password" = "Change sign-in Password";
+"Change sign-in Password" = "Snifel awal uffir n tuqqna";
 
 /* Title */
 "Change Single Password" = "Beddel awal uffir assuf";
@@ -603,7 +603,7 @@
 "Confirm new password" = "Sentem awal uffir amaynut";
 
 /* Title */
-"Confirm new sign-in password" = "Confirm new sign-in password";
+"Confirm new sign-in password" = "Sentem awal uffir amaynut n tuqqna";
 
 /* Placeholder */
 "Confirm Password" = "Sentem awal uffir";
@@ -641,7 +641,7 @@
 "Continue and Don't ask again" = "Kemmel yerna ur d-sutur ara tikkelt-nniḍen";
 
 /* No comment provided by engineer. */
-"Conversation" = "Conversation";
+"Conversation" = "Adiwenni";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Askar n usqerdec";
@@ -695,7 +695,7 @@
 "Current Recovery Email" = "Tansa imayl tamirant n tririt";
 
 /* Title */
-"Current sign-in Password" = "Current sign-in Password";
+"Current sign-in Password" = "Awal uffir n tuqqna amiran";
 
 /* action sheet option
    contacts default label type
@@ -774,7 +774,7 @@
 "Delete label" = "Kkes tabzimt";
 
 /* Title of message permanent deletion alert, singular */
-"Delete message" = "Delete message";
+"Delete message" = "Kkes izen";
 
 /* mail location desc */
 "Deleted" = "Ittwakkes";
@@ -1148,6 +1148,9 @@
 /* Title */
 "General Settings" = "Iɣewwaṛen Imuta";
 
+/* conversation number */
+"general_conversation" = "general_conversation";
+
 /* message number */
 "general_message" = "general_message";
 
@@ -1167,7 +1170,7 @@
 "Go to settings" = "Ddu ɣer iɣewwaṛen";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Go to sign-in";
+"Go to sign-in" = "Ddu ɣer tuqqna";
 
 /* network troubleshot cell title */
 "Government block" = "Asewḥel n udabu";
@@ -1357,7 +1360,7 @@
 
 /* The title of the label as action in action sheet
    Title */
-"Label as…" = "Label as…";
+"Label as…" = "Bzem am…";
 
 /* Title */
 "Label Management" = "Asefrek n tibzimin";
@@ -1490,7 +1493,7 @@
 "Mark as read" = "Creḍ yettɣra";
 
 /* Action */
-"Mark as read/unread" = "Mark as read/unread";
+"Mark as read/unread" = "Creḍ yettwaɣra / ur yettwaɣra ara";
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Creḍ ur yettwaɣra ara";
@@ -1617,7 +1620,7 @@
 
 /* The title of the move to action in action sheet
    Title */
-"Move to…" = "Move to…";
+"Move to…" = "Mutti ɣer…";
 
 /* Title */
 "Multiple Addresses" = "Tansiwin yeggten";
@@ -1657,7 +1660,7 @@
 "New password" = "Awal uffir amaynut";
 
 /* Title */
-"New sign-in password" = "New sign-in password";
+"New sign-in password" = "Awal uffir n tuqqna amaynut";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Meffer isem";
@@ -1855,7 +1858,7 @@
 "Photo Library" = "Tanedlist n tewlaft";
 
 /* device settings auto lock type title */
-"PIN" = "PIN";
+"PIN" = "Tangalt PIN";
 
 /* Description */
 "PIN code can't be empty." = "Tangalt Pin ur tezmir ara ad tili d tilemt.";
@@ -1867,7 +1870,7 @@
 "PIN/Touch ID" = "PIN/Touch ID";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
+"Plans can be edited on the web version." = "Iɣawasen zemren ad ttwaẓragen ɣef lqem web.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Ttxil-k rnu awal n uɛeddi i iɣerwaḍen-agi.";
@@ -1939,7 +1942,7 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Ma ulac uɣilif leqqem aswir s aɣawas n lexlaṣ akken ad tesqedceḍ ugar n 3 n tebzimin";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Please use ProtonMail App sign-in first.";
+"Please use ProtonMail App sign-in first." = "Ma ulac aɣilif, zwir deg tuqqna ar usnas ProtonMail.";
 
 /* Alert */
 "Please use the web application to reset your password." = "Ttxil-k seqdec asnas web iwakken ad talseḍ awennez n wawal n uɛeddi.";
@@ -2180,7 +2183,7 @@
 "Send message without subject?" = "Azen izen s war asentel?";
 
 /* Title */
-"Send plain but stored encrypted" = "Send plain but stored encrypted";
+"Send plain but stored encrypted" = "Azen aɣawas acu kan kles s wudem awgelhan";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "Azen s iɣbaren?";
@@ -2258,10 +2261,10 @@
 "Share it with your friends" = "Bḍut-t d yimdukkal-ik";
 
 /* Title */
-"Sign in" = "Sign in";
+"Sign in" = "Qqen";
 
 /* Account manager title */
-"Sign in to your ProtonMail account" = "Sign in to your ProtonMail account";
+"Sign in to your ProtonMail account" = "Qqen ɣer umiḍan-inek/m ProtonMail";
 
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
@@ -2272,13 +2275,13 @@
 "Sign Out" = "Ffeɣ";
 
 /* Alert title when sign out non-primary account from account manager */
-"Sign out %@?" = "Sign out %@?";
+"Sign out %@?" = "Suffeɣ %@?";
 
 /* Action */
-"Sign Out All" = "Sign Out All";
+"Sign Out All" = "Suffeɣ i meṛṛa";
 
 /* Error */
-"Sign-in password doesn't match" = "Sign-in password doesn't match";
+"Sign-in password doesn't match" = "Awal uffir n tuqqna ur imṣada ara";
 
 /* Title in signature settings */
 "Signature" = "Azmul";
@@ -2290,7 +2293,7 @@
 "Signed in as %@" = "Teqqneḍ amzun d %@";
 
 /* Alert when auth token is revoked and switch to another */
-"Signed out from %@ and signed in with %@" = "Signed out from %1$@ and signed in with %2$@";
+"Signed out from %@ and signed in with %@" = "Teffɣeḍ seg %1$@ syen teqqneḍ ɣer %2$@";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Ales";
@@ -2413,7 +2416,7 @@
 "Take new photo" = "Ṭṭef tawlaft tamaynut";
 
 /* No comment provided by engineer. */
-"Tap here to set" = "Tap here to set";
+"Tap here to set" = "Sit da i usbadu";
 
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Sit akken ibɣu yili iwakken ad tazneḍ s war afati i iɣerwaḍen-agi";
@@ -2474,13 +2477,13 @@
 "The new password does not match." = "Awal uffir amaynut ur imenṭaḍ ara.";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+"The new password needs to be at least 8 characters long" = "Awal uffir amaynut ilaq ad yesɛu ma drus 8 n yisekkilen";
 
 /* (No Comment) */
 "The new password not match" = "Awalen uffiren ur menṭaḍen ara";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your sign-in password if you forget it." = "The optional recovery email address allows you to reset your sign-in password if you forget it.";
+"The optional recovery email address allows you to reset your sign-in password if you forget it." = "Tansa n yimayl n tririt tafrayant ad k-teǧǧ ad talseḍ awennez n wawal-ik·im uffir n tuqqna ma tettuḍ-ṭ.";
 
 /* update password error */
 "The Password is wrong." = "Awal uffir d aRmeɣtu.";
@@ -2504,7 +2507,7 @@
 "The request timed out." = "Asuter yemmut.";
 
 /* Description */
-"The size limit for attachments is 25 MB." = "The size limit for attachments is 25 MB.";
+"The size limit for attachments is 25 MB." = "Tilist n tiddi n ufaylu yeddan d 25 MB.";
 
 /* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "Teɣzi n ufaylu yeddan ur izmir ara ad d-yekk nnig n 25 Maṭ";
@@ -2526,10 +2529,10 @@
 "The verification failed!" = "Icceḍ usenqed!";
 
 /* alert when sign out user if in queue still have tasks */
-"There are still some messages in queue. If you sign out, the draft will be deleted." = "There are still some messages in queue. If you sign out, the draft will be deleted.";
+"There are still some messages in queue. If you sign out, the draft will be deleted." = "Mazal llan yiznan i yettraǧun. Ma yella teffɣeḍ, arewway ad yettwakkes.";
 
 /* Alert to confirm signout with pending message in the queue */
-"There are unsent messages that will be lost if you sign out" = "There are unsent messages that will be lost if you sign out";
+"There are unsent messages that will be lost if you sign out" = "Llan yiznan ur nettwazen ara iṛuḥen ma yella teffɣeḍ seg tuqqna";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "Tella tuccḍa di tmerna neɣ asali n usali n isefka yettwaskelsen n usnas.";
@@ -2635,7 +2638,7 @@
 "Troubleshooting" = "Tifrat i wuguren";
 
 /* Title */
-"Troubleshooting guide" = "Troubleshooting guide";
+"Troubleshooting guide" = "Amnir n useggem";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Ɛreḍ tuqqna ɣer Proton seg uzeṭṭa-nniḍen (neɣ seqdec ProtonVPN neɣ Tor).";
@@ -2662,7 +2665,7 @@
 "Two Factor Code" = "Asesteb s snat n tarayin";
 
 /* Internal type casting error */
-"Type casting error" = "Type casting error";
+"Type casting error" = "Tuccḍa n uwgelhen n wanaw";
 
 /* Description */
 "Unable to connect to the server" = "Ur izmir ara ad yeqqen ɣer uqeddac";
@@ -2807,7 +2810,7 @@
 "User name invalid" = "Yir aseqdac";
 
 /* Title */
-"USER SIGN-IN" = "USER SIGN-IN";
+"USER SIGN-IN" = "TUQQNA ASEQDAC";
 
 /* *
  *  Login View */
@@ -2856,10 +2859,10 @@
 "We have trouble connecting to the servers. Please reconnect." = "Nufa uguren akken ad neqqen s aqeddac. Ma ulac uɣilif ales tuqqna.";
 
 /* alert body before list of addresses */
-"We recommend setting up a password instead for the following recipients:" = "We recommend setting up a password instead for the following recipients:";
+"We recommend setting up a password instead for the following recipients:" = "Ad nsemter aseɣwer n wawal uffir i yiuɣerwaḍen-agi:";
 
 /* alert body before list of addresses */
-"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "We recommend setting up a password instead, or disabling PGP for the following recipients:";
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Ad nsemter aseɣwer n wawal uffir, neɣ asexsi n PGP i yiuɣerwaḍen-agi:";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Ad nazen tangalt n usenqed ar tiliɣri ddaw-a.";
@@ -2940,10 +2943,10 @@
 "You have a new email!" = "Ɣur-k imayl amaynut!";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "You have entered at least one invalid email address. Please verify your recipients.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Teskecmeḍ ma drus yiwet n tansa imayl tameɣtut. Ma ulac uɣilif senqed iɣerwaḍen-ik•im.";
 
 /* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "You have entered at least one unknown recipient. Please verify your recipients.";
+"You have entered at least one unknown recipient. Please verify your recipients." = "Teskecmeḍ ma drus yiwen n uɣerwaḍ arussin. Ma ulac uɣilif senqed iɣerwaḍen-ik•im.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Ɣur-k ibeddilen ur nettwasekles ara. Tebɣiḍ ad ten-teskelseḍ?";

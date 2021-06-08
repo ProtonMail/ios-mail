@@ -20,7 +20,7 @@
 "/user" = "/användare";
 
 /* Service plan capability */
-"%@ storage capacity" = "%@ storage capacity";
+"%@ storage capacity" = "%@ lagringskapacitet";
 
 /* The title of single selected conversation of action sheet in inbox */
 "%d conversation" = "%d konversation";
@@ -75,10 +75,10 @@
 "A message cannot have more than 5 labels" = "Ett meddelande kan inte ha fler än 5 etiketter";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "A new version of ProtonMail app is available, please update to latest version.";
+"A new version of ProtonMail app is available, please update to latest version." = "En ny version av ProtonMail är tillgänglig, vänligen uppdatera till senaste versionen.";
 
 /* Description */
-"A new version of ProtonMail app is available. Please update to the latest version." = "A new version of ProtonMail app is available. Please update to the latest version.";
+"A new version of ProtonMail app is available. Please update to the latest version." = "En ny version av ProtonMail är tillgänglig. Vänligen uppdatera till den senaste versionen.";
 
 /* alert description */
 "A paid ProtonMail plan is required to use this feature" = "A paid ProtonMail plan is required to use this feature";
@@ -180,7 +180,7 @@
 "Add title" = "Lägg till titel";
 
 /* Title */
-"Add to contacts" = "Add to contacts";
+"Add to contacts" = "Lägg till i kontakter";
 
 /* default vcard types */
 "Address" = "Adress";
@@ -224,7 +224,7 @@
 "Antivirus interference" = "Antivirus interference";
 
 /* Alert message when user tries to discard unsaved changes */
-"Any unsaved changes will be lost." = "Alla osparade förändringar kommer att förloras.";
+"Any unsaved changes will be lost." = "Alla osparade ändringar kommer gå förlorade.";
 
 /* when server not reachable */
 "API Server not reachable…" = "API-servern kan inte nås…";
@@ -253,7 +253,7 @@
 /* mail location desc
    menu title
    The title of the archive action in action sheet */
-"Archive" = "Archive";
+"Archive" = "Arkiv";
 
 /* mail location title */
 "ARCHIVE" = "Arkiv";
@@ -272,7 +272,7 @@
 
 /* Alert to confirm sign out
    Alert when sign out non-primary account from account manager */
-"Are you sure you want to sign out?" = "Are you sure you want to sign out?";
+"Are you sure you want to sign out?" = "Är du säker på att du vill logga ut?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Är du säker? Detta kan inte ångras.";
@@ -386,7 +386,7 @@
 "Bug Report Received" = "Bug report received";
 
 /* Link to More Credits screen */
-"Buy More Credits" = "Buy More Credits";
+"Buy More Credits" = "Köp fler krediter";
 
 /* Alert for removing disconnected accounts */
 "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?";
@@ -641,7 +641,7 @@
 "Continue and Don't ask again" = "Fortsätt och fråga inte igen";
 
 /* No comment provided by engineer. */
-"Conversation" = "Conversation";
+"Conversation" = "Konversation";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Conversation mode";
@@ -799,7 +799,7 @@
 "Discard draft" = "Discard draft";
 
 /* (No Comment) */
-"Display name" = "Display name";
+"Display name" = "Visningsnamn";
 
 /* Title in settings */
 "Display Name" = "Visningsnamn";
@@ -1061,7 +1061,7 @@
 "Expiration not supported" = "Förfallotid stöds inte";
 
 /* VoiceOver: email can expire */
-"Expires" = "Expires";
+"Expires" = "Upphör";
 
 /* (No Comment) */
 "Expires in %d days %d hours %d mins %d seconds" = "Upphör om %d dagar %d timmar %d minuter %d sekunder";
@@ -1148,6 +1148,9 @@
 /* Title */
 "General Settings" = "General settings";
 
+/* conversation number */
+"general_conversation" = "general_conversation";
+
 /* message number */
 "general_message" = "general_message";
 
@@ -1161,7 +1164,7 @@
 "Go to drafts" = "Go to drafts";
 
 /* Action */
-"Go to inbox" = "Go to inbox";
+"Go to inbox" = "Gå till Inkorg";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Go to settings";
@@ -1224,7 +1227,7 @@
 "Ignore" = "Ignorera";
 
 /* Service plan capability */
-"IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP Support via ProtonMail Bridge";
+"IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP-stöd via ProtonMail Bridge";
 
 /* Action */
 "Import Error" = "Import Error";
@@ -1357,7 +1360,7 @@
 
 /* The title of the label as action in action sheet
    Title */
-"Label as…" = "Label as…";
+"Label as…" = "Märk som…";
 
 /* Title */
 "Label Management" = "Label management";
@@ -1490,7 +1493,7 @@
 "Mark as read" = "Markera som läst";
 
 /* Action */
-"Mark as read/unread" = "Mark as read/unread";
+"Mark as read/unread" = "Markera som läst/oläst";
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Markera som oläst";
@@ -1617,7 +1620,7 @@
 
 /* The title of the move to action in action sheet
    Title */
-"Move to…" = "Move to…";
+"Move to…" = "Flytta till…";
 
 /* Title */
 "Multiple Addresses" = "Multiple addresses";
@@ -1791,7 +1794,7 @@
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate";
 
 /* "Draft" = "Draft"; */
-"Outbox" = "Outbox";
+"Outbox" = "Utkorg";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Parent folder";
@@ -1842,7 +1845,7 @@
 "Phone" = "Phone";
 
 /* contact placeholder */
-"Phone number" = "Phone number";
+"Phone number" = "Telefonnummer";
 
 /* "Verification code request failed" */
 "Phone number invalid" = "Phone number invalid";
@@ -1852,7 +1855,7 @@
 
 /* *
  *  Attachment table ViewController */
-"Photo Library" = "Photo Library";
+"Photo Library" = "Fotobibliotek";
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
@@ -2098,10 +2101,10 @@
 "Reply" = "Svara";
 
 /* No comment provided by engineer. */
-"Reply all" = "Reply all";
+"Reply all" = "Svara alla";
 
 /* reply all action */
-"Reply All" = "Reply All";
+"Reply All" = "Svara alla";
 
 /* composer view model impl */
 "Reply message" = "Reply message";
@@ -2153,19 +2156,19 @@
 
 /* *
  *  SearchViewController */
-"Search" = "Search";
+"Search" = "Sök";
 
 /* section title in settings */
 "Security" = "Security";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
-"Select An Option" = "Select An Option";
+"Select An Option" = "Välj ett alternativ";
 
 /* section title */
 "Select colour" = "Välj färg";
 
 /* (No Comment) */
-"Select your language" = "Select your language";
+"Select your language" = "Välj ditt språk";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Selected";
@@ -2177,7 +2180,7 @@
 "Send anyway" = "Skicka ändå";
 
 /* when subject not empty */
-"Send message without subject?" = "Send message without subject?";
+"Send message without subject?" = "Skicka meddelande utan ämne?";
 
 /* Title */
 "Send plain but stored encrypted" = "Send plain but stored encrypted";
@@ -2336,10 +2339,10 @@
 "Star/unstar" = "Star/unstar";
 
 /* "Spam" */
-"Starred" = "Starred";
+"Starred" = "Stjärnmärkt";
 
 /* "INBOX" */
-"STARRED" = "Starred";
+"STARRED" = "Stjärnmärkt";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Start Time";
@@ -2626,7 +2629,7 @@
 "Trash" = "Trash";
 
 /* mail location title */
-"TRASH" = "Trash";
+"TRASH" = "Papperskorg";
 
 /* troubleshooting view button */
 "Troubleshoot" = "Troubleshoot";
@@ -2717,7 +2720,7 @@
 "Unknow Error" = "Unknown error";
 
 /* (No Comment) */
-"Unknow file" = "Unknown file";
+"Unknow file" = "Okänd fil";
 
 /* title, default display name */
 "Unknown" = "Unknown";
@@ -2738,7 +2741,7 @@
 "unread" = "oläst";
 
 /* VoiceOver: email is not read yet */
-"Unread" = "Unread";
+"Unread" = "Oläst";
 
 /* The title of the star action in action sheet */
 "Unstar" = "Unstar";
@@ -2750,7 +2753,7 @@
 "Unsupported file type" = "Filtyp som inte stöds";
 
 /* Service plan capability; i = 6 */
-"Up to %i users" = "Up to %i users";
+"Up to %i users" = "Upp till %i användare";
 
 /* like top right action text */
 "Update" = "Update";
@@ -2771,7 +2774,7 @@
 "Upgrade to a paid plan to benefit from more features" = "Upgrade to a paid plan to benefit from more features";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Uppgradera till en betald plan för att skicka från din %@-adress";
+"Upgrade to a paid plan to send from your %@ address" = "Uppgradera till en betald plan för att skicka e-post från din %@-adress";
 
 /* alert description */
 "Upgrade to get all paid features." = "Upgrade to get all paid features.";
@@ -2969,7 +2972,7 @@
 "Your changes will be discarded" = "Your changes will be discarded";
 
 /* view top title */
-"Your Country Code" = "Your Country Code";
+"Your Country Code" = "Din landskod";
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
