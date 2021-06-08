@@ -229,7 +229,10 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func getAttachments() -> [Attachment]? {
-        return self.message?.attachments.allObjects as? [Attachment]
+        guard let attachments = self.message?.attachments.allObjects as? [Attachment] else {
+            return []
+        }
+        return attachments.filter { !$0.isSoftDeleted }
     }
     
     override func uploadMimeAttachments() {
