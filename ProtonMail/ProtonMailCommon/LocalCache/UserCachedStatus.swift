@@ -660,5 +660,17 @@ extension UserCachedStatus: SwipeActionCacheProtocol {
             self.setValue(newValue.rawValue, forKey: Key.rightToLeftSwipeAction)
         }
     }
+    
+    func initialSwipeActionIfNeeded(leftToRight: Int, rightToLeft: Int) {
+        if self.getShared()?.int(forKey: Key.leftToRightSwipeAction) == nil,
+           let action = SwipeActionSettingType.migrateFromV3(rawValue: leftToRight) {
+            self.leftToRightSwipeActionType = action
+        }
+        
+        if self.getShared()?.int(forKey: Key.rightToLeftSwipeAction) == nil,
+           let action = SwipeActionSettingType.migrateFromV3(rawValue: rightToLeft) {
+            self.rightToLeftSwipeActionType = action
+        }
+    }
 }
 #endif
