@@ -456,11 +456,6 @@ extension QueueManager {
             self.remove(task: task, on: queue)
             self.dequeueReadQueue()
             completeHander(true)
-        case .removeDoubleSent(let tuple):
-            self.remove(task: task, on: queue)
-            self.removeAllTasks(of: tuple.messageID, actions: tuple.actions) {
-                completeHander(true)
-            }
         case .none:
             self.remove(task: task, on: queue)
             completeHander(true)
@@ -519,8 +514,6 @@ extension QueueManager {
 
     enum TaskAction {
         case none
-        /// Remove related task due to the message has been sent
-        case removeDoubleSent((messageID: String, actions: [MessageAction]))
         /// Queue is not block and readqueue > 0
         case checkReadQueue
         /// Stop dequeu
