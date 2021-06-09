@@ -392,7 +392,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel.removeAllSelectedIDs()
         self.hideCheckOptions()
         self.updateNavigationController(false)
-        if viewModel.eventsService.status == .running {
+        if viewModel.eventsService.status != .running {
             self.startAutoFetch(false)
         }
         self.hideActionBar()
@@ -688,7 +688,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.viewModel.label(msg: message, with: Message.Location.starred.rawValue)
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
             viewModel.labelConversations(conversationIDs: [conversation.conversationID],
-                                         labelID: Message.Location.starred.rawValue) { _ in }
+                                         labelID: Message.Location.starred.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
+                }
+            }
         }
     }
 
@@ -697,7 +702,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.viewModel.label(msg: message, with: Message.Location.starred.rawValue, apply: false)
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
             viewModel.unlabelConversations(conversationIDs: [conversation.conversationID],
-                                         labelID: Message.Location.starred.rawValue) { _ in }
+                                         labelID: Message.Location.starred.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
+                }
+            }
         }
     }
 
@@ -706,7 +716,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.viewModel.mark(messages: [message])
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
             viewModel.markConversationAsUnread(conversationIDs: [conversation.conversationID],
-                                               currentLabelID: viewModel.labelID) { _ in }
+                                               currentLabelID: viewModel.labelID) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
+                }
+            }
         }
     }
 
@@ -714,7 +729,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if let message = self.viewModel.item(index: indexPath) {
             self.viewModel.mark(messages: [message], unread: false)
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
-            viewModel.markConversationAsRead(conversationIDs: [conversation.conversationID]) { _ in }
+            viewModel.markConversationAsRead(conversationIDs: [conversation.conversationID]) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
+                }
+            }
         }
     }
 
