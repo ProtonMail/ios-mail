@@ -1605,6 +1605,7 @@ class LocalizedString {
     lazy var _expiration_not_supported = NSLocalizedString("Expiration not supported", comment: "alert title")
     lazy var _we_recommend_setting_up_a_password = NSLocalizedString("We recommend setting up a password instead for the following recipients:", comment: "alert body before list of addresses")
     lazy var _we_recommend_setting_up_a_password_or_disabling_pgp = NSLocalizedString("We recommend setting up a password instead, or disabling PGP for the following recipients:", comment: "alert body before list of addresses")
+    lazy var _extra_addresses = NSLocalizedString("+%d others", comment: "alert body for how many extra mail addresses, e.g. +3 others")
 
 
     // MARK: - Notifcations Snooze feature

@@ -674,21 +674,35 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
 }
 
-// MARK: - Expiration unavaibility alert
+// MARK: - Expiration unavailability alert
 extension ComposeViewController {
     func showExpirationUnavailabilityAlert(nonPMEmails: [String], pgpEmails: [String]) {
         var message = String()
         if nonPMEmails.count > 0 {
             message.append(LocalString._we_recommend_setting_up_a_password)
             message.append("\n\n")
-            message.append(nonPMEmails.joined(separator: ","))
+            if nonPMEmails.count > 5 {
+                message.append(nonPMEmails[...3].joined(separator: "\n"))
+                let extraStr = String.init(format: LocalString._extra_addresses,
+                                           nonPMEmails.count - 4)
+                message.append("\n\(extraStr)")
+            } else {
+                message.append(nonPMEmails.joined(separator: "\n"))
+            }
             message.append("\n")
         }
         if pgpEmails.count > 0 {
             if nonPMEmails.count > 0 { message.append("\n") }
             message.append(LocalString._we_recommend_setting_up_a_password_or_disabling_pgp)
             message.append("\n\n")
-            message.append(pgpEmails.joined(separator: ","))
+            if pgpEmails.count > 5 {
+                message.append(pgpEmails[...3].joined(separator: "\n"))
+                let extraStr = String.init(format: LocalString._extra_addresses,
+                                           pgpEmails.count - 4)
+                message.append("\n\(extraStr)")
+            } else {
+                message.append(pgpEmails.joined(separator: "\n"))
+            }
             message.append("\n")
         }
         let alertController = UIAlertController(title: LocalString._expiration_not_supported, message: message, preferredStyle: .alert)
