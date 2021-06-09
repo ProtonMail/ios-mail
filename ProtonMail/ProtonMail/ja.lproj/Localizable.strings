@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "添付ファイルが見つかりません。";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Modulus IDを取得できません";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Can't get a Modulus ID!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "確認";
-
-/* "Login Password" */
-"Confirm Login Password" = "ログインパスワードの確認";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "メールボックスのパスワードの確認";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "インターネットサービスプロバイダー (ISP) の問題";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "無効なアクセストークンです。再ログインしてください。";
-
 /* alert title */
 "Invalid credential" = "無効な認証情報です";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "ログアウト";
-
-/* (No Comment) */
-"LOGIN" = "ログイン";
-
-/* (No Comment) */
-"Login Password" = "ログインパスワード";
-
-/* (No Comment) */
-"Login password doesn't match" = "ログインパスワードが一致しません。";
 
 /* error title */
 "Logs" = "ログ";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "利用可能な暗号化の最高レベル";
 
-/* (No Comment) */
-"The label name is duplicate" = "ラベル名が重複しています。";
-
 /* Error */
 "The mailbox password is incorrect." = "メールボックスパスワードが間違っています。";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "ユーザー名";
 
 /* alert title */
 "Verification code request failed" = "検証コードの要求に失敗しました。";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "はい";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "はい、有効化してください ";
 
 /* Error message */
 "Yes, attach details of payment" = "はい、支払いの詳細を添付します。";

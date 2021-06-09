@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Ez a melléklet nem található!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Nem szerezhető be egy Modulus azonosító!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Can't get a Modulus ID!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Jóváhagyás";
-
-/* "Login Password" */
-"Confirm Login Password" = "Bejelentkezési jelszó megerősítése";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "E-mail jelszó megerősítése";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Internet szolgáltató (ISP) probléma";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Érvénytelen elérési token, kérjük jelentkezzen be újra";
-
 /* alert title */
 "Invalid credential" = "Érvénytelen bejelentkezési adatok";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Kijelentkezés";
-
-/* (No Comment) */
-"LOGIN" = "Bejelentkezés";
-
-/* (No Comment) */
-"Login Password" = "Bejelentkezési jelszó";
-
-/* (No Comment) */
-"Login password doesn't match" = "Bejelentkezési a jelszó nem egyezik";
 
 /* error title */
 "Logs" = "Naplók";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Az elérhető legnagyobb titkosítási szint.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Van már ilyen címke";
-
 /* Error */
 "The mailbox password is incorrect." = "Az e-mail jelszó helytelen.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Felhasználónév";
 
 /* alert title */
 "Verification code request failed" = "Ellenőrzési kód kérése nem sikerült";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Igen";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Igen, aktiváljuk ehhez: ";
 
 /* Error message */
 "Yes, attach details of payment" = "Igen, csatolja a fizetési részleteket";

@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Impossible de trouver cette pièce jointe !";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Impossible d’obtenir un identifiant Modulus !";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Impossible d’obtenir un identifiant Modulus !";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Confirmer";
-
-/* "Login Password" */
-"Confirm Login Password" = "Confirmer le mot de passe de connexion";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Confirmer le mot de passe de messagerie";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problème de fournisseur d'accès Internet (FAI)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Jeton d'accès invalide, veuillez vous reconnecter";
-
 /* alert title */
 "Invalid credential" = "Identifiants invalides";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Se déconnecter";
-
-/* (No Comment) */
-"LOGIN" = "Connexion";
-
-/* (No Comment) */
-"Login Password" = "Mot de passe de connexion";
-
-/* (No Comment) */
-"Login password doesn't match" = "Le mot de passe de connexion ne correspond pas";
 
 /* error title */
 "Logs" = "Journaux";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Le plus haut niveau de chiffrement disponible.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Le nom du label est un doublon";
-
 /* Error */
 "The mailbox password is incorrect." = "Le mot de passe de messagerie est incorrect.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Nom d'utilisateur";
 
 /* alert title */
 "Verification code request failed" = "Échec de la demande de code de vérification";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Oui";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Oui, l'activer pour ";
 
 /* Error message */
 "Yes, attach details of payment" = "Oui, joindre les détails du paiement";

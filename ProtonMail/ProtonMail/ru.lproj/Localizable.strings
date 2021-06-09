@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Невозможно найти это вложение!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Невозможно получить Modulus ID!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Can't get a Modulus ID!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Подтвердить";
-
-/* "Login Password" */
-"Confirm Login Password" = "Подтвердить входной пароль";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Подтвердите пароль почтового ящика";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Проблема с интернет-провайдером";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Некорректный токен доступа. Пожалуйста, войдите повторно";
-
 /* alert title */
 "Invalid credential" = "Часть учётных данных неверна";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Выход";
-
-/* (No Comment) */
-"LOGIN" = "Вход";
-
-/* (No Comment) */
-"Login Password" = "Пароль для входа";
-
-/* (No Comment) */
-"Login password doesn't match" = "Пароль для входа не совпадает";
 
 /* error title */
 "Logs" = "Логи";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Наивысший из доступных уровень шифрования.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Название ярлыка дублируется";
-
 /* Error */
 "The mailbox password is incorrect." = "Неверный пароль почтового ящика.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Имя пользователя";
 
 /* alert title */
 "Verification code request failed" = "Сбой запроса кода подтверждения";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Да";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Да, активировать его для ";
 
 /* Error message */
 "Yes, attach details of payment" = "Да, приложить реквизиты платежа";

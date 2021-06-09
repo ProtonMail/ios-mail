@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Kan ikke finde vedhæftningen!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Kan ikke hente et Modulus-ID!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Kan ikke hente et Modulus-ID!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Bekræft";
-
-/* "Login Password" */
-"Confirm Login Password" = "Bekræft loginadgangskode";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Bekræft postkasseadgangskode";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problem med internetudbyder (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Ugyldig adgangstegn, log ind igen";
-
 /* alert title */
 "Invalid credential" = "Ugyldig legitimationsoplysning";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Log ud";
-
-/* (No Comment) */
-"LOGIN" = "Log ind";
-
-/* (No Comment) */
-"Login Password" = "Log ind-adgangskode";
-
-/* (No Comment) */
-"Login password doesn't match" = "Log ind-adgangskode matcher ikke";
 
 /* error title */
 "Logs" = "Logger";
@@ -2454,8 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Det kraftigste tilgængelige krypteringsniveau.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Dublet etiketnavn";
 
 /* Error */
 "The mailbox password is incorrect." = "Postkasseadgangskoden er forkert.";
@@ -2814,7 +2793,6 @@
 
 /* *
  *  Login View */
-"Username" = "Brugernavn";
 
 /* alert title */
 "Verification code request failed" = "Anmodning om bekræftelseskode mislykkedes";
@@ -2899,9 +2877,6 @@
 
 /* Yes action */
 "Yes" = "Ja";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Ja, aktivér det for ";
 
 /* Error message */
 "Yes, attach details of payment" = "Ja, vedhæft betalingsoplysninger";

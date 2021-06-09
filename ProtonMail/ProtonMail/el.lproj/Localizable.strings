@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Δεν μπορεί να βρεθεί αυτό το συνημμένο!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Δεν είναι δυνατή η λήψη αναγνωριστικού Modulus!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Can't get a Modulus ID!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Επιβεβαίωση";
-
-/* "Login Password" */
-"Confirm Login Password" = "Επιβεβαίωση κωδικού σύνδεσης";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Επιβεβαίωση Κωδικού θυρίδας";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Πρόβλημα παρόχου Internet (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Μη έγκυρο αναγνωριστικό πρόσβασης παρακαλώ επανασυνδεθείτε";
-
 /* alert title */
 "Invalid credential" = "Μη έγκυρο διαπιστευτήριο";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Αποσύνδεση";
-
-/* (No Comment) */
-"LOGIN" = "Σύνδεση";
-
-/* (No Comment) */
-"Login Password" = "Κωδικός σύνδεσης";
-
-/* (No Comment) */
-"Login password doesn't match" = "Ο κωδικός πρόσβασης δεν ταιριάζει";
 
 /* error title */
 "Logs" = "Αρχεία καταγραφής";
@@ -2454,8 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Το υψηλότερο δυνατό επίπεδο κρυπτογράφησης.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Το όνομα της ετικέτας είναι διπλότυπο";
 
 /* Error */
 "The mailbox password is incorrect." = "Ο κωδικός θυρίδας είναι λάθος.";
@@ -2814,7 +2793,6 @@
 
 /* *
  *  Login View */
-"Username" = "Όνομα χρήστη";
 
 /* alert title */
 "Verification code request failed" = "Η αίτηση του κωδικού επαλήθευσης απέτυχε";
@@ -2899,9 +2877,6 @@
 
 /* Yes action */
 "Yes" = "Ναι";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Ναι, ενεργοποιήστε το για ";
 
 /* Error message */
 "Yes, attach details of payment" = "Ναι, επισυνάψτε τα στοιχεία πληρωμής";

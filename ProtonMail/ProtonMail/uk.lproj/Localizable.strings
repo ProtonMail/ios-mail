@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Неможливо знайти це вкладення!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Неможливо отримати ID модулю!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Неможливо отримати ID модулю!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Підтвердити";
-
-/* "Login Password" */
-"Confirm Login Password" = "Підтвердити пароль входу";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Підтвердити пароль поштової скриньки";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Проблема постачальника послуг Інтернету (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Неправильний токен доступу. Будь ласка, увійдіть повторно";
-
 /* alert title */
 "Invalid credential" = "Недійсні облікові дані";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Вийти";
-
-/* (No Comment) */
-"LOGIN" = "Вхід";
-
-/* (No Comment) */
-"Login Password" = "Пароль входу";
-
-/* (No Comment) */
-"Login password doesn't match" = "Пароль входу не збігається";
 
 /* error title */
 "Logs" = "Журнали";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Найвищий доступний рівень шифрування.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Така назва мітки вже існує";
-
 /* Error */
 "The mailbox password is incorrect." = "Неправильний пароль поштової скриньки.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Ім'я користувача";
 
 /* alert title */
 "Verification code request failed" = "Не вдалося виконати запит на код підтвердження";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Так";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Так, увімкнути для ";
 
 /* Error message */
 "Yes, attach details of payment" = "Так, вкласти подробиці платежу";

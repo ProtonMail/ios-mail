@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "找不到這個附件！";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "找不到模組 ID！";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "無法取得模數 ID！";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "確認";
-
-/* "Login Password" */
-"Confirm Login Password" = "確認登入密碼";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "確認郵箱密碼";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "網際網路服務提供商 (ISP) 問題";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "不正確的訪問 token，請重新登入";
-
 /* alert title */
 "Invalid credential" = "無效的登入憑證";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "登出";
-
-/* (No Comment) */
-"LOGIN" = "登入";
-
-/* (No Comment) */
-"Login Password" = "登錄密碼";
-
-/* (No Comment) */
-"Login password doesn't match" = "密碼不相符";
 
 /* error title */
 "Logs" = "日誌";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "可用的最高級別加密。";
 
-/* (No Comment) */
-"The label name is duplicate" = "標籤名稱重複";
-
 /* Error */
 "The mailbox password is incorrect." = "郵箱密碼錯誤。";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "使用者名稱";
 
 /* alert title */
 "Verification code request failed" = "驗證碼請求失敗";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "是";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "是的, 啟用它 ";
 
 /* Error message */
 "Yes, attach details of payment" = "是, 附上付款詳情";

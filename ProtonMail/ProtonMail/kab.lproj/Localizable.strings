@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Ur izmir ara ad yaf afaylu-agi yeddan!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Ur izmir ara ad d-yawi asulay Moduls!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Ur izmir ara ad d-yawi asulay Moduls!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Sentem";
-
-/* "Login Password" */
-"Confirm Login Password" = "Sentem awal uffir n tuqqna";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Sentem awal uffir n tnaka n yimayl";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Ugur n usaǧǧaw n umeẓlu n internet (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Ajiṭun n unekcum mačči d ameɣtu, ɛreḍ tulsa n tuqqna";
-
 /* alert title */
 "Invalid credential" = "Yir anekcum";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Ffeɣ";
-
-/* (No Comment) */
-"LOGIN" = "Aseqdac";
-
-/* (No Comment) */
-"Login Password" = "Awal uffir n tuqqna";
-
-/* (No Comment) */
-"Login password doesn't match" = "Awal uffir n tuqqna ur imenṭaḍ ara";
 
 /* error title */
 "Logs" = "Inekcam";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Aswir meqqren n uwgelhen mačči d ameɣtu.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Tabzimt agi tella yakan";
-
 /* Error */
 "The mailbox password is incorrect." = "Awal uffir n tnaka n yimayl mačči d ameɣtu.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Isem n useqdac";
 
 /* alert title */
 "Verification code request failed" = "Asuter n tengalt n usenqed yecceḍ";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Ih";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Ih, rmed-it i ";
 
 /* Error message */
 "Yes, attach details of payment" = "Ih, seddu talqayt ɣef lexlaṣ";

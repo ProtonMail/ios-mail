@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Não foi possível localizar este anexo!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Não foi possível obter um ID do Moduls!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Can't get a Modulus ID!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Confirmar";
-
-/* "Login Password" */
-"Confirm Login Password" = "Confirmar senha de acesso";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Confirmar senha da caixa de correio";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problema no provedor de serviços internet (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Token de acesso inválido. Por favor, faça o login novamente";
-
 /* alert title */
 "Invalid credential" = "Credenciais inválidas";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Encerrar seção";
-
-/* (No Comment) */
-"LOGIN" = "Login";
-
-/* (No Comment) */
-"Login Password" = "Senha de acesso";
-
-/* (No Comment) */
-"Login password doesn't match" = "Senha de acesso não confere";
 
 /* error title */
 "Logs" = "Registros";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "O nível mais alto de criptografia disponível.";
 
-/* (No Comment) */
-"The label name is duplicate" = "O nome do marcador está duplicado";
-
 /* Error */
 "The mailbox password is incorrect." = "A senha da caixa de correio está incorreta.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Nome de usuário";
 
 /* alert title */
 "Verification code request failed" = "Falha ao enviar o código de verificação";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Sim";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Sim, ativar para ";
 
 /* Error message */
 "Yes, attach details of payment" = "Sim, anexe detalhes de pagamento";

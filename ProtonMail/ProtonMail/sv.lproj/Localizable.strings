@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Can't find this attachment!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Can't get a Modulus ID!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Can't get a Modulus ID!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Bekräfta";
-
-/* "Login Password" */
-"Confirm Login Password" = "Confirm login password";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Confirm mailbox password";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Invalid access token please relogin";
-
 /* alert title */
 "Invalid credential" = "Invalid credential";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Logga ut";
-
-/* (No Comment) */
-"LOGIN" = "Login";
-
-/* (No Comment) */
-"Login Password" = "Login password";
-
-/* (No Comment) */
-"Login password doesn't match" = "Login password doesn't match";
 
 /* error title */
 "Logs" = "Logs";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "The highest level of encryption available.";
 
-/* (No Comment) */
-"The label name is duplicate" = "The label name is duplicate";
-
 /* Error */
 "The mailbox password is incorrect." = "The mailbox password is incorrect.";
 
@@ -2800,9 +2778,6 @@
 /* (No Comment) */
 "User is available!" = "Username is available";
 
-/* (No Comment) */
-"USER LOGIN" = "User log in";
-
 /* title */
 "User name exist" = "Username exist";
 
@@ -2814,7 +2789,6 @@
 
 /* *
  *  Login View */
-"Username" = "Användarnamn";
 
 /* alert title */
 "Verification code request failed" = "Verification code request failed";
@@ -2899,9 +2873,6 @@
 
 /* Yes action */
 "Yes" = "Ja";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Yes, activate it for ";
 
 /* Error message */
 "Yes, attach details of payment" = "Yes, attach details of payment";
