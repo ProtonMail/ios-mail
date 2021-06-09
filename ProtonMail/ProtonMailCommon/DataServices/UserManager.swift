@@ -269,6 +269,14 @@ class UserManager : Service, HasLocalStorage {
             guard let info = info else { return }
             self?.userinfo = info
             self?.save()
+            #if !APP_EXTENSION
+            guard let firstUser = self?.parentManager?.firstUser,
+                  let self = self else { return }
+            if firstUser.userInfo.userId == self.userInfo.userId {
+                userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeLeft, rightToLeft: info.swipeRight)
+                
+            }
+            #endif
         }
     }
 

@@ -121,6 +121,23 @@ enum SwipeActionSettingType: Int, CustomStringConvertible {
             return UIColorManager.NotificationError
         }
     }
+    
+    static func migrateFromV3(rawValue: Int) -> SwipeActionSettingType? {
+        switch rawValue {
+        case 0:
+            return .trash
+        case 1:
+            return .spam
+        case 2:
+            return .starAndUnstar
+        case 3:
+            return .archive
+        case 4:
+            return .readAndUnread
+        default:
+            return nil
+        }
+    }
 }
 
 enum MessageSwipeAction: CustomStringConvertible {
