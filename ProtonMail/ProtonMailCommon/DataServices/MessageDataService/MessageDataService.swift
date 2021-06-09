@@ -1519,8 +1519,9 @@ class MessageDataService : Service, HasLocalStorage {
                 }
             }
         }
-
-        self.cachePropertiesForBackground(in: message)
+        message.managedObjectContext?.performAndWait {
+            self.cachePropertiesForBackground(in: message)
+        }
         if action == .saveDraft || action == .send {
             let task = QueueManager.newTask()
             task.messageID = message.messageID
@@ -1561,8 +1562,9 @@ class MessageDataService : Service, HasLocalStorage {
                 try? att.managedObjectContext?.obtainPermanentIDs(for: [att])
             }
         }
-        
-        self.cachePropertiesForBackground(in: att.message)
+        att.managedObjectContext?.performAndWait {
+            self.cachePropertiesForBackground(in: att.message)
+        }
         let task = QueueManager.newTask()
         task.messageID = att.message.messageID
         task.actionString = action.rawValue
