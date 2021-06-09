@@ -14,9 +14,6 @@
 
 
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Can't get a Modulus ID!";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -25,11 +22,8 @@
 /**
  *  Login View
  */
-"Username" = "Username";
 "Password" = "Password";
 
-"USER LOGIN" = "User log in";
-"LOGIN" = "Login";
 "NEED AN ACCOUNT? SIGN UP." = "Sign up for free";
 "FORGOT PASSWORD?" = "Forgot password?";
 
@@ -161,12 +155,9 @@
 /**
  *  SignUpPasswordViewController
  */
-//"Login Password"
-"Confirm Login Password" = "Confirm login password";
 //"Mailbox Password"
 "Confirm Mailbox Password" = "Confirm mailbox password";
 "Mailbox password doesn't match" = "Mailbox password doesn't match";
-"Login password doesn't match" = "Login password doesn't match";
 
 
 /**
@@ -281,13 +272,11 @@
 //"Cancel"
 "Message Queue" = "Message queue";
 "Error Logs" = "Error logs";
-"Clear Local Message Cache" = "Clear local message cache";
 "Notification Email" = "Notification email";
 "Display Name" = "Display name";
 "DisplayName" = "Display name";
 "Display name" = "Display name";
 "Signature" = "Signature";
-"Login Password" = "Login password";
 "Mailbox Password" = "Mailbox password";
 "Clear Local Message Cache" = "Clear local message cache";
 "Mobile Signature" = "Mobile signature";
@@ -351,7 +340,6 @@
  */
 //"Alert" = "Alert";
 "A new version of ProtonMail app is available, please update to latest version." = "A new version of ProtonMail app is available, please update to latest version.";
-"Invalid access token please relogin" = "Invalid access token please relogin";
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
 "Sending Message" = "Sending message";
 "Message sending failed please try again" = "Message sending failed please try again";
@@ -472,7 +460,6 @@
  */
 
 "The maximum number of labels is %d." = "The maximum number of labels is %d.";
-"The label name is duplicate" = "The label name is duplicate";
 "Apply" = "Apply";
 "Add" = "Add";
 

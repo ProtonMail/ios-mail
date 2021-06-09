@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Impossibile trovare questo allegato!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Impossibile ottenere un ID Moduls!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Impossibile ottenere un ID Moduls!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Conferma";
-
-/* "Login Password" */
-"Confirm Login Password" = "Conferma la password di accesso";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Conferma la password della casella email";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problema del provider Internet (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Token di accesso non valido. Per favore, ritenta il login.";
-
 /* alert title */
 "Invalid credential" = "Credenziali non valide";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Esci";
-
-/* (No Comment) */
-"LOGIN" = "Accedi";
-
-/* (No Comment) */
-"Login Password" = "Password di accesso";
-
-/* (No Comment) */
-"Login password doesn't match" = "Le password di accesso non corrispondono";
 
 /* error title */
 "Logs" = "Registri";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Il massimo livello di crittografia disponibile.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Il nome dell'etichetta è duplicato";
-
 /* Error */
 "The mailbox password is incorrect." = "La password della casella email non è corretta.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Nome utente";
 
 /* alert title */
 "Verification code request failed" = "Richiesta di codice di verifica non riuscita";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Si";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Sì, attivalo per ";
 
 /* Error message */
 "Yes, attach details of payment" = "Sì, allegare i dettagli del pagamento";

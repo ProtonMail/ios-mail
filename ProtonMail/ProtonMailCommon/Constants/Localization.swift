@@ -673,8 +673,8 @@ class LocalizedString {
     /// "Human Check Warning"
     lazy var _signup_human_check_warning_title = NSLocalizedString("Human Check Warning", comment: "human check warning title")
 
-    /// "Warning: Before you pass the human check you can't sent email!!!"
-    lazy var _signup_human_check_warning = NSLocalizedString("Warning: Before you pass the human check you can't sent email!!!", comment: "human check warning description")
+    /// "Warning: Before you pass the human check you can't sent email!"
+    lazy var _signup_human_check_warning = NSLocalizedString("Warning: Before you pass the human check you can't sent email!", comment: "human check warning description")
 
     /// "Check Again"
     lazy var _signup_check_again_action = NSLocalizedString("Check Again", comment: "Action")
@@ -835,13 +835,13 @@ class LocalizedString {
     /// "PASSWORD"
     lazy var _password = NSLocalizedString("Password", comment: "title")
 
-    lazy var _setting_change_password = NSLocalizedString("Change Password", comment: "title")
+    lazy var _setting_change_password = NSLocalizedString("Change password", comment: "title")
 
     /// "Change Signin Password"
-    lazy var _change_signin_password = NSLocalizedString("Change sign-in Password", comment: "change password input label")
+    lazy var _change_signin_password = NSLocalizedString("Change sign-in password", comment: "change password input label")
 
     /// "Current signin password"
-    lazy var _current_signin_password = NSLocalizedString("Current sign-in Password", comment: "Title")
+    lazy var _current_signin_password = NSLocalizedString("Current sign-in password", comment: "Title")
 
     /// "New signin password"
     lazy var _new_signin_password = NSLocalizedString("New sign-in password", comment: "Title")
@@ -850,7 +850,7 @@ class LocalizedString {
     lazy var _confirm_new_signin_password = NSLocalizedString("Confirm new sign-in password", comment: "Title")
 
     /// "Change Mailbox Password"
-    lazy var _change_mailbox_password = NSLocalizedString("Change Mailbox Password", comment: "Title")
+    lazy var _change_mailbox_password = NSLocalizedString("Change mailbox password", comment: "Title")
 
     /// "New mailbox password"
     lazy var _new_mailbox_password = NSLocalizedString("New mailbox password", comment: "Title")
@@ -859,7 +859,7 @@ class LocalizedString {
     lazy var _confirm_new_mailbox_password = NSLocalizedString("Confirm new mailbox password", comment: "Title")
 
     /// "Change Single Password"
-    lazy var _change_single_password = NSLocalizedString("Change Single Password", comment: "Title")
+    lazy var _change_single_password = NSLocalizedString("Change single password", comment: "Title")
 
     /// "Unable to send the email"
     lazy var unable_to_send_the_email = NSLocalizedString("Unable to send the email", comment: "error when sending the message")
@@ -987,9 +987,6 @@ class LocalizedString {
 
     /// "Phone number"
     lazy var _phone_number = NSLocalizedString("Phone number", comment: "contact placeholder")
-
-    /// "Username"
-    lazy var _username = NSLocalizedString("Username", comment: "Title")
 
 
 
@@ -1721,8 +1718,6 @@ class LocalizedString {
     lazy var _pro_header = NSLocalizedString("For organizations that need multi-user support and additional productivity features", comment: "Service Plan description")
     
     lazy var _vis_header = NSLocalizedString("For power users and groups of people that value full anonymity and privacy", comment: "Service Plan description")
-
-    lazy var _yes_bypass_validation = NSLocalizedString("Yes, activate it for ", comment: "Warning message option to bypass validation and activate plan for current username")
     
     lazy var _no_dont_bypass_validation = NSLocalizedString("No, for another ProtonMail account", comment: "Warning message option when user want to resignin to another account")
     
@@ -1979,7 +1974,7 @@ class LocalizedString {
     lazy var _hour = NSLocalizedString("hour", comment: "hour")
     lazy var _hours = NSLocalizedString("hours", comment: "hours")
     
-    lazy var _minute = NSLocalizedString("%d min", comment: "minute")
+    lazy var _minute = NSLocalizedString("minute", comment: "minute")
     
     lazy var _unread_action = NSLocalizedString("unread", comment: "The unread title of unread action button in mailbox view")
     

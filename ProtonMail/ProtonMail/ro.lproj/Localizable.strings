@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Atașamentul nu poate fi găsit!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Nu se poate obține ID modul!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Nu se poate obține ID modul!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Confirmare";
-
-/* "Login Password" */
-"Confirm Login Password" = "Confirmare parolă conectare";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Confirmare parolă mesaje";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problemă cu furnizorul de servicii internet (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Semnătură de acces nevalidă. Reconectați-vă.";
-
 /* alert title */
 "Invalid credential" = "Acreditări nevalide";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Deconectare";
-
-/* (No Comment) */
-"LOGIN" = "Conectare";
-
-/* (No Comment) */
-"Login Password" = "Parolă de autentificare";
-
-/* (No Comment) */
-"Login password doesn't match" = "Parola de conectare nu se potrivește";
 
 /* error title */
 "Logs" = "Jurnale";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Cel mai mare nivel de criptare disponibil.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Numele etichetei există deja";
-
 /* Error */
 "The mailbox password is incorrect." = "Parola mesajelor nu este corectă.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Nume utilizator";
 
 /* alert title */
 "Verification code request failed" = "Solicitare cod de verificare eșuată";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Da";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Da, activare pentru ";
 
 /* Error message */
 "Yes, attach details of payment" = "Da, atașez detaliile plății.";

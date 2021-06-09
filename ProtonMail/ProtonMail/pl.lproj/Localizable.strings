@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Nie można odnaleźć tego załącznika!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Nie można uzyskać identyfikatora modułu!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Nie można uzyskać identyfikatora modułu!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Potwierdź";
-
-/* "Login Password" */
-"Confirm Login Password" = "Potwierdź hasło logowania";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Potwierdź hasło skrzynki pocztowej";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problem z dostawcą Internetu (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Token dostępowy jest nieprawidłowy. Zaloguj się ponownie";
-
 /* alert title */
 "Invalid credential" = "Dane logowania są nieprawidłowe";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Wyloguj";
-
-/* (No Comment) */
-"LOGIN" = "Zaloguj się";
-
-/* (No Comment) */
-"Login Password" = "Hasło logowania";
-
-/* (No Comment) */
-"Login password doesn't match" = "Hasła logowania nie pasują do siebie";
 
 /* error title */
 "Logs" = "Logi";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Najwyższy dostępny poziom szyfrowania.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Nazwa etykiety jest zduplikowana";
-
 /* Error */
 "The mailbox password is incorrect." = "Hasło skrzynki pocztowej jest nieprawidłowe.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Nazwa użytkownika";
 
 /* alert title */
 "Verification code request failed" = "Żądanie kodu weryfikującego nie powiodło się";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Tak";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Tak, aktywuj go dla ";
 
 /* Error message */
 "Yes, attach details of payment" = "Tak, dołącz szczegóły płatności";

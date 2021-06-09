@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Bu ek bulunamıyor!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Modül kimliği alınamıyor!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Can't get a Modulus ID!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Onayla";
-
-/* "Login Password" */
-"Confirm Login Password" = "Giriş parolasını onayla";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Posta kutusu parolasını onayla";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "İnternet Hizmeti Sağlayıcı (ISP) sorunu";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Geçersiz erişim belirteci, lütfen tekrar giriş yapın";
-
 /* alert title */
 "Invalid credential" = "Geçersiz kimlik bilgileri";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Oturumu kapat";
-
-/* (No Comment) */
-"LOGIN" = "Oturum aç";
-
-/* (No Comment) */
-"Login Password" = "Oturum açma parolası";
-
-/* (No Comment) */
-"Login password doesn't match" = "Giriş parolası uyuşmuyor";
 
 /* error title */
 "Logs" = "Günlükler";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Mevcut olan en yüksek şifreleme düzeyi.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Yinelenen etiket adı";
-
 /* Error */
 "The mailbox password is incorrect." = "Posta kutusu parolası hatalı.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Kullanıcı adı";
 
 /* alert title */
 "Verification code request failed" = "Doğrulama kodu isteği başarısız oldu";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Evet";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Evet, bunun için etkinleştir ";
 
 /* Error message */
 "Yes, attach details of payment" = "Evet, ödeme ayrıntılarını ekle";

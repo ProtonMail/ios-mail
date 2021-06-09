@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Gat ekki fundið þetta viðhengi!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Ekki hægt að fá Moduls-auðkenni!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Can't get a Modulus ID!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Staðfesta";
-
-/* "Login Password" */
-"Confirm Login Password" = "Staðfestu innskráningarlykilorð";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Staðfestu lykilorð fyrir pósthólf";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Vandamál hjá internetþjónustuaðila (Internet Service Provider - ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Ógilt auðkennisteikn, skráðu þig inn aftur";
-
 /* alert title */
 "Invalid credential" = "Ógilt auðkenni";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Skrá út";
-
-/* (No Comment) */
-"LOGIN" = "Innskráning";
-
-/* (No Comment) */
-"Login Password" = "Lykilorð Innskráningar";
-
-/* (No Comment) */
-"Login password doesn't match" = "Lykilorð innskráningar samsvarar ekki";
 
 /* error title */
 "Logs" = "Aðgerðaskrár";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Hæsta stig dulritunar í boði.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Heiti merkisins er tvítekið";
-
 /* Error */
 "The mailbox password is incorrect." = "Lykilorð á pósthólfi er rangt.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Notandanafn";
 
 /* alert title */
 "Verification code request failed" = "Beiðni um sannvottunarkóða mistókst";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Já";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Já, virkja það fyrir ";
 
 /* Error message */
 "Yes, attach details of payment" = "Já, láta fylgja ítarupplýsingar varðandi greiðsluna";

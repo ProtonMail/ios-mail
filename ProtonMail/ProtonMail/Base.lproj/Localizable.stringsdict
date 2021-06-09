@@ -34,7 +34,7 @@
 			<string>%u messages</string>
 		</dict>
 	</dict>
-	<key>%d min</key>
+	<key>minute</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>

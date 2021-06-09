@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Nelze najít tuto přílohu!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Nelze získat ID modulu!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Can't get a Modulus ID!";
 
@@ -543,9 +539,6 @@
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "Check Proton Status for our system status.";
 
-/* "Username" */
-"Checking ...." = "Kontrola ....";
-
 /* loading message */
 "Checking…" = "Checking…";
 
@@ -589,9 +582,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Potvrdit";
-
-/* "Login Password" */
-"Confirm Login Password" = "Potvrdit přihlašovací heslo";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Potvrdit heslo k poštovní schránce";
@@ -1306,9 +1296,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problém s poskytovatelem internetových služeb (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Neplatný token pro přístup. Přihlašte se prosím znovu";
-
 /* alert title */
 "Invalid credential" = "Neplatné přihlašovací údaje";
 
@@ -1439,15 +1426,6 @@
 
 /* comment */
 "Log out" = "Odhlásit se";
-
-/* (No Comment) */
-"LOGIN" = "Přihlášení";
-
-/* (No Comment) */
-"Login Password" = "Přihlašovací heslo";
-
-/* (No Comment) */
-"Login password doesn't match" = "Přihlašovací heslo se neshoduje";
 
 /* error title */
 "Logs" = "Logy";
@@ -2454,9 +2432,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "K dispozici je nejvyšší úroveň šifrování.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Jméno štítku je již použito";
-
 /* Error */
 "The mailbox password is incorrect." = "Heslo do poštovní schránky je nesprávné.";
 
@@ -2814,7 +2789,6 @@
 
 /* *
  *  Login View */
-"Username" = "Uživatelské jméno";
 
 /* alert title */
 "Verification code request failed" = "Nepodařilo se ověřit požadavek na ověřovací kód";
@@ -2899,9 +2873,6 @@
 
 /* Yes action */
 "Yes" = "Ano";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Ano, aktivujte pro ";
 
 /* Error message */
 "Yes, attach details of payment" = "Ano, přiložit detail platby";

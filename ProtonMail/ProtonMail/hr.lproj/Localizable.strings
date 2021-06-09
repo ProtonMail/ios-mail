@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Neuspješno pronalaženje ovog privitka!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Neuspješno dohvaćanje ID-a modula!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Neuspješno dohvaćanje ID-a modula!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Potvrdi";
-
-/* "Login Password" */
-"Confirm Login Password" = "Potvrdi lozinku za prijavu";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Potvrdi lozinku sandučića e-pošte";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problem s pružateljem internetskih usluga (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Nevažeći token za pristup. Molimo prijavite se ponovno";
-
 /* alert title */
 "Invalid credential" = "Nevažeće vjerodajnice";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Odjavite se";
-
-/* (No Comment) */
-"LOGIN" = "Prijava";
-
-/* (No Comment) */
-"Login Password" = "Lozinka za prijavu";
-
-/* (No Comment) */
-"Login password doesn't match" = "Lozinke za prijavu se ne podudaraju";
 
 /* error title */
 "Logs" = "Zapisnici";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Najviša dostupna razina šifriranja.";
 
-/* (No Comment) */
-"The label name is duplicate" = "Naziv oznake je duplikat";
-
 /* Error */
 "The mailbox password is incorrect." = "Nevažeća lozinka sandučića e-pošte.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Korisničko ime";
 
 /* alert title */
 "Verification code request failed" = "Neuspješni zahtjev za potvrdnim kôdom";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Da";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Da, aktiviraj za ";
 
 /* Error message */
 "Yes, attach details of payment" = "Da, priloži pojedinosti o plaćanju";

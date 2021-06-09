@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "¡No se puede encontrar este archivo adjunto!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "¡No se puede obtener un ID de Moduls!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "¡No se puede obtener un ID de Modulus!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Confirmar";
-
-/* "Login Password" */
-"Confirm Login Password" = "Confirmar contraseña de inicio de sesión";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Confirmar contraseña del buzón";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problema del proveedor de servicios de Internet (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Token de acceso no válido, vuelve a iniciar sesión";
-
 /* alert title */
 "Invalid credential" = "Credencial no válida";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Cerrar sesión";
-
-/* (No Comment) */
-"LOGIN" = "Iniciar sesión";
-
-/* (No Comment) */
-"Login Password" = "Contraseña de inicio de sesión";
-
-/* (No Comment) */
-"Login password doesn't match" = "La contraseña de inicio de sesión no coincide";
 
 /* error title */
 "Logs" = "Registros";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "El máximo nivel de cifrado disponible.";
 
-/* (No Comment) */
-"The label name is duplicate" = "El nombre de la etiqueta está duplicado";
-
 /* Error */
 "The mailbox password is incorrect." = "La contraseña del buzón es incorrecta.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Nombre de usuario";
 
 /* alert title */
 "Verification code request failed" = "Error en la solicitud de código de verificación";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Sí";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Sí, activarlo para ";
 
 /* Error message */
 "Yes, attach details of payment" = "Sí, adjuntar detalles del pago";

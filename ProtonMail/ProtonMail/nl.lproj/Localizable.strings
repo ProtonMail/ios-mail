@@ -443,10 +443,6 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Kan deze bijlage niet vinden!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Kan geen Moduls ID verkrijgen!";
-
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Kan geen Moduls ID verkrijgen!";
 
@@ -589,9 +585,6 @@
 /* *
  *  MenuViewController */
 "Confirm" = "Bevestigen";
-
-/* "Login Password" */
-"Confirm Login Password" = "Bevestig inlogwachtwoord";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Bevestig mailboxwachtwoord";
@@ -1306,9 +1299,6 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Probleem met Internet Service Provider (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Ongeldige toegangstoken, log opnieuw in";
-
 /* alert title */
 "Invalid credential" = "Inloggegevens ongeldig";
 
@@ -1439,15 +1429,6 @@
 
 /* comment */
 "Log out" = "Afmelden";
-
-/* (No Comment) */
-"LOGIN" = "Login";
-
-/* (No Comment) */
-"Login Password" = "Inlogwachtwoord";
-
-/* (No Comment) */
-"Login password doesn't match" = "Inlogwachtwoord komt niet overeen";
 
 /* error title */
 "Logs" = "Logs";
@@ -2454,9 +2435,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Het hoogste niveau van versleuteling beschikbaar.";
 
-/* (No Comment) */
-"The label name is duplicate" = "De labelnaam bestaat reeds";
-
 /* Error */
 "The mailbox password is incorrect." = "Het mailbox-wachtwoord is onjuist.";
 
@@ -2814,7 +2792,6 @@
 
 /* *
  *  Login View */
-"Username" = "Gebruikersnaam";
 
 /* alert title */
 "Verification code request failed" = "Aanvraag van verificatiecode is mislukt";
@@ -2899,9 +2876,6 @@
 
 /* Yes action */
 "Yes" = "Ja";
-
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Ja, activeer het voor ";
 
 /* Error message */
 "Yes, attach details of payment" = "Ja, voeg details toe van betaling";
