@@ -81,6 +81,7 @@ class SetPinCodeModelImpl : PinCodeViewModel {
     override func done(completion: @escaping (Bool)->Void) {
         self.isPinMatched() { matched in
             if matched {
+                keymaker.deactivate(BioProtection())
                 keymaker.activate(PinProtection(pin: self.enterPin), completion: completion)
             }
         }
