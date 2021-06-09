@@ -31,6 +31,7 @@ class ConversationViewModel {
     private let conversationMessagesProvider: ConversationMessagesProvider
     private let messageService: MessageDataService
     private let conversationService: ConversationProvider
+    private let eventsService: EventsFetching
     private let contactService: ContactDataService
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
@@ -52,12 +53,14 @@ class ConversationViewModel {
          user: UserManager,
          messageService: MessageDataService,
          conversationService: ConversationProvider,
+         eventsService: EventsFetching,
          contactService: ContactDataService) {
         self.conversation = conversation
         self.labelId = labelId
         self.user = user
         self.messageService = messageService
         self.conversationService = conversationService
+        self.eventsService = eventsService
         self.contactService = contactService
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
         observeConversationMessages()
@@ -76,6 +79,34 @@ class ConversationViewModel {
     func refreshDataSource(with messages: [Message]) {
         dataSource = [header] + messages.map {
             .message(viewModel: .init(message: $0, messageService: messageService, contactService: contactService))
+        }
+    }
+
+    func starTapped(completion: @escaping (Result<Bool, Error>) -> Void) {
+        if conversation.starred {
+            conversationService.unlabel(conversationIDs: [conversation.conversationID],
+                                        as: Message.Location.starred.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    completion(.success(false))
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        } else {
+            conversationService.label(conversationIDs: [conversation.conversationID],
+                                      as: Message.Location.starred.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    completion(.success(true))
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
         }
     }
 
@@ -100,58 +131,72 @@ class ConversationViewModel {
     func handleActionBarAction(_ action: MailboxViewModel.ActionTypes) {
         switch action {
         case .delete:
-            conversationService.deleteConversations(with: [conversation.conversationID], labelID: labelId) { _ in }
+            conversationService.deleteConversations(with: [conversation.conversationID],
+                                                    labelID: labelId) { [weak self] result in
+                guard let self = self else { return }
+                if (try? result.get()) != nil {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
         case .readUnread:
             if conversation.isUnread(labelID: labelId) {
-                conversationService.markAsRead(conversationIDs: [conversation.conversationID]) { _ in }
+                conversationService.markAsRead(conversationIDs: [conversation.conversationID]) { [weak self] result in
+                    guard let self = self else { return }
+                    if (try? result.get()) != nil {
+                        self.eventsService.fetchEvents(labelID: self.labelId)
+                    }
+                }
             } else {
                 conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
-                                                 labelID: labelId) { _ in }
+                                                 labelID: labelId) { [weak self] result in
+                    guard let self = self else { return }
+                    if (try? result.get()) != nil {
+                        self.eventsService.fetchEvents(labelID: self.labelId)
+                    }
+                }
             }
         case .trash:
             conversationService.move(conversationIDs: [conversation.conversationID],
                                      from: labelId,
-                                     to: Message.Location.trash.rawValue) { _ in }
+                                     to: Message.Location.trash.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                if (try? result.get()) != nil {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
         default:
             return
         }
     }
 
-    func handleActionSheetAction(_ action: MessageViewActionSheetAction,
-                                 completion: @escaping () -> Void) {
+    func handleActionSheetAction(_ action: MessageViewActionSheetAction, completion: @escaping () -> Void) {
+        let fetchEvents = { [weak self] (result: Result<Void, Error>) in
+            guard let self = self else { return }
+            if (try? result.get()) != nil { self.eventsService.fetchEvents(labelID: self.labelId) }
+        }
+        let moveAction = { (destination: Message.Location) in
+            self.conversationService.move(conversationIDs: [self.conversation.conversationID],
+                                          from: self.labelId,
+                                          to: destination.rawValue,
+                                          completion: fetchEvents)
+        }
         switch action {
         case .markUnread:
-            conversationService.markAsUnread(conversationIDs: [conversation.conversationID], labelID: labelId) { _ in }
+            conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
+                                             labelID: labelId,
+                                             completion: fetchEvents)
         case .trash:
-            conversationService.move(conversationIDs: [conversation.conversationID],
-                                     from: labelId,
-                                     to: Message.Location.trash.rawValue) { _ in }
+            moveAction(Message.Location.trash)
         case .archive:
-            conversationService.move(conversationIDs: [conversation.conversationID],
-                                     from: labelId,
-                                     to: Message.Location.archive.rawValue) { _ in }
+            moveAction(Message.Location.archive)
         case .spam:
-            conversationService.move(conversationIDs: [conversation.conversationID],
-                                     from: labelId,
-                                     to: Message.Location.spam.rawValue) { _ in }
+            moveAction(Message.Location.spam)
         case .delete:
-            conversationService.deleteConversations(with: [conversation.conversationID], labelID: labelId) { _ in }
-        case .reportPhishing:
-            guard let newestMessage = dataSource.newestMessage else {
-                return
-            }
-            BugDataService(api: self.user.apiService).reportPhishing(messageID: newestMessage.messageID,
-                                                                     messageBody: newestMessage.body) { _ in
-                self.conversationService.move(conversationIDs: [self.conversation.conversationID],
-                                              from: self.labelId,
-                                              to: Message.Location.spam.rawValue) { _ in }
-                                                                        completion()
-            }
-            return
+            conversationService.deleteConversations(with: [conversation.conversationID],
+                                                    labelID: labelId,
+                                                    completion: fetchEvents)
         case .inbox, .spamMoveToInbox:
-            conversationService.move(conversationIDs: [conversation.conversationID],
-                                     from: labelId,
-                                     to: Message.Location.spam.rawValue) { _ in }
+            moveAction(Message.Location.inbox)
         default:
             break
         }
@@ -170,6 +215,12 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
     func handleLabelAsAction(conversations: [Conversation],
                              shouldArchive: Bool,
                              currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+        let fetchEvents = { [weak self] (result: Result<Void, Error>) in
+            guard let self = self else { return }
+            if (try? result.get()) != nil {
+                self.eventsService.fetchEvents(labelID: self.labelId)
+            }
+        }
         for (label, status) in currentOptionsStatus {
             guard status != .dash else { continue } // Ignore the option in dash
             if selectedLabelAsLabels
@@ -177,12 +228,14 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                 // Add to message which does not have this label
                 if !conversation.getLabels().contains(label.location.labelID) {
                     conversationService.label(conversationIDs: conversations.map(\.conversationID),
-                                              as: label.location.labelID) { _ in }
+                                              as: label.location.labelID,
+                                              completion: fetchEvents)
                 }
             } else {
                 if conversation.getLabels().contains(label.location.labelID) {
                     conversationService.unlabel(conversationIDs: conversations.map(\.conversationID),
-                                                as: label.location.labelID) { _ in }
+                                                as: label.location.labelID,
+                                                completion: fetchEvents)
                 }
             }
         }
@@ -193,7 +246,8 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
             if let fLabel = conversation.firstValidFolder() {
                 conversationService.move(conversationIDs: conversations.map(\.conversationID),
                                          from: fLabel,
-                                         to: Message.Location.archive.rawValue) { _ in }
+                                         to: Message.Location.archive.rawValue,
+                                         completion: fetchEvents)
             }
         }
     }
@@ -209,44 +263,11 @@ extension ConversationViewModel: MoveToActionSheetProtocol {
         guard let destination = selectedMoveToFolder else { return }
         conversationService.move(conversationIDs: conversations.map(\.conversationID),
                                  from: "",
-                                 to: destination.location.labelID) { _ in }
-    }
-}
-
-// MARK: - Newest Message Headers & HTML
-extension ConversationViewModel {
-    func getMessageHeaderUrl() -> URL? {
-        guard let message = dataSource.newestMessage else {
-            return nil
+                                 to: destination.location.labelID) { [weak self] result in
+            guard let self = self else { return }
+            if (try? result.get()) != nil {
+                self.eventsService.fetchEvents(labelID: self.labelId)
+            }
         }
-        let time = dateFormatter.string(from: message.time ?? Date())
-        let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
-        let filename = "headers-" + time + "-" + title.joined(separator: "-")
-        guard let header = message.header else {
-            assert(false, "No header in message")
-            return nil
-        }
-        return try? self.writeToTemporaryUrl(header, filename: filename)
-    }
-
-    func getMessageBodyUrl() -> URL? {
-        guard let message = dataSource.newestMessage else {
-            return nil
-        }
-        let time = dateFormatter.string(from: message.time ?? Date())
-        let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
-        let filename = "body-" + time + "-" + title.joined(separator: "-")
-        guard let body = try? messageService.decryptBodyIfNeeded(message: message) else {
-            return nil
-        }
-        return try? self.writeToTemporaryUrl(body, filename: filename)
-    }
-
-    private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
-        let tempFileUri = FileManager.default.temporaryDirectoryUrl
-            .appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
-        try? FileManager.default.removeItem(at: tempFileUri)
-        try content.write(to: tempFileUri, atomically: true, encoding: .utf8)
-        return tempFileUri
     }
 }

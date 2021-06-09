@@ -1,5 +1,5 @@
 //
-//  MessageViewActionSheetViewModel.swift
+//  ConversationActionSheetViewModel.swift
 //  ProtonMail
 //
 //
@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-struct MessageViewActionSheetViewModel: ActionSheetViewModel {
+struct ConversationActionSheetViewModel: ActionSheetViewModel {
     let title: String
     private(set) var items: [MessageViewActionSheetAction] = []
 
@@ -32,6 +32,8 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
             .replyAll,
             .forward,
             .markUnread,
+            .star,
+            .unstar,
             .labelAs
         ])
 
@@ -63,12 +65,6 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
             items.append(.spam)
         }
 
-        items.append(contentsOf: [
-            .moveTo,
-            .print,
-            .viewHeaders,
-            .viewHTML,
-            .reportPhishing
-        ])
+        items.append(.moveTo)
     }
 }

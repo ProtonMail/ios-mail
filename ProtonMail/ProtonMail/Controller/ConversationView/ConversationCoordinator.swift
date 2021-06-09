@@ -22,6 +22,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             user: user,
             messageService: user.messageService,
             conversationService: user.conversationService,
+            eventsService: user.eventsService,
             contactService: user.contactService
         )
         let viewController = ConversationViewController(coordinator: self,
@@ -38,10 +39,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             presentCreateFolder(type: .folder)
         case .addNewLabel:
             presentCreateFolder(type: .label)
-        case .viewHeaders(url: let url):
-            presentQuickLookView(url: url, subType: .headers)
-        case .viewHTML(url: let url):
-            presentQuickLookView(url: url, subType: .html)
         default:
             return
         }
@@ -98,12 +95,5 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
         if let navigation = viewController.navigationController {
             self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
         }
-    }
-
-    private func presentQuickLookView(url: URL?, subType: PlainTextViewerViewController.ViewerSubType) {
-        guard let fileUrl = url, let text = try? String(contentsOf: fileUrl) else { return }
-        let viewer = PlainTextViewerViewController(text: text, subType: subType)
-        try? FileManager.default.removeItem(at: fileUrl)
-        self.navigationController.pushViewController(viewer, animated: true)
     }
 }

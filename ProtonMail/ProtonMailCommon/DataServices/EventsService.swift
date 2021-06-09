@@ -126,7 +126,7 @@ extension EventsService {
     /// fetch event logs from server. sync up the cache status to latest
     ///
     /// - Parameters:
-    ///   - labelID: Label/location/forlder
+    ///   - labelID: Label/location/folder
     ///   - notificationMessageID: the notification message
     ///   - completion: async complete handler
     func fetchEvents(byLabel labelID: String, notificationMessageID : String?, completion: CompletionBlock?) {

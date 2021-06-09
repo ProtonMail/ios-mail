@@ -38,6 +38,8 @@ enum MessageViewActionSheetAction: Equatable {
     case dismiss
     case inbox
     case spamMoveToInbox
+    case star
+    case unstar
 
     var title: String {
         switch self {
@@ -75,6 +77,10 @@ enum MessageViewActionSheetAction: Equatable {
             return LocalString._action_sheet_action_title_inbox
         case .spamMoveToInbox:
             return LocalString._action_sheet_action_title_spam_to_inbox
+        case .star:
+            return LocalString._title_of_star_action_in_action_sheet
+        case .unstar:
+            return LocalString._title_of_unstar_action_in_action_sheet
         }
     }
 
@@ -112,6 +118,10 @@ enum MessageViewActionSheetAction: Equatable {
             return Asset.actionSheetClose.image
         case .inbox, .spamMoveToInbox:
             return Asset.mailInboxIcon.image
+        case .star:
+            return Asset.actionSheetStar.image
+        case .unstar:
+            return Asset.actionSheetUnstar.image
         }
     }
 }
