@@ -1407,8 +1407,7 @@ class MessageDataService : Service, HasLocalStorage {
                     self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
                     completion?(nil, nil, nil)
                     // Draft folder must be single message mode
-                    let draftID = Message.Location.draft.rawValue
-                    self.fetchMessagesWithReset(byLabel: draftID, time: 0, cleanContact: false, completion: nil)
+                    self.ForcefetchDetailForMessage(message) { _, _, _, _ in }
                     return
                 } else {
                     NSError.alertMessageSentError(details: err.localizedDescription)
