@@ -66,4 +66,21 @@ class SettingsGestureViewModelTests: XCTestCase {
         XCTAssertEqual(sut.settingSwipeActionItems.count, 5)
         XCTAssertEqual(sut.settingSwipeActionItems, [.leftActionView, .left, .empty, .rightActionView, .right])
     }
+
+    func testMigration() {
+        swipeActionCacheStub.initialSwipeActionIfNeeded(leftToRight: 0,
+                                                        rightToLeft: 1)
+        XCTAssertEqual(sut.leftToRightAction, .trash)
+        XCTAssertEqual(sut.rightToLeftAction, .spam)
+
+        swipeActionCacheStub.initialSwipeActionIfNeeded(leftToRight: 2,
+                                                        rightToLeft: 3)
+        XCTAssertEqual(sut.leftToRightAction, .starAndUnstar)
+        XCTAssertEqual(sut.rightToLeftAction, .archive)
+
+        swipeActionCacheStub.initialSwipeActionIfNeeded(leftToRight: 4,
+                                                        rightToLeft: 5)
+        XCTAssertEqual(sut.leftToRightAction, .readAndUnread)
+        XCTAssertEqual(sut.rightToLeftAction, .none)
+    }
 }

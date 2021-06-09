@@ -171,6 +171,7 @@ class SignInManager: Service {
                 return
             }
             self.usersManager.update(auth: auth, user: info)
+            userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeLeft, rightToLeft: info.swipeRight)
 
             guard info.delinquent < 3 else {
                 self.queueManager.unregisterHandler(user.messageService)
