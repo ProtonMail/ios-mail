@@ -1,5 +1,5 @@
 //
-//  MessageDataService+QueueHandler.swift
+//  MainQueueHandler.swift
 //  ProtonMail
 //
 //
@@ -26,7 +26,33 @@ import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_Services
 
-extension MessageDataService: QueueHandler {
+final class MainQueueHandler: QueueHandler {
+    let userID: String
+    private let cacheService: CacheService
+    private let coreDataService: CoreDataService
+    private let apiService: APIService
+    private let messageDataService: MessageDataService
+    private let labelDataService: LabelsDataService
+    private let localNotificationService: LocalNotificationService
+    private weak var user: UserManager?
+    
+    init(cacheService: CacheService,
+         coreDataService: CoreDataService,
+         apiService: APIService,
+         messageDataService: MessageDataService,
+         labelDataService: LabelsDataService,
+         localNotificationService: LocalNotificationService,
+         user: UserManager) {
+        self.userID = user.userinfo.userId
+        self.cacheService = cacheService
+        self.coreDataService = coreDataService
+        self.apiService = apiService
+        self.messageDataService = messageDataService
+        self.labelDataService = labelDataService
+        self.localNotificationService = localNotificationService
+        self.user = user
+    }
+
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
         let completeHandler = handleTaskCompletion(task, notifyQueueManager: completion)
         
@@ -92,7 +118,7 @@ extension MessageDataService: QueueHandler {
                 self.deleteAttachmentWithAttachmentID(objectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .send:
                 let objectID = (otherData as? String) ?? messageID
-                self.send(byID: objectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+                messageDataService.send(byID: objectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .trash, UID: UID, completion: completeHandler)
             case .emptySpam:    // keep this as legacy option for 2-3 releases after 1.11.12
@@ -251,7 +277,7 @@ extension MessageDataService: QueueHandler {
 }
 
 //MARK: shared queue actions
-extension MessageDataService {
+extension MainQueueHandler {
     func empty(labelId: String, UID: String, completion: CompletionBlock?) {
         if let location = Message.Location(rawValue: labelId) {
             self.empty(at: location, UID: UID, completion: completion)
@@ -267,7 +293,7 @@ extension MessageDataService {
             return
         }
         
-        guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+        guard user?.userinfo.userId == UID else {
             completion?(nil, nil, NSError.userLoggedOut())
             return
         }
@@ -287,7 +313,7 @@ extension MessageDataService {
 }
 
 // MARK: queue actions for single message
-extension MessageDataService {
+extension MainQueueHandler {
     fileprivate func draft(save messageID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
         var isAttachmentKeyChanged = false
@@ -298,7 +324,7 @@ extension MessageDataService {
                 return
             }
             
-            guard UID == self.parent?.userinfo.userId else {
+            guard self.user?.userinfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -313,7 +339,7 @@ extension MessageDataService {
                 let completionWrapper: CompletionBlock = { task, response, error in
                     guard let mess = response else {
                         if let err = error {
-                            Analytics.shared.error(message: .saveDraftError, error: err, user: self.parent)
+                            Analytics.shared.error(message: .saveDraftError, error: err, user: self.user)
                             DispatchQueue.main.async {
                                 NSError.alertSavingDraftError(details: err.localizedDescription)
                             }
@@ -330,7 +356,7 @@ extension MessageDataService {
                         Analytics.shared.error(message: .saveDraftError,
                                                error: messageIDError,
                                                extra: ["dicKeys": keys],
-                                               user: self.parent)
+                                               user: self.user)
                         // The error is messageID missing from the response
                         // But this is meanless to users
                         // I think parse error is more understandable
@@ -393,7 +419,7 @@ extension MessageDataService {
                                 PMLog.D(" error: \(save_error)")
                             }
                         } catch let exc as NSError {
-                            Analytics.shared.error(message: .grtJSONSerialization, error: exc, user: self.parent)
+                            Analytics.shared.error(message: .grtJSONSerialization, error: exc, user: self.user)
                             completion?(task, response, exc)
                             return
                         }
@@ -412,7 +438,7 @@ extension MessageDataService {
                 }
                 
                 if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
-                    let addr = self.fromAddress(message) ?? message.cachedAddress ?? self.defaultAddress(message)
+                    let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultAddress(message)
                     let api = UpdateDraft(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
                     self.apiService.exec(route: api) { (task, response: UpdateDraftResponse) in
                         context.perform {
@@ -424,7 +450,7 @@ extension MessageDataService {
                         }
                     }
                 } else {
-                    let addr = self.fromAddress(message) ?? message.cachedAddress ?? self.defaultAddress(message)
+                    let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultAddress(message)
                     let api = CreateDraft(message: message, fromAddr: addr)
                     self.apiService.exec(route: api) { (task, response: UpdateDraftResponse) in
                         context.perform {
@@ -438,7 +464,7 @@ extension MessageDataService {
                 }
             } catch let ex as NSError {
                 // error: context thrown trying to get Message
-                Analytics.shared.error(message: .saveDraftError, error: ex, user: self.parent)
+                Analytics.shared.error(message: .saveDraftError, error: ex, user: self.user)
                 completion?(nil, nil, ex)
                 return
             }
@@ -470,8 +496,7 @@ extension MessageDataService {
                 return
             }
             
-            guard let userManager = self.parent,
-                  userManager.userinfo.userId == UID else {
+            guard self.user?.userinfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -486,13 +511,14 @@ extension MessageDataService {
                 params["ContentID"] = attachment.contentID()
             }
 
-            let addressID = attachment.message.cachedAddress?.addressID ?? userManager.messageService.getAddressID(attachment.message)
-            guard let key = attachment.message.cachedAddress?.keys.first ?? userManager.getAddressKey(address_id: addressID) else {
+            let addressID = attachment.message.cachedAddress?.addressID ?? self.messageDataService.getAddressID(attachment.message)
+            guard
+                let key = attachment.message.cachedAddress?.keys.first ?? self.user?.getAddressKey(address_id: addressID),
+                let passphrase = attachment.message.cachedPassphrase ?? self.user?.mailboxPassword,
+                let userKeys = attachment.message.cachedUser?.userPrivateKeysArray ?? self.user?.userPrivateKeys else {
                 completion?(nil, nil, NSError.encryptionError())
                 return
             }
-            
-            let passphrase = attachment.message.cachedPassphrase ?? userManager.mailboxPassword
             
             autoreleasepool(){
                 guard
@@ -506,7 +532,7 @@ extension MessageDataService {
                 }
                 Crypto().freeGolangMem()
                 let signed = attachment.sign(byKey: key,
-                                             userKeys: attachment.message.cachedUser?.userPrivateKeysArray ?? userManager.userPrivateKeys,
+                                             userKeys: userKeys,
                                              passphrase: passphrase)
                 let completionWrapper: CompletionBlock = { task, response, error in
                     PMLog.D("SendAttachmentDebug == finish upload att!")
@@ -543,7 +569,7 @@ extension MessageDataService {
                         }
                     } else {
                         if let err = error {
-                            Analytics.shared.error(message: .uploadAttachmentError, error: err, user: self.parent)
+                            Analytics.shared.error(message: .uploadAttachmentError, error: err, user: self.user)
                         }
                         completion?(task, response, error)
                     }
@@ -551,15 +577,15 @@ extension MessageDataService {
                 
                 PMLog.D("SendAttachmentDebug == start upload att!")
                 ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
-                userManager.apiService.upload( byPath: "/attachments",
-                                               parameters: params,
-                                               keyPackets: keyPacket,
-                                               dataPacket: dataPacket as Data,
-                                               signature: signed,
-                                               headers: [HTTPHeader.apiVersion: 3],
-                                               authenticated: true,
-                                               customAuthCredential: attachment.message.cachedAuthCredential,
-                                               completion: completionWrapper)
+                self.user?.apiService.upload(byPath: "/attachments",
+                                             parameters: params,
+                                             keyPackets: keyPacket,
+                                             dataPacket: dataPacket as Data,
+                                             signature: signed,
+                                             headers: [HTTPHeader.apiVersion: 3],
+                                             authenticated: true,
+                                             customAuthCredential: attachment.message.cachedAuthCredential,
+                                             completion: completionWrapper)
             }
         }
         
@@ -578,7 +604,7 @@ extension MessageDataService {
                 att = attachment
             }
             
-            guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+            guard self.user?.userinfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -602,7 +628,7 @@ extension MessageDataService {
                 return nil
             }
             
-            guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+            guard self.user?.userinfo.userId == UID else {
                 completion!(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -632,7 +658,7 @@ extension MessageDataService {
     ///   - action: action type. should .delete here
     ///   - completion: call back
     fileprivate func messageDelete(_ messageIDs: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
-        guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+        guard user?.userinfo.userId == UID else {
             completion!(nil, nil, NSError.userLoggedOut())
             return
         }
@@ -644,7 +670,7 @@ extension MessageDataService {
     }
     
     fileprivate func labelMessage(_ labelID: String, messageIDs: [String], UID: String, shouldFetchEvent: Bool, completion: CompletionBlock?) {
-        guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+        guard user?.userinfo.userId == UID else {
             completion!(nil, nil, NSError.userLoggedOut())
             return
         }
@@ -653,14 +679,14 @@ extension MessageDataService {
         // rebase TODO: need review
         self.apiService.exec(route: api) { [weak self](task, response: Response) in
             if shouldFetchEvent {
-                self?.parent?.eventsService.fetchEvents(labelID: labelID)
+                self?.user?.eventsService.fetchEvents(labelID: labelID)
             }
             completion?(task, nil, response.error?.toNSError)
         }
     }
     
     fileprivate func unLabelMessage(_ labelID: String, messageIDs: [String], UID: String, shouldFetchEvent: Bool, completion: CompletionBlock?) {
-        guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+        guard user?.userinfo.userId == UID else {
             completion!(nil, nil, NSError.userLoggedOut())
             return
         }
@@ -669,7 +695,7 @@ extension MessageDataService {
         // rebase TODO: need review
         self.apiService.exec(route: api) { [weak self] (task, response: Response) in
             if shouldFetchEvent {
-                self?.parent?.eventsService.fetchEvents(labelID: labelID)
+                self?.user?.eventsService.fetchEvents(labelID: labelID)
             }
             completion?(task, nil, response.error?.toNSError)
         }
@@ -692,7 +718,7 @@ extension MessageDataService {
     private func updateLabel(labelID: String, name: String, color: String, completion: CompletionBlock?) {
         let api = UpdateLabelRequest(id: labelID, name: name, color: color)
         self.apiService.exec(route: api) { [weak self] (task, response: Response) in
-            self?.parent?.eventsService.fetchEvents(labelID: labelID)
+            self?.user?.eventsService.fetchEvents(labelID: labelID)
             completion?(task, nil, response.error?.toNSError)
         }
     }
@@ -714,7 +740,7 @@ extension MessageDataService {
 }
 
 // MARK: queue actions for conversation
-extension MessageDataService {
+extension MainQueueHandler {
     fileprivate func unreadConversations(_ managedObjectIds: [String], labelID: String, writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
         context.performAndWait {
@@ -727,7 +753,7 @@ extension MessageDataService {
                 return nil
             }
             
-            guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+            guard self.user?.userinfo.userId == UID else {
                 completion!(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -762,7 +788,7 @@ extension MessageDataService {
                 return nil
             }
             
-            guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+            guard user?.userinfo.userId == UID else {
                 completion!(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -797,7 +823,7 @@ extension MessageDataService {
                 return nil
             }
             
-            guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+            guard user?.userinfo.userId == UID else {
                 completion!(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -832,7 +858,7 @@ extension MessageDataService {
                 return nil
             }
             
-            guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+            guard user?.userinfo.userId == UID else {
                 completion!(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -867,7 +893,7 @@ extension MessageDataService {
                 return nil
             }
             
-            guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+            guard user?.userinfo.userId == UID else {
                 completion!(nil, nil, NSError.userLoggedOut())
                 return
             }

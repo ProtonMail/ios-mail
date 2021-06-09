@@ -171,6 +171,17 @@ class UserManager : Service, HasLocalStorage {
                                          cacheService: self.cacheService)
         service.viewModeDataSource = self
         service.userDataSource = self
+        return service
+    }()
+
+    public lazy var mainQueueHandler: MainQueueHandler = { [unowned self] in
+        let service = MainQueueHandler(cacheService: self.cacheService,
+                                       coreDataService: sharedServices.get(by: CoreDataService.self),
+                                       apiService: self.apiService,
+                                       messageDataService: self.messageService,
+                                       labelDataService: self.labelService,
+                                       localNotificationService: self.localNotificationService,
+                                       user: self)
         let shareQueueManager = sharedServices.get(by: QueueManager.self)
         shareQueueManager.registerHandler(service)
         return service

@@ -175,7 +175,7 @@ class UnlockManager: Service {
         
         let queueManager = sharedServices.get(by: QueueManager.self)
         usersManager.users.forEach { (user) in
-            queueManager.registerHandler(user.messageService)
+            queueManager.registerHandler(user.mainQueueHandler)
         }
         
         #if !APP_EXTENSION

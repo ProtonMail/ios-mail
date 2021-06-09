@@ -160,7 +160,7 @@ class SignInManager: Service {
         self.userInfo = nil
 
         let user = self.usersManager.getUser(bySessionID: auth.sessionID)!
-        self.queueManager.registerHandler(user.messageService)
+        self.queueManager.registerHandler(user.mainQueueHandler)
 
         let labelService = user.labelService
         let userDataService = user.userService
@@ -174,7 +174,7 @@ class SignInManager: Service {
             userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeLeft, rightToLeft: info.swipeRight)
 
             guard info.delinquent < 3 else {
-                self.queueManager.unregisterHandler(user.messageService)
+                self.queueManager.unregisterHandler(user.mainQueueHandler)
                 _ = self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false).ensure {
                     onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
                 }

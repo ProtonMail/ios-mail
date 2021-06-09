@@ -174,7 +174,7 @@ class WindowsCoordinator: CoordinatorNew {
         if let user = usersManager.getUser(bySessionID: uid) {
             let shouldShowBadTokenAlert = usersManager.count == 1
 
-            queueManager.unregisterHandler(user.messageService)
+            queueManager.unregisterHandler(user.mainQueueHandler)
             usersManager.logout(user: user, shouldShowAccountSwitchAlert: true).done { [weak self] (_) in
                 guard let self = self else { return }
                 

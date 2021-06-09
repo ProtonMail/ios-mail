@@ -252,7 +252,7 @@ class SignupViewModelImpl : SignupViewModel {
                                                 self.usersManager.add(auth: auth!, user: info!)
                                                 
                                                 let user = self.usersManager.getUser(bySessionID: auth!.sessionID)!
-                                                self.signinManager.queueManager.registerHandler(user.messageService)
+                                                self.signinManager.queueManager.registerHandler(user.mainQueueHandler)
                                                 
                                                 self.userManager = user
                                                 let labelService = user.labelService
