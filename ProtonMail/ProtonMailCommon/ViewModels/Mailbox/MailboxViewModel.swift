@@ -621,7 +621,12 @@ class MailboxViewModel: StorageLimit {
         case .conversation:
             conversationService.move(conversationIDs: [undo.messageID],
                                      from: undo.newLabels,
-                                     to: undo.origLabels) { _ in }
+                                     to: undo.origLabels) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
         case .singleMessage:
             let messages = self.messageService.fetchMessages(withIDs: [undo.messageID], in: self.coreDataService.mainContext)
             let fLabels: [String] = .init(repeating: undo.newLabels, count: messages.count)
@@ -659,11 +664,21 @@ class MailboxViewModel: StorageLimit {
 
     func delete(conversationIDs: [String]) -> (SwipeResponse, UndoMessage?) {
         if [Message.Location.draft.rawValue, Message.Location.spam.rawValue, Message.Location.trash.rawValue].contains(labelID) {
-            conversationService.deleteConversations(with: conversationIDs, labelID: labelID) { _ in }
+            conversationService.deleteConversations(with: conversationIDs, labelID: labelID) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
         } else {
             conversationService.move(conversationIDs: conversationIDs,
                                      from: self.labelID,
-                                     to: Message.Location.trash.rawValue) { _ in }
+                                     to: Message.Location.trash.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
         }
         return (.nothing, nil)
     }
@@ -676,7 +691,12 @@ class MailboxViewModel: StorageLimit {
         } else if let conversation = self.itemOfConversation(index: index) {
             conversationService.move(conversationIDs: [conversation.conversationID],
                                      from: self.labelID,
-                                     to: Message.Location.archive.rawValue) { _ in }
+                                     to: Message.Location.archive.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
             return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: self.labelID, newLabels: Message.Location.archive.rawValue))
         }
         return (.nothing, nil)
@@ -690,7 +710,12 @@ class MailboxViewModel: StorageLimit {
         } else if let conversation = self.itemOfConversation(index: index) {
             conversationService.move(conversationIDs: [conversation.conversationID],
                                      from: self.labelID,
-                                     to: Message.Location.spam.rawValue) { _ in }
+                                     to: Message.Location.spam.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
             return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: self.labelID, newLabels: Message.Location.archive.rawValue))
         }
         return (.nothing, nil)
@@ -941,9 +966,19 @@ extension MailboxViewModel {
             messageService.label(messages: messages, label: labelID, apply: apply)
         case .conversation:
             if apply {
-                conversationService.label(conversationIDs: messageIDs.asArrayOfStrings, as: labelID, completion: nil)
+                conversationService.label(conversationIDs: messageIDs.asArrayOfStrings, as: labelID) { [weak self] result in
+                    guard let self = self else { return }
+                    if let _ = try? result.get() {
+                        self.eventsService.fetchEvents(labelID: self.labelId)
+                    }
+                }
             } else {
-                conversationService.unlabel(conversationIDs: messageIDs.asArrayOfStrings, as: labelID, completion: nil)
+                conversationService.unlabel(conversationIDs: messageIDs.asArrayOfStrings, as: labelID) { [weak self] result in
+                    guard let self = self else { return }
+                    if let _ = try? result.get() {
+                        self.eventsService.fetchEvents(labelID: self.labelId)
+                    }
+                }
             }
         }
     }
@@ -955,9 +990,19 @@ extension MailboxViewModel {
             messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
         case .conversation:
             if unread {
-                conversationService.markAsUnread(conversationIDs: messageIDs.asArrayOfStrings, labelID: self.labelID, completion: nil)
+                conversationService.markAsUnread(conversationIDs: messageIDs.asArrayOfStrings, labelID: self.labelID) { [weak self] result in
+                    guard let self = self else { return }
+                    if let _ = try? result.get() {
+                        self.eventsService.fetchEvents(labelID: self.labelId)
+                    }
+                }
             } else {
-                conversationService.markAsRead(conversationIDs: messageIDs.asArrayOfStrings, completion: nil)
+                conversationService.markAsRead(conversationIDs: messageIDs.asArrayOfStrings) { [weak self] result in
+                    guard let self = self else { return }
+                    if let _ = try? result.get() {
+                        self.eventsService.fetchEvents(labelID: self.labelId)
+                    }
+                }
             }
         }
     }
@@ -975,7 +1020,12 @@ extension MailboxViewModel {
         case .conversation:
             conversationService.move(conversationIDs: messageIDs.asArrayOfStrings,
                                      from: fLabel,
-                                     to: tLabel) { _ in }
+                                     to: tLabel) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
         }
     }
 }

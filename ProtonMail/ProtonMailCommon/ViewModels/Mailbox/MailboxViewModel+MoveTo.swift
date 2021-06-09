@@ -36,7 +36,12 @@ extension MailboxViewModel: MoveToActionSheetProtocol {
         guard let destination = selectedMoveToFolder else { return }
         conversationService.move(conversationIDs: conversations.map(\.conversationID),
                                  from: "",
-                                 to: destination.location.labelID) { _ in }
+                                 to: destination.location.labelID) { [weak self] result in
+            guard let self = self else { return }
+            if let _ = try? result.get() {
+                self.eventsService.fetchEvents(labelID: self.labelId)
+            }
+        }
         /*
          We pass the empty string because we don't have the source folder here
          The same is done for messages in `move(messages: [Message], to tLabel: String, queue: Bool = true)`

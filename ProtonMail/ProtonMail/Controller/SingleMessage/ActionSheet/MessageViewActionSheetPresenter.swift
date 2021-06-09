@@ -26,7 +26,7 @@ class MessageViewActionSheetPresenter {
 
     func present(
         on viewController: UIViewController,
-        viewModel: MessageViewActionSheetViewModel,
+        viewModel: ActionSheetViewModel,
         action: @escaping (MessageViewActionSheetAction) -> Void) {
         let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { _ in
             action(.dismiss)

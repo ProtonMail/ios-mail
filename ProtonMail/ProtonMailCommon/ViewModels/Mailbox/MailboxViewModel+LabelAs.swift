@@ -61,11 +61,21 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
                 // Add to message which does not have this label
                 let conversationsToApply = conversations.filter({ !$0.getLabelIds().contains(label.location.labelID )})
                 conversationService.label(conversationIDs: conversationsToApply.map(\.conversationID),
-                                          as: label.location.labelID) { _ in }
+                                          as: label.location.labelID) { [weak self] result in
+                    guard let self = self else { return }
+                    if let _ = try? result.get() {
+                        self.eventsService.fetchEvents(labelID: self.labelId)
+                    }
+                }
             } else if markType != .dash { // Ignore the option in dash
                 let conversationsToRemove = conversations.filter({ $0.getLabelIds().contains(label.location.labelID )})
                 conversationService.unlabel(conversationIDs: conversationsToRemove.map(\.conversationID),
-                                            as: label.location.labelID) { _ in }
+                                            as: label.location.labelID) { [weak self] result in
+                    guard let self = self else { return }
+                    if let _ = try? result.get() {
+                        self.eventsService.fetchEvents(labelID: self.labelId)
+                    }
+                }
             }
         }
 
@@ -73,7 +83,12 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
 
         if shouldArchive {
             conversationService.move(conversationIDs: conversations.map(\.conversationID), from: "",
-                                     to: Message.Location.archive.rawValue) { _ in }
+                                     to: Message.Location.archive.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
         }
     }
 }

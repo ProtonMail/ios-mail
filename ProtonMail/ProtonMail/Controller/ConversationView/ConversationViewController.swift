@@ -33,7 +33,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UIScr
         emptyBackButtonTitleForNextView()
         setUpTableView()
         navigationItem.rightBarButtonItem = starBarButton
-        starButtonSetUp(starred: false)
+        starButtonSetUp(starred: viewModel.conversation.starred)
         conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
         customView.separator.isHidden = true
 
@@ -97,7 +97,13 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UIScr
     }
 
     @objc
-    private func starButtonTapped() {}
+    private func starButtonTapped() {
+        viewModel.starTapped { [weak self] result in
+            if let shouldStar = try? result.get() {
+                self?.starButtonSetUp(starred: shouldStar)
+            }
+        }
+    }
 
     private func starButtonSetUp(starred: Bool) {
         starBarButton.image = starred ?
@@ -183,10 +189,9 @@ private extension ConversationViewController {
     }
 
     private func moreButtonTapped() {
-        guard let navigationVC = self.navigationController,
-              let newestMessage = viewModel.dataSource.newestMessage else { return }
-        let actionSheetViewModel = MessageViewActionSheetViewModel(title: newestMessage.subject,
-                                                                   labelID: viewModel.labelId)
+        guard let navigationVC = self.navigationController else { return }
+        let actionSheetViewModel = ConversationActionSheetViewModel(title: viewModel.conversation.subject,
+                                                                    labelID: viewModel.labelId)
         actionSheetPresenter.present(on: navigationVC,
                                      viewModel: actionSheetViewModel) { [weak self] action in
             self?.handleActionSheetAction(action)
@@ -204,10 +209,8 @@ private extension ConversationViewController {
             showLabelAsActionSheet()
         case .moveTo:
             showMoveToActionSheet()
-        case .print:
-            #warning("TODO: (Mustapha) Handle message printing in conversation, without message only related VCs")
-        case .viewHeaders, .viewHTML:
-            handleOpenViewAction(action)
+        case .star, .unstar:
+            starButtonTapped()
         case .dismiss:
             let actionSheet = navigationController?.view.subviews.compactMap { $0 as? PMActionSheet }.first
             actionSheet?.dismiss(animated: true)
@@ -217,12 +220,6 @@ private extension ConversationViewController {
                     self?.navigationController?.popViewController(animated: true)
                 })
             })
-        case .reportPhishing:
-            showPhishingAlert { [weak self] _ in
-                self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.navigationController?.popViewController(animated: true)
-                })
-            }
         default:
             viewModel.handleActionSheetAction(action, completion: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
@@ -241,30 +238,6 @@ private extension ConversationViewController {
         default:
             return
         }
-    }
-
-    private func handleOpenViewAction(_ action: MessageViewActionSheetAction) {
-        switch action {
-        case .viewHeaders:
-            if let url = viewModel.getMessageHeaderUrl() {
-                coordinator.navigate(to: .viewHeaders(url: url))
-            }
-        case .viewHTML:
-            if let url = viewModel.getMessageBodyUrl() {
-                coordinator.navigate(to: .viewHTML(url: url))
-            }
-        default:
-            return
-        }
-    }
-
-    private func showPhishingAlert(reportHandler: ((UIAlertAction) -> Void)?) {
-        let alert = UIAlertController(title: LocalString._confirm_phishing_report,
-                                      message: LocalString._reporting_a_message_as_a_phishing_,
-                                      preferredStyle: .alert)
-        alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: { _ in }))
-        alert.addAction(.init(title: LocalString._general_confirm_action, style: .default, handler: reportHandler))
-        self.present(alert, animated: true, completion: nil)
     }
 }
 
