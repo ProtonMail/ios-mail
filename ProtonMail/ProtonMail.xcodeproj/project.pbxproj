@@ -446,6 +446,7 @@
 		2B6619290F6CEFAFEB5D36C2FC24AFF5 /* BioCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A2C4F86BB7CF8BD48A4132F16CB0E /* BioCodeView.swift */; };
 		2B6ABBCD4248FEC54E996024F4CE3159 /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */; };
 		2BA6D2DE1A9057927EA360BE0FC0AEFB /* MessageDataService+MessageActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E2EAF0C2699CD02F6D967BF1FE3578 /* MessageDataService+MessageActions.swift */; };
+		2BB9308AFB09EC912FE7FFA7B25DB305 /* ActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B225A3C4678DA7A1ECC7ACCE601B71 /* ActionSheetViewModel.swift */; };
 		2BBF44D289C375CCBE277291F508E93E /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F6D37F0A6272E8EAE461BB707C35C4 /* Analytics.swift */; };
 		2BC9792AB92B546071E0DD4558DCACF3 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2DF54E18BEB8D52362623451A13350 /* UserInfo.swift */; };
 		2BFCE0C69350CAAD13C948D18DDEF4B2 /* ConversationsDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086FCA03DFA46EF6C5031EE894555820 /* ConversationsDelete.swift */; };
@@ -675,6 +676,7 @@
 		42EF01D55E24BA4B874239A5FAB6BE90 /* ContactGroupsViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C16D33EE4F6C03C5887A1EF07F1711 /* ContactGroupsViewCell.xib */; };
 		42FCF693FC7FF58C3581A53B4532A745 /* ConversationCount+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACCEBDF98162878365E6883D89C6F4A /* ConversationCount+Extension.swift */; };
 		43290DB48504BAD03A6BE119AB9BAA9D /* TagsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1B387241108A625C900C31BA86EE35 /* TagsPresenter.swift */; };
+		433E53EA4E9AAF74ED2C1F6581B804BB /* ConversationActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF27F43FC7314C887D5AFB7651F1E24 /* ConversationActionSheetViewModel.swift */; };
 		4347C2A1C7472299C71C4B4E78050E83 /* GeneralSettingSinglelineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3034A73BB562CFA651FB7AFF2BAB6E1 /* GeneralSettingSinglelineCell.swift */; };
 		437870C4018B87318E8A5836A11EDE44 /* MessageAPI+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F810FE516B49C36333F506F09E4E5 /* MessageAPI+Response.swift */; };
 		43802901EEDC9D5979BC0EB577975D70 /* UserInfo+ViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B854E9663E924BA98511AB6033591 /* UserInfo+ViewMode.swift */; };
@@ -9313,6 +9315,7 @@
 				A421135DB918C0680D6683CF7D8DBA4C /* AccessibleView.swift in Sources */,
 				1785716B664E88575AD51B49FAE798C8 /* ActionLabel.swift in Sources */,
 				54C2CFC9623A8B1837C0772E6BBFFE8B /* ActionSheetPresentProtocol.swift in Sources */,
+				2BB9308AFB09EC912FE7FFA7B25DB305 /* ActionSheetViewModel.swift in Sources */,
 				DDE05A9D4374ED6C849C5BD2B4720651 /* ActivityIndicatorHelper.swift in Sources */,
 				86D4BCE044FF8D29FC0B242850B7023E /* Address.swift in Sources */,
 				472CCCF84185441403F7BC40C1A4A26A /* AddressAPI.swift in Sources */,
@@ -9473,6 +9476,7 @@
 				46C75C1C045B539F4BEF0E2FEF1AD534 /* ContextLabel.swift in Sources */,
 				2FD4282792372823BBE649C768EF07F2 /* Conversation+Var+Extension.swift in Sources */,
 				56C8BB88F4BA343888BE44634DDD9D2D /* Conversation.swift in Sources */,
+				433E53EA4E9AAF74ED2C1F6581B804BB /* ConversationActionSheetViewModel.swift in Sources */,
 				E76AA0DB4732A916EA35C65803B6519E /* ConversationCollapsedMessageViewModel.swift in Sources */,
 				1ADF7D2EEEAF38993795C40B385E2732 /* ConversationCoordinator.swift in Sources */,
 				B7F9BA90A51B1678DFE25EF8956D949F /* ConversationCount+Extension.swift in Sources */,
