@@ -205,9 +205,12 @@ class MailboxCoordinator : DefaultCoordinator, CoordinatorDismissalObserver {
         default:
             guard let vc = self.viewController else {return}
             if let presented = vc.presentedViewController {
-                presented.dismiss(animated: false, completion: nil)
+                presented.dismiss(animated: false) { [weak self] in
+                    self?.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+                }
+            } else {
+                self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
             }
-            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
         }
     }
 
