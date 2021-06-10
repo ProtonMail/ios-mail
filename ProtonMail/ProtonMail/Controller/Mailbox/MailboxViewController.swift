@@ -232,7 +232,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         generateAccessibilityIdentifiers()
         configureBannerContainer()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.hideTopMessage()

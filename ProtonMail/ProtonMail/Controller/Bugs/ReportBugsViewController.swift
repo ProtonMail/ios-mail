@@ -78,23 +78,32 @@ class ReportBugsViewController: ProtonMailViewController {
         
         self.textView.textContainer.lineFragmentPadding = 0
         self.textView.textContainerInset = .init(all: textViewInset)
+        setUpSideMenuMethods()
     }
-    
-    
+
+    private func setUpSideMenuMethods() {
+        let pmSideMenuController = sideMenuController as? PMSideMenuController
+        pmSideMenuController?.willHideMenu = { [weak self] in
+            self?.textView.becomeFirstResponder()
+        }
+
+        pmSideMenuController?.willRevealMenu = { [weak self] in
+            self?.textView.resignFirstResponder()
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateSendButtonForText(textView.text)
         NotificationCenter.default.addKeyboardObserver(self)
         textView.becomeFirstResponder()
         resizeHeightIfNeeded()
-        self.sideMenuController?.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         textView.resignFirstResponder()
         NotificationCenter.default.removeKeyboardObserver(self)
-        self.sideMenuController?.delegate = nil
     }
     
     
@@ -269,16 +278,5 @@ extension ReportBugsViewController: UITextViewDelegate {
         if textView.text.isEmpty {
             addPlaceholder()
         }
-    }
-}
-
-extension ReportBugsViewController: SideMenuControllerDelegate {
-
-    func sideMenuControllerWillHideMenu(_ sideMenuController: SideMenuController) {
-        self.textView.becomeFirstResponder()
-    }
-    
-    func sideMenuControllerWillRevealMenu(_ sideMenuController: SideMenuController) {
-        self.textView.resignFirstResponder()
     }
 }

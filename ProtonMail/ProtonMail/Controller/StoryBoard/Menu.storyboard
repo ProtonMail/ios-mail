@@ -12,7 +12,7 @@
         <!--Side Menu Controller-->
         <scene sceneID="7bJ-Jm-ddX">
             <objects>
-                <viewController storyboardIdentifier="NewMenu" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PFh-fl-VGv" customClass="SideMenuController" customModule="SideMenuSwift" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NewMenu" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PFh-fl-VGv" customClass="PMSideMenuController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZdJ-HB-y3L"/>
                         <viewControllerLayoutGuide type="bottom" id="tRb-gt-gWt"/>
@@ -1890,7 +1890,7 @@
         <segue reference="A0a-yx-qTn"/>
         <segue reference="w5b-0j-26v"/>
         <segue reference="zIE-XJ-wkG"/>
-        <segue reference="ce7-08-teM"/>
+        <segue reference="Aj4-zg-YTd"/>
         <segue reference="tgC-Ba-c8Y"/>
     </inferredMetricsTieBreakers>
     <resources>

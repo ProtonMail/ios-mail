@@ -147,9 +147,9 @@ enum LabelLocation: Equatable, Hashable {
         case .trash:
             return Asset.menuTrash.image
         case .allmail:
-            return Asset.menuAllmail.image
+            return Asset.menuAllMail.image
         case .subscription:
-            return Asset.menuServiceplan.image
+            return Asset.menuServicePlan.image
         case .settings:
             return Asset.menuSettings.image
         case .contacts:
@@ -157,16 +157,15 @@ enum LabelLocation: Equatable, Hashable {
         case .bugs:
             return Asset.menuBugs.image
         case .lockapp:
-            return Asset.menuLockapp.image
+            return Asset.menuLockApp.image
         case .signout:
             return Asset.menuLogout.image
         case .customize(_):
             return nil
-        case .addLabel:
-            return Asset.icLabelAdd.image
-        case .addFolder:
-            return Asset.icFolderPlus.image
-        default: return nil
+        case .addLabel, .addFolder:
+            return Asset.menuPlus.image
+        default:
+            return nil
         }
     }
     

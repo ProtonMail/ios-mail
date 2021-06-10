@@ -1,17 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "menu_archive.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "menu_archive-active@2x.png",
+      "filename" : "menu_archive@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "menu_archive-active@3x.png",
+      "filename" : "menu_archive@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -19,8 +18,5 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "template-rendering-intent" : "template"
   }
 }

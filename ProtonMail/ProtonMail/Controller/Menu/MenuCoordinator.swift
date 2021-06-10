@@ -73,6 +73,7 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         SideMenuController.preferences.basic.position = .under
         SideMenuController.preferences.basic.enablePanGesture = true
         SideMenuController.preferences.basic.enableRubberEffectWhenPanning = false
+        SideMenuController.preferences.basic.statusBarBehavior = .none
         self.menuWidth = menuWidth
         
         self.services = services
