@@ -73,7 +73,7 @@ ui_tests:
     - git submodule update --init --recursive
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
-    - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=14.4" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
+    - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=14.5" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
   tags:
     - iOS
     
