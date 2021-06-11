@@ -64,11 +64,10 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
     @IBOutlet weak var bioCodeView: BioCodeView!
     
     func configureNavigationBar() {
-        let original = UIImage(named: "menu_logout-active")!
-        let flipped = UIImage(cgImage: original.cgImage!, scale: 0.7 * original.scale, orientation: .up) // scale coefficient is a magic number
+        let original = UIImage(named: "menu_logout")!
         
         self.navigationItem.title = ""
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: flipped,
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: original,
                                                 style: .plain,
                                                 target: self,
                                                 action: #selector(self.logoutButtonTapped))

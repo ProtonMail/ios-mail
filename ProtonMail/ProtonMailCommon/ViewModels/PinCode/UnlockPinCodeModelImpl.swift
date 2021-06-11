@@ -36,10 +36,8 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func backButtonIcon() -> UIImage {
-        let original = UIImage(named: "menu_logout-active")!
-        // scale coefficient is a magic number for this specific asset!
-        let flipped = UIImage(cgImage: original.cgImage!, scale: 0.7 * original.scale, orientation: .up)
-        return flipped
+        let original = UIImage(named: "menu_logout")!
+        return original
     }
     
     override func title() -> String {
