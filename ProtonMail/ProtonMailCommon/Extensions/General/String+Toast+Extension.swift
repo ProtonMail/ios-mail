@@ -25,15 +25,14 @@ import Foundation
 import MBProgressHUD
 
 extension String {
-    
     // Pass view to this function if you want to show alert in extension
     public func alertToast(withTitle: Bool = true, view: UIView? = nil) -> Void {
         var viewToShow: UIView?
-
         #if APP_EXTENSION
         viewToShow = view
         #else
-        viewToShow = UIApplication.shared.keyWindow
+        let application = UIApplication.shared
+        viewToShow = application.keyWindow
         #endif
         
         guard let view = viewToShow else {
@@ -53,13 +52,13 @@ extension String {
     
     public func alertToastBottom(view: UIView? = nil) ->Void {
         var viewToShow: UIView?
-
         #if APP_EXTENSION
         viewToShow = view
         #else
-        viewToShow = UIApplication.shared.keyWindow
+        let application = UIApplication.shared
+        viewToShow = application.keyWindow
         #endif
-        
+
         guard let view = viewToShow else {
             return
         }

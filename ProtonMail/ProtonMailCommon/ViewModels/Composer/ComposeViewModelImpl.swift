@@ -365,13 +365,13 @@ class ComposeViewModelImpl : ComposeViewModel {
             
             if errCode == 33101 {
                 c.pgpType = .failed_server_validation
-                LocalString._signle_address_invalid_error_content.alertToast()
+                self.showError?(LocalString._signle_address_invalid_error_content)
                 return
             }
             
             // Code=33102 "Recipient could not be found"
             if errCode == 33102 {
-                LocalString._recipient_not_found.alertToast()
+                self.showError?(LocalString._recipient_not_found)
                 return
             }
             

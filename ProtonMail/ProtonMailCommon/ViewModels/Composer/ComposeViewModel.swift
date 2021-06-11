@@ -96,6 +96,8 @@ class ComposeViewModel: NSObject {
     var bccSelectedContacts: [ContactPickerModelProtocol] = [] {
         didSet { self.contactsChange += 1 }
     }
+
+    var showError: ((String) -> Void)?
     
     private var _subject : String! = ""
     var body : String! = ""

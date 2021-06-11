@@ -108,8 +108,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             guard let self = self else { return }
             errorMsg.alertToast(view: self.view)
         }
-        
-        ///
+
         self.extendedLayoutIncludesOpaqueBars = true
         
         //  update header view data
