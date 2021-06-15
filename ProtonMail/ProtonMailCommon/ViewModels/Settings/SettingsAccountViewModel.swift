@@ -278,8 +278,8 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     }
 
     private func addConversationRowIfFeatureEnabled() {
-        guard userManager.conversationStateService.isConversationFeatureEnabled else { return }
-        mailboxItems.insert(.conversation, at: 1)
+//        guard userManager.conversationStateService.isConversationFeatureEnabled else { return }
+//        mailboxItems.insert(.conversation, at: 1)
     }
 
 }
@@ -287,12 +287,12 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
 extension SettingsAccountViewModelImpl: ConversationStateServiceDelegate {
 
     func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
-        if isFeatureEnabled && !mailboxItems.contains(.conversation) {
-            mailboxItems.insert(.conversation, at: 1)
-        } else {
-            mailboxItems.removeAll(where: { $0 == .conversation })
-        }
-        reloadTable?()
+//        if isFeatureEnabled && !mailboxItems.contains(.conversation) {
+//            mailboxItems.insert(.conversation, at: 1)
+//        } else {
+//            mailboxItems.removeAll(where: { $0 == .conversation })
+//        }
+//        reloadTable?()
     }
 
     func viewModeHasChanged(viewMode: ViewMode) {}
