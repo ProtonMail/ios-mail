@@ -513,36 +513,34 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         // TODO: check for existing download tasks and return that task rather than start a new download
-        self.queueManager?.queue { () -> Void in
-            if attachment.managedObjectContext != nil {
-                self.apiService.downloadAttachment(byID: attachment.attachmentID,
-                                                   destinationDirectoryURL: FileManager.default.attachmentDirectory,
-                                                   customAuthCredential: customAuthCredential,
-                                                   downloadTask: downloadTask,
-                                                   completion: { task, fileURL, error in
-                                                    var error = error
-                                                    self.coreDataService.enqueue(context: self.coreDataService.rootSavingContext) { (context) in
-                                                        if let fileURL = fileURL, let attachmentToUpdate = try? context.existingObject(with: attachment.objectID) as? Attachment {
-                                                            attachmentToUpdate.localURL = fileURL
-                                                            if #available(iOS 12, *) {
-                                                                if !self.isFirstTimeSaveAttData {
-                                                                    attachmentToUpdate.fileData = try? Data(contentsOf: fileURL)
-                                                                }
-                                                            } else {
+        if attachment.managedObjectContext != nil {
+            self.apiService.downloadAttachment(byID: attachment.attachmentID,
+                                               destinationDirectoryURL: FileManager.default.attachmentDirectory,
+                                               customAuthCredential: customAuthCredential,
+                                               downloadTask: downloadTask,
+                                               completion: { task, fileURL, error in
+                                                var error = error
+                                                self.coreDataService.enqueue(context: self.coreDataService.rootSavingContext) { (context) in
+                                                    if let fileURL = fileURL, let attachmentToUpdate = try? context.existingObject(with: attachment.objectID) as? Attachment {
+                                                        attachmentToUpdate.localURL = fileURL
+                                                        if #available(iOS 12, *) {
+                                                            if !self.isFirstTimeSaveAttData {
                                                                 attachmentToUpdate.fileData = try? Data(contentsOf: fileURL)
                                                             }
-                                                            error = context.saveUpstreamIfNeeded()
-                                                            if error != nil  {
-                                                                PMLog.D(" error: \(String(describing: error))")
-                                                            }
+                                                        } else {
+                                                            attachmentToUpdate.fileData = try? Data(contentsOf: fileURL)
                                                         }
-                                                        completion?(task, fileURL, error)
+                                                        error = context.saveUpstreamIfNeeded()
+                                                        if error != nil  {
+                                                            PMLog.D(" error: \(String(describing: error))")
+                                                        }
                                                     }
-                                                   })
-            } else {
-                PMLog.D("The attachment not exist")
-                completion?(nil, nil, nil)
-            }
+                                                    completion?(task, fileURL, error)
+                                                }
+                                               })
+        } else {
+            PMLog.D("The attachment not exist")
+            completion?(nil, nil, nil)
         }
     }
     
