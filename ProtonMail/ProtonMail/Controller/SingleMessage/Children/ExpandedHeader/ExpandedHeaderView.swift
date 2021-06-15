@@ -50,21 +50,19 @@ class ExpandedHeaderView: UIView {
             initialsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
             initialsLabel.heightAnchor.constraint(equalToConstant: 28),
             initialsLabel.widthAnchor.constraint(equalToConstant: 28),
-            initialsLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -14)
+            initialsLabel.bottomAnchor.constraint(equalTo: senderEmailControl.topAnchor, constant: -2)
         ].activate()
 
         [
             senderNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 14),
             senderNameLabel.leadingAnchor.constraint(equalTo: initialsLabel.trailingAnchor, constant: 10),
-            senderNameLabel.bottomAnchor.constraint(equalTo: senderEmailControl.topAnchor, constant: -8),
+            senderNameLabel.centerYAnchor.constraint(equalTo: initialsLabel.centerYAnchor),
             senderNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: timeLabel.leadingAnchor, constant: -8)
         ].activate()
 
         [
-            timeLabel.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 18),
             timeLabel.centerYAnchor.constraint(equalTo: senderNameLabel.centerYAnchor),
-            timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            timeLabel.bottomAnchor.constraint(lessThanOrEqualTo: senderEmailControl.topAnchor, constant: -8)
+            timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ].activate()
 
         [

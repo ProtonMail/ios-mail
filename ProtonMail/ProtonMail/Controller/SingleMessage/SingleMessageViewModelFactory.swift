@@ -20,6 +20,64 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+class SingleMessageContentViewModelFactory {
+
+    func createViewModel(
+        context: SingleMessageContentViewContext,
+        user: UserManager
+    ) -> SingleMessageContentViewModel {
+        let childViewModels = SingleMessageChildViewModels(
+            messageBody: messageBody(message: context.message, user: user),
+            nonExpandedHeader: .init(labelId: context.labelId, message: context.message, user: user),
+            bannerViewModel: banner(labelId: context.labelId, message: context.message, user: user),
+            attachments: attachments(message: context.message)
+        )
+        return .init(context: context, childViewModels: childViewModels, user: user, internetStatusProvider: .init())
+    }
+
+    private func messageBody(message: Message, user: UserManager) -> NewMessageBodyViewModel {
+        .init(
+            message: message,
+            messageService: user.messageService,
+            userManager: user,
+            shouldAutoLoadRemoteImages: user.userinfo.showImages.contains(.remote),
+            shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded),
+            internetStatusProvider: InternetConnectionStatusProvider()
+        )
+    }
+
+    private func banner(labelId: String, message: Message, user: UserManager) -> BannerViewModel {
+        let unsubscribeService = UnsubscribeService(
+            labelId: labelId,
+            apiService: user.apiService,
+            messageDataService: user.messageService,
+            eventsService: user.eventsService
+        )
+        let markLegitimateService = MarkLegitimateService(
+            labelId: labelId,
+            apiService: user.apiService,
+            messageDataService: user.messageService,
+            eventsService: user.eventsService
+        )
+        return .init(
+            message: message,
+            shouldAutoLoadRemoteContent: user.userinfo.showImages.contains(.remote),
+            expirationTime: message.expirationTime,
+            shouldAutoLoadEmbeddedImage: user.userinfo.showImages.contains(.embedded),
+            unsubscribeService: unsubscribeService,
+            markLegitimateService: markLegitimateService
+        )
+    }
+
+    private func attachments(message: Message) -> AttachmentViewModel {
+        let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
+            .map(AttachmentNormal.init) + (message.tempAtts ?? [])
+
+        return .init(attachments: attachments)
+    }
+
+}
+
 class SingleMessageViewModelFactory {
 
     func createViewModel(labelId: String, message: Message, user: UserManager) -> SingleMessageViewModel {

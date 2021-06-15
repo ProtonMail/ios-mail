@@ -29,48 +29,19 @@ class SingleMessageViewModel {
             propagateMessageData()
         }
     }
-    let shouldAutoLoadRemoteImage: Bool
 
-    var isExpanded = false {
-        didSet { isExpanded ? createExpandedHeaderViewModel() : createNonExpandedHeaderViewModel() }
-    }
-
-    var nonExapndedHeaderViewModel: NonExpandedHeaderViewModel? {
-        didSet {
-            guard let viewModel = nonExapndedHeaderViewModel else { return }
-            embedNonExpandedHeader?(viewModel)
-            expandedHeaderViewModel = nil
-        }
-    }
-
-    var expandedHeaderViewModel: ExpandedHeaderViewModel? {
-        didSet {
-            guard let viewModel = expandedHeaderViewModel else { return }
-            embedExpandedHeader?(viewModel)
-            nonExapndedHeaderViewModel = nil
-        }
-    }
-
-    let messageBodyViewModel: NewMessageBodyViewModel
-    let attachmentViewModel: AttachmentViewModel
-    let bannerViewModel: BannerViewModel
+    let contentViewModel: SingleMessageContentViewModel
     private(set) lazy var userActivity: NSUserActivity = .messageDetailsActivity(messageId: message.messageID)
 
     private let messageService: MessageDataService
-    private var isDetailedDownloaded: Bool = false
     let user: UserManager
     let labelId: String
     private let messageObserver: MessageObserver
-    let linkOpener: LinkOpener = userCachedStatus.browser
 
     var refreshView: (() -> Void)?
-    var updateErrorBanner: ((NSError?) -> Void)?
-    var embedExpandedHeader: ((ExpandedHeaderViewModel) -> Void)?
-    var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
 
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
-    private let internetStatusProvider: InternetConnectionStatusProvider
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -89,13 +60,18 @@ class SingleMessageViewModel {
         self.message = message
         self.messageService = user.messageService
         self.user = user
-        self.shouldAutoLoadRemoteImage = user.autoLoadRemoteImages
-        self.messageBodyViewModel = childViewModels.messageBody
-        self.nonExapndedHeaderViewModel = childViewModels.nonExpandedHeader
-        self.bannerViewModel = childViewModels.bannerViewModel
-        self.attachmentViewModel = childViewModels.attachments
         self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
-        self.internetStatusProvider = internetStatusProvider
+        let contentContext = SingleMessageContentViewContext(
+            labelId: labelId,
+            message: message,
+            areBottomButtonsVisible: false
+        )
+        self.contentViewModel = SingleMessageContentViewModel(
+            context: contentContext,
+            childViewModels: childViewModels,
+            user: user,
+            internetStatusProvider: internetStatusProvider
+        )
     }
 
     var messageTitle: NSAttributedString {
@@ -104,61 +80,17 @@ class SingleMessageViewModel {
 
     func viewDidLoad() {
         messageObserver.observe { [weak self] in
-            guard let self = self else { return }
-            self.message = $0
-            if self.isDetailedDownloaded != $0.isDetailDownloaded &&
-                $0.isDetailDownloaded {
-                self.isDetailedDownloaded = true
-                self.messageBodyViewModel.messageHasChanged(message: self.message)
-            }
+            self?.message = $0
         }
-        // Load message in cache
-        messageBodyViewModel.messageHasChanged(message: self.message, isError: false)
-        downloadDetails()
     }
 
     func propagateMessageData() {
         refreshView?()
-        // messageBodyViewModel.messageHasChanged(message: message)
-        nonExapndedHeaderViewModel?.messageHasChanged(message: message)
-        expandedHeaderViewModel?.messageHasChanged(message: message)
-        attachmentViewModel.messageHasChanged(message: message)
-        bannerViewModel.messageHasChanged(message: message)
+        contentViewModel.messageHasChanged(message: message)
     }
 
     func starTapped() {
         messageService.label(messages: [message], label: Message.Location.starred.rawValue, apply: !message.starred)
-    }
-
-    func markReadIfNeeded() {
-        guard message.unRead else { return }
-        messageService.mark(messages: [message], labelID: labelId, unRead: false)
-    }
-
-    func downloadDetails() {
-        let shouldLoadBody = message.body.isEmpty
-        self.isDetailedDownloaded = !shouldLoadBody
-        guard internetStatusProvider.currentStatus != .NotReachable else {
-            self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
-            return
-        }
-        messageService.fetchMessageDetailForMessage(message, labelID: labelId) { [weak self] _, _, _, error in
-            guard let self = self else { return }
-            self.updateErrorBanner?(error)
-            if error != nil && !self.message.isDetailDownloaded {
-                self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
-            } else if shouldLoadBody {
-                self.messageBodyViewModel.messageHasChanged(message: self.message)
-            }
-        }
-    }
-
-    func createExpandedHeaderViewModel() {
-        expandedHeaderViewModel = ExpandedHeaderViewModel(labelId: labelId, message: message, user: user)
-    }
-
-    func createNonExpandedHeaderViewModel() {
-        nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(labelId: labelId, message: message, user: user)
     }
 
     func getActionTypes() -> [MailboxViewModel.ActionTypes] {
@@ -215,8 +147,9 @@ class SingleMessageViewModel {
         case .delete:
             messageService.delete(messages: [message], label: labelId)
         case .reportPhishing:
+            let messageBody = contentViewModel.messageBodyViewModel.body
             BugDataService(api: self.user.apiService).reportPhishing(messageID: message.messageID,
-                                                                     messageBody: messageBodyViewModel.body
+                                                                     messageBody: messageBody
                                                                         ?? LocalString._error_no_object) { _ in
                 self.messageService.move(messages: [self.message],
                                          from: [self.labelId],
@@ -237,7 +170,7 @@ class SingleMessageViewModel {
     }
 
     func getMessageHeaderUrl() -> URL? {
-        let message = messageBodyViewModel.message
+        let message = contentViewModel.messageBodyViewModel.message
         let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "headers-" + time + "-" + title.joined(separator: "-")
@@ -249,7 +182,7 @@ class SingleMessageViewModel {
     }
 
     func getMessageBodyUrl() -> URL? {
-        let message = messageBodyViewModel.message
+        let message = contentViewModel.messageBodyViewModel.message
         let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "body-" + time + "-" + title.joined(separator: "-")

@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-extension SingleMessageViewController {
+extension SingleMessageContentViewController {
 
     func presentPrintController() {
         let headerController: Printable = self
@@ -44,7 +44,7 @@ extension SingleMessageViewController {
 
 }
 
-extension SingleMessageViewController: Printable {
+extension SingleMessageContentViewController: Printable {
     typealias Renderer = HeaderedPrintRenderer.CustomViewPrintRenderer
 
     func printPageRenderer() -> UIPrintPageRenderer {
@@ -78,7 +78,7 @@ extension SingleMessageViewController: Printable {
 
 }
 
-extension SingleMessageViewController: RecipientViewDelegate {
+extension SingleMessageContentViewController: RecipientViewDelegate {
 
     func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol) {}
     func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol) {}

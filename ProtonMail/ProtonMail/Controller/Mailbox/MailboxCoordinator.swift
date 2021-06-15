@@ -247,10 +247,10 @@ class MailboxCoordinator : DefaultCoordinator, CoordinatorDismissalObserver {
               let selectedRowIndexPath = viewController?.tableView.indexPathForSelectedRow,
               let conversation = viewModel.itemOfConversation(index: selectedRowIndexPath) else { return }
         let coordinator = ConversationCoordinator(
+            labelId: viewModel.labelID,
             navigationController: navigationController,
-            labelId: viewModel.labelId,
             conversation: conversation,
-            user: self.viewModel.user
+            user: viewModel.user
         )
         coordinator.start()
     }

@@ -29,3 +29,14 @@ extension Array {
         return self.filter({$0 as? T == obj}).count > 0
     }
 }
+
+extension Array {
+    func indexAfterIndex(_ index: Int, where block: (Element) -> Bool) -> Int? {
+        for index in (index..<endIndex) {
+            if block(self[index]) {
+                return index
+            }
+        }
+        return nil
+    }
+}

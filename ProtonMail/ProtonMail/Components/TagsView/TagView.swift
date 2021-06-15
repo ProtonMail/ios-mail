@@ -24,15 +24,12 @@ import UIKit
 
 class TagView: UIView {
 
-    let imageView = UIImageView()
     let tagLabel = UILabel()
-    let stackView = UIStackView()
 
     init() {
         super.init(frame: .zero)
         addSubviews()
         setUpLayout()
-        setUpViews()
     }
 
     override func layoutSubviews() {
@@ -42,30 +39,16 @@ class TagView: UIView {
     }
 
     private func addSubviews() {
-        addSubview(stackView)
-        stackView.addArrangedSubview(imageView)
-        stackView.addArrangedSubview(tagLabel)
-
-        imageView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-        tagLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        addSubview(tagLabel)
     }
 
     private func setUpLayout() {
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         [
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 1),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2)
-        ].forEach {
-            $0.priority = .defaultLow
-            $0.isActive = true
-        }
-    }
-
-    private func setUpViews() {
-        stackView.spacing = 4
-        imageView.contentMode = .scaleAspectFit
+            tagLabel.topAnchor.constraint(equalTo: topAnchor, constant: 2),
+            tagLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            tagLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2),
+            tagLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
+        ].activate()
     }
 
     required init?(coder: NSCoder) {

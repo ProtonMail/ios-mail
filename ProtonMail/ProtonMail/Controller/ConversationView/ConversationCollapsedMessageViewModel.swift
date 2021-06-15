@@ -1,12 +1,12 @@
 class ConversationCollapsedMessageViewModel {
 
-    private let message: Message
+    private var message: Message {
+        didSet { reloadView?(model) }
+    }
+
     private let contactService: ContactDataService
 
-    init(message: Message, contactService: ContactDataService) {
-        self.message = message
-        self.contactService = contactService
-    }
+    var reloadView: ((ConversationMessageModel) -> Void)?
 
     var subject: String {
         message.subject
@@ -32,6 +32,15 @@ class ConversationCollapsedMessageViewModel {
             tags: message.orderedLabels.map { UIColor(hexString: $0.color, alpha: 1.0) },
             expirationTag: message.createTagFromExpirationDate
         )
+    }
+
+    init(message: Message, contactService: ContactDataService) {
+        self.message = message
+        self.contactService = contactService
+    }
+
+    func messageHasChanged(message: Message) {
+        self.message = message
     }
 
 }

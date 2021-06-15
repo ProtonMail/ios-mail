@@ -7,19 +7,17 @@ class ConversationViewController: UIViewController,
 
     private var actionBar: PMActionBar?
     let viewModel: ConversationViewModel
+    let coordinator: ConversationCoordinator
+    private(set) lazy var customView = ConversationView()
+    private var storedSize: [String: HeightStoreInfo] = [:]
     private let conversationNavigationViewPresenter = ConversationNavigationViewPresenter()
     private let conversationMessageCellPresenter = ConversationMessageCellPresenter()
-
+    private let actionSheetPresenter = MessageViewActionSheetPresenter()
     private lazy var starBarButton = UIBarButtonItem.plain(target: self, action: #selector(starButtonTapped))
-
-    private(set) lazy var customView = ConversationView()
-    private lazy var actionSheetPresenter = MessageViewActionSheetPresenter()
-    private let coordinator: ConversationCoordinator
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
 
-    init(coordinator: ConversationCoordinator,
-         viewModel: ConversationViewModel) {
+    init(coordinator: ConversationCoordinator, viewModel: ConversationViewModel) {
         self.coordinator = coordinator
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -34,43 +32,66 @@ class ConversationViewController: UIViewController,
 
         emptyBackButtonTitleForNextView()
         setUpTableView()
+        navigationItem.backButtonTitle = .empty
         navigationItem.rightBarButtonItem = starBarButton
         starButtonSetUp(starred: viewModel.conversation.starred)
+
+        viewModel.refreshView = { [weak self] in
+            self?.refreshNavigationViewIfNeeded()
+        }
+
         conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
         customView.separator.isHidden = true
 
-        viewModel.reloadTableView = { [weak self] in
-            self?.customView.tableView.reloadData()
-        }
-
         viewModel.fetchConversationDetails()
         showActionBar()
+        viewModel.observeConversationMessages(tableView: customView.tableView)
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        1
+        2
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.dataSource.count
+        switch section {
+        case 0:
+            return viewModel.headerSectionDataSource.count
+        case 1:
+            return viewModel.messagesDataSource.count
+        default:
+            fatalError("Not supported section")
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        height(for: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        height(for: indexPath)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let dataSource = viewModel.dataSource[indexPath.row]
-        switch dataSource {
+        let itemType = indexPath.section == 0 ?
+            viewModel.headerSectionDataSource[indexPath.row] :
+            viewModel.messagesDataSource[indexPath.row]
+        switch itemType {
         case .header(let subject):
-            let cell = tableView.dequeue(cellType: ConversationViewHeaderCell.self)
-            let style = FontManager.MessageHeader.alignment(.center)
-            cell.customView.titleLabel.attributedText = subject.apply(style: style)
-            return cell
+            return headerCell(tableView, indexPath: indexPath, subject: subject)
         case .message(let viewModel):
-            switch viewModel.state {
-            case .collapsed(let viewModel):
-                let cell = tableView.dequeue(cellType: ConversationMessageCell.self)
-                conversationMessageCellPresenter.present(model: viewModel.model, in: cell.customView)
-                return cell
-            }
+            return messageCell(tableView, indexPath: indexPath, viewModel: viewModel)
+        case .empty:
+            return tableView.dequeue(cellType: UITableViewCell.self)
         }
+    }
+
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let conversationExpandedMessageCell = cell as? ConversationExpandedMessageCell else { return }
+        let viewController = children
+            .compactMap { $0 as? ConversationExpandedMessageViewController }
+            .first(where: { $0.viewModel.message.messageID == conversationExpandedMessageCell.messageId })
+        guard let controllerToUnembed = viewController else { return }
+        unembed(controllerToUnembed)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -87,6 +108,87 @@ class ConversationViewController: UIViewController,
         } else {
             presentDetailedNavigationTitle()
             customView.separator.isHidden = false
+        }
+    }
+
+    private func refreshNavigationViewIfNeeded() {
+        if navigationItem.titleView is ConversationNavigationSimpleView {
+            navigationItem.titleView = viewModel.simpleNavigationViewType.titleView
+        }
+
+        if navigationItem.titleView is ConversationNavigationDetailView {
+            navigationItem.titleView = viewModel.detailedNavigationViewType.titleView
+        }
+    }
+
+    private func cellTapped(messageId: String) {
+        guard let index = self.viewModel.messagesDataSource
+                .firstIndex(where: { $0.message?.messageID == messageId }),
+              let messageViewModel = self.viewModel.messagesDataSource[safe: index]?.messageViewModel else {
+            return
+        }
+        if messageViewModel.isDraft {
+            coordinator.handle(navigationAction: .draft(message: messageViewModel.message))
+        } else {
+            messageViewModel.toggleState()
+            customView.tableView.reloadRows(at: [.init(row: index, section: 1)], with: .automatic)
+        }
+    }
+
+    private func embedController(
+        viewModel: ConversationExpandedMessageViewModel,
+        in cell: ConversationExpandedMessageCell,
+        indexPath: IndexPath
+    ) -> ConversationExpandedMessageViewController {
+        cell.container.subviews.forEach { $0.removeFromSuperview() }
+        let contentViewModel = viewModel.messageContent
+        let singleMessageContentViewController = SingleMessageContentViewController(
+            viewModel: contentViewModel,
+            parentScrollView: customView.tableView,
+            navigationAction: { [weak self] in self?.handleSingleMessageAction(action: $0) }
+        )
+
+        let viewController = ConversationExpandedMessageViewController(
+            viewModel: .init(message: viewModel.message, messageContent: contentViewModel),
+            singleMessageContentViewController: singleMessageContentViewController
+        )
+
+        viewModel.updateTableView = { [weak self] in
+            UIView.setAnimationsEnabled(false)
+            self?.customView.tableView.beginUpdates()
+            self?.customView.tableView.endUpdates()
+            UIView.setAnimationsEnabled(true)
+        }
+
+        viewModel.storeHeight = { [weak self] in
+            let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+            let heightInfo = HeightStoreInfo(height: height, isHeaderExpanded: viewModel.messageContent.isExpanded)
+            self?.storedSize[viewModel.message.messageID] = heightInfo
+        }
+
+        return viewController
+    }
+
+    private func handleSingleMessageAction(action: SingleMessageNavigationAction) {
+        switch action {
+        case .reply(let messageId):
+            if let message = viewModel.messagesDataSource.message(with: messageId) {
+                coordinator.handle(navigationAction: .reply(message: message))
+            }
+        case .compose(let contact):
+            coordinator.handle(navigationAction: .composeTo(contact: contact))
+        case .contacts(let contact):
+            coordinator.handle(navigationAction: .addContact(contact: contact))
+        case .attachmentList(let messageId):
+            if let message = viewModel.messagesDataSource.message(with: messageId) {
+                coordinator.handle(navigationAction: .attachmentList(message: message))
+            }
+        case .more(let messageId):
+            if let message = viewModel.messagesDataSource.message(with: messageId) {
+                presentActionSheet(for: message)
+            }
+        default:
+            break
         }
     }
 
@@ -118,12 +220,107 @@ class ConversationViewController: UIViewController,
         customView.tableView.delegate = self
         customView.tableView.register(cellType: ConversationViewHeaderCell.self)
         customView.tableView.register(cellType: ConversationMessageCell.self)
+        customView.tableView.register(cellType: ConversationExpandedMessageCell.self)
+        customView.tableView.register(cellType: UITableViewCell.self)
     }
 
     required init?(coder: NSCoder) {
         nil
     }
 
+    private func presentActionSheet(for message: Message) {
+        guard let location = message.messageLocation?.rawValue else { return }
+        let viewModel = MessageViewActionSheetViewModel(title: message.subject, labelID: location)
+        actionSheetPresenter.present(on: navigationController ?? self, viewModel: viewModel) { [weak self] in
+            self?.handleActionSheetAction($0, message: message)
+        }
+    }
+
+    private func countHeightFor(viewType: ConversationViewItemType) -> CGFloat {
+        guard !viewType.isEmpty else {
+            return 0
+        }
+        guard let viewModel = viewType.messageViewModel,
+              let storedHeightInfo = storedSize[viewModel.message.messageID] else {
+            return UITableView.automaticDimension
+        }
+        let isExpanded = viewModel.state.expandedViewModel?.messageContent.isExpanded
+        if storedHeightInfo.isHeaderExpanded == isExpanded {
+            return storedHeightInfo.height
+        }
+        return UITableView.automaticDimension
+    }
+
+    private func height(for indexPath: IndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 0:
+            return UITableView.automaticDimension
+        case 1:
+            guard let viewType = self.viewModel.messagesDataSource[safe: indexPath.row] else {
+                return UITableView.automaticDimension
+            }
+            return countHeightFor(viewType: viewType)
+        default:
+            fatalError("Not supported section")
+        }
+    }
+
+    private func headerCell(
+        _ tableView: UITableView,
+        indexPath: IndexPath,
+        subject: String
+    ) -> UITableViewCell {
+        let cell = tableView.dequeue(cellType: ConversationViewHeaderCell.self)
+        let style = FontManager.MessageHeader.alignment(.center)
+        cell.customView.titleLabel.attributedText = subject.apply(style: style)
+        return cell
+    }
+
+    private func messageCell(
+        _ tableView: UITableView,
+        indexPath: IndexPath,
+        viewModel: ConversationMessageViewModel
+    ) -> UITableViewCell {
+        switch viewModel.state {
+        case .collapsed(let collapsedViewModel):
+            let cell = tableView.dequeue(cellType: ConversationMessageCell.self)
+            cell.customView.tapAction = { [weak self] in
+                self?.cellTapped(messageId: viewModel.message.messageID)
+            }
+            collapsedViewModel.reloadView = { [conversationMessageCellPresenter] model in
+                conversationMessageCellPresenter.present(model: model, in: cell.customView)
+            }
+            conversationMessageCellPresenter.present(model: collapsedViewModel.model, in: cell.customView)
+            return cell
+        case .expanded(let expandedViewModel):
+            let cell = tableView.dequeue(cellType: ConversationExpandedMessageCell.self)
+            let viewController = embedController(viewModel: expandedViewModel, in: cell, indexPath: indexPath)
+            embed(viewController, inside: cell.container)
+
+            viewController.customView.topArrowTapAction = { [weak self] in
+                self?.cellTapped(messageId: viewModel.message.messageID)
+            }
+
+            cell.messageId = viewModel.message.messageID
+
+            return cell
+        }
+    }
+
+}
+
+private extension Array where Element == ConversationViewItemType {
+
+    func message(with id: String) -> Message? {
+        compactMap(\.message)
+            .first(where: { $0.messageID == id })
+    }
+
+}
+
+private struct HeightStoreInfo: Hashable {
+    let height: CGFloat
+    let isHeaderExpanded: Bool
 }
 
 // MARK: - Action Bar
@@ -141,9 +338,13 @@ private extension ConversationViewController {
                 case .more:
                     self?.moreButtonTapped()
                 case .reply:
-                    self?.coordinator.navigate(to: .reply)
+                    if let message = self?.viewModel.messagesDataSource.newestMessage {
+                        self?.coordinator.handle(navigationAction: .reply(message: message))
+                    }
                 case .replyAll:
-                    self?.coordinator.navigate(to: .replyAll)
+                    if let message = self?.viewModel.messagesDataSource.newestMessage {
+                        self?.coordinator.handle(navigationAction: .replyAll(message: message))
+                    }
                 case .delete:
                     self?.showDeleteAlert(deleteHandler: { [weak self] _ in
                         self?.viewModel.handleActionBarAction(action)
@@ -199,6 +400,7 @@ private extension ConversationViewController {
             self?.handleActionSheetAction(action)
         }
     }
+
 }
 
 // MARK: - Action Sheet Actions
@@ -208,9 +410,9 @@ private extension ConversationViewController {
         case .reply, .replyAll, .forward:
             handleOpenComposerAction(action)
         case .labelAs:
-            showLabelAsActionSheet()
+            showLabelAsActionSheet(dataSource: .conversation)
         case .moveTo:
-            showMoveToActionSheet()
+            showMoveToActionSheet(dataSource: .conversation)
         case .star, .unstar:
             starButtonTapped()
         case .dismiss:
@@ -230,17 +432,23 @@ private extension ConversationViewController {
     }
 
     private func handleOpenComposerAction(_ action: MessageViewActionSheetAction) {
+        guard let message = viewModel.messagesDataSource.newestMessage else { return }
         switch action {
         case .reply:
-            coordinator.navigate(to: .reply)
+            coordinator.handle(navigationAction: .reply(message: message))
         case .replyAll:
-            coordinator.navigate(to: .replyAll)
+            coordinator.handle(navigationAction: .replyAll(message: message))
         case .forward:
-            coordinator.navigate(to: .forward)
+            coordinator.handle(navigationAction: .forward(message: message))
         default:
             return
         }
     }
+}
+
+enum ActionSheetDataSource {
+    case message(_ message: Message)
+    case conversation
 }
 
 extension ConversationViewController: LabelAsActionSheetPresentProtocol {
@@ -248,7 +456,7 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
         return viewModel
     }
 
-    func showLabelAsActionSheet() {
+    private func showLabelAsActionSheetForConversation() {
         let labels = labelAsActionHandler.getLabelMenuItems()
         let labelAsViewModel = LabelAsActionSheetViewModelConversations(menuLabels: labels,
                                                                         conversations: [viewModel.conversation])
@@ -258,9 +466,9 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
                         self?.coordinator.pendingActionAfterDismissal = { [weak self] in
-                            self?.showLabelAsActionSheet()
+                            self?.showLabelAsActionSheetForConversation()
                         }
-                        self?.coordinator.navigate(to: .addNewLabel)
+                        self?.coordinator.handle(navigationAction: .addNewLabel)
                      },
                      selected: { [weak self] menuLabel, isOn in
                         self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
@@ -283,8 +491,52 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
                                                      currentOptionsStatus: currentOptionsStatus)
                         }
                         self?.dismissActionSheet()
-                        self?.navigationController?.popViewController(animated: true)
+                     }
+            )
+    }
+
+    private func showLabelAsActionSheet(for message: Message) {
+        let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: labelAsActionHandler.getLabelMenuItems(),
+                                                                   messages: [message])
+
+        labelAsActionSheetPresenter
+            .present(on: self.navigationController ?? self,
+                     viewModel: labelAsViewModel,
+                     addNewLabel: { [weak self] in
+                        self?.coordinator.pendingActionAfterDismissal = { [weak self] in
+                            self?.showLabelAsActionSheet(for: message)
+                        }
+                        self?.coordinator.handle(navigationAction: .addNewLabel)
+                     },
+                     selected: { [weak self] menuLabel, isOn in
+                        self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
+                     },
+                     cancel: { [weak self] isHavingUnsavedChanges in
+                        if isHavingUnsavedChanges {
+                            self?.showDiscardAlert(handleDiscard: {
+                                self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
+                                self?.dismissActionSheet()
+                            })
+                        } else {
+                            self?.dismissActionSheet()
+                        }
+                     },
+                     done: { [weak self] isArchive, currentOptionsStatus  in
+                        self?.labelAsActionHandler
+                            .handleLabelAsAction(messages: [message],
+                                                 shouldArchive: isArchive,
+                                                 currentOptionsStatus: currentOptionsStatus)
+                        self?.dismissActionSheet()
                      })
+    }
+
+    func showLabelAsActionSheet(dataSource: ActionSheetDataSource) {
+        switch dataSource {
+        case .conversation:
+            showLabelAsActionSheetForConversation()
+        case .message(let message):
+            showLabelAsActionSheet(for: message)
+        }
     }
 }
 
@@ -293,7 +545,61 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
         return viewModel
     }
 
-    func showMoveToActionSheet() {
+    func showMoveToActionSheet(dataSource: ActionSheetDataSource) {
+        switch dataSource {
+        case .conversation:
+            showMoveToActionSheetForConversation()
+        case .message(let message):
+            showMoveToActionSheet(for: message)
+        }
+    }
+
+    private func showMoveToActionSheet(for message: Message) {
+        let isEnableColor = viewModel.user.isEnableFolderColor
+        let isInherit = viewModel.user.isInheritParentFolderColor
+        let moveToViewModel = MoveToActionSheetViewModelMessages(
+            menuLabels: viewModel.getFolderMenuItems(),
+            messages: [message],
+            isEnableColor: isEnableColor,
+            isInherit: isInherit,
+            labelId: message.messageLocation?.rawValue ?? ""
+        )
+
+        moveToActionSheetPresenter.present(
+            on: self.navigationController ?? self,
+            viewModel: moveToViewModel,
+            addNewFolder: { [weak self] in
+                self?.coordinator.pendingActionAfterDismissal = { [weak self] in
+                    self?.showMoveToActionSheet(for: message)
+                }
+                self?.coordinator.handle(navigationAction: .addNewFolder)
+            },
+            selected: { [weak self] menuLabel, isOn in
+               self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+            },
+            cancel: { [weak self] isHavingUnsavedChanges in
+               if isHavingUnsavedChanges {
+                   self?.showDiscardAlert(handleDiscard: {
+                       self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
+                       self?.dismissActionSheet()
+                   })
+               } else {
+                   self?.dismissActionSheet()
+               }
+            },
+            done: { [weak self] isHavingUnsavedChanges in
+               defer {
+                   self?.dismissActionSheet()
+               }
+               guard isHavingUnsavedChanges else {
+                   return
+               }
+               self?.moveToActionHandler.handleMoveToAction(messages: [message])
+            }
+        )
+    }
+
+    private func showMoveToActionSheetForConversation() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
         let moveToViewModel =
@@ -307,9 +613,9 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
                         self?.coordinator.pendingActionAfterDismissal = { [weak self] in
-                            self?.showMoveToActionSheet()
+                            self?.showMoveToActionSheetForConversation()
                         }
-                        self?.coordinator.navigate(to: .addNewFolder)
+                        self?.coordinator.handle(navigationAction: .addNewFolder)
                      },
                      selected: { [weak self] menuLabel, isOn in
                         self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
@@ -335,4 +641,5 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                         self?.moveToActionHandler.handleMoveToAction(conversations: [conversation])
                      })
     }
+
 }

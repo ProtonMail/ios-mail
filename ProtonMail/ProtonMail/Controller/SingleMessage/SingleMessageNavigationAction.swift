@@ -25,13 +25,23 @@ enum SingleMessageNavigationAction: Equatable {
     case compose(contact: ContactVO)
     case viewHeaders(url: URL?)
     case viewHTML(url: URL?)
-    case reply
+    case reply(messageId: String)
     case replyAll
     case forward
-    case attachmentList
+    case attachmentList(messageId: String)
     case url(url: URL)
     case inAppSafari(url: URL)
     case mailToUrl(url: URL)
     case addNewFolder
     case addNewLabel
+    case more(messageId: String)
+}
+
+extension SingleMessageNavigationAction {
+
+    var isReplyAction: Bool {
+        guard case .reply(_) = self else { return false }
+        return true
+    }
+
 }

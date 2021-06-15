@@ -1,12 +1,59 @@
 class ConversationMessageViewModel {
 
-    let message: Message
+    private(set) var message: Message {
+        didSet {
+            state.collapsedViewModel?.messageHasChanged(message: message)
+            state.expandedViewModel?.messageHasChanged(message: message)
+        }
+    }
 
-    var state: ConversationMessageState
+    private(set) var state: ConversationMessageState
+    private let labelId: String
+    private let user: UserManager
+    private let messageContentViewModelFactory = SingleMessageContentViewModelFactory()
 
-    init(message: Message, messageService: MessageDataService, contactService: ContactDataService) {
+    var isDraft: Bool {
+        let isDraft = message.labels
+            .compactMap { $0 as? Label }
+            .map(\.labelID)
+            .contains(Message.Location.draft.rawValue)
+        guard isDraft else { return false }
+        return true
+    }
+
+    init(labelId: String, message: Message, user: UserManager) {
+        self.labelId = labelId
         self.message = message
-        self.state = .collapsed(viewModel: .init(message: message, contactService: contactService))
+        self.user = user
+        self.state = .collapsed(viewModel: .init(message: message, contactService: user.contactService))
+    }
+
+    func messageHasChanged(message: Message) {
+        self.message = message
+    }
+
+    func toggleState() {
+        state = state.isExpanded ?
+            .collapsed(viewModel: .init(message: message, contactService: user.contactService)) :
+            .expanded(viewModel: .init(message: message, messageContent: singleMessageContentViewModel(for: message)))
+    }
+
+    private func singleMessageContentViewModel(for message: Message) -> SingleMessageContentViewModel {
+        let context = SingleMessageContentViewContext(
+            labelId: labelId,
+            message: message,
+            areBottomButtonsVisible: true
+        )
+        return messageContentViewModelFactory.createViewModel(context: context, user: user)
+    }
+
+}
+
+private extension ConversationMessageState {
+
+    var isExpanded: Bool {
+        guard case .expanded = self else { return false }
+        return true
     }
 
 }

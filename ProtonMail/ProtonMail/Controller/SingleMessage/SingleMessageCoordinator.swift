@@ -73,6 +73,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             presentCreateFolder(type: .folder)
         case .addNewLabel:
             presentCreateFolder(type: .label)
+        case .more(_):
+            break
         }
     }
 
@@ -114,10 +116,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     }
 
     private func presentCompose(action: SingleMessageNavigationAction) {
-        let allowedActions: [SingleMessageNavigationAction] = [.reply, .replyAll, .forward]
-        guard allowedActions.contains(action) else {
-            return
-        }
+        guard action == .replyAll || action.isReplyAction || action == .forward else { return }
 
         let board = UIStoryboard.Storyboard.composer.storyboard
         guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,
@@ -148,7 +147,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
         viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
         self.viewController?.present(destination, animated: true)
-
     }
 
     private func presentAttachmentListView() {

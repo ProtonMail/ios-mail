@@ -3,6 +3,9 @@ import UIKit
 
 class ConversationMessageView: UIView {
 
+    var tapAction: (() -> Void)?
+
+    let cellControl = UIControl(frame: .zero)
     let container = SubviewsFactory.container
 
     let contentStackView = UIStackView.stackView(axis: .horizontal, alignment: .center, spacing: 4)
@@ -31,10 +34,12 @@ class ConversationMessageView: UIView {
         super.init(frame: .zero)
         addSubviews()
         setUpLayout()
+        setUpActions()
     }
 
     private func addSubviews() {
-        addSubview(container)
+        addSubview(cellControl)
+        cellControl.addSubview(container)
         container.addSubview(contentStackView)
 
         initialsView.addSubview(initialsLabel)
@@ -56,10 +61,17 @@ class ConversationMessageView: UIView {
 
     private func setUpLayout() {
         [
-            container.topAnchor.constraint(equalTo: topAnchor, constant: 2),
-            container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
-            container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
-            container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2)
+            cellControl.topAnchor.constraint(equalTo: topAnchor),
+            cellControl.leadingAnchor.constraint(equalTo: leadingAnchor),
+            cellControl.trailingAnchor.constraint(equalTo: trailingAnchor),
+            cellControl.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ].activate()
+
+        [
+            container.topAnchor.constraint(equalTo: cellControl.topAnchor, constant: 2),
+            container.leadingAnchor.constraint(equalTo: cellControl.leadingAnchor, constant: 4),
+            container.trailingAnchor.constraint(equalTo: cellControl.trailingAnchor, constant: -4),
+            container.bottomAnchor.constraint(equalTo: cellControl.bottomAnchor, constant: -2)
         ].activate()
 
         [
@@ -92,6 +104,14 @@ class ConversationMessageView: UIView {
 
         senderLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         senderLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    }
+
+    private func setUpActions() {
+        cellControl.addTarget(self, action: #selector(cellTapped), for: .touchUpInside)
+    }
+
+    @objc private func cellTapped() {
+        tapAction?()
     }
 
     required init?(coder: NSCoder) {
@@ -136,11 +156,12 @@ private enum SubviewsFactory {
         view.backgroundColor = UIColorManager.BackgroundNorm
         view.layer.cornerRadius = 6
         view.layer.apply(shadow: .custom(y: 1))
+        view.isUserInteractionEnabled = false
         return view
     }
 
-    static var expirationView: TagView {
-        let tagView = TagView()
+    static var expirationView: TagIconView {
+        let tagView = TagIconView()
         tagView.imageView.image = Asset.iconHourglass.image
         tagView.backgroundColor = UIColorManager.InteractionWeak
         return tagView

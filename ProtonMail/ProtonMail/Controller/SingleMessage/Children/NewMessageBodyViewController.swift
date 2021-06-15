@@ -32,6 +32,7 @@ protocol NewMessageBodyViewControllerDelegate: AnyObject {
 }
 
 class NewMessageBodyViewController: UIViewController {
+
     private let viewModel: NewMessageBodyViewModel
     private weak var scrollViewContainer: ScrollableContainer!
     private lazy var customView = NewMessageBodyView()
@@ -87,8 +88,6 @@ class NewMessageBodyViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .red
 
         self.prepareWebView(with: self.loader)
 
@@ -237,13 +236,20 @@ class NewMessageBodyViewController: UIViewController {
         }
 
         self.loadingObservation = self.webView?.observe(\.isLoading,
-                                                        options: [.initial, .new, .old]) { [weak self] webView, _ in
+                                                        options: [.initial, .new, .old]) { [weak self] webView, state in
             // skip first call because it will inherit irrelevant contentSize
+
             guard webView.estimatedProgress > 0.1 else { return }
             self?.updateViewHeight(to: webView.scrollView.contentSize.height)
 
             // Work around for webview tap too sensitive. Save the default scale value
             self?.defaultScale = round(webView.scrollView.zoomScale * 1_000) / 1_000.0
+
+            if webView.estimatedProgress == 1, state.newValue == false {
+                self?.viewModel.storeHeight?()
+            }
+
+            self?.viewModel.updateTableView?()
         }
     }
 

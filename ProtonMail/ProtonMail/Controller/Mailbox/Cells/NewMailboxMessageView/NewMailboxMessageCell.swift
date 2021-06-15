@@ -83,7 +83,7 @@ class NewMailboxMessageCell: SwipyCell {
             if self?.shouldUpdateTime == true,
                let id = self?.id,
                let expiration = self?.cellDelegate?.getExpirationDate(id: id) {
-                let tag = self?.customView.messageContentView.tagsView.tagViews.compactMap({ $0 as? TagView })
+                let tag = self?.customView.messageContentView.tagsView.tagViews.compactMap({ $0 as? TagIconView })
                     .first(where: { $0.imageView.image == Asset.mailHourglass.image })
                 tag?.tagLabel.attributedText = expiration.apply(style: FontManager.OverlineRegularInteractionStrong)
                 self?.getExpirationOffset()

@@ -8,12 +8,12 @@ class ConversationMessageViewTags: UIView {
         }
     }
 
-    init() {
-        super.init(frame: .zero)
-    }
-
     override var intrinsicContentSize: CGSize {
         .init(width: subviews.map { $0.frame.maxX }.max() ?? 0, height: subviews.map { $0.frame.maxY }.max() ?? 0)
+    }
+
+    init() {
+        super.init(frame: .zero)
     }
 
     private func reloadSubviews() {

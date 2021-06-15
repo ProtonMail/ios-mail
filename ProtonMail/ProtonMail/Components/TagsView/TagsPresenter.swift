@@ -26,15 +26,29 @@ class TagsPresenter {
 
     func presentTags(tags: [TagViewModel], in view: TagsView) {
         view.tagViews = tags.map { tagViewModel in
-            let tagView = TagView()
-            tagView.tagLabel.attributedText = tagViewModel.title
-            tagView.tagLabel.lineBreakMode = .byTruncatingTail
-            tagView.tagLabel.isHidden = tagViewModel.title?.string.isEmpty ?? true
-            tagView.imageView.image = tagViewModel.icon
-            tagView.imageView.isHidden = tagViewModel.icon == nil
-            tagView.backgroundColor = tagViewModel.color
-            return tagView
+            tagViewModel.icon != nil ? tagIconViewView(tagViewModel) : tagView(tagViewModel)
         }
+    }
+
+    private func tagIconViewView(_ viewModel: TagViewModel) -> UIView {
+        let view = TagIconView()
+
+        view.tagLabel.attributedText = viewModel.title
+        view.tagLabel.lineBreakMode = .byTruncatingTail
+        view.imageView.image = viewModel.icon
+        view.backgroundColor = viewModel.color
+
+        return view
+    }
+
+    private func tagView(_ viewModel: TagViewModel) -> UIView {
+        let view = TagView()
+
+        view.tagLabel.attributedText = viewModel.title
+        view.tagLabel.lineBreakMode = .byTruncatingTail
+        view.backgroundColor = viewModel.color
+
+        return view
     }
 
 }

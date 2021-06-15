@@ -2,16 +2,16 @@ import ProtonCore_UIFoundations
 
 class ConversationViewModel {
 
-    var dataSource: [ConversationViewItemType] = [] {
-        didSet {
-            reloadTableView?()
-        }
+    var headerSectionDataSource: [ConversationViewItemType] = []
+
+    var messagesDataSource: [ConversationViewItemType] = [] {
+        didSet { refreshView?() }
     }
 
-    var reloadTableView: (() -> Void)?
+    var refreshView: (() -> Void)?
 
     var messagesTitle: String {
-        .localizedStringWithFormat(LocalString._general_message, conversation.numMessages.intValue)
+        .localizedStringWithFormat(LocalString._general_message, messagesDataSource.count)
     }
 
     var simpleNavigationViewType: NavigationViewType {
@@ -28,8 +28,8 @@ class ConversationViewModel {
     let conversation: Conversation
     let labelId: String
     let user: UserManager
+    let messageService: MessageDataService
     private let conversationMessagesProvider: ConversationMessagesProvider
-    private let messageService: MessageDataService
     private let conversationService: ConversationProvider
     private let eventsService: EventsFetching
     private let contactService: ContactDataService
@@ -48,38 +48,106 @@ class ConversationViewModel {
         .header(subject: conversation.subject)
     }
 
-    init(conversation: Conversation,
-         labelId: String,
-         user: UserManager,
-         messageService: MessageDataService,
-         conversationService: ConversationProvider,
-         eventsService: EventsFetching,
-         contactService: ContactDataService) {
-        self.conversation = conversation
+    init(labelId: String,
+         conversation: Conversation,
+         user: UserManager) {
         self.labelId = labelId
+        self.conversation = conversation
+        self.messageService = user.messageService
+        self.conversationService = user.conversationService
+        self.contactService = user.contactService
+        self.eventsService = user.eventsService
         self.user = user
-        self.messageService = messageService
-        self.conversationService = conversationService
-        self.eventsService = eventsService
-        self.contactService = contactService
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
-        observeConversationMessages()
+        headerSectionDataSource = [.header(subject: conversation.subject)]
     }
 
     func fetchConversationDetails() {
         conversationService.fetchConversation(with: conversation.conversationID, includeBodyOf: nil) { _ in }
     }
 
-    func observeConversationMessages() {
-        conversationMessagesProvider.observe { [weak self] messages in
-            self?.refreshDataSource(with: messages)
+    func observeConversationMessages(tableView: UITableView) {
+        conversationMessagesProvider.observe { [weak self] update in
+            self?.perform(update: update, on: tableView)
+        } storedMessages: { [weak self] messages in
+            self?.messagesDataSource = messages.compactMap { self?.messageType(with: $0) }
         }
     }
 
-    func refreshDataSource(with messages: [Message]) {
-        dataSource = [header] + messages.map {
-            .message(viewModel: .init(message: $0, messageService: messageService, contactService: contactService))
+    func messageType(with message: Message) -> ConversationViewItemType {
+        let viewModel = ConversationMessageViewModel(labelId: labelId, message: message, user: user)
+        return .message(viewModel: viewModel)
+    }
+
+    func getMessageHeaderUrl(message: Message) -> URL? {
+        let time = dateFormatter.string(from: message.time ?? Date())
+        let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
+        let filename = "headers-" + time + "-" + title.joined(separator: "-")
+        guard let header = message.header else {
+            assert(false, "No header in message")
+            return nil
         }
+        return try? self.writeToTemporaryUrl(header, filename: filename)
+    }
+
+    func getMessageBodyUrl(message: Message) -> URL? {
+        let time = dateFormatter.string(from: message.time ?? Date())
+        let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
+        let filename = "body-" + time + "-" + title.joined(separator: "-")
+        guard let body = try? messageService.decryptBodyIfNeeded(message: message) else {
+            return nil
+        }
+        return try? self.writeToTemporaryUrl(body, filename: filename)
+    }
+
+    private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
+        let tempFileUri = FileManager.default.temporaryDirectoryUrl
+            .appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
+        try? FileManager.default.removeItem(at: tempFileUri)
+        try content.write(to: tempFileUri, atomically: true, encoding: .utf8)
+        return tempFileUri
+    }
+
+    private func perform(update: ConversationUpdateType, on tableView: UITableView) {
+        switch update {
+        case .willUpdate:
+            tableView.beginUpdates()
+        case .didUpdate:
+            tableView.endUpdates()
+        case let .insert(message, row):
+            insert(message, row, tableView)
+        case let .update(message, row):
+            if let viewModel = messagesDataSource[safe: row]?.messageViewModel {
+                viewModel.messageHasChanged(message: message)
+            }
+        case let .delete(message):
+            if let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == message.messageID }) {
+                messagesDataSource.remove(at: index)
+                tableView.deleteRows(at: [.init(row: index, section: 1)], with: .automatic)
+            }
+        case let .move(fromRow, toRow):
+            if let item = messagesDataSource[safe: fromRow] {
+                messagesDataSource.remove(at: fromRow)
+                messagesDataSource.insert(item, at: toRow)
+                tableView.moveRow(at: .init(row: fromRow, section: 1), to: .init(row: toRow, section: 1))
+            }
+        }
+    }
+
+    private func insert(_ message: Message, _ row: Int, _ tableView: UITableView) {
+        if row > messagesDataSource.endIndex {
+            (messagesDataSource.endIndex...(messagesDataSource.endIndex + (row - messagesDataSource.endIndex)))
+                .forEach { messagesDataSource.insert(.empty, at: $0) }
+        }
+
+        if let currentElement = messagesDataSource[safe: row], currentElement.isEmpty {
+            messagesDataSource.remove(at: row)
+        } else if let toRemove = messagesDataSource.indexAfterIndex(row, where: { $0.isEmpty }) {
+            messagesDataSource.remove(at: toRemove)
+        }
+
+        messagesDataSource.insert(messageType(with: message), at: row)
+        tableView.insertRows(at: [.init(row: row, section: 1)], with: .automatic)
     }
 
     func starTapped(completion: @escaping (Result<Bool, Error>) -> Void) {
@@ -112,7 +180,7 @@ class ConversationViewModel {
 
     func getActionTypes() -> [MailboxViewModel.ActionTypes] {
         var actions: [MailboxViewModel.ActionTypes] = []
-        if let newestMessage = dataSource.newestMessage {
+        if let newestMessage = messagesDataSource.newestMessage {
             let isHavingMoreThanOneContact = (newestMessage.toList.toContacts() +
                                                 newestMessage.ccList.toContacts()).count > 1
             actions.append(isHavingMoreThanOneContact ? .replyAll : .reply)
@@ -209,7 +277,35 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
     func handleLabelAsAction(messages: [Message],
                              shouldArchive: Bool,
                              currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
-        fatalError("Not implemented")
+        guard let message = messages.first else { return }
+        for (label, status) in currentOptionsStatus {
+            guard status != .dash else { continue } // Ignore the option in dash
+            if selectedLabelAsLabels
+                .contains(where: { $0.labelID == label.location.labelID }) {
+                // Add to message which does not have this label
+                if !message.contains(label: label.location.labelID) {
+                    messageService.label(messages: messages,
+                                         label: label.location.labelID,
+                                         apply: true)
+                }
+            } else {
+                if message.contains(label: label.location.labelID) {
+                    messageService.label(messages: messages,
+                                         label: label.location.labelID,
+                                         apply: false)
+                }
+            }
+        }
+
+        selectedLabelAsLabels.removeAll()
+
+        if shouldArchive {
+            if let fLabel = message.firstValidFolder() {
+                messageService.move(messages: messages,
+                                    from: [fLabel],
+                                    to: Message.Location.archive.rawValue)
+            }
+        }
     }
 
     func handleLabelAsAction(conversations: [Conversation],
@@ -256,7 +352,8 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 // MARK: - Move TO Action Sheet Implementation
 extension ConversationViewModel: MoveToActionSheetProtocol {
     func handleMoveToAction(messages: [Message]) {
-        fatalError("Not implemented")
+        guard let destination = selectedMoveToFolder else { return }
+        user.messageService.move(messages: messages, to: destination.location.labelID)
     }
 
     func handleMoveToAction(conversations: [Conversation]) {

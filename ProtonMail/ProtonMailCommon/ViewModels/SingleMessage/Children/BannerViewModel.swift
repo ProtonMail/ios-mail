@@ -23,6 +23,9 @@
 import Foundation
 
 class BannerViewModel {
+
+    var updateTableView: (() -> Void)?
+
     let shouldAutoLoadRemoteContent: Bool
     let shouldAutoLoadEmbeddedImage: Bool
     private(set) var expirationTime: Date = .distantFuture

@@ -41,7 +41,7 @@ class ConversationNavigationViewPresenter {
 
 }
 
-private extension NavigationViewType {
+extension NavigationViewType {
 
     var titleView: UIView {
         switch self {

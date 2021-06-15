@@ -41,17 +41,11 @@ class MultiRowsTagsView: UIView {
     }
 
     override var intrinsicContentSize: CGSize {
-        return .init(width: frame.size.width, height: subviews.map { $0.frame.maxY }.max() ?? 0)
+        .init(width: frame.size.width, height: subviews.map { $0.frame.maxY }.max() ?? 0)
     }
-
-    private var width: CGFloat?
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
-        let widthHasChanged = width != frame.width
-        guard widthHasChanged else { return }
-        width = frame.width
 
         reloadTagsView()
     }
