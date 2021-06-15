@@ -2196,6 +2196,7 @@ extension MailboxViewController: SkeletonTableViewDataSource {
 
 extension MailboxViewController: EventsConsumer {
     func shouldCallFetchEvents() {
+        guard self.hasNetworking else { return }
         getLatestMessages()
     }
 }
