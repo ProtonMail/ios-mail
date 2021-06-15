@@ -1204,8 +1204,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     private func hideCheckOptions() {
         self.listEditing = false
-        if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
-            self.tableView.reloadRows(at: indexPathsForVisibleRows, with: .automatic)
+        if presentedViewController == nil {
+            if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
+                self.tableView.reloadRows(at: indexPathsForVisibleRows, with: .automatic)
+            }
+        } else {
+            self.tableView.reloadData()
         }
     }
 
