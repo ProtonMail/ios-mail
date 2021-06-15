@@ -75,20 +75,20 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         viewModel.allEmails()
     }()
     private var listEditing: Bool = false
-    private var timer : Timer!
+    private var timer : Timer?
     private var timerAutoDismiss : Timer?
     
     private var fetchingNewer : Bool = false
     private var fetchingOlder : Bool = false
-    private var indexPathForSelectedRow : IndexPath!
+    private var indexPathForSelectedRow : IndexPath?
     
     private var undoMessage : UndoMessage?
     
     private var isShowUndo : Bool = false
     private var isCheckingHuman: Bool = false
     
-    private var fetchingMessage : Bool! = false
-    private var fetchingStopped : Bool! = true
+    private var fetchingMessage : Bool = false
+    private var fetchingStopped : Bool = true
     private var needToShowNewMessage : Bool = false
     private var newMessageCount = 0
     private var hasNetworking = true
@@ -453,7 +453,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.selectedIDs.removeAllObjects()
         self.hideCheckOptions()
         self.updateNavigationController(false)
-        if !self.timer.isValid {
+        if self.timer?.isValid == false {
             self.startAutoFetch(false)
         }
     }
@@ -462,7 +462,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(listEditing)
         // invalidate tiemr in multi-selected mode to prevent ui refresh issue
-        self.timer.invalidate()
+        self.timer?.invalidate()
     }
 
     internal func beginRefreshingManually(animated: Bool) {
@@ -480,14 +480,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                           repeats: true)
         fetchingStopped = false
         if run {
-            self.timer.fire()
+            self.timer?.fire()
         }
     }
     
     private func stopAutoFetch() {
         fetchingStopped = true
         if self.timer != nil {
-            self.timer.invalidate()
+            self.timer?.invalidate()
             self.timer = nil
         }
     }
@@ -796,7 +796,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.newMessageCount = 0
         self.fetchingMessage = false
         
-        if self.fetchingStopped! == true {
+        if self.fetchingStopped == true {
             self.refreshControl?.endRefreshing()
             completeIsFetch?(false)
             return
@@ -847,7 +847,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
             
             self.retryCounter = 0
-            if self.fetchingStopped! == true {
+            if self.fetchingStopped == true {
                 completeIsFetch?(false)
                 return
             }
