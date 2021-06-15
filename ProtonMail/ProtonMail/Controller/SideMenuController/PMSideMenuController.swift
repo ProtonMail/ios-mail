@@ -21,12 +21,15 @@ class PMSideMenuController: SideMenuController, SideMenuControllerDelegate {
         isMenuPresented = true
         willRevealMenu?()
         setNeedsStatusBarAppearanceUpdate()
+        sideMenuController.contentViewController.view.accessibilityElementsHidden = true
+        sideMenuController.contentViewController.view.isUserInteractionEnabled = false
     }
 
     func sideMenuControllerWillHideMenu(_ sideMenuController: SideMenuController) {
         isMenuPresented = false
         willHideMenu?()
         setNeedsStatusBarAppearanceUpdate()
+        sideMenuController.contentViewController.view.accessibilityElementsHidden = false
+        sideMenuController.contentViewController.view.isUserInteractionEnabled = true
     }
-
 }

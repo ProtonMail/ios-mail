@@ -66,8 +66,24 @@ final class MenuViewController: UIViewController, AccessibleView {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.viewModel.menuViewInit()
+
+        self.view.accessibilityElementsHidden = false
+        self.view.becomeFirstResponder()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if UIAccessibility.isVoiceOverRunning {
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0),
+                                  at: .top, animated: true)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.sideMenuController?.contentViewController.view.isUserInteractionEnabled = true
+    }
 }
 
 // MARK: Private functions
@@ -80,6 +96,7 @@ extension MenuViewController {
         self.primaryUserview.setCornerRadius(radius: 6)
         self.shortNameView.setCornerRadius(radius: 2)
         self.avatarLabel.adjustsFontSizeToFitWidth = true
+        self.avatarLabel.accessibilityElementsHidden =  true
         self.addGesture()
     }
     

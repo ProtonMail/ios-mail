@@ -49,6 +49,15 @@ final class StorefrontCollectionViewController: UICollectionViewController {
             self.showErrorAlert()
         })
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if UIAccessibility.isVoiceOverRunning {
+            UIAccessibility.post(notification: .layoutChanged,
+                                 argument: self.navigationController?.view)
+        }
+    }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return self.viewModel.numberOfSections()

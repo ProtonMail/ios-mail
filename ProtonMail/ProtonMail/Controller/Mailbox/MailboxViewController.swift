@@ -256,6 +256,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                                     name: UIApplication.willEnterForegroundNotification,
                                                     object: nil)
         }
+
+        if UIAccessibility.isVoiceOverRunning {
+            UIAccessibility.post(notification: .layoutChanged,
+                                 argument: self.navigationController?.view)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -543,6 +548,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
             // TODO: swipe action
         }
+        let accessibilityAction =
+            UIAccessibilityCustomAction(name: LocalString._accessibility_list_view_custom_action_of_switch_editing_mode,
+                                        target: self,
+                                        selector: #selector(self.handleAccessibilityAction))
+        inputCell?.accessibilityCustomActions = [accessibilityAction]
     }
 
     private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, message: Message) {
@@ -1486,6 +1496,15 @@ extension MailboxViewController {
         }
         [yes, cancel].forEach(alert.addAction)
         present(alert, animated: true, completion: nil)
+    }
+
+    @objc
+    private func handleAccessibilityAction() {
+        listEditing.toggle()
+        updateNavigationController(listEditing)
+        if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows {
+            tableView.reloadRows(at: indexPathsForVisibleRows, with: .automatic)
+        }
     }
 
     func moreButtonTapped() {

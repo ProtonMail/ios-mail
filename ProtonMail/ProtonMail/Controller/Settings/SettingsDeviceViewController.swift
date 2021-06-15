@@ -94,6 +94,11 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
 
+        if UIAccessibility.isVoiceOverRunning {
+            UIAccessibility.post(notification: .layoutChanged,
+                                 argument: self.navigationController?.view)
+        }
+
         self.tableView.reloadData()
     }
 

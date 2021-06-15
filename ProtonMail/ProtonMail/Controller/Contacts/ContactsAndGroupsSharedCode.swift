@@ -54,6 +54,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
             backgroundSquareSize: 40,
             isRound: true
         )
+        self.addBarButtonItem.accessibilityLabel = LocalString._general_create_action
         
         let rightButtons: [UIBarButtonItem] = [self.addBarButtonItem]
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)

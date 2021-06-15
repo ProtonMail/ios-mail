@@ -2168,4 +2168,6 @@ class LocalizedString {
     lazy var _security_protection_title_pin = NSLocalizedString("PIN Code", comment: "The protection title of PIN Code protection")
     lazy var _security_protection_title_faceid = NSLocalizedString("Face ID", comment: "The protection title of Face ID protection")
     lazy var _security_protection_title_touchid = NSLocalizedString("Touch ID", comment: "The protection title of Touch ID protection")
+
+    lazy var _accessibility_list_view_custom_action_of_switch_editing_mode = NSLocalizedString("Switch selection mode", comment: "The string that will be read by VoiceOver if the user wants to switch selection mode.")
 }

@@ -107,6 +107,11 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         NotificationCenter.default.addKeyboardObserver(self)
         
         self.isOnMainView = true
+
+        if UIAccessibility.isVoiceOverRunning {
+            UIAccessibility.post(notification: .layoutChanged,
+                                 argument: self.navigationController?.view)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
