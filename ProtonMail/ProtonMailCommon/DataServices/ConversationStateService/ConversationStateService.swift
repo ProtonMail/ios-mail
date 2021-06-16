@@ -4,8 +4,7 @@ class ConversationStateService {
 
     var viewMode: ViewMode {
         get {
-            return .singleMessage
-//            isConversationModeEnabled(viewMode: viewModeState, flag: featureFlag) ? .conversation : .singleMessage
+            isConversationModeEnabled(viewMode: viewModeState, flag: featureFlag) ? .conversation : .singleMessage
         }
         set {
             viewModeState = newValue
@@ -13,7 +12,7 @@ class ConversationStateService {
     }
 
     var isConversationFeatureEnabled: Bool {
-        return false
+        featureFlag ?? false
     }
 
     private let conversationFeatureFlagService: ConversationFeatureFlagService
