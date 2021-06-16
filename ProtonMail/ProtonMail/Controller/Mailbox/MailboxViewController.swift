@@ -168,6 +168,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel.setupFetchController(self)
         self.tableView.reloadData()
     }
+
+    override var prefersStatusBarHidden: Bool {
+        false
+    }
     
     // MARK: - UIViewController Lifecycle
     
