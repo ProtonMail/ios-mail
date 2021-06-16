@@ -907,10 +907,18 @@ class MessageDataService : Service, HasLocalStorage {
             results.forEach{ context.delete($0) }
             return
         }
-        
+        let draftID = Message.Location.draft.rawValue
+
+        for message in results {
+            if let message = message as? Message, let labels = message.labels.allObjects as? [Label] {
+                if !labels.contains(where: { $0.labelID == draftID }) {
+                    context.delete(message)
+                }
+            }
+        }
+
         // The remove is triggered by pull down to refresh
         // So if the messages correspond to some conditions, can't delete it
-        let draftID = Message.Location.draft.rawValue
         for obj in results {
             guard let message = obj as? Message else { continue }
             if let labels = message.labels.allObjects as? [Label],
