@@ -66,7 +66,7 @@ class NewMailboxMessageCellPresenter {
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
 
         let sender = viewModel.sender
-            .apply(style: viewModel.isRead ? FontManager.Default : FontManager.DefaultStrongBold)
+            .apply(style: viewModel.isRead ? FontManager.DefaultWeak : FontManager.DefaultStrongBold)
         view.senderLabel.attributedText = sender
         view.senderLabel.lineBreakMode = .byTruncatingTail
 

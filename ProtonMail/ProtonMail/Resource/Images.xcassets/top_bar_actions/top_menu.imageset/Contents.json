@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "top_menu.png",
+      "filename" : "ic-hamburger.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,12 +12,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "top_menu-1.png",
+      "filename" : "ic-hamburger-1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "top_menu@2x.png",
+      "filename" : "ic-hamburger@2x-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -28,12 +28,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "top_menu@2x-1.png",
+      "filename" : "ic-hamburger@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "top_menu@3x.png",
+      "filename" : "ic-hamburger@3x-1.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -44,7 +44,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "top_menu@3x-1.png",
+      "filename" : "ic-hamburger@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

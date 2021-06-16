@@ -53,7 +53,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="CONTACTS" id="dNI-3f-weZ">
-                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="G3m-Jr-Xhu"/>
+                        <barButtonItem key="leftBarButtonItem" image="top_menu" id="G3m-Jr-Xhu"/>
                     </navigationItem>
                     <connections>
                         <outlet property="menuButton" destination="G3m-Jr-Xhu" id="MWn-nO-giN"/>
@@ -340,7 +340,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Contact Group" id="a3d-2J-OJR">
-                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="EF5-dg-urc"/>
+                        <barButtonItem key="leftBarButtonItem" image="top_menu" id="EF5-dg-urc"/>
                     </navigationItem>
                     <connections>
                         <outlet property="menuButton" destination="EF5-dg-urc" id="zAf-Ps-KgH"/>
@@ -1433,11 +1433,11 @@
                                         <rect key="frame" x="0.0" y="863.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I69-c4-NG7" id="bUD-xx-OlS">
-                                            <rect key="frame" x="0.0" y="0.0" width="302.5" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="301" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" ambiguous="YES" text="Instructions" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FrN-tO-378">
-                                                    <rect key="frame" x="15" y="0.0" width="279.5" height="44"/>
+                                                    <rect key="frame" x="15" y="0.0" width="278" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" systemColor="darkTextColor"/>
@@ -2417,7 +2417,7 @@
                 <tabBarController storyboardIdentifier="UITabbarControllerContactsAndGroups" automaticallyAdjustsScrollViewInsets="NO" id="HLX-xi-kWa" customClass="ContactTabBarViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Ywd-ql-O5c">
-                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="Zuw-9D-0zE"/>
+                        <barButtonItem key="leftBarButtonItem" image="top_menu" id="Zuw-9D-0zE"/>
                     </navigationItem>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XP2-at-4g0">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -2484,9 +2484,9 @@
         <image name="contact_groups_icon" width="40" height="40"/>
         <image name="contacts_warnings" width="25" height="25"/>
         <image name="feedback_contact" width="16" height="16"/>
-        <image name="hamburger" width="20" height="16"/>
         <image name="popup_behind_image" width="106.66666412353516" height="153.33332824707031"/>
         <image name="signup_logo" width="98" height="16"/>
+        <image name="top_menu" width="24" height="24"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

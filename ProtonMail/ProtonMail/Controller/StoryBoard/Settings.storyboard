@@ -412,7 +412,7 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Settings" id="UEn-BL-Kjn">
-                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="tIr-9y-oZU"/>
+                        <barButtonItem key="leftBarButtonItem" image="top_menu" id="tIr-9y-oZU"/>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
@@ -1135,7 +1135,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Settings" id="J6W-0e-CR2">
                         <barButtonItem key="backBarButtonItem" title=" " id="SAT-vP-eM9"/>
-                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="YZe-Qq-U8m"/>
+                        <barButtonItem key="leftBarButtonItem" image="top_menu" id="YZe-Qq-U8m"/>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
@@ -2072,8 +2072,8 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Logo" width="228" height="36.5"/>
-        <image name="hamburger" width="20" height="16"/>
         <image name="popup_behind_image" width="106.66666412353516" height="153.33332824707031"/>
+        <image name="top_menu" width="24" height="24"/>
         <image name="upgrade_background" width="325.5" height="437"/>
         <namedColor name="SantasGray">
             <color red="0.6119999885559082" green="0.62699997425079346" blue="0.66699999570846558" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

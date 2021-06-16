@@ -85,7 +85,7 @@ class StorefrontCoordinator: PushCoordinator {
         self.viewController?.set(coordinator: self)
         if self.navigationController != nil, self.sideMenu != nil {
             if let child = self.viewController {
-                let menuButton = UIBarButtonItem(image: UIImage(named: "hamburger")!, style: .plain, target: nil, action: nil)
+                let menuButton = UIBarButtonItem(image: UIImage(named: "top_menu")!, style: .plain, target: nil, action: nil)
                 observation = self.navigationController?.observe(\UINavigationController.parent) { (controller, change) in
                     ProtonMailViewController.setup(child, menuButton, true)
                     self.observation = nil

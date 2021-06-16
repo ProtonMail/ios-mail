@@ -81,7 +81,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="REPORT BUGS" id="V6k-R2-Ziv" userLabel="SETTINGS">
-                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="G3s-bn-rVj"/>
+                        <barButtonItem key="leftBarButtonItem" image="top_menu" id="G3s-bn-rVj"/>
                     </navigationItem>
                     <connections>
                         <outlet property="menuButton" destination="G3s-bn-rVj" id="dRo-vS-Pzj"/>
@@ -1888,7 +1888,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="udh-Uk-5dd"/>
         <segue reference="A0a-yx-qTn"/>
-        <segue reference="w5b-0j-26v"/>
+        <segue reference="hZj-FM-cPb"/>
         <segue reference="zIE-XJ-wkG"/>
         <segue reference="Aj4-zg-YTd"/>
         <segue reference="tgC-Ba-c8Y"/>
@@ -1898,7 +1898,6 @@
         <image name="encrypted_main" width="15" height="20.5"/>
         <image name="favorite_main" width="19.5" height="19"/>
         <image name="favorite_main_selected" width="19.5" height="19"/>
-        <image name="hamburger" width="20" height="16"/>
         <image name="label_edit-active" width="24" height="24"/>
         <image name="mail_attachment" width="14" height="14"/>
         <image name="mail_attachment-closed" width="14" height="14"/>
@@ -1911,7 +1910,7 @@
         <image name="popup_behind_image" width="106.66666412353516" height="153.33332824707031"/>
         <image name="reply" width="28" height="23.5"/>
         <image name="signup_logo" width="98" height="16"/>
-        <image name="top_menu" width="40" height="40"/>
+        <image name="top_menu" width="24" height="24"/>
         <image name="unchecked" width="22" height="22"/>
         <namedColor name="CornflowerBlue">
             <color red="0.39599999785423279" green="0.49399998784065247" blue="0.89399999380111694" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

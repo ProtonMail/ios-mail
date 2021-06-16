@@ -1275,13 +1275,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         let number = unread > 9999 ? " +9999" : "\(unread)"
 
         if isInUnreadFilter {
-            var selectedAttributes = FontManager.Caption
+            var selectedAttributes = FontManager.CaptionStrong
             selectedAttributes[.foregroundColor] = UIColorManager.TextInverted.cgColor
 
             unreadFilterButton.setAttributedTitle("\(number) \(LocalString._unread_action) ".apply(style: selectedAttributes),
                                                   for: .selected)
         } else {
-            var normalAttributes = FontManager.Caption
+            var normalAttributes = FontManager.CaptionStrong
             normalAttributes[.foregroundColor] = UIColorManager.BrandNorm.cgColor
 
             unreadFilterButton.setAttributedTitle("\(number) \(LocalString._unread_action) ".apply(style: normalAttributes),
@@ -1295,14 +1295,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     private func updateLastUpdateTimeLabel() {
         if let status = self.lastNetworkStatus, status == .NotReachable {
-            var attribute = FontManager.CaptionWeak
+            var attribute = FontManager.CaptionHint
             attribute[.foregroundColor] = UIColorManager.NotificationError
             updateTimeLabel.attributedText = NSAttributedString(string: LocalString._mailbox_offline_text, attributes: attribute)
             return
         }
         
         let timeText = self.viewModel.getLastUpdateTimeText()
-        updateTimeLabel.attributedText = NSAttributedString(string: timeText, attributes: FontManager.CaptionWeak)
+        updateTimeLabel.attributedText = NSAttributedString(string: timeText, attributes: FontManager.CaptionHint)
     }
 
     private func configureBannerContainer() {
