@@ -198,14 +198,7 @@ extension SettingsDeviceViewController {
                 switch item {
                 case .autolock:
                     let status = self.viewModel.lockOn ? LocalString._settings_On_title : LocalString._settings_Off_title
-                    switch self.viewModel.biometricType {
-                    case .none:
-                        settingsGeneralCell.configure(left: LocalString._pin)
-                    case .touchID:
-                        settingsGeneralCell.configure(left: LocalString._pin_and_touch_id)
-                    case .faceID:
-                        settingsGeneralCell.configure(left: LocalString._pin_and_face_id)
-                    }
+                    settingsGeneralCell.configure(left: LocalString._security)
                     settingsGeneralCell.configure(right: status)
                 case .combinContacts:
                     let status = self.viewModel.combineContactOn ? LocalString._settings_On_title : LocalString._settings_Off_title

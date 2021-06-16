@@ -80,11 +80,12 @@ final class LockCoordinator: DefaultCoordinator {
     }
 
     private func goToTouchId() {
-        if actualViewController.presentedViewController is BioCodeViewController { return }
+        if (actualViewController.presentedViewController as? UINavigationController)?.viewControllers.first is BioCodeViewController { return }
         let bioCodeVC = UIStoryboard.Storyboard.signIn.storyboard.make(BioCodeViewController.self)
         bioCodeVC.delegate = self
-        bioCodeVC.modalPresentationStyle = .fullScreen
-        actualViewController.present(bioCodeVC, animated: true, completion: nil)
+        let navigationVC = UINavigationController(rootViewController: bioCodeVC)
+        navigationVC.modalPresentationStyle = .fullScreen
+        actualViewController.present(navigationVC, animated: true, completion: nil)
     }
 }
 

@@ -1942,11 +1942,7 @@ class LocalizedString {
     
     lazy var _pin = NSLocalizedString("PIN", comment: "device settings auto lock type title")
     lazy var _enable_pin = NSLocalizedString("Enable PIN", comment: "device settings auto lock type title toggle text")
-    lazy var _pin_and_touch_id = NSLocalizedString("PIN/Touch ID", comment: "device settings auto lock type title")
-    lazy var _enable_pin_or_touch_id = NSLocalizedString("Enable PIN/TouchID", comment: "device settings auto lock type title toggle text")
-    
-    lazy var _pin_and_face_id = NSLocalizedString("PIN/Face ID", comment: "device settings auto lock type title")
-    lazy var _enable_pin_or_face_id = NSLocalizedString("Enable PIN/FaceID", comment: "device settings auto lock type title toggle text")
+
     lazy var _recipient_not_found = NSLocalizedString("Recipient not found", comment: "The error message is shown in composer")
     lazy var _signle_address_invalid_error_content = NSLocalizedString("Email address is invalid", comment: "The error message is shown in composer")
     lazy var _address_invalid_error_content = NSLocalizedString("At least one recipient email address is improperly formatted, please double check them.", comment: "incorrect email format error in composer")

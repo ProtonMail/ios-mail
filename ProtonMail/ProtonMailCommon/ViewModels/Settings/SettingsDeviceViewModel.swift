@@ -97,7 +97,6 @@ protocol SettingsDeviceViewModel: AnyObject {
 
     var lockOn: Bool { get }
     var combineContactOn: Bool { get }
-    var biometricType: BiometricType { get }
     var isDohOn: Bool { get }
 
     func cleanCache(completion: ((Result<Void, NSError>) -> Void)?)
@@ -112,7 +111,6 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
 
     var userManager: UserManager
     private let users: UsersManager
-    private let bioStatusProvider: BiometricStatusProvider
     private var dohSetting: DohStatusProtocol
 
     var lockOn: Bool {
@@ -121,10 +119,6 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
 
     var combineContactOn: Bool {
         return userCachedStatus.isCombineContactOn
-    }
-
-    var biometricType: BiometricType {
-        return self.bioStatusProvider.biometricType
     }
 
     var email: String {
@@ -142,10 +136,9 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
         return self.dohSetting.status == .on
     }
 
-    init(user: UserManager, users: UsersManager, bioStatusProvider: BiometricStatusProvider, dohSetting: DohStatusProtocol) {
+    init(user: UserManager, users: UsersManager, dohSetting: DohStatusProtocol) {
         self.userManager = user
         self.users = users
-        self.bioStatusProvider = bioStatusProvider
         self.dohSetting = dohSetting
     }
 

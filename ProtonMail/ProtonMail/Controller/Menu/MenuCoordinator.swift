@@ -296,7 +296,6 @@ extension MenuCoordinator {
         }
         let vm = SettingsDeviceViewModelImpl(user: user,
                                              users: self.usersManager,
-                                             bioStatusProvider: UIDevice.current,
                                              dohSetting: DoHMail.default)
         guard let settings = SettingsDeviceCoordinator(sideMenu: self.viewController?.sideMenuController,
                                                        nav: navigation,
