@@ -163,14 +163,19 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
     func cleanCache(completion: ((Result<Void, NSError>) -> Void)?) {
         for user in users.users {
             user.messageService.cleanLocalMessageCache { (_, _, error) in
-                guard user.userinfo.userId == self.userManager.userinfo.userId else {
-                    return
-                }
-
-                if let err = error {
-                    completion?(.failure(err))
-                } else {
-                    completion?(.success(()))
+                user.conversationService.cleanAll()
+                user.conversationService.fetchConversations(for: Message.Location.inbox.rawValue,
+                                                            before: 0,
+                                                            unreadOnly: false,
+                                                            shouldReset: false) { result in
+                    if user.userinfo.userId == self.userManager.userinfo.userId {
+                        switch result {
+                        case .failure(let error):
+                            completion?(.failure(error as NSError))
+                        case .success(_):
+                            completion?(.success(()))
+                        }
+                    }
                 }
             }
         }

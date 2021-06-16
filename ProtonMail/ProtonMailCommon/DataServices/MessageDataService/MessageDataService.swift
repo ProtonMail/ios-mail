@@ -1604,12 +1604,7 @@ class MessageDataService : Service, HasLocalStorage {
                     }
                 }
                 
-                switch viewMode {
-                case .singleMessage:
-                    self.fetchMessages(byLabel: Message.Location.inbox.rawValue, time: 0, forceClean: false, isUnread: false, completion: completionBlock)
-                case .conversation:
-                    self.parent?.conversationService.cleanAll()
-                }
+                self.fetchMessages(byLabel: Message.Location.inbox.rawValue, time: 0, forceClean: false, isUnread: false, completion: completionBlock)
             }.cauterize()
         }
     }
