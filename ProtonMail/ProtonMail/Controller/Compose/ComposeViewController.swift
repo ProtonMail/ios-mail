@@ -111,6 +111,11 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         self.prepareWebView()
         self.htmlEditor.delegate = self
         self.htmlEditor.setup(webView: self.webView)
+
+        self.viewModel.showError = { [weak self] errorMsg in
+            guard let self = self else { return }
+            errorMsg.alertToast(view: self.view)
+        }
         
         ///
         self.automaticallyAdjustsScrollViewInsets = false
