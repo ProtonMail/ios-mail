@@ -58,7 +58,8 @@ class ConversationUnreadResponse: Response {
     override func ParseResponse(_ response: [String: Any]) -> Bool {
         responseDict = response
 
-        guard let data = try? JSONSerialization.data(withJSONObject: response["Responses"] as Any, options: .prettyPrinted) else {
+        guard let responseData = response["Responses"] as? [String: Any],
+              let data = try? JSONSerialization.data(withJSONObject: responseData, options: .prettyPrinted) else {
             return false
         }
 

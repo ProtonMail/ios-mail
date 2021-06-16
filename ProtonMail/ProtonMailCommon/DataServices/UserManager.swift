@@ -179,6 +179,7 @@ class UserManager : Service, HasLocalStorage {
                                        coreDataService: sharedServices.get(by: CoreDataService.self),
                                        apiService: self.apiService,
                                        messageDataService: self.messageService,
+                                       conversationDataService: self.conversationService.conversationDataService,
                                        labelDataService: self.labelService,
                                        localNotificationService: self.localNotificationService,
                                        user: self)
@@ -187,14 +188,14 @@ class UserManager : Service, HasLocalStorage {
         return service
     }()
     
-    public lazy var conversationService: ConversationProvider = { [unowned self] in
-        let service = ConversationDataService(api: apiService,
-                                              userID: userinfo.userId,
-                                              coreDataService: sharedServices.get(by: CoreDataService.self),
-                                              labelDataService: labelService,
-                                              lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), eventsService: eventsService,
-                                              viewModeDataSource: self,
-                                              queueManager: sharedServices.get(by: QueueManager.self))
+    public lazy var conversationService: ConversationDataServiceProxy = { [unowned self] in
+        let service = ConversationDataServiceProxy(api: apiService,
+                                                   userID: userinfo.userId,
+                                                   coreDataService: sharedServices.get(by: CoreDataService.self),
+                                                   labelDataService: labelService,
+                                                   lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), eventsService: eventsService,
+                                                   viewModeDataSource: self,
+                                                   queueManager: sharedServices.get(by: QueueManager.self))
         return service
     }()
 

@@ -32,6 +32,7 @@ final class MainQueueHandler: QueueHandler {
     private let coreDataService: CoreDataService
     private let apiService: APIService
     private let messageDataService: MessageDataService
+    private let conversationDataService: ConversationProvider
     private let labelDataService: LabelsDataService
     private let localNotificationService: LocalNotificationService
     private weak var user: UserManager?
@@ -40,6 +41,7 @@ final class MainQueueHandler: QueueHandler {
          coreDataService: CoreDataService,
          apiService: APIService,
          messageDataService: MessageDataService,
+         conversationDataService: ConversationProvider,
          labelDataService: LabelsDataService,
          localNotificationService: LocalNotificationService,
          user: UserManager) {
@@ -48,6 +50,7 @@ final class MainQueueHandler: QueueHandler {
         self.coreDataService = coreDataService
         self.apiService = apiService
         self.messageDataService = messageDataService
+        self.conversationDataService = conversationDataService
         self.labelDataService = labelDataService
         self.localNotificationService = localNotificationService
         self.user = user
@@ -768,10 +771,8 @@ extension MainQueueHandler {
                 completion!(nil, nil, nil)
                 return
             }
-            
-            let request = ConversationUnreadRequest(conversationIDs: conversationIds, labelID: labelID)
-            self.apiService.exec(route: request) { (task, response: Response) in
-                completion!(task, nil, response.error?.toNSError)
+            conversationDataService.markAsUnread(conversationIDs: conversationIds, labelID: labelID) { result in
+                completion?(nil, nil, result.nsError)
             }
         }
     }
@@ -803,10 +804,8 @@ extension MainQueueHandler {
                 completion!(nil, nil, nil)
                 return
             }
-            
-            let request = ConversationReadRequest(conversationIDs: conversationIds)
-            self.apiService.exec(route: request) { (task, response: Response) in
-                completion!(task, nil, response.error?.toNSError)
+            conversationDataService.markAsRead(conversationIDs: conversationIds) { result in
+                completion?(nil, nil, result.nsError)
             }
         }
     }
@@ -839,10 +838,10 @@ extension MainQueueHandler {
                 return
             }
             
-            let request = ConversationDeleteRequest(conversationIDs: conversationIds, labelID: labelID)
-            self.apiService.exec(route: request) { (task, response: Response) in
-                completion!(task, nil, response.error?.toNSError)
+            conversationDataService.deleteConversations(with: conversationIds, labelID: labelID) { result in
+                completion?(nil, nil, result.nsError)
             }
+
         }
     }
     
@@ -874,9 +873,8 @@ extension MainQueueHandler {
                 return
             }
             
-            let request = ConversationLabelRequest(conversationIDs: conversationIds, labelID: labelID)
-            self.apiService.exec(route: request) { (task, response: Response) in
-                completion!(task, nil, response.error?.toNSError)
+            conversationDataService.label(conversationIDs: conversationIds, as: labelID) { result in
+                completion?(nil, nil, result.nsError)
             }
         }
     }
@@ -908,10 +906,8 @@ extension MainQueueHandler {
                 completion!(nil, nil, nil)
                 return
             }
-            
-            let request = ConversationUnlabelRequest(conversationIDs: conversationIds, labelID: labelID)
-            self.apiService.exec(route: request) { (task, response: Response) in
-                completion!(task, nil, response.error?.toNSError)
+            conversationDataService.unlabel(conversationIDs: conversationIds, as: labelID) { result in
+                completion?(nil, nil, result.nsError)
             }
         }
     }
