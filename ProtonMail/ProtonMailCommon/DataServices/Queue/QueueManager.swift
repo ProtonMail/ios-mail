@@ -43,7 +43,7 @@ final class QueueManager: Service {
     /// Handle the fetching data related things
     private var readQueue: [ReadBlock] = []
     private var handlers: [UserID: QueueHandler] = [:]
-
+    private var hasDequeued = false
     var isRequiredHumanCheck = false
 
     //These two variables are used to prevent concurrent call of dequeue=
@@ -339,6 +339,9 @@ extension QueueManager {
         guard self.reachability.currentReachabilityStatus() != .NotReachable,
               self.checkQueueStatus(),
               self.allowedToDequeue() else {return}
+        if !self.hasDequeued {
+            self.fetchMessageDataIfNeeded()
+        }
         self.dequeueMessageQueue()
         self.dequeueMiscQueue()
     }
@@ -504,6 +507,32 @@ extension QueueManager {
         }
 
         self.dequeueIfNeeded()
+    }
+    
+    private func fetchMessageDataIfNeeded() {
+        defer { self.hasDequeued = true }
+        guard let task = self.nextTask(from: self.messageQueue),
+              let action = MessageAction(rawValue: task.actionString) else {
+            return
+        }
+        
+        switch action {
+        case .uploadAtt, .uploadPubkey:
+            break
+        default:
+            return
+        }
+
+        // To prevent duplicate attachments upload
+        // If the first task is to upload the attachment
+        // insert a fetch action to the head of the message queue
+        // Only the first task may duplicate, so only care about the first one
+
+        let fetchTask = QueueManager.newTask()
+        fetchTask.actionString = MessageAction.fetchMessageDetail.rawValue
+        fetchTask.messageID = task.messageID
+        fetchTask.userID = task.userID
+        _ = self.messageQueue.insert(uuid: fetchTask.uuid, object: fetchTask, index: 0)
     }
 }
 

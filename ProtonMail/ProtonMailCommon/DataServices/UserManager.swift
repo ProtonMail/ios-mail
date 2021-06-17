@@ -243,6 +243,7 @@ class UserManager : Service, HasLocalStorage {
         self.apiService = api
         self.apiService.authDelegate = self
         self.parentManager = parent
+        let _ = self.mainQueueHandler.userID
         self.messageService.signin()
     }
 

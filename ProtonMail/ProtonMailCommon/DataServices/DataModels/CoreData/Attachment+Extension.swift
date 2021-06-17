@@ -338,6 +338,27 @@ extension Attachment {
         
         return outString
     }
+    
+    func disposition() -> String {
+        guard let headerInfo = self.headerInfo else {
+            return "attachment"
+        }
+        
+        let headerObject = headerInfo.parseObject()
+        guard let inlineCheckString = headerObject["content-disposition"] else {
+            return "attachment"
+        }
+        
+        let outString = inlineCheckString.preg_replace("[<>]", replaceto: "")
+        
+        return outString
+    }
+    
+    func setupHeaderInfo(isInline: Bool, contentID: String?) {
+        let disposition = isInline ? "inline": "attachment"
+        let id = contentID ?? UUID().uuidString
+        self.headerInfo = "{ \"content-disposition\": \"\(disposition)\",  \"content-id\": \"\(id)\" }"
+    }
 }
 
 protocol AttachmentConvertible {

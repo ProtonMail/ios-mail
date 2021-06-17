@@ -544,9 +544,14 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    func ForcefetchDetailForMessage(_ message: Message, completion: @escaping CompletionFetchDetail) {
+    private func noQueue(_ readBlock: @escaping ReadBlock) {
+        readBlock()
+    }
+    
+    func ForcefetchDetailForMessage(_ message: Message, runInQueue: Bool = true, completion: @escaping CompletionFetchDetail) {
         let msgID = message.messageID
-        self.queueManager?.queue {
+        let closure = runInQueue ? self.queueManager?.queue: noQueue
+        closure? {
             let completionWrapper: CompletionBlock = { task, response, error in
                 let objectId = message.objectID
                 let context = self.coreDataService.operationContext
@@ -607,7 +612,6 @@ class MessageDataService : Service, HasLocalStorage {
                                 }
                                 newMessage.unRead = false
                                 error = context.saveUpstreamIfNeeded()
-                                
                                 DispatchQueue.main.async {
                                     completion(task, response, Message.ObjectIDContainer(newMessage), error)
                                 }

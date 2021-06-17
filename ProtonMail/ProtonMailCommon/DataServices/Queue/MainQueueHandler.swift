@@ -78,7 +78,8 @@ final class MainQueueHandler: QueueHandler {
             //TODO: - v4 refactor conversation method
             switch action {
             case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .send,
-                 .updateLabel, .createLabel, .deleteLabel, .signout, .signin:
+                 .updateLabel, .createLabel, .deleteLabel, .signout, .signin,
+                 .fetchMessageDetail:
                 fatalError()
             case .emptyTrash, .emptySpam:   // keep this as legacy option for 2-3 releases after 1.11.12
                 fatalError()
@@ -156,6 +157,8 @@ final class MainQueueHandler: QueueHandler {
                 self.signout(completion: completeHandler)
             case .signin:
                 break
+            case .fetchMessageDetail:
+                self.fetchMessageDetail(messageID: messageID, completion: completeHandler)
             }
         }
     }
@@ -504,15 +507,28 @@ extension MainQueueHandler {
                 return
             }
             
-            var params = [
+            guard let attachments = attachment.message.attachments.allObjects as? [Attachment] else {
+                return
+            }
+            if let _ = attachments
+                .first(where: { $0.contentID() == attachment.contentID() &&
+                        $0.attachmentID != "0" }) {
+                // This upload is duplicated
+                context.delete(attachment)
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                }
+                completion?(nil, nil, nil)
+                return
+            }
+            
+            let params = [
                 "Filename": attachment.fileName,
                 "MIMEType": attachment.mimeType,
-                "MessageID": attachment.message.messageID
+                "MessageID": attachment.message.messageID,
+                "ContentID": attachment.contentID() ?? attachment.fileName,
+                "Disposition": attachment.disposition()
             ]
-            
-            if attachment.inline() {
-                params["ContentID"] = attachment.contentID()
-            }
 
             let addressID = attachment.message.cachedAddress?.addressID ?? self.messageDataService.getAddressID(attachment.message)
             guard
@@ -738,6 +754,24 @@ extension MainQueueHandler {
         self.apiService.exec(route: api) { (task: URLSessionDataTask?, response: Response) in
             completion?(task, nil, response.error?.toNSError)
             // probably we want to notify user the session will seem active on website in case of error
+        }
+    }
+    
+    private func fetchMessageDetail(messageID: String, completion: CompletionBlock?) {
+        let context = self.coreDataService.operationContext
+        self.coreDataService.enqueue(context: context) { [weak self] (context) in
+            guard let message = Message
+                    .messageForMessageID(messageID, inManagedObjectContext: context) else {
+                completion?(nil, nil, nil)
+                return
+            }
+            self?.messageDataService.ForcefetchDetailForMessage(message, runInQueue: false, completion: { _, _, _, error in
+                guard error == nil else {
+                    completion?(nil, nil, error)
+                    return
+                }
+                completion?(nil, nil, nil)
+            })
         }
     }
 }

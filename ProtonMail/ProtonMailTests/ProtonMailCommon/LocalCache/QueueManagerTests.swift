@@ -181,7 +181,7 @@ class QueueManagerTests: XCTestCase {
     
     func testDependencyFailed() {
         let task1 = QueueManager.newTask()
-        task1.actionString = MessageAction.uploadPubkey.rawValue
+        task1.actionString = MessageAction.send.rawValue
         task1.userID = "userID1"
         task1.messageID = "messageID1"
         task1.dependencyIDs = [UUID()]

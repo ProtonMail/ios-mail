@@ -61,4 +61,5 @@ enum MessageAction: String {
     case deleteLabel = "deleteLabel"
     case signout = "signout"
     case signin = "signin"
+    case fetchMessageDetail = "fetchMessageDetail"
 }

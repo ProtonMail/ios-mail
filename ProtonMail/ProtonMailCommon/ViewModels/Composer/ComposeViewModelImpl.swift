@@ -211,6 +211,9 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func uploadAtt(_ att: Attachment!) {
+        if att.headerInfo == nil {
+            att.setupHeaderInfo(isInline: false, contentID: nil)
+        }
         self.updateDraft()
         messageService.upload(att: att)
         self.updateDraft()
@@ -614,6 +617,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 if attached == false {
                     let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
                     let attachment = try? `await`(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
+                    attachment?.setupHeaderInfo(isInline: false, contentID: nil)
                     self.uploadPubkey(attachment)
                 }
             }

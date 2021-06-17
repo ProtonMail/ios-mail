@@ -644,7 +644,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             guard let att = attachment else {
                 return
             }
-            att.headerInfo = "{ \"content-disposition\": \"inline\", \"content-id\": \"\(sid)\" }"
+            att.setupHeaderInfo(isInline: true, contentID: sid)
             self.viewModel.uploadAtt(att)
         }
     }
