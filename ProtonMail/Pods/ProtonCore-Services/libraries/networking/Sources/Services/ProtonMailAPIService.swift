@@ -322,10 +322,13 @@ public class PMAPIService: APIService {
 
         if PMAPIService.noTrustKit {
             sessionManager.setSessionDidReceiveAuthenticationChallenge { _, challenge, credential -> URLSession.AuthChallengeDisposition in
-                let dispositionToReturn: URLSession.AuthChallengeDisposition = .useCredential
+                var dispositionToReturn: URLSession.AuthChallengeDisposition = .useCredential
                 // Hard force to pass all connections -- this only for testing and with charles
-                guard let trust = challenge.protectionSpace.serverTrust else { return dispositionToReturn }
-                let credentialOut = URLCredential(trust: trust)
+                dispositionToReturn = .useCredential
+                guard let serverTrust = challenge.protectionSpace.serverTrust else {
+                    return dispositionToReturn
+                }
+                let credentialOut = URLCredential(trust: serverTrust)
                 credential?.pointee = credentialOut
                 return dispositionToReturn
             }

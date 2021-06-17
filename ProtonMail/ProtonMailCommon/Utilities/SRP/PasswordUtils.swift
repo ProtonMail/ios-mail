@@ -24,6 +24,7 @@
 import Foundation
 import OpenPGP
 import ProtonCore_Authentication
+import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_SRP
 
 enum PasswordError: Error {

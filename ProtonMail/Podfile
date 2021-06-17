@@ -1,82 +1,36 @@
 source 'https://cdn.cocoapods.org/'
-platform :ios, '11.0'
-
-inhibit_all_warnings!
-use_frameworks!
 
 def proton_core_path
   'git@gitlab.protontech.ch:apple/shared/protoncore.git'
 end
 
-def proton_core_branch
-  'main'
+# proton url is set to env variable because the core module podspecs expect it. 
+# it's part of transition into open sourced core modules and it will not be necessary when they are on github
+ENV['PROTON_CORE_GIT_URL'] = proton_core_path
+source proton_core_path
+
+platform :ios, '11.0'
+inhibit_all_warnings!
+use_frameworks!
+
+def proton_core_version
+  '1.0.4'
 end
 
 def pm_shared_pods
-  pod 'ProtonCore-Crypto', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-SRP', :git => proton_core_path, :branch => proton_core_branch
-
-  # dependencies of Authentication
-  pod "ProtonCore-Services", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Log", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-DataModel", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Utilities", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Doh", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Networking", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-APIClient", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-OpenPGP", :git => proton_core_path, :branch => proton_core_branch
-
-  pod 'ProtonCore-Authentication', :git => proton_core_path, :branch => proton_core_branch
-
-  # dependencies of Keymaker
-  pod 'ProtonCore-Crypto', :git => proton_core_path, :branch => proton_core_branch
-
-  pod 'ProtonCore-Keymaker', :git => proton_core_path, :branch => proton_core_branch
-
-  # dependencies of Payments
-  pod 'ProtonCore-APIClient', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-Networking', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-Doh', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-Log', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-Services', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-DataModel', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-Utilities', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-Authentication', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-Crypto', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-OpenPGP', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-SRP', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-Foundations', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :branch => proton_core_branch
-
-  pod 'ProtonCore-Payments', :git => proton_core_path, :branch => proton_core_branch
-
+  pod 'ProtonCore-Crypto', proton_core_version
+  pod 'ProtonCore-SRP', proton_core_version
+  pod 'ProtonCore-Authentication', proton_core_version
+  pod 'ProtonCore-Keymaker', proton_core_version
+  pod 'ProtonCore-Payments', proton_core_version
 end
 
 def common_pods
   pm_shared_pods
-
-  # dependencies of UIFoundations
-  pod 'ProtonCore-Log', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-Foundations', :git => proton_core_path, :branch => proton_core_branch
-
-  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :branch => proton_core_branch
-
-  # dependencies of Common
-  pod "ProtonCore-Services", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Log", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-DataModel", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Utilities", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Doh", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Networking", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-APIClient", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-UIFoundations", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Foundations", :git => proton_core_path, :branch => proton_core_branch
-
-  pod 'ProtonCore-Common', :git => proton_core_path, :branch => proton_core_branch
-
-  pod 'ProtonCore-OpenPGP', :git => proton_core_path, :branch => proton_core_branch
-
+  pod 'ProtonCore-UIFoundations', proton_core_version
+  pod 'ProtonCore-Common', proton_core_version
+  pod 'ProtonCore-OpenPGP', proton_core_version
+  pod 'ProtonCore-Authentication-KeyGeneration', proton_core_version
   pod 'Groot', '3.0.1'
   pod 'AFNetworking', '4.0.1'
   pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
@@ -92,51 +46,16 @@ def common_pods
 end
 
 def pm_pods
-
   common_pods
-
   pod 'SwipyCell', '4.0.1'
   pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
-
-  # dependencies of Challenge
-  pod 'ProtonCore-Foundations', :git => proton_core_path, :branch => proton_core_branch
-
-  pod 'ProtonCore-Challenge', :git => proton_core_path, :branch => proton_core_branch
-
-  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :branch => proton_core_branch
-
-  pod 'ProtonCore-Log', :git => proton_core_path, :branch => proton_core_branch
-
-  # dependencies of AccountSwitcher
-  pod 'ProtonCore-Log', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-Foundations', :git => proton_core_path, :branch => proton_core_branch
-
-  pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :branch => proton_core_branch
-  
-  pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-HumanVerification', :git => proton_core_path, :branch => proton_core_branch
-
-  # dependencies of Login
-  pod "ProtonCore-Log", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Crypto", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-OpenPGP", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Authentication", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Services", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-DataModel", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Utilities", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Doh", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Networking", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-APIClient", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Foundations", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-UIFoundations", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-CoreTranslation", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-Challenge", :git => proton_core_path, :branch => proton_core_branch
-  pod "ProtonCore-HumanVerification", :git => proton_core_path, :branch => proton_core_branch
-
-  pod 'ProtonCore-Login', :git => proton_core_path, :branch => proton_core_branch
-
+  pod 'ProtonCore-Challenge', proton_core_version
+  pod 'ProtonCore-CoreTranslation', proton_core_version
+  pod 'ProtonCore-Log', proton_core_version
+  pod 'ProtonCore-AccountSwitcher', proton_core_version
+  pod 'ProtonCore-ForceUpgrade', proton_core_version
+  pod 'ProtonCore-HumanVerification', proton_core_version
+  pod 'ProtonCore-Login', proton_core_version
   pod 'SideMenuSwift', '2.0.6'
   pod "SkeletonView", '1.11.0'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug']
@@ -172,27 +91,24 @@ target 'ProtonMailTests' do
   pod 'OHHTTPStubs/Swift', '9.0.0'
   pod 'Groot', '3.0.1'
   pod 'PromiseKit', '6.13.1'
-
-  pod 'ProtonCore-TestingToolkit/UnitTests/Core', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-TestingToolkit/UnitTests/Doh', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-TestingToolkit/UnitTests/Services', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-TestingToolkit/UnitTests/Login', :git => proton_core_path, :branch => proton_core_branch 
-
+  pod 'ProtonCore-TestingToolkit/UnitTests/Core', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Doh', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Services', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Login', proton_core_version
   pm_pods
 end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
-
   pod 'PMTestAutomation', :git => 'git@gitlab.protontech.ch:apple/shared/pmtestautomation.git', :branch => 'master'
-  
-  pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', :git => proton_core_path, :branch => proton_core_branch
-  pod 'ProtonCore-TestingToolkit/UITests/Login', :git => proton_core_path, :branch => proton_core_branch   
+  pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UITests/Login', proton_core_version
 end
 
 target 'Share' do
   pm_share
 end
+
 target 'ShareDev' do
   pm_share
 end
@@ -200,6 +116,7 @@ end
 target 'Siri' do
   pm_siri
 end
+
 target 'SiriDev' do
   pm_siri
 end
@@ -207,7 +124,6 @@ end
 post_install do | installer |
   require 'fileutils'
   FileUtils.cp_r('Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-Acknowledgements.plist', 'ProtonMail/Supporting Files/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
-
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
@@ -221,4 +137,3 @@ post_install do | installer |
     end
   end
 end
-

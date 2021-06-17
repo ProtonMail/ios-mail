@@ -74,8 +74,11 @@ public extension AccessibleView {
 public extension UINavigationItem {
     
     func assignNavItemIndentifiers() {
-        self.leftBarButtonItem?.accessibilityIdentifier = "\(type(of: self)).leftBarButtonItem"
-        self.rightBarButtonItem?.accessibilityIdentifier = "\(type(of: self)).rightBarButtonItem"
+        let leftIdentifier = "\(type(of: self)).leftBarButtonItem"
+        self.leftBarButtonItem?.accessibilityIdentifier = leftIdentifier
+
+        let rightIdentifier = "\(type(of: self)).rightBarButtonItem"
+        self.rightBarButtonItem?.accessibilityIdentifier = rightIdentifier
     }
 }
 #endif

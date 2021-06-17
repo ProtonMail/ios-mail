@@ -28,18 +28,8 @@ import ProtonCore_Foundations
 
 // MARK: Enum
 extension PMChallenge {
-    public enum TextFieldType {
-        /// TextField for username
-        case username
-        /// TextField for password
-        case password
-        /// TextField for password confirm
-        case confirm
-        /// TextField for recovery mail
-        case recovery
-        /// TextField for verification
-        case verification
-    }
+
+    public typealias TextFieldType = ChallengeTextFieldType
 
     public enum TextFieldInterceptError: Error, LocalizedError {
         case delegateMissing

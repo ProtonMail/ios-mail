@@ -20,10 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-#if os(iOS)
-import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
+
+#if canImport(UIKit)
+import UIKit
 
 typealias ActionCallback = ((UIAlertAction) -> Void)?
 
@@ -107,5 +108,29 @@ private class AlertManager: AlertManagerProtocol {
         }
     }
 }
+
+#else
+
+typealias ActionCallback = ((Void) -> Void)?
+
+class PaymentsAlertManager {
+
+    func retryAlert(confirmAction: ActionCallback = nil, cancelAction: ActionCallback = nil) {
+        // unimplemented outside UIKit
+    }
+
+    func retryCancelAlert(confirmAction: ActionCallback = nil) {
+        // unimplemented outside UIKit
+    }
+
+    func userValidationAlert(message: String, confirmButtonTitle: String, confirmAction: ActionCallback = nil) {
+        // unimplemented outside UIKit
+    }
+
+    func errorAlert(message: String) {
+        // unimplemented outside UIKit
+    }
+}
+
 
 #endif

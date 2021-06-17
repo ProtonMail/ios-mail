@@ -23,7 +23,9 @@
 import Crypto
 import OpenPGP
 import Foundation
+import ProtonCore_Authentication
 import ProtonCore_DataModel
+import ProtonCore_Utilities
 
 final class AccountKeySetup {
     

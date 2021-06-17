@@ -25,34 +25,32 @@ import Crypto
 
 extension String {
     
-    // TODO:: add test
+    /// get the public key from the armored private key.
     public var publicKey: String {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(self, &error)
         if error != nil {
             return ""
         }
-        
         return key?.getArmoredPublicKey(nil) ?? ""
     }
     
-    //
+    /// get the fingerprint value from armored pub/priv key
     public var fingerprint: String {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(self, &error)
         if error != nil {
             return ""
         }
-        
         return key?.getFingerprint() ?? ""
     }
     
     //
-    var unArmor: Data? {
+    public var unArmor: Data? {
         return ArmorUnarmor(self, nil)
     }
     
-    func getSignature() throws -> String? {
+    public func getSignature() throws -> String? {
         var error: NSError?
         let clearTextMessage = CryptoNewClearTextMessageFromArmored(self, &error)
         if let err = error {
@@ -62,7 +60,7 @@ extension String {
         return dec_out_att
     }
     
-    func split() throws -> SplitMessage? {
+    public func split() throws -> SplitMessage? {
         var error: NSError?
         let out = CryptoNewPGPSplitMessageFromArmored(self, &error)
         if let err = error {
@@ -72,7 +70,7 @@ extension String {
     }
     
     // self is private key
-    func check(passphrase: String) -> Bool {
+    public func check(passphrase: String) -> Bool {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(self, &error)
         if error != nil {
@@ -89,5 +87,47 @@ extension String {
         } catch {
             return false
         }
+    }
+}
+
+extension String {
+
+    public func decryptMessage(binKeys: [Data], passphrase: String) throws -> String? {
+        return try Crypto().decrypt(encrytped: self, privateKey: binKeys, passphrase: passphrase)
+    }
+    
+    public func decryptMessageWithSinglKey(_ privateKey: String, passphrase: String) throws -> String? {
+        return try Crypto().decrypt(encrytped: self, privateKey: privateKey, passphrase: passphrase)
+    }
+    
+    public func encrypt(withPrivKey key: String, mailbox_pwd: String) throws -> String? {
+        return try Crypto().encrypt(plainText: self, privateKey: key, passphrase: mailbox_pwd)
+    }
+    
+    /// encrypt message with public key. singer - privkey & passphrase
+    /// - Parameters:
+    ///   - publicKey: armored public for encryption
+    ///   - privateKey: armored private key for signing
+    ///   - passphrase: private key passphrase
+    /// - Throws: exception
+    /// - Returns: encrypted message - Armored string
+    public func encrypt(withPubKey publicKey: String, privateKey: String, passphrase: String) throws -> String? {
+        return try Crypto().encrypt(plainText: self, publicKey: publicKey, privateKey: privateKey, passphrase: passphrase)
+    }
+    
+    /// decrypt armored encrypted message
+    /// - Parameter passphrase: passphrase
+    /// - Throws: exception
+    /// - Returns: clear text
+    public func encrypt(withPwd passphrase: String) throws -> String? {
+        return try Crypto().encrypt(plainText: self, token: passphrase)
+    }
+    
+    /// encrypt clear text with your own passphrase
+    /// - Parameter passphrase: passphrase
+    /// - Throws: exception
+    /// - Returns: encrypted message - Armored string
+    func decrypt(withPwd passphrase: String) throws -> String? {
+        return try Crypto().decrypt(encrypted: self, token: passphrase)
     }
 }

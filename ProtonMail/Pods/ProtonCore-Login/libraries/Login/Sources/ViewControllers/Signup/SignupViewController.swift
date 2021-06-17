@@ -47,7 +47,6 @@ class SignupViewController: UIViewController, AccessibleView {
 
     // MARK: Outlets
 
-    
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var closeButton: RoundButton!
     @IBOutlet weak var createAccountTitleLabel: UILabel! {

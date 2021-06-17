@@ -21,23 +21,24 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
+import ProtonCore_Authentication
 import ProtonCore_Networking
 
 extension AuthService {
-    struct CreateAddressKeysEndpointResponse: Codable {
+    struct SetupKeysEndpointResponse: Codable {
         let code: Int
-        let key: Key
     }
 
-    struct CreateAddressKeyEndpoint: Request {
-        let addressID: String
+    struct SetupKeysEndpoint: Request {
+        let addresses: [[String: Any]]
         let privateKey: String
-        let signedKeyList: [String: Any]
-        let primary: Bool
+        
+        /// base64 encoded need random value
+        let keySalt: String
+        let passwordAuth: PasswordAuth
 
         var path: String {
-            return "/keys"
+            return "/keys/setup"
         }
         var method: HTTPMethod {
             return .post            
@@ -53,14 +54,14 @@ extension AuthService {
         }
 
         var parameters: [String: Any]? {
-            let address: [String: Any] = [
-                "AddressID": addressID,
-                "PrivateKey": privateKey,
-                "Primary": primary ? 1 : 0,
-                "SignedKeyList": signedKeyList
+            let out: [String: Any] = [
+                "KeySalt": keySalt,
+                "PrimaryKey": privateKey,
+                "AddressKeys": addresses,
+                "Auth": passwordAuth.toDictionary()!
             ]
 
-            return address
+            return out
         }
     }
 }

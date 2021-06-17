@@ -22,6 +22,8 @@
 
 import Foundation
 
+// TODO:: need to add a copy function
+
 @objc public final class Key: NSObject {
 
     public let keyID: String
@@ -91,7 +93,7 @@ public typealias UserKey = Key
 extension Key {
     
     @available(*, deprecated, renamed: "isKeyV2")
-    public var newSchema: Bool {
+    internal var newSchema: Bool {
         return signature != nil
     }
     

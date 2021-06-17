@@ -22,6 +22,7 @@
 import Foundation
 import ProtonCore_APIClient
 import ProtonCore_Authentication
+import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_DataModel
 import ProtonCore_Log
 import ProtonCore_Networking
@@ -29,10 +30,12 @@ import ProtonCore_Services
 
 final class LoginService {
 
+    typealias AuthenticationManager = AuthenticatorInterface & AuthenticatorKeyGenerationInterface
+
     // MARK: - Properties
 
     let apiService: APIService
-    let manager: AuthenticatorInterface
+    let manager: AuthenticationManager
     var context: TwoFactorContext?
     var mailboxPassword: String?
     var minimumAccountType: AccountType
@@ -45,7 +48,7 @@ final class LoginService {
         return updatedSignUpDomain ?? defaultSignUpDomain
     }
 
-    init(api: APIService, authManager: AuthManager, minimumAccountType: AccountType, authenticator: AuthenticatorInterface? = nil) {
+    init(api: APIService, authManager: AuthManager, minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil) {
         self.apiService = api
         self.minimumAccountType = minimumAccountType
         self.authManager = authManager

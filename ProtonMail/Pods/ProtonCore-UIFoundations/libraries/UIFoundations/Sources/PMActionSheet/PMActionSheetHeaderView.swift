@@ -27,6 +27,7 @@ public final class PMActionSheetHeaderView: UIView {
     // MARK: Constant
     private let TITLE_PADDING: CGFloat = 63
     private let MAX_BUTTON_SIZE: CGFloat = 57
+    private let MIN_BUTTON_SIZE: CGFloat = 44
 
     // MARK: Customize variable
     private var leftItem: PMActionSheetPlainItem?
@@ -81,14 +82,14 @@ extension PMActionSheetHeaderView {
         let stack = UIStackView(.vertical, alignment: .center, distribution: .fillProportionally, useAutoLayout: true)
 
         if let title = self.title {
-            let font: UIFont = .boldSystemFont(ofSize: 17)
+            let font: UIFont = .systemFont(ofSize: 15)
             let color: UIColor = AdaptiveTextColors._N5
             let lbl = UILabel(title, font: font, textColor: color)
             stack.addArrangedSubview(lbl)
         }
 
         if let subtitle = self.subtitle {
-            let font: UIFont = .systemFont(ofSize: 15)
+            let font: UIFont = .systemFont(ofSize: 12)
             let color: UIColor = AdaptiveTextColors._N3
             let lbl = UILabel(subtitle, font: font, textColor: color)
             lbl.numberOfLines = 2
@@ -100,10 +101,11 @@ extension PMActionSheetHeaderView {
 
     private func setupTitlViewConstraint(_ container: UIStackView) {
         self.addSubview(container)
-        container.topAnchor.constraint(equalTo: self.topAnchor, constant: 13).isActive = true
+        container.topAnchor.constraint(greaterThanOrEqualTo: self.topAnchor, constant: 4).isActive = true
         container.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: TITLE_PADDING).isActive = true
         container.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -1 * TITLE_PADDING).isActive = true
-        container.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -9).isActive = true
+        container.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor, constant: -4).isActive = true
+        container.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 
     private func setupItem(item: PMActionSheetPlainItem?, isRightBtn: Bool) {
@@ -111,10 +113,12 @@ extension PMActionSheetHeaderView {
         self.addSubview(btn)
         btn.heightAnchor.constraint(lessThanOrEqualToConstant: MAX_BUTTON_SIZE).isActive = true
         btn.widthAnchor.constraint(lessThanOrEqualToConstant: MAX_BUTTON_SIZE).isActive = true
+        btn.heightAnchor.constraint(greaterThanOrEqualToConstant: MIN_BUTTON_SIZE).isActive = true
+        btn.widthAnchor.constraint(greaterThanOrEqualToConstant: MIN_BUTTON_SIZE).isActive = true
         btn.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         let size = btn.sizeThatFits(CGSize(width: MAX_BUTTON_SIZE,
                                            height: MAX_BUTTON_SIZE))
-        let width = min(size.width, MAX_BUTTON_SIZE)
+        let width = max(min(size.width, MAX_BUTTON_SIZE), MIN_BUTTON_SIZE)
         let padding = (TITLE_PADDING - width) / 2
         if isRightBtn {
             btn.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -1 * padding).isActive = true

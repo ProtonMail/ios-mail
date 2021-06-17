@@ -1,7 +1,6 @@
 //
 //  Locked.swift
-//  ProtonMail - Created on 15/10/2018.
-//
+//  ProtonCore-Keymaker - Created on 15/10/2018.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //

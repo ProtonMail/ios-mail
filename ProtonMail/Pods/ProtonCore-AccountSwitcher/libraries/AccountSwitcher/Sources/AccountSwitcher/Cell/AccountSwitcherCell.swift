@@ -22,9 +22,10 @@
 
 import UIKit
 import ProtonCore_CoreTranslation
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
-public final class AccountSwitcherCell: UITableViewCell {
+public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
 
     @IBOutlet private var avatar: UIImageView!
     @IBOutlet private var shortNameView: UIView!
@@ -64,7 +65,8 @@ public final class AccountSwitcherCell: UITableViewCell {
         self.userID = data.userID
         // todo support avatar
         self.avatar.image = nil
-        self.name.text = data.name.isEmpty ? data.mail: data.name
+        let name = data.name.isEmpty ? data.mail: data.name
+        self.name.text = name
         self.shortName.text = self.name.text?.shortName()
         self.mailAddress.text = data.mail
         
@@ -77,6 +79,7 @@ public final class AccountSwitcherCell: UITableViewCell {
             self.signInBtn.isHidden = false
         }
         self.setupLabelConstraint(isSignin: data.isSignin)
+        self.generateCellAccessibilityIdentifiers(name)
     }
 
     private func setupLabelConstraint(isSignin: Bool) {

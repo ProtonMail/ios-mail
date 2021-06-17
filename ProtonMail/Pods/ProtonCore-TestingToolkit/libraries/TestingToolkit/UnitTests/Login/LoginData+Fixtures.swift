@@ -1,4 +1,3 @@
-import ProtonCore_TestingToolkit
 import ProtonCore_Login
 
 public extension LoginData {

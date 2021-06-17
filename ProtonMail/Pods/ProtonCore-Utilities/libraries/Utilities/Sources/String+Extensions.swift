@@ -1,6 +1,6 @@
 //
 //  String+Extensions.swift
-//  PMAuthentication - Created on 21.12.2020.
+//  ProtonCore-Utilities - Created on 4/19/21.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
@@ -18,8 +18,16 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//
 
 import Foundation
+
+extension String {
+    
+    public var utf8: Data? {
+        return self.data(using: .utf8)
+    }
+}
 
 extension String {
     subscript(value: Int) -> Character {

@@ -20,6 +20,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_CoreTranslation
 import ProtonCore_DataModel
 import ProtonCore_Log

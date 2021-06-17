@@ -29,7 +29,7 @@ extension Data { // need follow the gomobile fixes
     ///
     /// The data object is converted into an array of bytes and than returned wrapped in an `NSMutableData` object. In
     /// thas way Gomobile takes it as it is without copying. The Swift side remains responsible for garbage collection.
-    var mutable: NSMutableData {
+    public var mutable: NSMutableData {
         var array = [UInt8](self)
         return NSMutableData(bytes: &array, length: count)
     }
@@ -37,7 +37,7 @@ extension Data { // need follow the gomobile fixes
 
 extension Data {
     
-    func getKeyPackage(publicKey: String, algo: String) throws -> Data? {
+    public func getKeyPackage(publicKey: String, algo: String) throws -> Data? {
         var error: NSError?
         // TODO: Needs double check
         let symKey = CryptoNewSessionKeyFromToken(self.mutable as Data, algo)
@@ -54,7 +54,7 @@ extension Data {
         return try keyRing?.encryptSessionKey(symKey)
     }
     
-    func getKeyPackage(publicKey binKey: Data, algo: String) throws -> Data? {
+    public func getKeyPackage(publicKey binKey: Data, algo: String) throws -> Data? {
         var error: NSError?
         // TODO: Needs double check
         let symKey = CryptoNewSessionKeyFromToken(self.mutable as Data, algo)
@@ -71,7 +71,7 @@ extension Data {
         return try keyRing?.encryptSessionKey(symKey)
     }
     
-    func getSymmetricPacket(withPwd pwd: String, algo: String) throws -> Data? {
+    public func getSymmetricPacket(withPwd pwd: String, algo: String) throws -> Data? {
         var error: NSError?
         // TODO: Needs double check
         let symKey = CryptoNewSessionKeyFromToken(self.mutable as Data, algo)
@@ -84,7 +84,7 @@ extension Data {
     }
     
     // self is public key
-    func isPublicKeyExpired() -> Bool? {
+    public func isPublicKeyExpired() -> Bool? {
         var error: NSError?
         let key = CryptoNewKey(self, &error)
         if error != nil {
@@ -92,4 +92,39 @@ extension Data {
         }
         return key?.isExpired()
     }
+}
+
+extension Data {
+    
+    public func decryptAttachment(_ keyPackage: Data, passphrase: String, privKeys: [Data]) throws -> Data? {
+        return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privKeys, passphrase: passphrase)
+    }
+
+    func decryptAttachmentWithSingleKey(_ keyPackage: Data, passphrase: String, privateKey: String) throws -> Data? {
+        return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privateKey, passphrase: passphrase)
+    }
+    
+    public func signAttachment(byPrivKey: String, passphrase: String) throws -> String? {
+        return try Crypto.signDetached(plainData: self, privateKey: byPrivKey, passphrase: passphrase)
+    }
+    
+    public func encryptAttachment(fileName: String, pubKey: String) throws -> SplitMessage? {
+        return try Crypto().encryptAttachment(plainData: self, fileName: fileName, publicKey: pubKey)
+    }
+    
+    // could remove and dirrectly use Crypto()
+    static func makeEncryptAttachmentProcessor(fileName: String, totalSize: Int, pubKey: String) throws -> AttachmentProcessor {
+        return try Crypto().encryptAttachmentLowMemory(fileName: fileName, totalSize: totalSize, publicKey: pubKey)
+    }
+    
+//    //key packet part
+//    public func getSessionFromPubKeyPackage(_ passphrase: String, privKeys: [Data]) throws -> SymmetricKey? {
+//        return try Crypto().getSession(keyPacket: self, privateKeys: privKeys, passphrase: passphrase)
+//    }
+//    
+//    //key packet part
+//    public func getSessionFromPubKeyPackage(addrPrivKey: String, passphrase: String) throws -> SymmetricKey? {
+//        return try Crypto().getSession(keyPacket: self, privateKey: addrPrivKey, passphrase: passphrase)
+//    }
+    
 }

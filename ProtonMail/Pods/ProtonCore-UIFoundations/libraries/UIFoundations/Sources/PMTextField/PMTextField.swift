@@ -20,7 +20,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import ProtonCore_Challenge
+import ProtonCore_Foundations
 
 public protocol PMTextFieldDelegate: AnyObject {
     /**
@@ -313,7 +313,7 @@ public class PMTextField: UIView {
         delegate?.didChangeValue(self, value: value)
     }
 
-    public func setUpChallenge(_ challenge: PMChallenge, type: PMChallenge.TextFieldType) throws {
+    public func setUpChallenge(_ challenge: ChallengeProtocol, type: ChallengeTextFieldType) throws {
         try challenge.observeTextField(textField, type: type)
     }
 

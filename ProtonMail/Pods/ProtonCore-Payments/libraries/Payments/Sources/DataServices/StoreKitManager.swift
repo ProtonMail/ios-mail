@@ -40,6 +40,7 @@ public class StoreKitManager: NSObject, StoreKitManagerProtocol {
     internal var paymentsApi: PaymentsApiProtocol = PaymentsApiImplementation()
     internal var paymentQueue: PaymentQueueProtocol = SKPaymentQueue.default()
     internal var request = SKProductsRequest(productIdentifiers: Set(AccountPlan.allCases.compactMap { $0.storeKitProductId }))
+    
     internal var paymentsAlertManager = PaymentsAlertManager()
     internal var pendingRetryIn: Double = 30
     internal var errorRetryIn: Double = 10

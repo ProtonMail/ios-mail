@@ -88,17 +88,4 @@ public struct AuthenticatorMock: AuthenticatorInterface {
     public func getRandomSRPModulus(completion: @escaping (Result<AuthService.ModulusEndpointResponse, AuthErrors>) -> Void) {
         getRandomSRPModulusStub(completion)
     }
-
-    @FuncStub(Self.createAddressKey) public var createAddressKeyStub
-    public func createAddressKey(_ credential: Credential?, address: Address,
-                                 password: String, salt: Data, primary: Bool,
-                                 completion: @escaping (Result<Key, AuthErrors>) -> Void) {
-        createAddressKeyStub(credential, address, password, salt, primary, completion)
-    }
-
-    @FuncStub(Self.setupAccountKeys) public var setupAccountKeysStub
-    public func setupAccountKeys(_ credential: Credential?, addresses: [Address],
-                                 password: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
-        setupAccountKeysStub(credential, addresses, password, completion)
-    }
 }

@@ -28,7 +28,7 @@ extension Array where Element: Key {
     }
     
     @available(*, deprecated, renamed: "isKeyV2")
-    public var newSchema: Bool {
+    internal var newSchema: Bool {
         for key in self where key.newSchema {
             return true
         }

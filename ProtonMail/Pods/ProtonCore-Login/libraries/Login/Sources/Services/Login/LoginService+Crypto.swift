@@ -22,6 +22,7 @@
 import Crypto
 import Foundation
 import ProtonCore_DataModel
+import ProtonCore_Utilities
 
 extension LoginService {
     // Code take from Drive
@@ -71,7 +72,7 @@ extension LoginService {
                 let armored = CryptoNewKeyFromArmored(privateKey, &error)
 
                 do {
-                    try armored?.unlock(Data(passphrase.utf8))
+                    try armored?.unlock(passphrase.utf8)
                     isValid = true
                 } catch {
                     // do nothing
@@ -88,7 +89,7 @@ extension LoginService {
                 let armored = CryptoNewKeyFromArmored(privateKey, &error)
 
                 do {
-                    try armored?.unlock(Data(passphrase.utf8))
+                    try armored?.unlock(passphrase.utf8)
                     isValid = true
                 } catch {
                     // do nothing

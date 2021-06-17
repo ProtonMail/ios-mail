@@ -22,6 +22,7 @@
 
 import UIKit
 import ProtonCore_CoreTranslation
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 protocol AccountmanagerUserCellDelegate: AnyObject {
@@ -35,7 +36,7 @@ protocol AccountmanagerUserCellDelegate: AnyObject {
     func prepareSignOut(for userID: String)
 }
 
-final class AccountmanagerUserCell: UITableViewCell {
+final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
 
     @IBOutlet private var shortNameView: UIView!
     @IBOutlet private var shortNameLabel: UILabel!
@@ -68,7 +69,8 @@ final class AccountmanagerUserCell: UITableViewCell {
                 delegate: AccountmanagerUserCellDelegate) {
         self.delegate = delegate
         self.userID = userID
-        self.name.text = name.isEmpty ? mail: name
+        let name: String = name.isEmpty ? mail: name
+        self.name.text = name
         self.shortNameLabel.text = self.name.text?.shortName()
         if isLogin {
             self.name.textColor = UIColorManager.TextNorm
@@ -82,6 +84,7 @@ final class AccountmanagerUserCell: UITableViewCell {
             // This will override IBAction
             self.configMoreButton(isSignin: isLogin)
         }
+        self.generateCellAccessibilityIdentifiers(name)
     }
 
     @available(iOS 14.0, *)

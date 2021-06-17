@@ -24,9 +24,11 @@
 import Foundation
 import ProtonCore_APIClient
 import ProtonCore_Authentication
+import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_Challenge
 import ProtonCore_Log
 import ProtonCore_Services
+import ProtonCore_Utilities
 
 protocol Signup {
 

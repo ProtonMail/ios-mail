@@ -23,6 +23,7 @@
 import Crypto
 import Foundation
 import OpenPGP
+import ProtonCore_Authentication
 
 final class AddressKeySetup {
     struct GeneratedAddressKey {

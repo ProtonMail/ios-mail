@@ -2336,7 +2336,7 @@ Public License instead of this License.  But first, please read
 			<key>License</key>
 			<string>GPLv3</string>
 			<key>Title</key>
-			<string>ProtonCore-Challenge</string>
+			<string>ProtonCore-Authentication-KeyGeneration</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

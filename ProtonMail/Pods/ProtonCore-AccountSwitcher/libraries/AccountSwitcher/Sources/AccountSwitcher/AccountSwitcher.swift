@@ -22,6 +22,7 @@
 
 import UIKit
 import ProtonCore_CoreTranslation
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 public extension AccountSwitcher {

@@ -278,7 +278,7 @@ extension UserInfo {
     }
     
     @available(*, deprecated, renamed: "isKeyV2")
-    public var newSchema: Bool {
+    internal var newSchema: Bool {
         for key in addressKeys where key.newSchema {
             return true
         }

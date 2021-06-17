@@ -84,7 +84,7 @@ public final class PMActionSheet: UIView {
 
     override public func draw(_ rect: CGRect) {
         super.draw(rect)
-        self.setHeaderViewCornerRadius()
+        showDragBar ? setDragBarRoundedCorners() : setHeaderRoundedCorners()
     }
 }
 
@@ -310,7 +310,7 @@ extension PMActionSheet {
             dragView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             dragView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             dragView.bottomAnchor.constraint(equalTo: container.topAnchor),
-            dragView.heightAnchor.constraint(equalToConstant: 14)
+            dragView.heightAnchor.constraint(equalToConstant: 22)
         ])
     }
 
@@ -341,14 +341,23 @@ extension PMActionSheet {
     }
 
     /// Set top right and top left corner round
-    private func setHeaderViewCornerRadius() {
+    private func setHeaderRoundedCorners() {
         guard let containerView = self.containerView else { return }
+        setTopRoundedCorners(for: containerView)
+    }
+
+    private func setDragBarRoundedCorners() {
+        guard let dragView = dragView else { return }
+        setTopRoundedCorners(for: dragView)
+    }
+
+    private func setTopRoundedCorners(for view: UIView) {
         let radius = self.viewModel.value.RADIUS
         let size = CGSize(width: radius, height: radius)
-        let path = UIBezierPath(roundedRect: containerView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: size)
+        let path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: size)
         let maskLayer = CAShapeLayer()
         maskLayer.path = path.cgPath
-        containerView.layer.mask = maskLayer
+        view.layer.mask = maskLayer
     }
 
     /// Reset position of container view and drag bar after pan gesture finish

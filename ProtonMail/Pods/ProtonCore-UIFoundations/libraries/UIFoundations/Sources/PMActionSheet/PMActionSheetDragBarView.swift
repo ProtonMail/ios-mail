@@ -39,16 +39,17 @@ final class PMActionSheetDragBarView: UIView {
 extension PMActionSheetDragBarView {
     private func setup() {
         self.setupBar()
-        self.backgroundColor = .clear
+        self.backgroundColor = UIColorManager.BackgroundNorm
     }
 
     private func setupBar() {
         let bar = UIView(frame: .zero)
-        bar.backgroundColor = .white
-        bar.roundCorner(3)
+        bar.backgroundColor = UIColorManager.InteractionWeakPressed
+        bar.roundCorner(2)
         self.addSubview(bar)
-        bar.setSizeContraint(height: 6, width: 56)
+        bar.setSizeContraint(height: 4, width: 40)
         bar.centerXInSuperview()
         bar.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        bar.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 }

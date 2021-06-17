@@ -22,6 +22,7 @@
 
 import UIKit
 import ProtonCore_CoreTranslation
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 public protocol AccountManagerUIProtocl: AnyObject {
@@ -29,7 +30,7 @@ public protocol AccountManagerUIProtocl: AnyObject {
     func dismiss()
 }
 
-public final class AccountManagerVC: UIViewController {
+public final class AccountManagerVC: UIViewController, AccessibleView {
 
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var titleLabel: UILabel!
@@ -61,6 +62,7 @@ public final class AccountManagerVC: UIViewController {
         super.viewDidLoad()
         assert(self.viewModel != nil, "Please use set(viewModel:) first")
         self.setupView()
+        self.generateAccessibilityIdentifiers()
     }
 
     override public func viewWillAppear(_ animated: Bool) {
@@ -233,6 +235,7 @@ extension AccountManagerVC {
         self.navigationItem.leftBarButtonItem = closeBtn
 
         self.setupRightBarItem()
+        self.navigationItem.assignNavItemIndentifiers()
     }
 
     private func setupRightBarItem() {
@@ -261,6 +264,9 @@ extension AccountManagerVC {
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickAddButton))
         view.addGestureRecognizer(tap)
+
+        view.isAccessibilityElement = true
+        view.accessibilityTraits = .button
     }
 
     private func setupTableview() {

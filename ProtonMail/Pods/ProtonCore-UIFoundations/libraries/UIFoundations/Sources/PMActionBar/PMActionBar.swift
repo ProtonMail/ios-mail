@@ -37,7 +37,7 @@ public final class PMActionBar: UIView {
     // MARK: Constants
     private let TAG_OFFSET: Int = 10
     /// Padding between bar item
-    private let PADDING: CGFloat = 8
+    private let PADDING: CGFloat = 6
     /// MULTIPLIER used in case Width.extend
     private let WIDTH_MULTIPLIER: CGFloat = 0.8
     /// Size of button bar item
@@ -227,7 +227,7 @@ extension PMActionBar {
                     continue
                 }
                 let view = self.createSeparatorView(width: width,
-                                                    color: item.backgroundColor,
+                                                    color: item.backgroundColor.withAlphaComponent(0.2),
                                                     vPadding: padding)
                 stack.addArrangedSubview(view)
             }
@@ -279,7 +279,8 @@ extension PMActionBar {
         btn.tintColor = item.itemColor
         btn.backgroundColor = item.backgroundColor
         btn.setTitle(item.text, for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 13.0, weight: .semibold)
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.titleEdgeInsets = .init(top: 0, left: 4, bottom: 0, right: 0)
         btn.roundCorner(BUTTON_SIZE / 2)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.sizeToFit()
