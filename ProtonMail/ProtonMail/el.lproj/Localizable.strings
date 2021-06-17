@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d messages";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minute" = "%d λεπτό";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Αλλαγή ενέργειας αριστερής ολίσθησης";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Change mailbox password";
 
-/* Title */
-"Change Mailbox Password" = "Αλλαγή Κωδικού Θυρίδας";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Αλλαγή κωδικού πρόσβασης";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Αλλαγή διεύθυνσης αποστολέα σε...";
 
 /* change password input label */
-"Change sign-in Password" = "Change sign-in Password";
+"Change sign-in password" = "Change sign-in password";
 
 /* Title */
-"Change Single Password" = "Αλλαγή ενιαίου κωδικού πρόσβασης";
+"Change single password" = "Change single password";
 
 /* Action */
 "Check Again" = "Ελέγξτε πάλι";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Current Recovery Email";
 
 /* Title */
-"Current sign-in Password" = "Current sign-in Password";
+"Current sign-in password" = "Current sign-in password";
 
 /* action sheet option
    contacts default label type
@@ -1064,6 +1060,9 @@
 
 /* Key size checkbox */
 "Extreme Security" = "Ύψιστη Ασφάλεια";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
 
 /* Error message */
 "Failed to determine type of file" = "Αποτυχία προσδιορισμού του τύπου αρχείου";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Τα μηνύματα που στέλνετε μπορούν να ρυθμιστούν για αυτόματη διαγραφή μετά από ένα συγκεκριμένο χρονικό διάστημα.";
 
+/* minute */
+"minute" = "minute";
+
 /* default vcard types */
 "Mobile" = "Κινητό";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Κανένα";
 
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Parent folder";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Κωδικός";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "PIN Code";
 
 /* Description */
 "PIN code can't be empty." = "PIN code can't be empty.";
@@ -2435,7 +2442,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Το υψηλότερο δυνατό επίπεδο κρυπτογράφησης.";
 
-
 /* Error */
 "The mailbox password is incorrect." = "Ο κωδικός θυρίδας είναι λάθος.";
 
@@ -2595,6 +2601,9 @@
 
 /* network troubleshot cell title */
 "Tor" = "Tor";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
 
 /* *
  *  SettingTableViewController */
@@ -2779,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "Το όνομα χρήστη είναι διαθέσιμο";
 
-/* (No Comment) */
-"USER LOGIN" = "Είσοδος Χρήστη";
-
 /* title */
 "User name exist" = "Υπάρχει όνομα χρήστη";
 
@@ -2790,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "USER SIGN-IN";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Η αίτηση του κωδικού επαλήθευσης απέτυχε";
@@ -2825,7 +2828,7 @@
 "Warning" = "Προειδοποίηση";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Προειδοποίηση: Πριν ολοκληρώστε την \"ανθρώπινη επαλήθευση\" δεν μπορείτε να στείλετε email!!!";
+"Warning: Before you pass the human check you can't sent email!" = "Warning: Before you pass the human check you can't sent email!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Προειδοποίηση: Δεν έχετε ορίσει ένα E-mail ανάκτησης, με αποτέλεσμα η ανάκτηση λογαριασμού να είναι αδύνατη αν ξεχάσετε τον κωδικό πρόσβασής σας. Θέλετε να συνεχίσετε χωρίς E-mail ανάκτησης;";

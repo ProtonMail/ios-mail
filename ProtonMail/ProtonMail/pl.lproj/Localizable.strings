@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d wiadomości";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minute" = "%d minuta";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Zmień gest przesunięcia w lewo";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Zmień hasło skrzynki pocztowej";
 
-/* Title */
-"Change Mailbox Password" = "Zmień hasło skrzynki pocztowej";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Zmień hasło";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Zmień adres nadawcy na...";
 
 /* change password input label */
-"Change sign-in Password" = "Zmień hasło logowania";
+"Change sign-in password" = "Zmień hasło logowania";
 
 /* Title */
-"Change Single Password" = "Zmień pojedyncze hasło";
+"Change single password" = "Zmień pojedyncze hasło";
 
 /* Action */
 "Check Again" = "Sprawdź ponownie";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Obecny adres pomocniczy";
 
 /* Title */
-"Current sign-in Password" = "Obecne hasło logowania";
+"Current sign-in password" = "Obecne hasło logowania";
 
 /* action sheet option
    contacts default label type
@@ -937,7 +933,7 @@
 "Enable email notices" = "Włącz powiadomienia e-mail";
 
 /* settings protection section title */
-"Enable FaceID" = "Włącz FaceID";
+"Enable FaceID" = "Włącz Face ID";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "Włącz kod PIN";
@@ -949,7 +945,7 @@
 "Enable PIN Protection" = "Włącz ochronę kodem PIN";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Włącz kod PIN / FaceID";
+"Enable PIN/FaceID" = "Włącz kod PIN / Face ID";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN/TouchID" = "Włącz kod PIN / Touch ID";
@@ -1064,6 +1060,9 @@
 
 /* Key size checkbox */
 "Extreme Security" = "Najwyższe bezpieczeństwo";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
 
 /* Error message */
 "Failed to determine type of file" = "Nie udało się określić typu pliku";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Możesz ustawić automatyczne usuwanie wysłanych wiadomości po określonym czasie.";
 
+/* minute */
+"minute" = "minuta";
+
 /* default vcard types */
 "Mobile" = "Komórkowy";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Brak";
 
@@ -1739,10 +1742,10 @@
 "On" = "‎";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On EE, MMM d, yyyy at %@" = "EE, d MMM yyyy o %@";
+"On EE, MMM d, yyyy at %@" = "EE, d MMM yyyy %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d MMM yyyy o %1$@, %2$@ napisał(a):";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d MMM yyyy %1$@, %2$@ napisał(a):";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Zignoruj aktywację zakupu, jeśli wszystkie Twoje subskrypcje są aktualne. Skontaktuj się ze wsparciem klienta, aby otrzymać dalsze wsparcie. \r\n\r\n Czy na pewno chcesz zignorować aktywację?";
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Folder nadrzędny";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Hasło";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "Kod PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "Kod PIN";
 
 /* Description */
 "PIN code can't be empty." = "Kod PIN nie może być pusty.";
@@ -2595,6 +2602,9 @@
 /* network troubleshot cell title */
 "Tor" = "sieć Tor";
 
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "Funkcja Touch ID nie jest włączona. Włącz funkcję w ustawieniach systemu";
@@ -2628,7 +2638,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Włączenie tej funkcji spowoduje automatyczne uzupełnianie adresów e-mail przy użyciu wszystkich kontaktów na Twoich zalogowanych kontach.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Włączenie tej funkcji zablokuje aplikację. Wymagane będzie użycie kodu PIN lub funkcji FaceID, aby ją odblokować.";
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Włączenie tej funkcji zablokuje aplikację. Wymagane będzie użycie kodu PIN lub funkcji Face ID, aby ją odblokować.";
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Włączenie tej funkcji zablokuje aplikację. Wymagane będzie użycie kodu PIN lub odcisku palca, aby ją odblokować.";
@@ -2778,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "Nazwa użytkownika jest dostępna";
 
-/* (No Comment) */
-"USER LOGIN" = "Logowanie użytkownika";
-
 /* title */
 "User name exist" = "Nazwa użytkownika już istnieje";
 
@@ -2789,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "LOGOWANIE UŻYTKOWNIKA";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Żądanie kodu weryfikującego nie powiodło się";
@@ -2824,7 +2828,7 @@
 "Warning" = "Ostrzeżenie";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Ostrzeżenie: dopóki nie sprawdzimy, że jesteś człowiekiem, nie możesz wysyłać wiadomości!!!";
+"Warning: Before you pass the human check you can't sent email!" = "Ostrzeżenie: Nie możesz wysyłać wiadomości, zanim nie sprawdzimy, że jesteś człowiekiem!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Ostrzeżenie: Nie dodałeś adresu pomocniczego. Jeśli zapomnisz hasła, to nie odzyskasz już swojego konta. Czy chcesz przejść dalej bez wpisywania tego adresu?";
@@ -2905,7 +2909,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Nie możesz ustawić adresu %@ jako domyślny, ponieważ jest to funkcja płatna.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Funkcja FaceID, która była używana do ochrony ważnych informacji o koncie została wyłączona w ustawieniach systemu. Aby uzyskać dostęp do konta, przejdź do ustawień i ponownie aktywuj FaceID lub zaloguj się ponownie.";
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Funkcja Face ID, która była używana do ochrony ważnych informacji o koncie została wyłączona w ustawieniach systemu. Aby uzyskać dostęp do konta, przejdź do ustawień i ponownie aktywuj Face ID lub zaloguj się ponownie.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Nie wszyscy odbiorcy obsługują funkcję wygasania wiadomości. Dodaj hasło i/lub wyłącz wysyłanie poprzez PGP, aby użyć funkcji wygasania dla wszystkich odbiorców.";

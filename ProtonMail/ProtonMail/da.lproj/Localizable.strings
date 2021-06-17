@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d beskeder";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minute" = "%d minut";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Skift venstre-stryg handling";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Skift adgangskode til postkasse";
 
-/* Title */
-"Change Mailbox Password" = "Skift Postkasseadgangskode";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Skift adgangskode";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Skift afsenderadresse til..";
 
 /* change password input label */
-"Change sign-in Password" = "Skift login-adgangskode";
+"Change sign-in password" = "Skift login-adgangskode";
 
 /* Title */
-"Change Single Password" = "Skift enkeltstående adgangskode";
+"Change single password" = "Skift enkeltstående adgangskode";
 
 /* Action */
 "Check Again" = "Tjek igen";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Nuværende gendannelses-e-mail";
 
 /* Title */
-"Current sign-in Password" = "Aktuel login-adgangskode";
+"Current sign-in password" = "Nuværende login-adgangskode";
 
 /* action sheet option
    contacts default label type
@@ -1064,6 +1060,9 @@
 
 /* Key size checkbox */
 "Extreme Security" = "Ekstrem sikkerhed";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Ansigts-ID";
 
 /* Error message */
 "Failed to determine type of file" = "Filtypebestemmelse mislykkedes";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Beskeder, du afsender, kan indstilles til auto-sletning efter et forudbestemt tidsinterval.";
 
+/* minute */
+"minute" = "minut";
+
 /* default vcard types */
 "Mobile" = "Mobil";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Ingen";
 
@@ -1742,7 +1745,7 @@
 "On EE, MMM d, yyyy at %@" = "EE d. MMM yyyy %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE d MMM yyyy kl. %1$@ skrev %2$@:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE d MMM yyyy %1$@ skrev %2$@:";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorer kun aktiveringen af købet, hvis du er sikker på, at alle dine abonnementer er opdaterede. For yderligere hjælp, kontakt venligst kundesupport. \r\n\r\n Er du sikker på, at du vil ignorere aktiveringen?";
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Overordnet mappe";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Adgangskode";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "PIN-kode";
 
 /* Description */
 "PIN code can't be empty." = "Pinkode skal udfyldes.";
@@ -1989,7 +1996,7 @@
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus kræves for at tilpasse din mobilsignatur";
 
 /* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary giver dig mulighed for at tilføje og redigere kontaktoplysninger udover blot din kontaktpersons navn og e-mail. Vha. ProtonMail vil disse data være lige så sikre som din end-to-end krypteret e-mail.";
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary muliggør at tilføje og redigere kontaktoplysninger udover blot din kontaktpersons navn og e-mail. Vha. ProtonMail vil disse data være så sikre som din end-to-end krypteret e-mail.";
 
 /* network troubleshot cell title */
 "ProtonVPN" = "ProtonVPN";
@@ -2203,7 +2210,7 @@
 "Sent by ProtonMail with zero access encryption" = "Afsendt af ProtonMail med nuladgangskryptering";
 
 /* encryption lock description */
-"Sent by you with end-to-end encryption" = "Afsendt af dig med end-to-end kryptering";
+"Sent by you with end-to-end encryption" = "Afsendt af dig med end-to-end-kryptering";
 
 /* Description */
 "Sent Failed" = "Afsendelse mislykkedes";
@@ -2308,10 +2315,10 @@
 "SRP Server" = "SRP-server";
 
 /* Description */
-"SRP single password keysalt invalid!" = "SRP enkelt-adgangskode keysalt ugyldig!";
+"SRP single password keysalt invalid!" = "SRP enkeltstående adgangskode keysalt ugyldig!";
 
 /* Description */
-"Srp single password keyslat invalid!" = "Srp enkelt adgangskode keysalt ugyldig!";
+"Srp single password keyslat invalid!" = "SRP enkeltstående adgangskode keysalt ugyldig!";
 
 /* The title of the star action in action sheet */
 "Star" = "Stjerne";
@@ -2434,7 +2441,6 @@
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Det kraftigste tilgængelige krypteringsniveau.";
-
 
 /* Error */
 "The mailbox password is incorrect." = "Postkasseadgangskoden er forkert.";
@@ -2595,6 +2601,9 @@
 
 /* network troubleshot cell title */
 "Tor" = "Tor";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Fingertryks-ID";
 
 /* *
  *  SettingTableViewController */
@@ -2779,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "Brugernavn er ledigt";
 
-/* (No Comment) */
-"USER LOGIN" = "BRUGERLOGIN";
-
 /* title */
 "User name exist" = "Brugernavn findes";
 
@@ -2790,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "BRUGER-LOGIN";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Anmodning om bekræftelseskode mislykkedes";
@@ -2825,7 +2828,7 @@
 "Warning" = "Advarsel";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Advarsel: Du kan ikke sende e-mails, før du består anti-bot kontrollen!!!";
+"Warning: Before you pass the human check you can't sent email!" = "Advarsel: Du ikke sende e-mails, før du beviser, at du ikke er en robot!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Advarsel: Du har ikke angivet en genoprettelses-e-mail, så kontogenoprettelse er umulig, hvis du skulle glemme din adgangskode. Fortsæt uden genoprettelses-e-mail?";
@@ -2959,7 +2962,7 @@
 "Your folders" = "Dine mapper";
 
 /* Description */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Din indbakke er nu beskyttet med end-to-end kryptering. Bed dine venner om også at bruge ProtonMail, så I automatisk sender sikre e-mails til hinanden! Du kan også manuelt kryptere beskeder til dem, hvis de ikke benytter ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Din indbakke er nu beskyttet med end-to-end-kryptering. For automatisk at sikre e-mails til venner, så få dem til at hente ProtonMail! Du kan også manuelt kryptere beskeder til dem, hvis de ikke benytter ProtonMail.";
 
 /* The section title of label manager table */
 "Your labels" = "Dine etiketter";

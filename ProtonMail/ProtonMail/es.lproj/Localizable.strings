@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d mensajes";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minute" = "%d minuto";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Cambiar acción de deslizamiento hacia la izquierda";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Cambiar contraseña del buzón";
 
-/* Title */
-"Change Mailbox Password" = "Cambiar contraseña del buzón";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Cambiar contraseña";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Cambiar dirección del remitente a...";
 
 /* change password input label */
-"Change sign-in Password" = "Cambiar contraseña de inicio de sesión";
+"Change sign-in password" = "Cambiar contraseña de inicio de sesión";
 
 /* Title */
-"Change Single Password" = "Cambiar contraseña única";
+"Change single password" = "Cambiar contraseña única";
 
 /* Action */
 "Check Again" = "Verificar de nuevo";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Correo de recuperación actual";
 
 /* Title */
-"Current sign-in Password" = "Contraseña de inicio de sesión actual";
+"Current sign-in password" = "Contraseña de inicio de sesión actual";
 
 /* action sheet option
    contacts default label type
@@ -792,17 +788,17 @@
 "Discard draft" = "Descartar borrador";
 
 /* (No Comment) */
-"Display name" = "Nombre para mostrar";
+"Display name" = "Nombre a mostrar";
 
 /* Title in settings */
-"Display Name" = "Nombre para mostrar";
+"Display Name" = "Nombre a mostrar";
 
 /* *
  *  SettingsViewController & alert title */
-"Display Name Updated" = "Nombre para mostrar actualizado";
+"Display Name Updated" = "Nombre a mostrar actualizado";
 
 /* Title in display name settings */
-"DisplayName" = "Nombre para mostrar";
+"DisplayName" = "Nombre a mostrar";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "¿Realmente quieres eliminar este archivo de los archivos adjuntos?";
@@ -1065,6 +1061,9 @@
 /* Key size checkbox */
 "Extreme Security" = "Máxima seguridad";
 
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
+
 /* Error message */
 "Failed to determine type of file" = "No se ha podido determinar el tipo de archivo";
 
@@ -1276,10 +1275,10 @@
 "inline attachments" = "adjuntos incrustados";
 
 /* (No Comment) */
-"Input Display Name ..." = "Introduce el nombre para mostrar...";
+"Input Display Name ..." = "Introduce el nombre a mostrar ...";
 
 /* place holder */
-"Input Display Name …" = "Introducir nombre para mostrar …";
+"Input Display Name …" = "Introduce el nombre a mostrar …";
 
 /* place holder */
 "Input Notification Email …" = "Introducir correo electrónico de notificación …";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Los mensajes enviados se pueden establecer en borrado automático después de un cierto período de tiempo.";
 
+/* minute */
+"minute" = "minuto";
+
 /* default vcard types */
 "Mobile" = "Móvil";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Ninguno";
 
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Carpeta principal";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Contraseña";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "Código PIN";
 
 /* Description */
 "PIN code can't be empty." = "El código PIN no puede estar vacío.";
@@ -2424,7 +2431,7 @@
 "The current standard" = "El estándar actual";
 
 /* Description */
-"The display name is now %@." = "El nombre para mostrar es ahora %@.";
+"The display name is now %@." = "El nombre a mostrar es ahora %@.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "La caché del borrador está rota, inténtalo de nuevo.";
@@ -2594,6 +2601,9 @@
 
 /* network troubleshot cell title */
 "Tor" = "Tor";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
 
 /* *
  *  SettingTableViewController */
@@ -2778,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "Nombre de usuario disponible";
 
-/* (No Comment) */
-"USER LOGIN" = "Inicio de sesión";
-
 /* title */
 "User name exist" = "El nombre de usuario existe";
 
@@ -2789,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "INICIO DE SESIÓN DE USUARIO";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Error en la solicitud de código de verificación";
@@ -2824,7 +2828,7 @@
 "Warning" = "Advertencia";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Advertencia: ¡Antes de pasar el control humano no puedes enviar correos electrónicos!";
+"Warning: Before you pass the human check you can't sent email!" = "Advertencia: ¡Antes de pasar el control humano no puedes enviar correos electrónicos!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Advertencia: No has establecido un correo electrónico de recuperación, por lo que la recuperación de la cuenta no será posible si olvidas tu contraseña. ¿Quieres continuar sin un correo electrónico de recuperación?";

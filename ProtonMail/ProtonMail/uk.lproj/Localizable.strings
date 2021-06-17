@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d повідомлень";
 
-/* minute */
-"%d min" = "%d хв";
-
 /* auto lock time format */
 "%d Minute" = "%d хвилина";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Дія посування вліво";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Змінити пароль поштової скриньки";
 
-/* Title */
-"Change Mailbox Password" = "Змінити пароль поштової скриньки";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Змінити пароль";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Змінити адресу відправника на...";
 
 /* change password input label */
-"Change sign-in Password" = "Змінити пароль входу";
+"Change sign-in password" = "Змінити пароль входу";
 
 /* Title */
-"Change Single Password" = "Змінити єдиний пароль";
+"Change single password" = "Змінити єдиний пароль";
 
 /* Action */
 "Check Again" = "Перевірити знову";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Поточна е-пошта для відновлення";
 
 /* Title */
-"Current sign-in Password" = "Поточний пароль входу";
+"Current sign-in password" = "Поточний пароль входу";
 
 /* action sheet option
    contacts default label type
@@ -1065,6 +1061,9 @@
 /* Key size checkbox */
 "Extreme Security" = "Максимальна безпека";
 
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
+
 /* Error message */
 "Failed to determine type of file" = "Не вдалося визначити тип файлу";
 
@@ -1403,7 +1402,7 @@
 "Load images" = "Завантажити зображення";
 
 /* Action */
-"Load remote content" = "Завантажити віддалений вміст";
+"Load remote content" = "Звантажити зовнішній вміст";
 
 /* (No Comment) */
 "Loading..." = "Завантаження...";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Повідомлення, які ви надсилаєте, можна налаштувати на автоматичне видалення після певного періоду часу.";
 
+/* minute */
+"minute" = "хвилина";
+
 /* default vcard types */
 "Mobile" = "Мобільний";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Немає";
 
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Тека вищого рівня";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Пароль";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "ПІН";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "ПІН-код";
 
 /* Description */
 "PIN code can't be empty." = "ПІН не може бути порожнім.";
@@ -1953,7 +1960,7 @@
 "Privacy" = "Приватність";
 
 /* agree check box privacy */
-"privacy policy." = "політика конфіденційности.";
+"privacy policy." = "політика приватності.";
 
 /* Local notification title */
 "Problem sending message" = "Проблема надсилання повідомлення";
@@ -2595,6 +2602,9 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "Неможливо використовувати TouchID. Увімкніть його в параметрах системи";
@@ -2619,7 +2629,7 @@
 "Troubleshooting guide" = "Поради для усунення проблем";
 
 /* network troubleshot cell title */
-"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Спробуйте під'єднатися до Proton з іншої мережі (абоо скористайтеся ProtonVPN чи Tor).";
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Спробуйте під'єднатися до Proton з іншої мережі (або скористайтеся ProtonVPN чи Tor).";
 
 /* action sheet option */
 "Turn Off" = "Вимкнути";
@@ -2778,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "Ім'я користувача доступне";
 
-/* (No Comment) */
-"USER LOGIN" = "Вхід користувача";
-
 /* title */
 "User name exist" = "Ім'я користувача вже існує";
 
@@ -2789,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "ВХІД КОРИСТУВАЧА";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Не вдалося виконати запит на код підтвердження";
@@ -2824,7 +2828,7 @@
 "Warning" = "Попередження";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Попередження: Ви не можете надсилати пошту, доки не пройдете перевірку \"Я не робот\"!";
+"Warning: Before you pass the human check you can't sent email!" = "Попередження: До виконання перевірки \"Я не робот\", ви не можете слати електронні листи!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Попередження: Ви не вказали резервну адресу е-пошти, тому відновити обліковий запис буде неможливо, якщо ви забудете пароль. Продовжити без резервної адреси е-пошти?";

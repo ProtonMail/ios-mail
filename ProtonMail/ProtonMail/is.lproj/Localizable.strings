@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d messages";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minute" = "%d mínúta";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Breyta aðgerð þegar strokið er til vinstri";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Change mailbox password";
 
-/* Title */
-"Change Mailbox Password" = "Breyta lykilorði á pósthólfi";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Breyta lykilorði";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Breyta tölvupóstfangi sendanda í ...";
 
 /* change password input label */
-"Change sign-in Password" = "Change sign-in Password";
+"Change sign-in password" = "Change sign-in password";
 
 /* Title */
-"Change Single Password" = "Breyta einföldu lykilorði";
+"Change single password" = "Change single password";
 
 /* Action */
 "Check Again" = "Athuga aftur";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Current Recovery Email";
 
 /* Title */
-"Current sign-in Password" = "Current sign-in Password";
+"Current sign-in password" = "Current sign-in password";
 
 /* action sheet option
    contacts default label type
@@ -1064,6 +1060,9 @@
 
 /* Key size checkbox */
 "Extreme Security" = "Ofuröryggi";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
 
 /* Error message */
 "Failed to determine type of file" = "Tókst ekki að ákvarða gerð skráar";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Skilaboð sem þú sendir er hægt að stilla þannig að þau eyðist sjálfvirkt eftir ákveðinn tíma.";
 
+/* minute */
+"minute" = "minute";
+
 /* default vcard types */
 "Mobile" = "Farsími";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Ekkert";
 
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Parent folder";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Lykilorð";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "PIN Code";
 
 /* Description */
 "PIN code can't be empty." = "PIN code can't be empty.";
@@ -2595,6 +2602,9 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID hefur ekki verið stillt, virkjaðu það í kerfisstillingunum";
@@ -2778,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "Notandanafnið er tiltækt!";
 
-/* (No Comment) */
-"USER LOGIN" = "Innskráning notanda";
-
 /* title */
 "User name exist" = "Notandanafn er þegar til";
 
@@ -2789,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "USER SIGN-IN";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Beiðni um sannvottunarkóða mistókst";
@@ -2824,7 +2828,7 @@
 "Warning" = "Aðvörun";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Aðvörun: þú getur ekki sent tölvupóst fyrr en þú hefur staðist athugun á hvort þú sért mannvera!!!";
+"Warning: Before you pass the human check you can't sent email!" = "Warning: Before you pass the human check you can't sent email!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Aðvörun: Þú stilltir ekki póstfang fyrir endurheimtupóst, þannig að ekki er mögulegt að endurheimta notandaaðganginn þinn ef þú gleymir lykilorðinu. Á að halda áfram án endurheimtupóstfangs?";

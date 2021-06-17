@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d messages";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minute" = "%d perc";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Balra csúsztatás művelet megváltoztatása";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Change mailbox password";
 
-/* Title */
-"Change Mailbox Password" = "E-mail jelszó módosítása";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Jelszó módosítása";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Feladó címének megváltoztatása...";
 
 /* change password input label */
-"Change sign-in Password" = "Change sign-in Password";
+"Change sign-in password" = "Change sign-in password";
 
 /* Title */
-"Change Single Password" = "Egy jelszavas jelszó módosítása";
+"Change single password" = "Change single password";
 
 /* Action */
 "Check Again" = "Ellenőrizze újra";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Current Recovery Email";
 
 /* Title */
-"Current sign-in Password" = "Current sign-in Password";
+"Current sign-in password" = "Current sign-in password";
 
 /* action sheet option
    contacts default label type
@@ -1064,6 +1060,9 @@
 
 /* Key size checkbox */
 "Extreme Security" = "Extrém biztonság";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
 
 /* Error message */
 "Failed to determine type of file" = "Nem sikerült meghatározni a fájl típusát";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Az elküldött üzenetek beállíthatóak úgy, hogy bizonyos idő elteltével automatikusan törlődjenek.";
 
+/* minute */
+"minute" = "minute";
+
 /* default vcard types */
 "Mobile" = "Mobil";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Nincs";
 
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Parent folder";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Jelszó";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "PIN Code";
 
 /* Description */
 "PIN code can't be empty." = "PIN code can't be empty.";
@@ -2595,6 +2602,9 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "A TouchID nincs beállítva. Engedélyezze a rendszer Beállításoknál";
@@ -2778,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "A felhasználónév elérhető";
 
-/* (No Comment) */
-"USER LOGIN" = "Bejelentkezés";
-
 /* title */
 "User name exist" = "Felhasználónév létezik";
 
@@ -2789,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "USER SIGN-IN";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Ellenőrzési kód kérése nem sikerült";
@@ -2824,7 +2828,7 @@
 "Warning" = "Figyelem";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Figyelem: amíg nem teljesíti a robot kizáró ellenőrzést, nem küldhet leveleket!";
+"Warning: Before you pass the human check you can't sent email!" = "Warning: Before you pass the human check you can't sent email!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Figyelem: nem adott meg helyreállító e-mail címet. Ha elveszíti a jelszavát, így lehetetlen lesz visszaszereznie a fiók elérést. Biztos, hogy folytatja helyreállító e-mail nélkül?";

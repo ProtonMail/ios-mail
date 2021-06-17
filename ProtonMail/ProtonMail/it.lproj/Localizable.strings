@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d messaggi";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minute" = "%d minuto";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Modifica azione di scorrimento a sinistra";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Cambia la password della casella email";
 
-/* Title */
-"Change Mailbox Password" = "Modifica della password della casella email";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Modifica della password";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Modifica dell'indirizzo del mittente in...";
 
 /* change password input label */
-"Change sign-in Password" = "Cambia Password di accesso";
+"Change sign-in password" = "Cambia password di accesso";
 
 /* Title */
-"Change Single Password" = "Modifica della password singola";
+"Change single password" = "Cambia password singola";
 
 /* Action */
 "Check Again" = "Controlla di nuovo";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Email di Recupero Corrente";
 
 /* Title */
-"Current sign-in Password" = "Password di accesso attuale";
+"Current sign-in password" = "Password di accesso attuale";
 
 /* action sheet option
    contacts default label type
@@ -1064,6 +1060,9 @@
 
 /* Key size checkbox */
 "Extreme Security" = "Sicurezza estrema";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
 
 /* Error message */
 "Failed to determine type of file" = "Fallito nel determinare il tipo di file";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "I messaggi che spedisci possono essere predisposti per autocancellarsi dopo un certo periodo di tempo.";
 
+/* minute */
+"minute" = "minuto";
+
 /* default vcard types */
 "Mobile" = "Mobile";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Nessuno";
 
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Cartella principale";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Password";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "Codice PIN";
 
 /* Description */
 "PIN code can't be empty." = "Il codice PIN non può essere vuoto.";
@@ -2595,6 +2602,9 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID non è attivo, attivalo nelle impostazioni di sistema";
@@ -2778,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "L'utente è disponibile!";
 
-/* (No Comment) */
-"USER LOGIN" = "LOGIN UTENTE";
-
 /* title */
 "User name exist" = "Nome utente esistente";
 
@@ -2789,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "ACCESSO UTENTE";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Richiesta di codice di verifica non riuscita";
@@ -2824,7 +2828,7 @@
 "Warning" = "Attenzione";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Attenzione: prima di passare il controllo umano, non è possibile inviare messaggi!!!";
+"Warning: Before you pass the human check you can't sent email!" = "Attenzione: prima di passare il controllo umano, non è possibile inviare messaggi!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Attenzione: non è stata impostata alcuna email di recupero e il recupero dell'account è impossibile se si dimentica la password. Procedere senza email di recupero?";

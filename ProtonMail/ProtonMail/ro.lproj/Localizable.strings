@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d mesaje";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minute" = "Un minut";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Schimbare acțiune glisare spre stânga";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Schimbare parolă mesaje";
 
-/* Title */
-"Change Mailbox Password" = "Schimbare parolă mesaje";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Schimbare parolă";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Schimbare adresă expeditor cu ...";
 
 /* change password input label */
-"Change sign-in Password" = "Schimbare parolă conectare";
+"Change sign-in password" = "Schimbare parolă conectare";
 
 /* Title */
-"Change Single Password" = "Schimbare parolă unică";
+"Change single password" = "Schimbare parolă unică";
 
 /* Action */
 "Check Again" = "Reverificare";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Adresă curentă e-mail de recuperare";
 
 /* Title */
-"Current sign-in Password" = "Parola actuală de conectare";
+"Current sign-in password" = "Parola actuală de conectare";
 
 /* action sheet option
    contacts default label type
@@ -1064,6 +1060,9 @@
 
 /* Key size checkbox */
 "Extreme Security" = "Securitate extremă";
+
+/* The protection title of Face ID protection */
+"Face ID" = "ID facial";
 
 /* Error message */
 "Failed to determine type of file" = "Eșuare determinare tip fișier";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Mesajele trimise pot fi setate să se șteargă automat după o anumită perioadă.";
 
+/* minute */
+"minute" = "minut";
+
 /* default vcard types */
 "Mobile" = "Mobil";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Nimic";
 
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Folder părinte";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Parola";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "Cod PIN";
 
 /* Description */
 "PIN code can't be empty." = "Codul PIN nu poate fi gol.";
@@ -2595,6 +2602,9 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
+/* The protection title of Touch ID protection */
+"Touch ID" = "Amprentă";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID nu este înregistrat. Activați-l în setările sistemului.";
@@ -2778,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "Nume disponibil!";
 
-/* (No Comment) */
-"USER LOGIN" = "Conectare";
-
 /* title */
 "User name exist" = "Utilizator existent";
 
@@ -2789,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "CONECTARE UTILIZATOR";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Solicitare cod de verificare eșuată";
@@ -2824,7 +2828,7 @@
 "Warning" = "Avertizare";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Avertisment: Nu puteți trimite mesaje până nu dovediți că sunteți o persoană!!!";
+"Warning: Before you pass the human check you can't sent email!" = "Avertisment: Nu puteți trimite mesaje până nu dovediți că sunteți o persoană!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Avertizare: Nu ați setat un e-mail de recuperare pentru a vă putea recuperarea contul dacă vă uitați parola. Continuați fără e-mail de recuperare?";

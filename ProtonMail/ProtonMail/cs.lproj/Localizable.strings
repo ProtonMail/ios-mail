@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d messages";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minute" = "%d minuta";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Změna akce pro přetažení vlevo";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Změnit heslo poštovní schránky";
 
-/* Title */
-"Change Mailbox Password" = "Změnit heslo poštovní schránky";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Změnit heslo";
 
 /* title */
@@ -528,16 +524,19 @@
 "Change sender address to .." = "Změnit adresu odesílatele na...";
 
 /* change password input label */
-"Change sign-in Password" = "Change sign-in Password";
+"Change sign-in password" = "Change sign-in password";
 
 /* Title */
-"Change Single Password" = "Změna jednoho hesla";
+"Change single password" = "Change single password";
 
 /* Action */
 "Check Again" = "Zkontrolovat znovu";
 
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "Check Proton Status for our system status.";
+
+/* "Username" */
+"Checking ...." = "Kontrola ....";
 
 /* loading message */
 "Checking…" = "Checking…";
@@ -685,7 +684,7 @@
 "Current Recovery Email" = "Current Recovery Email";
 
 /* Title */
-"Current sign-in Password" = "Current sign-in Password";
+"Current sign-in password" = "Current sign-in password";
 
 /* action sheet option
    contacts default label type
@@ -1061,6 +1060,9 @@
 
 /* Key size checkbox */
 "Extreme Security" = "Extrémní bezpečnost";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
 
 /* Error message */
 "Failed to determine type of file" = "Určení typu souboru zlyhalo";
@@ -1534,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Odesílané zprávy lze nastavit na automatické odstranění po určitém časovém období.";
 
+/* minute */
+"minute" = "minute";
+
 /* default vcard types */
 "Mobile" = "Mobil";
 
@@ -1666,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Žádné";
 
@@ -1777,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Parent folder";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Heslo";
 
 /* Description */
@@ -1837,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "PIN Code";
 
 /* Description */
 "PIN code can't be empty." = "PIN code can't be empty.";
@@ -2592,6 +2602,9 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID není povoleno, povolte jej prosím v Nastavení systému";
@@ -2775,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "Uživatel je k dispozici!";
 
-/* (No Comment) */
-"USER LOGIN" = "PŘIHLÁŠENÍ UŽIVATELE";
-
 /* title */
 "User name exist" = "Uživatelské jméno již existuje";
 
@@ -2786,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "USER SIGN-IN";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Nepodařilo se ověřit požadavek na ověřovací kód";
@@ -2821,7 +2828,7 @@
 "Warning" = "Upozornění";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Upozornění: Dokud neprojdete kontrolou lidskosti, nemůžete posílat e-maily!!!";
+"Warning: Before you pass the human check you can't sent email!" = "Warning: Before you pass the human check you can't sent email!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Upozornění: Nenastavili jste e-mail pro obnovení, v případě ztráty hesla, nebude možné účet obnovit. Pokračovat bez e-mailu pro obnovení?";

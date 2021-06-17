@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d Nachrichten";
 
-/* minute */
-"%d min" = "%d Min.";
-
 /* auto lock time format */
 "%d Minute" = "%d Minute";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Nach-Links-Wischen-Aktion ändern";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Postfach-Passwort ändern";
 
-/* Title */
-"Change Mailbox Password" = "Mailbox-Passwort ändern";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Passwort ändern";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Absenderadresse ändern auf …";
 
 /* change password input label */
-"Change sign-in Password" = "Anmeldepasswort ändern";
+"Change sign-in password" = "Anmeldepasswort ändern";
 
 /* Title */
-"Change Single Password" = "Einzelnes Passwort ändern";
+"Change single password" = "Einzelnes Passwort ändern";
 
 /* Action */
 "Check Again" = "Erneut überprüfen";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Aktuelle Wiederherstellungs-E-Mail-Adresse";
 
 /* Title */
-"Current sign-in Password" = "Aktuelles Anmeldepasswort";
+"Current sign-in password" = "Aktuelles Anmeldepasswort";
 
 /* action sheet option
    contacts default label type
@@ -1064,6 +1060,9 @@
 
 /* Key size checkbox */
 "Extreme Security" = "Höchste Sicherheit";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
 
 /* Error message */
 "Failed to determine type of file" = "Dateityp konnte nicht bestimmt werden";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Nachrichten, die Sie senden, können nach einer bestimmten Zeitspanne automatisch gelöscht werden.";
 
+/* minute */
+"minute" = "Minute";
+
 /* default vcard types */
 "Mobile" = "Mobiltelefon";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Keine";
 
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Übergeordneter Ordner";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Passwort";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "PIN";
 
 /* Description */
 "PIN code can't be empty." = "Der PIN-Code muss angegeben werden.";
@@ -2435,7 +2442,6 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Die höchstmögliche Verschlüsselung, die zur Verfügung steht.";
 
-
 /* Error */
 "The mailbox password is incorrect." = "Das Mailbox-Passwort ist ungültig.";
 
@@ -2595,6 +2601,9 @@
 
 /* network troubleshot cell title */
 "Tor" = "Tor";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
 
 /* *
  *  SettingTableViewController */
@@ -2779,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "Nutzer ist verfügbar!";
 
-/* (No Comment) */
-"USER LOGIN" = "Benutzeranmeldung";
-
 /* title */
 "User name exist" = "Benutzername vergeben";
 
@@ -2790,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "Benutzeranmeldung";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Überprüfen des Verifizierungscodes fehlgeschlagen";
@@ -2825,7 +2828,7 @@
 "Warning" = "Warnhinweis";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Warnhinweis: Bevor Sie nicht die menschliche Prüfung bestanden haben, können Sie keine E-Mails versenden!";
+"Warning: Before you pass the human check you can't sent email!" = "Achtung! Bevor Sie das Captcha nicht gelöst haben, können Sie keine E-Mails versenden!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Warnung: Sie haben keine Wiederherstellungs-E-Mail-Adresse eingerichtet, sodass eine Wiederherstellung des Kontos unmöglich ist, falls Sie Ihr Passwort vergessen. Ohne Wiederherstellungs-E-Mail-Adresse fortfahren?";

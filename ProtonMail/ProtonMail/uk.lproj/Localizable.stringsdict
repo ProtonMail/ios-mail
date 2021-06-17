@@ -2,26 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>minute</key>
-	<dict>
-		<key>MINUTE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>%d хвилини</string>
-			<key>many</key>
-			<string>%d хвилин</string>
-			<key>one</key>
-			<string>%d хвилина</string>
-			<key>other</key>
-			<string>%d хвилин</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
-	</dict>
 	<key>Updated %d min ago</key>
 	<dict>
 		<key>MINUTE</key>
@@ -51,13 +31,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u бесіди</string>
+			<string>%u розмови</string>
 			<key>many</key>
-			<string>%u бесід</string>
+			<string>%u розмов</string>
 			<key>one</key>
-			<string>%u бесіда</string>
+			<string>%u розмова</string>
 			<key>other</key>
-			<string>%u бесіди</string>
+			<string>%u розмов</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -82,21 +62,25 @@
 			<string>%u повідомлень</string>
 		</dict>
 	</dict>
-	<key>general_conversation</key>
+	<key>minute</key>
 	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@CONVERSATION@</string>
-		<key>CONVERSATION</key>
+		<key>MINUTE</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
+			<string>d</string>
+			<key>few</key>
+			<string>%d хвилини</string>
+			<key>many</key>
+			<string>%d хвилин</string>
 			<key>one</key>
-			<string>%u conversation</string>
+			<string>%d хвилина</string>
 			<key>other</key>
-			<string>%u conversations</string>
+			<string>%d хвилин</string>
 		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
 	</dict>
 </dict>
 </plist>

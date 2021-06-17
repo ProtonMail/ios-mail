@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d pesan";
 
-/* minute */
-"%d min" = "%d mnt";
-
 /* auto lock time format */
 "%d Minute" = "%d menit";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Ganti tindakan usap ke kiri";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Ganti kata sandi kotak pesan";
 
-/* Title */
-"Change Mailbox Password" = "Ubah Kata Sandi Kotak Pesan";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Ubah kata sandi";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Ubah alamat pengirim ke...";
 
 /* change password input label */
-"Change sign-in Password" = "Ganti Kata Sandi masuk";
+"Change sign-in password" = "Ubah kata sandi masuk";
 
 /* Title */
-"Change Single Password" = "Ubah Sandi Tunggal";
+"Change single password" = "Ubah lata sandi tunggal";
 
 /* Action */
 "Check Again" = "Periksa Lagi";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Surel Pemulihan Saat Ini";
 
 /* Title */
-"Current sign-in Password" = "Kata Sandi masuk Saat Ini";
+"Current sign-in password" = "Kata sandi masuk saat ini";
 
 /* action sheet option
    contacts default label type
@@ -1064,6 +1060,9 @@
 
 /* Key size checkbox */
 "Extreme Security" = "Keamanan Ekstrem";
+
+/* The protection title of Face ID protection */
+"Face ID" = "ID Wajah";
 
 /* Error message */
 "Failed to determine type of file" = "Gagal menentukan tipe berkas";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Pesan yang Anda kirim dapat diatur terhapus otomatis setelah jangka waktu tertentu.";
 
+/* minute */
+"minute" = "menit";
+
 /* default vcard types */
 "Mobile" = "Seluler";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Tidak ada";
 
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Folder induk";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Kata Sandi";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "Kode PIN";
 
 /* Description */
 "PIN code can't be empty." = "Kode PIN tidak boleh kosong.";
@@ -2595,6 +2602,9 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
+/* The protection title of Touch ID protection */
+"Touch ID" = "ID Sentuh";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID tidak terdaftar, aktifkan dalam Pengaturan sistem";
@@ -2778,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "Nama pengguna tersedia";
 
-/* (No Comment) */
-"USER LOGIN" = "Pengguna masuk";
-
 /* title */
 "User name exist" = "Nama pengguna ada";
 
@@ -2789,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "LAYAR-MASUK PENGGUNA";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Permintaan kode verifikasi gagal";
@@ -2824,7 +2828,7 @@
 "Warning" = "Peringatan";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Peringatan: Sebelum melewati pemeriksaan manusia, Anda tidak bisa mengirim surel!!!";
+"Warning: Before you pass the human check you can't sent email!" = "Peringatan: Sebelum melewati pemeriksaan manusia, Anda tidak bisa mengirim email!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Peringatan: Anda tidak mengatur surel pemulihan. Jika Anda melupakan sandi, surel tidak mungkin dapat dipulihkan. Lanjutkan tanpa surel pemulihan?";

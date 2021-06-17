@@ -40,9 +40,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d berichten";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minute" = "%d minuut";
 
@@ -500,13 +497,12 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Wijzig actie links vegen";
 
-/* settings general section title */
+/* settings general section title
+   Title */
 "Change mailbox password" = "Mailboxwachtwoord wijzigen";
 
-/* Title */
-"Change Mailbox Password" = "Wijzig mailboxwachtwoord";
-
-/* settings general section title */
+/* settings general section title
+   title */
 "Change password" = "Wachtwoord wijzigen";
 
 /* title */
@@ -528,10 +524,10 @@
 "Change sender address to .." = "Wijzig afzenderadres naar...";
 
 /* change password input label */
-"Change sign-in Password" = "Wijzig inlogwachtwoord";
+"Change sign-in password" = "Change sign-in password";
 
 /* Title */
-"Change Single Password" = "Wijzig inlogwachtwoord";
+"Change single password" = "Change single password";
 
 /* Action */
 "Check Again" = "Controleer opnieuw";
@@ -688,7 +684,7 @@
 "Current Recovery Email" = "Huidig herstel-e-mailadres";
 
 /* Title */
-"Current sign-in Password" = "Huidige inlogwachtwoord";
+"Current sign-in password" = "Current sign-in password";
 
 /* action sheet option
    contacts default label type
@@ -1064,6 +1060,9 @@
 
 /* Key size checkbox */
 "Extreme Security" = "Extreme Beveiliging";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
 
 /* Error message */
 "Failed to determine type of file" = "Kon bestandstype niet bepalen";
@@ -1537,6 +1536,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Berichten die u verstuurt kunnen na een bepaalde tijd automatisch verwijderd worden.";
 
+/* minute */
+"minute" = "minute";
+
 /* default vcard types */
 "Mobile" = "Mobiel";
 
@@ -1669,6 +1671,7 @@
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
+   The protection title of None protection
    Title */
 "None" = "Geen";
 
@@ -1780,7 +1783,8 @@
 /* Setting option title of folder setting page */
 "Parent folder" = "Bovenliggende map";
 
-/* title */
+/* *
+ *  Login View */
 "Password" = "Wachtwoord";
 
 /* Description */
@@ -1840,6 +1844,9 @@
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
+
+/* The protection title of PIN Code protection */
+"PIN Code" = "PIN Code";
 
 /* Description */
 "PIN code can't be empty." = "PIN-code mag niet leeg zijn.";
@@ -2595,6 +2602,9 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID is niet actief, activeer het in de systeeminstellingen";
@@ -2778,9 +2788,6 @@
 /* (No Comment) */
 "User is available!" = "Gebruiker is beschikbaar!";
 
-/* (No Comment) */
-"USER LOGIN" = "Gebruikersinlog";
-
 /* title */
 "User name exist" = "Gebruikersnaam bestaat al";
 
@@ -2789,9 +2796,6 @@
 
 /* Title */
 "USER SIGN-IN" = "GEBRUIKER LOGIN";
-
-/* *
- *  Login View */
 
 /* alert title */
 "Verification code request failed" = "Aanvraag van verificatiecode is mislukt";
@@ -2824,7 +2828,7 @@
 "Warning" = "Waarschuwing";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Waarschuwing: Voordat u bewezen heeft een natuurlijk persoon te zijn kunt u geen e-mails versturen!!!";
+"Warning: Before you pass the human check you can't sent email!" = "Warning: Before you pass the human check you can't sent email!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Waarschuwing: U heeft geen herstel-e-mailadres ingesteld, hierdoor is accountherstel niet mogelijk als u uw wachtwoord vergeet. Doorgaan zonder herstel-e-mailadres?";
