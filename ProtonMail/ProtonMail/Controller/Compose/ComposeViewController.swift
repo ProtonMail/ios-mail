@@ -746,8 +746,8 @@ extension ComposeViewController : ComposeViewDelegate {
             }
 
             let state: UIMenuElement.State = defaultAddr == addr ? .on: .off
-            let item = UIAction(title: addr.email, state: state) { (action) in
-                guard action.state == .off else { return }
+            let item = UIAction(title: addr.email, state: state) { [weak self] action in
+                guard action.state == .off, let self = self else { return }
                 if addr.send == .inactive {
                     let alertController = String(format: LocalString._composer_change_paid_plan_sender_error, addr.email).alertController()
                     alertController.addOKAction()

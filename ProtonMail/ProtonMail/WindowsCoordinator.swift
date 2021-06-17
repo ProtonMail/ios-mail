@@ -251,6 +251,7 @@ class WindowsCoordinator: CoordinatorNew {
                     lockVC.coordinator.start()
                     return
                 }
+
                 let coordinator = LockCoordinator(services: sharedServices) { [weak self] flowResult in
                     switch flowResult {
                     case .mailbox: self?.go(dest: .appWindow)
