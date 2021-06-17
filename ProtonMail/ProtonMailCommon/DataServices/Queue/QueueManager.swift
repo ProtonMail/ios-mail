@@ -63,25 +63,12 @@ final class QueueManager: Service {
         self.reachability = reachability
     }
 
-    // MARK: Add task
-    static func newTask() -> Task {
-        let uuid = UUID()
-        return Task(uuid: uuid,
-                        messageID: "",
-                        actionString: "",
-                        userID: "",
-                        dependencyIDs: [],
-                        data1: "",
-                        data2: "",
-                        isConversation: false)
-    }
-
     func addTask(_ task: Task, autoExecute: Bool = true) -> Bool {
         self.queue.sync {
-            guard !task.actionString.isEmpty, !task.userID.isEmpty else {
+            guard !task.userID.isEmpty else {
                 return false
             }
-            let action = MessageAction(rawValue: task.actionString)
+            let action = task.action
             switch action {
             case .saveDraft,
                  .uploadAtt, .uploadPubkey, .deleteAtt,
@@ -101,9 +88,8 @@ final class QueueManager: Service {
                 self.handleSignout(signoutTask: task)
             case .signin:
                 self.handleSignin(userID: task.userID)
-            default:
-                PMLog.D("Add task for unknow action: \(task.actionString)")
-                return false
+            case .fetchMessageDetail:
+                break
             }
             if autoExecute {
                 self.dequeueIfNeeded()
@@ -154,13 +140,10 @@ final class QueueManager: Service {
     }
 
     // MARK: Queue operations
-    func removeAllTasks(of msgID: String, actions: [MessageAction], completeHandler: (()->())?) {
+    func removeAllTasks(of msgID: String, removalCondition: @escaping ((MessageAction) -> Bool), completeHandler: (()->())?) {
         self.queue.async {
             let targetTasks = self.getMessageTasks(of: nil).filter { (task) -> Bool in
-                if let action = MessageAction(rawValue: task.actionString) {
-                    return task.messageID == msgID && actions.contains(action)
-                }
-                return false
+                task.messageID == msgID && removalCondition(task.action)
             }
             targetTasks.forEach { (task) in
                 _ = self.messageQueue.remove(task.uuid)
@@ -258,13 +241,13 @@ extension QueueManager {
 
     private func handleSignin(userID: String) {
         if let task = self.getMessageTasks(of: userID)
-            .first(where: { $0.actionString == MessageAction.signout.rawValue &&
+            .first(where: { $0.action == MessageAction.signout &&
                     $0.userID == userID }) {
             _ = self.messageQueue.remove(task.uuid)
         }
 
         if let task = self.getMiscTasks(of: userID)
-            .first(where: { $0.actionString == MessageAction.signout.rawValue &&
+            .first(where: { $0.action == MessageAction.signout &&
                     $0.userID == userID }) {
             _ = self.miscQueue.remove(task.uuid)
         }
@@ -320,18 +303,6 @@ extension QueueManager {
             return task
         }
 
-        if let legacyTask = next.object as? [String: Any] {
-            let task = Task(uuid: next.elementID,
-                            messageID: legacyTask[LegacyTaskKey.id] as? String ?? "",
-                            actionString: legacyTask[LegacyTaskKey.action] as? String ?? "",
-                            userID: legacyTask[LegacyTaskKey.userId] as? String ?? "",
-                            dependencyIDs: [],
-                            data1: legacyTask[LegacyTaskKey.data1] as? String ?? "",
-                            data2: legacyTask[LegacyTaskKey.data2] as? String ?? "",
-                            isConversation: false)
-            return task
-        }
-
         return nil
     }
 
@@ -357,26 +328,32 @@ extension QueueManager {
         }
 
         guard task.dependencyIDs.count == 0 else {
-            PMLog.D("The dependency should be empty, some previous task failed, current action is \(task.actionString)")
-            let actions: [MessageAction] = [.saveDraft, .uploadAtt,
-                                            .uploadPubkey, .deleteAtt, .send]
-            self.removeAllTasks(of: task.messageID, actions: actions) {
+            PMLog.D("The dependency should be empty, some previous task failed, current action is \(task.action.rawValue)")
+            self.removeAllTasks(of: task.messageID, removalCondition: { action in
+                switch action {
+                case .saveDraft, .uploadAtt,
+                     .uploadPubkey, .deleteAtt, .send:
+                    return true
+                default:
+                    return false
+                }
+            }) {
                 self.dequeueReadQueue()
             }
             return
         }
 
-        guard let action = MessageAction(rawValue: task.actionString),
-              let handler = self.handlers[task.userID] else {
-            PMLog.D(" Unsupported action: \(task.actionString) or handler is nil: \(self.handlers[task.userID] == nil). removing from message queue.")
+        guard let handler = self.handlers[task.userID] else {
+            PMLog.D(" Unsupported action: \(task.action.rawValue) or handler is nil: \(self.handlers[task.userID] == nil). removing from message queue.")
             _ = self.messageQueue.remove(task.uuid)
             self.dequeueMessageQueue()
             return
         }
 
+        let action = task.action
         if action == .signout,
            let _ = self.getMiscTasks(of: task.userID)
-            .first(where: { $0.actionString == task.actionString }) {
+            .first(where: { $0.action == task.action }) {
             // The misc queue has running task
             // skip this task, let misc queue to handle signout task
             _ = self.messageQueue.remove(task.uuid)
@@ -410,16 +387,16 @@ extension QueueManager {
             return
         }
 
-        guard let action = MessageAction(rawValue: task.actionString),
-              let handler = self.handlers[task.userID] else {
-            PMLog.D(" Unsupported action \(task.actionString) or handler is nil: \(self.handlers[task.userID] == nil), removing from misc queue.")
+        guard let handler = self.handlers[task.userID] else {
+            PMLog.D(" Unsupported action \(task.action.rawValue) or handler is nil: \(self.handlers[task.userID] == nil), removing from misc queue.")
             _ = self.miscQueue.remove(task.uuid)
             return
         }
+        let action = task.action
 
         if action == .signout,
            let _ = self.getMessageTasks(of: task.userID)
-            .first(where: { $0.actionString == task.actionString }) {
+            .first(where: { $0.action == task.action }) {
             // The message queue has running task
             // skip this task, let message queue to handle signout task
             _ = self.miscQueue.remove(task.uuid)
@@ -446,7 +423,7 @@ extension QueueManager {
     /// - Returns: isOnline
     private func handle(_ result: TaskResult, of task: Task, on queue: PMPersistentQueueProtocol, completeHander: @escaping ((Bool)->())) {
 
-        if task.actionString == MessageAction.signout.rawValue,
+        if task.action == MessageAction.signout,
            let handler = self.handlers[task.userID] {
             _ = self.handlers.removeValue(forKey: handler.userID)
         }
@@ -464,7 +441,7 @@ extension QueueManager {
             completeHander(true)
         case .connectionIssue:
             // Forgot the signout task in offline mode
-            if task.actionString == MessageAction.signout.rawValue {
+            if task.action == MessageAction.signout {
                 _ = queue.remove(task.uuid)
             }
             completeHander(false)
@@ -511,12 +488,11 @@ extension QueueManager {
     
     private func fetchMessageDataIfNeeded() {
         defer { self.hasDequeued = true }
-        guard let task = self.nextTask(from: self.messageQueue),
-              let action = MessageAction(rawValue: task.actionString) else {
+        guard let task = self.nextTask(from: self.messageQueue) else {
             return
         }
         
-        switch action {
+        switch task.action {
         case .uploadAtt, .uploadPubkey:
             break
         default:
@@ -528,10 +504,7 @@ extension QueueManager {
         // insert a fetch action to the head of the message queue
         // Only the first task may duplicate, so only care about the first one
 
-        let fetchTask = QueueManager.newTask()
-        fetchTask.actionString = MessageAction.fetchMessageDetail.rawValue
-        fetchTask.messageID = task.messageID
-        fetchTask.userID = task.userID
+        let fetchTask = QueueManager.Task(messageID: task.messageID, action: .fetchMessageDetail, userID: task.userID, dependencyIDs: [], isConversation: false)
         _ = self.messageQueue.insert(uuid: fetchTask.uuid, object: fetchTask, index: 0)
     }
 }
@@ -568,46 +541,34 @@ extension QueueManager {
     }
 
     @objc(_TtCC5Share12QueueManager4Task) final class Task: NSObject, NSCoding {
-        var uuid: TaskID
-        var messageID: String
-        var actionString: String
-        var userID: String
+        let uuid: TaskID
+        let messageID: String
+        let action: MessageAction
+        let userID: String
         /// The taskID in this array should be done to execute this task
         var dependencyIDs: [TaskID]
-        var data1: String
-        var data2: String
-        var otherData: Any?
-        var isConversation: Bool
+        let isConversation: Bool
 
-        init(uuid: TaskID,
+        init(uuid: TaskID = UUID(),
              messageID: String,
-             actionString: String,
+             action: MessageAction,
              userID: String,
              dependencyIDs: [TaskID],
-             data1: String,
-             data2: String,
-             isConversation: Bool,
-             otherData: Any? = nil) {
+             isConversation: Bool) {
             self.uuid = uuid
             self.messageID = messageID
-            self.actionString = actionString
+            self.action = action
             self.userID = userID
             self.dependencyIDs = dependencyIDs
-            self.data1 = data1
-            self.data2 = data2
             self.isConversation = isConversation
-            self.otherData = otherData
         }
 
         func encode(with coder: NSCoder) {
             coder.encode(uuid, forKey: "uuid")
             coder.encode(messageID, forKey: "messageID")
             coder.encode(userID, forKey: "userID")
-            coder.encode(actionString, forKey: "actionString")
+            coder.encode(try? JSONEncoder().encode(action), forKey: "action")
             coder.encode(dependencyIDs, forKey: "dependencyIDs")
-            coder.encode(data1, forKey: "data1")
-            coder.encode(data2, forKey: "data2")
-            coder.encode(otherData, forKey: "otherData")
             coder.encode(isConversation, forKey: "isConversation")
         }
 
@@ -615,11 +576,9 @@ extension QueueManager {
             guard let uuid = coder.decodeObject(forKey: "uuid") as? UUID,
                   let messageID = coder.decodeObject(forKey: "messageID") as? String,
                   let userID = coder.decodeObject(forKey: "userID") as? String,
-                  let actionString = coder.decodeObject(forKey: "actionString") as? String,
                   let dependencyIDs = coder.decodeObject(forKey: "dependencyIDs") as? [UUID],
-                  let data1 = coder.decodeObject(forKey: "data1") as? String,
-                  let data2 = coder.decodeObject(forKey: "data2") as? String,
-                  let otherData = coder.decodeObject(forKey: "otherData"),
+                  let actionData = coder.decodeObject(forKey: "action") as? Data,
+                  let action = try? JSONDecoder().decode(MessageAction.self, from: actionData),
                   coder.containsValue(forKey: "isConversation")
             else { return nil }
 
@@ -627,24 +586,11 @@ extension QueueManager {
 
             self.init(uuid: uuid,
                       messageID: messageID,
-                      actionString: actionString,
+                      action: action,
                       userID: userID,
                       dependencyIDs: dependencyIDs,
-                      data1: data1,
-                      data2: data2,
-                      isConversation: isConversation,
-                      otherData: otherData)
+                      isConversation: isConversation)
         }
-    }
-
-    struct LegacyTaskKey {
-        static let id = "id"
-        static let action = "action"
-        static let time = "time"
-        static let count = "count"
-        static let data1 = "data1"
-        static let data2 = "data2"
-        static let userId = "userId"
     }
 }
 

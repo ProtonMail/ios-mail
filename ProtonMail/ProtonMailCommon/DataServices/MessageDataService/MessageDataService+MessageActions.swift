@@ -61,7 +61,7 @@ extension MessageDataService {
 
         if queue {
             let msgIds = messagesWithSourceIds.map { $0.0.messageID }
-            self.queue(.folder, isConversation: false, data1: "", data2: tLabel, otherData: msgIds)
+            self.queue(.folder(nextLabelID: tLabel, itemIDs: msgIds, objectIDs: []), isConversation: false)
         }
         return true
     }
@@ -79,7 +79,7 @@ extension MessageDataService {
 
         if queue {
             let ids = messages.map{ $0.messageID }
-            self.queue(.folder, isConversation: false, data1: "", data2: tLabel, otherData: ids)
+            self.queue(.folder(nextLabelID: tLabel, itemIDs: ids, objectIDs: []), isConversation: false)
         }
         return true
     }
@@ -95,7 +95,7 @@ extension MessageDataService {
         }
 
         let messagesIds = messages.map(\.messageID)
-        self.queue(.delete, isConversation: false, data1: "", data2: "", otherData: messagesIds)
+        self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds), isConversation: false)
         return true
     }
     
@@ -109,7 +109,7 @@ extension MessageDataService {
             return false
         }
         let ids = messages.map { $0.objectID.uriRepresentation().absoluteString }
-        self.queue(unRead ? .unread : .read, isConversation: false, data1: "", data2: "", otherData: ids)
+        self.queue(unRead ? .unread(currentLabelID: labelID, itemIDs: [], objectIDs: ids) : .read(itemIDs: [], objectIDs: ids), isConversation: false)
         for message in messages {
             _ = self.cacheService.mark(message: message, labelID: labelID, unRead: unRead)
         }
@@ -125,8 +125,7 @@ extension MessageDataService {
         _ = self.cacheService.label(messages: messages, label: label, apply: apply)
 
         let messagesIds = messages.map(\.messageID)
-        let data2 = shouldFetchEvent ? "1" : "0"
-        self.queue(apply ? .label : .unlabel, isConversation: false, data1: label, data2: data2, otherData: messagesIds)
+        self.queue(apply ? .label(currentLabelID: label, shouldFetch: shouldFetchEvent, itemIDs: messagesIds, objectIDs: []) : .unlabel(currentLabelID: label, shouldFetch: shouldFetchEvent, itemIDs: messagesIds, objectIDs: []), isConversation: false)
         return true
     }
 

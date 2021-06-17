@@ -58,21 +58,11 @@ final class MainQueueHandler: QueueHandler {
 
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
         let completeHandler = handleTaskCompletion(task, notifyQueueManager: completion)
+        let action = task.action
         
-        guard let action = MessageAction(rawValue: task.actionString) else {
-            let result = QueueManager.TaskResult(error: .unSupportAction)
-            completion(task, result)
-            return
-        }
-        
-        let messageID = task.messageID
         let UID = task.userID
         let uuid = task.uuid
-        let data1 = task.data1
-        let data2 = task.data2
-        let actionString = task.actionString
         let isConversation = task.isConversation
-        let otherData = task.otherData
         
         if isConversation {
             //TODO: - v4 refactor conversation method
@@ -83,82 +73,65 @@ final class MainQueueHandler: QueueHandler {
                 fatalError()
             case .emptyTrash, .emptySpam:   // keep this as legacy option for 2-3 releases after 1.11.12
                 fatalError()
-            case .empty:
-                self.empty(labelId: data1, UID: UID, completion: completeHandler)
-            case .unread:
-                //take ids from otherData
-                self.unreadConversations((otherData as? [String]) ?? [messageID], labelID: data1, writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
-            case .read:
-                //take ids from otherData
-                self.readConversations((otherData as? [String]) ?? [messageID], writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
-            case .delete:
-                //data1 should passs the labelID of the delete action happened
-                //take ids from otherData
-                self.deleteConversations((otherData as? [String]) ?? [messageID], labelID: data1, writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
-            case .label:
-                //take ids from otherData
-                self.labelConversations((otherData as? [String]) ?? [messageID], labelID: data1, writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
-            case .unlabel:
-                //take ids from otherData
-                self.unlabelConversations((otherData as? [String]) ?? [messageID], labelID: data1, writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
-            case .folder:
+            case .empty(let labelID):
+                self.empty(labelId: labelID, UID: UID, completion: completeHandler)
+            case .unread(let currentLabelID, let itemIDs, _):
+                self.unreadConversations(itemIDs, labelID: currentLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .read(let itemIDs, _):
+                self.readConversations(itemIDs, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .delete(let currentLabelID, let itemIDs):
+                self.deleteConversations(itemIDs, labelID: currentLabelID ?? "", writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .label(let currentLabelID, _, let itemIDs, _):
+                self.labelConversations(itemIDs, labelID: currentLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .unlabel(let currentLabelID, _, let itemIDs, _):
+                self.unlabelConversations(itemIDs, labelID: currentLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .folder(let nextLabelID, _, let objectIDs):
                 //later use data 1 to handle the failure
                 //take ids from otherData
-                self.labelConversations((otherData as? [String]) ?? [messageID], labelID: data2, writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
+                self.labelConversations(objectIDs, labelID: nextLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             }
         } else {
             switch action {
-            case .saveDraft:
-                let objectID = (otherData as? String) ?? messageID
-                self.draft(save: objectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
-            case .uploadAtt:
-                let objectID = (otherData as? String) ?? messageID
-                self.uploadAttachmentWithAttachmentID(objectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
-            case .uploadPubkey:
-                let objectID = (otherData as? String) ?? messageID
-                self.uploadPubKey(objectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
-            case .deleteAtt:
-                let objectID = (otherData as? String) ?? messageID
-                self.deleteAttachmentWithAttachmentID(objectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
-            case .send:
-                let objectID = (otherData as? String) ?? messageID
-                messageDataService.send(byID: objectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .saveDraft(let messageObjectID):
+                self.draft(save: messageObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .uploadAtt(let attachmentObjectID):
+                self.uploadAttachmentWithAttachmentID(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .uploadPubkey(let attachmentObjectID):
+                self.uploadPubKey(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .deleteAtt(let attachmentObjectID):
+                self.deleteAttachmentWithAttachmentID(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .send(let messageObjectID):
+                messageDataService.send(byID: messageObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .trash, UID: UID, completion: completeHandler)
             case .emptySpam:    // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .spam, UID: UID, completion: completeHandler)
-            case .empty:
-                self.empty(labelId: data1, UID: UID, completion: completeHandler)
-            case .read, .unread:
-                let ids = (otherData as? [String]) ?? [messageID]
-                self.messageAction(ids, writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
-            case .delete:
-                let ids = (otherData as? [String]) ?? [messageID]
-                self.messageDelete(ids, writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
-            case .label:
-                let ids = (otherData as? [String]) ?? [messageID]
-                self.labelMessage(data1, messageIDs: ids, UID: UID, shouldFetchEvent: data2 == "1", completion: completeHandler)
-            case .unlabel:
-                let ids = (otherData as? [String]) ?? [messageID]
-                self.unLabelMessage(data1, messageIDs: ids, UID: UID, shouldFetchEvent: data2 == "1", completion: completeHandler)
-            case .folder:
-                //later use data 1 to handle the failure
-                let ids = (otherData as? [String]) ?? [messageID]
-                self.labelMessage(data2, messageIDs: ids, UID: UID, shouldFetchEvent: true, completion: completeHandler)
-            case .updateLabel:
-                let color: String = (otherData as? String) ?? "#5ec7b7"
-                self.updateLabel(labelID: data1, name: data2, color: color, completion: completeHandler)
-            case .createLabel:
-                let isFolder = (otherData as? Bool) ?? true
-                self.createLabel(name: data1, color: data2, isFolder: isFolder, completion: completeHandler)
-            case .deleteLabel:
-                self.deleteLabel(labelID: data1, completion: completeHandler)
+            case .empty(let currentLabelID):
+                self.empty(labelId: currentLabelID, UID: UID, completion: completeHandler)
+            case .read(_, let objectIDs):
+                self.messageAction(objectIDs, writeQueueUUID: uuid, action: action.rawValue, UID: UID, completion: completeHandler)
+            case .unread(_, _, let objectIDs):
+                self.messageAction(objectIDs, writeQueueUUID: uuid, action: action.rawValue, UID: UID, completion: completeHandler)
+            case .delete(_, let itemIDs):
+                self.messageDelete(itemIDs, writeQueueUUID: uuid, action: action.rawValue, UID: UID, completion: completeHandler)
+            case .label(let currentLabelID, let shouldFetch, let itemIDs, _):
+                self.labelMessage(currentLabelID, messageIDs: itemIDs, UID: UID, shouldFetchEvent: shouldFetch ?? false, completion: completeHandler)
+            case .unlabel(let currentLabelID, let shouldFetch, let itemIDs, _):
+                self.unLabelMessage(currentLabelID, messageIDs: itemIDs, UID: UID, shouldFetchEvent: shouldFetch ?? false, completion: completeHandler)
+            case .folder(let nextLabelID, let itemIDs, _):
+                self.labelMessage(nextLabelID, messageIDs: itemIDs, UID: UID, shouldFetchEvent: true, completion: completeHandler)
+            case .updateLabel(let labelID, let name, let color):
+                self.updateLabel(labelID: labelID, name: name, color: color, completion: completeHandler)
+            case .createLabel(let name, let color, let isFolder):
+                self.createLabel(name: name, color: color, isFolder: isFolder, completion: completeHandler)
+            case .deleteLabel(let labelID):
+                self.deleteLabel(labelID: labelID, completion: completeHandler)
             case .signout:
                 self.signout(completion: completeHandler)
             case .signin:
                 break
             case .fetchMessageDetail:
-                self.fetchMessageDetail(messageID: messageID, completion: completeHandler)
+                self.fetchMessageDetail(messageID: task.messageID, completion: completeHandler)
             }
         }
     }
@@ -168,10 +141,8 @@ final class MainQueueHandler: QueueHandler {
             var taskResult = QueueManager.TaskResult()
             
             guard let error = error else {
-                if let action = MessageAction(rawValue: queueTask.actionString) {
-                    if action == .delete {
-                        _ = self.cacheService.deleteMessage(by: queueTask.messageID)
-                    }
+                if case .delete = queueTask.action {
+                    _ = self.cacheService.deleteMessage(by: queueTask.messageID)
                 }
                 notifyQueueManager(queueTask, taskResult)
                 return
@@ -778,171 +749,33 @@ extension MainQueueHandler {
 
 // MARK: queue actions for conversation
 extension MainQueueHandler {
-    fileprivate func unreadConversations(_ managedObjectIds: [String], labelID: String, writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
-        let context = self.coreDataService.operationContext
-        context.performAndWait {
-            let conversations = managedObjectIds.compactMap { (id: String) -> Conversation? in
-                if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
-                    let managedObject = try? context.existingObject(with: objectID)
-                {
-                    return managedObject as? Conversation
-                }
-                return nil
-            }
-            
-            guard self.user?.userinfo.userId == UID else {
-                completion!(nil, nil, NSError.userLoggedOut())
-                return
-            }
-            
-            let conversationIds = conversations.map{ $0.conversationID }
-            guard conversationIds.count > 0 else {
-                Analytics.shared.debug(message: .coredataIssue,
-                                       extra: [
-                                        "API": "Message action",
-                                        "ObjectCounts": managedObjectIds.count
-                                       ])
-                completion!(nil, nil, nil)
-                return
-            }
-            conversationDataService.markAsUnread(conversationIDs: conversationIds, labelID: labelID) { result in
-                completion?(nil, nil, result.nsError)
-            }
+    fileprivate func unreadConversations(_ conversationIds: [String], labelID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+        conversationDataService.markAsUnread(conversationIDs: conversationIds, labelID: labelID) { result in
+            completion?(nil, nil, result.nsError)
         }
     }
     
-    fileprivate func readConversations(_ managedObjectIds: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
-        let context = self.coreDataService.operationContext
-        context.performAndWait {
-            let conversations = managedObjectIds.compactMap { (id: String) -> Conversation? in
-                if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
-                    let managedObject = try? context.existingObject(with: objectID)
-                {
-                    return managedObject as? Conversation
-                }
-                return nil
-            }
-            
-            guard user?.userinfo.userId == UID else {
-                completion!(nil, nil, NSError.userLoggedOut())
-                return
-            }
-            
-            let conversationIds = conversations.map{ $0.conversationID }
-            guard conversationIds.count > 0 else {
-                Analytics.shared.debug(message: .coredataIssue,
-                                       extra: [
-                                        "API": "Message action",
-                                        "ObjectCounts": managedObjectIds.count
-                                       ])
-                completion!(nil, nil, nil)
-                return
-            }
-            conversationDataService.markAsRead(conversationIDs: conversationIds) { result in
-                completion?(nil, nil, result.nsError)
-            }
+    fileprivate func readConversations(_ conversationIds: [String], writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+        conversationDataService.markAsRead(conversationIDs: conversationIds) { result in
+            completion?(nil, nil, result.nsError)
         }
     }
     
-    fileprivate func deleteConversations(_ managedObjectIds: [String], labelID: String, writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
-        let context = self.coreDataService.operationContext
-        context.performAndWait {
-            let conversations = managedObjectIds.compactMap { (id: String) -> Conversation? in
-                if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
-                    let managedObject = try? context.existingObject(with: objectID)
-                {
-                    return managedObject as? Conversation
-                }
-                return nil
-            }
-            
-            guard user?.userinfo.userId == UID else {
-                completion!(nil, nil, NSError.userLoggedOut())
-                return
-            }
-            
-            let conversationIds = conversations.map{ $0.conversationID }
-            guard conversationIds.count > 0 else {
-                Analytics.shared.debug(message: .coredataIssue,
-                                       extra: [
-                                        "API": "Message action",
-                                        "ObjectCounts": managedObjectIds.count
-                                       ])
-                completion!(nil, nil, nil)
-                return
-            }
-            
-            conversationDataService.deleteConversations(with: conversationIds, labelID: labelID) { result in
-                completion?(nil, nil, result.nsError)
-            }
-
+    fileprivate func deleteConversations(_ conversationIds: [String], labelID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+        conversationDataService.deleteConversations(with: conversationIds, labelID: labelID) { result in
+            completion?(nil, nil, result.nsError)
         }
     }
     
-    fileprivate func labelConversations(_ managedObjectIds: [String], labelID: String, writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
-        let context = self.coreDataService.operationContext
-        context.performAndWait {
-            let conversations = managedObjectIds.compactMap { (id: String) -> Conversation? in
-                if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
-                    let managedObject = try? context.existingObject(with: objectID)
-                {
-                    return managedObject as? Conversation
-                }
-                return nil
-            }
-            
-            guard user?.userinfo.userId == UID else {
-                completion!(nil, nil, NSError.userLoggedOut())
-                return
-            }
-            
-            let conversationIds = conversations.map{ $0.conversationID }
-            guard conversationIds.count > 0 else {
-                Analytics.shared.debug(message: .coredataIssue,
-                                       extra: [
-                                        "API": "Message action",
-                                        "ObjectCounts": managedObjectIds.count
-                                       ])
-                completion!(nil, nil, nil)
-                return
-            }
-            
-            conversationDataService.label(conversationIDs: conversationIds, as: labelID) { result in
-                completion?(nil, nil, result.nsError)
-            }
+    fileprivate func labelConversations(_ conversationIds: [String], labelID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+        conversationDataService.label(conversationIDs: conversationIds, as: labelID) { result in
+            completion?(nil, nil, result.nsError)
         }
     }
     
-    fileprivate func unlabelConversations(_ managedObjectIds: [String], labelID: String, writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
-        let context = self.coreDataService.operationContext
-        context.performAndWait {
-            let conversations = managedObjectIds.compactMap { (id: String) -> Conversation? in
-                if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
-                    let managedObject = try? context.existingObject(with: objectID)
-                {
-                    return managedObject as? Conversation
-                }
-                return nil
-            }
-            
-            guard user?.userinfo.userId == UID else {
-                completion!(nil, nil, NSError.userLoggedOut())
-                return
-            }
-            
-            let conversationIds = conversations.map{ $0.conversationID }
-            guard conversationIds.count > 0 else {
-                Analytics.shared.debug(message: .coredataIssue,
-                                       extra: [
-                                        "API": "Message action",
-                                        "ObjectCounts": managedObjectIds.count
-                                       ])
-                completion!(nil, nil, nil)
-                return
-            }
-            conversationDataService.unlabel(conversationIDs: conversationIds, as: labelID) { result in
-                completion?(nil, nil, result.nsError)
-            }
+    fileprivate func unlabelConversations(_ conversationIds: [String], labelID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+        conversationDataService.unlabel(conversationIDs: conversationIds, as: labelID) { result in
+            completion?(nil, nil, result.nsError)
         }
     }
 }

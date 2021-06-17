@@ -23,43 +23,267 @@
 
 import Foundation
 
-enum MessageAction: String {
+enum MessageAction: Equatable {
+    enum CodingKeys: CodingKey {
+        case saveDraft
+        case uploadAtt
+        case uploadPubkey
+        case deleteAtt
+        case read
+        case unread
+        case delete
+        case send
+        case emptyTrash
+        case emptySpam
+        case empty
+        case label
+        case unlabel
+        case folder
+        case updateLabel
+        case createLabel
+        case deleteLabel
+        case signout
+        case signin
+        case fetchMessageDetail
+    }
+
+    enum NestedCodingKeys: CodingKey {
+        case messageObjectID
+        case attachmentObjectID
+        case objectIDs
+        case currentLabelID
+        case itemIDs
+        case shouldFetch
+        case nextLabelID
+        case labelID
+        case name
+        case color
+        case isFolder
+    }
+    
     
     // Draft
-    case saveDraft = "saveDraft"
+    case saveDraft(messageObjectID: String)
     
     // Attachment
-    case uploadAtt = "uploadAtt"
-    case uploadPubkey = "uploadPubkey"
-    case deleteAtt = "deleteAtt"
+    case uploadAtt(attachmentObjectID: String)
+    case uploadPubkey(attachmentObjectID: String)
+    case deleteAtt(attachmentObjectID: String)
     
     // Read/unread
-    case read = "read"
-    case unread = "unread"
+    case read(itemIDs: [String], objectIDs: [String])
+    case unread(currentLabelID: String, itemIDs: [String], objectIDs: [String])
     
     // Move mailbox
-    case delete = "delete"
-//    case inbox = "inbox"
-//    case spam = "spam"
-//    case trash = "trash"
-//    case archive = "archive"
+    case delete(currentLabelID: String?, itemIDs: [String])
     
     // Send
-    case send = "send"
+    case send(messageObjectID: String)
     
     // Empty
-    case emptyTrash = "emptyTrash"
-    case emptySpam = "emptySpam"
-    case empty = "empty"
+    case emptyTrash
+    case emptySpam
+    case empty(currentLabelID: String)
     
-    case label = "applyLabel"
-    case unlabel = "unapplyLabel"
-    case folder = "moveToFolder"
+    case label(currentLabelID: String, shouldFetch: Bool?, itemIDs: [String], objectIDs: [String])
+    case unlabel(currentLabelID: String, shouldFetch: Bool?, itemIDs: [String], objectIDs: [String])
+    case folder(nextLabelID: String, itemIDs: [String], objectIDs: [String])
+
+    case updateLabel(labelID: String, name: String, color: String)
+    case createLabel(name: String, color: String, isFolder: Bool)
+    case deleteLabel(labelID: String)
+    case signout
+    case signin
+    case fetchMessageDetail
+
+    var rawValue: String {
+        switch self {
+        case .saveDraft:
+            return "saveDraft"
+        case .uploadAtt:
+            return "uploadAtt"
+        case .uploadPubkey:
+            return "uploadPubkey"
+        case .deleteAtt:
+            return "deleteAtt"
+        case .read:
+            return "read"
+        case .unread:
+            return "unread"
+        case .delete:
+            return "delete"
+        case .send:
+            return "send"
+        case .emptyTrash:
+            return "emptyTrash"
+        case .emptySpam:
+            return "emptySpam"
+        case .empty:
+            return "empty"
+        case .label:
+            return "applyLabel"
+        case .unlabel:
+            return "unapplyLabel"
+        case .folder:
+            return "moveToFolder"
+        case .updateLabel:
+            return "updateLabel"
+        case .createLabel:
+            return "createLabel"
+        case .deleteLabel:
+            return "deleteLabel"
+        case .signout:
+            return "signout"
+        case .signin:
+            return "signin"
+        case .fetchMessageDetail:
+            return "fetchMessageDetail"
+        }
+    }
+}
+
+extension MessageAction: Codable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if container.allKeys.count != 1 {
+            let context = DecodingError.Context(codingPath: container.codingPath,
+                                                debugDescription: "Invalid number of keys found, expected one.")
+            throw DecodingError.typeMismatch(Self.self, context)
+        }
+
+        switch container.allKeys.first.unsafelyUnwrapped {
+        case .saveDraft:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .saveDraft)
+            self = .saveDraft(messageObjectID: try nestedContainer.decode(String.self, forKey: .messageObjectID))
+        case .uploadAtt:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .uploadAtt)
+            self = .uploadAtt(attachmentObjectID: try nestedContainer.decode(String.self, forKey: .attachmentObjectID))
+        case .uploadPubkey:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .uploadPubkey)
+            self = .uploadPubkey(attachmentObjectID: try nestedContainer.decode(String.self, forKey: .attachmentObjectID))
+        case .deleteAtt:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteAtt)
+            self = .deleteAtt(attachmentObjectID: try nestedContainer.decode(String.self, forKey: .attachmentObjectID))
+        case .read:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .read)
+            self = .read(itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs), objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs))
+        case .unread:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unread)
+            self = .unread(currentLabelID: try nestedContainer.decode(String.self, forKey: .currentLabelID), itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs), objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs))
+        case .delete:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .delete)
+            self = .delete(currentLabelID: try nestedContainer.decode(String?.self, forKey: .currentLabelID), itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs))
+        case .send:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .send)
+            self = .send(messageObjectID: try nestedContainer.decode(String.self, forKey: .messageObjectID))
+        case .emptyTrash:
+            self = .emptyTrash
+        case .emptySpam:
+            self = .emptySpam
+        case .empty:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .empty)
+            self = .empty(currentLabelID: try nestedContainer.decode(String.self, forKey: .currentLabelID))
+        case .label:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .label)
+            self = .label(currentLabelID: try nestedContainer.decode(String.self, forKey: .currentLabelID), shouldFetch: try nestedContainer.decode(Bool?.self, forKey: .shouldFetch), itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs), objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs))
+        case .unlabel:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unlabel)
+            self = .unlabel(currentLabelID: try nestedContainer.decode(String.self, forKey: .currentLabelID), shouldFetch: try nestedContainer.decode(Bool?.self, forKey: .shouldFetch), itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs), objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs))
+        case .folder:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .folder)
+            self = .folder(nextLabelID: try nestedContainer.decode(String.self, forKey: .nextLabelID), itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs), objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs))
+        case .updateLabel:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateLabel)
+            self = .updateLabel(labelID: try nestedContainer.decode(String.self, forKey: .labelID), name: try nestedContainer.decode(String.self, forKey: .name), color: try nestedContainer.decode(String.self, forKey: .color))
+        case .createLabel:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .createLabel)
+            self = .createLabel(name: try nestedContainer.decode(String.self, forKey: .name), color: try nestedContainer.decode(String.self, forKey: .color), isFolder: try nestedContainer.decode(Bool.self, forKey: .isFolder))
+        case .deleteLabel:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteLabel)
+            self = .deleteLabel(labelID: try nestedContainer.decode(String.self, forKey: .labelID))
+        case .signout:
+            self = .signout
+        case .signin:
+            self = .signin
+        case .fetchMessageDetail:
+            self = .fetchMessageDetail
+        }
+    }
     
-    case updateLabel = "updateLabel"
-    case createLabel = "createLabel"
-    case deleteLabel = "deleteLabel"
-    case signout = "signout"
-    case signin = "signin"
-    case fetchMessageDetail = "fetchMessageDetail"
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        switch self {
+        case .saveDraft(messageObjectID: let messageObjectID):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .saveDraft)
+            try nestedContainer.encode(messageObjectID, forKey: .messageObjectID)
+        case .uploadAtt(attachmentObjectID: let attachmentObjectID):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .uploadAtt)
+            try nestedContainer.encode(attachmentObjectID, forKey: .attachmentObjectID)
+        case .uploadPubkey(attachmentObjectID: let attachmentObjectID):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .uploadPubkey)
+            try nestedContainer.encode(attachmentObjectID, forKey: .attachmentObjectID)
+        case .deleteAtt(attachmentObjectID: let attachmentObjectID):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteAtt)
+            try nestedContainer.encode(attachmentObjectID, forKey: .attachmentObjectID)
+        case .read(itemIDs: let itemIDs, objectIDs: let objectIDs):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .read)
+            try nestedContainer.encode(itemIDs, forKey: .itemIDs)
+            try nestedContainer.encode(objectIDs, forKey: .objectIDs)
+        case .unread(currentLabelID: let currentLabelID, itemIDs: let itemIDs, objectIDs: let objectIDs):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unread)
+            try nestedContainer.encode(currentLabelID, forKey: .currentLabelID)
+            try nestedContainer.encode(itemIDs, forKey: .itemIDs)
+            try nestedContainer.encode(objectIDs, forKey: .objectIDs)
+        case .delete(currentLabelID: let currentLabelID, itemIDs: let itemIDs):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .delete)
+            try nestedContainer.encode(currentLabelID, forKey: .currentLabelID)
+            try nestedContainer.encode(itemIDs, forKey: .itemIDs)
+        case .send(messageObjectID: let messageObjectID):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .send)
+            try nestedContainer.encode(messageObjectID, forKey: .messageObjectID)
+        case .emptyTrash:
+            try container.encode(rawValue, forKey: .emptyTrash)
+        case .emptySpam:
+            try container.encode(rawValue, forKey: .emptySpam)
+        case .empty(currentLabelID: let currentLabelID):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .empty)
+            try nestedContainer.encode(currentLabelID, forKey: .currentLabelID)
+        case .label(currentLabelID: let currentLabelID, shouldFetch: let shouldFetch, itemIDs: let itemIDs, objectIDs: let objectIDs):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .label)
+            try nestedContainer.encode(currentLabelID, forKey: .currentLabelID)
+            try nestedContainer.encode(shouldFetch, forKey: .shouldFetch)
+            try nestedContainer.encode(itemIDs, forKey: .itemIDs)
+            try nestedContainer.encode(objectIDs, forKey: .objectIDs)
+        case .unlabel(currentLabelID: let currentLabelID, shouldFetch: let shouldFetch, itemIDs: let itemIDs, objectIDs: let objectIDs):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unlabel)
+            try nestedContainer.encode(currentLabelID, forKey: .currentLabelID)
+            try nestedContainer.encode(shouldFetch, forKey: .shouldFetch)
+            try nestedContainer.encode(itemIDs, forKey: .itemIDs)
+            try nestedContainer.encode(objectIDs, forKey: .objectIDs)
+        case .folder(nextLabelID: let nextLabelID, itemIDs: let itemIDs, objectIDs: let objectIDs):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .folder)
+            try nestedContainer.encode(nextLabelID, forKey: .nextLabelID)
+            try nestedContainer.encode(itemIDs, forKey: .itemIDs)
+            try nestedContainer.encode(objectIDs, forKey: .objectIDs)
+        case .updateLabel(labelID: let labelID, name: let name, color: let color):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateLabel)
+            try nestedContainer.encode(labelID, forKey: .labelID)
+            try nestedContainer.encode(name, forKey: .name)
+            try nestedContainer.encode(color, forKey: .color)
+        case .createLabel(name: let name, color: let color, isFolder: let isFolder):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .createLabel)
+            try nestedContainer.encode(name, forKey: .name)
+            try nestedContainer.encode(color, forKey: .color)
+            try nestedContainer.encode(isFolder, forKey: .isFolder)
+        case .deleteLabel(labelID: let labelID):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteLabel)
+            try nestedContainer.encode(labelID, forKey: .labelID)
+        case .signout:
+            try container.encode(rawValue, forKey: .signout)
+        case .signin:
+            try container.encode(rawValue, forKey: .signin)
+        case .fetchMessageDetail:
+            try container.encode(rawValue, forKey: .fetchMessageDetail)
+        }
+    }
 }

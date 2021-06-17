@@ -68,31 +68,22 @@ class QueueManagerTests: XCTestCase {
     }
 
     func testGetNewTask() {
-        let newTask = QueueManager.newTask()
+        let newTask = QueueManager.Task(messageID: "", action: .emptySpam, userID: "", dependencyIDs: [], isConversation: false)
         XCTAssertEqual(newTask.messageID, "")
-        XCTAssertEqual(newTask.actionString, "")
+        XCTAssertEqual(newTask.action, .emptySpam)
         XCTAssertEqual(newTask.userID, "")
         XCTAssertEqual(newTask.dependencyIDs.count, 0)
-        XCTAssertEqual(newTask.data1, "")
-        XCTAssertEqual(newTask.data2, "")
-        XCTAssertNil(newTask.otherData)
         XCTAssertFalse(newTask.isConversation)
     }
     
     func testAddUnknownTask() {
-        let task = QueueManager.newTask()
-        task.actionString = "action"
-        task.userID = "userID"
-        task.messageID = "messageID"
+        let task = QueueManager.Task(messageID: "messageID", action: .emptySpam, userID: "", dependencyIDs: [], isConversation: false)
         
         XCTAssertFalse(sut.addTask(task))
     }
     
     func testAddTask() {
-        let task = QueueManager.newTask()
-        task.actionString = "read"
-        task.userID = "userID1"
-        task.messageID = "messageID"
+        let task = QueueManager.Task(messageID: "messageID", action: .emptySpam, userID: "userID1", dependencyIDs: [], isConversation: false)
         self.loadedTaskUUIDs.append(task.uuid)
         XCTAssertTrue(sut.addTask(task, autoExecute: false))
         
@@ -108,7 +99,7 @@ class QueueManagerTests: XCTestCase {
     }
     
     func testAddEmptyTask() {
-        let task = QueueManager.newTask()
+        let task = QueueManager.Task(messageID: "", action: .emptySpam, userID: "", dependencyIDs: [], isConversation: false)
         
         XCTAssertFalse(sut.addTask(task))
         XCTAssertEqual(messageQueue.count, 0)
@@ -116,9 +107,7 @@ class QueueManagerTests: XCTestCase {
     
     func testSignout() {
         loadTestData()
-        let task = QueueManager.newTask()
-        task.actionString = MessageAction.signout.rawValue
-        task.userID = "userID1"
+        let task = QueueManager.Task(messageID: "", action: .signout, userID: "userID1", dependencyIDs: [], isConversation: false)
         _ = sut.addTask(task, autoExecute: false)
         
         XCTAssertEqual(self.messageQueue.count, 1)
@@ -136,17 +125,13 @@ class QueueManagerTests: XCTestCase {
     
     func testSignout_signin() {
         loadTestData()
-        let task = QueueManager.newTask()
-        task.actionString = MessageAction.signout.rawValue
-        task.userID = "userID1"
+        let task = QueueManager.Task(messageID: "", action: .signout, userID: "userID1", dependencyIDs: [], isConversation: false)
         _ = sut.addTask(task, autoExecute: false)
         
         XCTAssertEqual(self.messageQueue.count, 1)
         XCTAssertEqual(self.miscQueue.count, 1)
         
-        let signin = QueueManager.newTask()
-        signin.actionString = MessageAction.signin.rawValue
-        signin.userID = "userID1"
+        let signin = QueueManager.Task(messageID: "", action: .signin, userID: "userID1", dependencyIDs: [], isConversation: false)
         _ = sut.addTask(signin, autoExecute: false)
         
         XCTAssertEqual(self.messageQueue.count, 0)
@@ -180,11 +165,7 @@ class QueueManagerTests: XCTestCase {
     }
     
     func testDependencyFailed() {
-        let task1 = QueueManager.newTask()
-        task1.actionString = MessageAction.send.rawValue
-        task1.userID = "userID1"
-        task1.messageID = "messageID1"
-        task1.dependencyIDs = [UUID()]
+        let task1 = QueueManager.Task(messageID: "messageID1", action: .send(messageObjectID: ""), userID: "userID1", dependencyIDs: [UUID()], isConversation: false)
         _ = self.messageQueue.add(task1.uuid, object: task1)
         
         let finish = expectation(description: "Notification Raised")
@@ -201,9 +182,16 @@ class QueueManagerTests: XCTestCase {
         loadTestData(autoExecute: false)
         
         let finish = expectation(description: "Notification Raised")
-        sut.removeAllTasks(of: "messageID3", actions: [.send, .saveDraft]) {
+        sut.removeAllTasks(of: "messageID3", removalCondition: { action in
+            switch action {
+            case .send, .saveDraft:
+                return true
+            default:
+                return false
+            }
+        }, completeHandler: {
             finish.fulfill()
-        }
+        })
         
         wait(for: [finish], timeout: 5.0)
         XCTAssertEqual(self.miscQueue.count, 2)
@@ -271,24 +259,8 @@ class QueueManagerTests: XCTestCase {
         checkExcuteSequence()
     }
     
-    func testLegacyObjectDequeueIfNeeded() {
-        loadLegacyQueuebject()
-        
-        let finish = expectation(description: "Notification Raised")
-        let time = Date().timeIntervalSince1970 + 999
-        sut.backgroundFetch(allowedTime: time) {
-            finish.fulfill()
-        }
-
-        wait(for: [finish], timeout: 5.0)
-        XCTAssertEqual(self.handlerMock.handleCount, self.loadedTaskUUIDs.count+self.miscTaskUUIDs.count)
-        checkExcuteSequence()
-    }
-    
     func testLegacyObjectAndCurrentTaskDequeueIfNeeded() {
-        loadLegacyQueuebject()
         loadTestData()
-        loadLegacyQueuebject()
         loadTestData(autoExecute: true)
 
         let finish = expectation(description: "Notification Raised")
@@ -330,10 +302,7 @@ class QueueManagerTests: XCTestCase {
     }
     
     func testDeleteAllQueuedMessageWithUnknownUserID() {
-        let task = QueueManager.newTask()
-        task.actionString = MessageAction.delete.rawValue
-        task.userID = "No ID"
-        task.messageID = "messageID1"
+        let task = QueueManager.Task(messageID: "messageID1", action: .delete(currentLabelID: nil, itemIDs: []), userID: "No ID", dependencyIDs: [], isConversation: false)
         XCTAssertTrue(sut.addTask(task, autoExecute: false))
         
         loadTestData()
@@ -365,10 +334,7 @@ class QueueManagerTests: XCTestCase {
     }
     
     func testConnectIssue1() {
-        let task = QueueManager.newTask()
-        task.actionString = "read"
-        task.userID = "userID1"
-        task.messageID = "messageID"
+        let task = QueueManager.Task(messageID: "messageID", action: .read(itemIDs: [], objectIDs: []), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.miscTaskUUIDs.append(task.uuid)
         self.handlerMock.setResult(to: .connectionIssue)
         XCTAssertTrue(sut.addTask(task, autoExecute: true))
@@ -380,10 +346,7 @@ class QueueManagerTests: XCTestCase {
     }
     
     func testConnectIssue2() {
-        let task = QueueManager.newTask()
-        task.actionString = "signout"
-        task.userID = "userID1"
-        task.messageID = "messageID"
+        let task = QueueManager.Task(messageID: "messageID", action: .signout, userID: "userID1", dependencyIDs: [], isConversation: false)
         self.miscTaskUUIDs.append(task.uuid)
         self.handlerMock.setResult(to: .connectionIssue)
         XCTAssertTrue(sut.addTask(task, autoExecute: true))
@@ -396,23 +359,14 @@ class QueueManagerTests: XCTestCase {
     
     func testRemoveRelated() {
         self.handlerMock.setResult(to: .removeRelated)
-        let task1 = QueueManager.newTask()
-        task1.actionString = MessageAction.saveDraft.rawValue
-        task1.userID = "userID1"
-        task1.messageID = "messageID3"
+        let task1 = QueueManager.Task(messageID: "messageID3", action: .saveDraft(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.loadedTaskUUIDs.append(task1.uuid)
         XCTAssertTrue(sut.addTask(task1, autoExecute: false))
         
-        let task2 = QueueManager.newTask()
-        task2.actionString = MessageAction.uploadAtt.rawValue
-        task2.userID = "userID1"
-        task2.messageID = "messageID3"
+        let task2 = QueueManager.Task(messageID: "messageID3", action: .uploadAtt(attachmentObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         XCTAssertTrue(sut.addTask(task2, autoExecute: false))
         
-        let task3 = QueueManager.newTask()
-        task3.actionString = MessageAction.saveDraft.rawValue
-        task3.userID = "userID1"
-        task3.messageID = "messageID3"
+        let task3 = QueueManager.Task(messageID: "messageID3", action: .saveDraft(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         XCTAssertTrue(sut.addTask(task3, autoExecute: false))
         
         let finish = expectation(description: "Notification Raised")
@@ -428,29 +382,17 @@ class QueueManagerTests: XCTestCase {
     
     func testCheckReadQueue() {
         self.handlerMock.setResult(to: .checkReadQueue)
-        let task1 = QueueManager.newTask()
-        task1.actionString = MessageAction.saveDraft.rawValue
-        task1.userID = "userID1"
-        task1.messageID = "messageID3"
+        let task1 = QueueManager.Task(messageID: "messageID3", action: .saveDraft(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.loadedTaskUUIDs.append(task1.uuid)
         XCTAssertTrue(sut.addTask(task1, autoExecute: false))
         
-        let task2 = QueueManager.newTask()
-        task2.actionString = MessageAction.uploadAtt.rawValue
-        task2.userID = "userID1"
-        task2.messageID = "messageID3"
+        let task2 = QueueManager.Task(messageID: "messageID3", action: .uploadAtt(attachmentObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         XCTAssertTrue(sut.addTask(task2, autoExecute: false))
         
-        let task3 = QueueManager.newTask()
-        task3.actionString = MessageAction.saveDraft.rawValue
-        task3.userID = "userID1"
-        task3.messageID = "messageID3"
+        let task3 = QueueManager.Task(messageID: "messageID3", action: .saveDraft(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         XCTAssertTrue(sut.addTask(task3, autoExecute: false))
         
-        let task4 = QueueManager.newTask()
-        task4.actionString = MessageAction.read.rawValue
-        task4.userID = "userID1"
-        task4.messageID = "messageID3"
+        let task4 = QueueManager.Task(messageID: "messageID3", action: .read(itemIDs: [], objectIDs: []), userID: "userID1", dependencyIDs: [], isConversation: false)
         XCTAssertTrue(sut.addTask(task4, autoExecute: false))
         
         let finish = expectation(description: "Notification Raised")
@@ -485,66 +427,24 @@ extension QueueManagerTests {
     }
     
     private func loadTestData(autoExecute: Bool = false) {
-        let task = QueueManager.newTask()
-        task.actionString = MessageAction.delete.rawValue
-        task.userID = "userID1"
-        task.messageID = "messageID1"
+        let task = QueueManager.Task(messageID: "messageID1", action: .deleteLabel(labelID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.miscTaskUUIDs.append(task.uuid)
         
         XCTAssertTrue(sut.addTask(task, autoExecute: autoExecute))
         
-        let task2 = QueueManager.newTask()
-        task2.actionString = MessageAction.empty.rawValue
-        task2.userID = "userID1"
-        task2.messageID = "messageID2"
+        let task2 = QueueManager.Task(messageID: "messageID2", action: .empty(currentLabelID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.miscTaskUUIDs.append(task2.uuid)
         
         XCTAssertTrue(sut.addTask(task2, autoExecute: autoExecute))
         
-        let task3 = QueueManager.newTask()
-        task3.actionString = MessageAction.send.rawValue
-        task3.userID = "userID1"
-        task3.messageID = "messageID3"
+        let task3 = QueueManager.Task(messageID: "messageID3", action: .send(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.loadedTaskUUIDs.append(task3.uuid)
         
         XCTAssertTrue(sut.addTask(task3, autoExecute: autoExecute))
         
-        let task4 = QueueManager.newTask()
-        task4.actionString = MessageAction.saveDraft.rawValue
-        task4.userID = "userID1"
-        task4.messageID = "messageID3"
+        let task4 = QueueManager.Task(messageID: "messageID3", action: .saveDraft(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.loadedTaskUUIDs.append(task4.uuid)
         
         XCTAssertTrue(sut.addTask(task4, autoExecute: autoExecute))
-    }
-    
-    private func loadLegacyQueuebject() {
-        let time = Date().timeIntervalSince1970
-        let element = ["id": "messageID1",
-                       "action": MessageAction.delete.rawValue,
-                       "time": "\(time)",
-                       "count": "0",
-                       "data1": "",
-                       "data2": "",
-                       "userId": "userID1"]
-        self.miscTaskUUIDs.append(miscQueue.add(element as NSCoding))
-        
-        let element2 = ["id": "messageID2",
-                       "action": MessageAction.empty.rawValue,
-                       "time": "\(time)",
-                       "count": "0",
-                       "data1": "",
-                       "data2": "",
-                       "userId": "userID1"]
-        self.miscTaskUUIDs.append(miscQueue.add(element2 as NSCoding))
-        
-        let element3 = ["id": "messageID3",
-                       "action": MessageAction.send.rawValue,
-                       "time": "\(time)",
-                       "count": "0",
-                       "data1": "",
-                       "data2": "",
-                       "userId": "userID1"]
-        self.loadedTaskUUIDs.append(messageQueue.add(element3 as NSCoding))
     }
 }

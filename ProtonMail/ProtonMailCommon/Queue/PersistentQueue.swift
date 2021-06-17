@@ -25,6 +25,8 @@ import Foundation
 
 @objcMembers class PersistentQueue: NSObject {
     
+    private static let currentVersionKey = "PersistentQueueCurrentVersion"
+    private static let currentVersionValue = "1.0.0"
     struct Key {
         static let elementID = "elementID"
         static let object = "object"
@@ -67,6 +69,11 @@ import Foundation
         #else
         self.queueURL = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent(self.queueName)
         #endif
+        // Erase persisted items on queue version change because it's not safe to transform in the new version
+        if UserDefaults.standard.string(forKey: Self.currentVersionKey) != Self.currentVersionValue {
+            try? FileManager.default.removeItem(at: queueURL)
+            UserDefaults.standard.setValue(Self.currentVersionValue, forKey: Self.currentVersionKey)
+        }
         if let data = try? Data(contentsOf: queueURL) {
             self.queue = (NSKeyedUnarchiver.unarchiveObject(with: data) ?? []) as! [Any]
         }

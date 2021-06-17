@@ -62,6 +62,8 @@ class BackupExcluder: BackupExcluderProtocol {
 }
 
 @objcMembers class PMPersistentQueue: NSObject, PMPersistentQueueProtocol {
+    private static let currentVersionKey = "PMPersistentQueueCurrentVersion"
+    private static let currentVersionValue = "1.0.0"
     struct Constant {
         static let name = "writeQueue"
         static let miscName = "miscQueue"
@@ -113,6 +115,11 @@ class BackupExcluder: BackupExcluderProtocol {
         #else
         self.queueURL = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent(self.queueName)
         #endif
+        // Erase persisted items on queue version change because it's not safe to transform in the new version
+        if UserDefaults.standard.string(forKey: Self.currentVersionKey) != Self.currentVersionValue {
+            try? FileManager.default.removeItem(at: queueURL)
+            UserDefaults.standard.setValue(Self.currentVersionValue, forKey: Self.currentVersionKey)
+        }
         if let data = try? Data(contentsOf: queueURL) {
             self.queue = (NSKeyedUnarchiver.unarchiveObject(with: data) ?? []) as! [Any]
         }

@@ -79,7 +79,7 @@ class MessageDataService : Service, HasLocalStorage {
     }
 
     func createLabel(name: String, color: String, isFolder: Bool) -> Bool {
-        self.queue(.createLabel, isConversation: false, data1: name, data2: color, otherData: isFolder)
+        self.queue(.createLabel(name: name, color: color, isFolder: isFolder), isConversation: false)
         return true
     }
     
@@ -101,7 +101,7 @@ class MessageDataService : Service, HasLocalStorage {
         
         if hasError { return false }
         
-        self.queue(.updateLabel, isConversation: false, data1: label.labelID, data2: name, otherData: color)
+        self.queue(.updateLabel(labelID: label.labelID, name: name, color: color), isConversation: false)
         return true
     }
     
@@ -124,7 +124,7 @@ class MessageDataService : Service, HasLocalStorage {
         
         if hasError { return false }
         ids.forEach { id in
-            self.queue(.deleteLabel, isConversation: false, data1: id, data2: "", otherData: nil)
+            self.queue(.deleteLabel(labelID: id), isConversation: false)
         }
         
         return true
@@ -255,14 +255,14 @@ class MessageDataService : Service, HasLocalStorage {
     ///
     /// - Parameter att: Attachment
     func upload( att : Attachment) {
-        self.queue(att, action: .uploadAtt)
+        self.queue(att, action: .uploadAtt(attachmentObjectID: att.objectID.uriRepresentation().absoluteString))
     }
     
     /// upload attachment to server
     ///
     /// - Parameter att: Attachment
     func upload( pubKey : Attachment) {
-        self.queue(pubKey, action: .uploadPubkey)
+        self.queue(pubKey, action: .uploadPubkey(attachmentObjectID: pubKey.objectID.uriRepresentation().absoluteString))
     }
     
     /// delete attachment from server
@@ -277,12 +277,8 @@ class MessageDataService : Service, HasLocalStorage {
                 }
             }
             
-            let objetcID = att.objectID.uriRepresentation().absoluteString
-            let task = QueueManager.newTask()
-            task.messageID = att.message.messageID
-            task.actionString = MessageAction.deleteAtt.rawValue
-            task.userID = self.userID
-            task.otherData = objetcID
+            let objectID = att.objectID.uriRepresentation().absoluteString
+            let task = QueueManager.Task(messageID: att.message.messageID, action: .deleteAtt(attachmentObjectID: objectID), userID: self.userID, dependencyIDs: [], isConversation: false)
             _ = self.queueManager?.addTask(task)
             self.cacheService.delete(attachment: att) {
                 seal.fulfill_()
@@ -340,7 +336,7 @@ class MessageDataService : Service, HasLocalStorage {
             message.isSending = true
             _ = message.managedObjectContext?.saveUpstreamIfNeeded()
         }
-        self.queue(message, action: .send)
+        self.queue(message, action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString))
         DispatchQueue.main.async {
             completion?(nil, nil, nil)
         }
@@ -430,7 +426,7 @@ class MessageDataService : Service, HasLocalStorage {
     
     func empty(labelID: String) {
         if self.cacheService.deleteMessage(by: labelID) {
-            queue(.empty, isConversation: false, data1: labelID)
+            queue(.empty(currentLabelID: labelID), isConversation: false)
         }
     }
 
@@ -850,7 +846,7 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     private func signout() {
-        self.queue(.signout, isConversation: false, data1: "", data2: "", otherData: nil)
+        self.queue(.signout, isConversation: false)
     }
     
     static func cleanUpAll() -> Promise<Void> {
@@ -996,7 +992,7 @@ class MessageDataService : Service, HasLocalStorage {
                     PMLog.D(" error: \(error)")
                 }
             }
-            self.queue(message, action: .saveDraft)
+            self.queue(message, action: .saveDraft(messageObjectID: message.objectID.uriRepresentation().absoluteString))
         }
     }
     
@@ -1503,23 +1499,17 @@ class MessageDataService : Service, HasLocalStorage {
         _ = cleanUp()
     }
     
-    func queue(_ conversation: Conversation, action: MessageAction, data1: String = "", data2: String = "", otherData: Any? = nil) {
+    func queue(_ conversation: Conversation, action: MessageAction) {
         switch action {
         case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .send, .emptyTrash, .emptySpam:
             fatalError()
         default:
-            let task = QueueManager.newTask()
-            task.messageID = conversation.conversationID
-            task.actionString = action.rawValue
-            task.data1 = data1
-            task.data2 = data2
-            task.userID = self.userID
-            task.otherData = otherData
+            let task = QueueManager.Task(messageID: conversation.conversationID, action: action, userID: self.userID, dependencyIDs: [], isConversation: true)
             _ = self.queueManager?.addTask(task)
         }
     }
     
-    func queue(_ message: Message, action: MessageAction, data1: String = "", data2: String = "") {
+    func queue(_ message: Message, action: MessageAction) {
         if message.objectID.isTemporaryID {
             message.managedObjectContext?.performAndWait {
                 do {
@@ -1532,41 +1522,24 @@ class MessageDataService : Service, HasLocalStorage {
         message.managedObjectContext?.performAndWait {
             self.cachePropertiesForBackground(in: message)
         }
-        if action == .saveDraft || action == .send {
-            let task = QueueManager.newTask()
-            task.messageID = message.messageID
-            task.actionString = action.rawValue
-            task.data1 = data1
-            task.data2 = data2
-            task.userID = self.userID
-            task.otherData = message.objectID.uriRepresentation().absoluteString
+        switch action {
+        case .saveDraft, .send:
+            let task = QueueManager.Task(messageID: message.messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
             _ = self.queueManager?.addTask(task)
-        } else {
+        default:
             if message.managedObjectContext != nil && !message.messageID.isEmpty {
-                let task = QueueManager.newTask()
-                task.messageID = message.messageID
-                task.actionString = action.rawValue
-                task.data1 = data1
-                task.data2 = data2
-                task.userID = self.userID
+                let task = QueueManager.Task(messageID: message.messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
                 _ = self.queueManager?.addTask(task)
             }
         }
     }
     
-    func queue(_ action: MessageAction, isConversation: Bool, data1: String = "", data2: String = "", otherData: Any? = nil) {
-        let task = QueueManager.newTask()
-        task.messageID = ""
-        task.actionString = action.rawValue
-        task.data1 = data1
-        task.data2 = data2
-        task.userID = self.userID
-        task.otherData = otherData
-        task.isConversation = isConversation
+    func queue(_ action: MessageAction, isConversation: Bool) {
+        let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: isConversation)
         _ = self.queueManager?.addTask(task)
     }
     
-    fileprivate func queue(_ att: Attachment, action: MessageAction, data1: String = "", data2: String = "") {
+    fileprivate func queue(_ att: Attachment, action: MessageAction) {
         if att.objectID.isTemporaryID {
             att.managedObjectContext?.performAndWait {
                 try? att.managedObjectContext?.obtainPermanentIDs(for: [att])
@@ -1575,13 +1548,19 @@ class MessageDataService : Service, HasLocalStorage {
         att.managedObjectContext?.performAndWait {
             self.cachePropertiesForBackground(in: att.message)
         }
-        let task = QueueManager.newTask()
-        task.messageID = att.message.messageID
-        task.actionString = action.rawValue
-        task.data1 = data1
-        task.data2 = data2
-        task.otherData = att.objectID.uriRepresentation().absoluteString
-        task.userID = self.userID
+        let updatedID = att.objectID.uriRepresentation().absoluteString
+        var updatedAction: MessageAction?
+        switch action {
+        case .uploadAtt:
+            updatedAction = .uploadAtt(attachmentObjectID: updatedID)
+        case .uploadPubkey:
+            updatedAction = .uploadPubkey(attachmentObjectID: updatedID)
+        case .deleteAtt:
+            updatedAction = .deleteAtt(attachmentObjectID: updatedID)
+        default:
+            break
+        }
+        let task = QueueManager.Task(messageID: att.message.messageID, action: updatedAction ?? action, userID: self.userID, dependencyIDs: [], isConversation: false)
         _ = self.queueManager?.addTask(task)
     }
     

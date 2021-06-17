@@ -1,9 +1,9 @@
 //
-//  ConversationDataService+Actions.swift
+//  ConversationDataServiceProxy.swift
 //  ProtonMail
 //
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2021 Proton Technologies AG
 //
 //  This file is part of ProtonMail.
 //
@@ -97,8 +97,7 @@ extension ConversationDataServiceProxy {
             return
         }
         let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs), in: coreDataService.mainContext)
-        let managedObjectIds = conversations.map{ $0.objectID.uriRepresentation().absoluteString }
-        self.queue(.read, isConversation: true, data1: "", data2: "", otherData: managedObjectIds)
+        self.queue(.read(itemIDs: conversationIDs, objectIDs: []), isConversation: true)
         mark(conversations: conversations, in: coreDataService.operationContext, as: false, labelID: nil)
     }
     
@@ -108,8 +107,7 @@ extension ConversationDataServiceProxy {
             return
         }
         let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs), in: coreDataService.mainContext)
-        let managedObjectIds = conversations.map{ $0.objectID.uriRepresentation().absoluteString }
-        self.queue(.unread, isConversation: true, data1: labelID, data2: "", otherData: managedObjectIds)
+        self.queue(.unread(currentLabelID: labelID, itemIDs: conversationIDs, objectIDs: []), isConversation: true)
         mark(conversations: conversations, in: coreDataService.operationContext, as: true, labelID: labelID)
     }
     
@@ -119,7 +117,7 @@ extension ConversationDataServiceProxy {
             return
         }
         let managedObjectIds = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs), in: coreDataService.mainContext).map{ $0.objectID.uriRepresentation().absoluteString }
-        self.queue(.label, isConversation: true, data1: labelID, data2: "", otherData: managedObjectIds)
+        self.queue(.label(currentLabelID: labelID, shouldFetch: nil, itemIDs: [], objectIDs: managedObjectIds), isConversation: true)
     }
     
     func unlabel(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
@@ -128,7 +126,7 @@ extension ConversationDataServiceProxy {
             return
         }
         let managedObjectIds = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs), in: coreDataService.mainContext).map{ $0.objectID.uriRepresentation().absoluteString }
-        self.queue(.unlabel, isConversation: true, data1: labelID, data2: "", otherData: managedObjectIds)
+        self.queue(.unlabel(currentLabelID: labelID, shouldFetch: nil, itemIDs: [], objectIDs: managedObjectIds), isConversation: true)
     }
     
     func move(conversationIDs: [String], from previousFolderLabel: String, to nextFolderLabel: String, completion: ((Result<Void, Error>) -> Void)?) {
@@ -137,7 +135,7 @@ extension ConversationDataServiceProxy {
             return
         }
         let managedObjectIds = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs), in: coreDataService.mainContext).map{ $0.objectID.uriRepresentation().absoluteString }
-        self.queue(.folder, isConversation: true, data1: previousFolderLabel, data2: nextFolderLabel, otherData: managedObjectIds)
+        self.queue(.folder(nextLabelID: nextFolderLabel, itemIDs: [], objectIDs: managedObjectIds), isConversation: true)
     }
     
     func cleanAll() {
@@ -150,15 +148,8 @@ extension ConversationDataServiceProxy {
 }
 
 extension ConversationDataServiceProxy {
-    private func queue(_ action: MessageAction, isConversation: Bool, data1: String = "", data2: String = "", otherData: Any? = nil) {
-        let task = QueueManager.newTask()
-        task.messageID = ""
-        task.actionString = action.rawValue
-        task.data1 = data1
-        task.data2 = data2
-        task.userID = self.userID
-        task.otherData = otherData
-        task.isConversation = isConversation
+    private func queue(_ action: MessageAction, isConversation: Bool) {
+        let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: isConversation)
         _ = self.queueManager?.addTask(task)
     }
 
