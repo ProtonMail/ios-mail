@@ -191,10 +191,6 @@ class UsersManager : Service, Migrate {
         self.save()
     }
     
-    func get(byID : String) {
-        
-    }
-    
     func get(not userID: String) -> UserManager?  {
         for user in users {
             if user.userInfo.userId != userID {
@@ -483,7 +479,7 @@ extension UsersManager {
                 return Promise()
             }
 
-            if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
+            if let primary = self.users.first, primary.isMatch(sessionID: userToDelete.auth.sessionID) {
                 self.remove(user: userToDelete)
                 isPrimaryAccountLogout = true
             } else {
@@ -494,7 +490,7 @@ extension UsersManager {
                 return self.clean()
             } else if shouldShowAccountSwitchAlert {
                 String(format: LocalString._signout_account_switched_when_token_revoked,
-                       arguments: [user.defaultEmail,
+                       arguments: [userToDelete.defaultEmail,
                                    self.users.first!.defaultEmail]).alertToast()
             }
             return Promise()
@@ -510,16 +506,16 @@ extension UsersManager {
             self.active(uid: nextFirst)
         }
         if !disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
-            let logoutUser: DisconnectedUserHandle = .init(defaultDisplayName: user.defaultDisplayName,
-                                                           defaultEmail: user.defaultEmail,
-                                                           userID: user.userinfo.userId)
+            let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,
+                                                    defaultEmail: user.defaultEmail,
+                                                    userID: user.userinfo.userId)
             self.disconnectedUsers.insert(logoutUser, at: 0)
         }
         self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
         self.save()
     }
     
-    internal func clean() -> Promise<Void> {
+    func clean() -> Promise<Void> {
         return UserManager.cleanUpAll().ensure {
             SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
             SharedCacheBase.getDefault()?.remove(forKey: CoderKey.authKeychainStore)
