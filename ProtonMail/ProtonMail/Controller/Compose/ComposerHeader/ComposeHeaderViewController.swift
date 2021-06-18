@@ -638,8 +638,12 @@ extension ComposeHeaderViewController: UITextFieldDelegate {
         if var text = textField.text,
            let textRange = Range(range, in: text) {
             text.replaceSubrange(textRange, with: string)
-            textField.text = text.trim()
-            return false
+            if text.hasPrefix(" ") || text.hasSuffix(" ") {
+                // Trigger trim function when needed
+                // Or this could cause infinite loop, MAILIOS-1410
+                textField.text = text.trim()
+                return false
+            }
         }
         return true
     }
