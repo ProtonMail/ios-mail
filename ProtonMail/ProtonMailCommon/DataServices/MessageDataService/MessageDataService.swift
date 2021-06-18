@@ -129,6 +129,21 @@ class MessageDataService : Service, HasLocalStorage {
         
         return true
     }
+    
+    func fetchLatestEventID(completion: CompletionBlock?) {
+        let getLatestEventID = EventLatestIDRequest()
+        self.apiService.exec(route: getLatestEventID) { [weak self] (task, IDRes: EventLatestIDResponse) in
+            guard !IDRes.eventID.isEmpty,
+                  let self = self else {
+                completion?(task, nil, nil)
+                return
+            }
+            self.lastUpdatedStore.clear()
+            _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID).ensure {
+                completion?(task, nil, nil)
+            }
+        }
+    }
 
     // MAKR : upload attachment
     
