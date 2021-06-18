@@ -32,8 +32,6 @@ extension MailboxViewModel {
         case delete
         case moveTo
         case more
-        case archive
-        case spam
         case reply
         case replyAll
 
@@ -47,10 +45,6 @@ extension MailboxViewModel {
                 return "Move to Inbox"
             case .more:
                 return "More"
-            case .archive:
-                return "Archive"
-            case .spam:
-                return "Spam"
             case .labelAs:
                 return "Label"
             case .reply:
@@ -64,8 +58,6 @@ extension MailboxViewModel {
         
         var iconImage: ImageAsset.Image {
             switch self {
-            case .archive:
-                return Asset.actionBarArchive.image
             case .delete:
                 return Asset.actionBarDelete.image
             case .trash:
@@ -74,8 +66,6 @@ extension MailboxViewModel {
                 return Asset.actionBarMoveTo.image
             case .more:
                 return Asset.actionBarMore.image
-            case .spam:
-                return Asset.actionBarSpam.image
             case .labelAs:
                 return Asset.actionBarLabel.image
             case .reply:
@@ -114,8 +104,6 @@ extension MailboxViewModel {
     
     func handleBarActions(_ action: ActionTypes, selectedIDs: NSMutableSet) {
         switch action {
-        case .archive:
-            self.move(IDs: selectedIDs, from: labelID, to: Message.Location.archive.rawValue)
         case .readUnread:
             //if all unread -> read
             //if all read -> unread
@@ -126,8 +114,6 @@ extension MailboxViewModel {
             self.move(IDs: selectedIDs, from: labelID, to: Message.Location.trash.rawValue)
         case .delete:
             self.delete(IDs: selectedIDs)
-        case .spam:
-            break
         case .reply:
             break
         case .replyAll:
