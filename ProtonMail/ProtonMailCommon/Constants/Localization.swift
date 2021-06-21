@@ -46,7 +46,7 @@ class LocalizedString {
 
     // Mark Link Opening Confirmaiton
     lazy var _about_to_open_link = NSLocalizedString("You are about to launch the web browser and navigate to", comment: "link opeining confirmation")
-    lazy var _request_link_confirmation = NSLocalizedString("Request Link Confirmation", comment: "link opeining confirmation")
+    lazy var _request_link_confirmation = NSLocalizedString("Request link confirmation", comment: "link opeining confirmation")
     
     // Mark Settings
 
@@ -78,7 +78,7 @@ class LocalizedString {
     /// "ProtonMail Plus is required to customize your mobile signature"
     lazy var _settings_plus_is_required_to_modify_signature_notes = NSLocalizedString("ProtonMail Plus is required to customize your mobile signature", comment: "Description")
     /// "Notification Email"
-    lazy var _settings_notification_email = NSLocalizedString("Recovery Email", comment: "Title")
+    lazy var _settings_notification_email = NSLocalizedString("Recovery email", comment: "Title")
     /// "Also used to reset a forgotten password."
     lazy var _settings_notification_email_notes = NSLocalizedString("Also used to reset a forgotten password.", comment: "Description")
     /// "Notification / Recovery Email"
@@ -1869,8 +1869,8 @@ class LocalizedString {
     
     
     /// New Settings
-    lazy var _account_settings = NSLocalizedString("Account Settings", comment: "section title in settings")
-    lazy var _app_settings = NSLocalizedString("App Settings", comment: "section title in settings")
+    lazy var _account_settings = NSLocalizedString("Account settings", comment: "section title in settings")
+    lazy var _app_settings = NSLocalizedString("App settings", comment: "section title in settings")
     lazy var _app_information = NSLocalizedString("APP INFORMATION", comment: "section title in settings")
     lazy var _app_general_settings = NSLocalizedString("General settings", comment: "section title in settings")
 
@@ -2024,7 +2024,7 @@ class LocalizedString {
     lazy var _title_of_spam_action_in_action_sheet = NSLocalizedString("Move to spam", comment: "The title of the spam action in action sheet")
 
     lazy var _settings_footer_of_combined_contact = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.", comment: "The footer of combined contact in settings")
-    lazy var _settings_title_of_combined_contact = NSLocalizedString("Combined Contacts", comment: "The title of combined contact in settings")
+    lazy var _settings_title_of_combined_contact = NSLocalizedString("Combined contacts", comment: "The title of combined contact in settings")
 
     lazy var _pin_code_setup1_title = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
     lazy var _pin_code_setup1_textfield_title = NSLocalizedString("Enter PIN code", comment: "The title of textfield of PIN code setup1")
@@ -2165,7 +2165,7 @@ class LocalizedString {
     lazy var _account_settings_conversation_row_title = NSLocalizedString("Conversation", comment: "")
 
     lazy var _security_protection_title_none = NSLocalizedString("None", comment: "The protection title of None protection")
-    lazy var _security_protection_title_pin = NSLocalizedString("PIN Code", comment: "The protection title of PIN Code protection")
+    lazy var _security_protection_title_pin = NSLocalizedString("PIN code", comment: "The protection title of PIN code protection")
     lazy var _security_protection_title_faceid = NSLocalizedString("Face ID", comment: "The protection title of Face ID protection")
     lazy var _security_protection_title_touchid = NSLocalizedString("Touch ID", comment: "The protection title of Touch ID protection")
 

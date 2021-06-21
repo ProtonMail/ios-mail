@@ -381,7 +381,7 @@ extension SettingsDeviceViewController {
         case .clearCache:
             var textAttribute = FontManager.CaptionWeak
             textAttribute.addTextAlignment(.center)
-            let description = "App Version: \(self.viewModel.appVersion())"
+            let description = "App version: \(self.viewModel.appVersion())"
             textToAdd = NSAttributedString(string: description, attributes: textAttribute)
         default:
             return UIView()
