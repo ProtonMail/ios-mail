@@ -1123,7 +1123,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 return
             }
             
-            self.viewModel.messageService.ForcefetchDetailForMessage(message) {_, _, msg, error in
+            self.viewModel.messageService.ForcefetchDetailForMessage(message, runInQueue: false) {_, _, msg, error in
                 guard let objectId = msg?.objectID,
                     let message = self.viewModel.object(by: objectId),
                     message.body.isEmpty == false else
