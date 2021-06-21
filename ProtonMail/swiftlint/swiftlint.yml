@@ -170,6 +170,8 @@ included:
   - ${PWD}/ProtonMail/Controller/ConversationView/ConversationMessageViewModel.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/ConversationMessageViewTags.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/ConversationMessagesProvider.swift
+  - ${PWD}/ProtonMailCommon/DataServices/ConversationDataService/ConversationDataServiceProxy.swift
+  - ${PWD}/ProtonMailCommon/DataServices/ConversationDataService/LocalConversationUpdater.swift
 
 excluded:
   - ${PWD}/Pods
@@ -200,3 +202,6 @@ modifier_order:
 
 cyclomatic_complexity:
   ignores_case_statements: true
+
+function_parameter_count:
+  warning: 7

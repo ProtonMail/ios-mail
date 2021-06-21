@@ -39,7 +39,7 @@ final class QueueManager: Service {
     private let messageQueue: PMPersistentQueueProtocol
     /// Handle actions exclude sending message related things
     private let miscQueue: PMPersistentQueueProtocol
-    private let reachability: Reachability
+    private let internetStatusProvider = InternetConnectionStatusProvider()
     /// Handle the fetching data related things
     private var readQueue: [ReadBlock] = []
     private var handlers: [UserID: QueueHandler] = [:]
@@ -56,11 +56,9 @@ final class QueueManager: Service {
     private var exceedNotify: (() -> Void)?
 
     init(messageQueue: PMPersistentQueueProtocol,
-         miscQueue: PMPersistentQueueProtocol,
-         reachability: Reachability = Reachability.forInternetConnection()) {
+         miscQueue: PMPersistentQueueProtocol) {
         self.messageQueue = messageQueue
         self.miscQueue = miscQueue
-        self.reachability = reachability
     }
 
     func addTask(_ task: Task, autoExecute: Bool = true) -> Bool {
@@ -307,7 +305,7 @@ extension QueueManager {
     }
 
     private func dequeueIfNeeded() {
-        guard self.reachability.currentReachabilityStatus() != .NotReachable,
+        guard internetStatusProvider.currentStatus != .NotReachable,
               self.checkQueueStatus(),
               self.allowedToDequeue() else {return}
         if !self.hasDequeued {

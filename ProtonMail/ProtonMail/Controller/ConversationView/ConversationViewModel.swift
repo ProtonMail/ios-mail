@@ -208,7 +208,7 @@ class ConversationViewModel {
             }
         case .readUnread:
             if conversation.isUnread(labelID: labelId) {
-                conversationService.markAsRead(conversationIDs: [conversation.conversationID]) { [weak self] result in
+                conversationService.markAsRead(conversationIDs: [conversation.conversationID], labelID: labelId) { [weak self] result in
                     guard let self = self else { return }
                     if (try? result.get()) != nil {
                         self.eventsService.fetchEvents(labelID: self.labelId)

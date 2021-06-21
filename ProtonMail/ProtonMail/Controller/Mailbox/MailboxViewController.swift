@@ -743,7 +743,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if let message = self.viewModel.item(index: indexPath) {
             self.viewModel.mark(messages: [message], unread: false)
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
-            viewModel.markConversationAsRead(conversationIDs: [conversation.conversationID]) { [weak self] result in
+            viewModel.markConversationAsRead(conversationIDs: [conversation.conversationID], currentLabelID: viewModel.labelId) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)

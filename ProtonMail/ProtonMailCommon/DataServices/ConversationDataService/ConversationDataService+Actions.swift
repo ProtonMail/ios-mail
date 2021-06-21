@@ -40,7 +40,7 @@ extension ConversationDataService {
         }
     }
 
-    func markAsRead(conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
+    func markAsRead(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
         let request = ConversationReadRequest(conversationIDs: conversationIDs)
         self.apiService.exec(route: request) { (task, response: ConversationReadResponse) in
             if let err = response.error {

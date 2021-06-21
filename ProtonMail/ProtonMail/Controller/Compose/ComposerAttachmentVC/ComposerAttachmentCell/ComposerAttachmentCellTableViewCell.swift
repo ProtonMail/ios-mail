@@ -48,7 +48,6 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         self.containerView.layer.borderColor = UIColorManager.IconDisabled.cgColor
     }
 
-    // swiftlint:disable:next function_parameter_count
     func config(objectID: String,
                 name: String,
                 size: Int,

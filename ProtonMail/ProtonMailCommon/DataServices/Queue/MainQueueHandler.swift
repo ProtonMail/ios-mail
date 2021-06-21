@@ -85,10 +85,8 @@ final class MainQueueHandler: QueueHandler {
                 self.labelConversations(itemIDs, labelID: currentLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .unlabel(let currentLabelID, _, let itemIDs, _):
                 self.unlabelConversations(itemIDs, labelID: currentLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
-            case .folder(let nextLabelID, _, let objectIDs):
-                //later use data 1 to handle the failure
-                //take ids from otherData
-                self.labelConversations(objectIDs, labelID: nextLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .folder(let nextLabelID, let itemIDs, _):
+                self.labelConversations(itemIDs, labelID: nextLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             }
         } else {
             switch action {
@@ -756,7 +754,7 @@ extension MainQueueHandler {
     }
     
     fileprivate func readConversations(_ conversationIds: [String], writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
-        conversationDataService.markAsRead(conversationIDs: conversationIds) { result in
+        conversationDataService.markAsRead(conversationIDs: conversationIds, labelID: "") { result in
             completion?(nil, nil, result.nsError)
         }
     }

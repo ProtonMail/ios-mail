@@ -47,7 +47,7 @@ protocol ConversationProvider: AnyObject {
     func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Operations
     func deleteConversations(with conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?)
-    func markAsRead(conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?)
+    func markAsRead(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?)
     func markAsUnread(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?)
     func label(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?)
     func unlabel(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?)

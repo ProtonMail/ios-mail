@@ -550,8 +550,8 @@ class MailboxViewModel: StorageLimit {
         conversationService.markAsUnread(conversationIDs: conversationIDs, labelID: currentLabelID, completion: completion)
     }
     
-    func markConversationAsRead(conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
-        conversationService.markAsRead(conversationIDs: conversationIDs, completion: completion)
+    func markConversationAsRead(conversationIDs: [String], currentLabelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+        conversationService.markAsRead(conversationIDs: conversationIDs, labelID: currentLabelID, completion: completion)
     }
     
     func fetchConversationCount(completion: ((Result<Void, Error>) -> Void)?) {
@@ -967,7 +967,7 @@ extension MailboxViewModel {
                     }
                 }
             } else {
-                conversationService.markAsRead(conversationIDs: messageIDs.asArrayOfStrings) { [weak self] result in
+                conversationService.markAsRead(conversationIDs: messageIDs.asArrayOfStrings, labelID: self.labelId) { [weak self] result in
                     guard let self = self else { return }
                     if let _ = try? result.get() {
                         self.eventsService.fetchEvents(labelID: self.labelId)
