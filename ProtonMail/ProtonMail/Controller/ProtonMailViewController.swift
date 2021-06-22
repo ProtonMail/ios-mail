@@ -116,7 +116,7 @@ extension UIViewController {
         controller.navigationController?.navigationBar.shadowImage = UIImage()//Hide shadow
         controller.navigationController?.navigationBar.layoutIfNeeded()
         
-        let navigationBarTitleFont = Fonts.h3.bold
+        let navigationBarTitleFont = Fonts.h3.semiBold
         #if !APP_EXTENSION
         controller.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColorManager.TextNorm,

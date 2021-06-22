@@ -44,7 +44,7 @@ final class LabelNameCell: UITableViewCell {
     }
 
     func config(name: String, type: PMLabelType, delegate: LabelNameDelegate?) {
-        self.nameField.text = name
+        self.nameField.attributedText = name.apply(style: FontManager.subHeadline)
         self.delegate = delegate
 
         let labelPlaceHolder = LocalString._labels_label_name_text

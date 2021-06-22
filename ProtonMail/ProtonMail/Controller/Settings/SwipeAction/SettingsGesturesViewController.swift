@@ -91,7 +91,8 @@ class SettingsGesturesViewController: ProtonMailViewController, ViewModelProtoco
                                       style: .plain,
                                       target: self,
                                       action: #selector(self.dismissView))
-        doneBtn.tintColor = UIColorManager.InteractionNorm
+        let attr = FontManager.HeadlineSmall.foregroundColor( UIColorManager.InteractionNorm)
+        doneBtn.setTitleTextAttributes(attr, for: .normal)
         navigationItem.rightBarButtonItem = doneBtn
     }
 

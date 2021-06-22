@@ -118,13 +118,15 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
             let learnMore = LocalString._settings_alternative_routing_learn
             let full = String.localizedStringWithFormat(eSection.foot, learnMore)
 
+            let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
             let attributedString = NSMutableAttributedString(string: full,
-                                                             attributes: FontManager.CaptionWeak)
+                                                             attributes: attr)
             if let subrange = full.range(of: learnMore) {
                 let nsRange = NSRange(subrange, in: full)
                 attributedString.addAttribute(.link,
                                               value: Link.alternativeRouting,
                                               range: nsRange)
+                textView.linkTextAttributes = [.foregroundColor: UIColorManager.InteractionNorm]
             }
             textView.attributedText = attributedString
             textView.translatesAutoresizingMaskIntoConstraints = false
@@ -135,7 +137,7 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
             NSLayoutConstraint.activate([
                 textView.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
                 textView.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),
-                textView.leftAnchor.constraint(equalTo: headerCell.contentView.leftAnchor, constant: 13),
+                textView.leftAnchor.constraint(equalTo: headerCell.contentView.leftAnchor, constant: 16),
                 textView.rightAnchor.constraint(equalTo: headerCell.contentView.rightAnchor, constant: -16)
             ])
         }

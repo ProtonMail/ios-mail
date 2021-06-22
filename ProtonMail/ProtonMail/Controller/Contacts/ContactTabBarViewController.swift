@@ -22,6 +22,7 @@
 
 
 import UIKit
+import ProtonCore_UIFoundations
 
 class ContactTabBarViewController: UITabBarController, CoordinatedNew {
     typealias coordinatorType = ContactTabBarCoordinator
@@ -71,7 +72,7 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew {
     ///    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.tabBar.tintColor = UIColorManager.InteractionNorm
         // setup tab bar item title
         self.tabBar.items?[0].title = LocalString._menu_contacts_title
         self.tabBar.items?[0].image = Asset.contactGroupsContactsTabbar.image

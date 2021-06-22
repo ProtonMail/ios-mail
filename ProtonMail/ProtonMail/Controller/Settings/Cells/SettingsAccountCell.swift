@@ -54,7 +54,7 @@ class SettingsAccountCell: UITableViewCell {
         nameAttribute.addTruncatingTail()
         self.nameLabel.attributedText = NSAttributedString(string: name, attributes: nameAttribute)
 
-        var emailAttribute = FontManager.DefaultSmallWeak
+        var emailAttribute = FontManager.CaptionWeak
         emailAttribute.addTruncatingTail()
         self.mailLabel.attributedText = NSAttributedString(string: email, attributes: emailAttribute)
 

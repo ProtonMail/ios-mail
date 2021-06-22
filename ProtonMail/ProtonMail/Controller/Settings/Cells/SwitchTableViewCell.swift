@@ -34,6 +34,10 @@ import UIKit
     override func awakeFromNib() {
         super.awakeFromNib()
         switchView.onTintColor = UIColorManager.BrandNorm
+        switchView.tintColor = UIColorManager.Shade60
+        switchView.layer.cornerRadius = 16
+        switchView.clipsToBounds = true
+        switchView.backgroundColor = UIColorManager.Shade60
         selectionStyle = .none
     }
     

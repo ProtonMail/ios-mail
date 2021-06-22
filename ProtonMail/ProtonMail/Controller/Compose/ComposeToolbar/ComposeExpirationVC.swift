@@ -249,8 +249,7 @@ extension ComposeExpirationVC: UITableViewDataSource, UITableViewDelegate {
             cell.textLabel?.attributedText = item.title.apply(style: FontManager.DefaultSmall)
             cell.accessoryType = .checkmark
         } else {
-            var attr = FontManager.DefaultSmallWeak
-            attr[.foregroundColor] = UIColorManager.TextDisabled
+            let attr = FontManager.DefaultSmallWeak.foregroundColor(UIColorManager.TextWeak)
             cell.textLabel?.attributedText = item.title.apply(style: attr)
             cell.accessoryType = .none
         }

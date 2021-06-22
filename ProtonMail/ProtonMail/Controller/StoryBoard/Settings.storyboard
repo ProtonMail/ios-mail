@@ -1206,7 +1206,7 @@
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Sent from &lt;a href=&quot;https://protonmail.ch&quot;&gt;ProtonMail&lt;/a&gt;, encrypted email based in Switzerland." translatesAutoresizingMaskIntoConstraints="NO" id="Trf-Y0-Ult">
                                         <rect key="frame" x="10" y="8" width="394" height="184"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <connections>
                                             <outlet property="delegate" destination="OCS-Qd-wj6" id="WMe-di-Vg6"/>
@@ -2066,8 +2066,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="GgS-nT-ctf"/>
         <segue reference="gwz-B9-War"/>
-        <segue reference="pf5-Mm-LDI"/>
-        <segue reference="A7E-cY-hB0"/>
+        <segue reference="PpL-SW-U8F"/>
+        <segue reference="3FM-PP-oeV"/>
         <segue reference="XQx-Pm-sNq"/>
     </inferredMetricsTieBreakers>
     <resources>
