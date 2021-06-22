@@ -1225,6 +1225,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     private func hideCheckOptions() {
+        guard listEditing else { return }
         self.listEditing = false
         if presentedViewController == nil {
             if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
