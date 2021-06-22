@@ -1712,7 +1712,7 @@ class LocalizedString {
 
     lazy var _other_plans = NSLocalizedString("OTHER PLANS", comment: "Section header")
 
-    lazy var _error_occured = NSLocalizedString("Error occured", comment: "Error alert title")
+    lazy var _error_occurred = NSLocalizedString("Error occurred", comment: "Error alert title")
 
     lazy var _free_header = NSLocalizedString("For individuals looking to benefit from secure communication at no cost", comment: "Service Plan description")
 
