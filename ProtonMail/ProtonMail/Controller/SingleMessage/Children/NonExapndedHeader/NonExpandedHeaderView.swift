@@ -79,7 +79,7 @@ class NonExpandedHeaderView: UIView {
         ].activate()
 
         [
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 14),
+            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
         ].activate()

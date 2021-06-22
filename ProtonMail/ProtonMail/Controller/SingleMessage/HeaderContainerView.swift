@@ -32,24 +32,21 @@ class HeaderContainerView: UIView {
 
     let expandArrowControl = UIControl(frame: .zero)
     let contentContainer = UIView(frame: .zero)
-    let contentStackView = UIStackView.stackView(axis: .vertical)
     let expandArrowImageView = SubviewsFactory.expandArrowImageView
 
     private func addSubviews() {
-        addSubview(contentStackView)
+        addSubview(contentContainer)
         addSubview(expandArrowControl)
 
         expandArrowControl.addSubview(expandArrowImageView)
-
-        contentStackView.addArrangedSubview(contentContainer)
     }
 
     private func setUpLayout() {
         [
-            contentStackView.topAnchor.constraint(equalTo: topAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+            contentContainer.topAnchor.constraint(equalTo: topAnchor),
+            contentContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentContainer.bottomAnchor.constraint(equalTo: bottomAnchor)
         ].activate()
 
         [contentContainer.widthAnchor.constraint(equalTo: widthAnchor)].activate()

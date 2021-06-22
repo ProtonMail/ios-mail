@@ -38,15 +38,6 @@ class SingleMessageView: UIView {
     let smallTitleHeaderSeparatorView = SubviewsFactory.smallSeparatorView
     let bigSeparatorView = SubviewsFactory.bigSeparatorView
     let contentContainer = UIView()
-//    let bannerContainer = UIView()
-//    let messageBodyContainer = UIView()
-//    let messageHeaderContainer = HeaderContainerView()
-
-//    let attachmentContainer = UIView()
-
-
-    // FIXME: - To move
-    //    let headerSeparator = SubviewsFactory.smallSeparatorView
 
     private func addSubviews() {
         addSubview(scrollView)
@@ -58,13 +49,6 @@ class SingleMessageView: UIView {
         stackView.addArrangedSubview(smallTitleHeaderSeparatorView)
         stackView.addArrangedSubview(bigSeparatorView)
         stackView.addArrangedSubview(contentContainer)
-//        stackView.addArrangedSubview(messageHeaderContainer)
-//        stackView.addArrangedSubview(attachmentContainer)
-//        stackView.addArrangedSubview(bannerContainer)
-//        stackView.addArrangedSubview(messageBodyContainer)
-
-        // FIXME: - TO move
-//        messageHeaderContainer.addSubview(headerSeparator)
     }
 
     private func setUpLayout() {
@@ -92,14 +76,6 @@ class SingleMessageView: UIView {
             navigationSeparator.trailingAnchor.constraint(equalTo: trailingAnchor),
             navigationSeparator.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
-
-        // FIXME: - To move
-//        [
-//            headerSeparator.heightAnchor.constraint(equalToConstant: 1),
-//            headerSeparator.leadingAnchor.constraint(equalTo: messageHeaderContainer.leadingAnchor),
-//            headerSeparator.trailingAnchor.constraint(equalTo: messageHeaderContainer.trailingAnchor),
-//            headerSeparator.bottomAnchor.constraint(equalTo: messageHeaderContainer.bottomAnchor)
-//        ].activate()
     }
 
     required init?(coder: NSCoder) {

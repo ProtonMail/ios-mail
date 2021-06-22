@@ -113,43 +113,44 @@ class SingleMessageContentViewController: UIViewController {
         self.bannerViewController = nil
     }
 
-    private func isHeaderContainerHidden(_ isHidden: Bool) {
-        customView.messageHeaderContainer.contentContainer.isHidden = isHidden
-        customView.messageHeaderContainer.contentContainer.alpha = isHidden ? 0 : 1
-    }
-
     private func manageHeaderViewControllers(oldController: UIViewController, newController: UIViewController) {
         unembed(oldController)
         embed(newController, inside: self.customView.messageHeaderContainer.contentContainer)
     }
 
     private func changeHeader(oldController: UIViewController, newController: UIViewController) {
-        guard isExpandingHeader == false else { return }
-        isExpandingHeader = true
-        let arrow = viewModel.isExpanded ? Asset.mailUpArrow.image : Asset.mailDownArrow.image
-        let showAnimation = { [weak self] in
-            UIView.animate(
-                withDuration: 0.25,
-                animations: {
-                    self?.isHeaderContainerHidden(false)
-                },
-                completion: { _ in
-                    self?.isExpandingHeader = false
-                    self?.viewModel.updateTableView?()
-                    self?.viewModel.storeHeight?()
-                }
-            )
+        oldController.willMove(toParent: nil)
+        newController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        self.addChild(newController)
+        self.customView.messageHeaderContainer.contentContainer.addSubview(newController.view)
+
+        let oldBottomConstraint = customView.messageHeaderContainer.contentContainer
+            .constraints.first(where: { $0.firstAttribute == .bottom })
+
+        newController.view.alpha = 0
+
+        [
+            newController.view.topAnchor.constraint(equalTo: customView.messageHeaderContainer.contentContainer.topAnchor),
+            newController.view.leadingAnchor.constraint(equalTo: customView.messageHeaderContainer.contentContainer.leadingAnchor),
+            newController.view.trailingAnchor.constraint(equalTo: customView.messageHeaderContainer.contentContainer.trailingAnchor)
+        ].activate()
+
+        let bottomConstraint = newController.view.bottomAnchor
+            .constraint(equalTo: customView.messageHeaderContainer.contentContainer.bottomAnchor)
+
+        oldBottomConstraint?.isActive = !(newController is ExpandedHeaderViewController)
+        bottomConstraint.isActive = newController is ExpandedHeaderViewController
+
+        UIView.animate(withDuration: 0.25) {
+            newController.view.alpha = 1
+            oldController.view.alpha = 0
+        } completion: { _ in
+            oldController.view.removeFromSuperview()
+            oldController.removeFromParent()
+            newController.didMove(toParent: self)
+            bottomConstraint.isActive = true
         }
-        UIView.animate(
-            withDuration: 0.25,
-            animations: { [weak self] in
-                self?.isHeaderContainerHidden(true)
-            }, completion: { [weak self] _ in
-                self?.manageHeaderViewControllers(oldController: oldController, newController: newController)
-                self?.customView.messageHeaderContainer.expandArrowImageView.image = arrow
-                showAnimation()
-            }
-        )
     }
 
     private func addObservations() {
