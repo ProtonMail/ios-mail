@@ -674,7 +674,7 @@ class LocalizedString {
     lazy var _signup_human_check_warning_title = NSLocalizedString("Human Check Warning", comment: "human check warning title")
 
     /// "Warning: Before you pass the human check you can't sent email!"
-    lazy var _signup_human_check_warning = NSLocalizedString("Warning: Before you pass the human check you can't sent email!", comment: "human check warning description")
+    lazy var _signup_human_check_warning = NSLocalizedString("Warning: Before you pass the human check you can't send email!", comment: "human check warning description")
 
     /// "Check Again"
     lazy var _signup_check_again_action = NSLocalizedString("Check Again", comment: "Action")
