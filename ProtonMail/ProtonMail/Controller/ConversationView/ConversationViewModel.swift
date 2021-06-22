@@ -3,10 +3,10 @@ import ProtonCore_UIFoundations
 class ConversationViewModel {
 
     var headerSectionDataSource: [ConversationViewItemType] = []
-
     var messagesDataSource: [ConversationViewItemType] = [] {
         didSet { refreshView?() }
     }
+    private(set) var isTrashedMessageHidden = false
 
     var refreshView: (() -> Void)?
 
@@ -33,6 +33,7 @@ class ConversationViewModel {
     private let conversationService: ConversationProvider
     private let eventsService: EventsFetching
     private let contactService: ContactDataService
+    private weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
 
@@ -67,10 +68,13 @@ class ConversationViewModel {
     }
 
     func observeConversationMessages(tableView: UITableView) {
+        self.tableView = tableView
         conversationMessagesProvider.observe { [weak self] update in
             self?.perform(update: update, on: tableView)
+            self?.checkTrashedHintBanner()
         } storedMessages: { [weak self] messages in
             self?.messagesDataSource = messages.compactMap { self?.messageType(with: $0) }
+            self?.checkTrashedHintBanner()
         }
     }
 
@@ -98,6 +102,39 @@ class ConversationViewModel {
             return nil
         }
         return try? self.writeToTemporaryUrl(body, filename: filename)
+    }
+
+    /// Add trashed hint banner if the messages contain trashed message
+    private func checkTrashedHintBanner() {
+        let trashed = self.messagesDataSource
+            .filter { $0.messageViewModel?.isTrashed ?? false }
+        let hasTrashed = !trashed.isEmpty
+        let isAllTrashed = trashed.count == self.messagesDataSource.count
+
+        let row = IndexPath(row: 1, section: 0)
+        let visible = self.tableView?.visibleCells.count ?? 0
+        guard hasTrashed else {
+            if let index = self.headerSectionDataSource.firstIndex(of: .trashedHint) {
+                self.headerSectionDataSource.remove(at: index)
+                if visible > 0 {
+                    self.tableView?.deleteRows(at: [row], with: .automatic)
+                }
+            }
+            return
+        }
+        if isAllTrashed {
+            if let index = self.headerSectionDataSource.firstIndex(of: .trashedHint) {
+                self.headerSectionDataSource.remove(at: index)
+                if visible > 0 {
+                    self.tableView?.deleteRows(at: [row], with: .automatic)
+                }
+            }
+        } else if !self.headerSectionDataSource.contains(.trashedHint) {
+            self.headerSectionDataSource.append(.trashedHint)
+            if visible > 0 {
+                self.tableView?.insertRows(at: [row], with: .automatic)
+            }
+        }
     }
 
     private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
@@ -366,5 +403,20 @@ extension ConversationViewModel: MoveToActionSheetProtocol {
                 self.eventsService.fetchEvents(labelID: self.labelId)
             }
         }
+    }
+}
+
+extension ConversationViewModel: ConversationViewTrashedHintDelegate {
+    func clickTrashedMessageSettingButton() {
+        self.isTrashedMessageHidden = !self.isTrashedMessageHidden
+
+        var reloadRows: [IndexPath] = []
+        self.messagesDataSource.enumerated().forEach { index, item in
+            guard let viewModel = item.messageViewModel,
+                  viewModel.isTrashed else { return }
+            reloadRows.append(.init(row: index, section: 1))
+        }
+        reloadRows.append(.init(row: 1, section: 0))
+        self.tableView?.reloadRows(at: reloadRows, with: .automatic)
     }
 }

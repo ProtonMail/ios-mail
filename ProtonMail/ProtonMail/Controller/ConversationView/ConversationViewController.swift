@@ -76,9 +76,17 @@ class ConversationViewController: UIViewController,
             viewModel.headerSectionDataSource[indexPath.row] :
             viewModel.messagesDataSource[indexPath.row]
         switch itemType {
+        case .trashedHint:
+            let cell = tableView.dequeue(cellType: ConversationViewTrashedHintCell.self)
+            cell.setup(isTrashedHidden: self.viewModel.isTrashedMessageHidden,
+                       delegate: self.viewModel)
+            return cell
         case .header(let subject):
             return headerCell(tableView, indexPath: indexPath, subject: subject)
         case .message(let viewModel):
+            if viewModel.isTrashed && self.viewModel.isTrashedMessageHidden {
+                return tableView.dequeue(cellType: UITableViewCell.self)
+            }
             return messageCell(tableView, indexPath: indexPath, viewModel: viewModel)
         case .empty:
             return tableView.dequeue(cellType: UITableViewCell.self)
@@ -86,10 +94,13 @@ class ConversationViewController: UIViewController,
     }
 
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let conversationExpandedMessageCell = cell as? ConversationExpandedMessageCell else { return }
+        guard let conversationExpandedMessageCell = cell as? ConversationExpandedMessageCell,
+              let view = cell.contentView.subviews.first else { return }
         let viewController = children
             .compactMap { $0 as? ConversationExpandedMessageViewController }
-            .first(where: { $0.viewModel.message.messageID == conversationExpandedMessageCell.messageId })
+            .first { $0.viewModel.message.messageID == conversationExpandedMessageCell.messageId &&
+                $0.view == view
+            }
         guard let controllerToUnembed = viewController else { return }
         unembed(controllerToUnembed)
     }
@@ -222,6 +233,7 @@ class ConversationViewController: UIViewController,
         customView.tableView.register(cellType: ConversationMessageCell.self)
         customView.tableView.register(cellType: ConversationExpandedMessageCell.self)
         customView.tableView.register(cellType: UITableViewCell.self)
+        customView.tableView.register(cellType: ConversationViewTrashedHintCell.self)
     }
 
     required init?(coder: NSCoder) {
@@ -240,8 +252,20 @@ class ConversationViewController: UIViewController,
         guard !viewType.isEmpty else {
             return 0
         }
-        guard let viewModel = viewType.messageViewModel,
-              let storedHeightInfo = storedSize[viewModel.message.messageID] else {
+        guard let viewModel = viewType.messageViewModel else {
+            return UITableView.automaticDimension
+        }
+
+        if viewModel.isTrashed && self.viewModel.isTrashedMessageHidden {
+            return 0
+        }
+        let isMessageExpanded = viewModel.state.isExpanded
+        if !isMessageExpanded {
+            // For smooth animation
+            return 56
+        }
+
+        guard let storedHeightInfo = storedSize[viewModel.message.messageID] else {
             return UITableView.automaticDimension
         }
         let isExpanded = viewModel.state.expandedViewModel?.messageContent.isExpanded
@@ -296,7 +320,6 @@ class ConversationViewController: UIViewController,
             let cell = tableView.dequeue(cellType: ConversationExpandedMessageCell.self)
             let viewController = embedController(viewModel: expandedViewModel, in: cell, indexPath: indexPath)
             embed(viewController, inside: cell.container)
-
             viewController.customView.topArrowTapAction = { [weak self] in
                 self?.cellTapped(messageId: viewModel.message.messageID)
             }

@@ -431,6 +431,20 @@ struct FontManager {
         ]
         return attributes
     }()
+    
+    static let body2RegularNorm: [NSAttributedString.Key: Any] = {
+        let font = UIFont.systemFont(ofSize: 15)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.12
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .kern: -0.24,
+            .font: font,
+            .foregroundColor: UIColorManager.TextNorm,
+            .paragraphStyle: paragraphStyle
+        ]
+        return attributes
+    }()
 
     static let body3RegularNorm: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 14)

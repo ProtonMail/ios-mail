@@ -99,10 +99,14 @@ class SingleMessageContentViewModel {
     }
 
     func downloadDetails() {
-        let shouldLoadBody = message.body.isEmpty
+        let shouldLoadBody = message.body.isEmpty || !message.isDetailDownloaded
         self.isDetailedDownloaded = !shouldLoadBody
         guard internetStatusProvider.currentStatus != .NotReachable else {
             self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
+            return
+        }
+        guard !(self.isDetailedDownloaded ?? false) else {
+            self.messageBodyViewModel.messageHasChanged(message: self.message)
             return
         }
         messageService.fetchMessageDetailForMessage(message, labelID: context.labelId) { [weak self] _, _, _, error in

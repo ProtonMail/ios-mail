@@ -20,6 +20,13 @@ class ConversationMessageViewModel {
         guard isDraft else { return false }
         return true
     }
+    
+    var isTrashed: Bool {
+        return message.labels
+            .compactMap { $0 as? Label }
+            .map(\.labelID)
+            .contains(Message.Location.trash.rawValue)
+    }
 
     init(labelId: String, message: Message, user: UserManager) {
         self.labelId = labelId
@@ -49,7 +56,7 @@ class ConversationMessageViewModel {
 
 }
 
-private extension ConversationMessageState {
+extension ConversationMessageState {
 
     var isExpanded: Bool {
         guard case .expanded = self else { return false }

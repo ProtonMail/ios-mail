@@ -1137,6 +1137,8 @@ class LocalizedString {
     
     /// "Hide"
     lazy var _hide = NSLocalizedString("Hide", comment: "Action")
+    /// "Show"
+    lazy var _show = NSLocalizedString("Show", comment: "Action")
 
     /// "Change Password"
     lazy var _change_password = NSLocalizedString("Change Password", comment: "update password error title")
@@ -2116,6 +2118,7 @@ class LocalizedString {
 
     lazy var _banner_embedded_image_title = NSLocalizedString("This message contains embedded images.", comment: "")
     lazy var _banner_load_embedded_image = NSLocalizedString("Load images", comment: "")
+    lazy var _banner_trashed_message_title = NSLocalizedString("This conversation contains trashed messages", comment: "")
 
     lazy var _message_action_sheet_title_recipient = NSLocalizedString("Recipient details", comment: "")
     lazy var _message_action_sheet_title_sender = NSLocalizedString("Sender details", comment: "")
