@@ -26,6 +26,7 @@ import ProtonCore_AccountSwitcher
 
 final class MenuViewController: UIViewController, AccessibleView {
 
+    @IBOutlet weak var accountSwitcherTopConstraint: NSLayoutConstraint!
     @IBOutlet private var menuWidth: NSLayoutConstraint!
     @IBOutlet private var shortNameView: UIView!
     @IBOutlet private var primaryUserview: UIView!
@@ -61,6 +62,7 @@ final class MenuViewController: UIViewController, AccessibleView {
                                                selector: #selector(self.appDidEnterBackground),
                                                name: UIApplication.didEnterBackgroundNotification,
                                                object: nil)
+        accountSwitcherTopConstraint.constant = UIDevice.hasNotch ? -2 : 24
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -118,7 +118,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="1024"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="8fi-sz-RIz">
-                                        <rect key="frame" x="0.0" y="24" width="300" height="1000"/>
+                                        <rect key="frame" x="0.0" y="46" width="300" height="978"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <connections>
                                             <outlet property="dataSource" destination="xSV-7A-xil" id="Qa7-95-105"/>
@@ -126,7 +126,7 @@
                                         </connections>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iCC-qA-Xmu" userLabel="primaryUserView">
-                                        <rect key="frame" x="8" y="2" width="284" height="48"/>
+                                        <rect key="frame" x="8" y="24" width="284" height="48"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RdD-rd-dlf" userLabel="displayName">
                                                 <rect key="frame" x="52" y="7" width="182" height="18"/>
@@ -195,7 +195,7 @@
                                     <constraint firstAttribute="width" constant="300" id="9yO-nG-sT2"/>
                                     <constraint firstItem="iCC-qA-Xmu" firstAttribute="leading" secondItem="vLd-tv-nzd" secondAttribute="leading" constant="8" id="OfV-lz-0xu"/>
                                     <constraint firstItem="8fi-sz-RIz" firstAttribute="top" secondItem="iCC-qA-Xmu" secondAttribute="bottom" constant="-26" id="PUa-9x-yyP"/>
-                                    <constraint firstItem="iCC-qA-Xmu" firstAttribute="top" secondItem="vLd-tv-nzd" secondAttribute="top" constant="2" id="SU9-3n-PVe"/>
+                                    <constraint firstItem="iCC-qA-Xmu" firstAttribute="top" secondItem="vLd-tv-nzd" secondAttribute="top" constant="24" id="SU9-3n-PVe"/>
                                     <constraint firstAttribute="trailing" secondItem="iCC-qA-Xmu" secondAttribute="trailing" constant="8" id="wE5-L8-0oI"/>
                                     <constraint firstAttribute="bottom" secondItem="8fi-sz-RIz" secondAttribute="bottom" id="waV-Wc-xhB"/>
                                     <constraint firstItem="8fi-sz-RIz" firstAttribute="leading" secondItem="vLd-tv-nzd" secondAttribute="leading" id="z2i-9W-Kbr"/>
@@ -210,6 +210,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="accountSwitcherTopConstraint" destination="SU9-3n-PVe" id="m3I-iq-GiC"/>
                         <outlet property="addressLabel" destination="E29-Rf-Lou" id="wOr-YC-N9z"/>
                         <outlet property="arrowBtn" destination="7ry-Cc-QGq" id="hdY-js-nec"/>
                         <outlet property="avatarLabel" destination="V1S-Jj-cK9" id="N7T-8J-VVP"/>

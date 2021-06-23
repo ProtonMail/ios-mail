@@ -94,4 +94,10 @@ extension UIDevice {
     
 }
 
+extension UIDevice {
 
+    static var hasNotch: Bool {
+        return UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0 > 0
+    }
+
+}
