@@ -7986,6 +7986,7 @@
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI/ProtonCore_PaymentsUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-SRP/ProtonCore_SRP.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCore_UIFoundations.framework",
@@ -8033,6 +8034,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Login.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Networking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Payments.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_PaymentsUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_SRP.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Services.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_UIFoundations.framework",
@@ -8127,6 +8129,7 @@
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI/ProtonCore_PaymentsUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-SRP/ProtonCore_SRP.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCore_UIFoundations.framework",
@@ -8174,6 +8177,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Login.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Networking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Payments.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_PaymentsUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_SRP.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Services.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_UIFoundations.framework",
@@ -8245,6 +8249,7 @@
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI/ProtonCore_PaymentsUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-SRP/ProtonCore_SRP.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCore_UIFoundations.framework",
@@ -8292,6 +8297,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Login.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Networking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Payments.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_PaymentsUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_SRP.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Services.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_UIFoundations.framework",
@@ -8507,14 +8513,10 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework",
-				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftOTP/SwiftOTP.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftOTP.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

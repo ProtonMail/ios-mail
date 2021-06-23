@@ -5,7 +5,7 @@
 //  Created by Kristina Jureviciute on 2021-04-23.
 //
 
-import PMTestAutomation
+import pmtest
 
 private let labelUnlockYourMailboxText = "Unlock your mailbox"
 private let mailboxPasswordTextFieldId = "MailboxPasswordViewController.mailboxPasswordTextField.textField"

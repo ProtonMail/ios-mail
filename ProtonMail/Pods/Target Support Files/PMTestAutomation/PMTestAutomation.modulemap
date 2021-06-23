@@ -1,6 +1,0 @@
-framework module PMTestAutomation {
-  umbrella header "PMTestAutomation-umbrella.h"
-
-  export *
-  module * { export * }
-}

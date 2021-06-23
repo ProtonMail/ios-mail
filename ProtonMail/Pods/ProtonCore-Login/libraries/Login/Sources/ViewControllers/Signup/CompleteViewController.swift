@@ -72,7 +72,7 @@ class CompleteViewController: UIViewController, AccessibleView {
     }
 
     // MARK: Private methods
-
+    
     private func createAccount() {
         guard let userName = name, let password = password else {
             assertionFailure("Create internal account input data missing")
@@ -83,7 +83,6 @@ class CompleteViewController: UIViewController, AccessibleView {
                 switch result {
                 case .success(let loginData):
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.waitingActivityIndicator.stopAnimating()
                         self.delegate?.accountCreationFinish(loginData: loginData)
                     }
                 case .failure(let error):
@@ -105,7 +104,6 @@ class CompleteViewController: UIViewController, AccessibleView {
                 switch result {
                 case .success(let loginData):
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.waitingActivityIndicator.stopAnimating()
                         self.delegate?.accountCreationFinish(loginData: loginData)
                     }
                 case .failure(let error):

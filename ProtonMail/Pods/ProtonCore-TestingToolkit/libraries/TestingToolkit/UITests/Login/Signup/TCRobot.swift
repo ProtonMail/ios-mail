@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PMTestAutomation
+import pmtest
 
 private let titleId = "TCViewController.titleLabel"
 private let backtButtonId = "TCViewController.closeButton"

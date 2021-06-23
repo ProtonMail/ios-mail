@@ -25,14 +25,15 @@ public extension UIDevice {
     /// A boolean value that indicates the device has a physical home button or not.
     static var hasPhysicalHome: Bool {
         guard #available(iOS 11.0, *) else {
-            // Device has physical home button
+            // Device that under iOS 11 must have physical home button
             return true
         }
 
         guard let application = UIApplication.getInstance(),
-              application.windows.first != nil else {
-                // Device has physical home button
-                return true
+              let keyWindow = application.windows.first,
+              keyWindow.safeAreaInsets.bottom > 0 else {
+            // Device has physical home button
+            return true
         }
         return false
     }

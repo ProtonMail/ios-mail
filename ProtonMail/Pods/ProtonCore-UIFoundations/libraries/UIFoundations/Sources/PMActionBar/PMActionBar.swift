@@ -37,12 +37,12 @@ public final class PMActionBar: UIView {
     // MARK: Constants
     private let TAG_OFFSET: Int = 10
     /// Padding between bar item
-    private let PADDING: CGFloat = 6
+    private let PADDING: CGFloat = 4
     /// MULTIPLIER used in case Width.extend
     private let WIDTH_MULTIPLIER: CGFloat = 0.8
     /// Size of button bar item
     private var BUTTON_SIZE: CGFloat {
-        return self.height - (2 * PADDING)
+    	min(40, height - (2 * PADDING))
     }
 
     // MARK: Variables
@@ -57,6 +57,10 @@ public final class PMActionBar: UIView {
     private var height: CGFloat = 48
     /// Bottom constraint of the action bar
     private var bottomConstraint: NSLayoutConstraint!
+    /// The pressed button. There should only be one pressed item at a time.
+    private weak var pressedButton: UIButton?
+    /// The previous selected button. Used when one wants to restore the prvious selecting states.
+    private weak var prevSelectedButton: UIButton?
 
     /// Initializer of the action bar
     /// - Parameters:
@@ -130,11 +134,29 @@ extension PMActionBar {
         }
         self.removeFromSuperview()
     }
+    
+    /// End the animation of indicator, restore the previous text/icon, and set the button state as selected if succeed.
+    /// If succeed is false and shouldRestore is true, then restore the previous selected barItem.
+    public func endSpinning(succeed: Bool, shouldRestore: Bool = false) {
+        guard let button = self.pressedButton else {
+            return
+        }
+        if succeed {
+            self.setup(button: button, for: .selected)
+        } else {
+            self.setup(button: button, for: .normal)
+            if shouldRestore, let prevButton = self.prevSelectedButton {
+                self.setup(button: prevButton, for: .selected)
+            }
+        }
+    }
 }
 
 // MARK: Private functions
 extension PMActionBar {
     @objc private func clickItem(sender: UIButton) {
+        guard self.pressedButton == nil else { return }
+        
         let idx = sender.tag - TAG_OFFSET
         let item = self.items[idx]
         item.handler?(item)
@@ -144,7 +166,11 @@ extension PMActionBar {
         for view in stack.arrangedSubviews {
             if let btn = view as? UIButton {
                 if btn == sender {
-                    self.setup(button: btn, for: .selected)
+                    if item.shouldSpin {
+                        self.setup(button: btn, for: .reserved)
+                    } else {
+                        self.setup(button: btn, for: .selected)
+                    }
                 } else {
                     self.setup(button: btn, for: .normal)
                 }
@@ -188,8 +214,8 @@ extension PMActionBar {
         stack.spacing = PADDING
         self.addSubview(stack)
         stack.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        stack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: PADDING).isActive = true
-        stack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -1 * PADDING).isActive = true
+        stack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 2 * PADDING).isActive = true
+        stack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -2 * PADDING).isActive = true
         stack.heightAnchor.constraint(equalToConstant: BUTTON_SIZE).isActive = true
         return stack
     }
@@ -216,9 +242,9 @@ extension PMActionBar {
                 } else {
                     btn = createPlainButton(item: item, idx: idx)
                 }
-                if (stack.arrangedSubviews.last as? UIButton) != nil {
-                    let spacer = self.createSpacer()
-                    stack.addArrangedSubview(spacer)
+                if let indicator = item.activityIndicator {
+                    btn.addSubview(indicator)
+                    indicator.centerInSuperview()
                 }
                 stack.addArrangedSubview(btn)
             case .separator:
@@ -280,7 +306,8 @@ extension PMActionBar {
         btn.backgroundColor = item.backgroundColor
         btn.setTitle(item.text, for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.titleEdgeInsets = .init(top: 0, left: 4, bottom: 0, right: 0)
+        btn.contentEdgeInsets = .init(top: 0, left: 4, bottom: 0, right: 11)
+        btn.titleEdgeInsets = .init(top: 0, left: 7, bottom: 0, right: 0)
         btn.roundCorner(BUTTON_SIZE / 2)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.sizeToFit()
@@ -314,6 +341,22 @@ extension PMActionBar {
     private func setup(button: UIButton, for state: UIButton.State) {
         let idx = button.tag - TAG_OFFSET
         let item = self.items[idx]
+        
+        // record the previous selected button
+        if item.isSelected, state == .normal {
+            self.prevSelectedButton = button
+        }
+        
+        // restore the previous-set image & title
+        if item.isPressed, state != .reserved {
+            if let image = item.icon {
+                button.setImage(image, for: .normal)
+            }
+            button.setTitle(item.text, for: .normal)
+            item.activityIndicator?.stopAnimating()
+            self.items[idx].isPressed = false
+            self.pressedButton = nil
+        }
         switch state {
         case .normal:
             button.backgroundColor = item.backgroundColor
@@ -325,6 +368,14 @@ extension PMActionBar {
             button.tintColor = item.selectedItemColor ?? item.itemColor
             button.setTitleColor(item.selectedItemColor ?? item.itemColor, for: .normal)
             self.items[idx].isSelected = true
+        case .reserved:
+            button.backgroundColor = item.pressedBackgroundColor ?? item.backgroundColor
+            button.setImage(nil, for: .normal)
+            button.setTitle("", for: .normal)
+            item.activityIndicator?.isHidden = false
+            item.activityIndicator?.startAnimating()
+            self.items[idx].isPressed = true
+            self.pressedButton = button
         default: break
         }
     }

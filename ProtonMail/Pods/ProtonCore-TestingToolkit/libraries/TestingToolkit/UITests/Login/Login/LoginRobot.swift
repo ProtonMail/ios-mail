@@ -4,7 +4,7 @@
 //
 //  Created by denys zelenchuk on 11.02.21.
 //
-import PMTestAutomation
+import pmtest
 import ProtonCore_CoreTranslation
 
 private let titleId = "LoginViewController.titleLabel"

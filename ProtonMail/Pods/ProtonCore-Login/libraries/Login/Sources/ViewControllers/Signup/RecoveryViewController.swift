@@ -27,8 +27,7 @@ import ProtonCore_UIFoundations
 
 protocol RecoveryViewControllerDelegate: AnyObject {
     func recoveryBackButtonPressed()
-    func recoverySkipButtonPressed()
-    func recoveryFinish(email: String?, phoneNumber: String?)
+    func recoveryFinish(email: String?, phoneNumber: String?, completionHandler: (() -> Void)?)
     func termsAndConditionsLinkPressed()
     func recoveryCountryPickerPressed()
 }
@@ -42,16 +41,6 @@ class RecoveryViewController: UIViewController, AccessibleView {
 
     weak var delegate: RecoveryViewControllerDelegate?
     var viewModel: RecoveryViewModel!
-    var accountCreationError: Error? {
-        didSet {
-            guard let error = accountCreationError else { return }
-            if let error = error as? LoginError {
-                showError(error: error)
-            } else if let error = error as? SignupError {
-                showError(error: error)
-            }
-        }
-    }
     private var countryCode: String = ""
 
     // MARK: Outlets
@@ -174,7 +163,12 @@ class RecoveryViewController: UIViewController, AccessibleView {
             phoneNumber = countryCode + recoveryPhoneTextField.value
         default: break
         }
-        self.delegate?.recoveryFinish(email: email, phoneNumber: phoneNumber)
+        nextButton.isSelected = true
+        lockUI()
+        self.delegate?.recoveryFinish(email: email, phoneNumber: phoneNumber) {
+            self.nextButton.isSelected = false
+            self.unlockUI()
+        }
     }
 
     private func setupGestures() {
@@ -201,7 +195,14 @@ class RecoveryViewController: UIViewController, AccessibleView {
         let message = CoreString._su_recovery_skip_desc
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let skipAction = UIAlertAction(title: CoreString._su_skip_button, style: .default, handler: { _ in
-            self.delegate?.recoverySkipButtonPressed()
+            self.nextButton.isSelected = true
+            self.nextButton.isEnabled = true
+            self.lockUI()
+            self.delegate?.recoveryFinish(email: nil, phoneNumber: nil) {
+                self.nextButton.isSelected = false
+                self.unlockUI()
+                self.validateNextButton()
+            }
         })
         skipAction.accessibilityLabel = "DialogSkipButton"
         alertController.addAction(skipAction)

@@ -5,7 +5,7 @@
 //  Created by Kristina Jureviciute on 2021-04-29.
 //
 
-import PMTestAutomation
+import pmtest
 import XCTest
 
 private let helpTitleLabel = "HelpViewController.titleLabel"

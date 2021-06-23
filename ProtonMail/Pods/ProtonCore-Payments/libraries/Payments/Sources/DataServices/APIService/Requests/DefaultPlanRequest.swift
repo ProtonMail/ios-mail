@@ -31,6 +31,10 @@ final class DefaultPlanRequest: BaseApiRequest<DefaultPlanResponse> {
     override func path() -> String {
         return super.path() + "/plans/default"
     }
+    
+    override func getIsAuthFunction() -> Bool {
+        return false
+    }
 }
 
 final class DefaultPlanResponse: ApiResponse {

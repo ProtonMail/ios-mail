@@ -25,7 +25,7 @@ import Foundation
 extension Date {
 
     /// Check if this date represnt time in future
-    var isFuture: Bool {
+    public var isFuture: Bool {
         return self.timeIntervalSinceNow > 0
     }
 }

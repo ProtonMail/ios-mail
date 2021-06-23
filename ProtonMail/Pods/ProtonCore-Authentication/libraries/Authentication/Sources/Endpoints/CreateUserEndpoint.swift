@@ -80,11 +80,15 @@ extension AuthService {
         }
 
         var path: String {
-            return "/users"
+            return "/v4/users"
         }
 
         var method: HTTPMethod {
             return .post
+        }
+        
+        var version: Int {
+            return 4
         }
 
         var isAuth: Bool {

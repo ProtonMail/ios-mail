@@ -235,3 +235,32 @@
 "Email address already used." = "Email address already used.";
 "Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
 "Change email address" = "Change email address";
+
+/**
+ *  Payments UI
+ */
+
+"Select a plan" = "Select a plan";
+"Current plan" = "Current plan";
+"Update plan" = "Update plan";
+"Visit protonmail.com to upgrade to Professional and Visionary plans, or to customize your plan." = "Visit protonmail.com to upgrade to Professional and Visionary plans, or to customize your plan.";
+"Upon confirming your purchase of a paid plan, your iTunes account will be charged the amount displayed, which includes taxes and additional platform fees (which are not charged by Proton directly).";
+"Select plan" = "Select plan";
+"Upgrade" = "Upgrade";
+" / year" = " / year";
+"Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
+"Current plan will expire on %@" = "Current plan will expire on %@";
+"%i user" = "%i user";
+"%i users" = "%i users";
+"%@ storage" = "%@ storage";
+"%@ storage *" = "%@ storage *";
+"%i address" = "%i address";
+"%i addresses" = "%i addresses";
+"Unlimited folders / labels / filters" = "Unlimited folders / labels / filters";
+"Custom email addresses" = "Custom email addresses";
+
+/**
+ * Splash
+ */
+
+"Made by" = "Made by";

@@ -7,7 +7,7 @@
 
 import Foundation
 import XCTest
-import PMTestAutomation
+import pmtest
 import ProtonCore_CoreTranslation
 
 private let titleId = "RecoveryViewController.recoveryMethodTitleLabel"

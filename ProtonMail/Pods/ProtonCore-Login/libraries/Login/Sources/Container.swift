@@ -36,6 +36,7 @@ final class Container {
     private let api: PMAPIService
     private let authManager: AuthManager
     private var humanCheckHelper: HumanCheckHelper?
+    private var paymentsCoordinator: PaymentsCoordinator?
     private let externalLinks = ExternalLinks()
     private let appName: String
     private let challenge: PMChallenge
@@ -103,6 +104,12 @@ final class Container {
     func makeEmailVerificationViewModel() -> EmailVerificationViewModel {
         return EmailVerificationViewModel(apiService: api, signupService: signupService)
     }
+    
+    func makePaymentsCoordinator(receipt: String?) -> PaymentsCoordinator {
+        let paymentsCoordinator = PaymentsCoordinator(apiService: api, receipt: receipt)
+        self.paymentsCoordinator = paymentsCoordinator
+        return paymentsCoordinator
+    }
 
     // MARK: Other view models
 
@@ -112,7 +119,19 @@ final class Container {
 
     func setupHumanVerification(viewController: UIViewController? = nil) {
         let url = externalLinks.humanVerificationHelp
-        humanCheckHelper = HumanCheckHelper(apiService: api, supportURL: url, viewController: viewController, responseDelegate: nil)
+        humanCheckHelper = HumanCheckHelper(apiService: api, supportURL: url, viewController: viewController, responseDelegate: nil, paymentDelegate: self)
         api.humanDelegate = humanCheckHelper
     }
+
+}
+
+extension Container: HumanVerifyPaymentDelegate {
+    var paymentToken: String? {
+        return paymentsCoordinator?.tokenStorage?.get()?.token
+    }
+    
+    func paymentTokenStatusChanged(status: PaymentTokenStatusResult) {
+
+    }
+
 }

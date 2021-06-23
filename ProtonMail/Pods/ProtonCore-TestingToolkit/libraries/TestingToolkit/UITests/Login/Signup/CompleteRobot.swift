@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PMTestAutomation
+import pmtest
 
 private let titleId = "CompleteViewController.completeTitleLabel"
 private let descriptionId = "CompleteViewController.completeDescriptionLabel"

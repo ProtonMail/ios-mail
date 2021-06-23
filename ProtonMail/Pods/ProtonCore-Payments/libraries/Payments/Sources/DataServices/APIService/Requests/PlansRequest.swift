@@ -38,6 +38,10 @@ final class PlansRequest: BaseApiRequest<PlansResponse> {
             "Cycle": 12
         ]
     }
+    
+    override func getIsAuthFunction() -> Bool {
+        return false
+    }
 }
 
 final class PlansResponse: ApiResponse {

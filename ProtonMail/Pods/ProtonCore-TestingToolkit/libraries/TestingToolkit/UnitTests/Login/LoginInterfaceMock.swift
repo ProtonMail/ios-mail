@@ -14,8 +14,10 @@ public struct LoginInterfaceMock: LoginInterface {
 
     @FuncStub(LoginInterfaceMock.presentSignupFlow) public var presentSignupFlowStub
     public func presentSignupFlow(over viewController: UIViewController,
+                                  isPlanSelectorAvailable: Bool,
+                                  receipt: String?,
                                   completion: @escaping (LoginResult) -> Void) {
-        presentSignupFlowStub(viewController, completion)
+        presentSignupFlowStub(viewController, isPlanSelectorAvailable, receipt, completion)
     }
 
     @FuncStub(LoginInterfaceMock.presentMailboxPasswordFlow) public var presentMailboxPasswordFlowStub

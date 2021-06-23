@@ -23,6 +23,7 @@
 import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_UIFoundations
+import ProtonCore_Payments
 
 protocol SignupCoordinatorDelegate: AnyObject {
     func userDidDismissSignupCoordinator(signupCoordinator: SignupCoordinator)
@@ -31,14 +32,14 @@ protocol SignupCoordinatorDelegate: AnyObject {
 }
 
 class SignupCoordinator {
-
+    
     weak var delegate: SignupCoordinatorDelegate?
-
+    
     private let container: Container
     private let signupMode: SignupMode
     private let signupPasswordRestrictions: SignupPasswordRestrictions
     private let isCloseButton: Bool
-
+    private let isPlanSelectorAvailable: Bool
     private weak var viewController: UIViewController?
     private var navigationController: UINavigationController?
     private var signupViewController: SignupViewController?
@@ -46,23 +47,27 @@ class SignupCoordinator {
     private var tcViewController: TCViewController?
     private var countryPickerViewController: CountryPickerViewController?
     private var countryPicker = PMCountryPicker(searchBarPlaceholderText: CoreString._hv_sms_search_placeholder)
-
+    
     var signupAccountType: SignupAccountType = .internal
     var name: String?
     var deviceToken: String?
     var password: String?
     var verifyToken: String?
+    
+    // Payments
+    private var paymentsCoordinator: PaymentsCoordinator?
 
-    init(container: Container,
-         signupMode: SignupMode,
-         signupPasswordRestrictions: SignupPasswordRestrictions,
-         isCloseButton: Bool) {
+    init(container: Container, signupMode: SignupMode, signupPasswordRestrictions: SignupPasswordRestrictions, isCloseButton: Bool, isPlanSelectorAvailable: Bool, receipt: String?) {
         self.container = container
         self.signupMode = signupMode
         self.signupPasswordRestrictions = signupPasswordRestrictions
         self.isCloseButton = isCloseButton
+        self.isPlanSelectorAvailable = isPlanSelectorAvailable
+        if isPlanSelectorAvailable {
+            self.paymentsCoordinator = container.makePaymentsCoordinator(receipt: receipt)
+        }
     }
-
+    
     func start(viewController: UIViewController) {
         self.viewController = viewController
         switch signupMode {
@@ -77,9 +82,9 @@ class SignupCoordinator {
         }
         showSignupViewController()
     }
-
+    
     // MARK: - View controller internal account presentation methods
-
+    
     private func showSignupViewController() {
         let signupViewController = UIStoryboard.instantiate(SignupViewController.self)
         signupViewController.viewModel = container.makeSignupViewModel()
@@ -94,33 +99,49 @@ class SignupCoordinator {
         }
         signupViewController.showCloseButton = isCloseButton
         signupViewController.signupAccountType = signupAccountType
-
+        
         let navigationController = UINavigationController(rootViewController: signupViewController)
         navigationController.navigationBar.isHidden = true
         navigationController.modalPresentationStyle = .fullScreen
         self.navigationController = navigationController
-
+        
         container.setupHumanVerification()
         viewController?.present(navigationController, animated: true, completion: nil)
     }
-
+    
     private func showPasswordViewController() {
         let passwordViewController = UIStoryboard.instantiate(PasswordViewController.self)
         passwordViewController.viewModel = container.makePasswordViewModel()
         passwordViewController.delegate = self
         passwordViewController.signupAccountType = signupAccountType
         passwordViewController.signupPasswordRestrictions = signupPasswordRestrictions
-
+        
         signupViewController?.navigationController?.pushViewController(passwordViewController, animated: true)
     }
-
+    
     private func showRecoveryViewController() {
         let recoveryViewController = UIStoryboard.instantiate(RecoveryViewController.self)
         recoveryViewController.viewModel = container.makeRecoveryViewModel(initialCountryCode: countryPicker.getInitialCode())
         recoveryViewController.delegate = self
         self.recoveryViewController = recoveryViewController
-
+        
         signupViewController?.navigationController?.pushViewController(recoveryViewController, animated: true)
+    }
+    
+    private func finishSignupProcess(email: String? = nil, phoneNumber: String? = nil, completionHandler: (() -> Void)?) {
+        if isPlanSelectorAvailable {
+            paymentsCoordinator?.startPaymentProcess(signupViewController: signupViewController, planShownHandler: completionHandler, completionHandler: { result in
+                switch result {
+                case .success:
+                    self.showCompleteViewController(email: email, phoneNumber: phoneNumber)
+                case .failure(let error):
+                    self.errorHandler(error: error)
+                }
+            })
+        } else {
+            completionHandler?()
+            showCompleteViewController(email: email, phoneNumber: phoneNumber)
+        }
     }
 
     private func showCompleteViewController(email: String? = nil, phoneNumber: String? = nil) {
@@ -128,7 +149,7 @@ class SignupCoordinator {
             assertionFailure("deviceToken missing")
             return
         }
-
+        
         let completeViewController = UIStoryboard.instantiate(CompleteViewController.self)
         let completeViewModel = container.makeCompleteViewModel(deviceToken: deviceToken)
         completeViewController.viewModel = completeViewModel
@@ -139,29 +160,28 @@ class SignupCoordinator {
         completeViewController.email = email
         completeViewController.phoneNumber = phoneNumber
         completeViewController.verifyToken = verifyToken
-
         signupViewController?.navigationController?.pushViewController(completeViewController, animated: true)
     }
-
+    
     private func showCountryPickerViewController() {
         let countryPickerViewController = countryPicker.getCountryPickerViewController()
         countryPickerViewController.delegate = self
         self.countryPickerViewController = countryPickerViewController
-
+        
         signupViewController?.navigationController?.present(countryPickerViewController, animated: true)
     }
-
+    
     private func showTermsAndConditionsViewController() {
         let tcViewController = UIStoryboard.instantiate(TCViewController.self)
         tcViewController.viewModel = container.makeTCViewModel()
         tcViewController.delegate = self
         self.tcViewController = tcViewController
-
+        
         signupViewController?.navigationController?.present(tcViewController, animated: true)
     }
-
+    
     // MARK: - View controller external account presentation methods
-
+    
     private func showEmailVerificationViewController() {
         guard let email = name else {
             assertionFailure("email missing")
@@ -172,17 +192,40 @@ class SignupCoordinator {
         emailVerificationViewModel.email = email
         emailVerificationViewController.viewModel = emailVerificationViewModel
         emailVerificationViewController.delegate = self
-
+        
         signupViewController?.navigationController?.pushViewController(emailVerificationViewController, animated: true)
     }
 
-    private func previousViewController() -> UIViewController? {
-        let numberOfViewControllers = navigationController?.viewControllers.count ?? 0
-        let index = navigationController?.viewControllers.last is CompleteViewController ? 1 : 2
-        if numberOfViewControllers >= index, let previousVC = navigationController?.viewControllers[numberOfViewControllers - 1 - index] {
-            return previousVC
+    private var activeViewController: UIViewController? {
+        guard let viewControllers = navigationController?.viewControllers else { return nil }
+        var completeVCIndex: Int?
+        for (index, vc) in viewControllers.enumerated() where vc is CompleteViewController {
+                completeVCIndex = index
         }
-        return nil
+        guard let completeVCIndex = completeVCIndex, viewControllers.count >= completeVCIndex - 1 else { return nil }
+        return  viewControllers[completeVCIndex - 1]
+    }
+    
+    private func finalizeAccountCreation(loginData: LoginData) {
+        if isPlanSelectorAvailable {
+            paymentsCoordinator?.finishPaymentProcess(loginData: loginData) { result in
+                switch result {
+                case .success:
+                    self.finishAccountCreation(loginData: loginData)
+                case .failure(let error):
+                    self.errorHandler(error: error)
+                }
+            }
+        } else {
+            finishAccountCreation(loginData: loginData)
+        }
+    }
+    
+    private func finishAccountCreation(loginData: LoginData) {
+        DispatchQueue.main.async {
+            self.signupViewController?.dismiss(animated: true)
+            self.delegate?.signupCoordinatorDidFinish(signupCoordinator: self, loginData: loginData)
+        }
     }
 }
 
@@ -201,12 +244,12 @@ extension SignupCoordinator: SignupViewControllerDelegate {
             showEmailVerificationViewController()
         }
     }
-
+    
     func signupCloseButtonPressed() {
         signupViewController?.dismiss(animated: true)
         delegate?.userDidDismissSignupCoordinator(signupCoordinator: self)
     }
-
+    
     func signinButtonPressed() {
         signupViewController?.dismiss(animated: true)
         delegate?.userSelectedSignin(email: nil)
@@ -216,15 +259,16 @@ extension SignupCoordinator: SignupViewControllerDelegate {
 // MARK: PasswordViewControllerDelegate
 
 extension SignupCoordinator: PasswordViewControllerDelegate {
-    func validatedPassword(password: String) {
+    func validatedPassword(password: String, completionHandler: (() -> Void)?) {
         self.password = password
         if signupAccountType == .internal {
             showRecoveryViewController()
+            completionHandler?()
         } else {
-            showCompleteViewController()
+            finishSignupProcess(completionHandler: completionHandler)
         }
     }
-
+    
     func passwordBackButtonPressed() {
         signupViewController?.navigationController?.popViewController(animated: true)
     }
@@ -233,24 +277,21 @@ extension SignupCoordinator: PasswordViewControllerDelegate {
 // MARK: RecoveryViewControllerDelegate
 
 extension SignupCoordinator: RecoveryViewControllerDelegate {
-    func recoveryFinish(email: String?, phoneNumber: String?) {
-        showCompleteViewController(email: email, phoneNumber: phoneNumber)
-    }
 
-    func recoverySkipButtonPressed() {
-        showCompleteViewController()
+    func recoveryFinish(email: String?, phoneNumber: String?, completionHandler: (() -> Void)?) {
+        finishSignupProcess(email: email, phoneNumber: phoneNumber, completionHandler: completionHandler)
     }
-
+    
     func recoveryBackButtonPressed() {
         signupViewController?.navigationController?.popViewController(animated: true)
     }
-
+    
     func termsAndConditionsLinkPressed() {
         showTermsAndConditionsViewController()
     }
-
+    
     func recoveryCountryPickerPressed() {
-      showCountryPickerViewController()
+        showCountryPickerViewController()
     }
 }
 
@@ -260,7 +301,7 @@ extension SignupCoordinator: CountryPickerViewControllerDelegate {
     func didCountryPickerClose() {
         countryPickerViewController?.dismiss(animated: true)
     }
-
+    
     func didSelectCountryCode(countryCode: CountryCode) {
         countryPickerViewController?.dismiss(animated: true)
         recoveryViewController?.updateCountryCode(countryCode.phone_code)
@@ -271,18 +312,31 @@ extension SignupCoordinator: CountryPickerViewControllerDelegate {
 
 extension SignupCoordinator: CompleteViewControllerDelegate {
     func accountCreationFinish(loginData: LoginData) {
-        signupViewController?.dismiss(animated: true)
-        delegate?.signupCoordinatorDidFinish(signupCoordinator: self, loginData: loginData)
+        finalizeAccountCreation(loginData: loginData)
     }
-
+    
     func accountCreationError(error: Error) {
-        let previousVC = previousViewController()
-        if let passwordViewController = previousVC as? PasswordViewController {
-            passwordViewController.accountCreationError = error
-        } else if let passwordViewController = previousVC as? RecoveryViewController {
-            passwordViewController.accountCreationError = error
+        errorHandler(error: error)
+    }
+    
+    private func errorHandler(error: Error) {
+        let errorVC = activeViewController ?? navigationController?.viewControllers.last
+        if let error = error as? LoginError {
+            if let vc = errorVC as? LoginErrorCapable {
+                vc.showError(error: error)
+            }
+        } else if let error = error as? SignupError {
+            if let vc = errorVC as? SignUpErrorCapable {
+                vc.showError(error: error)
+            }
+        } else if let error = error as? StoreKitManager.Errors {
+            if let vc = errorVC as? PaymentErrorCapable {
+                vc.showError(error: error)
+            }
         }
-        signupViewController?.navigationController?.popViewController(animated: true)
+        if activeViewController != nil {
+            signupViewController?.navigationController?.popViewController(animated: true)
+        }
     }
 }
 
@@ -299,11 +353,11 @@ extension SignupCoordinator: EmailVerificationViewControllerDelegate {
         self.verifyToken = verifyToken
         showPasswordViewController()
     }
-
+    
     func emailVerificationBackButtonPressed() {
         signupViewController?.navigationController?.popViewController(animated: true)
     }
-
+    
     func emailAlreadyExists(email: String) {
         signupViewController?.dismiss(animated: true)
         delegate?.userSelectedSignin(email: email)

@@ -8,7 +8,7 @@
 
 import XCTest
 import ProtonCore_CoreTranslation
-import PMTestAutomation
+import pmtest
 
 private let title = CoreString._hv_title
 private let emailButton = CoreString._hv_email_method_name

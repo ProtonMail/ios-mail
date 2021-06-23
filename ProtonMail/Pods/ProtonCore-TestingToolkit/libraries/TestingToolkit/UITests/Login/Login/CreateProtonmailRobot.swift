@@ -6,7 +6,7 @@
 //
 
 
-import PMTestAutomation
+import pmtest
 
 private let createProtonmailTitleId = "ChooseUsernameViewController.titleLabel"
 private let usernameFieldId = "ChooseUsernameViewController.addressTextField.textField"

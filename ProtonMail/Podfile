@@ -14,7 +14,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '1.0.4'
+  '1.2.0'
 end
 
 def pm_shared_pods
@@ -100,7 +100,7 @@ end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
-  pod 'PMTestAutomation', :git => 'git@gitlab.protontech.ch:apple/shared/pmtestautomation.git', :branch => 'master'
+  pod 'pmtest', :git => 'git@gitlab.protontech.ch:apple/shared/pmtestautomation.git', :branch =>'master'
   pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/Login', proton_core_version
 end

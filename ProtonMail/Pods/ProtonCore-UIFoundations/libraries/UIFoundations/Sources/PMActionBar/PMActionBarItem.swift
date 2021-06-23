@@ -50,6 +50,17 @@ public struct PMActionBarItem {
     private(set) var handler: ((PMActionBarItem) -> Void)?
     /// Optional information about the the bar item.
     public private(set) var userInfo: [String: Any]?
+    /// A Boolean value indicating whether the control is in the pressed state.
+    /// In this state, the activity indicator will spin if the shouldSpin set as true.
+    /// But if shouldSpin is false, then isPressed is always false.
+    /// # Notes
+    /// Changing value here won't stop the animation
+    public var isPressed: Bool = false
+    /// A Boolean value indicating whether the control should spin once it's selected. Default false.
+    var shouldSpin: Bool = false
+    /// Color when bar item is pressed
+    var pressedBackgroundColor: UIColor?
+    private(set) var activityIndicator: UIActivityIndicatorView?
 
     /// Initializer of bar item(button type)
     /// - Parameters:
@@ -177,5 +188,21 @@ public struct PMActionBarItem {
         self.backgroundColor = color
         self.type = .separator
         self.userInfo = ["width": width, "verticalPadding": verticalPadding]
+    }
+    
+    /// Set should spin as true, there'd be an activity indicator spinning shen selecting the button.
+    /// But it won't work on those already selected.
+    public func setShouldSpin(pressedBackgroundColor: UIColor = UIColorManager.FloatyPressed) -> Self {
+        var item = self
+        guard self.shouldSpin == false else {
+            return item
+        }
+        item.shouldSpin = true
+        item.pressedBackgroundColor = pressedBackgroundColor
+        
+        item.activityIndicator = .init(style: .white)
+        item.activityIndicator?.hidesWhenStopped = true
+        item.activityIndicator?.isHidden = true
+        return item
     }
 }

@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import PMTestAutomation
+import pmtest
 
 fileprivate let mailboxTableView = "mailboxTableView"
 fileprivate let inboxTitleLabel = LocalString._menu_inbox_title

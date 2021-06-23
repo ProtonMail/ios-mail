@@ -5,8 +5,7 @@
 //  Created by Kristina Jureviciute on 2021-04-23.
 //
 
-import PMTestAutomation
-import SwiftOTP
+import pmtest
 
 private let twoFAFieldId = "TwoFactorViewController.codeTextField.textField"
 private let authenticateButtonId = "TwoFactorViewController.authenticateButton"

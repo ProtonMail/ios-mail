@@ -881,7 +881,7 @@ public class PMAPIService: APIService {
         #endif
     }
 
-    func humanVerificationHandler(
+    private func humanVerificationHandler(
         method: HTTPMethod,
         path: String,
         parameters: Any?,
@@ -935,7 +935,7 @@ public class PMAPIService: APIService {
         }
     }
 
-    func humanVerificationUIHandler(
+    private func humanVerificationUIHandler(
         method: HTTPMethod,
         path: String,
         parameters: Any?,
@@ -977,13 +977,13 @@ public class PMAPIService: APIService {
                     // human verification completion
                     let hvCompletion: CompletionBlock = { task, response, error in
                         if let error = error, self.invalidHVCodes.first(where: { error.code == $0 }) != nil {
-                            let responseError = ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
-                                                              responseCode: response?["Code"] as? Int,
-                                                              userFacingMessage: response?["Error"] as? String,
-                                                              underlyingError: error)
+                            let responseError = self.getResponseError(task: task, response: response, error: error)
                             verificationCodeBlock?(false, responseError, nil)
                         } else {
-                            verificationCodeBlock?(true, nil) {
+                            let code = response?["Code"] as? Int
+                            let result = code == APIErrorCode.responseOK
+                            let responseError = result ? nil : self.getResponseError(task: task, response: response, error: error)
+                            verificationCodeBlock?(result, responseError) {
                                 // finish request with new completion block
                                 completion?(task, response, error)
                                 self.isHumanVerifyUIPresented = false
@@ -1010,14 +1010,21 @@ public class PMAPIService: APIService {
             }
         }
     }
+    
+    private func getResponseError(task: URLSessionDataTask?, response: [String: Any]?, error: NSError?) -> ResponseError {
+        return ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
+                             responseCode: response?["Code"] as? Int,
+                             userFacingMessage: response?["Error"] as? String,
+                             underlyingError: error)
+    }
 
-    var invalidHVCodes: [Int] {
+    private var invalidHVCodes: [Int] {
         return [APIErrorCode.invalidVerificationCode,
                 APIErrorCode.tooManyVerificationCodes,
                 APIErrorCode.tooManyFailedVerificationAttempts]
     }
 
-    func forceUpgradeHandler(responseDictionary: [String: Any]) {
+    private func forceUpgradeHandler(responseDictionary: [String: Any]) {
         let errorMessage = responseDictionary["Error"] as? String ?? ""
         if let delegate = forceUpgradeDelegate, isForceUpgradeUIPresented == false {
             isForceUpgradeUIPresented = true

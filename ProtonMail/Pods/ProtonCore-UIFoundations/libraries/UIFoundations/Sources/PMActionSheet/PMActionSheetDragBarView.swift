@@ -49,7 +49,6 @@ extension PMActionSheetDragBarView {
         self.addSubview(bar)
         bar.setSizeContraint(height: 4, width: 40)
         bar.centerXInSuperview()
-        bar.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        bar.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        bar.centerYInSuperview()
     }
 }

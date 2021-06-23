@@ -328,4 +328,22 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         get { self[.foregroundColor] as? UIColor }
         set( color ) { self[.foregroundColor] = color as? Value }
     }
+
+    public enum Splash {
+        public static var appName: PMFontAttributes {
+            let font = UIFont.systemFont(ofSize: 22, weight: .medium)
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineHeightMultiple = 1.07
+            paragraphStyle.alignment = .center
+            return [.kern: 0.8, .paragraphStyle: paragraphStyle, .font: font, .foregroundColor: UIColorManager.Splash.TextNorm]
+        }
+
+        public static var footer: PMFontAttributes {
+            let font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineHeightMultiple = 1.03
+            paragraphStyle.alignment = .center
+            return [.kern: -0.08, .paragraphStyle: paragraphStyle, .font: font, .foregroundColor: UIColorManager.Splash.TextHint]
+        }
+    }
 }

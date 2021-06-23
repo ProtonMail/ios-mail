@@ -511,4 +511,65 @@ public class LocalizedString {
 
     /// Signup invalid verification change email address button
     public lazy var _su_invalid_verification_change_email_button = NSLocalizedString("Change email address", bundle: Common.bundle, comment: "Change email address button")
+    
+    // Payments UI
+    
+    /// Select a plan title
+    public lazy var _pu_select_plan_title = NSLocalizedString("Select a plan", bundle: Common.bundle, comment: "Plan selection title")
+
+    /// Current plan title
+    public lazy var _pu_current_plan_title = NSLocalizedString("Current plan", bundle: Common.bundle, comment: "Plan selection title")
+  
+    /// Update plan title
+    public lazy var _pu_update_plan_title = NSLocalizedString("Update plan", bundle: Common.bundle, comment: "Plan selection title")
+    
+    /// Plan footer title
+    public lazy var _pu_plan_footer_title = NSLocalizedString("Visit protonmail.com to upgrade to Professional and Visionary plans, or to customize your plan.", bundle: Common.bundle, comment: "Plan footer title")
+
+    /// Plan footer description
+    public lazy var _pu_plan_footer_desc = NSLocalizedString("Upon confirming your purchase of a paid plan, your iTunes account will be charged the amount displayed, which includes taxes and additional platform fees (which are not charged by Proton directly).", bundle: Common.bundle, comment: "Plan footer description")
+    
+    /// Select plan button
+    public lazy var _pu_select_plan_button = NSLocalizedString("Select plan", bundle: Common.bundle, comment: "Selct plan button")
+    
+    /// Upgrade plan button
+    public lazy var _pu_upgrade_plan_button = NSLocalizedString("Upgrade", bundle: Common.bundle, comment: "Upgrade plan button")
+    
+    /// Plan details price time period
+    public lazy var _pu_plan_details_price_time_period = NSLocalizedString(" / year", bundle: Common.bundle, comment: "Plan details price time period")
+
+    /// Plan details renew automatically expired
+    public lazy var _pu_plan_details_renew_auto_expired = NSLocalizedString("Your plan will automatically renew on %@", bundle: Common.bundle, comment: "Plan details renew automatically expired")
+    
+    /// Plan details renew expired
+    public lazy var _pu_plan_details_renew_expired = NSLocalizedString("Current plan will expire on %@", bundle: Common.bundle, comment: "Plan  details renew expired")
+    
+    /// Plan details n user
+    public lazy var _pu_plan_details_n_user = NSLocalizedString("%i user", bundle: Common.bundle, comment: "Plan delails n user")
+    
+    /// Plan details n users
+    public lazy var _pu_plan_details_n_users = NSLocalizedString("%i users", bundle: Common.bundle, comment: "Plan delails n users")
+    
+    /// Plan details free storage
+    public lazy var _pu_plan_details_free_storage = NSLocalizedString("%@ storage", bundle: Common.bundle, comment: "Plan delails free storage")
+    
+    /// Plan details storage
+    public lazy var _pu_plan_details_storage = NSLocalizedString("%@ storage *", bundle: Common.bundle, comment: "Plan delails storage")
+    
+    /// Plan details n address
+    public lazy var _pu_plan_details_n_address = NSLocalizedString("%i address", bundle: Common.bundle, comment: "Plan delails n address")
+    
+    /// Plan details n addresses
+    public lazy var _pu_plan_details_n_addresses = NSLocalizedString("%i addresses", bundle: Common.bundle, comment: "Plan delails n addresses")
+
+    /// Plan details unlimited data
+    public lazy var _pu_plan_details_unlimited_data = NSLocalizedString("Unlimited folders / labels / filters", bundle: Common.bundle, comment: "Plan delails unlimited data")
+
+    /// Plan details custom email
+    public lazy var _pu_plan_details_custom_email = NSLocalizedString("Custom email addresses", bundle: Common.bundle, comment: "Plan delails custom email")
+
+// Splash
+
+    /// Part of "Made by Proton" text at the bottom of the splash screen
+    public lazy var _splash_made_by = NSLocalizedString("Made by", bundle: Common.bundle, comment: "Made by")
 }

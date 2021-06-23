@@ -51,20 +51,20 @@ extension String {
 
 extension String {
     func shortName() -> String {
-        var shortName = ""
-        let splitCharacterOfName = self
-                                    .split(separator: " ")
-                                    .compactMap { $0.first?.uppercased() }
-        let upperbound = min(2, splitCharacterOfName.count)
-        for i in 0..<upperbound {
-            if i == 1 && splitCharacterOfName[i].containsEmoji {
-                continue
-            }
-            shortName.append(splitCharacterOfName[i])
-            if i == 0 && splitCharacterOfName[i].containsEmoji {
-                break
-            }
+        let invalids = "[.,/#!$@%^&*;:{}=\\-_`~()]"
+        let splits = self
+            .components(separatedBy: .whitespaces)
+            .compactMap { $0.first?.uppercased() }
+            .filter { !invalids.contains($0) }
+
+        var initials = [splits.first]
+        if splits.count > 1 {
+            initials.append(splits.last)
         }
-        return shortName
+
+        let result = initials
+            .compactMap { $0 }
+            .joined()
+        return result.isEmpty ? "?": result
     }
 }

@@ -26,7 +26,7 @@ import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 protocol PasswordViewControllerDelegate: AnyObject {
-    func validatedPassword(password: String)
+    func validatedPassword(password: String, completionHandler: (() -> Void)?)
     func passwordBackButtonPressed()
 }
 
@@ -36,16 +36,6 @@ class PasswordViewController: UIViewController, AccessibleView {
     var viewModel: PasswordViewModel!
     var signupAccountType: SignupAccountType!
     var signupPasswordRestrictions: SignupPasswordRestrictions!
-    var accountCreationError: Error? {
-        didSet {
-            guard let error = accountCreationError else { return }
-            if let error = error as? LoginError {
-                showError(error: error)
-            } else if let error = error as? SignupError {
-                showError(error: error)
-            }
-        }
-    }
 
     // MARK: Outlets
 
@@ -121,7 +111,12 @@ class PasswordViewController: UIViewController, AccessibleView {
         case .failure(let error):
             showError(error: error)
         case .success:
-            delegate?.validatedPassword(password: passwordTextField.value)
+            nextButton.isSelected = true
+            lockUI()
+            delegate?.validatedPassword(password: passwordTextField.value) {
+                self.nextButton.isSelected = false
+                self.unlockUI()
+            }
         }
     }
 

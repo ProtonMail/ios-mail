@@ -9,7 +9,7 @@
 import XCTest
 import ProtonCore_CoreTranslation
 import ProtonCore_TestingToolkit
-import PMTestAutomation
+import pmtest
 
 private let logoutCell = "MenuItemTableViewCell.Sign_out"
 private let logoutConfirmButton = NSLocalizedString("Log out", comment: "comment")

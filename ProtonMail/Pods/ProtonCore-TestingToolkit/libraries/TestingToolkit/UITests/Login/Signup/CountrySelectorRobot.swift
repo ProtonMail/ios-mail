@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PMTestAutomation
+import pmtest
 
 private let backtButtonName = "Back"
 private let tableViewId = "CountryPickerViewController.tableView"

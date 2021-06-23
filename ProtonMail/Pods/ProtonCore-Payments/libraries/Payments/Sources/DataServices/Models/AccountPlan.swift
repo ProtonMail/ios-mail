@@ -78,7 +78,7 @@ public enum AccountPlan: String, CaseIterable {
         }
     }
 
-    internal init?(storeKitProductId: String) {
+    public init?(storeKitProductId: String) {
         switch storeKitProductId {
         case AccountPlan.mailPlus.storeKitProductId:
             self = .mailPlus

@@ -16,7 +16,6 @@ PODS:
     - AFNetworking/NSURLSession
   - AwaitKit (5.0.1):
     - PromiseKit (~> 6)
-  - CryptoSwift (1.4.0)
   - DKImagePickerController/Core (4.2.2):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -69,8 +68,7 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (9.0.0)
   - OHHTTPStubs/Swift (9.0.0):
     - OHHTTPStubs/Default
-  - PMTestAutomation (1.0.2):
-    - SwiftOTP
+  - pmtest (1.0.0)
   - PromiseKit (6.13.1):
     - PromiseKit/CorePromise (= 6.13.1)
     - PromiseKit/Foundation (= 6.13.1)
@@ -80,125 +78,134 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.13.1):
     - PromiseKit/CorePromise
-  - ProtonCore-AccountSwitcher (1.0.4):
-    - ProtonCore-CoreTranslation (= 1.0.4)
-    - ProtonCore-Log (= 1.0.4)
-    - ProtonCore-UIFoundations (= 1.0.4)
-  - ProtonCore-APIClient (1.0.4):
-    - ProtonCore-DataModel (= 1.0.4)
-    - ProtonCore-Networking (= 1.0.4)
-    - ProtonCore-Services (= 1.0.4)
-  - ProtonCore-Authentication (1.0.4):
-    - ProtonCore-APIClient (= 1.0.4)
-    - ProtonCore-Crypto (= 1.0.4)
-    - ProtonCore-Services (= 1.0.4)
-  - ProtonCore-Authentication-KeyGeneration (1.0.4):
-    - ProtonCore-Authentication (= 1.0.4)
-    - ProtonCore-Crypto (= 1.0.4)
-    - ProtonCore-OpenPGP (= 1.0.4)
-  - ProtonCore-Challenge (1.0.4):
-    - ProtonCore-Foundations (= 1.0.4)
-  - ProtonCore-Common (1.0.4):
-    - ProtonCore-Services (= 1.0.4)
-    - ProtonCore-UIFoundations (= 1.0.4)
-  - ProtonCore-CoreTranslation (1.0.4)
-  - ProtonCore-Crypto (1.0.4)
-  - ProtonCore-DataModel (1.0.4):
-    - ProtonCore-Utilities (= 1.0.4)
-  - ProtonCore-Doh (1.0.4):
-    - ProtonCore-Log (= 1.0.4)
-  - ProtonCore-ForceUpgrade (1.0.4):
-    - ProtonCore-CoreTranslation (= 1.0.4)
-    - ProtonCore-Networking (= 1.0.4)
-    - ProtonCore-UIFoundations (= 1.0.4)
-  - ProtonCore-Foundations (1.0.4)
-  - ProtonCore-HumanVerification (1.0.4):
-    - ProtonCore-APIClient (= 1.0.4)
-    - ProtonCore-CoreTranslation (= 1.0.4)
-    - ProtonCore-Foundations (= 1.0.4)
-    - ProtonCore-UIFoundations (= 1.0.4)
-    - ProtonCore-Utilities (= 1.0.4)
-  - ProtonCore-Keymaker (1.0.4):
+  - ProtonCore-AccountSwitcher (1.2.0):
+    - ProtonCore-CoreTranslation (= 1.2.0)
+    - ProtonCore-Log (= 1.2.0)
+    - ProtonCore-UIFoundations (= 1.2.0)
+  - ProtonCore-APIClient (1.2.0):
+    - ProtonCore-DataModel (= 1.2.0)
+    - ProtonCore-Networking (= 1.2.0)
+    - ProtonCore-Services (= 1.2.0)
+  - ProtonCore-Authentication (1.2.0):
+    - ProtonCore-APIClient (= 1.2.0)
+    - ProtonCore-Crypto (= 1.2.0)
+    - ProtonCore-Services (= 1.2.0)
+  - ProtonCore-Authentication-KeyGeneration (1.2.0):
+    - ProtonCore-Authentication (= 1.2.0)
+    - ProtonCore-Crypto (= 1.2.0)
+    - ProtonCore-OpenPGP (= 1.2.0)
+  - ProtonCore-Challenge (1.2.0):
+    - ProtonCore-Foundations (= 1.2.0)
+  - ProtonCore-Common (1.2.0):
+    - ProtonCore-Services (= 1.2.0)
+    - ProtonCore-UIFoundations (= 1.2.0)
+  - ProtonCore-CoreTranslation (1.2.0)
+  - ProtonCore-Crypto (1.2.0)
+  - ProtonCore-DataModel (1.2.0):
+    - ProtonCore-Utilities (= 1.2.0)
+  - ProtonCore-Doh (1.2.0):
+    - ProtonCore-Log (= 1.2.0)
+  - ProtonCore-ForceUpgrade (1.2.0):
+    - ProtonCore-CoreTranslation (= 1.2.0)
+    - ProtonCore-Networking (= 1.2.0)
+    - ProtonCore-UIFoundations (= 1.2.0)
+  - ProtonCore-Foundations (1.2.0)
+  - ProtonCore-HumanVerification (1.2.0):
+    - ProtonCore-APIClient (= 1.2.0)
+    - ProtonCore-CoreTranslation (= 1.2.0)
+    - ProtonCore-Foundations (= 1.2.0)
+    - ProtonCore-UIFoundations (= 1.2.0)
+    - ProtonCore-Utilities (= 1.2.0)
+  - ProtonCore-Keymaker (1.2.0):
     - EllipticCurveKeyPair (~> 2.0)
-    - ProtonCore-Crypto (= 1.0.4)
-  - ProtonCore-Log (1.0.4)
-  - ProtonCore-Login (1.0.4):
-    - ProtonCore-Authentication (= 1.0.4)
-    - ProtonCore-Authentication-KeyGeneration (= 1.0.4)
-    - ProtonCore-Challenge (= 1.0.4)
-    - ProtonCore-CoreTranslation (= 1.0.4)
-    - ProtonCore-Crypto (= 1.0.4)
-    - ProtonCore-DataModel (= 1.0.4)
-    - ProtonCore-Foundations (= 1.0.4)
-    - ProtonCore-HumanVerification (= 1.0.4)
-    - ProtonCore-Log (= 1.0.4)
-    - ProtonCore-OpenPGP (= 1.0.4)
-    - ProtonCore-UIFoundations (= 1.0.4)
+    - ProtonCore-Crypto (= 1.2.0)
+  - ProtonCore-Log (1.2.0)
+  - ProtonCore-Login (1.2.0):
+    - ProtonCore-Authentication (= 1.2.0)
+    - ProtonCore-Authentication-KeyGeneration (= 1.2.0)
+    - ProtonCore-Challenge (= 1.2.0)
+    - ProtonCore-CoreTranslation (= 1.2.0)
+    - ProtonCore-Crypto (= 1.2.0)
+    - ProtonCore-DataModel (= 1.2.0)
+    - ProtonCore-Foundations (= 1.2.0)
+    - ProtonCore-HumanVerification (= 1.2.0)
+    - ProtonCore-Log (= 1.2.0)
+    - ProtonCore-OpenPGP (= 1.2.0)
+    - ProtonCore-Payments (= 1.2.0)
+    - ProtonCore-PaymentsUI (= 1.2.0)
+    - ProtonCore-UIFoundations (= 1.2.0)
     - TrustKit
-  - ProtonCore-Networking (1.0.4)
-  - ProtonCore-OpenPGP (1.0.4)
-  - ProtonCore-Payments (1.0.4):
+  - ProtonCore-Networking (1.2.0)
+  - ProtonCore-OpenPGP (1.2.0)
+  - ProtonCore-Payments (1.2.0):
     - AwaitKit (~> 5.0.0)
-    - ProtonCore-APIClient (= 1.0.4)
-    - ProtonCore-Authentication (= 1.0.4)
-    - ProtonCore-CoreTranslation (= 1.0.4)
-    - ProtonCore-Foundations (= 1.0.4)
-    - ProtonCore-Log (= 1.0.4)
-    - ProtonCore-Services (= 1.0.4)
-    - ProtonCore-SRP (= 1.0.4)
+    - ProtonCore-APIClient (= 1.2.0)
+    - ProtonCore-Authentication (= 1.2.0)
+    - ProtonCore-CoreTranslation (= 1.2.0)
+    - ProtonCore-Foundations (= 1.2.0)
+    - ProtonCore-Log (= 1.2.0)
+    - ProtonCore-Services (= 1.2.0)
+    - ProtonCore-SRP (= 1.2.0)
     - ReachabilitySwift (~> 5.0.0)
-  - ProtonCore-Services (1.0.4):
+  - ProtonCore-PaymentsUI (1.2.0):
+    - ProtonCore-CoreTranslation (= 1.2.0)
+    - ProtonCore-Foundations (= 1.2.0)
+    - ProtonCore-Log (= 1.2.0)
+    - ProtonCore-Payments (= 1.2.0)
+    - ProtonCore-UIFoundations (= 1.2.0)
+  - ProtonCore-Services (1.2.0):
     - AFNetworking (~> 4.0)
     - AwaitKit (~> 5.0.0)
     - PromiseKit (~> 6.0)
-    - ProtonCore-DataModel (= 1.0.4)
-    - ProtonCore-Doh (= 1.0.4)
-    - ProtonCore-Log (= 1.0.4)
-    - ProtonCore-Networking (= 1.0.4)
-    - ProtonCore-Utilities (= 1.0.4)
+    - ProtonCore-DataModel (= 1.2.0)
+    - ProtonCore-Doh (= 1.2.0)
+    - ProtonCore-Log (= 1.2.0)
+    - ProtonCore-Networking (= 1.2.0)
+    - ProtonCore-Utilities (= 1.2.0)
     - TrustKit
-  - ProtonCore-SRP (1.0.4)
-  - ProtonCore-TestingToolkit/UITests/HumanVerification (1.0.4):
-    - PMTestAutomation
-    - ProtonCore-CoreTranslation (= 1.0.4)
-  - ProtonCore-TestingToolkit/UITests/Login (1.0.4):
-    - PMTestAutomation
-    - ProtonCore-CoreTranslation (= 1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/Authentication (1.0.4):
-    - ProtonCore-Authentication (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Services (= 1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/Core (1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/DataModel (1.0.4):
-    - ProtonCore-DataModel (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/Doh (1.0.4):
-    - ProtonCore-Doh (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/HumanVerification (1.0.4):
-    - ProtonCore-HumanVerification (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/Login (1.0.4):
-    - ProtonCore-Login (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Authentication (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/HumanVerification (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Services (= 1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/Networking (1.0.4):
-    - ProtonCore-Networking (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/Services (1.0.4):
-    - ProtonCore-Services (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Doh (= 1.0.4)
-    - ProtonCore-TestingToolkit/UnitTests/Networking (= 1.0.4)
-  - ProtonCore-UIFoundations (1.0.4):
-    - ProtonCore-Foundations (= 1.0.4)
-    - ProtonCore-Log (= 1.0.4)
-  - ProtonCore-Utilities (1.0.4):
-    - ProtonCore-Log (= 1.0.4)
+  - ProtonCore-SRP (1.2.0)
+  - ProtonCore-TestingToolkit/UITests/HumanVerification (1.2.0):
+    - pmtest
+    - ProtonCore-CoreTranslation (= 1.2.0)
+  - ProtonCore-TestingToolkit/UITests/Login (1.2.0):
+    - pmtest
+    - ProtonCore-CoreTranslation (= 1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Authentication (1.2.0):
+    - ProtonCore-Authentication (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Services (= 1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Core (1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/DataModel (1.2.0):
+    - ProtonCore-DataModel (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Doh (1.2.0):
+    - ProtonCore-Doh (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/HumanVerification (1.2.0):
+    - ProtonCore-HumanVerification (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Login (1.2.0):
+    - ProtonCore-Login (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Authentication (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/HumanVerification (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Services (= 1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Networking (1.2.0):
+    - ProtonCore-Networking (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Services (1.2.0):
+    - ProtonCore-Services (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Doh (= 1.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Networking (= 1.2.0)
+  - ProtonCore-UIFoundations (1.2.0):
+    - ProtonCore-CoreTranslation (= 1.2.0)
+    - ProtonCore-Foundations (= 1.2.0)
+    - ProtonCore-Log (= 1.2.0)
+  - ProtonCore-Utilities (1.2.0):
+    - ProtonCore-Log (= 1.2.0)
   - ReachabilitySwift (5.0.0)
   - SDWebImage (5.11.0):
     - SDWebImage/Core (= 5.11.0)
@@ -209,8 +216,6 @@ PODS:
   - SideMenuSwift (2.0.6)
   - SkeletonView (1.11.0)
   - SwiftGen (6.4.0)
-  - SwiftOTP (2.0.3):
-    - CryptoSwift (>= 1.0.0)
   - SwiftyGif (5.4.0)
   - SwipyCell (4.0.1)
   - TrustKit (1.7.0)
@@ -229,30 +234,30 @@ DEPENDENCIES:
   - MCSwipeTableViewCell (= 2.1.4)
   - "NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)"
   - OHHTTPStubs/Swift (= 9.0.0)
-  - "PMTestAutomation (from `git@gitlab.protontech.ch:apple/shared/pmtestautomation.git`, branch `master`)"
+  - "pmtest (from `git@gitlab.protontech.ch:apple/shared/pmtestautomation.git`, branch `master`)"
   - PromiseKit (= 6.13.1)
-  - ProtonCore-AccountSwitcher (= 1.0.4)
-  - ProtonCore-Authentication (= 1.0.4)
-  - ProtonCore-Authentication-KeyGeneration (= 1.0.4)
-  - ProtonCore-Challenge (= 1.0.4)
-  - ProtonCore-Common (= 1.0.4)
-  - ProtonCore-CoreTranslation (= 1.0.4)
-  - ProtonCore-Crypto (= 1.0.4)
-  - ProtonCore-ForceUpgrade (= 1.0.4)
-  - ProtonCore-HumanVerification (= 1.0.4)
-  - ProtonCore-Keymaker (= 1.0.4)
-  - ProtonCore-Log (= 1.0.4)
-  - ProtonCore-Login (= 1.0.4)
-  - ProtonCore-OpenPGP (= 1.0.4)
-  - ProtonCore-Payments (= 1.0.4)
-  - ProtonCore-SRP (= 1.0.4)
-  - ProtonCore-TestingToolkit/UITests/HumanVerification (= 1.0.4)
-  - ProtonCore-TestingToolkit/UITests/Login (= 1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/Core (= 1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/Doh (= 1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/Login (= 1.0.4)
-  - ProtonCore-TestingToolkit/UnitTests/Services (= 1.0.4)
-  - ProtonCore-UIFoundations (= 1.0.4)
+  - ProtonCore-AccountSwitcher (= 1.2.0)
+  - ProtonCore-Authentication (= 1.2.0)
+  - ProtonCore-Authentication-KeyGeneration (= 1.2.0)
+  - ProtonCore-Challenge (= 1.2.0)
+  - ProtonCore-Common (= 1.2.0)
+  - ProtonCore-CoreTranslation (= 1.2.0)
+  - ProtonCore-Crypto (= 1.2.0)
+  - ProtonCore-ForceUpgrade (= 1.2.0)
+  - ProtonCore-HumanVerification (= 1.2.0)
+  - ProtonCore-Keymaker (= 1.2.0)
+  - ProtonCore-Log (= 1.2.0)
+  - ProtonCore-Login (= 1.2.0)
+  - ProtonCore-OpenPGP (= 1.2.0)
+  - ProtonCore-Payments (= 1.2.0)
+  - ProtonCore-SRP (= 1.2.0)
+  - ProtonCore-TestingToolkit/UITests/HumanVerification (= 1.2.0)
+  - ProtonCore-TestingToolkit/UITests/Login (= 1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Core (= 1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Doh (= 1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Login (= 1.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Services (= 1.2.0)
+  - ProtonCore-UIFoundations (= 1.2.0)
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `4.5.0`)
   - SideMenuSwift (= 2.0.6)
   - SkeletonView (= 1.11.0)
@@ -282,6 +287,7 @@ SPEC REPOS:
     - ProtonCore-Networking
     - ProtonCore-OpenPGP
     - ProtonCore-Payments
+    - ProtonCore-PaymentsUI
     - ProtonCore-Services
     - ProtonCore-SRP
     - ProtonCore-TestingToolkit
@@ -290,7 +296,6 @@ SPEC REPOS:
   trunk:
     - AFNetworking
     - AwaitKit
-    - CryptoSwift
     - DKImagePickerController
     - DKPhotoGallery
     - EllipticCurveKeyPair
@@ -305,7 +310,6 @@ SPEC REPOS:
     - SideMenuSwift
     - SkeletonView
     - SwiftGen
-    - SwiftOTP
     - SwiftyGif
     - SwipyCell
     - "UIColor+Hex"
@@ -314,7 +318,7 @@ EXTERNAL SOURCES:
   "NSDate+Helper":
     :branch: master
     :git: https://github.com/ProtonMail/nsdate-helper.git
-  PMTestAutomation:
+  pmtest:
     :branch: master
     :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
   Sentry:
@@ -328,8 +332,8 @@ CHECKOUT OPTIONS:
   "NSDate+Helper":
     :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
     :git: https://github.com/ProtonMail/nsdate-helper.git
-  PMTestAutomation:
-    :commit: 6835811724fb9ff6a939a453c0eb1d6abeb2fb83
+  pmtest:
+    :commit: 0878ae03b2504ddfe0f547d1dd35bbc060734644
     :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
@@ -341,7 +345,6 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   AwaitKit: a6d0b0b6d603cedda8ef1c1c249b8d6730359917
-  CryptoSwift: 7cc902df1784de3b389a387756c7d710f197730c
   DKImagePickerController: 4a3e7948a848c4348e600b3fe5ce41478835fa10
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
@@ -351,7 +354,7 @@ SPEC CHECKSUMS:
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
-  PMTestAutomation: 3247e85bd59f547415fa9017124b65e4cee3e506
+  pmtest: 34d69550add20560f2e704e9c686663b2977308e
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   ProtonCore-AccountSwitcher: c133775b82b9d29be719499bf539dd037f21272b
   ProtonCore-APIClient: b029e89b29c8558e6740fe3527f384b82735efbe
@@ -368,14 +371,15 @@ SPEC CHECKSUMS:
   ProtonCore-HumanVerification: 2356d1b091e9e409842e16cb84336b179ca00714
   ProtonCore-Keymaker: 93a31241e031a1c2f8f1bc432fb337c859acb9c0
   ProtonCore-Log: e711c2314bc1638fc7c16cef0ce12f6df3023ddc
-  ProtonCore-Login: 1effe103225162721cbb92b7d01fc7d00a1ac67c
+  ProtonCore-Login: 3cd323f7ffae3d413167749c670d53f2decc1f7f
   ProtonCore-Networking: 43e96a8079abf06177ed5f362cf589246083a12f
   ProtonCore-OpenPGP: e2914f0994c15a66be4b6dea87553098c3ab74f6
   ProtonCore-Payments: 6bebf5416c3a7b823304e49b7fd0e84da0119d77
+  ProtonCore-PaymentsUI: c9abf8af68219515728b89773e15d27f7f4060ae
   ProtonCore-Services: 345ebd70dc2e1565c60abe5ef562e47ac18b55a4
   ProtonCore-SRP: decfb41f19b768173e92f8812d03c312bc8f5813
-  ProtonCore-TestingToolkit: faa3a728ab2cb03ac1da5356d3c3440877e4a4cd
-  ProtonCore-UIFoundations: e6f27bbf710e490aa96add6992f41735a4eb0730
+  ProtonCore-TestingToolkit: 974b76199a3dbb2bafa0f54c9c97a4e48db38e31
+  ProtonCore-UIFoundations: cf63e9b22e72d429c00d1ac777718bb1838f2738
   ProtonCore-Utilities: d4abe182ff9489dbd2f434aad2ad1b491624a465
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: 7acbb57630ac7db4a495547fb73916ff3e432f6b
@@ -383,12 +387,11 @@ SPEC CHECKSUMS:
   SideMenuSwift: f12ca1b11faad909bfc2878df37e0a1c40fa4570
   SkeletonView: cc84ce90a804dd0dd7198dd802833411c8a64eaf
   SwiftGen: 67860cc7c3cfc2ed25b9b74cfd55495fc89f9108
-  SwiftOTP: ce98ded1ab42e4e66c39228fcad6b0c07b98e494
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   SwipyCell: 3fbfd7dc091c4699d1cb03f015e2ecdc6f26929d
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 87994d332e2cc347c3e100823b3346b185c6d1d7
+PODFILE CHECKSUM: f5457dc337222f8d9b9e66733a926d0234732f43
 
 COCOAPODS: 1.10.1

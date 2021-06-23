@@ -132,6 +132,36 @@ extension UIColorManager {
     public static let BackgroundNorm = Shade0
     public static let BackgroundSecondary = Shade10
 
+    // MARK: Background
+    public enum Splash {
+        public static var Background: UIColor {
+            switch brand {
+            case .proton:
+                return UIColor(named: "SplashBackgroundColorForProton", in: PMUIFoundations.bundle, compatibleWith: nil)!
+            case .vpn:
+                return UIColor(named: "SplashBackgroundColorForVPN", in: PMUIFoundations.bundle, compatibleWith: nil)!
+            }
+        }
+
+        public static var TextNorm: UIColor {
+            switch brand {
+            case .proton:
+                return UIColor(named: "SplashTextNormForProton", in: PMUIFoundations.bundle, compatibleWith: nil)!
+            case .vpn:
+                return UIColor(named: "SplashTextNormForVPN", in: PMUIFoundations.bundle, compatibleWith: nil)!
+            }
+        }
+
+        public static var TextHint: UIColor {
+            switch brand {
+            case .proton:
+                return UIColor(named: "SplashTextHintForProton", in: PMUIFoundations.bundle, compatibleWith: nil)!
+            case .vpn:
+                return UIColor(named: "SplashTextHintForVPN", in: PMUIFoundations.bundle, compatibleWith: nil)!
+            }
+        }
+    }
+
     // MARK: Separator
     public static let SeparatorNorm = Shade20
 

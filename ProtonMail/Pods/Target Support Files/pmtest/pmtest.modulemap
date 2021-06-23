@@ -1,0 +1,6 @@
+framework module pmtest {
+  umbrella header "pmtest-umbrella.h"
+
+  export *
+  module * { export * }
+}

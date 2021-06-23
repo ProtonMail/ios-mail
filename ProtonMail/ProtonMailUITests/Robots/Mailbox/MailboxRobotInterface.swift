@@ -6,7 +6,7 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-import PMTestAutomation
+import pmtest
 
 import ProtonCore_TestingToolkit
 

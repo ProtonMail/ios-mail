@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PMTestAutomation
+import pmtest
 import ProtonCore_CoreTranslation
 
 private let titleId = "PasswordViewController.createPasswordTitleLabel"

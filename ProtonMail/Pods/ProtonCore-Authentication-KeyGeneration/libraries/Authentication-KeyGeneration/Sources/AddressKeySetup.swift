@@ -40,9 +40,11 @@ final class AddressKeySetup {
         
         // new openpgp instance
         let openPGP = PMNOpenPgp.createInstance()!
+        let timeinterval = CryptoGetUnixTime()
+        let int32Value = NSNumber(value: timeinterval).int32Value
         let key = openPGP.generateKey(keyName, domain: email,
                                       passphrase: hashedPassword,
-                                      bits: Int32(2048), time: Int32(0))
+                                      bits: Int32(2048), time: int32Value)
         let armoredKey = key.privateKey
         return GeneratedAddressKey(password: hashedPassword, armoredKey: armoredKey)
     }

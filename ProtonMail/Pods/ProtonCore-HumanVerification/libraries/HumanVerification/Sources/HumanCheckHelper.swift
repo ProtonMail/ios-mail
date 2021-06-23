@@ -50,9 +50,11 @@ public class HumanCheckHelper: HumanVerifyDelegate {
             let client = TestApiClient(api: self.apiService)
             let route = client.createHumanVerifyRoute(destination: nil, type: VerifyMethod.payment, token: paymentToken)
             // retrigger request and use header with payment token
-            completion(route.header, false, { result, _, _ in
+            completion(route.header, false, { result, _, verificationFinishBlock in
                 self.paymentDelegate?.paymentTokenStatusChanged(status: result == true ? .success : .fail)
-                if !result {
+                if result {
+                    verificationFinishBlock?()
+                } else {
                     // if request still has an error, start human verification UI
                     self.startMenuCoordinator(methods: methods, startToken: startToken, completion: completion)
                 }

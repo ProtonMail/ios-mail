@@ -98,15 +98,43 @@ private class AlertManager: AlertManagerProtocol {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: self.title, message: self.message, preferredStyle: .alert)
             if let cancelButtonTitle = self.cancelButtonTitle {
-                alert.addAction(UIAlertAction(title: cancelButtonTitle, style: self.cancelButtonStyle, handler: cancelAction))
+                alert.addAction(UIAlertAction(title: cancelButtonTitle, style: self.cancelButtonStyle, handler: { action in
+                    self.alertWindow = nil
+                    cancelAction?(action)
+                }))
             }
             if let confirmButtonTitle = self.confirmButtonTitle {
-                alert.addAction(UIAlertAction(title: confirmButtonTitle, style: self.confirmButtonStyle, handler: confirmAction))
+                alert.addAction(UIAlertAction(title: confirmButtonTitle, style: self.confirmButtonStyle, handler: { action in
+                    self.alertWindow = nil
+                    confirmAction?(action)
+                }))
             }
-            guard let window = UIApplication.getInstance()?.windows.filter({ $0.isKeyWindow }).first else { return }
-            window.rootViewController?.present(alert, animated: true, completion: nil)
+            self.alertWindow?.rootViewController?.present(alert, animated: true, completion: nil)
         }
     }
+
+    @available(iOS 13.0, *)
+    private var windowScene: UIWindowScene? {
+        return UIApplication.getInstance()?.connectedScenes.first { $0.activationState == .foregroundActive && $0 is UIWindowScene } as? UIWindowScene
+    }
+
+    private lazy var alertWindow: UIWindow? = {
+        let alertWindow: UIWindow?
+        if #available(iOS 13.0, *) {
+            if let windowScene = windowScene {
+                alertWindow = UIWindow(windowScene: windowScene)
+            } else {
+                alertWindow = UIWindow(frame: UIScreen.main.bounds)
+            }
+        } else {
+            alertWindow = UIWindow(frame: UIScreen.main.bounds)
+        }
+        alertWindow?.rootViewController = UIViewController()
+        alertWindow?.backgroundColor = UIColor.clear
+        alertWindow?.windowLevel = .alert
+        alertWindow?.makeKeyAndVisible()
+        return alertWindow
+    }()
 }
 
 #else

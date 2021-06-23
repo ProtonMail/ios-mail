@@ -31,6 +31,10 @@ final class StatusRequest: BaseApiRequest<StatusResponse> {
     override func path() -> String {
         return super.path() + "/status"
     }
+    
+    override func getIsAuthFunction() -> Bool {
+        return false
+    }
 }
 
 final class StatusResponse: ApiResponse {
