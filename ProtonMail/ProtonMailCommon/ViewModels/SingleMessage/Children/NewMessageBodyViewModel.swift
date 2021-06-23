@@ -135,7 +135,8 @@ class NewMessageBodyViewModel {
                                                 remoteContentMode)
             }
         } else if !message.body.isEmpty {
-            body = message.bodyToHtml()
+            // If the detail hasn't download, don't show encrypted body to user
+            body = message.isDetailDownloaded ? message.bodyToHtml(): .empty
             self.contents = WebContents(body: self.body ?? "",
                                         remoteContentMode:
                                             remoteContentMode)
