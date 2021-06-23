@@ -581,16 +581,6 @@ extension UsersManager {
     func loggedOutAll() -> Promise<Void> {
         return when(fulfilled: users.map{ self.logout(user: $0) })
     }
-    
-    func freeAccountNum() -> Int {
-        var count = 0
-        for user in users {
-            if !user.isPaid {
-                count = count + 1
-            }
-        }
-        return count
-    }
 }
 
 extension UsersManager {

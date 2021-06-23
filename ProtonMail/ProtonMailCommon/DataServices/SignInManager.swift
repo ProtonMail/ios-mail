@@ -149,12 +149,6 @@ class SignInManager: Service {
             return
         }
 
-        let count = self.usersManager.freeAccountNum()
-        if count > 0 && !userInfo.isPaid {
-            reachLimit()
-            return
-        }
-
         self.usersManager.add(auth: auth, user: userInfo)
         self.auth = nil
         self.userInfo = nil
