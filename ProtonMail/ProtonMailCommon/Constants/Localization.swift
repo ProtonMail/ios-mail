@@ -682,14 +682,14 @@ class LocalizedString {
     /// "Cancel Check"
     lazy var _signup_cancel_check_action = NSLocalizedString("Cancel Check", comment: "Action")
 
-    /// "TouchID is not enrolled, enable it in the system Settings"
-    lazy var _general_touchid_not_enrolled = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings", comment: "settings touchid error")
+    /// "Touch ID is not enrolled, enable it in the system Settings"
+    lazy var _general_touchid_not_enrolled = NSLocalizedString("Touch ID is not enrolled, enable it in the system Settings", comment: "settings touchid error")
 
     /// "A passcode hasn't been set. Please set one in the System Settings."
     lazy var _general_passcode_not_set = NSLocalizedString("A passcode has not been set, enable it in the system Settings", comment: "settings touchid error")
 
-    /// "TouchID not available"
-    lazy var _general_touchid_not_available = NSLocalizedString("TouchID not available", comment: "settings touchid/faceid error")
+    /// "Touch ID not available"
+    lazy var _general_touchid_not_available = NSLocalizedString("Touch ID not available", comment: "settings touchid/faceid error")
 
     /// "None"
     lazy var _general_none = NSLocalizedString("None", comment: "Title")
@@ -1064,22 +1064,22 @@ class LocalizedString {
     lazy var _change_left_swipe_action = NSLocalizedString("Change left swipe action", comment: "settings swipe actions section action description")
     /// "Change right swipe action"
     lazy var _change_right_swipe_action = NSLocalizedString("Change right swipe action", comment: "settings swipe actions section action description")
-    /// "Enable TouchID"
-    lazy var _enable_touchid = NSLocalizedString("Enable TouchID", comment: "settings protection section title")
+    /// "Enable Touch ID"
+    lazy var _enable_touchid = NSLocalizedString("Enable Touch ID", comment: "settings protection section title")
     /// "Enable Pin Protection"
     lazy var _enable_pin_protection = NSLocalizedString("Enable PIN Protection", comment: "settings protection section title")
     /// "Change Pin"
     lazy var _change_pin = NSLocalizedString("Change PIN", comment: "settings protection section title")
     /// "Entire App Protection"
     lazy var _protection_entire_app = NSLocalizedString("Protection Entire App", comment: "settings protection section title")
-    /// "Enable FaceID"
-    lazy var _enable_faceid = NSLocalizedString("Enable FaceID", comment: "settings protection section title")
+    /// "Enable Face ID"
+    lazy var _enable_faceid = NSLocalizedString("Enable Face ID", comment: "settings protection section title")
     
     lazy var _unlock_required = NSLocalizedString("Unlock required", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
     
-    lazy var _enable_faceid_in_settings = NSLocalizedString("You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in.", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
+    lazy var _enable_faceid_in_settings = NSLocalizedString("You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in.", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
     
-    lazy var _lock_faceID_desc = NSLocalizedString("Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.", comment: "A description string in pin & faceID setting page")
+    lazy var _lock_faceID_desc = NSLocalizedString("Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it.", comment: "A description string in pin & faceID setting page")
     
     lazy var _lock_touchID_desc = NSLocalizedString("Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.", comment: "A description string in pin & faceID setting page")
     
