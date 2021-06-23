@@ -982,8 +982,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.getLatestMessagesRaw() { [weak self] _ in
             self?.deleteExpiredMessages()
             
-            self?.viewModel.fetchMessages(time: 0, foucsClean: false) { [weak self] task, res, error in
-                self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
+            self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] task, res, error in
+                self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: false, completeIsFetch: nil)
             }
         }
     }
