@@ -236,14 +236,52 @@ extension Conversation {
     }
     
     /// Apply mark as changes to whole conversation.
-    func applyMarksAsChanges(unRead: Bool, labelID: String) {
+    func applyMarksAsChanges(unRead: Bool, labelID: String, context: NSManagedObjectContext) {
         let labels = self.mutableSetValue(forKey: Conversation.Attributes.labels)
-        let contextNumUnread = labels.compactMap{$0 as? ContextLabel}.filter{ $0.labelID == labelID }.first?.unreadCount ?? 0
+        let contextLabels = labels.compactMap{ $0 as? ContextLabel }
+        let messages = Message
+            .messagesForConversationID(self.conversationID,
+                                       inManagedObjectContext: context) ?? []
         
-        let updatedContextNumUnread = unRead ? contextNumUnread.intValue + 1 : 0
-        for label in labels {
-            if let l = label as? ContextLabel, l.labelID == labelID {
-                l.unreadCount = NSNumber(value: updatedContextNumUnread)
+        var changedLabels: Set<String> = []
+        if unRead {
+            // It marks the latest message of the conversation of the current location (inbox, archive, etc...) as unread.
+            guard let message = messages
+                    .filter({ $0.contains(label: labelID)})
+                    .last else { return }
+            message.unRead = true
+            if let messageLabels = message.labels.allObjects as? [Label] {
+                let changed = messageLabels.map { $0.labelID }
+                for id in changed {
+                    changedLabels.insert(id)
+                }
+            }
+        } else {
+            // It marks the entire all messages attach to the conversation (Conversation.Messages) as read.
+            for message in messages {
+                guard message.unRead == true else { continue }
+                message.unRead = false
+                guard let messageLabels = message.labels.allObjects as? [Label] else { continue }
+                let changed = messageLabels.map { $0.labelID }
+                for id in changed {
+                    changedLabels.insert(id)
+                }
+            }
+        }
+        
+        for label in contextLabels where changedLabels.contains(label.labelID) {
+            let offset = unRead ? 1: -1
+            var unreadCount = label.unreadCount.intValue + offset
+            unreadCount = max(unreadCount, 0)
+            label.unreadCount = NSNumber(value: unreadCount)
+            
+            
+            if let contextLabelInContext = ConversationCount
+                .lastContextUpdate(by: label.labelID,
+                                userID: self.userID,
+                                inManagedObjectContext: context) {
+                contextLabelInContext.unread += Int32(offset)
+                contextLabelInContext.unread = max(contextLabelInContext.unread, 0)
             }
         }
     }
@@ -282,7 +320,7 @@ extension Conversation {
     }
     
     ///Apply label changes of a conversation.
-    func applyLabelChanges(labelID: String, apply: Bool) {
+    func applyLabelChanges(labelID: String, apply: Bool, context: NSManagedObjectContext) {
         if apply {
             if self.contains(of: labelID) {
                 if let target = self.labels.compactMap({ $0 as? ContextLabel }).filter({ $0.labelID == labelID }).first {
@@ -298,6 +336,11 @@ extension Conversation {
                 newLabel.userID = self.userID
                 newLabel.size = self.size ?? NSNumber(value: 0)
                 newLabel.attachmentCount = self.numAttachments
+                
+                let messages = Message
+                    .messagesForConversationID(self.conversationID,
+                                               inManagedObjectContext: context) ?? []
+                newLabel.unreadCount = NSNumber(value: messages.filter { $0.unRead }.count)
                 self.mutableSetValue(forKey: Conversation.Attributes.labels).add(newLabel)
             }
         } else {

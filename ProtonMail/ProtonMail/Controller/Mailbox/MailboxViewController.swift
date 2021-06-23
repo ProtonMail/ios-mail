@@ -1624,9 +1624,17 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
 
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
-        showMoveToActionSheet(messages: viewModel.selectedMessages,
-                              isEnableColor: isEnableColor,
-                              isInherit: isInherit)
+        let messages = viewModel.selectedMessages
+        let conversations = viewModel.selectedConversations
+        if !messages.isEmpty {
+            showMoveToActionSheet(messages: messages,
+                                  isEnableColor: isEnableColor,
+                                  isInherit: isInherit)
+        } else if !conversations.isEmpty {
+            showMoveToActionSheet(conversations: conversations,
+                                  isEnableColor: isEnableColor,
+                                  isInherit: isInherit)
+        }
     }
 
     private func showMoveToActionSheet(messages: [Message], isEnableColor: Bool, isInherit: Bool) {

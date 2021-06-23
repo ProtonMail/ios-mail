@@ -71,19 +71,7 @@ final class LocalConversationUpdater {
                                                        inManagedObjectContext: context) else {
                     continue
                 }
-                conversationInContext.applyMarksAsChanges(unRead: asUnread, labelID: labelID)
-                // Mark contained messages as unread if marking conversation as unread
-                if !asUnread {
-                    let msgs = Message.messagesForConversationID(conversationInContext.conversationID,
-                                                                 inManagedObjectContext: context)
-                    msgs?.forEach({ msg in
-                        guard msg.getLabelIDs().contains(labelID) else {
-                            return
-                        }
-                        msg.unRead = asUnread
-                    })
-                }
-                updateCounters(conversationInContext: conversationInContext, context: context, asUnread: asUnread)
+                conversationInContext.applyMarksAsChanges(unRead: asUnread, labelID: labelID, context: context)
             }
 
             save(context: context, completion: completion)
@@ -103,49 +91,64 @@ final class LocalConversationUpdater {
                                                        inManagedObjectContext: context) else {
                     continue
                 }
-                let messages = Message.messagesForConversationID(conversationInContext.conversationID,
-                                                                 inManagedObjectContext: context)
-                let wasUnread = conversationInContext.isUnread(labelID: labelToRemove ?? "")
-                if isFolder, let labelToAdd = labelToAdd {
+                let messages = Message
+                    .messagesForConversationID(conversationInContext.conversationID,
+                                               inManagedObjectContext: context)
+
+                if isFolder {
                     // If folder, first remove all labels that are not draft, sent, starred, archive, allmail
                     let untouchedLocations: [Message.Location] = [.draft, .sent, .starred, .archive, .allmail]
                     let allLabels = conversationInContext.labels as? Set<ContextLabel> ?? []
                     let filteredLabels = allLabels.filter({ !untouchedLocations.map(\.rawValue).contains($0.labelID) })
                     for filteredLabel in filteredLabels {
-                        conversationInContext.applyLabelChanges(labelID: filteredLabel.labelID, apply: false)
-                        messages?.forEach { $0.remove(labelID: filteredLabel.labelID) }
-                    }
-                    // Then, apply the new folder
-                    conversationInContext.applyLabelChanges(labelID: labelToAdd, apply: true)
-                    messages?.forEach { $0.add(labelID: labelToAdd) }
-                    // If destination is Trash, mark as read and update counters
-                    if labelToAdd == Message.Location.trash.rawValue {
-                        mark(conversations: [conversationInContext],
-                             in: context,
-                             asUnread: false,
-                             labelID: labelToAdd) { _ in }
-                    } else {
-                        updateCounters(conversationInContext: conversationInContext,
-                                       context: context,
-                                       asUnread: wasUnread)
-                    }
-                } else {
-                    if let labelToRemove = labelToRemove {
-                        conversationInContext.applyLabelChanges(labelID: labelToRemove, apply: false)
-                        messages?.forEach { message in
-                            message.remove(labelID: labelToRemove)
+                        let label = Label.labelForLabelID(filteredLabel.labelID, inManagedObjectContext: context)
+                        // We clear only folder type labels
+                        if label?.type == 0 || label?.type == 3 {
+                            conversationInContext.applyLabelChanges(labelID: filteredLabel.labelID,
+                                                                    apply: false,
+                                                                    context: context)
+                            messages?.forEach { $0.remove(labelID: filteredLabel.labelID) }
+                            let hasUnread = messages?.contains(where: { $0.unRead }) == true ||
+                                conversationInContext.isUnread(labelID: filteredLabel.labelID)
+                            if hasUnread {
+                                updateConversationCount(for: filteredLabel.labelID, offset: -1, in: context)
+                            }
                         }
+                     }
+                }
+
+                if let removed = labelToRemove, !removed.isEmpty {
+                    conversationInContext.applyLabelChanges(labelID: removed, apply: false, context: context)
+                    messages?.forEach { $0.remove(labelID: removed) }
+                    let hasUnread = messages?.contains(where: { $0.unRead }) == true ||
+                        conversationInContext.isUnread(labelID: removed)
+                    if hasUnread {
+                        updateConversationCount(for: removed, offset: -1, in: context)
                     }
-                    if let labelToAdd = labelToAdd {
-                        conversationInContext.applyLabelChanges(labelID: labelToAdd, apply: true)
-                        messages?.forEach { message in
-                            message.add(labelID: labelToAdd)
-                        }
+                }
+
+                if let added = labelToAdd, !added.isEmpty {
+                    conversationInContext.applyLabelChanges(labelID: added, apply: true, context: context)
+                    messages?.forEach { $0.add(labelID: added) }
+                    let hasUnread = messages?.contains(where: { $0.unRead }) == true ||
+                        conversationInContext.isUnread(labelID: added)
+                    if hasUnread {
+                        updateConversationCount(for: added, offset: 1, in: context)
                     }
                 }
             }
             save(context: context, completion: completion)
         }
+    }
+
+    private func updateConversationCount(for labelID: String, offset: Int, in context: NSManagedObjectContext) {
+        guard let contextLabel = ConversationCount.lastContextUpdate(by: labelID,
+                                                                     userID: self.userID,
+                                                                     inManagedObjectContext: context) else {
+            return
+        }
+        contextLabel.unread += Int32(offset)
+        contextLabel.unread = max(contextLabel.unread, 0)
     }
 
     private func save(context: NSManagedObjectContext,
@@ -163,23 +166,25 @@ final class LocalConversationUpdater {
 private extension LocalConversationUpdater {
     func updateCounters(conversationInContext: Conversation, context: NSManagedObjectContext, asUnread: Bool) {
         // Update the counters
-        if let labels = conversationInContext.labels as? Set<ContextLabel> {
-            for label in labels {
-                let location = Message.Location(rawValue: label.labelID)
-                switch location {
-                case .draft, .sent:
-                    // Draft and Sent show a count of messages, not of conversations, we don't update them
-                    continue
-                default:
-                    if let conversationCount = ConversationCount.lastContextUpdate(by: label.labelID,
-                                                                                   userID: self.userID,
-                                                                                   inManagedObjectContext: context) {
-                        if asUnread {
-                            conversationCount.unread += 1
-                        } else {
-                            conversationCount.unread -= 1
-                            conversationCount.unread = max(conversationCount.unread, 0)
-                        }
+        guard let labels = conversationInContext.labels as? Set<ContextLabel> else {
+            return
+        }
+
+        for label in labels {
+            let location = Message.Location(rawValue: label.labelID)
+            switch location {
+            case .draft, .sent:
+                // Draft and Sent show a count of messages, not of conversations, we don't update them
+                continue
+            default:
+                if let conversationCount = ConversationCount.lastContextUpdate(by: label.labelID,
+                                                                               userID: self.userID,
+                                                                               inManagedObjectContext: context) {
+                    if asUnread {
+                        conversationCount.unread += 1
+                    } else {
+                        conversationCount.unread -= 1
+                        conversationCount.unread = max(conversationCount.unread, 0)
                     }
                 }
             }
