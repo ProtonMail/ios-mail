@@ -109,7 +109,7 @@ class SingleMessageContentViewModel {
             self.messageBodyViewModel.messageHasChanged(message: self.message)
             return
         }
-        messageService.fetchMessageDetailForMessage(message, labelID: context.labelId) { [weak self] _, _, _, error in
+        messageService.fetchMessageDetailForMessage(message, labelID: context.labelId, runInQueue: false) { [weak self] _, _, _, error in
             guard let self = self else { return }
             self.updateErrorBanner?(error)
             if error != nil && !self.message.isDetailDownloaded {

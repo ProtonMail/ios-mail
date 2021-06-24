@@ -651,10 +651,11 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    func fetchMessageDetailForMessage(_ message: Message, labelID: String, completion: @escaping CompletionFetchDetail) {
+    func fetchMessageDetailForMessage(_ message: Message, labelID: String, runInQueue: Bool = true, completion: @escaping CompletionFetchDetail) {
         if !message.isDetailDownloaded {
             let msgID = message.messageID
-            self.queueManager?.queue {
+            let closure = runInQueue ? queueManager?.queue: noQueue
+            closure? {
                 let completionWrapper: CompletionBlock = { task, response, error in
                     let context = self.coreDataService.operationContext
                     let objectId = message.objectID
