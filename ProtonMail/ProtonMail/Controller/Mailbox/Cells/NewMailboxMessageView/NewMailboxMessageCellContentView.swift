@@ -27,6 +27,7 @@ class NewMailboxMessageCellContentView: UIView {
 
     let messageContentView = NewMailboxMessageContentView()
     let leftContainer = UIControl()
+    let initialsContainer = SubviewsFactory.container
     let initialsLabel = UILabel.initialsLabel
     let checkBoxView = NewMailboxMessageCheckBoxView()
 
@@ -40,8 +41,9 @@ class NewMailboxMessageCellContentView: UIView {
     private func addSubviews() {
         addSubview(messageContentView)
         addSubview(leftContainer)
-        leftContainer.addSubview(initialsLabel)
+        leftContainer.addSubview(initialsContainer)
         leftContainer.addSubview(checkBoxView)
+        initialsContainer.addSubview(initialsLabel)
     }
 
     private func setUpLayout() {
@@ -63,7 +65,7 @@ class NewMailboxMessageCellContentView: UIView {
         ]
             .activate()
 
-        [initialsLabel, checkBoxView].forEach { view in
+        [initialsContainer, checkBoxView].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             [
                 view.topAnchor.constraint(equalTo: leftContainer.topAnchor),
@@ -73,10 +75,26 @@ class NewMailboxMessageCellContentView: UIView {
             ]
                 .activate()
         }
+
+        [
+            initialsLabel.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor, constant: 2),
+            initialsLabel.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: -2),
+            initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor)
+        ].activate()
     }
 
     required init?(coder: NSCoder) {
         nil
     }
 
+}
+
+private enum SubviewsFactory {
+    static var container: UIView {
+        let view = UIView()
+        view.backgroundColor = UIColorManager.InteractionWeak
+        view.layer.cornerRadius = 6
+        view.isUserInteractionEnabled = false
+        return view
+    }
 }

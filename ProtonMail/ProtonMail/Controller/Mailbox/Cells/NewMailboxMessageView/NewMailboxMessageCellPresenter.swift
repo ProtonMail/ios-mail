@@ -28,7 +28,7 @@ class NewMailboxMessageCellPresenter {
     private let tagsPresenter = TagsPresenter()
 
     func present(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageCellContentView) {
-        view.initialsLabel.attributedText = viewModel.initial
+        view.initialsLabel.text = viewModel.initial.string
         view.initialsLabel.textAlignment = .center
         presentContent(viewModel: viewModel, in: view.messageContentView)
         presentTags(tags: viewModel.tags, in: view.messageContentView)

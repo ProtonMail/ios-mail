@@ -20,10 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 class ExpandedHeaderView: UIView {
 
+    let initialsContainer = SubviewsFactory.container
     let initialsLabel = UILabel.initialsLabel
     let contentStackView = UIStackView.stackView(axis: .vertical, distribution: .fill, alignment: .fill)
     let senderNameLabel = UILabel()
@@ -37,26 +39,33 @@ class ExpandedHeaderView: UIView {
     }
 
     private func addSubviews() {
-        addSubview(initialsLabel)
+        addSubview(initialsContainer)
         addSubview(senderNameLabel)
         addSubview(senderEmailControl)
         addSubview(timeLabel)
         addSubview(contentStackView)
+        initialsContainer.addSubview(initialsLabel)
     }
 
     private func setUpLayout() {
         [
-            initialsLabel.topAnchor.constraint(equalTo: topAnchor, constant: 14),
-            initialsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
-            initialsLabel.heightAnchor.constraint(equalToConstant: 28),
-            initialsLabel.widthAnchor.constraint(equalToConstant: 28),
-            initialsLabel.bottomAnchor.constraint(equalTo: senderEmailControl.topAnchor, constant: -2)
+            initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 14),
+            initialsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
+            initialsContainer.heightAnchor.constraint(equalToConstant: 28),
+            initialsContainer.widthAnchor.constraint(equalToConstant: 28),
+            initialsContainer.bottomAnchor.constraint(equalTo: senderEmailControl.topAnchor, constant: -2)
+        ].activate()
+
+        [
+            initialsLabel.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor, constant: 2),
+            initialsLabel.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: -2),
+            initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor)
         ].activate()
 
         [
             senderNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 14),
-            senderNameLabel.leadingAnchor.constraint(equalTo: initialsLabel.trailingAnchor, constant: 10),
-            senderNameLabel.centerYAnchor.constraint(equalTo: initialsLabel.centerYAnchor),
+            senderNameLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
+            senderNameLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor),
             senderNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: timeLabel.leadingAnchor, constant: -8)
         ].activate()
 
@@ -66,7 +75,7 @@ class ExpandedHeaderView: UIView {
         ].activate()
 
         [
-            senderEmailControl.leadingAnchor.constraint(equalTo: initialsLabel.trailingAnchor, constant: 10),
+            senderEmailControl.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
             senderEmailControl.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -48),
             senderEmailControl.bottomAnchor.constraint(equalTo: contentStackView.topAnchor, constant: -8)
         ].activate()
@@ -82,4 +91,14 @@ class ExpandedHeaderView: UIView {
         nil
     }
 
+}
+
+private enum SubviewsFactory {
+    static var container: UIView {
+        let view = UIView()
+        view.backgroundColor = UIColorManager.InteractionWeak
+        view.layer.cornerRadius = 6
+        view.isUserInteractionEnabled = false
+        return view
+    }
 }

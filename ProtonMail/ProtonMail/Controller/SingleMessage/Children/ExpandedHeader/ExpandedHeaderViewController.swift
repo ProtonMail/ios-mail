@@ -56,7 +56,7 @@ class ExpandedHeaderViewController: UIViewController {
     private func setUpView() {
         customView.contentStackView.clearAllViews()
 
-        customView.initialsLabel.attributedText = viewModel.initials
+        customView.initialsLabel.text = viewModel.initials.string
         customView.initialsLabel.textAlignment = .center
 
         customView.senderNameLabel.attributedText = viewModel.sender

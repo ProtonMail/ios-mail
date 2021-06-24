@@ -15,7 +15,7 @@ class ConversationMessageCellPresenter {
         if let initials = model.initial {
             view.initialsLabel.isHidden = false
             view.initialsIcon.isHidden = true
-            view.initialsLabel.attributedText = initials
+            view.initialsLabel.text = initials.string
             view.initialsLabel.textAlignment = .center
         }
 

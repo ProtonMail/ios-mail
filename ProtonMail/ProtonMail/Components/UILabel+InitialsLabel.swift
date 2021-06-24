@@ -26,9 +26,12 @@ extension UILabel {
 
     static var initialsLabel: UILabel {
         let label = UILabel(frame: .zero)
-        label.backgroundColor = UIColorManager.InteractionWeak
-        label.setCornerRadius(radius: 6)
+        label.backgroundColor = .clear
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = UIColorManager.TextNorm
+        label.adjustsFontSizeToFitWidth = true
         label.isUserInteractionEnabled = false
+        label.baselineAdjustment = .alignCenters
         return label
     }
 

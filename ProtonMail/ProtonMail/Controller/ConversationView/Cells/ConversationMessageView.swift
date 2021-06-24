@@ -9,6 +9,7 @@ class ConversationMessageView: UIView {
     let container = SubviewsFactory.container
 
     let contentStackView = UIStackView.stackView(axis: .horizontal, alignment: .center, spacing: 4)
+    let initialsContainer = SubviewsFactory.initialsContainer
     let initialsLabel = UILabel.initialsLabel
     let initialsIcon = SubviewsFactory.draftIconImageView
     let initialsView = UIView()
@@ -42,8 +43,9 @@ class ConversationMessageView: UIView {
         cellControl.addSubview(container)
         container.addSubview(contentStackView)
 
-        initialsView.addSubview(initialsLabel)
+        initialsView.addSubview(initialsContainer)
         initialsView.addSubview(initialsIcon)
+        initialsContainer.addSubview(initialsLabel)
 
         contentStackView.addArrangedSubview(initialsView)
         contentStackView.addArrangedSubview(replyImageView)
@@ -82,12 +84,18 @@ class ConversationMessageView: UIView {
         ].activate()
 
         [
-            initialsLabel.topAnchor.constraint(greaterThanOrEqualTo: initialsView.topAnchor),
-            initialsLabel.leadingAnchor.constraint(greaterThanOrEqualTo: initialsView.leadingAnchor),
-            initialsLabel.trailingAnchor.constraint(lessThanOrEqualTo: initialsView.trailingAnchor),
-            initialsLabel.bottomAnchor.constraint(lessThanOrEqualTo: initialsView.bottomAnchor),
-            initialsLabel.heightAnchor.constraint(equalToConstant: 28),
-            initialsLabel.widthAnchor.constraint(equalToConstant: 28)
+            initialsContainer.topAnchor.constraint(greaterThanOrEqualTo: initialsView.topAnchor),
+            initialsContainer.leadingAnchor.constraint(greaterThanOrEqualTo: initialsView.leadingAnchor),
+            initialsContainer.trailingAnchor.constraint(lessThanOrEqualTo: initialsView.trailingAnchor),
+            initialsContainer.bottomAnchor.constraint(lessThanOrEqualTo: initialsView.bottomAnchor),
+            initialsContainer.heightAnchor.constraint(equalToConstant: 28),
+            initialsContainer.widthAnchor.constraint(equalToConstant: 28)
+        ].activate()
+
+        [
+            initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor),
+            initialsLabel.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor, constant: 2),
+            initialsLabel.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: -2)
         ].activate()
 
         [
@@ -156,6 +164,14 @@ private enum SubviewsFactory {
         view.backgroundColor = UIColorManager.BackgroundNorm
         view.layer.cornerRadius = 6
         view.layer.apply(shadow: .custom(y: 1))
+        view.isUserInteractionEnabled = false
+        return view
+    }
+
+    static var initialsContainer: UIView {
+        let view = UIView()
+        view.backgroundColor = UIColorManager.InteractionWeak
+        view.layer.cornerRadius = 6
         view.isUserInteractionEnabled = false
         return view
     }

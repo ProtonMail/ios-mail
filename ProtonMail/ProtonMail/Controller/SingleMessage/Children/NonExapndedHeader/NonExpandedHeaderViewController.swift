@@ -46,7 +46,7 @@ class NonExpandedHeaderViewController: UIViewController {
     }
 
     private func setUpView() {
-        customView.initialsLabel.attributedText = viewModel.initials
+        customView.initialsLabel.text = viewModel.initials.string
         customView.initialsLabel.textAlignment = .center
         customView.originImageView.image = viewModel.originImage
         customView.senderLabel.attributedText = viewModel.sender

@@ -25,6 +25,7 @@ import UIKit
 
 class NonExpandedHeaderView: UIView {
 
+    let initialsContainer = SubviewsFactory.container
     let initialsLabel = UILabel.initialsLabel
     let senderLabel = UILabel(frame: .zero)
     let lockImageView = SubviewsFactory.imageView
@@ -46,9 +47,10 @@ class NonExpandedHeaderView: UIView {
     }
 
     private func addSubviews() {
-        addSubview(initialsLabel)
+        addSubview(initialsContainer)
         addSubview(contentStackView)
 
+        initialsContainer.addSubview(initialsLabel)
         lockImageControl.addSubview(lockImageView)
 
         contentStackView.addArrangedSubview(firstLineStackView)
@@ -71,11 +73,17 @@ class NonExpandedHeaderView: UIView {
 
     private func setUpLayout() {
         [
-            initialsLabel.topAnchor.constraint(equalTo: topAnchor, constant: 14),
-            initialsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
-            initialsLabel.trailingAnchor.constraint(equalTo: firstLineStackView.leadingAnchor, constant: -10),
-            initialsLabel.heightAnchor.constraint(equalToConstant: 28),
-            initialsLabel.widthAnchor.constraint(equalToConstant: 28)
+            initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 14),
+            initialsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
+            initialsContainer.trailingAnchor.constraint(equalTo: firstLineStackView.leadingAnchor, constant: -10),
+            initialsContainer.heightAnchor.constraint(equalToConstant: 28),
+            initialsContainer.widthAnchor.constraint(equalToConstant: 28)
+        ].activate()
+
+        [
+            initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor),
+            initialsLabel.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor, constant: 2),
+            initialsLabel.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: -2)
         ].activate()
 
         [
@@ -116,6 +124,14 @@ private enum SubviewsFactory {
         let imageView = self.imageView
         imageView.tintColor = UIColorManager.IconWeak
         return imageView
+    }
+
+    static var container: UIView {
+        let view = UIView()
+        view.backgroundColor = UIColorManager.InteractionWeak
+        view.layer.cornerRadius = 6
+        view.isUserInteractionEnabled = false
+        return view
     }
 
     static var imageView: UIImageView {
