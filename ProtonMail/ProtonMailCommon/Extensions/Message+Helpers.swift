@@ -150,12 +150,11 @@ extension Message {
         }
 
         // will this be deadly slow?
-        let email = replacingEmails.first { $0.email == sender.email }
-        if let contact = email?.contact {
-            return contact.name
+        guard let email = replacingEmails.first(where: { $0.email == sender.email }) else {
+            return sender.name.isEmpty ? sender.email : sender.name
         }
-
-        return sender.name.isEmpty ? sender.email : sender.name
+        let contact = email.contact
+        return contact.name.isEmpty ? email.name: contact.name
     }
 
     func allEmailAddresses(_ replacingEmails: [Email]) -> String {

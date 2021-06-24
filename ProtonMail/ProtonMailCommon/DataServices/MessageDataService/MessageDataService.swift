@@ -236,11 +236,11 @@ class MessageDataService : Service, HasLocalStorage {
                         return Promise<Void>()
                     }
                 }.ensure {
-                    self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: false, completion: completionWrapper)
                     if cleanContact {
                         self.contactDataService.fetchContacts(completion: nil)
                     }
                     self.labelDataService.fetchV4Labels().cauterize()
+                    self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: false, completion: completionWrapper)
                 }.cauterize()
             }
         }
