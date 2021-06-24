@@ -256,7 +256,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
         }
         order += 1
         let copyAddresses = userManager.addresses
-        for index in copyAddresses.indices where userManager.addresses[index] != address {
+        for index in copyAddresses.indices where userManager.addresses[index].addressID != address.addressID {
             newAddrs.append(userManager.addresses[index])
             newOrder.append(userManager.addresses[index].addressID)
             userManager.addresses[index] = userManager.addresses[index].withUpdated(order: order)
