@@ -220,19 +220,22 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     }
 
     @objc private func updateStepWhenTheQueueIsEmpty() {
+        guard !step.contains(.queueIsEmpty) else { return }
         self.step.insert(.queueIsEmpty)
     }
     
     private func dismissAnimation() {
-        let animationBlock: ()->Void = { [weak self] in
-            if let view = self?.navigationController?.view {
-                view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
+        DispatchQueue.main.async {
+            let animationBlock: ()->Void = { [weak self] in
+                if let view = self?.navigationController?.view {
+                    view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
+                }
             }
-        }
-        self.stepAlert = nil
-        keymaker.lockTheApp()
-        UIView.animate(withDuration: 0.25, animations: animationBlock) { _ in
-            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            self.stepAlert = nil
+            keymaker.lockTheApp()
+            UIView.animate(withDuration: 0.25, animations: animationBlock) { _ in
+                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            }
         }
     }
     
