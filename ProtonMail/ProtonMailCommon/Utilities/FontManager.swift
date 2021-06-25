@@ -249,6 +249,21 @@ struct FontManager {
         ]
         return attributes
     }()
+
+    static let CaptionStrongInverted: [NSAttributedString.Key: Any] = {
+        let font = UIFont.systemFont(ofSize: 13, weight: .semibold) // Check with design, if it's correct one
+        //let font = UIFont(name: "SFProDisplay-Semibold", size: 13)!
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.03
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .kern: -0.08,
+            .font: font,
+            .foregroundColor: UIColorManager.TextInverted,
+            .paragraphStyle: paragraphStyle
+        ]
+        return attributes
+    }()
     
     static let Caption: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13)

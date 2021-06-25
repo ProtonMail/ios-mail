@@ -37,6 +37,20 @@ class ConversationView: UIView {
         nil
     }
 
+    func showNewMessageFloatyView(messageId: String) -> ConversationNewMessageFloatyView {
+        let safeBottom = superview?.safeGuide.bottom ?? 0.0
+        // make sure bottom always on the top of safeArea
+        let bottom = max(1 + safeBottom, 42.0)
+
+        let view = ConversationNewMessageFloatyView()
+        addSubview(view)
+        [
+            view.heightAnchor.constraint(equalToConstant: 48.0),
+            view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * bottom),
+            view.centerXAnchor.constraint(equalTo: centerXAnchor)
+        ].activate()
+        return view
+    }
 }
 
 private enum SubviewsFactory {

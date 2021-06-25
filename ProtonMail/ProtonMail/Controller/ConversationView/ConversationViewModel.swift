@@ -10,6 +10,8 @@ class ConversationViewModel {
 
     var refreshView: (() -> Void)?
 
+    var showNewMessageArrivedFloaty: ((String) -> Void)?
+
     var messagesTitle: String {
         .localizedStringWithFormat(LocalString._general_message, messagesDataSource.count)
     }
@@ -37,6 +39,9 @@ class ConversationViewModel {
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
 
+    /// Used to decide if there is any new messages coming
+    private var recordNumOfMessages = 0
+
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
@@ -61,10 +66,12 @@ class ConversationViewModel {
         self.user = user
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
         headerSectionDataSource = [.header(subject: conversation.subject)]
+
+        recordNumOfMessages = conversation.numMessages.intValue
     }
 
     func fetchConversationDetails() {
-        conversationService.fetchConversation(with: conversation.conversationID, includeBodyOf: nil) { _ in }
+        conversationService.fetchConversation(with: conversation.conversationID, includeBodyOf: nil, completion: nil)
     }
 
     func observeConversationMessages(tableView: UITableView) {
@@ -72,6 +79,7 @@ class ConversationViewModel {
         conversationMessagesProvider.observe { [weak self] update in
             self?.perform(update: update, on: tableView)
             self?.checkTrashedHintBanner()
+            self?.observeNewMessages()
         } storedMessages: { [weak self] messages in
             self?.messagesDataSource = messages.compactMap { self?.messageType(with: $0) }
             self?.checkTrashedHintBanner()
@@ -143,6 +151,13 @@ class ConversationViewModel {
         try? FileManager.default.removeItem(at: tempFileUri)
         try content.write(to: tempFileUri, atomically: true, encoding: .utf8)
         return tempFileUri
+    }
+
+    private func observeNewMessages() {
+        if messagesDataSource.count > recordNumOfMessages {
+            showNewMessageArrivedFloaty?(messagesDataSource.newestMessage?.messageID ?? "")
+        }
+        recordNumOfMessages = messagesDataSource.count
     }
 
     private func perform(update: ConversationUpdateType, on tableView: UITableView) {

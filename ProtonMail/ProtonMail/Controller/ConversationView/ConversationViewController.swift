@@ -40,6 +40,10 @@ class ConversationViewController: UIViewController,
             self?.refreshNavigationViewIfNeeded()
         }
 
+        viewModel.showNewMessageArrivedFloaty = { [weak self] messageId in
+            self?.showNewMessageFloatyView(messageId: messageId)
+        }
+
         conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
         customView.separator.isHidden = true
 
@@ -665,4 +669,23 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                      })
     }
 
+}
+
+// MARK: - New Message floaty view
+extension ConversationViewController {
+    private func showNewMessageFloatyView(messageId: String) {
+        let floatyView = customView.showNewMessageFloatyView(messageId: messageId)
+        floatyView.show { [weak self] in
+            guard let index = self?.viewModel.messagesDataSource
+                    .firstIndex(where: { $0.message?.messageID == messageId }),
+                  let messageViewModel = self?.viewModel.messagesDataSource[safe: index]?.messageViewModel,
+                  !messageViewModel.state.isExpanded else {
+                return
+            }
+
+            self?.cellTapped(messageId: messageId)
+            let indexPath = IndexPath(row: Int(index), section: 1)
+            self?.customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
+    }
 }

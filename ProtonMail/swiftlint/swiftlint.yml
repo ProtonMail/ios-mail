@@ -172,6 +172,7 @@ included:
   - ${PWD}/ProtonMail/Controller/ConversationView/ConversationMessagesProvider.swift
   - ${PWD}/ProtonMailCommon/DataServices/ConversationDataService/ConversationDataServiceProxy.swift
   - ${PWD}/ProtonMailCommon/DataServices/ConversationDataService/LocalConversationUpdater.swift
+  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationNewMessageFloatyView.swift
 
 excluded:
   - ${PWD}/Pods
