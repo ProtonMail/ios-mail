@@ -106,11 +106,11 @@ struct Element {
         }
         
         class func swipeSwipeUpUntilVisibleByIdentifier(_ identifier: String) -> XCUIElement {
-            return app.cells[identifier].firstMatch.swipeUpUntilVisible()
+            return app.cells[identifier].firstMatch.findCellInTheList()
         }
         
         class func swipeDownUpUntilVisibleByIdentifier(_ identifier: String) -> XCUIElement {
-            return app.cells[identifier].firstMatch.swipeUpUntilVisible()
+            return app.cells[identifier].firstMatch.findCellInTheList()
         }
     }
     
@@ -389,11 +389,25 @@ struct Element {
 extension XCUIElement {
     
     @discardableResult
+        func findCellInTheList(maxAttempts: Int = 5) -> XCUIElement {
+            var eventCount = 0
+            let table = app.tables.element.firstMatch
+            while eventCount <= maxAttempts, !self.isElementHittable {
+                table.swipeDown()
+                eventCount += 1
+            }
+            if !self.isElementHittable {
+                return self.swipeUpUntilVisible(maxAttempts: maxAttempts * 2)
+            }
+            return self
+        }
+    
+    @discardableResult
     func swipeUpUntilVisible(maxAttempts: Int = 5) -> XCUIElement {
         var eventCount = 0
         let table = app.tables.element.firstMatch
 
-        while eventCount <= maxAttempts, !self.isVisible {
+        while eventCount <= maxAttempts, !self.isElementHittable {
             table.swipeUp()
             eventCount += 1
         }
@@ -405,16 +419,16 @@ extension XCUIElement {
         var eventCount = 0
         let table = app.tables.element.firstMatch
 
-        while eventCount <= maxAttempts, !self.isVisible {
+        while eventCount <= maxAttempts, !self.isElementHittable {
             table.swipeDown()
             eventCount += 1
         }
         return self
     }
     
-    private var isVisible: Bool {
+    private var isElementHittable: Bool {
         guard self.exists && !self.frame.isEmpty else { return false }
-        return app.windows.element(boundBy: 0).frame.contains(self.frame)
+        return self.isHittable
     }
     
     /**
