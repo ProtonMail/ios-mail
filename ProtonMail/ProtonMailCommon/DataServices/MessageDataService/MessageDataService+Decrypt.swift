@@ -188,6 +188,7 @@ extension MessageDataService {
             newMessage.addressID = message.addressID
             newMessage.messageStatus = message.messageStatus
             newMessage.mimeType = message.mimeType
+            newMessage.conversationID = message.conversationID
             newMessage.setAsDraft()
             
             newMessage.userID = self.userID
