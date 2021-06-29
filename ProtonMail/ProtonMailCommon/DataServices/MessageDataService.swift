@@ -1291,20 +1291,16 @@ class MessageDataService : Service, HasLocalStorage {
                 let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
                 fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
                 if removeDraft {
-                    let request = NSBatchDeleteRequest(fetchRequest: fetch)
-                    request.resultType = .resultTypeObjectIDs
-     
-                    if let result = try? context.execute(request) as? NSBatchDeleteResult,
-                       let objectIdArray = result.result as? [NSManagedObjectID] {
-                        let changes = [NSDeletedObjectsKey: objectIdArray]
-                        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+                    if let messages = try? context.fetch(fetch) as? [NSManagedObject] {
+                        messages.forEach({ context.delete($0) })
+                        _ = context.saveUpstreamIfNeeded()
                     }
                     UIApplication.setBadge(badge: 0)
                     seal.fulfill_()
                 } else {
                     let draftID = Message.Location.draft.rawValue
                     let results = (try? fetch.execute()) ?? []
-                    var objectIdArray: [NSManagedObjectID] = []
+
                     for obj in results {
                         guard let message = obj as? Message else { continue }
                         if let labels = message.labels.allObjects as? [Label],
@@ -1325,11 +1321,9 @@ class MessageDataService : Service, HasLocalStorage {
                         }
                         if let dataObject = obj as? NSManagedObject {
                             context.delete(dataObject)
-                            objectIdArray.append(dataObject.objectID)
                         }
                     }
-                    let changes = [NSDeletedObjectsKey: objectIdArray]
-                    NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+                    _ = context.saveUpstreamIfNeeded()
                     seal.fulfill_()
                     return
                 }
@@ -1426,14 +1420,14 @@ class MessageDataService : Service, HasLocalStorage {
         self.coreDataService.enqueue(context: context) { (context) in
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attachment.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "(%K == 1) AND %K == NULL", Attachment.Attributes.isSoftDelete, Attachment.Attributes.message)
-            let request = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-            do {
-                try context.execute(request)
-            } catch let ex as NSError {
-                Analytics.shared.error(message: .purgeOldMessages,
-                                       error: ex,
-                                       user: self.usersManager?.getUser(byUserId: self.userID))
-                PMLog.D("error : \(ex)")
+            if let attachments = try? context.fetch(fetchRequest) as? [NSManagedObject] {
+                attachments.forEach({ context.delete($0) })
+                if let error = context.saveUpstreamIfNeeded() {
+                    Analytics.shared.error(message: .purgeOldMessages,
+                                           error: error,
+                                           user: self.usersManager?.getUser(byUserId: self.userID))
+                    PMLog.D("error : \(error)")
+                }
             }
         }
     }
