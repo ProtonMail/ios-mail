@@ -60,8 +60,8 @@ class ConversationNewMessageFloatyView: UIView {
         [
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32)
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 36),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -36)
         ].activate()
         titleLabel.setContentHuggingPriority(.required, for: .horizontal)
         button.fillSuperview()
