@@ -556,6 +556,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
 
     private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, message: Message) {
+        cell.delegate = self
+        
         let leftToRightAction = userCachedStatus.leftToRightSwipeActionType
         let leftToRightMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(leftToRightAction,
                                                                                         message: message)
@@ -2226,5 +2228,23 @@ extension MailboxViewController: EventsConsumer {
     func shouldCallFetchEvents() {
         guard self.hasNetworking else { return }
         getLatestMessages()
+    }
+}
+
+extension MailboxViewController: SwipyCellDelegate {
+    func swipyCellDidStartSwiping(_ cell: SwipyCell) {
+        tableView.visibleCells.filter({ $0 != cell }).forEach { cell in
+            cell.isUserInteractionEnabled = false
+        }
+    }
+
+    func swipyCellDidFinishSwiping(_ cell: SwipyCell, atState state: SwipyCellState, triggerActivated activated: Bool) {
+        tableView.visibleCells.forEach { cell in
+            cell.isUserInteractionEnabled = true
+        }
+    }
+
+    func swipyCell(_ cell: SwipyCell, didSwipeWithPercentage percentage: CGFloat, currentState state: SwipyCellState, triggerActivated activated: Bool) {
+
     }
 }
