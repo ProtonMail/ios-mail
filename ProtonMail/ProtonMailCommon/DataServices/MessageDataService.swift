@@ -2166,16 +2166,19 @@ class MessageDataService : Service, HasLocalStorage {
                             newMessage.messageStatus = 1
                             newMessage.isDetailDownloaded = true
                             newMessage.unRead = false
+                            if let error = context.saveUpstreamIfNeeded() {
+                                PMLog.D(" error: \(error)")
+                            }
+
+                            self.move(message: newMessage,
+                                 from: Message.Location.draft.rawValue,
+                                 to: Message.Location.sent.rawValue,
+                                 queue: false)
                         } else {
                             assert(false, "Failed to parse response Message")
                         }
                     }
-                    
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    } else {
-                        _ = self.markReplyStatus(message.orginalMessageID, action: message.action)
-                    }
+                    _ = self.markReplyStatus(message.orginalMessageID, action: message.action)
                 } else {
                     //Debug info
                     status.insert(SendStatus.doneWithError)
