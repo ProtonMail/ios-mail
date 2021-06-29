@@ -732,13 +732,13 @@
 "Edit Contact" = "Изменить контакт";
 
 /* Title */
-"Edit Folder" = "Изменить папку";
+"Edit Folder" = "Изменение папки";
 
 /* The title for the contact group editing view */
-"Edit Group" = "Изменить группу";
+"Edit Group" = "Изменение группы";
 
 /* Title */
-"Edit Label" = "Изменить ярлык";
+"Edit Label" = "Изменение ярлыка";
 
 /* title */
 "Edit mobile signature" = "Изменить мобильную подпись";
@@ -2486,7 +2486,7 @@
 "Your plan will automatically renew on" = "Ваш тариф автоматически обновится";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Ваша сессия закончилась, потому что вы были неактивны некоторое время или она была отозвана. Пожалуйста, войдите снова.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Срок вашей сессии истёк, потому что вы были неактивны некоторое время или она была прервана. Пожалуйста, войдите снова.";
 
 /* Description */
 "Your signature has been updated." = "Ваша подпись обновлена.";

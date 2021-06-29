@@ -386,7 +386,7 @@
 
 /* sign up user error when can't get moduls id
  update password error */
-"Can't get a Moduls ID!" = "Nu se poate obține ID coeficient!";
+"Can't get a Moduls ID!" = "Nu se poate obține ID modul!";
 
 /* update password error = typo:Modulus */
 "Can't get a Moduls!" = "Nu se poate obține un coeficient!";
