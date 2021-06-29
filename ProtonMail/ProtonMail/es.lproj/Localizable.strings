@@ -986,7 +986,7 @@
 "Go to login" = "Ir al inicio de sesión";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "Ir a los ajustes";
+"Go to settings" = "Ir a la configuración";
 
 /* network troubleshot cell title */
 "Government block" = "Bloqueo del gobierno";

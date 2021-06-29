@@ -459,7 +459,7 @@
 "Change sender address to .." = "Skift afsenderadresse til..";
 
 /* Title */
-"Change Single Password" = "Skift enkelststående adgangskode";
+"Change Single Password" = "Skift enkeltstående adgangskode";
 
 /* Action */
 "Check Again" = "Tjek igen";
@@ -844,19 +844,19 @@
 "End Time" = "Sluttid";
 
 /* encryption lock description */
-"End-to-end encrypted" = "Ende-til-ende krypteret";
+"End-to-end encrypted" = "End-to-end krypteret";
 
 /* encryption lock description */
-"End-to-end encrypted message" = "Ende-til-ende krypteret besked";
+"End-to-end encrypted message" = "End-to-end krypteret besked";
 
 /* encryption lock description */
-"End-to-end encrypted message from verified address" = "Ende-til-ende krypteret besked fra bekræftet adresse";
+"End-to-end encrypted message from verified address" = "End-to-end krypteret besked fra bekræftet adresse";
 
 /* encryption lock description */
-"End-to-end encrypted to verified address" = "Ende-til-ende krypteret for at bekræfte adresse";
+"End-to-end encrypted to verified address" = "End-to-end krypteret for at bekræfte adresse";
 
 /* Title */
-"End-to-End Encryption" = "Ende-til-ende kryptering";
+"End-to-End Encryption" = "End-to-end-kryptering";
 
 /* Action in 2fa popup view */
 "Enter" = "Angiv";
@@ -1467,7 +1467,7 @@
 "On EE, MMM d, yyyy at %@" = "EE d. MMM yyyy %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE d MMM yyyy %1$@ skrev %2$@:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE d MMM yyyy kl. %1$@ skrev %2$@:";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorer kun aktiveringen af købet, hvis du er sikker på, at alle dine abonnementer er opdaterede. For yderligere hjælp, kontakt venligst kundesupport. \r\n\r\n Er du sikker på, at du vil ignorere aktiveringen?";
@@ -1690,7 +1690,7 @@
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus kræves for at tilpasse din mobilsignatur";
 
 /* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary muliggør at tilføje og redigere kontaktoplysninger udover blot din kontaktpersons navn og e-mail. Vha. ProtonMail vil disse data være så sikre som din ende-til-ende krypteret e-mail.";
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary giver dig mulighed for at tilføje og redigere kontaktoplysninger udover blot din kontaktpersons navn og e-mail. Vha. ProtonMail vil disse data være lige så sikre som din end-to-end krypteret e-mail.";
 
 /* network troubleshot cell title */
 "ProtonVPN" = "ProtonVPN";
@@ -1855,7 +1855,7 @@
 "Sent by ProtonMail with zero access encryption" = "Afsendt af ProtonMail med nuladgangskryptering";
 
 /* encryption lock description */
-"Sent by you with end-to-end encryption" = "Afsendt af dig med ende-til-ende kryptering";
+"Sent by you with end-to-end encryption" = "Afsendt af dig med end-to-end kryptering";
 
 /* Description */
 "Sent Failed" = "Afsendelse mislykkedes";
@@ -2177,7 +2177,7 @@
 "Trash" = "Papirkurv";
 
 /* mail location title */
-"TRASH" = "PAPIRKURV";
+"TRASH" = "Papirkurv";
 
 /* Title */
 "Trouble shooting guide" = "Fejlfindingsguide";
@@ -2470,7 +2470,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Dit land blokerer muligvis for adgangen til Proton. Prøv at bruge ProtonVPN (eller enhver anden VPN) eller Tor for at tilgå Proton.";
 
 /* Description */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Din indbakke er nu beskyttet med ende-til-ende kryptering. For automatisk at sikre e-mails til venner, så få dem til at hente ProtonMail! Du kan også manuelt kryptere beskeder til dem, hvis de ikke benytter ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Din indbakke er nu beskyttet med end-to-end kryptering. Bed dine venner om også at bruge ProtonMail, så I automatisk sender sikre e-mails til hinanden! Du kan også manuelt kryptere beskeder til dem, hvis de ikke benytter ProtonMail.";
 
 /* *
  *  Onboarding */

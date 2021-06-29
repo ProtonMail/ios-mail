@@ -327,7 +327,7 @@
 "Bug Report Received" = "Rapporten är mottagen.";
 
 /* Link to More Credits screen */
-"Buy More Credits" = "Köp mer Credits";
+"Buy More Credits" = "Köp fler krediter";
 
 /* Alert for removing disconnected accounts */
 "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "Genom att ta bort detta konto kommer du inte längre att kunna komma åt det från den här enheten om du inte lägger till det igen.\n\nVill du ta bort detta konto ändå?";
@@ -697,7 +697,7 @@
 "Do you want to cancel the process?" = "Vill du avbryta processen?";
 
 /* Title */
-"Do you want to save the unsaved changes?" = "Vill du spara dina ändringar?";
+"Do you want to save the unsaved changes?" = "Vill du spara de osparade ändringarna?";
 
 /* Action */
 "Don't remind me again" = "Påminn mig inte igen";
@@ -1342,13 +1342,13 @@
 "More" = "Mer";
 
 /* Screen header */
-"More Credits" = "Köp mer Credits";
+"More Credits" = "Fler krediter";
 
 /* move action */
 "Move to All Mail" = "Flytta till all e-post";
 
 /* move action */
-"Move to Archive" = "Flytta till arkiv";
+"Move to Archive" = "Flytta till Arkiv";
 
 /* move action */
 "Move to Draft" = "Flytta till utkast";
@@ -1363,7 +1363,7 @@
 "Move to Outbox" = "Flytta till Utkorgen";
 
 /* move action */
-"Move to Spam" = "Flytta till skräppost";
+"Move to Spam" = "Flytta till Skräppost";
 
 /* move action */
 "Move to Trash" = "Flytta till Papperskorg";
@@ -2441,7 +2441,7 @@
 "You have a new email!" = "Du har ett nytt meddelande!";
 
 /* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "Du har osparade ändringar. Vill du spara?";
+"You have unsaved changes. Do you want to save it?" = "Du har osparade ändringar. Vill du spara det?";
 
 /* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Du har använt %d%% av ditt lagringsutrymme (%@).";
