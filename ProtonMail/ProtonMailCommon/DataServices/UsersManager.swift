@@ -379,6 +379,8 @@ class UsersManager : Service, Migrate {
             do {
                 auths = try authlocked.unlock(with: mainKey)
             } catch {
+                SharedCacheBase.getDefault().setValue(nil, forKey: CoderKey.authKeychainStore)
+                KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
                 Analytics.shared.error(message: .usersRestoreFailed, error: error, extra: ["IsUnlockFail": true])
                 return
             }

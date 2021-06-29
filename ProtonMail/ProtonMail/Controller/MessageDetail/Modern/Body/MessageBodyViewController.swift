@@ -167,7 +167,7 @@ extension MessageBodyViewController {
         super.webView(webView, didFinish: navigation)
         let isLoadingFinished = Int(webView.estimatedProgress) == 1
         guard isLoadingFinished else { return }
-        self.viewModel.isWebViewBodyLoaded = loader.renderedContents.isValid
+        self.viewModel.isWebViewBodyLoaded = viewModel.contents?.body.isEmpty == true ? true : loader.renderedContents.isValid
     }
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
