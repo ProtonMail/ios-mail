@@ -9,7 +9,7 @@
 import Foundation
 
 extension Data {
-    func encodeBase64() -> String {
+    public func encodeBase64() -> String {
         return self.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     }
 }

@@ -2,7 +2,6 @@
 //  AddressesEndpoint.swift
 //  PMAuthentication - Created on 17/03/2020.
 //
-//
 //  Copyright (c) 2019 Proton Technologies AG
 //
 //  This file is part of ProtonMail.

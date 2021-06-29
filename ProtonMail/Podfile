@@ -3,7 +3,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def pm_shared_pods
-  pod 'PMCrypto', :git => 'git@gitlab.protontech.ch:apple/shared/pmcrypto.git', :tag => '2.1.7'
+  pod 'PMCrypto', :git => 'git@gitlab.protontech.ch:apple/shared/pmcrypto.git', :tag => '2.1.10'
   # this is needed by PMKeymaker, otherwise will fetch outdated version from cocoapods
   pod 'EllipticCurveKeyPair', :git => 'https://github.com/abjurato/EllipticCurveKeyPair.git', :tag => '1.0.4'
   pod 'PMAuthentication', :git => 'git@gitlab.protontech.ch:apple/shared/pmauthentication.git', :branch => 'develop', :testspecs => ['Tests']

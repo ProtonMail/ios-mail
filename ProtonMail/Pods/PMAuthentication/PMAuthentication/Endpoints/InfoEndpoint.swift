@@ -33,11 +33,11 @@ extension AuthService {
         public var srpSession: String?
         
         override public func ParseResponse(_ response: [String: Any]!) -> Bool {
-            self.modulus         = response["Modulus"] as? String
+            self.modulus = response["Modulus"] as? String
             self.serverEphemeral = response["ServerEphemeral"] as? String
-            self.version         = response["Version"] as? Int ?? 0
-            self.salt            = response["Salt"] as? String
-            self.srpSession      = response["SRPSession"] as? String
+            self.version = response["Version"] as? Int ?? 0
+            self.salt = response["Salt"] as? String
+            self.srpSession = response["SRPSession"] as? String
             return true
         }
     }

@@ -1,8 +1,6 @@
 //
 //  TwoFAEndpoint.swift
-//
 //  PMAuthentication - Created on 20/02/2020.
-//  Copyright © 2020 ProtonMail. All rights reserved.
 //
 //
 //  Copyright (c) 2019 Proton Technologies AG

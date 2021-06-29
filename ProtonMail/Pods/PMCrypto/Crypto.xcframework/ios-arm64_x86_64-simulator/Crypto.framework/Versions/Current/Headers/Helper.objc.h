@@ -66,9 +66,9 @@ and its passphrase.
 FOUNDATION_EXPORT NSData* _Nullable HelperDecryptBinaryMessageArmored(NSString* _Nullable privateKey, NSData* _Nullable passphrase, NSString* _Nullable ciphertext, NSError* _Nullable* _Nullable error);
 
 /**
- * DecryptExplicitVerify decrypts an armored PGP message given a private key
-and its passphrase and verifies the embedded signature. Returns the plain
-data or an error on signature verification failure.
+ * DecryptExplicitVerify decrypts a PGP message given a private keyring
+and a public keyring to verify the embedded signature. Returns the plain
+data and an error on signature verification failure.
  */
 FOUNDATION_EXPORT HelperExplicitVerifyMessage* _Nullable HelperDecryptExplicitVerify(CryptoPGPMessage* _Nullable pgpMessage, CryptoKeyRing* _Nullable privateKeyRing, CryptoKeyRing* _Nullable publicKeyRing, int64_t verifyTime, NSError* _Nullable* _Nullable error);
 
@@ -90,6 +90,13 @@ using a given armored private key
 and its passphrase.
  */
 FOUNDATION_EXPORT CryptoSessionKey* _Nullable HelperDecryptSessionKey(NSString* _Nullable privateKey, NSData* _Nullable passphrase, NSData* _Nullable encryptedSessionKey, NSError* _Nullable* _Nullable error);
+
+/**
+ * DecryptSessionKeyExplicitVerify decrypts a PGP data packet given a session key
+and a public keyring to verify the embedded signature. Returns the plain data and
+an error on signature verification failure.
+ */
+FOUNDATION_EXPORT HelperExplicitVerifyMessage* _Nullable HelperDecryptSessionKeyExplicitVerify(NSData* _Nullable dataPacket, CryptoSessionKey* _Nullable sessionKey, CryptoKeyRing* _Nullable publicKeyRing, int64_t verifyTime, NSError* _Nullable* _Nullable error);
 
 /**
  * DecryptVerifyArmoredDetached decrypts an armored pgp message

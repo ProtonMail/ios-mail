@@ -35,9 +35,9 @@ public class AuthService: Client {
     }
     
     func auth(username: String,
-                     ephemeral: Data,
-                     proof: Data,
-                     session: String, complete: @escaping(_ response: Result<AuthService.AuthRouteResponse, Error>) -> Void) {
+              ephemeral: Data,
+              proof: Data,
+              session: String, complete: @escaping(_ response: Result<AuthService.AuthRouteResponse, Error>) -> Void) {
         let route = AuthEndpoint(username: username, ephemeral: ephemeral, proof: proof, session: session)
         self.apiService.exec(route: route, complete: complete)
     }
