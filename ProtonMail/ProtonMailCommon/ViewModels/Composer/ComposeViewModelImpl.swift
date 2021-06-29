@@ -325,13 +325,13 @@ class ComposeViewModelImpl : ComposeViewModel {
             
             if errCode == 33101 {
                 c.pgpType = .failed_server_validation
-                LocalString._signle_address_invalid_error_content.alertToast(withTitle: false)
+                self.showError?(LocalString._signle_address_invalid_error_content)
                 return
             }
             
             // Code=33102 "Recipient could not be found"
             if errCode == 33102 {
-                LocalString._recipient_not_found.alertToast(withTitle: false)
+                self.showError?(LocalString._recipient_not_found)
                 return
             }
             
@@ -360,7 +360,8 @@ class ComposeViewModelImpl : ComposeViewModel {
             var errCode = err.code
 
             // Code=33102 "Recipient could not be found"
-            if errCode == 33102 {                LocalString._address_in_group_not_found_error.alertToast(withTitle: false)
+            if errCode == 33102 {
+                self.showError?(LocalString._address_in_group_not_found_error)
                 return
             }
             
@@ -369,7 +370,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                     continue
                 }
                 errCode = 33102
-                LocalString._address_in_group_not_found_error.alertToast(withTitle: false)
+                self.showError?(LocalString._address_in_group_not_found_error)
                 break
             }
         }

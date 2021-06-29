@@ -26,50 +26,49 @@ import MBProgressHUD
 
 extension String {
     
-    public func alertToast(withTitle: Bool=true) -> Void {
-        var application: UIApplication?
+    // Pass view to this function if you want to show alert in extension
+    public func alertToast(withTitle: Bool = true, view: UIView? = nil) -> Void {
+        var viewToShow: UIView?
 
         #if APP_EXTENSION
-        let obj = UIApplication.perform(Selector("sharedApplication"))
-        application = obj?.takeRetainedValue() as? UIApplication
+        viewToShow = view
         #else
-        application = UIApplication.shared
+        viewToShow = UIApplication.shared.keyWindow
         #endif
         
-        guard let window : UIWindow = application?.keyWindow else {
+        guard let view = viewToShow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
         if withTitle {
             hud.label.text = LocalString._general_alert_title
         }
         hud.detailsLabel.text = self
-        let offset = self.getOffset(window: window, hud: hud)
+        let offset = self.getOffset(view: view, hud: hud)
         hud.offset = CGPoint(x: 0, y: offset)
         hud.removeFromSuperViewOnHide = true
         hud.hide(animated: true, afterDelay: 3)
     }
     
-    public func alertToastBottom() ->Void {
-        var application: UIApplication?
+    public func alertToastBottom(view: UIView? = nil) ->Void {
+        var viewToShow: UIView?
 
         #if APP_EXTENSION
-        let obj = UIApplication.perform(Selector("sharedApplication"))
-        application = obj?.takeRetainedValue() as? UIApplication
+        viewToShow = view
         #else
-        application = UIApplication.shared
+        viewToShow = UIApplication.shared.keyWindow
         #endif
         
-        guard let window : UIWindow = application?.keyWindow else {
+        guard let view = viewToShow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabel.text = self
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        let offset = self.getOffset(window: window, hud: hud)
+        let offset = self.getOffset(view: view, hud: hud)
         hud.offset = CGPoint(x: 0, y: 250 + offset)
         hud.hide(animated: true, afterDelay: 1)
     }
@@ -90,8 +89,8 @@ extension String {
         hud.hide(animated: true, afterDelay: 3)
     }
     
-    private func getOffset(window: UIWindow, hud: MBProgressHUD) -> CGFloat {
-        var previousHUDs = window.subviews
+    private func getOffset(view: UIView, hud: MBProgressHUD) -> CGFloat {
+        var previousHUDs = view.subviews
             .filter { $0 is MBProgressHUD && $0 != hud }
         guard previousHUDs.count > 0 else { return 0 }
 
