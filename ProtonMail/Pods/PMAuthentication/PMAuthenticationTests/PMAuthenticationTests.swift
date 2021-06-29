@@ -25,15 +25,19 @@ import XCTest
 import PMCommon
 
 class PMAuthenticationTests: XCTestCase {
+
+    override class func setUp() {
+        PMAPIService.noTrustKit = true
+    }
     
     func testAuthDrive() {
-        let blueApi = PMAPIService(doh: TestDoHMail.default, sessionUID: ObfuscatedConstants.testSessionId)
+        let blueApi = PMAPIService(doh: BlackDoHMail.default, sessionUID: ObfuscatedConstants.testSessionId)
         let manager = Authenticator(api: blueApi)
         let anonymousService = AnonymousServiceManager()
         anonymousService.appVersion = ObfuscatedConstants.driveAppVersion
         blueApi.serviceDelegate = anonymousService
         let expect = expectation(description: "AuthInfo + Auth")
-        manager.authenticate(username: TestUser.blueDriveTestUser.username, password: TestUser.blueDriveTestUser.password) { result in
+        manager.authenticate(username: TestUser.blackTestUser0.username, password: TestUser.blackTestUser0.password) { result in
             switch result {
             case .success(Authenticator.Status.newCredential(_, _)): XCTAssert(true)
             default: XCTFail("Auth flow failed")
@@ -215,7 +219,7 @@ class PMAuthenticationTests: XCTestCase {
     }
 
     func testUserInfoAndAddressForExternalAccount() {
-        let devApi = PMAPIService(doh: DevDoHMail.default, sessionUID: ObfuscatedConstants.testSessionId)
+        let devApi = PMAPIService(doh: BlackDoHMail.default, sessionUID: ObfuscatedConstants.testSessionId)
         let devService = AnonymousServiceManager()
         devApi.serviceDelegate = devService
         let manager = Authenticator(api: devApi)
@@ -373,7 +377,7 @@ class PMAuthenticationTests: XCTestCase {
     }
 
     func testUsernameUnavailable() {
-        let blueApi = PMAPIService(doh: TestDoHMail.default, sessionUID: ObfuscatedConstants.testSessionId)
+        let blueApi = PMAPIService(doh: BlackDoHMail.default, sessionUID: ObfuscatedConstants.testSessionId)
         let manager = Authenticator(api: blueApi)
         let anonymousService = AnonymousServiceManager()
         blueApi.serviceDelegate = anonymousService

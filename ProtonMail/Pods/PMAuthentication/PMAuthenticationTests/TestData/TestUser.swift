@@ -32,4 +32,7 @@ extension TestUser {
     static let liveTest2FAUser = TestUser(username: ObfuscatedConstants.liveTest2FAUserUsername, password: ObfuscatedConstants.liveTest2FAUserPassword)
     static let blueDriveTestUser = TestUser(username: ObfuscatedConstants.blueDriveUserUsername, password: ObfuscatedConstants.blueDriveUserPassword)
     static let externalTestUser = TestUser(username: ObfuscatedConstants.externalUserUsername, password: ObfuscatedConstants.externalUserPassword)
+    
+    static let blackTestUser0 = TestUser(username: ObfuscatedConstants.blackAutotestv0Username, password: ObfuscatedConstants.blackAutotestv0Password)
+    
 }

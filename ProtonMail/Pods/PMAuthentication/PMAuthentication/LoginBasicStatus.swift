@@ -1,8 +1,6 @@
 //
 //  LoginBasicStatus.swift
-//  
-//
-//  Created on 21/10/2020.
+//  PMAuthentication - Created on 21/10/2020.
 //
 //
 //  Copyright (c) 2019 Proton Technologies AG

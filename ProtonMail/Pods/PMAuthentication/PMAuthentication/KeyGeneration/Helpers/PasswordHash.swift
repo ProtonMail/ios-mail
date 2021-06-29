@@ -6,21 +6,30 @@
 //
 
 import Foundation
+import OpenPGP
+import Crypto
 
-final class PasswordHash {
+
+final public class PasswordHash {
     enum PasswordError: Error {
         case hashEmpty
         case hashEmptyEncode
         case hashSizeWrong
     }
+    
+    public static func random(bits: Int32) -> Data {
+        let salt : Data = PMNOpenPgp.randomBits(bits)
+        return salt
+    }
 
-    static func hashPassword(_ password: String, salt: Data) -> String {
+    public static func hashPassword(_ password: String, salt: Data) -> String {
+        
+        /// This Mutable data process looks usless.
         let byteArray = NSMutableData()
         byteArray.append(salt)
         let source = NSData(data: byteArray as Data) as Data
-        let encodedSalt = JKBCrypt.based64DotSlash(source)
         do {
-            let out = try bcrypt(password, salt: encodedSalt)
+            let out = try bcrypt(password, salt: source)
             let index = out.index(out.startIndex, offsetBy: 29)
             let outStr = String(out[index...])
             return outStr
@@ -33,20 +42,37 @@ final class PasswordHash {
         }
         return ""
     }
-
-    static func bcrypt(_ password: String, salt: String) throws -> String {
-        let real_salt = "$2a$10$" + salt
-
-        //backup plan when native bcrypt return empty string
-        if let out = JKBCrypt.hashPassword(password, withSalt: real_salt), !out.isEmpty {
-            let size = out.count
+    
+    static func bcrypt(_ password :String, salt :Data) throws -> String {
+        let encodedSalt = JKBCrypt.based64DotSlash(salt)
+        let real_salt = "$2a$10$" + encodedSalt
+        
+        let out_hash = PMNBCryptHash.hashString(password, salt: real_salt)
+        if !out_hash.isEmpty {
+            let size = out_hash.count
             if size > 4 {
-                let index = out.index(out.startIndex, offsetBy: 4)
-                return "$2y$" + String(out[index...])
-            } else {
-                throw PasswordError.hashSizeWrong
+                let index = out_hash.index(out_hash.startIndex, offsetBy: 4)
+                return "$2y$" + String(out_hash[index...])
             }
         }
-        throw PasswordError.hashEmpty
+        
+        //---- backup plan
+        var error: NSError?
+        let passSlic = password.data(using: .utf8)
+        let out = SrpMailboxPassword(passSlic, salt, &error)
+        if let err = error {
+            throw err
+        }
+        
+        guard let outSlic = out, let outHash = String.init(data: outSlic, encoding: .utf8) else {
+            throw PasswordError.hashEmpty
+        }
+        let size = outHash.count
+        if size > 4 {
+            let index = outHash.index(outHash.startIndex, offsetBy: 4)
+            return "$2y$" + String(outHash[index...])
+        } else {
+            throw PasswordError.hashSizeWrong
+        }
     }
 }

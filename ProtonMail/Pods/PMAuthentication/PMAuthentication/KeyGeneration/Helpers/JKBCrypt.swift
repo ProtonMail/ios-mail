@@ -362,10 +362,8 @@ let index_64 : [Int8]  = [
     51, 52, 53, -1, -1, -1, -1, -1
 ]
 
-// MARK: -
-
-@available(*, deprecated, message: "remove me after gmp")
-class JKBCrypt: NSObject {
+//
+public class JKBCrypt: NSObject {
 
     // MARK: Property List
 
@@ -379,145 +377,9 @@ class JKBCrypt: NSObject {
         self.s = UnsafeMutablePointer<Int32>.allocate(capacity: S_orig.count)
     }
 
-    // MARK: - Public Class Methods
-
-    /**
-     Generates a salt with the provided number of rounds.
-
-     :param: numberOfRounds  The number of rounds to apply.
-
-     The work factor increases exponentially as the `numberOfRounds` increases.
-
-     :returns: String    The generated salt
-     */
-    class func generateSaltWithNumberOfRounds(_ rounds: UInt) -> String {
-        let randomData : Data = JKBCryptRandom.generateRandomSignedDataOfLength(BCRYPT_SALT_LEN)
-
-        var salt : String
-        salt =  "$2a$" + ((rounds < 10) ? "0" : "") + "\(rounds)" + "$"
-        salt += JKBCrypt.encodeData(randomData, ofLength: UInt(randomData.count))
-
-        return salt
-    }
-
-    class func based64DotSlash(_ data: Data) -> String {
+    /// Keep this one still in use
+    public class func based64DotSlash(_ data: Data) -> String {
         return encodeData(data, ofLength: UInt(data.count))
-    }
-
-
-    /**
-     Generates a salt with a defaulted set of 10 rounds.
-
-     :returns: String    The generated salt.
-     */
-    class func generateSalt() -> String {
-        return JKBCrypt.generateSaltWithNumberOfRounds(10)
-    }
-
-    /**
-     Hashes the provided password with the provided salt.
-
-     :param: password    The password to hash.
-     :param: salt        The salt to use in the hash.
-
-     The `salt` must be 16 characters in length. Also, the `salt` must be properly formatted
-     with accepted version, revision, and salt rounds. If any of this is not true, nil is
-     returned.
-
-     :returns: String?  The hashed password.
-     */
-
-    @available(*, deprecated, message: "remove me after gmp")
-    class func hashPassword(_ password: String, withSalt salt: String) -> String? {
-        var bCrypt         : JKBCrypt
-        var realSalt       : String
-        //var hashedData     : NSData
-        var minor          : Character = "\000"[0]
-        var off            : Int = 0
-
-        // If the salt length is too short, it is invalid
-        if salt.count < BCRYPT_SALT_LEN {
-            return nil
-        }
-
-        // If the salt does not start with "$2", it is an invalid version
-        if salt[0] != "$" || salt[1] != "2" {
-            return nil
-        }
-
-        if salt[2] == "$" {
-            off = 3
-        }
-        else {
-            off = 4
-            minor = salt[2]
-            if minor != "a" || salt[3] != "$" {
-                // Invalid salt revision.
-                return nil
-            }
-        }
-
-        // Extract number of rounds
-        if salt[(Int)(off+2)] > "$" {
-            // Missing salt rounds
-            return nil
-        }
-
-        let saltStart = salt.startIndex
-        var range = salt.index(saltStart, offsetBy: off) ..< salt.index(saltStart, offsetBy: off+2)
-        let extactedRounds = Int(salt[range])
-        if extactedRounds == nil {
-            // Invalid number of rounds
-            return nil
-        }
-        let rounds : Int = extactedRounds!
-        range = salt.index(saltStart, offsetBy: off+3) ..< salt.index(saltStart, offsetBy: off+25)
-        realSalt = String(salt[range])
-
-        var passwordPreEncoding : String = password
-        if minor >= "a" {
-            passwordPreEncoding += "\0"
-        }
-
-        let passwordData : Data? = passwordPreEncoding.data(using: .utf8)
-        let saltData : Data? = JKBCrypt.decode_base64(realSalt, ofMaxLength: BCRYPT_SALT_LEN)
-
-        if passwordData != nil && saltData != nil {
-            bCrypt = JKBCrypt()
-            if let hashedData = bCrypt.hashPassword(passwordData!, withSalt: saltData!, numberOfRounds: rounds) {
-                var hashedPassword : String = "$2" + ((minor >= "a") ? String(minor) : "") + "$"
-
-                hashedPassword += ((rounds < 10) ? "0" : "") + "\(rounds)" + "$"
-
-                let saltString = JKBCrypt.encodeData(saltData!, ofLength: UInt(saltData!.count))
-                let hashedString = JKBCrypt.encodeData(hashedData, ofLength: 23)
-
-                return hashedPassword + saltString + hashedString
-            }
-        }
-
-        return nil
-    }
-
-    /**
-     Hashes the provided password with the provided hash and compares if the two hashes are equal.
-
-     :param: password    The password to hash.
-     :param: hash        The hash to use in generating and comparing the password.
-
-     The `hash` must be properly formatted with accepted version, revision, and salt rounds. If
-     any of this is not true, nil is returned.
-
-     :returns: Bool?     TRUE if the password hash matches the given hash; FALSE if the two do not
-     match; nil if hash is improperly formatted.
-     */
-    class func verifyPassword(_ password: String, matchesHash hash: String) -> Bool? {
-        if let hashedPassword = JKBCrypt.hashPassword(password, withSalt: hash) {
-            return hashedPassword == hash
-        }
-        else {
-            return nil
-        }
     }
 
     // MARK: - Private Class Methods
@@ -548,7 +410,7 @@ class JKBCrypt: NSObject {
         var c2 : UInt8
         var result : String = String()
 
-        var dataArray : [UInt8] = [UInt8](data)
+        let dataArray : [UInt8] = [UInt8](data)
 
         while offset < len {
             c1 = dataArray[offset] & 0xff
@@ -603,77 +465,6 @@ class JKBCrypt: NSObject {
     }
 
     /**
-     Decodes the provided Base64 encoded string to an NSData composed of signed characters.
-
-     :param: s       The Base64 encoded string. If this is nil, nil will be returned.
-     :param: maxolen The maximum number of characters to decode. If this is not greater than 0 nil will be returned.
-
-     :returns: NSData?   An NSData or nil if the arguments are invalid.
-     */
-    class fileprivate func decode_base64(_ s: String, ofMaxLength maxolen: Int) -> Data? {
-        var off : Int = 0
-        let slen : Int = s.count
-        var olen : Int = 0
-        var result : [Int8] = [Int8](repeating: 0, count: maxolen)
-
-        var c1 : Int8
-        var c2 : Int8
-        var c3 : Int8
-        var c4 : Int8
-        var o : Int8
-
-        if maxolen <= 0 {
-            // Invalid number of characters.
-            return nil
-        }
-
-        //var v1 : UInt8
-        //var v2 : UnicodeScalar
-
-        while off < slen - 1 && olen < maxolen {
-            c1 = JKBCrypt.char64of(s[off])
-            off += 1
-            c2 = JKBCrypt.char64of(s[off])
-            off += 1
-            if c1 == -1 || c2 == -1 {
-                break
-            }
-
-            o = c1 << 2
-            o |= (c2 & 0x30) >> 4
-            result[olen] = o
-            olen += 1
-            if olen >= maxolen || off >= slen {
-                break
-            }
-
-            c3 = JKBCrypt.char64of(s[Int(off)])
-            off += 1
-            if c3 == -1 {
-                break
-            }
-
-            o = (c2 & 0x0f) << 4
-            o |= (c3 & 0x3c) >> 2
-            result[olen] = o
-            olen += 1
-            if olen >= maxolen || off >= slen {
-                break
-            }
-
-            c4 = JKBCrypt.char64of(s[off])
-            off += 1
-            o = (c3 & 0x03) << 6
-            o |= c4
-            result[olen] = o
-            olen += 1
-            //++olen
-        }
-
-        return Data(buffer: UnsafeBufferPointer(start: &result, count: result.count)) // NSData(bytes: result, length: olen)
-    }
-
-    /**
      Cyclically extracts a word of key material from the provided NSData.
 
      :param: d       The NSData from which the word will be extracted.
@@ -695,68 +486,6 @@ class JKBCrypt: NSObject {
     }
 
     // MARK: - Private Instance Methods
-
-    /**
-     Hashes the provided password with the salt for the number of rounds.
-
-     :param: password        The password to hash.
-     :param: salt            The salt to use in the hash.
-     :param: numberOfRounds  The number of rounds to apply.
-
-     The salt must be 16 characters in length. The `numberOfRounds` must be between 4
-     and 31 inclusively. If any of this is not true, nil is returned.
-
-     :returns: NSData?  The hashed password.
-     */
-    fileprivate func hashPassword(_ password: Data, withSalt salt: Data, numberOfRounds: Int) -> Data? {
-        var rounds : Int
-        //var i      : Int
-        var j      : Int
-        let clen   : Int = 6
-        var cdata  : [Int32] = bf_crypt_ciphertext
-
-        if numberOfRounds < 4 || numberOfRounds > 31 {
-            // Invalid number of rounds
-            return nil
-        }
-
-        rounds = 1 << numberOfRounds
-        if salt.count != BCRYPT_SALT_LEN {
-            // Invalid salt length
-            return nil
-        }
-
-        self.initKey()
-        self.enhanceKeyScheduleWithData(salt, key: password)
-
-        for _ in 0 ..< rounds {
-            self.key(password)
-            self.key(salt)
-        }
-
-        for _ in 0 ..< 64 {
-            for j in 0 ..< (clen >> 1) {
-                self.encipher(&cdata, off: j << 1)
-            }
-        }
-
-        var result : [Int8] = [Int8](repeating: 0, count:clen * 4)
-
-        j = 0
-        for i in 0 ..< clen {
-            result[j] = Int8(truncatingIfNeeded: (cdata[i] >> 24) & 0xff)
-            j += 1
-            result[j] = Int8(truncatingIfNeeded: (cdata[i] >> 16) & 0xff)
-            j += 1
-            result[j] = Int8(truncatingIfNeeded: (cdata[i] >> 8) & 0xff)
-            j += 1
-            result[j] = Int8(truncatingIfNeeded: cdata[i] & 0xff)
-            j += 1
-        }
-
-        deinitKey()
-        return Data(buffer: UnsafeBufferPointer(start: &result, count: result.count))
-    }
 
     /**
      Enciphers the provided array using the Blowfish algorithm.
@@ -799,29 +528,6 @@ class JKBCrypt: NSObject {
 
         lr[off] = r ^ p.advanced(by: BLOWFISH_NUM_ROUNDS + 1).pointee
         lr[off + 1] = l
-    }
-
-    /**
-     Initializes the blowfish key schedule.
-
-     :returns: <void>
-     */
-    fileprivate func initKey() {
-        // p = P_orig
-        p = UnsafeMutablePointer<Int32>.allocate(capacity: P_orig.count)
-        p.initialize(from: UnsafeMutablePointer<Int32>(mutating: P_orig), count: P_orig.count)
-
-        // s = S_orig
-        s = UnsafeMutablePointer<Int32>.allocate(capacity: S_orig.count)
-        s.initialize(from: UnsafeMutablePointer<Int32>(mutating: S_orig), count: S_orig.count)
-    }
-
-    fileprivate func deinitKey() {
-        p.deinitialize(count: P_orig.count) //.deinitialize()
-        p.deallocate() //p.deallocate(capacity: P_orig.count)
-
-        s.deinitialize(count: S_orig.count) //.deinitialize()
-        s.deallocate() //s.deallocate(capacity: S_orig.count)
     }
 
     /**
