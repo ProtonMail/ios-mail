@@ -50,7 +50,6 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
     var emailID: String = ""
     var name: String = ""
     var email: String = ""
-    var shortName: String = ""
     var state: ContactGroupEditViewCellState = .none
     
     var viewModel: ContactGroupEditViewModel?
@@ -112,12 +111,7 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
     }
     
     private func prepareShortName() {
-        if name.count > 0 {
-            shortName = String(name[name.startIndex])
-        } else {
-            shortName = ""
-        }
-        shortNameLabel.text = self.shortName
+        shortNameLabel.text = name.shortName()
         
         shortNameLabel.textColor = ContactGroupEditViewCellColor.deselected.text
         shortNameLabel.backgroundColor = ContactGroupEditViewCellColor.deselected.background
