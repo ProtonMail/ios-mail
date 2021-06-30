@@ -696,7 +696,9 @@ extension ContactPicker {
     var pgpEmails : [String] {
         var out : [String] = [String]()
         for contact in self.contactsSelected {
-            if contact.hasPGPPined, let email = contact.displayEmail {
+            if let group = contact as? ContactGroupVO, group.hasPGPPined {
+                out += group.pgpEmails
+            } else if contact.hasPGPPined, let email = contact.displayEmail {
                 out.append(email)
             }
         }
@@ -706,7 +708,9 @@ extension ContactPicker {
     var nonePMEmails : [String] {
         var out : [String] = [String]()
         for contact in self.contactsSelected {
-            if contact.hasNonePM , let email = contact.displayEmail {
+            if let group = contact as? ContactGroupVO, group.hasNonePM {
+                out += group.nonePMEmails
+            } else if contact.hasNonePM , let email = contact.displayEmail {
                 out.append(email)
             }
         }

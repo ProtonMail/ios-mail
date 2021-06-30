@@ -576,6 +576,7 @@
 		37E6341675484BA5AB76775412FBF750 /* ViewModelServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14199450E90754880823E59D3068A8F4 /* ViewModelServiceImpl.swift */; };
 		37F859AF2D4F48027EFE98068D61FAA1 /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0214F4524AF2E8823C6C57E07A7C305A /* UIScrollView+Extension.swift */; };
 		37FD7D9D4577F1807C37DFD7A874320F /* MessageTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B54F4218CC2D00046B5A32A94D1084 /* MessageTestData.swift */; };
+		3808F95EE01251D48B4229C0C0A90A48 /* Collection+SafeElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9EFCC5A48434E15D259E7B185C8EA /* Collection+SafeElement.swift */; };
 		380AEB9683E863E7403569C665F2080C /* MimeTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FE55DF3A79F3EFFA81CDC0D860284A /* MimeTypesTests.swift */; };
 		381D0EBFC5AA08E11E88C3B3AD80677F /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8396D4F077F593F8E96ABB96990C418 /* BannerView.swift */; };
 		381EA105ED35194084B6EFDC03744328 /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FA163F2AFF8C09CDFCF9C3DEA9DEFB /* AttachmentTableViewCell.swift */; };
@@ -2425,6 +2426,7 @@
 		E7CBD73204DBDE75603A0F77DFA70A1B /* TextInsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66ECFE85614856773C0AB02A79A1B127 /* TextInsetTextField.swift */; };
 		E7D6855F9C8F2737DC5A6BF8304D7E87 /* Message+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E4AC8179E64BE4F4E1C508F653E628 /* Message+String+Extension.swift */; };
 		E7DD0041AAE7660B8B47401D4863F9CF /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B353F65994664847D220F289184C2A5B /* Colors.swift */; };
+		E814A6FB30B8E1E7803A79098D0DF8D0 /* Collection+SafeElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9EFCC5A48434E15D259E7B185C8EA /* Collection+SafeElement.swift */; };
 		E8236BDBCC7BA19BEB155800330B00E4 /* ComposeHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FFBFC2C8C8F31598B00A85625B0E79 /* ComposeHeaderViewController.swift */; };
 		E84CECD826C05D7F8C6378C35F9C3A67 /* ComposeContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725761D634B18B26A40AECAE90E517B7 /* ComposeContainerViewCoordinator.swift */; };
 		E8509B1BE23AD8B4BD0BE519E3E2F7F6 /* MailboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46F72AFDE901F2582A2569BFBC7E6EC /* MailboxViewController.swift */; };
@@ -10268,6 +10270,7 @@
 				946EFE2BD395638E4B98D70582531EF3 /* BugDataService.swift in Sources */,
 				B65DCCDC996ACE934E04D6F8D901E75A /* Bundle+Extension.swift in Sources */,
 				3AAD09087A5C16E841793A74B007CCC5 /* CacheService.swift in Sources */,
+				3808F95EE01251D48B4229C0C0A90A48 /* Collection+SafeElement.swift in Sources */,
 				6D4A534E9CF9D8EACB5BC5B93223D7DF /* Colors.swift in Sources */,
 				636B235F96E5D2628C8DB14D172D8BD9 /* Compare.swift in Sources */,
 				ACDD8C7C25E87BA153F67F0011F645AD /* ComposeContainerViewController.swift in Sources */,
@@ -10611,6 +10614,7 @@
 				A90A2CA597607B9C986F940F36F77351 /* BugDataService.swift in Sources */,
 				CC991EB544982FC7416A2D97BDC573D5 /* Bundle+Extension.swift in Sources */,
 				D7A1C0D48126175231279B1D22BDB307 /* CacheService.swift in Sources */,
+				E814A6FB30B8E1E7803A79098D0DF8D0 /* Collection+SafeElement.swift in Sources */,
 				E7DD0041AAE7660B8B47401D4863F9CF /* Colors.swift in Sources */,
 				EE90A6AC40F9DDC748A9F9E9AC0936E2 /* Compare.swift in Sources */,
 				90861CA6F7DCACD0842BCA6A185DD8FC /* ComposeContainerViewController.swift in Sources */,

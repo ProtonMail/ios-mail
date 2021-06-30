@@ -709,9 +709,9 @@ extension ComposeViewController {
         let sendAnywayAction = UIAlertAction(title: LocalString._send_anyway, style: .destructive) { [weak self] _ in
             self?.sendMessageStepTwo()
         }
-        let cancelAction = UIAlertAction(title: LocalString._general_cancel_action, style: .cancel, handler: nil)
-        alertController.addAction(sendAnywayAction)
+        let cancelAction = UIAlertAction(title: LocalString._general_cancel_action, style: .default, handler: nil)
         alertController.addAction(cancelAction)
+        alertController.addAction(sendAnywayAction)
         present(alertController, animated: true, completion: nil)
     }
 }

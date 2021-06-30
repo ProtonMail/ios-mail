@@ -324,34 +324,13 @@ class ComposeViewModelImpl : ComposeViewModel {
         let getEmail: Promise<KeysResponse> = self.user.apiService.run(route: UserEmailPubKeys.init(email: email))
         let contactService = self.user.contactService
         let getContact = contactService.fetch(byEmails: [email], context: context)
-        when(fulfilled: getEmail, getContact).done { keyRes, contacts in
+        when(fulfilled: getEmail, getContact).done { [weak self] keyRes, contacts in
             //internal emails
-            if keyRes.recipientType == 1 {
-                if let contact = contacts.first, contact.firstPgpKey != nil {
-                    c.pgpType = .internal_trusted_key
-                } else {
-                    c.pgpType = .internal_normal
-                }
-            } else {
-                if let contact = contacts.first {
-                    if contact.encrypt, contact.firstPgpKey != nil {
-                        c.pgpType = .pgp_encrypt_trusted_key
-                    } else if contact.sign {
-                        c.pgpType = .pgp_signed
-                        if let pwd = self.message?.password, pwd != "" {
-                            c.pgpType = .eo
-                        }
-                    }
-                } else {
-                    if let pwd = self.message?.password, pwd != "" {
-                        c.pgpType = .eo
-                    } else if self.user.userInfo.sign == 1 {
-                        c.pgpType = .pgp_signed
-                    } else {
-                        c.pgpType = .none
-                    }
-                }
+            guard let self = self else {
+                complete?(c.lock, PGPType.none.rawValue)
+                return
             }
+            c.pgpType = self.getPGPType(keyRes: keyRes, contacts: contacts)
             complete?(c.lock, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { (error) in
             var errCode: Int
@@ -388,10 +367,28 @@ class ComposeViewModelImpl : ComposeViewModel {
     override func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
         progress()
         let mails = contactGroup.getSelectedEmailData().map{$0.email}
-        let reqs = mails.map {
-            self.user.apiService.run(route: UserEmailPubKeys(email: $0))
+        let reqs = mails.map { mail -> Promise<KeysResponse> in
+            return self.user.apiService.run(route: UserEmailPubKeys(email: mail))
         }
-        when(fulfilled: reqs).done { (_) in
+        let context = self.composerContext! // VALIDATE
+        let contactService = self.user.contactService
+        let getContact = contactService.fetch(byEmails: mails, context: context)
+        
+        let keyReqs = when(fulfilled: reqs)
+        when(fulfilled: getContact, keyReqs).done { [weak self] (contacts, keyResponse) in
+            for (index, keyRes) in keyResponse.enumerated() {
+                guard let self = self,
+                      let mail = mails[safe: index] else {
+                    continue
+                }
+                var contactArray: [PreContact] = []
+                if let contact = contacts.first(where: { $0.email == mail }) {
+                    contactArray.append(contact)
+                }
+                let pgpType = self.getPGPType(keyRes: keyRes,
+                                              contacts: contactArray)
+                contactGroup.update(mail: mail, pgpType: pgpType)
+            }
             complete?(nil, 0)
         }.catch(policy: .allErrors) { (error) in
             var errCode: Int
@@ -942,5 +939,35 @@ extension ComposeViewModelImpl {
             PMLog.D(" func parseJson() -> error error \(error)")
         }
         return ["":""]
+    }
+    
+    private func getPGPType(keyRes: KeysResponse, contacts: [PreContact]) -> PGPType {
+        if keyRes.recipientType == 1 {
+            if let contact = contacts.first, contact.firstPgpKey != nil {
+                return .internal_trusted_key
+            } else {
+                return .internal_normal
+            }
+        } else {
+            if let contact = contacts.first {
+                if contact.encrypt, contact.firstPgpKey != nil {
+                    return .pgp_encrypt_trusted_key
+                } else if contact.sign {
+                    if let pwd = self.message?.password, pwd != "" {
+                        return .eo
+                    }
+                    return .pgp_signed
+                }
+            } else {
+                if let pwd = self.message?.password, pwd != "" {
+                    return .eo
+                } else if self.user.userInfo.sign == 1 {
+                    return .pgp_signed
+                } else {
+                    return .none
+                }
+            }
+        }
+        return .none
     }
 }
