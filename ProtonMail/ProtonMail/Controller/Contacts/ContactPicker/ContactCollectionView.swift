@@ -377,8 +377,11 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         } else if self.isCell(entry: indexPath) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContactEntryCell", for: indexPath) as! ContactCollectionViewEntryCell
             cell.delegate = self
-            if self.isFirstResponder && self.indexPathOfSelectedCell == nil {
-                cell.setFocus()
+            if (self.isFirstResponder || !self.searchText.isEmpty)
+                && self.indexPathOfSelectedCell == nil {
+                delay(0.1) {
+                    cell.setFocus()
+                }
             }
             cell.text = self.searchText
             cell.enabled = self.allowsTextInput
@@ -522,8 +525,8 @@ extension ContactCollectionView : UICollectionViewDelegate {
 extension ContactCollectionView : UITextFieldDelegateImproved {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        var newString = self.searchText
         defer {
-            isEntryCellRefreshing = false
             if let cell = self.cellForItem(at: self.entryCellIndexPath) as? ContactCollectionViewEntryCell,
                var text = textField.text,
                let textRange = Range(range, in: text) {
@@ -534,10 +537,12 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
                 let width = fontSize.width.rounded(.up)
                 
                 if cell.frame.minX > 0 &&
-                    (self.frame.width - cell.frame.minX) < (10 + width) &&
+                    (self.frame.width - cell.frame.minX) <= (10 + width) &&
                     width < self.frame.width {
+                    self.searchText = newString
                     isEntryCellRefreshing = true
                     self.reloadItems(at: [self.entryCellIndexPath])
+                    isEntryCellRefreshing = false
                 }
             }
         }
@@ -547,8 +552,7 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
             textField.resignFirstResponder()
             return false
         }
-        
-        let newString = text.replacingCharacters(in: Range(range, in: text)!, with: string)
+        newString = text.replacingCharacters(in: Range(range, in: text)!, with: string)
         // If backspace is pressed and there isn't any text in the field, we want to select the
         // last selected contact and not let them delete the space we inserted (the space allows
         // us to catch the last backspace press - without it, we get no event!)
