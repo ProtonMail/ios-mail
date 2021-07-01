@@ -109,6 +109,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             self.view.window?.windowScene?.title = LocalString._general_draft_action
         }
         #endif
+
+        setBodyMinimumHeight()
         
         generateAccessibilityIdentifiers()
     }
@@ -165,9 +167,16 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
 // MARK: UI related
 extension ComposeContainerViewController {
+    private func setBodyMinimumHeight() {
+        let headerCellHeight = tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.frame.height ?? 0
+        let spaceForFirstAttachment: CGFloat = 72.0
+        let bodyHeight = round(tableView.frame.height - headerCellHeight - spaceForFirstAttachment)
+        coordinator.setMinimumHeightForMessageBody(height: bodyHeight)
+    }
+
     private func setupButtomPadding() {
         self.bottomPadding = self.view.bottomAnchor.constraint(equalTo: self.tableView.bottomAnchor)
-        self.bottomPadding.constant = 50.0
+        self.bottomPadding.constant = view.safeAreaInsets.bottom + 48.0
         self.bottomPadding.isActive = true
     }
     
@@ -297,8 +306,8 @@ extension ComposeContainerViewController: ComposeContainerUIProtocol {
 
 extension ComposeContainerViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
-        self.bottomPadding.constant = 50.0
-        self.toolbarBottom.constant = -1 * UIDevice.safeGuide.bottom
+        self.bottomPadding.constant = view.safeAreaInsets.bottom + 48.0
+        self.toolbarBottom.constant = -1 * view.safeAreaInsets.bottom
     }
     
     func keyboardWillShowNotification(_ notification: Notification) {

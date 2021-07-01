@@ -33,6 +33,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     private var latestErrorBanner: BannerView?
     private var heightObservation: NSKeyValueObservation!
     private var queueObservation: NSKeyValueObservation!
+    var minimumHeight: CGFloat = 300
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +43,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         
         self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { [weak self] htmlEditor, change in
             guard let self = self, change.oldValue != change.newValue else { return }
-            let totalHeight = htmlEditor.contentHeight
+            let totalHeight = self.minimumHeight > htmlEditor.contentHeight ? self.minimumHeight : htmlEditor.contentHeight
             self.updateHeight(to: totalHeight)
             (self.viewModel as! ContainableComposeViewModel).contentHeight = totalHeight
         }

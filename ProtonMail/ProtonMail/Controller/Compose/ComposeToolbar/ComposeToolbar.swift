@@ -106,8 +106,7 @@ extension ComposeToolbar {
     }
 
     private func setup() {
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColorManager.InteractionWeak.cgColor
+        addTopBorder()
         self.contentView.backgroundColor = UIColorManager.BackgroundNorm
         self.lockButton.tintColor = UIColorManager.IconNorm
         self.hourButton.tintColor = UIColorManager.IconNorm
@@ -115,5 +114,18 @@ extension ComposeToolbar {
         self.attachmentNumView.backgroundColor = .clear
         self.attachmentNumLabel.textColor = .white
         self.attachmentNumLabel.backgroundColor = UIColorManager.InteractionNorm
+    }
+
+    private func addTopBorder() {
+        let view = UIView()
+        view.backgroundColor = UIColorManager.InteractionWeak
+        addSubview(view)
+
+        [
+            view.topAnchor.constraint(equalTo: self.topAnchor),
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            view.heightAnchor.constraint(equalToConstant: 1)
+        ].activate()
     }
 }

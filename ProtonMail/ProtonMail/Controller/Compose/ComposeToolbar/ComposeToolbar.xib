@@ -97,7 +97,7 @@
         </view>
     </objects>
     <resources>
-        <image name="ic-paper-clip" width="21.5" height="19"/>
+        <image name="ic-paper-clip" width="24" height="24"/>
         <image name="ic_hourglass_no_check" width="40" height="40"/>
         <image name="ic_lock_no_ckeck" width="40" height="40"/>
         <systemColor name="systemBackgroundColor">
