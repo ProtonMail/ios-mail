@@ -185,8 +185,16 @@ class ConversationViewModel {
         case let .insert(message, row):
             insert(message, row, tableView)
         case let .update(message, row):
-            if let viewModel = messagesDataSource[safe: row]?.messageViewModel {
-                viewModel.messageHasChanged(message: message)
+            guard let viewModel = messagesDataSource[safe: row]?.messageViewModel else {
+                return
+            }
+            viewModel.messageHasChanged(message: message)
+            let path = IndexPath(row: row, section: 1)
+            guard let cell = tableView.cellForRow(at: path) else { return }
+            if viewModel.isTrashed && cell.frame.height > 0 && self.isTrashedMessageHidden {
+                tableView.reloadRows(at: [path], with: .automatic)
+            } else if !viewModel.isTrashed && cell.frame.height == 0 {
+                tableView.reloadRows(at: [path], with: .automatic)
             }
         case let .delete(message):
             if let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == message.messageID }) {

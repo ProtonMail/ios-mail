@@ -20,7 +20,7 @@ class ConversationMessageViewModel {
         guard isDraft else { return false }
         return true
     }
-    
+
     var isTrashed: Bool {
         return message.labels
             .compactMap { $0 as? Label }
