@@ -41,6 +41,7 @@ class ConversationViewModel {
 
     /// Used to decide if there is any new messages coming
     private var recordNumOfMessages = 0
+    private(set) var isExpandedAtLaunch = false
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -81,9 +82,16 @@ class ConversationViewModel {
             self?.checkTrashedHintBanner()
             self?.observeNewMessages()
         } storedMessages: { [weak self] messages in
-            self?.messagesDataSource = messages.compactMap { self?.messageType(with: $0) }
             self?.checkTrashedHintBanner()
+            var messageDataModels = messages.compactMap { self?.messageType(with: $0) }
+
+            _ = self?.expandSpecificMessage(dataModels: &messageDataModels)
+            self?.messagesDataSource = messageDataModels
         }
+    }
+
+    func setCellIsExpandedAtLaunch() {
+        self.isExpandedAtLaunch = true
     }
 
     func messageType(with message: Message) -> ConversationViewItemType {
@@ -166,6 +174,14 @@ class ConversationViewModel {
             tableView.beginUpdates()
         case .didUpdate:
             tableView.endUpdates()
+
+            if !isExpandedAtLaunch && recordNumOfMessages == messagesDataSource.count {
+                if let path = self.expandSpecificMessage(dataModels: &self.messagesDataSource) {
+                    tableView.reloadRows(at: [path], with: .automatic)
+                    tableView.scrollToRow(at: path, at: .top, animated: true)
+                    setCellIsExpandedAtLaunch()
+                }
+            }
         case let .insert(message, row):
             insert(message, row, tableView)
         case let .update(message, row):
@@ -398,6 +414,31 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                                          completion: fetchEvents)
             }
         }
+    }
+
+    private func expandSpecificMessage(dataModels: inout [ConversationViewItemType]) -> IndexPath? {
+        var indexPath: IndexPath?
+
+        guard dataModels.count == recordNumOfMessages else {
+            return indexPath
+        }
+        guard !dataModels
+                .contains(where: { $0.messageViewModel?.state.isExpanded ?? false }) else { return indexPath }
+
+        /* scroll to the oldest unread message that the current location has
+           or to the newest message */
+        if let indexOfOldestUnreadMessage = dataModels
+            .firstIndex(where: { $0.message?.unRead == true &&
+                            $0.message?.contains(label: self.labelId) == true }) {
+            dataModels[indexOfOldestUnreadMessage].messageViewModel?.toggleState()
+            indexPath = IndexPath(row: indexOfOldestUnreadMessage, section: 1)
+        } else if let newestMessageIndex = dataModels
+                    .lastIndex(where: { $0.message?.contains(label: self.labelId) == true }) {
+            dataModels[newestMessageIndex].messageViewModel?.toggleState()
+            indexPath = IndexPath(row: newestMessageIndex, section: 1)
+        }
+
+        return indexPath
     }
 }
 

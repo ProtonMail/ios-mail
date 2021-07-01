@@ -52,6 +52,18 @@ class ConversationViewController: UIViewController,
         viewModel.observeConversationMessages(tableView: customView.tableView)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        guard !customView.tableView.visibleCells.isEmpty && // tableview finish reloading
+                !viewModel.isExpandedAtLaunch,
+              let row = viewModel.messagesDataSource
+                .firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false }) else { return }
+        viewModel.setCellIsExpandedAtLaunch()
+        let indexPath = IndexPath(row: row, section: 1)
+        customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+    }
+
     func numberOfSections(in tableView: UITableView) -> Int {
         2
     }
