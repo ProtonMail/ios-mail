@@ -54,14 +54,16 @@ class AttachmentListViewModel {
     private(set) var attachmentSections: [AttachmentSection] = []
     private(set) var inlineAttachments: [AttachmentInfo] = []
     private(set) var normalAttachments: [AttachmentInfo] = []
+    private(set) var inlineCIDS: [String]?
     let user: UserManager
 
     var attachmentCount: Int {
         return inlineAttachments.count + normalAttachments.count
     }
 
-    init(attachments: [AttachmentInfo], user: UserManager) {
+    init(attachments: [AttachmentInfo], user: UserManager, inlineCIDS: [String]?) {
         self.user = user
+        self.inlineCIDS = inlineCIDS
         inlineAttachments = attachments.filter({ attachmentInfo -> Bool in
             if let att = attachmentInfo.att {
                 return self.isInline(att)
@@ -188,18 +190,11 @@ class AttachmentListViewModel {
     }
 
     func isInline(_ attachment: Attachment) -> Bool {
-        guard let headerInfo = attachment.headerInfo else {
-            return false
+        if let cids = self.inlineCIDS {
+            // inline must have CID
+            guard let contentID = attachment.contentID() else { return false }
+            return cids.contains(contentID)
         }
-
-        let headerObject = headerInfo.parseObject()
-        guard let inlineCheckString = headerObject["content-disposition"] else {
-            return false
-        }
-
-        if inlineCheckString.contains("inline") {
-            return true
-        }
-        return false
+        return attachment.inline()
     }
 }

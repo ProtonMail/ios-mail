@@ -56,8 +56,9 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             presentAddContacts(with: contact)
         case .composeTo(let contact):
             presentCompose(with: contact)
-        case .attachmentList(let message):
-            presentAttachmnetListView(message: message)
+        case .attachmentList(let message, let inlineCIDs):
+            presentAttachmnetListView(message: message,
+                                      inlineCIDS: inlineCIDs)
         case .replyAll(let message):
             presentCompose(message: message, action: .replyAll)
         case .forward(let message):
@@ -123,12 +124,13 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
         self.viewController?.present(destination, animated: true)
     }
 
-    private func presentAttachmnetListView(message: Message) {
+    private func presentAttachmnetListView(message: Message, inlineCIDS: [String]?) {
         let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
             .map(AttachmentNormal.init) + (message.tempAtts ?? [])
 
         let viewModel = AttachmentListViewModel(attachments: attachments,
-                                                user: user)
+                                                user: user,
+                                                inlineCIDS: inlineCIDS)
         let viewController = AttachmentListViewController(viewModel: viewModel)
         self.navigationController.pushViewController(viewController, animated: true)
     }

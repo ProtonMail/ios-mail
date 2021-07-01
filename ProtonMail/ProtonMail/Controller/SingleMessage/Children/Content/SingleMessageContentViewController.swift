@@ -314,7 +314,9 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
 
 extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
     func openAttachmentList() {
-        navigationAction(.attachmentList(messageId: viewModel.message.messageID))
+        let messageID = viewModel.message.messageID
+        let body = viewModel.messageBodyViewModel.body
+        navigationAction(.attachmentList(messageId: messageID, decryptedBody: body))
     }
 }
 

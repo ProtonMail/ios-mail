@@ -194,10 +194,12 @@ class ConversationViewController: UIViewController,
             coordinator.handle(navigationAction: .composeTo(contact: contact))
         case .contacts(let contact):
             coordinator.handle(navigationAction: .addContact(contact: contact))
-        case .attachmentList(let messageId):
-            if let message = viewModel.messagesDataSource.message(with: messageId) {
-                coordinator.handle(navigationAction: .attachmentList(message: message))
+        case .attachmentList(let messageId, let body):
+            guard let message = viewModel.messagesDataSource.message(with: messageId) else {
+                return
             }
+            let cids = message.getCIDOfInlineAttachment(decryptedBody: body)
+            coordinator.handle(navigationAction: .attachmentList(message: message, inlineCIDs: cids))
         case .more(let messageId):
             if let message = viewModel.messagesDataSource.message(with: messageId) {
                 presentActionSheet(for: message)

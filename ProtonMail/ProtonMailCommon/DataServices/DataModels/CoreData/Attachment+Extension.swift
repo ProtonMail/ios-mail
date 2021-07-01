@@ -318,7 +318,7 @@ extension Attachment {
             return false
         }
         
-        if inlineCheckString.contains("inline") || inlineCheckString.contains("attachment") { //"attachment" shouldn't be here but some outside inline messages only have attachment tag.
+        if inlineCheckString.contains("inline") {
             return true
         }
         return false

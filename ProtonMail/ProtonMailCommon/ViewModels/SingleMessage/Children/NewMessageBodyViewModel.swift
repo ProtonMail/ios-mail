@@ -149,7 +149,7 @@ class NewMessageBodyViewModel {
 
     private func checkBannerStatus(_ bodyToCheck: String) {
         var shouldShowEmbeddedBanner = false
-        if embeddedContentPolicy != .allowed && message.isHavingEmbeddedImages {
+        if embeddedContentPolicy != .allowed && message.isHavingEmbeddedImages(decryptedBody: bodyToCheck) {
             shouldShowEmbeddedBanner = true
         }
 
@@ -247,9 +247,39 @@ class NewMessageBodyViewModel {
 }
 
 extension Message {
-    var isHavingEmbeddedImages: Bool {
-        let allAttachments = (self.attachments.allObjects as? [Attachment]) ?? []
-        let atts = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false })
-        return !atts.isEmpty
+    func isHavingEmbeddedImages(decryptedBody: String? = nil) -> Bool {
+        guard let attachments = self.attachments.allObjects as? [Attachment] else {
+            return false
+        }
+        guard let body = decryptedBody else {
+            let atts = attachments
+                .filter({ $0.inline() && $0.contentID()?.isEmpty == false })
+            return !atts.isEmpty
+        }
+        let cids = attachments.compactMap { $0.contentID() }
+        let inlines = cids.filter { cid in
+            return body.preg_match("src=\"\(cid)\"") ||
+                body.preg_match("src=\"cid:\(cid)\"") ||
+                body.preg_match("data-embedded-img=\"\(cid)\"") ||
+                body.preg_match("data-src=\"cid:\(cid)\"") ||
+                body.preg_match("proton-src=\"cid:\(cid)\"")
+        }
+        return !inlines.isEmpty
+    }
+
+    func getCIDOfInlineAttachment(decryptedBody: String?) -> [String]? {
+        guard let attachments = self.attachments.allObjects as? [Attachment],
+              let body = decryptedBody else {
+            return nil
+        }
+        let cids = attachments.compactMap { $0.contentID() }
+        let inlines = cids.filter { cid in
+            return body.preg_match("src=\"\(cid)\"") ||
+                body.preg_match("src=\"cid:\(cid)\"") ||
+                body.preg_match("data-embedded-img=\"\(cid)\"") ||
+                body.preg_match("data-src=\"cid:\(cid)\"") ||
+                body.preg_match("proton-src=\"cid:\(cid)\"")
+        }
+        return inlines
     }
 }

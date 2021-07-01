@@ -5,7 +5,7 @@ enum ConversationNavigationAction {
     case draft(message: Message)
     case addContact(contact: ContactVO)
     case composeTo(contact: ContactVO)
-    case attachmentList(message: Message)
+    case attachmentList(message: Message, inlineCIDs: [String]?)
     case viewHeaders(url: URL)
     case viewHTML(url: URL)
     case addNewLabel
