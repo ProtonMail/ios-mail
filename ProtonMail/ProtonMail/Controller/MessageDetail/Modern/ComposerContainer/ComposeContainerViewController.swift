@@ -73,6 +73,9 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 13.0, *) {
+            self.isModalInPresentation = true
+        }
         self.tableView.backgroundColor = .white
         // fix ios 10 have a seperator at bottom
         self.tableView.separatorColor = .clear
