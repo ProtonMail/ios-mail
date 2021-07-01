@@ -25,7 +25,7 @@ import UIKit
 protocol LoginCoordinatorDelegate: AnyObject {
     func userDidDismissLoginCoordinator(loginCoordinator: LoginCoordinator)
     func loginCoordinatorDidFinish(loginCoordinator: LoginCoordinator, data: LoginData)
-    func userSelectedSignup()
+    func userSelectedSignup(navigationController: UINavigationController)
 }
 
 final class LoginCoordinator {
@@ -36,7 +36,6 @@ final class LoginCoordinator {
     weak var delegate: LoginCoordinatorDelegate?
     var initialError: LoginError?
 
-    private weak var viewController: UIViewController?
     private let container: Container
     private let isCloseButtonAvailable: Bool
     private let isSignupAvailable: Bool
@@ -51,14 +50,16 @@ final class LoginCoordinator {
         externalLinks = container.makeExternalLinks()
     }
 
-    func start(viewController: UIViewController, username: String? = nil) {
-        self.viewController = viewController
-        showLogin(username: username)
+    func start(_ kind: FlowStartKind, username: String? = nil) {
+        showInitialViewController(kind, initialViewController: loginViewController(username: username))
     }
 
-    // MARK: - Actions
+    func startFromWelcomeScreen(viewController: UIViewController, variant: WelcomeScreenVariant, username: String? = nil) {
+        let welcome = WelcomeViewController(variant: variant, delegate: self, username: username, signupAvailable: isSignupAvailable)
+        showInitialViewController(.over(viewController), initialViewController: welcome)
+    }
 
-    private func showLogin(username: String?) {
+    private func loginViewController(username: String?) -> UIViewController {
         let loginViewController = UIStoryboard.instantiate(LoginViewController.self)
         loginViewController.viewModel = container.makeLoginViewModel()
         loginViewController.initialUsername = username
@@ -66,21 +67,31 @@ final class LoginCoordinator {
         loginViewController.showCloseButton = isCloseButtonAvailable
         loginViewController.initialError = initialError
         loginViewController.isSignupAvailable = isSignupAvailable
+        return loginViewController
+    }
 
-        let navigationController = UINavigationController(rootViewController: loginViewController)
-        navigationController.navigationBar.isHidden = true
-        navigationController.modalPresentationStyle = .fullScreen
-        self.navigationController = navigationController
+    // MARK: - Actions
 
-        container.setupHumanVerification(viewController: navigationController)
-
-        viewController?.present(navigationController, animated: true, completion: nil)
+    private func showInitialViewController(_ kind: FlowStartKind, initialViewController: UIViewController) {
+        switch kind {
+        case .over(let viewController):
+            let navigationController = UINavigationController(rootViewController: initialViewController)
+            navigationController.navigationBar.isHidden = true
+            navigationController.modalPresentationStyle = .fullScreen
+            self.navigationController = navigationController
+            container.setupHumanVerification(viewController: navigationController)
+            viewController.present(navigationController, animated: true, completion: nil)
+        case .inside(let navigationViewController):
+            self.navigationController = navigationViewController
+            container.setupHumanVerification(viewController: navigationViewController)
+            navigationController?.setViewControllers([initialViewController], animated: true)
+        }
     }
 
     private func showHelp() {
         let helpViewController = UIStoryboard.instantiate(HelpViewController.self)
         helpViewController.delegate = self
-        viewController?.presentedViewController?.present(helpViewController, animated: true, completion: nil)
+        navigationController?.present(helpViewController, animated: true, completion: nil)
     }
 
     private func showTwoFactorCode() {
@@ -109,7 +120,7 @@ final class LoginCoordinator {
     }
 
     private func finish(data: LoginData) {
-        viewController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true, completion: nil)
         delegate?.loginCoordinatorDidFinish(loginCoordinator: self, data: data)
     }
 
@@ -152,13 +163,13 @@ extension LoginCoordinator: LoginStepsDelegate {
 
 extension LoginCoordinator: LoginViewControllerDelegate {
     func userDidDismissLoginViewController() {
-        viewController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true, completion: nil)
         delegate?.userDidDismissLoginCoordinator(loginCoordinator: self)
     }
 
     func userDidRequestSignup() {
-        viewController?.dismiss(animated: true)
-        delegate?.userSelectedSignup()
+        guard let navigationController = navigationController else { return }
+        delegate?.userSelectedSignup(navigationController: navigationController)
     }
 
     func userDidRequestHelp() {
@@ -174,7 +185,7 @@ extension LoginCoordinator: LoginViewControllerDelegate {
 
 extension LoginCoordinator: HelpViewControllerDelegate {
     func userDidDismissHelpViewController() {
-        viewController?.presentedViewController?.dismiss(animated: true, completion: nil)
+        navigationController?.presentedViewController?.dismiss(animated: true, completion: nil)
     }
 
     func userDidRequestHelp(item: HelpItem) {
@@ -196,7 +207,7 @@ extension LoginCoordinator: HelpViewControllerDelegate {
 extension LoginCoordinator: CreateAddressCoordinatorDelegate {
     func createAddressCoordinatorDidFinish(createAddressCoordinator: CreateAddressCoordinator, data: LoginData) {
         childCoordinators[.createAddress] = nil
-        viewController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true, completion: nil)
         delegate?.loginCoordinatorDidFinish(loginCoordinator: self, data: data)
     }
 }
@@ -250,5 +261,20 @@ extension LoginCoordinator: TwoFactorViewControllerDelegate {
 private extension UIStoryboard {
     static func instantiate<T: UIViewController>(_ controllerType: T.Type) -> T {
         self.instantiate(storyboardName: "PMLogin", controllerType: controllerType)
+    }
+}
+
+// MARK: - Welcome screen delegate
+
+extension LoginCoordinator: WelcomeViewControllerDelegate {
+
+    func userWantsToLogIn(username: String?) {
+        let login = loginViewController(username: username)
+        navigationController?.setViewControllers([login], animated: true)
+    }
+
+    func userWantsToSignUp() {
+        guard let navigationController = navigationController else { return }
+        delegate?.userSelectedSignup(navigationController: navigationController)
     }
 }

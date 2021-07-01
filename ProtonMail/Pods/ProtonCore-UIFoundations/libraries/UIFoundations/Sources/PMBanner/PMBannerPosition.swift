@@ -37,8 +37,4 @@ public enum PMBannerPosition {
             return insets
         }
     }
-
-    public var maximumWidth: CGFloat {
-        return 414
-    }
 }

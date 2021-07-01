@@ -49,8 +49,8 @@ extension String {
     var emojiScalars: [UnicodeScalar] { filter { $0.isEmoji }.flatMap { $0.unicodeScalars } }
 }
 
-extension String {
-    func shortName() -> String {
+public extension String {
+    func initials() -> String {
         let invalids = "[.,/#!$@%^&*;:{}=\\-_`~()]"
         let splits = self
             .components(separatedBy: .whitespaces)

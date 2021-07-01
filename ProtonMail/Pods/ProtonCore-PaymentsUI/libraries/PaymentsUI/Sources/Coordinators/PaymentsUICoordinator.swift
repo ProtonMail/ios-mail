@@ -31,7 +31,7 @@ final class PaymentsUICoordinator {
     private var mode: PaymentsUIMode = .signup
     private var completionHandler: ((PaymentsUIResultReason) -> Void)?
     private var viewModel: PaymentsUIViewModelViewModel?
-    private let storeKitManager = StoreKitManager.default
+    private let paymentsManager: PaymentsManager
     
     private var processingAccountPlan: AccountPlan? {
         didSet {
@@ -45,12 +45,7 @@ final class PaymentsUICoordinator {
     
     init(planTypes: PlanTypes, appStoreLocalReceipt: String? = nil) {
         self.planTypes = planTypes
-        if let localReceipt = appStoreLocalReceipt {
-            storeKitManager.appStoreLocalTest = true
-            storeKitManager.appStoreLocalReceipt = localReceipt
-        } else {
-            storeKitManager.appStoreLocalTest = false
-        }
+        paymentsManager = PaymentsManager(appStoreLocalReceipt: appStoreLocalReceipt)
     }
     
     func start(viewController: UIViewController?, servicePlan: ServicePlanDataService, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
@@ -88,7 +83,7 @@ final class PaymentsUICoordinator {
         paymentsUIViewController.model?.fatchPlans(mode: mode, backendFetch: backendFetch) { result in
             switch result {
             case .success:
-                self.processingAccountPlan = self.unfinishedPurchasePlan
+                self.processingAccountPlan = self.paymentsManager.unfinishedPurchasePlan
                 if self.mode == .signup {
                     self.showPlanViewController(paymentsViewController: paymentsUIViewController)
                 } else {
@@ -117,47 +112,12 @@ final class PaymentsUICoordinator {
                     }
                     topViewController = top
                 }
-                paymentsViewController.modalPresentationStyle = .fullScreen
-                paymentsViewController.showHeader = true
+                paymentsViewController.modalPresentation = true
                 topViewController?.present(paymentsViewController, animated: true)
                 completionHandler?(.open(vc: paymentsViewController, opened: true))
             case .none:
-                paymentsViewController.showHeader = false
+                paymentsViewController.modalPresentation = false
                 completionHandler?(.open(vc: paymentsViewController, opened: false))
-            }
-        }
-    }
-    
-    private func buyPlan(accountPlan: AccountPlan, completionHandler: @escaping () -> Void) {
-        if accountPlan == .free {
-            completionHandler()
-            self.finishCallback(reason: .purchasedPlan(accountPlan: .free))
-            return
-        }
-        guard let productId = accountPlan.storeKitProductId else {
-            completionHandler()
-            self.finishCallback(reason: .purchaseError(error: StoreKitManager.Errors.unavailableProduct))
-            return
-        }
-        
-        if let unfinishedPurchasePlan = self.unfinishedPurchasePlan {
-            // purchase already started, don't start it again
-            completionHandler()
-            self.finishCallback(reason: .purchasedPlan(accountPlan: unfinishedPurchasePlan))
-            return
-        }
-
-        storeKitManager.purchaseProduct(identifier: productId) { _ in
-            DispatchQueue.main.async {
-                self.processingAccountPlan = accountPlan
-                completionHandler()
-                self.finishCallback(reason: .purchasedPlan(accountPlan: accountPlan))
-            }
-        } errorCompletion: { error in
-            DispatchQueue.main.async {
-                self.processingAccountPlan = self.unfinishedPurchasePlan
-                completionHandler()
-                self.showError(error: error)
             }
         }
     }
@@ -185,11 +145,6 @@ final class PaymentsUICoordinator {
         return mode != .signup
     }
     
-    private var unfinishedPurchasePlan: AccountPlan? {
-        guard storeKitManager.hasUnfinishedPurchase(), let transaction = StoreKitManager.default.currentTransaction() else { return nil }
-        return AccountPlan(storeKitProductId: transaction.payment.productIdentifier)
-    }
-    
     private func finishCallback(reason: PaymentsUIResultReason) {
         self.completionHandler?(reason)
     }
@@ -212,7 +167,22 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
     }
     
     func userDidSelectPlan(plan: Plan, completionHandler: @escaping () -> Void) {
-        buyPlan(accountPlan: plan.accountPlan, completionHandler: completionHandler)
+        paymentsManager.buyPlan(accountPlan: plan.accountPlan) { callback in
+            // callback to the UI that payment is finished
+            completionHandler()
+            switch callback {
+            case .purchasedPlan(let plan, let processingPlan):
+                if let processingPlan = processingPlan {
+                    self.processingAccountPlan = processingPlan
+                }
+                self.finishCallback(reason: .purchasedPlan(accountPlan: plan))
+            case .purchaseError(let error, let processingPlan):
+                if let processingPlan = processingPlan {
+                    self.processingAccountPlan = processingPlan
+                }
+                self.showError(error: error)
+            }
+        }
     }
 }
 

@@ -87,9 +87,9 @@ final class LoginViewController: UIViewController, AccessibleView {
         titleLabel.text = CoreString._ls_screen_title
         subtitleLabel.text = CoreString._ls_screen_subtitle
         signUpButton.isHidden = !isSignupAvailable
-        signUpButton.setTitle("Create an account", for: .normal)
+        signUpButton.setTitle(CoreString._ls_create_account_button, for: .normal)
         helpButton.setTitle(CoreString._ls_help_button, for: .normal)
-        signInButton.setTitle(CoreString._ls_screen_title, for: .normal)
+        signInButton.setTitle(CoreString._ls_sign_in_button, for: .normal)
         loginTextField.title = CoreString._ls_username_title
         passwordTextField.title = CoreString._ls_password_title
 

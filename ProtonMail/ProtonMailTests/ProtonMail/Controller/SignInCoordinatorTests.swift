@@ -145,7 +145,7 @@ final class SignInCoordinatorTests: XCTestCase {
                                     signature: "test signature", usedSpace: 123, userAddresses: [], autoSC: 321, language: "DE", maxUpload: 234,
                                     notify: 2345, showImage: 645, swipeL: 3452, swipeR: 4132, role: 1234, delinquent: 4123, keys: [],
                                     userId: "test user Id", sign: 1234, attachPublicKey: 5467, linkConfirmation: "test link confirmation", credit: 098,
-                                    currency: "BOL", pwdMode: 667, twoFA: 776, enableFolderColor: 77, inheritParentFolderColor: 88, subscribed: 12, groupingMode: 1)
+                                    currency: "BOL", pwdMode: 667, twoFA: 776, enableFolderColor: 77, inheritParentFolderColor: 88, subscribed: 12, groupingMode: 1, weekStart: 0)
         let testAuth = AuthCredential(sessionID: "test session id", accessToken: "test access token", refreshToken: "test refresh token",
                                       expiration: .distantFuture, privateKey: "test private key", passwordKeySalt: "test password key salt")
         var userInfoInFinalizeSignIn: UserInfo?

@@ -1,5 +1,5 @@
 //
-//  PaymentsCoordinator.swift
+//  PaymentsManager.swift
 //  PMLogin - Created on 01/06/2021.
 //
 //  Copyright (c) 2021 Proton Technologies AG
@@ -26,7 +26,7 @@ import ProtonCore_Payments
 import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 
-class PaymentsCoordinator {
+class PaymentsManager {
     
     private let api: APIService
     private let receipt: String?
@@ -88,7 +88,7 @@ class PaymentsCoordinator {
     }
 }
 
-extension PaymentsCoordinator: StoreKitManagerDelegate {
+extension PaymentsManager: StoreKitManagerDelegate {
     var apiService: APIService? {
         return api
     }

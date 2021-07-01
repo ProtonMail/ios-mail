@@ -35,7 +35,14 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     // MARK: - Outlets
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var headerStackView: UIStackView!
+    @IBOutlet weak var closeButton: UIButton! {
+        didSet {
+            // TODO: take the colour form storyboard
+            closeButton.tintColor = UIColorManager.TextNorm
+        }
+    }
+    @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var tableHeaderLabel: UILabel! {
         didSet {
             tableHeaderLabel.textColor = UIColorManager.TextNorm
@@ -63,19 +70,24 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             tableView.rowHeight = UITableView.automaticDimension
         }
     }
+    @IBOutlet weak var stackViewTopConstraint: NSLayoutConstraint!
     
     // MARK: - Properties
     
     weak var delegate: PaymentsUIViewControllerDelegate?
     var model: PaymentsUIViewModelViewModel?
     var mode: PaymentsUIMode = .signup
-    var showHeader = false
+    var modalPresentation = false
     
     override public func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableHeaderView?.isHidden = true
         tableView.tableFooterView?.isHidden = true
+        headerLabel.text = ""
         configureUI()
+        if isDataLoaded {
+            reloadUI()
+        }
         generateAccessibilityIdentifiers()
     }
     
@@ -96,6 +108,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     }
     
     func reloadData() {
+        isData = true
         if isViewLoaded {
             tableView.reloadData()
             reloadUI()
@@ -108,11 +121,13 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         delegate?.userDidCloseViewController()
     }
     
+    // MARK: Private interface
+    
     private func updateHeaderFooterViewHeight() {
         guard isDataLoaded, let headerView = tableView.tableFooterView, let footerView = tableView.tableFooterView else {
             return
         }
-        if mode != .signup && showHeader == false {
+        if mode != .signup {
             tableView.tableHeaderView = nil
         } else {
             tableView.tableHeaderView?.isHidden = false
@@ -133,32 +148,50 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         }
     }
     
-    private func reloadUI() {
-        if isDataLoaded {
-            if let isAnyPlanToPurchase = model?.isAnyPlanToPurchase {
-                self.tableFooterTextDescription.isHidden = !isAnyPlanToPurchase
+    private func configureUI() {
+        if modalPresentation {
+            if let image = UIImage(named: "Close", in: PaymentsUI.bundle, compatibleWith: nil) {
+                closeButton.setImage(image, for: .normal)
             }
-            activityIndicator.isHidden = true
-            updateHeaderFooterViewHeight()
+            stackViewTopConstraint.constant = 14
         }
     }
     
-    private func configureUI() {
-        reloadUI()
-        if showHeader {
-            switch mode {
-            case .signup:
-                tableHeaderLabel.text = CoreString._pu_select_plan_title
-            case .current:
-                tableHeaderLabel.text = CoreString._pu_current_plan_title
-            case .update:
-                tableHeaderLabel.text = CoreString._pu_update_plan_title
+    private func reloadUI() {
+        guard isDataLoaded else { return }
+        if let isAnyPlanToPurchase = model?.isAnyPlanToPurchase {
+            self.tableFooterTextDescription.isHidden = !isAnyPlanToPurchase
+        }
+        activityIndicator.isHidden = true
+        updateHeaderFooterViewHeight()
+        if mode == .signup {
+            tableHeaderLabel.text = CoreString._pu_select_plan_title
+            headerLabel.text = ""
+        } else {
+            if modalPresentation {
+                switch mode {
+                case .current:
+                    headerLabel.text = CoreString._pu_current_plan_title
+                case .update:
+                    if model?.isAnyPlanToPurchase ?? false {
+                        headerLabel.text = CoreString._pu_update_plan_title
+                    } else {
+                        headerLabel.text = CoreString._pu_current_plan_title
+                    }
+                default:
+                    break
+                }
+            } else {
+                closeButton.isHidden = true
+                headerLabel.isHidden = true
             }
         }
     }
+    
+    private var isData = false
     
     private var isDataLoaded: Bool {
-        return model?.plans.count ?? 0 > 0
+        return isData || mode == .signup
     }
 }
 

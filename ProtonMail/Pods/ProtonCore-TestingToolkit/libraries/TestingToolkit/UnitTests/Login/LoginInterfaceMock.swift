@@ -1,7 +1,7 @@
 import UIKit
 import ProtonCore_Login
 
-public struct LoginInterfaceMock: LoginInterface {
+public class LoginInterfaceMock: LoginInterface {
 
     public init() {}
 
@@ -14,15 +14,22 @@ public struct LoginInterfaceMock: LoginInterface {
 
     @FuncStub(LoginInterfaceMock.presentSignupFlow) public var presentSignupFlowStub
     public func presentSignupFlow(over viewController: UIViewController,
-                                  isPlanSelectorAvailable: Bool,
                                   receipt: String?,
                                   completion: @escaping (LoginResult) -> Void) {
-        presentSignupFlowStub(viewController, isPlanSelectorAvailable, receipt, completion)
+        presentSignupFlowStub(viewController, receipt, completion)
     }
 
     @FuncStub(LoginInterfaceMock.presentMailboxPasswordFlow) public var presentMailboxPasswordFlowStub
     public func presentMailboxPasswordFlow(over viewController: UIViewController,
                                            completion: @escaping (String) -> Void) {
         presentMailboxPasswordFlowStub(viewController, completion)
+    }
+
+    @FuncStub(LoginInterfaceMock.presentFlowFromWelcomeScreen) public var presentFlowFromWelcomeScreenStub
+    public func presentFlowFromWelcomeScreen(over viewController: UIViewController,
+                                             welcomeScreen: WelcomeScreenVariant,
+                                             username: String?,
+                                             completion: @escaping (LoginResult) -> Void) {
+        presentFlowFromWelcomeScreenStub(viewController, welcomeScreen, username, completion)
     }
 }

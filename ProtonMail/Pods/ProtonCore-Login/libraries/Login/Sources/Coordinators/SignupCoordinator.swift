@@ -25,13 +25,18 @@ import ProtonCore_CoreTranslation
 import ProtonCore_UIFoundations
 import ProtonCore_Payments
 
+enum FlowStartKind {
+    case over(UIViewController)
+    case inside(UINavigationController)
+}
+
 protocol SignupCoordinatorDelegate: AnyObject {
     func userDidDismissSignupCoordinator(signupCoordinator: SignupCoordinator)
     func signupCoordinatorDidFinish(signupCoordinator: SignupCoordinator, loginData: LoginData)
-    func userSelectedSignin(email: String?)
+    func userSelectedSignin(email: String?, navigationViewController: UINavigationController)
 }
 
-class SignupCoordinator {
+final class SignupCoordinator {
     
     weak var delegate: SignupCoordinatorDelegate?
     
@@ -40,7 +45,6 @@ class SignupCoordinator {
     private let signupPasswordRestrictions: SignupPasswordRestrictions
     private let isCloseButton: Bool
     private let isPlanSelectorAvailable: Bool
-    private weak var viewController: UIViewController?
     private var navigationController: UINavigationController?
     private var signupViewController: SignupViewController?
     private var recoveryViewController: RecoveryViewController?
@@ -55,7 +59,7 @@ class SignupCoordinator {
     var verifyToken: String?
     
     // Payments
-    private var paymentsCoordinator: PaymentsCoordinator?
+    private var paymentsManager: PaymentsManager?
 
     init(container: Container, signupMode: SignupMode, signupPasswordRestrictions: SignupPasswordRestrictions, isCloseButton: Bool, isPlanSelectorAvailable: Bool, receipt: String?) {
         self.container = container
@@ -64,28 +68,28 @@ class SignupCoordinator {
         self.isCloseButton = isCloseButton
         self.isPlanSelectorAvailable = isPlanSelectorAvailable
         if isPlanSelectorAvailable {
-            self.paymentsCoordinator = container.makePaymentsCoordinator(receipt: receipt)
+            self.paymentsManager = container.makePaymentsCoordinator(receipt: receipt)
         }
     }
     
-    func start(viewController: UIViewController) {
-        self.viewController = viewController
+    func start(kind: FlowStartKind) {
         switch signupMode {
         case .notAvailable:
             assertionFailure("Signup flow should never be presented when it's not available")
-            signupViewController?.dismiss(animated: true)
+            navigationController?.dismiss(animated: true)
             delegate?.userDidDismissSignupCoordinator(signupCoordinator: self)
+            return
         case .internal, .both(.internal):
             signupAccountType = .internal
         case .external, .both(.external):
             signupAccountType = .external
         }
-        showSignupViewController()
+        showSignupViewController(kind: kind)
     }
     
     // MARK: - View controller internal account presentation methods
     
-    private func showSignupViewController() {
+    private func showSignupViewController(kind: FlowStartKind) {
         let signupViewController = UIStoryboard.instantiate(SignupViewController.self)
         signupViewController.viewModel = container.makeSignupViewModel()
         signupViewController.delegate = self
@@ -99,14 +103,20 @@ class SignupCoordinator {
         }
         signupViewController.showCloseButton = isCloseButton
         signupViewController.signupAccountType = signupAccountType
-        
-        let navigationController = UINavigationController(rootViewController: signupViewController)
-        navigationController.navigationBar.isHidden = true
-        navigationController.modalPresentationStyle = .fullScreen
-        self.navigationController = navigationController
-        
-        container.setupHumanVerification()
-        viewController?.present(navigationController, animated: true, completion: nil)
+
+        switch kind {
+        case .over(let viewController):
+            let navigationController = UINavigationController(rootViewController: signupViewController)
+            navigationController.navigationBar.isHidden = true
+            navigationController.modalPresentationStyle = .fullScreen
+            self.navigationController = navigationController
+            container.setupHumanVerification(viewController: navigationController)
+            viewController.present(navigationController, animated: true, completion: nil)
+        case .inside(let navigationViewController):
+            self.navigationController = navigationViewController
+            container.setupHumanVerification(viewController: navigationViewController)
+            navigationViewController.setViewControllers([signupViewController], animated: true)
+        }
     }
     
     private func showPasswordViewController() {
@@ -116,7 +126,7 @@ class SignupCoordinator {
         passwordViewController.signupAccountType = signupAccountType
         passwordViewController.signupPasswordRestrictions = signupPasswordRestrictions
         
-        signupViewController?.navigationController?.pushViewController(passwordViewController, animated: true)
+        navigationController?.pushViewController(passwordViewController, animated: true)
     }
     
     private func showRecoveryViewController() {
@@ -125,12 +135,12 @@ class SignupCoordinator {
         recoveryViewController.delegate = self
         self.recoveryViewController = recoveryViewController
         
-        signupViewController?.navigationController?.pushViewController(recoveryViewController, animated: true)
+        navigationController?.pushViewController(recoveryViewController, animated: true)
     }
     
     private func finishSignupProcess(email: String? = nil, phoneNumber: String? = nil, completionHandler: (() -> Void)?) {
         if isPlanSelectorAvailable {
-            paymentsCoordinator?.startPaymentProcess(signupViewController: signupViewController, planShownHandler: completionHandler, completionHandler: { result in
+            paymentsManager?.startPaymentProcess(signupViewController: signupViewController, planShownHandler: completionHandler, completionHandler: { result in
                 switch result {
                 case .success:
                     self.showCompleteViewController(email: email, phoneNumber: phoneNumber)
@@ -160,15 +170,16 @@ class SignupCoordinator {
         completeViewController.email = email
         completeViewController.phoneNumber = phoneNumber
         completeViewController.verifyToken = verifyToken
-        signupViewController?.navigationController?.pushViewController(completeViewController, animated: true)
+        navigationController?.pushViewController(completeViewController, animated: true)
     }
     
     private func showCountryPickerViewController() {
         let countryPickerViewController = countryPicker.getCountryPickerViewController()
         countryPickerViewController.delegate = self
+        countryPickerViewController.modalTransitionStyle = .coverVertical
         self.countryPickerViewController = countryPickerViewController
         
-        signupViewController?.navigationController?.present(countryPickerViewController, animated: true)
+        navigationController?.present(countryPickerViewController, animated: true)
     }
     
     private func showTermsAndConditionsViewController() {
@@ -177,7 +188,7 @@ class SignupCoordinator {
         tcViewController.delegate = self
         self.tcViewController = tcViewController
         
-        signupViewController?.navigationController?.present(tcViewController, animated: true)
+        navigationController?.present(tcViewController, animated: true)
     }
     
     // MARK: - View controller external account presentation methods
@@ -193,7 +204,7 @@ class SignupCoordinator {
         emailVerificationViewController.viewModel = emailVerificationViewModel
         emailVerificationViewController.delegate = self
         
-        signupViewController?.navigationController?.pushViewController(emailVerificationViewController, animated: true)
+        navigationController?.pushViewController(emailVerificationViewController, animated: true)
     }
 
     private var activeViewController: UIViewController? {
@@ -208,7 +219,7 @@ class SignupCoordinator {
     
     private func finalizeAccountCreation(loginData: LoginData) {
         if isPlanSelectorAvailable {
-            paymentsCoordinator?.finishPaymentProcess(loginData: loginData) { result in
+            paymentsManager?.finishPaymentProcess(loginData: loginData) { result in
                 switch result {
                 case .success:
                     self.finishAccountCreation(loginData: loginData)
@@ -223,7 +234,7 @@ class SignupCoordinator {
     
     private func finishAccountCreation(loginData: LoginData) {
         DispatchQueue.main.async {
-            self.signupViewController?.dismiss(animated: true)
+            self.navigationController?.dismiss(animated: true)
             self.delegate?.signupCoordinatorDidFinish(signupCoordinator: self, loginData: loginData)
         }
     }
@@ -246,13 +257,13 @@ extension SignupCoordinator: SignupViewControllerDelegate {
     }
     
     func signupCloseButtonPressed() {
-        signupViewController?.dismiss(animated: true)
+        navigationController?.dismiss(animated: true)
         delegate?.userDidDismissSignupCoordinator(signupCoordinator: self)
     }
     
     func signinButtonPressed() {
-        signupViewController?.dismiss(animated: true)
-        delegate?.userSelectedSignin(email: nil)
+        guard let navigationController = navigationController else { return }
+        delegate?.userSelectedSignin(email: nil, navigationViewController: navigationController)
     }
 }
 
@@ -270,7 +281,7 @@ extension SignupCoordinator: PasswordViewControllerDelegate {
     }
     
     func passwordBackButtonPressed() {
-        signupViewController?.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -283,7 +294,7 @@ extension SignupCoordinator: RecoveryViewControllerDelegate {
     }
     
     func recoveryBackButtonPressed() {
-        signupViewController?.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     func termsAndConditionsLinkPressed() {
@@ -335,7 +346,7 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
             }
         }
         if activeViewController != nil {
-            signupViewController?.navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
         }
     }
 }
@@ -355,12 +366,12 @@ extension SignupCoordinator: EmailVerificationViewControllerDelegate {
     }
     
     func emailVerificationBackButtonPressed() {
-        signupViewController?.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     func emailAlreadyExists(email: String) {
-        signupViewController?.dismiss(animated: true)
-        delegate?.userSelectedSignin(email: email)
+        guard let navigationController = navigationController else { return }
+        delegate?.userSelectedSignin(email: email, navigationViewController: navigationController)
     }
 }
 

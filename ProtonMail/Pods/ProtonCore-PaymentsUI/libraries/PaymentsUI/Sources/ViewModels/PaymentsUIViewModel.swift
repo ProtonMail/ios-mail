@@ -34,8 +34,8 @@ final class PaymentsUIViewModelViewModel: NSObject {
     
     // MARK: Public properties
     
-    var plans: [Plan] = []
-    var isAnyPlanToPurchase = false
+    private (set) var plans: [Plan] = []
+    private (set) var isAnyPlanToPurchase = false
     
     var processingAccountPlan: AccountPlan? {
         didSet {
@@ -135,7 +135,7 @@ final class PaymentsUIViewModelViewModel: NSObject {
             }
             let plansToShow = planType.plansToShow.filter { $0 != .free }
             self.plans += self.getPlans(plans: plansToShow)
-            self.isAnyPlanToPurchase = true
+            self.isAnyPlanToPurchase = self.plans.count > 0
             completionHandler?(.success((self.plans, self.isAnyPlanToPurchase)))
         } else {
             // filter other subscriptions

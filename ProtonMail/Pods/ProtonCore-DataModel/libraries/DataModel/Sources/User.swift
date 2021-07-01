@@ -134,6 +134,8 @@ public final class UserInfo: NSObject {
 
     // 0 - threading, 1 - single message
     public var groupingMode: Int = 0
+
+    public var weekStart: Int = 0
     
     public static func getDefault() -> UserInfo {
         return .init(maxSpace: 0, usedSpace: 0, language: "",
@@ -162,7 +164,8 @@ public final class UserInfo: NSObject {
         enableFolderColor: Int?,
         inheritParentFolderColor: Int?,
         subscribed: Int?,
-        groupingMode: Int?) {
+        groupingMode: Int?,
+        weekStart: Int?) {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
         self.language = language ?? "en_US"
@@ -200,6 +203,7 @@ public final class UserInfo: NSObject {
         self.inheritParentFolderColor = inheritParentFolderColor ?? 0
         self.subscribed = subscribed ?? 0
         self.groupingMode = groupingMode ?? 1
+        self.weekStart = weekStart ?? 0
         
         if let value = linkConfirmation, let mode = LinkOpeningMode(rawValue: value) {
             self.linkConfirmation = mode

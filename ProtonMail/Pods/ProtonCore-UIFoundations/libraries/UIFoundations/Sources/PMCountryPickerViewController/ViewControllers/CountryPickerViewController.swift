@@ -182,4 +182,21 @@ extension CountryPickerViewController {
     }
 }
 
+// MARK: - Gesture recognizer delegate
+
+extension CountryPickerViewController: UIGestureRecognizerDelegate {
+
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        preventTableViewEventsFromBeingEatenByGestureRecognizer(view: touch.view)
+    }
+
+    private func preventTableViewEventsFromBeingEatenByGestureRecognizer(view: UIView?) -> Bool {
+        guard let tableView = tableView, let touchView = view, touchView.isDescendant(of: tableView) else {
+            return true
+        }
+        return false
+    }
+
+}
+
 #endif

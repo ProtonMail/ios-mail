@@ -71,7 +71,7 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
         self.userID = userID
         let name: String = name.isEmpty ? mail: name
         self.name.text = name
-        self.shortNameLabel.text = self.name.text?.shortName()
+        self.shortNameLabel.text = self.name.text?.initials()
         if isLogin {
             self.name.textColor = UIColorManager.TextNorm
         } else {

@@ -65,7 +65,8 @@ public struct LoginData {
                  enableFolderColor: nil,
                  inheritParentFolderColor: nil,
                  subscribed: user.subscribed,
-                 groupingMode: nil)
+                 groupingMode: nil,
+                 weekStart: nil)
     }
 }
 
@@ -93,7 +94,7 @@ public struct SignupPasswordRestrictions: OptionSet {
     public static let notEmpty                   = SignupPasswordRestrictions(rawValue: 1 << 0)
     public static let atLeastEightCharactersLong = SignupPasswordRestrictions(rawValue: 1 << 1)
 
-    public static let `default`: SignupPasswordRestrictions = .notEmpty
+    public static let `default`: SignupPasswordRestrictions = [.atLeastEightCharactersLong, .notEmpty]
 
     public func failedRestrictions(for password: String) -> SignupPasswordRestrictions {
         var failedRestrictions: SignupPasswordRestrictions = []

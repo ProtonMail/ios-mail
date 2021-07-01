@@ -67,7 +67,7 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
         self.avatar.image = nil
         let name = data.name.isEmpty ? data.mail: data.name
         self.name.text = name
-        self.shortName.text = self.name.text?.shortName()
+        self.shortName.text = self.name.text?.initials()
         self.mailAddress.text = data.mail
         
         if data.isSignin {

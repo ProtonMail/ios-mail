@@ -8,15 +8,15 @@
 import UIKit
 import ProtonCore_CoreTranslation
 
-public enum ScreenVariant<ScreenData, AdditionalData> {
-    case mail(AdditionalData)
-    case calendar(AdditionalData)
-    case drive(AdditionalData)
-    case vpn(AdditionalData)
-    case custom(SplashScreenData)
+public enum ScreenVariant<SpecificScreenData, CustomScreenData> {
+    case mail(SpecificScreenData)
+    case calendar(SpecificScreenData)
+    case drive(SpecificScreenData)
+    case vpn(SpecificScreenData)
+    case custom(CustomScreenData)
 }
 
-public typealias SplashScreenVariant = ScreenVariant<SplashScreenData, Void>
+public typealias SplashScreenVariant = ScreenVariant<Void, SplashScreenData>
 
 public extension SplashScreenVariant {
     static var mail: SplashScreenVariant { .mail(()) }
@@ -39,7 +39,7 @@ public final class SplashViewController: UIViewController {
     private let footer: UILabel
     private let brand: Brand
 
-    public override var preferredStatusBarStyle: UIStatusBarStyle {
+    override public var preferredStatusBarStyle: UIStatusBarStyle {
         switch brand {
         case .proton: return .default
         case .vpn: return .lightContent

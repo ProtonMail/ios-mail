@@ -100,9 +100,9 @@ public final class RecoveryRobot: CoreElements {
         }
 
         @discardableResult
-        public func skipButtonTap() -> CompleteRobot {
+        public func skipButtonTap<T: CoreElements>(robot _: T.Type) -> T {
             button(recoveryDialogSkipButtonAccessibilityId).tap()
-            return CompleteRobot()
+            return T()
         }
         
         @discardableResult

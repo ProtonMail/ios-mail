@@ -42,11 +42,11 @@ class SignupViewModel {
     }
 
     func isUserNameValid(name: String) -> Bool {
-        return !name.isEmpty
+        return !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     func isEmailValid(email: String) -> Bool {
-        guard !email.isEmpty else { return false }
+        guard !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return false }
         return email.isValidEmail()
     }
 

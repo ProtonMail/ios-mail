@@ -66,6 +66,7 @@ extension UserInfo: NSCoding {
         static let enableFolderColor = "enableFolderColor"
         static let inheritParentFolderColor = "inheritParentFolderColor"
         static let groupingMode = "groupingMode"
+        static let weekStart = "weekStart"
     }
     
     public convenience init(coder aDecoder: NSCoder) {
@@ -105,7 +106,8 @@ extension UserInfo: NSCoding {
             enableFolderColor: aDecoder.decodeInteger(forKey: CoderKey.enableFolderColor),
             inheritParentFolderColor: aDecoder.decodeInteger(forKey: CoderKey.inheritParentFolderColor),
             subscribed: aDecoder.decodeInteger(forKey: CoderKey.subscribed),
-            groupingMode: aDecoder.decodeInteger(forKey: CoderKey.groupingMode)
+            groupingMode: aDecoder.decodeInteger(forKey: CoderKey.groupingMode),
+            weekStart: aDecoder.decodeInteger(forKey: CoderKey.weekStart)
         )
     }
     
@@ -146,6 +148,7 @@ extension UserInfo: NSCoding {
         aCoder.encode(passwordMode, forKey: CoderKey.pwdMode)
         aCoder.encode(twoFactor, forKey: CoderKey.twoFA)
         aCoder.encode(groupingMode, forKey: CoderKey.groupingMode)
+        aCoder.encode(weekStart, forKey: CoderKey.weekStart)
     }
 }
 

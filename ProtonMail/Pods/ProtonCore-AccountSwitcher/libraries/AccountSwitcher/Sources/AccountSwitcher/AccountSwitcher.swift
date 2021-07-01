@@ -240,10 +240,10 @@ extension AccountSwitcher {
         self.shortUserNameView.roundCorner(2)
         self.shortUserName.adjustsFontSizeToFitWidth = true
         if user.name.isEmpty {
-            self.shortUserName.text = user.mail.shortName()
+            self.shortUserName.text = user.mail.initials()
             self.username.text = user.mail
         } else {
-            self.shortUserName.text = user.name.shortName()
+            self.shortUserName.text = user.name.initials()
             self.username.text = user.name
         }
         self.usermail.text = user.mail

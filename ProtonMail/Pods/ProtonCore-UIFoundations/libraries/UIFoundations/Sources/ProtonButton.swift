@@ -100,10 +100,10 @@ public class ProtonButton: UIButton {
     }
 
     fileprivate func solidLayout() {
-        setTitleColor(UIColorManager.TextInverted, for: .normal)
-        setTitleColor(UIColorManager.TextInverted, for: .highlighted)
-        setTitleColor(UIColorManager.TextInverted, for: .selected)
-        setTitleColor(UIColorManager.TextInverted.withAlphaComponent(0.4), for: .disabled)
+        setTitleColor(UIColorManager.White, for: .normal)
+        setTitleColor(UIColorManager.White, for: .highlighted)
+        setTitleColor(UIColorManager.White, for: .selected)
+        setTitleColor(UIColorManager.White.withAlphaComponent(0.4), for: .disabled)
         setBackgroundColor(UIColorManager.BrandNorm, forState: .normal)
         setBackgroundColor(UIColorManager.BrandDarken20, forState: .highlighted)
         setBackgroundColor(UIColorManager.BrandDarken20, forState: .selected)

@@ -24,6 +24,12 @@ public final class SignupHumanVerificationRobot: CoreElements {
             staticText(titleName).wait().checkExists()
             return SignupHumanVerificationRobot()
         }
+        
+        public func isHumanVerificationRequired() -> SignupHumanVerificationRobot? {
+            let staticText = XCUIApplication().staticTexts[titleName]
+            Wait().forElement(staticText)
+            return staticText.exists ? SignupHumanVerificationRobot() : nil
+        }
     }
 
     public func humanVericicationCaptchaTap<Robot: CoreElements>(to: Robot.Type) -> Robot {

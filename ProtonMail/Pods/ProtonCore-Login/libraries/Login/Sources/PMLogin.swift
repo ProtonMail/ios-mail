@@ -30,16 +30,29 @@ public protocol LoginInterface {
                           username: String?,
                           completion: @escaping (LoginResult) -> Void)
 
-    func presentSignupFlow(over viewController: UIViewController, isPlanSelectorAvailable: Bool, receipt: String?, completion: @escaping (LoginResult) -> Void)
+    func presentSignupFlow(over viewController: UIViewController,
+                           receipt: String?,
+                           completion: @escaping (LoginResult) -> Void)
 
     func presentMailboxPasswordFlow(over viewController: UIViewController,
                                     completion: @escaping (String) -> Void)
+
+    func presentFlowFromWelcomeScreen(over viewController: UIViewController,
+                                      welcomeScreen: WelcomeScreenVariant,
+                                      username: String?,
+                                      completion: @escaping (LoginResult) -> Void)
 }
 
 extension LoginInterface {
     public func presentLoginFlow(over viewController: UIViewController,
                                  completion: @escaping (LoginResult) -> Void) {
         presentLoginFlow(over: viewController, username: nil, completion: completion)
+    }
+
+    public func presentFlowFromWelcomeScreen(over viewController: UIViewController,
+                                             welcomeScreen: WelcomeScreenVariant,
+                                             completion: @escaping (LoginResult) -> Void) {
+        presentFlowFromWelcomeScreen(over: viewController, welcomeScreen: welcomeScreen, username: nil, completion: completion)
     }
 }
 
@@ -52,7 +65,7 @@ public class PMLogin: LoginInterface {
     private let isCloseButtonAvailable: Bool
     private let isPlanSelectorAvailable: Bool
     private var loginCoordinator: LoginCoordinator?
-    private var singnupCoordinator: SignupCoordinator?
+    private var signupCoordinator: SignupCoordinator?
     private var mailboxPasswordCoordinator: MailboxPasswordCoordinator?
     private var viewController: UIViewController?
     private var loginCompletion: ((LoginResult) -> Void)?
@@ -78,36 +91,17 @@ public class PMLogin: LoginInterface {
         self.isPlanSelectorAvailable = isPlanSelectorAvailable
     }
     
-    @available(*, unavailable, renamed: "presentLoginFlow(over:username:completion:)")
-    public func login(viewController: UIViewController, username: String? = nil, isSignupAvailable _: Bool = true, completion: @escaping (LoginResult) -> Void) {
-        presentLoginFlow(over: viewController, username: username, completion: completion)
-    }
-    
     public func presentLoginFlow(over viewController: UIViewController,
                                  username: String? = nil,
                                  completion: @escaping (LoginResult) -> Void) {
-        self.viewController = viewController
-        self.loginCompletion = completion
-        
-        loginCoordinator = LoginCoordinator(container: container,
-                                            isCloseButtonAvailable: isCloseButtonAvailable,
-                                            isSignupAvailable: signupMode != .notAvailable)
-        loginCoordinator?.delegate = self
-        loginCoordinator?.start(viewController: viewController, username: username)
-    }
-    
-    @available(*, unavailable, renamed: "presentLoginFlow(over:completion:)")
-    public func signup(viewController: UIViewController, completion: @escaping (LoginResult) -> Void) {
-        presentSignupFlow(over: viewController, completion: completion)
+        presentLogin(over: viewController, username: username, welcomeScreen: nil, completion: completion)
     }
 
-    public func presentSignupFlow(over viewController: UIViewController, isPlanSelectorAvailable: Bool = false, receipt: String? = nil, completion: @escaping (LoginResult) -> Void) {
+    public func presentSignupFlow(over viewController: UIViewController, receipt: String? = nil, completion: @escaping (LoginResult) -> Void) {
         self.viewController = viewController
         self.loginCompletion = completion
 
-        singnupCoordinator = SignupCoordinator(container: container, signupMode: signupMode, signupPasswordRestrictions: signupPasswordRestrictions, isCloseButton: isCloseButtonAvailable, isPlanSelectorAvailable: isPlanSelectorAvailable, receipt: receipt)
-        singnupCoordinator?.delegate = self
-        singnupCoordinator?.start(viewController: viewController)
+        presentSignup(.over(viewController), receipt: receipt, completion: completion)
     }
     
     public func presentMailboxPasswordFlow(over viewController: UIViewController, completion: @escaping (String) -> Void) {
@@ -116,24 +110,47 @@ public class PMLogin: LoginInterface {
         mailboxPasswordCoordinator = MailboxPasswordCoordinator(container: container, delegate: self)
         mailboxPasswordCoordinator?.start(viewController: viewController)
     }
+
+    public func presentFlowFromWelcomeScreen(over viewController: UIViewController,
+                                             welcomeScreen: WelcomeScreenVariant,
+                                             username: String?,
+                                             completion: @escaping (LoginResult) -> Void) {
+        presentLogin(over: viewController, username: username, welcomeScreen: welcomeScreen, completion: completion)
+    }
     
     public func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void) {
         container.login.logout(credential: credential, completion: completion)
     }
 
-    private func login(viewController: UIViewController,
-                       username: String? = nil,
-                       initialError: LoginError? = nil,
-                       completion: @escaping (LoginResult) -> Void) {
+    private func presentLogin(over viewController: UIViewController,
+                              username: String? = nil,
+                              welcomeScreen: WelcomeScreenVariant?,
+                              completion: @escaping (LoginResult) -> Void) {
         self.viewController = viewController
         self.loginCompletion = completion
-        
+
         loginCoordinator = LoginCoordinator(container: container,
                                             isCloseButtonAvailable: isCloseButtonAvailable,
                                             isSignupAvailable: signupMode != .notAvailable)
         loginCoordinator?.delegate = self
-        loginCoordinator?.initialError = initialError
-        loginCoordinator?.start(viewController: viewController, username: username)
+        if let welcomeScreen = welcomeScreen {
+            loginCoordinator?.startFromWelcomeScreen(viewController: viewController, variant: welcomeScreen, username: username)
+        } else {
+            loginCoordinator?.start(.over(viewController), username: username)
+        }
+    }
+
+    private func presentSignup(_ start: FlowStartKind,
+                               receipt: String?,
+                               completion: @escaping (LoginResult) -> Void) {
+        signupCoordinator = SignupCoordinator(container: container,
+                                              signupMode: signupMode,
+                                              signupPasswordRestrictions: signupPasswordRestrictions,
+                                              isCloseButton: isCloseButtonAvailable,
+                                              isPlanSelectorAvailable: isPlanSelectorAvailable,
+                                              receipt: receipt)
+        signupCoordinator?.delegate = self
+        signupCoordinator?.start(kind: start)
     }
 }
 
@@ -145,10 +162,11 @@ extension PMLogin: LoginCoordinatorDelegate {
     func loginCoordinatorDidFinish(loginCoordinator: LoginCoordinator, data: LoginData) {
         loginCompletion?(.loggedIn(data))
     }
-    
-    func userSelectedSignup() {
-        guard let viewController = viewController, let loginCompletion = loginCompletion else { return }
-        presentSignupFlow(over: viewController, completion: loginCompletion)
+
+    func userSelectedSignup(navigationController: UINavigationController) {
+        guard let loginCompletion = loginCompletion else { return }
+        // TODO: update receipt when BE know what solution is best
+        presentSignup(.inside(navigationController), receipt: nil, completion: loginCompletion)
     }
 }
 
@@ -161,14 +179,15 @@ extension PMLogin: SignupCoordinatorDelegate {
         loginCompletion?(.loggedIn(loginData))
     }
     
-    func userSelectedSignin(email: String?) {
-        guard let viewController = viewController, let loginCompletion = loginCompletion else { return }
-        if let email = email {
-            let initialError = LoginError.emailAddressAlreadyUsed
-            login(viewController: viewController, username: email, initialError: initialError, completion: loginCompletion)
-        } else {
-            login(viewController: viewController, initialError: nil, completion: loginCompletion)
+    func userSelectedSignin(email: String?, navigationViewController: UINavigationController) {
+        loginCoordinator = LoginCoordinator(container: container,
+                                            isCloseButtonAvailable: isCloseButtonAvailable,
+                                            isSignupAvailable: signupMode != .notAvailable)
+        loginCoordinator?.delegate = self
+        if email != nil {
+            loginCoordinator?.initialError = LoginError.emailAddressAlreadyUsed
         }
+        loginCoordinator?.start(.inside(navigationViewController), username: email)
     }
 }
 

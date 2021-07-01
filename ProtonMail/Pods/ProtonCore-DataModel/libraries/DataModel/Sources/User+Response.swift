@@ -74,6 +74,10 @@ extension UserInfo {
             if let twoFA = settings["2FA"]  as? [String: Any] {
                 self.twoFactor = twoFA["Enabled"] as? Int ?? 0
             }
+
+            if let weekStart = settings["WeekStart"] as? Int {
+                self.weekStart = weekStart
+            }
         }
     }
     

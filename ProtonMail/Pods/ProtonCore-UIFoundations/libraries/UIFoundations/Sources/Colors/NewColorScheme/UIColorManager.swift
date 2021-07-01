@@ -143,21 +143,33 @@ extension UIColorManager {
             }
         }
 
+        static var TextNormForProtonBrand: UIColor {
+            UIColor(named: "SplashTextNormForProton", in: PMUIFoundations.bundle, compatibleWith: nil)!
+        }
+
+        static var TextNormForVPNBrand: UIColor {
+            UIColor(named: "SplashTextNormForVPN", in: PMUIFoundations.bundle, compatibleWith: nil)!
+        }
+
         public static var TextNorm: UIColor {
             switch brand {
-            case .proton:
-                return UIColor(named: "SplashTextNormForProton", in: PMUIFoundations.bundle, compatibleWith: nil)!
-            case .vpn:
-                return UIColor(named: "SplashTextNormForVPN", in: PMUIFoundations.bundle, compatibleWith: nil)!
+            case .proton: return TextNormForProtonBrand
+            case .vpn: return TextNormForVPNBrand
             }
+        }
+
+        public static var TextHintForProtonBrand: UIColor {
+            UIColor(named: "SplashTextHintForProton", in: PMUIFoundations.bundle, compatibleWith: nil)!
+        }
+
+        static var TextHintForVPNBrand: UIColor {
+            UIColor(named: "SplashTextHintForVPN", in: PMUIFoundations.bundle, compatibleWith: nil)!
         }
 
         public static var TextHint: UIColor {
             switch brand {
-            case .proton:
-                return UIColor(named: "SplashTextHintForProton", in: PMUIFoundations.bundle, compatibleWith: nil)!
-            case .vpn:
-                return UIColor(named: "SplashTextHintForVPN", in: PMUIFoundations.bundle, compatibleWith: nil)!
+            case .proton: return TextHintForProtonBrand
+            case .vpn: return TextHintForVPNBrand
             }
         }
     }

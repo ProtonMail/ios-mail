@@ -26,7 +26,7 @@ import ProtonCore_Foundations
 #if canImport(UIKit)
 import UIKit
 
-typealias ActionCallback = ((UIAlertAction) -> Void)?
+public typealias ActionCallback = ((UIAlertAction) -> Void)?
 
 class PaymentsAlertManager {
     let alertManager: AlertManagerProtocol
@@ -76,7 +76,7 @@ class PaymentsAlertManager {
     }
 }
 
-protocol AlertManagerProtocol: AnyObject {
+public protocol AlertManagerProtocol: AnyObject {
     var title: String? { get set }
     var message: String? { get set }
     var confirmButtonTitle: String? { get set }

@@ -145,6 +145,7 @@
                 <tapGestureRecognizer cancelsTouchesInView="NO" id="yqg-Fi-U0a">
                     <connections>
                         <action selector="tapAction:" destination="jlT-c5-bVR" id="Xdf-aw-3CF"/>
+                        <outlet property="delegate" destination="jlT-c5-bVR" id="hal-lc-ft5"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

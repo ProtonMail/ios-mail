@@ -167,8 +167,15 @@ public class LocalizedString {
     /// Help button
     public lazy var _ls_help_button = NSLocalizedString("Need help?", bundle: Common.bundle, comment: "Help button")
 
-    /// Help button
+    /// Sign in button
+    public lazy var _ls_sign_in_button = NSLocalizedString("Sign in", bundle: Common.bundle, comment: "Sign in button")
+
+    /// Sign up button
     public lazy var _ls_create_account_button = NSLocalizedString("Create an account", bundle: Common.bundle, comment: "Create account button")
+
+    // Login welcome screen
+
+    public lazy var _ls_welcome_footer = NSLocalizedString("One account for all Proton services.", bundle: Common.bundle, comment: "Welcome screen footer label")
 
     // Login help
 

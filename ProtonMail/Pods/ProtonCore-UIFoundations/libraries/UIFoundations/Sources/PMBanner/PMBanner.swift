@@ -329,9 +329,11 @@ extension PMBanner {
             textView.topAnchor.constraint(equalTo: self.topAnchor, constant: style.borderInsets.top),
             textView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1 * style.borderInsets.bottom),
             textView.leadingAnchor.constraint(equalTo: leftRef, constant: style.borderInsets.left),
-            textView.trailingAnchor.constraint(equalTo: rightRef, constant: -style.borderInsets.right),
+            textView.trailingAnchor.constraint(equalTo: rightRef, constant: -style.borderInsets.right).prioritised(as: .defaultLow.lower),
             textView.heightAnchor.constraint(greaterThanOrEqualToConstant: ICON_SIZE)
         ])
+        textView.setContentHuggingPriority(.required, for: .horizontal)
+        textView.setContentCompressionResistancePriority(.defaultLow.lower.lower.lower, for: .horizontal)
     }
 
     /// Setup constraints of `PMBanner`
@@ -340,15 +342,15 @@ extension PMBanner {
         let insets = position.edgeInsets
 
         let left = self.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: insets.left)
-        left.priority = UILayoutPriority(rawValue: 888)
+        left.priority = UILayoutPriority.defaultLow.lower.lower //(rawValue: 888)
         left.isActive = true
 
         let right = self.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -1 * insets.right)
-        right.priority = UILayoutPriority(rawValue: 888)
+        right.priority = UILayoutPriority.defaultLow.lower.lower //(rawValue: 888)
         right.isActive = true
 
         self.centerXInSuperview()
-        self.widthAnchor.constraint(lessThanOrEqualToConstant: position.maximumWidth).isActive = true
+        self.widthAnchor.constraint(lessThanOrEqualTo: parent.readableContentGuide.widthAnchor).isActive = true
         self.heightAnchor.constraint(greaterThanOrEqualToConstant: ICON_SIZE + 2 * style.borderInsets.top).isActive = true
         self.layoutIfNeeded()
 

@@ -36,7 +36,7 @@ final class Container {
     private let api: PMAPIService
     private let authManager: AuthManager
     private var humanCheckHelper: HumanCheckHelper?
-    private var paymentsCoordinator: PaymentsCoordinator?
+    private var paymentsManager: PaymentsManager?
     private let externalLinks = ExternalLinks()
     private let appName: String
     private let challenge: PMChallenge
@@ -105,10 +105,10 @@ final class Container {
         return EmailVerificationViewModel(apiService: api, signupService: signupService)
     }
     
-    func makePaymentsCoordinator(receipt: String?) -> PaymentsCoordinator {
-        let paymentsCoordinator = PaymentsCoordinator(apiService: api, receipt: receipt)
-        self.paymentsCoordinator = paymentsCoordinator
-        return paymentsCoordinator
+    func makePaymentsCoordinator(receipt: String?) -> PaymentsManager {
+        let paymentsManager = PaymentsManager(apiService: api, receipt: receipt)
+        self.paymentsManager = paymentsManager
+        return paymentsManager
     }
 
     // MARK: Other view models
@@ -127,7 +127,7 @@ final class Container {
 
 extension Container: HumanVerifyPaymentDelegate {
     var paymentToken: String? {
-        return paymentsCoordinator?.tokenStorage?.get()?.token
+        return paymentsManager?.tokenStorage?.get()?.token
     }
     
     func paymentTokenStatusChanged(status: PaymentTokenStatusResult) {

@@ -21,13 +21,14 @@
 
 import UIKit
 import ProtonCore_UIFoundations
+import ProtonCore_Foundations
 import ProtonCore_CoreTranslation
 
 protocol PlanCellDelegate: AnyObject {
     func userPressedSelectPlanButton(plan: Plan, completionHandler: @escaping () -> Void)
 }
 
-final class PlanCell: UITableViewCell {
+final class PlanCell: UITableViewCell, AccessibleCell {
 
     static let reuseIdentifier = "PlanCell"
     static let nib = UINib(nibName: "PlanCell", bundle: PaymentsUI.bundle)
@@ -111,6 +112,7 @@ final class PlanCell: UITableViewCell {
         } else {
             selectPlanButton.setTitle(CoreString._pu_upgrade_plan_button, for: .normal)
         }
+        self.generateCellAccessibilityIdentifiers(plan.name)
     }
     
     private func enableTimeView(enabled: Bool) {

@@ -30,7 +30,8 @@ public extension UserInfo {
                  enableFolderColor: nil,
                  inheritParentFolderColor: nil,
                  subscribed: nil,
-                 groupingMode: nil)
+                 groupingMode: nil,
+                 weekStart: nil)
     }
 
     func updated(displayName: String? = nil,
@@ -60,7 +61,9 @@ public extension UserInfo {
                  enableFolderColor: Int? = nil,
                  inheritParentFolderColor: Int? = nil,
                  subscribed: Int? = nil,
-                 groupingMode: Int? = nil) -> UserInfo {
+                 groupingMode: Int? = nil,
+                 weekStart: Int? = nil) -> UserInfo {
+
         UserInfo(displayName: displayName ?? self.displayName,
                  maxSpace: maxSpace ?? self.maxSpace,
                  notificationEmail: notificationEmail ?? self.notificationEmail,
@@ -88,6 +91,7 @@ public extension UserInfo {
                  enableFolderColor: enableFolderColor ?? self.enableFolderColor,
                  inheritParentFolderColor: inheritParentFolderColor ?? self.inheritParentFolderColor,
                  subscribed: subscribed ?? self.subscribed,
-                 groupingMode: groupingMode ?? self.groupingMode)
+                 groupingMode: groupingMode ?? self.groupingMode,
+                 weekStart: weekStart ?? self.weekStart)
     }
 }
