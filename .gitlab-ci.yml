@@ -2,7 +2,8 @@ stages:
   - i18n
   - test
   - test_flight
-  - enterprise
+  - enterprise_test
+  - enterprise_release
   - bot # comes from translations/generator job
 
 .before_script_mac: &before_script_mac
@@ -11,6 +12,18 @@ stages:
 
 .set_up_brew_dependecies: &set_up_brew_dependecies
   - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --no-upgrade
+
+.enterprise_config_setting: &enterprise_config_setting
+  - cd ProtonMail
+  - touch ~/.bashrc
+  - curl -sL https://sentry.io/get-cli/ | bash || true
+  - base64 -D -o Certificates.p12 <<< $ENTERPRISE_DISTRIBUTION_CERTIFICATE
+  - base64 -D -o Siri.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SIRI_PROVISIONPROFILE
+  - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
+  - base64 -D -o PushService.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_PUSHSERVICE_PROVISIONPROFILE
+  - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
+  - SENTRY_PROJECT=$SENTRY_PROJECT_ENTERPRISE
+  - SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN_ENTERPRISE
 
 # --- includes ---
 include:
@@ -179,13 +192,13 @@ nightly-build-and-upload:
   tags:
     - iOS_ARM_TAIPEI
 
-# --- Build enterprise app and upload
-build-enterprise-app-and-upload:
+# --- Build enterprise app for release and upload
+build-release-enterprise-app-and-upload:
   dependencies: []
-  stage: enterprise
+  stage: enterprise_release
   when: manual
   artifacts:
-    name: "iOS mail app enterprise build"
+    name: "iOS mail app release enterprise build"
     paths:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
@@ -196,17 +209,30 @@ build-enterprise-app-and-upload:
     - git submodule update --init --recursive
     - *set_up_brew_dependecies
   script:
-    - cd ProtonMail
-    - touch ~/.bashrc
-    - curl -sL https://sentry.io/get-cli/ | bash || true
-    - base64 -D -o Certificates.p12 <<< $ENTERPRISE_DISTRIBUTION_CERTIFICATE
-    - base64 -D -o Siri.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SIRI_PROVISIONPROFILE
-    - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
-    - base64 -D -o PushService.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_PUSHSERVICE_PROVISIONPROFILE
-    - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
-    - SENTRY_PROJECT=$SENTRY_PROJECT_ENTERPRISE
-    - SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN_ENTERPRISE
-    - fastlane ios enterprise
+    - *enterprise_config_setting
+    - fastlane ios enterprise usingTimeStamp:false
+  tags:
+    - iOS
+
+# --- Build enterprise app for test and upload
+build-test-enterprise-app-and-upload:
+  dependencies: []
+  stage: enterprise_test
+  when: manual
+  artifacts:
+    name: "iOS mail app test enterprise build"
+    paths:
+      - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
+    expire_in: 90 days
+  before_script:
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
+    - git submodule init
+    - git submodule update --init --recursive
+    - *set_up_brew_dependecies
+  script:
+    - *enterprise_config_setting
+    - fastlane ios enterprise usingTimeStamp:true
   tags:
     - iOS
 

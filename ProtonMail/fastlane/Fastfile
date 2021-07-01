@@ -217,8 +217,12 @@ platform :ios do
   set_up_keychain(true)
   
   # Set build version by git log numbers
-  bundle_version = sh("./setup_bundle_version.sh")
-
+  if options[:usingTimeStamp]
+    timeStamp = Time.now.getutc.to_i
+    bundle_version = sh("./setup_bundle_version.sh " + timeStamp.to_s)
+  else
+    bundle_version = sh("./setup_bundle_version.sh")
+  end
 
   build_enterprise_app
 
@@ -234,7 +238,7 @@ platform :ios do
 
   tear_down_keychain
   
-  # send_to_slack(true, changelog, "", bundle_version.strip)
+  # send_to_slack(true, releaseNote, "", bundle_version.strip)
   end
 
   desc "Test code coverage"
