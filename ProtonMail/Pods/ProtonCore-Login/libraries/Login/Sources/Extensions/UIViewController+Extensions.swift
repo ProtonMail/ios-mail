@@ -189,33 +189,27 @@ extension SignUpErrorCapable {
 }
 
 protocol Focusable: UIViewController {
-    func focusOnce(view: UIView)
+    var focusNoMore: Bool { get set }
+    func focusOnce(view: UIView, delay: DispatchTimeInterval?)
+    func cancelFocus()
 }
 
 extension Focusable {
-    func focusOnce(view: UIView) {
-        guard !alreadyFocused else {
-            return
-        }
-
-        DispatchQueue.main.async {
+    func focusOnce(view: UIView, delay: DispatchTimeInterval? = nil) {
+        guard !focusNoMore else { return }
+        let focusClosure = { [weak self] in
+            guard let self = self, !self.focusNoMore else { return }
             _ = view.becomeFirstResponder()
+            self.focusNoMore = true
         }
-        alreadyFocused = true
+        if let delay = delay {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: focusClosure)
+        } else {
+            DispatchQueue.main.async(execute: focusClosure)
+        }
     }
-}
 
-extension UIViewController {
-    private static var _alreadyFocused = [String: Bool]()
-
-    fileprivate var alreadyFocused: Bool {
-        get {
-            let tmpAddress = String(format: "%p", unsafeBitCast(self, to: Int.self))
-            return UIViewController._alreadyFocused[tmpAddress] ?? false
-        }
-        set(newValue) {
-            let tmpAddress = String(format: "%p", unsafeBitCast(self, to: Int.self))
-            UIViewController._alreadyFocused[tmpAddress] = newValue
-        }
+    func cancelFocus() {
+        self.focusNoMore = true
     }
 }

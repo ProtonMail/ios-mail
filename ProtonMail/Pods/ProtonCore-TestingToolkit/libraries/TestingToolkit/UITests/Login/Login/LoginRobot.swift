@@ -9,7 +9,7 @@ import ProtonCore_CoreTranslation
 
 private let titleId = "LoginViewController.titleLabel"
 private let subtitleId = "LoginViewController.subtitleLabel"
-private let loginViewCloseButtonId = "LoginViewController.closeButton"
+private let loginViewCloseButtonId = "UINavigationItem.leftBarButtonItem"
 private let errorBannerMessage = "Email address already used."
 private let errorBannerButton = CoreString._hv_ok_button
 private let loginTextFieldId = "LoginViewController.loginTextField.textField"
@@ -36,6 +36,18 @@ public final class LoginRobot: CoreElements {
         public func loginScreenIsShown() -> LoginRobot {
             staticText(titleId).wait().checkExists()
             staticText(subtitleId).wait().checkExists()
+            return LoginRobot()
+        }
+
+        @discardableResult
+        public func switchToCreateAccountButtonIsShown() -> LoginRobot {
+            button(signUpButtonId).wait().checkExists()
+            return LoginRobot()
+        }
+
+        @discardableResult
+        public func switchToCreateAccountButtonIsNotPresented() -> LoginRobot {
+            button(signUpButtonId).wait().checkDoesNotExist()
             return LoginRobot()
         }
         
@@ -101,7 +113,7 @@ public final class LoginRobot: CoreElements {
     }
     
     public func signIn<T: CoreElements>(robot _: T.Type) -> T {
-        button(signInButtonId).tap().wait(time: 55)
+        button(signInButtonId).tap().wait(time: 15)
         return T()
     }
     

@@ -208,6 +208,7 @@
 "Create your password" = "Create your password";
 "Create a Proton account with your current email" = "Create a Proton account with your current email";
 "Password" = "Password";
+"Password must contain at least 8 characters" = "Password must contain at least 8 characters";
 "Repeat password" = "Repeat password";
 "Set recovery method" = "Set recovery method";
 "This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
@@ -221,7 +222,7 @@
 "Skip recovery method?" = "Skip recovery method?";
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
 "Set recovery method" = "Set recovery method";
-"Just a second…\nYour account is being created" = "Just a second…\nYour account is being created";
+"Your account is being created" = "Your account is being created…";
 "It usually takes no more than a minute." = "It usually takes no more than a minute.";
 "Account verification" = "Account verification";
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";

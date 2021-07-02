@@ -36,17 +36,7 @@ class TCViewController: UIViewController, AccessibleView {
     var viewModel: TCViewModel!
 
     // MARK: Outlets
-    @IBOutlet weak var closeButton: UIButton! {
-        didSet {
-            closeButton.tintColor = UIColorManager.TextNorm
-        }
-    }
-    @IBOutlet weak var titleLabel: UILabel! {
-        didSet {
-            titleLabel.text = CoreString._su_terms_conditions_view_title
-            titleLabel.textColor = UIColorManager.TextNorm
-        }
-    }
+
     @IBOutlet weak var webView: WKWebView!
 
     // MARK: View controller life cycle
@@ -54,13 +44,16 @@ class TCViewController: UIViewController, AccessibleView {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColorManager.BackgroundNorm
+        navigationItem.title = CoreString._su_terms_conditions_view_title
+        navigationController?.navigationBar.tintColor = UIColorManager.CloseColor
+        setUpCloseButton(showCloseButton: true, action: #selector(TCViewController.onCloseButtonTap(_:)))
         setupWebView()
         generateAccessibilityIdentifiers()
     }
 
     // MARK: Actions
 
-    @IBAction func onCloseButtonTap(_ sender: UIButton) {
+    @objc func onCloseButtonTap(_ sender: UIButton) {
         delegate?.termsAndConditionsClose()
     }
 

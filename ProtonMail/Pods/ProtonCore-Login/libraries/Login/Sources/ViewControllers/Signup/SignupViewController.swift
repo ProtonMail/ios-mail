@@ -36,7 +36,7 @@ enum SignupAccountType {
     case external
 }
 
-class SignupViewController: UIViewController, AccessibleView {
+class SignupViewController: UIViewController, AccessibleView, Focusable {
 
     weak var delegate: SignupViewControllerDelegate?
     var viewModel: SignupViewModel!
@@ -48,7 +48,6 @@ class SignupViewController: UIViewController, AccessibleView {
     // MARK: Outlets
 
     @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var closeButton: RoundButton!
     @IBOutlet weak var createAccountTitleLabel: UILabel! {
         didSet {
             createAccountTitleLabel.text = CoreString._su_main_view_title
@@ -90,6 +89,9 @@ class SignupViewController: UIViewController, AccessibleView {
     }
     @IBOutlet weak var scrollView: UIScrollView!
 
+    var focusNoMore: Bool = false
+    private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
+
     // MARK: View controller life cycle
 
     override func viewDidLoad() {
@@ -98,16 +100,23 @@ class SignupViewController: UIViewController, AccessibleView {
         setupGestures()
         setupNotifications()
         otherAccountButton.isHidden = !showOtherAccountButton
-        closeButton.isHidden = !showCloseButton
+        focusOnce(view: nameTextField, delay: .milliseconds(500))
+        setUpCloseButton(showCloseButton: showCloseButton, action: #selector(SignupViewController.onCloseButtonTap(_:)))
         requestDomain()
         configureAccountType()
         generateAccessibilityIdentifiers()
         try? nameTextField.setUpChallenge(viewModel.challenge, type: .username)
     }
 
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        navigationBarAdjuster.setUp(for: scrollView, shouldAdjustNavigationBar: showCloseButton, parent: parent)
+    }
+
     // MARK: Actions
 
     @IBAction func onOtherAccountButtonTap(_ sender: ProtonButton) {
+        cancelFocus()
         PMBanner.dismissAll(on: self)
         contentView.fadeOut(withDuration: 0.5) { [self] in
             self.contentView.fadeIn(withDuration: 0.5)
@@ -122,6 +131,7 @@ class SignupViewController: UIViewController, AccessibleView {
     }
 
     @IBAction func onNextButtonTap(_ sender: ProtonButton) {
+        cancelFocus()
         PMBanner.dismissAll(on: self)
         nextButton.isSelected = true
         nameTextField.isError = false
@@ -143,11 +153,13 @@ class SignupViewController: UIViewController, AccessibleView {
     }
 
     @IBAction func onSignInButtonTap(_ sender: ProtonButton) {
+        cancelFocus()
         PMBanner.dismissAll(on: self)
         delegate?.signinButtonPressed()
     }
 
-    @IBAction func onCloseButtonTap(_ sender: UIButton) {
+    @objc func onCloseButtonTap(_ sender: UIButton) {
+        cancelFocus()
         delegate?.signupCloseButtonPressed()
     }
 
@@ -222,7 +234,7 @@ class SignupViewController: UIViewController, AccessibleView {
     }
 
     private func showError(message: String) {
-        showBanner(message: message, position: PMBannerPosition.topCustom(UIEdgeInsets(top: 64, left: 16, bottom: CGFloat.infinity, right: 16)))
+        showBanner(message: message, position: PMBannerPosition.top)
     }
 
     private func requestValidationToken(email: String, deviceToken: String) {
@@ -245,6 +257,7 @@ class SignupViewController: UIViewController, AccessibleView {
     }
 
     @objc private func adjustKeyboard(notification: NSNotification) {
+        guard navigationController?.topViewController === self else { return }
         scrollView.adjustForKeyboard(notification: notification)
     }
 }
@@ -271,9 +284,7 @@ extension SignupViewController: PMTextFieldDelegate {
 // MARK: - Additional errors handling
 
 extension SignupViewController: SignUpErrorCapable {
-    var bannerPosition: PMBannerPosition {
-        return PMBannerPosition.topCustom(UIEdgeInsets(top: 64, left: 16, bottom: CGFloat.infinity, right: 16))
-    }
+    var bannerPosition: PMBannerPosition { .top }
 }
 
 #endif

@@ -21,11 +21,12 @@
 
 import Foundation
 import UIKit
+import ProtonCore_UIFoundations
 
 protocol LoginCoordinatorDelegate: AnyObject {
     func userDidDismissLoginCoordinator(loginCoordinator: LoginCoordinator)
     func loginCoordinatorDidFinish(loginCoordinator: LoginCoordinator, data: LoginData)
-    func userSelectedSignup(navigationController: UINavigationController)
+    func userSelectedSignup(navigationController: LoginNavigationViewController)
 }
 
 final class LoginCoordinator {
@@ -39,7 +40,7 @@ final class LoginCoordinator {
     private let container: Container
     private let isCloseButtonAvailable: Bool
     private let isSignupAvailable: Bool
-    private var navigationController: UINavigationController?
+    private var navigationController: LoginNavigationViewController?
     private var childCoordinators: [ChildCoordinators: Any] = [:]
     private let externalLinks: ExternalLinks
 
@@ -56,7 +57,7 @@ final class LoginCoordinator {
 
     func startFromWelcomeScreen(viewController: UIViewController, variant: WelcomeScreenVariant, username: String? = nil) {
         let welcome = WelcomeViewController(variant: variant, delegate: self, username: username, signupAvailable: isSignupAvailable)
-        showInitialViewController(.over(viewController), initialViewController: welcome)
+        showInitialViewController(.over(viewController), initialViewController: welcome, navigationBarHidden: true)
     }
 
     private func loginViewController(username: String?) -> UIViewController {
@@ -72,12 +73,10 @@ final class LoginCoordinator {
 
     // MARK: - Actions
 
-    private func showInitialViewController(_ kind: FlowStartKind, initialViewController: UIViewController) {
+    private func showInitialViewController(_ kind: FlowStartKind, initialViewController: UIViewController, navigationBarHidden: Bool = false) {
         switch kind {
         case .over(let viewController):
-            let navigationController = UINavigationController(rootViewController: initialViewController)
-            navigationController.navigationBar.isHidden = true
-            navigationController.modalPresentationStyle = .fullScreen
+            let navigationController = LoginNavigationViewController(rootViewController: initialViewController, navigationBarHidden: navigationBarHidden)
             self.navigationController = navigationController
             container.setupHumanVerification(viewController: navigationController)
             viewController.present(navigationController, animated: true, completion: nil)

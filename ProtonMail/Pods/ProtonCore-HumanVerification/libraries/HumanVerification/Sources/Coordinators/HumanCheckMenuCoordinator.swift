@@ -25,6 +25,7 @@ import UIKit
 import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import ProtonCore_CoreTranslation
 
 protocol HumanCheckMenuCoordinatorDelegate: AnyObject {
     func verificationCode(tokenType: TokenType, verificationCodeBlock: (@escaping SendVerificationCodeBlock))
@@ -39,6 +40,9 @@ class HumanCheckMenuCoordinator {
     private var method: VerifyMethod = .captcha
     private var destination: String = ""
 
+    /// Country picker
+    let countryPicker = PMCountryPicker(searchBarPlaceholderText: CoreString._hv_sms_search_placeholder)
+    
     /// View controllers
     private let rootViewController: UIViewController?
     private var initialMenuViewController: MenuViewController?
@@ -48,7 +52,6 @@ class HumanCheckMenuCoordinator {
     /// View models
     private let recaptchaViewModel: RecaptchaViewModel
     private let verifyViewModel: VerifyViewModel
-    private var countryCodeViewModel: CountryCodeViewModel?
     let verifyCheckViewModel: VerifyCheckViewModel
 
     // MARK: - Public properties
@@ -162,8 +165,7 @@ extension HumanCheckMenuCoordinator: MenuViewControllerDelegate {
             phoneVerifyViewController = instatntiateVC(method: PhoneVerifyViewController.self, identifier: "PhoneVerifyViewController")
             phoneVerifyViewController?.viewModel = verifyViewModel
             phoneVerifyViewController?.delegate = self
-            countryCodeViewModel = CountryCodeViewModel()
-            phoneVerifyViewController?.countryCodeViewModel = countryCodeViewModel
+            phoneVerifyViewController?.initialCountryCode = countryPicker.getInitialCode()
             initialMenuViewController?.smsViewController = phoneVerifyViewController
         default: break
         }
@@ -212,9 +214,8 @@ extension HumanCheckMenuCoordinator: PhoneVerifyViewControllerDelegate {
     }
 
     func didSelectCountryPicker() {
-        let countryPickerViewController = instatntiateVC(method: CountryPickerViewController.self, identifier: "CountryPickerViewController")
+        let countryPickerViewController = countryPicker.getCountryPickerViewController()
         countryPickerViewController.delegate = self
-        countryPickerViewController.viewModel = countryCodeViewModel
         initialMenuViewController?.present(countryPickerViewController, animated: true)
     }
 }

@@ -27,13 +27,13 @@ import ProtonCore_Payments
 
 enum FlowStartKind {
     case over(UIViewController)
-    case inside(UINavigationController)
+    case inside(LoginNavigationViewController)
 }
 
 protocol SignupCoordinatorDelegate: AnyObject {
     func userDidDismissSignupCoordinator(signupCoordinator: SignupCoordinator)
     func signupCoordinatorDidFinish(signupCoordinator: SignupCoordinator, loginData: LoginData)
-    func userSelectedSignin(email: String?, navigationViewController: UINavigationController)
+    func userSelectedSignin(email: String?, navigationViewController: LoginNavigationViewController)
 }
 
 final class SignupCoordinator {
@@ -45,10 +45,9 @@ final class SignupCoordinator {
     private let signupPasswordRestrictions: SignupPasswordRestrictions
     private let isCloseButton: Bool
     private let isPlanSelectorAvailable: Bool
-    private var navigationController: UINavigationController?
+    private var navigationController: LoginNavigationViewController?
     private var signupViewController: SignupViewController?
     private var recoveryViewController: RecoveryViewController?
-    private var tcViewController: TCViewController?
     private var countryPickerViewController: CountryPickerViewController?
     private var countryPicker = PMCountryPicker(searchBarPlaceholderText: CoreString._hv_sms_search_placeholder)
     
@@ -106,9 +105,7 @@ final class SignupCoordinator {
 
         switch kind {
         case .over(let viewController):
-            let navigationController = UINavigationController(rootViewController: signupViewController)
-            navigationController.navigationBar.isHidden = true
-            navigationController.modalPresentationStyle = .fullScreen
+            let navigationController = LoginNavigationViewController(rootViewController: signupViewController)
             self.navigationController = navigationController
             container.setupHumanVerification(viewController: navigationController)
             viewController.present(navigationController, animated: true, completion: nil)
@@ -186,9 +183,10 @@ final class SignupCoordinator {
         let tcViewController = UIStoryboard.instantiate(TCViewController.self)
         tcViewController.viewModel = container.makeTCViewModel()
         tcViewController.delegate = self
-        self.tcViewController = tcViewController
-        
-        navigationController?.present(tcViewController, animated: true)
+
+        let navigationVC = LoginNavigationViewController(rootViewController: tcViewController)
+        navigationVC.modalPresentationStyle = .pageSheet
+        navigationController?.present(navigationVC, animated: true)
     }
     
     // MARK: - View controller external account presentation methods
@@ -344,7 +342,13 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
             if let vc = errorVC as? PaymentErrorCapable {
                 vc.showError(error: error)
             }
+        } else {
+            let signUpError = SignupError.generic(message: error.localizedDescription)
+            if let vc = errorVC as? SignUpErrorCapable {
+                vc.showError(error: signUpError)
+            }
         }
+        
         if activeViewController != nil {
             navigationController?.popViewController(animated: true)
         }
@@ -355,7 +359,7 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
 
 extension SignupCoordinator: TCViewControllerDelegate {
     func termsAndConditionsClose() {
-        tcViewController?.dismiss(animated: true)
+        navigationController?.dismiss(animated: true)
     }
 }
 

@@ -39,7 +39,7 @@ protocol LoginViewControllerDelegate: LoginStepsDelegate {
     func loginViewControllerDidFinish(data: LoginData)
 }
 
-final class LoginViewController: UIViewController, AccessibleView {
+final class LoginViewController: UIViewController, AccessibleView, Focusable {
 
     // MARK: - Outlets
 
@@ -51,9 +51,7 @@ final class LoginViewController: UIViewController, AccessibleView {
     @IBOutlet private weak var helpButton: ProtonButton!
     @IBOutlet private weak var subtitleLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var closeButton: RoundButton!
     @IBOutlet private weak var topConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var illustrationTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var separatorView: UIView!
 
     // MARK: - Properties
@@ -66,6 +64,9 @@ final class LoginViewController: UIViewController, AccessibleView {
     var viewModel: LoginViewModel!
     var initialUsername: String?
 
+    var focusNoMore: Bool = false
+    private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -74,11 +75,21 @@ final class LoginViewController: UIViewController, AccessibleView {
         setupDelegates()
         setupNotifications()
         setupGestures()
-        generateAccessibilityIdentifiers()
         requestDomain()
         if let error = initialError {
             showError(error: error)
         }
+
+        focusOnce(view: loginTextField, delay: .milliseconds(500))
+
+        setUpCloseButton(showCloseButton: showCloseButton, action: #selector(LoginViewController.closePressed(_:)))
+
+        generateAccessibilityIdentifiers()
+    }
+
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        navigationBarAdjuster.setUp(for: scrollView, shouldAdjustNavigationBar: showCloseButton, parent: parent)
     }
 
     // MARK: - Setup
@@ -110,11 +121,6 @@ final class LoginViewController: UIViewController, AccessibleView {
         loginTextField.value = initialUsername ?? ""
 
         topConstraint.constant = -1 * (UIApplication.getInstance()?.statusBarFrame.height ?? .zero)
-
-        if UIScreen.main.bounds.height < 800 {
-            illustrationTopConstraint.constant = -130
-        }
-        closeButton.isHidden = !showCloseButton
     }
 
     private func requestDomain() {
@@ -172,6 +178,7 @@ final class LoginViewController: UIViewController, AccessibleView {
     // MARK: - Actions
 
     @IBAction private func signInPressed(_ sender: Any) {
+        cancelFocus()
         dismissKeyboard()
 
         let usernameValid = validateUsername()
@@ -186,14 +193,17 @@ final class LoginViewController: UIViewController, AccessibleView {
     }
 
     @IBAction func signUpPressed(_ sender: ProtonButton) {
+        cancelFocus()
         delegate?.userDidRequestSignup()
     }
 
     @IBAction private func needHelpPressed(_ sender: Any) {
+        cancelFocus()
         delegate?.userDidRequestHelp()
     }
 
-    @IBAction private func closePressed(_ sender: Any) {
+    @objc private func closePressed(_ sender: Any) {
+        cancelFocus()
         delegate?.userDidDismissLoginViewController()
     }
 
@@ -214,21 +224,16 @@ final class LoginViewController: UIViewController, AccessibleView {
     // MARK: - Keyboard
 
     @objc private func keyboardWillShow(notification: NSNotification) {
+        guard navigationController?.topViewController === self else { return }
         scrollView.adjustForKeyboard(notification: notification)
 
-        guard passwordTextField.isFirstResponder else {
-            return
-        }
-
-        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom - 48)
-        guard bottomOffset.y > 0 else {
-            return
-        }
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom - 36)
 
         self.scrollView.setContentOffset(bottomOffset, animated: true)
     }
 
     @objc private func keyboardWillHide(notification: NSNotification) {
+        guard navigationController?.topViewController === self else { return }
         scrollView.adjustForKeyboard(notification: notification)
     }
 
@@ -309,7 +314,5 @@ extension LoginViewController: LoginErrorCapable {
         delegate?.firstPasswordChangeNeeded()
     }
 
-    var bannerPosition: PMBannerPosition {
-        return PMBannerPosition.topCustom(UIEdgeInsets(top: 64, left: 16, bottom: CGFloat.infinity, right: 16))
-    }
+    var bannerPosition: PMBannerPosition { .top }
 }

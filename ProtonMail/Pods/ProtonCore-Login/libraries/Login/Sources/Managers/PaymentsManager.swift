@@ -46,14 +46,19 @@ class PaymentsManager {
         if let servicePlan = servicePlan, let signupViewController = signupViewController {
             paymentsUI = PaymentsUI(servicePlanDataService: servicePlan, appStoreLocalReceipt: receipt)
             
+            var shownHandlerCalled = false
             paymentsUI?.showSignupPlans(viewController: signupViewController, completionHandler: { reason in
                 switch reason {
                 case .open:
+                    shownHandlerCalled = true
                     planShownHandler?()
                 case .purchasedPlan(let plan):
                     self.selectedPlan = plan
                     completionHandler(.success(()))
                 case .purchaseError(let error):
+                    if !shownHandlerCalled {
+                        planShownHandler?()
+                    }
                     completionHandler(.failure(error))
                 default:
                     break
@@ -160,9 +165,7 @@ extension PaymentErrorCapable {
 }
 
 extension PaymentsUIViewController: SignUpErrorCapable, LoginErrorCapable, PaymentErrorCapable {
-    var bannerPosition: PMBannerPosition {
-        return PMBannerPosition.topCustom(UIEdgeInsets(top: 64, left: 16, bottom: CGFloat.infinity, right: 16))
-    }
+    var bannerPosition: PMBannerPosition { .top }
 }
 
 #endif

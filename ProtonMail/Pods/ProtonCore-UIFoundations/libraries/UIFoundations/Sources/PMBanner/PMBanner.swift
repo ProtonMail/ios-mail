@@ -39,6 +39,7 @@ public class PMBanner: UIView {
     private var iconButtonHandler: ((PMBanner) -> Void)?
     private var textButton: String?
     private var textButtonHandler: ((PMBanner) -> Void)?
+    private var textView: UITextView?
     private var linkAttributed: [NSAttributedString.Key: Any]?
     private var linkHandler: ((PMBanner, URL) -> Void)?
     private var position: PMBannerPosition?
@@ -205,6 +206,7 @@ extension PMBanner {
         let iconBtn = self.setup(iconButton, handler: iconButtonHandler)
         let textBtn = self.setup(textButton, handler: textButtonHandler)
         let textView = self.createMessage(message: message, attributedString: attributedString)
+        self.textView = textView
         self.setupConstraintFor(textView, by: imgView, iconBtn, textBtn)
     }
 
@@ -332,8 +334,24 @@ extension PMBanner {
             textView.trailingAnchor.constraint(equalTo: rightRef, constant: -style.borderInsets.right).prioritised(as: .defaultLow.lower),
             textView.heightAnchor.constraint(greaterThanOrEqualToConstant: ICON_SIZE)
         ])
-        textView.setContentHuggingPriority(.required, for: .horizontal)
+        updateTextViewContraints(textView)
         textView.setContentCompressionResistancePriority(.defaultLow.lower.lower.lower, for: .horizontal)
+    }
+
+    fileprivate func updateTextViewContraints(_ textView: UITextView) {
+        if traitCollection.horizontalSizeClass == .compact {
+            textView.setContentHuggingPriority(.defaultLow.lower.lower.lower, for: .horizontal)
+        } else {
+            textView.setContentHuggingPriority(.required, for: .horizontal)
+        }
+    }
+
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass,
+              let textView = textView
+        else { return }
+        updateTextViewContraints(textView)
     }
 
     /// Setup constraints of `PMBanner`
@@ -342,11 +360,11 @@ extension PMBanner {
         let insets = position.edgeInsets
 
         let left = self.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: insets.left)
-        left.priority = UILayoutPriority.defaultLow.lower.lower //(rawValue: 888)
+        left.priority = UILayoutPriority.defaultLow.lower.lower
         left.isActive = true
 
         let right = self.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -1 * insets.right)
-        right.priority = UILayoutPriority.defaultLow.lower.lower //(rawValue: 888)
+        right.priority = UILayoutPriority.defaultLow.lower.lower
         right.isActive = true
 
         self.centerXInSuperview()

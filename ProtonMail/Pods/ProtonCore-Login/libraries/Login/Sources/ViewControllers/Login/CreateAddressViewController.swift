@@ -47,6 +47,8 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
     weak var delegate: CreateAddressViewControllerDelegate?
     var viewModel: CreateAddressViewModel!
 
+    private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
+
     // MARK: - Setup
 
     override func viewDidLoad() {
@@ -81,6 +83,8 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
 
         recoveryTitleLabel.textColor = UIColorManager.TextNorm
         recoveryInfoLabel.textColor = UIColorManager.TextWeak
+
+        setUpBackArrow(action: #selector(CreateAddressViewController.goBack(_:)))
     }
 
     private func setupBinding() {
@@ -97,7 +101,7 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
     }
 
     private func showError(message: String) {
-        showBanner(message: message, position: PMBannerPosition.topCustom(UIEdgeInsets(top: 64, left: 16, bottom: CGFloat.infinity, right: 16)))
+        showBanner(message: message, position: PMBannerPosition.top)
     }
 
     // MARK: - Actions
@@ -107,7 +111,7 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
         viewModel.finish()
     }
 
-    @IBAction private func goBack(_ sender: Any) {
+    @objc private func goBack(_ sender: Any) {
         delegate?.userDidRequestGoBack()
     }
 

@@ -15,6 +15,7 @@
 
 @class CryptoAttachmentProcessor;
 @class CryptoClearTextMessage;
+@class CryptoEncryptSplitResult;
 @class CryptoGopenPGP;
 @class CryptoIdentity;
 @class CryptoKey;
@@ -24,11 +25,19 @@
 @class CryptoPGPSignature;
 @class CryptoPGPSplitMessage;
 @class CryptoPlainMessage;
+@class CryptoPlainMessageMetadata;
+@class CryptoPlainMessageReader;
 @class CryptoSessionKey;
 @class CryptoSignatureCollector;
 @class CryptoSignatureVerificationError;
 @protocol CryptoMIMECallbacks;
 @class CryptoMIMECallbacks;
+@protocol CryptoReader;
+@class CryptoReader;
+@protocol CryptoWriteCloser;
+@class CryptoWriteCloser;
+@protocol CryptoWriter;
+@class CryptoWriter;
 
 @protocol CryptoMIMECallbacks <NSObject>
 - (void)onAttachment:(NSString* _Nullable)headers data:(NSData* _Nullable)data;
@@ -36,6 +45,19 @@
 - (void)onEncryptedHeaders:(NSString* _Nullable)headers;
 - (void)onError:(NSError* _Nullable)err;
 - (void)onVerified:(long)verified;
+@end
+
+@protocol CryptoReader <NSObject>
+- (BOOL)read:(NSData* _Nullable)b n:(long* _Nullable)n error:(NSError* _Nullable* _Nullable)error;
+@end
+
+@protocol CryptoWriteCloser <NSObject>
+- (BOOL)close:(NSError* _Nullable* _Nullable)error;
+- (BOOL)write:(NSData* _Nullable)b n:(long* _Nullable)n error:(NSError* _Nullable* _Nullable)error;
+@end
+
+@protocol CryptoWriter <NSObject>
+- (BOOL)write:(NSData* _Nullable)b n:(long* _Nullable)n error:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**
@@ -96,6 +118,24 @@ armoring.
  * GetString returns the unarmored signed data as a string.
  */
 - (NSString* _Nonnull)getString;
+@end
+
+/**
+ * EncryptSplitResult is used to wrap the encryption writecloser while storing the key packet.
+ */
+@interface CryptoEncryptSplitResult : NSObject <goSeqRefInterface, CryptoWriteCloser, CryptoWriter> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nonnull instancetype)init;
+- (BOOL)close:(NSError* _Nullable* _Nullable)error;
+/**
+ * GetKeyPacket returns the Public-Key Encrypted Session Key Packets (https://datatracker.ietf.org/doc/html/rfc4880#section-5.1).
+This can be retrieved only after the message has been fully written and the writer is closed.
+ */
+- (NSData* _Nullable)getKeyPacket:(NSError* _Nullable* _Nullable)error;
+- (BOOL)write:(NSData* _Nullable)b n:(long* _Nullable)n error:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**
@@ -293,6 +333,22 @@ signature verification will be ignored.
  */
 - (CryptoSessionKey* _Nullable)decryptSessionKey:(NSData* _Nullable)keyPacket error:(NSError* _Nullable* _Nullable)error;
 /**
+ * DecryptSplitStream is used to decrypt a split pgp message as a Reader.
+It takes a key packet and a reader for the data packet
+and returns a PlainMessageReader for the plaintext data.
+If verifyKeyRing is not nil, PlainMessageReader.VerifySignature() will
+verify the embedded signature with the given key ring and verification time.
+ */
+- (CryptoPlainMessageReader* _Nullable)decryptSplitStream:(NSData* _Nullable)keypacket dataPacketReader:(id<CryptoReader> _Nullable)dataPacketReader verifyKeyRing:(CryptoKeyRing* _Nullable)verifyKeyRing verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
+/**
+ * DecryptStream is used to decrypt a pgp message as a Reader.
+It takes a reader for the message data
+and returns a PlainMessageReader for the plaintext data.
+If verifyKeyRing is not nil, PlainMessageReader.VerifySignature() will
+verify the embedded signature with the given key ring and verification time.
+ */
+- (CryptoPlainMessageReader* _Nullable)decryptStream:(id<CryptoReader> _Nullable)message verifyKeyRing:(CryptoKeyRing* _Nullable)verifyKeyRing verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
+/**
  * Encrypt encrypts a PlainMessage, outputs a PGPMessage.
 If an unlocked private key is also provided it will also sign the message.
 * message    : The plaintext input as a PlainMessage.
@@ -305,6 +361,20 @@ If an unlocked private key is also provided it will also sign the message.
 publicKey and returns a binary public-key encrypted session key packet.
  */
 - (NSData* _Nullable)encryptSessionKey:(CryptoSessionKey* _Nullable)sk error:(NSError* _Nullable* _Nullable)error;
+/**
+ * EncryptSplitStream is used to encrypt data as a stream.
+It takes a writer for the Symmetrically Encrypted Data Packet
+(https://datatracker.ietf.org/doc/html/rfc4880#section-5.7)
+and returns a writer for the plaintext data and the key packet.
+If signKeyRing is not nil, it is used to do an embedded signature.
+ */
+- (CryptoEncryptSplitResult* _Nullable)encryptSplitStream:(id<CryptoWriter> _Nullable)dataPacketWriter plainMessageMetadata:(CryptoPlainMessageMetadata* _Nullable)plainMessageMetadata signKeyRing:(CryptoKeyRing* _Nullable)signKeyRing error:(NSError* _Nullable* _Nullable)error;
+/**
+ * EncryptStream is used to encrypt data as a Writer.
+It takes a writer for the encrypted data and returns a WriteCloser for the plaintext data
+If signKeyRing is not nil, it is used to do an embedded signature.
+ */
+- (id<CryptoWriteCloser> _Nullable)encryptStream:(id<CryptoWriter> _Nullable)pgpMessageWriter plainMessageMetadata:(CryptoPlainMessageMetadata* _Nullable)plainMessageMetadata signKeyRing:(CryptoKeyRing* _Nullable)signKeyRing error:(NSError* _Nullable* _Nullable)error;
 /**
  * EncryptWithCompression encrypts with compression support a PlainMessage to PGPMessage using public/private keys.
 * message : The plain data as a PlainMessage.
@@ -338,6 +408,15 @@ containing an encrypted detached signature for a given PlainMessage.
  */
 - (CryptoPGPMessage* _Nullable)signDetachedEncrypted:(CryptoPlainMessage* _Nullable)message encryptionKeyRing:(CryptoKeyRing* _Nullable)encryptionKeyRing error:(NSError* _Nullable* _Nullable)error;
 /**
+ * SignDetachedEncryptedStream generates and returns a PGPMessage
+containing an encrypted detached signature for a given message Reader.
+ */
+- (CryptoPGPMessage* _Nullable)signDetachedEncryptedStream:(id<CryptoReader> _Nullable)message encryptionKeyRing:(CryptoKeyRing* _Nullable)encryptionKeyRing error:(NSError* _Nullable* _Nullable)error;
+/**
+ * SignDetachedStream generates and returns a PGPSignature for a given message Reader.
+ */
+- (CryptoPGPSignature* _Nullable)signDetachedStream:(id<CryptoReader> _Nullable)message error:(NSError* _Nullable* _Nullable)error;
+/**
  * VerifyDetached verifies a PlainMessage with a detached PGPSignature
 and returns a SignatureVerificationError if fails.
  */
@@ -348,6 +427,17 @@ with a PGPMessage containing an encrypted detached signature
 and returns a SignatureVerificationError if fails.
  */
 - (BOOL)verifyDetachedEncrypted:(CryptoPlainMessage* _Nullable)message encryptedSignature:(CryptoPGPMessage* _Nullable)encryptedSignature decryptionKeyRing:(CryptoKeyRing* _Nullable)decryptionKeyRing verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
+/**
+ * VerifyDetachedEncryptedStream verifies a PlainMessage
+with a PGPMessage containing an encrypted detached signature
+and returns a SignatureVerificationError if fails.
+ */
+- (BOOL)verifyDetachedEncryptedStream:(id<CryptoReader> _Nullable)message encryptedSignature:(CryptoPGPMessage* _Nullable)encryptedSignature decryptionKeyRing:(CryptoKeyRing* _Nullable)decryptionKeyRing verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
+/**
+ * VerifyDetachedStream verifies a message reader with a detached PGPSignature
+and returns a SignatureVerificationError if fails.
+ */
+- (BOOL)verifyDetachedStream:(id<CryptoReader> _Nullable)message signature:(CryptoPGPSignature* _Nullable)signature verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**
@@ -579,6 +669,45 @@ string.
 
 @end
 
+@interface CryptoPlainMessageMetadata : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nullable instancetype)init:(BOOL)isBinary filename:(NSString* _Nullable)filename modTime:(int64_t)modTime;
+@property (nonatomic) BOOL isBinary;
+@property (nonatomic) NSString* _Nonnull filename;
+@property (nonatomic) int64_t modTime;
+@end
+
+/**
+ * PlainMessageReader is used to wrap the data of the decrypted plain message.
+It can be used to read the decrypted data and verify the embedded signature.
+ */
+@interface CryptoPlainMessageReader : NSObject <goSeqRefInterface, CryptoReader> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nonnull instancetype)init;
+/**
+ * GetMetadata returns the metadata of the decrypted message.
+ */
+- (CryptoPlainMessageMetadata* _Nullable)getMetadata;
+/**
+ * Read is used to access the message decrypted data.
+Makes PlainMessageReader implement the Reader interface.
+ */
+- (BOOL)read:(NSData* _Nullable)b n:(long* _Nullable)n error:(NSError* _Nullable* _Nullable)error;
+/**
+ * VerifySignature is used to verify that the signature is valid.
+This method needs to be called once all the data has been read.
+It will return an error if the signature is invalid
+or if the message hasn't been read entirely.
+ */
+- (BOOL)verifySignature:(NSError* _Nullable* _Nullable)error;
+@end
+
 /**
  * SessionKey stores a decrypted session key.
  */
@@ -612,6 +741,14 @@ string.
  */
 - (CryptoPlainMessage* _Nullable)decryptAndVerify:(NSData* _Nullable)dataPacket verifyKeyRing:(CryptoKeyRing* _Nullable)verifyKeyRing verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
 /**
+ * DecryptStream is used to decrypt a data packet as a Reader.
+It takes a reader for the data packet
+and returns a PlainMessageReader for the plaintext data.
+If verifyKeyRing is not nil, PlainMessageReader.VerifySignature() will
+verify the embedded signature with the given key ring and verification time.
+ */
+- (CryptoPlainMessageReader* _Nullable)decryptStream:(id<CryptoReader> _Nullable)dataPacketReader verifyKeyRing:(CryptoKeyRing* _Nullable)verifyKeyRing verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
+/**
  * Encrypt encrypts a PlainMessage to PGPMessage with a SessionKey.
 * message : The plain data as a PlainMessage.
 * output  : The encrypted data as PGPMessage.
@@ -624,6 +761,12 @@ string.
 * output  : The encrypted data as PGPMessage.
  */
 - (NSData* _Nullable)encryptAndSign:(CryptoPlainMessage* _Nullable)message signKeyRing:(CryptoKeyRing* _Nullable)signKeyRing error:(NSError* _Nullable* _Nullable)error;
+/**
+ * EncryptStream is used to encrypt data as a Writer.
+It takes a writer for the encrypted data packet and returns a writer for the plaintext data.
+If signKeyRing is not nil, it is used to do an embedded signature.
+ */
+- (id<CryptoWriteCloser> _Nullable)encryptStream:(id<CryptoWriter> _Nullable)dataPacketWriter plainMessageMetadata:(CryptoPlainMessageMetadata* _Nullable)plainMessageMetadata signKeyRing:(CryptoKeyRing* _Nullable)signKeyRing error:(NSError* _Nullable* _Nullable)error;
 /**
  * EncryptWithCompression encrypts with compression support a PlainMessage to PGPMessage with a SessionKey.
 * message : The plain data as a PlainMessage.
@@ -822,6 +965,8 @@ ready for encryption, signature, or verification from an unencrypted string.
  */
 FOUNDATION_EXPORT CryptoPlainMessage* _Nullable CryptoNewPlainMessageFromString(NSString* _Nullable text);
 
+FOUNDATION_EXPORT CryptoPlainMessageMetadata* _Nullable CryptoNewPlainMessageMetadata(BOOL isBinary, NSString* _Nullable filename, int64_t modTime);
+
 FOUNDATION_EXPORT CryptoSessionKey* _Nullable CryptoNewSessionKeyFromToken(NSData* _Nullable token, NSString* _Nullable algo);
 
 /**
@@ -841,6 +986,12 @@ FOUNDATION_EXPORT void CryptoUpdateTime(int64_t newTime);
 
 @class CryptoMIMECallbacks;
 
+@class CryptoReader;
+
+@class CryptoWriteCloser;
+
+@class CryptoWriter;
+
 /**
  * MIMECallbacks defines callback methods to process a MIME message.
  */
@@ -857,6 +1008,31 @@ FOUNDATION_EXPORT void CryptoUpdateTime(int64_t newTime);
 - (void)onEncryptedHeaders:(NSString* _Nullable)headers;
 - (void)onError:(NSError* _Nullable)err;
 - (void)onVerified:(long)verified;
+@end
+
+@interface CryptoReader : NSObject <goSeqRefInterface, CryptoReader> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (BOOL)read:(NSData* _Nullable)b n:(long* _Nullable)n error:(NSError* _Nullable* _Nullable)error;
+@end
+
+@interface CryptoWriteCloser : NSObject <goSeqRefInterface, CryptoWriteCloser> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (BOOL)close:(NSError* _Nullable* _Nullable)error;
+- (BOOL)write:(NSData* _Nullable)b n:(long* _Nullable)n error:(NSError* _Nullable* _Nullable)error;
+@end
+
+@interface CryptoWriter : NSObject <goSeqRefInterface, CryptoWriter> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (BOOL)write:(NSData* _Nullable)b n:(long* _Nullable)n error:(NSError* _Nullable* _Nullable)error;
 @end
 
 #endif

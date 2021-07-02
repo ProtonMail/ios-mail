@@ -57,6 +57,7 @@ final class HelpViewController: UIViewController, AccessibleView {
         view.backgroundColor = UIColorManager.BackgroundNorm
         tableView.backgroundColor = UIColorManager.BackgroundNorm
         titleLabel.textColor = UIColorManager.TextNorm
+        closeButton.setImage(.closeImage, for: .normal)
         closeButton.tintColor = UIColorManager.TextNorm
         titleLabel.text = CoreString._ls_help_screen_title
     }
@@ -64,7 +65,6 @@ final class HelpViewController: UIViewController, AccessibleView {
     private func setupTableView() {
         tableView.register(PMCell.nib, forCellReuseIdentifier: PMCell.reuseIdentifier)
         tableView.register(PMTitleCell.nib, forCellReuseIdentifier: PMTitleCell.reuseIdentifier)
-        tableView.separatorColor = UIColor.dynamic(light: #colorLiteral(red: 0.9607843137, green: 0.9647058824, blue: 0.9803921569, alpha: 1), dark: #colorLiteral(red: 0.1450980392, green: 0.1529411765, blue: 0.1725490196, alpha: 1))
 
         tableView.dataSource = self
         tableView.delegate = self

@@ -1,13 +1,28 @@
 //
 //  WelcomeViewController.swift
-//  ProtonCore-Login
+//  ProtonCore-Login - Created on 17.06.2021.
 //
-//  Created by Krzysztof Siejkowski on 17/06/2021.
+//  Copyright (c) 2021 Proton Technologies AG
 //
+//  This file is part of ProtonMail.
+//
+//  ProtonMail is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  ProtonMail is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import ProtonCore_UIFoundations
 import ProtonCore_CoreTranslation
+import ProtonCore_Foundations
+import ProtonCore_UIFoundations
 
 public typealias WelcomeScreenVariant = ScreenVariant<WelcomeScreenTexts, WelcomeScreenCustomData>
 
@@ -26,12 +41,14 @@ public struct WelcomeScreenCustomData {
     let logo: UIImage
     let headline: String
     let body: String
+    let brand: Brand
 
-    public init(topImage: UIImage, logo: UIImage, headline: String, body: String) {
+    public init(topImage: UIImage, logo: UIImage, headline: String, body: String, brand: Brand) {
         self.topImage = topImage
         self.logo = logo
         self.headline = headline
         self.body = body
+        self.brand = brand
     }
 }
 
@@ -40,19 +57,25 @@ protocol WelcomeViewControllerDelegate: AnyObject {
     func userWantsToSignUp()
 }
 
-final class WelcomeViewController: UIViewController {
+final class WelcomeViewController: UIViewController, AccessibleView {
 
     private let variant: WelcomeScreenVariant
     private let username: String?
     private let signupAvailable: Bool
     private weak var delegate: WelcomeViewControllerDelegate?
 
-    init(variant: WelcomeScreenVariant, delegate: WelcomeViewControllerDelegate, username: String?, signupAvailable: Bool) {
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+
+    init(variant: WelcomeScreenVariant,
+         delegate: WelcomeViewControllerDelegate,
+         username: String?,
+         signupAvailable: Bool) {
         self.variant = variant
         self.delegate = delegate
         self.username = username
         self.signupAvailable = signupAvailable
         super.init(nibName: nil, bundle: nil)
+        self.extendedLayoutIncludesOpaqueBars = true
     }
 
     required init?(coder: NSCoder) { fatalError("not designed to be created from IB") }
@@ -60,7 +83,12 @@ final class WelcomeViewController: UIViewController {
     override func loadView() {
         let loginAction = #selector(WelcomeViewController.loginActionWasPerformed)
         let signupAction = #selector(WelcomeViewController.signupActionWasPerformed)
-        view = WelcomeView(variant: variant, target: self, loginAction: loginAction, signupAction: signupAction, signupAvailable: signupAvailable)
+        view = WelcomeView(variant: variant,
+                           target: self,
+                           loginAction: loginAction,
+                           signupAction: signupAction,
+                           signupAvailable: signupAvailable)
+        generateAccessibilityIdentifiers()
     }
 
     @objc private func loginActionWasPerformed() {
@@ -78,7 +106,11 @@ final class WelcomeView: UIView {
     private let signupButton = UIButton()
     private let signupAvailable: Bool
 
-    init(variant: WelcomeScreenVariant, target: UIViewController, loginAction: Selector, signupAction: Selector, signupAvailable: Bool) {
+    init(variant: WelcomeScreenVariant,
+         target: UIViewController,
+         loginAction: Selector,
+         signupAction: Selector,
+         signupAvailable: Bool) {
         self.signupAvailable = signupAvailable
 
         super.init(frame: .zero)
@@ -126,11 +158,11 @@ final class WelcomeView: UIView {
             loginButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             loginButton.widthAnchor.constraint(equalTo: readableContentGuide.widthAnchor),
 
-            signupButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 26),
+            signupButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 20),
             signupButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             signupButton.widthAnchor.constraint(equalTo: readableContentGuide.widthAnchor),
 
-            footer.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            footer.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16),
             footer.centerXAnchor.constraint(equalTo: centerXAnchor),
             footer.widthAnchor.constraint(equalTo: readableContentGuide.widthAnchor)
         ])
@@ -152,7 +184,7 @@ final class WelcomeView: UIView {
         case .calendar: UIColorManager.brand = .proton
         case .drive: UIColorManager.brand = .proton
         case .vpn: UIColorManager.brand = .vpn
-        case .custom: fatalError("not implemented yet")
+        case .custom(let data): UIColorManager.brand = data.brand
         }
 
         backgroundColor = UIColorManager.Splash.Background
@@ -211,8 +243,12 @@ final class WelcomeView: UIView {
     }
 
     private func footer() -> UIView {
-        let iconsNamesInOrder = ["WelcomeCalendarSmallLogo", "WelcomeVPNSmallLogo", "WelcomeDriveSmallLogo", "WelcomeMailSmallLogo"]
-        let iconsInFooter = UIStackView(arrangedSubviews: iconsNamesInOrder.map(image(named:)).map { $0.withRenderingMode(.alwaysTemplate) }.map(UIImageView.init(image:)))
+        let iconsNamesInOrder = [
+            "WelcomeCalendarSmallLogo", "WelcomeVPNSmallLogo", "WelcomeDriveSmallLogo", "WelcomeMailSmallLogo"
+        ]
+        let iconsInFooter = UIStackView(
+            arrangedSubviews: iconsNamesInOrder.map(image(named:)).map(UIImageView.init(image:))
+        )
         iconsInFooter.tintColor = UIColorManager.Splash.TextHint
         iconsInFooter.axis = .horizontal
         iconsInFooter.spacing = 32
@@ -224,7 +260,10 @@ final class WelcomeView: UIView {
         paragraphStyle.alignment = .center
 
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: font, .foregroundColor: UIColorManager.Splash.TextHint, .kern: 0.07, .paragraphStyle: paragraphStyle
+            .font: font,
+            .foregroundColor: UIColorManager.Splash.TextHint,
+            .kern: 0.07,
+            .paragraphStyle: paragraphStyle
         ]
 
         let label = UILabel()
@@ -248,10 +287,24 @@ final class WelcomeView: UIView {
         }
 
         let signUpTitle = CoreString._ls_create_account_button
-        signupButton.setAttributedTitle(NSAttributedString(string: signUpTitle, attributes: .DefaultSmall), for: .normal)
-        signupButton.setAttributedTitle(NSAttributedString(string: signUpTitle, attributes: .DefaultSmallDisabled), for: .disabled)
-        signupButton.setAttributedTitle(NSAttributedString(string: signUpTitle, attributes: .DefaultSmallWeek), for: .highlighted)
-        signupButton.setAttributedTitle(NSAttributedString(string: signUpTitle, attributes: .DefaultSmallStrong), for: .selected)
+
+        var normal: PMFontAttributes = .DefaultSmall
+        var disabled: PMFontAttributes = .DefaultSmallDisabled
+        var highlighted: PMFontAttributes = .DefaultSmallWeek
+        var selected: PMFontAttributes = .DefaultSmallWeek
+        switch UIColorManager.brand {
+        case .proton:
+            break
+        case .vpn:
+            normal[.foregroundColor] = UIColorManager.BrandNorm
+            disabled[.foregroundColor] = UIColorManager.BrandLighten40
+            highlighted[.foregroundColor] = UIColorManager.BrandDarken20
+            selected[.foregroundColor] = UIColorManager.BrandDarken20
+        }
+        signupButton.setAttributedTitle(NSAttributedString(string: signUpTitle, attributes: normal), for: .normal)
+        signupButton.setAttributedTitle(NSAttributedString(string: signUpTitle, attributes: disabled), for: .disabled)
+        signupButton.setAttributedTitle(NSAttributedString(string: signUpTitle, attributes: highlighted), for: .highlighted)
+        signupButton.setAttributedTitle(NSAttributedString(string: signUpTitle, attributes: selected), for: .selected)
     }
 
     private func setUpInteractions(target: UIViewController, loginAction: Selector, signupAction: Selector) {

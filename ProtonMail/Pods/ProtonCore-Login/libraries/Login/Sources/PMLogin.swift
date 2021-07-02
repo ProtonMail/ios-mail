@@ -23,6 +23,7 @@ import Foundation
 import ProtonCore_Doh
 import ProtonCore_Networking
 import ProtonCore_Services
+import ProtonCore_UIFoundations
 
 public protocol LoginInterface {
     
@@ -163,7 +164,7 @@ extension PMLogin: LoginCoordinatorDelegate {
         loginCompletion?(.loggedIn(data))
     }
 
-    func userSelectedSignup(navigationController: UINavigationController) {
+    func userSelectedSignup(navigationController: LoginNavigationViewController) {
         guard let loginCompletion = loginCompletion else { return }
         // TODO: update receipt when BE know what solution is best
         presentSignup(.inside(navigationController), receipt: nil, completion: loginCompletion)
@@ -179,7 +180,7 @@ extension PMLogin: SignupCoordinatorDelegate {
         loginCompletion?(.loggedIn(loginData))
     }
     
-    func userSelectedSignin(email: String?, navigationViewController: UINavigationController) {
+    func userSelectedSignin(email: String?, navigationViewController: LoginNavigationViewController) {
         loginCoordinator = LoginCoordinator(container: container,
                                             isCloseButtonAvailable: isCloseButtonAvailable,
                                             isSignupAvailable: signupMode != .notAvailable)

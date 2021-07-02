@@ -31,7 +31,7 @@ protocol EmailVerificationViewControllerDelegate: AnyObject {
     func emailVerificationBackButtonPressed()
 }
 
-class EmailVerificationViewController: UIViewController, AccessibleView {
+class EmailVerificationViewController: UIViewController, AccessibleView, Focusable {
 
     weak var delegate: EmailVerificationViewControllerDelegate?
     var viewModel: EmailVerificationViewModel!
@@ -81,11 +81,15 @@ class EmailVerificationViewController: UIViewController, AccessibleView {
     }
     @IBOutlet weak var scrollView: UIScrollView!
 
+    var focusNoMore: Bool = false
+    private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
+
     // MARK: View controller life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColorManager.BackgroundNorm
+        setUpBackArrow(action: #selector(EmailVerificationViewController.onBackButtonTap(_:)))
         setupGestures()
         setupNotifications()
         generateAccessibilityIdentifiers()
@@ -94,6 +98,12 @@ class EmailVerificationViewController: UIViewController, AccessibleView {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         unlockUI()
+        focusOnce(view: verificationCodeTextField)
+    }
+
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        navigationBarAdjuster.setUp(for: scrollView, parent: parent)
     }
 
     // MARK: Actions
@@ -108,7 +118,7 @@ class EmailVerificationViewController: UIViewController, AccessibleView {
         requestCodeDialog()
     }
 
-    @IBAction func onBackButtonTap(_ sender: UIButton) {
+    @objc func onBackButtonTap(_ sender: UIButton) {
         delegate?.emailVerificationBackButtonPressed()
     }
 
@@ -192,6 +202,7 @@ class EmailVerificationViewController: UIViewController, AccessibleView {
     }
 
     @objc private func adjustKeyboard(notification: NSNotification) {
+        guard navigationController?.topViewController === self else { return }
         scrollView.adjustForKeyboard(notification: notification)
     }
 }
@@ -220,9 +231,8 @@ extension EmailVerificationViewController: PMTextFieldDelegate {
 // MARK: - Additional errors handling
 
 extension EmailVerificationViewController: SignUpErrorCapable {
-    var bannerPosition: PMBannerPosition {
-        return PMBannerPosition.topCustom(UIEdgeInsets(top: 64, left: 16, bottom: CGFloat.infinity, right: 16))
-    }
+
+    var bannerPosition: PMBannerPosition { .top }
 
     func emailAddressAlreadyUsed() {
         guard let email = viewModel.email else { return }

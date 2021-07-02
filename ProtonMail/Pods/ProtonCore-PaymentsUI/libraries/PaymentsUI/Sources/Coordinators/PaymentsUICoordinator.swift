@@ -22,6 +22,7 @@
 import UIKit
 import ProtonCore_Payments
 import ProtonCore_Networking
+import ProtonCore_UIFoundations
 
 final class PaymentsUICoordinator {
     
@@ -113,7 +114,9 @@ final class PaymentsUICoordinator {
                     topViewController = top
                 }
                 paymentsViewController.modalPresentation = true
-                topViewController?.present(paymentsViewController, animated: true)
+                let navigationController = LoginNavigationViewController(rootViewController: paymentsViewController)
+                navigationController.modalPresentationStyle = .pageSheet
+                topViewController?.present(navigationController, animated: true)
                 completionHandler?(.open(vc: paymentsViewController, opened: true))
             case .none:
                 paymentsViewController.modalPresentation = false
@@ -154,10 +157,10 @@ final class PaymentsUICoordinator {
 
 extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
     func userDidCloseViewController() {
-        if mode == .signup {
-            viewController?.navigationController?.popViewController(animated: true)
+        if presentationType == .modal, mode != .signup {
+            paymentsUIViewController?.dismiss(animated: true, completion: nil)
         } else {
-            paymentsUIViewController?.dismiss(animated: true)
+            paymentsUIViewController?.navigationController?.popViewController(animated: true)
         }
         completionHandler?(.close)
     }

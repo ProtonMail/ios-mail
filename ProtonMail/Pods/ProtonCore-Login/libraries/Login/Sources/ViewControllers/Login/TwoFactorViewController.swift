@@ -43,6 +43,9 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
     weak var delegate: TwoFactorViewControllerDelegate?
     var viewModel: TwoFactorViewModel!
 
+    var focusNoMore: Bool = false
+    private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
+
     // MARK: - Setup
 
     override func viewDidLoad() {
@@ -52,7 +55,15 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
         setupBinding()
         setupDelegates()
         setupNotifications()
+
+        setUpBackArrow(action: #selector(TwoFactorViewController.goBack(_:)))
+
         generateAccessibilityIdentifiers()
+    }
+
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        navigationBarAdjuster.setUp(for: scrollView, parent: parent)
     }
 
     private func setupUI() {
@@ -111,6 +122,7 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
     // MARK: - Keyboard
 
     @objc private func adjustKeyboard(notification: NSNotification) {
+        guard navigationController?.topViewController === self else { return }
         scrollView.adjustForKeyboard(notification: notification)
     }
 
@@ -123,7 +135,7 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
 
     // MARK: - Actions
 
-    @IBAction private func goBack(_ sender: Any) {
+    @objc private func goBack(_ sender: Any) {
         delegate?.userDidRequestGoBack()
     }
 
@@ -165,7 +177,5 @@ extension TwoFactorViewController: LoginErrorCapable {
         delegate?.firstPasswordChangeNeeded()
     }
 
-    var bannerPosition: PMBannerPosition {
-        return PMBannerPosition.top
-    }
+    var bannerPosition: PMBannerPosition { .top }
 }

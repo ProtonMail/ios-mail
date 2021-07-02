@@ -32,7 +32,7 @@ protocol RecoveryViewControllerDelegate: AnyObject {
     func recoveryCountryPickerPressed()
 }
 
-class RecoveryViewController: UIViewController, AccessibleView {
+class RecoveryViewController: UIViewController, AccessibleView, Focusable {
 
     enum RecoveryMethod: Int {
         case email = 0
@@ -97,27 +97,49 @@ class RecoveryViewController: UIViewController, AccessibleView {
         didSet {
             termsTextView.delegate = self
             termsTextView.attributedText = viewModel?.termsAttributedString(textView: termsTextView)
+            termsTextView.linkTextAttributes = [.foregroundColor: UIColorManager.BrandNorm]
             termsTextView.backgroundColor = UIColorManager.BackgroundNorm
             termsTextView.textColor = UIColorManager.TextWeak
         }
     }
-    @IBOutlet weak var skipButton: UIButton! {
-        didSet {
-            skipButton.setTitle(CoreString._su_skip_button, for: .normal)
-        }
-    }
+
     @IBOutlet weak var scrollView: UIScrollView!
+
+    var focusNoMore: Bool = false
+    private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
 
     // MARK: View controller life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColorManager.BackgroundNorm
+        let skipButton = UIBarButtonItem(title: CoreString._su_skip_button,
+                                         style: .done,
+                                         target: self,
+                                         action: #selector(RecoveryViewController.onSkipButtonTap(_:)))
+        skipButton.tintColor = UIColorManager.BrandNorm
+        navigationItem.rightBarButtonItem = skipButton
+        setUpBackArrow(action: #selector(RecoveryViewController.onBackButtonTap))
         setupGestures()
         setupNotifications()
         recoveryPhoneTextField.isHidden = true
         generateAccessibilityIdentifiers()
+        navigationItem.assignNavItemIndentifiers()
         try? recoveryEmailTextField.setUpChallenge(viewModel.challenge, type: .recovery)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        switch methodSegmenedControl.selectedSegmentIndex {
+        case RecoveryMethod.email.rawValue: focusOnce(view: recoveryEmailTextField)
+        case RecoveryMethod.phoneNumber.rawValue: focusOnce(view: recoveryPhoneTextField)
+        default: break
+        }
+    }
+
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        navigationBarAdjuster.setUp(for: scrollView, parent: parent)
     }
 
     func updateCountryCode(_ responseCode: Int) {
@@ -143,11 +165,11 @@ class RecoveryViewController: UIViewController, AccessibleView {
         validateNextButton()
     }
 
-    @IBAction func onBackButtonTap(_ sender: UIButton) {
+    @objc func onBackButtonTap(_ sender: UIButton) {
         delegate?.recoveryBackButtonPressed()
     }
 
-    @IBAction func onSkipButtonTap(_ sender: UIButton) {
+    @objc func onSkipButtonTap(_ sender: UIButton) {
         PMBanner.dismissAll(on: self)
         showSkipRecoveryAlert()
     }
@@ -237,6 +259,7 @@ class RecoveryViewController: UIViewController, AccessibleView {
     }
 
     @objc private func adjustKeyboard(notification: NSNotification) {
+        guard navigationController?.topViewController === self else { return }
         scrollView.adjustForKeyboard(notification: notification)
     }
 }
@@ -287,9 +310,7 @@ extension RecoveryViewController: UITextViewDelegate {
 }
 
 extension RecoveryViewController: SignUpErrorCapable, LoginErrorCapable {
-    var bannerPosition: PMBannerPosition {
-        return PMBannerPosition.topCustom(UIEdgeInsets(top: 64, left: 16, bottom: CGFloat.infinity, right: 16))
-    }
+    var bannerPosition: PMBannerPosition { .top }
 }
 
 #endif

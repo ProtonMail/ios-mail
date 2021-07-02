@@ -30,7 +30,7 @@ protocol ChooseUsernameViewControllerDelegate: AnyObject {
     func userDidFinishChoosingUsername(username: String)
 }
 
-final class ChooseUsernameViewController: UIViewController, AccessibleView, ErrorCapable {
+final class ChooseUsernameViewController: UIViewController, AccessibleView, ErrorCapable, Focusable {
 
     // MARK: - Outlets
 
@@ -44,6 +44,9 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
 
     weak var delegate: ChooseUsernameViewControllerDelegate?
     var viewModel: ChooseUsernameViewModel!
+
+    var focusNoMore: Bool = false
+    private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
 
     // MARK: - Setup
 
@@ -68,6 +71,8 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
         addressTextField.textContentType = .username
         addressTextField.autocapitalizationType = .none
         addressTextField.autocorrectionType = .no
+
+        setUpBackArrow(action: #selector(ChooseUsernameViewController.goBack(_:)))
     }
 
     private func setupBinding() {
@@ -97,14 +102,25 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
         addressTextField.delegate = self
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        focusOnce(view: addressTextField)
+    }
+
     private func setupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        navigationBarAdjuster.setUp(for: scrollView, parent: parent)
+    }
+
     // MARK: - Keyboard
 
     @objc private func adjustKeyboard(notification: NSNotification) {
+        guard navigationController?.topViewController === self else { return }
         scrollView.adjustForKeyboard(notification: notification)
     }
 
@@ -121,12 +137,12 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
         viewModel.checkAvailability(username: addressTextField.value)
     }
 
-    @IBAction private func goBack(_ sender: Any) {
+    @objc private func goBack(_ sender: Any) {
         delegate?.userDidRequestGoBack()
     }
 
     private func showError(message: String) {
-        showBanner(message: message, position: PMBannerPosition.topCustom(UIEdgeInsets(top: 64, left: 16, bottom: CGFloat.infinity, right: 16)))
+        showBanner(message: message, position: .top)
     }
 
     // MARK: - Validation

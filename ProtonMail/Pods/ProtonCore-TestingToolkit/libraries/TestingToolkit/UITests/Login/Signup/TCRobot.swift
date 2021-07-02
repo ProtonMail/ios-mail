@@ -7,9 +7,10 @@
 
 import Foundation
 import pmtest
+import ProtonCore_CoreTranslation
 
-private let titleId = "TCViewController.titleLabel"
-private let backtButtonId = "TCViewController.closeButton"
+private let titleId = CoreString._su_terms_conditions_view_title
+private let backtButtonId = "UINavigationItem.leftBarButtonItem"
 private let webViewId = "TCViewController.webView"
 
 public final class TCRobot: CoreElements {
@@ -30,7 +31,7 @@ public final class TCRobot: CoreElements {
     }
     
     public func backButton() -> RecoveryRobot {
-        button(backtButtonId).tap()
+        button(backtButtonId).hasLabel("Close").tap()
         return RecoveryRobot()
     }
     

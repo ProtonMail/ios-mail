@@ -35,14 +35,6 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     // MARK: - Outlets
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var headerStackView: UIStackView!
-    @IBOutlet weak var closeButton: UIButton! {
-        didSet {
-            // TODO: take the colour form storyboard
-            closeButton.tintColor = UIColorManager.TextNorm
-        }
-    }
-    @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var tableHeaderLabel: UILabel! {
         didSet {
             tableHeaderLabel.textColor = UIColorManager.TextNorm
@@ -70,7 +62,6 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             tableView.rowHeight = UITableView.automaticDimension
         }
     }
-    @IBOutlet weak var stackViewTopConstraint: NSLayoutConstraint!
     
     // MARK: - Properties
     
@@ -78,17 +69,30 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     var model: PaymentsUIViewModelViewModel?
     var mode: PaymentsUIMode = .signup
     var modalPresentation = false
+
+    private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
     
     override public func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableHeaderView?.isHidden = true
         tableView.tableFooterView?.isHidden = true
-        headerLabel.text = ""
-        configureUI()
+        navigationItem.title = ""
+        if modalPresentation {
+            setUpCloseButton(showCloseButton: true, action: #selector(PaymentsUIViewController.onCloseButtonTap(_:)))
+        } else {
+            setUpBackArrow(action: #selector(PaymentsUIViewController.onCloseButtonTap(_:)))
+        }
+
         if isDataLoaded {
             reloadUI()
         }
         generateAccessibilityIdentifiers()
+        navigationItem.assignNavItemIndentifiers()
+    }
+
+    override public func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        navigationBarAdjuster.setUp(for: tableView, parent: parent)
     }
     
     override public func viewWillDisappear(_ animated: Bool) {
@@ -104,7 +108,10 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     // MARK: - Public methods
     
     func showError(message: String) {
-        showBanner(message: message, position: PMBannerPosition.topCustom(UIEdgeInsets(top: 64, left: 16, bottom: CGFloat.infinity, right: 16)))
+        if !activityIndicator.isHidden {
+            activityIndicator.isHidden = true
+        }
+        showBanner(message: message, position: .top)
     }
     
     func reloadData() {
@@ -117,7 +124,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
 
     // MARK: - Actions
 
-    @IBAction func onCloseButtonTap(_ sender: UIButton) {
+    @objc func onCloseButtonTap(_ sender: UIButton) {
         delegate?.userDidCloseViewController()
     }
     
@@ -148,15 +155,6 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         }
     }
     
-    private func configureUI() {
-        if modalPresentation {
-            if let image = UIImage(named: "Close", in: PaymentsUI.bundle, compatibleWith: nil) {
-                closeButton.setImage(image, for: .normal)
-            }
-            stackViewTopConstraint.constant = 14
-        }
-    }
-    
     private func reloadUI() {
         guard isDataLoaded else { return }
         if let isAnyPlanToPurchase = model?.isAnyPlanToPurchase {
@@ -166,26 +164,27 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         updateHeaderFooterViewHeight()
         if mode == .signup {
             tableHeaderLabel.text = CoreString._pu_select_plan_title
-            headerLabel.text = ""
+            navigationItem.title = ""
         } else {
             if modalPresentation {
                 switch mode {
                 case .current:
-                    headerLabel.text = CoreString._pu_current_plan_title
+                    navigationItem.title = CoreString._pu_current_plan_title
                 case .update:
                     if model?.isAnyPlanToPurchase ?? false {
-                        headerLabel.text = CoreString._pu_update_plan_title
+                        navigationItem.title = CoreString._pu_update_plan_title
                     } else {
-                        headerLabel.text = CoreString._pu_current_plan_title
+                        navigationItem.title = CoreString._pu_current_plan_title
                     }
                 default:
                     break
                 }
             } else {
-                closeButton.isHidden = true
-                headerLabel.isHidden = true
+                navigationItem.setHidesBackButton(true, animated: false)
+                navigationItem.title = ""
             }
         }
+        navigationItem.assignNavItemIndentifiers()
     }
     
     private var isData = false

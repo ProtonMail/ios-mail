@@ -132,7 +132,7 @@ extension UIColorManager {
     public static let BackgroundNorm = Shade0
     public static let BackgroundSecondary = Shade10
 
-    // MARK: Background
+    // MARK: Splash
     public enum Splash {
         public static var Background: UIColor {
             switch brand {
@@ -184,4 +184,7 @@ extension UIColorManager {
     public static let FloatyBackground = Tuna
     public static let FloatyPressed = Woodsmoke
     public static let FloatyText = White
+
+    // MARK: Close
+    public static let CloseColor = UIColor(named: "CloseButtonColour", in: PMUIFoundations.bundle, compatibleWith: nil)!
 }

@@ -46,7 +46,7 @@ class PhoneVerifyViewController: BaseUIViewController, AccessibleView {
 
     weak var delegate: PhoneVerifyViewControllerDelegate?
     var viewModel: VerifyViewModel!
-    var countryCodeViewModel: CountryCodeViewModel!
+    var initialCountryCode: Int = 0
 
     // MARK: View controller life cycle
 
@@ -96,7 +96,7 @@ class PhoneVerifyViewController: BaseUIViewController, AccessibleView {
         topTitleLabel.text = CoreString._hv_sms_enter_label
         topTitleLabel.textColor = UIColorManager.TextWeak
         sendCodeButton.setTitle(CoreString._hv_email_verification_button, for: UIControl.State())
-        updateCountryCode(countryCodeViewModel.getPhoneCodeFromName(NSLocale.current.regionCode))
+        updateCountryCode(initialCountryCode)
         phoneNumberTextFieldView.title = CoreString._hv_sms_label
         phoneNumberTextFieldView.placeholder = "XX XXX XX XX"
         phoneNumberTextFieldView.delegate = self

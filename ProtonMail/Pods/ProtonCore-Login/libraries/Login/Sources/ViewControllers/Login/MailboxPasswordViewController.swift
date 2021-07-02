@@ -45,12 +45,14 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
     @IBOutlet private weak var unlockButton: ProtonButton!
     @IBOutlet private weak var forgetButton: ProtonButton!
     @IBOutlet private weak var scrollView: UIScrollView!
-    @IBOutlet private weak var backButton: RoundButton!
 
     // MARK: - Properties
 
     weak var delegate: MailboxPasswordViewControllerDelegate?
     var viewModel: MailboxPasswordViewModel!
+
+    var focusNoMore: Bool = false
+    private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
 
     private weak var delegateInStandaloneFlow: MailboxPasswordViewControllerInStandaloneFlowDelegate?
     private var isStandaloneComponent = false
@@ -84,8 +86,8 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
         unlockButton.setTitle(CoreString._ls_login_mailbox_button_title, for: .normal)
         forgetButton.setTitle(CoreString._ls_login_mailbox_forgot_password, for: .normal)
 
-        if isStandaloneComponent {
-            backButton.isHidden = true
+        if !isStandaloneComponent {
+            setUpBackArrow(action: #selector(MailboxPasswordViewController.goBack(_:)))
         }
     }
 
@@ -131,6 +133,11 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
         NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        navigationBarAdjuster.setUp(for: scrollView, shouldAdjustNavigationBar: !isStandaloneComponent, parent: parent)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -140,6 +147,7 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
     // MARK: - Keyboard
 
     @objc private func adjustKeyboard(notification: NSNotification) {
+        guard navigationController?.topViewController === self else { return }
         scrollView.adjustForKeyboard(notification: notification)
     }
 
@@ -152,7 +160,7 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
 
     // MARK: - Actions
 
-    @IBAction private func goBack(_ sender: Any) {
+    @objc private func goBack(_ sender: Any) {
         delegate?.userDidRequestGoBack()
     }
 
@@ -184,9 +192,7 @@ extension MailboxPasswordViewController: LoginErrorCapable {
         delegate?.userAccountSetupNeeded()
     }
 
-    var bannerPosition: PMBannerPosition {
-        return PMBannerPosition.top
-    }
+    var bannerPosition: PMBannerPosition { .top }
 }
 
 // MARK: - Text field delegate

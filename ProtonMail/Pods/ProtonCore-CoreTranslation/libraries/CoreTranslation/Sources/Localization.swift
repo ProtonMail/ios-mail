@@ -421,6 +421,8 @@ public class LocalizedString {
     /// Password field title
     public lazy var _su_password_field_title = NSLocalizedString("Password", bundle: Common.bundle, comment: "Password field title")
 
+    public lazy var _su_password_field_hint = NSLocalizedString("Password must contain at least 8 characters", bundle: Common.bundle, comment: "Password field hint about minimum length")
+
     /// Repeat password field title
     public lazy var _su_repeat_password_field_title = NSLocalizedString("Repeat password", bundle: Common.bundle, comment: "Repeat password field title")
 
@@ -461,7 +463,7 @@ public class LocalizedString {
     public lazy var _su_recovery_method_button = NSLocalizedString("Set recovery method", bundle: Common.bundle, comment: "Set recovery method button")
 
     /// Signup complete view title
-    public lazy var _su_complete_view_title = NSLocalizedString("Just a second…\nYour account is being created", bundle: Common.bundle, comment: "Complete view title")
+    public lazy var _su_complete_view_title = NSLocalizedString("Your account is being created", bundle: Common.bundle, comment: "Complete view title")
 
     /// Signup complete view description
     public lazy var _su_complete_view_desc = NSLocalizedString("It usually takes no more than a minute.", bundle: Common.bundle, comment: "Complete view description")

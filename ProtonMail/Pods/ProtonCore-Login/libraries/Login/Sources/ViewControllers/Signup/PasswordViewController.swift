@@ -30,7 +30,7 @@ protocol PasswordViewControllerDelegate: AnyObject {
     func passwordBackButtonPressed()
 }
 
-class PasswordViewController: UIViewController, AccessibleView {
+class PasswordViewController: UIViewController, AccessibleView, Focusable {
 
     weak var delegate: PasswordViewControllerDelegate?
     var viewModel: PasswordViewModel!
@@ -49,6 +49,7 @@ class PasswordViewController: UIViewController, AccessibleView {
     @IBOutlet weak var passwordTextField: PMTextField! {
         didSet {
             passwordTextField.title = CoreString._su_password_field_title
+            passwordTextField.assistiveText = CoreString._su_password_field_hint
             passwordTextField.delegate = self
             passwordTextField.textContentType = .password
             passwordTextField.autocorrectionType = .no
@@ -71,11 +72,15 @@ class PasswordViewController: UIViewController, AccessibleView {
     }
     @IBOutlet weak var scrollView: UIScrollView!
 
+    var focusNoMore: Bool = false
+    private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
+
     // MARK: View controller life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColorManager.BackgroundNorm
+        setUpBackArrow(action: #selector(PasswordViewController.onBackButtonTap(_:)))
         setupGestures()
         setupNotifications()
         generateAccessibilityIdentifiers()
@@ -84,6 +89,12 @@ class PasswordViewController: UIViewController, AccessibleView {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         unlockUI()
+        focusOnce(view: passwordTextField)
+    }
+
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        navigationBarAdjuster.setUp(for: scrollView, parent: parent)
     }
 
     // MARK: Actions
@@ -93,7 +104,7 @@ class PasswordViewController: UIViewController, AccessibleView {
         validatePassword()
     }
 
-    @IBAction func onBackButtonTap(_ sender: UIButton) {
+    @objc func onBackButtonTap(_ sender: UIButton) {
         delegate?.passwordBackButtonPressed()
     }
 
@@ -145,6 +156,7 @@ class PasswordViewController: UIViewController, AccessibleView {
     }
 
     @objc private func adjustKeyboard(notification: NSNotification) {
+        guard navigationController?.topViewController === self else { return }
         scrollView.adjustForKeyboard(notification: notification)
     }
 }
@@ -174,9 +186,8 @@ extension PasswordViewController: PMTextFieldDelegate {
 }
 
 extension PasswordViewController: SignUpErrorCapable, LoginErrorCapable {
-    var bannerPosition: PMBannerPosition {
-        return PMBannerPosition.topCustom(UIEdgeInsets(top: 64, left: 16, bottom: CGFloat.infinity, right: 16))
-    }
+
+    var bannerPosition: PMBannerPosition { .top }
 
     func invalidPassword(reason: SignUpInvalidPasswordReason) {
         switch reason {

@@ -21,6 +21,7 @@
 
 import Foundation
 import UIKit
+import ProtonCore_UIFoundations
 
 protocol CreateAddressCoordinatorDelegate: AnyObject {
     func createAddressCoordinatorDidFinish(createAddressCoordinator: CreateAddressCoordinator, data: LoginData)
@@ -30,7 +31,7 @@ final class CreateAddressCoordinator {
 
     // MARK: - Properties
 
-    private let navigationController: UINavigationController
+    private let navigationController: LoginNavigationViewController
     private let container: Container
     private let externalLinks: ExternalLinks
 
@@ -39,7 +40,9 @@ final class CreateAddressCoordinator {
 
     weak var delegate: CreateAddressCoordinatorDelegate?
 
-    init(container: Container, navigationController: UINavigationController, data: CreateAddressData) {
+    init(container: Container,
+         navigationController: LoginNavigationViewController,
+         data: CreateAddressData) {
         self.container = container
         self.navigationController = navigationController
         self.data = data

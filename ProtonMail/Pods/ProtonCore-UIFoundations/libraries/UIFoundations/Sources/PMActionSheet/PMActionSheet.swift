@@ -307,8 +307,8 @@ extension PMActionSheet {
         dragView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(dragView)
         NSLayoutConstraint.activate([
-            dragView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            dragView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            dragView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            dragView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
             dragView.bottomAnchor.constraint(equalTo: container.topAnchor),
             dragView.heightAnchor.constraint(equalToConstant: 22)
         ])

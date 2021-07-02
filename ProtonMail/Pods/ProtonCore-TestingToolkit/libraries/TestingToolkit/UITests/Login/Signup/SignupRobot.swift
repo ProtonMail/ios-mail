@@ -18,7 +18,7 @@ private let errorBannerButton = CoreString._hv_ok_button
 private let otherAccountButton = "SignupViewController.otherAccountButton"
 private let otherAccountExtName = CoreString._su_email_address_button
 private let otherAccountIntName = CoreString._su_proton_address_button
-private let closeButton = "SignupViewController.closeButton"
+private let closeButton = "UINavigationItem.leftBarButtonItem"
 
 public final class SignupRobot: CoreElements {
     

@@ -24,6 +24,7 @@ import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
+import Lottie
 
 protocol CompleteViewControllerDelegate: AnyObject {
     func accountCreationFinish(loginData: LoginData)
@@ -43,7 +44,7 @@ class CompleteViewController: UIViewController, AccessibleView {
 
     // MARK: Outlets
 
-    @IBOutlet weak var waitingActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var animationView: AnimationView!
     @IBOutlet weak var completeTitleLabel: UILabel! {
         didSet {
             completeTitleLabel.text = CoreString._su_complete_view_title
@@ -62,7 +63,11 @@ class CompleteViewController: UIViewController, AccessibleView {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColorManager.BackgroundNorm
-        waitingActivityIndicator.startAnimating()
+        navigationItem.setHidesBackButton(true, animated: false)
+        animationView.animation = Animation.named("sign-up-create-account", bundle: PMLogin.bundle)
+        animationView.loopMode = .loop
+        animationView.backgroundBehavior = .pauseAndRestore
+        animationView.play()
         if signupAccountType == .internal {
             createAccount()
         } else {
