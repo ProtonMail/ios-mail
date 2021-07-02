@@ -159,7 +159,9 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
                 self.dismissAnimation()
                 return
             }
-
+            if step.contains(.queueIsEmpty) {
+                return
+            }
             if step.contains(.sendingFinishedSuccessfully) {
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { [weak self] in
                     self?.step.insert(.resultAcknowledged)
