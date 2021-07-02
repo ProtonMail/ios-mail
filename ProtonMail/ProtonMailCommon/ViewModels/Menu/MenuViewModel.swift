@@ -468,6 +468,8 @@ extension MenuViewModel {
                     default: continue
                     }
                 }
+                let unread = tmp.first(where: { $0.location == .inbox })?.unread ?? 0
+                UIApplication.setBadge(badge: unread)
                 seal.fulfill_()
             }
         }
