@@ -170,6 +170,9 @@ class ContactPicker: UIView, AccessibleView {
             self.promptLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             self.promptLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 14)
         ].activate()
+        self.promptLabel.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.becomeFirstResponder))
+        self.promptLabel.addGestureRecognizer(tap)
     }
     
     private func setupContactCollectionView() {

@@ -316,6 +316,9 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         let label = UILabel(frame: .zero)
         label.attributedText = "\(LocalString._composer_subject_placeholder):".apply(style: .DefaultSmallWeek)
         label.sizeToFit()
+        label.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.focusSubject))
+        label.addGestureRecognizer(tap)
         paddingView.addSubview(label)
         [
             label.leadingAnchor.constraint(equalTo: paddingView.leadingAnchor, constant: 16),
@@ -462,6 +465,10 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.toContactPicker.contactCollectionView.reloadData()
     }
 
+    @objc
+    private func focusSubject() {
+        self.subject.becomeFirstResponder()
+    }
 }
 
 
