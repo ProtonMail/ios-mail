@@ -32,7 +32,7 @@ class DoHMail : DoH, ServerConfig {
     //defind your host path  /api /
     var defaultPath: String = Constants.App.API_PATH
     //defind your default captcha host
-    var captchaHost: String = "https://mail-api.protonmail.com"
+    var captchaHost: String = Constants.App.API_HOST_URL
 
     //defind your query host
     var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
