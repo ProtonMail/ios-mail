@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
 
 public struct ExternalUserParameters {
     public let email: String
@@ -60,7 +60,7 @@ extension AuthService {
             ]
             let out: [String: Any] = [
                 "Email": externalUserParameters.email,
-                "Type": AccountType.full.rawValue,
+                "Type": AccountTypeD.full.rawValue,
                 "Auth": auth,
                 "Payload": payload
             ]

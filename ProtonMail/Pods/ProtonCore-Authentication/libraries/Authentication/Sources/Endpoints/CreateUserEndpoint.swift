@@ -21,9 +21,9 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
 
-enum AccountType: Int {
+enum AccountTypeD: Int {
     case full = 1
 }
 
@@ -66,7 +66,7 @@ extension AuthService {
             ]
             var out: [String: Any] = [
                 "Username": userParameters.userName,
-                "Type": AccountType.full.rawValue,
+                "Type": AccountTypeD.full.rawValue,
                 "Auth": auth,
                 "Payload": payload
             ]
