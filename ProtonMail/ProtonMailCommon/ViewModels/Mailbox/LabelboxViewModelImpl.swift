@@ -60,7 +60,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
                 if self.label.labelID != fLabel {
                     return (.showGeneral, nil)
                 }
-                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, newLabels: Message.Location.trash.rawValue))
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.trash.rawValue))
             }
         }
         
@@ -74,7 +74,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
                     if self.label.labelID != fLabel {
                         return (.showGeneral, nil)
                     }
-                    return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, newLabels: Message.Location.archive.rawValue))
+                    return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.archive.rawValue))
                 }
             }
         }
@@ -88,7 +88,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
                     if self.label.labelID != fLabel {
                         return (.showGeneral, nil)
                     }
-                    return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, newLabels: Message.Location.spam.rawValue))
+                    return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.spam.rawValue))
                 }
             }
         }

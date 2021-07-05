@@ -187,6 +187,7 @@ final class MailboxViewModelImpl: MailboxViewModel {
                 return (.showUndo,
                         UndoMessage(msgID: message.messageID,
                                     origLabels: self.label.rawValue,
+                                    origHasStar: message.starred,
                                     newLabels: Message.Location.trash.rawValue))
             }
         }

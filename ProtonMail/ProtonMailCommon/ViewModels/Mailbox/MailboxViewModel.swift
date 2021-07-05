@@ -36,12 +36,14 @@ class UndoMessage {
     var messageID : String
     var origLabels : String
     var newLabels : String
+    var origHasStar: Bool
     
     //
-    required init(msgID: String, origLabels : String, newLabels: String) {
+    required init(msgID: String, origLabels : String, origHasStar: Bool, newLabels: String) {
         self.messageID  = msgID
         self.origLabels = origLabels
         self.newLabels  = newLabels
+        self.origHasStar = origHasStar
     }
 }
 extension MailboxViewModel {
@@ -617,10 +619,20 @@ class MailboxViewModel: StorageLimit {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
+            if undo.origHasStar {
+                conversationService.label(conversationIDs: [undo.messageID],
+                                          as: Message.Location.starred.rawValue,
+                                          completion: nil)
+            }
         case .singleMessage:
             let messages = self.messageService.fetchMessages(withIDs: [undo.messageID], in: self.coreDataService.mainContext)
             let fLabels: [String] = .init(repeating: undo.newLabels, count: messages.count)
             messageService.move(messages: messages, from: fLabels, to: undo.origLabels)
+            if undo.origHasStar {
+                messageService.label(messages: messages,
+                                     label: Message.Location.starred.rawValue,
+                                     apply: true)
+            }
         }
     }
     
@@ -647,7 +659,7 @@ class MailboxViewModel: StorageLimit {
     
     func delete(message: Message) -> (SwipeResponse, UndoMessage?) {
         if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue) {
-            return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, newLabels: Message.Location.trash.rawValue))
+            return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, origHasStar: message.starred, newLabels: Message.Location.trash.rawValue))
         }
         return (.nothing, nil)
     }
@@ -676,7 +688,7 @@ class MailboxViewModel: StorageLimit {
     func archive(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
             if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.archive.rawValue) {
-                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, newLabels: Message.Location.archive.rawValue))
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, origHasStar: message.starred, newLabels: Message.Location.archive.rawValue))
             }
         } else if let conversation = self.itemOfConversation(index: index) {
             conversationService.move(conversationIDs: [conversation.conversationID],
@@ -687,7 +699,7 @@ class MailboxViewModel: StorageLimit {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
-            return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: self.labelID, newLabels: Message.Location.archive.rawValue))
+            return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: self.labelID, origHasStar: conversation.starred, newLabels: Message.Location.archive.rawValue))
         }
         return (.nothing, nil)
     }
@@ -695,7 +707,7 @@ class MailboxViewModel: StorageLimit {
     func spam(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
             if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.spam.rawValue) {
-                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, newLabels: Message.Location.spam.rawValue))
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, origHasStar: message.starred, newLabels: Message.Location.spam.rawValue))
             }
         } else if let conversation = self.itemOfConversation(index: index) {
             conversationService.move(conversationIDs: [conversation.conversationID],
@@ -706,7 +718,7 @@ class MailboxViewModel: StorageLimit {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
-            return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: self.labelID, newLabels: Message.Location.archive.rawValue))
+            return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: self.labelID, origHasStar: conversation.starred, newLabels: Message.Location.archive.rawValue))
         }
         return (.nothing, nil)
     }
