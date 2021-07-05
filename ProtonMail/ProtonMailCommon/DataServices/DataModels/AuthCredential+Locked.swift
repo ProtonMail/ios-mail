@@ -56,7 +56,7 @@ extension Locked where T == [AuthCredential] {
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PMCommon.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "AuthCredential")
         
-        guard let value = NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(with: data) as? T else {
+        guard let value = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? T else {
             throw LockedErrors.keyDoesNotMatch
         }
         return value

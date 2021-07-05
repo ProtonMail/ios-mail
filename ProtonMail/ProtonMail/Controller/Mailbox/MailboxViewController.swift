@@ -985,7 +985,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self?.deleteExpiredMessages()
             
             self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] task, res, error in
-                self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: false, completeIsFetch: nil)
+                self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
             }
         }
     }
@@ -1006,12 +1006,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             } else {// this new
                 if !viewModel.isEventIDValid() { //if event id is not valid reset
                     viewModel.fetchDataWithReset(time: 0, cleanContact: false, removeAllDraft: false) { [weak self] task, res, error in
-                        self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: handleNoResultLabel, completeIsFetch: completeIsFetch)
+                        self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
                     }
                 }
                 else {
                     viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] task, res, error in
-                        self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: handleNoResultLabel, completeIsFetch: completeIsFetch)
+                        self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
                     }
                 }
                 
@@ -1026,7 +1026,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func forceRefreshAllMessages() {
         stopAutoFetch()
         viewModel.fetchDataWithReset(time: 0, cleanContact: true, removeAllDraft: false) { [weak self] task, res, error in
-            self?.getLatestMessagesCompletion(task: task, res: res, error: error, handleNoResultLabel: true, completeIsFetch: nil)
+            self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
             self?.startAutoFetch()
         }
         self.viewModel.forceRefreshMessagesForOthers()
