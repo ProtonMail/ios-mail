@@ -30,6 +30,7 @@ class ContextLabel: NSManagedObject {
     @NSManaged public var size: NSNumber
     @NSManaged public var attachmentCount: NSNumber
     @NSManaged public var conversation: Conversation
+    @NSManaged public var conversationID: String
     @NSManaged public var labelID: String
     @NSManaged public var userID: String
 

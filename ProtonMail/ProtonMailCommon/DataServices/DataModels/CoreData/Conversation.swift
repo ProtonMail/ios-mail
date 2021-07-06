@@ -301,7 +301,6 @@ extension Conversation {
                     fatalError()
                 }
             } else {
-                #warning("v4 check this later")
                 let newLabel = ContextLabel(context: self.managedObjectContext!)
                 newLabel.labelID = labelID
                 newLabel.messageCount = 1
@@ -309,7 +308,8 @@ extension Conversation {
                 newLabel.userID = self.userID
                 newLabel.size = self.size ?? NSNumber(value: 0)
                 newLabel.attachmentCount = self.numAttachments
-                self.mutableSetValue(forKey: Conversation.Attributes.labels).add(newLabel)
+                newLabel.conversationID = self.conversationID
+                newLabel.conversation = self
             }
         } else if hasLabel, let label = labels.first(where: {$0.labelID == labelID}) {
             if numMessages <= 1 {
@@ -337,12 +337,13 @@ extension Conversation {
                 newLabel.userID = self.userID
                 newLabel.size = self.size ?? NSNumber(value: 0)
                 newLabel.attachmentCount = self.numAttachments
+                newLabel.conversationID = self.conversationID
+                newLabel.conversation = self
                 
                 let messages = Message
                     .messagesForConversationID(self.conversationID,
                                                inManagedObjectContext: context) ?? []
                 newLabel.unreadCount = NSNumber(value: messages.filter { $0.unRead }.count)
-                self.mutableSetValue(forKey: Conversation.Attributes.labels).add(newLabel)
             }
         } else {
             if self.contains(of: labelID), let label = labels.compactMap({ $0 as? ContextLabel }).filter({ $0.labelID == labelID }).first {
