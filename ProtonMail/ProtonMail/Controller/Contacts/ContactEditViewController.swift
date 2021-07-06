@@ -325,6 +325,7 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
     }
     
     func toSelectContactGroups(sender: ContactEditEmailCell) {
+        dismissKeyboard()
         self.performSegue(withIdentifier: kToSelectContactGroupSegue,
                           sender: sender)
     }
