@@ -879,8 +879,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.refreshControl.endRefreshing()
             return
         }
-        self.showNoResultLabel()
         forceRefreshAllMessages()
+        self.showNoResultLabel()
     }
     
     @objc private func goTroubleshoot() {
@@ -1018,6 +1018,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     private func forceRefreshAllMessages() {
+        guard !self.fetchingMessage else { return }
+        self.fetchingMessage = true
         stopAutoFetch()
         viewModel.fetchDataWithReset(time: 0, cleanContact: true, removeAllDraft: false) { [weak self] task, res, error in
             self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
