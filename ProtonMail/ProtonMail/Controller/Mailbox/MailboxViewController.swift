@@ -1411,7 +1411,8 @@ extension MailboxViewController {
         
         for (key, action) in actions.enumerated() {
             
-            let actionHandler: (PMActionBarItem) -> Void = { _ in
+            let actionHandler: (PMActionBarItem) -> Void = { [weak self] _ in
+                guard let self = self else { return }
                 if action == .more {
                     self.moreButtonTapped()
                 } else {

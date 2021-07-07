@@ -77,7 +77,9 @@ final class EventsService: Service, EventsFetching {
         stop()
         status = .started
         resume()
-        timer = Timer.scheduledTimer(timeInterval: Self.defaultPollingInterval, target: self, selector: #selector(timerDidFire), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(withTimeInterval: Self.defaultPollingInterval, repeats: true) { [weak self] _ in
+            self?.timerDidFire()
+        }
     }
     
     func pause() {
@@ -107,7 +109,7 @@ final class EventsService: Service, EventsFetching {
         }
     }
 
-    @objc private func timerDidFire() {
+    private func timerDidFire() {
         call()
     }
 }

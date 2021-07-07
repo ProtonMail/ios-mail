@@ -48,7 +48,14 @@ class WindowsCoordinator: CoordinatorNew {
     private lazy var snapshot = Snapshot()
     
     private var deeplink: DeepLink?
-    private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(color: .red), scene: nil)
+
+    private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(color: .red), scene: nil) {
+        didSet {
+            guard appWindow == nil else { return }
+            oldValue.rootViewController?.dismiss(animated: false)
+        }
+    }
+
     private var lockWindow: UIWindow?
     
     private var services: ServiceFactory

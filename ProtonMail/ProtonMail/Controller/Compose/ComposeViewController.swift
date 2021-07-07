@@ -550,11 +550,9 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
 
     // MARK: - Private methods
     private func setupAutoSave(firstTime : Bool = false) {
-        self.timer = Timer.scheduledTimer(timeInterval: 120,
-                                          target: self,
-                                          selector: #selector(ComposeViewController.autoSaveTimer),
-                                          userInfo: nil,
-                                          repeats: true)
+        self.timer = Timer.scheduledTimer(withTimeInterval: 120, repeats: true) { [weak self] _ in
+            self?.autoSaveTimer()
+        }
     }
     
     private func stopAutoSave() {

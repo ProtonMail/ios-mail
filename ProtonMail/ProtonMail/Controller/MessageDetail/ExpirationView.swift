@@ -51,7 +51,7 @@ class ExpirationCell: UITableViewCell {
     private var expiration: Date = .distantFuture
     var handleExpired: (() -> Void)?
     
-    @objc private func autoTimer() {
+    private func autoTimer() {
         let offset = Int(self.expiration.timeIntervalSince(Date()))
         if offset <= 0 {
             handleExpired?()
@@ -67,7 +67,9 @@ class ExpirationCell: UITableViewCell {
     
     internal func set(expiration: Date) {
         self.expiration = expiration
-        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(autoTimer), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            self?.autoTimer()
+        }
         self.timer.fire()
     }
 }
