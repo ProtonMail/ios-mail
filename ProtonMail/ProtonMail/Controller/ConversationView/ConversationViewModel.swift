@@ -162,7 +162,7 @@ class ConversationViewModel {
     }
 
     private func observeNewMessages() {
-        if messagesDataSource.count > recordNumOfMessages {
+        if messagesDataSource.count > recordNumOfMessages && messagesDataSource.last?.message?.draft == false {
             showNewMessageArrivedFloaty?(messagesDataSource.newestMessage?.messageID ?? "")
         }
         recordNumOfMessages = messagesDataSource.count
@@ -436,12 +436,18 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
         /* scroll to the oldest unread message that the current location has
            or to the newest message */
         if let indexOfOldestUnreadMessage = dataModels
-            .firstIndex(where: { $0.message?.unRead == true &&
-                            $0.message?.contains(label: self.labelId) == true }) {
+            .firstIndex(where: {
+                $0.message?.unRead == true &&
+                $0.message?.contains(label: self.labelId) == true &&
+                $0.message?.draft == false
+            }) {
             dataModels[indexOfOldestUnreadMessage].messageViewModel?.toggleState()
             indexPath = IndexPath(row: indexOfOldestUnreadMessage, section: 1)
         } else if let newestMessageIndex = dataModels
-                    .lastIndex(where: { $0.message?.contains(label: self.labelId) == true }) {
+                    .lastIndex(where: {
+                        $0.message?.contains(label: self.labelId) == true &&
+                        $0.message?.draft == false
+                    }) {
             dataModels[newestMessageIndex].messageViewModel?.toggleState()
             indexPath = IndexPath(row: newestMessageIndex, section: 1)
         }
