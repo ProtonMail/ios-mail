@@ -2128,7 +2128,6 @@ class LocalizedString {
     lazy var _action_sheet_action_title_reply = NSLocalizedString("Reply", comment: "")
     lazy var _action_sheet_action_title_replyAll = NSLocalizedString("Reply all", comment: "")
     lazy var _action_sheet_action_title_forward = NSLocalizedString("Forward", comment: "")
-    lazy var _action_sheet_action_title_markUnread = NSLocalizedString("Mark unread", comment: "")
     lazy var _action_sheet_action_title_labelAs = NSLocalizedString("Label as…", comment: "")
     lazy var _action_sheet_action_title_trash = NSLocalizedString("Move to trash", comment: "")
     lazy var _action_sheet_action_title_spam = NSLocalizedString("Move to spam", comment: "")

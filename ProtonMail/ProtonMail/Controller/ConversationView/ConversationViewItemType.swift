@@ -8,9 +8,9 @@ enum ConversationViewItemType: Equatable {
         switch (lhs, rhs) {
         case (.trashedHint, .trashedHint):
             return true
-        case (.header(let lSubject), .header(let rSubject)):
+        case let (.header(lSubject), .header(rSubject)):
             return lSubject == rSubject
-        case (.message(let lVM), .message(let rVM)):
+        case let (.message(lVM), .message(rVM)):
             return lVM.message.messageID == rVM.message.messageID
         case (.empty, .empty):
             return true

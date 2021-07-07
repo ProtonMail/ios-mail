@@ -253,7 +253,10 @@ class ConversationViewModel {
             }
         }
     }
+}
 
+// MARK: - Actions
+extension ConversationViewModel {
     func getActionTypes() -> [MailboxViewModel.ActionTypes] {
         var actions: [MailboxViewModel.ActionTypes] = []
         if let newestMessage = messagesDataSource.newestMessage {
@@ -284,7 +287,8 @@ class ConversationViewModel {
             }
         case .readUnread:
             if conversation.isUnread(labelID: labelId) {
-                conversationService.markAsRead(conversationIDs: [conversation.conversationID], labelID: labelId) { [weak self] result in
+                conversationService.markAsRead(conversationIDs: [conversation.conversationID],
+                                               labelID: labelId) { [weak self] result in
                     guard let self = self else { return }
                     if (try? result.get()) != nil {
                         self.eventsService.fetchEvents(labelID: self.labelId)
@@ -329,6 +333,10 @@ class ConversationViewModel {
             conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
                                              labelID: labelId,
                                              completion: fetchEvents)
+        case .markRead:
+            conversationService.markAsRead(conversationIDs: [conversation.conversationID],
+                                           labelID: labelId,
+                                           completion: fetchEvents)
         case .trash:
             moveAction(Message.Location.trash)
         case .archive:

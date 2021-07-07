@@ -25,6 +25,7 @@ enum MessageViewActionSheetAction: Equatable {
     case replyAll
     case forward
     case markUnread
+    case markRead
     case labelAs
     case trash
     case archive
@@ -52,7 +53,9 @@ enum MessageViewActionSheetAction: Equatable {
         case .forward:
             return LocalString._action_sheet_action_title_forward
         case .markUnread:
-            return LocalString._action_sheet_action_title_markUnread
+            return LocalString._title_of_unread_action_in_action_sheet
+        case .markRead:
+            return LocalString._title_of_read_action_in_action_sheet
         case .labelAs:
             return LocalString._action_sheet_action_title_labelAs
         case .trash:
@@ -92,7 +95,7 @@ enum MessageViewActionSheetAction: Equatable {
             return Asset.actionBarReplyAll.image
         case .forward:
             return Asset.mailForward.image
-        case .markUnread:
+        case .markUnread, .markRead:
             return Asset.actionSheetUnread.image
         case .labelAs:
             return Asset.swipeLabelAs.image

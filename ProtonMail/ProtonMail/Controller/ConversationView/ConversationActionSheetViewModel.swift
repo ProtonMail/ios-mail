@@ -24,14 +24,16 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
     let title: String
     private(set) var items: [MessageViewActionSheetAction] = []
 
-    init(title: String, labelID: String) {
+    init(title: String, labelID: String, isUnread: Bool) {
         self.title = title
 
         items.append(contentsOf: [
             .reply,
             .replyAll,
-            .forward,
-            .markUnread,
+            .forward
+        ])
+        items.append(isUnread ? .markRead : .markUnread)
+        items.append(contentsOf: [
             .star,
             .unstar,
             .labelAs

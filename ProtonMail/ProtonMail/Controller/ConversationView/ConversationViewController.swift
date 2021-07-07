@@ -162,73 +162,6 @@ class ConversationViewController: UIViewController,
         }
     }
 
-    private func embedController(
-        viewModel: ConversationExpandedMessageViewModel,
-        in cell: ConversationExpandedMessageCell,
-        indexPath: IndexPath
-    ) -> ConversationExpandedMessageViewController {
-        cell.container.subviews.forEach { $0.removeFromSuperview() }
-        let contentViewModel = viewModel.messageContent
-        let singleMessageContentViewController = SingleMessageContentViewController(
-            viewModel: contentViewModel,
-            parentScrollView: customView.tableView,
-            navigationAction: { [weak self] in self?.handleSingleMessageAction(action: $0) }
-        )
-
-        let viewController = ConversationExpandedMessageViewController(
-            viewModel: .init(message: viewModel.message, messageContent: contentViewModel),
-            singleMessageContentViewController: singleMessageContentViewController
-        )
-
-        viewModel.updateTableView = { [weak self] in
-            UIView.setAnimationsEnabled(false)
-            self?.customView.tableView.beginUpdates()
-            self?.customView.tableView.endUpdates()
-            UIView.setAnimationsEnabled(true)
-        }
-
-        viewModel.storeHeight = { [weak self] in
-            let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-            let heightInfo = HeightStoreInfo(height: height, isHeaderExpanded: viewModel.messageContent.isExpanded)
-            self?.storedSize[viewModel.message.messageID] = heightInfo
-        }
-
-        return viewController
-    }
-
-    private func handleSingleMessageAction(action: SingleMessageNavigationAction) {
-        switch action {
-        case .reply(let messageId):
-            if let message = viewModel.messagesDataSource.message(with: messageId) {
-                coordinator.handle(navigationAction: .reply(message: message))
-            }
-        case .compose(let contact):
-            coordinator.handle(navigationAction: .composeTo(contact: contact))
-        case .contacts(let contact):
-            coordinator.handle(navigationAction: .addContact(contact: contact))
-        case .attachmentList(let messageId, let body):
-            guard let message = viewModel.messagesDataSource.message(with: messageId) else {
-                return
-            }
-            let cids = message.getCIDOfInlineAttachment(decryptedBody: body)
-            coordinator.handle(navigationAction: .attachmentList(message: message, inlineCIDs: cids))
-        case .more(let messageId):
-            if let message = viewModel.messagesDataSource.message(with: messageId) {
-                presentActionSheet(for: message)
-            }
-        default:
-            break
-        }
-    }
-
-    private func presentDetailedNavigationTitle() {
-        conversationNavigationViewPresenter.present(viewType: viewModel.detailedNavigationViewType, in: navigationItem)
-    }
-
-    private func presentSimpleNavigationTitle() {
-        conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
-    }
-
     @objc
     private func starButtonTapped() {
         viewModel.starTapped { [weak self] result in
@@ -347,7 +280,50 @@ class ConversationViewController: UIViewController,
             return cell
         }
     }
+}
 
+private extension ConversationViewController {
+    private func embedController(
+        viewModel: ConversationExpandedMessageViewModel,
+        in cell: ConversationExpandedMessageCell,
+        indexPath: IndexPath
+    ) -> ConversationExpandedMessageViewController {
+        cell.container.subviews.forEach { $0.removeFromSuperview() }
+        let contentViewModel = viewModel.messageContent
+        let singleMessageContentViewController = SingleMessageContentViewController(
+            viewModel: contentViewModel,
+            parentScrollView: customView.tableView,
+            navigationAction: { [weak self] in self?.handleSingleMessageAction(action: $0) }
+        )
+
+        let viewController = ConversationExpandedMessageViewController(
+            viewModel: .init(message: viewModel.message, messageContent: contentViewModel),
+            singleMessageContentViewController: singleMessageContentViewController
+        )
+
+        viewModel.updateTableView = { [weak self] in
+            UIView.setAnimationsEnabled(false)
+            self?.customView.tableView.beginUpdates()
+            self?.customView.tableView.endUpdates()
+            UIView.setAnimationsEnabled(true)
+        }
+
+        viewModel.storeHeight = { [weak self] in
+            let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+            let heightInfo = HeightStoreInfo(height: height, isHeaderExpanded: viewModel.messageContent.isExpanded)
+            self?.storedSize[viewModel.message.messageID] = heightInfo
+        }
+
+        return viewController
+    }
+
+    private func presentDetailedNavigationTitle() {
+        conversationNavigationViewPresenter.present(viewType: viewModel.detailedNavigationViewType, in: navigationItem)
+    }
+
+    private func presentSimpleNavigationTitle() {
+        conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
+    }
 }
 
 private extension Array where Element == ConversationViewItemType {
@@ -367,9 +343,7 @@ private struct HeightStoreInfo: Hashable {
 // MARK: - Action Bar
 private extension ConversationViewController {
     private func showActionBar() {
-        guard self.actionBar == nil else {
-            return
-        }
+        guard self.actionBar == nil else { return }
 
         let actions = viewModel.getActionTypes()
         var actionBarItems: [PMActionBarItem] = []
@@ -399,9 +373,7 @@ private extension ConversationViewController {
 
             let actionBarItem: PMActionBarItem
             if key == actions.startIndex {
-                actionBarItem = PMActionBarItem(icon: action.iconImage,
-                                                text: action.name,
-                                                handler: actionHandler)
+                actionBarItem = PMActionBarItem(icon: action.iconImage, text: action.name, handler: actionHandler)
             } else {
                 actionBarItem = PMActionBarItem(icon: action.iconImage,
                                                 backgroundColor: .clear,
@@ -434,14 +406,15 @@ private extension ConversationViewController {
 
     private func moreButtonTapped() {
         guard let navigationVC = self.navigationController else { return }
+        let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
         let actionSheetViewModel = ConversationActionSheetViewModel(title: viewModel.conversation.subject,
-                                                                    labelID: viewModel.labelId)
+                                                                    labelID: viewModel.labelId,
+                                                                    isUnread: isUnread)
         actionSheetPresenter.present(on: navigationVC,
                                      viewModel: actionSheetViewModel) { [weak self] action in
             self?.handleActionSheetAction(action)
         }
     }
-
 }
 
 // MARK: - Action Sheet Actions
@@ -483,6 +456,31 @@ private extension ConversationViewController {
             coordinator.handle(navigationAction: .forward(message: message))
         default:
             return
+        }
+    }
+
+    private func handleSingleMessageAction(action: SingleMessageNavigationAction) {
+        switch action {
+        case .reply(let messageId):
+            if let message = viewModel.messagesDataSource.message(with: messageId) {
+                coordinator.handle(navigationAction: .reply(message: message))
+            }
+        case .compose(let contact):
+            coordinator.handle(navigationAction: .composeTo(contact: contact))
+        case .contacts(let contact):
+            coordinator.handle(navigationAction: .addContact(contact: contact))
+        case .attachmentList(let messageId, let body):
+            guard let message = viewModel.messagesDataSource.message(with: messageId) else {
+                return
+            }
+            let cids = message.getCIDOfInlineAttachment(decryptedBody: body)
+            coordinator.handle(navigationAction: .attachmentList(message: message, inlineCIDs: cids))
+        case .more(let messageId):
+            if let message = viewModel.messagesDataSource.message(with: messageId) {
+                presentActionSheet(for: message)
+            }
+        default:
+            break
         }
     }
 }
