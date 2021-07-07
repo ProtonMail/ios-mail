@@ -407,9 +407,11 @@ private extension ConversationViewController {
     private func moreButtonTapped() {
         guard let navigationVC = self.navigationController else { return }
         let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
+        let isStarred = viewModel.conversation.starred
         let actionSheetViewModel = ConversationActionSheetViewModel(title: viewModel.conversation.subject,
                                                                     labelID: viewModel.labelId,
-                                                                    isUnread: isUnread)
+                                                                    isUnread: isUnread,
+                                                                    isStarred: isStarred)
         actionSheetPresenter.present(on: navigationVC,
                                      viewModel: actionSheetViewModel) { [weak self] action in
             self?.handleActionSheetAction(action)
@@ -469,7 +471,7 @@ private extension ConversationViewController {
             coordinator.handle(navigationAction: .composeTo(contact: contact))
         case .contacts(let contact):
             coordinator.handle(navigationAction: .addContact(contact: contact))
-        case .attachmentList(let messageId, let body):
+        case let .attachmentList(messageId, body):
             guard let message = viewModel.messagesDataSource.message(with: messageId) else {
                 return
             }
