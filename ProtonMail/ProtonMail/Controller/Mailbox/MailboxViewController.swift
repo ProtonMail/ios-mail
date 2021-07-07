@@ -2245,13 +2245,17 @@ extension MailboxViewController: EventsConsumer {
 extension MailboxViewController: SwipyCellDelegate {
     func swipyCellDidStartSwiping(_ cell: SwipyCell) {
         tableView.visibleCells.filter({ $0 != cell }).forEach { cell in
-            cell.isUserInteractionEnabled = false
+            if let swipyCell = cell as? SwipyCell {
+                swipyCell.gestureRecognizers?.compactMap({ $0 as? UIPanGestureRecognizer }).forEach({ $0.isEnabled = false })
+            }
         }
     }
 
     func swipyCellDidFinishSwiping(_ cell: SwipyCell, atState state: SwipyCellState, triggerActivated activated: Bool) {
         tableView.visibleCells.forEach { cell in
-            cell.isUserInteractionEnabled = true
+            if let swipyCell = cell as? SwipyCell {
+                swipyCell.gestureRecognizers?.compactMap({ $0 as? UIPanGestureRecognizer }).forEach({ $0.isEnabled = true })
+            }
         }
     }
 
