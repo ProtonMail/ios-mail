@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 public class EncryptedSearchService {
     //instance of Singleton
@@ -17,9 +18,27 @@ public class EncryptedSearchService {
         let users: UsersManager = sharedServices.get()
         user = users.firstUser!
         //TODO is the firstUser correct? Should we select user by ID?
+        
+        messageService = user.messageService
+        
+        //self.conversationStateService = user.conversationStateService
     }
     
     internal var user: UserManager!
+    internal var messageService: MessageDataService
+    var totalMessages: Int = 0
+    //private let conversationStateService: ConversationStateService
+    
+    /*var viewMode: ViewMode {
+        //TODO check what I actually need from here
+        let singleMessageOnlyLabels: [Message.Location] = [.draft, .sent]
+        if let location = Message.Location.init(rawValue: labelID),
+           singleMessageOnlyLabels.contains(location),
+           self.conversationStateService.viewMode == .conversation {
+            return .singleMessage
+        }
+        return self.conversationStateService.viewMode
+    }*/
 }
 
 extension EncryptedSearchService {
@@ -41,17 +60,31 @@ extension EncryptedSearchService {
             //MessageDataService:159
             
             let mailBoxID: String = "5"
-            let service = self.user.messageService
-            service.fetchMessages(byLabel: mailBoxID, time: 0, forceClean: false, isUnread: false) { _, result, error in
+            var messageIDs: NSMutableArray = []
+            var messages: NSMutableArray = []   //Array containing all messages of a user
+            
+            self.messageService.fetchMessages(byLabel: mailBoxID, time: 0, forceClean: false, isUnread: false) { _, result, error in
                 //TODO implement completion block
                 if error == nil {
-                    NSLog("Messages: %@", result!)
+                    //NSLog("Messages: %@", result!)
+                    //print("response: %@", result!)
+                    messageIDs = self.getMessageIDs(result)
+                    messages = self.getMessageDetails(messageIDs)
+                    
+                    print("There are so many messages:", messages.count)
+                    
+                    //2. decrypt messages (using the user's PGP key)
+                    //MessageDataService+Decrypt.swift:38
+                    //func decryptBodyIfNeeded(message: Message) throws -> String?
+                } else {
+                    NSLog(error as! String)
                 }
                 NSLog("All messages downloaded")
             }
             
-            
-            //2. decrypt messages (using the user's PGP key)
+
+            print("Finished!")
+            //TODOs:
             //3. extract keywords from message
             //4. encrypt search index (using local symmetric key)
             //5. store the keywords index in a local DB(sqlite3)
@@ -60,7 +93,62 @@ extension EncryptedSearchService {
             // TODO task has completed
             // Update UI -> progress bar?
         }
-        return true
+        return false
+    }
+    
+    func getMessageIDs(_ response: [String:Any]?) -> NSMutableArray {
+        self.totalMessages = response!["Total"] as! Int
+        print("Total messages found: ", self.totalMessages)
+        let messages:NSArray = response!["Messages"] as! NSArray
+        
+        let messageIDs:NSMutableArray = []
+        for message in messages{
+            //messageIDs.adding(message["ID"])
+            if let msg = message as? Dictionary<String, AnyObject> {
+                //print(msg["ID"]!)
+                messageIDs.add(msg["ID"]!)
+            }
+            
+            //print(message)
+            //break
+        }
+        //print("Message IDs:")
+        //print(messageIDs)
+        
+        return messageIDs
+    }
+    
+    func getMessageDetails(_ messageIDs: NSArray) -> NSMutableArray {
+        //print("Iterate through messages:")
+        let messages: NSMutableArray = []
+        for msgID in messageIDs {
+            let message:Message?  = self.getMessage(msgID as! String)
+            //print(message!)
+            //print("Message id 1: %s, id of message: %s", messageIDs[msg] as! String, message!.messageID)
+            print(message!.messageID)
+
+            messages.add(message!)
+        }
+        return messages
+    }
+    
+    private func getMessage(_ messageID: String) -> Message? {
+        let fetchedResultsController = self.messageService.fetchedMessageControllerForID(messageID)
+        
+        if let fetchedResultsController = fetchedResultsController {
+            do {
+                try fetchedResultsController.performFetch()
+            } catch let ex as NSError {
+                PMLog.D(" error: \(ex)")
+            }
+        }
+        
+        if let context = fetchedResultsController?.managedObjectContext{
+            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                return message
+            }
+        }
+        return nil
     }
 
     //Encrypted Search
