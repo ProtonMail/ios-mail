@@ -208,6 +208,9 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
 
     func setMinimumHeightForMessageBody(height: CGFloat) {
         editor.minimumHeight = height
+        if editor.view.frame.height < height {
+            editor.updateHeight(to: height)
+        }
     }
 }
 

@@ -173,7 +173,8 @@ extension ComposeContainerViewController {
     private func setBodyMinimumHeight() {
         let headerCellHeight = tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.frame.height ?? 0
         let spaceForFirstAttachment: CGFloat = 72.0
-        let bodyHeight = round(tableView.frame.height - headerCellHeight - spaceForFirstAttachment)
+        let bottomHeightWithToolbar = view.safeAreaInsets.bottom + 48.0
+        let bodyHeight = round(view.frame.height - headerCellHeight - spaceForFirstAttachment - bottomHeightWithToolbar)
         coordinator.setMinimumHeightForMessageBody(height: bodyHeight)
     }
 
