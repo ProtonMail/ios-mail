@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,57 +14,54 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_background_new" translatesAutoresizingMaskIntoConstraints="NO" id="VDi-Mg-ytx">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                </imageView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j07-5X-rPA">
-                    <rect key="frame" x="72.5" y="279.5" width="230" height="60"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ENCRYPTED EMAIL" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L1Q-fd-6fr">
-                            <rect key="frame" x="52" y="45" width="126.5" height="16.5"/>
-                            <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="14"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="ylD-ti-cEi">
-                            <rect key="frame" x="1" y="0.0" width="228" height="37"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="228" id="Fra-9s-XVk"/>
-                                <constraint firstAttribute="height" constant="37" id="gXK-IT-lPZ"/>
-                            </constraints>
-                        </imageView>
-                    </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstItem="L1Q-fd-6fr" firstAttribute="top" secondItem="ylD-ti-cEi" secondAttribute="bottom" constant="8" id="6ov-74-5Ry"/>
-                        <constraint firstAttribute="height" constant="60" id="E2U-8q-lZx"/>
-                        <constraint firstItem="ylD-ti-cEi" firstAttribute="centerX" secondItem="L1Q-fd-6fr" secondAttribute="centerX" id="N3h-I9-eU8"/>
-                        <constraint firstItem="ylD-ti-cEi" firstAttribute="top" secondItem="j07-5X-rPA" secondAttribute="top" id="QcU-Po-E4O"/>
-                        <constraint firstItem="ylD-ti-cEi" firstAttribute="centerY" secondItem="j07-5X-rPA" secondAttribute="centerY" id="RLC-08-hmR"/>
-                        <constraint firstItem="ylD-ti-cEi" firstAttribute="centerX" secondItem="j07-5X-rPA" secondAttribute="centerX" id="e84-Dr-dmv"/>
-                        <constraint firstAttribute="width" constant="230" id="we2-W5-et3"/>
-                    </constraints>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="RLC-08-hmR"/>
-                        </mask>
-                    </variation>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ProtonMail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PzM-HR-X3P">
+                    <rect key="frame" x="135" y="334.5" width="105.5" height="26.5"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
+                    <color key="textColor" name="launch_title_color"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dHI-FS-Qbu">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="222.5"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
+                <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="footer" translatesAutoresizingMaskIntoConstraints="NO" id="yfg-PN-Bbz">
+                    <rect key="frame" x="134.5" y="595" width="106" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="eYn-nj-Bum"/>
+                    </constraints>
+                </imageView>
+                <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-icon-mail" translatesAutoresizingMaskIntoConstraints="NO" id="M0c-7E-OIH">
+                    <rect key="frame" x="139.5" y="222.5" width="96" height="96"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="96" id="1cp-Wo-kWb"/>
+                        <constraint firstAttribute="height" constant="96" id="oje-fg-18p"/>
+                    </constraints>
+                </imageView>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" name="launch_background_color"/>
             <constraints>
-                <constraint firstItem="VDi-Mg-ytx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="0wd-Bv-gX7"/>
-                <constraint firstAttribute="bottom" secondItem="VDi-Mg-ytx" secondAttribute="bottom" id="9TV-4w-pDU"/>
-                <constraint firstItem="VDi-Mg-ytx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Fqv-Hd-QYB"/>
-                <constraint firstAttribute="trailing" secondItem="VDi-Mg-ytx" secondAttribute="trailing" id="RqP-2g-Li2"/>
-                <constraint firstAttribute="centerX" secondItem="j07-5X-rPA" secondAttribute="centerX" id="WpK-Bw-igG"/>
-                <constraint firstAttribute="centerY" secondItem="j07-5X-rPA" secondAttribute="centerY" constant="24" id="h1I-zM-q36"/>
+                <constraint firstItem="M0c-7E-OIH" firstAttribute="top" secondItem="dHI-FS-Qbu" secondAttribute="bottom" id="0eK-rt-dPc"/>
+                <constraint firstItem="dHI-FS-Qbu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="3Rw-Hv-o8X"/>
+                <constraint firstItem="M0c-7E-OIH" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="8MI-ho-NtA"/>
+                <constraint firstItem="yfg-PN-Bbz" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="JYB-BL-gOd"/>
+                <constraint firstItem="PzM-HR-X3P" firstAttribute="top" secondItem="M0c-7E-OIH" secondAttribute="bottom" constant="16" id="Tmn-NE-Enz"/>
+                <constraint firstAttribute="trailing" secondItem="dHI-FS-Qbu" secondAttribute="trailing" id="VXr-my-ul4"/>
+                <constraint firstItem="PzM-HR-X3P" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Z17-D3-3Q7"/>
+                <constraint firstItem="dHI-FS-Qbu" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cfg-ve-WTu"/>
+                <constraint firstAttribute="bottom" secondItem="yfg-PN-Bbz" secondAttribute="bottom" constant="56" id="ePr-r4-fho"/>
+                <constraint firstItem="dHI-FS-Qbu" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.3333" id="hRK-s4-CG0"/>
             </constraints>
             <point key="canvasLocation" x="428" y="402"/>
         </view>
     </objects>
     <resources>
-        <image name="Logo" width="228" height="36.5"/>
-        <image name="sign_background_new" width="911" height="911"/>
+        <image name="footer" width="106" height="16"/>
+        <image name="splash-icon-mail" width="96" height="96"/>
+        <namedColor name="launch_background_color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="launch_title_color">
+            <color red="0.090196078431372548" green="0.094117647058823528" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

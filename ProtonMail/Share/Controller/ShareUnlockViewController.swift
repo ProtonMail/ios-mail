@@ -219,11 +219,11 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     
     func configureNavigationBar() {
         if let bar = self.navigationController?.navigationBar {
-            bar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
+            bar.barTintColor = UIColor(named: "launch_background_color")
             bar.isTranslucent = false
-            bar.tintColor = UIColor.white
+            bar.tintColor = UIColor(named: "launch_text_color")
             bar.titleTextAttributes = [
-                NSAttributedString.Key.foregroundColor: UIColor.white,
+                NSAttributedString.Key.foregroundColor: UIColor(named: "launch_text_color")!,
                 NSAttributedString.Key.font: Fonts.h2.regular
             ]
         }

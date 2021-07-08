@@ -53,22 +53,8 @@ class ShareExtensionEntry : UINavigationController {
         super.viewDidLoad()
         
         self.appCoordinator?.start()
-        //TODO:: fix me
-        //APIService.shared.delegate = self
     }
 }
-
-//TODO:: fix me
-//extension ShareExtensionEntry: APIServiceDelegate {
-//    func onError(error: NSError) {
-//        // alert
-//        error.alertErrorToast()
-//    }
-//
-//    func isReachable() -> Bool {
-//        return self.reachabilityManager.isReachable
-//    }
-//}
 
 extension ShareExtensionEntry: TrustKitUIDelegate {
     func onTrustKitValidationError(_ alert: UIAlertController) {

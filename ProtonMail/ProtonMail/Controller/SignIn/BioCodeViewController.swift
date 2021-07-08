@@ -22,6 +22,7 @@
     
 
 import Foundation
+import ProtonCore_UIFoundations
 
 class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthenticating {
     weak var delegate : PinCodeViewControllerDelegate?
@@ -57,20 +58,18 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
         self.authenticateUser()
     }
     
-    func pin_unlock_action(_ sender: Any) {
-        // nothing
-    }
-    
     @IBOutlet weak var bioCodeView: BioCodeView!
     
     func configureNavigationBar() {
-        let original = UIImage(named: "menu_logout")!
+        let original = UIImage(named: "menu_logout")?.withRenderingMode(.alwaysTemplate)
         
         self.navigationItem.title = ""
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: original,
-                                                style: .plain,
-                                                target: self,
-                                                action: #selector(self.logoutButtonTapped))
+        let logoutButton = UIBarButtonItem(image: original,
+                                           style: .plain,
+                                           target: self,
+                                           action: #selector(self.logoutButtonTapped))
+        logoutButton.tintColor = UIColorManager.IconNorm
+        self.navigationItem.leftBarButtonItem = logoutButton
         
         if let bar = self.navigationController?.navigationBar {
             // this will make bar transparent

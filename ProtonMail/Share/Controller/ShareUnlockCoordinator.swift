@@ -59,7 +59,6 @@ class ShareUnlockCoordinator : PushCoordinator {
     private func goPin() {
         //UI refe
         guard let navigationController = self.navigationController else { return }
-        self.viewController?.bioCodeView?.pinUnlock?.isEnabled = false                // FIXME: do we actually need this?
         let pinView = SharePinUnlockCoordinator(navigation: navigationController,
                                                 vm: ShareUnlockPinCodeModelImpl(unlock: self.services.get()),
                                                 services: self.services,
