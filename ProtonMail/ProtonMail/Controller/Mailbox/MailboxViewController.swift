@@ -194,12 +194,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         self.viewModel.setupFetchController(self,
                                             isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
-        if viewModel.countOfFetchedObjects == 0 {
-            self.viewModel.fetchMessages(time: 0,
-                                         forceClean: false,
-                                         isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox,
-                                         completion: nil)
-        }
         
         self.undoButton.setTitle(LocalString._messages_undo_action, for: .normal)
         self.setNavigationTitleText(viewModel.localizedNavigationTitle)
@@ -235,6 +229,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel.cleanReviewItems()
         generateAccessibilityIdentifiers()
         configureBannerContainer()
+        
+        if viewModel.eventsService.status != .started {
+            self.startAutoFetch()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -296,10 +294,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.tableView.reloadRows(at: [selectedItem], with: .fade)
                 self.tableView.deselectRow(at: selectedItem, animated: true)
             }
-        }
-
-        if viewModel.eventsService.status != .started {
-            self.startAutoFetch()
         }
         
         FileManager.default.cleanCachedAttsLegacy()
@@ -916,7 +910,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.handleRequestError(error)
         }
         
-        var loadMore: Int = 0
+        var loadMore: Int?
         if error == nil {
             self.onlineTimerReset()
             self.viewModel.resetNotificationMessage()
@@ -928,12 +922,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                loadMore = more
             }
             
-            if loadMore <= 0 {
+            if let more = loadMore, more <= 0 {
                 self.viewModel.messageService.updateMessageCount()
             }
         }
         
-        if loadMore > 0 {
+        if let more = loadMore, more > 0 {
             if self.retryCounter >= 10 {
                 completeIsFetch?(false)
                 delay(1.0) {

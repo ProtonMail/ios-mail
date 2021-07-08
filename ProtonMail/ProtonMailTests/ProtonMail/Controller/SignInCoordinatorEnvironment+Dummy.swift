@@ -30,24 +30,22 @@ extension SignInCoordinatorEnvironment {
 
     static var dummyTryRestoringPersistedUser: () -> Void {{ }}
 
-    static var dummyFinalizeSignIn: (UserInfo, AuthCredential, @escaping (NSError) -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void {{ _, _, _, _, _, _ in }}
+    static var dummyFinalizeSignIn: (LoginData, @escaping (NSError) -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void {{ _, _, _, _, _ in }}
 
     static var dummyUnlockIfRememberedCredentials: (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void {{ _, _, _, _ in }}
 
     static func test(
         login: @escaping LoginCreationClosure,
-        fetchSettings: @escaping (UserInfo, AuthCredential) -> Promise<UserInfo> = dummyFetchSettings,
         mailboxPassword: @escaping (String, AuthCredential) -> String = dummyMailboxPassword,
         currentAuth: @escaping () -> AuthCredential? = dummyCurrentAuth,
         tryRestoringPersistedUser: @escaping () -> Void = dummyTryRestoringPersistedUser,
-        finalizeSignIn: @escaping (UserInfo, AuthCredential, @escaping (NSError) -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void = dummyFinalizeSignIn,
+        finalizeSignIn: @escaping (LoginData, @escaping (NSError) -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void = dummyFinalizeSignIn,
         unlockIfRememberedCredentials: @escaping (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void = dummyUnlockIfRememberedCredentials
     ) -> SignInCoordinatorEnvironment {
         .init(services: ServiceFactory(),
               doh: try! DohMock(),
               forceUpgradeDelegate: ForceUpgradeDelegateMock(),
               apiServiceDelegate: APIServiceDelegateMock(),
-              fetchSettings: fetchSettings,
               mailboxPassword: mailboxPassword,
               currentAuth: currentAuth,
               tryRestoringPersistedUser: tryRestoringPersistedUser,

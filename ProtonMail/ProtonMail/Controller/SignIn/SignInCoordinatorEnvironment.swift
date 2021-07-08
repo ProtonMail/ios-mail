@@ -33,19 +33,17 @@ struct SignInCoordinatorEnvironment {
     let doh: DoH
     let forceUpgradeDelegate: ForceUpgradeDelegate
     let apiServiceDelegate: APIServiceDelegate
-    let fetchSettings: (UserInfo, AuthCredential) -> Promise<UserInfo>
     let mailboxPassword: (String, AuthCredential) -> String
     let currentAuth: () -> AuthCredential?
     let tryRestoringPersistedUser: () -> Void
-    let finalizeSignIn: (UserInfo, AuthCredential, @escaping (NSError) -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void
+    let finalizeSignIn: (LoginData, @escaping (NSError) -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void
     let unlockIfRememberedCredentials: (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void
     let loginCreationClosure: LoginCreationClosure
     let shouldShowAlertOnError: Bool
 
-    func fetchSettings(userInfo: UserInfo, auth: AuthCredential) -> Promise<UserInfo> { fetchSettings(userInfo, auth) }
-    func finalizeSignIn(userInfo: UserInfo, auth: AuthCredential, onError: @escaping (NSError) -> Void,
+    func finalizeSignIn(loginData: LoginData, onError: @escaping (NSError) -> Void,
                         reachLimit: @escaping () -> Void, existError: @escaping () -> Void, tryUnlock: @escaping () -> Void) {
-        finalizeSignIn(userInfo, auth, onError, reachLimit, existError, tryUnlock)
+        finalizeSignIn(loginData, onError, reachLimit, existError, tryUnlock)
     }
     func unlockIfRememberedCredentials(forUser: String?, requestMailboxPassword: @escaping () -> Void, unlockFailed: @escaping () -> Void, unlocked: @escaping () -> Void) {
         unlockIfRememberedCredentials(forUser, requestMailboxPassword, unlockFailed, unlocked)
@@ -55,19 +53,17 @@ struct SignInCoordinatorEnvironment {
 extension SignInCoordinatorEnvironment {
     static func live(services: ServiceFactory, forceUpgradeDelegate: ForceUpgradeDelegate) -> SignInCoordinatorEnvironment {
         let doh = DoHMail.default
-        let userDataService = sharedUserDataService
         let apiServiceDelegate = services.get(by: UsersManager.self)
         return .init(services: services,
                      doh: doh,
                      forceUpgradeDelegate: forceUpgradeDelegate,
                      apiServiceDelegate: apiServiceDelegate,
-                     fetchSettings: userDataService.fetchSettings(userInfo:auth:),
                      mailboxPassword: services.get(by: SignInManager.self)
                         .mailboxPassword(from:auth:),
                      currentAuth: { services.get(by: UsersManager.self).firstUser?.auth },
                      tryRestoringPersistedUser: services.get(by: UsersManager.self).tryRestore,
                      finalizeSignIn: services.get(by: SignInManager.self)
-                        .finalizeSignIn(userInfo:auth:onError:reachLimit:existError:tryUnlock:),
+                        .finalizeSignIn(loginData:onError:reachLimit:existError:tryUnlock:),
                      unlockIfRememberedCredentials: services.get(by: UnlockManager.self)
                         .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
                      loginCreationClosure: { appName, minimumAccountType, signupMode, signupPasswordRestrictions, isCloseButtonAvailable in

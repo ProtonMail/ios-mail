@@ -175,28 +175,15 @@ final class SignInCoordinator: DefaultCoordinator {
             onFinish(.dismissed)
 
         case .loggedIn(let loginData):
-            let auth = loginData.credential
-            let userInfo = loginData.toUserInfo
-            let user = loginData.user
-            environment.fetchSettings(userInfo, auth).pipe { [weak self] in
-                self?.processFetchSettingsResult($0, auth: auth, username: user.name)
-            }
-        }
-    }
-
-    private func processFetchSettingsResult(_ result: Result<UserInfo>, auth: AuthCredential, username: String?) {
-        switch result {
-
-        case .rejected(let error):
-            handleRequestError(error as NSError, wrapIn: FlowError.fetchingSettingsFailed)
-
-        case .fulfilled(let userInfo):
-            environment.finalizeSignIn(userInfo: userInfo, auth: auth) { [weak self] error in
+            environment.finalizeSignIn(loginData: loginData) { [weak self] error in
                 self?.handleRequestError(error, wrapIn: FlowError.finalizingSignInFailed)
+            } reachLimit: {
+                [weak self] in self?.processReachLimitError()
+            } existError: {
+                [weak self] in self?.processExistError()
+            } tryUnlock: {
+                [weak self] in self?.unlockMainKey(failOnMailboxPassword: false)
             }
-            reachLimit: { [weak self] in self?.processReachLimitError() }
-            existError: { [weak self] in self?.processExistError() }
-            tryUnlock: { [weak self] in self?.unlockMainKey(failOnMailboxPassword: false) }
         }
     }
 

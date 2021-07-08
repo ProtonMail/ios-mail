@@ -25,6 +25,7 @@ import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
+import ProtonCore_Login
 
 class SignInManager: Service {
     let usersManager: UsersManager
@@ -37,52 +38,6 @@ class SignInManager: Service {
         self.usersManager = usersManager
         self.lastUpdatedStore = lastUpdatedStore
         self.queueManager = queueManager
-    }
-    
-    internal func signIn(username: String,
-                         password: String,
-                         noKeyUser: Bool,
-                         cachedTwoCode: String?,
-                         faillogout : Bool,
-                         ask2fa: @escaping ()->Void,
-                         onError: @escaping (NSError)->Void,
-                         reachLimit: @escaping ()->Void,
-                         exist: @escaping ()->Void,
-                         afterSignIn: @escaping ()->Void,
-                         requestMailboxPassword: @escaping ()->Void,
-                         tryUnlock:@escaping ()->Void )
-    {
-        let success: (String?, AuthCredential?, UserInfo?)->Void = { mailboxpwd, auth, userinfo in
-            guard let auth = auth, let user = userinfo else {
-                onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
-                return
-            }
-
-            self.auth = auth
-            self.userInfo = user
-            guard let mailboxPassword = mailboxpwd else {//OK but need mailbox pwd
-                UserTempCachedStatus.restore()
-                requestMailboxPassword()
-                return
-            }
-            self.proceedWithMailboxPassword(mailboxPassword, auth: auth, onError: onError, reachLimit: reachLimit, existError: exist, tryUnlock: tryUnlock)
-        }
-        
-        self.auth = nil
-        self.userInfo = nil
-        // one time api and service
-        let service = PMAPIService(doh: usersManager.doh, sessionUID: "")
-        service.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: service)
-        service.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-        let userService = UserDataService(check: false, api: service)
-        userService.sign(in: username,
-                         password: password,
-                         noKeyUser: noKeyUser,
-                         twoFACode: cachedTwoCode,
-                         faillogout: faillogout,
-                         ask2fa: ask2fa,
-                         onError: onError,
-                         onSuccess: success)
     }
     
     internal func signUpSignIn(username: String,
@@ -115,36 +70,15 @@ class SignInManager: Service {
         }
         return mailboxPassword
     }
-    
-    /// TODO:: those input delegats need change  to error return
-    internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?,
-                                             onError: @escaping (NSError)->Void,
-                                             reachLimit: @escaping ()->Void,
-                                             existError: @escaping ()->Void,
-                                             tryUnlock:@escaping ()->Void ) {
-        guard let auth = auth, let privateKey = auth.privateKey, privateKey.check(passphrase: mailboxPassword), let userInfo = self.userInfo else {
-            onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
-            return
-        }
-        auth.udpate(password: mailboxPassword)
-        
-        finalizeSignIn(userInfo: userInfo,
-                       auth: auth,
-                       onError: onError,
-                       reachLimit: reachLimit,
-                       existError: existError,
-                       tryUnlock: tryUnlock)
-    }
 
-    func finalizeSignIn(userInfo: UserInfo,
-                        auth: AuthCredential,
+    func finalizeSignIn(loginData: LoginData,
                         onError: @escaping (NSError) -> Void,
                         reachLimit: @escaping () -> Void,
                         existError: @escaping () -> Void,
                         tryUnlock: @escaping () -> Void) {
-
-        let exist = self.usersManager.isExist(userID: userInfo.userId)
-        if exist == true {
+        let userInfo = loginData.toUserInfo
+        let auth = loginData.credential
+        if self.usersManager.isExist(userID: userInfo.userId) {
             existError()
             return
         }
@@ -156,18 +90,14 @@ class SignInManager: Service {
         let user = self.usersManager.getUser(bySessionID: auth.sessionID)!
         self.queueManager.registerHandler(user.mainQueueHandler)
 
-        let labelService = user.labelService
         let userDataService = user.userService
-        labelService.fetchV4Labels().cauterize()
-        userDataService.fetchUserInfo(auth: auth).done(on: .main) { info in
-            guard let info = info else {
-                onError(NSError.unknowError())
-                return
-            }
-            self.usersManager.update(auth: auth, user: info)
-            userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeLeft, rightToLeft: info.swipeRight)
+        userDataService.fetchSettings(userInfo: userInfo, auth: auth).done(on: .main) { [weak self] userInfo in
+            guard let self = self else { return }
+            self.usersManager.update(auth: auth, user: userInfo)
+            userCachedStatus.initialSwipeActionIfNeeded(leftToRight: userInfo.swipeLeft,
+                                                        rightToLeft: userInfo.swipeRight)
 
-            guard info.delinquent < 3 else {
+            guard userInfo.delinquent < 3 else {
                 self.queueManager.unregisterHandler(user.mainQueueHandler)
                 _ = self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false).ensure {
                     onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
@@ -182,9 +112,10 @@ class SignInManager: Service {
             NotificationCenter.default.post(name: .didSignIn, object: nil)
 
             tryUnlock()
-        }.catch(on: .main) { (error) in
+        }.catch(on: .main) { [weak self] (error) in
             onError(error as NSError)
-            _ = self.usersManager.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
+            _ = self?.usersManager.clean()
+            // this will happen if fetchUserInfo fails - maybe because of connectivity issues
         }
     }
 }

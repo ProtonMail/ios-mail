@@ -19,6 +19,7 @@ class ConversationStateService {
     private let userDefaults: KeyValueStoreProvider
     private let delegatesStore: NSHashTable<AnyObject> = NSHashTable.weakObjects()
     private let featureFlagKey = "conversation_feature_flag"
+    private var isFetchingFlag = false
 
     private var delegates: [ConversationStateServiceDelegate] {
         delegatesStore.allObjects
@@ -64,8 +65,13 @@ class ConversationStateService {
     }
 
     func refreshFlag() {
-        _ = conversationFeatureFlagService.getConversationFlag()
-            .done { [weak self] in self?.featureFlag = $0 }
+        guard !self.isFetchingFlag else { return }
+        self.isFetchingFlag = true
+        _ = conversationFeatureFlagService
+            .getConversationFlag().done { [weak self] in
+                self?.isFetchingFlag = false
+                self?.featureFlag = $0
+            }
     }
 
     func userInfoHasChanged(viewMode: ViewMode) {

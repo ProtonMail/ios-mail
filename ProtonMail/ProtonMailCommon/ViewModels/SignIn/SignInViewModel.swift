@@ -48,31 +48,7 @@ class SignInViewModel : NSObject {
         self.unlockManager = sharedServices.get()
         self.username = username
     }
-    
-    func signIn(username: String, password: String, cachedTwoCode: String?, faillogout: Bool, complete: @escaping (SignInComplete)->Void) {
-        //Start checking if the user logged in already
-        if usersManager.isExist(userName: username) {
-            return complete(.exist)
-        }
-        
-        signinManager.signIn(username: username, password: password, noKeyUser: false, cachedTwoCode: cachedTwoCode, faillogout: faillogout, ask2fa: {
-            complete(.ask2fa)
-        }, onError: { (error) in
-            complete(.error(error))
-        }, reachLimit: {
-            complete(.limit)
-        }, exist: {
-            complete(.exist)
-        }, afterSignIn: {
-            complete(.ok)
-        }, requestMailboxPassword: {
-            complete(.mbpwd)
-        }) {//require mailbox pwd
-            self.unlockManager.unlockIfRememberedCredentials(forUser: username, requestMailboxPassword: { })
-            complete(.ok)
-        }
-    }
-    
+
     enum TokenError : Error {
         case unsupport
         case empty

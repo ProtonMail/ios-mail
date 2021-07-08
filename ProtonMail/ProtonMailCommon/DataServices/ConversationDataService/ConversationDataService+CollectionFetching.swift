@@ -133,9 +133,6 @@ extension ConversationDataService {
                                 }
                             }
                         }
-                        if shouldReset {
-                            _ = self.labelDataService.fetchV4Labels()
-                        }
                         DispatchQueue.main.async {
                             completion?(.success(()))
                         }

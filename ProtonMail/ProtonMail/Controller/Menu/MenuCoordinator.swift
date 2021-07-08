@@ -432,5 +432,7 @@ extension MenuCoordinator : CoordinatorDelegate {
             return
         }
         self.vm.activateUser(id: user.userInfo.userId)
+        let label = MenuLabel(location: .inbox)
+        self.navigateToMailBox(labelInfo: label, deepLink: nil)
     }
 }
