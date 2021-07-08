@@ -107,6 +107,9 @@ extension Message {
         }
     }
 
+    var isSent : Bool {
+        contains(label: Location.sent)
+    }
     /// get messsage label ids
     ///
     /// - Returns: array

@@ -108,12 +108,12 @@ extension Message {
     }
 
     func initial(replacingEmails: [Email]) -> String {
-        let senderName = self.senderName(labelId: "", replacingEmails: replacingEmails)
+        let senderName = self.senderName(replacingEmails: replacingEmails)
         return senderName.isEmpty ? "?" : senderName.shortName()
     }
 
     func sender(replacingEmails: [Email]) -> String {
-        let senderName = self.senderName(labelId: "", replacingEmails: replacingEmails)
+        let senderName = self.senderName(replacingEmails: replacingEmails)
         return senderName.isEmpty ? "(\(String(format: LocalString._mailbox_no_recipient)))" : senderName
     }
 
@@ -126,8 +126,8 @@ extension Message {
             .contains(labelId)
     }
 
-    func senderName(labelId: String, replacingEmails: [Email]) -> String {
-        if labelId == Message.Location.sent.rawValue || draft {
+    func senderName(replacingEmails: [Email]) -> String {
+        if isSent || draft {
             return allEmailAddresses(replacingEmails)
         } else {
             return displaySender(replacingEmails)
