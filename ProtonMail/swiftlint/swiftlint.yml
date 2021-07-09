@@ -174,6 +174,7 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/ConversationDataService/LocalConversationUpdater.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/ConversationNewMessageFloatyView.swift
   - ${PWD}/ProtonMail/Utilities/Snapshot.swift
+  - ${PWD}/ProtonMail/Controller/Views/PinCodeView.swift
 
 excluded:
   - ${PWD}/Pods

@@ -51,12 +51,11 @@ class SharePinUnlockViewController : UIViewController, CoordinatedNew {
         super.viewDidLoad()
         self.view.layoutIfNeeded()
         self.pinCodeView.delegate = self
-        self.pinCodeView.hideTouchID()
         self.setUpView(true)
     }
     
     internal func setUpView(_ reset: Bool) {
-        pinCodeView.updateViewText(viewModel.title(), cancelText: viewModel.cancel(), resetPin: reset)
+        pinCodeView.updateViewText(cancelText: viewModel.cancel(), resetPin: reset)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,7 +63,6 @@ class SharePinUnlockViewController : UIViewController, CoordinatedNew {
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
         navigationController?.setNavigationBarHidden(true, animated: true)
-        pinCodeView.updateCorner()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -90,18 +88,18 @@ class SharePinUnlockViewController : UIViewController, CoordinatedNew {
 
 extension SharePinUnlockViewController : PinCodeViewDelegate {
     
-    func TouchID() {
+    func touchID() {
 
     }
     
-    func Cancel() {
+    func cancel() {
         //TODO:: use the coordinator delegated
         self.dismiss(animated: true) { 
             self.delegate?.cancel()
         }
     }
     
-    func Next(_ code : String) {
+    func next(_ code : String) {
         if code.isEmpty {
             let alert = LocalString._pin_code_cant_be_empty.alertController()
             alert.addOKAction()
@@ -128,7 +126,7 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
                             if count <= 0 {
                                 //TODO:: fix me
 //                                SignInManager.shared.clean()
-                                self.Cancel()
+                                self.cancel()
                             } else {
                                 self.pinCodeView.resetPin()
                                 self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
