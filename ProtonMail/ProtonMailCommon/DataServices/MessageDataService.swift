@@ -127,7 +127,7 @@ class MessageDataService : Service, HasLocalStorage {
     
     private func updateCounter(markUnRead: Bool, on message: Message, context: NSManagedObjectContext) {
         let offset = markUnRead ? 1 : -1
-        let labelIDs: [String] = message.getLableIDs()
+        let labelIDs: [String] = message.getLabelIDs()
         self.coreDataService.enqueue(context: context) { (context) in
             for lID in labelIDs {
                 let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context)
@@ -145,7 +145,7 @@ class MessageDataService : Service, HasLocalStorage {
     
     private func updateCounterSync(markUnRead: Bool, on message: Message, context: NSManagedObjectContext) {
         let offset = markUnRead ? 1 : -1
-        let labelIDs: [String] = message.getLableIDs()
+        let labelIDs: [String] = message.getLabelIDs()
         for lID in labelIDs {
             let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context)
             var count = unreadCount + offset
@@ -230,7 +230,7 @@ class MessageDataService : Service, HasLocalStorage {
             }
             if let lid = message.add(labelID: tLabel) {
                 //if move to trash. clean lables.
-                var labelsFound = message.getNormalLableIDs()
+                var labelsFound = message.getNormalLabelIDs()
                 labelsFound.append(Message.Location.starred.rawValue)
                 labelsFound.append(Message.Location.allmail.rawValue)
                 if lid == Message.Location.trash.rawValue {
@@ -296,7 +296,7 @@ class MessageDataService : Service, HasLocalStorage {
                     self.updateCounterSync(plus: false, with: id, context: context)
                 }
             }
-            var labelsFound = message.getNormalLableIDs()
+            var labelsFound = message.getNormalLabelIDs()
             labelsFound.append(Message.Location.starred.rawValue)
             labelsFound.append(Message.Location.allmail.rawValue)
             self.remove(labels: labelsFound, on: message, cleanUnread: true)
@@ -318,6 +318,31 @@ class MessageDataService : Service, HasLocalStorage {
         
         return true
     }
+
+    func deleteExpiredMessage() {
+        let context = coreDataService.mainManagedObjectContext
+        context.perform {
+            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+            fetch.predicate = NSPredicate(format: "%K != NULL AND %K < %@",
+                                                 Message.Attributes.expirationTime,
+                                                 Message.Attributes.expirationTime,
+                                                 NSDate())
+            if let messages = try? context.fetch(fetch) as? [Message] {
+                messages.forEach { (msg) in
+                    if msg.unRead {
+                        let labels: [String] = msg.getLabelIDs()
+                        labels.forEach { (label) in
+                            self.updateCounterSync(plus: false, with: label, context: context)
+                        }
+                    }
+                    context.delete(msg)
+                }
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            }
+        }
+    }
     
     // MAKR : upload attachment
     
@@ -330,7 +355,7 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - time: the latest update time
     ///   - forceClean: force clean the exsition messages first
     ///   - completion: aync complete handler
-    func fetchMessages(byLable labelID : String, time: Int, forceClean: Bool, completion: CompletionBlock?) {
+    func fetchMessages(byLabel labelID : String, time: Int, forceClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if error != nil {
@@ -369,7 +394,15 @@ class MessageDataService : Service, HasLocalStorage {
                                 for message in messages {
                                     // the matedata set, mark the status
                                     message.messageStatus = 1
+                                    
+                                    if let attachments = message.attachments.allObjects as? [Attachment] {
+                                        // Add uploading files
+                                        let uploading = attachments.filter { $0.attachmentID == "0" }
+                                        let oldNum = message.numAttachments.intValue
+                                        message.numAttachments = NSNumber(integerLiteral: oldNum + uploading.count)
+                                    }
                                 }
+                                
                                 if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D(" error: \(error)")
                                 }
@@ -450,8 +483,39 @@ class MessageDataService : Service, HasLocalStorage {
                         lastUpdatedStore.removeUpdateTime(by: self.userID, context: self.managedObjectContext)
                         return self.contactDataService.cleanUp()
                     }.ensure {
-                        self.fetchMessages(byLable: labelID, time: time, forceClean: false, completion: completionWrapper)
+                        self.fetchMessages(byLabel: labelID, time: time, forceClean: false, completion: completionWrapper)
                         self.contactDataService.fetchContacts(completion: nil)
+                        self.labelDataService.fetchLabels()
+                    }.cauterize()
+                }  else {
+                    completion?(task, nil, nil)
+                }
+            }
+        }
+    }
+    
+    func fetchMessagesOnlyWithReset(byLabel labelID: String, time: Int, completion: CompletionBlock?) {
+        queue {
+            let getLatestEventID = EventLatestIDRequest()
+            self.apiService.exec(route: getLatestEventID) { (task, IDRes: EventLatestIDResponse) in
+                if !IDRes.eventID.isEmpty {
+                    let completionWrapper: CompletionBlock = { task, responseDict, error in
+                        if error == nil {
+                            lastUpdatedStore.clear()
+                            _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID, context: self.managedObjectContext).ensure {
+                                completion?(task, responseDict, error)
+                            }
+                            return
+                            //lastUpdatedStore.lastEventID = IDRes.eventID
+                        }
+                        completion?(task, responseDict, error)
+                    }
+                    
+                    self.cleanMessage(removeDraft: false).then { (_) -> Promise<Void> in
+                        lastUpdatedStore.removeUpdateTime(by: self.userID, context: self.managedObjectContext)
+                        return Promise<Void>()
+                    }.ensure {
+                        self.fetchMessages(byLabel: labelID, time: time, forceClean: false, completion: completionWrapper)
                         self.labelDataService.fetchLabels()
                     }.cauterize()
                 }  else {
@@ -473,7 +537,7 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - labelID: Label/location/forlder
     ///   - notificationMessageID: the notification message
     ///   - completion: async complete handler
-    func fetchEvents(byLable labelID: String, notificationMessageID : String?, context: NSManagedObjectContext, completion: CompletionBlock?) {
+    func fetchEvents(byLabel labelID: String, notificationMessageID : String?, context: NSManagedObjectContext, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID(userID: self.userID, context: context))
             self.apiService.exec(route: eventAPI) { (task, response: EventCheckResponse) in
@@ -499,7 +563,7 @@ class MessageDataService : Service, HasLocalStorage {
                                     self.cleanMessage().then {
                                         return self.contactDataService.cleanUp()
                                     }.ensure {
-                                        self.fetchMessages(byLable: labelID, time: 0, forceClean: false, completion: completionWrapper)
+                                        self.fetchMessages(byLabel: labelID, time: 0, forceClean: false, completion: completionWrapper)
                                         self.contactDataService.fetchContacts(completion: nil)
                                         self.labelDataService.fetchLabels()
                                     }.cauterize()
@@ -541,7 +605,7 @@ class MessageDataService : Service, HasLocalStorage {
                                     self.cleanMessage().then {
                                         return self.contactDataService.cleanUp()
                                     }.ensure {
-                                        self.fetchMessages(byLable: labelID, time: 0, forceClean: false, completion: completionWrapper)
+                                        self.fetchMessages(byLabel: labelID, time: 0, forceClean: false, completion: completionWrapper)
                                         self.contactDataService.fetchContacts(completion: nil)
                                         self.labelDataService.fetchLabels()
                                     }.cauterize()
@@ -640,7 +704,7 @@ class MessageDataService : Service, HasLocalStorage {
 
     private func fetchEvents(labelID: String) {
         fetchEvents(
-            byLable: labelID,
+            byLabel: labelID,
             notificationMessageID: nil,
             context: coreDataService.mainManagedObjectContext,
             completion: nil
@@ -1217,7 +1281,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    fileprivate func cleanMessage() -> Promise<Void> {
+    fileprivate func cleanMessage(removeDraft: Bool = true) -> Promise<Void> {
         return Promise { seal in
             self.coreDataService.enqueue(context: self.coreDataService.mainManagedObjectContext) { (context) in
                 if #available(iOS 12, *) {
@@ -1226,17 +1290,49 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
                 fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
-                let request = NSBatchDeleteRequest(fetchRequest: fetch)
-                request.resultType = .resultTypeObjectIDs
-
-                if let result = try? context.execute(request) as? NSBatchDeleteResult,
-                   let objectIdArray = result.result as? [NSManagedObjectID] {
+                if removeDraft {
+                    let request = NSBatchDeleteRequest(fetchRequest: fetch)
+                    request.resultType = .resultTypeObjectIDs
+     
+                    if let result = try? context.execute(request) as? NSBatchDeleteResult,
+                       let objectIdArray = result.result as? [NSManagedObjectID] {
+                        let changes = [NSDeletedObjectsKey: objectIdArray]
+                        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+                    }
+                    UIApplication.setBadge(badge: 0)
+                    seal.fulfill_()
+                } else {
+                    let draftID = Message.Location.draft.rawValue
+                    let results = (try? fetch.execute()) ?? []
+                    var objectIdArray: [NSManagedObjectID] = []
+                    for obj in results {
+                        guard let message = obj as? Message else { continue }
+                        if let labels = message.labels.allObjects as? [Label],
+                           labels.contains(where: { $0.labelID == draftID }) {
+                            
+                            if let attachments = message.attachments.allObjects as? [Attachment],
+                               attachments.contains(where: { $0.attachmentID == "0" }) {
+                                // If the draft is uploading attachments, don't delete it
+                                continue
+                            } else if message.isSending {
+                                // If the draft is sending, don't delete it
+                                continue
+                            } else if let _ = UUID(uuidString: message.messageID) {
+                                // If the message ID is UUiD, means hasn't created draft, don't delete it
+                                continue
+                            }
+                            
+                        }
+                        if let dataObject = obj as? NSManagedObject {
+                            context.delete(dataObject)
+                            objectIdArray.append(dataObject.objectID)
+                        }
+                    }
                     let changes = [NSDeletedObjectsKey: objectIdArray]
                     NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+                    seal.fulfill_()
+                    return
                 }
-
-                UIApplication.setBadge(badge: 0)
-                seal.fulfill_()
             }
         }
     }
@@ -1313,20 +1409,8 @@ class MessageDataService : Service, HasLocalStorage {
                     for message in badMessages {
                         badIDs.append(message.messageID)
                     }
-                    
-                    var temp: [String] = []
-                    for i in 0..<badIDs.count {
-                        if temp.count > 10 {
-                            self.fetchMetadata(with: temp)
-                            temp.removeAll()
-                        } else {
-                            temp.append(badIDs[i])
-                            continue
-                        }
-                    }
-                    if !temp.isEmpty {
-                        self.fetchMetadata(with: temp)
-                    }
+
+                    self.fetchMessageInBatches(messageIDs: badIDs)
                 }
             } catch let ex as NSError {
                 Analytics.shared.error(message: .purgeOldMessages,
@@ -1391,7 +1475,7 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 let completionWrapper: CompletionBlock = { task, response, error in
                     guard let mess = response else {
-                        if let err = error {
+                        if let err = error, !err.isBadVersionError {
                             Analytics.shared.error(message: .saveDraftError, error: err, user: self.usersManager?.firstUser)
                             NSError.alertSavingDraftError(details: err.localizedDescription)
                         }
@@ -1402,7 +1486,18 @@ class MessageDataService : Service, HasLocalStorage {
                     
                     guard let messageID = mess["ID"] as? String else {
                         // error: not ID field in response
-                        completion?(task, nil, error)
+                        let keys = Array(mess.keys)
+                        let messageIDError = NSError.badParameter("messageID")
+                        Analytics.shared.error(message: .saveDraftError,
+                                               error: messageIDError,
+                                               extra: ["dicKeys": keys],
+                                               user: self.usersManager?.firstUser)
+                        // The error is messageID missing from the response
+                        // But this is meanless to users
+                        // I think parse error is more understandable
+                        let parseError = NSError.unableToParseResponse("messageID")
+                        NSError.alertSavingDraftError(details: parseError.localizedDescription)
+                        completion?(task, nil, parseError)
                         return
                     }
                     
@@ -1477,7 +1572,7 @@ class MessageDataService : Service, HasLocalStorage {
                     }
                 }
                 
-                if message.isDetailDownloaded && message.messageID != "0" {
+                if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
                     let addr = userManager.messageService.fromAddress(message) ?? message.cachedAddress ?? userManager.messageService.defaultAddress(message)
                     let api = UpdateDraft(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
                     self.apiService.exec(route: api) { (task, response: UpdateDraftResponse) in
@@ -2036,8 +2131,17 @@ class MessageDataService : Service, HasLocalStorage {
                                                    "HasPlainText": sendBuilder.hasPlainText,
                                                    "HasMIME": sendBuilder.hasMime,
                                                    "HasAtt": attachments.count != 0],
-                                           user: self.usersManager?.firstUser)
+                                           user: self.usersManager?.getUser(byUserId: self.userID))
                 }
+                
+                if let _ = UUID(uuidString: message.messageID) {
+                    // Draft saved failed, can't send this message
+                    let parseError = NSError(domain: APIServiceErrorDomain,
+                                             code: APIErrorCode.badParameter,
+                                             localizedDescription: "Invalid ID")
+                    throw parseError
+                }
+                
                 
                 let sendApi = SendMessage(messageID: message.messageID,
                                           expirationTime: message.expirationOffset,
@@ -2082,13 +2186,9 @@ class MessageDataService : Service, HasLocalStorage {
                     //Debug info
                     status.insert(SendStatus.doneWithError)
                     
-                    if error?.code == 9001 {
-                        //here need let user to show the human check.
-                        sharedMessageQueue.isRequiredHumanCheck = true
+                    if error?.code == 15198 {
                         error?.alertSentErrorToast()
-                    } else if error?.code == 15198 {
-                        error?.alertSentErrorToast()
-                    }  else {
+                    } else if error?.code != 9001 {
                         error?.alertErrorToast()
                     }
                     NSError.alertMessageSentErrorToast()
@@ -2106,15 +2206,10 @@ class MessageDataService : Service, HasLocalStorage {
                 }
                 completion?(nil, nil, error)
             }.catch(policy: .allErrors) { (error) in
-                status.insert(SendStatus.exceptionCatched)
                 
                 let err = error as NSError
                 PMLog.D(error.localizedDescription)
-                if err.code == 9001 {
-                    //here need let user to show the human check.
-                    sharedMessageQueue.isRequiredHumanCheck = true
-                    NSError.alertMessageSentError(details: err.localizedDescription)
-                } else if err.code == 15198 {
+                if err.code == 15198 {
                     NSError.alertMessageSentError(details: err.localizedDescription)
                 } else if err.code == 15004 {
                     // this error means the message has already been sent
@@ -2140,7 +2235,7 @@ class MessageDataService : Service, HasLocalStorage {
                     self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
                     completion?(nil, nil, nil)
                     return
-                } else {
+                } else if err.code != 9001 {
                     NSError.alertMessageSentError(details: err.localizedDescription)
                 }
                 
@@ -2466,7 +2561,7 @@ class MessageDataService : Service, HasLocalStorage {
                     return self.contactDataService.cleanUp()
                 }.ensure {
                     lastUpdatedStore.clear()
-                    self.fetchMessages(byLable: Message.Location.inbox.rawValue, time: 0, forceClean: false) { (_, _, _) in
+                    self.fetchMessages(byLabel: Message.Location.inbox.rawValue, time: 0, forceClean: false) { (_, _, _) in
                         self.labelDataService.fetchLabels() {
                             self.contactDataService.fetchContacts { (_, error) in
                                 if error == nil {
@@ -2620,7 +2715,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
                                     for delete in deleted {
                                         let labelID = delete as! String
-                                        if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
+                                        if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
                                             let labelObjs = messageObject.mutableSetValue(forKey: "labels")
                                             if labelObjs.count > 0 {
                                                 labelObjs.remove(label)
@@ -2638,7 +2733,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 
                                 if let added = msg.message?["LabelIDsAdded"] as? NSArray {
                                     for add in added {
-                                        if let label = Label.labelForLableID(add as! String, inManagedObjectContext: context) {
+                                        if let label = Label.labelForLabelID(add as! String, inManagedObjectContext: context) {
                                             let labelObjs = messageObject.mutableSetValue(forKey: "labels")
                                             labelObjs.add(label)
                                             messageObject.setValue(labelObjs, forKey: "labels")
@@ -2729,12 +2824,30 @@ class MessageDataService : Service, HasLocalStorage {
                         PMLog.D(" error: \(String(describing: error))")
                     }
                 }
-                self.fetchMetadata(with: messagesNoCache)
+
+                self.fetchMessageInBatches(messageIDs: messagesNoCache)
+
                 DispatchQueue.main.async {
                     completion?(task, nil, error)
                     return
                 }
             }
+        }
+    }
+
+    private func fetchMessageInBatches(messageIDs: [String]) {
+        //split the api call in case there are too many messages
+        var temp: [String] = []
+        for i in 0..<messageIDs.count {
+            if temp.count > 20 {
+                self.fetchMetadata(with: temp)
+                temp.removeAll()
+            } else {
+                temp.append(messageIDs[i])
+            }
+        }
+        if !temp.isEmpty {
+            self.fetchMetadata(with: temp)
         }
     }
     
@@ -2873,7 +2986,7 @@ class MessageDataService : Service, HasLocalStorage {
                             switch(label.Action) {
                             case .some(IncrementalUpdateType.delete):
                                 if let labelID = label.ID {
-                                    if let dLabel = Label.labelForLableID(labelID, inManagedObjectContext: context) {
+                                    if let dLabel = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
                                         context.delete(dLabel)
                                     }
                                 }

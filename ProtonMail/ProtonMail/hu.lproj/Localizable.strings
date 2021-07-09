@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Összes levél";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Az app-ból kilépéssel minden biztonsági beállítás reset-elve és törölve lesz.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Alternatív útválasztó engedélyezése";
 
@@ -713,7 +716,7 @@
 "Draft" = "Piszkozat";
 
 /* title of toast message that user taps the message which is uploading */
-"Draft is still uploading..." = "Draft is still uploading...";
+"Draft is still uploading..." = "A piszkozat még feltöltés alatt...";
 
 /* menu title */
 "Drafts" = "Piszkozatok";
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Az iOS alkalmazásban nem lehet erre váltani: %@.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "Nem lehetséges az app-on belül előfizetést váltani. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "Tájékoztasson az új funkciókról";
 
@@ -1283,7 +1289,7 @@
 "Message %@" = "Üzenet %@";
 
 /* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.";
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Az üzenetet nem lehetett elküldeni. Legalább az egyik címzett e-mail címe vagy domainje nem létezik vagy rossz formátumú.";
 
 /* *
  *  Expiration View */
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "A PIN kód nem lehet üres.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Az előfizetéseket a webes változatban lehet szerkeszteni.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Kérjük, adjon meg jelszót a következő címzetteknek.";
@@ -1831,7 +1840,7 @@
 "Sending Message" = "Üzenet küldése";
 
 /* content of the sending mesage that will display this text on the date label */
-"Sending message..." = "Sending message...";
+"Sending message..." = "Üzenet küldése...";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Üzenetek küldése a %1$@ címről előfizetéshez kötött. Az Ön üzenete az %2$@, alapértelmezett címről lesz elküldve";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "Az új jelszó nem egyezik.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Az új jelszónak minimum 8 karakter hosszúságúnak kell lennie";
+
 /* (No Comment) */
 "The new password not match" = "A jelszavak nem egyeznek meg";
 
@@ -2182,6 +2194,12 @@
 /* action sheet option */
 "Turn Off" = "Kikapcsolás";
 
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Kapcsolja be ezt a funkciót az alkalmazás automatikus lezárásához és használjon PIN-kódot vagy FaceID-t a feloldáshoz.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Kapcsolja be ezt a funkciót az alkalmazás automatikus lezárásához és használjon PIN-kódot vagy ujjlenyomatot a feloldáshoz.";
+
 /* Title */
 "Tweet about ProtonMail" = "Tweeteljen a ProtonMailről";
 
@@ -2279,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Értesítési e-mail frissítése";
-
-/* title */
-"Update Now" = "Frissítés most";
-
-/* title */
-"Update Required" = "Frissítés szükséges";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Váltson előfizetéses csomagra, hogy több hasznos lehetőséghez férjen hozzá";

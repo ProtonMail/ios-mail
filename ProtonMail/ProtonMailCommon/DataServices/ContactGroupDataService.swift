@@ -131,7 +131,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                         // successfully deleted on the server
                         let context = self.coreDataService.mainManagedObjectContext
                         self.coreDataService.enqueue(context: context) { (context) in
-                            let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
+                            let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
                             if let label = label {
                                 context.delete(label)
                             }
@@ -176,7 +176,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                         PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
                         let context = self.coreDataService.mainManagedObjectContext
                         self.coreDataService.enqueue(context: context) { (context) in
-                            let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
+                            let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
                             
                             if let label = label,
                                 var newSet = label.emails as? Set<Email> {
@@ -236,7 +236,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                         
                         let context = self.coreDataService.mainManagedObjectContext
                         self.coreDataService.enqueue(context: context) { (context) in
-                            let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
+                            let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
                             
                             // remove only the email objects in the response
                             if let label = label, var newSet = label.emails as? Set<Email> {

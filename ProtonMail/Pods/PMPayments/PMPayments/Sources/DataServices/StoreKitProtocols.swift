@@ -48,7 +48,7 @@ public protocol StoreKitManagerProtocol: NSObjectProtocol {
     typealias FinishCallback = () -> Void
 
     func subscribeToPaymentQueue()
-    func isValidPurchase(identifier: String) -> Bool
+    func isValidPurchase(identifier: String, completion: @escaping (Bool) -> Void)
     func purchaseProduct(identifier: String, successCompletion: @escaping SuccessCallback, errorCompletion: @escaping ErrorCallback, deferredCompletion: FinishCallback?)
     func continueRegistrationPurchase(finishHandler: FinishCallback?)
     func updateAvailableProductsList()

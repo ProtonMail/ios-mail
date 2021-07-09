@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Όλα τα Μηνύματα";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Θα γίνει επαναφορά όλων των ρυθμίσεων προστασίας κατά την αποσύνδεση από την εφαρμογή.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Επιτρέψτε εναλλακτική δρομολόγηση";
 
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Δεν είναι δυνατό να μεταβείτε στο %@ μέσα στην εφαρμογή iOS.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "Δεν είναι δυνατή η μετάβαση σε άλλο πακέτο μέσα από την εφαρμογή. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "Κρατήστε με ενημερωμένο σχετικά με τις νέες λειτουργίες";
 
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "Το πεδίο κωδικού Pin δεν μπορεί να είναι κενό.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Μπορείτε να επεξεργαστείτε τα πακέτα στην έκδοση web.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Προσθέστε έναν κωδικό πρόσβασης για τους ακόλουθους παραλήπτες.";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "Ο νέος κωδικός δεν ταιριάζει.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Ο νέος κωδικός πρόσβασης θα πρέπει να έχει τουλάχιστον 8 χαρακτήρες";
+
 /* (No Comment) */
 "The new password not match" = "Οι κωδικοί πρόσβασης δεν ταιριάζουν";
 
@@ -2182,6 +2194,12 @@
 /* action sheet option */
 "Turn Off" = "Απενεργοποιήστε";
 
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Ενεργοποιήστε αυτήν τη λειτουργία για να κλειδώσετε αυτόματα την εφαρμογή σας και χρησιμοποιήστε έναν κωδικό PIN ή FaceID για να την ξεκλειδώσετε.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Ενεργοποιήστε αυτήν τη λειτουργία για να κλειδώσετε αυτόματα την εφαρμογή σας και χρησιμοποιήστε έναν κωδικό PIN ή δαχτυλικό αποτύπωμα για να την ξεκλειδώσετε.";
+
 /* Title */
 "Tweet about ProtonMail" = "Tweet σχετικά με το ProtonMail";
 
@@ -2279,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Ενημέρωση E-mail ειδοποίησης";
-
-/* title */
-"Update Now" = "Ενημέρωση Τώρα";
-
-/* title */
-"Update Required" = "Απαιτείται Ενημέρωση";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Αναβαθμίστε σε ένα λογαριασμό επί πληρωμής για να επωφεληθείτε από περισσότερες λειτουργίες";

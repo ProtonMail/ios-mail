@@ -170,7 +170,10 @@
 /* mail location desc
    mail location title
    menu title */
-"All Mail" = "Alle e-mails";
+"All Mail" = "Alle mails";
+
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Alle beskyttelsesindstillinger vil blive nulstillet og slettet ved log ud af appen.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Tillad alternativ routing";
@@ -710,16 +713,16 @@
 
 /* Action
    mail location desc */
-"Draft" = "Udkast";
+"Draft" = "Kladde";
 
 /* title of toast message that user taps the message which is uploading */
 "Draft is still uploading..." = "Kladde uploader stadig...";
 
 /* menu title */
-"Drafts" = "Udkast";
+"Drafts" = "Kladder";
 
 /* mail location title */
-"DRAFTS" = "KLADDER";
+"DRAFTS" = "Kladder";
 
 /* Action */
 "Edit" = "Redigér";
@@ -1123,6 +1126,9 @@
 
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Det er ikke muligt at skifte til %@ i iOS-app'en.";
+
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "Det er ikke muligt at svinge til et andet abonnement i appen. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Hold mig unnderrettet om nye funktioner";
@@ -1557,6 +1563,9 @@
 /* Description */
 "Pin code can't be empty." = "PIN-kode er obligatorisk.";
 
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Abonnementer kan redigeres på webversionen.";
+
 /* alert description */
 "Please add a password for the following recipients." = "Tilføj en adgangskode til flg. modtagere.";
 
@@ -1743,16 +1752,16 @@
 
 /* *
  *  Controller Defined */
-"Reply" = "Besvar";
+"Reply" = "Svar";
 
 /* reply all action */
-"Reply All" = "Besvar alle";
+"Reply All" = "Svar alle";
 
 /* composer view model impl */
 "Reply message" = "Svar på besked";
 
 /* (No Comment) */
-"ReplyAll" = "Svar på alle";
+"ReplyAll" = "Svar alle";
 
 /* menu title */
 "Report Bugs" = "Anmeld fejl";
@@ -1785,7 +1794,7 @@
 "Save Changes" = "Gem ændringer";
 
 /* Action */
-"Save draft" = "Gem udkast";
+"Save draft" = "Gem kladde";
 
 /* action sheet option */
 "Scheduled" = "Planlagt";
@@ -1837,10 +1846,10 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Afsendelse af beskeder fra en %1$@-adresse er en betalingsfunktion. Din besked afsendes via din standardadresse %2$@";
 
 /* menu title */
-"Sent" = "Afsendt";
+"Sent" = "Sendt";
 
 /* mail location title */
-"SENT" = "AFSENDT";
+"SENT" = "Sendt";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "Afsendt af ProtonMail med nuladgangskryptering";
@@ -1928,7 +1937,7 @@
 "Starred" = "Stjernemarkeret";
 
 /* "INBOX" */
-"STARRED" = "STJERNEMARKERET";
+"STARRED" = "Stjernemarkeret";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Starttidspunkt";
@@ -2045,6 +2054,9 @@
 
 /* update password error */
 "The new password does not match." = "Den nye adgangskode matcher ikke.";
+
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Den nye adgangskode skal være på minimum 8 tegn";
 
 /* (No Comment) */
 "The new password not match" = "Adgangskoder matcher ikke";
@@ -2182,6 +2194,12 @@
 /* action sheet option */
 "Turn Off" = "Slå Fra";
 
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Slå funktionen til for at autolåse din app og benytte PIN-kode eller Ansigts-ID til oplåsning af den.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Slå funktionen til for at autolåse din app og benytte PIN-kode eller fingeraftryk til oplåsning af den.";
+
 /* Title */
 "Tweet about ProtonMail" = "Tweet om ProtonMail";
 
@@ -2279,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Opdatér notifikations-e-mail";
-
-/* title */
-"Update Now" = "Opdatér nu";
-
-/* title */
-"Update Required" = "Opdatering kræves";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Opgradér til et abonnement for at udnytte flere funktioner";

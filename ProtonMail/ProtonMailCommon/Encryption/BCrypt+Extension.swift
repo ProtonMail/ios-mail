@@ -22,7 +22,7 @@
 
 
 import Foundation
-
+import OpenPGP
 
 func PMNBCrypt (password: String, salt: String) -> String {
     var hash_out : String = ""

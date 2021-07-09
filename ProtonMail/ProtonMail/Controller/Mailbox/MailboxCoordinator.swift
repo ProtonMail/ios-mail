@@ -196,7 +196,7 @@ class MailboxCoordinator : DefaultCoordinator {
             next.viewModel = CaptchaViewModelImpl(api: user.apiService)
             next.delegate = self.viewController
         case .folder:
-            guard let next = destination as? LablesViewController else {
+            guard let next = destination as? LabelsViewController else {
                 return false
             }
             
@@ -209,7 +209,7 @@ class MailboxCoordinator : DefaultCoordinator {
             next.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService, coreDataService: coreDataService)
             next.delegate = self.viewController
         case .labels:
-            guard let next = destination as? LablesViewController else {
+            guard let next = destination as? LabelsViewController else {
                 return false
             }
             guard let messages = sender as? [Message] else {

@@ -645,5 +645,14 @@ extension UserCachedStatus: ServicePlanDataStorage {
             self.setValue(newValue, forKey: Key.isIAPAvailableOnBE)
         }
     }
+    
+    var credits: Credits? {
+        get {
+            return nil
+        }
+        set {
+            
+        }
+    }
 }
 #endif

@@ -22,6 +22,7 @@
 
 
 import Foundation
+import OpenPGP
 
 class AppCacheService: Service {
     

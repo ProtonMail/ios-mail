@@ -27,14 +27,14 @@ class StorageViewCell: UITableViewCell {
 
     @IBOutlet weak var storageProgressBar: UIProgressView!
     
-    @IBOutlet weak var storageUsageDescriptionLable: UILabel!
+    @IBOutlet weak var storageUsageDescriptionLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         self.accessibilityLabel = "storageCell"
         
         if #available(iOS 10, *) {
-            storageUsageDescriptionLable.font = UIFont.preferredFont(forTextStyle: .footnote)
-            storageUsageDescriptionLable.adjustsFontForContentSizeCategory = true
+            storageUsageDescriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
+            storageUsageDescriptionLabel.adjustsFontForContentSizeCategory = true
         }
     }
     
@@ -52,6 +52,6 @@ class StorageViewCell: UITableViewCell {
         let progress: Float = Float(usedSpace) / Float(maxSpace)
         
         storageProgressBar.setProgress(progress, animated: false)
-        storageUsageDescriptionLable.text = "\(formattedUsedSpace)/\(formattedMaxSpace)"
+        storageUsageDescriptionLabel.text = "\(formattedUsedSpace)/\(formattedMaxSpace)"
     }
 }

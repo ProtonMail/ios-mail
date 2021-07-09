@@ -130,7 +130,7 @@ class MailboxViewModel: StorageLimit {
                 
                 if let updateTime = lastUpdatedStore.lastUpdate(by: self.labelID, userID: secondUser.userInfo.userId, context: self.coreDataService.mainManagedObjectContext),
                    updateTime.isNew == false, secondUser.messageService.isEventIDValid(context: self.coreDataService.mainManagedObjectContext) {
-                    secondUser.messageService.fetchEvents(byLable: self.labelID,
+                    secondUser.messageService.fetchEvents(byLabel: self.labelID,
                                                           notificationMessageID: nil,
                                                           context: self.coreDataService.mainManagedObjectContext,
                                                           completion: secondComplete)
@@ -139,12 +139,42 @@ class MailboxViewModel: StorageLimit {
                         secondUser.messageService.fetchMessagesWithReset(byLabel: self.labelID, time: 0, completion: secondComplete)
                     }
                     else {
-                        secondUser.messageService.fetchMessages(byLable: self.labelID,
+                        secondUser.messageService.fetchMessages(byLabel: self.labelID,
                                                                 time: 0,
                                                                 forceClean: false,
                                                                 completion: secondComplete)
                     }
                 }
+            }
+        }
+    }
+    
+    func forceRefreshMessagesForOthers() {
+        if fetchingMessageForOhters == false {
+            fetchingMessageForOhters = true
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                guard let users = self.users else { return }
+                guard let secondUser = users.get(not: self.user.userInfo.userId) else { return }
+                let secondComplete : CompletionBlock = { (task, res, error) -> Void in
+                    var loadMore: Int = 0
+                    if error == nil {
+                        if let more = res?["More"] as? Int {
+                            loadMore = more
+                        }
+                        if loadMore <= 0 {
+                            secondUser.messageService.updateMessageCount()
+                        }
+                    }
+                    
+                    if loadMore > 0 {
+                        //self.retry()
+                    } else {
+                        self.fetchingMessageForOhters = false
+                    }
+                }
+                
+                secondUser.messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: 0, completion: secondComplete)
             }
         }
     }
@@ -389,11 +419,11 @@ class MailboxViewModel: StorageLimit {
     }
     
     func fetchMessages(time: Int, foucsClean: Bool, completion: CompletionBlock?) {
-        messageService.fetchMessages(byLable: self.labelID, time: time, forceClean: foucsClean, completion: completion)
+        messageService.fetchMessages(byLabel: self.labelID, time: time, forceClean: foucsClean, completion: completion)
     }
     
     func fetchEvents(time: Int, notificationMessageID:String?, completion: CompletionBlock?) {
-        messageService.fetchEvents(byLable: self.labelID,
+        messageService.fetchEvents(byLabel: self.labelID,
                                    notificationMessageID: notificationMessageID,
                                    context: self.coreDataService.mainManagedObjectContext,
                                    completion: completion)
@@ -406,6 +436,10 @@ class MailboxViewModel: StorageLimit {
     ///   - completion: aync complete handler
     func fetchMessageWithReset(time: Int, completion: CompletionBlock?) {
         messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
+    }
+    
+    func fetchMessageOnlyWithReset(time: Int, completion: CompletionBlock?) {
+        messageService.fetchMessagesOnlyWithReset(byLabel: self.labelID, time: time, completion: completion)
     }
     
     func isEventIDValid() -> Bool {

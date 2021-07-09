@@ -1680,13 +1680,6 @@ class LocalizedString {
     
     lazy var _iap_bugreport_no = NSLocalizedString("No, not related to in-app purchase", comment: "Error message")
 
-    // Mark : Force Upgrade
-
-    /// "Update Required"
-    lazy var _update_required = NSLocalizedString("Update Required", comment: "title")
-    /// "Update Now"
-    lazy var _update_now = NSLocalizedString("Update Now", comment: "title")
-    
     // contact group
     lazy var _contacts_action_select_an_option = NSLocalizedString("Select An Option",
                                                                    comment: "The title for the popup list, presenting a list of options for creating a contact or creating a contact group")

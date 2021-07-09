@@ -174,7 +174,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         return Promise { seal in
             if self.isFetching == false {
                 self.isFetching = true
-                self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, context: self.coreDataService.mainManagedObjectContext, completion: { (task, res, error) in
+                self.messageService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, context: self.coreDataService.mainManagedObjectContext, completion: { (task, res, error) in
                     self.isFetching = false
                     if let error = error {
                         seal.reject(error)
@@ -202,7 +202,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private func fetchContacts() {
         if isFetching == false {
             isFetching = true
-            self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue,
+            self.messageService.fetchEvents(byLabel: Message.Location.inbox.rawValue,
                                             notificationMessageID: nil,
                                             context: self.coreDataService.mainManagedObjectContext,
                                             completion: { (task, res, error) in

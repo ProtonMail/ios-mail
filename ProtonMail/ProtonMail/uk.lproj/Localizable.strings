@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Уся пошта";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Усі параметри захисту будуть скинуті одразу після виходу з програми.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Дозволити альтернативну маршрутизацію";
 
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Неможливо перемкнутися на %@ в нашій програмі для iOS.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "Неможливо змінити тарифний план у програмі. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "Повідомляти про нові можливості";
 
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "ПІН не може бути порожнім.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Тарифні плани можна змінювати у вебверсії.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Додайте пароль для таких отримувачів.";
@@ -1992,10 +2001,10 @@
 "Take a Photo" = "Сфотографувати";
 
 /* alert description */
-"Tap send anyway to send without expiration to these recipients" = "Tap send anyway to send without expiration to these recipients";
+"Tap send anyway to send without expiration to these recipients" = "Торкніться Надіслати для надсилання без терміну дії цим отримувачам";
 
 /* network troubleshot cell title */
-"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+"Temporarily disable or remove your antivirus software." = "Тимчасово вимкніть чи вилучіть свою антивірусну програму.";
 
 /* agree check box terms */
 "terms and conditions" = "правила та умови";
@@ -2016,7 +2025,7 @@
 "The display name is now %@." = "Ім'я тепер %@.";
 
 /* Description */
-"The draft cache is broken. Please try again." = "The draft cache is broken. Please try again.";
+"The draft cache is broken. Please try again." = "Кеш чернетки пошкоджено. Будь ласка, спробуйте знову.";
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Не вдалося надіслати. Виникла помилка з форматом чернетки.";
@@ -2031,20 +2040,23 @@
 "The mailbox password is incorrect." = "Неправильний пароль поштової скриньки.";
 
 /* Alert message */
-"The maximum number of distinct recipients is %d" = "The maximum number of distinct recipients is %d";
+"The maximum number of distinct recipients is %d" = "Максимальна кількість окремих отримувачів %d";
 
 /* *
  *  LabelsViewController */
 "The maximum number of labels is %d." = "Максимальна кількість міток - %d.";
 
 /* update password error */
-"The new password can't be empty." = "The new password can't be empty.";
+"The new password can't be empty." = "Новий пароль не може бути порожнім.";
 
 /* (No Comment) */
 "The new password can't empty" = "Новий пароль не може бути порожнім";
 
 /* update password error */
-"The new password does not match." = "The new password does not match.";
+"The new password does not match." = "Паролі відрізняються.";
+
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Новий пароль має містити щонайменше 8 символів";
 
 /* (No Comment) */
 "The new password not match" = "Паролі відрізняються";
@@ -2062,7 +2074,7 @@
 "The passwords you entered do not match." = "Введені паролі відрізняються.";
 
 /* update password error */
-"The private key update failed." = "The private key update failed.";
+"The private key update failed." = "Не вдалося оновити приватний ключ.";
 
 /* Title */
 "The request timed out." = "Термін дії запиту завершився.";
@@ -2071,13 +2083,13 @@
 "The total attachment size can't be bigger than 25MB" = "Загальний розмір вкладень не може перевищувати 25МБ";
 
 /* Description */
-"The total attachment size cannot exceed 25MB" = "The total attachment size cannot exceed 25MB";
+"The total attachment size cannot exceed 25MB" = "Загальний обсяг вкладень не може перевищувати 25МБ";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL-адреса, яку ви намагаєтесь відвідати, нестандартна і може не завантажитися належним чином. Ви хочете відкрити її у своєму типовому браузері?";
 
 /* Alert when the account is already logged in */
-"The user is already logged in" = "The user is already logged in";
+"The user is already logged in" = "Користувач вже увійшов";
 
 /* (No Comment) */
 "The UserName have been taken." = "The username have been taken.";
@@ -2090,19 +2102,19 @@
 "The verification failed!" = "Перевірка не вдалася!";
 
 /* alert when logout user if in queue still have tasks */
-"There are still some messages in queue. If you log out, the draft will be deleted." = "There are still some messages in queue. If you log out, the draft will be deleted.";
+"There are still some messages in queue. If you log out, the draft will be deleted." = "В черзі все ще є повідомлення. Якщо ви вийдете, чернетку буде видалено.";
 
 /* Alert to confirm logout with pending message in the queue */
-"There are unsent messages that will be lost if you log out" = "There are unsent messages that will be lost if you log out";
+"There are unsent messages that will be lost if you log out" = "У вас є ненадіслані повідомлення, які будуть втрачені при виході";
 
 /* Description */
-"There was an error creating or loading the app's saved data." = "There was an error creating or loading the app's saved data.";
+"There was an error creating or loading the app's saved data." = "Сталася помилка при створенні чи завантаженні збережених даних програми.";
 
 /* local error */
 "There was an error creating or loading the application's saved data." = "Сталася помилка при створенні чи завантаженні збережених даних програми.";
 
 /* Alert message */
-"This can take a while. Please do not dismiss the app." = "This can take a while. Please do not dismiss the app.";
+"This can take a while. Please do not dismiss the app." = "Це може тривати деякий час. Не закривайте програму.";
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Цей контакт з вашої адресної книги.";
@@ -2114,25 +2126,25 @@
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Схоже, цей лист надіслано з адреси ProtonMail, але він прийшов з-за меж нашої системи та не відповідає нашим вимогам перевірки. Він може бути підроблений або неправильно пересланий!";
 
 /* spam score warning */
-"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.";
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Це повідомлення може бути спробою шахрайства. Перевірте відправника та вміст повідомлення, щоб переконатися в їх справжності.";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice will be uninstalled." = "This preference will fallback to Safari if the browser of choice will be uninstalled.";
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Цей параметр відкриватиме Safari, якщо вибраний браузер не встановлено.";
 
 /* contacts talbe cell Title title */
 "Title" = "Посада";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Не вдалося засвідчити сертифікат TLS. Ваше з'єднання може відстежуватись, тому задля вашої безпеки програма тимчасово заблокована.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Не вдалося засвідчити сертифікат TLS. Ваше з'єднання може відстежуватись, тому задля вашої безпеки програма тимчасово заблокована.\n\nнегайно перемкнути мережу";
 
 /* Title */
 "To" = "Кому";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\r\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Щоб запобігти зловживанню ProtonMail,\r\n нам необхідно переконатися, що ви людина.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Щоб скинути пароль поштової скриньки, скористайтеся вебверсією ProtonMail за адресою protonmail.com";
@@ -2177,10 +2189,16 @@
 "TroubleShooting" = "Усунення проблем";
 
 /* network troubleshot cell title */
-"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Try connecting to Proton from a different network (or use ProtonVPN or Tor).";
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Спробуйте під'єднатися до Proton з іншої мережі (абоо скористайтеся ProtonVPN чи Tor).";
 
 /* action sheet option */
 "Turn Off" = "Вимкнути";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Увімкніть цю функцію для автоматичного замкнення програми та використання ПІН чи FaceID для відмикання.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Увімкніть цю функцію для автоматичного замкнення програми та використання ПІН чи відбитку пальця для відмикання.";
 
 /* Title */
 "Tweet about ProtonMail" = "Твітнути про ProtonMail";
@@ -2207,10 +2225,10 @@
 "Unable to decrypt message." = "Неможливо розшифрувати повідомлення.";
 
 /* Description */
-"Unable to edit this message offline" = "Unable to edit this message offline";
+"Unable to edit this message offline" = "Неможливо редагувати це повідомлення поза мережею";
 
 /* Description */
-"Unable to generate hashed password!" = "Unable to generate hashed password!";
+"Unable to generate hashed password!" = "Неможливо генерувати хешований пароль!";
 
 /* Error */
 "Unable to get contacts" = "Не вдається отримати контакти";
@@ -2280,12 +2298,6 @@
 /* update notification email error title */
 "Update Notification Email" = "Оновити адресу для сповіщень";
 
-/* title */
-"Update Now" = "Оновити зараз";
-
-/* title */
-"Update Required" = "Необхідно оновити";
-
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Перейдіть на платний тарифний план, щоб отримати більше можливостей";
 
@@ -2299,7 +2311,7 @@
 "Upload Contacts" = "Вивантажити контакти";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Upload iOS contacts to ProtonMail?";
+"Upload iOS contacts to ProtonMail?" = "Вивантажити контакти iOS до ProtonMail?";
 
 /* default vcard types */
 "Url" = "URL-адреса";
@@ -2369,7 +2381,7 @@
 "We will send a verification code to the email address above." = "Ми надішлемо код підтвердження на адресу е-пошти, вказану вище.";
 
 /* The body of the iOS 10 upgrate alert */
-"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future.";
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "Ми невдовзі припинимо підтримку пристроїв з iOS 10. Будь ласка, оновіть операційну систему свого пристрою, щоб й надалі отримувати оновлення.";
 
 /* Title */
 "We would like to know what we can do better." = "Ми хотіли б знати, що ми можемо зробити краще.";
@@ -2393,7 +2405,7 @@
 "wrote:" = "пише:";
 
 /* Yes action */
-"Yes" = "Yes";
+"Yes" = "Так";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Так, увімкнути для ";
@@ -2402,10 +2414,10 @@
 "Yes, attach details of payment" = "Так, вкласти подробиці платежу";
 
 /* link opeining confirmation */
-"You are about to launch the web browser and navigate to" = "You are about to launch the web browser and navigate to";
+"You are about to launch the web browser and navigate to" = "Ви збираєтеся запустити браузер та перейти до";
 
 /* Alert of removing all accounts */
-"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?";
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Ви збираєтеся вилучити всі облікові записи. Ви не зможете отримати доступ до них з цього пристрою, доки не додасте їх знову.\n\nВи все одно хочете вилучити усі свої облікові записи?";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Ви можете налаштувати жести посування в параметрах ProtonMail.";
@@ -2414,13 +2426,13 @@
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Ви можете отримати допомогу та підтримку за посиланням protonmail.com/support. Про помилки можна повідомляти в програмі.";
 
 /* pm.me upgrade warning in composer */
-"You can't set %@ address as default because it is a paid feature." = "You can't set %@ address as default because it is a paid feature.";
+"You can't set %@ address as default because it is a paid feature." = "Ви не можете встановити адресу %@ типовою, тому що це платна функція.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in.";
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Ви вимкнули FaceID в параметрах системи. FaceID використовується для захисту важливої інформації облікового запису. Щоб отримати доступ до свого облікового запису, перейдіть до параметрів і повторно активуйте FaceID, або увійдіть знову.";
 
 /* description */
-"You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.";
+"You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Ви увімкнули термін дії повідомлення, але не всі отримувачі його підтримують. Щоб використати термін дії для всіх отримувачів, додайте пароль та/або вимкніть PGP-надсилання.";
 
 /* Message */
 "You have %d new emails!" = "У вас %d нових листів!";
@@ -2432,7 +2444,7 @@
 "You have unsaved changes. Do you want to save it?" = "У вас є незбережені зміни. Хочете зберегти їх?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "Ви використали %d%% свого дискового простору (%@).";
 
 /* *
  *  StorageLimit */
@@ -2446,16 +2458,16 @@
 "You will be switched to %@" = "Ви перемкнетеся на %@";
 
 /* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "You're going to delete the message irreversibly. Are you sure?";
+"You're going to delete the message irreversibly. Are you sure?" = "Ви збираєтеся остаточно видалити повідомлення. Ви впевнені?";
 
 /* view top title */
 "Your Country Code" = "Код вашої країни";
 
 /* network troubleshot cell title */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ваша країна може блокувати доступ до Proton. Спробуйте скористатися %1$@ (чи будь-який інший VPN) або %2$@ для доступу до Proton.";
 
 /* network troubleshot cell title */
-"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton.";
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Ваша країна може блокувати доступ до Proton. Спробуйте скористатися ProtonVPN (чи будь-який інший VPN) або Tor для доступу до Proton.";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Ваша поштова скринька тепер захищена наскрізним шифруванням. Для автоматичного захищеного листування зі своїми друзями, запросіть їх до ProtonMail! Ви також можете надсилати їм зашифровані листи, якщо вони не використовують ProtonMail.";
@@ -2465,16 +2477,16 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ваша нова зашифрована поштова скринька вже налаштована і готова до надсилання та отримання зашифрованих повідомлень.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Your new secure email\r\n account is ready.";
+"Your new secure email\r\n account is ready." = "Ваш новий обліковий запис\r\n захищеної електронної пошти готовий.";
 
 /* Service plan description footer */
-"Your plan is currently active until" = "Your plan is currently active until";
+"Your plan is currently active until" = "Ваш тарифний план активний до";
 
 /* Service plan description footer */
-"Your plan will automatically renew on" = "Your plan will automatically renew on";
+"Your plan will automatically renew on" = "Ваш тарифний план автоматично поновиться";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Термін дії вашого сеансу завершився, тому що ви були неактивні деякий час, або через відкликання доступу. Виконайте вхід знову.";
 
 /* Description */
 "Your signature has been updated." = "Ваш підпис було оновлено.";

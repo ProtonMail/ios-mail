@@ -110,7 +110,7 @@ extension Message {
     /// get messsage label ids
     ///
     /// - Returns: array
-    func getLableIDs() -> [String] {
+    func getLabelIDs() -> [String] {
         var labelIDs = [String]()
         let labels = self.labels
         for l in labels {
@@ -121,7 +121,7 @@ extension Message {
         return labelIDs
     }
     
-    func getNormalLableIDs() -> [String] {
+    func getNormalLabelIDs() -> [String] {
         var labelIDs = [String]()
         let labels = self.labels
         for l in labels {
@@ -137,7 +137,7 @@ extension Message {
     /// get the lable IDs with the info about exclusive
     ///
     /// - Returns: dict
-    func getLableIDs() -> [String: Bool] {
+    func getLabelIDs() -> [String: Bool] {
         var out : [String : Bool] = [String : Bool]()
         let labels = self.labels
         for l in labels {

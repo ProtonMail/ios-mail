@@ -50,7 +50,7 @@ class MultiLabelDisplayView: PMView {
         }
     }
     
-    func updateLablesDetails(_ labelView: LabelDisplayView, label: Label?) {
+    func updateLabelsDetails(_ labelView: LabelDisplayView, label: Label?) {
         if let label = label {
             if label.name.isEmpty || label.color.isEmpty {
                 //labelView.hidden = true;

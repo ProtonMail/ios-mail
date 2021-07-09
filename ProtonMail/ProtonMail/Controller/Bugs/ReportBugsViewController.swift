@@ -134,7 +134,7 @@ class ReportBugsViewController: ProtonMailViewController {
             MBProgressHUD.hide(for: v, animated: true)
             self.sendButton.isEnabled = true
             if let error = error {
-                guard !self.checkDoh(error) else {
+                guard !self.checkDoh(error), !error.isBadVersionError else {
                     return
                 }
                 let alert = error.alertController()

@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Toate mesajele";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Toate setările de protecție vor fi resetate și șterse după ce vă deconectați din aplicație.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Permite rută alternativă";
 
@@ -983,7 +986,7 @@
 "Go to login" = "Conectați-vă";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "Accesați setările";
+"Go to settings" = "Accesare setări";
 
 /* network troubleshot cell title */
 "Government block" = "Blocare națională";
@@ -1123,6 +1126,9 @@
 
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Nu este posibilă comutarea la %@ din aplicația iOS.";
+
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "Nu este posibilă schimbarea la un alt plan din cadrul aplicației. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Țineți-mă la curent cu noile caracteristici";
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "Codul PIN nu poate fi gol.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Planurile pot fi editate pe versiunea web.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Adăugați o parolă pentru pentru următorii destinatari.";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "Parolele noi nu sunt identice.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Parola nouă trebuie să aibă cel puțin 8 caractere";
+
 /* (No Comment) */
 "The new password not match" = "Parolele nu coincid";
 
@@ -2182,6 +2194,12 @@
 /* action sheet option */
 "Turn Off" = "Oprire";
 
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Activați această funcție pentru a bloca automat aplicația și un cod PIN sau FaceID pentru deblocare.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Activați această funcție pentru a bloca automat aplicația și un cod PIN sau amprentă pentru deblocare.";
+
 /* Title */
 "Tweet about ProtonMail" = "Scrieți pe Tweeter despre ProtonMail";
 
@@ -2279,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Actualizare e-mail de notificare";
-
-/* title */
-"Update Now" = "Actualizați acum";
-
-/* title */
-"Update Required" = "Actualizare necesară";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Treceți la un plan plătit pentru a beneficia de mai multe funcții";

@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Все письма";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Все настройки защиты будут сброшены и удалены после выхода из приложения.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Разрешить альтернативную маршрутизацию";
 
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Невозможно переключиться на %@ через наше приложение iOS.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "Невозможно перейти на другой план в приложении. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "Сообщайте мне о новых функциях";
 
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "PIN-код не может быть пустым.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Планы можно редактировать в веб-версии.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Пожалуйста, добавьте пароль для следующих получателей.";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "Новый пароль и его подтверждение не совпадают.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Длина пароля должна быть не менее 8 символов";
+
 /* (No Comment) */
 "The new password not match" = "Пароли не совпадают";
 
@@ -2182,6 +2194,12 @@
 /* action sheet option */
 "Turn Off" = "Отключить";
 
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Включите эту функцию для автоматической блокировки вашего приложения, и используйте PIN-код или FaceID для разблокировки.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Включите эту функцию для автоматической блокировки вашего приложения, и используйте PIN-код или отпечаток пальца для разблокировки.";
+
 /* Title */
 "Tweet about ProtonMail" = "Твитнуть о ProtonMail";
 
@@ -2279,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Обновить адрес эл. почты для уведомлений";
-
-/* title */
-"Update Now" = "Обновить сейчас";
-
-/* title */
-"Update Required" = "Требуется обновление";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Перейдите на платный тариф, чтобы получить преимущества от большего количества функций";

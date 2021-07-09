@@ -40,6 +40,8 @@ extension Message {
         
         static let messageType = "messageType"
         static let messageStatus = "messageStatus"
+
+        static let expirationTime = "expirationTime"
         
         // 1.9.1
         static let unRead = "unRead"
@@ -103,7 +105,7 @@ extension Message {
         
         if let context = self.managedObjectContext {
             let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
-            if let toLabel = Label.labelForLableID(addLabelID, inManagedObjectContext: context) {
+            if let toLabel = Label.labelForLabelID(addLabelID, inManagedObjectContext: context) {
                 var exsited = false
                 for l in labelObjs {
                     if let label = l as? Label {
@@ -128,7 +130,7 @@ extension Message {
     func setAsDraft() {
         if let context = self.managedObjectContext {
             let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
-            if let toLabel = Label.labelForLableID(Location.draft.rawValue, inManagedObjectContext: context) {
+            if let toLabel = Label.labelForLabelID(Location.draft.rawValue, inManagedObjectContext: context) {
                 var exsited = false
                 for l in labelObjs {
                     if let label = l as? Label {
@@ -143,7 +145,7 @@ extension Message {
                 }
             }
             
-            if let toLabel = Label.labelForLableID("1", inManagedObjectContext: context) {
+            if let toLabel = Label.labelForLabelID("1", inManagedObjectContext: context) {
                 var exsited = false
                 for l in labelObjs {
                     if let label = l as? Label {

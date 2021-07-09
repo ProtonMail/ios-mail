@@ -3,4 +3,4 @@
 	url = https://github.com/cure53/DOMPurify
 [submodule "Networking"]
 	path = Networking
-	url = git@gitlab.protontech.ch:apple/shared/pmnetworking
+	url = https://github.com/ProtonMail/ios-networking

@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Todo o correio";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Todas as definições de protecção serão limpas e repostas ao sair da aplicação.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Permitir redireccionamento alternativo";
 
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Não é possível mudar para %@ dentro da nossa aplicação iOS.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "Não é possível mudar para outro plano dentro da aplicação. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "Informem-me sobre novas funcionalidades";
 
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "O código PIN não pode estar vazio.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Os planos podem ser editados na versão web.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Por favor, adicione uma senha para os seguintes destinatários.";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "As senha inseridas não são idênticas.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "A senha deve ter pelo menos 6 caracteres";
+
 /* (No Comment) */
 "The new password not match" = "As senhas não coincidem";
 
@@ -2182,6 +2194,12 @@
 /* action sheet option */
 "Turn Off" = "Desactivar";
 
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Active esta funcionalidade para bloquear automaticamente a sua aplicação e utilize um PIN ou impressão digital para a desbloquear.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Active esta funcionalidade para bloquear automaticamente a sua aplicação e utilize um PIN ou impressão digital para a desbloquear.";
+
 /* Title */
 "Tweet about ProtonMail" = "Tweet sobre o ProtonMail";
 
@@ -2279,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Actualizar email de notificação";
-
-/* title */
-"Update Now" = "Actualizar agora";
-
-/* title */
-"Update Required" = "Actualização requerida";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Actualize para um plano pago para poder beneficiar de mais funcionalidades";

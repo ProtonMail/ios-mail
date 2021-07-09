@@ -223,6 +223,9 @@ extension AppDelegate: UIApplicationDelegate {
         } else {
             self.coordinator.start()
         }
+        #if DEBUG
+        setupUITestsMocks()
+        #endif
         return true
     }
     
@@ -524,3 +527,16 @@ extension AppDelegate : UnlockManagerDelegate {
         // should work via messages
     }
 }
+
+#if DEBUG
+extension AppDelegate {
+    private func setupUITestsMocks() {
+        let environment = ProcessInfo.processInfo.environment
+        if let _ = environment["HumanVerificationStubs"] {
+            HumanVerificationManager.shared.setupUITestsMocks()
+        } else if let _ = environment["ForceUpgradeStubs"] {
+            ForceUpgradeManager.shared.setupUITestsMocks()
+        }
+    }
+}
+#endif

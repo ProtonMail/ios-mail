@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Wszystkie wiadomości";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Po wylogowaniu się z aplikacji, wszystkie ustawienia ochrony zostaną zresetowane i usunięte.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Zezwalaj na alternatywne przekierowanie połączenia";
 
@@ -435,7 +438,7 @@
 "Change default address to .." = "Zmień domyślny adres na...";
 
 /* settings swipe actions section action description */
-"Change left swipe action" = "Zmień gest przesuwania w lewo";
+"Change left swipe action" = "Zmień gest przesunięcia w lewo";
 
 /* change password input label */
 "Change Login Password" = "Zmień hasło logowania";
@@ -450,7 +453,7 @@
 "Change Pin" = "Zmień kod PIN";
 
 /* settings swipe actions section action description */
-"Change right swipe action" = "Zmień gest przesuwania w prawo";
+"Change right swipe action" = "Zmień gest przesunięcia w prawo";
 
 /* Title */
 "Change sender address to .." = "Zmień adres nadawcy na...";
@@ -474,7 +477,7 @@
 "City" = "Miasto";
 
 /* settings general section title */
-"Clear Local Message Cache" = "Wyczyść pamięć podręczną wiadomości lokalnych";
+"Clear Local Message Cache" = "Wyczyść pamięć podręczną wiadomości";
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Wyczyść formatowanie";
@@ -805,7 +808,7 @@
 "Enable Pin Protection" = "Włącz ochronę kodem PIN";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Włącz kod PIN/FaceID";
+"Enable PIN/FaceID" = "Włącz kod PIN / FaceID ";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN/TouchID" = "Włącz kod PIN / Touch ID";
@@ -823,7 +826,7 @@
 "Encrypted for outside reply" = "Zaszyfrowane dla zewnętrznych odpowiedzi";
 
 /* Title */
-"Encrypted from outside" = "Zaszyfrowane z zewnątrz";
+"Encrypted from outside" = "Zaszyfrowana z zewnątrz";
 
 /* Title */
 "Encrypted from outside PGP inline" = "Zaszyfrowana z zewnątrz poprzez PGP/Inline";
@@ -1123,6 +1126,9 @@
 
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Zmiana na plan %@ poprzez aplikację iOS nie jest obsługiwana.";
+
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "Zmiana planu poprzez aplikację nie jest obsługiwana. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Informuj mnie o nowych funkcjach";
@@ -1436,7 +1442,7 @@
 "Notice" = "Uwaga";
 
 /* Title */
-"Notification / Recovery Email" = "Adres pomocniczy/powiadomień";
+"Notification / Recovery Email" = "Adres pomocniczy / powiadomień";
 
 /* Title */
 "Notification Email" = "Powiadomienia e-mail";
@@ -1500,7 +1506,7 @@
 "Password cannot be empty." = "Hasło nie może być puste.";
 
 /* cell title in device settings */
-"Password management" = "Menedżer haseł";
+"Password management" = "Zarządzaniem hasłem";
 
 /* Title */
 "Password Mismatch" = "Hasła nie pasują do siebie";
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "Kod PIN nie może być pusty.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Edytowanie planów jest dostępne przez przeglądarkę.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Dodaj hasło dla następujących odbiorców.";
@@ -1813,7 +1822,7 @@
 "Send message without subject?" = "Wysłać wiadomość bez tematu?";
 
 /* Title */
-"Send plain but stored enc" = "Wyślij w postaci otwartej, ale przechowuj w zaszyfrowanej";
+"Send plain but stored enc" = "Wyślij jako zwykły tekst, ale przechowuj w formie zaszyfrowanej";
 
 /* Title */
 "Send Verification Code" = "Wyślij kod weryfikacyjny";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "Nowe hasła nie pasują do siebie.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Hasło musi zawierać co najmniej 8 znaków";
+
 /* (No Comment) */
 "The new password not match" = "Hasła nie pasują do siebie";
 
@@ -2182,6 +2194,12 @@
 /* action sheet option */
 "Turn Off" = "Wyłącz";
 
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Włączenie tej funkcji zablokuje aplikację. Wymagane będzie użycie kodu PIN lub funkcji FaceID, aby ją odblokować.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Włączenie tej funkcji zablokuje aplikację. Wymagane będzie użycie kodu PIN lub odcisku palca, aby ją odblokować.";
+
 /* Title */
 "Tweet about ProtonMail" = "Tweetnij o ProtonMailu";
 
@@ -2228,14 +2246,14 @@
 "Unable to parse response" = "Nie można przetworzyć odpowiedzi";
 
 /* Description */
-"Unable to parse the response object:\n%@" = "Nie można przetworzyć tego obiektu odpowiedzi:\n%@";
+"Unable to parse the response object:\n%@" = "Nie można przetworzyć obiektu odpowiedzi:\n%@";
 
 /* alert title */
 "Unable to parse token" = "Nie można przetworzyć tokena";
 
 /* *
  *  MessageDataService */
-"Unable to send the email" = "Nie można wysłać wiadomości e-mail";
+"Unable to send the email" = "Nie można wysłać wiadomości.";
 
 /* Action */
 "Undo" = "Cofnij";
@@ -2279,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Zaktualizuj adres powiadomień";
-
-/* title */
-"Update Now" = "Zaktualizuj";
-
-/* title */
-"Update Required" = "Aktualizacja jest wymagana";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Ulepsz do płatnego planu, aby korzystać z większej liczby funkcji";
@@ -2348,7 +2360,7 @@
 "View HTML" = "Widok HTML";
 
 /* Action */
-"View Plans" = "Zobacz plany";
+"View Plans" = "Pokaż plany";
 
 /* Title */
 "Warning" = "Ostrzeżenie";
@@ -2375,7 +2387,7 @@
 "We would like to know what we can do better." = "Chcielibyśmy wiedzieć, co możemy zrobić lepiej.";
 
 /* Title */
-"Welcome to ProtonMail!" = "Witaj w ProtonMail";
+"Welcome to ProtonMail!" = "Witaj w ProtonMaili";
 
 /* Description */
 "What people see in the \"From\" field." = "To, co odbiorca widzi w polu \"Od\".";
@@ -2432,7 +2444,7 @@
 "You have unsaved changes. Do you want to save it?" = "Masz niezapisane zmiany. Czy chcesz je zapisać?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "Wykorzystujesz %d%% przestrzeni dyskowej (%@).";
+"You have used %d%% of your storage space (%@)." = "Używasz %d%% przestrzeni dyskowej (%@).";
 
 /* *
  *  StorageLimit */

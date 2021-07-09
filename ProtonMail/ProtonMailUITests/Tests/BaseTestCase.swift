@@ -17,12 +17,19 @@ class BaseTestCase: XCTestCase {
     let app = XCUIApplication()
     var launchArguments = ["-clear_all_preference", "YES"]
     let testData = TestData()
+    var humanVerificationStubs = false
+    var forceUpgradeStubs = false
     
     override func setUp() {
         super.setUp()
         app.terminate()
         continueAfterFailure = false
         app.launchArguments = launchArguments
+        if humanVerificationStubs {
+            app.launchEnvironment["HumanVerificationStubs"] = "1"
+        } else if forceUpgradeStubs {
+            app.launchEnvironment["ForceUpgradeStubs"] = "1"
+        }
         app.launch()
         handleInterruption()
         
@@ -45,7 +52,7 @@ class BaseTestCase: XCTestCase {
     func handleInterruption() {
         var flag = false
         addUIInterruptionMonitor(withDescription: "Handle system alerts") { (alert) -> Bool in
-            let buttonLabels = ["Allow Access to All Photos", "Don’t Allow", "OK"]
+            let buttonLabels = ["Allow Access to All Photos", "Don’t Allow", LocalString._general_ok_action, LocalString._hide]
             for (_, label) in buttonLabels.enumerated() {
                 let element = alert.buttons[label].firstMatch
                 if element.exists {

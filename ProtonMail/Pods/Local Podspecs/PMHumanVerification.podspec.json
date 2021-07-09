@@ -1,0 +1,44 @@
+{
+  "name": "PMHumanVerification",
+  "version": "1.0.0",
+  "summary": "PMHumanVerification framework",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/ProtonMail/ios-forceupgrade",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Greg": "grzegorz.biegaj@protonmail.com"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.10"
+  },
+  "swift_versions": [
+    "5.0"
+  ],
+  "source": {
+    "git": "https://github.com/ProtonMail/ios-humanverification.git",
+    "tag": "1.0.0"
+  },
+  "source_files": "PMHumanVerification/Sources/**/*.{h,m,swift}",
+  "resource_bundles": {
+    "Resources-HV": [
+      "PMHumanVerification/Sources/**/*.{xib,storyboard,xcassets,geojson}"
+    ]
+  },
+  "exclude_files": "Classes/Exclude",
+  "dependencies": {
+    "PMCommon": [
+
+    ],
+    "PMUIFoundations": [
+
+    ],
+    "PMCoreTranslation": [
+
+    ]
+  },
+  "swift_version": "5.0"
+}

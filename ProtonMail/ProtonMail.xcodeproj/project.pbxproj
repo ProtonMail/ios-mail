@@ -167,6 +167,7 @@
 		13994C5C41A68EF791656462769BFFF4 /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 14F9568A88F8951E16C13659E130542C /* editor.css */; };
 		13C7DC28728D738A4A44B81151FDA2F3 /* MessageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E79798EF9EFDC06A9602AEDA36F519 /* MessageAPI.swift */; };
 		13C85B16671D62B6BCE376C84FC9F84A /* ContactDetailsDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539074996CE23757D22112375FC84A40 /* ContactDetailsDisplayCell.swift */; };
+		13D6BC21951FCB848768E2B1698EE730 /* HumanVerificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C839A90180EF329A196905032A668 /* HumanVerificationTests.swift */; };
 		13D7C2EF8DB7A54FF4C709972D7D6D38 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0274395474CC1045787FCCB2815446EB /* APIResponse.swift */; };
 		14058CBC4B1B03FBFB6E795354DDE837 /* LabelUpdate+Var+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C0E41C40732B45C409A90B2BA762CE /* LabelUpdate+Var+Extension.swift */; };
 		14346E6FF9EB1D75199D8F7DAF30E2C6 /* PhotoAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */; };
@@ -278,6 +279,7 @@
 		21A22D014CF6CB1EB6C5D86F919A7795 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		21C61585CCE300557EEB115B8866C89E /* MultiLabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E60FC91F733F0C899B8269CF3D0E7D /* MultiLabelDisplayView.xib */; };
 		220085D197AF2A60E944FFFA28A9B949 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6FB7A9464582BFE7709A9BFE7B9EF1 /* SettingsTableViewController.swift */; };
+		2233F795F71F5E732F4C35AC78408EAE /* HumanVerificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDDD7A7370D0C2BF1085CABF3EFEF56 /* HumanVerificationManager.swift */; };
 		2234B5637B079ED9D93926E8778D70EE /* OpenPGPDefines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7367FEA62FD3BC6409047F164033C09E /* OpenPGPDefines.swift */; };
 		22525A0B070282B8ECC472862DF1DA42 /* ComposeContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725761D634B18B26A40AECAE90E517B7 /* ComposeContainerViewCoordinator.swift */; };
 		2261FD68733AFD33ED2FFEAD6C08AFA5 /* SettingsRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5430DBF2FDD531A57B9CC2748B8E9F7 /* SettingsRobot.swift */; };
@@ -412,6 +414,7 @@
 		318D6A4EB5A542980147C3D7DDDCB961 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA36F62FC193FD9B79943EDBC1E64B97 /* Dictionary+Extension.swift */; };
 		319971DFAE78C684178F6F43C2FE2B01 /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D92DEE740435769B951F10DDEACF596 /* Email.swift */; };
 		319B417BCB53C99F20213C7311746D41 /* SettingsLockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F184F5E623173C0B5F53ED9D924E549 /* SettingsLockViewModel.swift */; };
+		31A6B604287850920A93432BA499335B /* HumanVerificationRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F90D6FAF4BED65BC239834A9A46418E /* HumanVerificationRobot.swift */; };
 		31BCDC020EF7877E2727797C936574FD /* Label+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E467CCACC05F98A905583E5C070A1 /* Label+Extension.swift */; };
 		31C092E9ED13659927E978318413AFE6 /* LabelUpdate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E339161AB614E4FEE415473D46117E /* LabelUpdate+Extension.swift */; };
 		31C64CEE09B1836D31E616AAD138135D /* ServiceLevel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 437553B32C1B4E43F061343518A57D5D /* ServiceLevel.storyboard */; };
@@ -546,7 +549,6 @@
 		44338554D399CC6B3888A218C865FB05 /* NotificationCenter+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B924404B24EC8056D1E834431E6614 /* NotificationCenter+KeyboardExtension.swift */; };
 		4450AF55BD9DDBD939CCF32E2D877A50 /* LabelEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F316188242477E404DB5C128DA38712 /* LabelEditViewController.swift */; };
 		44B343F18132FF5605E3F365CC6AD337 /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
-		44BA9354B7960F0D530F15A528A1A2F4 /* ForceUpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AA9CD05E95098F2E1A5F5ADED547BF /* ForceUpgradeView.swift */; };
 		44C252A90EBE0F1DF3CF5C408C7C7A04 /* BioAuthenticating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB44CB6D5A2E50712713374FC6B482C /* BioAuthenticating.swift */; };
 		44D5B94E288F1DFB58B401F5C310ADAE /* ContactGroupSelectEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868B9DB322FDF331F2E057421684798D /* ContactGroupSelectEmailViewModel.swift */; };
 		44D9562BF3BFD11754EE64C1A9858052 /* ShareUnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9124F85553079D292C10B6135CE2CD /* ShareUnlockPinCodeModelImpl.swift */; };
@@ -697,6 +699,7 @@
 		53A25777BE3320B7FE5A4F458B272A3A /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8C577A5F3B3CB7F718420FF1C7FCB0 /* UserTempCachedStatus.swift */; };
 		5456D28DAA72FA380E90D950AC8DA532 /* MessageQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B142492E7764F95AE62A0DC0372EAB /* MessageQueue.swift */; };
 		545861DB23CE6D71850E553CBF10BC67 /* StorefrontCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9C5E235DFE3343462EF534F416108 /* StorefrontCollectionViewController.swift */; };
+		548E52F7370C329D6EF003C30BDE9B64 /* ForceUpgradeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67802797AF090C7172BF539FCEE9E222 /* ForceUpgradeManager.swift */; };
 		5491FE95A070E551D5908BF7215CEC23 /* BioCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */; };
 		54C83EB89CFDAC7DBA83DFC1B3E758F4 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D359947F79BF6B029DC3D1D35D9C4B3 /* UITableView+Extension.swift */; };
 		54D74C2891D2A676F8CB823B7F60248B /* DurationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872DE11A0429812CCE064954F853C7D5 /* DurationPickerViewController.swift */; };
@@ -883,7 +886,6 @@
 		6A0E256F2AD0A8BD02B861A2D114302E /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4A5F1C9B9B429AB005131084CC1554 /* KeychainWrapper.swift */; };
 		6A231C121B65B738854D06059DD601E3 /* ContactGroupsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4EE54A268109D2981B1AF1C57F7040 /* ContactGroupsViewCell.swift */; };
 		6A25D4621BD0EA344CA63038F536C166 /* SettingsLockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557EDDD2F75D3AD64D8574EC4EF51077 /* SettingsLockCoordinator.swift */; };
-		6A378C62A3EFD64B079D027DBE5CFDD3 /* ForceUpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AA9CD05E95098F2E1A5F5ADED547BF /* ForceUpgradeView.swift */; };
 		6A4E96B40AEA073453C285E358C25D71 /* MessageAttachmentsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47904ABCB915E53DA53742D106A9D21 /* MessageAttachmentsCoordinator.swift */; };
 		6A5FF586DA4AACA25910507A29055BB1 /* EncryptionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300A42E73CE48B7B3B4F8A70ABFA3C /* EncryptionKit.swift */; };
 		6AAE2C6D91DAE0C565346D4817CE5301 /* DomainAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6B6DA72FC64376C0F63D8E75593A09 /* DomainAPI.swift */; };
@@ -1015,6 +1017,7 @@
 		799780FD5F2FA1EA8AF1CF17E727BFC8 /* MoveToFolderRobotInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FF1154F52F79C4A09B508E85C2CF09 /* MoveToFolderRobotInterface.swift */; };
 		79A6618BF1520085B23A22DE625650C8 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		79A8AD48860F7F790C22A8CD98D5FDEC /* SwipeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C325968088FD68E27D9274AE99D4BB /* SwipeAction.swift */; };
+		79E77BCF74708AA2F1D684BC50367043 /* HumanVerificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDDD7A7370D0C2BF1085CABF3EFEF56 /* HumanVerificationManager.swift */; };
 		79F766AA44BA18DDF8B4FAA4FF6D098B /* AccountManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073B805E29F045E01C02F8707CDCA382 /* AccountManagerViewController.swift */; };
 		79F8C671E737174FD00BFC55BDDDC156 /* LabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3E9A265BC9A4B517966D356B1B3711 /* LabelViewModel.swift */; };
 		7A06EE5559FF30B9F4194C4C20DA6894 /* ContactGroupsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4EE54A268109D2981B1AF1C57F7040 /* ContactGroupsViewCell.swift */; };
@@ -1127,7 +1130,6 @@
 		888052BD938AEC8A1B291D6DE2143022 /* SettingsGesturesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970048A9C65B4A39A882ECD6742D1B4C /* SettingsGesturesCoordinator.swift */; };
 		8884F57E7501757C12651DE4D8442A02 /* LinkOpeningMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006B4EB43FF5EB36A9D584477B9777C9 /* LinkOpeningMode.swift */; };
 		889A9738E20467DBD5B490E1CEA8F3BC /* SettingsGestureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AA750B6B171EF6759553F4F16CF1C9 /* SettingsGestureViewModel.swift */; };
-		889EEE1EDADB651B4FA530B58904F6AE /* ForceUpgradeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D9667E37D3C989F4A573929F329B87D /* ForceUpgradeView.xib */; };
 		88A1F5419E81730BED3A992B25CA7E06 /* QuotedPrintable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0869F01BF78BFA135AF9E1654905D3A9 /* QuotedPrintable.swift */; };
 		88A65111ABCFED5CA208235F73E78EAE /* UpgradeAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642BAB85BF31A87E9AE6400AB84E65CF /* UpgradeAlertViewModel.swift */; };
 		88AF0A78EE71F93D2D2A4F58CB7A8DCD /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5285D8EEFAB67EE756E374E86D04AF5 /* MessageDetailBottomView.xib */; };
@@ -1429,7 +1431,6 @@
 		AD3FC9A8281D52D92DD6AB2AC337BBE4 /* Otp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5DB3F8B4300F56E6B07717CFD02181 /* Otp.swift */; };
 		AD6BC462886581D44928BD3E102FDABE /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDEEB4FE40AE05D69323DFE6EBD375E /* String+Empty.swift */; };
 		ADA1DEE8C30AEA46B9CADF452C3C5792 /* ComposeContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA79CC603CE1C8009B44AFF554E984A /* ComposeContainerViewModel.swift */; };
-		ADA70D31EA51254CB5EE9DE928D34FB4 /* ForceUpgradeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D9667E37D3C989F4A573929F329B87D /* ForceUpgradeView.xib */; };
 		ADE5C94F5057C65080C219518A266625 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57CA6DB7B96640D8E5ADE7AA38DAEB4 /* AddressBookService.swift */; };
 		AE1C2969342BBAD48DAA1C8DCE1D69D2 /* UserCachedStatus+NotificationSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EFB2E7F66C228E239E6B8C080B2355 /* UserCachedStatus+NotificationSnoozerCore.swift */; };
 		AE3A658C03AFFB900A9DE60B22430701 /* LabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8F91DDC0A969EA9035A26B837BFF4 /* LabelsView.swift */; };
@@ -1663,6 +1664,7 @@
 		CBBC66B9B0AF04741A70B75B8669A8B4 /* ContactGroupEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C87CB8247C927A6A9D72F57CD09704E /* ContactGroupEditViewController.swift */; };
 		CBE5BDE9E77343AE8779654051141F0C /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F092E325F64EA09A865FC4BB1A07EED /* IntentHandler.swift */; };
 		CBEAA70C5F5707909B5CC2A5FEA29D68 /* ContactEditPhoneCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6AC93EA817E53F80A6B7F61686052 /* ContactEditPhoneCell.swift */; };
+		CBF5999097B0DB9193A3EBFD0DF2491C /* ForceUpgradeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47766CA349BFE22B92120E6D8B41889 /* ForceUpgradeTests.swift */; };
 		CC2EBDBACFDEEEA59D39624EE3907C93 /* TableContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1DE9C31FB59BEBDEABDC93DA9E0A71 /* TableContainerViewModel.swift */; };
 		CC3DB70813C01D33892530589099992B /* FolderEditingViewModelImpl .swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFA497449313ED051B5B07C37A12D5B /* FolderEditingViewModelImpl .swift */; };
 		CC3FFDED562D1CD26FFDBAE9C50049E6 /* VCard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03341659B0BBA12D8FF7BDBEF9C7CEB7 /* VCard+Extension.swift */; };
@@ -1981,6 +1983,7 @@
 		EDDBA2FA01E62287DC64ED7BA4099DBB /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680AA287FBEF2802C1CC7D4471321EF3 /* URL+Extension.swift */; };
 		EDE761D3F5EE9171EA5FC0A86C9AEB97 /* PasswordExtension.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5DCE1A915445A08E86CB35521431F753 /* PasswordExtension.strings */; };
 		EE204F148344F07B7BC89F40B3B76D98 /* LabelUpdate+Var+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C0E41C40732B45C409A90B2BA762CE /* LabelUpdate+Var+Extension.swift */; };
+		EE509427E10FF9F458663C4C243EAF79 /* ForceUpgradeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67802797AF090C7172BF539FCEE9E222 /* ForceUpgradeManager.swift */; };
 		EE8A43CF7C379CFC1675C80D8EA14801 /* SharePinUnlockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578306A989094FC9AA14DDBF059C4A3 /* SharePinUnlockCoordinator.swift */; };
 		EE90A6AC40F9DDC748A9F9E9AC0936E2 /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7737039039B0057CB8287F7A03624B /* Compare.swift */; };
 		EE929D9A66FC3CCE296CD5240C7DAC44 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFE3868B0060D33182C2D17832CAF5F /* APIService.swift */; };
@@ -2360,6 +2363,7 @@
 		1E1D2C6642E07C8BB129A67146BE1541 /* SignupViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModelImpl.swift; sourceTree = "<group>"; };
 		1F2A28C85A4CFD1E37A659CFE55DBE2D /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		1F37FA268CD248ACD827C2188DAB3F5F /* SettingsNotificationsSnoozeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsSnoozeTableViewController.swift; sourceTree = "<group>"; };
+		1F90D6FAF4BED65BC239834A9A46418E /* HumanVerificationRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationRobot.swift; sourceTree = "<group>"; };
 		1FE7FDAAD86D92DCBC19CC95E76B0EBC /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		1FFA17DEB32E13FA0D4754550343FD80 /* FolderCreatingViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderCreatingViewModelImpl.swift; sourceTree = "<group>"; };
 		20457356B822B4AA92822E628FF5B525 /* ServicePlanHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServicePlanHeader.xib; sourceTree = "<group>"; };
@@ -2428,6 +2432,7 @@
 		2C0080FCFB0CEDD8EE94686C388FF476 /* KeysAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeysAPITests.swift; sourceTree = "<group>"; };
 		2C1C49FACBAAF24D0FEE27BBB85179CA /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		2C445D4A6832BC7E1EF9B9E416D3FE6B /* PMNIBirthday+FormattedBirthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PMNIBirthday+FormattedBirthday.swift"; sourceTree = "<group>"; };
+		2CDDD7A7370D0C2BF1085CABF3EFEF56 /* HumanVerificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationManager.swift; sourceTree = "<group>"; };
 		2CFB8736687A7913C94C156D188BF283 /* ContactsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModelImpl.swift; sourceTree = "<group>"; };
 		2D87C40DA6D84670B62DCCA74D00A8C6 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		2D92DEE740435769B951F10DDEACF596 /* Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
@@ -2462,6 +2467,7 @@
 		338B5030AA2AC5D7A9B5F4BCE1CDEEA0 /* CoreDataStoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStoreTest.swift; sourceTree = "<group>"; };
 		3399221AA081E74249939780EA537FD0 /* PMDocumentPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMDocumentPickerViewController.swift; sourceTree = "<group>"; };
 		34198E539CEA034BEB0FDCCE8CAF0FD1 /* Deeplinkable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deeplinkable.swift; sourceTree = "<group>"; };
+		3445A867EE99176F3A3A26FD43859C7A /* ForceUpgradeTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ForceUpgradeTests.xctestplan; sourceTree = "<group>"; };
 		34AF9D982968623754ABB144B312AA6A /* SettingsPrivacyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewModel.swift; sourceTree = "<group>"; };
 		35790F4AAF6A1A3818D5B89F5049B7D3 /* CoreDataCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataCacheTests.swift; sourceTree = "<group>"; };
 		35FFA6941585C1A3968EFF2FFC1080F6 /* MultiSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiSet.swift; sourceTree = "<group>"; };
@@ -2666,6 +2672,7 @@
 		66C6DA59C08DB69AC664D5D8D0ECB14F /* Alerts.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Alerts.storyboard; sourceTree = "<group>"; };
 		66ECFE85614856773C0AB02A79A1B127 /* TextInsetTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInsetTextField.swift; sourceTree = "<group>"; };
 		675FBF79D40CC09DA975E382018E27B6 /* InfoDev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
+		67802797AF090C7172BF539FCEE9E222 /* ForceUpgradeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceUpgradeManager.swift; sourceTree = "<group>"; };
 		67EC1DC2D18907F7965D542F99DC7A68 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/PasswordExtension.strings"; sourceTree = "<group>"; };
 		680AA287FBEF2802C1CC7D4471321EF3 /* URL+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
 		687C050F04EF01856E07749C85013212 /* LabelUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelUpdate.swift; sourceTree = "<group>"; };
@@ -2737,7 +2744,6 @@
 		75FFC0F937D149117E07B6ADFEF9186F /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
 		760C5DA9DF82644FD4A749CF84130A95 /* String+Toast+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Toast+Extension.swift"; sourceTree = "<group>"; };
 		7627FEBF2F33A575273ACF9A8A0AA738 /* SettingsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAPI.swift; sourceTree = "<group>"; };
-		76AA9CD05E95098F2E1A5F5ADED547BF /* ForceUpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceUpgradeView.swift; sourceTree = "<group>"; };
 		76C59E968B84EFA98595260E397FD856 /* ContactGroupSubSelectionViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSubSelectionViewModelImpl.swift; sourceTree = "<group>"; };
 		7701811CC159E155675343DC85A414BD /* NetworkTroubleShootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTroubleShootCoordinator.swift; sourceTree = "<group>"; };
 		77470A28987E8BF0D25380DCA11EE454 /* DateFormatter+VCardBirthdayTextFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+VCardBirthdayTextFormatterTests.swift"; sourceTree = "<group>"; };
@@ -2787,6 +2793,7 @@
 		84A90610267786480D43EC567B4FD014 /* ContactGroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewController.swift; sourceTree = "<group>"; };
 		84C3061765AA5BFC7FF721EFC7610C5E /* EmailAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAttachmentView.swift; sourceTree = "<group>"; };
 		8505C937DDDAA8247647EF72CB03D9B7 /* ProtonMail-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtonMail-Bridging-Header.h"; sourceTree = "<group>"; };
+		850C839A90180EF329A196905032A668 /* HumanVerificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationTests.swift; sourceTree = "<group>"; };
 		85778E8AEBF289AD3818C95FD0AA550F /* MenuUserViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuUserViewCell.swift; sourceTree = "<group>"; };
 		85850442C4864AE9C5F562412AEE815A /* ShareExtensionEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareExtensionEntry.swift; sourceTree = "<group>"; };
 		85CB18A8436A71ED72AD8D63463EBE2E /* SettingsLockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLockViewController.swift; sourceTree = "<group>"; };
@@ -2897,7 +2904,6 @@
 		9CFE3868B0060D33182C2D17832CAF5F /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = APIService.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9D2DF54E18BEB8D52362623451A13350 /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		9D3541C080FEB2E40FF2EC49FBD12E8E /* InboxRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxRobot.swift; sourceTree = "<group>"; };
-		9D9667E37D3C989F4A573929F329B87D /* ForceUpgradeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForceUpgradeView.xib; sourceTree = "<group>"; };
 		9DB1C20863F2073B64B8819A059F313F /* Onboarding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		9DF670755650E5DD985579607F574B57 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		9DF88A834B12464DF1599E364D514B85 /* HumanCheckMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckMenuViewController.swift; sourceTree = "<group>"; };
@@ -3169,6 +3175,7 @@
 		E3F1904E81CADB25323AA62B5C0D4F3F /* ContactFieldType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFieldType.swift; sourceTree = "<group>"; };
 		E423BA75545AFD73B1251514EBE7B1DE /* LabelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		E44E8C94EC355ADF770FAB0226BEC145 /* SettingsWeekdaysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWeekdaysTableViewController.swift; sourceTree = "<group>"; };
+		E47766CA349BFE22B92120E6D8B41889 /* ForceUpgradeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceUpgradeTests.swift; sourceTree = "<group>"; };
 		E4809B81E683764D08E1015C74ED8F26 /* ServerNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerNotice.swift; sourceTree = "<group>"; };
 		E4C4F07D733569C6EA6A8183961F81DB /* AccountManagerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagerCoordinator.swift; sourceTree = "<group>"; };
 		E5D43C34BA636164CB98130F1336206B /* AppCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCacheService.swift; sourceTree = "<group>"; };
@@ -3223,6 +3230,7 @@
 		F354A5C8ACB31FED58BE89174ACEE85F /* Pods-KeymakerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeymakerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KeymakerTests/Pods-KeymakerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F384FA7CE20BA83BDC21976A4F87CBAF /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F3D58FCADAE9651A7DC590F95D05A02F /* config.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = config.yml; path = ../../../.circleci/config.yml; sourceTree = "<group>"; };
+		F3E3D3399252D761E7F8B5C787F21142 /* HumanVerificationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = HumanVerificationTests.xctestplan; sourceTree = "<group>"; };
 		F3FFB4D121498650CDD8BDAAFC74E192 /* CameraAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAttachmentProvider.swift; sourceTree = "<group>"; };
 		F43024EF08BDFF50854961057184F509 /* Locale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locale.swift; sourceTree = "<group>"; };
 		F5285D8EEFAB67EE756E374E86D04AF5 /* MessageDetailBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageDetailBottomView.xib; sourceTree = "<group>"; };
@@ -3398,6 +3406,8 @@
 				48C7A0F9BCC6AC42892A9E6B5DF67120 /* CoreDataStore.swift */,
 				338B5030AA2AC5D7A9B5F4BCE1CDEEA0 /* CoreDataStoreTest.swift */,
 				DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */,
+				67802797AF090C7172BF539FCEE9E222 /* ForceUpgradeManager.swift */,
+				2CDDD7A7370D0C2BF1085CABF3EFEF56 /* HumanVerificationManager.swift */,
 				475371327F0AFA5EBE8C9E572ADC90F5 /* KeyManager.swift */,
 				2407BF5796C9E19D445712F8FD6D18A2 /* LabelsDataService.swift */,
 				9E8B4288C5616BC0386F1E7673A353E7 /* LocalNotificationService.swift */,
@@ -3439,12 +3449,22 @@
 			path = AttachmentProviders;
 			sourceTree = "<group>";
 		};
+		01E25AA7A544F657747507CCD7A7FE22 /* HumanVerification */ = {
+			isa = PBXGroup;
+			children = (
+				1F90D6FAF4BED65BC239834A9A46418E /* HumanVerificationRobot.swift */,
+			);
+			path = HumanVerification;
+			sourceTree = "<group>";
+		};
 		02423C8683D1F61352E4CB6C1F49AB36 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				A7081D7BD43E6D25BFF6342BBBAF0F47 /* Composer */,
 				294973B01BBF6D11B2350E979CA8C4AE /* Contacts */,
 				073D1FC81ECA32ECB65DA4B15292FECA /* Drafts */,
+				B516AAEF508B0C70FAD271F2A385E20C /* ForceUpgrade */,
+				CA165A78D1719AFCC0E3317C159965C3 /* HumanVerification */,
 				B1F874B764C3FFBF854B6DBF731EB8F6 /* LabelFolder */,
 				1C1B82D542CF2D686015AD43EC12C5AE /* Login */,
 				66C245856B49003030A4B5C4955E9C72 /* Logout */,
@@ -3828,8 +3848,6 @@
 				215A2C4F86BB7CF8BD48A4132F16CB0E /* BioCodeView.swift */,
 				7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */,
 				0D3F8063AC2797A497E3780E5689868D /* DropLandingZone.swift */,
-				76AA9CD05E95098F2E1A5F5ADED547BF /* ForceUpgradeView.swift */,
-				9D9667E37D3C989F4A573929F329B87D /* ForceUpgradeView.xib */,
 				D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */,
 				C0A6A9213EBF556CB9344EDEDD80B021 /* LabelDisplayView.xib */,
 				5AE81D376E0F8F347F32607EFABE1337 /* LoadingView.swift */,
@@ -4183,6 +4201,7 @@
 			isa = PBXGroup;
 			children = (
 				BB7137B300E4ACFB8BE4699916420080 /* Contacts */,
+				01E25AA7A544F657747507CCD7A7FE22 /* HumanVerification */,
 				2D9A977C19BC17895B2218C72087E6B1 /* Login */,
 				A388D761FF6BC38A6D811A0FAC3A331F /* Mailbox */,
 				0CE59C23C85E4F44C4AAD88EB046503C /* ManageAccounts */,
@@ -4848,6 +4867,14 @@
 			path = AccountManager;
 			sourceTree = "<group>";
 		};
+		B516AAEF508B0C70FAD271F2A385E20C /* ForceUpgrade */ = {
+			isa = PBXGroup;
+			children = (
+				E47766CA349BFE22B92120E6D8B41889 /* ForceUpgradeTests.swift */,
+			);
+			path = ForceUpgrade;
+			sourceTree = "<group>";
+		};
 		B6FD76AB266683499B9986D35CAD0B10 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -4994,6 +5021,8 @@
 				8392D6E1ACBF3D68B6A6D94AB3C9017E /* AccountSettingsTests.xctestplan */,
 				285DA90EB8315B2399A7795C332C07D8 /* ContactsTests.xctestplan */,
 				75D1203C161177BE76D251869F58DE1B /* DraftsTests.xctestplan */,
+				3445A867EE99176F3A3A26FD43859C7A /* ForceUpgradeTests.xctestplan */,
+				F3E3D3399252D761E7F8B5C787F21142 /* HumanVerificationTests.xctestplan */,
 				7CEA3AF34A844F0A3C330A4AC5D6D158 /* LabelsFoldersTests.xctestplan */,
 				6D83506BBDC6E44B57939DD37118B91A /* LoginTests.xctestplan */,
 				949094E72422CC8D946443C0DA57603A /* LogoutTests.xctestplan */,
@@ -5062,6 +5091,14 @@
 				28FA25E2EEE3FC1EFAACBC1CA95424E9 /* ReportBugsViewController.swift */,
 			);
 			path = Bugs;
+			sourceTree = "<group>";
+		};
+		CA165A78D1719AFCC0E3317C159965C3 /* HumanVerification */ = {
+			isa = PBXGroup;
+			children = (
+				850C839A90180EF329A196905032A668 /* HumanVerificationTests.swift */,
+			);
+			path = HumanVerification;
 			sourceTree = "<group>";
 		};
 		CA606DAC9EE0274B8332C64D2C79C415 /* General */ = {
@@ -5595,6 +5632,7 @@
 				FC0C0B7EA8A8FBB727A5ADE1E1495779 /* Sources */,
 				2B857D75F91317177E8959F47BA20486 /* Frameworks */,
 				62D3021FF0F850AB3DDA2E25EAFA4C1B /* Resources */,
+				FD69D6C7B0EBFBFD87338C14572B81DA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -6032,7 +6070,6 @@
 				4C278335DF8F682CB41DDBE437E35276 /* DurationPickerViewController.xib in Resources */,
 				78F95849907F2D42532CF5AE1BEC2123 /* ExpirationView.xib in Resources */,
 				DE25A58F063F9553B41A12F653064371 /* ExpirationWarningHeaderCell.xib in Resources */,
-				ADA70D31EA51254CB5EE9DE928D34FB4 /* ForceUpgradeView.xib in Resources */,
 				A20CA81EF0D00E50A6F350B15253B0D8 /* GeneralSettingActionCell.xib in Resources */,
 				9D8AA94044019EE989862A88469971C1 /* GeneralSettingViewCell.xib in Resources */,
 				2F502E26FF1CB0F6178CA27F2FF94E92 /* HtmlEditor.css in Resources */,
@@ -6109,7 +6146,6 @@
 				B5B27CCDF8981984DEA0C92B2AC56FB5 /* DurationPickerViewController.xib in Resources */,
 				E2D4C9A8E9CEF40C493D1FDFE6896434 /* ExpirationView.xib in Resources */,
 				DD80543BA11F118055C8ED60F0C025EE /* ExpirationWarningHeaderCell.xib in Resources */,
-				889EEE1EDADB651B4FA530B58904F6AE /* ForceUpgradeView.xib in Resources */,
 				3AA3CB72CF7DE62B020F41B963C98FAA /* GeneralSettingActionCell.xib in Resources */,
 				88726C426B9D5CED48CBB851DEBA9717 /* GeneralSettingViewCell.xib in Resources */,
 				611B705D8210806CBB9FEFBD436C98BF /* HtmlEditor.css in Resources */,
@@ -6445,9 +6481,13 @@
 				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PMChallenge/PMChallenge.framework",
 				"${BUILT_PRODUCTS_DIR}/PMCommon/PMCommon.framework",
 				"${BUILT_PRODUCTS_DIR}/PMCoreTranslation/PMCoreTranslation.framework",
+				"${BUILT_PRODUCTS_DIR}/PMForceUpgrade/PMForceUpgrade.framework",
+				"${BUILT_PRODUCTS_DIR}/PMHumanVerification/PMHumanVerification.framework",
+				"${BUILT_PRODUCTS_DIR}/PMUIFoundations/PMUIFoundations.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -6456,6 +6496,7 @@
 				"${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
 				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenPGP/OpenPGP.framework/OpenPGP",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -6469,9 +6510,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMChallenge.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCommon.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCoreTranslation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMForceUpgrade.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMHumanVerification.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMUIFoundations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -6480,6 +6525,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyGif.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenPGP.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -6496,12 +6542,14 @@
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenPGP/OpenPGP.framework/OpenPGP",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenPGP.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -6539,9 +6587,13 @@
 				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PMChallenge/PMChallenge.framework",
 				"${BUILT_PRODUCTS_DIR}/PMCommon/PMCommon.framework",
 				"${BUILT_PRODUCTS_DIR}/PMCoreTranslation/PMCoreTranslation.framework",
+				"${BUILT_PRODUCTS_DIR}/PMForceUpgrade/PMForceUpgrade.framework",
+				"${BUILT_PRODUCTS_DIR}/PMHumanVerification/PMHumanVerification.framework",
+				"${BUILT_PRODUCTS_DIR}/PMUIFoundations/PMUIFoundations.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -6550,6 +6602,7 @@
 				"${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
 				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenPGP/OpenPGP.framework/OpenPGP",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -6563,9 +6616,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMChallenge.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCommon.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCoreTranslation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMForceUpgrade.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMHumanVerification.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMUIFoundations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -6574,6 +6631,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyGif.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenPGP.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -6729,6 +6787,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n";
+		};
+		FD69D6C7B0EBFBFD87338C14572B81DA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/PMCoreTranslation/PMCoreTranslation.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMCoreTranslation.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -7054,7 +7130,7 @@
 				CC3DB70813C01D33892530589099992B /* FolderEditingViewModelImpl .swift in Sources */,
 				D16D95D7A6A4D03761B972DB3A60341A /* FolderboxViewModelImpl.swift in Sources */,
 				A07D710E56B39CF6A9E9F94E5511CE24 /* Fonts.swift in Sources */,
-				44BA9354B7960F0D530F15A528A1A2F4 /* ForceUpgradeView.swift in Sources */,
+				548E52F7370C329D6EF003C30BDE9B64 /* ForceUpgradeManager.swift in Sources */,
 				450818E1FCADD68E679DEDEAAA97676D /* Foundation+Extension.swift in Sources */,
 				64B71D4524861CCE5DA02014EB54FFAB /* General2FAViewModelImpl.swift in Sources */,
 				86C0E2F7D1FB1BF7AE46580117DAC976 /* GeneralSettingActionCell.swift in Sources */,
@@ -7070,6 +7146,7 @@
 				E2262DD9802E8E9A5098D0422C7F5E7C /* HtmlEditorBehaviour.swift in Sources */,
 				182298E9BC1F3776F5E21A4AD4C3FB8B /* HumanCheckMenuViewController.swift in Sources */,
 				5C56480223AC89083A884B0C44D0D525 /* HumanCheckViewModel.swift in Sources */,
+				2233F795F71F5E732F4C35AC78408EAE /* HumanVerificationManager.swift in Sources */,
 				4535DD66CB9FA2CA18B6CD30828102E9 /* IBDesignableLabeled.swift in Sources */,
 				872A3181F118ABDED530F7CC0DDDC89E /* ImageProcessor.swift in Sources */,
 				75D447D16FCAACFC84F4EFC27B57F25A /* Images.swift in Sources */,
@@ -7630,7 +7707,7 @@
 				C7CFB07D275EFCC8033DD8DB1A37CF88 /* FolderEditingViewModelImpl .swift in Sources */,
 				5BF9AB9C4FBCDDF4DE40718C16406DFF /* FolderboxViewModelImpl.swift in Sources */,
 				0F4558D5FC030B10CF54D2B09FA18E49 /* Fonts.swift in Sources */,
-				6A378C62A3EFD64B079D027DBE5CFDD3 /* ForceUpgradeView.swift in Sources */,
+				EE509427E10FF9F458663C4C243EAF79 /* ForceUpgradeManager.swift in Sources */,
 				3ABF24A184F0084019B954FFBCD990B8 /* Foundation+Extension.swift in Sources */,
 				97FEA651880A7FAB26C1A6790BB3A75F /* General2FAViewModelImpl.swift in Sources */,
 				037FABCFA3B05F82C3A9BAE59E48915D /* GeneralSettingActionCell.swift in Sources */,
@@ -7646,6 +7723,7 @@
 				5C9D929AC4E00B2C65AF6A3AFCFF378A /* HtmlEditorBehaviour.swift in Sources */,
 				8E92CE63B52F73319FE979EA0041C232 /* HumanCheckMenuViewController.swift in Sources */,
 				23E0B58144CA677A5148535CD7A0B801 /* HumanCheckViewModel.swift in Sources */,
+				79E77BCF74708AA2F1D684BC50367043 /* HumanVerificationManager.swift in Sources */,
 				B64EC1A2585E39DD52D5EB07E6F59D46 /* IBDesignableLabeled.swift in Sources */,
 				75E3E625A137E008ACDC04C18E18120D /* ImageProcessor.swift in Sources */,
 				E8259C3D148E34E4DADFE58E853515FA /* Images.swift in Sources */,
@@ -8640,8 +8718,11 @@
 				9720B2B85C2D4C1E23E2A6F28D8EEA83 /* DraftsRobot.swift in Sources */,
 				76F645C4CDB4BC11EFBA5E84561CC8BE /* DraftsTests.swift in Sources */,
 				671C4E531F5B7E16DFE870F28521EE8D /* Element.swift in Sources */,
+				CBF5999097B0DB9193A3EBFD0DF2491C /* ForceUpgradeTests.swift in Sources */,
 				5091F7FA0F8D52D8013CCF0449D055D4 /* ForwardMessageTests.swift in Sources */,
 				CED67CF1B9ECEE6B99076CA7E729D2CD /* GroupDetailsRobot.swift in Sources */,
+				31A6B604287850920A93432BA499335B /* HumanVerificationRobot.swift in Sources */,
+				13D6BC21951FCB848768E2B1698EE730 /* HumanVerificationTests.swift in Sources */,
 				1F7A82432384AF322FDA7AA2F20C1C2F /* ImageGalleryRobot.swift in Sources */,
 				969474F5DD65897C3E131A08DF023B7E /* InboxRobot.swift in Sources */,
 				815FC30A13170D962D9F7642BA9CF3A2 /* LabelFolderRobot.swift in Sources */,
@@ -8960,7 +9041,6 @@
 				INFOPLIST_FILE = Siri/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
@@ -9024,7 +9104,6 @@
 				INFOPLIST_FILE = Siri/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Siri;
@@ -9054,7 +9133,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.mail.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9088,7 +9166,6 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9123,7 +9200,6 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9156,7 +9232,6 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Siri/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
@@ -9192,7 +9267,6 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Siri/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.SiriDev;
@@ -9231,7 +9305,6 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;
@@ -9301,6 +9374,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = "";
+				MARKETING_VERSION = 1.15.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -9333,7 +9407,6 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;
@@ -9373,7 +9446,6 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.14.0;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -9433,6 +9505,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = "";
+				MARKETING_VERSION = 1.15.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail-Bridging-Header.h";
@@ -9466,7 +9539,6 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9496,7 +9568,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = Push/InfoDev.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9523,7 +9594,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.mail.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9555,7 +9625,6 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Siri/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.SiriDev;
@@ -9598,7 +9667,6 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9652,7 +9720,6 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9661,7 +9728,6 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
@@ -9702,7 +9768,6 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9745,7 +9810,6 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9802,7 +9866,6 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9811,7 +9874,6 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
@@ -9847,7 +9909,6 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9880,7 +9941,6 @@
 				INFOPLIST_FILE = Siri/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Siri;
@@ -9910,7 +9970,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = Push/InfoDev.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9974,7 +10033,6 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.14.0;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -10000,7 +10058,6 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -10009,7 +10066,6 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
@@ -10052,7 +10108,6 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -10092,7 +10147,6 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -10122,7 +10176,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.mail.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -10181,6 +10234,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = "";
+				MARKETING_VERSION = 1.15.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail-Bridging-Header.h";
@@ -10242,7 +10296,6 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.14.0;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -10273,7 +10326,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = Push/InfoDev.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.14.0;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -10310,7 +10362,6 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.14.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;

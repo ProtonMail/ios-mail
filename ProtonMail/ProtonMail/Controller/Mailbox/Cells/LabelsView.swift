@@ -121,7 +121,7 @@ class LabelsView: PMView {
         leftLabelView.lineBreakMode = .byTruncatingTail
     }
     
-    func configLables (_ leftText : String, labels : [Label]?) {
+    func configLabels (_ leftText : String, labels : [Label]?) {
         self.sender = leftText
         var tmplabels : [Label] = []
         if let alllabels = labels {

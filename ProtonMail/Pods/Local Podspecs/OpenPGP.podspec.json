@@ -1,31 +1,18 @@
 {
   "name": "OpenPGP",
-  "version": "1.0.5",
+  "version": "1.1.1",
   "summary": "OpenPGP iOS library for ProtonMail.",
   "description": "The OpenPGP iOS library for the ProtonMail app.",
   "homepage": "http://protonmail.ch",
   "license": "ProtonMail",
   "authors": "Yanfeng Zhang",
-  "platforms": {
-    "ios": "9.0"
-  },
-  "source_files": "include/OpenPGP/*.h",
-  "public_header_files": "include/OpenPGP/*.h",
-  "header_dir": "OpenPGP",
-  "preserve_paths": "libs/libOpenPGP.a",
-  "libraries": [
-    "OpenPGP",
-    "z",
-    "bz2"
-  ],
-  "vendored_libraries": "libs/libOpenPGP.a",
-  "dependencies": {
-    "OpenSSL": [
-
-    ]
-  },
   "source": {
     "git": ".",
     "commit": ""
-  }
+  },
+  "platforms": {
+    "ios": "10.0",
+    "osx": "10.12"
+  },
+  "vendored_frameworks": "OpenPGP.xcframework"
 }

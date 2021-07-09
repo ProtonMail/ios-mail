@@ -90,10 +90,10 @@
 "Add accounts" = "Ajouter des comptes";
 
 /* new contacts add Anniversary */
-"Add Anniversary" = "Ajouter une date de mariage";
+"Add Anniversary" = "Ajouter un anniversaire";
 
 /* new contacts add Birthday */
-"Add Birthday" = "Ajouter une date d'anniversaire";
+"Add Birthday" = "Ajouter une date de naissance";
 
 /* Contacts add new contact */
 "Add Contact" = "Ajouter un contact";
@@ -105,7 +105,7 @@
 "Add Folder" = "Ajouter un dossier";
 
 /* new contacts add Gender */
-"Add Gender" = "Ajouter un sexe";
+"Add Gender" = "Ajouter un genre";
 
 /* The title for the contact group creation view */
 "Add Group" = "Ajouter un groupe";
@@ -171,6 +171,9 @@
    mail location title
    menu title */
 "All Mail" = "Tous les messages";
+
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Tous les paramètres de protection seront réinitialisés et effacés lors de la déconnexion de l'application.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Autoriser le routage alternatif";
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Il n'est pas possible de passer à %@ depuis notre application iOS.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "Il n'est pas possible de basculer vers une autre offre depuis l'application. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "M'informer des nouvelles fonctionnalités";
 
@@ -1159,7 +1165,7 @@
 "Labels, Folders, Filters & More" = "Labels, Dossiers, Filtres & plus";
 
 /* Title */
-"Labels/Folders" = "Labels / Dossiers";
+"Labels/Folders" = "Labels/Dossiers";
 
 /* Title */
 "Language" = "Langue";
@@ -1314,7 +1320,7 @@
 "Message sent" = "Message envoyé";
 
 /* Title */
-"Message Swipe Actions" = "Actions de balayage";
+"Message Swipe Actions" = "Actions de balayage pour les messages";
 
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Il est possible de mettre en place un délai d'expiration après lequel les messages que vous envoyez s'effacent automatiquement.";
@@ -1342,7 +1348,7 @@
 "Move to All Mail" = "Déplacer vers Tous les messages";
 
 /* move action */
-"Move to Archive" = "Archiver";
+"Move to Archive" = "Déplacer vers les archives";
 
 /* move action */
 "Move to Draft" = "Déplacer vers Brouillons";
@@ -1351,16 +1357,16 @@
 "Move to Folder" = "Déplacer vers Dossier";
 
 /* "Trash" */
-"Move to Inbox" = "Déplacer vers Boîte de réception";
+"Move to Inbox" = "Déplacer dans la boîte de réception";
 
 /* move action */
-"Move to Outbox" = "Déplacer vers Boîte d'envoi";
+"Move to Outbox" = "Déplacer dans la boîte d'envoi";
 
 /* move action */
-"Move to Spam" = "Déplacer vers Spam";
+"Move to Spam" = "Déplacer dans les indésirables";
 
 /* move action */
-"Move to Trash" = "Déplacer vers Corbeille";
+"Move to Trash" = "Déplacer dans la corbeille";
 
 /* Title */
 "Move to..." = "Déplacer vers...";
@@ -1442,13 +1448,13 @@
 "Notification Email" = "Adresse électronique de secours";
 
 /* title of action sheet */
-"Notification Snooze" = "Ne pas déranger";
+"Notification Snooze" = "Report de notification";
 
 /* VoiceOver description */
-"Notifications Are Snoozed" = "Les notifications sont interrompues";
+"Notifications Are Snoozed" = "Les notifications sont reportées";
 
 /* VoiceOver description */
-"Notifications Snooze Off" = "Interruption des notifications désactivé";
+"Notifications Snooze Off" = "Report des notifications désactivé";
 
 /* *
  *  ReportBugsViewController */
@@ -1543,7 +1549,7 @@
 
 /* *
  *  Attachment table ViewController */
-"Photo Library" = "Galerie";
+"Photo Library" = "Photothèque";
 
 /* device settings auto lock type title */
 "PIN" = "PIN";
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "Le code PIN ne peut pas être vide.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Les abonnements peuvent être modifiés depuis la version Web.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Veuillez ajouter un mot de passe pour les destinataires suivants.";
@@ -1897,10 +1906,10 @@
 "Snoozed for" = "Reporté pendant";
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
-"Snoozed till" = "Interrompu jusqu'à";
+"Snoozed till" = "Reporté jusqu'à";
 
 /* (No Comment) */
-"Space Warning" = "Alerte Espace de stockage";
+"Space Warning" = "Avertissement d'espace de stockage";
 
 /* mail location desc
    menu title */
@@ -1910,7 +1919,7 @@
 "SPAM" = "SPAM";
 
 /* Description */
-"Spammed" = "Spammé";
+"Spammed" = "Indésirable";
 
 /* Error */
 "SRP Client" = "Client SRP";
@@ -1943,7 +1952,7 @@
 "Storage" = "Espace de stockage";
 
 /* Title */
-"Storage Warning" = "Alerte Stockage";
+"Storage Warning" = "Avertissement de stockage";
 
 /* encryption lock description */
 "Stored with zero access encryption" = "Stocké avec un chiffrement zéro accès";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "Le nouveau mot de passe et sa confirmation ne correspondent pas.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Le nouveau mot de passe doit comporter au moins 8 caractères";
+
 /* (No Comment) */
 "The new password not match" = "Les mots de passe ne correspondent pas";
 
@@ -2111,7 +2123,7 @@
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Ce courriel a échoué aux exigences d'authentification de son domaine. Il a peut être été falsifié ou transmis de manière incorrecte !";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ce courriel semble provenir d'une adresse ProtonMail mais ne provient pas de notre système et a échoué aux exigences d'authentification. Il a peut-être été falsifié ou transmis de manière incorrecte !";
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ce courriel semble provenir d'une adresse ProtonMail, mais ne provient pas de notre système et a échoué aux exigences d'authentification. Il a peut-être été falsifié ou transmis de manière incorrecte !";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ce message peut être une tentative d'hameçonnage. Veuillez vérifier l'expéditeur et le contenu pour vous assurer qu'ils sont légitimes.";
@@ -2181,6 +2193,12 @@
 
 /* action sheet option */
 "Turn Off" = "Désactiver";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Activez cette fonctionnalité pour verrouiller automatiquement votre application et utilisez un code PIN ou FaceID pour la déverrouiller.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Activez cette fonctionnalité pour verrouiller automatiquement votre application et utilisez un code PIN ou une empreinte digitale pour la déverrouiller.";
 
 /* Title */
 "Tweet about ProtonMail" = "Tweeter au sujet de ProtonMail";
@@ -2279,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Mettre à jour l'adresse électronique de secours";
-
-/* title */
-"Update Now" = "Mettre à jour maintenant";
-
-/* title */
-"Update Required" = "Mise à jour nécessaire";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Souscrivez à une offre payante pour bénéficier de plus de fonctionnalités";

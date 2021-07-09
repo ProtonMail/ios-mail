@@ -43,7 +43,7 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
     @IBOutlet weak var userNameNoteLabel: UILabel!
     @IBOutlet weak var agreementButton: UIButton!
     @IBOutlet weak var termsButton: UIButton!
-    @IBOutlet weak var andLable: UILabel!
+    @IBOutlet weak var andLabel: UILabel!
     @IBOutlet weak var privacyButton: UIButton!
     
     //define
@@ -73,6 +73,7 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
     fileprivate var stopLoading : Bool = false
     fileprivate var agreePolicy : Bool = true
     fileprivate var moveAfterCheck : Bool = false
+    fileprivate var startCreateAccount = false
     
     var viewModel : SignupViewModel!
     
@@ -108,7 +109,7 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
         userNameNoteLabel.text = LocalString._notes_the_username_is_also_your_protonmail_address
         agreementButton.setTitle(LocalString._notes_by_using_protonmail_you_agree_to_our, for: .normal)
         termsButton.setTitle(LocalString._notes_terms_and_conditions, for: .normal)
-        andLable.text = LocalString._and
+        andLabel.text = LocalString._and
         privacyButton.setTitle(LocalString._privacy_policy, for: .normal)
         createAccountButton.setTitle(LocalString._signup_create_account_action, for: .normal)
         
@@ -199,6 +200,10 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
     }
     
     @IBAction func createAccountAction(_ sender: UIButton) {
+        defer {
+            startCreateAccount = false
+        }
+        startCreateAccount = true
         dismissKeyboard()
         MBProgressHUD.showAdded(to: view, animated: true)
         if agreePolicy {
@@ -330,7 +335,9 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
     }
     
     @IBAction func editEnd(_ sender: UITextField) {
-        checkUserName();
+        if !startCreateAccount {
+            checkUserName()
+        }
     }
     
     func checkUserName() {

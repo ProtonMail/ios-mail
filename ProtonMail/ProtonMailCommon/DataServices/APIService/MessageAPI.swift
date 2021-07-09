@@ -477,7 +477,7 @@ final class SendMessage : Request {
             plainTextAddress["Body"] = self.plainTextDataPacket
             plainTextAddress["MIMEType"] = "text/plain"
             
-            if let cb = self.clearPlainTextBody {
+            if let cb = self.clearPlainTextBody, plainTextPackage.contains(where: { $0.type != .intl }) {
                 // Include only if cleartext recipients
                 plainTextAddress["BodyKey"] = [
                     "Key" : cb.key,
@@ -485,7 +485,7 @@ final class SendMessage : Request {
                 ]
             }
             
-            if let cAtts = clearAtts {
+            if let cAtts = clearAtts, plainTextPackage.contains(where: { $0.type != .intl }) {
                 // Only include if cleartext recipients, optional if no attachments
                 var atts : [String:Any] = [String:Any]()
                 for it in cAtts {
@@ -516,7 +516,7 @@ final class SendMessage : Request {
             htmlAddress["Body"] = self.body
             htmlAddress["MIMEType"] = "text/html"
             
-            if let cb = clearBody {
+            if let cb = clearBody, htmlPackage.contains(where: { $0.type != .intl }) {
                 // Include only if cleartext recipients
                 htmlAddress["BodyKey"] = [
                     "Key" : cb.key,
@@ -524,7 +524,7 @@ final class SendMessage : Request {
                 ]
             }
             
-            if let cAtts = clearAtts {
+            if let cAtts = clearAtts, htmlPackage.contains(where: { $0.type != .intl }) {
                 // Only include if cleartext recipients, optional if no attachments
                 var atts : [String:Any] = [String:Any]()
                 for it in cAtts {
@@ -553,7 +553,7 @@ final class SendMessage : Request {
             mimeAddress["Body"] = mimeDataPacket
             mimeAddress["MIMEType"] = "multipart/mixed"
             
-            if let cb = clearMimeBody {
+            if let cb = clearMimeBody, mimePackage.contains(where: { $0.type != .intl }) {
                 // Include only if cleartext MIME recipients
                 mimeAddress["BodyKey"] = [
                     "Key" : cb.key,

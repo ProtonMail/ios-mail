@@ -7,17 +7,17 @@
 //
 
 /// Move to folder dialog identifiers
-fileprivate let addFolderButtonIdentifier = "LablesViewController.addFolderButton"
-fileprivate let addLabelButtonIdentifier = "LablesViewController.addLabelButton"
-fileprivate let applyMoveToFolderButtonIdentifier = "LablesViewController.applyButton"
-fileprivate let cancelMoveToFolderButtonIdentifier = "LablesViewController.cancelButton"
+fileprivate let addFolderButtonIdentifier = "LabelsViewController.addFolderButton"
+fileprivate let addLabelButtonIdentifier = "LabelsViewController.addLabelButton"
+fileprivate let applyMoveToFolderButtonIdentifier = "LabelsViewController.applyButton"
+fileprivate let cancelMoveToFolderButtonIdentifier = "LabelsViewController.cancelButton"
 fileprivate func folderCellIdentifier(_ folderName: String) -> String { return "LabelTableViewCell.\(folderName)".replacingOccurrences(of: " ", with: "_") }
 
 /// Add new folder dialog identifiers
-fileprivate let folderNameTextFieldIdentifier = "LableEditViewController.newLabelInput"
-fileprivate let cancelAddFolderButtonIdentifier = "LableEditViewController.cancelButton"
-fileprivate let applyAddFolderButtonIdentifier = "LableEditViewController.applyButton"
-fileprivate let colorCollectionViewIdentifier = "LableEditViewController.collectionView"
+fileprivate let folderNameTextFieldIdentifier = "LabelEditViewController.newLabelInput"
+fileprivate let cancelAddFolderButtonIdentifier = "LabelEditViewController.cancelButton"
+fileprivate let applyAddFolderButtonIdentifier = "LabelEditViewController.applyButton"
+fileprivate let colorCollectionViewIdentifier = "LabelEditViewController.collectionView"
 fileprivate let doneKyboardButtonIdentifier = LocalString._general_done_button.lowercased()
 
 /**

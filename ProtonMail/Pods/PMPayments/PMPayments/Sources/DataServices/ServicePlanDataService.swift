@@ -30,6 +30,12 @@ public protocol ServicePlanDataStorage: class {
     var isIAPUpgradePlanAvailable: Bool { get set }
     var defaultPlanDetails: ServicePlanDetails? { get set }
     var currentSubscription: ServicePlanSubscription? { get set }
+    var credits: Credits? { get set }
+}
+
+public struct Credits {
+    public let credit: Double
+    public let currency: String
 }
 
 public class ServicePlanDataService: NSObject, Service {
@@ -84,8 +90,9 @@ public class ServicePlanDataService: NSObject, Service {
     }
 
     public var proceedTier54: Decimal = Decimal(0)
-    public var credit: Double?
-    public var currency: String?
+    public var credits: Credits? {
+        willSet { self.localStorage.credits = newValue }
+    }
 }
 
 extension ServicePlanDataService {
@@ -141,15 +148,8 @@ extension ServicePlanDataService {
                 self.currentSubscription = subscriptionRes.subscription
                 self.updatePaymentMethods()
                 self.updateTier()
-                self.paymentsApi.getUser(api: self.service) { result in
-                    switch result {
-                    case .success(let user):
-                        self.credit = Double(user.credit) / 100
-                        self.currency = user.currency
-                        seal.fulfill_()
-                    case .failure:
-                        seal.fulfill_()
-                    }
+                self.getUser {
+                    seal.fulfill_()
                 }
             }.catch { error in
                 if error.isNoSubscriptionError {
@@ -158,8 +158,11 @@ extension ServicePlanDataService {
                 } else {
                     self.currentSubscription = nil
                 }
+                self.credits = nil
                 self.updateTier()
-                seal.fulfill_()
+                self.getUser {
+                    seal.fulfill_()
+                }
             }
         }
     }
@@ -189,6 +192,19 @@ extension ServicePlanDataService {
                 }
             } catch {
                 self.proceedTier54 = Decimal(0)
+            }
+        }
+    }
+
+    internal func getUser(completion: @escaping () -> Void) {
+        self.paymentsApi.getUser(api: self.service) { result in
+            switch result {
+            case .success(let user):
+                self.credits = Credits(credit: Double(user.credit) / 100, currency: user.currency)
+                completion()
+            case .failure:
+                self.credits = nil
+                completion()
             }
         }
     }

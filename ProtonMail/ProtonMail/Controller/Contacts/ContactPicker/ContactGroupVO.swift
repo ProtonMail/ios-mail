@@ -234,7 +234,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return errorResponse
             }
         } else {
-            if let label = Label.labelForLableID(self.ID,
+            if let label = Label.labelForLabelID(self.ID,
                                                  inManagedObjectContext: context),
                 let emails = label.emails.allObjects as? [Email] {
                 color = label.color

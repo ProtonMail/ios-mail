@@ -185,9 +185,13 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PMChallenge/PMChallenge.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PMCommon/PMCommon.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PMCoreTranslation/PMCoreTranslation.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PMForceUpgrade/PMForceUpgrade.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PMHumanVerification/PMHumanVerification.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PMUIFoundations/PMUIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
@@ -196,6 +200,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
+  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Distribution" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
@@ -211,6 +216,9 @@ if [[ "$CONFIGURATION" == "Distribution" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/PMChallenge/PMChallenge.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PMCommon/PMCommon.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PMCoreTranslation/PMCoreTranslation.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PMForceUpgrade/PMForceUpgrade.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PMHumanVerification/PMHumanVerification.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PMUIFoundations/PMUIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
@@ -219,6 +227,7 @@ if [[ "$CONFIGURATION" == "Distribution" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
+  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
@@ -234,6 +243,9 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/PMChallenge/PMChallenge.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PMCommon/PMCommon.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PMCoreTranslation/PMCoreTranslation.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PMForceUpgrade/PMForceUpgrade.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PMHumanVerification/PMHumanVerification.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PMUIFoundations/PMUIFoundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
@@ -242,6 +254,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
+  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenPGP/OpenPGP.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

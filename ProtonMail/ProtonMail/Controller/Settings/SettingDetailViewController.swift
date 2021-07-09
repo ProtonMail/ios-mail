@@ -230,7 +230,7 @@ class SettingDetailViewController: UIViewController {
                                        tfaCode: self.cached2faCode,
                                        complete: { value, error in
                 self.cached2faCode = nil
-                if let error = error {
+                if let error = error, !error.isBadVersionError {
                     MBProgressHUD.hide(for: self.view, animated: true)
                     let alertController = error.alertController()
                     alertController.addOKAction()

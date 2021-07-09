@@ -1,0 +1,39 @@
+{
+  "name": "PMUIFoundations",
+  "version": "1.2.5",
+  "summary": "Core UI objects for ProtonMail",
+  "description": "Core UI objects for ProtonMail",
+  "homepage": "https://gitlab.protontech.ch/apple/shared/PMUIFoundations",
+  "license": "ProtonMail",
+  "authors": "ProtonMail",
+  "platforms": {
+    "ios": "11.0",
+    "osx": "11.0"
+  },
+  "source": {
+    "git": ".",
+    "commit": ""
+  },
+  "ios": {
+    "source_files": "PMUIFoundations/**/*.swift",
+    "resource_bundles": {
+      "PMUIFoundations": [
+        "PMUIFoundations/Assets.xcassets",
+        "PMUIFoundations/**/*.{xib,storyboard,geojson}"
+      ]
+    }
+  },
+  "osx": {
+    "source_files": [
+      "PMUIFoundations/PMUIFoundations.swift",
+      "PMUIFoundations/Colors/Colors.swift",
+      "PMUIFoundations/Colors/Color+Extestion.swift"
+    ],
+    "resource_bundles": {
+      "PMUIFoundations": [
+        "PMUIFoundations/Assets.xcassets"
+      ]
+    }
+  },
+  "static_framework": false
+}

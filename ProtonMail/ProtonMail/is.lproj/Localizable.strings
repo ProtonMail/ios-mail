@@ -172,6 +172,9 @@
    menu title */
 "All Mail" = "Allur póstur";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "All protection settings will be reset and wiped upon logging out of the app.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Leyfa varaleið beiningar";
 
@@ -713,7 +716,7 @@
 "Draft" = "Drög";
 
 /* title of toast message that user taps the message which is uploading */
-"Draft is still uploading..." = "Draft is still uploading...";
+"Draft is still uploading..." = "Enn er verið að senda inn drögin...";
 
 /* menu title */
 "Drafts" = "Drög";
@@ -1124,6 +1127,9 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Það er ekki hægt að skipta yfir í  %@ innan iOS-forritsins.";
 
+/* No comment provided by engineer. */
+"It's not possible to swicth to another plan within the app. %1$@" = "It's not possible to swicth to another plan within the app. %1$@";
+
 /* Title */
 "Keep me updated about new features" = "Halda mér upplýstum um nýja eiginleika";
 
@@ -1283,7 +1289,7 @@
 "Message %@" = "Skilaboð %@";
 
 /* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.";
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Ekki var hægt að senda skilaboð. Tölvupóstfang/lén a.m.k. eins viðtakanda er ekki til eða er rangt sniðið.";
 
 /* *
  *  Expiration View */
@@ -1556,6 +1562,9 @@
 
 /* Description */
 "Pin code can't be empty." = "PIN-númer má ekki vera autt.";
+
+/* No comment provided by engineer. */
+"Plans can be edited on the web version." = "Plans can be edited on the web version.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Bættu inn lykilorði fyrir eftirfarandi viðtakendur.";
@@ -1831,7 +1840,7 @@
 "Sending Message" = "Sendi skilaboð";
 
 /* content of the sending mesage that will display this text on the date label */
-"Sending message..." = "Sending message...";
+"Sending message..." = "Sendi skilaboð...";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Að senda skilaboð frá %1$@ póstföngum er eiginleiki sem greiða þarf fyrir. Skilaboðin þín verða send frá sjálfgefna tölvupóstfanginu %2$@";
@@ -2046,6 +2055,9 @@
 /* update password error */
 "The new password does not match." = "Nýju lykilorðin stemma ekki.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+
 /* (No Comment) */
 "The new password not match" = "Lykilorðin stemma ekki";
 
@@ -2182,6 +2194,12 @@
 /* action sheet option */
 "Turn Off" = "Slökkva á";
 
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Kveiktu á þessum eiginleika til að læsa\\nforritinu sjálfvirkt og nota PIN-kóða eða fingrafar til að aflæsa því.";
+
 /* Title */
 "Tweet about ProtonMail" = "Tístu um ProtonMail";
 
@@ -2279,12 +2297,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Uppfæra tilkynningapóst";
-
-/* title */
-"Update Now" = "Uppfæra núna";
-
-/* title */
-"Update Required" = "Uppfærsla nauðsynleg";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Uppfærðu í greidda áskrift til að nýta þér fleiri eiginleika";

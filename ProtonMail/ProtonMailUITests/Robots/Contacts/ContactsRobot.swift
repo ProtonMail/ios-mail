@@ -84,12 +84,11 @@ class ContactsRobot {
         }
         
         private func swipeLeftToDelete(_ name: String) -> ContactsView {
-            Element.cell.swipeDownUpUntilVisibleByIdentifier(contactCellIdentifier(name)).swipeLeft()
+            Element.cell.swipeDownUpUntilVisibleByIdentifier(contactCellIdentifier(name)).longSwipe(.left)
             return ContactsView()
         }
         
         private func clickDeleteButton() -> ContactsView {
-            Element.wait.forButtonWithIdentifier(deleteButtonText, file: #file, line:  #line).tap()
             return ContactsView()
         }
         
@@ -134,12 +133,11 @@ class ContactsRobot {
         }
         
         private func swipeLeftToDelete(_ withName: String) -> ContactsGroupView {
-            Element.cell.swipeDownUpUntilVisibleByIdentifier(groupCellIdentifier(withName)).swipeLeft()
+            Element.cell.swipeDownUpUntilVisibleByIdentifier(groupCellIdentifier(withName)).longSwipe(.left)
             return self
         }
         
         private func clickDeleteButton() -> ContactsGroupView {
-            Element.wait.forButtonWithIdentifier(deleteButtonText, file: #file, line: #line).tap()
             return self
         }
         

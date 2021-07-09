@@ -27,6 +27,9 @@ import PromiseKit
 import PMKeymaker
 import Crypto
 import PMCommon
+#if !APP_EXTENSION
+import PMHumanVerification
+#endif
 
 protocol UsersManagerDelegate: class {
     func migrating()
@@ -173,6 +176,10 @@ class UsersManager : Service, Migrate {
         //let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
         let apiService = PMAPIService(doh: self.doh, sessionUID: session)
         apiService.serviceDelegate = self
+        #if !APP_EXTENSION
+        apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
+        apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+        #endif
         let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
         newUser.delegate = self
         self.removeDisconnectedUser(.init(defaultDisplayName: newUser.defaultDisplayName,
@@ -369,6 +376,10 @@ class UsersManager : Service, Migrate {
             
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             apiService.serviceDelegate = self
+            #if !APP_EXTENSION
+            apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
+            apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+            #endif
             let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
@@ -384,7 +395,7 @@ class UsersManager : Service, Migrate {
             KeychainWrapper.keychain.remove(forKey: CoderKey.keychainStore)
             
         } else {
-            guard let encryptedAuthData = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) else {
+            guard let encryptedAuthData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.authKeychainStore) ?? KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) else {
                 Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsKeychainNil": true])
                 return
             }
@@ -429,11 +440,16 @@ class UsersManager : Service, Migrate {
                 let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 apiService.serviceDelegate = self
+                #if !APP_EXTENSION
+                apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
+                apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+                #endif
                 let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
                 newUser.delegate = self
                 users.append(newUser)
             }
         }
+        users.forEach { $0.fetchUserInfo() }
         self.loggedIn()
     }
         
@@ -490,14 +506,16 @@ class UsersManager : Service, Migrate {
         {
             return
         }
-        KeychainWrapper.keychain.set(lockedAuth.encryptedValue, forKey: CoderKey.authKeychainStore)
+        SharedCacheBase.getDefault()?.setValue(lockedAuth.encryptedValue, forKey: CoderKey.authKeychainStore)
         
         let userList = self.users.compactMap{ $0.userinfo }
         guard let lockedUsers = try? Locked<[UserInfo]>(clearValue: userList, with: mainKey) else {
             return
         }
+        // Check MAILIOS-854, MAILIOS-1208
         SharedCacheBase.getDefault()?.set(lockedUsers.encryptedValue, forKey: CoderKey.usersInfo)
         SharedCacheBase.getDefault().synchronize()
+        KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
     }
     
 }
@@ -553,6 +571,7 @@ extension UsersManager {
     internal func clean() -> Promise<Void> {
         return UserManager.cleanUpAll().ensure {
             SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
+            SharedCacheBase.getDefault()?.remove(forKey: CoderKey.authKeychainStore)
             KeychainWrapper.keychain.remove(forKey: CoderKey.keychainStore)
             KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
             KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
@@ -596,8 +615,9 @@ extension UsersManager {
         let isSignIn = users.hasUserName() && isMailboxPasswordStored
         
         let authKeychainStore = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore)
+        let authUserDefaultStore = SharedCacheBase.getDefault()?.data(forKey: CoderKey.authKeychainStore)
         
-        return  authKeychainStore != nil && (hasUsersInfo || isSignIn)
+        return  (authKeychainStore != nil || authUserDefaultStore != nil) && (hasUsersInfo || isSignIn)
     }
     
     var isPasswordStored : Bool {
@@ -697,6 +717,10 @@ extension UsersManager {
             let userID = user.userId
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             apiService.serviceDelegate = self
+            #if !APP_EXTENSION
+            apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
+            apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+            #endif
             let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
@@ -743,6 +767,10 @@ extension UsersManager {
                 let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 apiService.serviceDelegate = self
+                #if !APP_EXTENSION
+                apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
+                apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+                #endif
                 let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
                 newUser.delegate = self
                 users.append(newUser)

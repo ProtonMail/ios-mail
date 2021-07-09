@@ -223,6 +223,9 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
                 fatalError("Failed to dequeue ExpirationCell")
             }
             newCell.set(expiration: expiration)
+            newCell.handleExpired = { [weak self] in
+                self?.coordinator.dismiss()
+            }
             return newCell
             
         default:

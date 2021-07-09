@@ -6,17 +6,17 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let addFolderButtonIdentifier = "LablesViewController.addFolderButton"
-fileprivate let addLabelButtonIdentifier = "LablesViewController.addLabelButton"
-fileprivate let folderNameTextFieldIdentifier = "LableEditViewController.newLabelInput"
-fileprivate let createButtonIdentifier = "LableEditViewController.applyButton"
-fileprivate let closeButtonIdentifier = "LableEditViewController.closeButton"
+fileprivate let addFolderButtonIdentifier = "LabelsViewController.addFolderButton"
+fileprivate let addLabelButtonIdentifier = "LabelsViewController.addLabelButton"
+fileprivate let folderNameTextFieldIdentifier = "LabelEditViewController.newLabelInput"
+fileprivate let createButtonIdentifier = "LabelEditViewController.applyButton"
+fileprivate let closeButtonIdentifier = "LabelEditViewController.closeButton"
 fileprivate let keyboardDoneIdentifier = "Done"
 fileprivate let deleteButtonIdentifier = LocalString._general_delete_action
 fileprivate func labelFolderCellIdentifier(_ name: String) -> String { return "LabelTableViewCell.\(name)" }
 fileprivate func selectLabelFolderButtonIdentifier(_ name: String) -> String { return "\(name).selectStatusButton" }
 fileprivate func editLabelFolderButtonIdentifier(_ name: String) -> String { return "\(name).editButton" }
-fileprivate let colorCollectionViewIdentifier = "LableEditViewController.collectionView"
+fileprivate let colorCollectionViewIdentifier = "LabelEditViewController.collectionView"
 
 /**
  LabelsAndFoldersRobot class represents Labels/Folders view.

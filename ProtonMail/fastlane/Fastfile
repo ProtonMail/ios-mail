@@ -19,14 +19,9 @@ default_platform(:ios)
 DEVELOPER_KEYCHAIN_NAME = "MAIL_IOS_CERTIFICATE_KEYCHAIN"
 DEVELOPER_KEYCHAIN_PASSWORD = "TUFJTF9JT1NfQ0VSVElGSUNBVEVfS0VZQ0hBSU4="
 CERTIFICATE_PATH = "Certificates.p12"
-API_KEY_DURATION = 30 * 60 # 30 mins * 60 seconds
+API_KEY_DURATION = 1200 # seconds
 APP_IDENTIFIER = "ch.protonmail.protonmail"
 
-
-def clean_data
-  xcode_select("/Applications/Xcode.app")
-  clear_derived_data
-end
 
 def set_up_keychain
   create_keychain(
@@ -150,7 +145,7 @@ end
 platform :ios do 
   desc "Build app"
   lane :build do |options|
-    clean_data
+    xcode_select("/Applications/Xcode.app")
     set_up_keychain
 
     api_key = set_up_app_store_api_key

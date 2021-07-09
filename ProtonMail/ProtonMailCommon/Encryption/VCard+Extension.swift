@@ -22,7 +22,7 @@
 
 
 import Foundation
-
+import OpenPGP
 
 extension PMNIVCard {
     func write() throws -> String? {

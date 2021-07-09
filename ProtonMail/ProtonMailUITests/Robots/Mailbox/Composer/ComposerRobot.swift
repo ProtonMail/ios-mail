@@ -23,6 +23,7 @@ fileprivate let attachmentButtonIdentifier = "ComposeHeaderViewController.attach
 fileprivate let showCcBccButtonIdentifier = "ComposeHeaderViewController.showCcBccButton"
 fileprivate let cancelNavBarButtonIdentifier = "ComposeContainerViewController.cancelButton"
 fileprivate let fromStaticTextIdentifier = "ComposeHeaderViewController.fromAddress"
+fileprivate let fromPickerButtonIdentifier = "ComposeHeaderViewController.fromPickerButton"
 fileprivate func getContactCellIdentifier(_ email: String) -> String { return "ContactsTableViewCell.\(email)" }
 
 /// Set Password modal identifiers.
@@ -208,7 +209,7 @@ class ComposerRobot {
     }
     
     func changeFromAddressTo(_ email: String) -> ComposerRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(fromStaticTextIdentifier, file: #file, line: #line).tap()
+        Element.wait.forButtonWithIdentifier(fromPickerButtonIdentifier, file: #file, line: #line).tap()
         Element.wait.forButtonWithIdentifier(email, file: #file, line: #line).tap()
         return ComposerRobot()
     }
