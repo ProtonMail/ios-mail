@@ -55,7 +55,6 @@ PODS:
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
   - MCSwipeTableViewCell (2.1.4)
-  - "NSDate+Helper (1.0.4)"
   - OHHTTPStubs/Core (9.0.0)
   - OHHTTPStubs/Default (9.0.0):
     - OHHTTPStubs/Core
@@ -222,10 +221,6 @@ PODS:
   - SwiftyGif (5.4.0)
   - SwipyCell (4.0.1)
   - TrustKit (1.7.0)
-  - "UIColor+Hex (1.0.1)":
-    - "UIColor+Hex/NSColor (= 1.0.1)"
-    - "UIColor+Hex/UIColor (= 1.0.1)"
-  - "UIColor+Hex/UIColor (1.0.1)"
 
 DEPENDENCIES:
   - AFNetworking (= 4.0.1)
@@ -235,7 +230,6 @@ DEPENDENCIES:
   - Masonry (= 1.1.0)
   - MBProgressHUD (= 1.1.0)
   - MCSwipeTableViewCell (= 2.1.4)
-  - "NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)"
   - OHHTTPStubs/Swift (= 9.0.0)
   - "pmtest (from `git@gitlab.protontech.ch:apple/shared/pmtestautomation.git`, branch `master`)"
   - PromiseKit (= 6.13.1)
@@ -267,7 +261,6 @@ DEPENDENCIES:
   - SwiftGen (~> 6.0)
   - SwipyCell (= 4.0.1)
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `master`)
-  - "UIColor+Hex (= 1.0.1)"
 
 SPEC REPOS:
   "git@gitlab.protontech.ch:apple/shared/protoncore.git":
@@ -316,12 +309,8 @@ SPEC REPOS:
     - SwiftGen
     - SwiftyGif
     - SwipyCell
-    - "UIColor+Hex"
 
 EXTERNAL SOURCES:
-  "NSDate+Helper":
-    :branch: master
-    :git: https://github.com/ProtonMail/nsdate-helper.git
   pmtest:
     :branch: master
     :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
@@ -333,9 +322,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/ProtonMail/TrustKit.git
 
 CHECKOUT OPTIONS:
-  "NSDate+Helper":
-    :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
-    :git: https://github.com/ProtonMail/nsdate-helper.git
   pmtest:
     :commit: 0878ae03b2504ddfe0f547d1dd35bbc060734644
     :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
@@ -357,7 +343,6 @@ SPEC CHECKSUMS:
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
-  "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
   pmtest: 34d69550add20560f2e704e9c686663b2977308e
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
@@ -395,8 +380,7 @@ SPEC CHECKSUMS:
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   SwipyCell: 3fbfd7dc091c4699d1cb03f015e2ecdc6f26929d
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
-  "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 4f8da5c913013b01e246d08754d2e52b39bb75ae
+PODFILE CHECKSUM: ee6fcff2083d827d80040590f2334b817a65123e
 
 COCOAPODS: 1.10.1

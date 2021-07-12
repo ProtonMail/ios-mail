@@ -69,11 +69,6 @@ extension Message {
         return userContacts.first(where: { $0.email == sender.email }) ?? sender
     }
 
-    var messageTime: String {
-        guard let time = time, let displayString = NSDate.stringForDisplay(from: time) else { return .empty }
-        return displayString
-    }
-
     var isCustomFolder: Bool {
         customFolder != nil
     }

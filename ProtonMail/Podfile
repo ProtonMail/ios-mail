@@ -33,9 +33,7 @@ def common_pods
   pod 'ProtonCore-Authentication-KeyGeneration', proton_core_version
   pod 'Groot', '3.0.1'
   pod 'AFNetworking', '4.0.1'
-  pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
   pod 'Masonry', '1.1.0'
-  pod 'UIColor+Hex', '1.0.1'
   pod 'PromiseKit', '6.13.1'
   pod 'AwaitKit', '5.0.1'
   pod 'MCSwipeTableViewCell', '2.1.4'
