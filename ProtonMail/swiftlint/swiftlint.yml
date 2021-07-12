@@ -175,6 +175,12 @@ included:
   - ${PWD}/ProtonMail/Controller/ConversationView/ConversationNewMessageFloatyView.swift
   - ${PWD}/ProtonMail/Utilities/Snapshot.swift
   - ${PWD}/ProtonMail/Controller/Views/PinCodeView.swift
+  - ${PWD}/ProtonMail/Environment.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/UserInfo+WeekStart.swift
+  - ${PWD}/ProtonMailCommon/Extensions/NSAttributedString+Extensions.swift
+  - ${PWD}/ProtonMailCommon/Utilities/Formatters/PMDateFormatter.swift
+  - ${PWD}/ProtonMailCommon/Utilities/Formatters/WeekStart+WeekStartInGregorianCalendar.swift
+  - ${PWD}/ProtonMailCommon/Utilities/Formatters/WeekStart.swift
 
 excluded:
   - ${PWD}/Pods

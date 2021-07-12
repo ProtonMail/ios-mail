@@ -1,5 +1,5 @@
 //
-//  Environment.swift
+//  WeekStart.swift
 //  ProtonMail
 //
 //
@@ -20,21 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
-enum Environment {
-    static var locale = Locale.current
-    static var currentDate: () -> Date = Date.init
-    static var timeZone = TimeZone.current
-
-    static var calendar: Calendar {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = Environment.timeZone
-        calendar.locale = Environment.locale
-        return calendar
-    }
-
-    static func restore() {
-        locale = Locale.current
-        currentDate = Date.init
-        timeZone = TimeZone.current
-    }
+enum WeekStart: Int {
+    case automatic = 0
+    case monday = 1
+    case sunday = 7
+    case saturday = 6
 }

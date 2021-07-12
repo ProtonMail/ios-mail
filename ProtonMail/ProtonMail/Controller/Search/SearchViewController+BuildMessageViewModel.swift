@@ -22,7 +22,11 @@
 
 extension SearchViewController {
 
-    func buildViewModel(message: Message, customFolderLabels: [Label]) -> NewMailboxMessageViewModel {
+    func buildViewModel(
+        message: Message,
+        customFolderLabels: [Label],
+        weekStart: WeekStart
+    ) -> NewMailboxMessageViewModel {
         let initial = message.initial(replacingEmails: replacingEmails)
         let sender = message.sender(replacingEmails: replacingEmails)
 
@@ -33,7 +37,7 @@ extension SearchViewController {
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
             sender: sender,
-            time: message.messageTime,
+            time: date(of: message, weekStart: weekStart),
             isForwarded: message.forwarded,
             isReply: message.replied,
             isReplyAll: message.repliedAll,
@@ -44,6 +48,11 @@ extension SearchViewController {
             messageCount: 0,
             folderIcons: message.getFolderIcons(customFolderLabels: customFolderLabels)
         )
+    }
+
+    private func date(of message: Message, weekStart: WeekStart) -> String {
+        guard let date = message.time else { return .empty }
+        return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }
 
 }

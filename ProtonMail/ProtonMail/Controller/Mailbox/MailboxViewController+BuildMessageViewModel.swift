@@ -26,7 +26,11 @@ import UIKit
 
 extension MailboxViewController {
 
-    func buildNewMailboxMessageViewModel(message: Message, customFolderLabels: [Label]) -> NewMailboxMessageViewModel {
+    func buildNewMailboxMessageViewModel(
+        message: Message,
+        customFolderLabels: [Label],
+        weekStart: WeekStart
+    ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID)
         let initial = message.initial(replacingEmails: replacingEmails)
@@ -39,7 +43,7 @@ extension MailboxViewController {
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
             sender: sender,
-            time: message.messageTime,
+            time: date(of: message, weekStart: weekStart),
             isForwarded: message.forwarded,
             isReply: message.replied,
             isReplyAll: message.repliedAll,
@@ -56,7 +60,11 @@ extension MailboxViewController {
         return mailboxViewModel
     }
 
-    func buildNewMailboxMessageViewModel(conversation: Conversation, customFolderLabels: [Label]) -> NewMailboxMessageViewModel {
+    func buildNewMailboxMessageViewModel(
+        conversation: Conversation,
+        customFolderLabels: [Label],
+        weekStart: WeekStart
+    ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: conversation.conversationID)
         let sender = conversation.getJoinedSendersName(replacingEmails)
@@ -71,7 +79,7 @@ extension MailboxViewController {
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
             sender: sender,
-            time: conversation.getTimeString(labelId: labelId),
+            time: date(of: conversation, labelId: labelId, weekStart: weekStart),
             isForwarded: false,
             isReply: false,
             isReplyAll: false,
@@ -86,4 +94,15 @@ extension MailboxViewController {
         }
         return mailboxViewModel
     }
+
+    private func date(of message: Message, weekStart: WeekStart) -> String {
+        guard let date = message.time else { return .empty }
+        return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
+    }
+
+    private func date(of conversation: Conversation, labelId: String, weekStart: WeekStart) -> String {
+        guard let date = conversation.getTime(labelID: labelId) else { return .empty }
+        return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
+    }
+
 }

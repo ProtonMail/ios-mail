@@ -43,7 +43,9 @@ class NonExpandedHeaderViewModel {
     }
 
     var time: NSAttributedString {
-        message.messageTime.apply(style: FontManager.CaptionWeak)
+        guard let date = message.time else { return .empty }
+        return PMDateFormatter.shared.string(from: date, weekStart: user.userinfo.weekStartValue)
+            .apply(style: FontManager.CaptionWeak)
     }
 
     var recipient: NSAttributedString {
@@ -60,6 +62,8 @@ class NonExpandedHeaderViewModel {
 
     var senderContact: ContactVO?
 
+    let user: UserManager
+
     private(set) var message: Message {
         didSet {
             reloadView?()
@@ -68,7 +72,6 @@ class NonExpandedHeaderViewModel {
 
     private let labelId: String
     private let contactService: ContactDataService
-    let user: UserManager
 
     private var userContacts: [ContactVO] {
         contactService.allContactVOs()

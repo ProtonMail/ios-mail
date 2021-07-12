@@ -5,6 +5,7 @@ class ConversationCollapsedMessageViewModel {
     }
 
     private let contactService: ContactDataService
+    private let weekStart: WeekStart
 
     var reloadView: ((ConversationMessageModel) -> Void)?
 
@@ -23,7 +24,7 @@ class ConversationCollapsedMessageViewModel {
             initial: message.initial(replacingEmails: replacingEmails).apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
             sender: message.sender(replacingEmails: replacingEmails),
-            time: message.messageTime,
+            time: date(of: message, weekStart: weekStart),
             isForwarded: message.forwarded,
             isReplied: message.replied,
             isRepliedToAll: message.repliedAll,
@@ -34,13 +35,19 @@ class ConversationCollapsedMessageViewModel {
         )
     }
 
-    init(message: Message, contactService: ContactDataService) {
+    init(message: Message, contactService: ContactDataService, weekStart: WeekStart) {
         self.message = message
         self.contactService = contactService
+        self.weekStart = weekStart
     }
 
     func messageHasChanged(message: Message) {
         self.message = message
+    }
+
+    private func date(of message: Message, weekStart: WeekStart) -> String {
+        guard let date = message.time else { return .empty }
+        return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }
 
 }

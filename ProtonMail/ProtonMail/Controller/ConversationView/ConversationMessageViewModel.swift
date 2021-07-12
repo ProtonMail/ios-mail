@@ -1,17 +1,5 @@
 class ConversationMessageViewModel {
 
-    private(set) var message: Message {
-        didSet {
-            state.collapsedViewModel?.messageHasChanged(message: message)
-            state.expandedViewModel?.messageHasChanged(message: message)
-        }
-    }
-
-    private(set) var state: ConversationMessageState
-    private let labelId: String
-    private let user: UserManager
-    private let messageContentViewModelFactory = SingleMessageContentViewModelFactory()
-
     var isDraft: Bool {
         let isDraft = message.labels
             .compactMap { $0 as? Label }
@@ -28,11 +16,32 @@ class ConversationMessageViewModel {
             .contains(Message.Location.trash.rawValue)
     }
 
+    private(set) var message: Message {
+        didSet {
+            state.collapsedViewModel?.messageHasChanged(message: message)
+            state.expandedViewModel?.messageHasChanged(message: message)
+        }
+    }
+
+    private var weekStart: WeekStart {
+        user.userinfo.weekStartValue
+    }
+
+    private(set) var state: ConversationMessageState
+    private let labelId: String
+    private let user: UserManager
+    private let messageContentViewModelFactory = SingleMessageContentViewModelFactory()
+
     init(labelId: String, message: Message, user: UserManager) {
         self.labelId = labelId
         self.message = message
         self.user = user
-        self.state = .collapsed(viewModel: .init(message: message, contactService: user.contactService))
+        let collapsedViewModel = ConversationCollapsedMessageViewModel(
+            message: message,
+            contactService: user.contactService,
+            weekStart: user.userinfo.weekStartValue
+        )
+        self.state = .collapsed(viewModel: collapsedViewModel)
     }
 
     func messageHasChanged(message: Message) {
@@ -41,7 +50,7 @@ class ConversationMessageViewModel {
 
     func toggleState() {
         state = state.isExpanded ?
-            .collapsed(viewModel: .init(message: message, contactService: user.contactService)) :
+            .collapsed(viewModel: .init(message: message, contactService: user.contactService, weekStart: weekStart)) :
             .expanded(viewModel: .init(message: message, messageContent: singleMessageContentViewModel(for: message)))
     }
 

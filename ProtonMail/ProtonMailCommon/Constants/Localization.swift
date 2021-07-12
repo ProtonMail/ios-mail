@@ -2173,4 +2173,6 @@ class LocalizedString {
 
     lazy var _conversation_new_message_button = NSLocalizedString("New Message", comment: "The title of the button that shows in the conversation view when there is new message coming.")
     lazy var _accessibility_list_view_custom_action_of_switch_editing_mode = NSLocalizedString("Switch selection mode", comment: "The string that will be read by VoiceOver if the user wants to switch selection mode.")
+
+    lazy var _yesterday = NSLocalizedString("Yesterday", comment: "")
 }

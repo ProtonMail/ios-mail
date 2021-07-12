@@ -445,8 +445,15 @@ extension SearchViewController: UITableViewDataSource {
         }
         
         let message = self.searchResult[indexPath.row]
-        let viewModel = buildViewModel(message: message,
-                                       customFolderLabels: user.labelService.getAllLabels(of: .folder, context: CoreDataService.shared.mainContext))
+        let customFolderLabels = user.labelService.getAllLabels(
+            of: .folder,
+            context: CoreDataService.shared.mainContext
+        )
+        let viewModel = buildViewModel(
+            message: message,
+            customFolderLabels: customFolderLabels,
+            weekStart: user.userInfo.weekStartValue
+        )
         cellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
         return mailboxCell
     }

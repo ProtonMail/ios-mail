@@ -38,11 +38,6 @@ extension Conversation {
         return senderName.shortName()
     }
 
-    func getTimeString(labelId: String) -> String {
-        guard let time = self.getTime(labelID: labelId), let displayString = NSDate.stringForDisplay(from: time) else { return .empty }
-        return displayString
-    }
-
     func getLabelIds() -> [String] {
         self.labels.compactMap({ $0 as? ContextLabel }).map({ $0.labelID })
     }

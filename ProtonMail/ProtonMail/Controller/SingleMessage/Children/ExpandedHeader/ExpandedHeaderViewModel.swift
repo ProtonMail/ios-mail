@@ -39,7 +39,9 @@ class ExpandedHeaderViewModel {
     }
 
     var time: NSAttributedString {
-        message.messageTime.apply(style: FontManager.CaptionWeak)
+        guard let date = message.time else { return .empty }
+        return PMDateFormatter.shared.string(from: date, weekStart: user.userinfo.weekStartValue)
+            .apply(style: FontManager.CaptionWeak)
     }
 
     var date: NSAttributedString? {
