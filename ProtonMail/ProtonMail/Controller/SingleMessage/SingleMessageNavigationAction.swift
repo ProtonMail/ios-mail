@@ -26,7 +26,7 @@ enum SingleMessageNavigationAction: Equatable {
     case viewHeaders(url: URL?)
     case viewHTML(url: URL?)
     case reply(messageId: String)
-    case replyAll
+    case replyAll(messageId: String)
     case forward
     case attachmentList(messageId: String, decryptedBody: String?)
     case url(url: URL)
@@ -41,6 +41,11 @@ extension SingleMessageNavigationAction {
 
     var isReplyAction: Bool {
         guard case .reply(_) = self else { return false }
+        return true
+    }
+
+    var isReplyAllAction: Bool {
+        guard case .replyAll(_) = self else { return false }
         return true
     }
 

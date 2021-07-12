@@ -56,9 +56,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             presentAddContacts(with: contact)
         case .composeTo(let contact):
             presentCompose(with: contact)
-        case .attachmentList(let message, let inlineCIDs):
-            presentAttachmnetListView(message: message,
-                                      inlineCIDS: inlineCIDs)
+        case let .attachmentList(message, inlineCIDs):
+            presentAttachmnetListView(message: message, inlineCIDS: inlineCIDs)
         case .replyAll(let message):
             presentCompose(message: message, action: .replyAll)
         case .forward(let message):

@@ -50,7 +50,7 @@ private enum SubviewsFactory {
     }
 
     static var replyButton: UIButton {
-        let button = UIButton(image: Asset.replyButtonIcon.image)
+        let button = UIButton(frame: .zero)
         button.tintColor = UIColorManager.InteractionNorm
         return button
     }

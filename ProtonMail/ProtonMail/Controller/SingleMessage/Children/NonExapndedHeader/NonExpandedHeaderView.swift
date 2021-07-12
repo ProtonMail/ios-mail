@@ -35,6 +35,7 @@ class NonExpandedHeaderView: UIView {
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
     let recipientLabel = UILabel()
     let tagsView = SingleRowTagsView()
+    let starImageView = SubviewsFactory.starImageView
     private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
 
     private let firstLineStackView = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
@@ -60,6 +61,7 @@ class NonExpandedHeaderView: UIView {
         firstLineStackView.addArrangedSubview(senderLabel)
         firstLineStackView.addArrangedSubview(lockContainer)
         firstLineStackView.addArrangedSubview(UIView())
+        firstLineStackView.addArrangedSubview(starImageView)
         firstLineStackView.addArrangedSubview(originContainer)
         firstLineStackView.addArrangedSubview(timeLabel)
 
@@ -69,6 +71,7 @@ class NonExpandedHeaderView: UIView {
 
         firstLineStackView.setCustomSpacing(4, after: senderLabel)
         firstLineStackView.setCustomSpacing(6, after: originContainer)
+        firstLineStackView.setCustomSpacing(4, after: starImageView)
     }
 
     private func setUpLayout() {
@@ -137,6 +140,12 @@ private enum SubviewsFactory {
     static var imageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
+        return imageView
+    }
+
+    static var starImageView: UIImageView {
+        let imageView = imageView
+        imageView.image = Asset.mailStar.image
         return imageView
     }
 

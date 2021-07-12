@@ -260,9 +260,7 @@ extension ConversationViewModel {
     func getActionTypes() -> [MailboxViewModel.ActionTypes] {
         var actions: [MailboxViewModel.ActionTypes] = []
         if let newestMessage = messagesDataSource.newestMessage {
-            let isHavingMoreThanOneContact = (newestMessage.toList.toContacts() +
-                                                newestMessage.ccList.toContacts()).count > 1
-            actions.append(isHavingMoreThanOneContact ? .replyAll : .reply)
+            actions.append(newestMessage.isHavingMoreThanOneContact ? .replyAll : .reply)
         }
         actions.append(.readUnread)
         let deleteLocation = [

@@ -49,7 +49,7 @@ class ConversationMessageViewModel {
         let context = SingleMessageContentViewContext(
             labelId: labelId,
             message: message,
-            areBottomButtonsVisible: true
+            viewMode: .conversation
         )
         return messageContentViewModelFactory.createViewModel(context: context, user: user)
     }

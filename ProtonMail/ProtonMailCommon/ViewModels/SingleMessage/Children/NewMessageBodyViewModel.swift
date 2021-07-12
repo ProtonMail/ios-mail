@@ -28,8 +28,7 @@ protocol NewMessageBodyViewModelDelegate: AnyObject {
 
 class NewMessageBodyViewModel {
 
-    var updateTableView: (() -> Void)?
-    var storeHeight: (() -> Void)?
+    var recalculateCellHeight: (() -> Void)?
 
     private(set) var message: Message
     private let messageService: MessageDataService

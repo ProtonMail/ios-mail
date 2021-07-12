@@ -301,17 +301,14 @@ private extension ConversationViewController {
             singleMessageContentViewController: singleMessageContentViewController
         )
 
-        viewModel.updateTableView = { [weak self] in
+        viewModel.recalculateCellHeight = { [weak self] in
             UIView.setAnimationsEnabled(false)
-            self?.customView.tableView.beginUpdates()
-            self?.customView.tableView.endUpdates()
-            UIView.setAnimationsEnabled(true)
-        }
-
-        viewModel.storeHeight = { [weak self] in
             let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
             let heightInfo = HeightStoreInfo(height: height, isHeaderExpanded: viewModel.messageContent.isExpanded)
             self?.storedSize[viewModel.message.messageID] = heightInfo
+            self?.customView.tableView.beginUpdates()
+            self?.customView.tableView.endUpdates()
+            UIView.setAnimationsEnabled(true)
         }
 
         return viewController
@@ -464,17 +461,17 @@ private extension ConversationViewController {
     private func handleSingleMessageAction(action: SingleMessageNavigationAction) {
         switch action {
         case .reply(let messageId):
-            if let message = viewModel.messagesDataSource.message(with: messageId) {
-                coordinator.handle(navigationAction: .reply(message: message))
-            }
+            guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
+            coordinator.handle(navigationAction: .reply(message: message))
+        case .replyAll(let messageId):
+            guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
+            coordinator.handle(navigationAction: .replyAll(message: message))
         case .compose(let contact):
             coordinator.handle(navigationAction: .composeTo(contact: contact))
         case .contacts(let contact):
             coordinator.handle(navigationAction: .addContact(contact: contact))
         case let .attachmentList(messageId, body):
-            guard let message = viewModel.messagesDataSource.message(with: messageId) else {
-                return
-            }
+            guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
             let cids = message.getCIDOfInlineAttachment(decryptedBody: body)
             coordinator.handle(navigationAction: .attachmentList(message: message, inlineCIDs: cids))
         case .more(let messageId):

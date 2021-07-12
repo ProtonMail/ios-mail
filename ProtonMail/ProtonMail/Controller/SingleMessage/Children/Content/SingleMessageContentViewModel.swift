@@ -1,7 +1,7 @@
 struct SingleMessageContentViewContext {
     let labelId: String
     let message: Message
-    let areBottomButtonsVisible: Bool
+    let viewMode: ViewMode
 }
 
 class SingleMessageContentViewModel {
@@ -32,15 +32,11 @@ class SingleMessageContentViewModel {
         didSet { isExpanded ? createExpandedHeaderViewModel() : createNonExpandedHeaderViewModel() }
     }
 
-    var updateTableView: (() -> Void)? {
+    var recalcualteCellHeight: (() -> Void)? {
         didSet {
-            messageBodyViewModel.updateTableView = { [weak self] in self?.updateTableView?() }
-            bannerViewModel.updateTableView = { [weak self] in self?.updateTableView?() }
+            messageBodyViewModel.recalculateCellHeight = { [weak self] in self?.recalcualteCellHeight?() }
+            bannerViewModel.recalculateCellHeight = { [weak self] in self?.recalcualteCellHeight?() }
         }
-    }
-
-    var storeHeight: (() -> Void)? {
-        didSet { messageBodyViewModel.storeHeight = { [weak self] in self?.storeHeight?() } }
     }
 
     var nonExapndedHeaderViewModel: NonExpandedHeaderViewModel? {
@@ -90,6 +86,7 @@ class SingleMessageContentViewModel {
             self.isDetailedDownloaded = true
             self.messageBodyViewModel.messageHasChanged(message: self.message)
         }
+        recalcualteCellHeight?()
     }
 
     func viewDidLoad() {

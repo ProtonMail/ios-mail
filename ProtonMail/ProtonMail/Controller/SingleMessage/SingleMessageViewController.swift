@@ -163,7 +163,7 @@ private extension SingleMessageViewController {
                 case .reply:
                     self?.coordinator.navigate(to: .reply(messageId: self?.viewModel.message.messageID ?? .empty))
                 case .replyAll:
-                    self?.coordinator.navigate(to: .replyAll)
+                    self?.coordinator.navigate(to: .replyAll(messageId: self?.viewModel.message.messageID ?? .empty))
                 case .delete:
                     self?.showDeleteAlert(deleteHandler: { [weak self] _ in
                         self?.viewModel.handleActionBarAction(action)
@@ -271,7 +271,7 @@ private extension SingleMessageViewController {
         case .reply:
             coordinator.navigate(to: .reply(messageId: viewModel.message.messageID))
         case .replyAll:
-            coordinator.navigate(to: .replyAll)
+            coordinator.navigate(to: .replyAll(messageId: viewModel.message.messageID))
         case .forward:
             coordinator.navigate(to: .forward)
         default:

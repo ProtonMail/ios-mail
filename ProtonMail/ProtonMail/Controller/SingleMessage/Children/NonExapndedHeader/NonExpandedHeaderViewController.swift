@@ -53,6 +53,7 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.senderLabel.lineBreakMode = .byTruncatingTail
         customView.timeLabel.attributedText = viewModel.time
         customView.recipientLabel.attributedText = viewModel.recipient
+        customView.starImageView.isHidden = !viewModel.message.starred
         tagsPresenter.presentTags(tags: viewModel.tags, in: customView.tagsView)
         setUpLock()
     }

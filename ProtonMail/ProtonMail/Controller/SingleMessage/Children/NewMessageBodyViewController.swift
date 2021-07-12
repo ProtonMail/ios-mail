@@ -236,7 +236,7 @@ class NewMessageBodyViewController: UIViewController {
         }
 
         self.loadingObservation = self.webView?.observe(\.isLoading,
-                                                        options: [.initial, .new, .old]) { [weak self] webView, state in
+                                                        options: [.initial, .new, .old]) { [weak self] webView, _ in
             // skip first call because it will inherit irrelevant contentSize
 
             guard webView.estimatedProgress > 0.1 else { return }
@@ -244,12 +244,6 @@ class NewMessageBodyViewController: UIViewController {
 
             // Work around for webview tap too sensitive. Save the default scale value
             self?.defaultScale = round(webView.scrollView.zoomScale * 1_000) / 1_000.0
-
-            if webView.estimatedProgress == 1, state.newValue == false {
-                self?.viewModel.storeHeight?()
-            }
-
-            self?.viewModel.updateTableView?()
         }
     }
 
@@ -300,6 +294,14 @@ extension NewMessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
 extension NewMessageBodyViewController: LinkOpeningValidator {
     var user: UserManager {
         return viewModel.userManager
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        webView.evaluateJavaScript("document.readyState") { [weak self] _, _ in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self?.viewModel.recalculateCellHeight?()
+            }
+        }
     }
 
     func webView(_ webView: WKWebView,

@@ -494,7 +494,9 @@ extension Message {
                          name: sender?.name ?? "",
                          email: sender?.address ?? "")
     }
+
+    var isHavingMoreThanOneContact: Bool {
+        (toList.toContacts() + ccList.toContacts()).count > 1
+    }
+
 }
-
-
-

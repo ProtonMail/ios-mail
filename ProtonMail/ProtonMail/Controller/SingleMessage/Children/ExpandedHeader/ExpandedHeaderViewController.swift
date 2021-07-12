@@ -65,6 +65,8 @@ class ExpandedHeaderViewController: UIViewController {
 
         customView.senderEmailControl.label.attributedText = viewModel.senderEmail
 
+        customView.starImageView.isHidden = !viewModel.message.starred
+
         customView.senderEmailControl.tap = { [weak self] in
             guard let sender = self?.viewModel.senderContact else { return }
             self?.contactTapped(sheetType: .sender, contact: sender)

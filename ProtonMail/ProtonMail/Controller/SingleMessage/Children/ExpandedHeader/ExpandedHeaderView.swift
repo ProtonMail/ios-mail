@@ -31,6 +31,7 @@ class ExpandedHeaderView: UIView {
     let senderNameLabel = UILabel()
     let senderEmailControl = TextControl()
     let timeLabel = UILabel()
+    let starImageView = SubviewsFactory.starImageView
 
     init() {
         super.init(frame: .zero)
@@ -43,6 +44,7 @@ class ExpandedHeaderView: UIView {
         addSubview(senderNameLabel)
         addSubview(senderEmailControl)
         addSubview(timeLabel)
+        addSubview(starImageView)
         addSubview(contentStackView)
         initialsContainer.addSubview(initialsLabel)
     }
@@ -66,12 +68,17 @@ class ExpandedHeaderView: UIView {
             senderNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 14),
             senderNameLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
             senderNameLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor),
-            senderNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: timeLabel.leadingAnchor, constant: -8)
+            senderNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: starImageView.leadingAnchor, constant: -8)
         ].activate()
 
         [
             timeLabel.centerYAnchor.constraint(equalTo: senderNameLabel.centerYAnchor),
             timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+        ].activate()
+
+        [
+            starImageView.centerYAnchor.constraint(equalTo: senderNameLabel.centerYAnchor),
+            starImageView.trailingAnchor.constraint(equalTo: timeLabel.leadingAnchor, constant: -4)
         ].activate()
 
         [
@@ -101,4 +108,12 @@ private enum SubviewsFactory {
         view.isUserInteractionEnabled = false
         return view
     }
+
+    static var starImageView: UIImageView {
+        let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = Asset.mailStar.image
+        return imageView
+    }
+
 }

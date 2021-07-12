@@ -116,7 +116,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     }
 
     private func presentCompose(action: SingleMessageNavigationAction) {
-        guard action == .replyAll || action.isReplyAction || action == .forward else { return }
+        guard action.isReplyAllAction || action.isReplyAction || action == .forward else { return }
 
         let board = UIStoryboard.Storyboard.composer.storyboard
         guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,

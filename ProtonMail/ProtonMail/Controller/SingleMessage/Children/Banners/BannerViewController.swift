@@ -99,8 +99,8 @@ class BannerViewController: UIViewController {
         if let view = displayedBanners[type] {
             view.removeFromSuperview()
             displayedBanners.removeValue(forKey: type)
-            viewModel.updateTableView?()
         }
+        viewModel.recalculateCellHeight?()
     }
 
     func showContentBanner(remoteContent: Bool, embeddedImage: Bool) {
@@ -222,7 +222,7 @@ class BannerViewController: UIViewController {
 
         containerView.insertArrangedSubview(viewToAdd, at: indexToInsert)
         displayedBanners[type] = viewToAdd
-        viewModel.updateTableView?()
+        viewModel.recalculateCellHeight?()
     }
 
     private func findIndexToInsert(_ typeToInsert: BannerType) -> Int {

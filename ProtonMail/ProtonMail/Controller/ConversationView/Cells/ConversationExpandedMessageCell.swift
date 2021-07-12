@@ -2,6 +2,7 @@ import ProtonCore_UIFoundations
 
 class ConversationExpandedMessageCell: UITableViewCell {
 
+    var prepareForReuseBlock: (() -> Void)?
     var messageId: String?
     let container = UIView()
 
@@ -20,6 +21,7 @@ class ConversationExpandedMessageCell: UITableViewCell {
         super.prepareForReuse()
 
         messageId = nil
+        prepareForReuseBlock?()
     }
 
     private func addSubviews() {

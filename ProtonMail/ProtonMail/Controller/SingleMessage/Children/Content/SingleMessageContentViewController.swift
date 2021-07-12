@@ -77,9 +77,12 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func setUpFooterButtons() {
-        customView.footerButtons.isHidden = !viewModel.context.areBottomButtonsVisible
+        customView.footerButtons.isHidden = viewModel.context.viewMode != .conversation
+        let image = viewModel.message.isHavingMoreThanOneContact ?
+            Asset.replyAllButtonIcon.image : Asset.replyButtonIcon.image
+        customView.footerButtons.replyButton.setImage(image, for: .normal)
 
-        if viewModel.context.areBottomButtonsVisible {
+        if viewModel.context.viewMode == .conversation {
             customView.footerButtons.replyButton
                 .addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
             customView.footerButtons.moreButton
@@ -88,7 +91,10 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     @objc private func replyButtonTapped() {
-        navigationAction(.reply(messageId: viewModel.message.messageID))
+        let messageId = viewModel.message.messageID
+        let action: SingleMessageNavigationAction = viewModel.message.isHavingMoreThanOneContact ?
+            .replyAll(messageId: messageId) : .reply(messageId: messageId)
+        navigationAction(action)
     }
 
     @objc private func moreButtonTapped() {
@@ -136,20 +142,26 @@ class SingleMessageContentViewController: UIViewController {
             newController.view.trailingAnchor.constraint(equalTo: customView.messageHeaderContainer.contentContainer.trailingAnchor)
         ].activate()
 
+        customView.messageHeaderContainer.expandArrowImageView.image = newController is ExpandedHeaderViewController ?
+            Asset.arrowUp.image : Asset.arrowDown.image
+
         let bottomConstraint = newController.view.bottomAnchor
             .constraint(equalTo: customView.messageHeaderContainer.contentContainer.bottomAnchor)
 
         oldBottomConstraint?.isActive = !(newController is ExpandedHeaderViewController)
         bottomConstraint.isActive = newController is ExpandedHeaderViewController
 
+        viewModel.recalcualteCellHeight?()
+
         UIView.animate(withDuration: 0.25) {
             newController.view.alpha = 1
             oldController.view.alpha = 0
-        } completion: { _ in
+        } completion: { [weak self] _ in
             oldController.view.removeFromSuperview()
             oldController.removeFromParent()
             newController.didMove(toParent: self)
             bottomConstraint.isActive = true
+            self?.viewModel.recalcualteCellHeight?()
         }
     }
 

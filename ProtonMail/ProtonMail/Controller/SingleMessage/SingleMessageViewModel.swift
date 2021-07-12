@@ -64,7 +64,7 @@ class SingleMessageViewModel {
         let contentContext = SingleMessageContentViewContext(
             labelId: labelId,
             message: message,
-            areBottomButtonsVisible: false
+            viewMode: .singleMessage
         )
         self.contentViewModel = SingleMessageContentViewModel(
             context: contentContext,
@@ -95,8 +95,7 @@ class SingleMessageViewModel {
 
     func getActionTypes() -> [MailboxViewModel.ActionTypes] {
         var actions: [MailboxViewModel.ActionTypes] = []
-        let isHavingMoreThanOneContact = (message.toList.toContacts() + message.ccList.toContacts()).count > 1
-        actions.append(isHavingMoreThanOneContact ? .replyAll : .reply)
+        actions.append(message.isHavingMoreThanOneContact ? .replyAll : .reply)
         actions.append(.readUnread)
         let deleteLocation = [
             Message.Location.draft.rawValue,

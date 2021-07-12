@@ -1,17 +1,13 @@
 class ConversationExpandedMessageViewModel {
 
-    var updateTableView: (() -> Void)? {
-        didSet { messageContent.updateTableView = { [weak self] in self?.updateTableView?() } }
-    }
-
-    var storeHeight: (() -> Void)? {
-        didSet { messageContent.storeHeight = { [weak self] in self?.storeHeight?() } }
+    var recalculateCellHeight: (() -> Void)? {
+        didSet { messageContent.recalcualteCellHeight = { [weak self] in self?.recalculateCellHeight?() } }
     }
 
     var message: Message {
         didSet {
             messageContent.messageHasChanged(message: message)
-            updateTableView?()
+            recalculateCellHeight?()
         }
     }
 
