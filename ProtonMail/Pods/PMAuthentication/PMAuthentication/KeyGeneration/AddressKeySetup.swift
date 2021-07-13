@@ -1,41 +1,69 @@
 //
 //  AddressKeySetup.swift
-//  PMAuthentication
+//  PMAuthentication - Created on 21.12.2020.
 //
-//  Created by Igor Kulman on 21.12.2020.
-//  Copyright © 2020 ProtonMail. All rights reserved.
 //
+//  Copyright (c) 2019 Proton Technologies AG
+//
+//  This file is part of ProtonMail.
+//
+//  ProtonMail is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  ProtonMail is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Crypto
 import Foundation
+import OpenPGP
 
 final class AddressKeySetup {
     struct GeneratedAddressKey {
-        let cryptoKey: CryptoKey
         let password: String
         let armoredKey: String
     }
 
     func generateAddressKey(keyName: String, email: String, password: String, salt: Data) throws -> GeneratedAddressKey {
-        var error: NSError?
-
-        let hashedPassword = PasswordHash.hashPassword(password, salt: salt)
-
-        guard let passwordLessKey = CryptoGenerateKey(keyName, email, "rsa", 2048, &error) else {
-            throw KeySetupError.keyGenerationFailed
+        guard salt.isEmpty == false else {
+            throw KeySetupError.invalidSalt
         }
-        let key = try passwordLessKey.lock(hashedPassword.data(using: .utf8))
-        let armoredKey = key.armor(&error)
-        return GeneratedAddressKey(cryptoKey: key, password: hashedPassword, armoredKey: armoredKey)
+        
+        let hashedPassword = PasswordHash.hashPassword(password, salt: salt)
+        
+        // new openpgp instance
+        let openPGP = PMNOpenPgp.createInstance()!
+        let key = openPGP.generateKey(keyName, domain: email,
+                                      passphrase: hashedPassword,
+                                      bits: Int32(2048), time: Int32(0))
+        let armoredKey = key.privateKey
+        return GeneratedAddressKey(password: hashedPassword, armoredKey: armoredKey)
     }
 
-    func setupCreateAddressKeyRoute(key: GeneratedAddressKey, modulus: String, modulusId: String, addressId: String, primary: Bool) throws -> AuthService.CreateAddressKeyEndpoint {
-        let unlockedKey = try key.cryptoKey.unlock(key.password.data(using: .utf8))
+    func setupCreateAddressKeyRoute(key: GeneratedAddressKey, modulus: String, modulusId: String,
+                                    addressId: String, primary: Bool) throws -> AuthService.CreateAddressKeyEndpoint {
+        
+        var error: NSError?
+        
+        let keyData = ArmorUnarmor(key.armoredKey, nil)!
+    
+        guard let cryptoKey = CryptoNewKey(keyData, &error) else {
+            throw KeySetupError.keyReadFailed
+        }
+        
+        let fingerprint = cryptoKey.getFingerprint()
+
+        let unlockedKey = try cryptoKey.unlock(key.password.data(using: .utf8))
+        
         guard let keyRing = CryptoKeyRing(unlockedKey) else {
             throw KeySetupError.keyRingGenerationFailed
         }
-
-        let fingerprint = key.cryptoKey.getFingerprint()
 
         let keylist: [[String: Any]] = [[
             "Fingerprint": fingerprint,
@@ -48,8 +76,7 @@ final class AddressKeySetup {
 
         let message = CryptoNewPlainMessageFromString(jsonKeylist)
         let signature = try keyRing.signDetached(message)
-
-        var error: NSError?
+        
         let signed = signature.getArmored(&error)
         let signedKeyList: [String: Any] = [
             "Data": jsonKeylist,

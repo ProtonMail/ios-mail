@@ -63,13 +63,14 @@ public class Authenticator: NSObject {
 
             // 2. build SRP things
             do {
-                guard let auth = SrpAuth(response.version,
-                                         username: username,
-                                         password: PASSWORD,
-                                         salt: salt,
-                                         signedModulus: signedModulus,
-                                         serverEphemeral: serverEphemeral) else
-                {
+                let passSlic = PASSWORD.data(using: .utf8)
+                guard let auth = SrpAuth.init(response.version,
+                                              username: username,
+                                              password: passSlic,
+                                              b64salt: salt,
+                                              signedModulus: signedModulus,
+                                              serverEphemeral: serverEphemeral)
+                else {
                     return completion(.failure( Errors.emptyServerSrpAuth))
                 }
                 
@@ -118,7 +119,7 @@ public class Authenticator: NSObject {
     public func confirm2FA(_ twoFactorCode: String,
                            context: TwoFactorContext, completion: @escaping Completion)  {
         var route = AuthService.TwoFAEndpoint(code: twoFactorCode)
-        route.auth = AuthCredential(context.credential) //TODO:: fix me. this is temp
+        route.auth = AuthCredential(context.credential)
         self.apiService.exec(route: route) { (result: Result<AuthService.TwoFAResponse, Error>) in
             switch result {
             case .failure(let error):
@@ -188,6 +189,28 @@ public class Authenticator: NSObject {
         }
     }
     
+    public func createUser(userParameters: UserParameters, completion: @escaping (Result<(), Error>) -> Void) {
+        let route = AuthService.CreateUserEndpoint(userParameters: userParameters)
+        self.apiService.exec(route: route) { (_, response) in
+            if let error = response.error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+
+    public func createExternalUser(externalUserParameters: ExternalUserParameters, completion: @escaping (Result<(), Error>) -> Void) {
+        let route = AuthService.CreateExternalUserEndpoint(externalUserParameters: externalUserParameters)
+        self.apiService.exec(route: route) { (_, response) in
+            if let error = response.error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+
     public func getUserInfo(_ credential: Credential? = nil, completion: @escaping (Result<User, Error>) -> Void) {
         var route = AuthService.UserInfoEndpoint()
         if let auth = credential {

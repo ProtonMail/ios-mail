@@ -63,18 +63,23 @@ class AuthFlowTests: XCTestCase, AuthDelegate {
         }
     }
     func onForceUpgrade() { }
+
+    override class func setUp() {
+        PMAPIService.noTrustKit = true
+    }
     
     func testAutoAuthRefresh() {
-        let blueApi = PMAPIService(doh: TestDoHMail.default, sessionUID: ObfuscatedConstants.testSessionId)
-        api = Authenticator(api: blueApi)
-        let manager = Authenticator(api: blueApi)
+        let testApi = PMAPIService(doh: BlackDoHMail.default, sessionUID: ObfuscatedConstants.testSessionId)
+        testApi.doh.status = .off
+        api = Authenticator(api: testApi)
+        let manager = Authenticator(api: testApi)
         let anonymousService = AnonymousServiceManager()
         anonymousService.appVersion = ObfuscatedConstants.driveAppVersion
-        blueApi.serviceDelegate = anonymousService
-        blueApi.authDelegate = self
+        testApi.serviceDelegate = anonymousService
+        testApi.authDelegate = self
         let expect = expectation(description: "AuthInfo + Auth")
         ///
-        manager.authenticate(username: TestUser.blueDriveTestUser.username, password: TestUser.blueDriveTestUser.password) { result in
+        manager.authenticate(username: TestUser.blackTestUser0.username, password: TestUser.blackTestUser0.password) { result in
             switch result {
             case .success(Authenticator.Status.newCredential(let firstCredential, _)):
                 self.authCredential = AuthCredential(firstCredential)
@@ -86,7 +91,7 @@ class AuthFlowTests: XCTestCase, AuthDelegate {
                     case .success(let addresses):
                         XCTAssertFalse(addresses.isEmpty)
                         let route = ExpireToken(uid: firstCredential.UID)
-                        blueApi.exec(route: route) { (result1: Result<ExpireTokenResponse, Error>) in
+                        testApi.exec(route: route) { (result1: Result<ExpireTokenResponse, Error>) in
                             manager.getAddresses() { result in
                                 switch result {
                                 case .failure(let error):
@@ -131,7 +136,7 @@ class AuthFlowTests: XCTestCase, AuthDelegate {
     
     
     func testAutoAuthRefreshRaceConditaion() {
-        let blueApi = PMAPIService(doh: TestDoHMail.default, sessionUID: ObfuscatedConstants.testSessionId)
+        let blueApi = PMAPIService(doh: BlackDoHMail.default, sessionUID: ObfuscatedConstants.testSessionId)
         api = Authenticator(api: blueApi)
         let manager = Authenticator(api: blueApi)
         let anonymousService = AnonymousServiceManager()
@@ -142,7 +147,7 @@ class AuthFlowTests: XCTestCase, AuthDelegate {
         let expect1 = expectation(description: "AuthInfo + Auth")
         let expect2 = expectation(description: "AuthInfo + Auth")
         ///
-        manager.authenticate(username: TestUser.blueDriveTestUser.username, password: TestUser.blueDriveTestUser.password) { result in
+        manager.authenticate(username: TestUser.blackTestUser0.username, password: TestUser.blackTestUser0.password) { result in
             switch result {
             case .success(Authenticator.Status.newCredential(let firstCredential, _)):
                 self.authCredential = AuthCredential(firstCredential)

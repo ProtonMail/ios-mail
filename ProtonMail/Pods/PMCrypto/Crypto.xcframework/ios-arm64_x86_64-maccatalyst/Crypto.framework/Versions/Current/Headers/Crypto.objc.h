@@ -153,6 +153,14 @@ the given headers. Empty parameters are omitted from the headers.
  */
 - (NSString* _Nonnull)armorWithCustomHeaders:(NSString* _Nullable)comment version:(NSString* _Nullable)version error:(NSError* _Nullable* _Nullable)error;
 /**
+ * CanEncrypt returns true if any of the subkeys can be used for encryption.
+ */
+- (BOOL)canEncrypt;
+/**
+ * CanVerify returns true if any of the subkeys can be used for verification.
+ */
+- (BOOL)canVerify;
+/**
  * Check verifies if the public keys match the private key parameters by
 signing and verifying.
  */
@@ -244,6 +252,14 @@ the given headers. Empty parameters are omitted from the headers.
  * AddKey adds the given key to the keyring.
  */
 - (BOOL)addKey:(CryptoKey* _Nullable)key error:(NSError* _Nullable* _Nullable)error;
+/**
+ * CanEncrypt returns true if any of the keys in the keyring can be used for encryption.
+ */
+- (BOOL)canEncrypt;
+/**
+ * CanVerify returns true if any of the keys in the keyring can be used for verification.
+ */
+- (BOOL)canVerify;
 - (void)clearPrivateParams;
 /**
  * Copy creates a deep copy of the keyring.
@@ -582,17 +598,32 @@ string.
 @property (nonatomic) NSString* _Nonnull algo;
 - (BOOL)clear;
 /**
- * Decrypt decrypts password protected pgp binary messages.
+ * Decrypt decrypts pgp data packets using directly a session key.
 * encrypted: PGPMessage.
 * output: PlainMessage.
  */
 - (CryptoPlainMessage* _Nullable)decrypt:(NSData* _Nullable)dataPacket error:(NSError* _Nullable* _Nullable)error;
+/**
+ * DecryptAndVerify decrypts pgp data packets using directly a session key and verifies embedded signatures.
+* encrypted: PGPMessage.
+* verifyKeyRing: KeyRing with verification public keys
+* verifyTime: when should the signature be valid, as timestamp. If 0 time verification is disabled.
+* output: PlainMessage.
+ */
+- (CryptoPlainMessage* _Nullable)decryptAndVerify:(NSData* _Nullable)dataPacket verifyKeyRing:(CryptoKeyRing* _Nullable)verifyKeyRing verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
 /**
  * Encrypt encrypts a PlainMessage to PGPMessage with a SessionKey.
 * message : The plain data as a PlainMessage.
 * output  : The encrypted data as PGPMessage.
  */
 - (NSData* _Nullable)encrypt:(CryptoPlainMessage* _Nullable)message error:(NSError* _Nullable* _Nullable)error;
+/**
+ * EncryptAndSign encrypts a PlainMessage to PGPMessage with a SessionKey and signs it with a Private key.
+* message : The plain data as a PlainMessage.
+* signKeyRing: The KeyRing to sign the message
+* output  : The encrypted data as PGPMessage.
+ */
+- (NSData* _Nullable)encryptAndSign:(CryptoPlainMessage* _Nullable)message signKeyRing:(CryptoKeyRing* _Nullable)signKeyRing error:(NSError* _Nullable* _Nullable)error;
 /**
  * EncryptWithCompression encrypts with compression support a PlainMessage to PGPMessage with a SessionKey.
 * message : The plain data as a PlainMessage.

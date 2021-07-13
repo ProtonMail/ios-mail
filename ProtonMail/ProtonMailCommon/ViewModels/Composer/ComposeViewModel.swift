@@ -85,6 +85,8 @@ class ComposeViewModel: NSObject {
     var toSelectedContacts: [ContactPickerModelProtocol] = []
     var ccSelectedContacts: [ContactPickerModelProtocol] = []
     var bccSelectedContacts: [ContactPickerModelProtocol] = []
+
+    var showError: ((String) -> Void)?
     
     private var _subject : String! = ""
     var body : String! = ""

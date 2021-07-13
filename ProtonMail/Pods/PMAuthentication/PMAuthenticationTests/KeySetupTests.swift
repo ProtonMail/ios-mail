@@ -7,24 +7,35 @@
 //
 
 import XCTest
-@testable import PMAuthentication
 import PMCommon
+@testable import PMAuthentication
 
 class KeySetupTests: XCTestCase {
     let addressJson = """
         { "ID": "testId", "email": "test@example.org", "send": 1, "receive": 1, "status": 1, "type": 1, "order": 1, "displayName": "", "signature": "" }
     """
-    var testAddress: Address {
+    var testAddress: PMAuthentication.Address {
         return try! JSONDecoder().decode(Address.self, from: addressJson.data(using: .utf8)!)
     }
 
     func testAddressKeyGeneration() {
         let keySetup = AddressKeySetup()
         do {
-            let key = try keySetup.generateAddressKey(keyName: "Test key", email: "\(TestUser.liveTestUser.username)@\(LiveDoHMail.default.signupDomain)", password: TestUser.liveTestUser.password, salt: Data())
+            let salt = PasswordHash.random(bits: 128)
+            let key = try keySetup.generateAddressKey(keyName: "Test key", email: "\(TestUser.liveTestUser.username)@\(LiveDoHMail.default.signupDomain)", password: TestUser.liveTestUser.password, salt: salt)
             XCTAssertFalse(key.armoredKey.isEmpty)
         } catch {
             XCTFail(error.localizedDescription)
+        }
+    }
+    
+    func testAddressKeyGenerationFail() {
+        let keySetup = AddressKeySetup()
+        do {
+            _ = try keySetup.generateAddressKey(keyName: "Test key", email: "\(TestUser.liveTestUser.username)@\(LiveDoHMail.default.signupDomain)", password: TestUser.liveTestUser.password, salt: Data())
+            XCTFail("should not be here")
+        } catch let error {
+            XCTAssertEqual(error as? KeySetupError, .invalidSalt)
         }
     }
 
@@ -32,7 +43,8 @@ class KeySetupTests: XCTestCase {
         let keySetup = AddressKeySetup()
 
         do {
-            let key = try keySetup.generateAddressKey(keyName: "Test key", email: "\(TestUser.liveTestUser.username)@\(LiveDoHMail.default.signupDomain)", password: TestUser.liveTestUser.password, salt: Data())
+            let salt = PasswordHash.random(bits: 128)
+            let key = try keySetup.generateAddressKey(keyName: "Test key", email: "\(TestUser.liveTestUser.username)@\(LiveDoHMail.default.signupDomain)", password: TestUser.liveTestUser.password, salt: salt)
             let route = try keySetup.setupCreateAddressKeyRoute(key: key, modulus: ObfuscatedConstants.modulus, modulusId: ObfuscatedConstants.modulusId, addressId: TestUser.liveTestUser.username, primary: true)
             XCTAssertFalse(route.addressID.isEmpty)
             XCTAssertFalse(route.privateKey.isEmpty)

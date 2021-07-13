@@ -1,9 +1,6 @@
 //
 //  UserAvailableEndpoint.swift
-//  PMAuthentication
-//
-//  Created on 01.12.2020.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  PMAuthentication - Created on 01.12.2020.
 //
 //
 //  Copyright (c) 2019 Proton Technologies AG
@@ -28,7 +25,7 @@ import PMCommon
 
 extension AuthService {
     
-    //this is temp. it belongs to core common
+    // This is temp. it belongs to core common
     static let urlQueryValueAllowed: CharacterSet = {
         let generalDelimitersToEncode = ":#[]@"
         let subDelimitersToEncode = "!$&'()*+,;="

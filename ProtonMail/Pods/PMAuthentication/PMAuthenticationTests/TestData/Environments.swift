@@ -24,18 +24,17 @@ import XCTest
 @testable import PMAuthentication
 import PMCommon
 
-
-class TestDoHMail : DoH, ServerConfig {
-    var signupDomain: String = ObfuscatedConstants.blueSignupDomain
-    var captchaHost: String = ObfuscatedConstants.blueCaptchaHost
+class BlackDoHMail : DoH, ServerConfig {
+    var signupDomain: String = ObfuscatedConstants.blackSignupDomain
+    var captchaHost: String = ObfuscatedConstants.blackCaptchaHost
     //defind your default host
-    var defaultHost: String = ObfuscatedConstants.blueDefaultHost
+    var defaultHost: String = ObfuscatedConstants.blackDefaultHost
     //defind your query host
-    var apiHost : String = ObfuscatedConstants.blueApiHost
+    var apiHost : String = ObfuscatedConstants.blackApiHost
         
-    var defaultPath: String = ObfuscatedConstants.blueDefaultPath
+    var defaultPath: String = ObfuscatedConstants.blackDefaultPath
     //singleton
-    static let `default` = try! TestDoHMail()
+    static let `default` = try! BlackDoHMail()
 }
 
 class LiveDoHMail : DoH, ServerConfig {
@@ -47,19 +46,6 @@ class LiveDoHMail : DoH, ServerConfig {
     var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
     //singleton
     static let `default` = try! LiveDoHMail()
-}
-
-class DevDoHMail : DoH, ServerConfig {
-    var signupDomain: String = ObfuscatedConstants.devSignupDomain
-    var captchaHost: String = ObfuscatedConstants.devCaptchaHost
-    //defind your default host
-    var defaultHost: String = ObfuscatedConstants.devDefaultHost
-    //defind your query host
-    var apiHost : String = ObfuscatedConstants.devApiHost
-    
-    var defaultPath: String = ObfuscatedConstants.devDefaultPath
-    //singleton
-    static let `default` = try! DevDoHMail()
 }
 
 class AnonymousServiceManager : APIServiceDelegate {

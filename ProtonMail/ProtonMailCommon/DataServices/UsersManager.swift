@@ -127,24 +127,13 @@ class UsersManager : Service, Migrate {
     var doh : DoH
     /// the interface for talking to UI
     weak var delegate : UsersManagerDelegate?
-    
-    /// Credential
-//    var userCredentials : [AuthCredential] = []
+
     /// users
     var users : [UserManager] = [] {
         didSet {
             userCachedStatus.primaryUserSessionId = users.first?.auth.sessionID
         }
     }
-//    var apiServices : [APIService] = []
-    
-    /// global services
-    
-    /// device level service
-    
-    /// user list
-    
-    /// signIn manager application level
     
     init(doh: DoH, delegate : UsersManagerDelegate?) {
         self.doh = doh
@@ -198,16 +187,7 @@ class UsersManager : Service, Migrate {
                 usr.userinfo = user
             }
         }
-        
-//        let session = auth.sessionID
-//        //        if session != user.userId {
-//        //            //error  //TODO::
-//        //        }
-//        let apiConfig = serverConfig
-//        let apiService = APIService(config: apiConfig, sessionUID: session)
-//        let newUser = UserManager(api: apiService, userinfo: user, auth: auth)
-//        users.append(newUser)
-//
+
         self.save()
     }
     
@@ -254,11 +234,6 @@ class UsersManager : Service, Migrate {
     var firstUser : UserManager? {
         return users.first
     }
-    
-//    lazy var apiService: APIService = {
-//        let service = APIService(config: usersManager.serverConfig, userID: "")
-//        return service
-//    }()
     
     func getAPIService (bySessionID uid : String)  -> APIService? {
         let found = users.filter { (user) -> Bool in
@@ -404,6 +379,8 @@ class UsersManager : Service, Migrate {
             do {
                 auths = try authlocked.unlock(with: mainKey)
             } catch {
+                SharedCacheBase.getDefault().setValue(nil, forKey: CoderKey.authKeychainStore)
+                KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
                 Analytics.shared.error(message: .usersRestoreFailed, error: error, extra: ["IsUnlockFail": true])
                 return
             }
@@ -452,48 +429,6 @@ class UsersManager : Service, Migrate {
         users.forEach { $0.fetchUserInfo() }
         self.loggedIn()
     }
-        
-//        let authList = self.users.compactMap{ $0.auth }
-//        userCachedStatus.isForcedLogout = false
-//        guard let lockedAuth = try? Locked<[AuthCredential]>.init(encryptedValue: T##Data: authList, with: mainKey) else
-//        {
-//            return
-//        }
-//        KeychainWrapper.keychain.set(lockedAuth.encryptedValue, forKey: CoderKey.authKeychainStore)
-//
-//        let userList = self.users.compactMap{ $0.userinfo }
-//        guard let lockedUsers = try? Locked<[UserInfo]>(clearValue: userList, with: mainKey) else {
-//            return
-//        }
-//        SharedCacheBase.getDefault()?.set(lockedUsers.encryptedValue, forKey: CoderKey.usersInfo)
-//        SharedCacheBase.getDefault().synchronize()
-        
-        
-        // then try the older version
-        
-        // clean up
-        
-//        // MARK: - Private variables
-//
-//        guard let mainKey = keymaker.mainKey,
-//            let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.userInfo) else
-//        {
-//            return nil
-//        }
-//
-//                let locked = Locked<UserInfo>(encryptedValue: cypherData)
-//                return try? locked.unlock(with: mainKey)
-//            }
-//            set {
-//                self.saveUserInfo(newValue)
-//            }
-//        }
-//        guard let userInfo = sharedUserDataService.userInfo,
-//            let auth = AuthCredential.fetchFromKeychain() else {
-//                return
-//        }
-//        self.add(auth: auth, user: userInfo)
-//    }
     
     func save() {
         guard let mainKey = keymaker.mainKey else {
@@ -535,11 +470,22 @@ extension UsersManager {
     func logout(user: UserManager, shouldShowAccountSwitchAlert: Bool = false) -> Promise<Void> {
         var isPrimaryAccountLogout = false
         return user.cleanUp().then { _ -> Promise<Void> in
+            guard let userToDelete = self.users.first(where: { $0.userinfo.userId == user.userinfo.userId }) else {
+                if !self.disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId}) {
+                    let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,
+                                                            defaultEmail: user.defaultEmail,
+                                                            userID: user.userinfo.userId)
+                    self.disconnectedUsers.insert(logoutUser, at: 0)
+                    self.save()
+                }
+                return Promise()
+            }
+
             if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
-                self.remove(user: user)
+                self.remove(user: userToDelete)
                 isPrimaryAccountLogout = true
             } else {
-                self.remove(user: user)
+                self.remove(user: userToDelete)
             }
             
             if self.users.isEmpty {
@@ -557,13 +503,15 @@ extension UsersManager {
         }
     }
     
-    func remove(user: UserManager) {
+    private func remove(user: UserManager) {
         if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.auth.sessionID) })?.auth.sessionID {
             self.active(uid: nextFirst)
         }
-        self.disconnectedUsers.append(.init(defaultDisplayName: user.defaultDisplayName,
-                                         defaultEmail: user.defaultEmail,
-                                         userID: user.userInfo.userId))
+        if !disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
+            self.disconnectedUsers.append(.init(defaultDisplayName: user.defaultDisplayName,
+                                             defaultEmail: user.defaultEmail,
+                                             userID: user.userInfo.userId))
+        }
         self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
         self.save()
     }

@@ -2480,7 +2480,7 @@
 "Your new secure email\r\n account is ready." = "您的安全邮箱\r现已就绪。";
 
 /* Service plan description footer */
-"Your plan is currently active until" = "您的订阅有效期至";
+"Your plan is currently active until" = "您的等级有效期至";
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "下次自动续费日期为";

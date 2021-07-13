@@ -225,13 +225,13 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
                    performDropWith coordinator: UITableViewDropCoordinator)
     {
         DispatchQueue.main.async {
-            LocalString._importing_drop.alertToastBottom()
+            LocalString._importing_drop.alertToastBottom(view: self.view)
         }
         
         let itemProviders = coordinator.items.map { $0.dragItem.itemProvider }
         self.viewModel.importFiles(from: itemProviders, errorHandler: self.error) {
             DispatchQueue.main.async {
-                LocalString._drop_finished.alertToastBottom()
+                LocalString._drop_finished.alertToastBottom(view: self.view)
             }
         }
     }
