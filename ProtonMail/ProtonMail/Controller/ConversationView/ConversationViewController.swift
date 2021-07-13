@@ -372,9 +372,7 @@ private extension ConversationViewController {
             if key == actions.startIndex {
                 actionBarItem = PMActionBarItem(icon: action.iconImage, text: action.name, handler: actionHandler)
             } else {
-                actionBarItem = PMActionBarItem(icon: action.iconImage,
-                                                backgroundColor: .clear,
-                                                handler: actionHandler)
+                actionBarItem = PMActionBarItem(icon: action.iconImage, backgroundColor: .clear, handler: actionHandler)
             }
             actionBarItems.append(actionBarItem)
         }

@@ -43,7 +43,7 @@ extension MailboxViewController {
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
             sender: sender,
-            time: date(of: message, weekStart: weekStart),
+            time: message.isSending ? LocalString._mailbox_draft_is_sending : date(of: message, weekStart: weekStart),
             isForwarded: message.forwarded,
             isReply: message.replied,
             isReplyAll: message.repliedAll,
