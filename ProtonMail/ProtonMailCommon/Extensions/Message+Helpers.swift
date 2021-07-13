@@ -109,7 +109,7 @@ extension Message {
 
     func initial(replacingEmails: [Email]) -> String {
         let senderName = self.senderName(replacingEmails: replacingEmails)
-        return senderName.isEmpty ? "?" : senderName.shortName()
+        return senderName.isEmpty ? "?" : senderName.initials()
     }
 
     func sender(replacingEmails: [Email]) -> String {

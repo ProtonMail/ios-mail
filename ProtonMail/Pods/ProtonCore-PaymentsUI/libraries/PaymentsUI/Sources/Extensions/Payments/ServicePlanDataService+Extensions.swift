@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import ProtonCore_Payments
 import ProtonCore_CoreTranslation
 
@@ -47,7 +48,7 @@ extension ServicePlanDataService {
         let attrStr = NSMutableAttributedString(string: string)
         if let range = string.range(of: boldString) {
             let boldedRange = NSRange(range, in: string)
-            attrStr.addAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .bold)], range: boldedRange)
+            attrStr.addAttributes([.font: UIFont.systemFont(ofSize: 13, weight: .bold), .foregroundColor: UIColorManager.TextNorm], range: boldedRange)
         }
         return attrStr
     }

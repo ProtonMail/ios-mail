@@ -33,9 +33,10 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
 
     // MARK: - Outlets
 
+    @IBOutlet private weak var titleView: UILabel!
+    @IBOutlet private weak var codeTextField: PMTextField!
     @IBOutlet private weak var authenticateButton: ProtonButton!
     @IBOutlet private weak var recoveryCodeButton: ProtonButton!
-    @IBOutlet private weak var codeTextField: PMTextField!
     @IBOutlet private weak var scrollView: UIScrollView!
 
     // MARK: - Properties
@@ -61,9 +62,10 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
         generateAccessibilityIdentifiers()
     }
 
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         navigationBarAdjuster.setUp(for: scrollView, parent: parent)
+        scrollView.adjust(forKeyboardVisibilityNotification: nil)
     }
 
     private func setupUI() {
@@ -107,12 +109,7 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
             }
         }
     }
-
-    private func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -121,9 +118,17 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
 
     // MARK: - Keyboard
 
-    @objc private func adjustKeyboard(notification: NSNotification) {
-        guard navigationController?.topViewController === self else { return }
-        scrollView.adjustForKeyboard(notification: notification)
+    private func setupNotifications() {
+        NotificationCenter.default
+            .setupKeyboardNotifications(target: self, show: #selector(keyboardWillShow), hide: #selector(keyboardWillHide))
+    }
+
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: codeTextField, bottomView: recoveryCodeButton)
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: titleView, bottomView: recoveryCodeButton)
     }
 
     // MARK: - Errors

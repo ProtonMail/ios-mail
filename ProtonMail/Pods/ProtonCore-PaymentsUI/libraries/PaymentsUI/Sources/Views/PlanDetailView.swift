@@ -52,6 +52,9 @@ final class PlanDetailView: UIView {
         addSubview(mainView)
         mainView.frame = bounds
         mainView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        backgroundColor = .clear
+        mainView.backgroundColor = .clear
+        detailLabel.backgroundColor = .clear
     }
     
     func configure(text: String) {

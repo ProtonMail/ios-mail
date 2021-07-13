@@ -166,7 +166,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         profilePictureImageView.isHidden = true
         
         let name = viewModel.getProfile().newDisplayName
-        shortNameLabel.text = name.shortName()
+        shortNameLabel.text = name.initials()
 
         var attributes = FontManager.Headline
         attributes.addTextAlignment(.center)
@@ -189,7 +189,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             
             // show short name
             let name = viewModel.getProfile().newDisplayName
-            shortNameLabel.text = name.shortName()
+            shortNameLabel.text = name.initials()
         }
         
         // full name

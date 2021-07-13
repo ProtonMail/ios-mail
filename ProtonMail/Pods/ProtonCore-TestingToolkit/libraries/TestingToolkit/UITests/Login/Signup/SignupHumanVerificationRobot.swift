@@ -15,6 +15,24 @@ private let recaptchaButtonCheckName = "Recaptcha requires verification. I'm not
 private let closeButtonAccessibilityId = "closeButton"
 
 public final class SignupHumanVerificationRobot: CoreElements {
+
+    public enum HVOrCompletionRobot {
+        case humanVerification(SignupHumanVerificationRobot)
+        case complete(CompleteRobot)
+
+        public func proceed<T: CoreElements>(to: T.Type) -> T {
+            switch self {
+            case .humanVerification(let hvRobot):
+                return hvRobot
+                    .verify.humanVerificationScreenIsShown()
+                    .humanVericicationCaptchaTap(to: CompleteRobot.self)
+                    .verify.completeScreenIsShown(robot: T.self)
+            case .complete(let completeRobot):
+                return completeRobot
+                    .verify.completeScreenIsShown(robot: T.self)
+            }
+        }
+    }
     
     public let verify = Verify()
     
@@ -25,10 +43,10 @@ public final class SignupHumanVerificationRobot: CoreElements {
             return SignupHumanVerificationRobot()
         }
         
-        public func isHumanVerificationRequired() -> SignupHumanVerificationRobot? {
+        public func isHumanVerificationRequired() -> HVOrCompletionRobot {
             let staticText = XCUIApplication().staticTexts[titleName]
-            Wait().forElement(staticText)
-            return staticText.exists ? SignupHumanVerificationRobot() : nil
+            Wait(time: 5.0).forElement(staticText)
+            return staticText.exists ? .humanVerification(SignupHumanVerificationRobot()) : .complete(CompleteRobot())
         }
     }
 

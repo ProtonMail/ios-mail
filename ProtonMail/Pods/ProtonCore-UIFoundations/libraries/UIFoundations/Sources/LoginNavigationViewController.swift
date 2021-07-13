@@ -23,10 +23,18 @@ import UIKit
 
 public final class LoginNavigationViewController: UINavigationController {
 
+    public enum TransitionStyle {
+        case systemDefault
+        case modalLike
+    }
+
+    public var autoresettingNextTransitionStyle: TransitionStyle = .systemDefault
+
     public init(rootViewController: UIViewController, navigationBarHidden: Bool = false) {
         super.init(rootViewController: rootViewController)
+        delegate = self
         modalPresentationStyle = .fullScreen
-        setUpTransparentNavigationBar()
+        setUpShadowLessNavigationBar()
         setNavigationBarHidden(navigationBarHidden, animated: false)
     }
 
@@ -43,20 +51,56 @@ public final class LoginNavigationViewController: UINavigationController {
         CATransaction.commit()
     }
 
-    public func setUpTransparentNavigationBar() {
-        navigationBar.isTranslucent = false
-        navigationBar.backgroundColor = .clear
+    public func setUpShadowLessNavigationBar() {
+        baseNavigationBarConfiguration()
         navigationBar.shadowImage = .colored(with: .clear)
     }
 
-    public func setUpOpaqueNavigationBar() {
-        navigationBar.isTranslucent = false
-        navigationBar.backgroundColor = .clear
+    public func setUpNavigationBarWithShadow() {
+        baseNavigationBarConfiguration()
         navigationBar.shadowImage = .colored(with: UIColorManager.Shade20)
     }
 
-    override public func setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {
-        super.setViewControllers(viewControllers, animated: animated)
-        setNavigationBarHidden(false, animated: true)
+    private func baseNavigationBarConfiguration() {
+        let color = topViewController?.view.backgroundColor ?? .clear
+        navigationBar.isTranslucent = false
+        navigationBar.setBackgroundImage(.colored(with: color), for: .default)
+        navigationBar.backgroundColor = .clear
+    }
+}
+
+extension LoginNavigationViewController: UINavigationControllerDelegate {
+    public func navigationController(_ navigationController: UINavigationController,
+                                     animationControllerFor operation: UINavigationController.Operation,
+                                     from fromVC: UIViewController,
+                                     to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        defer { autoresettingNextTransitionStyle = .systemDefault }
+        switch autoresettingNextTransitionStyle {
+        case .modalLike: return ModalLikeTransition()
+        case .systemDefault: return nil
+        }
+    }
+}
+
+fileprivate final class ModalLikeTransition: NSObject, UIViewControllerAnimatedTransitioning {
+
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval { 0.3 }
+
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        guard let fromViewController = transitionContext.viewController(forKey: .from),
+              let toViewController = transitionContext.viewController(forKey: .to)
+        else { return }
+        let containerView = transitionContext.containerView
+
+        let finalFrame = transitionContext.finalFrame(for: toViewController)
+        toViewController.view.frame.origin.y = fromViewController.view.frame.maxY
+        containerView.insertSubview(toViewController.view, aboveSubview: fromViewController.view)
+
+        UIView.animate(withDuration: transitionDuration(using: transitionContext)) {
+            toViewController.view.frame = finalFrame
+        } completion: {
+            toViewController.navigationController?.setNavigationBarHidden(false, animated: false)
+            transitionContext.completeTransition($0)
+        }
     }
 }

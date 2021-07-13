@@ -138,39 +138,30 @@ final class WelcomeView: UIView {
             addSubview($0)
         }
 
-        topImage.contentMode = .center
+        topImage.contentMode = .scaleAspectFill
 
         NSLayoutConstraint.activate([
             topImage.topAnchor.constraint(equalTo: topAnchor),
-            topImage.centerXAnchor.constraint(equalTo: centerXAnchor),
+            topImage.leadingAnchor.constraint(equalTo: leadingAnchor),
+            topImage.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            logo.topAnchor.constraint(equalTo: topImage.bottomAnchor, constant: 24),
-            logo.centerXAnchor.constraint(equalTo: centerXAnchor),
+            logo.topAnchor.constraint(lessThanOrEqualTo: topImage.bottomAnchor, constant: 24),
+            logo.centerXAnchor.constraint(equalTo: readableContentGuide.centerXAnchor),
 
             headline.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 36),
-
             body.topAnchor.constraint(equalTo: headline.bottomAnchor, constant: 8),
-            body.centerXAnchor.constraint(equalTo: centerXAnchor),
-            body.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            body.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-
             loginButton.topAnchor.constraint(equalTo: body.bottomAnchor, constant: 32),
-            loginButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            loginButton.widthAnchor.constraint(equalTo: readableContentGuide.widthAnchor),
-
             signupButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 20),
-            signupButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            signupButton.widthAnchor.constraint(equalTo: readableContentGuide.widthAnchor),
-
+            footer.topAnchor.constraint(greaterThanOrEqualTo: signupButton.bottomAnchor, constant: 16),
             footer.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            footer.centerXAnchor.constraint(equalTo: centerXAnchor),
-            footer.widthAnchor.constraint(equalTo: readableContentGuide.widthAnchor)
         ])
 
         NSLayoutConstraint.activate([headline, body, loginButton, signupButton, footer].flatMap { view in
-            [view.centerXAnchor.constraint(equalTo: centerXAnchor),
-             view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-             view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)]
+            [
+                view.centerXAnchor.constraint(equalTo: readableContentGuide.centerXAnchor),
+                view.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor, constant: 24),
+                view.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor, constant: -24)
+            ]
         })
     }
 

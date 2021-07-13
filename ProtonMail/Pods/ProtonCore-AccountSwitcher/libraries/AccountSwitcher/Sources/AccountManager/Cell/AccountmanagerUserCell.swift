@@ -24,6 +24,7 @@ import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
+import ProtonCore_Utilities
 
 protocol AccountmanagerUserCellDelegate: AnyObject {
     /// Show more option action sheet, only call this function before iOS 14

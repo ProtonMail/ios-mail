@@ -137,9 +137,10 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         }
     }
 
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         navigationBarAdjuster.setUp(for: scrollView, parent: parent)
+        scrollView.adjust(forKeyboardVisibilityNotification: nil)
     }
 
     func updateCountryCode(_ responseCode: Int) {
@@ -253,14 +254,21 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         return viewModel.isValidPhoneNumber(number: recoveryPhoneTextField.value)
     }
 
+    // MARK: - Keyboard
+
     private func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default
+            .setupKeyboardNotifications(target: self, show: #selector(keyboardWillShow), hide: #selector(keyboardWillHide))
     }
 
-    @objc private func adjustKeyboard(notification: NSNotification) {
-        guard navigationController?.topViewController === self else { return }
-        scrollView.adjustForKeyboard(notification: notification)
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        adjust(scrollView, notification: notification,
+               topView: topView(of: recoveryEmailTextField, recoveryPhoneTextField),
+               bottomView: termsTextView)
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: recoveryMethodTitleLabel, bottomView: termsTextView)
     }
 }
 

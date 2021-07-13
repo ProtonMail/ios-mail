@@ -80,6 +80,7 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColorManager.BackgroundNorm
+        passwordTextField.returnKeyType = .next
         setUpBackArrow(action: #selector(PasswordViewController.onBackButtonTap(_:)))
         setupGestures()
         setupNotifications()
@@ -92,9 +93,10 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
         focusOnce(view: passwordTextField)
     }
 
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         navigationBarAdjuster.setUp(for: scrollView, parent: parent)
+        scrollView.adjust(forKeyboardVisibilityNotification: nil)
     }
 
     // MARK: Actions
@@ -150,14 +152,21 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
         }
     }
 
+    // MARK: - Keyboard
+
     private func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default
+            .setupKeyboardNotifications(target: self, show: #selector(keyboardWillShow), hide: #selector(keyboardWillHide))
     }
 
-    @objc private func adjustKeyboard(notification: NSNotification) {
-        guard navigationController?.topViewController === self else { return }
-        scrollView.adjustForKeyboard(notification: notification)
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        adjust(scrollView, notification: notification,
+               topView: topView(of: passwordTextField, repeatPasswordTextField),
+               bottomView: nextButton)
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: createPasswordTitleLabel, bottomView: nextButton)
     }
 }
 

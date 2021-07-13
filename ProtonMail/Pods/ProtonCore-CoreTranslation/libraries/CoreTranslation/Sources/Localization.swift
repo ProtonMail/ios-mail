@@ -245,7 +245,7 @@ public class LocalizedString {
     public lazy var _ls_create_address_button_title = NSLocalizedString("Create address", bundle: Common.bundle, comment: "Action button title for creating ProtonMail address")
 
     /// Info about ProtonMail address usage
-    public lazy var _ls_create_address_info = NSLocalizedString("You will use this email address to log in to all Proton services.", bundle: Common.bundle, comment: "Info about ProtonMail address usage")
+    public lazy var _ls_create_address_info = NSLocalizedString("You will use this email address to log into all Proton services.", bundle: Common.bundle, comment: "Info about ProtonMail address usage")
 
     /// Recovery address label title
     public lazy var _ls_create_address_recovery_title = NSLocalizedString("Your recovery email address:", bundle: Common.bundle, comment: "Recovery address label title")
@@ -507,7 +507,7 @@ public class LocalizedString {
     /// Signup error password empty
     public lazy var _su_error_password_empty = NSLocalizedString("Password can not be empty.\nPlease try again.", bundle: Common.bundle, comment: "Password empty error")
 
-    public lazy var _su_error_password_too_short = NSLocalizedString("Password is too short. Should have at least %@ characters.\nPlease try again.", bundle: Common.bundle, comment: "Password too short error")
+    public lazy var _su_error_password_too_short = NSLocalizedString("Password must contain at least %@ characters.", bundle: Common.bundle, comment: "Password too short error")
 
     /// Signup error password not equal
     public lazy var _su_error_password_not_equal = NSLocalizedString("Passwords do not match.\nPlease try again.", bundle: Common.bundle, comment: "Password not equal error")
@@ -529,8 +529,8 @@ public class LocalizedString {
     /// Current plan title
     public lazy var _pu_current_plan_title = NSLocalizedString("Current plan", bundle: Common.bundle, comment: "Plan selection title")
   
-    /// Update plan title
-    public lazy var _pu_update_plan_title = NSLocalizedString("Update plan", bundle: Common.bundle, comment: "Plan selection title")
+    /// Upgrade plan title
+    public lazy var _pu_upgrade_plan_title = NSLocalizedString("Upgrade plan", bundle: Common.bundle, comment: "Plan selection title")
     
     /// Plan footer title
     public lazy var _pu_plan_footer_title = NSLocalizedString("Visit protonmail.com to upgrade to Professional and Visionary plans, or to customize your plan.", bundle: Common.bundle, comment: "Plan footer title")

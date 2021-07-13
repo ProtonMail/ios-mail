@@ -22,7 +22,7 @@
 
 import Foundation
 
-public enum AccountPlan: String, CaseIterable {
+public enum AccountPlan: String, CaseIterable, Equatable {
     /// Commion plans
     case free = "free"
     case visionary = "visionary"

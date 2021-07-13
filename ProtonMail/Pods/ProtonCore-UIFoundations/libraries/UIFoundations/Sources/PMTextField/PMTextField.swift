@@ -101,6 +101,14 @@ public class PMTextField: UIView {
     }
 
     /**
+     Sets keyboard return key type
+     */
+    @IBInspectable public var returnKeyType: UIReturnKeyType {
+        get { textField.returnKeyType }
+        set { textField.returnKeyType = newValue }
+    }
+
+    /**
      The text displayed by the text field.
      */
     @IBInspectable public var value: String {

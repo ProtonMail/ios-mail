@@ -1,8 +1,8 @@
 //
-//  PaymentsUIViewModelProtocol.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  UIBarButtonItem+SimulateTap.swift
+//  PMLoginTests - Created on 02/07/2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2019 Proton Technologies AG
 //
 //  This file is part of ProtonMail.
 //
@@ -17,25 +17,20 @@
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Payments
+#if canImport(UIKit)
 
-enum PlanTitle: Equatable {
-    case price(String?)
-    case current
+import UIKit
+
+extension UIBarButtonItem {
+
+    public func simulateTap() {
+        if let action = action {
+            _ = target?.perform(action, with: self)
+        }
+    }
+
 }
 
-struct Plan {
-    let name: String
-    let title: PlanTitle
-    let details: [String]
-    var isSelectable: Bool
-    var endDate: NSAttributedString?
-    let accountPlan: AccountPlan
-}
-
-protocol PaymentsUIViewModelProtocol {
-    var plansToShow: [AccountPlan] { get }
-    var allPaidPlans: [AccountPlan] { get }
-}
+#endif

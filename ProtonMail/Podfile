@@ -14,7 +14,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '1.5.0'
+  '1.6.0'
 end
 
 def pm_shared_pods

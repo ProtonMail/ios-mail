@@ -128,27 +128,30 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
         }
     }
 
-    private func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         navigationBarAdjuster.setUp(for: scrollView, shouldAdjustNavigationBar: !isStandaloneComponent, parent: parent)
+        scrollView.adjust(forKeyboardVisibilityNotification: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         focusOnce(view: mailboxPasswordTextField)
     }
 
     // MARK: - Keyboard
 
-    @objc private func adjustKeyboard(notification: NSNotification) {
-        guard navigationController?.topViewController === self else { return }
-        scrollView.adjustForKeyboard(notification: notification)
+    private func setupNotifications() {
+        NotificationCenter.default
+            .setupKeyboardNotifications(target: self, show: #selector(keyboardWillShow), hide: #selector(keyboardWillHide))
+    }
+
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: mailboxPasswordTextField, bottomView: forgetButton)
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: titleLabel, bottomView: forgetButton)
     }
 
     // MARK: - Errors

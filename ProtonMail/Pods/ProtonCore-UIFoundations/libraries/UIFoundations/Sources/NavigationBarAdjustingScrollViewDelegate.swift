@@ -36,11 +36,11 @@ public final class NavigationBarAdjustingScrollViewDelegate: NSObject, UIScrollV
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard shouldAdjustNavigationBar, let navigationController = navigationController else { return }
-        let adjustedTopOffset = scrollView.contentOffset.y + scrollView.adjustedContentInset.top
+        let adjustedTopOffset = scrollView.contentOffset.y
         if adjustedTopOffset <= .zero {
-            navigationController.setUpTransparentNavigationBar()
+            navigationController.setUpShadowLessNavigationBar()
         } else {
-            navigationController.setUpOpaqueNavigationBar()
+            navigationController.setUpNavigationBarWithShadow()
         }
     }
 }

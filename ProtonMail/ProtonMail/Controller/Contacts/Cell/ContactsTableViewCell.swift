@@ -86,7 +86,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
 
         var attr = FontManager.body3RegularNorm
         attr.addTextAlignment(.center)
-        shortName.attributedText = name.shortName().apply(style: attr)
+        shortName.attributedText = name.initials().apply(style: attr)
         generateCellAccessibilityIdentifiers(name)
     }
 }

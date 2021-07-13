@@ -27,7 +27,7 @@ class ExpandedHeaderViewModel {
     var reloadView: (() -> Void)?
 
     var initials: NSAttributedString {
-        senderName.shortName().apply(style: FontManager.body3RegularNorm)
+        senderName.initials().apply(style: FontManager.body3RegularNorm)
     }
 
     var sender: NSAttributedString {

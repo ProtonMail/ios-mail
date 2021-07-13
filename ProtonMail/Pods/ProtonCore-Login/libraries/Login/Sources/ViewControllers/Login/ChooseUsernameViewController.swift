@@ -107,21 +107,25 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
         focusOnce(view: addressTextField)
     }
 
-    private func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         navigationBarAdjuster.setUp(for: scrollView, parent: parent)
+        scrollView.adjust(forKeyboardVisibilityNotification: nil)
     }
 
     // MARK: - Keyboard
 
-    @objc private func adjustKeyboard(notification: NSNotification) {
-        guard navigationController?.topViewController === self else { return }
-        scrollView.adjustForKeyboard(notification: notification)
+    private func setupNotifications() {
+        NotificationCenter.default
+            .setupKeyboardNotifications(target: self, show: #selector(keyboardWillShow), hide: #selector(keyboardWillHide))
+    }
+
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: addressTextField, bottomView: nextButton)
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: titleLabel, bottomView: nextButton)
     }
 
     // MARK: - Actions

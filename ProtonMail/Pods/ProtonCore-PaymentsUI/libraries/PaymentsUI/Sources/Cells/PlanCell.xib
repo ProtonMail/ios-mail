@@ -32,7 +32,7 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6V-ll-zVD">
                                         <rect key="frame" x="0.0" y="0.0" width="325" height="16"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="HGX-Dk-ZKo"/>
                                         </constraints>
@@ -53,7 +53,7 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KuW-ZY-JGe">
                                         <rect key="frame" x="0.0" y="0.0" width="325" height="16"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="uTb-0W-mPp"/>
                                         </constraints>
@@ -72,7 +72,7 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9TX-YS-JEz">
                                         <rect key="frame" x="0.0" y="0.0" width="325" height="16"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="myE-m2-lS6"/>
                                         </constraints>
@@ -86,7 +86,7 @@
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BD7-sE-cHY">
                                         <rect key="frame" x="0.0" y="17" width="325" height="16"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="zxb-sg-v39"/>
                                         </constraints>
@@ -100,7 +100,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="ByM-Ed-V8z" firstAttribute="leading" secondItem="7Yo-CW-EIF" secondAttribute="leading" constant="24" id="0Vr-uC-hdX"/>
                             <constraint firstItem="woK-Bo-nUa" firstAttribute="leading" secondItem="uOR-yW-Qpp" secondAttribute="leading" id="4k8-V3-AXv"/>

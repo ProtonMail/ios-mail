@@ -114,7 +114,7 @@
 /**
  * Login create address
  */
-"You will use this email address to log in to all Proton services." = "You will use this email address to log in to all Proton services.";
+"You will use this email address to log into all Proton services." = "You will use this email address to log into all Proton services.";
 "Your recovery email address:" = "Your recovery email address:";
 "Create address" = "Create address";
 "By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
@@ -249,7 +249,7 @@
 
 "Select a plan" = "Select a plan";
 "Current plan" = "Current plan";
-"Update plan" = "Update plan";
+"Upgrade plan" = "Upgrade plan";
 "Visit protonmail.com to upgrade to Professional and Visionary plans, or to customize your plan." = "Visit protonmail.com to upgrade to Professional and Visionary plans, or to customize your plan.";
 "Upon confirming your purchase of a paid plan, your iTunes account will be charged the amount displayed, which includes taxes and additional platform fees (which are not charged by Proton directly).";
 "Select plan" = "Select plan";

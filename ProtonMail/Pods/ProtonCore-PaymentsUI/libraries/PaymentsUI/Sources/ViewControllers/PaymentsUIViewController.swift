@@ -74,6 +74,10 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColorManager.BackgroundNorm
+        tableView.backgroundColor = UIColorManager.BackgroundNorm
+        tableView.tableHeaderView?.backgroundColor = UIColorManager.BackgroundNorm
+        tableView.tableFooterView?.backgroundColor = UIColorManager.BackgroundNorm
         tableView.tableHeaderView?.isHidden = true
         tableView.tableFooterView?.isHidden = true
         navigationItem.title = ""
@@ -172,7 +176,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
                     navigationItem.title = CoreString._pu_current_plan_title
                 case .update:
                     if model?.isAnyPlanToPurchase ?? false {
-                        navigationItem.title = CoreString._pu_update_plan_title
+                        navigationItem.title = CoreString._pu_upgrade_plan_title
                     } else {
                         navigationItem.title = CoreString._pu_current_plan_title
                     }

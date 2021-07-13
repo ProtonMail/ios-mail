@@ -111,7 +111,7 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
     }
     
     private func prepareShortName() {
-        shortNameLabel.text = name.shortName()
+        shortNameLabel.text = name.initials()
         
         shortNameLabel.textColor = ContactGroupEditViewCellColor.deselected.text
         shortNameLabel.backgroundColor = ContactGroupEditViewCellColor.deselected.background

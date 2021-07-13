@@ -41,6 +41,7 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
     @IBOutlet private weak var recoveryTitleLabel: UILabel!
     @IBOutlet private weak var recoveryInfoLabel: UILabel!
     @IBOutlet private weak var termsLabel: UILabel!
+    @IBOutlet private weak var scrollView: UIScrollView!
 
     // MARK: - Properties
 
@@ -57,6 +58,12 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
         setupUI()
         setupBinding()
         generateAccessibilityIdentifiers()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        navigationBarAdjuster.setUp(for: scrollView, parent: parent)
+        scrollView.adjust(forKeyboardVisibilityNotification: nil)
     }
 
     private func setupUI() {

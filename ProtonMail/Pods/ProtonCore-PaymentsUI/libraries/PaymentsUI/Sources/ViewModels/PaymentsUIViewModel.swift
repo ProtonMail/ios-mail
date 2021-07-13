@@ -130,7 +130,7 @@ final class PaymentsUIViewModelViewModel: NSObject {
         let currentPlans = self.servicePlan.currentSubscription?.plans.filter { $0 != .free } ?? []
         if currentPlans.count == 0 {
             // current plan is free - show other plans to update
-            if withCurrentPlan, let freePlan = self.fetchPlan(plan: .free, isSelectable: false) {
+            if withCurrentPlan, let freePlan = self.fetchPlan(plan: .free, isSelectable: false, isCurrent: true) {
                 self.plans += [freePlan]
             }
             let plansToShow = planType.plansToShow.filter { $0 != .free }
@@ -141,12 +141,12 @@ final class PaymentsUIViewModelViewModel: NSObject {
             // filter other subscriptions
             let allPlans = currentPlans.filter { planType.allPaidPlans.contains($0) }
             
-            if let foundPlan = allPlans.first, let plan = self.fetchPlan(plan: foundPlan, isSelectable: false, endDate: servicePlan.endDateString(plan: foundPlan)) {
+            if let foundPlan = allPlans.first, let plan = self.fetchPlan(plan: foundPlan, isSelectable: false, isCurrent: true, endDate: servicePlan.endDateString(plan: foundPlan)) {
                 self.plans += [plan]
                 completionHandler?(.success((self.plans, self.isAnyPlanToPurchase)))
             } else {
                 // there is an other subscription type
-                if let freePlan = self.fetchPlan(plan: .free, isSelectable: false) {
+                if let freePlan = self.fetchPlan(plan: .free, isSelectable: false, isCurrent: true) {
                     self.plans += [freePlan]
                     completionHandler?(.success((self.plans, self.isAnyPlanToPurchase)))
                 }
@@ -174,15 +174,16 @@ final class PaymentsUIViewModelViewModel: NSObject {
     
     private func getPlans(plans: [AccountPlan]) -> [Plan] {
         return plans.compactMap {
-            return fetchPlan(plan: $0, isSelectable: true)
+            return fetchPlan(plan: $0, isSelectable: true, isCurrent: false)
         }
     }
     
-    private func fetchPlan(plan: AccountPlan, isSelectable: Bool, endDate: NSAttributedString? = nil) -> Plan? {
+    private func fetchPlan(plan: AccountPlan, isSelectable: Bool, isCurrent: Bool, endDate: NSAttributedString? = nil) -> Plan? {
         guard let details = fetchDetails(accountPlan: plan) else { return nil }
         var strDetails = [details.usersDescription, details.storageDescription, details.addressesDescription]
         strDetails += details.additionalDescription
-        return Plan(name: details.nameDescription, details: strDetails, price: plan.planPrice, isSelectable: isSelectable, endDate: endDate, accountPlan: plan)
+        let title: PlanTitle = isCurrent == true ? .current : .price(plan.planPrice)
+        return Plan(name: details.nameDescription, title: title, details: strDetails, isSelectable: isSelectable, endDate: endDate, accountPlan: plan)
     }
 
     private func fetchDetails(accountPlan: AccountPlan) -> ServicePlanDetails? {

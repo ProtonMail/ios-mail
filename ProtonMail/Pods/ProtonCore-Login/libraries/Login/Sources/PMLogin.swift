@@ -102,7 +102,7 @@ public class PMLogin: LoginInterface {
         self.viewController = viewController
         self.loginCompletion = completion
 
-        presentSignup(.over(viewController), receipt: receipt, completion: completion)
+        presentSignup(.over(viewController, .coverVertical), receipt: receipt, completion: completion)
     }
     
     public func presentMailboxPasswordFlow(over viewController: UIViewController, completion: @escaping (String) -> Void) {
@@ -137,7 +137,7 @@ public class PMLogin: LoginInterface {
         if let welcomeScreen = welcomeScreen {
             loginCoordinator?.startFromWelcomeScreen(viewController: viewController, variant: welcomeScreen, username: username)
         } else {
-            loginCoordinator?.start(.over(viewController), username: username)
+            loginCoordinator?.start(.over(viewController, .coverVertical), username: username)
         }
     }
 

@@ -35,7 +35,7 @@ extension Conversation {
         guard let senderName = getSendersName(replacingEmails).first else {
             return "?"
         }
-        return senderName.shortName()
+        return senderName.initials()
     }
 
     func getLabelIds() -> [String] {

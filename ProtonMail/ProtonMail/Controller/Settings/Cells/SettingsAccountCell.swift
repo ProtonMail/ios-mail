@@ -58,6 +58,6 @@ class SettingsAccountCell: UITableViewCell {
         emailAttribute.addTruncatingTail()
         self.mailLabel.attributedText = NSAttributedString(string: email, attributes: emailAttribute)
 
-        self.shortNameLabel.text = name.shortName()
+        self.shortNameLabel.text = name.initials()
     }
 }

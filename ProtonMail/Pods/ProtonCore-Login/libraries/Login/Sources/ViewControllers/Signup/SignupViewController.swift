@@ -63,8 +63,6 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     @IBOutlet weak var nameTextField: PMTextField! {
         didSet {
             nameTextField.delegate = self
-            nameTextField.keyboardType = .emailAddress
-            nameTextField.textContentType = .emailAddress
             nameTextField.autocorrectionType = .no
             nameTextField.autocapitalizationType = .none
             nameTextField.spellCheckingType = .no
@@ -100,7 +98,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         setupGestures()
         setupNotifications()
         otherAccountButton.isHidden = !showOtherAccountButton
-        focusOnce(view: nameTextField, delay: .milliseconds(500))
+        focusOnce(view: nameTextField, delay: .milliseconds(750))
         setUpCloseButton(showCloseButton: showCloseButton, action: #selector(SignupViewController.onCloseButtonTap(_:)))
         requestDomain()
         configureAccountType()
@@ -108,9 +106,10 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         try? nameTextField.setUpChallenge(viewModel.challenge, type: .username)
     }
 
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         navigationBarAdjuster.setUp(for: scrollView, shouldAdjustNavigationBar: showCloseButton, parent: parent)
+        scrollView.adjust(forKeyboardVisibilityNotification: nil)
     }
 
     // MARK: Actions
@@ -118,6 +117,8 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     @IBAction func onOtherAccountButtonTap(_ sender: ProtonButton) {
         cancelFocus()
         PMBanner.dismissAll(on: self)
+        let isFirstResponder = nameTextField.isFirstResponder
+        if isFirstResponder { _ = nameTextField.resignFirstResponder() }
         contentView.fadeOut(withDuration: 0.5) { [self] in
             self.contentView.fadeIn(withDuration: 0.5)
             self.nameTextField.isError = false
@@ -127,6 +128,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
                 signupAccountType = .internal
             }
             configureAccountType()
+            if isFirstResponder { _ = nameTextField.becomeFirstResponder() }
         }
     }
 
@@ -175,8 +177,12 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         nameTextField.value = ""
         if signupAccountType == .internal {
             nameTextField.title = CoreString._su_username_field_title
+            nameTextField.keyboardType = .default
+            nameTextField.textContentType = .username
         } else {
             nameTextField.title = CoreString._su_email_field_title
+            nameTextField.keyboardType = .emailAddress
+            nameTextField.textContentType = .emailAddress
         }
         let title = signupAccountType == .internal ? CoreString._su_email_address_button : CoreString._su_proton_address_button
         otherAccountButton.setTitle(title, for: .normal)
@@ -251,14 +257,19 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         })
     }
 
+    // MARK: - Keyboard
+
     private func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default
+            .setupKeyboardNotifications(target: self, show: #selector(keyboardWillShow), hide: #selector(keyboardWillHide))
     }
 
-    @objc private func adjustKeyboard(notification: NSNotification) {
-        guard navigationController?.topViewController === self else { return }
-        scrollView.adjustForKeyboard(notification: notification)
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: nameTextField, bottomView: signinButton)
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: createAccountTitleLabel, bottomView: signinButton)
     }
 }
 

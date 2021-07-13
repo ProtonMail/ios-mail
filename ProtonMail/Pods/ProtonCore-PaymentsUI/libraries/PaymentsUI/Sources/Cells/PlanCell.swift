@@ -84,13 +84,20 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         self.plan = plan
         planNameLabel.text = plan.name
         
-        if let price = plan.price {
-            let attributedText = NSMutableAttributedString(string: price, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 22), NSAttributedString.Key.foregroundColor: UIColorManager.TextNorm])
-            attributedText.append(NSAttributedString(string: CoreString._pu_plan_details_price_time_period, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17), NSAttributedString.Key.foregroundColor: UIColorManager.TextWeak]))
-            planPriceLabel.attributedText = attributedText
-        } else {
-            planPriceSeparator.isHidden = true
-            planPriceLabel.isHidden = true
+        switch plan.title {
+        case .price(let price):
+            if let price = price {
+                let attributedText = NSMutableAttributedString(string: price, attributes: [.font: UIFont.systemFont(ofSize: 22), .foregroundColor: UIColorManager.TextNorm])
+                attributedText.append(NSAttributedString(string: CoreString._pu_plan_details_price_time_period, attributes: [.font: UIFont.systemFont(ofSize: 17), .foregroundColor: UIColorManager.TextWeak]))
+                planPriceLabel.attributedText = attributedText
+            } else {
+                planPriceSeparator.isHidden = true
+                planPriceLabel.isHidden = true
+            }
+        case .current:
+            planPriceLabel.textColor = UIColorManager.TextWeak
+            planPriceLabel.font = .systemFont(ofSize: 17.0)
+            planPriceLabel.text = CoreString._pu_current_plan_title
         }
         
         plan.details.forEach {

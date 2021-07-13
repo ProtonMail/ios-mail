@@ -51,7 +51,6 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
     @IBOutlet private weak var helpButton: ProtonButton!
     @IBOutlet private weak var subtitleLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var separatorView: UIView!
 
     // MARK: - Properties
@@ -80,16 +79,17 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
             showError(error: error)
         }
 
-        focusOnce(view: loginTextField, delay: .milliseconds(500))
+        focusOnce(view: loginTextField, delay: .milliseconds(750))
 
         setUpCloseButton(showCloseButton: showCloseButton, action: #selector(LoginViewController.closePressed(_:)))
 
         generateAccessibilityIdentifiers()
     }
 
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         navigationBarAdjuster.setUp(for: scrollView, shouldAdjustNavigationBar: showCloseButton, parent: parent)
+        scrollView.adjust(forKeyboardVisibilityNotification: nil)
     }
 
     // MARK: - Setup
@@ -113,14 +113,13 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
         loginTextField.autocapitalizationType = .none
         loginTextField.textContentType = .username
         loginTextField.keyboardType = .emailAddress
+        loginTextField.returnKeyType = .next
 
         passwordTextField.autocorrectionType = .no
         passwordTextField.autocapitalizationType = .none
         passwordTextField.textContentType = .password
 
         loginTextField.value = initialUsername ?? ""
-
-        topConstraint.constant = -1 * (UIApplication.getInstance()?.statusBarFrame.height ?? .zero)
     }
 
     private func requestDomain() {
@@ -168,11 +167,6 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
             self?.view.isUserInteractionEnabled = !isLoading
             self?.signInButton.isSelected = isLoading
         }
-    }
-
-    private func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     // MARK: - Actions
@@ -223,18 +217,19 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
 
     // MARK: - Keyboard
 
+    private func setupNotifications() {
+        NotificationCenter.default
+            .setupKeyboardNotifications(target: self, show: #selector(keyboardWillShow), hide: #selector(keyboardWillHide))
+    }
+
     @objc private func keyboardWillShow(notification: NSNotification) {
-        guard navigationController?.topViewController === self else { return }
-        scrollView.adjustForKeyboard(notification: notification)
-
-        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom - 36)
-
-        self.scrollView.setContentOffset(bottomOffset, animated: true)
+        adjust(scrollView, notification: notification,
+               topView: topView(of: loginTextField, passwordTextField),
+               bottomView: signUpButton)
     }
 
     @objc private func keyboardWillHide(notification: NSNotification) {
-        guard navigationController?.topViewController === self else { return }
-        scrollView.adjustForKeyboard(notification: notification)
+        adjust(scrollView, notification: notification, topView: titleLabel, bottomView: signUpButton)
     }
 
     // MARK: - Validation

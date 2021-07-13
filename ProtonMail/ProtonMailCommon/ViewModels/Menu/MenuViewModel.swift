@@ -521,7 +521,7 @@ extension MenuViewModel {
         
         let name = user.defaultDisplayName.isEmpty ? user.defaultEmail: user.defaultDisplayName
         self.delegate?.update(displayName: name)
-        self.delegate?.update(avatar: name.shortName())
+        self.delegate?.update(avatar: name.initials())
     }
     
     // Get the indexPaths should be Expanded / collapsed by the given label

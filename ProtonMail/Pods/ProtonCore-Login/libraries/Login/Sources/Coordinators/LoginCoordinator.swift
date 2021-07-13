@@ -57,7 +57,7 @@ final class LoginCoordinator {
 
     func startFromWelcomeScreen(viewController: UIViewController, variant: WelcomeScreenVariant, username: String? = nil) {
         let welcome = WelcomeViewController(variant: variant, delegate: self, username: username, signupAvailable: isSignupAvailable)
-        showInitialViewController(.over(viewController), initialViewController: welcome, navigationBarHidden: true)
+        showInitialViewController(.over(viewController, .crossDissolve), initialViewController: welcome, navigationBarHidden: true)
     }
 
     private func loginViewController(username: String?) -> UIViewController {
@@ -73,10 +73,15 @@ final class LoginCoordinator {
 
     // MARK: - Actions
 
-    private func showInitialViewController(_ kind: FlowStartKind, initialViewController: UIViewController, navigationBarHidden: Bool = false) {
+    private func showInitialViewController(
+        _ kind: FlowStartKind,
+        initialViewController: UIViewController,
+        navigationBarHidden: Bool = false
+    ) {
         switch kind {
-        case .over(let viewController):
+        case let .over(viewController, modalTransitionStyle):
             let navigationController = LoginNavigationViewController(rootViewController: initialViewController, navigationBarHidden: navigationBarHidden)
+            navigationController.modalTransitionStyle = modalTransitionStyle
             self.navigationController = navigationController
             container.setupHumanVerification(viewController: navigationController)
             viewController.present(navigationController, animated: true, completion: nil)
@@ -268,12 +273,17 @@ private extension UIStoryboard {
 extension LoginCoordinator: WelcomeViewControllerDelegate {
 
     func userWantsToLogIn(username: String?) {
+        guard let navigationController = navigationController else { return }
+        navigationController.modalTransitionStyle = .coverVertical
         let login = loginViewController(username: username)
-        navigationController?.setViewControllers([login], animated: true)
+        navigationController.autoresettingNextTransitionStyle = .modalLike
+        navigationController.setViewControllers([login], animated: true)
     }
 
     func userWantsToSignUp() {
         guard let navigationController = navigationController else { return }
+        navigationController.modalTransitionStyle = .coverVertical
+        navigationController.autoresettingNextTransitionStyle = .modalLike
         delegate?.userSelectedSignup(navigationController: navigationController)
     }
 }

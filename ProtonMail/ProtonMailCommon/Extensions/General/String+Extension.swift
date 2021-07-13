@@ -446,23 +446,6 @@ extension String {
         return escaped
     }
 
-    func shortName() -> String {
-        let invalids = "[.,/#!$@%^&*;:{}=\\-_`~()]"
-        let splits = self
-            .components(separatedBy: .whitespaces)
-            .compactMap { $0.first?.uppercased() }
-            .filter { !invalids.contains($0) }
-
-        var initials = [splits.first]
-        if splits.count > 1 {
-            initials.append(splits.last)
-        }
-
-        let result = initials
-            .compactMap { $0 }
-            .joined()
-        return result.isEmpty ? "?": result
-    }
 }
 
 

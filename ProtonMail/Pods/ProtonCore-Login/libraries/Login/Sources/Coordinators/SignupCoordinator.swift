@@ -26,7 +26,7 @@ import ProtonCore_UIFoundations
 import ProtonCore_Payments
 
 enum FlowStartKind {
-    case over(UIViewController)
+    case over(UIViewController, UIModalTransitionStyle)
     case inside(LoginNavigationViewController)
 }
 
@@ -104,9 +104,10 @@ final class SignupCoordinator {
         signupViewController.signupAccountType = signupAccountType
 
         switch kind {
-        case .over(let viewController):
+        case let .over(viewController, modalTransitionStyle):
             let navigationController = LoginNavigationViewController(rootViewController: signupViewController)
             self.navigationController = navigationController
+            navigationController.modalTransitionStyle = modalTransitionStyle
             container.setupHumanVerification(viewController: navigationController)
             viewController.present(navigationController, animated: true, completion: nil)
         case .inside(let navigationViewController):
@@ -167,6 +168,7 @@ final class SignupCoordinator {
         completeViewController.email = email
         completeViewController.phoneNumber = phoneNumber
         completeViewController.verifyToken = verifyToken
+        navigationController?.setUpShadowLessNavigationBar()
         navigationController?.pushViewController(completeViewController, animated: true)
     }
     
