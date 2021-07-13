@@ -64,15 +64,25 @@ extension EncryptedSearchService {
                     messages = msgs
                     print("# of message objects: ", messages.count)
                     
-                    NSLog("Downloading message details...")
+                    /*for m in messages {
+                        if (m as! Message).isDetailDownloaded {
+                            print("Message details already downloaded for message: ", (m as! Message).messageID)
+                            //print("Body: ", (m as! Message).body)
+                        } else {
+                            print("Message details NOT already downloaded for message: ", (m as! Message).messageID)
+                        }
+                    }*/
+                    
+                    NSLog("Downloading message details...") //if needed
                     //3. downloads message details
-                    self.getMessageDetails(messages, messagesToProcess: messages.count){
+                    //self.getMessageDetails(messages, messagesToProcess: messages.count){
+                    self.getMessageDetailsIfNotAvailable(messages, messagesToProcess: messages.count){
                         compMsgs in
                         completeMessages = compMsgs
                         
                         print("complete messages: ", completeMessages.count)
                         
-                        NSLog("Downloading message details...")
+                        NSLog("Decrypting messages...")
                         //4. decrypt messages (using the user's PGP key)
                         self.decryptBodyAndExtractData(completeMessages)
                     }
@@ -134,38 +144,104 @@ extension EncryptedSearchService {
     func getMessageObjects(_ messageIDs: NSArray, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
         //print("Iterate through messages:")
         let messages: NSMutableArray = []
+        var processedMessages: Int = 0
         for msgID in messageIDs {
-            let message:Message? = self.getMessage(msgID as! String)
-            messages.add(message!)
+            self.getMessage(msgID as! String) {
+                m in
+                messages.add(m!)
+                processedMessages += 1
+                print("message: ", processedMessages)
+                
+                if processedMessages == messageIDs.count {
+                    completionHandler(messages)
+                }
+            }
+            
+            //print("Message contains body?: ", message!.isDetailDownloaded)
+            //print("Message body: ", message!.body)
+            //break
         }
-        completionHandler(messages)
+        
+        //do I have to call it here as well?
+        if processedMessages == messageIDs.count {
+            completionHandler(messages)
+        }
     }
     
-    func getMessageDetails(_ messages: NSArray, messagesToProcess: Int, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
+    /*func getMessageDetails(_ messages: NSArray, messagesToProcess: Int, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
         let msg: NSMutableArray = []
         var processedMessageCount: Int = 0
         for m in messages {
             self.messageService.ForcefetchDetailForMessage(m as! Message){_,_,newMessage,error in
-                    //print("message")
-                    //print(newMessage!)
-                    //print("error")
-                    //print(error!)
+                //print("message")
+                //print(newMessage!)
+                //print("error")
+                //print(error!)
+                if error == nil {
+                    print("Processing message: ", processedMessageCount)
+                    msg.add(newMessage!)
+                    processedMessageCount += 1
+                }
+                else {
+                    NSLog("Error when fetching message details: %@", error!)
+                }
+                
+                //check if last message
+                //if index == messages.count-1 {
+                if processedMessageCount == messagesToProcess {
+                    completionHandler(msg)
+                }
+            }
+        }
+    }*/
+    
+    func getMessageDetailsIfNotAvailable(_ messages: NSArray, messagesToProcess: Int, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
+        let msg: NSMutableArray = []
+        var processedMessageCount: Int = 0
+        for m in messages {
+            if (m as! Message).isDetailDownloaded {
+                msg.add(m)
+                processedMessageCount += 1
+            } else {
+                self.messageService.fetchMessageDetailForMessage(m as! Message, labelID: "5") { _, response, _, error in
+                    //print("Response: ", response!)
+                    print("Fetching message details for message: ", (m as! Message).messageID)
+                    
                     if error == nil {
-                        print("Processing message: ", processedMessageCount)
-                        msg.add(newMessage!)
-                        processedMessageCount += 1
-
-                        //check if last message
-                        //if index == messages.count-1 {
-                        if processedMessageCount == messagesToProcess {
-                            completionHandler(msg)
+                        //let abc:NSDictionary = response!["Message"] as! NSDictionary
+                        //print("abc:", abc)
+                        //TODO extract message id
+                        let mID: String = (m as! Message).messageID
+                        //call get message (from cache) -> now with details
+                        //let newM:Message? = self.getMessage(mID)
+                        self.getMessage(mID) { newM in
+                            msg.add(newM!)
+                            print("Message: (", mID, ") successfull added!")
+                            processedMessageCount += 1  //increase message count if successfully added
+                            
+                            //if we are already finished with for loop, we have to check here to be able to return
+                            if processedMessageCount == messagesToProcess {
+                                completionHandler(msg)
+                            }
                         }
                     }
+                    else {
+                        NSLog("Error: ", error!)
+                    }
+                    //print("Finish fetching message detail")
+                }
             }
+            print("Messages processed: ", processedMessageCount)
+        }
+        
+        //check if all messages have been processed
+        //do I have to check here as well?
+        if processedMessageCount == messagesToProcess {
+            completionHandler(msg)
         }
     }
     
-    private func getMessage(_ messageID: String) -> Message? {
+    private func getMessage(_ messageID: String, completionHandler: @escaping (Message?) -> Void) -> Void {
         let fetchedResultsController = self.messageService.fetchedMessageControllerForID(messageID)
         
         if let fetchedResultsController = fetchedResultsController {
@@ -178,37 +254,39 @@ extension EncryptedSearchService {
         
         if let context = fetchedResultsController?.managedObjectContext{
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                return message
+                //return message
+                completionHandler(message)
             }
         }
-        return nil
+        //return nil
+        //completionHandler(nil)
     }
     
     func decryptBodyAndExtractData(_ messages: NSArray) {
         //2. decrypt messages (using the user's PGP key)
         //MessageDataService+Decrypt.swift:38
         //func decryptBodyIfNeeded(message: Message) throws -> String?
-        for message in messages {
-            
-            print("Message:")
-            print(message)
-            /*ProtonMail.ObjectBox
-            print((message as! Message).isDetailDownloaded)
-            
-            print((message as! Message).subject)
-            print("Encrypted body of message:")
-            print((message as! Message).body)
-            //break
+        for m in messages {
+            //print("Message:")
+            //print((m as! Message).body)
             
             do {
-                let body = try self.messageService.decryptBodyIfNeeded(message: message as! Message)
-                print("Body of email: ", body!)
+                let body = try self.messageService.decryptBodyIfNeeded(message: m as! Message)
+                print("Body of email (plaintext): ", body!)
+                //(m as! Message).pl
             } catch {
                 print("Unexpected error: \(error).")
             }
-            break*/
+            
+            //for debugging only
             break
         }
+    }
+    
+    func extractKeywordsFromBody(bodyOfEmail body: String) -> NSMutableArray {
+        var contentOfEmail: NSMutableArray = []
+        
+        return contentOfEmail
     }
 
     //Encrypted Search
