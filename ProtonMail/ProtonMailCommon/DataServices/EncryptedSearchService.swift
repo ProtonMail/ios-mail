@@ -270,22 +270,27 @@ extension EncryptedSearchService {
             //print("Message:")
             //print((m as! Message).body)
             
+            var body: String? = ""
             do {
-                let body = try self.messageService.decryptBodyIfNeeded(message: m as! Message)
+                body = try self.messageService.decryptBodyIfNeeded(message: m as! Message)
                 print("Body of email (plaintext): ", body!)
-                //(m as! Message).pl
             } catch {
                 print("Unexpected error: \(error).")
             }
             
+            var keyWordsPerEmail: NSMutableArray = []
+            keyWordsPerEmail = self.extractKeywordsFromBody(bodyOfEmail: body!)
+            
             //for debugging only
             break
         }
+        
+        //return keywords
     }
     
     func extractKeywordsFromBody(bodyOfEmail body: String) -> NSMutableArray {
         var contentOfEmail: NSMutableArray = []
-        
+        //TODO implement using a HTML parser
         return contentOfEmail
     }
 
