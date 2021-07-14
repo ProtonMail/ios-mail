@@ -24,7 +24,7 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
     let title: String
     private(set) var items: [MessageViewActionSheetAction] = []
 
-    init(title: String, labelID: String, isUnread: Bool, isStarred: Bool) {
+    init(title: String, labelID: String, isUnread: Bool, isStarred: Bool, isAllMessagesInTrash: Bool) {
         self.title = title
 
         items.append(contentsOf: [
@@ -36,7 +36,7 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
         items.append(isStarred ? .unstar : .star)
         items.append(.labelAs)
 
-        if labelID != Message.Location.trash.rawValue {
+        if labelID != Message.Location.trash.rawValue && !isAllMessagesInTrash {
             items.append(.trash)
         }
 

@@ -89,7 +89,7 @@ class MoveToActionSheetPresenter {
             let iconColor = viewModel.getColor(of: menuLabel)
 
             let item = PMActionSheetPlainItem(title: menuLabel.name,
-                                              icon: icon,
+                                              icon: icon?.withRenderingMode(.alwaysTemplate),
                                               iconColor: iconColor,
                                               markType: viewModel.initialLabelSelectionStatus[menuLabel],
                                               indentationLevel: menuLabel.indentationLevel) { item in

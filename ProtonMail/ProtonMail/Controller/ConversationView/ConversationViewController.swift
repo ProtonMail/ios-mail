@@ -415,10 +415,14 @@ private extension ConversationViewController {
         guard let navigationVC = self.navigationController else { return }
         let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
         let isStarred = viewModel.conversation.starred
+
+        let messagesCountInTrash = viewModel.conversation.getNumMessages(labelID: Message.Location.trash.rawValue)
+        let isAllMessagesInTrash = messagesCountInTrash == viewModel.conversation.numMessages.intValue
         let actionSheetViewModel = ConversationActionSheetViewModel(title: viewModel.conversation.subject,
                                                                     labelID: viewModel.labelId,
                                                                     isUnread: isUnread,
-                                                                    isStarred: isStarred)
+                                                                    isStarred: isStarred,
+                                                                    isAllMessagesInTrash: isAllMessagesInTrash)
         actionSheetPresenter.present(on: navigationVC,
                                      viewModel: actionSheetViewModel) { [weak self] action in
             self?.handleActionSheetAction(action)
@@ -650,12 +654,16 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
     private func showMoveToActionSheetForConversation() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
-        let moveToViewModel =
-            MoveToActionSheetViewModelConversations(menuLabels: viewModel.getFolderMenuItems(),
-                                                    conversations: [viewModel.conversation],
-                                                    isEnableColor: isEnableColor,
-                                                    isInherit: isInherit,
-                                                    labelId: viewModel.labelId)
+        let messagesOfConversation = viewModel.messagesDataSource.compactMap({ $0.message })
+
+        let moveToViewModel = MoveToActionSheetViewModelMessages(
+            menuLabels: viewModel.getFolderMenuItems(),
+            messages: messagesOfConversation,
+            isEnableColor: isEnableColor,
+            isInherit: isInherit,
+            labelId: viewModel.labelId
+        )
+
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,

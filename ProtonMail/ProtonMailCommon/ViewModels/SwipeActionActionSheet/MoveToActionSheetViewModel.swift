@@ -123,7 +123,7 @@ struct MoveToActionSheetViewModelConversations: MoveToActionSheetViewModel {
         }
 
         initialLabelSelectionCount.forEach { (label, _) in
-            for conversation in conversations where conversation.getLabels().contains(label.location.labelID) {
+            for conversation in conversations where conversation.contains(of: label.location.labelID) {
                 if let labelCount = initialLabelSelectionCount[label] {
                     initialLabelSelectionCount[label] = labelCount + 1
                 } else {
