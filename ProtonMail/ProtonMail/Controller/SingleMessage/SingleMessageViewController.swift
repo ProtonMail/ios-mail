@@ -222,7 +222,9 @@ private extension SingleMessageViewController {
     private func moreButtonTapped() {
         guard let navigationVC = self.navigationController else { return }
         let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.subject,
-                                                                   labelID: viewModel.labelId)
+                                                                   labelID: viewModel.labelId,
+                                                                   includeStarring: false,
+                                                                   isStarred: viewModel.message.starred)
         actionSheetPresenter.present(on: navigationVC,
                                      viewModel: actionSheetViewModel) { [weak self] action in
             self?.handleActionSheetAction(action)

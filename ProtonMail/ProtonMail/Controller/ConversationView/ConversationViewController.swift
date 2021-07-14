@@ -37,7 +37,9 @@ class ConversationViewController: UIViewController,
         starButtonSetUp(starred: viewModel.conversation.starred)
 
         viewModel.refreshView = { [weak self] in
-            self?.refreshNavigationViewIfNeeded()
+            guard let self = self else { return }
+            self.refreshNavigationViewIfNeeded()
+            self.starButtonSetUp(starred: self.viewModel.conversation.starred)
         }
 
         viewModel.showNewMessageArrivedFloaty = { [weak self] messageId in
@@ -196,8 +198,14 @@ class ConversationViewController: UIViewController,
                           Message.Location.starred.rawValue]
         guard let labels = message.labels.allObjects as? [Label],
               let location = labels
-                .first(where: { !forbidden.contains($0.labelID) && ($0.type.intValue == 3 || Int($0.labelID) != nil) }) else { return }
-        let viewModel = MessageViewActionSheetViewModel(title: message.subject, labelID: location.labelID)
+                .first(where: {
+                        !forbidden.contains($0.labelID)
+                    && ($0.type.intValue == 3 || Int($0.labelID) != nil)
+                }) else { return }
+        let viewModel = MessageViewActionSheetViewModel(title: message.subject,
+                                                        labelID: location.labelID,
+                                                        includeStarring: true,
+                                                        isStarred: message.starred)
         actionSheetPresenter.present(on: navigationController ?? self, viewModel: viewModel) { [weak self] in
             self?.handleActionSheetAction($0, message: message)
         }

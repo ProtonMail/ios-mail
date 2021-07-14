@@ -9,6 +9,10 @@ extension ConversationViewModel {
         switch action {
         case .markUnread:
             messageService.mark(messages: [message], labelID: messageLocation, unRead: true)
+        case .star:
+            messageService.label(messages: [message], label: Message.Location.starred.rawValue, apply: true, shouldFetchEvent: true)
+        case .unstar:
+            messageService.label(messages: [message], label: Message.Location.starred.rawValue, apply: false, shouldFetchEvent: true)
         case .trash:
             messageService.move(messages: [message],
                                 from: [messageLocation],

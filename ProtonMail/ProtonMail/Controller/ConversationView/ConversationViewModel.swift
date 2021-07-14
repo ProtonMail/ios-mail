@@ -184,6 +184,7 @@ class ConversationViewModel {
             }
         case let .insert(message, row):
             insert(message, row, tableView)
+            refreshView?()
         case let .update(message, row):
             guard let viewModel = messagesDataSource[safe: row]?.messageViewModel else {
                 return
@@ -196,11 +197,13 @@ class ConversationViewModel {
             } else if !viewModel.isTrashed && cell.frame.height == 0 {
                 tableView.reloadRows(at: [path], with: .automatic)
             }
+            refreshView?()
         case let .delete(message):
             if let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == message.messageID }) {
                 messagesDataSource.remove(at: index)
                 tableView.deleteRows(at: [.init(row: index, section: 1)], with: .automatic)
             }
+            refreshView?()
         case let .move(fromRow, toRow):
             if let item = messagesDataSource[safe: fromRow] {
                 messagesDataSource.remove(at: fromRow)
