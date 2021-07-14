@@ -146,11 +146,7 @@ extension LabelEditViewController {
         self.view.endEditing(true)
 
         guard self.viewModel.hasNetworking else {
-            let title = self.viewModel.networkingAlertTitle
-            let message = LocalString._please_connect_and_retry
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addOKAction()
-            self.present(alert, animated: true, completion: nil)
+            self.viewModel.networkingAlertTitle.alertToastBottom(subtitle: LocalString._please_connect_and_retry)
             return
         }
 
@@ -185,11 +181,7 @@ extension LabelEditViewController {
 
     private func clickDeleteButton() {
         guard self.viewModel.hasNetworking else {
-            let title = self.viewModel.networkingAlertTitle
-            let message = LocalString._please_connect_and_retry
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addOKAction()
-            self.present(alert, animated: true, completion: nil)
+            self.viewModel.networkingAlertTitle.alertToastBottom(subtitle: LocalString._please_connect_and_retry)
             return
         }
 

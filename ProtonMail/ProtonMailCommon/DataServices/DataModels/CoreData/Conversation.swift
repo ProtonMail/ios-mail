@@ -246,14 +246,15 @@ extension Conversation {
         var changedLabels: Set<String> = []
         if unRead {
             // It marks the latest message of the conversation of the current location (inbox, archive, etc...) as unread.
-            guard let message = messages
+            if let message = messages
                     .filter({ $0.contains(label: labelID)})
-                    .last else { return }
-            message.unRead = true
-            if let messageLabels = message.labels.allObjects as? [Label] {
-                let changed = messageLabels.map { $0.labelID }
-                for id in changed {
-                    changedLabels.insert(id)
+                    .last {
+                message.unRead = true
+                if let messageLabels = message.labels.allObjects as? [Label] {
+                    let changed = messageLabels.map { $0.labelID }
+                    for id in changed {
+                        changedLabels.insert(id)
+                    }
                 }
             }
         } else {
@@ -269,7 +270,7 @@ extension Conversation {
             }
         }
         
-        for label in contextLabels where changedLabels.contains(label.labelID) {
+        for label in contextLabels where changedLabels.contains(label.labelID) || label.labelID == labelID {
             let offset = unRead ? 1: -1
             var unreadCount = label.unreadCount.intValue + offset
             unreadCount = max(unreadCount, 0)

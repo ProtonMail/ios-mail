@@ -38,7 +38,7 @@ extension String {
         guard let view = viewToShow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
+        let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
         if withTitle {
             hud.label.text = LocalString._general_alert_title
@@ -62,7 +62,7 @@ extension String {
         guard let view = viewToShow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
+        let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabel.text = self
         hud.removeFromSuperViewOnHide = true
@@ -70,6 +70,28 @@ extension String {
         let offset = self.getOffset(view: view, hud: hud)
         hud.offset = CGPoint(x: 0, y: 250 + offset)
         hud.hide(animated: true, afterDelay: 1)
+    }
+
+    public func alertToastBottom(view: UIView? = nil, subtitle: String) ->Void {
+        var viewToShow: UIView?
+        #if APP_EXTENSION
+        viewToShow = view
+        #else
+        let application = UIApplication.shared
+        viewToShow = application.keyWindow
+        #endif
+        
+        guard let view = viewToShow else {
+            return
+        }
+        let hud = MBProgressHUD.showAdded(to: view, animated: true)
+        hud.mode = MBProgressHUDMode.text
+        hud.label.text = self
+        hud.detailsLabel.text = subtitle
+        let offset = subtitle.getOffset(view: view, hud: hud)
+        hud.offset = CGPoint(x: 0, y: offset)
+        hud.removeFromSuperViewOnHide = true
+        hud.hide(animated: true, afterDelay: 3)
     }
     
     /**
@@ -80,7 +102,7 @@ extension String {
      - Returns: void
      **/
     func toast(at view: UIView) -> Void {
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
+        let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.label.text = LocalString._general_alert_title
         hud.detailsLabel.text = self

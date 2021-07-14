@@ -135,9 +135,7 @@ extension SettingsPrivacyViewController {
                                                 MBProgressHUD.hide(for: view, animated: true)
                                                 if let error = error {
                                                     feedback(false)
-                                                    let alertController = error.alertController()
-                                                    alertController.addOKAction()
-                                                    self.present(alertController, animated: true, completion: nil)
+                                                    error.alertToast()
                                                 } else {
                                                     feedback(true)
                                                 }
@@ -165,9 +163,7 @@ extension SettingsPrivacyViewController {
                                                 MBProgressHUD.hide(for: view, animated: true)
                                                 if let error = error {
                                                     feedback(false)
-                                                    let alertController = error.alertController()
-                                                    alertController.addOKAction()
-                                                    self.present(alertController, animated: true, completion: nil)
+                                                    error.alertToast()
                                                 } else {
                                                     feedback(true)
                                                 }
@@ -197,9 +193,7 @@ extension SettingsPrivacyViewController {
                                                 MBProgressHUD.hide(for: view, animated: true)
                                                 if let error = error {
                                                     feedback(false)
-                                                    let alertController = error.alertController()
-                                                    alertController.addOKAction()
-                                                    self.present(alertController, animated: true, completion: nil)
+                                                    error.alertToast()
                                                 } else {
                                                     feedback(true)
                                                 }

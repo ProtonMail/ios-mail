@@ -784,7 +784,7 @@ class UserDataService : Service, HasLocalStorage {
             if response.error == nil {
                 userInfo.userAddresses = email_domains
             }
-            completion(task, nil, nil)
+            completion(task, nil, response.error?.toNSError)
         }
     }
     

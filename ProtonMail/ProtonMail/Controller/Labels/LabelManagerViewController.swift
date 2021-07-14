@@ -112,11 +112,7 @@ extension LabelManagerViewController {
     @objc
     private func enableReorderMode() {
         guard self.viewModel.hasNetworking else {
-            let title = LocalString._general_pm_offline
-            let message = LocalString._please_connect_and_retry
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addOKAction()
-            self.present(alert, animated: true, completion: nil)
+            LocalString._general_pm_offline.alertToastBottom(subtitle: LocalString._please_connect_and_retry)
             return
         }
         self.updateEditingMode(isOn: true)

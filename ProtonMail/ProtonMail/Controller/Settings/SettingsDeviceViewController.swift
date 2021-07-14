@@ -146,9 +146,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
                 switch result {
                 case .failure(let error):
                     hud.hide(animated: true, afterDelay: 0)
-                    let alert = error.alertController()
-                    alert.addOKAction()
-                    self.present(alert, animated: true, completion: nil)
+                    error.alertToast()
                 case .success:
                     hud.mode = MBProgressHUDMode.text
                     hud.label.text = LocalString._general_done_button

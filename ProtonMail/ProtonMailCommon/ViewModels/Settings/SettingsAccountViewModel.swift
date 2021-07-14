@@ -155,7 +155,7 @@ protocol SettingsAccountViewModel : AnyObject {
     var allSendingAddresses: [Address] { get }
     
     func updateItems()
-    func updateDefaultAddress(with address: Address, completion: (() -> Void)?)
+    func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?)
 
     var reloadTable: (() -> Void)? { get set }
 }
@@ -245,7 +245,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
         }
     }
 
-    func updateDefaultAddress(with address: Address, completion: (() -> Void)?) {
+    func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?) {
         var newAddrs = [Address]()
         var newOrder = [String]()
         newAddrs.append(address)
@@ -272,7 +272,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
                 self.userManager.save()
             }
             DispatchQueue.main.async {
-                completion?()
+                completion?(error)
             }
         }
     }

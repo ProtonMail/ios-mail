@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
+import ProtonCore_Networking
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -172,10 +173,12 @@ class ChangePasswordViewController: UIViewController {
                     } else if error.code == APIErrorCode.UserErrorCode.newNotMatch {
                         _ = self.newPasswordEditor.becomeFirstResponder()
                     }
-
-                    let alertController = error.alertController()
-                    alertController.addOKAction()
-                    self.present(alertController, animated: true, completion: nil)
+                    if let responseError = error as? ResponseError,
+                       let underlyingError = responseError.underlyingError {
+                        underlyingError.alertToast()
+                    } else {
+                        error.alertToast()
+                    }
                 } else {
                     _ = self.navigationController?.popToRootViewController(animated: true)
                 }

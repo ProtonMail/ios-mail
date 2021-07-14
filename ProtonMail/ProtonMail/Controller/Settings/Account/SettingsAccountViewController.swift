@@ -295,9 +295,10 @@ extension SettingsAccountViewController {
                     let view = UIApplication.shared.keyWindow ?? UIView()
                     MBProgressHUD.showAdded(to: view, animated: true)
 
-                    self.viewModel.updateDefaultAddress(with: address) {
+                    self.viewModel.updateDefaultAddress(with: address) { [weak self] error in
                         MBProgressHUD.hide(for: view, animated: true)
-                        self.tableView.reloadData()
+                        error?.alertToast()
+                        self?.tableView.reloadData()
                     }
                 }))
             }
@@ -305,11 +306,7 @@ extension SettingsAccountViewController {
             if needsShow {
                 let cell = tableView.cellForRow(at: indexPath)
                 alertController.popoverPresentationController?.sourceView = cell ?? self.view
-                if let cell = cell {
-                    alertController.popoverPresentationController?.sourceRect = cell.bounds
-                } else {
-                    alertController.popoverPresentationController?.sourceRect = self.view.frame
-                }
+                alertController.popoverPresentationController?.sourceRect = cell?.bounds ?? self.view.frame
                 present(alertController, animated: true, completion: nil)
             }
         case .displayName:

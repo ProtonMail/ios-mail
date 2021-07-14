@@ -43,10 +43,8 @@ class SettingsConversationViewController: UITableViewController {
     }
 
     private func setUpRequestFailedObservation() {
-        viewModel.requestFailed = { [weak self] error in
-            let alertController = error.alertController()
-            alertController.addOKAction()
-            self?.present(alertController, animated: true, completion: nil)
+        viewModel.requestFailed = { error in
+            error.alertToast()
         }
     }
 

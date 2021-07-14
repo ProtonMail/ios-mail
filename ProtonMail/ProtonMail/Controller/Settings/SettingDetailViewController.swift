@@ -23,6 +23,7 @@
 
 import UIKit
 import MBProgressHUD
+import ProtonCore_Networking
 import ProtonCore_UIFoundations
 
 class SettingDetailViewController: UIViewController {
@@ -301,9 +302,12 @@ class SettingDetailViewController: UIViewController {
 
     private func showErrorAlert(_ error: NSError) {
         MBProgressHUD.hide(for: self.view, animated: true)
-        let alertController = error.alertController()
-        alertController.addOKAction()
-        self.present(alertController, animated: true, completion: nil)
+        if let responseError = error as? ResponseError,
+           let underlyingError = responseError.underlyingError {
+            underlyingError.alertToast()
+        } else {
+            error.alertToast()
+        }
     }
 
     private func showErrorOfNoNotificationEmail(_ error: NSError) {
