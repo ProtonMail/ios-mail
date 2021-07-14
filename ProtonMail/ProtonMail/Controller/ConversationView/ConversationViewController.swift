@@ -709,4 +709,13 @@ extension ConversationViewController {
             self?.customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
         }
     }
+
+    func showMessage(of messageId: String) {
+        guard let index = viewModel.messagesDataSource.firstIndex(where: { $0.message?.messageID == messageId }) else {
+            return
+        }
+        cellTapped(messageId: messageId)
+        let indexPath = IndexPath(row: index, section: 1)
+        customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+    }
 }

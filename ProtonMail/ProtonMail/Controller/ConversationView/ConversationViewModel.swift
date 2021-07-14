@@ -38,6 +38,7 @@ class ConversationViewModel {
     private weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
+    var openFromNotification = false
 
     /// Used to decide if there is any new messages coming
     private var recordNumOfMessages = 0
@@ -57,7 +58,8 @@ class ConversationViewModel {
 
     init(labelId: String,
          conversation: Conversation,
-         user: UserManager) {
+         user: UserManager,
+         openFromNotification: Bool = false) {
         self.labelId = labelId
         self.conversation = conversation
         self.messageService = user.messageService
@@ -66,6 +68,7 @@ class ConversationViewModel {
         self.eventsService = user.eventsService
         self.user = user
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
+        self.openFromNotification = openFromNotification
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
         recordNumOfMessages = conversation.numMessages.intValue
@@ -458,7 +461,7 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                 $0.message?.unRead == true &&
                 $0.message?.contains(label: self.labelId) == true &&
                 $0.message?.draft == false
-            }) {
+            }), !openFromNotification {
             dataModels[indexOfOldestUnreadMessage].messageViewModel?.toggleState()
             indexPath = IndexPath(row: indexOfOldestUnreadMessage, section: 1)
         } else if let newestMessageIndex = dataModels
@@ -468,6 +471,7 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                     }) {
             dataModels[newestMessageIndex].messageViewModel?.toggleState()
             indexPath = IndexPath(row: newestMessageIndex, section: 1)
+            openFromNotification = false
         }
 
         return indexPath

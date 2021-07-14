@@ -230,6 +230,10 @@ extension MenuCoordinator {
     }
     
     private func navigateToMailBox(labelInfo: MenuLabel, deepLink: DeepLink?) {
+        guard !scrollToLatestMessageInConversationViewIfPossible(deepLink) else {
+            return
+        }
+
         let vc = MailboxViewController.instance()
         self.vmService.mailbox(fromMenu: vc)
         
@@ -272,7 +276,7 @@ extension MenuCoordinator {
         default: return
         }
         
-        let mailbox = MailboxCoordinator(sideMenu: self.viewController?.sideMenuController, nav: navigation, vc: vc, vm: viewModel, services: self.services)
+        let mailbox = MailboxCoordinator(sideMenu: self.viewController?.sideMenuController, nav: navigation, viewController: vc, viewModel: viewModel, services: self.services)
         mailbox.start()
         if let deeplink = deepLink {
             mailbox.follow(deeplink)
@@ -421,6 +425,42 @@ extension MenuCoordinator {
         sideMenu.present(nvc, animated: true) {
             sideMenu.hideMenu()
         }
+    }
+
+    private func scrollToLatestMessageInConversationViewIfPossible(_ deepLink: DeepLink?) -> Bool {
+        guard usersManager.firstUser?.conversationStateService.viewMode == .conversation,
+              let deepLink = deepLink else {
+            return false
+        }
+        //find messageId in deepLink
+        var path = deepLink.first
+        var messageId: String?
+        while(path != nil) {
+            if path?.name == "SingleMessageViewController" {
+                messageId = path?.value
+                break
+            } else {
+                path = path?.next
+            }
+        }
+
+        guard let messageId = messageId,
+              let message = Message.messageForMessageID(messageId, inManagedObjectContext: coreDataService.mainContext) else {
+            return false
+        }
+
+        var isFound = false
+        if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+            window.enumerateViewControllerHierarchy { controller, stop in
+                if let conversationVC = controller as? ConversationViewController,
+                   conversationVC.viewModel.conversation.conversationID == message.conversationID {
+                    conversationVC.showMessage(of: message.messageID)
+                    isFound = true
+                    stop = true
+                }
+            }
+        }
+        return isFound
     }
 }
 

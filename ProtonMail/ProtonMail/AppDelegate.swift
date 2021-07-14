@@ -62,7 +62,7 @@ extension SideMenuController {
                                                          coreDataService: sharedServices.get(),
                                                          lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
                                                          queueManager: sharedServices.get(by: QueueManager.self))
-                    let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
+                    let mailbox = MailboxCoordinator(viewController: mailboxViewController, viewModel: viewModel, services: sharedServices)
                     mailbox.start()
                 }
             }

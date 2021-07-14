@@ -15,11 +15,12 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
         self.user = user
     }
 
-    func start() {
+    func start(openFromNotification: Bool = false) {
         let viewModel = ConversationViewModel(
             labelId: labelId,
             conversation: conversation,
-            user: user
+            user: user,
+            openFromNotification: openFromNotification
         )
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
