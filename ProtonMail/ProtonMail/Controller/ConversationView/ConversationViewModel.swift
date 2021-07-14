@@ -185,12 +185,15 @@ class ConversationViewModel {
         case let .insert(message, row):
             insert(message, row, tableView)
             refreshView?()
-        case let .update(message, row):
-            guard let viewModel = messagesDataSource[safe: row]?.messageViewModel else {
+        case let .update(message, fromRow, toRow):
+            if fromRow != toRow {
+                move(fromRow: fromRow, toRow: toRow, tableView: tableView)
+            }
+            guard let viewModel = messagesDataSource[safe: toRow]?.messageViewModel else {
                 return
             }
             viewModel.messageHasChanged(message: message)
-            let path = IndexPath(row: row, section: 1)
+            let path = IndexPath(row: toRow, section: 1)
             guard let cell = tableView.cellForRow(at: path) else { return }
             if viewModel.isTrashed && cell.frame.height > 0 && self.isTrashedMessageHidden {
                 tableView.reloadRows(at: [path], with: .automatic)
@@ -205,11 +208,15 @@ class ConversationViewModel {
             }
             refreshView?()
         case let .move(fromRow, toRow):
-            if let item = messagesDataSource[safe: fromRow] {
-                messagesDataSource.remove(at: fromRow)
-                messagesDataSource.insert(item, at: toRow)
-                tableView.moveRow(at: .init(row: fromRow, section: 1), to: .init(row: toRow, section: 1))
-            }
+            move(fromRow: fromRow, toRow: toRow, tableView: tableView)
+        }
+    }
+
+    private func move(fromRow: Int, toRow: Int, tableView: UITableView) {
+        if let item = messagesDataSource[safe: fromRow] {
+            messagesDataSource.remove(at: fromRow)
+            messagesDataSource.insert(item, at: toRow)
+            tableView.moveRow(at: .init(row: fromRow, section: 1), to: .init(row: toRow, section: 1))
         }
     }
 

@@ -57,8 +57,8 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
                 conversationUpdate?(.insert(message: message, row: indexPath.row))
             }
         case .update:
-            if let message = anObject as? Message, let indexPath = newIndexPath {
-                conversationUpdate?(.update(message: message, row: indexPath.row))
+            if let message = anObject as? Message, let indexPath = indexPath, let newIndexPath = newIndexPath {
+                conversationUpdate?(.update(message: message, fromRow: indexPath.row, toRow: newIndexPath.row))
             }
         case .move:
             if let oldIndexPath = indexPath, let newIndexPath = newIndexPath {
