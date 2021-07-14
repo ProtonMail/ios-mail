@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
+import ProtonCore_PaymentsUI
 
 class ContactsAndGroupsSharedCode: ProtonMailViewController {
     
@@ -32,7 +33,6 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     let kAddContactSugue = "toAddContact"
     let kAddContactGroupSugue = "toAddContactGroup"
     let kSegueToImportView = "toImportContacts"
-    let kToUpgradeAlertSegue = "toUpgradeAlertSegue"
     
     var isOnMainView = true {
         didSet {
@@ -121,10 +121,17 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     }
     
     private func addContactGroupTapped() {
-        if let user = self.user, user.isPaid  {
+        if let user = self.user, user.hasPaidMailPlan  {
             self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
         } else {
-            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+            presentPlanUpgrade()
         }
     }
+
+    private func presentPlanUpgrade() {
+        guard let user = user else { return }
+        PaymentsUI(servicePlanDataService: user.sevicePlanService)
+            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
+    }
+
 }

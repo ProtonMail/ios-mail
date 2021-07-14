@@ -341,6 +341,11 @@ extension UserManager : AuthDelegate {
 }
 
 extension UserManager : UserDataSource {
+
+    var hasPaidMailPlan: Bool {
+        userInfo.role > 0 && userInfo.subscribed != 4
+    }
+
     func getAddressPrivKey(address_id: String) -> String {
         return ""
     }

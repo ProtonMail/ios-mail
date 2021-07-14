@@ -25,6 +25,7 @@ import Foundation
 import Photos
 import MBProgressHUD
 import ProtonCore_UIFoundations
+import ProtonCore_PaymentsUI
 
 protocol ContactEditViewControllerDelegate {
     func deleted()
@@ -60,7 +61,6 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     //const segue
     fileprivate let kToContactTypeSegue : String      = "toContactTypeSegue"
     fileprivate let kToSelectContactGroupSegue: String = "toSelectContactGroupSegue"
-    fileprivate let kToUpgradeAlertSegue : String     = "toUpgradeAlertSegue"
     
     private var imagePicker: UIImagePickerController? = nil
     
@@ -207,11 +207,6 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             contactTypeViewController.deleget = self
             let type = sender as! ContactEditTypeInterface
             sharedVMService.contactTypeViewModel(contactTypeViewController, type: type)
-        } else if segue.identifier == kToUpgradeAlertSegue {
-            let popup = segue.destination as! UpgradeAlertViewController
-            sharedVMService.upgradeAlert(contacts: popup)
-            popup.delegate = self
-            self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
         } else if segue.identifier == kToSelectContactGroupSegue {
             let destination = segue.destination as! ContactGroupsViewController
             let refreshHandler = (sender as! ContactEditEmailCell).refreshHandler
@@ -379,43 +374,15 @@ extension ContactEditViewController : ContactUpgradeCellDelegate {
     func upgrade() {
         if !showingUpgrade {
             self.showingUpgrade = true
-            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+            presentPlanUpgrade()
         }
+    }
+
+    private func presentPlanUpgrade() {
+        PaymentsUI(servicePlanDataService: viewModel.user.sevicePlanService)
+            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
     }
 }
-
-extension ContactEditViewController : UpgradeAlertVCDelegate {
-    func postToPlan() {
-        self.dismiss(animated: true)
-        NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(LabelLocation.subscription.labelID))
-    }
-    func goPlans() {
-        if self.presentingViewController != nil {
-            self.dismiss(animated: true) {
-                self.postToPlan()
-            }
-        } else {
-            self.postToPlan()
-        }
-    }
-    
-    func learnMore() {
-        self.showingUpgrade = false
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(.paidPlans)
-        }
-    }
-    
-    func cancel() {
-        self.showingUpgrade = false
-    }
-    
-    
-}
-
 
 // MARK: - UITableViewDataSource
 extension ContactEditViewController: UITableViewDataSource {

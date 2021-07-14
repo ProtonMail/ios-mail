@@ -121,22 +121,10 @@ class ViewModelService : Service {
                                           refreshHandler: @escaping (Set<Email>) -> Void) {
         fatalError("This method must be overridden")
     }
-    
-    ///////////////////////
-    ///
-    func upgradeAlert(signature vmp: ViewModelProtocolBase) {
-        fatalError("This method must be overridden")
-    }
-    ///
-    func upgradeAlert(contacts vmp: ViewModelProtocolBase) {
-        fatalError("This method must be overridden")
-    }
-    
-    
+
     //
     func signOut() { }
     func cleanLegacy() {
         //get current version
     }
 }
-

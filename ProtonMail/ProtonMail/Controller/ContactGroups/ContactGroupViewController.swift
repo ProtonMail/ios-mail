@@ -26,6 +26,7 @@ import CoreData
 import PromiseKit
 import MBProgressHUD
 import ProtonCore_UIFoundations
+import ProtonCore_PaymentsUI
 
 /**
  When the core data that provides data to this controller has data changes,
@@ -108,6 +109,11 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         viewModel.save()
         NotificationCenter.default.removeKeyboardObserver(self)
     }
+
+    private func presentPlanUpgrade() {
+        PaymentsUI(servicePlanDataService: viewModel.user.sevicePlanService)
+            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
+    }
     
     private func prepareFetchedResultsController() {
         let _ = self.viewModel.setFetchResultController(delegate: self)
@@ -142,9 +148,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     @objc private func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         // blocks contact group view from editing
-        if viewModel.user.isPaid == false {
-            self.performSegue(withIdentifier: kToUpgradeAlertSegue,
-                              sender: self)
+        if viewModel.user.hasPaidMailPlan == false {
+            presentPlanUpgrade()
             return
         }
         
@@ -377,14 +382,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             }
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
-            
-        } else if segue.identifier == kToUpgradeAlertSegue {
-            let popup = segue.destination as! UpgradeAlertViewController
-            popup.delegate = self
-            sharedVMService.upgradeAlert(contacts: popup)
-            self.setPresentationStyleForSelfController(self,
-                                                       presentingController: popup,
-                                                       style: .overFullScreen)
         }
         
         if #available(iOS 13, *) { // detect view dismiss above iOS 13
@@ -466,10 +463,10 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate
     }
     
     func sendEmailToGroup(ID: String, name: String) {
-        if viewModel.user.isPaid {
+        if viewModel.user.hasPaidMailPlan {
             self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: ID, name: name))
         } else {
-            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+            presentPlanUpgrade()
         }
     }
 }
@@ -525,9 +522,9 @@ extension ContactGroupsViewController: UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isEditingState {
             // blocks contact email cell contact group editing
-            if viewModel.user.isPaid == false {
+            if viewModel.user.hasPaidMailPlan == false {
                 tableView.deselectRow(at: indexPath, animated: true)
-                self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+                presentPlanUpgrade()
                 return
             }
             if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
@@ -549,9 +546,9 @@ extension ContactGroupsViewController: UITableViewDelegate
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if isEditingState {
             // blocks contact email cell contact group editing
-            if viewModel.user.isPaid == false {
+            if viewModel.user.hasPaidMailPlan == false {
                 tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+                presentPlanUpgrade()
                 return
             }
             
@@ -564,34 +561,6 @@ extension ContactGroupsViewController: UITableViewDelegate
                 PMLog.D("FatalError: Conversion failed")
             }
         }
-    }
-}
-
-extension ContactGroupsViewController: UpgradeAlertVCDelegate {
-    func postToPlan() {
-        NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(LabelLocation.subscription.labelID))
-    }
-    func goPlans() {
-        if self.presentingViewController != nil {
-            self.dismiss(animated: true) {
-                self.postToPlan()
-            }
-        } else {
-            self.postToPlan()
-        }
-    }
-    
-    func learnMore() {
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(.paidPlans)
-        }
-    }
-    
-    func cancel() {
-        
     }
 }
 

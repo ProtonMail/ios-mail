@@ -32,4 +32,5 @@ class PMSideMenuController: SideMenuController, SideMenuControllerDelegate {
         sideMenuController.contentViewController.view.accessibilityElementsHidden = false
         sideMenuController.contentViewController.view.isUserInteractionEnabled = true
     }
+
 }

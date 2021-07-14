@@ -66,7 +66,6 @@
                         <segue destination="iCl-CV-gT2" kind="presentation" identifier="toImportContacts" id="6gL-17-Vjp"/>
                         <segue destination="d3P-H0-xNt" kind="presentation" identifier="toAddContact" id="pLm-6L-kNd"/>
                         <segue destination="HW2-St-HGr" kind="presentation" identifier="toAddContactGroup" id="3li-n2-ywX"/>
-                        <segue destination="plX-Lv-x6C" kind="presentation" identifier="toUpgradeAlertSegue" id="A8I-lk-YH7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Rs-Sb-Nje" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -353,7 +352,6 @@
                         <segue destination="d3P-H0-xNt" kind="presentation" identifier="toAddContact" id="HIr-Zm-YHr"/>
                         <segue destination="iCl-CV-gT2" kind="presentation" identifier="toImportContacts" id="7yS-kj-Eid"/>
                         <segue destination="1jS-uV-TRv" kind="presentation" identifier="toComposer" modalPresentationStyle="pageSheet" id="m8Q-wN-q8j"/>
-                        <segue destination="plX-Lv-x6C" kind="presentation" identifier="toUpgradeAlertSegue" id="Hva-pu-Vsz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v9c-YF-3Yf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -459,7 +457,6 @@
                         <outlet property="tableView" destination="KRC-sl-Cdx" id="Yhy-A6-85s"/>
                         <segue destination="HW2-St-HGr" kind="presentation" identifier="toContactGroupEditSegue" id="Rzd-pg-PEg"/>
                         <segue destination="1jS-uV-TRv" kind="presentation" identifier="toComposer" modalPresentationStyle="pageSheet" id="6yh-h8-btl"/>
-                        <segue destination="plX-Lv-x6C" kind="presentation" identifier="toUpgradeAlertSegue" id="2p9-E1-lOg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SJ4-LB-3WW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1433,11 +1430,11 @@
                                         <rect key="frame" x="0.0" y="863.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I69-c4-NG7" id="bUD-xx-OlS">
-                                            <rect key="frame" x="0.0" y="0.0" width="301" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="302.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" ambiguous="YES" text="Instructions" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FrN-tO-378">
-                                                    <rect key="frame" x="15" y="0.0" width="278" height="44"/>
+                                                    <rect key="frame" x="15" y="0.0" width="279.5" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" systemColor="darkTextColor"/>
@@ -1549,7 +1546,6 @@
                         <outlet property="tableViewBottomOffset" destination="yM3-h1-tMh" id="Y65-ln-Ddx"/>
                         <outlet property="topContainerView" destination="SsN-qI-ND3" id="lES-QC-3Ji"/>
                         <segue destination="8FT-3K-fbA" kind="show" identifier="toContactTypeSegue" id="6uY-cJ-FnB"/>
-                        <segue destination="plX-Lv-x6C" kind="presentation" identifier="toUpgradeAlertSegue" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="oC7-Qd-EW1"/>
                         <segue destination="Otj-eK-LVU" kind="show" identifier="toSelectContactGroupSegue" id="GcK-DS-QnS"/>
                     </connections>
                 </viewController>
@@ -2014,7 +2010,6 @@
                         <outlet property="tableView" destination="rMv-dt-zfT" id="Hju-O5-rMY"/>
                         <segue destination="d3P-H0-xNt" kind="presentation" identifier="toEditContactSegue" id="Grd-B0-e0M"/>
                         <segue destination="1jS-uV-TRv" kind="presentation" identifier="toCompose" id="rru-oY-8Lv"/>
-                        <segue destination="plX-Lv-x6C" kind="presentation" identifier="toUpgradeAlertSegue" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="sDR-N5-yCe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TF4-Th-N3Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2281,14 +2276,6 @@
             </objects>
             <point key="canvasLocation" x="7245" y="2635"/>
         </scene>
-        <!--UpgradeAlertViewController-->
-        <scene sceneID="Vr2-e9-Tzg">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Menu" referencedIdentifier="UpgradeAlertViewController" id="plX-Lv-x6C" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="k8e-w1-vXv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="8811" y="2925"/>
-        </scene>
         <!--Contact Import View Controller-->
         <scene sceneID="cXE-Bm-zc9">
             <objects>
@@ -2474,8 +2461,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="6gL-17-Vjp"/>
-        <segue reference="A8I-lk-YH7"/>
-        <segue reference="oQx-RX-nff"/>
+        <segue reference="m8Q-wN-q8j"/>
         <segue reference="pLm-6L-kNd"/>
         <segue reference="vny-dJ-xp5"/>
         <segue reference="3li-n2-ywX"/>

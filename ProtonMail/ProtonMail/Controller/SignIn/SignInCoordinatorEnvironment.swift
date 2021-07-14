@@ -74,7 +74,8 @@ extension SignInCoordinatorEnvironment {
                                 minimumAccountType: minimumAccountType,
                                 signupMode: signupMode,
                                 signupPasswordRestrictions: signupPasswordRestrictions,
-                                isCloseButtonAvailable: isCloseButtonAvailable)
+                                isCloseButtonAvailable: isCloseButtonAvailable,
+                                isPlanSelectorAvailable: true)
                      },
                      shouldShowAlertOnError: true
         )

@@ -184,17 +184,6 @@ class ViewModelServiceImpl: ViewModelService {
         base.setModel(vm: model)
     }
     
-    /////////////////
-    override func upgradeAlert(contacts vmp: ViewModelProtocolBase) {
-        vmp.setModel(vm: ContactAlertViewModelImpl())
-    }
-    override func upgradeAlert(signature vmp: ViewModelProtocolBase) {
-        vmp.setModel(vm: SignatureAlertViewModelImpl())
-    }
-    
-    
-    
-    
     //TODO::fixme
     override func cleanLegacy() {
         //get current cache version

@@ -182,6 +182,11 @@ included:
   - ${PWD}/ProtonMailCommon/Utilities/Formatters/PMDateFormatter.swift
   - ${PWD}/ProtonMailCommon/Utilities/Formatters/WeekStart+WeekStartInGregorianCalendar.swift
   - ${PWD}/ProtonMailCommon/Utilities/Formatters/WeekStart.swift
+  - ${PWD}/ProtonMail/Controller/IAP/PaymentsUIProtocol.swift
+  - ${PWD}/ProtonMail/Controller/IAP/StorefrontCoordinator.swift
+  - ${PWD}/ProtonMail/Controller/IAP/StorefrontNavigationAction.swift
+  - ${PWD}/ProtonMail/Controller/IAP/StorefrontViewController.swift
+  - ${PWD}/ProtonMail/Controller/SideMenuController/SideMenuProtocol.swift
 
 excluded:
   - ${PWD}/Pods

@@ -1,9 +1,9 @@
 //
-//  SignatureAlertViewModelImpl.swift
-//  ProtonMail - Created on 5/23/18.
+//  SideMenuProtocol.swift
+//  ProtonMail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2021 Proton Technologies AG
 //
 //  This file is part of ProtonMail.
 //
@@ -18,18 +18,14 @@
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
+import SideMenuSwift
 
-import Foundation
-
-
-class SignatureAlertViewModelImpl : UpgradeAlertViewModel {
-    override var title2 : String {
-        return LocalString._a_paid_rotonMail_plan_is_required_to_use_this_feature
-    }
-    
-    override var message : String {
-        return LocalString._upgrade_to_get_all_paid_features
-    }
+protocol SideMenuProtocol: AnyObject {
+    func hideMenu(animated: Bool, completion: ((Bool) -> Void)?)
+    func revealMenu(animated: Bool, completion: ((Bool) -> Void)?)
+    func setContentViewController(to viewController: UIViewController, animated: Bool, completion: (() -> Void)?)
 }
+
+extension SideMenuController: SideMenuProtocol {}

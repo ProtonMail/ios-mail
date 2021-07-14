@@ -128,7 +128,7 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
     }
     
     func paidUser() -> Bool {
-        return user.isPaid
+        return user.hasPaidMailPlan
     }
     
     

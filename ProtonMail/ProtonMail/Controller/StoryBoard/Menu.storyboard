@@ -1862,14 +1862,6 @@
             </objects>
             <point key="canvasLocation" x="-180" y="2486"/>
         </scene>
-        <!--UpgradeAlertViewController-->
-        <scene sceneID="CGA-oT-Uil">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="UpgradeAlertViewController" storyboardName="Settings" referencedIdentifier="UpgradeAlertViewController" id="Fkc-SV-vIj" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DQ6-r4-H0d" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="109" y="5813"/>
-        </scene>
         <!--ref_troubleshoot_nav_controller-->
         <scene sceneID="kGo-UL-kqf">
             <objects>

@@ -184,12 +184,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
             self.setPresentationStyleForSelfController(self,
                                                        presentingController: popup,
                                                        style: .overFullScreen)
-            
-        case kToUpgradeAlertSegue:
-            let popup = viewController as! UpgradeAlertViewController
-            popup.delegate = self
-            sharedVMService.upgradeAlert(contacts: popup)
-            
         default:
             break
         }
@@ -212,34 +206,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
             }
             self.refreshControl.endRefreshing()
         }
-    }
-}
-
-extension ContactsViewController: UpgradeAlertVCDelegate {
-    func postToPlan() {
-        NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(LabelLocation.subscription.labelID))
-    }
-    func goPlans() {
-        if self.presentingViewController != nil {
-            self.dismiss(animated: true) {
-                self.postToPlan()
-            }
-        } else {
-            self.postToPlan()
-        }
-    }
-    
-    func learnMore() {
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(.paidPlans)
-        }
-    }
-    
-    func cancel() {
-        
     }
 }
 

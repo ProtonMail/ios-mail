@@ -39,7 +39,7 @@ class ContactDetailsViewModel : ViewModelBase {
     }
     
     func paidUser() -> Bool {
-        return user.isPaid
+        return user.hasPaidMailPlan
     }
     
     @discardableResult

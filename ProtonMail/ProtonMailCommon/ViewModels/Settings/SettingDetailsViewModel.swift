@@ -24,6 +24,8 @@
 import Foundation
 
 protocol SettingDetailsViewModel {
+
+    var userManager: UserManager { get }
     
     var sectionTitle2 : String {get}
     
@@ -51,6 +53,11 @@ protocol SettingDetailsViewModel {
 
 
 class SettingDetailsViewModelTest : SettingDetailsViewModel{
+
+    var userManager: UserManager {
+        fatalError()
+    }
+
     var sectionTitle2: String {
         return ""
     }
@@ -124,6 +131,7 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
 class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     
     let userManager : UserManager
+
     init(user: UserManager) {
         self.userManager = user
     }
@@ -214,7 +222,9 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
 
 
 class ChangeSignatureViewModel : SettingDetailsViewModel{
+
     let userManager : UserManager
+
     init(user: UserManager) {
         self.userManager = user
     }
@@ -314,7 +324,9 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
 }
 
 class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
+
     let userManager : UserManager
+
     init(user: UserManager) {
         self.userManager = user
     }

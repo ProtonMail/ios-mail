@@ -25,6 +25,7 @@ import Foundation
 import SideMenuSwift
 import ProtonCore_AccountSwitcher
 import ProtonCore_Networking
+import ProtonCore_PaymentsUI
 
 final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     
@@ -51,6 +52,7 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     private let lastUpdatedStore:LastUpdatedStoreProtocol
     private let usersManager: UsersManager
     var pendingActionAfterDismissal: (() -> Void)?
+    private var storefrontCoordinator: StorefrontCoordinator?
 
     // todo: that would be better if vc is protocol
     init(services: ServiceFactory,
@@ -285,13 +287,15 @@ extension MenuCoordinator {
     }
     
     private func navigateToSubscribe() {
-        guard let user = self.usersManager.firstUser else {
-            return
-        }
-        let nextCoordinator = StorefrontCoordinator(sideMenu: self.viewController?.sideMenuController, user: user)
-        nextCoordinator.viewController?.viewModel = StorefrontViewModel(currentUser: user)
-        
-        nextCoordinator.start()
+        guard let user = self.usersManager.firstUser,
+              let sideMenuViewController = viewController?.sideMenuController else { return }
+        let paymentsUI = PaymentsUI(servicePlanDataService: user.sevicePlanService)
+        let coordinator = StorefrontCoordinator(
+            paymentsUI: paymentsUI,
+            sideMenu: sideMenuViewController,
+            eventsService: user.eventsService
+        )
+        coordinator.start()
     }
     
     private func navigateToSettings(deepLink: DeepLink?) {

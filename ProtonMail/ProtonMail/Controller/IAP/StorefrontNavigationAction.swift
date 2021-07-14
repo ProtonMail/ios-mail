@@ -1,9 +1,9 @@
 //
-//  ContactAlertViewModelImpl.swift
-//  ProtonMail - Created on 5/23/18.
+//  StorefrontNavigationAction.swift
+//  ProtonMail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2021 Proton Technologies AG
 //
 //  This file is part of ProtonMail.
 //
@@ -18,18 +18,8 @@
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
-
-
-class ContactAlertViewModelImpl : UpgradeAlertViewModel {
-    override var title2 : String {
-        return LocalString._a_paid_rotonMail_plan_is_required_to_use_this_feature
-    }
-    
-    override var message : String {
-        return LocalString._upgrade_to_get_all_paid_features
-    }
+enum StorefrontNavigationAction {
+    case menuTapped
 }

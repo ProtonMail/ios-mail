@@ -25,6 +25,7 @@ import PromiseKit
 import AwaitKit
 import MBProgressHUD
 import ProtonCore_UIFoundations
+import ProtonCore_PaymentsUI
 
 class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol {
     typealias viewModelType = ContactDetailsViewModel
@@ -44,7 +45,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
     fileprivate let kToComposeSegue : String                = "toCompose"
-    fileprivate let kToUpgradeAlertSegue : String           = "toUpgradeAlertSegue"
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -305,13 +305,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             }
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
-            
-        } else if segue.identifier == kToUpgradeAlertSegue {
-            let popup = segue.destination as! UpgradeAlertViewController
-            sharedVMService.upgradeAlert(contacts: popup)
-            self.setPresentationStyleForSelfController(self,
-                                                       presentingController: popup,
-                                                       style: .overFullScreen)
         }
     }
     
@@ -340,7 +333,12 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
 
 extension ContactDetailViewController : ContactUpgradeCellDelegate {
     func upgrade() {
-        self.performSegue(withIdentifier: self.kToUpgradeAlertSegue, sender: self)
+        presentPlanUpgrade()
+    }
+
+    private func presentPlanUpgrade() {
+        PaymentsUI(servicePlanDataService: viewModel.user.sevicePlanService)
+            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
     }
 }
 

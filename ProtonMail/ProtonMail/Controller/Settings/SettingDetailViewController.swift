@@ -25,6 +25,7 @@ import UIKit
 import MBProgressHUD
 import ProtonCore_Networking
 import ProtonCore_UIFoundations
+import ProtonCore_PaymentsUI
 
 class SettingDetailViewController: UIViewController {
     
@@ -45,7 +46,6 @@ class SettingDetailViewController: UIViewController {
 
     @IBOutlet weak var notesLabel: UILabel!
     private let kAsk2FASegue = "password_to_twofa_code_segue"
-    private let kToUpgradeAlertSegue = "toUpgradeAlertSegue"
     
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var viewModel : SettingDetailsViewModel!
@@ -146,7 +146,7 @@ class SettingDetailViewController: UIViewController {
         
         //check Role if need a paid feature
         if !viewModel.isSwitchEnabled() {
-            self.performSegue(withIdentifier: self.kToUpgradeAlertSegue, sender: self)
+            presentPlanUpgrade()
         }
     }
     
@@ -196,10 +196,6 @@ class SettingDetailViewController: UIViewController {
             popup.delegate = self
             popup.mode = .twoFactorCode
             self.setPresentationStyleForSelfController(self, presentingController: popup)
-        } else if segue.identifier == self.kToUpgradeAlertSegue {
-            let popup = segue.destination as! UpgradeAlertViewController
-            popup.delegate = self
-            sharedVMService.upgradeAlert(signature: popup)
         }
     }
     
@@ -211,6 +207,12 @@ class SettingDetailViewController: UIViewController {
     }
     
     // MARK: private methods
+
+    private func presentPlanUpgrade() {
+        PaymentsUI(servicePlanDataService: viewModel.userManager.sevicePlanService)
+            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
+    }
+
     fileprivate func dismissKeyboard() {
         if viewModel.isShowTextView() {
             if (self.inputTextView != nil) {
@@ -328,27 +330,6 @@ extension SettingDetailViewController : TwoFACodeViewControllerDelegate {
     
     func cancel2FA() {
     }
-}
-
-extension SettingDetailViewController : UpgradeAlertVCDelegate {
-    func goPlans() {
-        ///TODO::fixme consider to remove the pop
-        self.navigationController?.popViewController(animated: true)
-        NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(LabelLocation.subscription.labelID))
-    }
-    
-    func learnMore() {
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(.paidPlans)
-        }
-    }
-    
-    func cancel() {
-    }
-    
 }
 
 // MARK: - UITextFieldDelegate

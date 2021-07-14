@@ -100,11 +100,6 @@ extension UIColor {
         static let Menu_UnSelectBackground_Label = UIColor(RRGGBB:UInt(0x3F3E4E))
         static let Menu_SelectedBackground = UIColor(RRGGBB: UInt(0x2F2E3C))
         
-        static let ServicePlanFree = UIColor(red: 0/255, green: 172/255, blue: 63/255, alpha: 1.0)
-        static let ServicePlanPro = UIColor(red: 153/255, green: 30/255, blue: 245/255, alpha: 1.0)
-        static let ServicePlanPlus = UIColor(red: 199/255, green: 89/255, blue: 31/255, alpha: 1.0)
-        static let ServicePlanVisionary = UIColor(red: 56/255, green: 114/255, blue: 218/255, alpha: 1.0)
-        
         static let TableFootnoteTextGray = UIColor(red: 110/255, green: 110/255, blue: 112/255, alpha: 1.0)
         static let TableSeparatorGray = UIColor(red: 226/255, green: 230/255, blue: 232/255, alpha: 1.0)
         static let ButtonBackground: UIColor = {

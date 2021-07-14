@@ -569,6 +569,7 @@ class LocalizedString {
 
     lazy var _general_message = NSLocalizedString("general_message", comment: "message number")
     lazy var _general_conversation = NSLocalizedString("general_conversation", comment: "conversation number")
+    lazy var _general_subscription = NSLocalizedString("Subscription", comment: "The title of a subscription plans screen")
     
     /// "iOS 10 update error title"
     lazy var _ios10_update_title = NSLocalizedString("OS compatibility", comment: "The title of the iOS 10 upgrate alert")
@@ -1385,10 +1386,6 @@ class LocalizedString {
 
     lazy var _learn_more = NSLocalizedString("Learn More", comment: "Action")
     lazy var _not_now = NSLocalizedString("Not Now", comment: "Action")
-    lazy var _view_plans = NSLocalizedString("View Plans", comment: "Action")
-
-    /// "PREMIUM FEATURE"
-    lazy var _premium_feature = NSLocalizedString("PREMIUM FEATURE", comment: "Upgrade warning title")
 
     /// "Looking to secure your contact's details?"
     lazy var _looking_to_secure_your_contacts_details = NSLocalizedString("Looking to secure your contact's details?", comment: "Upgrade warning title")
@@ -1584,13 +1581,6 @@ class LocalizedString {
     lazy var _edit_mobile_signature = NSLocalizedString("Edit mobile signature", comment: "title")
     /// "Edit signature"
     lazy var _edit_signature = NSLocalizedString("Edit signature", comment: "title")
-    
-    // "A paid ProtonMail plan is required to use this feature"
-    lazy var _a_paid_rotonMail_plan_is_required_to_use_this_feature = NSLocalizedString("A paid ProtonMail plan is required to use this feature", comment: "alert description")
-    // "Upgrade to get all paid features."
-    lazy var _upgrade_to_get_all_paid_features = NSLocalizedString("Upgrade to get all paid features.", comment: "alert description")
-
-
 
     // MARK: - Composer expiration warning
 
