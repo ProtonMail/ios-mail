@@ -570,6 +570,11 @@ extension EventsService {
                             do {
                                 if let conversationObject = try GRTJSONSerialization.object(withEntityName: Conversation.Attributes.entityName, fromJSONDictionary: conversationEvent.conversation, in: context) as? Conversation {
                                     conversationObject.userID = self.userManager.userInfo.userId
+                                    if let labels = conversationObject.labels as? Set<ContextLabel> {
+                                        for label in labels {
+                                            label.order = conversationObject.order
+                                        }
+                                    }
                                 }
                                 error = context.saveUpstreamIfNeeded()
                                 if error != nil {
@@ -602,6 +607,11 @@ extension EventsService {
                                 }
                                 
                                 if let conversationObject = try GRTJSONSerialization.object(withEntityName: Conversation.Attributes.entityName, fromJSONDictionary: conversationData, in: context) as? Conversation {
+                                    if let labels = conversationObject.labels as? Set<ContextLabel> {
+                                        for label in labels {
+                                            label.order = conversationObject.order
+                                        }
+                                    }
                                     if let messageCount = conversationEvent.conversation["NumMessages"] as? NSNumber, conversationObject.numMessages != messageCount {
                                         conversationsNeedRefetch.append(conversationEvent.ID)
                                     }

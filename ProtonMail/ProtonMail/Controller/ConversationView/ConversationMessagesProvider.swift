@@ -13,7 +13,7 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
             Message.Attributes.conversationID,
             conversation.conversationID
         )
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: true), NSSortDescriptor(key: #keyPath(Message.order), ascending: true)]
         return NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: context,

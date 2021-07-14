@@ -99,6 +99,13 @@ extension ConversationDataService {
                             try GRTJSONSerialization.objects(withEntityName: Conversation.Attributes.entityName,
                                                              fromJSONArray: conversationsDict,
                                                              in: context) as? [Conversation] {
+                            for conversation in conversations {
+                                if let labels = conversation.labels as? Set<ContextLabel> {
+                                    for label in labels {
+                                        label.order = conversation.order
+                                    }
+                                }
+                            }
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
                             }
@@ -191,7 +198,14 @@ extension ConversationDataService {
                             }
                         }
                         
-                        if (try GRTJSONSerialization.objects(withEntityName: Conversation.Attributes.entityName, fromJSONArray: conversationsDict, in: context) as? [Conversation]) != nil {
+                        if let conversations = try GRTJSONSerialization.objects(withEntityName: Conversation.Attributes.entityName, fromJSONArray: conversationsDict, in: context) as? [Conversation] {
+                            for conversation in conversations {
+                                if let labels = conversation.labels as? Set<ContextLabel> {
+                                    for label in labels {
+                                        label.order = conversation.order
+                                    }
+                                }
+                            }
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
                             }

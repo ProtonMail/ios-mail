@@ -804,7 +804,7 @@ class MessageDataService : Service, HasLocalStorage {
                 fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@)",
                                                      labelID, Message.Attributes.messageStatus, 0, Message.Attributes.userID, self.userID)
             }
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
             fetchRequest.fetchBatchSize = 30
             fetchRequest.includesPropertyValues = true
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
@@ -818,7 +818,7 @@ class MessageDataService : Service, HasLocalStorage {
                 fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil)",
                                                                 ContextLabel.Attributes.labelID, labelID, ContextLabel.Attributes.userID, self.userID)
             }
-            fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: false), NSSortDescriptor(keyPath: \ContextLabel.order, ascending: false)]
             fetchRequest.fetchBatchSize = 30
             fetchRequest.includesPropertyValues = true
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
@@ -836,7 +836,7 @@ class MessageDataService : Service, HasLocalStorage {
         let moc = self.coreDataService.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
     }
     

@@ -60,8 +60,13 @@ extension ConversationDataService {
                             conversationDict["Labels"] = labels
 
                         }
-                        try GRTJSONSerialization.object(withEntityName: Conversation.Attributes.entityName, fromJSONDictionary: conversationDict, in: context)
-                        
+                        let conversation = try GRTJSONSerialization.object(withEntityName: Conversation.Attributes.entityName, fromJSONDictionary: conversationDict, in: context)
+                        if let conversation = conversation as? Conversation,
+                           let labels = conversation.labels as? Set<ContextLabel> {
+                            for label in labels {
+                                label.order = conversation.order
+                            }
+                        }
                         for (index, _) in messagesDict.enumerated() {
                             messagesDict[index]["UserID"] = self.userID
                         }

@@ -3829,6 +3829,7 @@
 		C9BE9D2FABB2F4204098EE8B5588DE5C /* Settings+Defined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Settings+Defined.swift"; sourceTree = "<group>"; };
 		C9C7F21312E00992676D7D963F599A5F /* DebugDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugDetailsViewController.swift; sourceTree = "<group>"; };
 		C9DBBF8C3E33F8FE6871898C9E636C7A /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CA36EC65E0B9D8E40B8BD182E12C9992 /* 2.0.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.3.xcdatamodel; sourceTree = "<group>"; };
 		CA36F62FC193FD9B79943EDBC1E64B97 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
 		CAE2F91A25228FAA9CA6A5DF9DE7F4B9 /* Pods-PushService.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PushService/Pods-PushService.distribution.xcconfig"; sourceTree = "<group>"; };
 		CBF3B98E120BE095A6776D6F6904AFCA /* RemoteContentBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteContentBannerView.swift; sourceTree = "<group>"; };
@@ -12808,9 +12809,10 @@
 				CC4CDB6401C97884FDAC9AAC06E88BA9 /* 2.0.0.xcdatamodel */,
 				C6FC2D303C438A6A11045E7AFA6C2335 /* 2.0.1.xcdatamodel */,
 				079B8EA6518FBF74242E1F66E4D2BDAE /* 2.0.2.xcdatamodel */,
+				CA36EC65E0B9D8E40B8BD182E12C9992 /* 2.0.3.xcdatamodel */,
 				4AC8B46F567BE34418EFC96C5472E216 /* ProtonMail.xcdatamodel */,
 			);
-			currentVersion = 079B8EA6518FBF74242E1F66E4D2BDAE /* 2.0.2.xcdatamodel */;
+			currentVersion = CA36EC65E0B9D8E40B8BD182E12C9992 /* 2.0.3.xcdatamodel */;
 			name = ProtonMail.xcdatamodeld;
 			path = ProtonMail/ProtonMail.xcdatamodeld;
 			sourceTree = SOURCE_ROOT;

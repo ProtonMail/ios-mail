@@ -33,6 +33,7 @@ class ContextLabel: NSManagedObject {
     @NSManaged public var conversationID: String
     @NSManaged public var labelID: String
     @NSManaged public var userID: String
+    @NSManaged public var order: NSNumber
 
     enum Attributes {
         static let entityName = String(describing: ContextLabel.self)

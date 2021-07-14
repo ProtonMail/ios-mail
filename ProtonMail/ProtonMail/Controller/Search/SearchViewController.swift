@@ -190,7 +190,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: true)]
         fetchRequest.resultType = .dictionaryResultType
 
         let objectId = NSExpressionDescription()

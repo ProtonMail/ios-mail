@@ -119,7 +119,7 @@ final public class Message: NSManagedObject {
     //"LabelIDs":[ "1", "d3HYa3E394T_ACXDmTaBub14w==" ],
     @NSManaged public var labels: NSSet
     
-    
+    @NSManaged public var order: NSNumber
 
     ///***Those values api returns them but client skip it
     ///"Order": 367
