@@ -44,8 +44,8 @@ final class MenuViewController: UIViewController, AccessibleView {
         self.coordinator = coordinator
     }
 
-    override var prefersStatusBarHidden: Bool {
-        true
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     override func viewDidLoad() {

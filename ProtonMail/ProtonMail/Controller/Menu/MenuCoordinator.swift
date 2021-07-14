@@ -70,10 +70,12 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         }
         //Setup side menu setting
         SideMenuController.preferences.basic.menuWidth = menuWidth
-        SideMenuController.preferences.basic.position = .under
+        SideMenuController.preferences.basic.position = .sideBySide
         SideMenuController.preferences.basic.enablePanGesture = true
         SideMenuController.preferences.basic.enableRubberEffectWhenPanning = false
-        SideMenuController.preferences.basic.statusBarBehavior = .none
+        SideMenuController.preferences.animation.shouldAddShadowWhenRevealing = true
+        SideMenuController.preferences.animation.shadowColor = .black
+        SideMenuController.preferences.animation.shadowAlpha = 0.52
         self.menuWidth = menuWidth
         
         self.services = services

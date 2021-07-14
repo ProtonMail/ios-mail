@@ -121,7 +121,6 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.doneItem = UIBarButtonItem(title: LocalString._general_save_action,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(ContactEditViewController.doneAction))
