@@ -192,8 +192,12 @@ class ConversationViewController: UIViewController,
     }
 
     private func presentActionSheet(for message: Message) {
-        guard let location = message.messageLocation?.rawValue else { return }
-        let viewModel = MessageViewActionSheetViewModel(title: message.subject, labelID: location)
+        let forbidden = [Message.Location.allmail.rawValue,
+                          Message.Location.starred.rawValue]
+        guard let labels = message.labels.allObjects as? [Label],
+              let location = labels
+                .first(where: { !forbidden.contains($0.labelID) && ($0.type.intValue == 3 || Int($0.labelID) != nil) }) else { return }
+        let viewModel = MessageViewActionSheetViewModel(title: message.subject, labelID: location.labelID)
         actionSheetPresenter.present(on: navigationController ?? self, viewModel: viewModel) { [weak self] in
             self?.handleActionSheetAction($0, message: message)
         }
