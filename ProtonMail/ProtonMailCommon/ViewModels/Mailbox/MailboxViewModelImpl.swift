@@ -107,6 +107,55 @@ final class MailboxViewModelImpl: MailboxViewModel {
         }
     }
 
+    override func isSwipeActionValid(_ action: MessageSwipeAction,
+                                     conversation: Conversation) -> Bool {
+        switch self.label {
+        case .archive:
+            return action != .archive
+        case .starred:
+            return action != .star
+        case .spam:
+            return action != .spam
+        case .draft:
+            return action != .spam && action != .trash && action != .archive
+        case .sent:
+            return action != .spam
+        case .trash:
+            return action != .trash
+        case .allmail:
+            return checkIsSwipeActionValidOf(conversation: conversation, action: action)
+        default:
+            return true
+        }
+    }
+
+    private func checkIsSwipeActionValidOf(conversation: Conversation,
+                                           action: MessageSwipeAction) -> Bool {
+        switch action {
+        case .none:
+            return false
+        case .unread:
+            return !conversation.isUnread(labelID: labelID)
+        case .read:
+            return conversation.isUnread(labelID: labelID)
+        case .star:
+            return !conversation.starred
+        case .unstar:
+            return conversation.starred
+        case .trash:
+            return !conversation.contains(of: Message.Location.trash.rawValue)
+        case .labelAs:
+            return true
+        case .moveTo:
+            return true
+        case .archive:
+            return !conversation.contains(of: Message.Location.archive.rawValue)
+        case .spam:
+            return !conversation.contains(of: Message.Location.spam.rawValue)
+                && !conversation.contains(of: Message.Location.sent.rawValue)
+        }
+    }
+
     override func isDrafts() -> Bool {
         return self.label == .draft
     }

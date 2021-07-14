@@ -89,10 +89,10 @@ final class LocalConversationUpdater {
                 let messages = Message
                     .messagesForConversationID(conversation.conversationID,
                                                inManagedObjectContext: context)
+                let untouchedLocations: [Message.Location] = [.draft, .sent, .starred, .archive, .allmail]
 
                 if isFolder {
                     // If folder, first remove all labels that are not draft, sent, starred, archive, allmail
-                    let untouchedLocations: [Message.Location] = [.draft, .sent, .starred, .archive, .allmail]
                     let allLabels = conversation.labels as? Set<ContextLabel> ?? []
                     let filteredLabels = allLabels.filter({ !untouchedLocations.map(\.rawValue).contains($0.labelID) })
                     for filteredLabel in filteredLabels {
@@ -112,7 +112,9 @@ final class LocalConversationUpdater {
                      }
                 }
 
-                if let removed = labelToRemove, !removed.isEmpty {
+                if let removed = labelToRemove,
+                   !removed.isEmpty,
+                   !untouchedLocations.map(\.rawValue).contains(removed) {
                     conversation.applyLabelChanges(labelID: removed, apply: false, context: context)
                     messages?.forEach { $0.remove(labelID: removed) }
                     let hasUnread = messages?.contains(where: { $0.unRead }) == true ||

@@ -66,7 +66,28 @@ class LabelboxViewModelImpl : MailboxViewModel {
         
         return (.nothing, nil)
     }
-    
+
+    override func delete(conversationIDs: [String]) -> (SwipeResponse, UndoMessage?) {
+        if [Message.Location.draft.rawValue, Message.Location.spam.rawValue, Message.Location.trash.rawValue].contains(labelID) {
+            conversationService.deleteConversations(with: conversationIDs, labelID: labelID) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
+        } else {
+            conversationService.move(conversationIDs: conversationIDs,
+                                     from: self.labelID,
+                                     to: Message.Location.trash.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
+        }
+        return (.nothing, nil)
+    }
+
     override func archive(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
             if let fLabel = message.firstValidFolder() {
@@ -76,6 +97,21 @@ class LabelboxViewModelImpl : MailboxViewModel {
                     }
                     return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.archive.rawValue))
                 }
+            }
+        } else if let conversation = self.itemOfConversation(index: index) {
+            if let fLabel = conversation.firstValidFolder() {
+                conversationService.move(conversationIDs: [conversation.conversationID],
+                                         from: fLabel,
+                                         to: Message.Location.archive.rawValue) { [weak self] result in
+                    guard let self = self else { return }
+                    if let _ = try? result.get() {
+                        self.eventsService.fetchEvents(labelID: self.labelId)
+                    }
+                }
+                if self.label.labelID != fLabel {
+                    return (.showGeneral, nil)
+                }
+                return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: fLabel, origHasStar: conversation.starred, newLabels: Message.Location.archive.rawValue))
             }
         }
         return (.nothing, nil)
@@ -90,6 +126,21 @@ class LabelboxViewModelImpl : MailboxViewModel {
                     }
                     return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.spam.rawValue))
                 }
+            }
+        } else if let conversation = self.itemOfConversation(index: index) {
+            if let fLabel = conversation.firstValidFolder() {
+                conversationService.move(conversationIDs: [conversation.conversationID],
+                                         from: fLabel,
+                                         to: Message.Location.spam.rawValue) { [weak self] result in
+                    guard let self = self else { return }
+                    if let _ = try? result.get() {
+                        self.eventsService.fetchEvents(labelID: self.labelId)
+                    }
+                }
+                if self.label.labelID != fLabel {
+                    return (.showGeneral, nil)
+                }
+                return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: fLabel, origHasStar: conversation.starred, newLabels: Message.Location.archive.rawValue))
             }
         }
         return (.nothing, nil)

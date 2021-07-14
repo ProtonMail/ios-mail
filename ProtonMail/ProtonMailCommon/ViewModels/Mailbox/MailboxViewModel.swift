@@ -531,6 +531,10 @@ class MailboxViewModel: StorageLimit {
     func isSwipeActionValid(_ action: MessageSwipeAction, message: Message) -> Bool {
         return true
     }
+
+    func isSwipeActionValid(_ action: MessageSwipeAction, conversation: Conversation) -> Bool {
+        true
+    }
     
     func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
         return false
@@ -1080,6 +1084,28 @@ extension MailboxViewModel {
             return .archive
         case .readAndUnread:
             return message.unRead ? .read : .unread
+        case .labelAs:
+            return .labelAs
+        case .moveTo:
+            return .moveTo
+        }
+    }
+
+    func convertSwipeActionTypeToMessageSwipeAction(_ type: SwipeActionSettingType,
+                                                      conversation: Conversation) -> MessageSwipeAction {
+        switch type {
+        case .none:
+            return .none
+        case .trash:
+            return .trash
+        case .spam:
+            return .spam
+        case .starAndUnstar:
+            return conversation.starred ? .unstar : .star
+        case .archive:
+            return .archive
+        case .readAndUnread:
+            return conversation.isUnread(labelID: labelId) ? .read : .unread
         case .labelAs:
             return .labelAs
         case .moveTo:

@@ -547,8 +547,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             mailboxCell.id = conversation.conversationID
             mailboxCell.cellDelegate = self
             messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
-
-            // TODO: swipe action
+            configureSwipeAction(mailboxCell, indexPath: indexPath, conversation: conversation)
         }
         let accessibilityAction =
             UIAccessibilityCustomAction(name: LocalString._accessibility_list_view_custom_action_of_switch_editing_mode,
@@ -590,6 +589,36 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
 
+    private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, conversation: Conversation) {
+        let leftToRightAction = userCachedStatus.leftToRightSwipeActionType
+        let leftToRightMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(leftToRightAction,
+                                                                                        conversation: conversation)
+
+        if leftToRightMsgAction != .none && viewModel.isSwipeActionValid(leftToRightMsgAction, conversation: conversation) {
+            let leftToRightSwipeView = makeSwipeView(messageSwipeAction: leftToRightMsgAction)
+            cell.addSwipeTrigger(forState: .state(0, .left),
+                                 withMode: .exit,
+                                 swipeView: leftToRightSwipeView,
+                                 swipeColor: leftToRightMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
+                self?.handleSwipeAction(on: cell, action: leftToRightMsgAction, conversation: conversation)
+            }
+        }
+
+        let rightToLeftAction = userCachedStatus.rightToLeftSwipeActionType
+        let rightToLeftMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(rightToLeftAction,
+                                                                                        conversation: conversation)
+
+        if rightToLeftMsgAction != .none && viewModel.isSwipeActionValid(rightToLeftMsgAction, conversation: conversation) {
+            let rightToLeftSwipeView = makeSwipeView(messageSwipeAction: rightToLeftMsgAction)
+            cell.addSwipeTrigger(forState: .state(0, .right),
+                                 withMode: .exit,
+                                 swipeView: rightToLeftSwipeView,
+                                 swipeColor: rightToLeftMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
+                self?.handleSwipeAction(on: cell, action: rightToLeftMsgAction, conversation: conversation)
+            }
+        }
+    }
+
     private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, message: Message) {
         guard let indexPathOfCell = self.tableView.indexPath(for: cell) else {
             self.tableView.reloadData()
@@ -611,6 +640,23 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
 
         cell.swipeToOrigin {}
+    }
+
+    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, conversation: Conversation) {
+        guard let indexPathOfCell = self.tableView.indexPath(for: cell) else {
+            self.tableView.reloadData()
+            return
+        }
+
+        guard self.viewModel.isSwipeActionValid(action, conversation: conversation) else {
+            cell.swipeToOrigin {}
+            return
+        }
+
+        if !self.processSwipeActions(action,
+                                     indexPath: indexPathOfCell) {
+            cell.swipeToOrigin {}
+        }
     }
 
     private func processSwipeActions(_ action: MessageSwipeAction, indexPath: IndexPath) -> Bool {
@@ -802,7 +848,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func showUndoView(_ title : String) {
         undoLabel.text = String(format: LocalString._messages_with_title, title)
         self.undoBottomDistance.constant = self.kUndoShowPosition
-        self.undoButton.isHidden = false
+        self.undoButton.isHidden = self.viewModel.viewMode == .conversation
         self.undoView.isHidden = false
         self.undoButtonWidth.constant = 100.0
         self.updateViewConstraints()
