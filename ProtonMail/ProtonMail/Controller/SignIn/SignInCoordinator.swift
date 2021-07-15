@@ -109,7 +109,7 @@ final class SignInCoordinator: DefaultCoordinator {
         // TODO: what is the right setup here? also — should the name be taken from somewhere instead of hardcoded?
         login = environment.loginCreationClosure("Proton Mail",
                                                  .internal,
-                                                 .both(initial: .internal),
+                                                 .internal,
                                                  [.notEmpty, .atLeastEightCharactersLong],
                                                  !isFirstAccountFlow)
 
