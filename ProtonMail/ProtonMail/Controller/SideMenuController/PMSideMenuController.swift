@@ -16,6 +16,10 @@ class PMSideMenuController: SideMenuController, SideMenuControllerDelegate {
     override var childForStatusBarHidden: UIViewController? {
         isMenuPresented ? menuViewController : contentViewController
     }
+    
+    override var childForStatusBarStyle: UIViewController? {
+        isMenuPresented ? menuViewController : contentViewController
+    }
 
     func sideMenuControllerWillRevealMenu(_ sideMenuController: SideMenuController) {
         isMenuPresented = true
