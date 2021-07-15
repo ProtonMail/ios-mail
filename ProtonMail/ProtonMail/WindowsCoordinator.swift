@@ -91,6 +91,9 @@ class WindowsCoordinator: CoordinatorNew {
                     self?.didReceiveTokenRevoke(uid: uid)
                 }
             }
+            NotificationCenter.default.addObserver(forName: .fetchPrimaryUserSettings, object: nil, queue: .main) { [weak self] _ in
+                self?.restoreAppStates()
+            }
             
             if #available(iOS 13.0, *) {
                 // this is done by UISceneDelegate
@@ -225,6 +228,10 @@ class WindowsCoordinator: CoordinatorNew {
                     switch flowResult {
                     case .succeeded:
                         self?.go(dest: .appWindow)
+                        delay(1) {
+                            // Waiting for init of Menu coordinate to receive the notification
+                            NotificationCenter.default.post(name: .switchView, object: nil)
+                        }
                     case .userWantsToGoToTroubleshooting:
                         let troubleshootingVC = UIStoryboard.Storyboard.alert.storyboard.make(NetworkTroubleShootViewController.self)
                         troubleshootingVC.onDismiss = { [weak self] in
@@ -285,16 +292,21 @@ class WindowsCoordinator: CoordinatorNew {
                 if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
                 }
-                if self.navigate(from: self.currentWindow, to: self.appWindow),
-                    let deeplink = self.deeplink
-                {
-                    self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-                        if let menu = controller as? MenuViewController {
-                            menu.coordinator.follow(deeplink)
-                            stop = true
-                        }
-                    }
-                }
+                _ = self.navigate(from: self.currentWindow, to: self.appWindow)
+            }
+        }
+    }
+
+    private func restoreAppStates() {
+        guard let deepLink = self.deeplink else {
+            // There is no previous states , navigate to inbox
+            NotificationCenter.default.post(name: .switchView, object: nil)
+            return
+        }
+        self.appWindow.enumerateViewControllerHierarchy { controller, stop in
+            if let menu = controller as? MenuViewController {
+                menu.coordinator.follow(deepLink)
+                stop = true
             }
         }
     }

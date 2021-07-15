@@ -77,4 +77,8 @@ extension Notification.Name {
     static var attachmentUploaded: Notification.Name {
         return .init("attachmentUploaded")
     }
+    
+    static var fetchPrimaryUserSettings: Notification.Name {
+        return .init("fetchPrimaryUserSettings")
+    }
 }

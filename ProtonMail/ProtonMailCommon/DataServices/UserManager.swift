@@ -287,8 +287,10 @@ class UserManager : Service, HasLocalStorage {
                   let self = self else { return }
             if firstUser.userInfo.userId == self.userInfo.userId {
                 userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeLeft, rightToLeft: info.swipeRight)
-                
             }
+            // When app launch, the app will show a skeleton view
+            // After getting setting data, show inbox
+            NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
             #endif
         }
     }

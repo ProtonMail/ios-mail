@@ -50,22 +50,7 @@ extension SideMenuController {
         switch identifier {
         case contentSegueID:
             segue.contentType = .content
-            if let navigation = segue.destination as? UINavigationController {
-                if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                    sharedVMService.mailbox(fromMenu: mailboxViewController)
-                    let usersManager = sharedServices.get(by: UsersManager.self)
-                    let user = usersManager.firstUser!
-                    let viewModel = MailboxViewModelImpl(label: .inbox,
-                                                         userManager: user,
-                                                         usersManager: usersManager,
-                                                         pushService: sharedServices.get(),
-                                                         coreDataService: sharedServices.get(),
-                                                         lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
-                                                         queueManager: sharedServices.get(by: QueueManager.self))
-                    let mailbox = MailboxCoordinator(viewController: mailboxViewController, viewModel: viewModel, services: sharedServices)
-                    mailbox.start()
-                }
-            }
+            // Show skeleton view at the begining
         case menuSegueID:
             segue.contentType = .menu
             guard let menuVC = segue.destination as? MenuViewController else {
