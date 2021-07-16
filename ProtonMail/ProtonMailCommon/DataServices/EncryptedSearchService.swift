@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import SwiftSoup
 
 public class EncryptedSearchService {
     //instance of Singleton
@@ -278,7 +279,7 @@ extension EncryptedSearchService {
                 print("Unexpected error: \(error).")
             }
             
-            var keyWordsPerEmail: NSMutableArray = []
+            var keyWordsPerEmail: String = ""
             keyWordsPerEmail = self.extractKeywordsFromBody(bodyOfEmail: body!)
             
             //for debugging only
@@ -288,10 +289,148 @@ extension EncryptedSearchService {
         //return keywords
     }
     
-    func extractKeywordsFromBody(bodyOfEmail body: String) -> NSMutableArray {
-        var contentOfEmail: NSMutableArray = []
-        //TODO implement using a HTML parser
+    func extractKeywordsFromBody(bodyOfEmail body: String, _ removeQuotes: Bool = true) -> String {
+        var contentOfEmail: String = ""
+        
+        do {
+            //let html = "<html><head><title>First parse</title></head>"
+            //    + "<body><p>Parsed HTML into a doc.</p></body></html>"
+            //parse HTML email as DOM tree
+            let doc: Document = try SwiftSoup.parse(body)
+            
+            //remove style elements from DOM tree
+            let styleElements: Elements = try doc.getElementsByTag("style")
+            for s in styleElements {
+                try s.remove()
+            }
+            
+            //remove quoted text, unless the email is forwarded
+            var content: String = ""
+            if removeQuotes {
+                let (noQuoteContent, _) = try locateBlockQuotes(doc)
+                content = noQuoteContent
+            } else {
+                content = try doc.html()
+            }
+            
+            let newBodyOfEmail: Document = try SwiftSoup.parse(content)
+            contentOfEmail = try newBodyOfEmail.text().trim()
+            //TODO replace multiple whitespaces with a single whitespace
+            //i.e. in Kotlin -> .replace("\\s+", " ")
+        } catch Exception.Error(_, let message) {
+            print(message)
+        } catch {
+            print("error")
+        }
+        print("content of email cleaned: ", contentOfEmail)
+        
         return contentOfEmail
+    }
+    
+    //Returns content before and after match in the source
+    func split(_ source: String, _ match: String) -> (before: String, after: String) {
+        if let range:Range<String.Index> = source.range(of: match) {
+            let index: Int = source.distance(from: source.startIndex, to: range.lowerBound)
+            let s1_index: String.Index = source.index(source.startIndex, offsetBy: index)
+            let s1: String = String(source[..<s1_index])
+            
+            let s2_index: String.Index = source.index(s1_index, offsetBy: match.count)
+            let s2: String = String(source[s2_index...])
+            
+            return (s1, s2)
+        }
+        //no match found
+        return (source, "")
+    }
+    
+    //TODO refactor
+    func searchforContent(_ element: Element?, _ text: String) throws -> Elements {
+        let abc: Document = (element?.ownerDocument())!
+        let cde: Elements? = try abc.select(":matches(^$text$)")
+        return cde!
+    }
+    
+    func locateBlockQuotes(_ inputDocument: Element?) throws -> (String, String) {
+        guard inputDocument != nil else { return ("", "") }
+        
+        let body: Elements? = try inputDocument?.select("body")
+        
+        var document: Element?
+        if body!.first() != nil {
+            document = body!.first()
+        } else {
+            document = inputDocument
+        }
+        
+        var parentHTML: String? = ""
+        if try document?.html() != nil {
+            parentHTML = try document?.html()
+        }
+        var parentText: String? = ""
+        if try document?.text() != nil {
+            parentText = try document?.text()
+        }
+        
+        var result:(String, String)? = nil
+        
+        func testBlockQuote(_ blockquote: Element) throws -> (String, String)? {
+            let blockQuoteText: String = try blockquote.text()
+            let (beforeText, afterText): (String, String) = split(parentText!, blockQuoteText)
+            
+            if (!(beforeText.trim().isEmpty) && (afterText.trim().isEmpty)) {
+                let blockQuoteHTML: String = try blockquote.outerHtml()
+                let (beforeHTML, _): (String, String) = split(parentHTML!, blockQuoteHTML)
+                
+                return (beforeHTML, blockQuoteHTML)
+            }
+            return nil
+        }
+        
+        let blockQuoteSelectors: NSArray = [".protonmail_quote",
+                                            ".gmail_quote",
+                                            ".yahoo_quoted",
+                                            ".gmail_extra",
+                                            ".moz-cite-prefix",
+                                            // '.WordSection1',
+                                            "#isForwardContent",
+                                            "#isReplyContent",
+                                            "#mailcontent:not(table)",
+                                            "#origbody",
+                                            "#reply139content",
+                                            "#oriMsgHtmlSeperator",
+                                            "blockquote[type=\"cite\"]",
+                                            "[name=\"quote\"]", // gmx
+                                            ".zmail_extra", // zoho
+        ]
+        let blockQuoteSelector: String = blockQuoteSelectors.componentsJoined(by: ",")
+        
+        // Standard search with a composed query selector
+        let blockQuotes: Elements? = try document?.select(blockQuoteSelector)
+        try blockQuotes?.forEach({ blockquote in
+            if (result == nil) {
+                result = try testBlockQuote(blockquote)
+            }
+        })
+        
+        let blockQuoteTextSelectors: NSArray = ["-----Original Message-----"]
+        // Second search based on text content with xpath
+        if (result == nil) {
+            try blockQuoteTextSelectors.forEach { text in
+                if (result == nil) {
+                    try searchforContent(document, text as! String).forEach { blockquote in
+                        if (result == nil) {
+                            result = try testBlockQuote(blockquote)
+                        }
+                    }
+                }
+            }
+        }
+        
+        if result == nil {
+            return (parentHTML!, "")
+        }
+        
+        return result!
     }
 
     //Encrypted Search
