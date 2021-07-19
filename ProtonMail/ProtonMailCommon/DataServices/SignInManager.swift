@@ -75,6 +75,7 @@ class SignInManager: Service {
                         onError: @escaping (NSError) -> Void,
                         reachLimit: @escaping () -> Void,
                         existError: @escaping () -> Void,
+                        showSkeleton: @escaping () -> Void,
                         tryUnlock: @escaping () -> Void) {
         let userInfo = loginData.toUserInfo
         let auth = loginData.credential
@@ -89,6 +90,8 @@ class SignInManager: Service {
 
         let user = self.usersManager.getUser(bySessionID: auth.sessionID)!
         self.queueManager.registerHandler(user.mainQueueHandler)
+
+        showSkeleton()
 
         let userDataService = user.userService
         userDataService.fetchSettings(userInfo: userInfo, auth: auth).done(on: .main) { [weak self] userInfo in

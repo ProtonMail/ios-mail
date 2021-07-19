@@ -114,7 +114,9 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     
     func go(to labelInfo: MenuLabel, deepLink: DeepLink?=nil) {
         switch labelInfo.location {
-        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .customize(_):
+        case .customize(_):
+            self.handleCustomLabel(labelInfo: labelInfo, deepLink: deepLink)
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail:
             self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
         case .subscription:
             self.navigateToSubscribe()
@@ -198,6 +200,7 @@ extension MenuCoordinator {
         case "toBugPop": return MenuLabel(location: .bugs)
         case "toAccountManager": return MenuLabel(location: .customize("toAccountManager"))
         case "toAddAccountSegue": return MenuLabel(location: .customize("toAddAccountSegue"))
+        case .skeletonTemplate: return MenuLabel(location: .customize(.skeletonTemplate))
         default: return nil
         }
     }
@@ -228,6 +231,16 @@ extension MenuCoordinator {
         } else {
             let label = MenuLabel(location: .inbox)
             self.navigateToMailBox(labelInfo: label, deepLink: nil)
+        }
+    }
+    
+    private func handleCustomLabel(labelInfo: MenuLabel, deepLink: DeepLink?) {
+        if case .customize(let id) = labelInfo.location {
+            if id == .skeletonTemplate {
+                self.navigateToSkeletonVC()
+            } else {
+                self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
+            }
         }
     }
     
@@ -465,6 +478,12 @@ extension MenuCoordinator {
             }
         }
         return isFound
+    }
+
+    private func navigateToSkeletonVC() {
+        let skeletonVC = SkeletonViewController.instance()
+        guard let navigation = skeletonVC.navigationController else { return }
+        self.setupContentVC(destination: navigation)
     }
 }
 

@@ -6,4 +6,7 @@ extension String {
         return ""
     }
 
+    static var skeletonTemplate: String {
+        return "SkeletonTemplate"
+    }
 }
