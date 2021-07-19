@@ -173,6 +173,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         
         // name textfield bottom border
         displayNameField.addBottomBorder()
+        emptyBackButtonTitleForNextView()
     }
     
     override func viewWillAppear(_ animated: Bool) {

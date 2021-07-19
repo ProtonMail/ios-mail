@@ -2242,24 +2242,9 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="Type" id="B15-WE-Pwg">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="44D-QV-Dj1">
-                            <color key="tintColor" red="0.98540240530000001" green="0.9950486422" blue="0.99995875359999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <action selector="cancelAction:" destination="8FT-3K-fbA" id="fAu-hC-sgD"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Yt8-cW-5WU">
-                            <color key="tintColor" red="0.98540240530000001" green="0.9950486422" blue="0.99995875359999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <action selector="doneAction:" destination="8FT-3K-fbA" id="fEL-jJ-dDC"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Type" id="B15-WE-Pwg"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="cancelItem" destination="44D-QV-Dj1" id="9j4-WM-s3c"/>
-                        <outlet property="doneItem" destination="Yt8-cW-5WU" id="RgG-Gi-5xV"/>
                         <outlet property="tableView" destination="oWv-uE-Z4u" id="HSr-Ts-FKK"/>
                         <outlet property="tableViewBottomOffset" destination="VSN-4E-tQt" id="Ww0-Ph-yBS"/>
                     </connections>
