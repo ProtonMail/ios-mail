@@ -24,6 +24,7 @@ public class EncryptedSearchService {
         messageService = user.messageService
         
         searchIndex = EncryptedSearchIndexService.shared.createSearchIndex()!
+        EncryptedSearchIndexService.shared.createSearchIndexTable()
         
         //self.conversationStateService = user.conversationStateService
     }
