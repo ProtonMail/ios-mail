@@ -183,7 +183,9 @@ class MessageDataService : Service, HasLocalStorage {
                         }
                     }
                 } else {
-                    completion?(task, responseDict, NSError.unableToParseResponse(responseDict))
+                    DispatchQueue.main.async {
+                        completion?(task, responseDict, NSError.unableToParseResponse(responseDict))
+                    }
                 }
             }
             let request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: isUnread)
