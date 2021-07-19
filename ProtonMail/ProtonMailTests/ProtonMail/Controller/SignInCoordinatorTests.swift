@@ -104,7 +104,7 @@ final class SignInCoordinatorTests: XCTestCase {
         let testAuth = AuthCredential(sessionID: "test session id", accessToken: "test access token", refreshToken: "test refresh token",
                                       expiration: .distantFuture, privateKey: "test private key", passwordKeySalt: "test password key salt")
         var loginData: LoginData?
-        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { loginDataRes, _, _, _, _ in
+        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { loginDataRes, _, _, _, _, _ in
             loginData = loginDataRes
         }, unlockIfRememberedCredentials: { _, _, _, _ in })
 
@@ -127,7 +127,7 @@ final class SignInCoordinatorTests: XCTestCase {
     func testCoordinatorUnlocksWhenShouldTryUnlock() {
         let loginStubFactory = PMLoginStubFactory()
         var wasUnlockCredentialsCalled = false
-        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, _, _, _, tryUnlock in
+        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, _, _, _, _, tryUnlock in
             tryUnlock()
         }, unlockIfRememberedCredentials: { _, _, _, _ in wasUnlockCredentialsCalled = true })
         let out = SignInCoordinator.loginFlowForSecondAndAnotherAccount(username: "test username", environment: environment) { _ in }
@@ -140,7 +140,7 @@ final class SignInCoordinatorTests: XCTestCase {
         let loginStubFactory = PMLoginStubFactory()
         struct TestError: Error, Equatable { let localizedDescription = "test error" }
         let testError = TestError()
-        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, onError, _, _, _ in
+        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, onError, _, _, _, _ in
             onError(testError as NSError)
         })
         var flowResult: SignInCoordinator.FlowResult?
@@ -154,7 +154,7 @@ final class SignInCoordinatorTests: XCTestCase {
 
     func testCoordinatorFinishesWithReachLimitIfFinalizeSignInFailsWithReachLimit() {
         let loginStubFactory = PMLoginStubFactory()
-        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, _, reachLimit, _, _ in
+        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, _, reachLimit, _, _, _ in
             reachLimit()
         })
         var flowResult: SignInCoordinator.FlowResult?
@@ -166,7 +166,7 @@ final class SignInCoordinatorTests: XCTestCase {
 
     func testCoordinatorFinishesWithUnlockFailedIfUnlockIfRememberedCorrectlyFinishedWithUnlockFailed() {
         let loginStubFactory = PMLoginStubFactory()
-        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, _, _, _, tryUnlock in
+        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, _, _, _, _, tryUnlock in
             tryUnlock()
         }, unlockIfRememberedCredentials: { _, _, unlockFailed, _ in unlockFailed?() })
         var flowResult: SignInCoordinator.FlowResult?
@@ -178,7 +178,7 @@ final class SignInCoordinatorTests: XCTestCase {
 
     func testCoordinatorSucceedsIfUnlockSucceeds() {
         let loginStubFactory = PMLoginStubFactory()
-        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, _, _, _, tryUnlock in
+        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, _, _, _, _, tryUnlock in
             tryUnlock()
         }, unlockIfRememberedCredentials: { _, _, _, unlocked in unlocked?() })
         var flowResult: SignInCoordinator.FlowResult?

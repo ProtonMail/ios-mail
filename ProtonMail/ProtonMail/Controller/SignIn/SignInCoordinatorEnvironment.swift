@@ -36,14 +36,14 @@ struct SignInCoordinatorEnvironment {
     let mailboxPassword: (String, AuthCredential) -> String
     let currentAuth: () -> AuthCredential?
     let tryRestoringPersistedUser: () -> Void
-    let finalizeSignIn: (LoginData, @escaping (NSError) -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void
+    let finalizeSignIn: (LoginData, @escaping (NSError) -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void
     let unlockIfRememberedCredentials: (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void
     let loginCreationClosure: LoginCreationClosure
     let shouldShowAlertOnError: Bool
 
     func finalizeSignIn(loginData: LoginData, onError: @escaping (NSError) -> Void,
-                        reachLimit: @escaping () -> Void, existError: @escaping () -> Void, tryUnlock: @escaping () -> Void) {
-        finalizeSignIn(loginData, onError, reachLimit, existError, tryUnlock)
+                        reachLimit: @escaping () -> Void, existError: @escaping () -> Void, showSkeleton: @escaping () -> Void, tryUnlock: @escaping () -> Void) {
+        finalizeSignIn(loginData, onError, reachLimit, existError, showSkeleton, tryUnlock)
     }
     func unlockIfRememberedCredentials(forUser: String?, requestMailboxPassword: @escaping () -> Void, unlockFailed: @escaping () -> Void, unlocked: @escaping () -> Void) {
         unlockIfRememberedCredentials(forUser, requestMailboxPassword, unlockFailed, unlocked)
@@ -63,7 +63,7 @@ extension SignInCoordinatorEnvironment {
                      currentAuth: { services.get(by: UsersManager.self).firstUser?.auth },
                      tryRestoringPersistedUser: services.get(by: UsersManager.self).tryRestore,
                      finalizeSignIn: services.get(by: SignInManager.self)
-                        .finalizeSignIn(loginData:onError:reachLimit:existError:tryUnlock:),
+                        .finalizeSignIn(loginData:onError:reachLimit:existError:showSkeleton:tryUnlock:),
                      unlockIfRememberedCredentials: services.get(by: UnlockManager.self)
                         .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
                      loginCreationClosure: { appName, minimumAccountType, signupMode, signupPasswordRestrictions, isCloseButtonAvailable in

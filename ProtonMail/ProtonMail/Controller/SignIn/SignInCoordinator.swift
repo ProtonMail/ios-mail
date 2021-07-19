@@ -181,6 +181,8 @@ final class SignInCoordinator: DefaultCoordinator {
                 [weak self] in self?.processReachLimitError()
             } existError: {
                 [weak self] in self?.processExistError()
+            } showSkeleton: {
+                [weak self] in self?.showSkeletonTemplate()
             } tryUnlock: {
                 [weak self] in self?.unlockMainKey(failOnMailboxPassword: false)
             }
@@ -197,6 +199,11 @@ final class SignInCoordinator: DefaultCoordinator {
     private func processExistError() {
         let alertController = LocalString._duplicate_logged_in.alertController()
         showAlertAndFinish(controller: alertController, result: .alreadyLoggedIn)
+    }
+    
+    private func showSkeletonTemplate() {
+        let link = DeepLink(.skeletonTemplate)
+        NotificationCenter.default.post(name: .switchView, object: link)
     }
 
     private func unlockMainKey(failOnMailboxPassword: Bool) {
