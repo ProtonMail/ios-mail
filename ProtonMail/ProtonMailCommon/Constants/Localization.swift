@@ -2016,7 +2016,7 @@ class LocalizedString {
     lazy var _settings_title_of_combined_contact = NSLocalizedString("Combined contacts", comment: "The title of combined contact in settings")
 
     lazy var _pin_code_setup1_title = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
-    lazy var _pin_code_setup1_textfield_title = NSLocalizedString("Enter PIN code", comment: "The title of textfield of PIN code setup1")
+    lazy var _pin_code_setup1_textfield_title = NSLocalizedString("Enter current PIN code", comment: "The title of textfield of PIN code setup1")
     lazy var _pin_code_setup1_textfield_assistiveText = NSLocalizedString("Enter a PIN code with min 4 characters and max 21 characters.", comment: "The assistive text of textfield of PIN code setup1")
     lazy var _pin_code_setup1_textfield_invalid_password = NSLocalizedString("Invalid password", comment: "The error message of entering an invalid password")
     lazy var _pin_code_setup1_button_title = NSLocalizedString("Continue", comment: "The title of button of PIN code setup1")
