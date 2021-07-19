@@ -91,6 +91,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             user: user,
             coreDataService: sharedServices.get(by: CoreDataService.self)
         )
+        viewModel.addToContacts(contact)
 
         viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
         viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))

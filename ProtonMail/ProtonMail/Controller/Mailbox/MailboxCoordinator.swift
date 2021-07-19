@@ -318,37 +318,13 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                let value = path.value,
                let mailToURL = URL(string: value) {
                 let user = self.viewModel.user
-                let viewModel = ContainableComposeViewModel(msg: nil,
-                                                            action: .newDraft,
-                                                            msgService: user.messageService,
-                                                            user: user,
-                                                            coreDataService: coreDataService)
+                let mailToURL = URL(string: value)!
+                let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user, coreDataService: self.services.get(by: CoreDataService.self))
+                viewModel.parse(mailToURL: mailToURL)
 
-                if let mailToData = mailToURL.parseMailtoLink() {
-                    PMLog.D("mailto: \(mailToData)")
-
-                    mailToData.to.forEach { receipient in
-                        viewModel.addToContacts(ContactVO(name: receipient, email: receipient))
-                    }
-
-                    mailToData.cc.forEach { receipient in
-                        viewModel.addCcContacts(ContactVO(name: receipient, email: receipient))
-                    }
-
-                    mailToData.bcc.forEach { receipient in
-                        viewModel.addBccContacts(ContactVO(name: receipient, email: receipient))
-                    }
-
-                    if let subject = mailToData.subject {
-                        viewModel.setSubject(subject)
-                    }
-
-                    if let body = mailToData.body {
-                        viewModel.setBody(body)
-                    }
-                }
-
-                showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: nil), services: services)
+                composer.start()
+                composer.follow(deeplink)
             }
 
         default:

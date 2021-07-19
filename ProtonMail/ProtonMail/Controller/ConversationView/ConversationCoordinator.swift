@@ -59,6 +59,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             presentCompose(with: contact)
         case let .attachmentList(message, inlineCIDs):
             presentAttachmnetListView(message: message, inlineCIDS: inlineCIDs)
+        case .mailToUrl(let url):
+            presentCompose(with: url)
         case .replyAll(let message):
             presentCompose(message: message, action: .replyAll)
         case .forward(let message):
@@ -87,6 +89,27 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             user: user,
             coreDataService: sharedServices.get(by: CoreDataService.self)
         )
+        viewModel.addToContacts(contact)
+
+        viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
+        viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
+        self.viewController?.present(destination, animated: true)
+    }
+    
+    private func presentCompose(with mailToURL: URL) {
+        let board = UIStoryboard.Storyboard.composer.storyboard
+        guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,
+              let viewController = destination.viewControllers.first as? ComposeContainerViewController else {
+            return
+        }
+        let viewModel = ContainableComposeViewModel(
+            msg: nil,
+            action: .newDraft,
+            msgService: user.messageService,
+            user: user,
+            coreDataService: sharedServices.get(by: CoreDataService.self)
+        )
+        viewModel.parse(mailToURL: mailToURL)
 
         viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
         viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
