@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import SwiftSoup
+import SQLite
 
 public class EncryptedSearchService {
     //instance of Singleton
@@ -22,12 +23,16 @@ public class EncryptedSearchService {
         
         messageService = user.messageService
         
+        searchIndex = EncryptedSearchIndexService.shared.createSearchIndex()!
+        
         //self.conversationStateService = user.conversationStateService
     }
     
     internal var user: UserManager!
     internal var messageService: MessageDataService
     var totalMessages: Int = 0
+    
+    internal var searchIndex: Connection
     //private let conversationStateService: ConversationStateService
     
     /*var viewMode: ViewMode {
