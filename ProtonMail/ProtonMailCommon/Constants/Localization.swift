@@ -767,16 +767,13 @@ class LocalizedString {
     lazy var _enter_pin_to_unlock_inbox = NSLocalizedString("Enter your PIN to unlock your inbox.", comment: "Title")
 
     /// "attempt remaining until secure data wipe!"
-    lazy var _attempt_remaining_until_secure_data_wipe = NSLocalizedString("attempt remaining until secure data wipe!", comment: "Error")
-
-    /// "attempts remaining until secure data wipe!"
-    lazy var _attempts_remaining_until_secure_data_wipe = NSLocalizedString("attempts remaining until secure data wipe!", comment: "Error")
+    lazy var _attempt_remaining_until_secure_data_wipe = NSLocalizedString("%d attempt remaining until secure data wipe!", comment: "Error")
 
     /// "Incorrect PIN,"
     lazy var _incorrect_pin = NSLocalizedString("Incorrect PIN,", comment: "Error")
 
     /// "attempts remaining"
-    lazy var _attempts_remaining = NSLocalizedString("attempts remaining", comment: "Description")
+    lazy var _attempt_remaining = NSLocalizedString("%d attempt remaining", comment: "Description")
 
     /// "Upload iOS contacts to ProtonMail?"
     lazy var _upload_ios_contacts_to_protonmail = NSLocalizedString("Upload iOS contacts to ProtonMail?", comment: "Description")
