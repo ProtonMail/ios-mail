@@ -103,12 +103,20 @@ extension EncryptedSearchIndexService {
     }
     
     func addNewEntryToSearchIndex(messageID:String, time: Int, labelIDs: NSSet, isStarred:Bool, unread:Bool, location:Int, order:Int, refreshBit:Bool, hasBody:Bool, decryptionFailed:Bool, encryptionIV:String, encryptedContent:String, encryptedContentFile:String) -> Int64? {
-        var rowID:Int64? = -1
         
-        let labelIDsAsString:String = (labelIDs.allObjects as NSArray).componentsJoined(by: ";")
+        var rowID:Int64? = -1
+        var allLabels:String = ""
+        for (index, label) in labelIDs.enumerated() {
+            let id:String = (label as! Label).labelID
+            if index == 0 {
+                allLabels += id
+            } else {
+                allLabels += ";" + id
+            }
+        }
         
         do {
-            let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID, self.databaseSchema.time <- time, self.databaseSchema.labelIDs <- labelIDsAsString, self.databaseSchema.isStarred <- isStarred, self.databaseSchema.unread <- unread, self.databaseSchema.location <- location, self.databaseSchema.order <- order, self.databaseSchema.refreshBit <- refreshBit, self.databaseSchema.hasBody <- hasBody, self.databaseSchema.decryptionFailed <- decryptionFailed, self.databaseSchema.encryptionIV <- encryptionIV, self.databaseSchema.encryptedContent <- encryptedContent, self.databaseSchema.encryptedContentFile <- encryptedContentFile)
+            let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID, self.databaseSchema.time <- time, self.databaseSchema.labelIDs <- allLabels, self.databaseSchema.isStarred <- isStarred, self.databaseSchema.unread <- unread, self.databaseSchema.location <- location, self.databaseSchema.order <- order, self.databaseSchema.refreshBit <- refreshBit, self.databaseSchema.hasBody <- hasBody, self.databaseSchema.decryptionFailed <- decryptionFailed, self.databaseSchema.encryptionIV <- encryptionIV, self.databaseSchema.encryptedContent <- encryptedContent, self.databaseSchema.encryptedContentFile <- encryptedContentFile)
             rowID = try self.handleToSQliteDB?.run(insert!)
         } catch {
             print("Insert in Table. Unexpected error: \(error).")
