@@ -271,8 +271,7 @@ extension EncryptedSearchService {
     
     func decryptBodyAndExtractData(_ messages: NSArray) {
         //2. decrypt messages (using the user's PGP key)
-        //MessageDataService+Decrypt.swift:38
-        //func decryptBodyIfNeeded(message: Message) throws -> String?
+        var decryptionFailed: Bool = true
         for m in messages {
             //print("Message:")
             //print((m as! Message).body)
@@ -281,6 +280,7 @@ extension EncryptedSearchService {
             do {
                 body = try self.messageService.decryptBodyIfNeeded(message: m as! Message)
                 print("Body of email (plaintext): ", body!)
+                decryptionFailed = false
             } catch {
                 print("Unexpected error: \(error).")
             }
@@ -288,7 +288,7 @@ extension EncryptedSearchService {
             var keyWordsPerEmail: String = ""
             keyWordsPerEmail = self.extractKeywordsFromBody(bodyOfEmail: body!)
             
-            self.addMessageKewordsToSearchIndex(keyWordsPerEmail, m as! Message)
+            self.addMessageKewordsToSearchIndex(keyWordsPerEmail, m as! Message, decryptionFailed)
             //for debugging only
             break
         }
@@ -440,9 +440,18 @@ extension EncryptedSearchService {
         return result!
     }
     
-    func addMessageKewordsToSearchIndex(_ keywordsPerEmail: String,_ message: Message) -> Void {
-        //TODO hasBody, decryption failed, time, labelID, location, order
-        let row: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(messageID: message.messageID, time: 0, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: 0, order: 0, refreshBit: false, hasBody: true, decryptionFailed: false, encryptionIV: "", encryptedContent: "", encryptedContentFile: "")
+    func addMessageKewordsToSearchIndex(_ keywordsPerEmail: String,_ message: Message, _ decryptionFailed: Bool) -> Void {
+        //TODO refreshbit -> remove, encryptionIV, encryptedContent, encryptedConentenFile
+        
+        var hasBody: Bool = true
+        if decryptionFailed {
+            hasBody = false //TODO are there any other case where there is no body?
+        }
+        
+        let location:Int? = Int(message.messageLocation!.rawValue)
+        let time: Int = Int((message.time)!.timeIntervalSince1970)
+        
+        let row: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(messageID: message.messageID, time: time, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: location!, order: message.order, refreshBit: false, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: "", encryptedContent: "", encryptedContentFile: "")
         print("message inserted at row: ", row!)
     }
 
