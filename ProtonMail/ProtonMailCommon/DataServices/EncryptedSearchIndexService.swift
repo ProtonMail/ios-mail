@@ -43,7 +43,6 @@ extension EncryptedSearchIndexService {
         static let Table_Searchable_Messages = "SearchableMessage"
         static let Column_Searchable_Message_Id = "ID"
         static let Column_Searchable_Message_Time = "Time"
-        static let Column_Searchable_Message_Refresh_Bit = "RefreshBit"
         static let Column_Searchable_Message_Labels = "LabelIDs"
         static let Column_Searchable_Message_Has_Body = "HasBody"
         static let Column_Searchable_Message_Is_Starred = "IsStarred"
@@ -65,7 +64,6 @@ extension EncryptedSearchIndexService {
         var unread:Expression<Bool> = Expression(value: false)
         var location:Expression<Int> = Expression(value: -1)
         var order:Expression<CLong?> = Expression(value: nil)
-        var refreshBit:Expression<Bool> = Expression(value: false)
         var hasBody:Expression<Bool> = Expression(value: false)
         var decryptionFailed:Expression<Bool> = Expression(value: false)
         var encryptionIV: Expression<String?> = Expression(value: nil)
@@ -75,7 +73,7 @@ extension EncryptedSearchIndexService {
     
     func createSearchIndexTable() -> Void {
         //self.searchableMessages = Table(DatabaseConstants.Table_Searchable_Messages)
-        self.databaseSchema = DatabaseEntries(messageID: Expression<String>(DatabaseConstants.Column_Searchable_Message_Id), time: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Time), labelIDs: Expression<String>(DatabaseConstants.Column_Searchable_Message_Labels), isStarred: Expression<Bool?>(DatabaseConstants.Column_Searchable_Message_Is_Starred), unread: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Unread), location: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Location), order: Expression<CLong?>(DatabaseConstants.Column_Searchable_Message_Order), refreshBit: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Refresh_Bit), hasBody: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Has_Body), decryptionFailed: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Decryption_Failed), encryptionIV: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV), encryptedContent: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content), encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File))
+        self.databaseSchema = DatabaseEntries(messageID: Expression<String>(DatabaseConstants.Column_Searchable_Message_Id), time: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Time), labelIDs: Expression<String>(DatabaseConstants.Column_Searchable_Message_Labels), isStarred: Expression<Bool?>(DatabaseConstants.Column_Searchable_Message_Is_Starred), unread: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Unread), location: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Location), order: Expression<CLong?>(DatabaseConstants.Column_Searchable_Message_Order), hasBody: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Has_Body), decryptionFailed: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Decryption_Failed), encryptionIV: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV), encryptedContent: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content), encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File))
         
         do {
             try self.handleToSQliteDB?.run(self.searchableMessages.create(ifNotExists: true) {
@@ -87,7 +85,6 @@ extension EncryptedSearchIndexService {
                 t.column(self.databaseSchema.unread, defaultValue: false)
                 t.column(self.databaseSchema.location, defaultValue: -1)
                 t.column(self.databaseSchema.order, defaultValue: nil)
-                t.column(self.databaseSchema.refreshBit, defaultValue: false)
                 t.column(self.databaseSchema.hasBody, defaultValue: false)
                 t.column(self.databaseSchema.decryptionFailed, defaultValue: false)
                 t.column(self.databaseSchema.encryptionIV, defaultValue: nil)
@@ -102,7 +99,7 @@ extension EncryptedSearchIndexService {
         //return messages
     }
     
-    func addNewEntryToSearchIndex(messageID:String, time: Int, labelIDs: NSSet, isStarred:Bool, unread:Bool, location:Int, order:Int, refreshBit:Bool, hasBody:Bool, decryptionFailed:Bool, encryptionIV:String, encryptedContent:String, encryptedContentFile:String) -> Int64? {
+    func addNewEntryToSearchIndex(messageID:String, time: Int, labelIDs: NSSet, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:String, encryptedContent:String, encryptedContentFile:String) -> Int64? {
         
         var rowID:Int64? = -1
         var allLabels:String = ""
@@ -116,7 +113,7 @@ extension EncryptedSearchIndexService {
         }
         
         do {
-            let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID, self.databaseSchema.time <- time, self.databaseSchema.labelIDs <- allLabels, self.databaseSchema.isStarred <- isStarred, self.databaseSchema.unread <- unread, self.databaseSchema.location <- location, self.databaseSchema.order <- order, self.databaseSchema.refreshBit <- refreshBit, self.databaseSchema.hasBody <- hasBody, self.databaseSchema.decryptionFailed <- decryptionFailed, self.databaseSchema.encryptionIV <- encryptionIV, self.databaseSchema.encryptedContent <- encryptedContent, self.databaseSchema.encryptedContentFile <- encryptedContentFile)
+            let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID, self.databaseSchema.time <- time, self.databaseSchema.labelIDs <- allLabels, self.databaseSchema.isStarred <- isStarred, self.databaseSchema.unread <- unread, self.databaseSchema.location <- location, self.databaseSchema.order <- order, self.databaseSchema.hasBody <- hasBody, self.databaseSchema.decryptionFailed <- decryptionFailed, self.databaseSchema.encryptionIV <- encryptionIV, self.databaseSchema.encryptedContent <- encryptedContent, self.databaseSchema.encryptedContentFile <- encryptedContentFile)
             rowID = try self.handleToSQliteDB?.run(insert!)
         } catch {
             print("Insert in Table. Unexpected error: \(error).")
