@@ -448,10 +448,13 @@ extension EncryptedSearchService {
             hasBody = false //TODO are there any other case where there is no body?
         }
         
-        let location:Int? = Int(message.messageLocation!.rawValue)
+        //TODO where do I get the message location from?
+        let location: Int = 5
         let time: Int = Int((message.time)!.timeIntervalSince1970)
         
-        let row: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(messageID: message.messageID, time: time, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: location!, order: message.order, refreshBit: false, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: "", encryptedContent: "", encryptedContentFile: "")
+        let order: Int = 0//message.order TODO needs to be filled
+        
+        let row: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(messageID: message.messageID, time: time, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: "", encryptedContent: "", encryptedContentFile: "")
         print("message inserted at row: ", row!)
     }
 
