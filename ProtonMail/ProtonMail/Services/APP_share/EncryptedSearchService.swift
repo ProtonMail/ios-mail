@@ -288,6 +288,7 @@ extension EncryptedSearchService {
             var keyWordsPerEmail: String = ""
             keyWordsPerEmail = self.extractKeywordsFromBody(bodyOfEmail: body!)
             
+            self.addMessageKewordsToSearchIndex(keyWordsPerEmail, m as! Message)
             //for debugging only
             break
         }
@@ -437,6 +438,12 @@ extension EncryptedSearchService {
         }
         
         return result!
+    }
+    
+    func addMessageKewordsToSearchIndex(_ keywordsPerEmail: String,_ message: Message) -> Void {
+        //TODO hasBody, decryption failed, time, labelID, location, order
+        let row: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(messageID: message.messageID, time: 0, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: 0, order: 0, refreshBit: false, hasBody: true, decryptionFailed: false, encryptionIV: "", encryptedContent: "", encryptedContentFile: "")
+        print("message inserted at row: ", row!)
     }
 
     //Encrypted Search
