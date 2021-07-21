@@ -139,11 +139,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
         self.localObjectIndexing.cancel() // switches off indexing of Messages in local db
     }
-    
-    // my selector that was defined above
-    @objc func willEnterForeground() {
-        self.dismiss(animated: false, completion: nil)
-    }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -154,11 +149,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
         super.viewWillAppear(animated)
         self.searchResult = self.searchResult.filter{ $0.managedObjectContext != nil }
         navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
