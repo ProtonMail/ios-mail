@@ -303,6 +303,11 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
+    func updateAttKeyPacket(message: Message, addressID: String) {
+        let objectID = message.objectID.uriRepresentation().absoluteString
+        self.queue(.updateAttKeyPacket(messageObjectID: objectID, addressID: addressID), isConversation: false)
+    }
+    
     typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
     func base64AttachmentData(att: Attachment, _ complete : @escaping base64AttachmentDataComplete) {
         guard let user = self.userDataSource else {
@@ -1684,7 +1689,8 @@ class MessageDataService : Service, HasLocalStorage {
     func defaultAddress(_ message: Message) -> Address? {
         let userInfo = self.userDataSource!.userInfo
         if let addressID = message.addressID, !addressID.isEmpty {
-            if let add = userInfo.userAddresses.address(byID: addressID), add.send.rawValue == 1 {
+            if let add = userInfo.userAddresses.address(byID: addressID),
+               add.send == .active {
                 return add
             } else {
                 if let add = userInfo.userAddresses.defaultSendAddress() {

@@ -290,12 +290,12 @@ class CreateDraft : Request {
         
         if let attachments = self.message.attachments.allObjects as? [Attachment] {
             var atts : [String : String] = [:]
-            for att in attachments {
-                if att.keyChanged {
-                    atts[att.attachmentID] = att.keyPacket
-                }
+            for att in attachments where att.keyChanged {
+                atts[att.attachmentID] = att.keyPacket
             }
-            out["AttachmentKeyPackets"] = atts
+            if !atts.keys.isEmpty {
+                out["AttachmentKeyPackets"] = atts
+            }
         }
         return out
     }

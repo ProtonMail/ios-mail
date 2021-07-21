@@ -121,6 +121,7 @@
                 <entry key="JSONKeyPath" value="ContextNumMessages"/>
             </userInfo>
         </attribute>
+        <attribute name="order" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="size" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ContextSize"/>
@@ -457,10 +458,16 @@
                 <entry key="JSONKeyPath" value="MIMEType"/>
             </userInfo>
         </attribute>
+        <attribute name="nextAddressID" optional="YES" attributeType="String"/>
         <attribute name="numAttachments" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO">
             <userInfo>
                 <entry key="JSONKeyPath" value="NumAttachments"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="order" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Order"/>
             </userInfo>
         </attribute>
         <attribute name="orginalMessageID" optional="YES" attributeType="String"/>
@@ -561,13 +568,13 @@
     <elements>
         <element name="Attachment" positionX="0" positionY="0" width="128" height="224"/>
         <element name="Contact" positionX="0" positionY="0" width="128" height="209"/>
-        <element name="ContextLabel" positionX="0" positionY="0" width="128" height="164"/>
+        <element name="ContextLabel" positionX="0" positionY="0" width="128" height="193"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="209"/>
         <element name="ConversationCount" positionX="0" positionY="0" width="128" height="179"/>
         <element name="Email" positionX="0" positionY="0" width="128" height="179"/>
         <element name="Label" positionX="0" positionY="0" width="128" height="239"/>
         <element name="LabelUpdate" positionX="0" positionY="0" width="128" height="179"/>
-        <element name="Message" positionX="0" positionY="0" width="128" height="614"/>
+        <element name="Message" positionX="0" positionY="0" width="128" height="644"/>
         <element name="UserEvent" positionX="0" positionY="0" width="128" height="74"/>
     </elements>
 </model>

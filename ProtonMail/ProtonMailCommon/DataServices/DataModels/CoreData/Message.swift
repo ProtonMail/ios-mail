@@ -31,6 +31,10 @@ final public class Message: NSManagedObject {
     
     ///"AddressID":"222",
     @NSManaged public var addressID : String?
+    /// Local use, to record the addressID when user change the sender address
+    /// Before executing the updateAttKeyPacket action, this variable keep holding the addressID that should show
+    /// after the action finish and the message.addressID is equal nextAddressID, this variable will be reset to nil
+    @NSManaged public var nextAddressID: String?
     ///"BCCList":[ { "Address":"", "Name":"", "Group": ""} ]
     @NSManaged public var bccList: String
     ///"Body":"-----BEGIN PGP MESSAGE-----.*-----END PGP MESSAGE-----",
