@@ -814,17 +814,6 @@ extension ComposeViewController : ComposeViewDelegate {
     }
     
     private func updateSenderMail(addr: Address) {
-        let atts = self.viewModel.getAttachments() ?? []
-        for att in atts {
-            if att.keyPacket == nil || att.keyPacket == "" {
-                Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self](_) in
-                    guard let _self = self else {return}
-                    _self.updateSenderMail(addr: addr)
-                }
-                return
-            }
-        }
-        
         self.queue.sync {
             self.viewModel.updateAddressID(addr.addressID).catch { (error ) in
                 let alertController = error.localizedDescription.alertController()

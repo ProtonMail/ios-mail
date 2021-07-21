@@ -249,52 +249,25 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func updateAddressID(_ address_id: String) -> Promise<Void> {
-        return Promise { seal in
-            let userinfo = self.user.userInfo
-            guard let addr = userinfo.userAddresses.address(byID: address_id),
-                  let key = addr.keys.first else {
-                throw RuntimeError.no_address.error
+        return Promise { [weak self] seal in
+            guard let message = self?.message else {
+                let error = NSError(domain: "", code: -1,
+                                    localizedDescription: LocalString._error_no_object)
+                seal.reject(error)
+                return
             }
-            
-            for att in self.getAttachments() ?? [] {
-                do {
-                    //TODO: work around to wait attachment upload completed, need a better way
-                    while att.keyPacket == nil || att.keyPacket == "" {
-                        Thread.sleep(forTimeInterval: 1.0)
+            let context = self?.coreDataService.operationContext
+            if let _ = self?.user.userinfo.userAddresses.first(where: { $0.addressID == address_id}) {
+                context?.performAndWait {
+                    if let messageInContext = try? context?.existingObject(with: message.objectID) as? Message {
+                        messageInContext.nextAddressID = address_id
                     }
-                    
-                    guard let sessionPack = self.user.newSchema ?
-                            try att.getSession(userKey: self.user.userPrivateKeys,
-                                               keys: self.user.addressKeys,
-                                               mailboxPassword: self.user.mailboxPassword) :
-                            try att.getSession(keys: self.user.addressPrivateKeys,
-                                               mailboxPassword: self.user.mailboxPassword) else { //DONE
-                        continue
-                    }
-                    guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
-                        continue
-                    }
-                    att.managedObjectContext?.performAndWait {
-                        att.keyPacket = newKeyPack
-                        att.keyChanged = true
-                    }
-                } catch let err as NSError{
-                    Analytics.shared.error(message: .updateAddressIDError, error: err, user: self.user)
-                }
-            }
-            
-            if let context = self.message?.managedObjectContext {
-                context.performAndWait {
-                    self.message?.addressID = address_id
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    }
+                    _ = context?.saveUpstreamIfNeeded()
                 }
             }
 
-            self.updateDraft()
-            
-            seal.resolve(nil)
+            self?.messageService.updateAttKeyPacket(message: message, addressID: address_id)
+            seal.fulfill_()
         }
     }
     
@@ -422,7 +395,11 @@ class ComposeViewModelImpl : ComposeViewModel {
     
     override func getDefaultSendAddress() -> Address? {
         if let msg = self.message {
-            return self.messageService.defaultAddress(msg)
+            var address: Address?
+            if let id = msg.nextAddressID {
+                address = self.user.userInfo.userAddresses.first(where: { $0.addressID == id })
+            }
+            return address ?? self.messageService.defaultAddress(msg)
         } else {
             if let addr = self.user.userInfo.userAddresses.defaultSendAddress() {
                 return addr

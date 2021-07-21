@@ -68,6 +68,8 @@ class MessageActionCodableTests: XCTestCase {
             break
         case .fetchMessageDetail:
             break
+        case .updateAttKeyPacket:
+            break
         // Warning: Newly added cases must be covered in one specific test case below to make sure the codable implementation is complete
         }
         XCTAssert(true, "All cases covered")
@@ -88,6 +90,13 @@ class MessageActionCodableTests: XCTestCase {
 
     func testUploadPubkey() throws {
         let action: MessageAction = .uploadPubkey(attachmentObjectID: "PubKeyAttachment")
+        let encoded = try JSONEncoder().encode(action)
+        let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
+        XCTAssertEqual(action, decoded)
+    }
+    
+    func testUpdate() throws {
+        let action: MessageAction = .updateAttKeyPacket(messageObjectID: "AObjectID", addressID: "AnAddressID")
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)

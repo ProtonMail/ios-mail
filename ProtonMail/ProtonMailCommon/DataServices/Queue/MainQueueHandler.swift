@@ -69,7 +69,7 @@ final class MainQueueHandler: QueueHandler {
             switch action {
             case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .send,
                  .updateLabel, .createLabel, .deleteLabel, .signout, .signin,
-                 .fetchMessageDetail:
+                 .fetchMessageDetail, .updateAttKeyPacket:
                 fatalError()
             case .emptyTrash, .emptySpam:   // keep this as legacy option for 2-3 releases after 1.11.12
                 fatalError()
@@ -98,6 +98,8 @@ final class MainQueueHandler: QueueHandler {
                 self.uploadPubKey(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .deleteAtt(let attachmentObjectID):
                 self.deleteAttachmentWithAttachmentID(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .updateAttKeyPacket(let messageObjectID, let addressID):
+                self.updateAttachmentKeyPacket(messageObjectID: messageObjectID, addressID: addressID, completion: completeHandler)
             case .send(let messageObjectID):
                 messageDataService.send(byID: messageObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
@@ -600,6 +602,79 @@ extension MainQueueHandler {
             let api = DeleteAttachment(attID: att?.attachmentID ?? "0", authCredential: authCredential)
             self.apiService.exec(route: api) { (task, response: Response) in
                 completion!(task, nil, response.error?.toNSError)
+            }
+        }
+    }
+    
+    private func updateAttachmentKeyPacket(messageObjectID: String, addressID: String, completion: CompletionBlock?) {
+        let context = self.coreDataService.operationContext
+        self.coreDataService.enqueue(context: context) { [weak self] (context) in
+            guard let self = self,
+                  let objectID = self.coreDataService
+                    .managedObjectIDForURIRepresentation(messageObjectID) else {
+                // error: while trying to get objectID
+                completion?(nil, nil, NSError.badParameter(messageObjectID))
+                return
+            }
+            
+            guard let user = self.user else {
+                completion?(nil, nil, NSError.userLoggedOut())
+                return
+            }
+
+            do {
+                guard let message = try context
+                        .existingObject(with: objectID) as? Message,
+                      let attachments = message.attachments.allObjects as? [Attachment] else {
+                    // error: object is not a Message
+                    completion?(nil, nil, NSError.badParameter(messageObjectID))
+                    return
+                }
+
+                guard let address = user.userinfo.userAddresses.address(byID: addressID),
+                      let key = address.keys.first else {
+                    completion?(nil, nil, NSError.badParameter("Address ID"))
+                    return
+                }
+
+                for att in attachments where !att.isSoftDeleted && att.attachmentID != "0" {
+                    guard let sessionPack = user.newSchema ?
+                            try att.getSession(userKey: user.userPrivateKeys,
+                                               keys: user.addressKeys,
+                                               mailboxPassword: user.mailboxPassword) :
+                            try att.getSession(keys: user.addressPrivateKeys,
+                                               mailboxPassword: user.mailboxPassword) else { //DONE
+                        continue
+                    }
+                    guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                        continue
+                    }
+                    context.performAndWait {
+                        att.keyPacket = newKeyPack
+                        att.keyChanged = true
+                    }
+                }
+                guard let decryptedBody = try self.messageDataService
+                    .decryptBodyIfNeeded(message: message) else {
+                        // error: object is not a Message
+                        completion?(nil, nil, NSError.badParameter("decrypted body"))
+                        return
+                    }
+                context.performAndWait { [weak self] in
+                    message.addressID = addressID
+                    if message.nextAddressID == addressID {
+                        message.nextAddressID = nil
+                    }
+                    let mailbox_pwd = user.mailboxPassword
+                    self?.messageDataService.encryptBody(message, clearBody: decryptedBody, mailbox_pwd: mailbox_pwd, error: nil)
+                }
+                self.messageDataService.saveDraft(message)
+                completion?(nil, nil, nil)
+            } catch let ex as NSError {
+                // error: context thrown trying to get Message
+                Analytics.shared.error(message: .updateAddressIDError, error: ex, user: self.user)
+                completion?(nil, nil, ex)
+                return
             }
         }
     }

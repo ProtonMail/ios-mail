@@ -69,7 +69,7 @@ final class QueueManager: Service {
             let action = task.action
             switch action {
             case .saveDraft,
-                 .uploadAtt, .uploadPubkey, .deleteAtt,
+                 .uploadAtt, .uploadPubkey, .deleteAtt, .updateAttKeyPacket,
                  .send:
                 let dependencies = self.getMessageTasks(of: task.userID)
                     .filter { $0.messageID == task.messageID }
