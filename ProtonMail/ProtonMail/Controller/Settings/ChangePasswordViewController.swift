@@ -114,11 +114,11 @@ class ChangePasswordViewController: UIViewController {
 
     private func updateView() {
         let screenHeight = view.frame.height
-        let offbox = screenHeight - textFieldPoint
-        if offbox > keyboardHeight {
-            topOffset.constant = 32
+        let keyboardTop = screenHeight - self.keyboardHeight
+        if self.textFieldPoint > keyboardTop {
+            topOffset.constant = keyboardTop - self.textFieldPoint
         } else {
-            topOffset.constant = offbox - keyboardHeight
+            topOffset.constant = 32
         }
     }
 
@@ -253,8 +253,12 @@ extension ChangePasswordViewController: PMTextFieldDelegate {
     }
 
     func didBeginEditing(textField: PMTextField) {
-        let frame = textField.convert(textField.frame, to: self.view)
-        textFieldPoint = frame.origin.y + frame.height + 40
+        textFieldPoint = textField.frame.origin.y + textField.frame.height
+
+        if textField == confirmPasswordEditor {
+            let padding: CGFloat = 24
+            textFieldPoint += ( padding + self.saveButton.frame.height )
+        }
         updateView()
     }
 }
