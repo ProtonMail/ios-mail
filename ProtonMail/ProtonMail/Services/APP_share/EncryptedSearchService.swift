@@ -32,6 +32,12 @@ public class EncryptedSearchService {
     internal var user: UserManager!
     internal var messageService: MessageDataService
     var totalMessages: Int = 0
+    var limitPerRequest: Int = 1
+    var lastMessageTimeIndexed: Int = 0     //stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
+    var processedMessages: Int = 0
+    
+    var isInit: Bool = true
+    var isRefresh: Bool = false
     
     internal var searchIndex: Connection
     //private let conversationStateService: ConversationStateService
@@ -53,82 +59,123 @@ extension EncryptedSearchService {
     func buildSearchIndex() -> Bool {
         //Run code in the background
         DispatchQueue.global(qos: .userInitiated).async {
-            let mailBoxID: String = "5"
-            var messageIDs: NSMutableArray = []
-            var messages: NSMutableArray = []   //Array containing all messages of a user
-            var completeMessages: NSMutableArray = []
-
-            //1. download all messages locally
-            NSLog("Downloading messages locally...")
-            self.fetchMessages(mailBoxID){ids in
-                messageIDs = ids
-                print("# of message ids: ", messageIDs.count)
-
-                NSLog("Downloading message objects...")
-                //2. download message objects
-                self.getMessageObjects(messageIDs){
-                    msgs in
-                    messages = msgs
-                    print("# of message objects: ", messages.count)
-                    
-                    /*for m in messages {
-                        if (m as! Message).isDetailDownloaded {
-                            print("Message details already downloaded for message: ", (m as! Message).messageID)
-                            //print("Body: ", (m as! Message).body)
-                        } else {
-                            print("Message details NOT already downloaded for message: ", (m as! Message).messageID)
-                        }
-                    }*/
-                    
-                    NSLog("Downloading message details...") //if needed
-                    //3. downloads message details
-                    //self.getMessageDetails(messages, messagesToProcess: messages.count){
-                    self.getMessageDetailsIfNotAvailable(messages, messagesToProcess: messages.count){
-                        compMsgs in
-                        completeMessages = compMsgs
-                        
-                        print("complete messages: ", completeMessages.count)
-                        
-                        NSLog("Decrypting messages...")
-                        //4. decrypt messages (using the user's PGP key)
-                        self.decryptBodyAndExtractData(completeMessages)
-                    }
+            NSLog("Check total number of messages on the backend")
+            self.getTotalMessages() {
+                print("Total messages: ", self.totalMessages)
+                
+                //if search index already build, and there are no new messages we can return here
+                if self.isInit == false && self.isRefresh == true {
+                    return
                 }
+                
+                self.downloadAllMessagesAndBuildSearchIndex()
             }
-
-            /*
-
-            print("Finished!")*/
-            //TODOs:
-            //3. extract keywords from message
-            //4. encrypt search index (using local symmetric key)
-            //5. store the keywords index in a local DB(sqlite3)
         }
         DispatchQueue.main.async {
-            // TODO task has completed
-            // Update UI -> progress bar?
+            //next async stuff
         }
         return false
     }
     
-    func fetchMessages(_ mailBoxID: String, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
-        self.messageService.fetchMessages(byLabel: mailBoxID, time: 0, forceClean: false, isUnread: false) { _, result, error in
+    // Checks the total number of messages on the backend
+    func getTotalMessages(completionHandler: @escaping () -> Void) -> Void {
+        self.messageService.fetchMessages(byLabel: Message.Location.allmail.rawValue, time: 0, forceClean: false, isUnread: false) { _, response, error in
             if error == nil {
-                //NSLog("Messages: %@", result!)
-                //print("response: %@", result!)
-                var messageIDs:NSMutableArray = []
-                messageIDs = self.getMessageIDs(result)
-                completionHandler(messageIDs)
+                //print(response)
+                self.totalMessages = response!["Total"] as! Int
+                self.limitPerRequest = response!["Limit"] as! Int
             } else {
-                NSLog(error as! String)
+                NSLog("Error when parsing total # of messages: %@", error!)
             }
-            //NSLog("All messages downloaded")
+            completionHandler()
+        }
+    }
+    
+    // Downloads Messages and builds Search Index
+    func downloadAllMessagesAndBuildSearchIndex() -> Void {
+        var messageIDs: NSMutableArray = []
+        var messages: NSMutableArray = []   //Array containing all messages of a user
+        var completeMessages: NSMutableArray = []
+        
+        //1. download all messages locally
+        NSLog("Downloading messages locally...")
+        self.fetchMessages(Message.Location.allmail.rawValue){ids in
+            messageIDs = ids
+            print("# of message ids: ", messageIDs.count)
+
+            NSLog("Downloading message objects...")
+            //2. download message objects
+            self.getMessageObjects(messageIDs){
+                msgs in
+                messages = msgs
+                print("# of message objects: ", messages.count)
+                
+                NSLog("Downloading message details...") //if needed
+                //3. downloads message details
+                self.getMessageDetailsIfNotAvailable(messages, messagesToProcess: messages.count){
+                    compMsgs in
+                    completeMessages = compMsgs
+                    
+                    print("complete messages: ", completeMessages.count)
+                    
+                    NSLog("Decrypting messages...")
+                    //4. decrypt messages (using the user's PGP key)
+                    self.decryptBodyAndExtractData(completeMessages)
+                }
+            }
+        }
+    }
+    
+    func fetchMessages(_ mailBoxID: String, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
+        var messageIDs:NSMutableArray = []
+        let numberOfFetches:Int = Int(ceil(Double(self.totalMessages)/Double(self.limitPerRequest)))
+        //var count: Int = 0
+        
+        let group = DispatchGroup()
+        //repeat {
+        for _ in 0...numberOfFetches {
+            
+            group.enter()
+            print("enter group")
+
+            //Do not block main queue to avoid deadlock
+            DispatchQueue.global(qos: .default).async {
+                print("Fetching new messages...")
+                print("Running on thread: ", Thread.current)
+                self.messageService.fetchMessages(byLabel: mailBoxID, time: 0, forceClean: false, isUnread: false) { _, result, error in
+                    if error == nil {
+                        //NSLog("Messages: %@", result!)
+                        //print("response: %@", result!)
+                        let msgIDs = self.getMessageIDs(result)
+                        messageIDs.addObjects(from: msgIDs as! [Any])
+                        self.processedMessages += msgIDs.count
+                        print("Processed messages: ", self.processedMessages)
+                    } else {
+                        NSLog(error as! String)
+                    }
+                    //count += 1
+                    print("Finished fetching messages...")
+                    group.leave()
+                }
+            }
+            print("wait until fetching messages is completed...")
+            //print("should be main thread: ", Thread.current.isMainThread)
+            //print("thread?: ", Thread.current)
+            //group.wait()    //wait for fetch to finish until next fetch
+            //print("Should not be executed befor any result is returned")
+        }   //end for
+        //} while count < 5//self.processedMessages < self.totalMessages
+        
+        group.notify(queue: .main) {
+            print("Fetching messages completed!")
+            //return messageIDs once all are here
+            completionHandler(messageIDs)
         }
     }
     
     func getMessageIDs(_ response: [String:Any]?) -> NSMutableArray {
-        self.totalMessages = response!["Total"] as! Int
-        print("Total messages found: ", self.totalMessages)
+        //self.totalMessages = response!["Total"] as! Int
+        //print("Total messages found: ", self.totalMessages)
         let messages:NSArray = response!["Messages"] as! NSArray
         
         let messageIDs:NSMutableArray = []
