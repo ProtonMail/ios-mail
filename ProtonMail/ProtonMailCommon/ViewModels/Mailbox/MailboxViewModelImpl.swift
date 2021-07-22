@@ -48,15 +48,7 @@ final class MailboxViewModelImpl: MailboxViewModel {
     }
 
     override func getSwipeTitle(_ action: MessageSwipeAction) -> String {
-        switch self.label {
-        case .trash, .spam:
-            if action == .trash {
-                return LocalString._general_delete_action
-            }
-            return action.description
-        default:
-            return action.description
-        }
+        action.description
     }
 
     override func isSwipeActionValid(_ action: MessageSwipeAction,
@@ -69,11 +61,11 @@ final class MailboxViewModelImpl: MailboxViewModel {
         case .spam:
             return action != .spam
         case .draft:
-            return action != .spam && action != .trash && action != .archive
+            return action != .spam && action != .archive
         case .sent:
             return action != .spam
         case .trash:
-            return action != .trash
+            return true
         case .allmail:
             return checkIsSwipeActionValidOf(message: message, action: action)
         default:
@@ -117,11 +109,11 @@ final class MailboxViewModelImpl: MailboxViewModel {
         case .spam:
             return action != .spam
         case .draft:
-            return action != .spam && action != .trash && action != .archive
+            return action != .spam && action != .archive
         case .sent:
             return action != .spam
         case .trash:
-            return action != .trash
+            return true
         case .allmail:
             return checkIsSwipeActionValidOf(conversation: conversation, action: action)
         default:
@@ -143,7 +135,7 @@ final class MailboxViewModelImpl: MailboxViewModel {
         case .unstar:
             return conversation.starred
         case .trash:
-            return !conversation.contains(of: Message.Location.trash.rawValue)
+            return true
         case .labelAs:
             return true
         case .moveTo:
@@ -223,13 +215,10 @@ final class MailboxViewModelImpl: MailboxViewModel {
         return self.label == .draft
     }
 
-    override func delete(message: Message) -> (SwipeResponse, UndoMessage?) {
-        switch self.label {
-        case .trash, .spam, .draft:
-            if messageService.delete(messages: [message], label: self.label.rawValue) {
-                return (.showGeneral, nil)
-            }
-        default:
+    override func delete(message: Message) -> (SwipeResponse, UndoMessage?, Bool) {
+        if self.labelId == Message.Location.trash.rawValue {
+            return (.nothing, nil, false)
+        } else {
             if messageService.move(messages: [message],
                                    from: [self.label.rawValue],
                                    to: Message.Location.trash.rawValue) {
@@ -237,10 +226,9 @@ final class MailboxViewModelImpl: MailboxViewModel {
                         UndoMessage(msgID: message.messageID,
                                     origLabels: self.label.rawValue,
                                     origHasStar: message.starred,
-                                    newLabels: Message.Location.trash.rawValue))
+                                    newLabels: Message.Location.trash.rawValue), true)
             }
         }
-
-        return (.nothing, nil)
+        return (.nothing, nil, false)
     }
 }
