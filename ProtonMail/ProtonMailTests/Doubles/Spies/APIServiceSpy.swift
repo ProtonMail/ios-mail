@@ -14,7 +14,7 @@ class APIServiceSpy: APIService {
     var authDelegate: AuthDelegate?
     var humanDelegate: HumanVerifyDelegate?
 
-    var doh: DoH {
+    var doh: DoH & ServerConfig {
         get { fatalError() }
         set {  }
     }

@@ -4,20 +4,20 @@
 //
 //  Copyright (c) 2021 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 import ProtonCore_Payments
@@ -32,7 +32,7 @@ final class PaymentsUICoordinator {
     private var mode: PaymentsUIMode = .signup
     private var completionHandler: ((PaymentsUIResultReason) -> Void)?
     private var viewModel: PaymentsUIViewModelViewModel?
-    private let paymentsManager: PaymentsManager
+    private let paymentsManager = PaymentsManager()
     
     private var processingAccountPlan: AccountPlan? {
         didSet {
@@ -44,9 +44,8 @@ final class PaymentsUICoordinator {
     
     var paymentsUIViewController: PaymentsUIViewController?
     
-    init(planTypes: PlanTypes, appStoreLocalReceipt: String? = nil) {
+    init(planTypes: PlanTypes) {
         self.planTypes = planTypes
-        paymentsManager = PaymentsManager(appStoreLocalReceipt: appStoreLocalReceipt)
     }
     
     func start(viewController: UIViewController?, servicePlan: ServicePlanDataService, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
@@ -69,7 +68,7 @@ final class PaymentsUICoordinator {
         let paymentsUIViewController = UIStoryboard.instantiate(PaymentsUIViewController.self)
         paymentsUIViewController.delegate = self
         
-        self.viewModel = PaymentsUIViewModelViewModel(servicePlan: servicePlan, planTypes: planTypes, planRefreshHandler: {
+        self.viewModel = PaymentsUIViewModelViewModel(mode: mode, servicePlan: servicePlan, planTypes: planTypes, planRefreshHandler: {
             DispatchQueue.main.async {
                 self.paymentsUIViewController?.reloadData()
             }
@@ -81,7 +80,7 @@ final class PaymentsUICoordinator {
             showPlanViewController(paymentsViewController: paymentsUIViewController)
         }
         
-        paymentsUIViewController.model?.fatchPlans(mode: mode, backendFetch: backendFetch) { result in
+        paymentsUIViewController.model?.fatchPlans(backendFetch: backendFetch) { result in
             switch result {
             case .success:
                 self.processingAccountPlan = self.paymentsManager.unfinishedPurchasePlan
@@ -128,7 +127,7 @@ final class PaymentsUICoordinator {
     private func showError(error: Error) {
         if let error = error as? StoreKitManager.Errors {
             // ignore payment cancellation error
-            if error == .cancelled { return }
+            if error == .cancelled || error == .unknown { return }
             self.showError(message: error.localizedDescription)
         } else if let error = error as? ResponseError {
             self.showError(message: error.localizedDescription)

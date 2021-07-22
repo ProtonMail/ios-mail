@@ -99,6 +99,10 @@ extension AppDelegate: UserDataServiceDelegate {
 }
 
 extension AppDelegate: APIServiceDelegate {
+    var locale: String {
+        return LanguageManager.currentLanguageCode()
+    }
+
     func isReachable() -> Bool {
         #if !APP_EXTENSION
         return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable

@@ -1,24 +1,23 @@
 //
 //  Keymaker.swift
-//  ProtonMail - Created on 13/10/2018.
-//
+//  ProtonCore-ProtonCore-Keymaker - Created on 13/10/2018.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import EllipticCurveKeyPair
@@ -153,6 +152,19 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         self._mainKey = nil
     }
     
+    /// Assigns in-memory decrypted MainKey value, typically obtained externally, skipping all obtaination flows.
+    /// Does not check correctness of MainKey, does not send any notifications or messages.
+    /// **Important: use only for cross-process transfers of MainKey.**
+    ///
+    /// *Usecase example:*
+    /// ProtonDrive File Provider appex has two processes - FileProvider runs in the background and performs operations on files, and FileProviderUI is able to present UI but can not perform operations.
+    /// When the app has significant protections enabled, we would present FileProviderUI and user will obtain MainKey by usual flow.
+    /// Then MainKey needs to be transferred to FileProvider process (solved by Drive team) and needs to be injected into its Keymaker instance (by means of ``GenericKeymaker/forceInjectMainKey(_:)``).
+    ///
+    public func forceInjectMainKey(_ potentialMainKey: MainKey) {
+        self._mainKey = potentialMainKey
+    }
+    
     public func obtainMainKey(with protector: ProtectionStrategy,
                               handler: @escaping (MainKey?) -> Void)
     {
@@ -205,7 +217,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         let isMainThread = Thread.current.isMainThread
         self.controlThread.addOperation {
             guard let mainKey = self.mainKey,
-                  let _ = try? protector.lock(value: mainKey) else
+                  (try? protector.lock(value: mainKey)) != nil else
             {
                 isMainThread ? DispatchQueue.main.async{ completion(false) } : completion(false)
                 return

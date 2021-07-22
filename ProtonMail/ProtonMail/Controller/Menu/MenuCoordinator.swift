@@ -54,6 +54,10 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     var pendingActionAfterDismissal: (() -> Void)?
     private var storefrontCoordinator: StorefrontCoordinator?
 
+    private var storeKitManager: StoreKitManagerImpl {
+        services.get(by: StoreKitManagerImpl.self)
+    }
+
     // todo: that would be better if vc is protocol
     init(services: ServiceFactory,
          vmService: ViewModelService,
@@ -229,8 +233,17 @@ extension MenuCoordinator {
         if let link = notification.object as? DeepLink {
             self.follow(link)
         } else {
+            presentInitialPage()
+        }
+    }
+
+    private func presentInitialPage() {
+        if storeKitManager.shouldShowReportBugPage {
+            navigateToBugReport()
+            storeKitManager.shouldShowReportBugPage = false
+        } else {
             let label = MenuLabel(location: .inbox)
-            self.navigateToMailBox(labelInfo: label, deepLink: nil)
+            navigateToMailBox(labelInfo: label, deepLink: nil)
         }
     }
     
@@ -302,7 +315,7 @@ extension MenuCoordinator {
     private func navigateToSubscribe() {
         guard let user = self.usersManager.firstUser,
               let sideMenuViewController = viewController?.sideMenuController else { return }
-        let paymentsUI = PaymentsUI(servicePlanDataService: user.sevicePlanService)
+        let paymentsUI = PaymentsUI(servicePlanDataService: user.sevicePlanService, planTypes: .mail)
         let coordinator = StorefrontCoordinator(
             paymentsUI: paymentsUI,
             sideMenu: sideMenuViewController,
@@ -354,6 +367,7 @@ extension MenuCoordinator {
             return
         }
         vc.user = user
+        vm.highlight(label: MenuLabel(location: .bugs))
         self.setupContentVC(destination: navigation)
     }
     

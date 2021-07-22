@@ -4,24 +4,28 @@
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-//
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import Crypto
+
+enum Either<Left, Right> {
+    case left(Left)
+    case right(Right)
+}
 
 public typealias KeyRing             = CryptoKeyRing
 public typealias SplitMessage        = CryptoPGPSplitMessage
@@ -379,8 +383,16 @@ public class Crypto {
         }
         return nil
     }
-    
+
     public func encrypt(plainText: String, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
+        try encrypt(input: .left(plainText), privateKey: signerPrivateKey, passphrase: passphrase)
+    }
+    
+    public func encrypt(plainData: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
+        try encrypt(input: .right(plainData), privateKey: signerPrivateKey, passphrase: passphrase)
+    }
+
+    private func encrypt(input: Either<String, Data>, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
         var error: NSError?
         let privateKey = CryptoNewKeyFromArmored(signerPrivateKey, &error)
         if let err = error {
@@ -400,8 +412,13 @@ public class Crypto {
         if let err = error {
             throw err
         }
-        
-        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        let plainMessage: CryptoPlainMessage?
+        switch input {
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
+        }
+
+        plainMessage?.textType = true
         let signerKeyRing = CryptoNewKeyRing(unlockedKey, &error)
         if let err = error {
             throw err
@@ -415,8 +432,16 @@ public class Crypto {
         
         return armoredMessage
     }
-    
+
     public func encrypt(plainText: String, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String? {
+        try encrypt(input: .left(plainText), publicKey: publicKey, privateKey: signerPrivateKey, passphrase: passphrase)
+    }
+    
+    public func encrypt(plainData: Data, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String? {
+        try encrypt(input: .right(plainData), publicKey: publicKey, privateKey: signerPrivateKey, passphrase: passphrase    )
+    }
+
+    private func encrypt(input: Either<String, Data>, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String? {
         var error: NSError?
         let newKey = CryptoNewKeyFromArmored(publicKey, &error)
         if let err = error {
@@ -432,7 +457,11 @@ public class Crypto {
             throw err
         }
         
-        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        let plainMessage: CryptoPlainMessage?
+        switch input {
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
+        }
         
         var signerKeyRing: KeyRing?
         if !signerPrivateKey.isEmpty {
@@ -460,6 +489,14 @@ public class Crypto {
     }
     
     public func encrypt(plainText: String, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
+        try encrypt(input: .left(plainText), publicKey: binKey, privateKey: signerPrivateKey, passphrase: passphrase)
+    }
+
+    public func encrypt(plainData: Data, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
+        try encrypt(input: .right(plainData), publicKey: binKey, privateKey: signerPrivateKey, passphrase: passphrase)
+    }
+
+    private func encrypt(input: Either<String, Data>, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
         var error: NSError?
         
         let newKey = CryptoNewKey(binKey.mutable as Data, &error)
@@ -476,7 +513,11 @@ public class Crypto {
             throw err
         }
         
-        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        let plainMessage: CryptoPlainMessage?
+        switch input {
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
+        }
         
         var signerKeyRing: KeyRing?
         if !signerPrivateKey.isEmpty {
@@ -504,6 +545,14 @@ public class Crypto {
     }
     
     public func encrypt(plainText: String, publicKey binKey: Data) throws -> String? {
+        try encrypt(input: .left(plainText), publicKey: binKey)
+    }
+
+    public func encrypt(plainData: Data, publicKey binKey: Data) throws -> String? {
+        try encrypt(input: .right(plainData), publicKey: binKey)
+    }
+
+    private func encrypt(input: Either<String, Data>, publicKey binKey: Data) throws -> String? {
         var error: NSError?
         
         let newKey = CryptoNewKey(binKey.mutable as Data, &error)
@@ -520,7 +569,11 @@ public class Crypto {
             throw err
         }
         
-        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        let plainMessage: CryptoPlainMessage?
+        switch input {
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
+        }
         
         let cryptedMessage = try publicKeyRing?.encrypt(plainMessage, privateKey: nil)
         let armoredMessage = cryptedMessage?.getArmored(&error)
@@ -533,10 +586,23 @@ public class Crypto {
     
     // MARK: - encrypt with password
     public func encrypt(plainText: String, token: String) throws -> String? {
-        let plainTextMessage = CryptoNewPlainMessageFromString(plainText)
+        try encrypt(input: .left(plainText), token: token)
+    }
+
+    // MARK: - encrypt with password
+    public func encrypt(plainData: Data, token: String) throws -> String? {
+        try encrypt(input: .right(plainData), token: token)
+    }
+
+    private func encrypt(input: Either<String, Data>, token: String) throws -> String? {
+        let plainMessage: CryptoPlainMessage?
+        switch input {
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
+        }
         let tokenBytes = token.data(using: .utf8)
         var error: NSError?
-        let encryptedMessage = CryptoEncryptMessageWithPassword(plainTextMessage, tokenBytes, &error)
+        let encryptedMessage = CryptoEncryptMessageWithPassword(plainMessage, tokenBytes, &error)
         if let err = error {
             throw err
         }
@@ -716,8 +782,8 @@ public class Crypto {
         
         return signature
     }
-    
-    public func signDetached(plainData: String, privateKey: String, passphrase: String) throws -> String {
+
+    public func signDetached(plainText: String, privateKey: String, passphrase: String) throws -> String {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
@@ -731,7 +797,7 @@ public class Crypto {
             throw err
         }
         
-        let plainMessage = CryptoNewPlainMessageFromString(plainData)
+        let plainMessage = CryptoNewPlainMessageFromString(plainText)
         let pgpSignature = try keyRing!.signDetached(plainMessage)
         let signature = pgpSignature.getArmored(&error)
         if let err = error {
@@ -740,34 +806,16 @@ public class Crypto {
         
         return signature
     }
-    
-    public func verifyDetached(signature: String, plainData: Data, publicKey: String, verifyTime: Int64) throws -> Bool {
-        var error: NSError?
-        let key = CryptoNewKeyFromArmored(publicKey, &error)
-        if let err = error {
-            throw err
-        }
-        
-        let publicKeyRing = CryptoNewKeyRing(key, &error)
-        if let err = error {
-            throw err
-        }
-        
-        let plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
-        let signature = CryptoNewPGPSignatureFromArmored(signature, &error)
-        if let err = error {
-            throw err
-        }
-        
-        do {
-            try publicKeyRing?.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
-            return true
-        } catch {
-            return false
-        }
-    }
-    
+
     public func verifyDetached(signature: String, plainText: String, publicKey: String, verifyTime: Int64) throws -> Bool {
+        try verifyDetached(signature: signature, input: .left(plainText), publicKey: publicKey, verifyTime: verifyTime)
+    }
+
+    public func verifyDetached(signature: String, plainData: Data, publicKey: String, verifyTime: Int64) throws -> Bool {
+        try verifyDetached(signature: signature, input: .right(plainData), publicKey: publicKey, verifyTime: verifyTime)
+    }
+
+    private func verifyDetached(signature: String, input: Either<String, Data>, publicKey: String, verifyTime: Int64) throws -> Bool {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(publicKey, &error)
         if let err = error {
@@ -778,8 +826,13 @@ public class Crypto {
         if let err = error {
             throw err
         }
-        
-        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+
+        let plainMessage: CryptoPlainMessage?
+        switch input {
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
+        }
+
         let signature = CryptoNewPGPSignatureFromArmored(signature, &error)
         if let err = error {
             throw err

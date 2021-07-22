@@ -1,23 +1,23 @@
 //
 //  PMLogin.swift
-//  PMLogin - Created on 12/11/2020.
+//  ProtonCore-Login - Created on 12/11/2020.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_Doh
@@ -32,7 +32,6 @@ public protocol LoginInterface {
                           completion: @escaping (LoginResult) -> Void)
 
     func presentSignupFlow(over viewController: UIViewController,
-                           receipt: String?,
                            completion: @escaping (LoginResult) -> Void)
 
     func presentMailboxPasswordFlow(over viewController: UIViewController,
@@ -73,7 +72,7 @@ public class PMLogin: LoginInterface {
     private var mailboxPasswordCompletion: ((String) -> Void)?
     
     public init(appName: String,
-                doh: DoH,
+                doh: DoH & ServerConfig,
                 apiServiceDelegate: APIServiceDelegate,
                 forceUpgradeDelegate: ForceUpgradeDelegate,
                 minimumAccountType: AccountType,
@@ -98,11 +97,11 @@ public class PMLogin: LoginInterface {
         presentLogin(over: viewController, username: username, welcomeScreen: nil, completion: completion)
     }
 
-    public func presentSignupFlow(over viewController: UIViewController, receipt: String? = nil, completion: @escaping (LoginResult) -> Void) {
+    public func presentSignupFlow(over viewController: UIViewController, completion: @escaping (LoginResult) -> Void) {
         self.viewController = viewController
         self.loginCompletion = completion
 
-        presentSignup(.over(viewController, .coverVertical), receipt: receipt, completion: completion)
+        presentSignup(.over(viewController, .coverVertical), completion: completion)
     }
     
     public func presentMailboxPasswordFlow(over viewController: UIViewController, completion: @escaping (String) -> Void) {
@@ -141,15 +140,12 @@ public class PMLogin: LoginInterface {
         }
     }
 
-    private func presentSignup(_ start: FlowStartKind,
-                               receipt: String?,
-                               completion: @escaping (LoginResult) -> Void) {
+    private func presentSignup(_ start: FlowStartKind, completion: @escaping (LoginResult) -> Void) {
         signupCoordinator = SignupCoordinator(container: container,
                                               signupMode: signupMode,
                                               signupPasswordRestrictions: signupPasswordRestrictions,
                                               isCloseButton: isCloseButtonAvailable,
-                                              isPlanSelectorAvailable: isPlanSelectorAvailable,
-                                              receipt: receipt)
+                                              isPlanSelectorAvailable: isPlanSelectorAvailable)
         signupCoordinator?.delegate = self
         signupCoordinator?.start(kind: start)
     }
@@ -166,8 +162,7 @@ extension PMLogin: LoginCoordinatorDelegate {
 
     func userSelectedSignup(navigationController: LoginNavigationViewController) {
         guard let loginCompletion = loginCompletion else { return }
-        // TODO: update receipt when BE know what solution is best
-        presentSignup(.inside(navigationController), receipt: nil, completion: loginCompletion)
+        presentSignup(.inside(navigationController), completion: loginCompletion)
     }
 }
 

@@ -1,26 +1,23 @@
 //
 //  Route.swift
-//  Pods
-//
-//  Created by on 5/22/20.
-//
+//  ProtonCore-Networking - Created on 5/22/20.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 // swiftlint:disable identifier_name
 
@@ -70,18 +67,6 @@ public protocol Request: Package {
     var autoRetry: Bool { get }
 }
 
-// open class DefaultRequest : Request {
-//     public var path: String = ""
-//    
-//     public var auth: AuthCredential?
-//    
-//     public var authCredential: AuthCredential? {
-//         get {
-//             return self.auth
-//         }
-//     }
-// }
-
 extension Request {
     public var isAuth: Bool {
         return true
@@ -114,19 +99,3 @@ public extension Request {
         return v_default
     }
 }
-
-// public protocol Router: URLRequestConvertible {
-//    
-//    var path: String { get }
-//    var version: String { get }
-//    var method: HTTPMethod { get }
-//    var header: [String: String]? { get }
-//    var parameters: [String: Any]? { get }
-//    
-//    var authenticatedHeader: [String: String]? { get }
-//    var nonAuthenticatedHeader: [String: String]? { get }
-//    
-//    var parameterEncoding: ParameterEncoding { get }
-//    
-//    func asURLRequest() throws -> URLRequest
-// }

@@ -1,24 +1,23 @@
 //
 //  Localization.swift
-//  PMCoreTranslation - Created on 07.11.2020
-//
+//  ProtonCore-CoreTranslation - Created on 07.11.2020
 //
 //  Copyright (c) 2020 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 // swiftlint:disable line_length identifier_name
 
@@ -323,8 +322,6 @@ public class LocalizedString {
     public lazy var _retry = NSLocalizedString("Retry", bundle: Common.bundle, comment: "Button in some alerts")
 
     public lazy var _error_apply_payment_on_registration_support = NSLocalizedString("Contact customer support", bundle: Common.bundle, comment: "Error applying credit after registration alert")
-
-    public lazy var _error_unknown_title = NSLocalizedString("Unknown error", bundle: Common.bundle, comment: "General title for several error alerts")
 
     /// Errors
     public lazy var _error_unavailable_product = NSLocalizedString("Failed to get list of available products from AppStore.", bundle: Common.bundle, comment: "Error message")

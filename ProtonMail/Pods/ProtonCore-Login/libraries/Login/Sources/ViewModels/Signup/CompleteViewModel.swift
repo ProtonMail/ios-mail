@@ -1,23 +1,23 @@
 //
 //  CompleteViewModel.swift
-//  PMLogin - Created on 11/03/2021.
+//  ProtonCore-Login - Created on 11/03/2021.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
@@ -33,16 +33,28 @@ class CompleteViewModel {
     }
 
     func createNewUser(userName: String, password: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(LoginData), Error>) -> Void) throws {
-        try? signupService.createNewUser(userName: userName, password: password, deviceToken: self.deviceToken, email: email, phoneNumber: phoneNumber) { result in
-            switch result {
-            case .success:
-                self.login(name: userName, password: password, completion: completion)
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    completion(.failure(error))
+            loginService.checkAvailability(username: userName) { result in
+                switch result {
+                case .success:
+                    try? self.signupService.createNewUser(userName: userName, password: password, deviceToken: self.deviceToken, email: email, phoneNumber: phoneNumber) { result in
+                        switch result {
+                        case .success:
+                            self.login(name: userName, password: password, completion: completion)
+                        case .failure(let error):
+                            DispatchQueue.main.async {
+                                completion(.failure(error))
+                            }
+                        }
+                    }
+                case .failure(let error):
+                    switch error {
+                    case .notAvailable:
+                        self.login(name: userName, password: password, completion: completion)
+                    case .generic:
+                        completion(.failure(error))
+                    }
                 }
             }
-        }
     }
 
     func createNewExternalUser(email: String, password: String, verifyToken: String, completion: @escaping (Result<(LoginData), Error>) -> Void) throws {

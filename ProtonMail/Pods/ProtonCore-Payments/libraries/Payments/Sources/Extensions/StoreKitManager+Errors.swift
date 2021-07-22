@@ -1,24 +1,23 @@
 //
 //  StoreKitManager+Errors.swift
-//  PMPayments - Created on 2/12/20.
-//
+//  ProtonCore-Payments - Created on 2/12/20.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_CoreTranslation
@@ -38,6 +37,7 @@ extension StoreKitManager {
         case creditsApplied
         case wrongTokenStatus(PaymentToken.Status)
         case cancelled
+        case unknown
         case appIsLocked                            // (mail only)
         case pleaseSignIn                           // (mail only)
 
@@ -56,7 +56,7 @@ extension StoreKitManager {
             case .pleaseSignIn: return CoreString._error_please_sign_in_iap
             case .creditsApplied: return CoreString._error_credits_applied
             case .wrongTokenStatus: return CoreString._error_wrong_token_status
-            case .cancelled: return nil
+            case .cancelled, .unknown: return nil
             }
         }
     }

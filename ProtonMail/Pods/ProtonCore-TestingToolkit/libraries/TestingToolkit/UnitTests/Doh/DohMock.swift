@@ -1,3 +1,24 @@
+//
+//  DohMock.swift
+//  ProtonCore-TestingToolkit - Created on 03.06.2021.
+//
+//  Copyright (c) 2021 Proton Technologies AG
+//
+//  This file is part of Proton Technologies AG and ProtonCore.
+//
+//  ProtonCore is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  ProtonCore is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
+
 import XCTest
 import ProtonCore_Doh
 
@@ -9,7 +30,7 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     public var apiHost: String { apiHostStub() }
 
     @PropertyStub(\DohInterfaceMock.blockList, initialGet: .crash) public var blockListStub
-    public var blockList: [String : Int] { blockListStub() }
+    public var blockList: [String: Int] { blockListStub() }
 
     @PropertyStub(\DohInterfaceMock.captchaHost, initialGet: .crash) public var captchaHostStub
     public var captchaHost: String { captchaHostStub() }
@@ -21,7 +42,7 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     public func codeCheck(code: Int) -> Bool { codeCheckStub(code) }
 
     @PropertyStub(\DohInterfaceMock.debugBlock, initialGet: .crash) public var debugBlockStub
-    public var debugBlock: [String : Bool] { debugBlockStub() }
+    public var debugBlock: [String: Bool] { debugBlockStub() }
 
     @PropertyStub(\DohInterfaceMock.debugMode, initialGet: .crash) public var debugModeStub
     public var debugMode: Bool { debugModeStub() }
@@ -54,7 +75,7 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
 
 public final class DohMock: DoH, ServerConfig {
 
-    public override init() throws {}
+    override public init() throws {}
 
     @PropertyStub(\DohInterfaceMock.defaultHost, initialGet: Dummy.url) public var defaultHostStub
     public var defaultHost: String { defaultHostStub() }
