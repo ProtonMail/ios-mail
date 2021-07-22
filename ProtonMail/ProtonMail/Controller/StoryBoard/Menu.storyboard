@@ -871,7 +871,6 @@
                         <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="f3k-3A-WEA"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="zIE-XJ-wkG"/>
                         <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewControllerFromNotification" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="hZj-FM-cPb"/>
-                        <segue destination="49o-KF-b5x" kind="presentation" identifier="to_onboarding_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="2RB-hE-91p"/>
                         <segue destination="Qwy-GJ-vAH" kind="presentation" identifier="toHumanCheckView" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="dts-X9-0aN"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="XIN-Jt-JzU"/>
                         <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="pageSheet" id="dh2-Js-yHz"/>
@@ -1469,119 +1468,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iFf-Kh-A8Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2861" y="1519"/>
-        </scene>
-        <!--Onboarding View Controller-->
-        <scene sceneID="nyg-Wk-JgE">
-            <objects>
-                <viewController modalTransitionStyle="crossDissolve" id="49o-KF-b5x" customClass="OnboardingViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="N6U-lc-OEn"/>
-                        <viewControllerLayoutGuide type="bottom" id="8ib-9c-KcH"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="vpJ-dr-6fj">
-                        <rect key="frame" x="0.0" y="0.0" width="704" height="984"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="popup_behind_image" translatesAutoresizingMaskIntoConstraints="NO" id="Amg-8j-09a">
-                                <rect key="frame" x="0.0" y="0.0" width="704" height="984"/>
-                            </imageView>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0H5-fc-aM9">
-                                <rect key="frame" x="20" y="20" width="664" height="944"/>
-                                <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3hZ-Xv-exa">
-                                        <rect key="frame" x="0.0" y="44" width="664" height="900"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="49o-KF-b5x" id="mYz-EI-XZG"/>
-                                        </connections>
-                                    </scrollView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbd-TF-Dbk">
-                                        <rect key="frame" x="544" y="0.0" width="120" height="44"/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="closeTour"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="22r-xu-Gso"/>
-                                            <constraint firstAttribute="height" constant="44" id="ho9-so-e99"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
-                                        <state key="normal" title="close tour ">
-                                            <color key="titleColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="closeAction:" destination="49o-KF-b5x" eventType="touchUpInside" id="92U-oI-YQZ"/>
-                                        </connections>
-                                    </button>
-                                    <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="clb-GX-hIC">
-                                        <rect key="frame" x="0.0" y="936" width="664" height="0.0"/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="pageIndicatorTintColor" red="0.81176470590000005" green="0.81176470590000005" blue="0.81176470590000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="currentPageIndicatorTintColor" red="0.52929306030273438" green="0.52396804094314575" blue="0.67762881517410278" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </pageControl>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cIe-rh-Wq5">
-                                        <rect key="frame" x="232" y="874" width="200" height="42"/>
-                                        <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="42" id="SVQ-Js-ckc"/>
-                                            <constraint firstAttribute="width" constant="200" id="nuL-0e-LYF"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <state key="normal" title="Support ProtonMail">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="6"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="learnMoreAction:" destination="49o-KF-b5x" eventType="touchUpInside" id="AZB-vH-7L1"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <accessibility key="accessibilityConfiguration" identifier="onboardingView"/>
-                                <constraints>
-                                    <constraint firstItem="3hZ-Xv-exa" firstAttribute="leading" secondItem="0H5-fc-aM9" secondAttribute="leading" id="7lS-Zu-dWw"/>
-                                    <constraint firstAttribute="trailing" secondItem="clb-GX-hIC" secondAttribute="trailing" id="DO2-EL-Pud"/>
-                                    <constraint firstAttribute="trailing" secondItem="3hZ-Xv-exa" secondAttribute="trailing" id="K4z-Ok-YL1"/>
-                                    <constraint firstAttribute="trailing" secondItem="qbd-TF-Dbk" secondAttribute="trailing" id="Lr2-l6-bPq"/>
-                                    <constraint firstItem="clb-GX-hIC" firstAttribute="leading" secondItem="0H5-fc-aM9" secondAttribute="leading" id="NOU-2N-Pmc"/>
-                                    <constraint firstAttribute="bottom" secondItem="cIe-rh-Wq5" secondAttribute="bottom" constant="28" id="TnX-Or-y8G"/>
-                                    <constraint firstAttribute="centerX" secondItem="cIe-rh-Wq5" secondAttribute="centerX" id="Vru-3W-1Bt"/>
-                                    <constraint firstItem="qbd-TF-Dbk" firstAttribute="top" secondItem="0H5-fc-aM9" secondAttribute="top" id="poQ-ry-SmC"/>
-                                    <constraint firstAttribute="bottom" secondItem="clb-GX-hIC" secondAttribute="bottom" constant="8" id="q6u-Pl-wfP"/>
-                                    <constraint firstAttribute="bottom" secondItem="3hZ-Xv-exa" secondAttribute="bottom" id="qph-r3-pen"/>
-                                    <constraint firstItem="3hZ-Xv-exa" firstAttribute="top" secondItem="qbd-TF-Dbk" secondAttribute="bottom" id="zpG-Ma-hJp"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="Amg-8j-09a" firstAttribute="top" secondItem="vpJ-dr-6fj" secondAttribute="top" id="0G9-8T-WlA"/>
-                            <constraint firstAttribute="trailing" secondItem="Amg-8j-09a" secondAttribute="trailing" id="6rD-sS-Mhu"/>
-                            <constraint firstItem="8ib-9c-KcH" firstAttribute="top" secondItem="0H5-fc-aM9" secondAttribute="bottom" constant="20" id="ADy-Uc-EsE"/>
-                            <constraint firstAttribute="bottom" secondItem="Amg-8j-09a" secondAttribute="bottom" id="FxK-Kr-P1S"/>
-                            <constraint firstAttribute="trailing" secondItem="0H5-fc-aM9" secondAttribute="trailing" constant="20" id="Gpx-jQ-SZt"/>
-                            <constraint firstAttribute="centerX" secondItem="0H5-fc-aM9" secondAttribute="centerX" id="OqW-Qb-wg8"/>
-                            <constraint firstItem="0H5-fc-aM9" firstAttribute="leading" secondItem="vpJ-dr-6fj" secondAttribute="leading" constant="20" id="SjR-Dd-Pqa"/>
-                            <constraint firstItem="Amg-8j-09a" firstAttribute="leading" secondItem="vpJ-dr-6fj" secondAttribute="leading" id="m6p-Bw-DL9"/>
-                            <constraint firstItem="0H5-fc-aM9" firstAttribute="top" secondItem="N6U-lc-OEn" secondAttribute="bottom" constant="20" id="x08-60-y9W"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="FuR-k7-Yd0"/>
-                    <connections>
-                        <outlet property="closeButton" destination="qbd-TF-Dbk" id="xjW-wb-sJq"/>
-                        <outlet property="contentScrollView" destination="3hZ-Xv-exa" id="ZcJ-QA-AED"/>
-                        <outlet property="contentView" destination="0H5-fc-aM9" id="hYg-NN-cbm"/>
-                        <outlet property="learnmoreButton" destination="cIe-rh-Wq5" id="5wo-RK-Jov"/>
-                        <outlet property="pageControlView" destination="clb-GX-hIC" id="des-UY-ZKR"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="M3v-xg-4es" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2861" y="803"/>
         </scene>
         <!--Mailbox Captcha View Controller-->
         <scene sceneID="Zws-bg-wS4">

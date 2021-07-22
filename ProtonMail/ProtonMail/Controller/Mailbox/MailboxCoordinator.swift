@@ -226,7 +226,11 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case .newFolder:
             self.presentCreateFolder(type: .folder)
         case .newLabel:
-            self.presentCreateFolder(type: .label)
+            presentCreateFolder(type: .label)
+        case .onboarding:
+            let vc = OnboardViewController()
+            vc.modalPresentationStyle = .fullScreen
+            self.viewController?.present(vc, animated: true, completion: nil)
         default:
             guard let viewController = self.viewController else { return }
             if let presented = viewController.presentedViewController {

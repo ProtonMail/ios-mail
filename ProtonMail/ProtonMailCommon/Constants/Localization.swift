@@ -880,39 +880,25 @@ class LocalizedString {
     /// "close tour"
     lazy var _close_tour = NSLocalizedString("close tour", comment: "Action")
 
-    /// "Support ProtonMail"
-    lazy var _support_protonmail = NSLocalizedString("Support ProtonMail", comment: "Action")
-
 
     // Mark : Onboarding
+    lazy var _easily_up_to_date = NSLocalizedString("Easily up-to-date", comment: "Onboarding title")
 
-    /// "Your new encrypted email account has been set up and is ready to send and receive encrypted messages."
-    lazy var _your_new_account_is_ready_to_send_and_receive_encrypted_messages = NSLocalizedString("Your new encrypted email account has been set up and is ready to send and receive encrypted messages.", comment: "Description")
-    /// "You can customize swipe gestures in the ProtonMail App Settings."
-    lazy var _you_can_customize_swipe_in_app_settings = NSLocalizedString("You can customize swipe gestures in the ProtonMail App Settings.", comment: "Description")
-    /// "Create and add Labels to organize your inbox. Long press on a message for all options."
-    lazy var _create_and_add_labels_to_organize_inbox_and_hold_down_on_a_message_for_all_options = NSLocalizedString("Create and add Labels to organize your inbox. Long press on a message for all options.", comment: "Description")
-    /// "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail."
-    lazy var _your_inbox_is_now_protected_with_e2e_you_can_also_do_eo = NSLocalizedString("Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.", comment: "Description")
-    /// "Messages you send can be set to auto delete after a certain time period."
-    lazy var _messages_you_send_can_be_set_to_auto_delete_after_a_certain_time_period = NSLocalizedString("Messages you send can be set to auto delete after a certain time period.", comment: "Description")
-    /// "You can get help and support at protonmail.com/support. Bugs can also be reported with the app."
-    lazy var _you_can_get_help_and_support_at_protonmail_support_and_bugs = NSLocalizedString("You can get help and support at protonmail.com/support. Bugs can also be reported with the app.", comment: "Description")
-    /// "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail."
-    lazy var _protonmail_doesnt_sell_ads_or_abuse_your_privacy = NSLocalizedString("ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.", comment: "Description")
-    /// "Welcome to ProtonMail!"
-    lazy var _welcome_to_protonmail = NSLocalizedString("Welcome to ProtonMail!", comment: "Title")
-    /// "Quick swipe actions"
-    lazy var _quick_swipe_actions = NSLocalizedString("Quick swipe actions", comment: "Title")
-    /// "Label Management"
-    lazy var _label_management = NSLocalizedString("Label Management", comment: "Title")
-    /// "End-to-End Encryption"
-    lazy var _end_to_end_encryption = NSLocalizedString("End-to-End Encryption", comment: "Title")
-    /// "Expiring Messages"
-    lazy var _expiring_messages = NSLocalizedString("Expiring Messages", comment: "Title")
-    /// "Help & Support"
-    lazy var _help_and_support = NSLocalizedString("Help & Support", comment: "Title")
+    lazy var _simply_private = NSLocalizedString("Simply private", comment: "Onboarding title")
 
+    lazy var _neat_and_tidy = NSLocalizedString("Neat and tidy", comment: "Onboarding title")
+
+    lazy var _easily_up_to_date_content = NSLocalizedString("Breeze through threaded messages in conversation mode.", comment: "Onboarding content")
+
+    lazy var _simply_private_content = NSLocalizedString("Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.", comment: "Onboarding content")
+
+    lazy var _neat_and_tidy_content = NSLocalizedString("File, label, and color code messages to create your perfect, custom inbox.", comment: "Onboarding content")
+
+    lazy var _skip_btn_title = NSLocalizedString("Skip", comment: "skip button title in onboarding page")
+
+    lazy var _next_btn_title = NSLocalizedString("Next", comment: "title of the next button")
+
+    lazy var _get_started_title = NSLocalizedString("Get Started", comment: "title of the next button")
 
     /// "Invalid credential"
     lazy var _invalid_credential = NSLocalizedString("Invalid credential", comment: "Error")

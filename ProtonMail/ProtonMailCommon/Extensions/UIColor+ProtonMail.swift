@@ -78,7 +78,8 @@ extension UIColor {
     }
     
     struct ProtonMail {
-        
+        static let onboardingImageBackgroundColor = UIColor(r: 245, g: 247, b: 250, a: 1)
+
         static let Blue_475F77 = UIColor(RRGGBB: UInt(0x475F77))
         static let Blue_85B1DE = UIColor(RRGGBB: UInt(0x85B1DE))
         static let Blue_5C7A99 = UIColor(RRGGBB: UInt(0x5C7A99))

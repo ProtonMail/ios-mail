@@ -187,6 +187,9 @@ included:
   - ${PWD}/ProtonMail/Controller/IAP/StorefrontNavigationAction.swift
   - ${PWD}/ProtonMail/Controller/IAP/StorefrontViewController.swift
   - ${PWD}/ProtonMail/Controller/SideMenuController/SideMenuProtocol.swift
+  - ${PWD}/ProtonMail/Controller/Onboarding/NewOnboardView.swift
+  - ${PWD}/ProtonMail/Controller/Onboarding/OnboardView.swift
+  - ${PWD}/ProtonMail/Controller/Onboarding/OnboardViewController.swift
 
 excluded:
   - ${PWD}/Pods

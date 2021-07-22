@@ -1,21 +1,23 @@
 {
   "images" : [
     {
+      "filename" : "organise.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "organise@2x.png",
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "onboarding_encryption.jpg"
+      "scale" : "2x"
     },
     {
+      "filename" : "organise@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }
