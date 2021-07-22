@@ -643,52 +643,79 @@ class MailboxViewModel: StorageLimit {
     final func delete(IDs: NSMutableSet) {
         switch viewMode {
         case .conversation:
-            _ = self.delete(conversationIDs: IDs.asArrayOfStrings)
+            deletePermanently(conversationIDs: IDs.asArrayOfStrings)
         case .singleMessage:
             let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataService.mainContext)
             for msg in messages {
-                let _ = self.delete(message: msg)
+                deletePermanently(message: msg)
             }
         }
     }
     
-    final func delete(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
+    final func delete(index: IndexPath) -> (SwipeResponse, UndoMessage?, Bool) {
         if let message = self.item(index: index) {
             return self.delete(message: message)
         } else if let conversation = self.itemOfConversation(index: index) {
             return self.delete(conversationIDs: [conversation.conversationID])
         }
-        return (.nothing, nil)
-    }
-    
-    func delete(message: Message) -> (SwipeResponse, UndoMessage?) {
-        if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue) {
-            return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, origHasStar: message.starred, newLabels: Message.Location.trash.rawValue))
-        }
-        return (.nothing, nil)
+        return (.nothing, nil, false)
     }
 
-    func delete(conversationIDs: [String]) -> (SwipeResponse, UndoMessage?) {
-        if [Message.Location.draft.rawValue, Message.Location.spam.rawValue, Message.Location.trash.rawValue].contains(labelID) {
-            conversationService.deleteConversations(with: conversationIDs, labelID: labelID) { [weak self] result in
-                guard let self = self else { return }
-                if let _ = try? result.get() {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
+    func delete(message: Message) -> (SwipeResponse, UndoMessage?, Bool) {
+        if self.labelID == Message.Location.trash.rawValue {
+            return (.nothing, nil, false)
         } else {
-            conversationService.move(conversationIDs: conversationIDs,
-                                     from: self.labelID,
-                                     to: Message.Location.trash.rawValue) { [weak self] result in
-                guard let self = self else { return }
-                if let _ = try? result.get() {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
+            if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue) {
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, origHasStar: message.starred, newLabels: Message.Location.trash.rawValue), true)
+            } else {
+                return (.nothing, nil, true)
             }
         }
-        return (.nothing, nil)
     }
-    
+
+    private func deletePermanently(message: Message) {
+        messageService.delete(messages: [message], label: self.labelID)
+    }
+
+    func delete(conversationIDs: [String]) -> (SwipeResponse, UndoMessage?, Bool) {
+        if self.labelID == Message.Location.trash.rawValue {
+            return (.nothing, nil, false)
+        } else {
+            let localConvos = conversationService.fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs),
+                                                                          in: coreDataService.mainContext)
+            let allTrashed = localConvos.allSatisfy { convo in
+                if let labels = convo.labels as? Set<ContextLabel>,
+                   labels.contains(where: { $0.labelID == Message.Location.trash.rawValue }) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+            if allTrashed {
+                return (.nothing, nil, false)
+            } else {
+                conversationService.move(conversationIDs: conversationIDs,
+                                         from: self.labelID,
+                                         to: Message.Location.trash.rawValue) { [weak self] result in
+                    guard let self = self else { return }
+                    if let _ = try? result.get() {
+                        self.eventsService.fetchEvents(labelID: self.labelId)
+                    }
+                }
+                return (.nothing, nil, true)
+            }
+        }
+    }
+
+    private func deletePermanently(conversationIDs: [String]) {
+        conversationService.deleteConversations(with: conversationIDs, labelID: self.labelID) { [weak self] result in
+            guard let self = self else { return }
+            if let _ = try? result.get() {
+                self.eventsService.fetchEvents(labelID: self.labelId)
+            }
+        }
+    }
+
     func archive(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
             if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.archive.rawValue) {

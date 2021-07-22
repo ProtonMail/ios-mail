@@ -54,20 +54,20 @@ class LabelboxViewModelImpl : MailboxViewModel {
         return true
     }
     
-    override func delete(message: Message) -> (SwipeResponse, UndoMessage?) {
+    override func delete(message: Message) -> (SwipeResponse, UndoMessage?, Bool) {
         if let fLabel = message.firstValidFolder() {
             if messageService.move(messages: [message], from: [fLabel], to: Message.Location.trash.rawValue) {
                 if self.label.labelID != fLabel {
-                    return (.showGeneral, nil)
+                    return (.showGeneral, nil, false)
                 }
-                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.trash.rawValue))
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.trash.rawValue), true)
             }
         }
         
-        return (.nothing, nil)
+        return (.nothing, nil, true)
     }
 
-    override func delete(conversationIDs: [String]) -> (SwipeResponse, UndoMessage?) {
+    override func delete(conversationIDs: [String]) -> (SwipeResponse, UndoMessage?, Bool) {
         if [Message.Location.draft.rawValue, Message.Location.spam.rawValue, Message.Location.trash.rawValue].contains(labelID) {
             conversationService.deleteConversations(with: conversationIDs, labelID: labelID) { [weak self] result in
                 guard let self = self else { return }
@@ -85,7 +85,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
                 }
             }
         }
-        return (.nothing, nil)
+        return (.nothing, nil, true)
     }
 
     override func archive(index: IndexPath) -> (SwipeResponse, UndoMessage?) {

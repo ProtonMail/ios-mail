@@ -223,3 +223,6 @@ cyclomatic_complexity:
 
 function_parameter_count:
   warning: 7
+
+large_tuple:
+  warning: 3

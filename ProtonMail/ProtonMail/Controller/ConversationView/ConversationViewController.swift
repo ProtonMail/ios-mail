@@ -1,8 +1,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class ConversationViewController: UIViewController,
-                                  UITableViewDataSource, UITableViewDelegate,
+class ConversationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
                                   UIScrollViewDelegate, ComposeSaveHintProtocol {
 
     private var actionBar: PMActionBar?
@@ -96,8 +95,7 @@ class ConversationViewController: UIViewController,
         switch itemType {
         case .trashedHint:
             let cell = tableView.dequeue(cellType: ConversationViewTrashedHintCell.self)
-            cell.setup(isTrashedHidden: self.viewModel.isTrashedMessageHidden,
-                       delegate: self.viewModel)
+            cell.setup(isTrashedHidden: self.viewModel.isTrashedMessageHidden, delegate: self.viewModel)
             return cell
         case .header(let subject):
             return headerCell(tableView, indexPath: indexPath, subject: subject)
@@ -212,12 +210,8 @@ class ConversationViewController: UIViewController,
     }
 
     private func countHeightFor(viewType: ConversationViewItemType) -> CGFloat {
-        guard !viewType.isEmpty else {
-            return 0
-        }
-        guard let viewModel = viewType.messageViewModel else {
-            return UITableView.automaticDimension
-        }
+        guard !viewType.isEmpty else { return 0 }
+        guard let viewModel = viewType.messageViewModel else { return UITableView.automaticDimension }
 
         if viewModel.isTrashed && self.viewModel.isTrashedMessageHidden {
             return 0

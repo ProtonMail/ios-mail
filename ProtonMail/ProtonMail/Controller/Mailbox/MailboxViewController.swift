@@ -683,8 +683,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.unstar(indexPath)
             return false
         case .trash:
-            self.delete(indexPath)
-            return true
+            return self.delete(indexPath)
         case .archive:
             self.archive(indexPath)
             return true
@@ -729,8 +728,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
     
-    private func delete(_ index: IndexPath) {
-        let (res, undo) = self.viewModel.delete(index: index)
+    private func delete(_ index: IndexPath) -> Bool {
+        let (res, undo, actionDidSucceed) = self.viewModel.delete(index: index)
         switch res {
         case .showUndo:
             undoMessage = undo
@@ -739,6 +738,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             showMessageMoved(title: LocalString._messages_has_been_deleted)
         default: break
         }
+        return actionDidSucceed
     }
     
     private func spam(_ index: IndexPath) {
