@@ -21,15 +21,18 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 extension SingleMessageContentViewController {
-
     func presentPrintController() {
         let headerController: Printable = self
         guard let bodyController: Printable = messageBodyViewController,
               let headerPrinter = headerController.printPageRenderer()
-                as? HeaderedPrintRenderer.CustomViewPrintRenderer,
+                as? Renderer,
               let bodyPrinter = bodyController.printPageRenderer() as? HeaderedPrintRenderer else { return }
 
         bodyPrinter.header = headerPrinter
+        if let attachmentPrinter = attachmentViewController?.printPageRenderer() as? Renderer {
+            bodyPrinter.attachmentView = attachmentPrinter
+            attachmentViewController?.printingWillStart(renderer: attachmentPrinter)
+        }
 
         headerController.printingWillStart?(renderer: headerPrinter)
         bodyController.printingWillStart?(renderer: bodyPrinter)
