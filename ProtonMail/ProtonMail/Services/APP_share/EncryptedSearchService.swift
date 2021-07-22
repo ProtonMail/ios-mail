@@ -326,7 +326,7 @@ extension EncryptedSearchService {
             var body: String? = ""
             do {
                 body = try self.messageService.decryptBodyIfNeeded(message: m as! Message)
-                print("Body of email (plaintext): ", body!)
+                //print("Body of email (plaintext): ", body!)
                 decryptionFailed = false
             } catch {
                 print("Unexpected error: \(error).")
@@ -337,7 +337,7 @@ extension EncryptedSearchService {
             
             self.addMessageKewordsToSearchIndex(keyWordsPerEmail, m as! Message, decryptionFailed)
             //for debugging only
-            break
+            //break
         }
         
         //return keywords
@@ -376,7 +376,7 @@ extension EncryptedSearchService {
         } catch {
             print("error")
         }
-        print("content of email cleaned: ", contentOfEmail)
+        //print("content of email cleaned: ", contentOfEmail)
         
         return contentOfEmail
     }
@@ -488,18 +488,16 @@ extension EncryptedSearchService {
     }
     
     func addMessageKewordsToSearchIndex(_ keywordsPerEmail: String,_ message: Message, _ decryptionFailed: Bool) -> Void {
-        //TODO refreshbit -> remove, encryptionIV, encryptedContent, encryptedConentenFile
+        //encryptionIV, encryptedContent, encryptedConentenFile
         
         var hasBody: Bool = true
         if decryptionFailed {
             hasBody = false //TODO are there any other case where there is no body?
         }
         
-        //TODO where do I get the message location from?
-        let location: Int = 5
+        let location: Int = Int(Message.Location.allmail.rawValue)!
         let time: Int = Int((message.time)!.timeIntervalSince1970)
-        
-        let order: Int = 0//message.order TODO needs to be filled
+        let order: Int = Int(truncating: message.order)
         
         let row: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(messageID: message.messageID, time: time, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: "", encryptedContent: "", encryptedContentFile: "")
         print("message inserted at row: ", row!)
