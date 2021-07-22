@@ -1052,9 +1052,6 @@
 /* VoiceOver: email can expire */
 "Expires" = "Upphör";
 
-/* (No Comment) */
-"Expires in %d days %d hours %d mins %d seconds" = "Upphör om %d dagar %d timmar %d minuter %d sekunder";
-
 /* Title */
 "Expiring Messages" = "Expiring messages";
 

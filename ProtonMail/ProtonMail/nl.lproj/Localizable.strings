@@ -1052,9 +1052,6 @@
 /* VoiceOver: email can expire */
 "Expires" = "Verloopt";
 
-/* (No Comment) */
-"Expires in %d days %d hours %d mins %d seconds" = "Verloopt over %d dagen %d uur %d minuten %d seconden";
-
 /* Title */
 "Expiring Messages" = "Verlooptijd";
 

@@ -1052,9 +1052,6 @@
 /* VoiceOver: email can expire */
 "Expires" = "有效期限";
 
-/* (No Comment) */
-"Expires in %d days %d hours %d mins %d seconds" = "於 %d 天又 %d 小時 %d 分鐘 %d 秒後失效";
-
 /* Title */
 "Expiring Messages" = "有限期限信件";
 

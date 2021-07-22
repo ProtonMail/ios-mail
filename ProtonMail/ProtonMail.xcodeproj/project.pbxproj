@@ -7124,7 +7124,7 @@
 				9FFE53FEB9AD7785DB2F6CA596BE2868 /* [CP] Embed Pods Frameworks */,
 				32FD8B84ACCEDCB9E7DCC6348BF41D03 /* Embed App Extensions */,
 				6EE58F9A6C6CBD84F7F37695EBB06601 /* Embed Frameworks */,
-				DE7C5F547BAF810BD37500B2550EA37E /* Sentry Upload */,
+				B49F60917E082A7489C221AE56FD4DBE /* Sentry Upload */,
 			);
 			buildRules = (
 			);
@@ -7150,7 +7150,7 @@
 				74DAC7A39D03830847662B2CA23938FC /* Resources */,
 				B7EBEAA51F130EAAA1213E69D9E40DBD /* [CP] Embed Pods Frameworks */,
 				E04C8B5D7BBBD207F1F503EE464CC7BE /* Embed App Extensions */,
-				F3EAD2CB32C6DEB9AD3C1954EACCC8E4 /* Sentry Upload */,
+				3907F5AE84B000107860A68C0C875322 /* Sentry Upload */,
 			);
 			buildRules = (
 			);
@@ -8278,7 +8278,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DE7C5F547BAF810BD37500B2550EA37E /* Sentry Upload */ = {
+		B49F60917E082A7489C221AE56FD4DBE /* Sentry Upload */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
 			files = (
@@ -8332,7 +8332,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F3EAD2CB32C6DEB9AD3C1954EACCC8E4 /* Sentry Upload */ = {
+		3907F5AE84B000107860A68C0C875322 /* Sentry Upload */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
 			files = (
