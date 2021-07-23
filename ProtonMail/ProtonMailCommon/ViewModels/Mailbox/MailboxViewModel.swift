@@ -609,7 +609,7 @@ class MailboxViewModel: StorageLimit {
     }
     
     func label(msg message : Message, with labelID: String, apply: Bool = true) {
-        messageService.label(messages: [message], label: labelID, apply: apply)
+        messageService.label(messages: [message], label: labelID, apply: apply, shouldFetchEvent: false)
     }
     
     func undo(_ undo: UndoMessage) {

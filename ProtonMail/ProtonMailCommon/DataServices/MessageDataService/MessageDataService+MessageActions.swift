@@ -61,7 +61,7 @@ extension MessageDataService {
 
         if queue {
             let msgIds = messagesWithSourceIds.map { $0.0.messageID }
-            self.queue(.folder(nextLabelID: tLabel, itemIDs: msgIds, objectIDs: []), isConversation: false)
+            self.queue(.folder(nextLabelID: tLabel, shouldFetch: false, itemIDs: msgIds, objectIDs: []), isConversation: false)
         }
         return true
     }
@@ -79,7 +79,7 @@ extension MessageDataService {
 
         if queue {
             let ids = messages.map{ $0.messageID }
-            self.queue(.folder(nextLabelID: tLabel, itemIDs: ids, objectIDs: []), isConversation: false)
+            self.queue(.folder(nextLabelID: tLabel, shouldFetch: false, itemIDs: ids, objectIDs: []), isConversation: false)
         }
         return true
     }

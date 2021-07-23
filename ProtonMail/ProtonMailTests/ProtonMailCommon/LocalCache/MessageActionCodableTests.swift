@@ -193,11 +193,11 @@ class MessageActionCodableTests: XCTestCase {
     }
 
     func testFolder() throws {
-        let action: MessageAction = .folder(nextLabelID: "next", itemIDs: ["items"], objectIDs: ["objects"])
+        let action: MessageAction = .folder(nextLabelID: "next", shouldFetch: false, itemIDs: ["items"], objectIDs: ["objects"])
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)
-        let action2: MessageAction = .folder(nextLabelID: "next", itemIDs: [], objectIDs: [])
+        let action2: MessageAction = .folder(nextLabelID: "next", shouldFetch: true, itemIDs: [], objectIDs: [])
         let encoded2 = try JSONEncoder().encode(action2)
         let decoded2 = try JSONDecoder().decode(MessageAction.self, from: encoded2)
         XCTAssertEqual(action2, decoded2)
