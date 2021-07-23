@@ -335,9 +335,12 @@ extension EncryptedSearchService {
             var keyWordsPerEmail: String = ""
             keyWordsPerEmail = self.extractKeywordsFromBody(bodyOfEmail: body!)
             
+            //TODO create encryptedContentField
+            self.createEncryptedContent(message: m as! Message, cleanedBody: keyWordsPerEmail)
+            
             self.addMessageKewordsToSearchIndex(keyWordsPerEmail, m as! Message, decryptionFailed)
             //for debugging only
-            //break
+            break
         }
         
         //return keywords
@@ -485,6 +488,82 @@ extension EncryptedSearchService {
         }
         
         return result!
+    }
+    
+    struct Sender: Codable {
+        var Name: String = ""
+        var Address: String = ""
+    }
+    
+    struct Recipient: Codable {
+        var name: String = ""
+        var email: String = ""
+    }
+    
+    struct RecipientList: Codable {
+        var recipient: [Recipient?]
+    }
+    
+    struct DecryptedMessageContent: Codable {
+        var subject: String = ""
+        var sender: Recipient = Recipient()
+        var body: String = ""
+        var toList: RecipientList = RecipientList(recipient: [nil])
+        var ccList: RecipientList = RecipientList(recipient: [nil])
+        var bccList: RecipientList = RecipientList(recipient: [nil])
+    }
+    
+    func createEncryptedContent(message: Message, cleanedBody: String) -> Void {
+        //1. create decryptedMessageContent
+        let decoder = JSONDecoder()
+        let senderJsonData = Data(message.sender!.utf8)
+        let toListJsonData: Data = message.toList.data(using: .utf8)!
+        let ccListJsonData: Data = message.ccList.data(using: .utf8)!
+        let bccListJsonData: Data = message.bccList.data(using: .utf8)!
+        
+        /*print("To List: ", message.toList)
+        print("CC List: ", message.ccList)
+        print("BCC List: ", message.bccList)
+        print("Extract data from Json string... ")*/
+        
+        var decryptedMessageContent: DecryptedMessageContent = DecryptedMessageContent()
+        do {
+            let senderStruct = try decoder.decode(Sender.self, from: senderJsonData)
+            let toListStruct = try decoder.decode([Sender].self, from: toListJsonData)
+            let ccListStruct = try decoder.decode([Sender].self, from: ccListJsonData)
+            let bccListStruct = try decoder.decode([Sender].self, from: bccListJsonData)
+            
+            let sender = Recipient(name: senderStruct.Name, email: senderStruct.Address)
+            
+            var recList: [Recipient] = []
+            toListStruct.forEach { s in
+                let r = Recipient(name: s.Name, email: s.Address)
+                recList.append(r)
+            }
+            let toList = RecipientList(recipient: recList)
+            
+            var recList2: [Recipient] = []
+            ccListStruct.forEach { s in
+                let r = Recipient(name: s.Name, email: s.Address)
+                recList2.append(r)
+            }
+            let ccList = RecipientList(recipient: recList2)
+            
+            var recList3: [Recipient] = []
+            bccListStruct.forEach { s in
+                let r = Recipient(name: s.Name, email: s.Address)
+                recList3.append(r)
+            }
+            let bccList = RecipientList(recipient: recList3)
+            
+            decryptedMessageContent = DecryptedMessageContent(subject: message.subject, sender: sender, body: cleanedBody, toList: toList, ccList: ccList, bccList: bccList)
+        } catch {
+            print(error)
+        }
+        
+        print("Decrypted Message Content: ", decryptedMessageContent)
+        
+        //2. encrypt content via gomobile
     }
     
     func addMessageKewordsToSearchIndex(_ keywordsPerEmail: String,_ message: Message, _ decryptionFailed: Bool) -> Void {
