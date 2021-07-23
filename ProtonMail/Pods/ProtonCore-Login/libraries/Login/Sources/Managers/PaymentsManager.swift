@@ -1,23 +1,23 @@
 //
 //  PaymentsManager.swift
-//  PMLogin - Created on 01/06/2021.
+//  ProtonCore-Login - Created on 01/06/2021.
 //
 //  Copyright (c) 2021 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 #if canImport(UIKit)
 import UIKit
@@ -29,22 +29,23 @@ import ProtonCore_UIFoundations
 class PaymentsManager {
     
     private let api: APIService
-    private let receipt: String?
     private let storeKitManager = StoreKitManager.default
     private var servicePlan: ServicePlanDataService?
     private var paymentsUI: PaymentsUI?
     private var selectedPlan: AccountPlan = .free
+    private var planTypes: PlanTypes
     private var loginData: LoginData?
+    private weak var existingDelegate: StoreKitManagerDelegate?
     
-    init(apiService: APIService, receipt: String?) {
+    init(apiService: APIService, planTypes: PlanTypes = .mail) {
         self.api = apiService
-        self.receipt = receipt
+        self.planTypes = planTypes
         storeKitSetup()
     }
     
     func startPaymentProcess(signupViewController: SignupViewController?, planShownHandler: (() -> Void)?, completionHandler: @escaping (Result<(), Error>) -> Void) {
         if let servicePlan = servicePlan, let signupViewController = signupViewController {
-            paymentsUI = PaymentsUI(servicePlanDataService: servicePlan, appStoreLocalReceipt: receipt)
+            paymentsUI = PaymentsUI(servicePlanDataService: servicePlan, planTypes: planTypes)
             
             var shownHandlerCalled = false
             paymentsUI?.showSignupPlans(viewController: signupViewController, completionHandler: { reason in
@@ -72,12 +73,14 @@ class PaymentsManager {
         if selectedPlan != .free {
             servicePlan?.updateCurrentSubscription {
                 self.storeKitManager.continueRegistrationPurchase {
+                    self.restoreExistingDelegate()
                     completionHandler(.success(()))
                 }
             } failure: { error in
                 completionHandler(.failure(error))
             }
         } else {
+            self.restoreExistingDelegate()
             completionHandler(.success(()))
         }
     }
@@ -88,8 +91,17 @@ class PaymentsManager {
         self.servicePlan = servicePlan
         storeKitManager.subscribeToPaymentQueue()
         storeKitManager.updateAvailableProductsList()
+        storeExistingDelegate()
         storeKitManager.delegate = self
-        paymentsUI = PaymentsUI(servicePlanDataService: servicePlan, appStoreLocalReceipt: receipt)
+        paymentsUI = PaymentsUI(servicePlanDataService: servicePlan, planTypes: planTypes)
+    }
+    
+    private func storeExistingDelegate() {
+        existingDelegate = storeKitManager.delegate
+    }
+    
+    private func restoreExistingDelegate() {
+        storeKitManager.delegate = existingDelegate
     }
 }
 
@@ -120,6 +132,10 @@ extension PaymentsManager: StoreKitManagerDelegate {
 
     var servicePlanDataService: ServicePlanDataService? {
         return servicePlan
+    }
+    
+    func reportBugAlert() {
+        existingDelegate?.reportBugAlert()
     }
 }
 

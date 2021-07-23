@@ -124,7 +124,7 @@ class UsersManager : Service, Migrate {
     }
    
     /// Server's config like url port path etc..
-    var doh : DoH
+    var doh : DoH & ServerConfig
     /// the interface for talking to UI
     weak var delegate : UsersManagerDelegate?
 
@@ -135,7 +135,7 @@ class UsersManager : Service, Migrate {
         }
     }
     
-    init(doh: DoH, delegate : UsersManagerDelegate?) {
+    init(doh: DoH & ServerConfig, delegate : UsersManagerDelegate?) {
         self.doh = doh
         
         //init doh defalt on/off
@@ -782,6 +782,10 @@ extension UsersManager {
 }
 
 extension UsersManager: APIServiceDelegate {
+    var locale: String {
+        return LanguageManager.currentLanguageCode()
+    }
+
     func isReachable() -> Bool {
         return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
     }

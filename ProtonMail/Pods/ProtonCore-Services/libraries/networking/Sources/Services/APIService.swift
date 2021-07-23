@@ -1,26 +1,23 @@
 //
 //  APIService.swift
-//  Pods
-//
-//  Created on 5/22/20.
-//
+//  ProtonCore-Services - Created on 5/22/20.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 // swiftlint:disable identifier_name todo function_parameter_count
 
@@ -75,57 +72,6 @@ extension APIServerConfig {
     }
 }
 
-// Predefined servers, could also add the serverlist load from config env later
-public enum Server: APIServerConfig {
-    case live // "api.protonmail.ch"
-    case testlive // "test-api.protonmail.ch"
-
-    case dev1 // "dev.protonmail.com"
-    case dev2 // "dev-api.protonmail.ch"
-
-    case blue // "protonmail.blue"
-    case midnight // "midnight.protonmail.blue"
-
-    // local test
-    // static let URL_HOST : String = "http://127.0.0.1"  //http
-
-    public var host: String {
-        switch self {
-        case .live:
-            return "api.protonmail.ch"
-        case .blue:
-            return "protonmail.blue"
-        case .midnight:
-            return "midnight.protonmail.blue"
-        case .testlive:
-            return "test-api.protonmail.ch"
-        case .dev1:
-            return "dev.protonmail.com"
-        case .dev2:
-            return "dev-api.protonmail.ch"
-        }
-    }
-
-    public var path: String {
-        switch self {
-        case .live, .testlive, .dev2:
-            return ""
-        case .blue, .midnight, .dev1:
-            return "/api"
-        }
-    }
-
-    public var `protocol`: String {
-        return "https"
-    }
-
-}
-
-// enum <T> {
-//     case failure(Error)
-//     case success(T)
-// }
-
 public typealias CompletionBlock = (_ task: URLSessionDataTask?, _ response: [String: Any]?, _ error: NSError?) -> Void
 
 public protocol API {
@@ -157,12 +103,13 @@ public protocol API {
 /// this is auth UI related
 public protocol APIServiceDelegate: AnyObject {
     func onUpdate(serverTime: Int64)
-    // func onError(error: NSError)
-
+    
     // check if server reachable or check if network avaliable
     func isReachable() -> Bool
 
     var appVersion: String { get }
+    
+    var locale: String { get }
 
     var userAgent: String? { get }
 
@@ -218,7 +165,7 @@ public protocol APIService: API {
     var serviceDelegate: APIServiceDelegate? { get set }
     var authDelegate: AuthDelegate? { get set }
     var humanDelegate: HumanVerifyDelegate? { get set }
-    var doh: DoH { get set }
+    var doh: DoH & ServerConfig { get set }
     var signUpDomain: String { get }
 }
 
@@ -277,9 +224,13 @@ public extension APIService {
                 if let resRaw = responseDict {
                     _ = response.ParseResponse(resRaw)
                 }
-                complete(task, response)
+                DispatchQueue.main.async {
+                    complete(task, response)
+                }
             case (let response, nil):
-                complete(task, response)
+                DispatchQueue.main.async {
+                    complete(task, response)
+                }
             }
         }
 
@@ -304,9 +255,13 @@ public extension APIService {
                 if let resRaw = responseDict {
                     _ = response.ParseResponse(resRaw)
                 }
-                complete(response)
+                DispatchQueue.main.async {
+                    complete(response)
+                }
             case (let response, nil):
-                complete(response)
+                DispatchQueue.main.async {
+                    complete(response)
+                }
             }
         }
 
@@ -337,32 +292,42 @@ public extension APIService {
                                                           responseCode: errorResponse.code,
                                                           userFacingMessage: errorResponse.error,
                                                           underlyingError: NSError(errorResponse))
-                        complete(task, .failure(responseError))
+                        DispatchQueue.main.async {
+                            complete(task, .failure(responseError))
+                        }
                         return
                     }
                     // server SRP
                     let decodedResponse = try decoder.decode(T.self, from: responseData)
-                    complete(task, .success(decodedResponse))
+                    DispatchQueue.main.async {
+                        complete(task, .success(decodedResponse))
+                    }
                 } else if let error = error {
                     let responseError = ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
                                                       responseCode: nil,
                                                       userFacingMessage: nil,
                                                       underlyingError: error)
-                    complete(task, .failure(responseError))
+                    DispatchQueue.main.async {
+                        complete(task, .failure(responseError))
+                    }
                     return
                 } else {
                     let responseError = ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
                                                       responseCode: nil,
                                                       userFacingMessage: nil,
                                                       underlyingError: nil)
-                    complete(task, .failure(responseError))
+                    DispatchQueue.main.async {
+                        complete(task, .failure(responseError))
+                    }
                 }
             } catch let decodingError {
                 let responseError = ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
                                                   responseCode: nil, // unable to decode means no response
                                                   userFacingMessage: nil,
                                                   underlyingError: decodingError as NSError)
-                complete(task, .failure(responseError))
+                DispatchQueue.main.async {
+                    complete(task, .failure(responseError))
+                }
             }
         }
         var header = route.header

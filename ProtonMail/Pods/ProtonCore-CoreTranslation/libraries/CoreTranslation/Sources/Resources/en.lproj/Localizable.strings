@@ -156,8 +156,6 @@
 "payment failed" = "payment failed";
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support.";
 "Retry" = "Retry";
-"Contact customer support" = "Contact customer support";
-"Unknown error" = "Unknown error";
 "Failed to get list of available products from AppStore." = "Failed to get list of available products from AppStore.";
 "Purchase is not possible." = "Purchase is not possible.";
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";

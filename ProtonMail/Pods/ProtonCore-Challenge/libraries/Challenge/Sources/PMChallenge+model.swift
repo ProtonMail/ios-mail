@@ -1,24 +1,23 @@
 //
 //  PMChallenge+model.swift
-//  ProtonMail - Created on 6/19/20.
-//
+//  ProtonCore-Challenge - Created on 6/19/20.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 // swiftlint:disable identifier_name
 
@@ -67,11 +66,15 @@ extension PMChallenge {
 
     public struct Challenge: Codable {
         // MARK: Signup data
+        @available(*, deprecated, message: "This parameter will be removed in the future")
         public internal(set) var usernameChecks: [String] = []
         /// Number of seconds it took to verify sms/email/catpcha/payment
+        @available(*, deprecated, message: "This parameter will be removed in the future")
         public internal(set) var time_human: Int = 0
         /// Number of seconds that user focus on password textField.
+        @available(*, deprecated, message: "This parameter will be removed in the future")
         public internal(set) var time_pass: Int = 0
+
         /// Number of seconds from signup form load to start filling username input
         public internal(set) var time_user: [Int] = []
         /// Chars that typed in username input
@@ -117,11 +120,37 @@ extension PMChallenge {
         /// UUID for this app, will change after reinstall
         public private(set) var uuid = UIDevice.current.identifierForVendor?.uuidString ?? "unknow"
 
+        public func encode(to encoder: Encoder) throws {
+            // Since some of variables are deprecated
+            // to remove these variables from JSONEncoder
+            // implement this function
+            // after removing these variables, consider to remove this function too
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(time_user, forKey: .time_user)
+            try container.encode(usernameTypedChars, forKey: .usernameTypedChars)
+            try container.encode(recoverTypedChars, forKey: .recoverTypedChars)
+            try container.encode(click_user, forKey: .click_user)
+            try container.encode(click_recovery, forKey: .click_recovery)
+            try container.encode(copy_username, forKey: .copy_username)
+            try container.encode(copy_recovery, forKey: .copy_recovery)
+            try container.encode(paste_username, forKey: .paste_username)
+            try container.encode(paste_recovery, forKey: .paste_recovery)
+            try container.encode(timezone, forKey: .timezone)
+            try container.encode(timezoneOffset, forKey: .timezoneOffset)
+            try container.encode(isJailbreak, forKey: .isJailbreak)
+            try container.encode(deviceName, forKey: .deviceName)
+            try container.encode(appLang, forKey: .appLang)
+            try container.encode(regionCode, forKey: .regionCode)
+            try container.encode(storageCapacity, forKey: .storageCapacity)
+            try container.encode(keyboards, forKey: .keyboards)
+            try container.encode(cellulars, forKey: .cellulars)
+            try container.encode(isDarkmodeOn, forKey: .isDarkmodeOn)
+            try container.encode(preferredContentSize, forKey: .preferredContentSize)
+            try container.encode(uuid, forKey: .uuid)
+        }
+
         mutating func reset() {
-            self.usernameChecks = []
-            self.time_human = 0
             self.time_user = []
-            self.time_pass = 0
             self.usernameTypedChars = []
             self.recoverTypedChars = []
             self.click_user = 0
@@ -158,7 +187,10 @@ extension PMChallenge {
         
         public func toDictionary() -> [String: Any] {
             do {
-                let challenge = try self.asDictionary()
+                var challenge = try self.asDictionary()
+                challenge.removeValue(forKey: "usernameChecks")
+                challenge.removeValue(forKey: "time_human")
+                challenge.removeValue(forKey: "time_pass")
                 return challenge
             } catch {
                 let err1 = error.localizedDescription

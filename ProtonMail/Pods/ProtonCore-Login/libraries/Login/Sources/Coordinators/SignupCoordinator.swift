@@ -1,23 +1,23 @@
 //
 //  SignupCoordinator.swift
-//  PMLogin - Created on 11/03/2021.
+//  ProtonCore-Login - Created on 11/03/2021.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 #if canImport(UIKit)
 import UIKit
@@ -51,23 +51,23 @@ final class SignupCoordinator {
     private var countryPickerViewController: CountryPickerViewController?
     private var countryPicker = PMCountryPicker(searchBarPlaceholderText: CoreString._hv_sms_search_placeholder)
     
-    var signupAccountType: SignupAccountType = .internal
-    var name: String?
-    var deviceToken: String?
-    var password: String?
-    var verifyToken: String?
+    private var signupAccountType: SignupAccountType = .internal
+    private var name: String?
+    private var deviceToken: String?
+    private var password: String?
+    private var verifyToken: String?
     
     // Payments
     private var paymentsManager: PaymentsManager?
 
-    init(container: Container, signupMode: SignupMode, signupPasswordRestrictions: SignupPasswordRestrictions, isCloseButton: Bool, isPlanSelectorAvailable: Bool, receipt: String?) {
+    init(container: Container, signupMode: SignupMode, signupPasswordRestrictions: SignupPasswordRestrictions, isCloseButton: Bool, isPlanSelectorAvailable: Bool) {
         self.container = container
         self.signupMode = signupMode
         self.signupPasswordRestrictions = signupPasswordRestrictions
         self.isCloseButton = isCloseButton
         self.isPlanSelectorAvailable = isPlanSelectorAvailable
         if isPlanSelectorAvailable {
-            self.paymentsManager = container.makePaymentsCoordinator(receipt: receipt)
+            self.paymentsManager = container.makePaymentsCoordinator()
         }
     }
     
@@ -343,6 +343,13 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
         } else if let error = error as? StoreKitManager.Errors {
             if let vc = errorVC as? PaymentErrorCapable {
                 vc.showError(error: error)
+            }
+        } else if let error = error as? AvailabilityError {
+            if let vc = errorVC as? SignUpErrorCapable {
+                switch error {
+                case .generic(let message), .notAvailable(let message):
+                    vc.showError(error: SignupError.generic(message: message))
+                }
             }
         } else {
             let signUpError = SignupError.generic(message: error.localizedDescription)

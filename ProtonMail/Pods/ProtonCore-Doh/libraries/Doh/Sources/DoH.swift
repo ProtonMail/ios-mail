@@ -1,24 +1,23 @@
 //
 //  DoH.swift
-//  Created by ProtonMail on 2/24/20.
-//
+//  ProtonCore-Doh - Created on 2/24/20.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
@@ -69,6 +68,9 @@ public protocol ServerConfig {
     /// debug mode vars
     var debugMode: Bool { get }
     var blockList: [String: Int] { get }
+    
+    /// the doh provider timeout  the default value is 5s
+    var timeout: TimeInterval { get }
 }
 
 public extension ServerConfig {
@@ -87,6 +89,10 @@ public extension ServerConfig {
     var enableDoh: Bool {
         return true
     }
+    
+    var timeout: TimeInterval {
+        return 20
+    }
 }
 
 public protocol DoHInterface {
@@ -103,15 +109,15 @@ open class DoH: DoHInterface {
     private var caches: [String: [DNSCache]] = [:]
     private var providers: [DoHProviderPublic] = []
 
-    internal var mutex = pthread_mutex_t()
-    internal var hostUrlMutex = pthread_mutex_t()
+    internal var mutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
+    internal var hostUrlMutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
 
     public var debugBlock: [String: Bool] = [:]
 
     public func getHostUrl() -> String {
-        pthread_mutex_lock(&self.hostUrlMutex)
+        pthread_mutex_lock(hostUrlMutex)
         defer {
-            pthread_mutex_unlock(&self.hostUrlMutex)
+            pthread_mutex_unlock(hostUrlMutex)
         }
         let config = self as! ServerConfig
         let defaultUrl = config.defaultHost + config.defaultPath
@@ -133,7 +139,7 @@ open class DoH: DoHInterface {
                 return hostUrl + config.defaultPath
             }
             /// block call or call back call
-            fetchAll(host: config.apiHost) // this is sync call
+            fetchAll(host: config.apiHost, timeout: config.timeout) // this is sync call
 
             if let found = self.cache(get: config.apiHost) {
                 let newurl = URL(string: config.defaultHost)!
@@ -157,13 +163,13 @@ open class DoH: DoHInterface {
         return config.signupDomain
     }
 
-    func fetchAll(host: String) {
+    func fetchAll(host: String, timeout: TimeInterval) {
         // doing google for now. will add others
-        if let dns = Google().fetch(sync: host) {
+        if let dns = Google().fetch(sync: host, timeout: timeout) {
             self.cache(set: host, dnsList: dns)
         }
 
-        if let dns = Quad9().fetch(sync: host) {
+        if let dns = Quad9().fetch(sync: host, timeout: timeout) {
             self.cache(set: host, dnsList: dns)
         }
         var tmp = self.caches[host] ?? []
@@ -174,14 +180,14 @@ open class DoH: DoHInterface {
     }
 
     public init() throws {
-        pthread_mutex_init(&mutex, nil)
-        pthread_mutex_init(&hostUrlMutex, nil)
+        pthread_mutex_init(mutex, nil)
+        pthread_mutex_init(hostUrlMutex, nil)
         guard let config = self as? ServerConfig else {
             throw RuntimeError("Class didn't extend DoHConfig")
         }
 
-        pthread_mutex_lock(&self.mutex)
-        defer { pthread_mutex_unlock(&self.mutex) }
+        pthread_mutex_lock(mutex)
+        defer { pthread_mutex_unlock(mutex) }
 
         var tmp = self.caches[config.defaultHost] ?? []
         let newurl = URL(string: config.defaultHost)!
@@ -191,10 +197,19 @@ open class DoH: DoHInterface {
         tmp.append(cache)
         self.caches[config.apiHost] = tmp
     }
+    
+    deinit {
+        pthread_mutex_destroy(mutex)
+        self.mutex.deinitialize(count: 1)
+        self.mutex.deallocate()
+        pthread_mutex_destroy(hostUrlMutex)
+        self.hostUrlMutex.deinitialize(count: 1)
+        self.hostUrlMutex.deallocate()
+    }
 
     func cache(get host: String) -> DNSCache? {
-        pthread_mutex_lock(&self.mutex)
-        defer { pthread_mutex_unlock(&self.mutex) }
+        pthread_mutex_lock(mutex)
+        defer { pthread_mutex_unlock(mutex) }
 
         guard var found = self.caches[host] else {
             return nil
@@ -248,8 +263,8 @@ open class DoH: DoHInterface {
     }
 
     func cache(set host: String, dns: DNS) {
-        pthread_mutex_lock(&self.mutex)
-        defer { pthread_mutex_unlock(&self.mutex) }
+        pthread_mutex_lock(mutex)
+        defer { pthread_mutex_unlock(mutex) }
 
         let timeout = Date().timeIntervalSince1970 + Double(dns.ttl) * 1000
         let cache = DNSCache(primary: false, dns: dns, lastTimeout: timeout, retry: 0)
@@ -259,8 +274,8 @@ open class DoH: DoHInterface {
     }
 
     func cache(set host: String, dnsList: [DNS]) {
-        pthread_mutex_lock(&self.mutex)
-        defer { pthread_mutex_unlock(&self.mutex) }
+        pthread_mutex_lock(mutex)
+        defer { pthread_mutex_unlock(mutex) }
 
         for dns in dnsList {
             let timeout = Date().timeIntervalSince1970 + Double(dns.ttl) * 1000
@@ -276,8 +291,8 @@ open class DoH: DoHInterface {
     }
 
     public func clearAll() {
-        pthread_mutex_lock(&self.mutex)
-        defer { pthread_mutex_unlock(&self.mutex) }
+        pthread_mutex_lock(mutex)
+        defer { pthread_mutex_unlock(mutex) }
 
         let config = self as! ServerConfig
         var tmp: [DNSCache] = []
@@ -321,8 +336,8 @@ open class DoH: DoHInterface {
             return false
         }
 
-        pthread_mutex_lock(&self.mutex)
-        defer { pthread_mutex_unlock(&self.mutex) }
+        pthread_mutex_lock(mutex)
+        defer { pthread_mutex_unlock(mutex) }
 
         guard var found = self.caches[config.apiHost] else {
             return false
@@ -374,8 +389,8 @@ open class DoH: DoHInterface {
             return false
         }
 
-        pthread_mutex_lock(&self.mutex)
-        defer { pthread_mutex_unlock(&self.mutex) }
+        pthread_mutex_lock(mutex)
+        defer { pthread_mutex_unlock(mutex) }
 
         globalCounter += 1
         guard globalCounter % 2 == 0 else {

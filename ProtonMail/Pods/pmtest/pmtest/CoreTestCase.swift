@@ -28,5 +28,11 @@
 import XCTest
 
 open class CoreTestCase: XCTestCase {
-    let ui = CoreElements()
+    
+    let device = UiDevice()
+    let ui = Elements()
+    
+    func uiInBundle(appBundleId: String?) -> Elements {
+        return Elements(bundleIdentifier: appBundleId)
+    }
 }

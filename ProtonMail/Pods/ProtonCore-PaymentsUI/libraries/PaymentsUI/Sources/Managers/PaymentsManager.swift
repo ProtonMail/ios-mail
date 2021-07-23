@@ -4,20 +4,20 @@
 //
 //  Copyright (c) 2021 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 import ProtonCore_Payments
@@ -30,15 +30,7 @@ final class PaymentsManager {
     }
     
     private let storeKitManager = StoreKitManager.default
-
-    init(appStoreLocalReceipt: String? = nil) {
-        if let localReceipt = appStoreLocalReceipt {
-            storeKitManager.appStoreLocalTest = true
-            storeKitManager.appStoreLocalReceipt = localReceipt
-        } else {
-            storeKitManager.appStoreLocalTest = false
-        }
-    }
+    private var callbackExecuted = false
 
     func buyPlan(accountPlan: AccountPlan, finishCallback: @escaping (PaymentCallback) -> Void) {
         if accountPlan == .free {
@@ -58,11 +50,17 @@ final class PaymentsManager {
 
         storeKitManager.purchaseProduct(identifier: productId) { _ in
             DispatchQueue.main.async {
-                finishCallback(.purchasedPlan(accountPlan: accountPlan, processingPlan: accountPlan))
+                if self.callbackExecuted == false {
+                    finishCallback(.purchasedPlan(accountPlan: accountPlan, processingPlan: accountPlan))
+                    self.callbackExecuted = true
+                }
             }
         } errorCompletion: { error in
             DispatchQueue.main.async {
-                finishCallback(.purchaseError(error: error, processingPlan: self.unfinishedPurchasePlan))
+                if self.callbackExecuted == false {
+                    finishCallback(.purchaseError(error: error, processingPlan: self.unfinishedPurchasePlan))
+                    self.callbackExecuted = true
+                }
             }
         }
     }

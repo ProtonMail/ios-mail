@@ -176,6 +176,7 @@ code_sign_if_enabled() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DKImagePickerController/DKImagePickerController.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DKPhotoGallery/DKPhotoGallery.framework"
@@ -222,6 +223,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Distribution" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DKImagePickerController/DKImagePickerController.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DKPhotoGallery/DKPhotoGallery.framework"
@@ -267,6 +269,7 @@ if [[ "$CONFIGURATION" == "Distribution" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DKImagePickerController/DKImagePickerController.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DKPhotoGallery/DKPhotoGallery.framework"

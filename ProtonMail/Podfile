@@ -14,10 +14,11 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '1.6.0'
+  '2.0.1'
 end
 
 def pm_shared_pods
+  pod 'ProtonCore-Networking/Alamofire', proton_core_version
   pod 'ProtonCore-Crypto', proton_core_version
   pod 'ProtonCore-SRP', proton_core_version
   pod 'ProtonCore-Authentication', proton_core_version
@@ -32,7 +33,7 @@ def common_pods
   pod 'ProtonCore-OpenPGP', proton_core_version
   pod 'ProtonCore-Authentication-KeyGeneration', proton_core_version
   pod 'Groot', '3.0.1'
-  pod 'AFNetworking', '4.0.1'
+#  pod 'AFNetworking', '4.0.1'
   pod 'Masonry', '1.1.0'
   pod 'PromiseKit', '6.13.1'
   pod 'AwaitKit', '5.0.1'
@@ -85,7 +86,7 @@ end
 
 target 'ProtonMailTests' do
   inherit! :search_paths
-  pod 'AFNetworking', '4.0.1'
+#  pod 'AFNetworking', '4.0.1'
   pod 'OHHTTPStubs/Swift', '9.0.0'
   pod 'Groot', '3.0.1'
   pod 'PromiseKit', '6.13.1'

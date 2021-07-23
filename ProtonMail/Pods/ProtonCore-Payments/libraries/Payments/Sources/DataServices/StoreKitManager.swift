@@ -1,24 +1,23 @@
 //
 //  StoreKitManager.swift
-//  PMPayments - Created on 21/08/2018.
-//
+//  ProtonCore-Payments - Created on 21/08/2018.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import StoreKit
 import Reachability
@@ -33,8 +32,6 @@ public class StoreKitManager: NSObject, StoreKitManagerProtocol {
     public static let transactionFinishedNotification = Notification.Name("StoreKitManager.transactionFinished")
     public weak var delegate: StoreKitManagerDelegate?
     public var refreshHandler: (() -> Void)?
-    public var appStoreLocalTest: Bool = false
-    public var appStoreLocalReceipt: String = ""
 
     // MARK: Internal properties for testing proposes
     internal var paymentsApi: PaymentsApiProtocol = PaymentsApiImplementation()
@@ -172,11 +169,12 @@ public class StoreKitManager: NSObject, StoreKitManagerProtocol {
     }
 
     public func readReceipt() throws -> String {
-        if isRunningTests, let receiptError = receiptError {
-            throw receiptError
-        }
-        if appStoreLocalTest || isRunningTests {
-            return appStoreLocalReceipt
+        if isRunningTests {
+            if let receiptError = receiptError {
+                throw receiptError
+            } else {
+                return "Test"
+            }
         }
         guard let receiptUrl = Bundle.main.appStoreReceiptURL/*,
             !receiptUrl.lastPathComponent.contains("sandbox")*/ else {
@@ -259,12 +257,12 @@ extension StoreKitManager: SKPaymentTransactionObserver {
     // this will be called right after the purchase and after relaunch
     public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
 
-////        // TEMPORARY SOLUTION: finish all pending operations if delegate is not set
+//        // TEMPORARY SOLUTION: finish all pending operations if delegate is not set
 //        transactions.forEach {
 //            paymentQueue.finishTransaction($0)
 //        }
 //        return
-//
+
         processAllTransactions(finishHandler: transactionsFinishHandler)
     }
 
@@ -312,6 +310,9 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         case .some(let error):
             if error.code == SKError.paymentCancelled.rawValue {
                 self.errorCompletion(Errors.cancelled)
+                self.refreshHandler?()
+            } else if error.code == SKError.unknown.rawValue {
+                self.errorCompletion(Errors.unknown)
                 self.refreshHandler?()
             } else {
                 self.errorCompletion(error)

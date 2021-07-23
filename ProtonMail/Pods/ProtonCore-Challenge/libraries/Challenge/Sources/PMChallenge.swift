@@ -1,24 +1,23 @@
 //
 //  PMChallenge.swift
-//  ProtonMail - Created on 6/19/20.
-//
+//  ProtonCore-Challenge - Created on 6/19/20.
 //
 //  Copyright (c) 2019 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 import Foundation
@@ -33,10 +32,6 @@ public final class PMChallenge: ChallengeProtocol {
     private var interceptors: [TextFieldDelegateInterceptor] = []
     /// To calculate number of second that user editing username
     private var usernameEditingTime: TimeInterval = 0
-    /// To calculate number of second that user editing password
-    private var passwordEditingTime: TimeInterval = 0
-    /// To calculate number of second from request verify to start input verification
-    private var requestVerifyTime: TimeInterval = 0
     /// Copy event debounce
     private var copyDebounce: TimeInterval = 0
 
@@ -80,8 +75,6 @@ extension PMChallenge {
         self.interceptors.forEach({ $0.destroy() })
         self.interceptors = []
         self.usernameEditingTime = 0
-        self.passwordEditingTime = 0
-        self.requestVerifyTime = 0
     }
 
     /// Export collected challenge data
@@ -129,9 +122,6 @@ extension PMChallenge {
         case .username:
             self.usernameEditingTime = 0
             self.challenge.time_user = []
-        case .password:
-            self.passwordEditingTime = 0
-            self.challenge.time_pass = 0
         default:
             break
         }
@@ -147,7 +137,6 @@ extension PMChallenge {
 
         let time = Int(Date().timeIntervalSince1970 - self.usernameEditingTime)
         self.challenge.time_user.append(time)
-        self.challenge.usernameChecks.append(username)
 
         self.usernameEditingTime = 0
         guard let interceptor = self.interceptors.first(where: { $0.type == .username }) else {
@@ -158,17 +147,12 @@ extension PMChallenge {
     }
 
     /// Declare user start request verification so that timer starts.
-    public func requestVerify() {
-        self.requestVerifyTime = Date().timeIntervalSince1970
-    }
+    @available(*, deprecated, message: "The function will be removed in the future")
+    public func requestVerify() { }
 
     /// Count verification time
-    public func verificationFinish() throws {
-        if self.requestVerifyTime == 0 {
-            throw PMChallenge.TimerError.verificationTimerError
-        }
-        self.challenge.time_human = Int(Date().timeIntervalSince1970 - self.requestVerifyTime)
-    }
+    @available(*, deprecated, message: "The function will be removed in the future")
+    public func verificationFinish() throws { }
 }
 
 // MARK: Private function
@@ -229,24 +213,12 @@ extension PMChallenge: TextFieldInterceptorDelegate {
             if self.usernameEditingTime == 0 {
                 self.usernameEditingTime = Date().timeIntervalSince1970
             }
-        case .password:
-            if self.passwordEditingTime == 0 {
-                self.passwordEditingTime = Date().timeIntervalSince1970
-            }
         default:
             break
         }
     }
 
-    func endEditing(type: TextFieldType) {
-        switch type {
-        case .password:
-            self.challenge.time_pass += Int(Date().timeIntervalSince1970 - self.passwordEditingTime)
-            self.passwordEditingTime = 0
-        default:
-            break
-        }
-    }
+    func endEditing(type: TextFieldType) { }
 
     func charactersTyped(chars: String, type: TextFieldType) throws {
         let value: String = chars.count > 1 ? "Paste": chars

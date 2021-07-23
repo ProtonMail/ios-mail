@@ -56,9 +56,9 @@ open class UiElement {
     private var identifier: String?
     private var childElement: UiElement?
     private var descendantElement: UiElement?
-    private var enabled: Bool?
-    private var disabled: Bool?
-    private var hittable: Bool?
+    private var elementEnabled: Bool?
+    private var elementDisabled: Bool?
+    private var elementHittable: Bool?
     private var predicate: NSPredicate?
     private var matchedPredicate: NSPredicate?
     private var labelPredicate: NSPredicate?
@@ -67,6 +67,7 @@ open class UiElement {
     private var tableToSwipeInto: XCUIElement?
 
     internal func getType() -> XCUIElement.ElementType {
+        XCUIDevice.shared.press(.home)
         return self.uiElement().elementType
     }
 
@@ -87,6 +88,7 @@ open class UiElement {
         return self.index
     }
 
+    /// Element properties
     public func label() -> String {
         return locatedElement!.label
     }
@@ -98,7 +100,23 @@ open class UiElement {
     public func value() -> Any? {
         return locatedElement!.value
     }
-    
+
+    public func exists() -> Bool {
+        return locatedElement!.exists
+    }
+
+    public func enabled() -> Bool {
+        return locatedElement!.isEnabled
+    }
+
+    public func hittable() -> Bool {
+        return locatedElement!.isHittable
+    }
+
+    public func selected() -> Bool {
+        return locatedElement!.isSelected
+    }
+
     /// Matchers
     public func byIndex(_ index: Int) -> UiElement {
         self.index = index
@@ -106,17 +124,17 @@ open class UiElement {
     }
 
     public func isEnabled() -> UiElement {
-        self.enabled = true
+        self.elementEnabled = true
         return self
     }
 
     public func isDisabled() -> UiElement {
-        self.disabled = true
+        self.elementDisabled = true
         return self
     }
 
     public func isHittable() -> UiElement {
-        self.hittable = true
+        self.elementHittable = true
         return self
     }
 
@@ -229,16 +247,16 @@ open class UiElement {
     @discardableResult
     public func swipeUpUntilVisible(maxAttempts: Int = 5) -> UiElement {
         var eventCount = 0
-        var table: XCUIElement
+        var swipeArea: XCUIElement
         
         if tableToSwipeInto != nil {
-            table = tableToSwipeInto!
+            swipeArea = tableToSwipeInto!
         } else {
-            table = app.tables.element
+            swipeArea = app
         }
         
         while eventCount <= maxAttempts, !isVisible {
-            table.swipeUp()
+            swipeArea.swipeUp()
             eventCount += 1
         }
         return self
@@ -247,16 +265,16 @@ open class UiElement {
     @discardableResult
     public func swipeDownUntilVisible(maxAttempts: Int = 5) -> UiElement {
         var eventCount = 0
-        var table: XCUIElement
+        var swipeArea: XCUIElement
         
         if tableToSwipeInto != nil {
-            table = tableToSwipeInto!
+            swipeArea = tableToSwipeInto!
         } else {
-            table = app.tables.element
+            swipeArea = app
         }
-
-        while eventCount <= maxAttempts, !self.isVisible {
-            table.swipeDown()
+        
+        while eventCount <= maxAttempts, !isVisible {
+            swipeArea.swipeDown()
             eventCount += 1
         }
         return self
@@ -407,14 +425,14 @@ open class UiElement {
         }
 
         /// Fail test if both disabled and enbaled parameters were used.
-        if disabled == true && enabled == true {
+        if elementDisabled == true && elementEnabled == true {
             XCTFail("Only one isDisabled() or isEnabled() function can be applied to query the element.", file: #file, line: #line)
         }
 
         /// Filer out XCUIElementQuery based on isEnabled / isDisabled state.
-        if disabled == true {
+        if elementDisabled == true {
             uiElementQuery = uiElementQuery?.matching(Predicate.disabled)
-        } else if enabled == true {
+        } else if elementEnabled == true {
             uiElementQuery = uiElementQuery?.matching(Predicate.enabled)
         }
 
@@ -439,7 +457,7 @@ open class UiElement {
         }
 
         /// Filer out XCUIElementQuery based on isHittable state.
-        if hittable == true {
+        if elementHittable == true {
             uiElementQuery = uiElementQuery?.matching(Predicate.hittable)
         }
 

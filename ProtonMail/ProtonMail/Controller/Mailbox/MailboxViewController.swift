@@ -27,7 +27,7 @@ import SkeletonView
 import SwipyCell
 import ProtonCore_Services
 import ProtonCore_UIFoundations
-
+import Alamofire
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, ComposeSaveHintProtocol {
     typealias viewModelType = MailboxViewModel
     typealias coordinatorType = MailboxCoordinator
@@ -1296,12 +1296,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func hideCheckOptions() {
         guard listEditing else { return }
         self.listEditing = false
-        if presentedViewController == nil {
-            if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
-                self.tableView.reloadRows(at: indexPathsForVisibleRows, with: .automatic)
-            }
-        } else {
-            self.tableView.reloadData()
+        if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
+            self.tableView.reloadRows(at: indexPathsForVisibleRows, with: .automatic)
         }
     }
 
@@ -1991,13 +1987,6 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if let presentedVC = self.presentedViewController,
-           let _ = presentedVC as? ComposerNavigationController {
-            // Ignore event when composer is presented
-            // Or the main thread will block when attachment uploading
-            // the app will crash
-            return
-        }
         if controller == self.viewModel.labelFetchedResults {
             tableView.reloadData()
             return
@@ -2018,14 +2007,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if let presentedVC = self.presentedViewController,
-           let _ = presentedVC as? ComposerNavigationController {
-            // Ignore event when composer is presented
-            // Or the main thread will block when attachment uploading
-            // the app will crash
-            return
-        }
-        
         if controller == self.viewModel.labelFetchedResults || controller == self.viewModel.unreadFetchedResult {
             return
         }
@@ -2043,14 +2024,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        if let presentedVC = self.presentedViewController,
-           let _ = presentedVC as? ComposerNavigationController {
-            // Ignore event when composer is presented
-            // Or the main thread will block when attachment uploading
-            // the app will crash
-            return
-        }
-        
         if controller == self.viewModel.labelFetchedResults || controller == self.viewModel.unreadFetchedResult {
             return
         }
@@ -2065,13 +2038,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        if let presentedVC = self.presentedViewController,
-           let _ = presentedVC as? ComposerNavigationController {
-            // Ignore event when composer is presented
-            // Or the main thread will block when attachment uploading
-            // the app will crash
-            return
-        }
         if controller == self.viewModel.labelFetchedResults || controller == self.viewModel.unreadFetchedResult {
             return
         }

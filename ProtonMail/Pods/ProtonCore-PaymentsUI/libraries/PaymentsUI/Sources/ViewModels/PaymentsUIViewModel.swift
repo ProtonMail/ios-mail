@@ -4,20 +4,20 @@
 //
 //  Copyright (c) 2021 Proton Technologies AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Technologies AG and ProtonCore.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 import ProtonCore_UIFoundations
@@ -26,10 +26,10 @@ import ProtonCore_Payments
 final class PaymentsUIViewModelViewModel: NSObject {
     
     @objc private dynamic var servicePlan: ServicePlanDataService
+    private let mode: PaymentsUIMode
     private let planType: PaymentsUIViewModelProtocol
     private var accountPlans: [AccountPlan] = []
     private var observation: NSKeyValueObservation?
-    private var mode: PaymentsUIMode = .signup
     private var planRefreshHandler: (() -> Void)?
     
     // MARK: Public properties
@@ -45,17 +45,20 @@ final class PaymentsUIViewModelViewModel: NSObject {
     
     // MARK: Public interface
     
-    init(servicePlan: ServicePlanDataService, planTypes: PlanTypes, planRefreshHandler: (() -> Void)? = nil) {
+    init(mode: PaymentsUIMode, servicePlan: ServicePlanDataService, planTypes: PlanTypes, planRefreshHandler: (() -> Void)? = nil) {
+        self.mode = mode
         self.servicePlan = servicePlan
         switch planTypes {
         case .mail:
             planType = MailPlansViewModel()
+        case .vpn:
+            planType = VPNPlansViewModel()
         }
         self.planRefreshHandler = planRefreshHandler
         super.init()
         
-        observation = observe(\.servicePlan.currentSubscription, options: [.new] ) { _, _ in
-            if self.mode != .signup {
+        if self.mode != .signup {
+            observation = observe(\.servicePlan.currentSubscription, options: [.new] ) { _, _ in
                 let oldPlansCount = self.plans.count
                 self.processPlansToUpdate(withCurrentPlan: self.mode == .current )
                 if self.plans.count < oldPlansCount {
@@ -65,10 +68,8 @@ final class PaymentsUIViewModelViewModel: NSObject {
         }
     }
     
-    func fatchPlans(mode: PaymentsUIMode, backendFetch: Bool, completionHandler: ((Result<([Plan], Bool), Error>) -> Void)? = nil) {
+    func fatchPlans(backendFetch: Bool, completionHandler: ((Result<([Plan], Bool), Error>) -> Void)? = nil) {
         isAnyPlanToPurchase = false
-        self.mode = mode
-
         switch mode {
         case .signup:
             fetchAllPlans(plans: planType.plansToShow, backendFetch: backendFetch, completionHandler: completionHandler)
