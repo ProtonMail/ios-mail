@@ -48,13 +48,18 @@
                             </label>
                         </subviews>
                     </stackView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="PWA-Zo-EPc">
+                        <rect key="frame" x="284" y="30" width="20" height="20"/>
+                    </activityIndicatorView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="9l6-om-bwU" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="1e9-K7-KXu"/>
                     <constraint firstItem="OiR-fy-Brd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="3Od-CC-Adv"/>
                     <constraint firstItem="OiR-fy-Brd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="6bu-Mi-TVG"/>
+                    <constraint firstAttribute="trailing" secondItem="PWA-Zo-EPc" secondAttribute="trailing" constant="16" id="6l8-Xm-mCg"/>
                     <constraint firstAttribute="trailing" secondItem="Gce-CO-Ggw" secondAttribute="trailing" constant="16" id="6xi-UM-rwC"/>
                     <constraint firstAttribute="bottom" secondItem="OiR-fy-Brd" secondAttribute="bottom" constant="16" id="9aq-AH-8Ci"/>
+                    <constraint firstItem="PWA-Zo-EPc" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="IfD-nu-QL8"/>
                     <constraint firstItem="Gce-CO-Ggw" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Mp3-mX-g1d"/>
                     <constraint firstItem="9l6-om-bwU" firstAttribute="leading" secondItem="OiR-fy-Brd" secondAttribute="trailing" constant="16" id="XMD-Ep-dzd"/>
                     <constraint firstItem="9l6-om-bwU" firstAttribute="centerY" secondItem="OiR-fy-Brd" secondAttribute="centerY" id="bB0-J6-vbb"/>
@@ -67,6 +72,7 @@
                 <outlet property="fileIconView" destination="OiR-fy-Brd" id="KBd-Yc-pw4"/>
                 <outlet property="fileNameLabel" destination="uKz-QE-GFK" id="Pug-7c-h2G"/>
                 <outlet property="fileSizeLabel" destination="ej0-cS-ZyP" id="enh-hT-Jjp"/>
+                <outlet property="loadingIndicator" destination="PWA-Zo-EPc" id="0yJ-Hp-4Ki"/>
             </connections>
             <point key="canvasLocation" x="133.33333333333334" y="93.080357142857139"/>
         </tableViewCell>

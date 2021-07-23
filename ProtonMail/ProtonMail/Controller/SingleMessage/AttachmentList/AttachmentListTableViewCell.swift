@@ -61,6 +61,7 @@ class AttachmentListTableViewCell: UITableViewCell {
     @IBOutlet private weak var fileNameLabel: UILabel!
     @IBOutlet private weak var fileSizeLabel: UILabel!
     @IBOutlet private weak var arrowIconView: UIImageView!
+    @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -77,16 +78,30 @@ class AttachmentListTableViewCell: UITableViewCell {
         addSeparator(padding: 0)
     }
 
-    func configure(mimeType: String, fileName: String, fileSize: String) {
+    func configure(mimeType: String,
+                   fileName: String,
+                   fileSize: String,
+                   isDownloading: Bool) {
         let type = MIMEType(rawValue: mimeType)
         fileIconView.image = type.bigIcon
         fileIconView.tintColor = UIColorManager.TextNorm
 
         var fileNameAttribute = FontManager.Default
+        var fileSizeAttribute = FontManager.DefaultSmallWeak
+        if isDownloading {
+            arrowIconView.isHidden = true
+            loadingIndicator.startAnimating()
+
+            fileNameAttribute = FontManager.DefaultDisabled
+            fileSizeAttribute = FontManager.DefaultSmallDisabled
+        } else {
+            arrowIconView.isHidden = false
+            loadingIndicator.stopAnimating()
+        }
+
         fileNameAttribute.addTruncatingTail()
         fileNameLabel.attributedText = NSAttributedString(string: fileName, attributes: fileNameAttribute)
 
-        var fileSizeAttribute = FontManager.DefaultSmallWeak
         fileSizeAttribute.addTruncatingTail()
         fileSizeLabel.attributedText = NSAttributedString(string: fileSize, attributes: fileSizeAttribute)
     }

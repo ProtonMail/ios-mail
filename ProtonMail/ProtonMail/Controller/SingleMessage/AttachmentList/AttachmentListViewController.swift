@@ -31,6 +31,8 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
     let bannerContainer: UIView = UIView()
     private var bannerHeightConstraint: NSLayoutConstraint?
     private var isInternetBannerPresented = false
+    private var previewer: QuickViewViewController?
+    private var lastClickAttachmentID: String?
 
     // Used in Quick Look dataSource
     private var tempClearFileURL: URL?
@@ -75,11 +77,38 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
                                                selector: #selector(reachabilityChanged(_:)),
                                                name: NSNotification.Name.reachabilityChanged,
                                                object: nil)
+
+        self.bindDownloadEvent()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.previewer = nil
+        self.lastClickAttachmentID = nil
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.updateInterface(reachability: sharedInternetReachability)
+    }
+
+    private func bindDownloadEvent() {
+        viewModel.attachmentDownloaded = { [weak self] attachmentID, clearFileURL in
+            DispatchQueue.main.async {
+                guard let self = self,
+                      let (attachment, index) = self.viewModel.getAttachment(id: attachmentID) else { return }
+                if self.lastClickAttachmentID == attachmentID {
+                    self.tempClearFileURL = clearFileURL
+                    if self.isPKPass(attachment: attachment) {
+                        self.openPKPassView()
+                    } else {
+                        let type = attachment.mimeType
+                        self.openQuickLook(mimeType: .init(rawValue: type))
+                    }
+                }
+                self.tableView.reloadRows(at: [index], with: .automatic)
+            }
+        }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -110,9 +139,11 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
             let byteCountFormatter = ByteCountFormatter()
             let sizeString = "\(byteCountFormatter.string(fromByteCount: Int64(attachment.size)))"
 
+            let isDownloading = viewModel.isAttachmentDownloading(id: attachment.att?.attachmentID ?? "")
             cellToConfig.configure(mimeType: attachment.mimeType,
                                    fileName: attachment.fileName,
-                                   fileSize: sizeString)
+                                   fileSize: sizeString,
+                                   isDownloading: isDownloading)
 
             if currentNetworkStatus == .NotReachable && !attachment.isDownloaded {
                 cellToConfig.selectionStyle = .none
@@ -154,21 +185,29 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
             attachment = viewModel.normalAttachments[indexPath.row]
         }
 
-        let errorClosure: (NSError) -> Void = { [weak self] error in
+        self.lastClickAttachmentID = attachment.att?.attachmentID
+        viewModel.open(attachmentInfo: attachment,
+                       showPreviewer: { [weak self] in
+            guard let self = self else { return }
+            if self.isPKPass(attachment: attachment) { return }
+            self.openQuickLook(mimeType: .unknownFile)
+        }, failed: { [weak self] error in
             DispatchQueue.main.async {
-                let alert = error.localizedDescription.alertController()
-                alert.addOKAction()
-                self?.present(alert, animated: true, completion: nil)
+                guard let self = self else { return }
+                let errorClosure = { [weak self] (error: NSError) in
+                    let alert = error.localizedDescription.alertController()
+                    alert.addOKAction()
+                    self?.present(alert, animated: true, completion: nil)
+                }
+                if let previewer = self.previewer {
+                    previewer.dismiss(animated: true) { errorClosure(error) }
+                } else {
+                    errorClosure(error)
+                }
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
-        }
-
-        viewModel.open(attachmentInfo: attachment, failed: errorClosure) { [weak self] url in
-            DispatchQueue.main.async {
-                self?.openQuickLook(clearfileURL: url,
-                                    fileName: attachment.fileName.clear,
-                                    type: attachment.mimeType)
-            }
-        }
+        })
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
 
@@ -195,23 +234,36 @@ private extension AttachmentListViewController {
         self.bannerHeightConstraint = bannerHeightConstraint
     }
 
-    func openQuickLook(clearfileURL: URL, fileName: String, type: String) {
-        self.tempClearFileURL = clearfileURL
+    func isPKPass(attachment: AttachmentInfo) -> Bool {
+        let fileName = attachment.fileName.clear
+        let type = attachment.mimeType
+        return type == "application/vnd.apple.pkpass" ||
+            fileName.contains(check: ".pkpass") == true
+    }
 
-        if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
-           let pkfile = try? Data(contentsOf: clearfileURL),
-           let pass = try? PKPass(data: pkfile),
-           let viewController = PKAddPassesViewController(pass: pass),
-           // as of iOS 12.0 SDK, PKAddPassesViewController will not be initialized on iPads without any warning 🤯
-           (viewController as UIViewController?) != nil {
-            self.present(viewController, animated: true, completion: nil)
-            return
+    func openQuickLook(mimeType: MIMEType) {
+        if self.tempClearFileURL != nil, let previewer = self.previewer {
+            previewer.reloadData()
+            let delayTypes: [MIMEType] = [.video]
+            previewer.removeLoadingView(needDelay: delayTypes.contains(mimeType))
+        } else {
+            let previewQL = QuickViewViewController()
+            previewQL.dataSource = self
+            previewQL.delegate = self
+            self.present(previewQL, animated: true, completion: nil)
+            self.previewer = previewQL
         }
+    }
 
-        let previewQL = QuickViewViewController()
-        previewQL.dataSource = self
-        previewQL.delegate = self
-        self.present(previewQL, animated: true, completion: nil)
+    func openPKPassView() {
+        if let url = self.tempClearFileURL,
+           let pkFile = try? Data(contentsOf: url),
+            let pass = try? PKPass(data: pkFile),
+            let viewController = PKAddPassesViewController(pass: pass),
+            // as of iOS 12.0 SDK, PKAddPassesViewController will not be initialized on iPads without any warning 🤯
+            (viewController as UIViewController?) != nil {
+            self.present(viewController, animated: true, completion: nil)
+        }
     }
 }
 
@@ -295,5 +347,6 @@ extension AttachmentListViewController: QLPreviewControllerDataSource, QLPreview
         }
         try? FileManager.default.removeItem(at: url)
         self.tempClearFileURL = nil
+        self.lastClickAttachmentID = nil
     }
 }
