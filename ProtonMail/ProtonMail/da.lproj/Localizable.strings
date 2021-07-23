@@ -1123,7 +1123,7 @@
 "From:" = "Fra:";
 
 /* abbreviation of forward: */
-"FW:" = "VS:";
+"Fw:" = "VS:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Videresend:";
@@ -1260,7 +1260,7 @@
 "Incorrect password" = "Forkert adgangskode";
 
 /* Error */
-"Incorrect PIN," = "Forkert PIN-kode.";
+"Incorrect PIN." = "Forkert PIN-kode.";
 
 /* Option title */
 "Inherit color from parent folder" = "Nedarv farve fra overordnet mappe";
@@ -1271,11 +1271,8 @@
 /* Title */
 "inline attachments" = "integrerede vedhæftninger";
 
-/* (No Comment) */
-"Input Display Name ..." = "Angiv visningsnavn...";
-
 /* place holder */
-"Input Display Name …" = "Angiv visningsnavn…";
+"Input Display Name…" = "Angiv visningsnavn…";
 
 /* place holder */
 "Input Notification Email …" = "Angiv notifikations-e-mail…";
@@ -1741,9 +1738,6 @@
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "EE d. MMM yyyy %@";
 
-/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE d MMM yyyy %1$@ skrev %2$@:";
-
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorer kun aktiveringen af købet, hvis du er sikker på, at alle dine abonnementer er opdaterede. For yderligere hjælp, kontakt venligst kundesupport. \r\n\r\n Er du sikker på, at du vil ignorere aktiveringen?";
 
@@ -2060,7 +2054,7 @@
 "Remove All" = "Fjern alle";
 
 /* Settings row */
-"Remove image meta-data" = "Fjern metadata for billede";
+"Remove image metadata" = "Fjern metadata for billede";
 
 /* action title */
 "Remove password" = "Fjern adgangskode";
@@ -2574,7 +2568,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS-certifikatvalidering mislykkedes. Din forbindelse kan overvåges, og appen blokeres midlertidigt af hensyn til din sikkerhed.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS-certifikatvalidering mislykkedes. Din forbindelse kan overvåges, og appen blokeres midlertidigt af hensyn til din sikkerhed.\n\nSkift netværk øjeblikkeligt";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS-certifikatvalidering mislykkedes. Din forbindelse kan overvåges, og appen blokeres midlertidigt af hensyn til din sikkerhed.\n\nSkift netværk øjeblikkeligt";
 
 /* message To: feild
    Title */

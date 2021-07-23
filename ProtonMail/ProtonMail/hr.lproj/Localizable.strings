@@ -1123,7 +1123,7 @@
 "From:" = "Od:";
 
 /* abbreviation of forward: */
-"FW:" = "FW:";
+"Fw:" = "Fw:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Fwd:";
@@ -1260,7 +1260,7 @@
 "Incorrect password" = "Nevažeća lozinka";
 
 /* Error */
-"Incorrect PIN," = "Pogrešan PIN,";
+"Incorrect PIN." = "Pogrešan PIN.";
 
 /* Option title */
 "Inherit color from parent folder" = "Naslijedi boju iz roditeljske mape";
@@ -1271,11 +1271,8 @@
 /* Title */
 "inline attachments" = "ugrađeni privitak";
 
-/* (No Comment) */
-"Input Display Name ..." = "Unesi zaslonski naziv...";
-
 /* place holder */
-"Input Display Name …" = "Unesite zaslonsko ime…";
+"Input Display Name…" = "Unesite zaslonsko ime…";
 
 /* place holder */
 "Input Notification Email …" = "Unesi adresu e-pošte za obavijesti…";
@@ -1741,9 +1738,6 @@
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "Dana EE, d. MMM, yyyy u %@";
 
-/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "Dana EE, d. MMM, yyyy u %1$@, %2$@ je napisao/la:";
-
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Zanemarite aktivaciju kupnje samo ako ste sigurni da su sve vaše pretplate ažurirane. Za daljnju pomoć obratite se korisničkoj podršci. \r\n\r\n Jeste li sigurni da želite zanemariti aktivaciju?";
 
@@ -2060,7 +2054,7 @@
 "Remove All" = "Ukloni sve";
 
 /* Settings row */
-"Remove image meta-data" = "Ukloni meta podatke slika";
+"Remove image metadata" = "Ukloni meta podatke slika";
 
 /* action title */
 "Remove password" = "Ukloni lozinku";
@@ -2574,7 +2568,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Provjera TLS certifikata nije uspjela. Vaša veza može biti nadzirana te je aplikacija je privremeno blokirana zbog vaše sigurnosti.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Provjera TLS certifikata nije uspjela. Vaša veza može biti nadzirana te je aplikacija je privremeno blokirana zbog vaše sigurnosti.\n\nOdmah promijenite mrežu";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Provjera TLS certifikata nije uspjela. Vaša veza može biti nadzirana te je aplikacija je privremeno blokirana zbog vaše sigurnosti.\n\nOdmah promijenite mrežu";
 
 /* message To: feild
    Title */

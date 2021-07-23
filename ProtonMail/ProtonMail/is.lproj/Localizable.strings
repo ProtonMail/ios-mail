@@ -1123,7 +1123,7 @@
 "From:" = "Frá:";
 
 /* abbreviation of forward: */
-"FW:" = "Áfram:";
+"Fw:" = "Áfram:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Áfram:";
@@ -1260,7 +1260,7 @@
 "Incorrect password" = "Rangt lykilorð";
 
 /* Error */
-"Incorrect PIN," = "Rangt PIN-númer,";
+"Incorrect PIN." = "Rangt PIN-númer.";
 
 /* Option title */
 "Inherit color from parent folder" = "Inherit color from parent folder";
@@ -1271,11 +1271,8 @@
 /* Title */
 "inline attachments" = "innfelld viðhengi";
 
-/* (No Comment) */
-"Input Display Name ..." = "Settu inn birtingarnafn ...";
-
 /* place holder */
-"Input Display Name …" = "Input Display Name …";
+"Input Display Name…" = "Settu inn birtingarnafn…";
 
 /* place holder */
 "Input Notification Email …" = "Input Notification Email …";
@@ -1741,9 +1738,6 @@
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "EE, d. MMM, yyyy klukkan %@";
 
-/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d. MMM, yyyy kl. %1$@, skrifaði %2$@:";
-
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
 
@@ -2060,7 +2054,7 @@
 "Remove All" = "Fjarlægja allt";
 
 /* Settings row */
-"Remove image meta-data" = "Fjarlægja lýsigögn myndar";
+"Remove image metadata" = "Fjarlægja lýsigögn myndar";
 
 /* action title */
 "Remove password" = "Remove password";
@@ -2574,7 +2568,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately";
 
 /* message To: feild
    Title */

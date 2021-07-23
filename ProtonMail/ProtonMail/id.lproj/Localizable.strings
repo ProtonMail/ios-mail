@@ -1123,7 +1123,7 @@
 "From:" = "Dari:";
 
 /* abbreviation of forward: */
-"FW:" = "Terusan:";
+"Fw:" = "Terusan:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Fwd:";
@@ -1260,7 +1260,7 @@
 "Incorrect password" = "Kata sandi salah";
 
 /* Error */
-"Incorrect PIN," = "PIN salah,";
+"Incorrect PIN." = "PIN salah.";
 
 /* Option title */
 "Inherit color from parent folder" = "Wariskan warna dari folder induk";
@@ -1271,11 +1271,8 @@
 /* Title */
 "inline attachments" = "lampiran sebaris";
 
-/* (No Comment) */
-"Input Display Name ..." = "Masukkan nama tampilan ...";
-
 /* place holder */
-"Input Display Name …" = "Masukkan Nama Tampilan …";
+"Input Display Name…" = "Masukkan Nama Tampilan…";
 
 /* place holder */
 "Input Notification Email …" = "Masukkan Surel Pemberitahuan …";
@@ -1741,9 +1738,6 @@
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "Pada EE, d MMM yyyy pukul %@";
 
-/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "Pada EE, d MMM yyyy pukul %1$@, %2$@, menulis:";
-
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Hanya abaikan aktivasi pembayaran jika Anda yakin semua langganan Anda telah terperbaharui. Untuk bantuan lebih lanjut, silakan hubungi layanan konsumen. \r\n\r\n Apakah Anda yakin ingin mengabaikan aktivasi?";
 
@@ -2060,7 +2054,7 @@
 "Remove All" = "Hapus Semua";
 
 /* Settings row */
-"Remove image meta-data" = "Hapus meta-data gambar";
+"Remove image metadata" = "Hapus metadata gambar";
 
 /* action title */
 "Remove password" = "Hapus sandi";
@@ -2574,7 +2568,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Validasi sertifikat TLS gagal. Koneksi Anda mungkin diawasi dan aplikasi memblokir sementara demi keselamatan Anda.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Validasi sertifikat TLS gagal. Koneksi Anda mungkin sedang dipantau dan sementara aplikasi telah di blokir untuk keamanan Anda.\n\nsegera beralih jaringan";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Validasi sertifikat TLS gagal. Koneksi Anda mungkin sedang dipantau dan sementara aplikasi telah di blokir untuk keamanan Anda.\n\nsegera beralih jaringan";
 
 /* message To: feild
    Title */

@@ -1123,7 +1123,7 @@
 "From:" = "Від:";
 
 /* abbreviation of forward: */
-"FW:" = "FW:";
+"Fw:" = "Fw:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Fwd:";
@@ -1260,7 +1260,7 @@
 "Incorrect password" = "Неправильний пароль";
 
 /* Error */
-"Incorrect PIN," = "Неправильний ПІН,";
+"Incorrect PIN." = "Неправильний ПІН.";
 
 /* Option title */
 "Inherit color from parent folder" = "Успадкувати колір від теки вищого рівня";
@@ -1271,11 +1271,8 @@
 /* Title */
 "inline attachments" = "вбудовані вкладення";
 
-/* (No Comment) */
-"Input Display Name ..." = "Введіть ім'я ...";
-
 /* place holder */
-"Input Display Name …" = "Введіть ім'я…";
+"Input Display Name…" = "Введіть ім'я…";
 
 /* place holder */
 "Input Notification Email …" = "Введіть е-пошту для сповіщень…";
@@ -1741,9 +1738,6 @@
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "EE, d MMM yyyy, %@";
 
-/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d MMM yyyy, %1$@, %2$@, написано:";
-
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ігноруйте активацію покупки лише якщо ви впевнені, що усі ваші передплати актуальні. Для отримання допомоги, зверніться до служби підтримки. \r\n\r\n Ви дійсно хочете ігнорувати активацію?";
 
@@ -2060,7 +2054,7 @@
 "Remove All" = "Вилучити все";
 
 /* Settings row */
-"Remove image meta-data" = "Вилучити метадані зображення";
+"Remove image metadata" = "Вилучити метадані зображення";
 
 /* action title */
 "Remove password" = "Вилучити пароль";
@@ -2574,7 +2568,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Не вдалося засвідчити сертифікат TLS. Ваше з'єднання може відстежуватись, тому задля вашої безпеки програма тимчасово заблокована.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Не вдалося засвідчити сертифікат TLS. Ваше з'єднання може відстежуватись, тому задля вашої безпеки програма тимчасово заблокована.\n\nнегайно перемкнути мережу";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Не вдалося засвідчити сертифікат TLS. Ваше з'єднання може відстежуватись, тому задля вашої безпеки програма тимчасово заблокована.\n\nнегайно перемкнути мережу";
 
 /* message To: feild
    Title */

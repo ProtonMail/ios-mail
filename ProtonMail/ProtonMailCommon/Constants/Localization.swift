@@ -60,8 +60,8 @@ class LocalizedString {
     lazy var _settings_displayname_title = NSLocalizedString("DisplayName", comment: "Title in display name settings")
     /// "DISPLAY NAME"
     lazy var _settings_display_name_title = NSLocalizedString("Display Name", comment: "Title in settings")
-    /// "Input Display Name …"
-    lazy var _settings_input_display_name_placeholder = NSLocalizedString("Input Display Name …", comment: "place holder")
+    /// "Input Display Name…"
+    lazy var _settings_input_display_name_placeholder = NSLocalizedString("Input Display Name…", comment: "place holder")
     /// "Signature"
     lazy var _settings_signature_title = NSLocalizedString("Signature", comment: "Title in signature settings")
     /// "Email default signature"
@@ -93,8 +93,8 @@ class LocalizedString {
     lazy var _settings_new_password = NSLocalizedString("New password", comment: "Placeholder")
     /// "Confirm new password"
     lazy var _settings_confirm_new_password = NSLocalizedString("Confirm new password", comment: "Placeholder")
-    /// "Remove image meta-data"
-    lazy var _strip_metadata = NSLocalizedString("Remove image meta-data", comment: "Settings row")
+    /// "Remove image metadata"
+    lazy var _strip_metadata = NSLocalizedString("Remove image metadata", comment: "Settings row")
     /// "Default browser"
     lazy var _default_browser = NSLocalizedString("Default browser", comment: "Settings row")
     /// "Manage in device Settings"
@@ -257,17 +257,15 @@ class LocalizedString {
     lazy var _composer_short_reply   = NSLocalizedString("Re:", comment: "abbreviation of reply:")
     /// "Fwd:"
     lazy var _composer_short_forward = NSLocalizedString("Fwd:", comment: "abbreviation of forward:")
-    /// "FW:"
-    lazy var _composer_short_forward_shorter = NSLocalizedString("FW:", comment: "abbreviation of forward:")
+    /// "Fw:"
+    lazy var _composer_short_forward_shorter = NSLocalizedString("Fw:", comment: "abbreviation of forward:")
     /// "On"
     lazy var _composer_on            = NSLocalizedString("On", comment: "Title")
     /// "wrote:"
     lazy var _composer_wrote         = NSLocalizedString("wrote:", comment: "Title")
     /// "On EE, MMM d, yyyy at %@"
     lazy var _composer_forward_header = NSLocalizedString("On EE, MMM d, yyyy at %@", comment: "forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.")
-    /// "On EE, MMM d, yyyy at %@, %@, wrote:"
-    lazy var _composer_reply_header = NSLocalizedString("On EE, MMM d, yyyy at %@, %@, wrote:", comment: "reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. ")
-    
+
     /// "Date:"
     lazy var _composer_date_field    = NSLocalizedString("Date:", comment: "message Date: text")
     /// "Subject:"
@@ -769,8 +767,8 @@ class LocalizedString {
     /// "attempt remaining until secure data wipe!"
     lazy var _attempt_remaining_until_secure_data_wipe = NSLocalizedString("%d attempt remaining until secure data wipe!", comment: "Error")
 
-    /// "Incorrect PIN,"
-    lazy var _incorrect_pin = NSLocalizedString("Incorrect PIN,", comment: "Error")
+    /// "Incorrect PIN."
+    lazy var _incorrect_pin = NSLocalizedString("Incorrect PIN.", comment: "Error")
 
     /// "attempts remaining"
     lazy var _attempt_remaining = NSLocalizedString("%d attempt remaining", comment: "Description")
@@ -1816,7 +1814,7 @@ class LocalizedString {
     // TrustKit
     
     lazy var _cert_validation_failed_title = NSLocalizedString("Insecure connection", comment: "Cert pinning failed alert title")
-    lazy var _cert_validation_failed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately", comment: "Cert pinning failed alert message")
+    lazy var _cert_validation_failed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately", comment: "Cert pinning failed alert message")
     
     lazy var _cert_validation_hardfailed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n", comment: "Cert pinning failed alert message")
 

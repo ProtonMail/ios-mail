@@ -1123,7 +1123,7 @@
 "From:" = "Seg:";
 
 /* abbreviation of forward: */
-"FW:" = "AZN:";
+"Fw:" = "AZN:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Azn:";
@@ -1260,7 +1260,7 @@
 "Incorrect password" = "Yir awal uffir";
 
 /* Error */
-"Incorrect PIN," = "Yir tangalt PIN,";
+"Incorrect PIN." = "Yir tangalt PIN.";
 
 /* Option title */
 "Inherit color from parent folder" = "Ini yettwaɣellet seg ukaram agejdan";
@@ -1271,11 +1271,8 @@
 /* Title */
 "inline attachments" = "ifuyla yeddan";
 
-/* (No Comment) */
-"Input Display Name ..." = "Sekcem isem...";
-
 /* place holder */
-"Input Display Name …" = "Sekcem isem n uskan…";
+"Input Display Name…" = "Sekcem isem n uskan…";
 
 /* place holder */
 "Input Notification Email …" = "Sekcem imayl n ulɣu…";
@@ -1741,9 +1738,6 @@
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "Deg EE, MMM d, yyyy ɣef %@";
 
-/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "Deg EE, MMM d, yyyy ɣef %1$@, %2$@, y/tura:";
-
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ttu asermed n tiɣin ma yella kan tetḥeqqeḍ belli akk iltaɣen-inek•m ttweleqqemen. I wugar n tallelt, ttxil-k•m nermes tadhelt n umsaɣ.\r\n\r\n Tetḥeqqeḍ belli tebɣiḍ ad tettuḍ asermed?";
 
@@ -2060,7 +2054,7 @@
 "Remove All" = "Kkes meṛṛa";
 
 /* Settings row */
-"Remove image meta-data" = "Kkes idferisefka n tugna";
+"Remove image metadata" = "Kkes idferisefka n tugna";
 
 /* action title */
 "Remove password" = "Kkes wawal uffir";
@@ -2574,7 +2568,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Aseɣbel n uselkin TLS ur yeddi ara. Tuqqna-inek·inem ahat ad tettuɛass, ɣef waya asnas ad yettusewḥel i kra n wakud i uḍman n tɣellist-inek·inem.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Aseɣbel n uselkin TLS ur yeddi ara. Tuqqna-inek·inem ahat ad tettuɛass, ɣef waya asnas ad yettusewḥel i kra n wakud i uḍman n tɣellist-inek·inem.\n\nbeddel  tura tura azeṭṭa";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Aseɣbel n uselkin TLS ur yeddi ara. Tuqqna-inek·inem ahat ad tettuɛass, ɣef waya asnas ad yettusewḥel i kra n wakud i uḍman n tɣellist-inek·inem.\n\nbeddel  tura tura azeṭṭa";
 
 /* message To: feild
    Title */

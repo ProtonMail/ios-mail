@@ -148,7 +148,7 @@ class PinInputRobot {
         
         @discardableResult
         func pinErrorMessageShows(_ count: Int) -> PinInputRobot {
-            let errorMessage = String(format: "Incorrect PIN, %d attempts remaining", (10-count))
+            let errorMessage = String(format: "Incorrect PIN. %d attempts remaining", (10-count))
             Element.wait.forStaticTextFieldWithIdentifier(pinCodeAttemptStaticTextIdentifier).assertWithLabel(errorMessage)
             return PinInputRobot()
         }
