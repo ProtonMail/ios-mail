@@ -25,55 +25,16 @@ import XCTest
 
 class MessageActionCodableTests: XCTestCase {
 
-    func testAllCasesAreCovered() {
-        let action = MessageAction.emptySpam
+    func checkIfAllCasesAreTested() {
+        let action: MessageAction = .emptySpam
         switch action {
-        case .saveDraft:
+        case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .read, .unread, .delete, .send, .emptyTrash,
+             .emptySpam, .empty, .label, .unlabel, .folder, .updateLabel, .createLabel, .deleteLabel, .signout,
+             .signin, .fetchMessageDetail, .updateAttKeyPacket:
             break
-        case .uploadAtt:
-            break
-        case .uploadPubkey:
-            break
-        case .deleteAtt:
-            break
-        case .read:
-            break
-        case .unread:
-            break
-        case .delete:
-            break
-        case .send:
-            break
-        case .emptyTrash:
-            break
-        case .emptySpam:
-            break
-        case .empty:
-            break
-        case .label:
-            break
-        case .unlabel:
-            break
-        case .folder:
-            break
-        case .updateLabel:
-            break
-        case .createLabel:
-            break
-        case .deleteLabel:
-            break
-        case .signout:
-            break
-        case .signin:
-            break
-        case .fetchMessageDetail:
-            break
-        case .updateAttKeyPacket:
-            break
-        // Warning: Newly added cases must be covered in one specific test case below to make sure the codable implementation is complete
         }
-        XCTAssert(true, "All cases covered")
     }
+
     func testSaveDraft() throws {
         let action: MessageAction = .saveDraft(messageObjectID: "aDraft")
         let encoded = try JSONEncoder().encode(action)

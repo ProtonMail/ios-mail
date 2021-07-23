@@ -29,228 +29,187 @@ import ProtonCore_Services
 class PushNotificationServiceTests: XCTestCase {
     typealias SubscriptionWithSettings = PushNotificationService.SubscriptionWithSettings
     
-//    func testNoneToReported() {
-//        let newToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
-//        let session = SessionIDMock()
-//        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
-//        let expect = expectation(description: "wait for registration")
-//        
-//        let api = APIMock(registration: { new in
-//                XCTAssertEqual(new.token, newToken)
-//                XCTAssertEqual([new.UID], session.sessionIDs)
-//                XCTAssertFalse(new.encryptionKit.passphrase.isEmpty)
-//                XCTAssertFalse(new.encryptionKit.publicKey.isEmpty)
-//                XCTAssertFalse(new.encryptionKit.privateKey.isEmpty)
-//            
-//                if let current = currentSubscriptionPin.get()?.first, current.state == .pending {
-//                    XCTAssertTrue(true)
-//                } else {
-//                    XCTFail("did not put to pending while calling api")
-//                }
-//            
-//                return nil // no error
-//        },
-//            unregistration: { old in return nil },
-//            registrationDone: { expect.fulfill() },
-//            unregistrationDone: { })
-//        
-//        
-//        let service = PushNotificationService.init(service: nil,
-//                                                   subscriptionSaver: currentSubscriptionPin,
-//                                                   encryptionKitSaver: InMemorySaver(),
-//                                                   outdatedSaver: InMemorySaver(),
-//                                                   sessionIDProvider: session,
-//                                                   deviceRegistrator: api,
-//                                                   signInProvider: SignInMock(),
-//                                                   unlockProvider: UnlockMock())
-//        NotificationCenter.default.removeObserver(service)
-//        currentSubscriptionPin.set(newValue: Optional.none)
-//        
-//        
-//        service.didRegisterForRemoteNotifications(withDeviceToken: newToken)
-//
-//        waitForExpectations(timeout: 5) { error in
-//            XCTAssertNil(error)
-//            
-//            if let current = currentSubscriptionPin.get()?.first, current.state == .reported {
-//                XCTAssertEqual(current.settings, SubscriptionSettings(token: newToken, UID: session.sessionIDs.first!))
-//            } else {
-//                XCTFail("did not report altho api did not return error")
-//            }
-//        }
-//    }
-//    
-//    func testNoneToNotReported() {
-//        let newToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
-//        let session = SessionIDMock()
-//        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
-//        let expect = expectation(description: "wait for registration")
-//
-//        let api = APIMock(registration: { new in
-//                XCTAssertEqual(new.token, newToken)
-//                XCTAssertEqual([new.UID], session.sessionIDs)
-//                XCTAssertFalse(new.encryptionKit.passphrase.isEmpty)
-//                XCTAssertFalse(new.encryptionKit.publicKey.isEmpty)
-//                XCTAssertFalse(new.encryptionKit.privateKey.isEmpty)
-//            
-//                if let current = currentSubscriptionPin.get()?.first, current.state == .pending { // should be pending with new settings
-//                    XCTAssertTrue(true)
-//                } else {
-//                    XCTFail("did not put to pending while calling api")
-//                }
-//
-//                return NSError.init(domain: "String", code: 0, userInfo: nil) // error
-//        },
-//            unregistration: { old in return nil },
-//            registrationDone: { expect.fulfill() },
-//            unregistrationDone: { })
-//        
-//        let service = PushNotificationService.init(service: nil,
-//                                                   subscriptionSaver: currentSubscriptionPin,
-//                                                   encryptionKitSaver: InMemorySaver(),
-//                                                   outdatedSaver: InMemorySaver(),
-//                                                   sessionIDProvider: session,
-//                                                   deviceRegistrator: api,
-//                                                   signInProvider: SignInMock(),
-//                                                   unlockProvider: UnlockMock())
-//        NotificationCenter.default.removeObserver(service)
-//        currentSubscriptionPin.set(newValue: Optional.none)
-//
-//        service.didRegisterForRemoteNotifications(withDeviceToken: newToken)
-//
-//        waitForExpectations(timeout: 5) { error in
-//            XCTAssertNil(error)
-//            
-//            if let current = currentSubscriptionPin.get()?.first, current.state == .notReported { // should be notReported
-//                XCTAssertEqual(current.settings, SubscriptionSettings(token: newToken, UID: session.sessionIDs.first!))
-//            } else {
-//                XCTFail("did not report altho api did not return error")
-//            }
-//        }
-//    }
-//
-//    func testReportedToReported() {
-//        let oldToken = "Thou shalt not covet"
-//        let newToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
-//        let session = SessionIDMock()
-//        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
-//        let outdatedPin = InMemorySaver<Set<SubscriptionSettings>>()
-//        let expect = expectation(description: "wait for registration")
-//
-//        let api = APIMock(registration: { new in
-//                XCTAssertEqual(new.token, newToken)
-//                XCTAssertEqual([new.UID], session.sessionIDs)
-//                XCTAssertFalse(new.encryptionKit.passphrase.isEmpty)
-//                XCTAssertFalse(new.encryptionKit.publicKey.isEmpty)
-//                XCTAssertFalse(new.encryptionKit.privateKey.isEmpty)
-//            
-//            
-//                if let current = currentSubscriptionPin.get()?.first, current.state == .pending { // should be pending with new settings
-//                    XCTAssertEqual(new.token, current.settings.token)
-//                    XCTAssertEqual(new.UID, current.settings.UID)
-//                    XCTAssertEqual(new.encryptionKit, current.settings.encryptionKit)
-//                } else {
-//                    XCTFail("did not put to pending while calling api")
-//                }
-//                
-//                return nil // no error
-//        },
-//            unregistration: { old in
-//                XCTAssertEqual(old.token, oldToken) // should unregister old
-//                XCTAssertEqual(old.UID, session.sessionIDs.first)
-//                return nil // no error
-//        },
-//            registrationDone: { },
-//            unregistrationDone: { expect.fulfill() })
-//        
-//        let service = PushNotificationService.init(service: nil,
-//                                                   subscriptionSaver: currentSubscriptionPin,
-//                                                   encryptionKitSaver: InMemorySaver(),
-//                                                   outdatedSaver: outdatedPin,
-//                                                   sessionIDProvider: session,
-//                                                   deviceRegistrator: api,
-//                                                   signInProvider: SignInMock(),
-//                                                   unlockProvider: UnlockMock())
-//        NotificationCenter.default.removeObserver(service)
-//        currentSubscriptionPin.set(newValue: Set([SubscriptionWithSettings(settings: .init(token: oldToken, UID: session.sessionIDs.first!), state: .reported)])) // already have some reported subscription
-//        
-//        service.didRegisterForRemoteNotifications(withDeviceToken: newToken)
-//
-//        waitForExpectations(timeout: 5) { error in
-//            XCTAssertNil(error)
-//            
-//            if let current = currentSubscriptionPin.get()?.first, current.state == .reported { // reported with new token
-//                XCTAssertEqual(current.settings, SubscriptionSettings(token: newToken, UID: session.sessionIDs.first!))
-//            } else {
-//                XCTFail("did not report altho api did not return error")
-//            }
-//
-//            XCTAssertTrue(outdatedPin.get()?.isEmpty == true) // outdated should be empty
-//        }
-//    }
-//
+    func testNoneToReported() {
+        let newToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
+        let session = SessionIDMock()
+        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
+        let expect = expectation(description: "wait for registration")
+
+        let api = APIMock(registration: { new in
+                XCTAssertEqual(new.token, newToken)
+                XCTAssertEqual([new.UID], session.sessionIDs)
+                XCTAssertFalse(new.encryptionKit.passphrase.isEmpty)
+                XCTAssertFalse(new.encryptionKit.publicKey.isEmpty)
+                XCTAssertFalse(new.encryptionKit.privateKey.isEmpty)
+
+                if let current = currentSubscriptionPin.get()?.first, current.state == .pending {
+                    XCTAssertTrue(true)
+                } else {
+                    XCTFail("did not put to pending while calling api")
+                }
+
+                return nil // no error
+        },
+            unregistration: { old in return nil },
+            registrationDone: { expect.fulfill() },
+            unregistrationDone: { })
+
+
+        let service = PushNotificationService.init(service: nil,
+                                                   subscriptionSaver: currentSubscriptionPin,
+                                                   encryptionKitSaver: InMemorySaver(),
+                                                   outdatedSaver: InMemorySaver(),
+                                                   sessionIDProvider: session,
+                                                   deviceRegistrator: api,
+                                                   signInProvider: SignInMock(),
+                                                   unlockProvider: UnlockMock())
+        NotificationCenter.default.removeObserver(service)
+        currentSubscriptionPin.set(newValue: Optional.none)
+
+
+        service.didRegisterForRemoteNotifications(withDeviceToken: newToken)
+
+        waitForExpectations(timeout: 5) { error in
+            XCTAssertNil(error)
+
+            if let current = currentSubscriptionPin.get()?.first, current.state == .reported {
+                XCTAssertEqual(current.settings, SubscriptionSettings(token: newToken, UID: session.sessionIDs.first!))
+            } else {
+                XCTFail("did not report altho api did not return error")
+            }
+        }
+    }
+
+    func testNoneToNotReported() {
+        let newToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
+        let session = SessionIDMock()
+        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
+        let expect = expectation(description: "wait for registration")
+
+        let api = APIMock(registration: { new in
+                XCTAssertEqual(new.token, newToken)
+                XCTAssertEqual([new.UID], session.sessionIDs)
+                XCTAssertFalse(new.encryptionKit.passphrase.isEmpty)
+                XCTAssertFalse(new.encryptionKit.publicKey.isEmpty)
+                XCTAssertFalse(new.encryptionKit.privateKey.isEmpty)
+
+                if let current = currentSubscriptionPin.get()?.first, current.state == .pending { // should be pending with new settings
+                    XCTAssertTrue(true)
+                } else {
+                    XCTFail("did not put to pending while calling api")
+                }
+
+                return NSError.init(domain: "String", code: 0, userInfo: nil) // error
+        },
+            unregistration: { old in return nil },
+            registrationDone: { expect.fulfill() },
+            unregistrationDone: { })
+
+        let service = PushNotificationService.init(service: nil,
+                                                   subscriptionSaver: currentSubscriptionPin,
+                                                   encryptionKitSaver: InMemorySaver(),
+                                                   outdatedSaver: InMemorySaver(),
+                                                   sessionIDProvider: session,
+                                                   deviceRegistrator: api,
+                                                   signInProvider: SignInMock(),
+                                                   unlockProvider: UnlockMock())
+        NotificationCenter.default.removeObserver(service)
+        currentSubscriptionPin.set(newValue: Optional.none)
+
+        service.didRegisterForRemoteNotifications(withDeviceToken: newToken)
+
+        waitForExpectations(timeout: 5) { error in
+            XCTAssertNil(error)
+
+            if let current = currentSubscriptionPin.get()?.first, current.state == .notReported { // should be notReported
+                XCTAssertEqual(current.settings, SubscriptionSettings(token: newToken, UID: session.sessionIDs.first!))
+            } else {
+                XCTFail("did not report altho api did not return error")
+            }
+        }
+    }
+
+    func testReportedToReported() {
+        let oldToken = "Thou shalt not covet"
+        let newToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
+        let session = SessionIDMock()
+        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
+        let outdatedPin = InMemorySaver<Set<SubscriptionSettings>>()
+        let expect = expectation(description: "wait for registration")
+
+        let api = APIMock(registration: { new in
+                XCTAssertEqual(new.token, newToken)
+                XCTAssertEqual([new.UID], session.sessionIDs)
+                XCTAssertFalse(new.encryptionKit.passphrase.isEmpty)
+                XCTAssertFalse(new.encryptionKit.publicKey.isEmpty)
+                XCTAssertFalse(new.encryptionKit.privateKey.isEmpty)
+
+
+                if let current = currentSubscriptionPin.get()?.first, current.state == .pending { // should be pending with new settings
+                    XCTAssertEqual(new.token, current.settings.token)
+                    XCTAssertEqual(new.UID, current.settings.UID)
+                    XCTAssertEqual(new.encryptionKit, current.settings.encryptionKit)
+                } else {
+                    XCTFail("did not put to pending while calling api")
+                }
+
+                return nil // no error
+        },
+            unregistration: { old in
+                XCTAssertEqual(old.token, oldToken) // should unregister old
+                XCTAssertEqual(old.UID, session.sessionIDs.first)
+                return nil // no error
+        },
+            registrationDone: { },
+            unregistrationDone: { expect.fulfill() })
+
+        let service = PushNotificationService.init(service: nil,
+                                                   subscriptionSaver: currentSubscriptionPin,
+                                                   encryptionKitSaver: InMemorySaver(),
+                                                   outdatedSaver: outdatedPin,
+                                                   sessionIDProvider: session,
+                                                   deviceRegistrator: api,
+                                                   signInProvider: SignInMock(),
+                                                   unlockProvider: UnlockMock())
+        NotificationCenter.default.removeObserver(service)
+        currentSubscriptionPin.set(newValue: Set([SubscriptionWithSettings(settings: .init(token: oldToken, UID: session.sessionIDs.first!), state: .reported)])) // already have some reported subscription
+
+        service.didRegisterForRemoteNotifications(withDeviceToken: newToken)
+
+        waitForExpectations(timeout: 5) { error in
+            XCTAssertNil(error)
+
+            if let current = currentSubscriptionPin.get()?.first, current.state == .reported { // reported with new token
+                XCTAssertEqual(current.settings, SubscriptionSettings(token: newToken, UID: session.sessionIDs.first!))
+            } else {
+                XCTFail("did not report altho api did not return error")
+            }
+
+            XCTAssertTrue(outdatedPin.get()?.isEmpty == true) // outdated should be empty
+        }
+    }
+
 //    //TODO:: enable the test
 //    func testSameSettingsNoNeedToReport() {
-////        let oldToken = "Thou shalt not covet"
-////        let session = SessionIDMock()
-////        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
-////        
-////        let expect = expectation(description: "wait for registration")
-////        expect.isInverted = true // should not be fulfilled - api should not be called
-////        let api = APIMock(registration: { new in
-////                XCTFail("attempt of unnecessary registration")
-////                expect.fulfill()  // no need to continue, already not good
-////                return nil
-////        },
-////            unregistration: { old in
-////                XCTFail("attempt of unncessary unregistration")
-////                expect.fulfill()
-////                return nil // no need to continue, already not good
-////        },
-////            registrationDone: { },
-////            unregistrationDone: { })
-////
-////        let service = PushNotificationService.init(service: nil,
-////                                                   subscriptionSaver: currentSubscriptionPin,
-////                                                   encryptionKitSaver: InMemorySaver(),
-////                                                   outdatedSaver: InMemorySaver(),
-////                                                   sessionIDProvider: session,
-////                                                   deviceRegistrator: api,
-////                                                   signInProvider: SignInMock(),
-////                                                   unlockProvider: UnlockMock())
-////        NotificationCenter.default.removeObserver(service)
-////        currentSubscriptionPin.set(newValue: Set([SubscriptionWithSettings(settings:.init(token: oldToken, UID: session.sessionIDs.first!), state: .reported)])) // already have some reported subscription
-////
-////        service.didRegisterForRemoteNotifications(withDeviceToken: oldToken)
-////
-////        waitForExpectations(timeout: 5) { error in
-////            XCTAssertNil(error)
-////
-////            if let current = currentSubscriptionPin.get()?.first, current.state == .reported {  // should not be different
-////                XCTAssertEqual(current.settings, SubscriptionSettings(token: oldToken, UID: session.sessionIDs.first!))
-////            } else {
-////                 XCTFail("did change subscription altho did not need to")
-////            }
-////        }
-//    }
-//
-//    func testSameSettingsNeedToReport() {
-//        let oldToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
+//        let oldToken = "Thou shalt not covet"
 //        let session = SessionIDMock()
 //        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
-//        let expect = expectation(description: "wait for registration")
 //
+//        let expect = expectation(description: "wait for registration")
+//        expect.isInverted = true // should not be fulfilled - api should not be called
 //        let api = APIMock(registration: { new in
-//            XCTAssertTrue(true) // registers - good
-//            return nil
+//                XCTFail("attempt of unnecessary registration")
+//                expect.fulfill()  // no need to continue, already not good
+//                return nil
 //        },
 //            unregistration: { old in
 //                XCTFail("attempt of unncessary unregistration")
+//                expect.fulfill()
 //                return nil // no need to continue, already not good
 //        },
-//            registrationDone: { expect.fulfill() },
+//            registrationDone: { },
 //            unregistrationDone: { })
-//        
+//
 //        let service = PushNotificationService.init(service: nil,
 //                                                   subscriptionSaver: currentSubscriptionPin,
 //                                                   encryptionKitSaver: InMemorySaver(),
@@ -260,20 +219,61 @@ class PushNotificationServiceTests: XCTestCase {
 //                                                   signInProvider: SignInMock(),
 //                                                   unlockProvider: UnlockMock())
 //        NotificationCenter.default.removeObserver(service)
-//        currentSubscriptionPin.set(newValue: Set([SubscriptionWithSettings(settings:.init(token: oldToken, UID: session.sessionIDs.first!), state: .notReported)])) // already have some reported subscription
-//        
-//        service.didRegisterForRemoteNotifications(withDeviceToken: oldToken) // same settings
+//        currentSubscriptionPin.set(newValue: Set([SubscriptionWithSettings(settings:.init(token: oldToken, UID: session.sessionIDs.first!), state: .reported)])) // already have some reported subscription
+//
+//        service.didRegisterForRemoteNotifications(withDeviceToken: oldToken)
 //
 //        waitForExpectations(timeout: 5) { error in
 //            XCTAssertNil(error)
-//            
+//
 //            if let current = currentSubscriptionPin.get()?.first, current.state == .reported {  // should not be different
 //                XCTAssertEqual(current.settings, SubscriptionSettings(token: oldToken, UID: session.sessionIDs.first!))
 //            } else {
-//                 XCTFail("did not report subscription altho did not have reported previous with same settings")
+//                 XCTFail("did change subscription altho did not need to")
 //            }
 //        }
 //    }
+
+    func testSameSettingsNeedToReport() {
+        let oldToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
+        let session = SessionIDMock()
+        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
+        let expect = expectation(description: "wait for registration")
+
+        let api = APIMock(registration: { new in
+            XCTAssertTrue(true) // registers - good
+            return nil
+        },
+            unregistration: { old in
+                XCTFail("attempt of unncessary unregistration")
+                return nil // no need to continue, already not good
+        },
+            registrationDone: { expect.fulfill() },
+            unregistrationDone: { })
+
+        let service = PushNotificationService.init(service: nil,
+                                                   subscriptionSaver: currentSubscriptionPin,
+                                                   encryptionKitSaver: InMemorySaver(),
+                                                   outdatedSaver: InMemorySaver(),
+                                                   sessionIDProvider: session,
+                                                   deviceRegistrator: api,
+                                                   signInProvider: SignInMock(),
+                                                   unlockProvider: UnlockMock())
+        NotificationCenter.default.removeObserver(service)
+        currentSubscriptionPin.set(newValue: Set([SubscriptionWithSettings(settings:.init(token: oldToken, UID: session.sessionIDs.first!), state: .notReported)])) // already have some reported subscription
+
+        service.didRegisterForRemoteNotifications(withDeviceToken: oldToken) // same settings
+
+        waitForExpectations(timeout: 5) { error in
+            XCTAssertNil(error)
+
+            if let current = currentSubscriptionPin.get()?.first, current.state == .reported {  // should not be different
+                XCTAssertEqual(current.settings, SubscriptionSettings(token: oldToken, UID: session.sessionIDs.first!))
+            } else {
+                 XCTFail("did not report subscription altho did not have reported previous with same settings")
+            }
+        }
+    }
 
 }
 
@@ -283,7 +283,7 @@ extension PushNotificationServiceTests {
     typealias SubscriptionSettings = PushSubscriptionSettings
     typealias Completion = CompletionBlock
     
-    internal class InMemorySaver<T: Codable>: Saver<T> {
+    class InMemorySaver<T: Codable>: Saver<T> {
         convenience init() {
             self.init(key: "", store: StoreMock())
         }

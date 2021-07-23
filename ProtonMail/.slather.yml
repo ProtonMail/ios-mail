@@ -2,7 +2,7 @@ configuration: Debug
 input_format: profdata
 xcodeproj: ProtonMail.xcodeproj
 workspace: ProtonMail.xcworkspace
-scheme: Tests
+scheme: ProtonMailTests
 build_directory: ../test_output
 binary_basename: ProtonMail
 ignore: 

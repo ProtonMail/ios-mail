@@ -149,10 +149,8 @@ class PushNotificationServiceSubscriptionTests: XCTestCase {
         let tokenA = "AAAAAAAA"
         let tokenB = "BBBBBBBB"
         let uid1 = "11111111"
-        let uid2 = "22222222"
         
         let settingsA1 = SubscriptionSettings(token: tokenA, UID: uid1)
-        let settingsA2 = SubscriptionSettings(token: tokenA, UID: uid2)
         let settingsB1 = SubscriptionSettings(token: tokenB, UID: uid1)
         let A1p = SubscriptionWithSettings(settings: settingsA1, state: .pending)
         let B1r = SubscriptionWithSettings(settings: settingsB1, state: .reported)

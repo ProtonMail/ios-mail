@@ -26,14 +26,6 @@ import XCTest
 
 class MimeTypesTests: XCTestCase {
 
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-    
     func testClearFilename() {
         XCTAssertEqual("ima/ge.png".clear, "ima_ge.png")
         XCTAssertEqual("i:1#$ma/ge.png".clear, "i_1#$ma_ge.png")
