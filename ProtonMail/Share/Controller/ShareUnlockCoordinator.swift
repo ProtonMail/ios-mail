@@ -94,7 +94,11 @@ class ShareUnlockCoordinator : PushCoordinator {
 
 extension ShareUnlockCoordinator : SharePinUnlockViewControllerDelegate {
     func cancel() {
-        self.viewController?.loginCheck()
+        let users = self.services.get(by: UsersManager.self)
+        users.clean().done { [weak self] _ in
+            let error = NSError(domain: Bundle.main.bundleIdentifier!, code: 0)
+            self?.viewController?.extensionContext?.cancelRequest(withError: error)
+        }.cauterize()
     }
     
     func next() {

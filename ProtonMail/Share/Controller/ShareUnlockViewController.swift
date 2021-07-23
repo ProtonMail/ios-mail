@@ -157,6 +157,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         switch unlockManager.getUnlockFlow() {
         case .requirePin:
             self.bioCodeView.loginCheck(.requirePin)
+            self.coordinator?.go(dest: .pin)
 
         case .requireTouchID:
             self.bioCodeView.loginCheck(.requireTouchID)
