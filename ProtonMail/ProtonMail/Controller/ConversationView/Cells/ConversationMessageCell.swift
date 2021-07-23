@@ -3,6 +3,7 @@ import UIKit
 class ConversationMessageCell: UITableViewCell {
 
     let customView = ConversationMessageView()
+    var cellReuse: (() -> Void)?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -14,6 +15,12 @@ class ConversationMessageCell: UITableViewCell {
 
     private func addSubviews() {
         contentView.addSubview(customView)
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        cellReuse?()
     }
 
     private func setUpLayout() {

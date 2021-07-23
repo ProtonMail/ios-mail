@@ -13,7 +13,10 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
             Message.Attributes.conversationID,
             conversation.conversationID
         )
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: true), NSSortDescriptor(key: #keyPath(Message.order), ascending: true)]
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: #keyPath(Message.time), ascending: true),
+            NSSortDescriptor(key: #keyPath(Message.order), ascending: true)
+        ]
         return NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: context,
@@ -41,7 +44,8 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        conversationUpdate?(.didUpdate)
+        let messages = controller.fetchedObjects?.compactMap { $0 as? Message } ?? []
+        conversationUpdate?(.didUpdate(messages: messages))
     }
 
     func controller(
@@ -53,8 +57,8 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
     ) {
         switch type {
         case .insert:
-            if let message = anObject as? Message, let indexPath = newIndexPath {
-                conversationUpdate?(.insert(message: message, row: indexPath.row))
+            if let indexPath = newIndexPath {
+                conversationUpdate?(.insert(row: indexPath.row))
             }
         case .update:
             if let message = anObject as? Message, let indexPath = indexPath, let newIndexPath = newIndexPath {
@@ -65,8 +69,8 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
                 conversationUpdate?(.move(fromRow: oldIndexPath.row, toRow: newIndexPath.row))
             }
         case .delete:
-            if let message = anObject as? Message {
-                conversationUpdate?(.delete(message: message))
+            if let row = indexPath?.row {
+                conversationUpdate?(.delete(row: row))
             }
         @unknown default:
             break

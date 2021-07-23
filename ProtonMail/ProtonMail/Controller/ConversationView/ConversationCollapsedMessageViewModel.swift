@@ -14,7 +14,7 @@ class ConversationCollapsedMessageViewModel {
     }
 
     var replacingEmails: [Email] {
-        contactService.allEmails()
+        contactService.allAccountEmails()
     }
 
     var model: ConversationMessageModel {

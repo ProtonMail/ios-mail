@@ -587,6 +587,11 @@ class ContactDataService: Service, HasLocalStorage {
         let context = self.coreDataService.mainContext
         return self.allEmailsInManagedObjectContext(context)
     }
+
+    func allAccountEmails() -> [Email] {
+        let context = coreDataService.mainContext
+        return allEmailsInManagedObjectContext(context).filter { $0.userID == userID }
+    }
     
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)

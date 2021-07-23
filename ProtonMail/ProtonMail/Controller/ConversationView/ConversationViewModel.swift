@@ -83,7 +83,6 @@ class ConversationViewModel {
         conversationMessagesProvider.observe { [weak self] update in
             self?.perform(update: update, on: tableView)
             self?.checkTrashedHintBanner()
-            self?.observeNewMessages()
         } storedMessages: { [weak self] messages in
             self?.checkTrashedHintBanner()
             var messageDataModels = messages.compactMap { self?.messageType(with: $0) }
@@ -171,12 +170,24 @@ class ConversationViewModel {
         recordNumOfMessages = messagesDataSource.count
     }
 
+    private func updateDataSource(with messages: [Message]) {
+        messagesDataSource = messages.map { newMessage -> ConversationViewItemType in
+            if let viewModel = messagesDataSource.first(where: { $0.message?.messageID == newMessage.messageID }) {
+                return viewModel
+            }
+            return messageType(with: newMessage)
+        }
+    }
+
     private func perform(update: ConversationUpdateType, on tableView: UITableView) {
         switch update {
         case .willUpdate:
             tableView.beginUpdates()
-        case .didUpdate:
+        case let .didUpdate(messages):
+            updateDataSource(with: messages)
             tableView.endUpdates()
+
+            observeNewMessages()
 
             if !isExpandedAtLaunch && recordNumOfMessages == messagesDataSource.count {
                 if let path = self.expandSpecificMessage(dataModels: &self.messagesDataSource) {
@@ -185,17 +196,22 @@ class ConversationViewModel {
                     setCellIsExpandedAtLaunch()
                 }
             }
-        case let .insert(message, row):
-            insert(message, row, tableView)
+
             refreshView?()
+        case let .insert(row):
+            tableView.insertRows(at: [.init(row: row, section: 1)], with: .automatic)
         case let .update(message, fromRow, toRow):
-            if fromRow != toRow {
-                move(fromRow: fromRow, toRow: toRow, tableView: tableView)
-            }
-            guard let viewModel = messagesDataSource[safe: toRow]?.messageViewModel else {
+            let messageId = message.messageID
+            guard let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == messageId }),
+                  let viewModel = messagesDataSource[index].messageViewModel else {
                 return
             }
             viewModel.messageHasChanged(message: message)
+
+            if fromRow != toRow {
+                tableView.moveRow(at: .init(row: fromRow, section: 1), to: .init(row: toRow, section: 1))
+            }
+
             let path = IndexPath(row: toRow, section: 1)
             guard let cell = tableView.cellForRow(at: path) else { return }
             if viewModel.isTrashed && cell.frame.height > 0 && self.isTrashedMessageHidden {
@@ -203,40 +219,12 @@ class ConversationViewModel {
             } else if !viewModel.isTrashed && cell.frame.height == 0 {
                 tableView.reloadRows(at: [path], with: .automatic)
             }
-            refreshView?()
-        case let .delete(message):
-            if let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == message.messageID }) {
-                messagesDataSource.remove(at: index)
-                tableView.deleteRows(at: [.init(row: index, section: 1)], with: .automatic)
-            }
-            refreshView?()
+        case let .delete(row):
+            tableView.deleteRows(at: [.init(row: row, section: 1)], with: .automatic)
         case let .move(fromRow, toRow):
-            move(fromRow: fromRow, toRow: toRow, tableView: tableView)
-        }
-    }
-
-    private func move(fromRow: Int, toRow: Int, tableView: UITableView) {
-        if let item = messagesDataSource[safe: fromRow] {
-            messagesDataSource.remove(at: fromRow)
-            messagesDataSource.insert(item, at: toRow)
+            guard fromRow != toRow else { return }
             tableView.moveRow(at: .init(row: fromRow, section: 1), to: .init(row: toRow, section: 1))
         }
-    }
-
-    private func insert(_ message: Message, _ row: Int, _ tableView: UITableView) {
-        if row > messagesDataSource.endIndex {
-            (messagesDataSource.endIndex...(messagesDataSource.endIndex + (row - messagesDataSource.endIndex)))
-                .forEach { messagesDataSource.insert(.empty, at: $0) }
-        }
-
-        if let currentElement = messagesDataSource[safe: row], currentElement.isEmpty {
-            messagesDataSource.remove(at: row)
-        } else if let toRemove = messagesDataSource.indexAfterIndex(row, where: { $0.isEmpty }) {
-            messagesDataSource.remove(at: toRemove)
-        }
-
-        messagesDataSource.insert(messageType(with: message), at: row)
-        tableView.insertRows(at: [.init(row: row, section: 1)], with: .automatic)
     }
 
     func starTapped(completion: @escaping (Result<Bool, Error>) -> Void) {

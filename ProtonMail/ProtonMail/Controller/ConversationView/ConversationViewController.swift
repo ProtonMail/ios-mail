@@ -104,8 +104,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                 return tableView.dequeue(cellType: UITableViewCell.self)
             }
             return messageCell(tableView, indexPath: indexPath, viewModel: viewModel)
-        case .empty:
-            return tableView.dequeue(cellType: UITableViewCell.self)
         }
     }
 
@@ -210,8 +208,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     private func countHeightFor(viewType: ConversationViewItemType) -> CGFloat {
-        guard !viewType.isEmpty else { return 0 }
-        guard let viewModel = viewType.messageViewModel else { return UITableView.automaticDimension }
+        guard let viewModel = viewType.messageViewModel else {
+            return UITableView.automaticDimension
+        }
 
         if viewModel.isTrashed && self.viewModel.isTrashedMessageHidden {
             return 0
@@ -270,6 +269,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             }
             collapsedViewModel.reloadView = { [conversationMessageCellPresenter] model in
                 conversationMessageCellPresenter.present(model: model, in: cell.customView)
+            }
+            cell.cellReuse = { [weak collapsedViewModel] in
+                collapsedViewModel?.reloadView = nil
             }
             conversationMessageCellPresenter.present(model: collapsedViewModel.model, in: cell.customView)
             return cell
