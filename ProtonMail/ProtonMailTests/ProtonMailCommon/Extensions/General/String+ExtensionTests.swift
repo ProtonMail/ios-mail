@@ -126,17 +126,6 @@ class String_ExtensionTests: XCTestCase {
         XCTAssertFalse("this\\ is\"really\"not\\allowed@example.com".isValidEmail())
     }
     
-    //TODO:: Figure out later
-    func testShouldInvalidButPassed() {
-        //The address is only valid according to the broad definition of RFC 5322. It is otherwise invalid.
-        //The local part of the address is too long
-        //XCTAssertFalse("foofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoo@baz.com".isValidEmail())
-        //    1234567890123456789012345678901234567890123456789012345678901234+x@example.com (local part is longer than 64 characters)
-        //XCTAssertFalse("email@example.web".isValidEmail())
-        //Address is valid but the Top Level Domain begins with a number
-        //XCTAssertFalse("email@111.222.333.44444".isValidEmail())
-    }
-    
     func testHasImage() {
         let testSrc1 = "<embed type=\"image/svg+xml\" src=\"cid:5d13cdcaf81f4108654c36fc.svg@www.emailprivacytester.com\"/>"
         XCTAssertFalse(testSrc1.hasImage())

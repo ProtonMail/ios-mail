@@ -219,9 +219,6 @@ class SaverTests: XCTestCase {
         XCTAssert(saverCase8.get() == mock)
         XCTAssert(store.log == "g-keyg-keys-keyg-keyr-keyg-keys-keyg-key", store.log)
         store.resetLog()
-        
     }
-
-
 
 }

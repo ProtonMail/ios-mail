@@ -244,10 +244,10 @@ platform :ios do
   desc "Test code coverage"
   lane :unit_test do |options|
 
-  scan(workspace: "Protonmail.xcworkspace", device: "iPhone 8", scheme: "Tests", code_coverage: true, derived_data_path: "../test_output")
+  scan(workspace: "Protonmail.xcworkspace", device: "iPhone 8", scheme: "ProtonMailTests", code_coverage: true, derived_data_path: "../test_output")
 
   slather(build_directory: "../test_output/",
-   scheme: "Tests",
+   scheme: "ProtonMailTests",
    workspace: "Protonmail.xcworkspace",
    proj: "Protonmail.xcodeproj",
    output_directory: "../test_output/slatherOutput", 
