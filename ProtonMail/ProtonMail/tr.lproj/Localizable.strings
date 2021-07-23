@@ -1052,9 +1052,6 @@
 /* VoiceOver: email can expire */
 "Expires" = "Bitiş süresi";
 
-/* (No Comment) */
-"Expires in %d days %d hours %d mins %d seconds" = "%d gün %d saat %d dakika %d saniye içinde sona eriyor";
-
 /* Title */
 "Expiring Messages" = "Süreli iletiler";
 

@@ -1052,9 +1052,6 @@
 /* VoiceOver: email can expire */
 "Expires" = "Scadrà";
 
-/* (No Comment) */
-"Expires in %d days %d hours %d mins %d seconds" = "Scadrà tra %d giorni %d ore %d minuti %d secondi";
-
 /* Title */
 "Expiring Messages" = "Scadenza messaggi";
 

@@ -1052,9 +1052,6 @@
 /* VoiceOver: email can expire */
 "Expires" = "Lejár";
 
-/* (No Comment) */
-"Expires in %d days %d hours %d mins %d seconds" = "Érvényes %d nap %d óra %d perc %d másodpercig";
-
 /* Title */
 "Expiring Messages" = "Időkorlátos üzenetek";
 

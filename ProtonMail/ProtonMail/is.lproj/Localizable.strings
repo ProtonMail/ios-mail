@@ -1052,9 +1052,6 @@
 /* VoiceOver: email can expire */
 "Expires" = "Rennur út";
 
-/* (No Comment) */
-"Expires in %d days %d hours %d mins %d seconds" = "Rennur út eftir %d daga %d klst %d mín %d sek";
-
 /* Title */
 "Expiring Messages" = "Skilaboð sem renna út";
 

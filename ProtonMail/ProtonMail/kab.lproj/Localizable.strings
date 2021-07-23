@@ -1052,9 +1052,6 @@
 /* VoiceOver: email can expire */
 "Expires" = "Ad yemmet";
 
-/* (No Comment) */
-"Expires in %d days %d hours %d mins %d seconds" = "Ad yemmet di %d n wussan %d n yisragen %d tisdatin %d n tasinin";
-
 /* Title */
 "Expiring Messages" = "Iznan ara yemten";
 

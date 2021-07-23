@@ -1052,9 +1052,6 @@
 /* VoiceOver: email can expire */
 "Expires" = "有効期限";
 
-/* (No Comment) */
-"Expires in %d days %d hours %d mins %d seconds" = "期限切れまで残り、%d 日 %d 時間 %d 分 %d 秒";
-
 /* Title */
 "Expiring Messages" = "有効期限付きメッセージ";
 

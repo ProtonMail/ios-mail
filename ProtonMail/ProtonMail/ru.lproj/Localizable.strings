@@ -1052,9 +1052,6 @@
 /* VoiceOver: email can expire */
 "Expires" = "Истекает";
 
-/* (No Comment) */
-"Expires in %d days %d hours %d mins %d seconds" = "Истекает через %d д. %d час. %d мин. %d сек.";
-
 /* Title */
 "Expiring Messages" = "Исчезающие сообщения";
 
