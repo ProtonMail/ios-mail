@@ -728,14 +728,13 @@ class ComposeViewModelImpl : ComposeViewModel {
                 body = body.encodeHtml()
                 body = body.ln2br()
             }
-            let on = LocalString._composer_on
-            let at = LocalString._general_at_label
-            let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
-            let time : String! = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
+            let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+            let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
+            let timeDesc = message!.orginalTime?.formattedWith(timeFormat) ?? ""
             let sn : String! = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
             let se : String! = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
             
-            var replyHeader = time + ", " + sn!
+            var replyHeader = timeDesc + ", " + sn!
             replyHeader = replyHeader + " &lt;<a href=\"mailto:"
             replyHeader = replyHeader + se + "\" class=\"\">" + se + "</a>&gt;"
             
@@ -745,10 +744,9 @@ class ComposeViewModelImpl : ComposeViewModel {
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
             return .init(body: result, remoteContentMode: globalRemoteContentMode)
         case .forward:
-            let on = LocalString._composer_on
-            let at = LocalString._general_at_label
-            let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
-            let time = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
+            let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+            let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
+            let timeDesc = message!.orginalTime?.formattedWith(timeFormat) ?? ""
             
             let fwdm = LocalString._composer_fwd_message
             let from = LocalString._general_from_label
@@ -757,7 +755,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             let t = "\(LocalString._general_to_label):"
             let c = "\(LocalString._general_cc_label):"
             var forwardHeader =
-                "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
+                "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(timeDesc)<br>\(sj) \(message!.title)<br>"
             
             if message!.toList != "" {
                 forwardHeader += "\(t) \(message!.toList.formatJsonContact(true))<br>"
