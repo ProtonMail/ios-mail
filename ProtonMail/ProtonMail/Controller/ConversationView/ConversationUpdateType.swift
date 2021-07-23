@@ -1,8 +1,8 @@
 enum ConversationUpdateType {
     case willUpdate
-    case didUpdate
-    case insert(message: Message, row: Int)
+    case didUpdate(messages: [Message])
+    case insert(row: Int)
     case update(message: Message, fromRow: Int, toRow: Int)
     case move(fromRow: Int, toRow: Int)
-    case delete(message: Message)
+    case delete(row: Int)
 }
