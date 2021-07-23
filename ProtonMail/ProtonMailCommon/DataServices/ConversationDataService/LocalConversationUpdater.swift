@@ -30,23 +30,23 @@ final class LocalConversationUpdater {
         self.userID = userID
     }
 
-    func delete(conversations: [Conversation],
+    func delete(conversationIDs: [String],
                 in context: NSManagedObjectContext,
                 completion: ((Result<Void, Error>) -> Void)?) {
         context.performAndWait {
-            for conversation in conversations {
+            for conversationID in conversationIDs {
                 guard let conversationInContext = Conversation
-                        .conversationForConversationID(conversation.conversationID,
+                        .conversationForConversationID(conversationID,
                                                        inManagedObjectContext: context) else {
                     continue
                 }
                 // Mark as unread when deleting which will in turn update counters
-                mark(conversations: [conversationInContext],
+                mark(conversationIDs: [conversationID],
                      in: context,
                      asUnread: false,
                      labelID: Message.Location.trash.rawValue) { _ in
                     context.delete(conversationInContext)
-                    let messages = Message.messagesForConversationID(conversationInContext.conversationID,
+                    let messages = Message.messagesForConversationID(conversationID,
                                                                      inManagedObjectContext: context)
                     messages?.forEach({ message in
                         context.delete(message)
@@ -58,16 +58,16 @@ final class LocalConversationUpdater {
         }
     }
 
-    func mark(conversations: [Conversation],
+    func mark(conversationIDs: [String],
               in context: NSManagedObjectContext,
               asUnread: Bool,
               labelID: String,
               completion: ((Result<Void, Error>) -> Void)?) {
         let labelID = labelID
         context.performAndWait {
-            for conversation in conversations {
+            for conversationID in conversationIDs {
                 guard let conversationInContext = Conversation
-                        .conversationForConversationID(conversation.conversationID,
+                        .conversationForConversationID(conversationID,
                                                        inManagedObjectContext: context) else {
                     continue
                 }
@@ -78,16 +78,19 @@ final class LocalConversationUpdater {
         }
     }
 
-    func editLabels(conversations: [Conversation],
+    func editLabels(conversationIDs: [String],
                     in context: NSManagedObjectContext,
                     labelToRemove: String?,
                     labelToAdd: String?,
                     isFolder: Bool,
                     completion: ((Result<Void, Error>) -> Void)?) {
         context.performAndWait {
-            for conversation in conversations {
+            for conversationID in conversationIDs {
+                guard let conversation = Conversation.conversationForConversationID(conversationID, inManagedObjectContext: context) else {
+                    continue
+                }
                 let messages = Message
-                    .messagesForConversationID(conversation.conversationID,
+                    .messagesForConversationID(conversationID,
                                                inManagedObjectContext: context)
                 let untouchedLocations: [Message.Location] = [.draft, .sent, .starred, .archive, .allmail]
 

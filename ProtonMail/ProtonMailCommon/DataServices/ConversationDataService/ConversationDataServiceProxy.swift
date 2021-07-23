@@ -116,10 +116,8 @@ extension ConversationDataServiceProxy {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs),
-                                                    in: coreDataService.mainContext)
         self.queue(.delete(currentLabelID: labelID, itemIDs: conversationIDs), isConversation: true)
-        localConversationUpdater.delete(conversations: conversations,
+        localConversationUpdater.delete(conversationIDs: conversationIDs,
                                         in: coreDataService.operationContext) { [weak self] result in
             guard let self = self else { return }
             self.updateContextLabels(for: conversationIDs, on: self.coreDataService.mainContext)
@@ -132,10 +130,8 @@ extension ConversationDataServiceProxy {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs),
-                                                    in: coreDataService.mainContext)
         self.queue(.read(itemIDs: conversationIDs, objectIDs: []), isConversation: true)
-        localConversationUpdater.mark(conversations: conversations,
+        localConversationUpdater.mark(conversationIDs: conversationIDs,
                                       in: coreDataService.operationContext,
                                       asUnread: false,
                                       labelID: labelID) { [weak self] result in
@@ -150,10 +146,8 @@ extension ConversationDataServiceProxy {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs),
-                                                    in: coreDataService.mainContext)
         self.queue(.unread(currentLabelID: labelID, itemIDs: conversationIDs, objectIDs: []), isConversation: true)
-        localConversationUpdater.mark(conversations: conversations,
+        localConversationUpdater.mark(conversationIDs: conversationIDs,
                                       in: coreDataService.operationContext,
                                       asUnread: true,
                                       labelID: labelID) { [weak self] result in
@@ -168,14 +162,12 @@ extension ConversationDataServiceProxy {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs),
-                                                    in: coreDataService.mainContext)
         self.queue(.label(currentLabelID: labelID,
                           shouldFetch: nil,
                           itemIDs: conversationIDs,
                           objectIDs: []),
                    isConversation: true)
-        localConversationUpdater.editLabels(conversations: conversations,
+        localConversationUpdater.editLabels(conversationIDs: conversationIDs,
                                             in: coreDataService.operationContext,
                                             labelToRemove: nil,
                                             labelToAdd: labelID,
@@ -191,14 +183,12 @@ extension ConversationDataServiceProxy {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs),
-                                                    in: coreDataService.mainContext)
         self.queue(.unlabel(currentLabelID: labelID,
                             shouldFetch: nil,
                             itemIDs: conversationIDs,
                             objectIDs: []),
                    isConversation: true)
-        localConversationUpdater.editLabels(conversations: conversations,
+        localConversationUpdater.editLabels(conversationIDs: conversationIDs,
                                             in: coreDataService.operationContext,
                                             labelToRemove: labelID,
                                             labelToAdd: nil,
@@ -217,14 +207,12 @@ extension ConversationDataServiceProxy {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs),
-                                                    in: coreDataService.mainContext)
         self.queue(.folder(nextLabelID: nextFolderLabel,
                            shouldFetch: true,
                            itemIDs: conversationIDs,
                            objectIDs: []),
                    isConversation: true)
-        localConversationUpdater.editLabels(conversations: conversations,
+        localConversationUpdater.editLabels(conversationIDs: conversationIDs,
                                             in: coreDataService.operationContext,
                                             labelToRemove: previousFolderLabel,
                                             labelToAdd: nextFolderLabel,
