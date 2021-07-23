@@ -233,6 +233,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if viewModel.eventsService.status != .started {
             self.startAutoFetch()
         }
+
+        SwipyCellConfig.shared.triggerPoints.removeValue(forKey: -0.75)
+        SwipyCellConfig.shared.triggerPoints.removeValue(forKey: 0.75)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -597,7 +600,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if leftToRightMsgAction != .none && viewModel.isSwipeActionValid(leftToRightMsgAction, conversation: conversation) {
             let leftToRightSwipeView = makeSwipeView(messageSwipeAction: leftToRightMsgAction)
             cell.addSwipeTrigger(forState: .state(0, .left),
-                                 withMode: .exit,
+                                 withMode: leftToRightAction == .readAndUnread ? .toggle : .exit,
                                  swipeView: leftToRightSwipeView,
                                  swipeColor: leftToRightMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
                 self?.handleSwipeAction(on: cell, action: leftToRightMsgAction, conversation: conversation)
@@ -611,7 +614,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if rightToLeftMsgAction != .none && viewModel.isSwipeActionValid(rightToLeftMsgAction, conversation: conversation) {
             let rightToLeftSwipeView = makeSwipeView(messageSwipeAction: rightToLeftMsgAction)
             cell.addSwipeTrigger(forState: .state(0, .right),
-                                 withMode: .exit,
+                                 withMode: rightToLeftAction == .readAndUnread ? .toggle : .exit,
                                  swipeView: rightToLeftSwipeView,
                                  swipeColor: rightToLeftMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
                 self?.handleSwipeAction(on: cell, action: rightToLeftMsgAction, conversation: conversation)
@@ -653,10 +656,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return
         }
 
-        if !self.processSwipeActions(action,
-                                     indexPath: indexPathOfCell) {
-            cell.swipeToOrigin {}
+        guard !self.processSwipeActions(action,
+                                     indexPath: indexPathOfCell) else {
+            return
         }
+
+        guard action != .read && action != .unread else {
+            return
+        }
+
+        cell.swipeToOrigin {}
     }
 
     private func processSwipeActions(_ action: MessageSwipeAction, indexPath: IndexPath) -> Bool {

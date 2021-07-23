@@ -220,6 +220,7 @@ extension ConversationDataServiceProxy {
         let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs),
                                                     in: coreDataService.mainContext)
         self.queue(.folder(nextLabelID: nextFolderLabel,
+                           shouldFetch: true,
                            itemIDs: conversationIDs,
                            objectIDs: []),
                    isConversation: true)
