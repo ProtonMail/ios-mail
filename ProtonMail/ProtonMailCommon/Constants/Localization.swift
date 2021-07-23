@@ -1385,6 +1385,9 @@ class LocalizedString {
     /// "Unknow Error"
     lazy var _unknow_error = NSLocalizedString("Unknow Error", comment: "Description")
 
+    /// On Fri, Jul 23, 2021 at 3:40 PM
+    /// %@ is 12-hour clock or 24-hour clock
+    lazy var _reply_time_desc = NSLocalizedString("'On' EE, MMM d, yyyy 'at' %@", comment: "reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. EE, M...yyyy is date formate")
 
     /// "Message expired"
     lazy var _message_expired = NSLocalizedString("Message expired", comment: "")
