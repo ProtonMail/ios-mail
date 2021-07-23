@@ -34,10 +34,10 @@ extension Date {
 
         if distance > 86_400 {
             let day = Int(distance / 86_400)
-            return "\(day) " + (day > 1 ? LocalString._days : LocalString._day)
+            return String.localizedStringWithFormat(LocalString._day, day)
         } else if distance > 3_600 {
             let hour = Int(distance / 3_600)
-            return "\(hour) " + (hour > 1 ? LocalString._hours : LocalString._hour)
+            return String.localizedStringWithFormat(LocalString._hour, hour)
         } else {
             let minute = Int(distance / 60)
             return String.localizedStringWithFormat(LocalString._minute, minute)

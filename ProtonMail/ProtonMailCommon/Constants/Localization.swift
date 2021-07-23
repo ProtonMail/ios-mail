@@ -1940,10 +1940,10 @@ class LocalizedString {
     lazy var _message_of_unavailable_to_upgrade_account = NSLocalizedString("It's not possible to switch to another plan within the app. %1$@", comment: "The string used to show in the plan update page when the user not able to upgrade the account")
     lazy var _message_of_unavailable_to_upgrade_url = NSLocalizedString("Plans can be edited on the web version.", comment: "")
     lazy var _week = NSLocalizedString("week", comment: "week")
-    lazy var _day = NSLocalizedString("day", comment: "day")
+    lazy var _day = NSLocalizedString("%d day", comment: "day")
     lazy var _days = NSLocalizedString("days", comment: "days")
     
-    lazy var _hour = NSLocalizedString("hour", comment: "hour")
+    lazy var _hour = NSLocalizedString("%d hour", comment: "hour")
     lazy var _hours = NSLocalizedString("hours", comment: "hours")
     
     lazy var _minute = NSLocalizedString("minute", comment: "minute")

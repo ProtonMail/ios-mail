@@ -61,10 +61,10 @@ class ExpirationIconView: PMView {
         
         if distance > 86400 {
             let day = Int(distance / 86400)
-            expirationLabel.text = "\(day) " + (day > 1 ? LocalString._days : LocalString._day)
+            expirationLabel.text = String.localizedStringWithFormat(LocalString._day, day)
         } else if distance > 3600 {
             let hour = Int(distance / 3600)
-            expirationLabel.text = "\(hour) " + (hour > 1 ? LocalString._hours : LocalString._hour)
+            expirationLabel.text = String.localizedStringWithFormat(LocalString._hour, hour)
         } else {
             let minute = Int(distance / 60)
             expirationLabel.text = String.localizedStringWithFormat(LocalString._minute, minute)

@@ -114,5 +114,41 @@
             <string>%d attempts remaining until secure data wipe!</string>
         </dict>
     </dict>
+    <key>%d hour</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@HOUR@</string>
+        <key>HOUR</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>u</string>
+            <key>zero</key>
+            <string>%d hour</string>
+            <key>one</key>
+            <string>%d hour</string>
+            <key>other</key>
+            <string>%d hours</string>
+        </dict>
+    </dict>
+    <key>%d day</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@DAY@</string>
+        <key>DAY</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>u</string>
+            <key>zero</key>
+            <string>%d day</string>
+            <key>one</key>
+            <string>%d day</string>
+            <key>other</key>
+            <string>%d days</string>
+        </dict>
+    </dict>
 </dict>
 </plist>
