@@ -73,6 +73,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             presentCreateFolder(type: .folder)
         case .addNewLabel:
             presentCreateFolder(type: .label)
+        case .url(let url):
+            presentWebView(url: url)
         }
     }
 
@@ -158,6 +160,13 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
         self.navigationController.pushViewController(viewController, animated: true)
     }
 
+    private func presentWebView(url: URL) {
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url,
+                                      options: [:],
+                                      completionHandler: nil)
+        }
+    }
 }
 
 extension SingleMessageNavigationAction {

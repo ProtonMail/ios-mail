@@ -486,6 +486,8 @@ private extension ConversationViewController {
             if let message = viewModel.messagesDataSource.message(with: messageId) {
                 presentActionSheet(for: message)
             }
+        case .url(let url):
+            coordinator.handle(navigationAction: .url(url: url))
         default:
             break
         }
