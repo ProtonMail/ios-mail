@@ -1507,10 +1507,10 @@ class LocalizedString {
     lazy var _the_passwords_you_entered_do_not_match = NSLocalizedString("The passwords you entered do not match.", comment: "Description")
 
     /// "Can't load share content!"
-    lazy var _cant_load_share_content = NSLocalizedString("Can't load share content!", comment: "This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly")
+    lazy var _cant_load_share_content = NSLocalizedString("Failed to load content!\nPlease try again.", comment: "This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly")
 
     /// "Share Alert"
-    lazy var _share_alert = NSLocalizedString("Share Alert", comment: "Title")
+    lazy var _share_alert = NSLocalizedString("Error", comment: "Title of alert in share extension.")
 
     /// "Failed to determine type of file"
     lazy var _failed_to_determine_file_type = NSLocalizedString("Failed to determine type of file", comment: "Error message")
