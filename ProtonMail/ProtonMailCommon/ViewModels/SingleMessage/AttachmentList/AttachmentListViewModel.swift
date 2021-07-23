@@ -55,11 +55,14 @@ class AttachmentListViewModel {
     private(set) var inlineAttachments: [AttachmentInfo] = []
     private(set) var normalAttachments: [AttachmentInfo] = []
     private(set) var inlineCIDS: [String]?
+    private var downloadingTask: [String: URLSessionDownloadTask] = [:]
     let user: UserManager
 
     var attachmentCount: Int {
         return inlineAttachments.count + normalAttachments.count
     }
+    /// (attachmentID, tempClearFileURL)
+    var attachmentDownloaded: ((String, URL) -> Void)?
 
     init(attachments: [AttachmentInfo], user: UserManager, inlineCIDS: [String]?) {
         self.user = user
@@ -89,21 +92,31 @@ class AttachmentListViewModel {
     }
 
     func open(attachmentInfo: AttachmentInfo,
-              failed: @escaping (NSError) -> Void,
-              opener: @escaping (URL) -> Void) {
+                 showPreviewer: @escaping () -> Void,
+                 failed: @escaping (NSError) -> Void) {
         guard let attachment = attachmentInfo.att else {
             // two attachment types. inline and normal att in core data
             // inline att doesn't need to decrypt and it saved in cache temporarily when decrypting the message
             // in this case just try to open it directly
-            if let url = attachmentInfo.localUrl {
-                opener(url)
+            if let url = attachmentInfo.localUrl,
+               let id = attachmentInfo.att?.attachmentID {
+                self.attachmentDownloaded?(id, url)
             }
             return
         }
 
         let decryptor: (Attachment, URL) -> Void = { [weak self] in
             guard let self = self else { return }
-            try? self.decrypt($0, encryptedFileURL: $1, clearfile: opener)
+            do {
+                try self.decrypt($0, encryptedFileURL: $1)
+            } catch {
+                failed(error as NSError)
+            }
+        }
+
+        showPreviewer()
+        if self.downloadingTask[attachment.attachmentID] != nil {
+            return
         }
 
         guard attachmentInfo.isDownloaded,
@@ -126,7 +139,6 @@ class AttachmentListViewModel {
                     }
                 }
             }
-
             self.downloadAttachment(attachment,
                                     success: decryptor,
                                     fail: failed)
@@ -136,28 +148,46 @@ class AttachmentListViewModel {
         decryptor(attachment, localURL)
     }
 
+    func isAttachmentDownloading(id: String) -> Bool {
+        return self.downloadingTask[id] != nil
+    }
+
+    func getAttachment(id: String) -> (AttachmentInfo, IndexPath)? {
+        if let index = normalAttachments.firstIndex(where: { $0.att?.attachmentID == id }) {
+            let attachment = normalAttachments[index]
+            let path = IndexPath(row: index, section: 0)
+            return (attachment, path)
+        } else if let index = inlineAttachments.firstIndex(where: { $0.att?.attachmentID == id }) {
+            let attachment = inlineAttachments[index]
+            let path = IndexPath(row: index, section: 1)
+            return (attachment, path)
+        }
+        return nil
+    }
+
     private func downloadAttachment(_ attachment: Attachment,
                                     success: @escaping ((Attachment, URL) throws -> Void),
                                     fail: @escaping (NSError) -> Void) {
-        user.messageService.fetchAttachmentForAttachment(attachment,
-                                                         downloadTask: nil,
-                                                         completion: { _, url, networkingError in
-                                                            if let error = networkingError {
-                                                                fail(error)
-                                                                return
-                                                            } else if let url = url {
-                                                                do {
-                                                                    try success(attachment, url)
-                                                                } catch {
-                                                                    fail(error as NSError)
-                                                                }
-                                                            }
-                                                         })
+        let service = user.messageService
+        service.fetchAttachmentForAttachment(attachment) { [weak self] task in
+            self?.downloadingTask[attachment.attachmentID] = task
+        } completion: { [weak self] _, url, error in
+            self?.downloadingTask.removeValue(forKey: attachment.attachmentID)
+            if let error = error {
+                fail(error)
+                return
+            } else if let url = url {
+                do {
+                    try success(attachment, url)
+                } catch {
+                    fail(error as NSError)
+                }
+            }
+        }
     }
 
     private func decrypt(_ attachment: Attachment,
-                         encryptedFileURL: URL,
-                         clearfile: (URL) -> Void) throws {
+                         encryptedFileURL: URL) throws {
         guard let keyPacket = attachment.keyPacket,
             let keyPackage: Data = Data(base64Encoded: keyPacket,
                                         options: NSData.Base64DecodingOptions(rawValue: 0)) else {
@@ -185,8 +215,7 @@ class AttachmentListViewModel {
             (try? decryptData.write(to: tempClearFileURL, options: [.atomic])) != nil else {
             throw Errors.cantDecryptAttachment
         }
-
-        clearfile(tempClearFileURL)
+        self.attachmentDownloaded?(attachment.attachmentID, tempClearFileURL)
     }
 
     func isInline(_ attachment: Attachment) -> Bool {

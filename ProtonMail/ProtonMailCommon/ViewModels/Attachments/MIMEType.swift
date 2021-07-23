@@ -34,7 +34,7 @@ enum MIMEType {
     case audio
     case epub
     case ics
-    case unknowFile
+    case unknownFile
 
     static let msWordMIME = ["application/doc",
                              "application/ms-doc",
@@ -102,7 +102,7 @@ enum MIMEType {
         } else if MIMEType.icsMIME.contains(rawValue) {
             self = .ics
         } else {
-            self = .unknowFile
+            self = .unknownFile
         }
     }
     // swiftlint:enable cyclomatic_complexity

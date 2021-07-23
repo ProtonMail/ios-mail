@@ -151,6 +151,20 @@ struct FontManager {
         return attributes
     }()
 
+    static let DefaultDisabled: [NSAttributedString.Key: Any] = {
+        let font = UIFont.systemFont(ofSize: 17)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.18
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .kern: -0.41,
+            .font: font,
+            .foregroundColor: UIColorManager.TextDisabled,
+            .paragraphStyle: paragraphStyle
+        ]
+        return attributes
+    }()
+
     static let DefaultHint: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 17)
         var paragraphStyle = NSMutableParagraphStyle()
