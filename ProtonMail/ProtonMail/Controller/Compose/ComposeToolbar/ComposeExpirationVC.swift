@@ -59,11 +59,11 @@ final class ComposeExpirationVC: UIViewController {
             case .none:
                 return LocalString._none
             case .oneHour:
-                return "1 \(LocalString._hour)"
+                return String.localizedStringWithFormat(LocalString._hour, 1)
             case .oneDay:
-                return "1 \(LocalString._day)"
+                return String.localizedStringWithFormat(LocalString._day, 1)
             case .threeDays:
-                return "3 \(LocalString._days)"
+                return String.localizedStringWithFormat(LocalString._day, 3)
             case .oneWeek:
                 return "1 \(LocalString._week)"
             case .custom:
