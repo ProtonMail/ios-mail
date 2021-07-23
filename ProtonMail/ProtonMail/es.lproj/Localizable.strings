@@ -1123,7 +1123,7 @@
 "From:" = "De:";
 
 /* abbreviation of forward: */
-"FW:" = "RV:";
+"Fw:" = "RV:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Rv:";
@@ -1260,7 +1260,7 @@
 "Incorrect password" = "Contraseña incorrecta";
 
 /* Error */
-"Incorrect PIN," = "PIN incorrecto,";
+"Incorrect PIN." = "PIN incorrecto.";
 
 /* Option title */
 "Inherit color from parent folder" = "Heredar color de la carpeta principal";
@@ -1271,11 +1271,8 @@
 /* Title */
 "inline attachments" = "adjuntos incrustados";
 
-/* (No Comment) */
-"Input Display Name ..." = "Introduce el nombre a mostrar ...";
-
 /* place holder */
-"Input Display Name …" = "Introduce el nombre a mostrar …";
+"Input Display Name…" = "Introduce el nombre a mostrar…";
 
 /* place holder */
 "Input Notification Email …" = "Introducir correo electrónico de notificación …";
@@ -1741,9 +1738,6 @@
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "El EE, d MMM, yyyy a las %@";
 
-/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "El EE, d MMM, yyyy a las %1$@, %2$@ escribió:";
-
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Solo ignora la activación de la compra si estás seguro de que todas tus suscripciones están actualizadas. Para obtener más ayuda, comunícate con el servicio de atención al cliente. \r\n\r\n ¿Estás seguro de que quieres ignorar la activación?";
 
@@ -2060,7 +2054,7 @@
 "Remove All" = "Eliminar todo";
 
 /* Settings row */
-"Remove image meta-data" = "Eliminar los metadatos de la imagen";
+"Remove image metadata" = "Eliminar los metadatos de la imagen";
 
 /* action title */
 "Remove password" = "Quitar contraseña";
@@ -2574,7 +2568,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "La validación del certificado TLS ha fallado. Tu conexión a Internet puede ser monitorizada. Por tu seguridad, la aplicación está temporalmente bloqueada.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "La validación del certificado TLS ha fallado. Tu conexión a Internet puede ser monitorizada. Por tu seguridad, la aplicación está temporalmente bloqueada.\n\ncambiar de red inmediatamente";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "La validación del certificado TLS ha fallado. Tu conexión a Internet puede ser monitorizada. Por tu seguridad, la aplicación está temporalmente bloqueada.\n\ncambiar de red inmediatamente";
 
 /* message To: feild
    Title */

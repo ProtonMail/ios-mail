@@ -1123,7 +1123,7 @@
 "From:" = "Von:";
 
 /* abbreviation of forward: */
-"FW:" = "Fwd:";
+"Fw:" = "Fwd:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Fwd:";
@@ -1260,7 +1260,7 @@
 "Incorrect password" = "Falsches Passwort";
 
 /* Error */
-"Incorrect PIN," = "Falsche PIN";
+"Incorrect PIN." = "Falsche PIN.";
 
 /* Option title */
 "Inherit color from parent folder" = "Farbe vom übergeordneten Ordner übernehmen";
@@ -1271,11 +1271,8 @@
 /* Title */
 "inline attachments" = "Inline-Anhänge";
 
-/* (No Comment) */
-"Input Display Name ..." = "Anzuzeigenden Namen eingeben …";
-
 /* place holder */
-"Input Display Name …" = "Anzeigename eingeben …";
+"Input Display Name…" = "Anzeigename eingeben…";
 
 /* place holder */
 "Input Notification Email …" = "E-Mail Benachrichtigung eingeben …";
@@ -1741,9 +1738,6 @@
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "Am EE, dem d. MMM.yyyy um %@";
 
-/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "%2$@ schrieb am EE, dem d.MMM.yyyy um %1$@:";
-
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorieren Sie die Kaufaktivierung nur, wenn Sie sicher sind, dass alle Ihre Abonnements auf dem neuesten Stand sind. Für weitere Hilfe wenden Sie sich bitte an den Kundensupport. \r\n\r\n Möchten Sie die Aktivierung wirklich ignorieren?";
 
@@ -2060,7 +2054,7 @@
 "Remove All" = "Alle entfernen";
 
 /* Settings row */
-"Remove image meta-data" = "Meta-Daten aus Grafiken entfernen";
+"Remove image metadata" = "Meta-Daten aus Grafiken entfernen";
 
 /* action title */
 "Remove password" = "Passwort entfernen";
@@ -2574,7 +2568,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS-Zertifikatsvalidierung fehlgeschlagen. Ihre Verbindung wird möglicherweise überwacht, und die Anwendung ist zu Ihrer Sicherheit vorübergehend gesperrt.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS-Zertifikatsvalidierung fehlgeschlagen. Ihre Verbindung wird möglicherweise überwacht, und die Anwendung ist zu Ihrer Sicherheit vorübergehend gesperrt.\n\nNetzwerke sofort wechseln";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS-Zertifikatsvalidierung fehlgeschlagen. Ihre Verbindung wird möglicherweise überwacht, und die Anwendung ist zu Ihrer Sicherheit vorübergehend gesperrt.\n\nNetzwerke sofort wechseln";
 
 /* message To: feild
    Title */

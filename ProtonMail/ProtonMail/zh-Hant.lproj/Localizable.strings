@@ -1123,7 +1123,7 @@
 "From:" = "寄件人：";
 
 /* abbreviation of forward: */
-"FW:" = "轉發：";
+"Fw:" = "轉發：";
 
 /* abbreviation of forward: */
 "Fwd:" = "轉發至：";
@@ -1260,7 +1260,7 @@
 "Incorrect password" = "密碼錯誤";
 
 /* Error */
-"Incorrect PIN," = "PIN 碼不正確";
+"Incorrect PIN." = "PIN 碼不正確";
 
 /* Option title */
 "Inherit color from parent folder" = "自上層資料夾繼承色彩";
@@ -1271,11 +1271,8 @@
 /* Title */
 "inline attachments" = "內嵌附件";
 
-/* (No Comment) */
-"Input Display Name ..." = "輸入顯示名稱 ...";
-
 /* place holder */
-"Input Display Name …" = "輸入顯示名稱 …";
+"Input Display Name…" = "輸入顯示名稱…";
 
 /* place holder */
 "Input Notification Email …" = "輸入通知電子郵件 …";
@@ -1741,9 +1738,6 @@
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "在 EE, MMM d, yyyy 在 %@";
 
-/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "在 EE, MMM d, yyyy 的 %1$@, %2$@, 寫下:";
-
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "請勿忽略購買啟用，除非您確定所有訂閱都是最新的。如需進一步協助，請聯絡客戶支援。\r\n\r\n您確定要忽略啟用嗎？";
 
@@ -2060,7 +2054,7 @@
 "Remove All" = "全部移除";
 
 /* Settings row */
-"Remove image meta-data" = "移除圖片之中繼資料";
+"Remove image metadata" = "移除圖片之中繼資料";
 
 /* action title */
 "Remove password" = "移除密碼";
@@ -2574,7 +2568,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS 憑證驗證失敗。您的連線可能正被監控，應用程式基於安全考量已暫時封鎖。\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS 憑證驗證失敗。您的連線可能正被監控，應用程式基於安全考量已暫時封鎖。\n\n立即切換網路";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS 憑證驗證失敗。您的連線可能正被監控，應用程式基於安全考量已暫時封鎖。\n\n立即切換網路";
 
 /* message To: feild
    Title */
