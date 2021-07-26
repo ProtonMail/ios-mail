@@ -95,7 +95,11 @@ class SingleMessageViewModel {
 
     func getActionTypes() -> [MailboxViewModel.ActionTypes] {
         var actions: [MailboxViewModel.ActionTypes] = []
-        actions.append(message.isHavingMoreThanOneContact ? .replyAll : .reply)
+        let excludedMailboxes = [Message.Location.trash, Message.Location.draft, Message.Location.sent].map(\.rawValue)
+            + [Message.HiddenLocation.sent, Message.HiddenLocation.draft].map(\.rawValue)
+        if !excludedMailboxes.contains(labelId) {
+            actions.append(message.isHavingMoreThanOneContact ? .replyAll : .reply)
+        }
         actions.append(.readUnread)
         let deleteLocation = [
             Message.Location.draft.rawValue,

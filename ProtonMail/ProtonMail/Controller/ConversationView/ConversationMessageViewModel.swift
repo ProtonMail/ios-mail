@@ -1,10 +1,16 @@
 class ConversationMessageViewModel {
 
     var isDraft: Bool {
-        let isDraft = message.labels
+        let labelIds = message.labels
             .compactMap { $0 as? Label }
             .map(\.labelID)
-            .contains(Message.Location.draft.rawValue)
+        let isDraft: Bool
+        if labelIds.contains(Message.Location.draft.rawValue)
+            || labelIds.contains(Message.HiddenLocation.draft.rawValue) {
+            isDraft = true
+        } else {
+            isDraft = false
+        }
         guard isDraft else { return false }
         return true
     }

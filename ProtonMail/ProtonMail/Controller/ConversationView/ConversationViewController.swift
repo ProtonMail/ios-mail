@@ -39,6 +39,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             guard let self = self else { return }
             self.refreshNavigationViewIfNeeded()
             self.starButtonSetUp(starred: self.viewModel.conversation.starred)
+            self.reloadActionBar()
         }
 
         viewModel.showNewMessageArrivedFloaty = { [weak self] messageId in
@@ -49,8 +50,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         customView.separator.isHidden = true
 
         viewModel.fetchConversationDetails()
-        showActionBar()
         viewModel.observeConversationMessages(tableView: customView.tableView)
+        showActionBar()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -143,6 +144,14 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
         if navigationItem.titleView is ConversationNavigationDetailView {
             navigationItem.titleView = viewModel.detailedNavigationViewType.titleView
+        }
+    }
+
+    private func reloadActionBar() {
+        if actionBar != nil {
+            actionBar?.dismiss()
+            actionBar = nil
+            showActionBar()
         }
     }
 

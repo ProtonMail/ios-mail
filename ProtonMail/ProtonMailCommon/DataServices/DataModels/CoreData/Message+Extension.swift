@@ -96,12 +96,12 @@ extension Message {
         var outLabel: String?
         //1, 2, labels can't be in inbox,
         var addLabelID = labelID
-        if labelID == Location.inbox.rawValue && (self.contains(label: HidenLocation.draft.rawValue) || self.contains(label: Location.draft.rawValue)) {
+        if labelID == Location.inbox.rawValue && (self.contains(label: HiddenLocation.draft.rawValue) || self.contains(label: Location.draft.rawValue)) {
             // move message to 1 / 8
             addLabelID = Location.draft.rawValue //"8"
         }
         
-        if labelID == Location.inbox.rawValue && (self.contains(label: HidenLocation.sent.rawValue) || self.contains(label: Location.sent.rawValue)) {
+        if labelID == Location.inbox.rawValue && (self.contains(label: HiddenLocation.sent.rawValue) || self.contains(label: Location.sent.rawValue)) {
             // move message to 2 / 7
             addLabelID = sentSelf ? Location.inbox.rawValue : Location.sent.rawValue //"7"
         }
@@ -230,7 +230,7 @@ extension Message {
         // This is the basic labes for draft
         let basic = [Message.Location.draft.rawValue,
                      Message.Location.allmail.rawValue,
-                     Message.HidenLocation.draft.rawValue]
+                     Message.HiddenLocation.draft.rawValue]
         for label in labels {
             let id = label.labelID
             if basic.contains(id) {continue}

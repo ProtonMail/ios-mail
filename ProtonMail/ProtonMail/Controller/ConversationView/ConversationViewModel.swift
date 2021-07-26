@@ -260,8 +260,29 @@ class ConversationViewModel {
 extension ConversationViewModel {
     func getActionTypes() -> [MailboxViewModel.ActionTypes] {
         var actions: [MailboxViewModel.ActionTypes] = []
-        if let newestMessage = messagesDataSource.newestMessage {
-            actions.append(newestMessage.isHavingMoreThanOneContact ? .replyAll : .reply)
+        let excludedMailboxes = [Message.Location.trash, Message.Location.draft, Message.Location.sent].map(\.rawValue)
+            + [Message.HiddenLocation.sent, Message.HiddenLocation.draft].map(\.rawValue)
+        if !excludedMailboxes.contains(labelId) {
+            let allLabels = messagesDataSource.compactMap(\.message?.labels).flatMap({ $0 }) as? [Label] ?? []
+            let excludedLocations = [Message.Location.trash,
+                                     Message.Location.draft,
+                                     Message.Location.starred,
+                                     Message.Location.sent,
+                                     Message.Location.allmail].map(\.rawValue)
+                                    +
+                                    [Message.HiddenLocation.sent,
+                                     Message.HiddenLocation.draft].map(\.rawValue)
+            let disallowedReply = allLabels.map(\.labelID).allSatisfy { labelId in
+                excludedLocations.contains(labelId)
+            }
+            if !disallowedReply {
+                if let newestMessage = messagesDataSource.newestMessage {
+                    actions.append(newestMessage.isHavingMoreThanOneContact ? .replyAll : .reply)
+                } else {
+                    // Fallback in case the newest message is not available yet
+                    actions.append(.reply)
+                }
+            }
         }
         actions.append(.readUnread)
         let deleteLocation = [
