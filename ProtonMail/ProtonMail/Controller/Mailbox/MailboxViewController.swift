@@ -1334,7 +1334,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // TODO: refactor SearchViewController to have Coordinator and properly inject this hunk
         if let search = (segue.destination as? UINavigationController)?.topViewController as? SearchViewController {
-            search.user = self.viewModel.user
+            let viewModel = self.viewModel.getSearchViewModel(uiDelegate: search)
+            search.set(viewModel: viewModel)
         }
         super.prepare(for: segue, sender: sender)
     }
