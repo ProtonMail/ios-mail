@@ -478,6 +478,11 @@ class MailboxViewModel: StorageLimit {
         self.pushService.processCachedLaunchOptions()
     }
     
+    func getSearchViewModel(uiDelegate: SearchViewUIProtocol) -> SearchVMProtocol {
+        SearchViewModel(user: self.user,
+                        coreDataService: self.coreDataService,
+                        uiDelegate: uiDelegate)
+    }
 
     func message(by messageID: String) -> Message? {
         if let context = self.fetchedResultsController?.managedObjectContext {
@@ -1151,7 +1156,7 @@ extension MailboxViewModel: ConversationStateServiceDelegate {
     }
 }
 
-private extension String {
+extension String {
 
     static func actionSheetTitle(selectedCount: Int, viewMode: ViewMode) -> String {
         switch viewMode {

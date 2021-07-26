@@ -26,6 +26,7 @@ class LabelAsActionSheetPresenter {
     func present(
         on viewController: UIViewController,
         viewModel: LabelAsActionSheetViewModel,
+        hasNewLabelButton: Bool = true,
         addNewLabel: @escaping () -> Void,
         selected: @escaping (MenuLabel, Bool) -> Void,
         cancel: @escaping (_ isHavingUnsavedChanges: Bool) -> Void,
@@ -105,7 +106,11 @@ class LabelAsActionSheetPresenter {
 
 
         let foldersGroup = PMActionSheetItemGroup(items: labelActions, style: .multiSelection)
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [archiveGroup, addFolderGroup, foldersGroup])
+        var itemGroups: [PMActionSheetItemGroup] = [archiveGroup, foldersGroup]
+        if hasNewLabelButton {
+            itemGroups.insert(addFolderGroup, at: 1)
+        }
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups)
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
         labelSelectionActionSheet = actionSheet
     }
