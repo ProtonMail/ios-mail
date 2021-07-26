@@ -379,6 +379,8 @@ private extension ConversationViewController {
                         self?.viewModel.handleActionBarAction(action)
                         self?.navigationController?.popViewController(animated: true)
                     })
+                case .labelAs:
+                    self?.showLabelAsActionSheet(dataSource: .conversation)
                 default:
                     self?.viewModel.handleActionBarAction(action)
                     self?.navigationController?.popViewController(animated: true)

@@ -169,6 +169,8 @@ private extension SingleMessageViewController {
                         self?.viewModel.handleActionBarAction(action)
                         self?.navigationController?.popViewController(animated: true)
                     })
+                case .labelAs:
+                    self?.showLabelAsActionSheet()
                 default:
                     self?.viewModel.handleActionBarAction(action)
                     self?.navigationController?.popViewController(animated: true)

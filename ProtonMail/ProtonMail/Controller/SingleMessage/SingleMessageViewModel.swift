@@ -107,7 +107,7 @@ class SingleMessageViewModel {
             Message.Location.trash.rawValue
         ]
         actions.append(deleteLocation.contains(labelId) ? .delete : .trash)
-        actions.append(.more)
+        actions.append(contentsOf: [.labelAs, .more])
         return actions
     }
 
