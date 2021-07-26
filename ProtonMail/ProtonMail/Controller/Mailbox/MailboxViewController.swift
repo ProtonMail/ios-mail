@@ -2047,6 +2047,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             if let indexPath = indexPath {
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
+            popPresentedItemIfNeeded(anObject)
         case .insert:
             if let newIndexPath = newIndexPath {
                 tableView.insertRows(at: [newIndexPath], with: .fade)
@@ -2097,6 +2098,25 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             break
         default:
             return
+        }
+    }
+}
+
+// MARK: - Popping Handling
+extension MailboxViewController {
+    private func popPresentedItemIfNeeded(_ anObject: Any) {
+        if navigationController?.topViewController is ConversationViewController
+            || navigationController?.topViewController is SingleMessageViewController {
+            if let contextLabel = anObject as? ContextLabel {
+                if coordinator?.conversationCoordinator?.conversation.conversationID == contextLabel.conversationID {
+                    navigationController?.popViewController(animated: true)
+                }
+            }
+            if let message = anObject as? Message {
+                if coordinator?.singleMessageCoordinator?.message.messageID == message.messageID {
+                    navigationController?.popViewController(animated: true)
+                }
+            }
         }
     }
 }

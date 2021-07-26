@@ -190,10 +190,10 @@ struct ConversationEvent {
     var ID: String
     var conversation: [String: Any]
     init?(event: [String: Any]) {
-        if let action = event["Action"] as? Int, let id = event["ID"] as? String, let con = event["Conversation"] as? [String: Any] {
+        if let action = event["Action"] as? Int, let id = event["ID"] as? String {
             self.action = action
             self.ID = id
-            self.conversation = con
+            self.conversation = event["Conversation"] as? [String: Any] ?? [:]
         } else {
             return nil
         }

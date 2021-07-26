@@ -29,7 +29,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     weak var viewController: SingleMessageViewController?
 
     private let labelId: String
-    private let message: Message
+    let message: Message
     private let user: UserManager
     private let navigationController: UINavigationController
     var pendingActionAfterDismissal: (() -> Void)?

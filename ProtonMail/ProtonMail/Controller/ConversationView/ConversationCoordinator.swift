@@ -4,7 +4,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
 
     private let labelId: String
     private let navigationController: UINavigationController
-    private let conversation: Conversation
+    let conversation: Conversation
     private let user: UserManager
     var pendingActionAfterDismissal: (() -> Void)?
 

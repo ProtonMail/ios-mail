@@ -35,6 +35,8 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     // whole the ref until started
     internal var navBeforeStart: UINavigationController?
     var pendingActionAfterDismissal: (() -> Void)?
+    private(set) var singleMessageCoordinator: SingleMessageCoordinator?
+    private(set) var conversationCoordinator: ConversationCoordinator?
 
     init(sideMenu: SideMenuController?, viewModel: MailboxViewModel, services: ServiceFactory) {
         self.sideMenu = sideMenu
@@ -374,6 +376,7 @@ extension MailboxCoordinator {
             message: message,
             user: self.viewModel.user
         )
+        singleMessageCoordinator = coordinator
         coordinator.start()
     }
 
@@ -387,6 +390,7 @@ extension MailboxCoordinator {
             conversation: conversation,
             user: self.viewModel.user
         )
+        conversationCoordinator = coordinator
         coordinator.start()
     }
 }
