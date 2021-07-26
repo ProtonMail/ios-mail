@@ -102,9 +102,7 @@ extension Message {
     
     /// check if message contains a draft label
     var draft : Bool {
-        get {
-            return self.contains(label: Location.draft)
-        }
+        contains(label: Location.draft) || contains(label: HiddenLocation.draft.rawValue)
     }
 
     var isSent : Bool {

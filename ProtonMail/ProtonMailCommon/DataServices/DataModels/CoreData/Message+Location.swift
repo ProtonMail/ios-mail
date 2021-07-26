@@ -25,7 +25,7 @@ import Foundation
 
 extension Message {
     
-    enum HidenLocation : String {
+    enum HiddenLocation : String {
         case draft = "1" //1 can't be removed
         case sent  = "2" //2 can't be removed
     }
