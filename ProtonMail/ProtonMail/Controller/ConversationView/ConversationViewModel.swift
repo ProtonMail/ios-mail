@@ -291,7 +291,7 @@ extension ConversationViewModel {
             Message.Location.trash.rawValue
         ]
         actions.append(deleteLocation.contains(labelId) ? .delete : .trash)
-        actions.append(.more)
+        actions.append(contentsOf: [.labelAs, .more])
         return actions
     }
 
@@ -428,13 +428,13 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
             if selectedLabelAsLabels
                 .contains(where: { $0.labelID == label.location.labelID }) {
                 // Add to message which does not have this label
-                if !conversation.getLabels().contains(label.location.labelID) {
+                if !conversation.getLabelIds().contains(label.location.labelID) {
                     conversationService.label(conversationIDs: conversations.map(\.conversationID),
                                               as: label.location.labelID,
                                               completion: fetchEvents)
                 }
             } else {
-                if conversation.getLabels().contains(label.location.labelID) {
+                if conversation.getLabelIds().contains(label.location.labelID) {
                     conversationService.unlabel(conversationIDs: conversations.map(\.conversationID),
                                                 as: label.location.labelID,
                                                 completion: fetchEvents)

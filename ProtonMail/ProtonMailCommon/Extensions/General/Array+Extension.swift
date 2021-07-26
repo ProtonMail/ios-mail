@@ -23,13 +23,6 @@
 
 import Foundation
 
-
-extension Array {
-    public func contains<T>(_ obj: T) -> Bool where T : Equatable {
-        return self.filter({$0 as? T == obj}).count > 0
-    }
-}
-
 extension Array {
     func indexAfterIndex(_ index: Int, where block: (Element) -> Bool) -> Int? {
         for index in (index..<endIndex) {
