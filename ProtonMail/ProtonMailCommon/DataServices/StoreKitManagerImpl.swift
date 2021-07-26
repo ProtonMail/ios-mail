@@ -21,10 +21,17 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import PMCommon
-import PMPayments
+import ProtonCore_Payments
+import ProtonCore_Services
 
 class StoreKitManagerImpl: StoreKitManagerDelegate, Service {
+
+    var shouldShowReportBugPage = false
+
+    func reportBugAlert() {
+        shouldShowReportBugPage = true
+    }
+    
     var apiService: APIService? {
         return sharedServices.get(by: UsersManager.self).firstUser?.apiService
     }

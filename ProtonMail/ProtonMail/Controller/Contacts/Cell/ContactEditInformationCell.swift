@@ -20,8 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
+import ProtonCore_UIFoundations
 
 final class ContactEditInformationCell: UITableViewCell {
     
@@ -33,13 +32,13 @@ final class ContactEditInformationCell: UITableViewCell {
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
     
-    fileprivate var isPaid : Bool = false
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
         self.typeButton.isHidden = true
         self.typeButton.isEnabled = false
+        valueField.tintColor = UIColorManager.TextHint
+        backgroundColor = UIColorManager.BackgroundNorm
     }
     
     override func layoutSubviews() {
@@ -47,21 +46,20 @@ final class ContactEditInformationCell: UITableViewCell {
         sepratorView.gradient()
     }
     
-    func configCell(obj : ContactEditInformation, paid: Bool, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+    func configCell(obj : ContactEditInformation, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.information = obj
-        self.isPaid = paid
         self.delegate = callback
         
-        typeLabel.text = self.information.infoType.title
+        typeLabel.attributedText = NSAttributedString(string: self.information.infoType.title,
+                                                      attributes: FontManager.Default)
         valueField.placeholder = self.information.infoType.title
-        valueField.text = self.information.newValue
+        valueField.attributedText = NSAttributedString(string: self.information.newValue,
+                                                       attributes: FontManager.Default)
 
-        if self.isPaid {
-            if becomeFirstResponder {
-                delay(0.25, closure: {
-                    self.valueField.becomeFirstResponder()
-                })
-            }
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
         }
     }
     
@@ -76,10 +74,6 @@ extension ContactEditInformationCell: UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return false
-        }
         return true
     }
     
@@ -88,10 +82,6 @@ extension ContactEditInformationCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return
-        }
-        information.newValue = valueField.text!
+        information.newValue = valueField.attributedText?.string ?? ""
     }
 }

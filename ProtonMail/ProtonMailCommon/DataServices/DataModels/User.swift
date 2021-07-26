@@ -22,7 +22,8 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
 @objc(User)
 final class User : NSObject {

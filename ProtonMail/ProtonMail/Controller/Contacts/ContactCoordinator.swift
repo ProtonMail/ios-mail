@@ -22,7 +22,7 @@
     
 
 import Foundation
-import SWRevealViewController
+import SideMenuSwift
 
 class ContactCoordinator : DefaultCoordinator {
     typealias VC = ContactsViewController
@@ -31,7 +31,7 @@ class ContactCoordinator : DefaultCoordinator {
     var services: ServiceFactory
     
     internal weak var navigation: UIViewController?
-    internal weak var swRevealVC: SWRevealViewController?
+    internal weak var sideMenu: SideMenuController?
     internal weak var viewController: ContactsViewController?
     
     ///
@@ -45,9 +45,9 @@ class ContactCoordinator : DefaultCoordinator {
         case test   = ""
     }
     
-    init(rvc: SWRevealViewController?, nav: UIViewController?, vc: ContactsViewController, vm: ContactsViewModel, services: ServiceFactory, deeplink: DeepLink? = nil) {
+    init(sideMenu: SideMenuController?, nav: UIViewController?, vc: ContactsViewController, vm: ContactsViewModel, services: ServiceFactory, deeplink: DeepLink? = nil) {
         self.navigation = nav
-        self.swRevealVC = rvc
+        self.sideMenu = sideMenu
         self.viewModel = vm
         self.viewController = vc
         self.services = services

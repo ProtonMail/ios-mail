@@ -22,7 +22,7 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_DataModel
 
 extension UserDefaults {
     
@@ -35,7 +35,7 @@ extension UserDefaults {
             NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PushService.UserInfo")
             NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UserInfo")
             NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PMCommon.UserInfo")
-            
+
             NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ProtonMail.Address")
             NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.Address")
             NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "Share.Address")
@@ -43,8 +43,7 @@ extension UserDefaults {
             NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PushService.Address")
             NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PushServiceDev.Address")
             NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PMCommon.Address")
-            
-            
+                        
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonMail.Key")
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.Key")
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "Share.Key")
@@ -53,11 +52,9 @@ extension UserDefaults {
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PushServiceDev.Key")
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PMCommon.Key")
             
-//            NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ProtonMail.UpdateTime")
-//            NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "Share.UpdateTime")
-//            NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ShareDev.UpdateTime")
-//            NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "PushService.UpdateTime")
-//            NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UpdateTime")
+            NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "UserInfo")
+            NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "Address")
+            NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "Key")
             
             return NSKeyedUnarchiver.unarchiveObject(with: data)
         }

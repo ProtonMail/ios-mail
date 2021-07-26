@@ -22,7 +22,7 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_DataModel
 
 extension ContactVO {
     

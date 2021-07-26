@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BioCodeView" customModule="ProtonMail" customModuleProvider="target">
             <connections>
-                <outlet property="pinUnlock" destination="ODm-l3-QMI" id="B7e-Z7-mZD"/>
                 <outlet property="touchID" destination="mWj-si-0fe" id="Hxc-NC-LYF"/>
             </connections>
         </placeholder>
@@ -18,34 +18,11 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_background_new" translatesAutoresizingMaskIntoConstraints="NO" id="Afc-fK-Tl8">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lcP-fg-NZt">
                     <rect key="frame" x="0.0" y="318.5" width="375" height="170"/>
                     <subviews>
-                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ODm-l3-QMI">
-                            <rect key="frame" x="87.5" y="30" width="200" height="42"/>
-                            <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="42" id="UyI-7Y-xm0"/>
-                                <constraint firstAttribute="width" constant="200" id="dek-cG-GyO"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <state key="normal" title="PIN UNLOCK">
-                                <color key="titleColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="6"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="pin_unlock_action:" destination="-1" eventType="touchUpInside" id="b7Z-bO-cX5"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mWj-si-0fe">
-                            <rect key="frame" x="162.5" y="90" width="50" height="50"/>
+                            <rect key="frame" x="162.5" y="74.5" width="50" height="50"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="Sil-p3-DB7"/>
@@ -58,42 +35,66 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="mWj-si-0fe" firstAttribute="centerX" secondItem="lcP-fg-NZt" secondAttribute="centerX" id="3tP-s4-YlY"/>
-                        <constraint firstItem="mWj-si-0fe" firstAttribute="top" secondItem="ODm-l3-QMI" secondAttribute="bottom" constant="18" id="5o4-xY-d9L"/>
-                        <constraint firstItem="ODm-l3-QMI" firstAttribute="centerX" secondItem="lcP-fg-NZt" secondAttribute="centerX" id="IAs-OR-2RW"/>
                         <constraint firstAttribute="height" constant="170" id="K5J-kT-5FE"/>
-                        <constraint firstItem="ODm-l3-QMI" firstAttribute="top" secondItem="lcP-fg-NZt" secondAttribute="top" constant="30" id="TjT-gb-D5w"/>
                     </constraints>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="YrC-69-egs">
-                    <rect key="frame" x="138.5" y="162.5" width="98" height="16"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="soQ-Yi-mWs">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="222.5"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-icon-mail" translatesAutoresizingMaskIntoConstraints="NO" id="mBm-Nk-uKk">
+                    <rect key="frame" x="139.5" y="222.5" width="96" height="96"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="98" id="6tC-W7-xNh"/>
-                        <constraint firstAttribute="height" constant="16" id="91v-rI-YXK"/>
+                        <constraint firstAttribute="width" constant="96" id="CeJ-iE-u1i"/>
+                        <constraint firstAttribute="height" constant="96" id="z6z-9Z-rzd"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ProtonMail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DvF-Ol-SEW">
+                    <rect key="frame" x="135" y="334.5" width="105.5" height="26.5"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
+                    <color key="textColor" name="launch_title_color"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="footer" translatesAutoresizingMaskIntoConstraints="NO" id="Rmh-Sp-CGf">
+                    <rect key="frame" x="134.5" y="595" width="106" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="Riw-VC-fLe"/>
                     </constraints>
                 </imageView>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" name="launch_background_color"/>
             <constraints>
-                <constraint firstItem="Afc-fK-Tl8" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4i9-30-QdF"/>
-                <constraint firstAttribute="bottom" secondItem="Afc-fK-Tl8" secondAttribute="bottom" id="Ii2-eg-cx3"/>
+                <constraint firstItem="soQ-Yi-mWs" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="2rs-SY-iG8"/>
+                <constraint firstItem="DvF-Ol-SEW" firstAttribute="top" secondItem="mBm-Nk-uKk" secondAttribute="bottom" constant="16" id="9ZL-sC-ShL"/>
+                <constraint firstItem="mBm-Nk-uKk" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="HjY-HG-P5F"/>
+                <constraint firstAttribute="bottom" secondItem="Rmh-Sp-CGf" secondAttribute="bottom" constant="56" id="IhO-hV-pgj"/>
                 <constraint firstItem="lcP-fg-NZt" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="70" id="JjN-tz-IT6"/>
                 <constraint firstItem="lcP-fg-NZt" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="KDW-AO-PlJ"/>
-                <constraint firstItem="YrC-69-egs" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="QUk-vP-SvT"/>
-                <constraint firstItem="Afc-fK-Tl8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bxd-bB-p6B"/>
+                <constraint firstItem="mBm-Nk-uKk" firstAttribute="top" secondItem="soQ-Yi-mWs" secondAttribute="bottom" id="Lmb-bI-2jh"/>
+                <constraint firstItem="mWj-si-0fe" firstAttribute="top" secondItem="DvF-Ol-SEW" secondAttribute="bottom" constant="32" id="PHo-pl-Nb6"/>
+                <constraint firstItem="soQ-Yi-mWs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="V7K-eb-mXM"/>
                 <constraint firstItem="lcP-fg-NZt" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dK6-KA-Kh4"/>
+                <constraint firstItem="Rmh-Sp-CGf" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="enl-8G-bEn"/>
                 <constraint firstAttribute="trailing" secondItem="lcP-fg-NZt" secondAttribute="trailing" id="fiw-fz-BYg"/>
-                <constraint firstItem="lcP-fg-NZt" firstAttribute="top" secondItem="YrC-69-egs" secondAttribute="bottom" constant="140" id="m4V-IH-hWc"/>
-                <constraint firstAttribute="trailing" secondItem="Afc-fK-Tl8" secondAttribute="trailing" id="xlA-iq-Qx4"/>
+                <constraint firstItem="DvF-Ol-SEW" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="ftN-K2-wNb"/>
+                <constraint firstItem="soQ-Yi-mWs" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.333583" id="nET-87-vrR"/>
+                <constraint firstAttribute="trailing" secondItem="soQ-Yi-mWs" secondAttribute="trailing" id="o4R-SZ-BSD"/>
             </constraints>
             <point key="canvasLocation" x="-165" y="-57"/>
         </view>
     </objects>
     <resources>
-        <image name="Logo" width="228" height="36.5"/>
-        <image name="sign_background_new" width="375" height="667"/>
+        <image name="footer" width="106" height="16"/>
+        <image name="splash-icon-mail" width="96" height="96"/>
         <image name="touch_id_icon" width="50" height="50"/>
+        <namedColor name="launch_background_color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="launch_title_color">
+            <color red="0.090196078431372548" green="0.094117647058823528" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

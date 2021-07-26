@@ -1,0 +1,60 @@
+{
+  "entries": {
+    "brew": {
+      "swiftlint": {
+        "version": "0.43.1",
+        "bottle": {
+          "rebuild": 0,
+          "cellar": ":any_skip_relocation",
+          "prefix": "/usr/local",
+          "root_url": "https://homebrew.bintray.com/bottles",
+          "files": {
+            "arm64_big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/swiftlint-0.43.1.arm64_big_sur.bottle.tar.gz",
+              "sha256": "e1b633e61793b924f5875e4812b49184c91fc6580bfd497ab650fe13fbbe8d8f"
+            },
+            "big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/swiftlint-0.43.1.big_sur.bottle.tar.gz",
+              "sha256": "90faabe65db0f6bc43c3752b3b6d541e7e23cd0f368035dcef57503d74ed9581"
+            },
+            "catalina": {
+              "url": "https://homebrew.bintray.com/bottles/swiftlint-0.43.1.catalina.bottle.tar.gz",
+              "sha256": "c1396dec887bf6d7986c35f38101955fb1a5c527ad4cd459174b3841dfa62239"
+            }
+          }
+        }
+      },
+      "swiftgen": {
+        "version": "6.4.0",
+        "bottle": {
+          "rebuild": 0,
+          "cellar": ":any",
+          "prefix": "/usr/local",
+          "root_url": "https://homebrew.bintray.com/bottles",
+          "files": {
+            "big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/swiftgen-6.4.0.big_sur.bottle.tar.gz",
+              "sha256": "338165c7d38fa699a84115b5dbd5881e5f8d18b194ba9c139f05b96c5bf807f8"
+            },
+            "catalina": {
+              "url": "https://homebrew.bintray.com/bottles/swiftgen-6.4.0.catalina.bottle.tar.gz",
+              "sha256": "cdc09fffadaf11a05b19563d0e733d81f467b228571096bc5c32191087fd6074"
+            }
+          }
+        }
+      }
+    }
+  },
+  "system": {
+    "macos": {
+      "big_sur": {
+        "HOMEBREW_VERSION": "3.0.10",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "9b8dc125f1d09de2d4481997bace9980ce742c2e",
+        "CLT": "12.4.0.0.1.1610135815",
+        "Xcode": "12.4",
+        "macOS": "11.2.3"
+      }
+    }
+  }
+}

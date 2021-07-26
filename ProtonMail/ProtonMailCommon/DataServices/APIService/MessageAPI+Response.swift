@@ -22,7 +22,7 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
 
 final class MessageCountResponse : Response {
     var counts : [[String : Any]]?

@@ -22,6 +22,7 @@
 
 
 import Foundation
+import ProtonCore_Networking
 
 final class UserAgent {
     public static let `default` : UserAgent = UserAgent()

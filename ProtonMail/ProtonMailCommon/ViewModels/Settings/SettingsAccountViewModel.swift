@@ -19,16 +19,15 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
-
+import ProtonCore_DataModel
 
 public enum SettingAccountSection : Int, CustomStringConvertible {
-    case account = 0
-    case addresses = 1
-    case snooze = 2
-    case mailbox = 3
+    case account
+    case addresses
+    case snooze
+    case mailbox
     
     public var description : String {
         switch(self){
@@ -45,33 +44,33 @@ public enum SettingAccountSection : Int, CustomStringConvertible {
 }
 
 public enum AccountItem : Int, CustomStringConvertible {
-    case singlePassword = 0
-    case loginPassword = 1
-    case mailboxPassword = 2
-    case recovery = 3
-    case storage = 4
+    case singlePassword
+    case loginPassword
+    case mailboxPassword
+    case recovery
+    case storage
     
     public var description : String {
         switch(self){
         case .singlePassword:
             return LocalString._single_password
         case .loginPassword:
-            return LocalString._login_password
+            return LocalString._signin_password
         case .mailboxPassword:
             return LocalString._mailbox_password
         case .recovery:
             return LocalString._recovery_email
         case .storage:
-            return LocalString._mailbox_size
+            return LocalString._mailbox_storage
         }
     }
 }
 
 public enum AddressItem : Int, CustomStringConvertible {
-    case addr = 0
-    case displayName = 1
-    case signature = 2
-    case mobileSignature = 3
+    case addr
+    case displayName
+    case signature
+    case mobileSignature
     
     public var description : String {
         switch(self){
@@ -89,10 +88,10 @@ public enum AddressItem : Int, CustomStringConvertible {
 
 
 public enum SnoozeItem : Int, CustomStringConvertible {
-    case autolock = 0
-    case language = 1
-    case combinContacts = 2
-    case cleanCache = 3
+    case autolock
+    case language
+    case combinContacts
+    case cleanCache
     
     public var description : String {
         switch(self){
@@ -108,23 +107,26 @@ public enum SnoozeItem : Int, CustomStringConvertible {
     }
 }
 
-public enum MailboxItem : Int, CustomStringConvertible {
-    case privacy = 0
-    case search = 1
-    case labelFolder = 2
-    case gestures = 3
-    case storage = 4
+public enum MailboxItem : Int, CustomStringConvertible, Equatable {
+    case privacy
+    case conversation
+    case search
+    case labels
+    case folders
+    case storage
     
     public var description : String {
         switch(self){
         case .privacy:
             return LocalString._privacy
+        case .conversation:
+            return LocalString._account_settings_conversation_row_title
         case .search:
             return LocalString._general_search_placeholder
-        case .labelFolder:
-            return LocalString._label_and_folders
-        case .gestures:
-            return LocalString._swiping_gestures
+        case .labels:
+            return LocalString._labels
+        case .folders:
+            return LocalString._folders
         case .storage:
             return LocalString._local_storage_limit
         }
@@ -138,7 +140,7 @@ protocol SettingsAccountViewModel : AnyObject {
     var addrItems: [AddressItem] { get set }
     var mailboxItems: [MailboxItem] {get set}
     
-    var setting_swipe_action_items : [SSwipeActionItems] { get set}
+    var setting_swipe_action_items : [SwipeActionItems] { get set}
     var setting_swipe_actions : [MessageSwipeAction] { get set }
     
     var storageText : String { get }
@@ -149,23 +151,32 @@ protocol SettingsAccountViewModel : AnyObject {
     
     var defaultSignatureStatus: String { get }
     var defaultMobileSignatureStatus: String { get }
+    var userManager: UserManager { get }
+    var allSendingAddresses: [Address] { get }
     
     func updateItems()
+    func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?)
+
+    var reloadTable: (() -> Void)? { get set }
 }
 
 class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox]
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-    var mailboxItems :  [MailboxItem] = [.privacy, /* .search,*/ .labelFolder, .gestures]
+    var mailboxItems :  [MailboxItem] = [.privacy, /* .search,*/ .labels, .folders]
     
-    var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
+    var setting_swipe_action_items : [SwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
                                                             .star, .archive, .unread]
     var userManager: UserManager
+
+    var reloadTable: (() -> Void)?
     
-    init(user : UserManager) {
+    init(user: UserManager) {
         self.userManager = user
+        user.conversationStateService.add(delegate: self)
+        addConversationRowIfFeatureEnabled()
     }
     
     func updateItems() {
@@ -183,7 +194,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
             let formattedUsedSpace = ByteCountFormatter.string(fromByteCount: Int64(usedSpace), countStyle: ByteCountFormatter.CountStyle.binary)
             let formattedMaxSpace = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.binary)
             
-            return "\(formattedUsedSpace)/\(formattedMaxSpace)"
+            return "\(formattedUsedSpace) / \(formattedMaxSpace)"
         }
     }
     
@@ -200,11 +211,13 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
         }
         
     }
+
     var displayName : String {
         get {
             return self.userManager.defaultDisplayName
         }
     }
+
     var defaultSignatureStatus: String {
         get {
             if self.userManager.defaultSignatureStatus {
@@ -214,6 +227,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
             }
         }
     }
+
     var defaultMobileSignatureStatus: String {
         get {
             if self.userManager.showMobileSignature {
@@ -223,6 +237,64 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
             }
         }
     }
-    
-//    var addresses : [add]
+
+    var allSendingAddresses: [Address] {
+        let defaultAddress: Address? = userManager.addresses.defaultAddress()
+        return userManager.addresses.filter { address in
+            address.status.rawValue == 1 && address.receive.rawValue == 1 && address != defaultAddress
+        }
+    }
+
+    func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?) {
+        var newAddrs = [Address]()
+        var newOrder = [String]()
+        newAddrs.append(address)
+        newOrder.append(address.addressID)
+        var order = 1
+        if let indexOfNewDefaultAddress = userManager.addresses.firstIndex(of: address) {
+            userManager.addresses[indexOfNewDefaultAddress] = address.withUpdated(order: order)
+        }
+        order += 1
+        let copyAddresses = userManager.addresses
+        for index in copyAddresses.indices where userManager.addresses[index].addressID != address.addressID {
+            newAddrs.append(userManager.addresses[index])
+            newOrder.append(userManager.addresses[index].addressID)
+            userManager.addresses[index] = userManager.addresses[index].withUpdated(order: order)
+            order += 1
+        }
+
+        let service = userManager.userService
+        service.updateUserDomiansOrder(auth: userManager.auth,
+                                       user: userManager.userInfo,
+                                       newAddrs,
+                                       newOrder: newOrder) { _, _, error in
+            if error == nil {
+                self.userManager.save()
+            }
+            DispatchQueue.main.async {
+                completion?(error)
+            }
+        }
+    }
+
+    private func addConversationRowIfFeatureEnabled() {
+        guard userManager.conversationStateService.isConversationFeatureEnabled else { return }
+        mailboxItems.insert(.conversation, at: 1)
+    }
+
+}
+
+extension SettingsAccountViewModelImpl: ConversationStateServiceDelegate {
+
+    func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
+        if isFeatureEnabled && !mailboxItems.contains(.conversation) {
+            mailboxItems.insert(.conversation, at: 1)
+        } else {
+            mailboxItems.removeAll(where: { $0 == .conversation })
+        }
+        reloadTable?()
+    }
+
+    func viewModeHasChanged(viewMode: ViewMode) {}
+
 }

@@ -33,6 +33,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     private var latestErrorBanner: BannerView?
     private var heightObservation: NSKeyValueObservation!
     private var queueObservation: NSKeyValueObservation!
+    var minimumHeight: CGFloat = 300
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +43,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         
         self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { [weak self] htmlEditor, change in
             guard let self = self, change.oldValue != change.newValue else { return }
-            let totalHeight = htmlEditor.contentHeight
+            let totalHeight = self.minimumHeight > htmlEditor.contentHeight ? self.minimumHeight : htmlEditor.contentHeight
             self.updateHeight(to: totalHeight)
             (self.viewModel as! ContainableComposeViewModel).contentHeight = totalHeight
         }
@@ -97,16 +98,6 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             let offsetArea = self.view.convert(offsetAreaInCell, to: enclosingScroller.scroller)
             enclosingScroller.scroller.scrollRectToVisible(offsetArea, animated: true)
         }
-    }
-    
-    override func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController) {
-        super.composeViewHideExpirationView(composeView)
-        self.enclosingScroller?.scroller.isScrollEnabled = true
-    }
-    
-    override func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
-        super.composeViewDidTapExpirationButton(composeView)
-        self.enclosingScroller?.scroller.isScrollEnabled = false
     }
     
     override func webViewPreferences() -> WKPreferences {
@@ -168,7 +159,9 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
                 self.dismissAnimation()
                 return
             }
-
+            if step.contains(.queueIsEmpty) {
+                return
+            }
             if step.contains(.sendingFinishedSuccessfully) {
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { [weak self] in
                     self?.step.insert(.resultAcknowledged)
@@ -203,9 +196,11 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     }
     private var stepAlert: UIAlertController? {
         didSet {
-            self.presentedViewController?.dismiss(animated: false)
-            if let alert = self.stepAlert {
-                self.present(alert, animated: false, completion: nil)
+            DispatchQueue.main.async {
+                self.presentedViewController?.dismiss(animated: false)
+                if let alert = self.stepAlert {
+                    self.present(alert, animated: false, completion: nil)
+                }
             }
         }
     }
@@ -224,23 +219,26 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
          self.headerView.ccContactPicker,
          self.headerView.bccContactPicker].forEach{ $0.prepareForDesctruction() }
         
-        self.queueObservation = sharedMessageQueue.observe(\.queue, options: [.initial]) { [weak self] _, change in
-            if sharedMessageQueue.queue.isEmpty {
-                self?.step.insert(.queueIsEmpty)
-            }
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateStepWhenTheQueueIsEmpty), name: .queueIsEmpty, object: nil)
+    }
+
+    @objc private func updateStepWhenTheQueueIsEmpty() {
+        guard !step.contains(.queueIsEmpty) else { return }
+        self.step.insert(.queueIsEmpty)
     }
     
     private func dismissAnimation() {
-        let animationBlock: ()->Void = { [weak self] in
-            if let view = self?.navigationController?.view {
-                view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
+        DispatchQueue.main.async {
+            let animationBlock: ()->Void = { [weak self] in
+                if let view = self?.navigationController?.view {
+                    view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
+                }
             }
-        }
-        self.stepAlert = nil
-        keymaker.lockTheApp()
-        UIView.animate(withDuration: 0.25, animations: animationBlock) { _ in
-            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            self.stepAlert = nil
+            keymaker.lockTheApp()
+            UIView.animate(withDuration: 0.25, animations: animationBlock) { _ in
+                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            }
         }
     }
     

@@ -25,7 +25,8 @@ import Foundation
 import CoreData
 import Groot
 import PromiseKit
-import PMCommon
+import AwaitKit
+import ProtonCore_Services
 
 enum LabelFetchType : Int {
     case all = 0
@@ -41,23 +42,33 @@ class LabelsDataService: Service, HasLocalStorage {
     public let apiService: APIService
     private let userID : String
     private let coreDataService: CoreDataService
+    private let lastUpdatedStore: LastUpdatedStoreProtocol
+    private let cacheService: CacheService
+    weak var viewModeDataSource: ViewModeDataSource?
     
-    init(api: APIService, userID: String, coreDataService: CoreDataService) {
+    init(api: APIService, userID: String, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, cacheService: CacheService) {
         self.apiService = api
         self.userID = userID
         self.coreDataService = coreDataService
+        self.lastUpdatedStore = lastUpdatedStore
+        self.cacheService = cacheService
     }
     
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
-            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
-            fetch.predicate = NSPredicate(format: "%K == %@", Label.Attributes.userID, self.userID)
-            let request = NSBatchDeleteRequest(fetchRequest: fetch)
-            let moc = self.coreDataService.backgroundManagedObjectContext
+            let labelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
+            labelFetch.predicate = NSPredicate(format: "%K == %@", Label.Attributes.userID, self.userID)
+            let labelDeleteRequest = NSBatchDeleteRequest(fetchRequest: labelFetch)
+
+            let contextLabelRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
+            contextLabelRequest.predicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, self.userID)
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: contextLabelRequest)
+
+            let moc = self.coreDataService.operationContext
             self.coreDataService.enqueue(context: moc) { (context) in
-                if let _ = try? moc.execute(request) {
-                    _ = context.saveUpstreamIfNeeded()
-                }
+                _ = try? moc.execute(labelDeleteRequest)
+                _ = try? moc.execute(deleteRequest)
+                _ = context.saveUpstreamIfNeeded()
                 seal.fulfill_()
             }
         }
@@ -66,70 +77,122 @@ class LabelsDataService: Service, HasLocalStorage {
     static func cleanUpAll() -> Promise<Void> {
         return Promise { seal in
             let coreDataService = sharedServices.get(by: CoreDataService.self)
-            let context = coreDataService.backgroundManagedObjectContext
+            let context = coreDataService.operationContext
             coreDataService.enqueue(context: context) { (context) in
                 Label.deleteAll(inContext: context)
                 LabelUpdate.deleteAll(inContext: context)
+                ContextLabel.deleteAll(inContext: context)
                 seal.fulfill_()
             }            
         }
     }
-    
-    /**
-     Fetch all contact groups using API call
-     
-     No email list is included in this fetching operation
-     ````
-     - Parameter type: type 1 is for message labels, type 2 is for contact groups
-     */
-    func fetchLabels(type: Int = 1, completion: (() -> Void)? = nil) { //TODO:: fix the completion in case of error
-        let labelsRoute = GetLabelsRequest(type: type)
-        self.apiService.exec(route: labelsRoute) { (response: GetLabelsResponse) in
-            if var labels = response.labels {
-                // add prebuild inbox label
+
+    /// Get label and folder through v4 api
+    func fetchV4Labels() -> Promise<Void> {
+        return Promise { seal in
+            let labelReq = GetV4LabelsRequest(type: .label)
+            let folderReq = GetV4LabelsRequest(type: .folder)
+            
+            let labelAPI: Promise<GetLabelsResponse> = self.apiService.run(route: labelReq)
+            let folderAPI: Promise<GetLabelsResponse> = self.apiService.run(route: folderReq)
+            // [labelAPI, folderAPI]
+            _ = when(fulfilled: labelAPI, folderAPI).done { (labelRes, folderRes) in
+                guard var labels = labelRes.labels,
+                      var folders = folderRes.labels else {
+                    let error = NSError(domain: "", code: -1,
+                                        localizedDescription: LocalString._error_no_object)
+                    seal.reject(error)
+                    return
+                }
                 for (index, _) in labels.enumerated() {
                     labels[index]["UserID"] = self.userID
                 }
-                // these labels should be created without UserID because they are "native" and shared across all users
-                if type == 1 {
-                    labels.append(["ID": "0"]) //case inbox   = "0"
-                    labels.append(["ID": "8"]) //case draft   = "8"
-                    labels.append(["ID": "1"]) //case draft   = "1"
-                    labels.append(["ID": "7"]) //case sent    = "7"
-                    labels.append(["ID": "2"]) //case sent    = "2"
-                    labels.append(["ID": "10"]) //case starred = "10"
-                    labels.append(["ID": "6"]) //case archive = "6"
-                    labels.append(["ID": "4"]) //case spam    = "4"
-                    labels.append(["ID": "3"]) //case trash   = "3"
-                    labels.append(["ID": "5"]) //case allmail = "5"
+                for (index, _) in folders.enumerated() {
+                    folders[index]["UserID"] = self.userID
                 }
                 
+                folders.append(["ID": "0"]) //case inbox   = "0"
+                folders.append(["ID": "8"]) //case draft   = "8"
+                folders.append(["ID": "1"]) //case draft   = "1"
+                folders.append(["ID": "7"]) //case sent    = "7"
+                folders.append(["ID": "2"]) //case sent    = "2"
+                folders.append(["ID": "10"]) //case starred = "10"
+                folders.append(["ID": "6"]) //case archive = "6"
+                folders.append(["ID": "4"]) //case spam    = "4"
+                folders.append(["ID": "3"]) //case trash   = "3"
+                folders.append(["ID": "5"]) //case allmail = "5"
+                
+                let allFolders = labels + folders
+                
                 //save
-                let context = self.coreDataService.mainManagedObjectContext
+                let context = self.coreDataService.operationContext
+                self.coreDataService.enqueue(context: context) { (context) in
+                    do {
+                        let labels_out = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: allFolders, in: context)
+                        let error = context.saveUpstreamIfNeeded()
+                        if error == nil {
+                            if labels_out.count != allFolders.count {
+                                PMLog.D("error: label insertions failed partially!")
+                            }
+                            seal.fulfill_()
+                        } else {
+                            //TODO:: error
+                            seal.reject(error!)
+                            PMLog.D("error: \(String(describing: error))")
+                        }
+                    } catch let ex as NSError {
+                        seal.reject(ex)
+                        PMLog.D("error: \(ex)")
+                    }
+                }
+            }.catch { (error) in
+                seal.reject(error)
+            }
+        }
+    }
+
+    func fetchV4ContactGroup() -> Promise<Void> {
+        return Promise { seal in
+            let groupRes = GetV4LabelsRequest(type: .contactGroup)
+            self.apiService.exec(route: groupRes) { (_, res: GetLabelsResponse) in
+                if let error = res.error {
+                    seal.reject(error)
+                    return
+                }
+                guard var labels = res.labels else {
+                    let error = NSError(domain: "", code: -1,
+                                        localizedDescription: LocalString._error_no_object)
+                    seal.reject(error)
+                    return
+                }
+                for (index, _) in labels.enumerated() {
+                    labels[index]["UserID"] = self.userID
+                }
+                //save
+                let context = self.coreDataService.operationContext
                 self.coreDataService.enqueue(context: context) { (context) in
                     do {
                         let labels_out = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: labels, in: context)
                         let error = context.saveUpstreamIfNeeded()
                         if error == nil {
                             if labels_out.count != labels.count {
-                               PMLog.D("error: label insertions failed partially!")
+                                PMLog.D("error: label insertions failed partially!")
                             }
+                            seal.fulfill_()
                         } else {
                             //TODO:: error
+                            seal.reject(error!)
                             PMLog.D("error: \(String(describing: error))")
                         }
                     } catch let ex as NSError {
+                        seal.reject(ex)
                         PMLog.D("error: \(ex)")
                     }
-                    completion?()
                 }
-            } else {
-                //TODO:: error
-                completion?()
             }
         }
     }
-    
+
     func getAllLabels(of type : LabelFetchType, context: NSManagedObjectContext) -> [Label] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
         
@@ -157,7 +220,7 @@ class LabelsDataService: Service, HasLocalStorage {
     }
     
     func fetchedResultsController(_ type : LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        let moc = self.coreDataService.mainManagedObjectContext
+        let moc = self.coreDataService.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
         fetchRequest.predicate = self.fetchRequestPrecidate(type)
         
@@ -175,25 +238,25 @@ class LabelsDataService: Service, HasLocalStorage {
     private func fetchRequestPrecidate(_ type: LabelFetchType) -> NSPredicate {
         switch type {
         case .all:
-            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
+            return NSPredicate(format: "(labelID MATCHES %@) AND ((%K == 1) OR (%K == 3)) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.type, Label.Attributes.userID, self.userID)
         case .folder:
-            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive, Label.Attributes.userID, self.userID)
+            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 3) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
         case .folderWithInbox:
             // 0 - inbox, 6 - archive, 3 - trash, 4 - spam
             let defaults = NSPredicate(format: "labelID IN %@", [0, 6, 3, 4])
             // custom folders like in previous (LabelFetchType.folder) case
-            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive, Label.Attributes.userID, self.userID)
+            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 3) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
             
             return NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
         case .folderWithOutbox:
             // 7 - sent, 6 - archive, 3 - trash
             let defaults = NSPredicate(format: "labelID IN %@", [6, 7, 3])
             // custom folders like in previous (LabelFetchType.folder) case
-            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive, Label.Attributes.userID, self.userID)
+            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 3) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
             
             return NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
         case .label:
-            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive, Label.Attributes.userID, self.userID)
+            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
         case .contactGroup:
             return NSPredicate(format: "(%K == 2) AND (%K == %@)", Label.Attributes.type, Label.Attributes.userID, self.userID)
         }
@@ -201,7 +264,7 @@ class LabelsDataService: Service, HasLocalStorage {
     
     func addNewLabel(_ response : [String : Any]?) {
         if var label = response {
-            let context = self.coreDataService.backgroundManagedObjectContext
+            let context = self.coreDataService.operationContext
             context.performAndWait() {
                 do {
                     label["UserID"] = self.userID
@@ -215,14 +278,91 @@ class LabelsDataService: Service, HasLocalStorage {
             }
         }
     }
-    
-    func label(by labelID : String) -> Label? {
-        let context = self.coreDataService.backgroundManagedObjectContext
-        return Label.labelForLabelID(labelID, inManagedObjectContext: context) 
+
+    func labelFetchedController(by labelID: String) -> NSFetchedResultsController<NSFetchRequestResult> {
+        let context = self.coreDataService.mainContext
+        return Label.labelFetchController(for: labelID, inManagedObjectContext: context)
     }
     
-    func unreadCount(by lableID: String, userID: String? = nil) -> Promise<Int> {
-        let context = self.coreDataService.mainManagedObjectContext
-        return lastUpdatedStore.unreadCount(by: lableID, userID: userID ?? self.userID, context: context)
+    func label(by labelID : String) -> Label? {
+        let context = self.coreDataService.mainContext
+        return Label.labelForLabelID(labelID, inManagedObjectContext: context)
+    }
+
+    func label(name: String) -> Label? {
+        let context = self.coreDataService.mainContext
+        return Label.labelForLabelName(name, inManagedObjectContext: context)
+    }
+    
+    func unreadCount(by labelID: String, userID: String? = nil) -> Promise<Int> {
+        guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
+            return Promise<Int>.value(0)
+        }
+        
+        let mustBeSingle = [Message.Location.draft.rawValue,
+                            Message.Location.sent.rawValue]
+        if mustBeSingle.contains(labelID) {
+            return lastUpdatedStore.unreadCount(by: labelID, userID: userID ?? self.userID, type: .singleMessage)
+        }
+        
+        switch viewMode {
+        case .conversation:
+            return lastUpdatedStore.unreadCount(by: labelID, userID: userID ?? self.userID, type: .conversation)
+        case .singleMessage:
+            return lastUpdatedStore.unreadCount(by: labelID, userID: userID ?? self.userID, type: .singleMessage)
+        }
+    }
+
+    func createNewLabel(name: String, color: String, type: PMLabelType = .label, parentID: String? = nil, notify: Bool = true, completion: ((String?, NSError?) -> Void)?) {
+        let route = CreateLabelRequest(name: name, color: color, type: type, parentID: parentID, notify: notify, expanded: true)
+        self.apiService.exec(route: route) { (task, response: CreateLabelRequestResponse) in
+            if let err = response.error {
+                completion?(nil, err.toNSError)
+            } else {
+                let ID = response.label?["ID"] as? String
+                if let labelResponse = response.label {
+                    self.cacheService.addNewLabel(serverReponse: labelResponse, completion: nil)
+                }
+                completion?(ID, nil)
+            }
+        }
+    }
+
+    func updateLabel(_ label: Label, name: String, color: String, parentID: String?, notify: Bool, completion: ((NSError?) -> Void)?) {
+        let api = UpdateLabelRequest(id: label.labelID, name: name, color: color, parentID: parentID, notify: notify)
+        self.apiService.exec(route: api) { (task, response: UpdateLabelRequestResponse) in
+            if let err = response.error {
+                completion?(err.toNSError)
+            } else {
+                guard let labelDic = response.label else {
+                    let error = NSError(domain: "", code: -1,
+                                        localizedDescription: LocalString._error_no_object)
+                    completion?(error)
+                    return
+                }
+                self.cacheService.updateLabel(serverReponse: labelDic) {
+                    completion?(nil)
+                }
+            }
+        }
+    }
+
+    
+    /// Send api to delete label and remove related labels from the DB
+    /// - Parameters:
+    ///   - label: The label want to be deleted
+    ///   - subLabelIDs: Object ids array of child labels
+    ///   - completion: completion
+    func deleteLabel(_ label: Label,
+                     subLabelIDs: [NSManagedObjectID] = [],
+                     completion: (() -> Void)?) {
+        let api = DeleteLabelRequest(lable_id: label.labelID)
+        self.apiService.exec(route: api) { (_, _) in
+
+        }
+        let ids = subLabelIDs + [label.objectID]
+        self.cacheService.deleteLabels(objectIDs: ids) {
+            completion?()
+        }
     }
 }

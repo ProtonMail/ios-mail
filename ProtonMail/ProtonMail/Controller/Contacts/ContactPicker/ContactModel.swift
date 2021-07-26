@@ -20,8 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import PMCommon
+import ProtonCore_Services
 
 typealias LockCheckProgress = (() -> Void)
 typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType : Int) -> Void)
@@ -32,7 +31,7 @@ typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType : Int) -> Void)
     case contactGroup = 2
 }
 
-protocol ContactPickerModelProtocol: class {
+protocol ContactPickerModelProtocol: AnyObject {
     
     var modelType: ContactPickerModelState { get }
     var contactTitle : String { get }

@@ -22,6 +22,7 @@
 
 
 import UIKit
+import ProtonCore_UIFoundations
 
 class ContactTabBarViewController: UITabBarController, CoordinatedNew {
     typealias coordinatorType = ContactTabBarCoordinator
@@ -62,15 +63,23 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew {
         }
     }
     
+    class func instance() -> ContactTabBarViewController {
+        let board = UIStoryboard.Storyboard.contact.storyboard
+        let vc = board.instantiateInitialViewController() as! ContactTabBarViewController
+        return vc
+    }
+    
     ///    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.tabBar.tintColor = UIColorManager.InteractionNorm
         // setup tab bar item title
         self.tabBar.items?[0].title = LocalString._menu_contacts_title
-        self.tabBar.items?[0].image = UIImage.init(named: "contact_groups_contacts_tabbar")
+        self.tabBar.items?[0].image = Asset.contactGroupsContactsTabbar.image
+        self.tabBar.items?[0].selectedImage = Asset.contactGroupsContactsTabbarFilled.image
         self.tabBar.items?[1].title = LocalString._menu_contact_group_title
-        self.tabBar.items?[1].image = UIImage.init(named: "contact_groups_groups_tabbar")
+        self.tabBar.items?[1].image = Asset.contactGroupsGroupsTabbar.image
+        self.tabBar.items?[1].selectedImage = Asset.contactGroupsGroupsTabbarFilled.image
         self.tabBar.assignItemsAccessibilityIdentifiers()
     }
 }

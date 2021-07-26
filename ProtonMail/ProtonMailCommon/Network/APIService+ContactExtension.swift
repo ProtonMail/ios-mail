@@ -22,7 +22,7 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Services
 
 /// Contact extension
 extension APIService {

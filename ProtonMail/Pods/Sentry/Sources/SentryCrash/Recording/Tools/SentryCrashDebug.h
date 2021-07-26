@@ -24,8 +24,10 @@
 // THE SOFTWARE.
 //
 
+
 /* Utility functions for querying the mach kernel.
  */
+
 
 #ifndef HDR_SentryCrashDebug_h
 #define HDR_SentryCrashDebug_h
@@ -34,7 +36,9 @@
 extern "C" {
 #endif
 
+
 #include <stdbool.h>
+
 
 /** Check if the current process is being traced or not.
  *

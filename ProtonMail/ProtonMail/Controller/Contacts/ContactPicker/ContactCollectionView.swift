@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import ProtonCore_UIFoundations
 import UIKit
 
 //Complete
@@ -92,16 +92,16 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         self._showPrompt = true
         
         if let layout = self.collectionViewLayout as? ContactCollectionViewFlowLayout {
-            layout.minimumInteritemSpacing = 0 //5
-            layout.minimumLineSpacing = 0 // 1
-            layout.sectionInset = UIEdgeInsets.init(top: 0, left: 6, bottom: 0, right: 6)
+            layout.minimumInteritemSpacing = 5
+            layout.minimumLineSpacing = 8
+            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 6)
         }
         
         self.prototypeCell = ContactCollectionViewContactCell()
         
         self.allowsMultipleSelection = false
         self.allowsSelection = true
-        self.backgroundColor = UIColor(hexColorCode: "#FFFFFF") //UIColorFromRGB(0xFCFEFF)
+        self.backgroundColor = UIColorManager.BackgroundNorm
         
         //        self.register(ContactCollectionViewContactCell.self, forCellWithReuseIdentifier: "ContactCell")
         self.register(UINib.init(nibName: "ContactCollectionViewContactCell", bundle: nil),
@@ -377,8 +377,11 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         } else if self.isCell(entry: indexPath) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContactEntryCell", for: indexPath) as! ContactCollectionViewEntryCell
             cell.delegate = self
-            if self.isFirstResponder && self.indexPathOfSelectedCell == nil {
-                cell.setFocus()
+            if (self.isFirstResponder || !self.searchText.isEmpty)
+                && self.indexPathOfSelectedCell == nil {
+                delay(0.1) {
+                    cell.setFocus()
+                }
             }
             cell.text = self.searchText
             cell.enabled = self.allowsTextInput
@@ -423,7 +426,7 @@ extension ContactCollectionView : UICollectionViewDelegateFlowLayout {
             widthForItem = max(30, widthForItem)
         } else if self.isCell(entry: indexPath) {
             let prototype = ContactCollectionViewEntryCell()
-            widthForItem = max(100, prototype.widthForText(text: self.searchText) + 44)
+            widthForItem = max(100, prototype.widthForText(text: self.searchText))
         } else {
             if let cell = self.cellForItem(at: indexPath) as? ContactCollectionViewContactCell {
                 widthForItem = cell.widthForCell()
@@ -522,18 +525,24 @@ extension ContactCollectionView : UICollectionViewDelegate {
 extension ContactCollectionView : UITextFieldDelegateImproved {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        var newString = self.searchText
         defer {
-            isEntryCellRefreshing = false
-            if let cell = self.cellForItem(at: self.entryCellIndexPath) as? ContactCollectionViewEntryCell {
+            if let cell = self.cellForItem(at: self.entryCellIndexPath) as? ContactCollectionViewEntryCell,
+               var text = textField.text,
+               let textRange = Range(range, in: text) {
                 
-                let strForWholeString = NSString(format:"%@%@", textField.text!,string) as String
+                text.replaceSubrange(textRange, with: string)
                 
-                let fontSize: CGSize = strForWholeString.size(withAttributes: [NSAttributedString.Key.font: Fonts.h6.light])
+                let fontSize: CGSize = text.size(withAttributes: [NSAttributedString.Key.font: Fonts.h5.regular])
                 let width = fontSize.width.rounded(.up)
                 
-                if (self.frame.width - cell.frame.minX) < (44.0 + width) && width < self.frame.width {
+                if cell.frame.minX > 0 &&
+                    (self.frame.width - cell.frame.minX) <= (10 + width) &&
+                    width < self.frame.width {
+                    self.searchText = newString
                     isEntryCellRefreshing = true
                     self.reloadItems(at: [self.entryCellIndexPath])
+                    isEntryCellRefreshing = false
                 }
             }
         }
@@ -543,8 +552,7 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
             textField.resignFirstResponder()
             return false
         }
-        
-        let newString = text.replacingCharacters(in: Range(range, in: text)!, with: string)
+        newString = text.replacingCharacters(in: Range(range, in: text)!, with: string)
         // If backspace is pressed and there isn't any text in the field, we want to select the
         // last selected contact and not let them delete the space we inserted (the space allows
         // us to catch the last backspace press - without it, we get no event!)
@@ -565,7 +573,7 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
     }
     
     func textFieldDidChange(textField: UITextField) {
-        self.searchText = textField.text
+        self.searchText = textField.text?.isEmpty == true ? " " : textField.text
         guard !isEntryCellRefreshing else {
             return
         }

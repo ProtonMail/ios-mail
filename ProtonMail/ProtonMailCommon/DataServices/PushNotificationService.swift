@@ -23,10 +23,9 @@
 
 import Foundation
 import UIKit
-import SWRevealViewController
-import PMKeymaker
 import UserNotifications
-import PMCommon
+import ProtonCore_Networking
+import ProtonCore_Services
 
 public class PushNotificationService: NSObject, Service {
 
@@ -241,14 +240,18 @@ public class PushNotificationService: NSObject, Service {
 
             switch userInfo["category"] as? String {
             case .some(LocalNotificationService.Categories.failedToSend.rawValue):
-                let link = DeepLink(MenuCoordinatorNew.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
-                link.append(.init(name: MenuCoordinatorNew.Destination.mailbox.rawValue, value: Message.Location.draft.rawValue))
+                let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
+                link.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.draft.rawValue))
                 NotificationCenter.default.post(name: .switchView, object: link)
             default:
+                let coreDataService = sharedServices.get(by: CoreDataService.self)
+                let message = Message.messageForMessageID(messageid, inManagedObjectContext: coreDataService.mainContext)
+                let firstValidFolder = message?.firstValidFolder()
+
                 user.messageService.pushNotificationMessageID = messageid
-                let link = DeepLink(MenuCoordinatorNew.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
-                link.append(.init(name: MenuCoordinatorNew.Destination.mailbox.rawValue))
-                link.append(.init(name: MailboxCoordinator.Destination.detailsFromNotify.rawValue))
+                let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
+                link.append(.init(name: String(describing: MailboxViewController.self), value: firstValidFolder))
+                link.append(.init(name: MailboxCoordinator.Destination.details.rawValue, value: messageid))
                 NotificationCenter.default.post(name: .switchView, object: link)
             }
             completionHandler()

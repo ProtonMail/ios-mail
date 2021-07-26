@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
+  - Alamofire (5.4.3)
   - AwaitKit (5.0.1):
     - PromiseKit (~> 6)
   - DKImagePickerController/Core (4.2.2):
@@ -47,14 +48,14 @@ PODS:
   - DKPhotoGallery/Resource (0.0.17):
     - SDWebImage
     - SwiftyGif
-  - EllipticCurveKeyPair (2.0-beta1)
+  - EllipticCurveKeyPair (2.0)
   - Groot (3.0.1):
     - Groot/Swift (= 3.0.1)
   - Groot/Swift (3.0.1)
+  - lottie-ios (3.2.3)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
   - MCSwipeTableViewCell (2.1.4)
-  - "NSDate+Helper (1.0.4)"
   - OHHTTPStubs/Core (9.0.0)
   - OHHTTPStubs/Default (9.0.0):
     - OHHTTPStubs/Core
@@ -68,57 +69,7 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (9.0.0)
   - OHHTTPStubs/Swift (9.0.0):
     - OHHTTPStubs/Default
-  - OpenPGP (1.1.1)
-  - PMAuthentication (1.3.3):
-    - OpenPGP (>= 1.0.5)
-    - PMCommon (>= 1.1.2)
-    - PMCrypto
-  - PMAuthentication/Tests (1.3.3):
-    - OHHTTPStubs/Swift
-    - OpenPGP (>= 1.0.5)
-    - PMCommon (>= 1.1.2)
-    - PMCrypto
-  - PMChallenge (0.0.2)
-  - PMCommon (1.2.0):
-    - PMCommon/Default (= 1.2.0)
-  - PMCommon/APIClient (1.2.0):
-    - PMCommon/Networking
-  - PMCommon/Default (1.2.0):
-    - PMCommon/APIClient
-    - PMCommon/Networking
-    - PMCommon/Services
-    - PMCommon/SRP
-  - PMCommon/Networking (1.2.0):
-    - AFNetworking (~> 4.0)
-    - AwaitKit (~> 5.0.0)
-    - PromiseKit (~> 6.0)
-  - PMCommon/Services (1.2.0):
-    - PMCommon/APIClient
-    - TrustKit
-  - PMCommon/SRP (1.2.0)
-  - PMCommon/Tests (1.2.0):
-    - OHHTTPStubs/Swift
-    - TrustKit
-  - PMCoreTranslation (1.0.0)
-  - PMCrypto (2.1.10)
-  - PMForceUpgrade (1.0.0):
-    - PMCommon
-    - PMCoreTranslation
-  - PMHumanVerification (1.0.0):
-    - PMCommon
-    - PMCoreTranslation
-    - PMUIFoundations
-  - PMKeymaker (1.2.3):
-    - EllipticCurveKeyPair
-    - PMCrypto
-  - PMLog (1.0.0)
-  - PMPayments (1.0.1):
-    - PMAuthentication
-    - PMCommon
-    - PMCoreTranslation
-    - PMLog
-    - ReachabilitySwift
-  - PMUIFoundations (1.2.5)
+  - pmtest (1.0.0)
   - PromiseKit (6.13.1):
     - PromiseKit/CorePromise (= 6.13.1)
     - PromiseKit/Foundation (= 6.13.1)
@@ -128,59 +79,232 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.13.1):
     - PromiseKit/CorePromise
+  - ProtonCore-AccountSwitcher (2.0.1):
+    - ProtonCore-CoreTranslation (= 2.0.1)
+    - ProtonCore-Log (= 2.0.1)
+    - ProtonCore-UIFoundations (= 2.0.1)
+    - ProtonCore-Utilities (= 2.0.1)
+  - ProtonCore-APIClient (2.0.1):
+    - ProtonCore-DataModel (= 2.0.1)
+    - ProtonCore-Networking (= 2.0.1)
+    - ProtonCore-Services (= 2.0.1)
+  - ProtonCore-Authentication (2.0.1):
+    - ProtonCore-APIClient (= 2.0.1)
+    - ProtonCore-Crypto (= 2.0.1)
+    - ProtonCore-Services (= 2.0.1)
+  - ProtonCore-Authentication-KeyGeneration (2.0.1):
+    - ProtonCore-Authentication (= 2.0.1)
+    - ProtonCore-Crypto (= 2.0.1)
+    - ProtonCore-OpenPGP (= 2.0.1)
+  - ProtonCore-Challenge (2.0.1):
+    - ProtonCore-Foundations (= 2.0.1)
+  - ProtonCore-Common (2.0.1):
+    - ProtonCore-Services (= 2.0.1)
+    - ProtonCore-UIFoundations (= 2.0.1)
+  - ProtonCore-CoreTranslation (2.0.1)
+  - ProtonCore-Crypto (2.0.1)
+  - ProtonCore-DataModel (2.0.1):
+    - ProtonCore-Utilities (= 2.0.1)
+  - ProtonCore-Doh (2.0.1):
+    - ProtonCore-Log (= 2.0.1)
+  - ProtonCore-ForceUpgrade (2.0.1):
+    - ProtonCore-CoreTranslation (= 2.0.1)
+    - ProtonCore-Networking (= 2.0.1)
+    - ProtonCore-UIFoundations (= 2.0.1)
+  - ProtonCore-Foundations (2.0.1)
+  - ProtonCore-HumanVerification (2.0.1):
+    - ProtonCore-APIClient (= 2.0.1)
+    - ProtonCore-CoreTranslation (= 2.0.1)
+    - ProtonCore-Foundations (= 2.0.1)
+    - ProtonCore-UIFoundations (= 2.0.1)
+    - ProtonCore-Utilities (= 2.0.1)
+  - ProtonCore-Keymaker (2.0.1):
+    - EllipticCurveKeyPair (~> 2.0)
+    - ProtonCore-Crypto (= 2.0.1)
+  - ProtonCore-Log (2.0.1)
+  - ProtonCore-Login (2.0.1):
+    - lottie-ios
+    - ProtonCore-Authentication (= 2.0.1)
+    - ProtonCore-Authentication-KeyGeneration (= 2.0.1)
+    - ProtonCore-Challenge (= 2.0.1)
+    - ProtonCore-CoreTranslation (= 2.0.1)
+    - ProtonCore-Crypto (= 2.0.1)
+    - ProtonCore-DataModel (= 2.0.1)
+    - ProtonCore-Foundations (= 2.0.1)
+    - ProtonCore-HumanVerification (= 2.0.1)
+    - ProtonCore-Log (= 2.0.1)
+    - ProtonCore-OpenPGP (= 2.0.1)
+    - ProtonCore-Payments (= 2.0.1)
+    - ProtonCore-PaymentsUI (= 2.0.1)
+    - ProtonCore-UIFoundations (= 2.0.1)
+    - TrustKit
+  - ProtonCore-Networking (2.0.1):
+    - ProtonCore-Networking/AFNetworking (= 2.0.1)
+  - ProtonCore-Networking/AFNetworking (2.0.1):
+    - AFNetworking (~> 4.0)
+    - TrustKit
+  - ProtonCore-Networking/Alamofire (2.0.1):
+    - Alamofire (~> 5.2)
+    - TrustKit
+  - ProtonCore-OpenPGP (2.0.1)
+  - ProtonCore-Payments (2.0.1):
+    - AwaitKit (~> 5.0.0)
+    - ProtonCore-APIClient (= 2.0.1)
+    - ProtonCore-Authentication (= 2.0.1)
+    - ProtonCore-CoreTranslation (= 2.0.1)
+    - ProtonCore-Foundations (= 2.0.1)
+    - ProtonCore-Log (= 2.0.1)
+    - ProtonCore-Services (= 2.0.1)
+    - ProtonCore-SRP (= 2.0.1)
+    - ReachabilitySwift (~> 5.0.0)
+  - ProtonCore-PaymentsUI (2.0.1):
+    - ProtonCore-CoreTranslation (= 2.0.1)
+    - ProtonCore-Foundations (= 2.0.1)
+    - ProtonCore-Log (= 2.0.1)
+    - ProtonCore-Payments (= 2.0.1)
+    - ProtonCore-UIFoundations (= 2.0.1)
+  - ProtonCore-Services (2.0.1):
+    - AwaitKit (~> 5.0.0)
+    - PromiseKit (~> 6.0)
+    - ProtonCore-DataModel (= 2.0.1)
+    - ProtonCore-Doh (= 2.0.1)
+    - ProtonCore-Log (= 2.0.1)
+    - ProtonCore-Networking (= 2.0.1)
+    - ProtonCore-Utilities (= 2.0.1)
+    - TrustKit
+  - ProtonCore-SRP (2.0.1)
+  - ProtonCore-TestingToolkit/UITests/HumanVerification (2.0.1):
+    - pmtest
+    - ProtonCore-CoreTranslation (= 2.0.1)
+  - ProtonCore-TestingToolkit/UITests/Login (2.0.1):
+    - pmtest
+    - ProtonCore-CoreTranslation (= 2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/Authentication (2.0.1):
+    - ProtonCore-Authentication (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Services (= 2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/Core (2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/DataModel (2.0.1):
+    - ProtonCore-DataModel (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/Doh (2.0.1):
+    - ProtonCore-Doh (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/HumanVerification (2.0.1):
+    - ProtonCore-HumanVerification (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/Login (2.0.1):
+    - ProtonCore-Login (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Authentication (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/HumanVerification (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Services (= 2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/Networking (2.0.1):
+    - ProtonCore-Networking (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/Services (2.0.1):
+    - ProtonCore-Services (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Doh (= 2.0.1)
+    - ProtonCore-TestingToolkit/UnitTests/Networking (= 2.0.1)
+  - ProtonCore-UIFoundations (2.0.1):
+    - ProtonCore-CoreTranslation (= 2.0.1)
+    - ProtonCore-Foundations (= 2.0.1)
+    - ProtonCore-Log (= 2.0.1)
+  - ProtonCore-Utilities (2.0.1):
+    - ProtonCore-Log (= 2.0.1)
   - ReachabilitySwift (5.0.0)
-  - SDWebImage (5.10.4):
-    - SDWebImage/Core (= 5.10.4)
-  - SDWebImage/Core (5.10.4)
-  - Sentry (5.2.2):
-    - Sentry/Core (= 5.2.2)
-  - Sentry/Core (5.2.2)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
+  - Sentry (4.5.0):
+    - Sentry/Core (= 4.5.0)
+  - Sentry/Core (4.5.0)
+  - SideMenuSwift (2.0.6)
+  - SkeletonView (1.11.0)
+  - SwiftGen (6.4.0)
   - SwiftyGif (5.4.0)
-  - SWRevealViewController (2.3.0)
+  - SwipyCell (4.0.1)
   - TrustKit (1.7.0)
-  - "UIColor+Hex (1.0.1)":
-    - "UIColor+Hex/NSColor (= 1.0.1)"
-    - "UIColor+Hex/UIColor (= 1.0.1)"
-  - "UIColor+Hex/UIColor (1.0.1)"
 
 DEPENDENCIES:
-  - AFNetworking (= 4.0.1)
-  - AwaitKit (~> 5.0.0)
+  - AwaitKit (= 5.0.1)
   - DKImagePickerController/PhotoGallery (~> 4.2.0)
-  - EllipticCurveKeyPair (from `https://github.com/abjurato/EllipticCurveKeyPair.git`, tag `1.0.4`)
   - Groot (= 3.0.1)
   - Masonry (= 1.1.0)
   - MBProgressHUD (= 1.1.0)
-  - MCSwipeTableViewCell (~> 2.1.4)
-  - "NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)"
+  - MCSwipeTableViewCell (= 2.1.4)
   - OHHTTPStubs/Swift (= 9.0.0)
-  - "OpenPGP (from `git@gitlab.protontech.ch:apple/shared/pmopenpgp.git`, branch `develop`)"
-  - "PMAuthentication (from `git@gitlab.protontech.ch:apple/shared/pmauthentication.git`, branch `develop`)"
-  - "PMAuthentication/Tests (from `git@gitlab.protontech.ch:apple/shared/pmauthentication.git`, branch `develop`)"
-  - "PMChallenge (from `git@gitlab.protontech.ch:apple/shared/pmchallenge.git`, tag `0.0.3`)"
-  - PMCommon (from `../Networking`)
-  - PMCommon/Tests (from `../Networking`)
-  - "PMCoreTranslation (from `git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git`, branch `develop`)"
-  - "PMCrypto (from `git@gitlab.protontech.ch:apple/shared/pmcrypto.git`, tag `2.1.10`)"
-  - "PMForceUpgrade (from `git@gitlab.protontech.ch:apple/shared/pmforceupgrade.git`, branch `develop`)"
-  - "PMHumanVerification (from `git@gitlab.protontech.ch:apple/shared/pmhumanverification.git`, branch `Develop`)"
-  - "PMKeymaker (from `git@gitlab.protontech.ch:apple/shared/pmkeymaker.git`, branch `develop`)"
-  - "PMLog (from `git@gitlab.protontech.ch:apple/shared/pmlog.git`, branch `master`)"
-  - "PMPayments (from `git@gitlab.protontech.ch:apple/shared/pmpayments.git`, branch `develop`)"
-  - "PMUIFoundations (from `git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git`, branch `master`)"
-  - PromiseKit (~> 6.0)
-  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `5.2.2`)
-  - SWRevealViewController (= 2.3.0)
+  - "pmtest (from `git@gitlab.protontech.ch:apple/shared/pmtestautomation.git`, branch `master`)"
+  - PromiseKit (= 6.13.1)
+  - ProtonCore-AccountSwitcher (= 2.0.1)
+  - ProtonCore-Authentication (= 2.0.1)
+  - ProtonCore-Authentication-KeyGeneration (= 2.0.1)
+  - ProtonCore-Challenge (= 2.0.1)
+  - ProtonCore-Common (= 2.0.1)
+  - ProtonCore-CoreTranslation (= 2.0.1)
+  - ProtonCore-Crypto (= 2.0.1)
+  - ProtonCore-ForceUpgrade (= 2.0.1)
+  - ProtonCore-HumanVerification (= 2.0.1)
+  - ProtonCore-Keymaker (= 2.0.1)
+  - ProtonCore-Log (= 2.0.1)
+  - ProtonCore-Login (= 2.0.1)
+  - ProtonCore-Networking/Alamofire (= 2.0.1)
+  - ProtonCore-OpenPGP (= 2.0.1)
+  - ProtonCore-Payments (= 2.0.1)
+  - ProtonCore-SRP (= 2.0.1)
+  - ProtonCore-TestingToolkit/UITests/HumanVerification (= 2.0.1)
+  - ProtonCore-TestingToolkit/UITests/Login (= 2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/Doh (= 2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/Login (= 2.0.1)
+  - ProtonCore-TestingToolkit/UnitTests/Services (= 2.0.1)
+  - ProtonCore-UIFoundations (= 2.0.1)
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `4.5.0`)
+  - SideMenuSwift (= 2.0.6)
+  - SkeletonView (= 1.11.0)
+  - SwiftGen (~> 6.0)
+  - SwipyCell (= 4.0.1)
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `master`)
-  - "UIColor+Hex (= 1.0.1)"
 
 SPEC REPOS:
+  "git@gitlab.protontech.ch:apple/shared/protoncore.git":
+    - ProtonCore-AccountSwitcher
+    - ProtonCore-APIClient
+    - ProtonCore-Authentication
+    - ProtonCore-Authentication-KeyGeneration
+    - ProtonCore-Challenge
+    - ProtonCore-Common
+    - ProtonCore-CoreTranslation
+    - ProtonCore-Crypto
+    - ProtonCore-DataModel
+    - ProtonCore-Doh
+    - ProtonCore-ForceUpgrade
+    - ProtonCore-Foundations
+    - ProtonCore-HumanVerification
+    - ProtonCore-Keymaker
+    - ProtonCore-Log
+    - ProtonCore-Login
+    - ProtonCore-Networking
+    - ProtonCore-OpenPGP
+    - ProtonCore-Payments
+    - ProtonCore-PaymentsUI
+    - ProtonCore-Services
+    - ProtonCore-SRP
+    - ProtonCore-TestingToolkit
+    - ProtonCore-UIFoundations
+    - ProtonCore-Utilities
   trunk:
     - AFNetworking
+    - Alamofire
     - AwaitKit
     - DKImagePickerController
     - DKPhotoGallery
+    - EllipticCurveKeyPair
     - Groot
+    - lottie-ios
     - Masonry
     - MBProgressHUD
     - MCSwipeTableViewCell
@@ -188,139 +312,84 @@ SPEC REPOS:
     - PromiseKit
     - ReachabilitySwift
     - SDWebImage
+    - SideMenuSwift
+    - SkeletonView
+    - SwiftGen
     - SwiftyGif
-    - SWRevealViewController
-    - "UIColor+Hex"
+    - SwipyCell
 
 EXTERNAL SOURCES:
-  EllipticCurveKeyPair:
-    :git: https://github.com/abjurato/EllipticCurveKeyPair.git
-    :tag: 1.0.4
-  "NSDate+Helper":
+  pmtest:
     :branch: master
-    :git: https://github.com/ProtonMail/nsdate-helper.git
-  OpenPGP:
-    :branch: develop
-    :git: "git@gitlab.protontech.ch:apple/shared/pmopenpgp.git"
-  PMAuthentication:
-    :branch: develop
-    :git: "git@gitlab.protontech.ch:apple/shared/pmauthentication.git"
-  PMChallenge:
-    :git: "git@gitlab.protontech.ch:apple/shared/pmchallenge.git"
-    :tag: 0.0.3
-  PMCommon:
-    :path: "../Networking"
-  PMCoreTranslation:
-    :branch: develop
-    :git: "git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git"
-  PMCrypto:
-    :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
-    :tag: 2.1.10
-  PMForceUpgrade:
-    :branch: develop
-    :git: "git@gitlab.protontech.ch:apple/shared/pmforceupgrade.git"
-  PMHumanVerification:
-    :branch: Develop
-    :git: "git@gitlab.protontech.ch:apple/shared/pmhumanverification.git"
-  PMKeymaker:
-    :branch: develop
-    :git: "git@gitlab.protontech.ch:apple/shared/pmkeymaker.git"
-  PMLog:
-    :branch: master
-    :git: "git@gitlab.protontech.ch:apple/shared/pmlog.git"
-  PMPayments:
-    :branch: develop
-    :git: "git@gitlab.protontech.ch:apple/shared/pmpayments.git"
-  PMUIFoundations:
-    :branch: master
-    :git: "git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git"
+    :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
-    :tag: 5.2.2
+    :tag: 4.5.0
   TrustKit:
     :branch: master
     :git: https://github.com/ProtonMail/TrustKit.git
 
 CHECKOUT OPTIONS:
-  EllipticCurveKeyPair:
-    :git: https://github.com/abjurato/EllipticCurveKeyPair.git
-    :tag: 1.0.4
-  "NSDate+Helper":
-    :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
-    :git: https://github.com/ProtonMail/nsdate-helper.git
-  OpenPGP:
-    :commit: ad04f85b416f31378f22eee3c97e4d133a82d843
-    :git: "git@gitlab.protontech.ch:apple/shared/pmopenpgp.git"
-  PMAuthentication:
-    :commit: 3ea81ae38d19893093b8fffd9936ac559d0766c8
-    :git: "git@gitlab.protontech.ch:apple/shared/pmauthentication.git"
-  PMChallenge:
-    :git: "git@gitlab.protontech.ch:apple/shared/pmchallenge.git"
-    :tag: 0.0.3
-  PMCoreTranslation:
-    :commit: 3dd6961d0366e2e403449163ce52b7dd53b7ffde
-    :git: "git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git"
-  PMCrypto:
-    :git: "git@gitlab.protontech.ch:apple/shared/pmcrypto.git"
-    :tag: 2.1.10
-  PMForceUpgrade:
-    :commit: 73ad84d27f1592699ce5e357760bdc7ed44413ea
-    :git: "git@gitlab.protontech.ch:apple/shared/pmforceupgrade.git"
-  PMHumanVerification:
-    :commit: e253503593d711ae848d12dcf78ab10cdcf3cb10
-    :git: "git@gitlab.protontech.ch:apple/shared/pmhumanverification.git"
-  PMKeymaker:
-    :commit: 97defd9cd70e83c67e7f9ad2b0c9ee93c55a8416
-    :git: "git@gitlab.protontech.ch:apple/shared/pmkeymaker.git"
-  PMLog:
-    :commit: 2f7826833a4eb974c5b0b44a3d938e8019ec6b1a
-    :git: "git@gitlab.protontech.ch:apple/shared/pmlog.git"
-  PMPayments:
-    :commit: 6b42ab93d9d9efa88a2154d3e04b02cb730385c5
-    :git: "git@gitlab.protontech.ch:apple/shared/pmpayments.git"
-  PMUIFoundations:
-    :commit: 55c5d20e3d82f79352864e82dbbbd80fd1893a52
-    :git: "git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git"
+  pmtest:
+    :commit: 579ef5f66deea4231784614d936956982f53ee30
+    :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
-    :tag: 5.2.2
+    :tag: 4.5.0
   TrustKit:
     :commit: 838fba789e01c9cabff77acea3fb7135f71a220f
     :git: https://github.com/ProtonMail/TrustKit.git
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   AwaitKit: a6d0b0b6d603cedda8ef1c1c249b8d6730359917
   DKImagePickerController: 4a3e7948a848c4348e600b3fe5ce41478835fa10
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  EllipticCurveKeyPair: 74c4c02087041d25e6ff17fb11412b163be80198
+  EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
+  lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
-  "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
-  OpenPGP: f55b53823addb41962c9d6bf78523d54320d3cb9
-  PMAuthentication: d7fd635535cd17373e7c229eb3f34037305e09a5
-  PMChallenge: e1545bb99e3b668f7b4af62aea193d11f1039d3b
-  PMCommon: f816f55710a806755ba44149436f9b15313598f4
-  PMCoreTranslation: 221df023e0a50c73bdadd07ce8917e053f69a859
-  PMCrypto: f31103813374ae10111fa581d9e10c5f8686ce8a
-  PMForceUpgrade: f494aa7192a45e642ef190a1c8d58ab746eaa515
-  PMHumanVerification: ba7ccf6a4045285a417e6c08971efe3714a4ed09
-  PMKeymaker: 41484527ae0683d08361a0c09023bed5dc8c367b
-  PMLog: 872e7cf1c22a2a4ae6ba176de3a7ae0e12ab1b6f
-  PMPayments: a8cd7749328c3155f8de959772e7aae76109b14b
-  PMUIFoundations: 9b9001fdb4d4ee82ce6341c8e397b007543b8957
+  pmtest: cb339e22597f14ee4aba80b8c7d850018fb44496
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
+  ProtonCore-AccountSwitcher: 5507361b5125aef517d55bd40bd158d6f4e42991
+  ProtonCore-APIClient: d32b49784c93dbcdf8727c02c7d56dc3b8ef53b3
+  ProtonCore-Authentication: 1d528747dca6338938edb6e32eec186d2d962bf6
+  ProtonCore-Authentication-KeyGeneration: 089167810d786a4e98b4eb3bf5f5dcaefad280cb
+  ProtonCore-Challenge: bd935427f93890db353a444588361910b965de66
+  ProtonCore-Common: fa4572539b9d17239e968088ee5c6c28e433b333
+  ProtonCore-CoreTranslation: 144d6056b99726675c4fa7d0ee082b2c040ca57f
+  ProtonCore-Crypto: d2ed43e2e731adc4b89597de45cd0e9734102544
+  ProtonCore-DataModel: 824f9a92eb9194d4d177e89da332d73cfcc9cad7
+  ProtonCore-Doh: 98f9e0df440fc3bba335b36d36db07ede1df2bf1
+  ProtonCore-ForceUpgrade: 0e7843321c7947d3dab234f5f76553c4695a3aaf
+  ProtonCore-Foundations: 9c9278ee52e908bd552facc587c032e4af9f558f
+  ProtonCore-HumanVerification: 2356d1b091e9e409842e16cb84336b179ca00714
+  ProtonCore-Keymaker: 93a31241e031a1c2f8f1bc432fb337c859acb9c0
+  ProtonCore-Log: e711c2314bc1638fc7c16cef0ce12f6df3023ddc
+  ProtonCore-Login: 24d7c05b2d6f371e070bb47ab42d3b57e097ead2
+  ProtonCore-Networking: 6c461510b5fdffeacedfd9f1667ef783e3dc1c0d
+  ProtonCore-OpenPGP: e2914f0994c15a66be4b6dea87553098c3ab74f6
+  ProtonCore-Payments: f783c97fea642b85864b81771ea019daac632213
+  ProtonCore-PaymentsUI: e930c75b63a19ee1facb153379d9e1abf413e8de
+  ProtonCore-Services: 363bc43f40d21f920b27bcef550e385997cb1cc2
+  ProtonCore-SRP: decfb41f19b768173e92f8812d03c312bc8f5813
+  ProtonCore-TestingToolkit: 52e5e95e02d9791a831a814b11e16627f1ae68e9
+  ProtonCore-UIFoundations: cf63e9b22e72d429c00d1ac777718bb1838f2738
+  ProtonCore-Utilities: d4abe182ff9489dbd2f434aad2ad1b491624a465
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
-  Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  Sentry: ab6c209f23700d1460691dbc90e19ed0a05d496b
+  SideMenuSwift: f12ca1b11faad909bfc2878df37e0a1c40fa4570
+  SkeletonView: cc84ce90a804dd0dd7198dd802833411c8a64eaf
+  SwiftGen: 67860cc7c3cfc2ed25b9b74cfd55495fc89f9108
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
-  SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
+  SwipyCell: 3fbfd7dc091c4699d1cb03f015e2ecdc6f26929d
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
-  "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: f4f8de78af24526c98b4cc53a042c20ef1121328
+PODFILE CHECKSUM: 40809b9f956a41d91a1ef88d1c3bc2f537abf5dd
 
 COCOAPODS: 1.10.1

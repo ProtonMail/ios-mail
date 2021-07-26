@@ -59,7 +59,8 @@ extension NSError {
     
     
     public func alertToast() ->Void {
-        MBProgressHUD.alertToast(errorString: localizedDescription)
+        let message = localizedFailureReason ?? localizedDescription
+        MBProgressHUD.alertToast(errorString: message)
     }
     
     public func alert(at view: UIView) ->Void {

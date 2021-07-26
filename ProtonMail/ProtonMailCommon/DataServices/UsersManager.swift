@@ -24,14 +24,14 @@
 import Foundation
 import AwaitKit
 import PromiseKit
-import PMKeymaker
 import Crypto
-import PMCommon
-#if !APP_EXTENSION
-import PMHumanVerification
-#endif
+import ProtonCore_DataModel
+import ProtonCore_Doh
+import ProtonCore_Keymaker
+import ProtonCore_Networking
+import ProtonCore_Services
 
-protocol UsersManagerDelegate: class {
+protocol UsersManagerDelegate: AnyObject {
     func migrating()
     func session()
 }
@@ -124,7 +124,7 @@ class UsersManager : Service, Migrate {
     }
    
     /// Server's config like url port path etc..
-    var doh : DoH
+    var doh : DoH & ServerConfig
     /// the interface for talking to UI
     weak var delegate : UsersManagerDelegate?
 
@@ -135,7 +135,7 @@ class UsersManager : Service, Migrate {
         }
     }
     
-    init(doh: DoH, delegate : UsersManagerDelegate?) {
+    init(doh: DoH & ServerConfig, delegate : UsersManagerDelegate?) {
         self.doh = doh
         
         //init doh defalt on/off
@@ -191,10 +191,6 @@ class UsersManager : Service, Migrate {
         self.save()
     }
     
-    func get(byID : String) {
-        
-    }
-    
     func get(not userID: String) -> UserManager?  {
         for user in users {
             if user.userInfo.userId != userID {
@@ -216,18 +212,21 @@ class UsersManager : Service, Migrate {
     }
     
     func active(uid: String) {
-        if let index = self.users.enumerated().first(where: { $1.isMatch(sessionID: uid) })?.offset {
-            self.users.swapAt(0, index)
+        guard let index = self.users.firstIndex(where: { $0.isMatch(sessionID: uid) }) else {
+            return
         }
+        let user = self.users.remove(at: index)
+        self.users.insert(user, at: 0)
         self.save()
+        self.firstUser?.refreshFeatureFlags()
     }
     
     func active(index: Int) {
         guard self.users.count > 0, index < users.count, index != 0 else {
             return
         }
-        
-        self.users.swapAt(0, index)
+        let user = self.users.remove(at: index)
+        self.users.insert(user, at: 0)
         self.save()
     }
     //TODO:: referance could try to use weak.
@@ -347,7 +346,6 @@ class UsersManager : Service, Migrate {
         
         if let oldAuth = oldAuthFetch(),  let user = oldUserInfo() {
             let session = oldAuth.sessionID
-            let userID = user.userId
             
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             apiService.serviceDelegate = self
@@ -414,7 +412,6 @@ class UsersManager : Service, Migrate {
             
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 apiService.serviceDelegate = self
                 #if !APP_EXTENSION
@@ -426,6 +423,7 @@ class UsersManager : Service, Migrate {
                 users.append(newUser)
             }
         }
+
         users.forEach { $0.fetchUserInfo() }
         self.loggedIn()
     }
@@ -464,7 +462,7 @@ extension UsersManager : UserManagerSave {
 /// cache login check
 extension UsersManager {
     func launchCleanUpIfNeeded() {
-        self.users.forEach { $0.launchCleanUpIfNeeded() }
+
     }
     
     func logout(user: UserManager, shouldShowAccountSwitchAlert: Bool = false) -> Promise<Void> {
@@ -481,7 +479,7 @@ extension UsersManager {
                 return Promise()
             }
 
-            if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
+            if let primary = self.users.first, primary.isMatch(sessionID: userToDelete.auth.sessionID) {
                 self.remove(user: userToDelete)
                 isPrimaryAccountLogout = true
             } else {
@@ -491,8 +489,8 @@ extension UsersManager {
             if self.users.isEmpty {
                 return self.clean()
             } else if shouldShowAccountSwitchAlert {
-                String(format: LocalString._logout_account_switched_when_token_revoked,
-                       arguments: [user.defaultEmail,
+                String(format: LocalString._signout_account_switched_when_token_revoked,
+                       arguments: [userToDelete.defaultEmail,
                                    self.users.first!.defaultEmail]).alertToast()
             }
             return Promise()
@@ -508,15 +506,16 @@ extension UsersManager {
             self.active(uid: nextFirst)
         }
         if !disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
-            self.disconnectedUsers.append(.init(defaultDisplayName: user.defaultDisplayName,
-                                             defaultEmail: user.defaultEmail,
-                                             userID: user.userInfo.userId))
+            let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,
+                                                    defaultEmail: user.defaultEmail,
+                                                    userID: user.userinfo.userId)
+            self.disconnectedUsers.insert(logoutUser, at: 0)
         }
         self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
         self.save()
     }
     
-    internal func clean() -> Promise<Void> {
+    func clean() -> Promise<Void> {
         return UserManager.cleanUpAll().ensure {
             SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
             SharedCacheBase.getDefault()?.remove(forKey: CoderKey.authKeychainStore)
@@ -529,13 +528,11 @@ extension UsersManager {
             
             UserTempCachedStatus.backup()
             
-            
             sharedUserDataService.signOut(true)
                     
             userCachedStatus.signOut()
             self.users.forEach { user in
                 user.userService.signOut(true)
-                user.messageService.launchCleanUpIfNeeded()
             }
             self.users = []
             self.save()
@@ -583,16 +580,6 @@ extension UsersManager {
     
     func loggedOutAll() -> Promise<Void> {
         return when(fulfilled: users.map{ self.logout(user: $0) })
-    }
-    
-    func freeAccountNum() -> Int {
-        var count = 0
-        for user in users {
-            if !user.isPaid {
-                count = count + 1
-            }
-        }
-        return count
     }
 }
 
@@ -662,7 +649,6 @@ extension UsersManager {
         // check the older auth and older user format first
         if let oldAuth = oldAuthFetchLagcy(),  let user = oldUserInfoLagcy() {
             let session = oldAuth.sessionID
-            let userID = user.userId
             let apiService = PMAPIService(doh: self.doh, sessionUID: session)
             apiService.serviceDelegate = self
             #if !APP_EXTENSION
@@ -712,7 +698,6 @@ extension UsersManager {
             
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let userID = user.userId
                 let apiService = PMAPIService(doh: self.doh, sessionUID: session)
                 apiService.serviceDelegate = self
                 #if !APP_EXTENSION
@@ -792,37 +777,15 @@ extension UsersManager {
             return []
         }
         return loggedOutUserHandles
-        
-        
-//        var disconnectedUsers: Array<DisconnectedUserHandle> {
-//            get {
-//                // TODO: this locking/unlocking can be refactored to be @propertyWrapper on iOS 5.1
-//                guard let mainKey = keymaker.mainKey,
-//                    let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.disconnectedUsers),
-//                    case let locked = Locked<Data>(encryptedValue: encryptedData),
-//                    let data = try? locked.unlock(with: mainKey, new: true),
-//                    let loggedOutUserHandles = try? JSONDecoder().decode(Array<DisconnectedUserHandle>.self, from: data) else
-//                {
-//                    return []
-//                }
-//                return loggedOutUserHandles
-//            }
-//            set {
-//                guard let mainKey = keymaker.mainKey,
-//                    let data = try? JSONEncoder().encode(newValue),
-//                    let locked = try? Locked(clearValue: data, with: mainKey) else
-//                {
-//                    PMLog.D("Failed to save disconnectedUsers to keychain")
-//                    return
-//                }
-//                KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)
-//            }
-//        }
     }
     
 }
 
 extension UsersManager: APIServiceDelegate {
+    var locale: String {
+        return LanguageManager.currentLanguageCode()
+    }
+
     func isReachable() -> Bool {
         return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
     }

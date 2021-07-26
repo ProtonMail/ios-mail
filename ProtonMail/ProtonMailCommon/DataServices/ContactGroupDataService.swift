@@ -25,14 +25,14 @@ import Foundation
 import CoreData
 import Groot
 import PromiseKit
-import PMCommon
+import ProtonCore_Services
 
 //let sharedContactGroupsDataService = ContactGroupsDataService(api: APIService.shared)
 
 class ContactGroupsDataService: Service, HasLocalStorage {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
-            let context = self.coreDataService.backgroundManagedObjectContext
+            let context = self.coreDataService.operationContext
             self.coreDataService.enqueue(context: context) { (context) in
                 let groups = self.labelDataService.getAllLabels(of: .contactGroup, context: context)
                 groups.forEach {
@@ -68,20 +68,11 @@ class ContactGroupsDataService: Service, HasLocalStorage {
     func createContactGroup(name: String, color: String) -> Promise<String> {
         return Promise {
             seal in
-            let route = CreateLabelRequest(name: name, color: color, exclusive: false, type: 2)
-            self.apiService.exec(route: route) { (response: CreateLabelRequestResponse) in
-                if let error = response.error {
-                    seal.reject(error)
+            self.labelDataService.createNewLabel(name: name, color: color, type: .contactGroup) { (labelId, error) in
+                if let err = error {
+                    seal.reject(err)
                 } else {
-                    if let newContactGroup = response.label,
-                       let ID = newContactGroup["ID"] as? String {
-                        // save
-                        PMLog.D("[Contact Group addContactGroup API] result = \(newContactGroup)")
-                        self.labelDataService.addNewLabel(newContactGroup)
-                        seal.fulfill(ID)
-                    } else {
-                        seal.reject(NSError.unableToParseResponse(response))
-                    }
+                    seal.fulfill(labelId ?? "")
                 }
             }
         }
@@ -129,7 +120,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                     if let returnedCode = response.returnedCode {
                         PMLog.D("[Contact Group deleteContactGroup API] result = \(String(describing: returnedCode))")
                         // successfully deleted on the server
-                        let context = self.coreDataService.mainManagedObjectContext
+                        let context = self.coreDataService.operationContext
                         self.coreDataService.enqueue(context: context) { (context) in
                             let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
                             if let label = label {
@@ -174,15 +165,19 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                     if !response.emailIDs.isEmpty {
                         // save
                         PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
-                        let context = self.coreDataService.mainManagedObjectContext
+                        let context = self.coreDataService.operationContext
                         self.coreDataService.enqueue(context: context) { (context) in
                             let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
+                            
+                            let emailsToUse = emailList.compactMap { (email) -> Email? in
+                                try? context.existingObject(with: email.objectID) as? Email
+                            }
                             
                             if let label = label,
                                 var newSet = label.emails as? Set<Email> {
                                 // insert those email objects that is in the response only
                                 for emailID in response.emailIDs {
-                                    for email in emailList {
+                                    for email in emailsToUse {
                                         if email.emailID == emailID {
                                             newSet.insert(email)
                                             break
@@ -191,13 +186,12 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                                 }
                                 
                                 label.emails = newSet as NSSet
-                                
-                                do {
-                                    try context.save()
-                                    seal.fulfill(())
-                                } catch {
+
+                                if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D("addEmailsToContactGroup updating error: \(error)")
                                     seal.reject(error)
+                                } else {
+                                    seal.fulfill(())
                                 }
                             } else {
                                 PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
@@ -234,30 +228,33 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                         // save
                         PMLog.D("[Contact Group removeEmailsFromContactGroup API] result = \(String(describing: response))")
                         
-                        let context = self.coreDataService.mainManagedObjectContext
+                        let context = self.coreDataService.operationContext
                         self.coreDataService.enqueue(context: context) { (context) in
                             let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
                             
                             // remove only the email objects in the response
-                            if let label = label, var newSet = label.emails as? Set<Email> {
+                            if let label = label {
+                                let emailObjects = label.mutableSetValue(forKey: Label.Attributes.emails)
+
                                 for emailID in response.emailIDs {
                                     for email in emailList {
                                         if email.emailID == emailID {
-                                            newSet.remove(email)
-                                            break
+                                            if let emailToDelete = emailObjects.compactMap({ $0 as? Email }).first(where: { email in
+                                                return email.emailID == emailID
+                                            }) {
+                                                emailObjects.remove(emailToDelete)
+                                            }
                                         }
                                     }
                                 }
-                                
-                                label.emails = newSet as NSSet
-                                
-                                do {
-                                    try context.save()
-                                    seal.fulfill(())
-                                } catch {
+
+                                if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D("addEmailsToContactGroup updating error: \(error)")
                                     seal.reject(error)
+                                } else {
+                                    seal.fulfill(())
                                 }
+
                             } else {
                                 PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
                                 seal.reject(ContactGroupEditError.InternalError)
@@ -272,7 +269,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
     }
     
     func getAllContactGroupVOs() -> [ContactGroupVO] {
-        let labels = self.labelDataService.getAllLabels(of: .contactGroup, context: self.coreDataService.mainManagedObjectContext)
+        let labels = self.labelDataService.getAllLabels(of: .contactGroup, context: self.coreDataService.mainContext)
         
         var result: [ContactGroupVO] = []
         for label in labels {

@@ -23,8 +23,8 @@
 
 import Foundation
 
-let sharedMessageQueue = MessageQueue(queueName: "writeQueue")
-let sharedFailedQueue = MessageQueue(queueName: "failedQueue")
+//let sharedMessageQueue = MessageQueue(queueName: "writeQueue")
+//let sharedFailedQueue = MessageQueue(queueName: "failedQueue")
 
 class MessageQueue: PersistentQueue {
     fileprivate struct Key {
@@ -32,8 +32,6 @@ class MessageQueue: PersistentQueue {
         static let action = "action"
         static let time = "time"
         static let count = "count"
-        static let data1 = "data1"
-        static let data2 = "data2"
         static let userId = "userId"
     }
     
@@ -43,13 +41,13 @@ class MessageQueue: PersistentQueue {
     var isRequiredHumanCheck : Bool = false
     
     //TODO::here need input the time of action when local cache changed.
-    func addMessage(_ messageID: String, action: MessageAction, data1: String = "", data2: String = "", userId: String = "") -> UUID {
+    func addMessage(_ messageID: String, action: MessageAction, userId: String = "") -> UUID {
         let time = Date().timeIntervalSince1970
-        let element = [Key.id : messageID, Key.action : action.rawValue, Key.time : "\(time)", Key.count : "0", Key.data1 : data1, Key.data2 : data2, Key.userId: userId]
+        let element = [Key.id : messageID, Key.action : action.rawValue, Key.time : "\(time)", Key.count : "0", Key.userId: userId]
         return add(element as NSCoding)
     }
     
-    func nextMessage() -> (uuid: UUID, messageID: String, action: String, data1: String, data2: String, userId: String)? {
+    func nextMessage() -> (uuid: UUID, messageID: String, action: String, userId: String)? {
         if isBlocked || isInProgress || isRequiredHumanCheck {
             return nil
         }
@@ -57,10 +55,8 @@ class MessageQueue: PersistentQueue {
             if let element = object as? [String : String] {
                 if let id = element[Key.id] {
                     if let action = element[Key.action] {
-                        let data1 = element[Key.data1] ?? ""
-                        let data2 = element[Key.data2] ?? ""
                         let userId = element[Key.userId] ?? ""
-                        return (uuid as UUID, id, action, data1, data2, userId)
+                        return (uuid as UUID, id, action, userId)
                     }
                 }
             }
@@ -81,11 +77,7 @@ class MessageQueue: PersistentQueue {
         }
         return Array(Set(ids))
     }
-    
-    func removeDoubleSent(messageID : String, actions: [String]) {
-        self.removeDuplicated(messageID, key: Key.id, actionKey: Key.action, actions: actions)
-    }
-    
+
     func isAnyQueuedMessage(userID: String) -> Bool {
         let msgs = self.queue.compactMap { (entryOfQueue) -> String? in
             guard let object = entryOfQueue as? [String: Any],

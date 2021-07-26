@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="ComposerAttachmentCellTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C1D-ci-xg9" userLabel="containerView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
+                        <subviews>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="CGX-FH-ldQ">
+                                <rect key="frame" x="10" y="10" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="BFn-bO-u5B"/>
+                                    <constraint firstAttribute="height" constant="20" id="qpc-wm-kWN"/>
+                                </constraints>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="251" text="Labelsdfsdfjsdkfjlsdjflsdfjlsdfj" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ujR-Q7-MW3" userLabel="fileName">
+                                <rect key="frame" x="40" y="6.5" width="190" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQP-r2-Ht5" userLabel="fileSize">
+                                <rect key="frame" x="238" y="6.5" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="743-US-atR">
+                                <rect key="frame" x="288" y="5" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="bzC-0Z-gHc"/>
+                                    <constraint firstAttribute="height" constant="24" id="oSY-13-OcL"/>
+                                </constraints>
+                                <state key="normal" image="action_sheet_close"/>
+                                <connections>
+                                    <action selector="clickDeleteButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="EIH-Tw-PIw"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iwe-MP-EtI">
+                                <rect key="frame" x="8" y="8" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="5Fw-Yf-GDP"/>
+                                    <constraint firstAttribute="height" constant="24" id="65w-aq-7qm"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="EQP-r2-Ht5" firstAttribute="leading" secondItem="ujR-Q7-MW3" secondAttribute="trailing" constant="8" id="5Mb-qq-6ix"/>
+                            <constraint firstItem="iwe-MP-EtI" firstAttribute="leading" secondItem="C1D-ci-xg9" secondAttribute="leading" constant="8" id="Gjg-jK-KbF"/>
+                            <constraint firstItem="CGX-FH-ldQ" firstAttribute="top" secondItem="C1D-ci-xg9" secondAttribute="top" constant="10" id="HRW-L4-izy"/>
+                            <constraint firstItem="ujR-Q7-MW3" firstAttribute="centerY" secondItem="C1D-ci-xg9" secondAttribute="centerY" id="MtG-wJ-hUN"/>
+                            <constraint firstItem="743-US-atR" firstAttribute="centerY" secondItem="C1D-ci-xg9" secondAttribute="centerY" id="UZB-kn-vbo"/>
+                            <constraint firstItem="iwe-MP-EtI" firstAttribute="top" secondItem="C1D-ci-xg9" secondAttribute="top" constant="8" id="WeL-iW-Pnj"/>
+                            <constraint firstItem="CGX-FH-ldQ" firstAttribute="leading" secondItem="C1D-ci-xg9" secondAttribute="leading" constant="10" id="Y2v-pW-Dik"/>
+                            <constraint firstItem="EQP-r2-Ht5" firstAttribute="centerY" secondItem="C1D-ci-xg9" secondAttribute="centerY" id="ado-IX-HcJ"/>
+                            <constraint firstAttribute="trailing" secondItem="743-US-atR" secondAttribute="trailing" constant="8" id="jEC-7C-EKd"/>
+                            <constraint firstItem="ujR-Q7-MW3" firstAttribute="leading" secondItem="CGX-FH-ldQ" secondAttribute="trailing" constant="10" id="nzV-JL-ztj"/>
+                            <constraint firstItem="743-US-atR" firstAttribute="leading" secondItem="EQP-r2-Ht5" secondAttribute="trailing" constant="8" id="vIT-Hw-F0m"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="C1D-ci-xg9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="1yV-am-PcQ"/>
+                    <constraint firstAttribute="bottom" secondItem="C1D-ci-xg9" secondAttribute="bottom" constant="10" id="5j0-nV-6ee"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="C1D-ci-xg9" secondAttribute="trailing" id="GV7-Dz-FcX"/>
+                    <constraint firstItem="C1D-ci-xg9" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="MdG-0j-Ifa"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="activityIndicator" destination="CGX-FH-ldQ" id="W9I-Us-2Ar"/>
+                <outlet property="containerView" destination="C1D-ci-xg9" id="azg-qm-Ckw"/>
+                <outlet property="deleteButton" destination="743-US-atR" id="rQ9-sM-U2x"/>
+                <outlet property="fileName" destination="ujR-Q7-MW3" id="pSj-3L-9PO"/>
+                <outlet property="fileSize" destination="EQP-r2-Ht5" id="yeb-Da-ou3"/>
+                <outlet property="iconView" destination="iwe-MP-EtI" id="Lfs-iX-eRV"/>
+            </connections>
+            <point key="canvasLocation" x="91" y="113"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="action_sheet_close" width="24" height="24"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

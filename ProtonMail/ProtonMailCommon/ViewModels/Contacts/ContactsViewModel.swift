@@ -35,7 +35,7 @@ class ContactsViewModel : ViewModelTimer {
     }
     
     func paidUser() -> Bool {
-        return user.isPaid
+        return user.hasPaidMailPlan
     }
     
     func resetFetchedController() {

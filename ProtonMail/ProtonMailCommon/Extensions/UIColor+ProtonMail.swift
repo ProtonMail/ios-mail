@@ -53,8 +53,33 @@ extension UIColor {
         )
     }
     
-    struct ProtonMail {
+    func toHex() -> String {
+        guard let components = self.cgColor.components else {
+            return "#000000"
+        }
         
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        
+        if self.cgColor.numberOfComponents < 3 {
+            // UIExtendedGrayColorSpace
+            r = components[0]
+            g = components[0]
+            b = components[0]
+        } else {
+            r = components[0]
+            g = components[1]
+            b = components[2]
+        }
+        
+        let hexString = String.init(format: "#%02lX%02lX%02lX", lroundf(Float(r * 255)), lroundf(Float(g * 255)), lroundf(Float(b * 255)))
+        return hexString
+    }
+    
+    struct ProtonMail {
+        static let onboardingImageBackgroundColor = UIColor(r: 245, g: 247, b: 250, a: 1)
+
         static let Blue_475F77 = UIColor(RRGGBB: UInt(0x475F77))
         static let Blue_85B1DE = UIColor(RRGGBB: UInt(0x85B1DE))
         static let Blue_5C7A99 = UIColor(RRGGBB: UInt(0x5C7A99))
@@ -75,11 +100,6 @@ extension UIColor {
         static let Menu_UnSelectBackground = UIColor(RRGGBB: UInt(0x505061))
         static let Menu_UnSelectBackground_Label = UIColor(RRGGBB:UInt(0x3F3E4E))
         static let Menu_SelectedBackground = UIColor(RRGGBB: UInt(0x2F2E3C))
-        
-        static let ServicePlanFree = UIColor(red: 0/255, green: 172/255, blue: 63/255, alpha: 1.0)
-        static let ServicePlanPro = UIColor(red: 153/255, green: 30/255, blue: 245/255, alpha: 1.0)
-        static let ServicePlanPlus = UIColor(red: 199/255, green: 89/255, blue: 31/255, alpha: 1.0)
-        static let ServicePlanVisionary = UIColor(red: 56/255, green: 114/255, blue: 218/255, alpha: 1.0)
         
         static let TableFootnoteTextGray = UIColor(red: 110/255, green: 110/255, blue: 112/255, alpha: 1.0)
         static let TableSeparatorGray = UIColor(red: 226/255, green: 230/255, blue: 232/255, alpha: 1.0)

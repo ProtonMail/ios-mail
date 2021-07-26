@@ -51,6 +51,11 @@ extension UIView {
         clipsToBounds = true
     }
     
+    func setCornerRadius(radius: CGFloat) {
+        layer.cornerRadius = radius
+        clipsToBounds = true
+    }
+    
     func shake(_ times: Float, offset: CGFloat) {
         UIView.animate(withDuration: 1.0, animations: {
             let shakeAnimation = CABasicAnimation(keyPath: "position")

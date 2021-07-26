@@ -22,9 +22,8 @@
 
 
 import Foundation
-import PMCommon
-
-
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
 //Addresses API
 //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_addresses.md
@@ -45,40 +44,69 @@ final class AddressesResponse : Response {
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         if let addresses = response["Addresses"] as? [[String : Any]] {
             for address in addresses {
-                self.parseAddr(res: address)
+                let result = self.parseAddr(res: address)
+                guard result else { return false }
             }
+            return true
         } else if let address = response["Address"] as? [String : Any] {
-            self.parseAddr(res: address)
+            return self.parseAddr(res: address)
+        } else {
+            return true
         }
-        return true
     }
     
-    func parseAddr(res: [String : Any]!) {
-        var keys: [Key] = [Key]()
+    func parseAddr(res: [String : Any]!) -> Bool {
+        var keys: [Key] = []
         if let address_keys = res["Keys"] as? [[String : Any]] {
             for key_res in address_keys {
-                keys.append(Key(
-                                key_id: key_res["ID"] as? String,
-                                private_key: key_res["PrivateKey"] as? String,
-                                token: key_res["Token"] as? String,
-                                signature: key_res["Signature"] as? String,
-                                activation: key_res["Activation"] as? String,
-                                isupdated: false))
+                guard let ID = key_res["ID"] as? String else { return false }
+
+                keys.append(
+                    Key(keyID: ID,
+                        privateKey: key_res["PrivateKey"] as? String,
+                        keyFlags: key_res["Flags"] as? Int ?? 0,
+                        token: key_res["Token"] as? String,
+                        signature: key_res["Signature"] as? String,
+                        activation: key_res["Activation"] as? String,
+                        active: key_res["Active"] as? Int ?? 0,
+                        version: key_res["Version"] as? Int ?? 0,
+                        primary: key_res["Primary"] as? Int ?? 0,
+                        isUpdated: false)
+                )
             }
         }
-        
-        addresses.append(Address(
-            addressid: res["ID"] as? String,
-            email:res["Email"] as? String,
-            order: res["Order"] as? Int,
-            receive: res["Receive"] as? Int,
-            display_name: res["DisplayName"] as? String,
-            signature: res["Signature"] as? String,
-            keys : keys,
-            status: res["Status"] as? Int,
-            type: res["Type"] as? Int,
-            send: res["Send"] as? Int
-        ))
+
+
+        guard let ID = res["ID"] as? String else { return false }
+
+        let sendValue = res["Send"] as? Int ?? 0
+        let receiveValue = res["Receive"] as? Int ?? 0
+        let statusValue = res["Status"] as? Int ?? 0
+        let typeValue = res["Type"] as? Int ?? 0
+
+        let send = Address.AddressSendReceive(rawValue: sendValue) ?? .inactive
+        let receive = Address.AddressSendReceive(rawValue: receiveValue) ?? .inactive
+        let status = Address.AddressStatus(rawValue: statusValue) ?? .disabled
+        let type = Address.AddressType(rawValue: typeValue) ?? .protonDomain
+
+        addresses.append(
+            Address(
+                addressID: ID,
+                domainID: res["DomainID"] as? String,
+                email: res["Email"] as? String ?? "",
+                send: send,
+                receive: receive,
+                status: status,
+                type: type,
+                order: res["Order"] as? Int ?? 0,
+                displayName: res["DisplayName"] as? String ?? "",
+                signature: res["Signature"] as? String ?? "",
+                hasKeys: keys.isEmpty ? 0 : 1,
+                keys: keys
+            )
+        )
+
+        return true
     }
 }
 

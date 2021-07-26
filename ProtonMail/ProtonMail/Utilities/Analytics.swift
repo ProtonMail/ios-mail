@@ -37,11 +37,17 @@ class Analytics {
     }
     
     func setup() {
-        SentrySDK.start { (options) in
-            options.dsn = self.sentryEndpoint
-            #if DEBUG
-            options.debug = true
-            #endif
+        do {
+            Client.shared = try Client(dsn: self.sentryEndpoint)
+            try Client.shared?.startCrashHandler()
+            Client.shared?.maxBreadcrumbs = 300
+
+            Client.shared?.beforeSerializeEvent = { event in
+                guard let debugMeta = event.debugMeta else { return }
+                event.debugMeta = Array(debugMeta.prefix(50)) // prevents hitting 16KB cap on Sentry gzip requests
+            }
+        } catch {
+            print("\(error)")
         }
     }
     
@@ -55,7 +61,8 @@ class Analytics {
         event.message = message.rawValue
         event.extra = extra + appendDic
         event.user = self.getUsesr(currentUser: user)
-        SentrySDK.capture(event: event)
+
+        Client.shared?.send(event: event)
     }
     
     func error(message: Analytics.Events, error: Error, extra: [String: Any]=[:],
@@ -77,7 +84,10 @@ class Analytics {
         event.message = "\(message.rawValue) - \(_error.code)"
         event.extra = extra + appendDic + dic
         event.user = self.getUsesr(currentUser: user)
-        SentrySDK.capture(event: event)
+        Client.shared?.snapshotStacktrace {
+            Client.shared?.appendStacktrace(to: event)
+            Client.shared?.send(event: event)
+        }
     }
     
     func error(message: Analytics.Events, error: String, extra: [String: Any]=[:],
@@ -94,7 +104,10 @@ class Analytics {
         event.message = "\(message.rawValue) - \(-10000000) - \(NSError.protonMailErrorDomain("DataService"))"
         event.extra = extra + appendDic + dic
         event.user = self.getUsesr(currentUser: user)
-        SentrySDK.capture(event: event)
+        Client.shared?.snapshotStacktrace {
+            Client.shared?.appendStacktrace(to: event)
+            Client.shared?.send(event: event)
+        }
     }
     
     private func getUsesr(currentUser: UserManager?=nil) -> Sentry.User {

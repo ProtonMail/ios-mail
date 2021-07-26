@@ -23,7 +23,7 @@
 
 import UIKit
 import TrustKit
-import PMCommon
+import ProtonCore_Services
 
 class HorizontallyScrollableWebViewContainer: UIViewController {
     internal var webView: PMWebView!
@@ -81,6 +81,7 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         self.webView.navigationDelegate = self
         self.webView.uiDelegate = self
         self.webView.scrollView.delegate = self
+        self.webView.scrollView.contentInsetAdjustmentBehavior = .never
         self.webView.scrollView.bounces = false // otherwise 1px margin will make contents horizontally scrollable
         self.webView.scrollView.bouncesZoom = false
         self.webView.scrollView.isDirectionalLockEnabled = false
@@ -140,13 +141,13 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
             self.scrollDecelerationOverlayObservation = self.scrollDecelerationOverlay.observe(\ViewBlowingAfterTouch.center, options: [.old, .new]) { [weak self] pixel, change in
                 guard let _ = pixel.superview else { return }
                 guard let new = change.newValue, let old = change.oldValue else { return }
-                self?.enclosingScroller?.propogate(scrolling: .init(x: new.x - old.x, y: new.y - old.y),
+                self?.enclosingScroller?.propagate(scrolling: .init(x: new.x - old.x, y: new.y - old.y),
                                                    boundsTouchedHandler: pixel.removeFromSuperview)
             }
             
         default:
             let translation = gesture.translation(in: self.webView)
-            self.enclosingScroller?.propogate(scrolling: CGPoint(x: 0, y: self.gestureInitialOffset.y - translation.y),
+            self.enclosingScroller?.propagate(scrolling: CGPoint(x: 0, y: self.gestureInitialOffset.y - translation.y),
                                               boundsTouchedHandler: { /* nothing */ })
             self.gestureInitialOffset = translation
         }
@@ -233,7 +234,7 @@ extension HorizontallyScrollableWebViewContainer: UIScrollViewDelegate {
         newSize = newSize.applying(self.lastZoom.inverted()).applying(self.initialZoom)
         
         let united = CGPoint(x: 0, y: self.lastContentOffset.y + self.enclosingScroller!.scroller.contentOffset.y)
-        self.enclosingScroller?.propogate(scrolling: self.lastContentOffset, boundsTouchedHandler: {
+        self.enclosingScroller?.propagate(scrolling: self.lastContentOffset, boundsTouchedHandler: {
             // sometimes offset after zoom can exceed tableView's heigth (usually when pinch center is close to the bottom of the cell and cell after zoom should be much bigger than before)
             // here we're saying the tableView which contentOffset we'd like to have after it will increase cell and animate changes. That will cause a little glitch tho :(
             self.enclosingScroller?.scroller.contentOffset = united

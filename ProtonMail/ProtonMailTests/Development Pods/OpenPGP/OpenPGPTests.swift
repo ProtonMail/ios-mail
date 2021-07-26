@@ -24,10 +24,10 @@
 import Foundation
 import XCTest
 import Crypto
+import OpenPGP
 
 class OpenPGPTests: XCTestCase {
-    
-    //MARK: - Test methods
+
     func testCheckPassphrase() {
         let result = PMNOpenPgp.checkPassphrase(OpenPGPDefines.privateKey,
                                    passphrase: OpenPGPDefines.passphrase)

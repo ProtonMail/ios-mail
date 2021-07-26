@@ -244,7 +244,7 @@ class EmailHeaderView: UIView, AccessibleView {
             }
             
             let t = LocalString._general_to_label
-            let to = "\(t) \(strTo)"
+            let to = "\(t): \(strTo)"
             let formRange = NSRange (location: 0, length: to.count)
             let attributedString = NSMutableAttributedString(string: to,
                                                              attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
@@ -259,7 +259,7 @@ class EmailHeaderView: UIView, AccessibleView {
     fileprivate var toShortAttr : NSMutableAttributedString! {
         get {
             let t = LocalString._general_to_label
-            let to = "\(t) "
+            let to = "\(t): "
             let formRange = NSRange (location: 0, length: to.count)
             let attributedString = NSMutableAttributedString(string: to,
                                                              attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
@@ -274,7 +274,7 @@ class EmailHeaderView: UIView, AccessibleView {
     fileprivate var ccShortAttr : NSMutableAttributedString! {
         get {
             let c = LocalString._general_cc_label
-            let cc = "\(c) "
+            let cc = "\(c): "
             let formRange = NSRange (location: 0, length: cc.count)
             let attributedString = NSMutableAttributedString(string: cc,
                                                              attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
@@ -344,9 +344,9 @@ class EmailHeaderView: UIView, AccessibleView {
         self.visible = true
         
         // accessibility
-        self.emailToTable.accessibilityLabel = LocalString._general_to_label
+        self.emailToTable.accessibilityLabel = "\(LocalString._general_to_label):"
         self.emailFromTable.accessibilityLabel = LocalString._general_from_label
-        self.emailCcTable.accessibilityLabel = LocalString._general_cc_label
+        self.emailCcTable.accessibilityLabel = "\(LocalString._general_cc_label):"
         self.emailBccTable.accessibilityLabel = LocalString._general_bcc_label
         self.accessibilityElements = [self.emailTitle!,
                                       self.emailFrom!, self.emailFromTable!,
@@ -443,7 +443,7 @@ class EmailHeaderView: UIView, AccessibleView {
         var tmplabels : [Label] = []
         if let alllabels = labels {
             for l in alllabels {
-                if l.exclusive == false {
+                if l.type == 1 {
                     if l.name.isEmpty || l.color.isEmpty { //will also check the lable id
                     } else {
                         tmplabels.append(l)

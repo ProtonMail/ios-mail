@@ -22,10 +22,8 @@
 
 
 import Foundation
-import PMKeymaker
-
-import SWRevealViewController // for state restoration
-
+import ProtonCore_Keymaker
+import ProtonCore_Networking
 
 // this view controller is placed into AppWindow only until it is correctly loaded from storyboard or correctly restored with use of MainKey
 fileprivate class PlaceholderVC: UIViewController {
@@ -50,7 +48,14 @@ class WindowsCoordinator: CoordinatorNew {
     private lazy var snapshot = Snapshot()
     
     private var deeplink: DeepLink?
-    private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(color: .red), scene: nil)
+
+    private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(color: .red), scene: nil) {
+        didSet {
+            guard appWindow == nil else { return }
+            oldValue.rootViewController?.dismiss(animated: false)
+        }
+    }
+
     private var lockWindow: UIWindow?
     
     private var services: ServiceFactory
@@ -62,7 +67,8 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     enum Destination {
-        case lockWindow, appWindow, signInWindow
+        enum SignInDestination: String { case form, mailboxPassword }
+        case lockWindow, appWindow, signInWindow(SignInDestination)
     }
     
     internal var scene: AnyObject? {
@@ -84,6 +90,9 @@ class WindowsCoordinator: CoordinatorNew {
                 if let uid = noti.userInfo?["uid"] as? String {
                     self?.didReceiveTokenRevoke(uid: uid)
                 }
+            }
+            NotificationCenter.default.addObserver(forName: .fetchPrimaryUserSettings, object: nil, queue: .main) { [weak self] _ in
+                self?.restoreAppStates()
             }
             
             if #available(iOS 13.0, *) {
@@ -113,11 +122,11 @@ class WindowsCoordinator: CoordinatorNew {
         //some cache may need user to unlock first. so this need to move to after windows showup
         let usersManager : UsersManager = self.services.get()
         usersManager.launchCleanUpIfNeeded()
-        //        usersManager.tryRestore()
-        //sharedUserDataService.delegate = self
+//        usersManager.tryRestore()
         
         //we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
         // clean this up later.
+
         let unlockManager: UnlockManager = self.services.get()
         let flow = unlockManager.getUnlockFlow()
         if flow == .requireTouchID || flow == .requirePin {
@@ -146,7 +155,7 @@ class WindowsCoordinator: CoordinatorNew {
     @objc func lock() {
         guard sharedServices.get(by: UsersManager.self).hasUsers() else {
             keymaker.wipeMainKey()
-            self.go(dest: .signInWindow)
+            self.go(dest: .signInWindow(.form))
             return
         }
         self.go(dest: .lockWindow)
@@ -157,12 +166,12 @@ class WindowsCoordinator: CoordinatorNew {
         let usersManager : UsersManager = self.services.get()
         
         guard usersManager.hasUsers() else {
-            self.go(dest: .signInWindow)
+            self.go(dest: .signInWindow(.form))
             return
         }
         if usersManager.count <= 0 {
-            usersManager.clean()
-            self.go(dest: .signInWindow)
+            _ = usersManager.clean()
+            self.go(dest: .signInWindow(.form))
         } else {
             self.go(dest: .appWindow)
         }
@@ -170,11 +179,12 @@ class WindowsCoordinator: CoordinatorNew {
     
     @objc func didReceiveTokenRevoke(uid: String) {
         let usersManager: UsersManager = services.get()
+        let queueManager: QueueManager = services.get()
         
         if let user = usersManager.getUser(bySessionID: uid) {
             let shouldShowBadTokenAlert = usersManager.count == 1
-//            let isPrimaryAccountLoggingOut = user.userinfo.userId == usersManager.firstUser?.userinfo.userId
-            
+
+            queueManager.unregisterHandler(user.mainQueueHandler)
             usersManager.logout(user: user, shouldShowAccountSwitchAlert: true).done { [weak self] (_) in
                 guard let self = self else { return }
                 
@@ -185,7 +195,7 @@ class WindowsCoordinator: CoordinatorNew {
                         if let menu = controller as? MenuViewController {
                             //Work Around: trigger viewDidLoad of menu view controller
                             _ = menu.view
-                            menu.toInbox()
+                            menu.navigateTo(label: MenuLabel(location: .inbox))
                         }
                     }
                 }
@@ -200,45 +210,108 @@ class WindowsCoordinator: CoordinatorNew {
     func go(dest: Destination) {
         DispatchQueue.main.async { // cuz
             switch dest {
-            case .signInWindow:
+            case .signInWindow(let signInDestination):
+                // just restart coordinator in case it's already displayed with right configuration
+                if let signInVC = self.currentWindow.rootViewController as? SignInCoordinator.VC,
+                   signInVC.coordinator.startingPoint == signInDestination {
+                    signInVC.coordinator.start()
+                    return
+                }
+                self.lockWindow = nil
                 self.appWindow = nil
-                let newWindow = UIWindow(storyboard: .signIn, scene: self.scene)
-                let vm = SignInViewModel(usersManager: sharedServices.get())
-                let coordinator = SignInCoordinator(destination: newWindow, vm: vm, services: sharedServices)
-                coordinator.start()
-                self.navigate(from: self.currentWindow, to: newWindow)
+                let signInEnvironment = SignInCoordinatorEnvironment.live(
+                    services: sharedServices, forceUpgradeDelegate: ForceUpgradeManager.shared.forceUpgradeHelper
+                )
+                let coordinator: SignInCoordinator = .loginFlowForFirstAccount(
+                    startingPoint: signInDestination, environment: signInEnvironment
+                ) { [weak self] flowResult in
+                    switch flowResult {
+                    case .succeeded:
+                        self?.go(dest: .appWindow)
+                        delay(1) {
+                            // Waiting for init of Menu coordinate to receive the notification
+                            NotificationCenter.default.post(name: .switchView, object: nil)
+                        }
+                    case .userWantsToGoToTroubleshooting:
+                        let troubleshootingVC = UIStoryboard.Storyboard.alert.storyboard.make(NetworkTroubleShootViewController.self)
+                        troubleshootingVC.onDismiss = { [weak self] in
+                            // restart the process after user returns from troubleshooting
+                            self?.go(dest: .signInWindow(signInDestination))
+                        }
+                        let navigationVC = UINavigationController(rootViewController: troubleshootingVC)
+                        navigationVC.modalPresentationStyle = .fullScreen
+                        self?.currentWindow.rootViewController?.present(navigationVC, animated: true, completion: nil)
+                    case .alreadyLoggedIn, .loggedInFreeAccountsLimitReached, .errored:
+                        // not sure what else I can do here instead of restarting the process
+                        self?.go(dest: .signInWindow(.form))
+                    case .dismissed:
+                        assertionFailure("this should never happen as the loginFlowForFirstAccount is not dismissable")
+                        self?.go(dest: .signInWindow(.form))
+                    }
+                }
+                let newWindow = UIWindow(root: coordinator.actualViewController, scene: self.scene)
+                self.navigate(from: self.currentWindow, to: newWindow) {
+                    coordinator.start()
+                }
+
             case .lockWindow:
-                let lock = self.lockWindow ?? UIWindow(storyboard: .signIn, scene: self.scene)
-                let vm = SignInViewModel(usersManager: sharedServices.get())
-                let coordinator = SignInCoordinator(destination: lock, vm: vm, services: sharedServices)
-                coordinator.start()
-                self.navigate(from: self.currentWindow, to: lock)
+                guard self.lockWindow == nil else {
+                    guard let lockVC = self.currentWindow.rootViewController as? LockCoordinator.VC,
+                          lockVC.coordinator.startedOrSheduledForAStart == false
+                    else {
+                        self.lockWindow = nil
+                        return
+                    }
+                    lockVC.coordinator.start()
+                    return
+                }
+
+                let coordinator = LockCoordinator(services: sharedServices) { [weak self] flowResult in
+                    switch flowResult {
+                    case .mailbox: self?.go(dest: .appWindow)
+                    case .mailboxPassword: self?.go(dest: .signInWindow(.mailboxPassword))
+                    case .signIn: self?.go(dest: .signInWindow(.form))
+                    }
+                }
+                let lock = UIWindow(root: coordinator.actualViewController, scene: self.scene)
                 self.lockWindow = lock
-                
+                coordinator.startedOrSheduledForAStart = true
+                self.navigate(from: self.currentWindow, to: lock) { [weak coordinator] in
+                    if UIApplication.shared.applicationState != .background {
+                        coordinator?.start()
+                    } else {
+                        coordinator?.startedOrSheduledForAStart = false
+                    }
+                }
+
             case .appWindow:
+                self.lockWindow = nil
                 if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderVC {
                     self.appWindow = UIWindow(storyboard: .inbox, scene: self.scene)
                 }
                 if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
                 }
-                if self.navigate(from: self.currentWindow, to: self.appWindow),
-                    let deeplink = self.deeplink
-                {
-                    self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-                        if let menu = controller as? MenuViewController,
-                            let coordinator = menu.getCoordinator() as? MenuCoordinatorNew
-                        {
-                            coordinator.follow(deeplink)
-                            stop = true
-                        }
-                    }
-                }
+                _ = self.navigate(from: self.currentWindow, to: self.appWindow)
+            }
+        }
+    }
+
+    private func restoreAppStates() {
+        guard let deepLink = self.deeplink else {
+            // There is no previous states , navigate to inbox
+            NotificationCenter.default.post(name: .switchView, object: nil)
+            return
+        }
+        self.appWindow.enumerateViewControllerHierarchy { controller, stop in
+            if let menu = controller as? MenuViewController {
+                menu.coordinator.follow(deepLink)
+                stop = true
             }
         }
     }
     
-    @discardableResult func navigate(from source: UIWindow?, to destination: UIWindow) -> Bool {
+    @discardableResult func navigate(from source: UIWindow?, to destination: UIWindow, completion: (() -> Void)? = nil) -> Bool {
         guard source != destination, source?.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else {
             return false
         }
@@ -263,6 +336,7 @@ class WindowsCoordinator: CoordinatorNew {
                 topDestination.viewWillAppear(false)
                 topDestination.viewDidAppear(false)
             }
+            completion?()
         })
         self.currentWindow = destination
         return true
@@ -279,8 +353,9 @@ class WindowsCoordinator: CoordinatorNew {
             
             // this will let us restore correct user starting from MenuViewModel and transfer it down the hierarchy later
             // mostly relevant in multiuser environment when two or more windows with defferent users in each one
-            if let menu = controller as? MenuViewController, let user = menu.viewModel.currentUser {
-                let userNode = DeepLink.Node(name: MenuCoordinatorNew.Setup.switchUser.rawValue, value: user.auth.sessionID)
+            if let menu = controller as? MenuViewController,
+               let user = menu.viewModel.currentUser {
+                let userNode = DeepLink.Node(name: MenuCoordinator.Setup.switchUser.rawValue, value: user.auth.sessionID)
                 deeplink.append(userNode)
             }
         }

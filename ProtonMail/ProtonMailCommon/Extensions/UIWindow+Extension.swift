@@ -22,7 +22,7 @@
     
 
 import UIKit
-import SWRevealViewController
+import SideMenuSwift
 
 extension UIWindow {
     func enumerateViewControllerHierarchy(_ handler: @escaping (UIViewController, inout Bool)->Void) {
@@ -30,10 +30,10 @@ extension UIWindow {
         var currentController = self.rootViewController
         
         while !stop {
-            if let nextViewController = currentController as? SWRevealViewController {
-                handler(nextViewController.rearViewController, &stop)
-                handler(nextViewController.frontViewController, &stop)
-                currentController = nextViewController.frontViewController
+            if let nextViewController = currentController as? SideMenuController {
+                handler(nextViewController.menuViewController, &stop)
+                handler(nextViewController.contentViewController, &stop)
+                currentController = nextViewController.contentViewController
                 continue
             }
             
@@ -57,7 +57,7 @@ extension UIWindow {
     func topmostViewController() -> UIViewController? {
         var topController = self.rootViewController
         while let presentedViewController = topController?.presentedViewController
-            ?? (topController as? SWRevealViewController)?.frontViewController
+            ?? (topController as? SideMenuController)?.contentViewController
             ?? (topController as? UINavigationController)?.topViewController
         {
             topController = presentedViewController

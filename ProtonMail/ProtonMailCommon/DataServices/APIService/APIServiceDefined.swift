@@ -96,5 +96,10 @@ struct DomainsAPI {
     //Delete Domain [DELETE /domains/{domainid}]
 }
 
-
-
+//Conversations API
+struct ConversationsAPI {
+    
+    static let path : String = "/\(Constants.App.API_PREFIXED)/conversations"
+    
+    static let v_get_conversations : Int = -1
+}

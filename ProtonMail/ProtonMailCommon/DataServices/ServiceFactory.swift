@@ -23,7 +23,7 @@
 
 import Foundation
 import PromiseKit
-import PMCommon
+import ProtonCore_Services
 
 protocol Service: AnyObject {}
 protocol HasLocalStorage {
@@ -37,6 +37,7 @@ let sharedServices: ServiceFactory = {
     // app cache service
     helper.add(AppCacheService.self, for: AppCacheService())
     helper.add(CoreDataService.self, for: CoreDataService.shared)
+    helper.add(LastUpdatedStore.self, for: LastUpdatedStore(coreDataService: helper.get(by: CoreDataService.self)))
     #if !APP_EXTENSION
     // view model factory
     helper.add(ViewModelService.self, for: ViewModelServiceImpl(coreDataService: CoreDataService.shared))
@@ -47,6 +48,7 @@ let sharedServices: ServiceFactory = {
     // from old ServiceFactory.default
     helper.add(AddressBookService.self, for: AddressBookService())
     helper.add(BugDataService.self, for: BugDataService(api: PMAPIService.unauthorized))
+    
     #endif
     
     return helper

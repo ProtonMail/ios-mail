@@ -42,7 +42,7 @@ class WebContents: NSObject {
     }
     
     enum RemoteContentPolicy: Int {
-        case allowed=0, disallowed, lockdown
+        case allowed, disallowed, lockdown
         
         var cspRaw: String {
             switch self {
@@ -56,6 +56,11 @@ class WebContents: NSObject {
                 return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; script-src 'none';"
             }
         }
+    }
+
+    enum EmbeddedContentPolicy {
+        case disallowed
+        case allowed
     }
     
     internal static var css: String = try! String(contentsOfFile: Bundle.main.path(forResource: "editor", ofType: "css")!, encoding: .utf8).replacingOccurrences(of: "\n", with: "")

@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PinCodeView" customModule="ProtonMail" customModuleProvider="target">
             <connections>
                 <outlet property="attempsLabel" destination="AEc-sM-wxY" id="1IX-la-wxI"/>
-                <outlet property="backButton" destination="AAk-Af-Ice" id="gjU-WJ-AOS"/>
-                <outlet property="logoutButton" destination="hCt-xR-6Bd" id="Amn-jJ-sx5"/>
+                <outlet property="backButton" destination="q74-en-lkU" id="WLf-Xa-zoV"/>
+                <outlet property="confirmButton" destination="yZi-Xu-g8R" id="rBG-Ym-96b"/>
+                <outlet property="deletePinButton" destination="cgw-dA-i9G" id="JpJ-9j-8rS"/>
+                <outlet property="lockImageView" destination="YmX-CC-apy" id="GHi-xS-O3p"/>
                 <outlet property="pinDisplayView" destination="plR-r3-cPc" id="7Ln-Ha-vQf"/>
                 <outlet property="pinView" destination="mzr-Tn-Lq9" id="etQ-FT-o8f"/>
-                <outlet property="titleLabel" destination="mMX-jV-nmJ" id="Se2-NK-8Rq"/>
-                <outlet property="touchIDButton" destination="Qno-rs-meF" id="Mrt-fa-d2g"/>
-                <outlet property="whiteLineView" destination="B78-0p-iWm" id="l0u-Sx-zZb"/>
                 <outletCollection property="roundButtons" destination="ruA-EE-Yxr" collectionClass="NSMutableArray" id="QWN-6m-4Ap"/>
                 <outletCollection property="roundButtons" destination="F3h-zj-1Kd" collectionClass="NSMutableArray" id="lQM-yv-jC1"/>
                 <outletCollection property="roundButtons" destination="ePo-l9-EYx" collectionClass="NSMutableArray" id="tPs-iM-Ef7"/>
@@ -29,7 +25,6 @@
                 <outletCollection property="roundButtons" destination="cJW-Pp-nUw" collectionClass="NSMutableArray" id="2pR-al-361"/>
                 <outletCollection property="roundButtons" destination="bNG-Ml-gC9" collectionClass="NSMutableArray" id="Joi-i7-aeq"/>
                 <outletCollection property="roundButtons" destination="4Pk-5l-6zT" collectionClass="NSMutableArray" id="R7H-1z-p1M"/>
-                <outletCollection property="roundButtons" destination="cgw-dA-i9G" collectionClass="NSMutableArray" id="Vtj-pr-TgN"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -37,48 +32,39 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jCN-hH-fG9" userLabel="Background view">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <color key="backgroundColor" red="0.24313725490196078" green="0.23921568627450979" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wci-cw-0Qd">
-                    <rect key="frame" x="0.0" y="18" width="375" height="132"/>
+                    <rect key="frame" x="0.0" y="18" width="375" height="144"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AAk-Af-Ice">
-                            <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect PIN. 9 attemps remaining" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AEc-sM-wxY">
+                            <rect key="frame" x="28" y="115.5" width="319" height="36"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="48" id="HW6-XL-WL0"/>
-                                <constraint firstAttribute="width" constant="100" id="u94-I0-Gz6"/>
+                                <constraint firstAttribute="height" constant="36" id="PiF-5W-nzr"/>
                             </constraints>
-                            <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" image="top_back">
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="backAction:" destination="-1" eventType="touchUpInside" id="zp7-nH-334"/>
-                            </connections>
-                        </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your PIN to unlock your inbox." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mMX-jV-nmJ">
-                            <rect key="frame" x="0.0" y="40" width="375" height="17"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                            <color key="textColor" systemColor="systemRedColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter PIN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sRT-yh-ERt">
+                            <rect key="frame" x="150.5" y="-4.5" width="74.5" height="21"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-lock-wide" translatesAutoresizingMaskIntoConstraints="NO" id="YmX-CC-apy">
+                            <rect key="frame" x="173.5" y="44.5" width="28" height="28"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="28" id="1et-As-Py0"/>
+                                <constraint firstAttribute="width" constant="28" id="XoK-Ml-B10"/>
+                            </constraints>
+                        </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ium-WR-J5s" userLabel="Top Pin Display">
-                            <rect key="frame" x="28" y="60" width="319" height="60"/>
+                            <rect key="frame" x="28" y="80.5" width="319" height="40"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B78-0p-iWm" userLabel="white line">
-                                    <rect key="frame" x="0.0" y="49" width="319" height="1"/>
-                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="1" id="YuT-z5-D3C"/>
-                                    </constraints>
-                                </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mzr-Tn-Lq9">
-                                    <rect key="frame" x="60" y="0.0" width="199" height="49"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="319" height="30"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="plR-r3-cPc">
-                                            <rect key="frame" x="0.0" y="8" width="199" height="41"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Enter your PIN to unlock you inbox" textAlignment="center" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="plR-r3-cPc">
+                                            <rect key="frame" x="0.0" y="8" width="319" height="22"/>
                                             <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                             <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -89,106 +75,47 @@
                                         <constraint firstItem="plR-r3-cPc" firstAttribute="top" secondItem="mzr-Tn-Lq9" secondAttribute="top" constant="8" id="84w-GQ-bC3"/>
                                         <constraint firstAttribute="bottom" secondItem="plR-r3-cPc" secondAttribute="bottom" id="9j1-YY-pOy"/>
                                         <constraint firstItem="plR-r3-cPc" firstAttribute="leading" secondItem="mzr-Tn-Lq9" secondAttribute="leading" id="CJA-Mk-WjZ"/>
-                                        <constraint firstAttribute="trailing" secondItem="plR-r3-cPc" secondAttribute="trailing" id="w1U-ed-NHC"/>
+                                        <constraint firstAttribute="trailing" secondItem="plR-r3-cPc" secondAttribute="trailing" id="neM-cA-sPw"/>
                                     </constraints>
                                 </view>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Viu-ok-AzR">
-                                    <rect key="frame" x="259" y="0.0" width="60" height="49"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="30" id="OL3-e0-7U5"/>
-                                        <constraint firstAttribute="width" constant="60" id="uhn-bp-a6N"/>
-                                    </constraints>
-                                    <state key="normal" image="pin_code_del">
-                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="OL3-e0-7U5"/>
-                                        </mask>
-                                    </variation>
-                                    <connections>
-                                        <action selector="deleteAction:" destination="-1" eventType="touchUpInside" id="l00-06-gxj"/>
-                                    </connections>
-                                </button>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jI2-Da-rNx">
-                                    <rect key="frame" x="0.0" y="15" width="60" height="30"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="30" id="Fdu-V0-hCX"/>
-                                        <constraint firstAttribute="width" constant="60" id="ggh-db-zZN"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                    <state key="normal" title="Del">
-                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
-                                </button>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="jI2-Da-rNx" firstAttribute="leading" secondItem="Ium-WR-J5s" secondAttribute="leading" id="5an-y7-OJ7"/>
-                                <constraint firstItem="B78-0p-iWm" firstAttribute="leading" secondItem="Ium-WR-J5s" secondAttribute="leading" id="9Xs-DU-Sq6"/>
-                                <constraint firstAttribute="trailing" secondItem="Viu-ok-AzR" secondAttribute="trailing" id="AbM-Js-Zsv"/>
-                                <constraint firstAttribute="height" constant="60" id="Gd2-XE-NZy"/>
-                                <constraint firstItem="B78-0p-iWm" firstAttribute="top" secondItem="Viu-ok-AzR" secondAttribute="bottom" id="RRo-Qq-rYx"/>
-                                <constraint firstAttribute="trailing" secondItem="B78-0p-iWm" secondAttribute="trailing" id="WJc-w2-JeW"/>
-                                <constraint firstItem="mzr-Tn-Lq9" firstAttribute="leading" secondItem="jI2-Da-rNx" secondAttribute="trailing" id="Z68-Qo-N7v"/>
-                                <constraint firstAttribute="centerY" secondItem="jI2-Da-rNx" secondAttribute="centerY" id="aay-eg-f7V"/>
-                                <constraint firstItem="Viu-ok-AzR" firstAttribute="top" secondItem="Ium-WR-J5s" secondAttribute="top" id="e9E-f6-Xe0"/>
-                                <constraint firstAttribute="bottom" secondItem="B78-0p-iWm" secondAttribute="bottom" constant="10" id="fQ1-Vn-bfA"/>
+                                <constraint firstAttribute="bottom" secondItem="mzr-Tn-Lq9" secondAttribute="bottom" constant="10" id="Frg-pm-HhL"/>
+                                <constraint firstAttribute="height" constant="40" id="Gd2-XE-NZy"/>
+                                <constraint firstAttribute="trailing" secondItem="mzr-Tn-Lq9" secondAttribute="trailing" id="iBk-ZT-ybo"/>
                                 <constraint firstItem="mzr-Tn-Lq9" firstAttribute="top" secondItem="Ium-WR-J5s" secondAttribute="top" id="mQV-WB-IoS"/>
-                                <constraint firstItem="Viu-ok-AzR" firstAttribute="leading" secondItem="mzr-Tn-Lq9" secondAttribute="trailing" id="n4P-ku-pnv"/>
-                                <constraint firstItem="B78-0p-iWm" firstAttribute="top" secondItem="mzr-Tn-Lq9" secondAttribute="bottom" id="zHK-CT-iAQ"/>
+                                <constraint firstItem="mzr-Tn-Lq9" firstAttribute="leading" secondItem="Ium-WR-J5s" secondAttribute="leading" id="ogy-9D-g7e"/>
                             </constraints>
                         </view>
-                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect PIN, 9 attemps remaining" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AEc-sM-wxY">
-                            <rect key="frame" x="28" y="115" width="319" height="17"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="xxc-2K-jwj">
-                            <rect key="frame" x="138.5" y="16" width="98" height="16"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="16" id="Jfx-po-qZ6"/>
-                                <constraint firstAttribute="width" constant="98" id="Uvz-9p-8GB"/>
-                            </constraints>
-                        </imageView>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="Ium-WR-J5s" secondAttribute="trailing" constant="28" id="1Hd-la-Cbc"/>
-                        <constraint firstItem="xxc-2K-jwj" firstAttribute="centerY" secondItem="AAk-Af-Ice" secondAttribute="centerY" id="1TU-mb-k1Z"/>
+                        <constraint firstItem="Ium-WR-J5s" firstAttribute="top" secondItem="YmX-CC-apy" secondAttribute="bottom" constant="8" id="2gH-KK-QhP"/>
                         <constraint firstItem="AEc-sM-wxY" firstAttribute="leading" secondItem="wci-cw-0Qd" secondAttribute="leading" constant="28" id="6mM-Gy-b1C"/>
-                        <constraint firstItem="AAk-Af-Ice" firstAttribute="top" secondItem="wci-cw-0Qd" secondAttribute="top" id="QFd-gD-CDV"/>
-                        <constraint firstItem="mMX-jV-nmJ" firstAttribute="leading" secondItem="wci-cw-0Qd" secondAttribute="leading" id="X2T-36-g4H"/>
-                        <constraint firstItem="AAk-Af-Ice" firstAttribute="leading" secondItem="wci-cw-0Qd" secondAttribute="leading" id="XHW-fR-Ws6"/>
-                        <constraint firstItem="Ium-WR-J5s" firstAttribute="top" secondItem="AAk-Af-Ice" secondAttribute="bottom" constant="12" id="Z9U-BF-dUH"/>
+                        <constraint firstItem="YmX-CC-apy" firstAttribute="centerX" secondItem="sRT-yh-ERt" secondAttribute="centerX" id="KzK-tO-FD9"/>
                         <constraint firstItem="AEc-sM-wxY" firstAttribute="top" secondItem="Ium-WR-J5s" secondAttribute="bottom" constant="-5" id="bLl-MK-247"/>
-                        <constraint firstItem="xxc-2K-jwj" firstAttribute="centerX" secondItem="wci-cw-0Qd" secondAttribute="centerX" id="feh-Bh-dPg"/>
-                        <constraint firstAttribute="trailing" secondItem="mMX-jV-nmJ" secondAttribute="trailing" id="pe3-h4-Dxf"/>
+                        <constraint firstItem="YmX-CC-apy" firstAttribute="top" secondItem="sRT-yh-ERt" secondAttribute="bottom" constant="28" id="fQw-Us-CDb"/>
                         <constraint firstAttribute="trailing" secondItem="AEc-sM-wxY" secondAttribute="trailing" constant="28" id="rZf-vG-baz"/>
-                        <constraint firstItem="mMX-jV-nmJ" firstAttribute="top" secondItem="xxc-2K-jwj" secondAttribute="bottom" constant="8" id="vdo-me-hBz"/>
-                        <constraint firstAttribute="height" constant="132" id="x1F-Lm-L4f"/>
+                        <constraint firstItem="sRT-yh-ERt" firstAttribute="centerX" secondItem="wci-cw-0Qd" secondAttribute="centerX" id="szQ-3g-49p"/>
+                        <constraint firstAttribute="height" constant="144" id="x1F-Lm-L4f"/>
                         <constraint firstItem="Ium-WR-J5s" firstAttribute="leading" secondItem="wci-cw-0Qd" secondAttribute="leading" constant="28" id="yYW-jf-Iyb"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qx0-Yp-brk">
-                    <rect key="frame" x="0.0" y="162" width="375" height="422"/>
+                <view contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="Qx0-Yp-brk" userLabel="KeyboardContainerView">
+                    <rect key="frame" x="0.0" y="180" width="375" height="367"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EcD-l5-JfY" userLabel="1 line">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="105.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="92"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2YQ-k7-y6L">
-                                    <rect key="frame" x="240.5" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="233.5" y="0.0" width="91.5" height="92"/>
                                     <subviews>
-                                        <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ePo-l9-EYx" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="85.5" height="85.5"/>
+                                        <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ePo-l9-EYx" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="10" width="71.5" height="72"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                            <state key="normal" title="3">
-                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <state key="normal" title="3"/>
                                             <connections>
                                                 <action selector="buttonActions:" destination="-1" eventType="touchUpInside" id="3qy-a3-8S8"/>
                                             </connections>
@@ -204,16 +131,13 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hMB-jP-Ame">
-                                    <rect key="frame" x="135" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="141.5" y="0.0" width="92" height="92"/>
                                     <subviews>
-                                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3h-zj-1Kd" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="85.5" height="85.5"/>
+                                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3h-zj-1Kd" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="10" width="72" height="72"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                            <state key="normal" title="2">
-                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <state key="normal" title="2"/>
                                             <connections>
                                                 <action selector="buttonActions:" destination="-1" eventType="touchUpInside" id="DVi-wH-1xU"/>
                                             </connections>
@@ -229,16 +153,13 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NJe-HH-Q3r">
-                                    <rect key="frame" x="29.5" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="50" y="0.0" width="91.5" height="92"/>
                                     <subviews>
-                                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ruA-EE-Yxr" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="85.5" height="85.5"/>
+                                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ruA-EE-Yxr" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="10" width="71.5" height="72"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                            <state key="normal" title="1">
-                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <state key="normal" title="1"/>
                                             <connections>
                                                 <action selector="buttonActions:" destination="-1" eventType="touchUpInside" id="4DD-Pq-VlH"/>
                                             </connections>
@@ -268,19 +189,16 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f6l-IW-foE" userLabel="2 line">
-                            <rect key="frame" x="0.0" y="105.5" width="375" height="105.5"/>
+                            <rect key="frame" x="0.0" y="92" width="375" height="91.5"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sRF-R5-6v9">
-                                    <rect key="frame" x="29.5" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="50" y="0.0" width="91.5" height="91.5"/>
                                     <subviews>
-                                        <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dG0-wX-hWt" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="85.5" height="85.5"/>
+                                        <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dG0-wX-hWt" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="10" width="71.5" height="71.5"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                            <state key="normal" title="4">
-                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <state key="normal" title="4"/>
                                             <connections>
                                                 <action selector="buttonActions:" destination="-1" eventType="touchUpInside" id="snf-r5-0lB"/>
                                             </connections>
@@ -296,16 +214,13 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WTc-Fs-rHA">
-                                    <rect key="frame" x="135" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="141.5" y="0.0" width="92" height="91.5"/>
                                     <subviews>
-                                        <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ut4-0g-D6Q" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="85.5" height="85.5"/>
+                                        <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ut4-0g-D6Q" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="10" width="72" height="71.5"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                            <state key="normal" title="5">
-                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <state key="normal" title="5"/>
                                             <connections>
                                                 <action selector="buttonActions:" destination="-1" eventType="touchUpInside" id="pbv-RW-Hap"/>
                                             </connections>
@@ -321,16 +236,13 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S2U-py-UpY">
-                                    <rect key="frame" x="240.5" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="233.5" y="0.0" width="91.5" height="91.5"/>
                                     <subviews>
-                                        <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oap-vx-3Xa" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="85.5" height="85.5"/>
+                                        <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oap-vx-3Xa" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="10" width="71.5" height="71.5"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                            <state key="normal" title="6">
-                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <state key="normal" title="6"/>
                                             <connections>
                                                 <action selector="buttonActions:" destination="-1" eventType="touchUpInside" id="jOp-Ct-vcH"/>
                                             </connections>
@@ -360,19 +272,16 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8u-Fp-tL4" userLabel="3 line">
-                            <rect key="frame" x="0.0" y="211" width="375" height="105.5"/>
+                            <rect key="frame" x="0.0" y="183.5" width="375" height="92"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KKT-eL-aId">
-                                    <rect key="frame" x="29.5" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="50" y="0.0" width="91.5" height="92"/>
                                     <subviews>
-                                        <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5FI-Ld-5gG" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="85.5" height="85.5"/>
+                                        <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5FI-Ld-5gG" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="10" width="71.5" height="72"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                            <state key="normal" title="7">
-                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <state key="normal" title="7"/>
                                             <connections>
                                                 <action selector="buttonActions:" destination="-1" eventType="touchUpInside" id="vcp-Gz-0As"/>
                                             </connections>
@@ -388,16 +297,13 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uci-V7-HfD">
-                                    <rect key="frame" x="135" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="141.5" y="0.0" width="92" height="92"/>
                                     <subviews>
-                                        <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJW-Pp-nUw" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="85.5" height="85.5"/>
+                                        <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJW-Pp-nUw" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="10" width="72" height="72"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                            <state key="normal" title="8">
-                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <state key="normal" title="8"/>
                                             <connections>
                                                 <action selector="buttonActions:" destination="-1" eventType="touchUpInside" id="nXE-Bi-WYX"/>
                                             </connections>
@@ -413,16 +319,13 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tys-3n-60h">
-                                    <rect key="frame" x="240.5" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="233.5" y="0.0" width="91.5" height="92"/>
                                     <subviews>
-                                        <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bNG-Ml-gC9" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="85.5" height="85.5"/>
+                                        <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bNG-Ml-gC9" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="10" width="71.5" height="72"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                            <state key="normal" title="9">
-                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <state key="normal" title="9"/>
                                             <connections>
                                                 <action selector="buttonActions:" destination="-1" eventType="touchUpInside" id="do4-5q-lfZ"/>
                                             </connections>
@@ -452,21 +355,17 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zM2-1N-P6W" userLabel="4 line">
-                            <rect key="frame" x="0.0" y="316.5" width="375" height="105.5"/>
+                            <rect key="frame" x="0.0" y="275.5" width="375" height="91.5"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nq3-iq-nRl">
-                                    <rect key="frame" x="240.5" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="233.5" y="0.0" width="91.5" height="91.5"/>
                                     <subviews>
-                                        <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cgw-dA-i9G" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="85.5" height="85.5"/>
+                                        <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cgw-dA-i9G">
+                                            <rect key="frame" x="10" y="10" width="71.5" height="71.5"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                            <state key="normal" title="GO">
-                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
+                                            <state key="normal" image="pin_code_del"/>
                                             <connections>
-                                                <action selector="goAction:" destination="-1" eventType="touchUpInside" id="zo6-RE-28b"/>
+                                                <action selector="deleteAction:" destination="-1" eventType="touchUpInside" id="Uat-p9-iog"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -480,16 +379,13 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0T6-dQ-iNz">
-                                    <rect key="frame" x="135" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="141.5" y="0.0" width="92" height="91.5"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Pk-5l-6zT" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="85.5" height="85.5"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Pk-5l-6zT" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="10" width="72" height="71.5"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                            <state key="normal" title="0">
-                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
+                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                            <state key="normal" title="0"/>
                                             <connections>
                                                 <action selector="buttonActions:" destination="-1" eventType="touchUpInside" id="vJU-Qc-ETa"/>
                                             </connections>
@@ -505,7 +401,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdH-CX-apo">
-                                    <rect key="frame" x="0.0" y="0.0" width="105.5" height="105.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="92" height="91.5"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="gdH-CX-apo" secondAttribute="height" multiplier="1:1" id="kDA-Tg-Cz2"/>
@@ -528,13 +424,13 @@
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="414" id="5JG-Gt-3MQ"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="398" id="5JG-Gt-3MQ"/>
                         <constraint firstItem="B8u-Fp-tL4" firstAttribute="height" secondItem="zM2-1N-P6W" secondAttribute="height" id="5Pp-Hr-4Ft"/>
                         <constraint firstItem="B8u-Fp-tL4" firstAttribute="top" secondItem="f6l-IW-foE" secondAttribute="bottom" id="6cY-dN-seX"/>
                         <constraint firstItem="f6l-IW-foE" firstAttribute="top" secondItem="EcD-l5-JfY" secondAttribute="bottom" id="6dS-Kh-pme"/>
                         <constraint firstAttribute="bottom" secondItem="zM2-1N-P6W" secondAttribute="bottom" id="8fG-F1-a7d"/>
                         <constraint firstAttribute="trailing" secondItem="f6l-IW-foE" secondAttribute="trailing" id="CFN-uy-h10"/>
-                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="505" id="MmO-Sf-Ohl"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="520" id="MmO-Sf-Ohl"/>
                         <constraint firstItem="EcD-l5-JfY" firstAttribute="height" secondItem="f6l-IW-foE" secondAttribute="height" id="P8n-gV-YjE"/>
                         <constraint firstItem="zM2-1N-P6W" firstAttribute="leading" secondItem="Qx0-Yp-brk" secondAttribute="leading" id="QFe-gI-ygW"/>
                         <constraint firstItem="B8u-Fp-tL4" firstAttribute="leading" secondItem="Qx0-Yp-brk" secondAttribute="leading" id="WxQ-i6-0WF"/>
@@ -548,80 +444,54 @@
                         <constraint firstItem="zM2-1N-P6W" firstAttribute="top" secondItem="B8u-Fp-tL4" secondAttribute="bottom" id="y7L-CX-J0x"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6du-kj-CAp" userLabel="BottomView">
-                    <rect key="frame" x="28" y="592" width="319" height="75"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hCt-xR-6Bd">
-                            <rect key="frame" x="59.5" y="0.0" width="200" height="75"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="75" id="b6W-T6-1ie"/>
-                                <constraint firstAttribute="width" constant="200" id="f6i-kp-WTS"/>
-                            </constraints>
-                            <state key="normal" title="Logout" image="pin_code_confirm">
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <state key="selected">
-                                <color key="titleColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <state key="highlighted">
-                                <color key="titleColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="logoutAction:" destination="-1" eventType="touchUpInside" id="45x-75-69e"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qno-rs-meF">
-                            <rect key="frame" x="0.0" y="12.5" width="50" height="50"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="50" id="q4Q-p9-B6e"/>
-                                <constraint firstAttribute="height" constant="50" id="zoh-JH-S5G"/>
-                            </constraints>
-                            <state key="normal" image="touch_id_icon"/>
-                            <connections>
-                                <action selector="touchIDAction:" destination="-1" eventType="touchUpInside" id="nSq-so-6EG"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZi-Xu-g8R" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
+                    <rect key="frame" x="24" y="579" width="327" height="48"/>
                     <constraints>
-                        <constraint firstItem="Qno-rs-meF" firstAttribute="leading" secondItem="6du-kj-CAp" secondAttribute="leading" id="20e-tB-AZK"/>
-                        <constraint firstAttribute="height" constant="75" id="38K-io-jn9"/>
-                        <constraint firstItem="hCt-xR-6Bd" firstAttribute="centerY" secondItem="6du-kj-CAp" secondAttribute="centerY" id="COB-3F-iZQ"/>
-                        <constraint firstItem="hCt-xR-6Bd" firstAttribute="centerX" secondItem="6du-kj-CAp" secondAttribute="centerX" id="wsV-4y-8Zl"/>
-                        <constraint firstItem="Qno-rs-meF" firstAttribute="centerY" secondItem="hCt-xR-6Bd" secondAttribute="centerY" id="yHM-Tn-BSb"/>
+                        <constraint firstAttribute="height" constant="48" id="Owz-um-MLh"/>
                     </constraints>
-                </view>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="confirmAction:" destination="-1" eventType="touchUpInside" id="5Lo-LW-kNj"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q74-en-lkU">
+                    <rect key="frame" x="303" y="0.0" width="72" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="72" id="cl0-iY-I6i"/>
+                        <constraint firstAttribute="height" constant="48" id="jfo-g3-dVb"/>
+                    </constraints>
+                    <connections>
+                        <action selector="backAction:" destination="-1" eventType="touchUpInside" id="ITn-zi-Rvp"/>
+                    </connections>
+                </button>
             </subviews>
-            <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="Qx0-Yp-brk" firstAttribute="top" secondItem="wci-cw-0Qd" secondAttribute="bottom" constant="12" id="5cu-BG-wn1"/>
-                <constraint firstAttribute="bottom" secondItem="6du-kj-CAp" secondAttribute="bottom" id="8cb-UX-Omv"/>
-                <constraint firstItem="6du-kj-CAp" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="28" id="FJv-cv-UzB"/>
-                <constraint firstAttribute="bottom" secondItem="jCN-hH-fG9" secondAttribute="bottom" id="K2o-XY-5E5"/>
-                <constraint firstItem="jCN-hH-fG9" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Lxj-uk-pm3"/>
+                <constraint firstItem="yZi-Xu-g8R" firstAttribute="top" secondItem="Qx0-Yp-brk" secondAttribute="bottom" priority="750" constant="32" id="2NY-zt-yzg"/>
+                <constraint firstAttribute="trailing" secondItem="yZi-Xu-g8R" secondAttribute="trailing" constant="24" id="4Zp-fP-SeU"/>
+                <constraint firstItem="Qx0-Yp-brk" firstAttribute="top" secondItem="wci-cw-0Qd" secondAttribute="bottom" constant="18" id="5cu-BG-wn1"/>
+                <constraint firstItem="sRT-yh-ERt" firstAttribute="centerY" secondItem="q74-en-lkU" secondAttribute="centerY" id="AwR-h7-Sw2"/>
                 <constraint firstItem="wci-cw-0Qd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="18" id="N2o-ss-gZp"/>
+                <constraint firstAttribute="bottomMargin" secondItem="yZi-Xu-g8R" secondAttribute="bottom" constant="40" id="NPk-Ds-czk"/>
                 <constraint firstItem="wci-cw-0Qd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="SAt-5C-dMY"/>
                 <constraint firstAttribute="trailing" secondItem="wci-cw-0Qd" secondAttribute="trailing" id="ZrM-wt-glC"/>
                 <constraint firstAttribute="trailing" secondItem="Qx0-Yp-brk" secondAttribute="trailing" priority="500" id="bnR-DV-Nq3"/>
-                <constraint firstItem="Qx0-Yp-brk" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" priority="950" id="i9A-dl-DpA"/>
-                <constraint firstAttribute="trailing" secondItem="6du-kj-CAp" secondAttribute="trailing" constant="28" id="jQR-7d-hiJ"/>
-                <constraint firstItem="6du-kj-CAp" firstAttribute="top" secondItem="Qx0-Yp-brk" secondAttribute="bottom" priority="950" constant="8" id="p7s-gR-SNl"/>
-                <constraint firstItem="jCN-hH-fG9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="poH-B1-3vh"/>
+                <constraint firstAttribute="trailing" secondItem="q74-en-lkU" secondAttribute="trailing" id="gNh-0V-zDL"/>
+                <constraint firstItem="yZi-Xu-g8R" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="24" id="mTe-gz-FTR"/>
                 <constraint firstItem="Qx0-Yp-brk" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="500" id="rHc-Dw-nwm"/>
-                <constraint firstAttribute="trailing" secondItem="jCN-hH-fG9" secondAttribute="trailing" id="w2f-sU-Bv9"/>
+                <constraint firstItem="q74-en-lkU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="wEf-Cg-Adb"/>
                 <constraint firstItem="Qx0-Yp-brk" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="wv6-sl-COi"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
-            <point key="canvasLocation" x="519" y="612"/>
+            <point key="canvasLocation" x="517.60000000000002" y="611.24437781109452"/>
         </view>
     </objects>
     <resources>
-        <image name="Logo" width="228" height="36.5"/>
-        <image name="pin_code_confirm" width="24" height="24"/>
-        <image name="pin_code_del" width="32" height="32"/>
-        <image name="top_back" width="24" height="24"/>
-        <image name="touch_id_icon" width="50" height="50"/>
+        <image name="ic-lock-wide" width="28" height="28"/>
+        <image name="pin_code_del" width="40" height="40"/>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

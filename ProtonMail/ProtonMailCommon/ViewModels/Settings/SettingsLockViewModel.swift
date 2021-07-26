@@ -19,147 +19,167 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
-import PMKeymaker
+import ProtonCore_Keymaker
 
-enum SettingLockSection : Int, CustomStringConvertible {
-    case lock = 0
-    case type = 1
-    case timer = 2
+enum SettingLockSection : Int {
+    case enableProtection = 0
+    case changePin = 1
+    case timing = 2
     
-    var description : String {
+    var description: NSAttributedString {
         switch self {
-        case .lock:
-            return "Auto-lock app"
-        case .timer:
-            return "Auto-Lock Timer"
+        case .enableProtection:
+            let wipeDesc = LocalString._lock_wipe_desc.apply(style: FontManager.CaptionWeak)
+            let title = "\n\nProtection".apply(style: FontManager.DefaultSmallWeak)
+            let desc = NSMutableAttributedString(attributedString: wipeDesc)
+            desc.append(title)
+            return desc
+        case .timing:
+            return "Timing".apply(style: .DefaultSmallWeek)
         default:
-            return ""
-        }
-    }
-    
-    var foot : String {
-        switch self {
-        case .lock:
-            switch UIDevice.current.biometricType {
-            case .faceID:
-                return "\(LocalString._lock_faceID_desc)\n\(LocalString._lock_wipe_desc)"
-            default:
-                return "\(LocalString._lock_touchID_desc) \n\(LocalString._lock_wipe_desc)"
-            }
-        default:
-            return ""
+            return "".apply(style: .DefaultSmallWeek)
         }
     }
 }
 
-enum LockTypeItem : Int, CustomStringConvertible {
-    case pin = 0
-    case touchid = 1
-    case faceid = 2
-    
-    var description : String {
-        switch(self){
-        case .pin:
-            return "Use PIN code"
-        case .touchid:
-            return "Use TouchID"
-        case .faceid:
-            return "Use FaceID"
+enum ProtectionItem: Int, CustomStringConvertible {
+    case none = 0
+    case pinCode = 1
+    case faceId = 2
+
+    var description: String {
+        switch self {
+        case .none:
+            return LocalString._security_protection_title_none
+        case .pinCode:
+            return LocalString._security_protection_title_pin
+        case .faceId:
+            return LocalString._security_protection_title_faceid
         }
     }
 }
 
 protocol SettingsLockViewModel : AnyObject {
     var sections: [SettingLockSection] { get set }
+
+    var protectionItems: [ProtectionItem] { get set }
     
-    var lockItems: [LockTypeItem] {get set}
-    
-    var storageText : String { get }
-    var recoveryEmail : String { get }
-    
-    var email : String { get }
-    var displayName : String { get }
-    
-    var lockOn : Bool { get set }
-    func updateProtectionItems() 
+    var lockOn: Bool { get }
+    var isTouchIDEnabled: Bool { get }
+    var isPinCodeEnabled: Bool { get }
+    var auto_logout_time_options: [Int] { get }
+    var biometricType: BiometricType { get }
+
+    func updateProtectionItems()
+    func enableBioProtection( completion: @escaping () -> Void)
+    func disableProtection()
+    func getBioProtectionTitle() -> String
+    func getBioProtectionSectionTitle() -> NSAttributedString?
 }
 
 class SettingsLockViewModelImpl : SettingsLockViewModel {
-    var lockItems: [LockTypeItem] = [.pin, .touchid, .faceid]
+    var protectionItems: [ProtectionItem] = [.none, .pinCode]
     
-    var sections: [SettingLockSection] = [.lock, .type, .timer]
-    
-    var userManager: UserManager
-    
-    var lockOn: Bool = false
-    
-    init(user : UserManager) {
-        self.userManager = user
-        lockOn = userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled
-//        self.updateProtectionItems()
+    var sections: [SettingLockSection] = [.enableProtection, .changePin, .timing]
+
+    var biometricType: BiometricType {
+        return self.biometricStatus.biometricType
     }
     
-    var storageText: String {
-        get {
-            let usedSpace = self.userManager.userInfo.usedSpace
-            let maxSpace = self.userManager.userInfo.maxSpace
-            let formattedUsedSpace = ByteCountFormatter.string(fromByteCount: Int64(usedSpace), countStyle: ByteCountFormatter.CountStyle.binary)
-            let formattedMaxSpace = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.binary)
-            
-            return "\(formattedUsedSpace)/\(formattedMaxSpace)"
-        }
-    }
+    private let biometricStatus: BiometricStatusProvider
+    private let userCacheStatus: CacheStatusInject
     
-    var recoveryEmail : String {
-        get {
-            return self.userManager.userInfo.notificationEmail
-        }
+    var lockOn: Bool {
+        return self.isPinCodeEnabled || self.isTouchIDEnabled
     }
-    
-    
-    var email : String {
-        get {
-            return self.userManager.defaultEmail
-        }
-        
+
+    var isPinCodeEnabled: Bool {
+        return self.userCacheStatus.isPinCodeEnabled
     }
-    var displayName : String {
-        get {
-            return self.userManager.defaultDisplayName
+
+    var isTouchIDEnabled: Bool {
+        return self.userCacheStatus.isTouchIDEnabled
+    }
+
+    let auto_logout_time_options = [-1, 0, 1, 2, 5,
+                                    10, 15, 30, 60]
+    
+    init(biometricStatus: BiometricStatusProvider, userCacheStatus: CacheStatusInject) {
+        self.biometricStatus = biometricStatus
+        self.userCacheStatus = userCacheStatus
+
+        switch self.biometricStatus.biometricType {
+        case .touchID, .faceID:
+            protectionItems.append(.faceId)
+        case .none:
+            break
         }
     }
     
     func updateProtectionItems() {
-        sections = [.lock]
-        lockItems = []
-        
+        sections = [.enableProtection]
+
         if lockOn {
-            sections.append(.type)
-            //TODO:: UIDevice is in UIkit. viewmodel should avoid UIKit. need to change this
-            switch UIDevice.current.biometricType {
-            case .none:
-                break
-            case .touchID:
-                lockItems.append(.touchid)
-                break
-            case .faceID:
-                lockItems.append(.faceid)
-                break
+            if isTouchIDEnabled {
+                switch self.biometricStatus.biometricType {
+                case .none:
+                    break
+                case .touchID:
+                    keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
+                case .faceID:
+                    keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
+                }
+            } else if isPinCodeEnabled {
+                sections.append(.changePin)
+                keymaker.deactivate(BioProtection())
             }
-            lockItems.append(.pin)
-            if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
-                sections.append(.timer)
+
+            if self.userCacheStatus.isPinCodeEnabled || self.userCacheStatus.isTouchIDEnabled {
+                sections.append(.timing)
             }
         } else {
-            if userCachedStatus.isPinCodeEnabled {
+            if self.userCacheStatus.isPinCodeEnabled {
                 keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
             }
-            if userCachedStatus.isTouchIDEnabled {
+            if self.userCacheStatus.isTouchIDEnabled {
                 keymaker.deactivate(BioProtection())
             }
         }
+    }
+
+    func enableBioProtection( completion: @escaping () -> Void) {
+        keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
+        keymaker.activate(BioProtection()) { _ in
+            completion()
+        }
+    }
+
+    func disableProtection() {
+        if userCachedStatus.isPinCodeEnabled {
+            keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
+        }
+        if userCachedStatus.isTouchIDEnabled {
+            keymaker.deactivate(BioProtection())
+        }
+    }
+
+    func getBioProtectionTitle() -> String {
+        switch self.biometricStatus.biometricType {
+        case .faceID:
+            return LocalString._security_protection_title_faceid
+        case .touchID:
+            return LocalString._security_protection_title_touchid
+        default:
+            return ""
+        }
+    }
+
+    func getBioProtectionSectionTitle() -> NSAttributedString? {
+        guard !getBioProtectionTitle().isEmpty else {
+            return nil
+        }
+        return getBioProtectionTitle().apply(style: .DefaultSmallWeek)
     }
 }

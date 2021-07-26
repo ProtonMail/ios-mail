@@ -24,38 +24,45 @@
 import UIKit
 import PromiseKit
 import MBProgressHUD
+import ProtonCore_UIFoundations
+import ProtonCore_PaymentsUI
 
-class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol {
     typealias viewModelType = ContactGroupDetailViewModel
 
     var viewModel: ContactGroupDetailViewModel!
     
+    @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var groupNameLabel: UILabel!
     @IBOutlet weak var groupDetailLabel: UILabel!
+    @IBOutlet weak var sendImage: UIImageView!
     @IBOutlet weak var groupImage: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
+    private var editBarItem: UIBarButtonItem!
     
     private let kToContactGroupEditSegue = "toContactGroupEditSegue"
     private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
     private let kToComposerSegue = "toComposer"
-    private let kToUpgradeAlertSegue = "toUpgradeAlertSegue"
     
     func set(viewModel: ContactGroupDetailViewModel) {
         self.viewModel = viewModel
+        self.viewModel.reloadView = { [weak self] in
+            self?.reload()
+        }
     }
-    
+
     @IBAction func sendButtonTapped(_ sender: UIButton) {
-        if self.viewModel.user.isPaid {
+        if self.viewModel.user.hasPaidMailPlan {
             self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
         } else {
-            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+            presentPlanUpgrade()
         }
     }
     
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
-        if self.viewModel.user.isPaid == false {
-            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+        if self.viewModel.user.hasPaidMailPlan == false {
+            presentPlanUpgrade()
             return
         }
         performSegue(withIdentifier: kToContactGroupEditSegue,
@@ -64,8 +71,23 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = LocalString._contact_groups_detail_view_title
-        
+
+        editBarItem = UIBarButtonItem(title: LocalString._general_edit_action,
+                                      style: .plain,
+                                      target: self,
+                                      action: #selector(self.editButtonTapped(_:)))
+        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
+        editBarItem.setTitleTextAttributes(attributes, for: .normal)
+        navigationItem.rightBarButtonItem = editBarItem
+
+        view.backgroundColor = UIColorManager.BackgroundNorm
+        tableView.backgroundColor = UIColorManager.BackgroundNorm
+
+        headerContainerView.backgroundColor = UIColorManager.BackgroundNorm
+
+        sendImage.image = Asset.mailSendIcon.image.withRenderingMode(.alwaysTemplate)
+        sendImage.tintColor = UIColorManager.InteractionNorm
+
         prepareTable()
     }
     
@@ -98,14 +120,13 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     }
 
     private func prepareHeader() {
-        groupNameLabel.text = viewModel.getName()
+        groupNameLabel.attributedText = viewModel.getName().apply(style: .Default)
         
-        groupDetailLabel.text = viewModel.getTotalEmailString()
+        groupDetailLabel.attributedText = viewModel.getTotalEmailString().apply(style: .DefaultSmallWeek)
         
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: UIColor.init(hexString: viewModel.getColor(),
                                                             alpha: 1))
-        
         if let image = sendButton.imageView?.image {
             sendButton.imageView?.contentMode = .center
             sendButton.imageView?.image = UIImage.resize(image: image, targetSize: CGSize.init(width: 20, height: 20))
@@ -149,22 +170,14 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                                                         action: .newDraft,
                                                         msgService: user.messageService,
                                                         user: user,
-                                                        coreDataService: self.viewModel.coreDataService)
+                                                        coreDataService: sharedServices.get(by: CoreDataService.self))
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
                 viewModel.addToContacts(contactGroupVO)
             }
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
-            
-        } else if segue.identifier == kToUpgradeAlertSegue {
-            let popup = segue.destination as! UpgradeAlertViewController
-            popup.delegate = self
-            sharedVMService.upgradeAlert(contacts: popup)
-            self.setPresentationStyleForSelfController(self,
-                                                       presentingController: popup,
-                                                       style: .overFullScreen)
         }
         
         if #available(iOS 13, *) {
@@ -174,38 +187,15 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             segue.destination.presentationController?.delegate = self
         }
     }
+
+    private func presentPlanUpgrade() {
+        PaymentsUI(servicePlanDataService: viewModel.user.sevicePlanService, planTypes: .mail)
+            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
+    }
+
 }
 
-extension ContactGroupDetailViewController: UpgradeAlertVCDelegate {
-    func postToPlan() {
-        NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
-    }
-    func goPlans() {
-        if self.presentingViewController != nil {
-            self.dismiss(animated: true) {
-                self.postToPlan()
-            }
-        } else {
-            self.postToPlan()
-        }
-    }
-    
-    func learnMore() {
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(.paidPlans)
-        }
-    }
-    
-    func cancel() {
-        
-    }
-}
-
-extension ContactGroupDetailViewController: UITableViewDataSource
-{
+extension ContactGroupDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -233,6 +223,12 @@ extension ContactGroupDetailViewController: UITableViewDataSource
                     state: .detailView)
         
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let titleView = view as? UITableViewHeaderFooterView {
+            titleView.textLabel?.text =  titleView.textLabel?.text?.capitalized
+        }
     }
 }
 

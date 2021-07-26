@@ -22,7 +22,7 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
 
 // MARK : update right swipe action
 final class GetAvailableDomainsRequest : Request {

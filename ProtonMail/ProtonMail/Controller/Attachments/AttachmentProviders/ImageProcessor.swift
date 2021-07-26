@@ -118,4 +118,3 @@ extension ImageProcessor where Self: AttachmentProvider {
         }
     }
 }
-

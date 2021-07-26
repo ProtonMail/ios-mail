@@ -1,6 +1,6 @@
 //
-//  SettingsCoordinator.swift
-//  ProtonMail - Created on 09/08/2018.
+//  MenuViewController.swift
+//  ProtonMail
 //
 //
 //  Copyright (c) 2019 Proton Technologies AG
@@ -22,20 +22,16 @@
 
 
 import Foundation
-import SWRevealViewController
+import SideMenuSwift
+import ProtonCore_AccountSwitcher
+import ProtonCore_Networking
+import ProtonCore_PaymentsUI
 
-class MenuCoordinatorNew: DefaultCoordinator {
-    typealias VC = MenuViewController
-    
-    weak var viewController: MenuViewController?
-    internal weak var lastestCoordinator: CoordinatorNew?
-    let viewModel : MenuViewModel
-    var services: ServiceFactory
+final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     
     enum Setup: String {
         case switchUser = "USER"
         case switchUserFromNotification = "UserFromNotification"
-        
         init?(rawValue: String) {
             switch rawValue {
             case "USER": self = .switchUser
@@ -44,323 +40,478 @@ class MenuCoordinatorNew: DefaultCoordinator {
             }
         }
     }
-    enum Destination : String {
-        case mailbox   = "toMailboxSegue"
-        case label     = "toLabelboxSegue"
-        case settings  = "toSettingsSegue"
-        case bugs      = "toBugsSegue"
-        case contacts  = "toContactsSegue"
-        case feedbacks = "toFeedbackSegue"
-        case plan      = "toServicePlan"
-        case bugsPop = "toBugPop"
-        case accountManager = "toAccountManager"
-        case addAccount = "toAddAccountSegue"
-        
-        init?(rawValue: String) {
-            switch rawValue {
-            case "toMailboxSegue", String(describing: MailboxViewController.self): self = .mailbox
-            case "toLabelboxSegue": self = .label
-            case "toSettingsSegue", String(describing: SettingsTableViewController.self): self = .settings
-            case "toBugsSegue": self = .bugs
-            case "toContactsSegue": self = .contacts
-            case "toFeedbackSegue": self = .feedbacks
-            case "toServicePlan": self = .plan
-            case "toBugPop": self = .bugsPop
-            case "toAccountManager": self = .accountManager
-            case "toAddAccountSegue": self = .addAccount
-            default: return nil
-            }
-        }
+
+    typealias VC = MenuViewController
+    weak var viewController: VC?
+    private let menuWidth: CGFloat
+    private let vm: MenuVMProtocol
+    let services: ServiceFactory
+    private let vmService: ViewModelService
+    private let pushService: PushNotificationService
+    private let coreDataService: CoreDataService
+    private let lastUpdatedStore:LastUpdatedStoreProtocol
+    private let usersManager: UsersManager
+    var pendingActionAfterDismissal: (() -> Void)?
+    private var storefrontCoordinator: StorefrontCoordinator?
+
+    private var storeKitManager: StoreKitManagerImpl {
+        services.get(by: StoreKitManagerImpl.self)
     }
-    
-    init(vc: MenuViewController, vm: MenuViewModel, services: ServiceFactory) {
+
+    // todo: that would be better if vc is protocol
+    init(services: ServiceFactory,
+         vmService: ViewModelService,
+         pushService: PushNotificationService,
+         coreDataService: CoreDataService,
+         lastUpdatedStore:LastUpdatedStoreProtocol,
+         usersManager: UsersManager,
+         vc: VC, vm: MenuVMProtocol, menuWidth: CGFloat = 350) {
         defer {
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(performLastSegue(_:)),
-                                                   name: .switchView,
-                                                   object: nil)
+            NotificationCenter
+                .default
+                .addObserver(self,
+                             selector: #selector(performLastSegue(_:)),
+                             name: .switchView,
+                             object: nil)
         }
-        self.viewModel = vm
-        self.viewController = vc
+        //Setup side menu setting
+        SideMenuController.preferences.basic.menuWidth = menuWidth
+        SideMenuController.preferences.basic.position = .sideBySide
+        SideMenuController.preferences.basic.enablePanGesture = true
+        SideMenuController.preferences.basic.enableRubberEffectWhenPanning = false
+        SideMenuController.preferences.animation.shouldAddShadowWhenRevealing = true
+        SideMenuController.preferences.animation.shadowColor = .black
+        SideMenuController.preferences.animation.shadowAlpha = 0.52
+        self.menuWidth = menuWidth
+        
         self.services = services
-    }
-    
-    deinit{
-        //unnecessary in newer ios versions
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func performLastSegue(_ notification: Notification) {
-        if let link = notification.object as? DeepLink {
-            self.follow(link)
-        } else {
-            self.go(to: .mailbox)
-        }
+        self.coreDataService = coreDataService
+        self.vmService = vmService
+        self.pushService = pushService
+        self.lastUpdatedStore = lastUpdatedStore
+        self.usersManager = usersManager
+        self.viewController = vc
+        
+        self.vm = vm
     }
     
     func start() {
-        self.viewController?.set(viewModel: self.viewModel)
-        self.viewController?.set(coordinator: self)
-    }
-    
-    
-    private func toPlan() {
-        let user = self.viewModel.currentUser!
-        let nextCoordinator = StorefrontCoordinator(rvc: self.viewController?.revealViewController(), user: user)
-        nextCoordinator.viewController?.viewModel = StorefrontViewModel(currentUser: user)
-
-        nextCoordinator.start()
-    }
-    
-    private func toInbox(labelID: String, deepLink: DeepLink) {
-        //Example of deeplink without segue
-        var nextVM : MailboxViewModel?
-        
-        guard let user = self.viewModel.currentUser else {return}
-        let labelService = user.labelService
-        
-        if let mailbox = Message.Location(rawValue: labelID) {
-            nextVM = MailboxViewModelImpl(label: mailbox, userManager: user,
-                                          usersManager: self.viewModel.users,
-                                          pushService: services.get(),
-                                          coreDataService: services.get())
-        } else if let label = labelService.label(by: labelID) {
-            //shared global service need to be changed later
-            if label.exclusive {
-                nextVM = FolderboxViewModelImpl(label: label, userManager: user,
-                                                usersManager: self.viewModel.users,
-                                                pushService: services.get(),
-                                                coreDataService: services.get())
-            } else {
-                nextVM = LabelboxViewModelImpl(label: label, userManager: user,
-                                               usersManager: self.viewModel.users,
-                                               pushService: services.get(),
-                                               coreDataService: services.get())
-            }
-        }
-        
-        if let vm = nextVM {
-            let mailbox = MailboxCoordinator(rvc: self.viewController?.revealViewController(), vm: vm, services: self.services)
-            self.lastestCoordinator = mailbox
-            mailbox.start()
-            
-            // SWRevealViewController needs about 1/2 second to finish its pushFrontViewController(_:animated:) async work
-            // and we can not present modal VCs like composer or search until then
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-                mailbox.follow(deepLink)
-            }
-        }
-       
+        self.viewController?.set(vm: self.vm, coordinator: self)
+        self.vm.set(menuWidth: self.menuWidth)
     }
     
     func follow(_ deepLink: DeepLink) {
-        
-        // Navigate to notification mail firstly, ignore previous deep link
-        let pushService = sharedServices.get(by: PushNotificationService.self)
-        guard !pushService.hasCachedLaunchOptions() else {
+        if self.pushService.hasCachedLaunchOptions() {
             pushService.processCachedLaunchOptions()
             return
         }
-        
-        // take first node
         var start = deepLink.popFirst
+        start = self.processUserInfoIn(node: start)
         
-        // do the setup if it's setup
-        if let setup = start, let dest = Setup(rawValue: setup.name) {
-            switch dest {
-            case .switchUser where setup.value != nil:
-                // this will setup currentUser to this MenuViewModel which will transfer it down the hierarchy
-                let users = services.get(by: UsersManager.self)
-                guard let user = users.getUser(bySessionID: setup.value!) else {
-                    break
-                }
-                users.active(uid: setup.value!)
-                self.viewModel.currentUser = user
-                
-            case .switchUserFromNotification where setup.value != nil:
-                let users = services.get(by: UsersManager.self)
-                guard let user = users.getUser(bySessionID: setup.value!) else {
-                    break
-                }
-                
-                users.active(uid: setup.value!)
-                let isSameUser = self.viewModel.currentUser?.userinfo.userId ?? "" == user.userinfo.userId 
-                self.viewModel.currentUser = user
-                
-                if !isSameUser {
-                    String(format: LocalString._switch_account_by_click_notification,
-                           user.defaultEmail).alertToastBottom()
-                }
-            default: break
-            }
-            // and clear it
-            start = nil
+        guard let path = start ?? deepLink.popFirst,
+              let label = MenuCoordinator.getLocation(by: path.name, value: path.value) else {
+            return
         }
         
-        // start will be cleared if it was a setup and then we'll need to take next node
-        // or start will be already that first node if it was not a setup
-        if let path = start ?? deepLink.popFirst, let dest = Destination(rawValue: path.name) {
-            switch dest {
-            case .plan:
-                self.toPlan()
-            case .mailbox where path.value != nil:
-                self.toInbox(labelID: path.value!, deepLink: deepLink)
-            default:
-                self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: deepLink)
-            }
-        }
-    }
-
-    //old one call from vc
-    func go(to dest: Destination, sender: Any? = nil) {
-        switch dest {
-        case .plan:
-            self.toPlan()
-        default:
-            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
-        }
+        self.go(to: label, deepLink: deepLink)
     }
     
-    ///TODO::fixme. add warning or error when return false except the last one.
-    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {        
-        guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
-            return false //
-        }
-        
-        let navigation = destination as? UINavigationController
-        guard let rvc = source.revealViewController() else {
-            return false
-        }
-        
-        //Inactive nsfetchcontroller while last view entering background
-        let lastFrontVC = (rvc.frontViewController as? UINavigationController)?.firstViewController()
-        if let vc = lastFrontVC as? MailboxViewController {
-            vc.inactiveViewModel()
-        }
-        
-        switch dest {
-        case .mailbox:
-            guard let next = navigation?.firstViewController() as? MailboxViewController else {
-                return false
-            }
-            sharedVMService.mailbox(fromMenu: next)
-            var label = Message.Location.inbox
-            if let index = sender as? Message.Location {
-                label = index
-            }
-            guard let user = self.viewModel.currentUser else {
-                return false
-            }
-            let viewModel = MailboxViewModelImpl(label: label, userManager: user, usersManager: self.viewModel.users, pushService: services.get(), coreDataService: services.get())
-            let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
-            self.lastestCoordinator = mailbox
-            mailbox.start()
-            if let deeplink = sender as? DeepLink {
-                mailbox.follow(deeplink)
-            }
-            
-        case .label:
-            guard let next = navigation?.firstViewController() as? MailboxViewController else {
-                return false
-            }
-            sharedVMService.mailbox(fromMenu: next)
-            let user = self.viewModel.currentUser!
-            
-            var viewModel : MailboxViewModel = MailboxViewModelImpl(label: Message.Location.inbox,
-                                                                    userManager: user,
-                                                                    usersManager: self.viewModel.users,
-                                                                    pushService: services.get(),
-                                                                    coreDataService: services.get())
-            
-            if let label = sender as? Label {
-                if label.exclusive {
-                    viewModel = FolderboxViewModelImpl(label: label, userManager: user,
-                                                       usersManager: self.viewModel.users,
-                                                       pushService: services.get(),
-                                                       coreDataService: services.get())
-                } else {
-                    viewModel = LabelboxViewModelImpl(label: label, userManager: user,
-                                                      usersManager: self.viewModel.users,
-                                                      pushService: services.get(),
-                                                      coreDataService: services.get())
-                }
-            }
-            let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
-            self.lastestCoordinator = mailbox
-            mailbox.start()
-            if let deeplink = sender as? DeepLink {
-                mailbox.follow(deeplink)
-            }
-            
+    func go(to labelInfo: MenuLabel, deepLink: DeepLink?=nil) {
+        switch labelInfo.location {
+        case .customize(_):
+            self.handleCustomLabel(labelInfo: labelInfo, deepLink: deepLink)
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail:
+            self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
+        case .subscription:
+            self.navigateToSubscribe()
         case .settings:
-            guard let next = navigation else {
-                return false
-            }
-            
-            guard  let user = self.viewModel.currentUser else {
-                return false
-            }
-            let vm = SettingsDeviceViewModelImpl(user: user)
-            guard let settings = SettingsDeviceCoordinator(rvc: rvc, nav: next,
-                                                           vm: vm, services: self.services, scene: nil) else {
-                return false
-            }
-            settings.start()
-            if let deeplink = sender as? DeepLink {
-                settings.follow(deeplink)
-            }
+            self.navigateToSettings(deepLink: deepLink)
         case .contacts:
-            guard let tabBarController = destination as? ContactTabBarViewController else {
-                return false
-            }
-            let user = self.viewModel.currentUser!
-            let contacts = ContactTabBarCoordinator(rvc: rvc, vc: tabBarController, services: self.services, user: user)
-            contacts.start()
-        case .bugs, .feedbacks:
-            ///those two types use the default segue
-            break
-        case .plan:
-            /// this handled in go function.
-            break
-        case .bugsPop:
-            return true
-        case .accountManager:
-            guard let next = navigation else {
-                return false
-            }
-            let vm = AccountManagerViewModel(usersManager: self.services.get())
-            guard let accoutManager = AccountManagerCoordinator(nav: next, vm: vm, services: self.services, scene: nil) else {
-                return false
-            }
-            accoutManager.delegate = self
-            accoutManager.start()
-            return true
+            self.navigateToContact()
+        case .bugs:
+            self.navigateToBugReport()
+        case .accountManger:
+            self.navigateToAccountManager()
         case .addAccount:
-            guard let next = navigation else {
-                return false
-            }
-            
-            let preFilledUsername = (sender as? UsersManager.DisconnectedUserHandle)?.defaultEmail
-            guard let account = AccountConnectCoordinator(nav: next,
-                                                          vm: SignInViewModel(usersManager: self.services.get(), username: preFilledUsername),
-                                                          services: self.services) else {
-                return false
-            }
-            account.delegate = self
-            account.start()
-            return true
+            let mail = labelInfo.name
+            self.navigateToAddAccount(mail: mail)
+        case .addLabel:
+            self.navigateToCreateFolder(type: .label)
+        case .addFolder:
+            self.navigateToCreateFolder(type: .folder)
+        default:
+            break
         }
-        
-        return false
+        self.vm.highlight(label: labelInfo)
+    }
+    
+    func fetchSubscribeDataFailed() {
+        let label = MenuLabel(location: .inbox)
+        self.go(to: label)
+        self.vm.subscriptionUnavailable()
     }
 }
 
-extension MenuCoordinatorNew : CoordinatorDelegate {
+// MARK: helper function
+extension MenuCoordinator {
+    /// If the node contain user info return `nil` after processed
+    private func processUserInfoIn(node: DeepLink.Node?) -> DeepLink.Node? {
+        guard let setup = node,
+              let dest = Setup(rawValue: setup.name),
+              let sessionID = setup.value else {
+            return node
+        }
+        
+        guard let user = self.usersManager.getUser(bySessionID: sessionID) else {
+            return node
+        }
+        
+        switch dest {
+        case .switchUser:
+            self.usersManager.active(uid: sessionID)
+        case .switchUserFromNotification:
+            let isAnotherUser = self.usersManager.firstUser?.userinfo.userId ?? "" != user.userinfo.userId
+            self.usersManager.active(uid: sessionID)
+            // viewController?.setupLabelsIfViewIsLoaded()
+            // rebase todo, check MR 496
+            if isAnotherUser {
+                String(format: LocalString._switch_account_by_click_notification,
+                       user.defaultEmail).alertToastBottom()
+            }
+        }
+        self.vm.userDataInit()
+        return nil
+    }
+    
+    // If SignInCoordinator.swift doesn't use this function anymore
+    // set this function as private function
+    class func getLocation(by path: String, value: String?) -> MenuLabel? {
+        switch path {
+        case "toMailboxSegue",
+             "toLabelboxSegue",
+             String(describing: MailboxViewController.self):
+            let value = value ?? "0"
+            let location = LabelLocation(id: value)
+            return MenuLabel(location: location)
+        case "toSettingsSegue",
+             String(describing: SettingsTableViewController.self):
+            return MenuLabel(location: .settings)
+        case "toBugsSegue": return MenuLabel(location: .bugs)
+        case "toContactsSegue": return MenuLabel(location: .contacts)
+        case "toServicePlan",
+             "Subscription":
+            return MenuLabel(location: .subscription)
+        case "toBugPop": return MenuLabel(location: .bugs)
+        case "toAccountManager": return MenuLabel(location: .customize("toAccountManager"))
+        case "toAddAccountSegue": return MenuLabel(location: .customize("toAddAccountSegue"))
+        case .skeletonTemplate: return MenuLabel(location: .customize(.skeletonTemplate))
+        default: return nil
+        }
+    }
+    
+    private func setupContentVC(destination: UIViewController) {
+        guard let sideMenu = self.viewController?.sideMenuController else {
+            return
+        }
+        sideMenu.setContentViewController(to: destination)
+        sideMenu.hideMenu(animated: true, completion: nil)
+    }
+    
+    private func queryLabel(id: String) -> Label? {
+        guard let user = self.usersManager.firstUser else {
+            return nil
+        }
+        let labelService = user.labelService
+        let label = labelService.label(by: id)
+        return label
+    }
+}
+
+// MARK: Navigation
+extension MenuCoordinator {
+    @objc private func performLastSegue(_ notification: Notification) {
+        if let link = notification.object as? DeepLink {
+            self.follow(link)
+        } else {
+            presentInitialPage()
+        }
+    }
+
+    private func presentInitialPage() {
+        if storeKitManager.shouldShowReportBugPage {
+            navigateToBugReport()
+            storeKitManager.shouldShowReportBugPage = false
+        } else {
+            let label = MenuLabel(location: .inbox)
+            navigateToMailBox(labelInfo: label, deepLink: nil)
+        }
+    }
+    
+    private func handleCustomLabel(labelInfo: MenuLabel, deepLink: DeepLink?) {
+        if case .customize(let id) = labelInfo.location {
+            if id == .skeletonTemplate {
+                self.navigateToSkeletonVC()
+            } else {
+                self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
+            }
+        }
+    }
+    
+    private func navigateToMailBox(labelInfo: MenuLabel, deepLink: DeepLink?) {
+        guard !scrollToLatestMessageInConversationViewIfPossible(deepLink) else {
+            return
+        }
+
+        let vc = MailboxViewController.instance()
+        self.vmService.mailbox(fromMenu: vc)
+        
+        guard let user = self.usersManager.firstUser,
+              let navigation = vc.navigationController else {
+            return
+        }
+        var viewModel: MailboxViewModel
+        switch labelInfo.location {
+        case .customize(let id):
+            if labelInfo.type == .folder,
+               let label = self.queryLabel(id: id) {
+                viewModel = FolderboxViewModelImpl(label: label, userManager: user,
+                                                   usersManager: self.usersManager,
+                                                   pushService: self.pushService,
+                                                   coreDataService: self.coreDataService,
+                                                   lastUpdatedStore: self.lastUpdatedStore,
+                                                   queueManager: self.services.get(by: QueueManager.self))
+            } else if labelInfo.type == .label,
+                      let label = self.queryLabel(id: id) {
+                viewModel = LabelboxViewModelImpl(label: label, userManager: user,
+                                                  usersManager: self.usersManager,
+                                                  pushService: self.pushService,
+                                                  coreDataService: self.coreDataService,
+                                                  lastUpdatedStore: self.lastUpdatedStore,
+                                                  queueManager: self.services.get(by: QueueManager.self))
+            } else {
+                // the type is unknown or the label doesn't exist
+                return
+            }
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail:
+            let msgLocation = labelInfo.location.toMessageLocation
+            viewModel = MailboxViewModelImpl(label: msgLocation,
+                                             userManager: user,
+                                             usersManager: self.usersManager,
+                                             pushService: self.pushService,
+                                             coreDataService: self.coreDataService,
+                                             lastUpdatedStore: self.lastUpdatedStore,
+                                             queueManager: self.services.get(by: QueueManager.self))
+        default: return
+        }
+        
+        let mailbox = MailboxCoordinator(sideMenu: self.viewController?.sideMenuController, nav: navigation, viewController: vc, viewModel: viewModel, services: self.services)
+        mailbox.start()
+        if let deeplink = deepLink {
+            mailbox.follow(deeplink)
+        }
+        self.setupContentVC(destination: navigation)
+    }
+    
+    private func navigateToSubscribe() {
+        guard let user = self.usersManager.firstUser,
+              let sideMenuViewController = viewController?.sideMenuController else { return }
+        let paymentsUI = PaymentsUI(servicePlanDataService: user.sevicePlanService, planTypes: .mail)
+        let coordinator = StorefrontCoordinator(
+            paymentsUI: paymentsUI,
+            sideMenu: sideMenuViewController,
+            eventsService: user.eventsService
+        )
+        coordinator.start()
+    }
+    
+    private func navigateToSettings(deepLink: DeepLink?) {
+        let vc = SettingsDeviceViewController.instance()
+        guard let user = self.usersManager.firstUser,
+              let navigation = vc.navigationController else {
+            return
+        }
+        let vm = SettingsDeviceViewModelImpl(user: user,
+                                             users: self.usersManager,
+                                             dohSetting: DoHMail.default)
+        guard let settings = SettingsDeviceCoordinator(sideMenu: self.viewController?.sideMenuController,
+                                                       nav: navigation,
+                                                       vm: vm,
+                                                       services: self.services,
+                                                       scene: nil) else {
+            return
+        }
+        settings.start()
+        if let deeplink = deepLink {
+            settings.follow(deeplink)
+        }
+        self.setupContentVC(destination: navigation)
+    }
+    
+    private func navigateToContact() {
+        let vc = ContactTabBarViewController.instance()
+        guard let user = self.usersManager.firstUser else {
+            return
+        }
+        let contacts = ContactTabBarCoordinator(sideMenu: self.viewController?.sideMenuController,
+                                                vc: vc,
+                                                services: self.services,
+                                                user: user)
+        contacts.start()
+        self.setupContentVC(destination: vc)
+    }
+    
+    private func navigateToBugReport() {
+        let vc = ReportBugsViewController.instance()
+        guard let user = self.usersManager.firstUser,
+              let navigation = vc.navigationController else {
+            return
+        }
+        vc.user = user
+        vm.highlight(label: MenuLabel(location: .bugs))
+        self.setupContentVC(destination: navigation)
+    }
+    
+    private func navigateToAccountManager() {
+        guard let menuVC = self.viewController else {
+            return
+        }
+        
+        let vc = AccountManagerVC.instance()
+        let list = self.vm.getAccountList()
+        let vm = AccountManagerViewModel(accounts: list, uiDelegate: vc)
+        vm.set(delegate: menuVC)
+        guard let nav = vc.navigationController,
+              let sideMenu = self.viewController?.sideMenuController else {
+            return
+        }
+        
+        sideMenu.present(nav, animated: true) {
+            sideMenu.hideMenu()
+        }
+    }
+    
+    private func navigateToAddAccount(mail: String) {
+
+        guard let sideMenu = self.viewController?.sideMenuController else { return }
+
+        let signInEnvironment = SignInCoordinatorEnvironment.live(
+            services: sharedServices, forceUpgradeDelegate: ForceUpgradeManager.shared.forceUpgradeHelper
+        )
+
+        let coordinator: SignInCoordinator = .loginFlowForSecondAndAnotherAccount(
+            username: mail.isEmpty ? nil : mail, environment: signInEnvironment
+        ) { [weak self] result in
+            switch result {
+            case .succeeded:
+                sideMenu.dismiss(animated: false, completion: nil)
+            case .loggedInFreeAccountsLimitReached:
+                sideMenu.dismiss(animated: false, completion: nil)
+            case .alreadyLoggedIn:
+                sideMenu.dismiss(animated: false, completion: nil)
+            case .userWantsToGoToTroubleshooting:
+                sideMenu.dismiss(animated: false) { [weak self] in self?.navigateToTroubleshooting() }
+            case .errored:
+                sideMenu.dismiss(animated: false) { [weak self] in self?.navigateToAccountManager() }
+            case .dismissed:
+                sideMenu.dismiss(animated: false) { [weak self] in self?.navigateToAccountManager() }
+            }
+        }
+        coordinator.delegate = self
+        let vc = coordinator.actualViewController
+        vc.modalPresentationStyle = .overCurrentContext
+        sideMenu.present(vc, animated: false) {
+            sideMenu.hideMenu()
+            coordinator.start()
+        }
+    }
+
+    private func navigateToTroubleshooting() {
+        let troubleshootingVC = UIStoryboard.Storyboard.alert.storyboard.make(NetworkTroubleShootViewController.self)
+        troubleshootingVC.onDismiss = { [weak self] in
+            self?.navigateToAccountManager()
+        }
+        let navigationVC = UINavigationController(rootViewController: troubleshootingVC)
+        navigationVC.modalPresentationStyle = .fullScreen
+        guard let sideMenu = self.viewController?.sideMenuController else {
+            return
+        }
+        sideMenu.present(navigationVC, animated: true) {
+            sideMenu.hideMenu()
+        }
+    }
+    
+    private func navigateToCreateFolder(type: PMLabelType) {
+        guard let user = self.vm.currentUser else { return }
+        // The add button is shown when the labels data is empty
+        // So just send empty array is fine
+        let vm = LabelEditViewModel(user: user, label: nil, type: type, labels: [])
+        let vc = LabelEditViewController.instance()
+        let coordinator = LabelEditCoordinator(services: self.services,
+                                               viewController: vc,
+                                               viewModel: vm,
+                                               coordinatorDismissalObserver: self)
+        coordinator.start()
+        guard let sideMenu = self.viewController?.sideMenuController,
+              let nvc = vc.navigationController else { return }
+        sideMenu.present(nvc, animated: true) {
+            sideMenu.hideMenu()
+        }
+    }
+
+    private func scrollToLatestMessageInConversationViewIfPossible(_ deepLink: DeepLink?) -> Bool {
+        guard usersManager.firstUser?.conversationStateService.viewMode == .conversation,
+              let deepLink = deepLink else {
+            return false
+        }
+        //find messageId in deepLink
+        var path = deepLink.first
+        var messageId: String?
+        while(path != nil) {
+            if path?.name == "SingleMessageViewController" {
+                messageId = path?.value
+                break
+            } else {
+                path = path?.next
+            }
+        }
+
+        guard let messageId = messageId,
+              let message = Message.messageForMessageID(messageId, inManagedObjectContext: coreDataService.mainContext) else {
+            return false
+        }
+
+        var isFound = false
+        if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+            window.enumerateViewControllerHierarchy { controller, stop in
+                if let conversationVC = controller as? ConversationViewController,
+                   conversationVC.viewModel.conversation.conversationID == message.conversationID {
+                    conversationVC.showMessage(of: message.messageID)
+                    isFound = true
+                    stop = true
+                }
+            }
+        }
+        return isFound
+    }
+
+    private func navigateToSkeletonVC() {
+        let skeletonVC = SkeletonViewController.instance()
+        guard let navigation = skeletonVC.navigationController else { return }
+        self.setupContentVC(destination: navigation)
+    }
+}
+
+extension MenuCoordinator : CoordinatorDelegate {
     func willStop(in coordinator: CoordinatorNew) {
         
     }
     
     func didStop(in coordinator: CoordinatorNew) {
-        self.viewController?.updateUser()
+        guard let user = self.usersManager.firstUser else {
+            return
+        }
+        self.vm.activateUser(id: user.userInfo.userId)
+        let label = MenuLabel(location: .inbox)
+        self.navigateToMailBox(labelInfo: label, deepLink: nil)
     }
 }

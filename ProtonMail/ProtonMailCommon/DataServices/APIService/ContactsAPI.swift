@@ -22,7 +22,8 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
 
 //Contact API
@@ -76,7 +77,6 @@ class ContactsResponse : Response {
     var total : Int = -1
     var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        //PMLog.D("[Contact] Get contacts response \(response)")
         self.total = response?["Total"] as? Int ?? -1
         self.contacts = response?["Contacts"] as? [[String : Any]] ?? []
         return true
@@ -112,7 +112,6 @@ class ContactEmailsResponse: Response {
     var total : Int = -1
     var contacts : [[String : Any]] = [] // [["ID": ..., "Name": ..., "ContactEmails": ...], ...]
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        //PMLog.D("[Contact] Get contact emails response \(response)")
         self.total = response?["Total"] as? Int ?? -1
         if let tempContactEmails = response?["ContactEmails"] as? [[String : Any]] {
             // setup emails
@@ -158,7 +157,6 @@ class ContactEmailsResponse: Response {
                 }
             }
         }
-        PMLog.D("contacts: \n \(self.contacts.json(prettyPrinted: true))")
         return true
     }
 }
@@ -167,8 +165,6 @@ class ContactEmailsResponseForContactGroup: Response {
     var total : Int = -1
     var emailList : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D("[Contact] Get contact emails for contact group response \(String(describing: response))")
-        
         if let res = response?["ContactEmails"] as? [[String : Any]] {
             emailList = res
         }
@@ -192,8 +188,6 @@ final class ContactDetailRequest : Request {  //ContactDetailResponse
 class ContactDetailResponse : Response {
     var contact : [String : Any]?
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-//      PMLog.D("[Contact] Get contact detail response \(response)")
-//        PMLog.D(response.json(prettyPrinted: true))
         contact = response["Contact"] as? [String : Any]
         return true
     }
@@ -324,7 +318,6 @@ final class ContactAddRequest : Request {   // ContactAddResponse
 final class ContactAddResponse : Response {
     var results : [Any?] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D( response.json(prettyPrinted: true) )
         if let responses = response["Responses"] as? [[String : Any]] {
             for res in responses {
                 if let response = res["Response"] as? [String : Any] {
@@ -424,7 +417,6 @@ final class ContactLabelAnArrayOfContactEmailsRequest: Request { //ContactLabelA
 final class ContactLabelAnArrayOfContactEmailsResponse: Response {
     var emailIDs: [String] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        //PMLog.D("[Contact] label an array of contact emails response \(response)")
         if let responses = response["Responses"] as? [[String: Any]] {
             for data in responses {
                 if let ID = data["ID"] as? String, let tmp = data["Response"] as? [String: Any] {
@@ -468,7 +460,6 @@ final class ContactUnlabelAnArrayOfContactEmailsResponse: Response {
     var emailIDs: [String] = []
     
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        //PMLog.D("[Contact] unlabel an array of contact emails response \(response)")
         if let responses = response["Responses"] as? [[String: Any]] {
             for data in responses {
                 if let ID = data["ID"] as? String, let tmp = data["Response"] as? [String: Any] {

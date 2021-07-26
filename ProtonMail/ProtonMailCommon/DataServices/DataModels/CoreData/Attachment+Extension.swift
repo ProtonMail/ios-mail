@@ -26,7 +26,7 @@ import CoreData
 import PromiseKit
 import AwaitKit
 import Crypto
-import PMCommon
+import ProtonCore_DataModel
 
 
 //TODO::fixme import header
@@ -158,7 +158,7 @@ extension Attachment {
                 }
             }
             
-            guard let out = try fileData?.signAttachment(byPrivKey: key.private_key, passphrase: pwd) else {
+            guard let out = try fileData?.signAttachment(byPrivKey: key.privateKey, passphrase: pwd) else {
                 return nil
             }
             var error : NSError?
@@ -260,7 +260,7 @@ extension Attachment {
                     if let key_packet = self.keyPacket {
                         if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
                             if let decryptData =
-                                userInfo.newSchema ?
+                                userInfo.isKeyV2 ?
                                     try data.decryptAttachment(keyPackage: keydata,
                                                                userKeys: userPrivKeys,
                                                                passphrase: passphrase,
@@ -281,7 +281,7 @@ extension Attachment {
                     if let key_packet = self.keyPacket {
                         if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
                             if let decryptData =
-                                userInfo.newSchema ?
+                                userInfo.isKeyV2 ?
                                     try data.decryptAttachment(keyPackage: keydata,
                                                                userKeys: userPrivKeys,
                                                                passphrase: passphrase,
@@ -318,7 +318,7 @@ extension Attachment {
             return false
         }
         
-        if inlineCheckString.contains("inline") || inlineCheckString.contains("attachment") { //"attachment" shouldn't be here but some outside inline messages only have attachment tag.
+        if inlineCheckString.contains("inline") {
             return true
         }
         return false
@@ -337,6 +337,27 @@ extension Attachment {
         let outString = inlineCheckString.preg_replace("[<>]", replaceto: "")
         
         return outString
+    }
+    
+    func disposition() -> String {
+        guard let headerInfo = self.headerInfo else {
+            return "attachment"
+        }
+        
+        let headerObject = headerInfo.parseObject()
+        guard let inlineCheckString = headerObject["content-disposition"] else {
+            return "attachment"
+        }
+        
+        let outString = inlineCheckString.preg_replace("[<>]", replaceto: "")
+        
+        return outString
+    }
+    
+    func setupHeaderInfo(isInline: Bool, contentID: String?) {
+        let disposition = isInline ? "inline": "attachment"
+        let id = contentID ?? UUID().uuidString
+        self.headerInfo = "{ \"content-disposition\": \"\(disposition)\",  \"content-id\": \"\(id)\" }"
     }
 }
 

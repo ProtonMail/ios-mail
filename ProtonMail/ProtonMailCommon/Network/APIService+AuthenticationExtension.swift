@@ -23,11 +23,20 @@
 
 import Foundation
 import PromiseKit
-import PMAuthentication
-import PMCommon
-
+import ProtonCore_APIClient
+import ProtonCore_Authentication
+import ProtonCore_DataModel
+import ProtonCore_Networking
+import ProtonCore_Services
 
 var refreshTokenFailedCount = 0
+
+/*
+
+ NOTE: this might possibly be removed after login integration. check if this is needed anymore.
+        If not, we could try to move this into the core authentication
+
+ */
 
 /// Auth extension
 extension APIService {
@@ -82,8 +91,8 @@ extension APIService {
         let manager = Authenticator(api: self)
         manager.confirm2FA(code, context: context, completion: { (result ) in
             switch result {
-            case .failure(Authenticator.Errors.serverError(let error)): // error response returned by server
-                return completion(nil, .resCheck, nil, nil, nil, error)
+            case .failure(Authenticator.Errors.networkingError(let error)): // error response returned by server
+                return completion(nil, .resCheck, nil, nil, nil, error.underlyingError ?? error as NSError)
                 
             case .failure(let error as NSError): // network or parsing error
                 return completion(nil, .resCheck, nil, nil, nil, error.isInternetError() ? NSError.internetError() : NSError.authInvalidGrant())
@@ -102,8 +111,8 @@ extension APIService {
         let manager = Authenticator(api: self)
         manager.authenticate(username: username, password: password, completion: { (result ) in
             switch result {
-            case .failure(Authenticator.Errors.serverError(let error)): // error response returned by server
-                return completion(nil, .resCheck, nil, nil, nil, error)
+            case .failure(Authenticator.Errors.networkingError(let error)): // error response returned by server
+                return completion(nil, .resCheck, nil, nil, nil, error.underlyingError ?? error as NSError)
                 
             case .failure(Authenticator.Errors.emptyServerSrpAuth):
                 return completion(nil, .resCheck, nil, nil, nil, NSError.authUnableToGeneratePwd())
@@ -135,8 +144,8 @@ extension APIService {
             }
         })
     }
-    
-    func authRefresh(_ authCredential: AuthCredential, completion: AuthRefreshComplete?) {
+
+    func authRefresh(_ authCredential: AuthCredential, completion: ((_ auth: Credential?, _ hasError: NSError?) -> Void)?) {
         let oldCredential = Credential(authCredential)
         let manager = Authenticator(api: self)
         manager.refreshCredential(oldCredential, completion: { (result ) in
@@ -152,8 +161,8 @@ extension APIService {
                 
             case .failure(let error):
                 var err: NSError = error as NSError
-                if case Authenticator.Errors.serverError(let serverResponse) = error {
-                    err = serverResponse
+                if case Authenticator.Errors.networkingError(let responseError) = error {
+                    err = responseError.underlyingError ?? responseError as NSError
                 }
                 
                 var needsRetry : Bool = false

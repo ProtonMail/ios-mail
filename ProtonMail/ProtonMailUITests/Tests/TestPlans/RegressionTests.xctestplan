@@ -21,8 +21,6 @@
         "ContactsTests\/testContactGroupSendMessage()",
         "DraftsTests\/testSaveDraftWithAttachment()",
         "DraftsTests\/testSendDraftWithAttachment()",
-        "LoginTests\/testLoginWithOnePassAnd2FA()",
-        "LoginTests\/testLoginWithTwoPassAnd2FA()",
         "MultiuserManagementTests\/testAddTwoFreeAccounts()",
         "MultiuserManagementTests\/testCancelLoginOnTwoFaPrompt()",
         "MultiuserManagementTests\/testConnectOnePassAccountWithTwoFa()",

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="iN0-l3-epB" customClass="PMCellSectionView" customModule="ProtonCore_UIFoundations">
+            <rect key="frame" x="0.0" y="0.0" width="535" height="286"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eJ5-sm-oqb">
+                    <rect key="frame" x="0.0" y="44" width="535" height="208"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wDl-R5-K1V">
+                            <rect key="frame" x="26" y="20" width="483" height="180"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="wDl-R5-K1V" firstAttribute="top" secondItem="eJ5-sm-oqb" secondAttribute="topMargin" constant="12" id="KLT-iG-a75"/>
+                        <constraint firstAttribute="bottomMargin" secondItem="wDl-R5-K1V" secondAttribute="bottom" id="SSc-Ky-OgN"/>
+                        <constraint firstAttribute="trailingMargin" secondItem="wDl-R5-K1V" secondAttribute="trailing" constant="6" id="itr-4V-odz"/>
+                        <constraint firstItem="wDl-R5-K1V" firstAttribute="leading" secondItem="eJ5-sm-oqb" secondAttribute="leadingMargin" constant="6" id="zn9-Cb-1Yh"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="eJ5-sm-oqb" secondAttribute="trailing" id="Fb4-CH-jXR"/>
+                <constraint firstItem="eJ5-sm-oqb" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="YYU-Q2-wf0"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="eJ5-sm-oqb" secondAttribute="bottom" id="ePG-9g-ttw"/>
+                <constraint firstItem="eJ5-sm-oqb" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="v9O-Zb-4y1"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="titleLabel" destination="wDl-R5-K1V" id="4lP-pw-hTb"/>
+            </connections>
+            <point key="canvasLocation" x="219.56521739130437" y="-73.660714285714278"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

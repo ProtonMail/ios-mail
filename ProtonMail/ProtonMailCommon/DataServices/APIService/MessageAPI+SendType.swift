@@ -22,7 +22,7 @@
 
 
 import Foundation
-
+import ProtonCore_Networking
 
 struct SendType : OptionSet {
     let rawValue: Int

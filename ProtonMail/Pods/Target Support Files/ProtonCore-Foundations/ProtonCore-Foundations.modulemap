@@ -1,0 +1,6 @@
+framework module ProtonCore_Foundations {
+  umbrella header "ProtonCore-Foundations-umbrella.h"
+
+  export *
+  module * { export * }
+}

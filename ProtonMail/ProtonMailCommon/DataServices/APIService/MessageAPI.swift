@@ -24,9 +24,8 @@
 import Foundation
 import PromiseKit
 import AwaitKit
-import PMCommon
-
-
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
 //Message API
 //Doc: V1 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages.md
@@ -181,7 +180,6 @@ final class FetchMessages : Request {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
-        PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
     
@@ -190,10 +188,8 @@ final class FetchMessages : Request {
     }
 }
 
-/// Response
 final class FetchMessagesByID : Request {
     let msgIDs : [String]
-    
     init(msgIDs: [String]) {
         self.msgIDs = msgIDs
     }
@@ -211,22 +207,24 @@ final class FetchMessagesByID : Request {
         }
         return out
     }
+    
     var path: String {
         return MessageAPI.path + self.buildURL()
     }
 }
 
-
 ///Response
 final class FetchMessagesByLabel : Request {
-    let labelID : String
-    let startTime : Int?
-    let endTime : Int
+    let labelID: String!
+    let startTime: Int?
+    let endTime: Int
+    let isUnread: Bool?
     
-    init(labelID : String, endTime : Int = 0) {
+    init(labelID: String, endTime: Int = 0, isUnread: Bool? = nil) {
         self.labelID = labelID
         self.endTime = endTime
         self.startTime = 0
+        self.isUnread = isUnread
     }
     
     var parameters: [String : Any]? {
@@ -236,7 +234,9 @@ final class FetchMessagesByLabel : Request {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
-        PMLog.D( out.json(prettyPrinted: true) )
+        if let unread = self.isUnread, unread {
+            out["Unread"] = 1
+        }
         return out
     }
     
@@ -244,6 +244,7 @@ final class FetchMessagesByLabel : Request {
         return MessageAPI.path
     }
 }
+
 
 // MARK : Create/Update Draft Part
 /// create draft message request class -- MessageResponse
@@ -267,7 +268,7 @@ class CreateDraft : Request {
             "Unread" : message.unRead ? 1 : 0]
         
         let fromaddr = fromAddress
-        let name = fromaddr?.display_name ?? "unknow"
+        let name = fromaddr?.displayName ?? "unknow"
         let address = fromaddr?.email ?? "unknow"
         
         messsageDict["Sender"] = [
@@ -289,15 +290,13 @@ class CreateDraft : Request {
         
         if let attachments = self.message.attachments.allObjects as? [Attachment] {
             var atts : [String : String] = [:]
-            for att in attachments {
-                if att.keyChanged {
-                    atts[att.attachmentID] = att.keyPacket
-                }
+            for att in attachments where att.keyChanged {
+                atts[att.attachmentID] = att.keyPacket
             }
-            out["AttachmentKeyPackets"] = atts
+            if !atts.keys.isEmpty {
+                out["AttachmentKeyPackets"] = atts
+            }
         }
-        
-        //PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
     
@@ -563,8 +562,6 @@ final class SendMessage : Request {
             packages.append(mimeAddress)
         }
         out["Packages"] = packages
-        //PMLog.D( out.json(prettyPrinted: true) )
-        PMLog.D( "API toDict done" )
         return out
     }
     

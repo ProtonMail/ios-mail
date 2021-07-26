@@ -103,9 +103,9 @@ enum UpdatePasswordError : Int, Error, CustomErrorVar {
         case .invalidUserName:
             return LocalString._error_invalid_username
         case .invalidModulusID:
-            return LocalString._cant_get_a_moduls_id
+            return LocalString._cant_get_a_modulus_id
         case .invalidModulus:
-            return LocalString._cant_get_a_moduls
+            return LocalString._cant_get_a_modulus
         case .cantHashPassword:
             return LocalString._invalid_hashed_password
         case .cantGenerateVerifier:

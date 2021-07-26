@@ -25,12 +25,14 @@ import UIKit
 import CoreData
 import PromiseKit
 import MBProgressHUD
+import ProtonCore_UIFoundations
+import ProtonCore_PaymentsUI
 
 /**
  When the core data that provides data to this controller has data changes,
  the update will be performed immediately and automatically by core data
  */
-class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
+class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol, ComposeSaveHintProtocol {
     typealias viewModelType = ContactGroupsViewModel
     
     private var viewModel: ContactGroupsViewModel!
@@ -57,7 +59,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     private var refreshControl: UIRefreshControl!
     private var searchController: UISearchController!
     
-    
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
@@ -65,11 +66,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     func set(viewModel: ContactGroupsViewModel) {
         self.viewModel = viewModel
-    }
-    
-    
-    func inactiveViewModel() {
-        
     }
     
     override func viewDidLoad() {
@@ -94,6 +90,10 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             updateNavigationBar()
         }
         generateAccessibilityIdentifiers()
+
+        emptyBackButtonTitleForNextView()
+        view.backgroundColor = UIColorManager.BackgroundNorm
+        tableView.backgroundColor = UIColorManager.BackgroundNorm
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,6 +109,11 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         viewModel.save()
         NotificationCenter.default.removeKeyboardObserver(self)
     }
+
+    private func presentPlanUpgrade() {
+        PaymentsUI(servicePlanDataService: viewModel.user.sevicePlanService, planTypes: .mail)
+            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
+    }
     
     private func prepareFetchedResultsController() {
         let _ = self.viewModel.setFetchResultController(delegate: self)
@@ -116,12 +121,12 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     private func prepareRefreshController() {
         refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
+        refreshControl.backgroundColor = UIColorManager.BackgroundNorm
         refreshControl.addTarget(self,
                                  action: #selector(fireFetch),
                                  for: UIControl.Event.valueChanged)
         tableView.addSubview(self.refreshControl)
-        refreshControl.tintColor = UIColor.gray
+        refreshControl.tintColor = UIColorManager.InteractionNorm
         refreshControl.tintColorDidChange()
     }
     
@@ -143,9 +148,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     @objc private func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         // blocks contact group view from editing
-        if viewModel.user.isPaid == false {
-            self.performSegue(withIdentifier: kToUpgradeAlertSegue,
-                              sender: self)
+        if viewModel.user.hasPaidMailPlan == false {
+            presentPlanUpgrade()
             return
         }
         
@@ -309,15 +313,14 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
-        self.searchController.hidesNavigationBarDuringPresentation = false
-        self.searchController.automaticallyAdjustsScrollViewInsets = true
+        self.searchController.hidesNavigationBarDuringPresentation = true
         self.searchController.searchBar.sizeToFit()
         self.searchController.searchBar.keyboardType = .default
         self.searchController.searchBar.autocapitalizationType = .none
         self.searchController.searchBar.isTranslucent = false
-        self.searchController.searchBar.tintColor = .white
-        self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-        self.searchController.searchBar.backgroundColor = .clear
+        self.searchController.searchBar.tintColor = UIColorManager.TextNorm
+        self.searchController.searchBar.barTintColor = UIColorManager.TextHint
+        self.searchController.searchBar.backgroundColor = UIColorManager.BackgroundNorm
 
         self.searchViewConstraint.constant = 0.0
         self.searchView.isHidden = true
@@ -364,6 +367,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                                                        presentingController: popup,
                                                        style: .overFullScreen)
         } else if segue.identifier == kToComposerSegue {
+            self.isOnMainView = true
             guard let nav = segue.destination as? UINavigationController,
                 let next = nav.viewControllers.first as? ComposeContainerViewController else
             {
@@ -376,16 +380,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                 contactGroupVO.selectAllEmailFromGroup()
                 viewModel.addToContacts(contactGroupVO)
             }
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
-            
-        } else if segue.identifier == kToUpgradeAlertSegue {
-            let popup = segue.destination as! UpgradeAlertViewController
-            popup.delegate = self
-            sharedVMService.upgradeAlert(contacts: popup)
-            self.setPresentationStyleForSelfController(self,
-                                                       presentingController: popup,
-                                                       style: .overFullScreen)
         }
         
         if #available(iOS 13, *) { // detect view dismiss above iOS 13
@@ -467,10 +463,10 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate
     }
     
     func sendEmailToGroup(ID: String, name: String) {
-        if viewModel.user.isPaid {
+        if viewModel.user.hasPaidMailPlan {
             self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: ID, name: name))
         } else {
-            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+            presentPlanUpgrade()
         }
     }
 }
@@ -526,9 +522,9 @@ extension ContactGroupsViewController: UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isEditingState {
             // blocks contact email cell contact group editing
-            if viewModel.user.isPaid == false {
+            if viewModel.user.hasPaidMailPlan == false {
                 tableView.deselectRow(at: indexPath, animated: true)
-                self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+                presentPlanUpgrade()
                 return
             }
             if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
@@ -550,9 +546,9 @@ extension ContactGroupsViewController: UITableViewDelegate
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if isEditingState {
             // blocks contact email cell contact group editing
-            if viewModel.user.isPaid == false {
+            if viewModel.user.hasPaidMailPlan == false {
                 tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+                presentPlanUpgrade()
                 return
             }
             
@@ -565,34 +561,6 @@ extension ContactGroupsViewController: UITableViewDelegate
                 PMLog.D("FatalError: Conversion failed")
             }
         }
-    }
-}
-
-extension ContactGroupsViewController: UpgradeAlertVCDelegate {
-    func postToPlan() {
-        NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
-    }
-    func goPlans() {
-        if self.presentingViewController != nil {
-            self.dismiss(animated: true) {
-                self.postToPlan()
-            }
-        } else {
-            self.postToPlan()
-        }
-    }
-    
-    func learnMore() {
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(.paidPlans)
-        }
-    }
-    
-    func cancel() {
-        
     }
 }
 

@@ -46,13 +46,13 @@
 #import "LanguageManager.h"
 #import "NSBundle+Language.h"
 
-////pgp part
+//pgp part
 //#import <OpenPGP/PMNOpenPgp.h>
 //#import <OpenPGP/PMNSrpClient.h>
 //#import <OpenPGP/PMNLibVersion.h>
 //#import <OpenPGP/PMNBCryptHash.h>
-//
-////vcard part
+
+//vcard part
 //#import <OpenPGP/PMNIEzvcard.h>
 //#import <OpenPGP/PMNIVCard.h>
 //#import <OpenPGP/PMNIFormattedName.h>
@@ -79,10 +79,4 @@
 //#import <OpenPGP/PMNIPMMimeType.h>
 //#import <OpenPGP/PMNIPhoto.h>
 
-#endif
-
-// how the heck does it compile? Only extension targets have APP_EXTENSION flag, but the pod is installed only for main target. Even more strange things: without condition or with opposite condition, which seems more correct, ShareDev target, which this line should be excluded for, fails to compile cuz can not find this pod, which it should not use at all
-// 🤯
-#if APP_EXTENSION
-#import <SWRevealViewController/SWRevealViewController.h>
 #endif

@@ -24,6 +24,8 @@
 import Foundation
 
 protocol SettingDetailsViewModel {
+
+    var userManager: UserManager { get }
     
     var sectionTitle2 : String {get}
     
@@ -51,6 +53,11 @@ protocol SettingDetailsViewModel {
 
 
 class SettingDetailsViewModelTest : SettingDetailsViewModel{
+
+    var userManager: UserManager {
+        fatalError()
+    }
+
     var sectionTitle2: String {
         return ""
     }
@@ -124,6 +131,7 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
 class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     
     let userManager : UserManager
+
     init(user: UserManager) {
         self.userManager = user
     }
@@ -170,7 +178,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     
     func getCurrentValue() -> String {
         if let addr = self.userManager.addresses.defaultAddress() {
-            return addr.display_name
+            return addr.displayName
         }
         return self.userManager.displayName
     }
@@ -179,7 +187,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
         let userService = self.userManager.userService
         if let addr = self.userManager.addresses.defaultAddress() {
             userService.updateAddress(auth: userManager.auth, user: userManager.userInfo,
-                                      addressId: addr.address_id, displayName: new_value,
+                                      addressId: addr.addressID, displayName: new_value,
                                       signature: addr.signature, completion: { (_, _, error) in
                 if let error = error {
                     complete(false, error)
@@ -189,15 +197,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
                 }
             })
         } else {
-            userService.updateDisplayName(auth: userManager.auth, user: userManager.userInfo,
-                                          displayName: new_value) { _, _, error in
-                if let error = error {
-                    complete(false, error)
-                } else {
-                    self.userManager.save()
-                    complete(true, nil)
-                }
-            }
+            fatalError("Current user has no defualt address. Should not go here")
         }
     }
     
@@ -222,13 +222,15 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
 
 
 class ChangeSignatureViewModel : SettingDetailsViewModel{
+
     let userManager : UserManager
+
     init(user: UserManager) {
         self.userManager = user
     }
     
     var sectionTitle2: String {
-        return LocalString._edit_signature
+        return ""
     }
     
     func getNavigationTitle() -> String {
@@ -264,7 +266,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getPlaceholdText() -> String {
-        return ""
+        return LocalString._settings_default_signature_placeholder
     }
     
     func getCurrentValue() -> String {
@@ -278,7 +280,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
         let userService = userManager.userService
         if let addr = userManager.addresses.defaultAddress() {
             userService.updateAddress(auth: userManager.auth, user: userManager.userInfo,
-                                      addressId: addr.address_id, displayName: addr.display_name,
+                                      addressId: addr.addressID, displayName: addr.displayName,
                                       signature: new_value.ln2br(), completion: { (_, _, error) in
                 if let error = error {
                     complete(false, error)
@@ -322,13 +324,15 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
 }
 
 class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
+
     let userManager : UserManager
+
     init(user: UserManager) {
         self.userManager = user
     }
     
     var sectionTitle2: String {
-        return LocalString._edit_mobile_signature
+        return ""
     }
     
     func getNavigationTitle() -> String {
@@ -397,7 +401,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
     }
     
     func getNotes() -> String {
-        return self.getRole() ? "" : LocalString._settings_plus_is_required_to_modify_signature_notes
+        return ""
     }
     
     
@@ -425,7 +429,7 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
     }
     
     var sectionTitle2: String {
-        return ""
+        return LocalString._settings_notification_email_section_title
     }
     func getNavigationTitle() -> String {
         return LocalString._settings_notification_email

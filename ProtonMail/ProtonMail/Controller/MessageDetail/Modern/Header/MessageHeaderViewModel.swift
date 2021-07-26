@@ -23,7 +23,7 @@
 
 import Foundation
 import PromiseKit
-import PMCommon
+
 
 class MessageHeaderViewModel: NSObject {
     @objc dynamic var headerData: HeaderData
@@ -32,19 +32,17 @@ class MessageHeaderViewModel: NSObject {
     private(set) var parentViewModel: MessageViewModel 
     private var parentObservation: NSKeyValueObservation!
     private var messageObservation: NSKeyValueObservation!
-    private let coreDataService: CoreDataService
     
 
     let messageService: MessageDataService
     let user : UserManager
     
-    init(parentViewModel: MessageViewModel, message: Message, coreDataService: CoreDataService) {
+    init(parentViewModel: MessageViewModel, message: Message) {
         self.message = message
         self.headerData = parentViewModel.header
         self.parentViewModel = parentViewModel
         self.messageService = parentViewModel.messageService
         self.user = parentViewModel.user
-        self.coreDataService = coreDataService
         super.init()
         
         self.parentObservation = parentViewModel.observe(\.header) { [weak self] parentViewModel, _ in
@@ -66,7 +64,7 @@ class MessageHeaderViewModel: NSObject {
 
 extension MessageHeaderViewModel {
     internal func star(_ isStarred: Bool) {
-        self.messageService.label(message: self.message, label: Message.Location.starred.rawValue, apply: isStarred)
+        self.messageService.label(messages: [self.message], label: Message.Location.starred.rawValue, apply: isStarred)
     }
     
     internal func notes(for model: ContactPickerModelProtocol) -> String {
@@ -98,11 +96,10 @@ extension MessageHeaderViewModel {
                                 complete?(nil, -1)
                                 return
                             }
-                            
-                            let context = self.coreDataService.mainManagedObjectContext
+
                             let getEmail: Promise<KeysResponse> = user.apiService.run(route: UserEmailPubKeys(email: emial))
                             let contactService = self.user.contactService
-                            let getContact = contactService.fetch(byEmails: [emial], context: context)
+                            let getContact = contactService.fetch(byEmails: [emial])
                             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                                 //internal emails
                                 if keyRes.recipientType == 1 {

@@ -6,7 +6,11 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let menuButton = "Menu"
+import pmtest
+
+import ProtonCore_TestingToolkit
+
+fileprivate let menuButtonLabel = "Menu"
 let composeButtonLabel = "Compose"
 fileprivate let mailboxTableViewIdentifier = "MailboxViewController.tableView"
 fileprivate let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
@@ -18,9 +22,9 @@ var subjects = [String]()
 /**
  Parent class for all the Mailbox Robot classes like Inbox, Sent, Trash, etc.
  */
-class MailboxRobotInterface {
+class MailboxRobotInterface: CoreElements {
     
-    init() {
+    required init() {
         Element.wait.forTableViewWithIdentifier(mailboxTableViewIdentifier, file: #file, line: #line, timeout: 20)
     }
     
@@ -68,7 +72,7 @@ class MailboxRobotInterface {
     }
 
     func menuDrawer() -> MenuRobot {
-        Element.wait.forHittableButton(menuButton).tap()
+        Element.wait.forHittableButton(menuButtonLabel).tap()
         return MenuRobot()
     }
     

@@ -7,21 +7,24 @@
 //
 
 import XCTest
-import PMCoreTranslation
+import ProtonCore_CoreTranslation
+import ProtonCore_TestingToolkit
+import pmtest
 
-private let logoutCell = "MenuTableViewCell.\(LocalString._logout_title)"
+private let logoutCell = "MenuItemTableViewCell.Sign_out"
 private let logoutConfirmButton = NSLocalizedString("Log out", comment: "comment")
-private let sentStaticText = "MenuTableViewCell.\(LocalString._menu_sent_title)"
-private let contactsStaticText = "MenuTableViewCell.\(LocalString._menu_contacts_title)"
-private let draftsStaticText = "MenuTableViewCell.\(LocalString._menu_drafts_title)"
-private let inboxStaticText = "MenuTableViewCell.\(LocalString._menu_inbox_title)"
-private let settingsStaticText = "MenuTableViewCell.\(LocalString._menu_settings_title)"
-private let subscriptionStaticText = "MenuTableViewCell.\(LocalString._menu_service_plan_title)"
-private let reportBugStaticText = "MenuTableViewCell.Report_Bugs"
-private let spamStaticText = "MenuTableViewCell.\(LocalString._menu_spam_title)"
-private let trashStaticText = "MenuTableViewCell.\(LocalString._menu_trash_title)"
-private let sidebarHeaderViewOtherIdentifier = "MenuViewController.headerView"
+private let inboxStaticText = "MenuItemTableViewCell.\(LocalString._menu_inbox_title)"
+private let reportBugStaticText = "MenuItemTableViewCell.Report_Bugs"
+private let spamStaticText = "MenuItemTableViewCell.\(LocalString._menu_spam_title)"
+private let trashStaticText = "MenuItemTableViewCell.\(LocalString._menu_trash_title)"
+private let sentStaticText = "MenuItemTableViewCell.\(LocalString._menu_sent_title)"
+private let contactsStaticText = "MenuItemTableViewCell.\(LocalString._menu_contacts_title)"
+private let draftsStaticText = "MenuItemTableViewCell.\(LocalString._menu_drafts_title)"
+private let settingsStaticText = "MenuItemTableViewCell.\(LocalString._menu_settings_title)"
+private let subscriptionStaticText = "MenuItemTableViewCell.\(LocalString._menu_service_plan_title)"
+private let sidebarHeaderViewOtherIdentifier = "MenuViewController.primaryUserview"
 private let manageAccountsStaticTextIdentifier = "MenuButtonViewCell.\(LocalString._menu_manage_accounts.replaceSpaces())"
+private let primaryUserViewIdentifier = "MenuViewController.primaryUserview"
 private let iapErrorAlertTitle = LocalString._general_alert_title
 private let iapErrorAlertMessage = LocalString._iap_unavailable
 private let forceUpgrateAlertTitle = CoreString._fu_alert_title
@@ -36,7 +39,7 @@ private func folderLabelCellIdentifier(_ name: String) -> String { return "MenuL
 /**
  Represents Menu view.
 */
-class MenuRobot {
+class MenuRobot: CoreElements {
     
     func logoutUser() -> LoginRobot {
         return logout()
@@ -51,7 +54,7 @@ class MenuRobot {
     
     @discardableResult
     func contacts() -> ContactsRobot {
-        Element.wait.forCellWithIdentifier(contactsStaticText, file: #file, line: #line).tap()
+        Element.cell.swipeSwipeUpUntilVisibleByIdentifier(contactsStaticText).tap()
         return ContactsRobot()
     }
     
@@ -73,9 +76,9 @@ class MenuRobot {
         return DraftsRobot()
     }
     
-    func inbox() -> DraftsRobot {
+    func inbox() -> InboxRobot {
         Element.wait.forCellWithIdentifier(inboxStaticText, file: #file, line: #line).tap()
-        return DraftsRobot()
+        return InboxRobot()
     }
     
     func spams() -> SpamRobot {
@@ -100,17 +103,17 @@ class MenuRobot {
     
     @discardableResult
     func reports() -> ReportRobot {
-        Element.wait.forCellWithIdentifier(reportBugStaticText, file: #file, line: #line).tap()
+        Element.cell.swipeSwipeUpUntilVisibleByIdentifier(reportBugStaticText).tap()
         return ReportRobot()
     }
     
     func settings() -> SettingsRobot {
-        Element.wait.forCellWithIdentifier(settingsStaticText, file: #file, line: #line).tap()
+        Element.cell.swipeSwipeUpUntilVisibleByIdentifier(settingsStaticText).tap()
         return SettingsRobot()
     }
     
     private func logout() -> MenuRobot {
-        Element.wait.forCellWithIdentifier(logoutCell).tap()
+        Element.cell.swipeSwipeUpUntilVisibleByIdentifier(logoutCell).tap()
         return self
     }
     
@@ -151,9 +154,8 @@ class MenuRobot {
                 Element.wait.forStaticTextFieldWithIdentifier(displayNameStaticTextdentifier(user.email), file: #file, line: #line)
             }
             
-            func accountShortNameIsCorrect(_ user: User, _ shortName: String) {
-                Element.wait.forStaticTextFieldWithIdentifier(shortNameStaticTextdentifier(user.email), file: #file, line: #line)
-                    .assertWithLabel(shortName)
+            func accountShortNameIsCorrect(_ shortName: String) {
+                Element.wait.forOtherFieldWithIdentifier(primaryUserViewIdentifier).assertHasStaticTextChild(withText: shortName)
             }
         }
     }

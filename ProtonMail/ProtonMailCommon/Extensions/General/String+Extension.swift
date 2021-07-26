@@ -136,7 +136,7 @@ extension String {
             return [];
         }
         
-        PMLog.D(self)
+//        PMLog.D(self)
         do {
             if let data = self.data(using: String.Encoding.utf8) {
                 let decoded = try JSONSerialization.jsonObject(with: data, options: []) as? [[String : Any]]
@@ -369,7 +369,7 @@ extension String {
     func decodeBase64() -> String {
         let decodedData = Data(base64Encoded: self, options: NSData.Base64DecodingOptions(rawValue: 0))
         let decodedString = NSString(data: decodedData!, encoding: String.Encoding.utf8.rawValue)
-        PMLog.D(any: decodedString!) // foo
+//        PMLog.D(any: decodedString!)
         
         return decodedString! as String
     }
@@ -445,6 +445,7 @@ extension String {
         }
         return escaped
     }
+
 }
 
 
@@ -457,4 +458,31 @@ extension String {
     subscript (i: Int) -> String {
         return String(self[i] as Character)
     }
+}
+
+extension Character {
+    /// A simple emoji is one scalar and presented to the user as an Emoji
+    var isSimpleEmoji: Bool {
+        guard let firstScalar = unicodeScalars.first else { return false }
+        return firstScalar.properties.isEmoji && firstScalar.value > 0x238C
+    }
+
+    /// Checks if the scalars will be merged into an emoji
+    var isCombinedIntoEmoji: Bool { unicodeScalars.count > 1 && unicodeScalars.first?.properties.isEmoji ?? false }
+
+    var isEmoji: Bool { isSimpleEmoji || isCombinedIntoEmoji }
+}
+
+extension String {
+    var isSingleEmoji: Bool { count == 1 && containsEmoji }
+
+    var containsEmoji: Bool { contains { $0.isEmoji } }
+
+    var containsOnlyEmoji: Bool { !isEmpty && !contains { !$0.isEmoji } }
+
+    var emojiString: String { emojis.map { String($0) }.reduce("", +) }
+
+    var emojis: [Character] { filter { $0.isEmoji } }
+
+    var emojiScalars: [UnicodeScalar] { filter { $0.isEmoji }.flatMap { $0.unicodeScalars } }
 }

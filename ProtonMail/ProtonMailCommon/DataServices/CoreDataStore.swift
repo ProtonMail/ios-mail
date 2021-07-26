@@ -19,87 +19,85 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 import CoreData
 
-
 /// Provide the local store for core data.
 /// Inital does nothing extra
 class CoreDataStore {
-    ///TODO::fixme tempary.
+    /// TODO::fixme tempary.
     static let shared = CoreDataStore()
-    
+
     class var dbUrl: URL {
         return FileManager.default.appGroupsDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
     }
-    
+
     class var tempUrl: URL {
         return FileManager.default.temporaryDirectoryUrl.appendingPathComponent("ProtonMail.sqlite")
     }
-    
+
     class var modelBundle: Bundle {
         return Bundle(url: Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!)!
     }
-    
+
     static let name: String = "ProtonMail.sqlite"
-    
+
     public lazy var defaultContainer: NSPersistentContainer = { [unowned self] in
         return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.dbUrl)
     }()
-    
+
     public lazy var memoryPersistentContainer: NSPersistentContainer = { [unowned self] in
         return self.newMemoryPersistentContainer(self.managedObjectModel, name: CoreDataStore.name)
     }()
-    
+
     public lazy var testPersistentContainer: NSPersistentContainer = { [unowned self] in
         return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.tempUrl)
     }()
-    
+
     public lazy var defaultPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
         return self.newPersistentStoreCoordinator(self.managedObjectModel, url: CoreDataStore.dbUrl)
     }()
-    
+
     public lazy var memoryPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
         return self.newMemoryStoreCoordinator(self.managedObjectModel)
     }()
-    
+
     public lazy var testPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
         return self.newPersistentStoreCoordinator(self.managedObjectModel, url: CoreDataStore.tempUrl)
     }()
-    
+
     private lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
         var modelURL = Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
-    
+
     private func newPersistentContainer(_ managedObjectModel: NSManagedObjectModel, name: String, url: URL) -> NSPersistentContainer {
         var url = url
         let container = NSPersistentContainer(name: name, managedObjectModel: managedObjectModel)
-        
+
         let description = NSPersistentStoreDescription(url: url)
         description.shouldMigrateStoreAutomatically = true
         description.shouldInferMappingModelAutomatically = true
-        
+
         container.persistentStoreDescriptions = [description]
         container.loadPersistentStores { (persistentStoreDescription, error) in
             if let ex = error as NSError? {
                 Analytics.shared.error(message: .coreDataError, error: ex)
                 PMLog.D(api: ex)
-                
-                container.loadPersistentStores { (persistentStoreDescription, error) in
+
+                container.loadPersistentStores { (_, error) in
                     if let ex = error as NSError? {
                         Analytics.shared.error(message: .coreDataError, error: ex)
                         PMLog.D(api: ex)
-                            
+
                         do {
                             try FileManager.default.removeItem(at: url)
                             LastUpdatedStore.clear()
-                        } catch let error as NSError{
+                        } catch let error as NSError {
                             self.popError(error)
                         }
-                        
+
                         self.popError(ex)
                         fatalError()
                     }
@@ -112,13 +110,13 @@ class CoreDataStore {
         }
         return container
     }
-    
+
     private func newMemoryPersistentContainer(_ managedObjectModel: NSManagedObjectModel, name: String) -> NSPersistentContainer {
         let container = NSPersistentContainer(name: name, managedObjectModel: managedObjectModel)
         let description = NSPersistentStoreDescription()
-        description.type = NSInMemoryStoreType
+        description.url = URL(fileURLWithPath: "/dev/null")
         container.persistentStoreDescriptions = [description]
-        container.loadPersistentStores { (persistentStoreDescription, error) in
+        container.loadPersistentStores { (_, error) in
             if let ex = error as NSError? {
                 PMLog.D(api: ex)
             }
@@ -126,7 +124,7 @@ class CoreDataStore {
         }
         return container
     }
-    
+
     private func newMemoryStoreCoordinator(_ objectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
         let coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
         // Coordinator with in-mem store type
@@ -151,11 +149,11 @@ class CoreDataStore {
                                                 options: options)
             url.excludeFromBackup()
         } catch let ex as NSError {
-            if (ex.domain == "NSCocoaErrorDomain" && ex.code == 134100) {
+            if ex.domain == "NSCocoaErrorDomain" && ex.code == 134100 {
                 do {
                     try FileManager.default.removeItem(at: url)
                     coordinator = newPersistentStoreCoordinator(managedObjectModel, url: url)
-                } catch let error as NSError{
+                } catch let error as NSError {
                     coordinator = nil
                     popError(error)
                 }
@@ -166,38 +164,38 @@ class CoreDataStore {
         }
         return coordinator
     }
-    
-    func popError (_ error : NSError) {
+
+    func popError (_ error: NSError) {
         // Report any error we got.
         var dict = [AnyHashable: Any]()
         dict[NSLocalizedDescriptionKey] = LocalString._error_core_data_save_failed
         dict[NSLocalizedFailureReasonErrorKey] = LocalString._error_core_data_load_failed
         dict[NSUnderlyingErrorKey] = error
-        //TODO:: need monitor
+        // TODO:: need monitor
         let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain("CoreDataService")
-        let _ = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any] as? [String : Any])
-        
+        _ = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any] as? [String: Any])
+
         assert(false, "Unresolved error \(error), \(error.userInfo)")
         PMLog.D("Unresolved error \(error), \(error.userInfo)")
-        
-        //TODO::Fix should use delegate let windown to know
-        //let alertController = alertError.alertController()
-        //alertController.addAction(UIAlertAction(title: LocalString._general_close_action, style: .default, handler: { (action) -> Void in
-        //abort()
-        //}))
-        //UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+
+        // TODO::Fix should use delegate let windown to know
+        // let alertController = alertError.alertController()
+        // alertController.addAction(UIAlertAction(title: LocalString._general_close_action, style: .default, handler: { (action) -> Void in
+        // abort()
+        // }))
+        // UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
     }
- 
+
     func cleanLegacy() {
-        //the old code data file
+        // the old code data file
         let url = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
         do {
             try FileManager.default.removeItem(at: url)
             PMLog.D("clean ok")
-        } catch let error as NSError{
+        } catch let error as NSError {
             PMLog.D("\(error)")
         }
     }
-    
+
    // func migrate(from model, to model, replace : Bool)
 }

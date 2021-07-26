@@ -3,7 +3,7 @@
 //  ProtonMail - Created on 18/12/2018.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2021 Proton Technologies AG
 //
 //  This file is part of ProtonMail.
 //
@@ -18,92 +18,50 @@
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
+//  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_PaymentsUI
+import ProtonCore_UIFoundations
+import SideMenuSwift
 import UIKit
-import SWRevealViewController
-import PMPayments
 
-class StorefrontCoordinator: PushCoordinator {
-    var configuration: ((StorefrontCollectionViewController) -> ())?
-    
-    var services: ServiceFactory = sharedServices
-    
-    typealias VC = StorefrontCollectionViewController
-    weak var viewController: StorefrontCollectionViewController?
-    var navigationController: UINavigationController?
-    weak var rvc: SWRevealViewController?
-    var user: UserManager
-    
-    init(navigation: UINavigationController, user: UserManager) {
-        self.navigationController = navigation
-        let vc = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
-        self.viewController = vc
-        self.user = user
-    }
-    
-    init(rvc: SWRevealViewController?, user: UserManager) {
-        self.rvc = rvc
-        let vc = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
-        self.viewController = vc
-        self.user = user
-        self.navigationController = UINavigationController(rootViewController: vc)
-    }
-    
-    func go(to nextPlan: AccountPlan) {
-        guard let navigationController = self.navigationController else { return }
-        let havingVpnPlan = viewController?.viewModel.isHavingVpnPlanInCurrentSubscription ?? false
-        let nextCoordinator = StorefrontCoordinator(navigation: navigationController, user: self.user)
-        let storefront = Storefront(plan: nextPlan,
-                                    servicePlanService: user.sevicePlanService,
-                                    user: user.userInfo,
-                                    isHavingVpnPlan: havingVpnPlan)
-        nextCoordinator.viewController?.viewModel = StorefrontViewModel(currentUser: self.user,
-                                                                        storefront: storefront,
-                                                                        havingVpnPlan: havingVpnPlan)
+class StorefrontCoordinator {
 
-        nextCoordinator.start()
-    }
-    
-    func goToBuyMoreCredits(for subscription: ServicePlanSubscription) {
-        guard let navigationController = self.navigationController else { return }
-        let nextCoordinator = StorefrontCoordinator(navigation: navigationController, user: self.user)
-        let storefront = Storefront(creditsFor: subscription, servicePlanService: user.sevicePlanService, user: user.userInfo)
-        nextCoordinator.viewController?.viewModel = StorefrontViewModel(currentUser: self.user, storefront: storefront)
-        nextCoordinator.start()
+    private weak var sideMenu: SideMenuProtocol?
+    private let paymentsUI: PaymentsUIProtocol
+    private let eventsService: EventsFetching
+
+    init(paymentsUI: PaymentsUIProtocol, sideMenu: SideMenuProtocol, eventsService: EventsFetching) {
+        self.paymentsUI = paymentsUI
+        self.sideMenu = sideMenu
+        self.eventsService = eventsService
     }
 
-    func openProtonWebPage() {
-        if let url = URL(string: "https://mail.protonmail.com/"),
-           UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    func handle(navigationAction: StorefrontNavigationAction) {
+        switch navigationAction {
+        case .menuTapped:
+            sideMenu?.revealMenu(animated: true, completion: nil)
         }
     }
-    
-    private var observation: NSKeyValueObservation!
+
     func start() {
-        self.viewController?.set(coordinator: self)
-        if self.navigationController != nil, self.rvc != nil {
-            if let child = self.viewController {
-                let menuButton = UIBarButtonItem(image: UIImage(named: "hamburger")!, style: .plain, target: nil, action: nil)
-                observation = self.navigationController?.observe(\UINavigationController.parent) { (controller, change) in
-                    ProtonMailViewController.setup(child, menuButton, true)
-                    self.observation = nil
-                }
-            }
-            self.rvc?.pushFrontViewController(self.navigationController, animated: true)
-        } else if let vc = self.viewController {
-            navigationController?.pushViewController(vc, animated: animated)
-        }
+        let viewController = StorefrontViewController(
+            coordinator: self,
+            paymentsUI: paymentsUI,
+            eventsService: eventsService
+        )
+        let navigationController = createNavigationController(with: viewController)
+        sideMenu?.setContentViewController(to: navigationController, animated: false, completion: nil)
+        sideMenu?.hideMenu(animated: true, completion: nil)
     }
-    
-    func goToInbox() {
-        guard let menuVC = self.rvc?.rearViewController as? MenuViewController,
-              let coord = menuVC.getCoordinator() as? MenuCoordinatorNew else {
-            return
-        }
-        
-        coord.go(to: .mailbox)
+
+    private func createNavigationController(with rootViewController: UIViewController) -> UINavigationController {
+        let navigationController = UINavigationController(rootViewController: rootViewController)
+        navigationController.navigationBar.titleTextAttributes = FontManager.DefaultStrong
+        navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController.navigationBar.shadowImage = UIImage()
+        navigationController.navigationBar.isTranslucent = false
+        return navigationController
     }
+
 }

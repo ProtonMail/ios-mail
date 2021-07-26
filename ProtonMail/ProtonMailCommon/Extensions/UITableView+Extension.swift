@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import ProtonCore_UIFoundations
 
 extension UITableView {
     
@@ -44,8 +44,29 @@ extension UITableView {
     }
     
     func showLoadingFooter() {
-        tableFooterView = LoadingView.viewForOwner(self)
-        tableFooterView?.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
+        tableFooterView = makeLoadingFooterView()
+    }
+
+    func makeLoadingFooterView() -> UIView {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 72))
+        let loadingActivityView: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            loadingActivityView = UIActivityIndicatorView(style: .medium)
+        } else {
+            loadingActivityView = UIActivityIndicatorView(style: .white)
+        }
+        loadingActivityView.color = UIColorManager.BrandNorm
+        view.addSubview(loadingActivityView)
+
+        [
+            loadingActivityView.heightAnchor.constraint(equalToConstant: 32),
+            loadingActivityView.widthAnchor.constraint(equalToConstant: 32),
+            loadingActivityView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            loadingActivityView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+            loadingActivityView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ].activate()
+        loadingActivityView.startAnimating()
+        return view
     }
     
     /**
@@ -62,11 +83,23 @@ extension UITableView {
     }
 }
 
-
-
 extension UITableView {
     
     func RegisterCell(_ cellID : String) {
         self.register(UINib(nibName: cellID, bundle: nil), forCellReuseIdentifier: cellID)
     }
+
+
+    func dequeue<T: UITableViewCell>(cellType: T.Type) -> T {
+        guard let cell = dequeueReusableCell(withIdentifier: cellType.reuseIdentifier) as? T else {
+            fatalError("Could not dequeue cell with reuse identifier: \(cellType.reuseIdentifier)")
+        }
+
+        return cell
+    }
+
+    func register<T: UITableViewCell>(cellType: T.Type) {
+        register(cellType, forCellReuseIdentifier: cellType.reuseIdentifier)
+    }
+
 }

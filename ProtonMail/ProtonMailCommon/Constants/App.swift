@@ -67,10 +67,5 @@ struct Constants {
                 #endif
             }
         }
-        
-        
-        @available(*, deprecated, message: "unlimited soon")
-        static let MaxNumberOfRecipients: Int = 100
     }
 }
-

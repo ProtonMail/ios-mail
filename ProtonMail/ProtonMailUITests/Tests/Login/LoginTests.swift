@@ -20,6 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_TestingToolkit
+
 class LoginTests: BaseTestCase {
     
     private let loginRobot = LoginRobot()
@@ -35,7 +37,6 @@ class LoginTests: BaseTestCase {
         let user = testData.twoPassUser
         loginRobot
             .loginTwoPasswordUser(user)
-            .decryptMailbox(user.mailboxPassword)
             .verify.inboxShown()
     }
     
@@ -50,7 +51,6 @@ class LoginTests: BaseTestCase {
         let user = testData.twoPassUserWith2Fa
         loginRobot
             .loginTwoPasswordUserWithTwoFA(user)
-            .decryptMailbox(user.mailboxPassword)
             .verify.inboxShown()
     }
     
@@ -58,28 +58,27 @@ class LoginTests: BaseTestCase {
         let user = testData.onePassUser
         loginRobot
             .loginWithInvalidPassword(user)
-            .verify.invalidCredentialDialogDisplay()
+            .verify.incorrectCredentialsErrorDialog()
     }
     
     func testLoginWithInvalidUserAndPassword() {
         let user = testData.onePassUser
         loginRobot
             .loginWithInvalidUserAndPassword(user)
-            .verify.invalidCredentialDialogDisplay()
+            .verify.incorrectCredentialsErrorDialog()
     }
     
     func testLoginWithInvalidUser() {
         let user = testData.onePassUser
         loginRobot
             .loginWithInvalidUser(user)
-            .verify.invalidCredentialDialogDisplay()
+            .verify.incorrectCredentialsErrorDialog()
     }
     
     func testLoginWithInvalid2Pass() {
         let user = testData.twoPassUser
         loginRobot
-            .loginTwoPasswordUser(user)
-            .decryptMailboxWithInvalidPassword(user.mailboxPassword)
-            .verify.verifyDecryptFailedErrorDisplayed()
+            .loginTwoPasswordUserWithInvalid2Pass(user)
+            .verify.incorrectMailboxPasswordErrorDialog()
     }
 }

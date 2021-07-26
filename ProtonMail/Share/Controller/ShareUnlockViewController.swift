@@ -24,7 +24,7 @@
 import UIKit
 import MBProgressHUD
 import PromiseKit
-import PMCommon
+import ProtonCore_Services
 
 var sharedUserDataService : UserDataService!
 
@@ -99,7 +99,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                     return
                 }
                 guard sharedServices.get(by: UsersManager.self).hasUsers() else {
-                    self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
+                    self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_signin_first)
                     return
                 }
                 self.loginCheck()
@@ -157,6 +157,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         switch unlockManager.getUnlockFlow() {
         case .requirePin:
             self.bioCodeView.loginCheck(.requirePin)
+            self.coordinator?.go(dest: .pin)
 
         case .requireTouchID:
             self.bioCodeView.loginCheck(.requireTouchID)
@@ -219,12 +220,11 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     
     func configureNavigationBar() {
         if let bar = self.navigationController?.navigationBar {
-            bar.barStyle = UIBarStyle.black
-            bar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
+            bar.barTintColor = UIColor(named: "launch_background_color")
             bar.isTranslucent = false
-            bar.tintColor = UIColor.white
+            bar.tintColor = UIColor(named: "launch_text_color")
             bar.titleTextAttributes = [
-                NSAttributedString.Key.foregroundColor: UIColor.white,
+                NSAttributedString.Key.foregroundColor: UIColor(named: "launch_text_color")!,
                 NSAttributedString.Key.font: Fonts.h2.regular
             ]
         }

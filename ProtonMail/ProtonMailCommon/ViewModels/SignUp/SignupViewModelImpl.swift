@@ -23,11 +23,11 @@
 
 import Foundation
 import Crypto
-import PMChallenge
-import PMCommon
 import PromiseKit
 import AwaitKit
 import OpenPGP
+import ProtonCore_Challenge
+import ProtonCore_Services
 
 final class AccountSignupViewModelImpl : SignupViewModelImpl {
     override func isAccountManager() -> Bool {
@@ -209,7 +209,7 @@ class SignupViewModelImpl : SignupViewModel {
                                             challenge: challenge)
                     self.apiService.exec(route: api) { (task, response) -> Void in
                         if let error = response.error {
-                            if error.code == 7002 {
+                            if error.responseCode == 7002 {
                                 complete(false, true, LocalString._account_creation_has_been_disabled_pls_go_to_https, response.error);
                             } else {
                                 complete(false, false, LocalString._create_user_failed_please_try_again, response.error);
@@ -240,13 +240,7 @@ class SignupViewModelImpl : SignupViewModel {
 //                                        }
                                         
                                         auth?.update(salt: self.keysalt!.encodeBase64(), privateKey: self.newPrivateKey)
-                                        //setup swipe function, will use default auth credential
-                                        let _ = try await(self.apiService.run(route: UpdateSwiftLeftAction(action: MessageSwipeAction.archive,
-                                                                                                           authCredential: auth)))
-                                        let _ = try await(self.apiService.run(route: UpdateSwiftRightAction(action: MessageSwipeAction.trash,
-                                                                                                            authCredential: auth)))
-                                        //sharedLabelsDataService.fetchLabels()
-                                        //ServicePlanDataService.shared.updateCurrentSubscription()
+
                                         //TODO:: this part looks strange.
                                         UserDataService(api: PMAPIService.unauthorized).fetchUserInfo(auth: auth).done(on: .main) { info in
                                             if info != nil {
@@ -256,10 +250,13 @@ class SignupViewModelImpl : SignupViewModel {
                                                 sharedUserDataService.passwordMode = 1
 
                                                 self.usersManager.add(auth: auth!, user: info!)
+                                                
                                                 let user = self.usersManager.getUser(bySessionID: auth!.sessionID)!
+                                                self.signinManager.queueManager.registerHandler(user.mainQueueHandler)
+                                                
                                                 self.userManager = user
                                                 let labelService = user.labelService
-                                                labelService.fetchLabels()
+                                                labelService.fetchV4Labels().cauterize()
                                                 self.usersManager.loggedIn()
                                                 self.usersManager.active(uid: auth!.sessionID)
                                                 complete(true, true, "", nil)
@@ -297,7 +294,7 @@ class SignupViewModelImpl : SignupViewModel {
             if response.error == nil {
                 self.lastSendTime = Date()
             }
-            complete(response.error)
+            complete(response.error?.toNSError)
         }
     }
     
@@ -313,16 +310,12 @@ class SignupViewModelImpl : SignupViewModel {
         if !self.displayName.isEmpty {
             if let addr = user.addresses.defaultAddress() {
                 user.userService.updateAddress(auth: user.auth, user: user.userInfo,
-                                               addressId: addr.address_id, displayName: displayName,
+                                               addressId: addr.addressID, displayName: displayName,
                                                signature: addr.signature, completion: { (_, _, error) in
                     
                 })
             } else {
-                user.userService.updateDisplayName(auth: user.auth,
-                                                   user: user.userInfo,
-                                                   displayName: displayName) { _, _, error in
-                    
-                }
+                fatalError("User has no defualt address. Should not go here")
             }
         }
         
@@ -345,7 +338,7 @@ class SignupViewModelImpl : SignupViewModel {
         if direct.count <= 0 {
             let api = DirectRequest()
             self.apiService.exec(route: api) { (task, response: DirectResponse) in
-                if let error = response.error {
+                if response.error != nil {
                     res([])
                 } else {
                     self.direct = response.signupFunctions ?? []
@@ -414,6 +407,6 @@ class SignupViewModelImpl : SignupViewModel {
     }
     
     override func challengeExport() -> PMChallenge.Challenge {
-        return self.challenge.export()
+            return self.challenge.export()
     }
 }

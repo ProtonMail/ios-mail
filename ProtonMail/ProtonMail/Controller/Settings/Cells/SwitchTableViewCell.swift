@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
+import ProtonCore_UIFoundations
 import UIKit
 
 @IBDesignable class SwitchTableViewCell: UITableViewCell {
@@ -32,14 +33,12 @@ import UIKit
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        if #available(iOS 10, *) {
-            topLineLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
-            topLineLabel.adjustsFontForContentSizeCategory = true
-            
-            bottomLineLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-            bottomLineLabel.adjustsFontForContentSizeCategory = true
-        }
+        switchView.onTintColor = UIColorManager.BrandNorm
+        switchView.tintColor = UIColorManager.Shade60
+        switchView.layer.cornerRadius = 16
+        switchView.clipsToBounds = true
+        switchView.backgroundColor = UIColorManager.Shade60
+        selectionStyle = .none
     }
     
     var callback : switchActionBlock?
@@ -50,6 +49,12 @@ import UIKit
     @IBOutlet weak var bottomLineLabel: UILabel!
     
     @IBOutlet weak var switchView: UISwitch!
+    
+    override func prepareForReuse() {
+        self.switchView.isEnabled = true
+        self.switchView.onTintColor = UIColorManager.BrandNorm
+    }
+    
     @IBAction func switchAction(_ sender: UISwitch) {
         let status = sender.isOn
         callback?(self, status, { (isOK ) -> Void in
@@ -60,15 +65,18 @@ import UIKit
         })
     }
     
-    func configCell(_ topline : String, bottomLine : String, status : Bool, complete : switchActionBlock?) {
-        topLineLabel.text = topline
+    func configCell(_ topline: String, bottomLine: String, status: Bool, complete: switchActionBlock?) {
+        var leftAttributes = FontManager.Default
+        leftAttributes.addTextAlignment(.left)
+        topLineLabel.attributedText = NSMutableAttributedString(string: topline, attributes: leftAttributes)
+
         bottomLineLabel.text = bottomLine
         switchView.isOn = status
         callback = complete
         self.bottomLineLabel.isUserInteractionEnabled = false
         self.accessibilityLabel = topline
         self.accessibilityElements = [switchView as Any]
-        self.switchView.accessibilityLabel = (topLineLabel.text ?? "") + (bottomLineLabel.text ?? "")
+        self.switchView.accessibilityLabel = topline + bottomLine
         
         if bottomLine.isEmpty {
             //topLineBottomConstraint.priority = UILayoutPriority(1000.0)

@@ -28,6 +28,7 @@ public class UserEvent: NSManagedObject {
     
     @NSManaged public var userID: String
     @NSManaged public var eventID: String
+    @NSManaged public var updateTime: Date?
     
 }
 
@@ -37,6 +38,7 @@ extension UserEvent {
         static let entityName = "UserEvent"
         static let userID = "userID"
         static let eventID = "eventID"
+        static let updateTime = "updateTime"
     }
     
     class func userEvent(by userID: String,  inManagedObjectContext context: NSManagedObjectContext) -> UserEvent? {

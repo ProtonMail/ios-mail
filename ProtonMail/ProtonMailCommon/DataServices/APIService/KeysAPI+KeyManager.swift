@@ -24,7 +24,8 @@
 import Foundation
 import PromiseKit
 import Crypto
-import PMCommon
+import ProtonCore_Networking
+import ProtonCore_DataModel
 
 ///MARK: This file is prepared for future key manager framwork
 
@@ -171,7 +172,7 @@ final class AddressKey : Package {
         var out : [String : Any] = [
             "AddressID": self.addressID,
             "PrivateKey": self.privateKey,
-            "SignedKeyList": self.signedKeyList.parameters
+            "SignedKeyList": self.signedKeyList.parameters as Any
         ]
         
         if let t = self.token, let s = self.signature {
@@ -231,8 +232,6 @@ final class SetupKeyRequest : Request {
             "AddressKeys" : self.addressKeys.parameters ?? [:],
             "Auth" : self.passwordAuth.parameters ?? [:]   //"Auth": { 4 params }
         ]
-
-        PMLog.D(out.json(prettyPrinted: true))
         return out
     }
     

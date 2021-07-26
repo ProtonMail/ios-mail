@@ -36,10 +36,8 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func backButtonIcon() -> UIImage {
-        let original = UIImage(named: "menu_logout-active")!
-        // scale coefficient is a magic number for this specific asset!
-        let flipped = UIImage(cgImage: original.cgImage!, scale: 0.7 * original.scale, orientation: .up)
-        return flipped
+        let original = UIImage(named: "menu_logout")!
+        return original
     }
     
     override func title() -> String {
@@ -88,12 +86,12 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     
     override func getPinFailedError() -> String {
         let c = 10 - userCachedStatus.pinFailedCount
-        if c <= 1 {
-            return "\(c) \(LocalString._attempt_remaining_until_secure_data_wipe)"
-        } else if c < 4 {
-            return "\(c) \(LocalString._attempts_remaining_until_secure_data_wipe)"
+        if c < 4 {
+            let error = String.localizedStringWithFormat(LocalString._attempt_remaining_until_secure_data_wipe, c)
+            return error
         }
-        return "\(LocalString._incorrect_pin) \(c) \(LocalString._attempts_remaining)"
+        let text = String.localizedStringWithFormat(LocalString._attempt_remaining, c)
+        return "\(LocalString._incorrect_pin) \(text)"
     }
     
     override func checkTouchID() -> Bool {

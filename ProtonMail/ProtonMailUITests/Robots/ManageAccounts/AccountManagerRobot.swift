@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 fileprivate let addAccountCellIdentifier = "addAccountLabel"
 fileprivate let removeAllButtonIdentifier = "UINavigationItem.rightBarButtonItem"
 fileprivate let swipeUserCellLogoutButtonIdentifier = "Log out"

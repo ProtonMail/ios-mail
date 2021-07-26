@@ -23,7 +23,7 @@
 
 import Foundation
 import Crypto
-import PMCommon
+import ProtonCore_DataModel
 
 // MARK: - OpenPGP String extension
 
@@ -46,7 +46,7 @@ extension String {
                         PMLog.D(signature)
                         return try Crypto().decryptVerify(encrytped: self,
                                                           publicKey: verifier,
-                                                          privateKey: key.private_key,
+                                                          privateKey: key.privateKey,
                                                           passphrase: plaitToken, verifyTime: time)
                     }
                 } else if let token = key.token { //old schema with token - subuser. key is embed singed
@@ -54,7 +54,7 @@ extension String {
                         //TODO:: try to verify signature here embeded signature
                         return try Crypto().decryptVerify(encrytped: self,
                                                           publicKey: verifier,
-                                                          privateKey: key.private_key,
+                                                          privateKey: key.privateKey,
                                                           passphrase: plaitToken, verifyTime: time)
                     }
                 } else {//normal key old schema
@@ -90,7 +90,7 @@ extension String {
                 PMLog.D(signature)
                 return try Crypto().encrypt(plainText: self,
                                             publicKey: key.publicKey,
-                                            privateKey: key.private_key,
+                                            privateKey: key.privateKey,
                                             passphrase: plaitToken)
             }
         } else if let token = key.token { //old schema with token - subuser. key is embed singed
@@ -98,13 +98,13 @@ extension String {
                 //TODO:: try to verify signature here embeded signature
                 return try Crypto().encrypt(plainText: self,
                                             publicKey: key.publicKey,
-                                            privateKey: key.private_key,
+                                            privateKey: key.privateKey,
                                             passphrase: plaitToken)
             }
         }
         return try Crypto().encrypt(plainText: self,
                                     publicKey:  key.publicKey,
-                                    privateKey: key.private_key,
+                                    privateKey: key.privateKey,
                                     passphrase: mailbox_pwd)
     }
 

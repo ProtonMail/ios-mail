@@ -57,71 +57,83 @@ extension Message {
         /// whether a read receipt has been sent in response to the message
         static let receiptSent = Flag(rawValue: 1 << 11) //const FLAG_RECEIPT_SENT = 2048;
         
-        //static let spam        = Flag(rawValue: 1 << 12) //const FLAG_SPAM = 4096;
-        //static let phishing    = Flag(rawValue: 1 << 13) //const FLAG_PHISHING = 8192;
-        
         /// Mark -- For drafts only
         /// whether to request a read receipt for the message
-        static let receiptRequest  = Flag(rawValue: 1 << 16) //const RECEIPT_REQUEST = 65536
+        static let receiptRequest = Flag(rawValue: 1 << 16) //const RECEIPT_REQUEST = 65536
         /// whether to attach the public key
-        static let publicKey       = Flag(rawValue: 1 << 17) //const PUBLIC_KEY = 131072
+        static let publicKey = Flag(rawValue: 1 << 17) //const PUBLIC_KEY = 131072
         /// whether to sign the message
-        static let sign            = Flag(rawValue: 1 << 18) //const SIGN = 262144
+        static let sign = Flag(rawValue: 1 << 18) //const SIGN = 262144
+
+        static let unsubscribed = Flag(rawValue: 1 << 19) // 524288
+
+        // Incoming mail failed dmarc authentication.
+        static let dmarcFailed = Flag(rawValue: 1 << 26)
+
+        // The message is in spam and the user moves it to a new location that is not spam or trash (e.g. inbox or archive).
+        static let hamManual = Flag(rawValue: 1 << 27)
+
+        // Incoming mail is marked as phishing by anti-spam filters.
+        static let autoPhishing = Flag(rawValue: 1 << 30)
         
         var description : String {
             var out = "Raw: \(rawValue)\n"
             if self.contains(.received) {
-                out += "FLAG_RECEIVED = 1\n"
+                out += "FLAG_RECEIVED = \(Flag.received.rawValue)\n"
             }
             if self.contains(.sent) {
-                out += "FLAG_SENT = 2\n"
+                out += "FLAG_SENT = \(Flag.sent.rawValue)\n"
             }
             if self.contains(.internal) {
-                out += "FLAG_INTERNAL = 4\n"
+                out += "FLAG_INTERNAL = \(Flag.internal.rawValue)\n"
             }
             if self.contains(.e2e) {
-                out += "FLAG_E2E = 8\n"
+                out += "FLAG_E2E = \(Flag.e2e.rawValue)\n"
             }
-            
             if self.contains(.auto) {
-                out += "FLAG_AUTO = 16\n"
+                out += "FLAG_AUTO = \(Flag.auto.rawValue)\n"
             }
             if self.contains(.replied) {
-                out += "FLAG_REPLIED = 32\n"
+                out += "FLAG_REPLIED = \(Flag.replied.rawValue)\n"
             }
             if self.contains(.repliedAll) {
-                out += "FLAG_REPLIEDALL = 64\n"
+                out += "FLAG_REPLIEDALL = \(Flag.repliedAll.rawValue)\n"
             }
             if self.contains(.forwarded) {
-                out += "FLAG_FORWARDED = 128\n"
+                out += "FLAG_FORWARDED = \(Flag.forwarded.rawValue)\n"
             }
-            
             if self.contains(.autoReplied) {
-                out += "FLAG_AUTOREPLIED = 256\n"
+                out += "FLAG_AUTOREPLIED = \(Flag.autoReplied.rawValue)\n"
             }
             if self.contains(.imported) {
-                out += "FLAG_IMPORTED = 512\n"
+                out += "FLAG_IMPORTED = \(Flag.imported.rawValue)\n"
             }
             if self.contains(.opened) {
-                out += "FLAG_OPENED = 1024\n"
+                out += "FLAG_OPENED = \(Flag.opened.rawValue)\n"
             }
             if self.contains(.receiptSent) {
-                out += "FLAG_RECEIPT_SENT = 2048\n"
+                out += "FLAG_RECEIPT_SENT = \(Flag.receiptSent.rawValue)\n"
             }
-//            if self.contains(.spam) {
-//                out += "FLAG_SPAM = 4096\n"
-//            }
-//            if self.contains(.phishing) {
-//                out += "FLAG_PHISHING = 8192\n"
-//            }
             if self.contains(.receiptRequest) {
-                out += "FLAG_RECEIPT_REQUEST = 65536\n"
+                out += "FLAG_RECEIPT_REQUEST = \(Flag.receiptRequest.rawValue)\n"
             }
             if self.contains(.publicKey) {
-                out += "FLAG_PUBLIC_KEY = 131072\n"
+                out += "FLAG_PUBLIC_KEY = \(Flag.publicKey.rawValue)\n"
             }
             if self.contains(.sign) {
-                out += "FLAG_SIGN = 262144\n"
+                out += "FLAG_SIGN = \(Flag.sign.rawValue)\n"
+            }
+            if self.contains(.unsubscribed) {
+                out += "FLAG_UNSUBSCRIBED = \(Flag.unsubscribed.rawValue)\n"
+            }
+            if self.contains(.dmarcFailed) {
+                out += "FLAG_DMARC_FAILED = \(Flag.dmarcFailed.rawValue)\n"
+            }
+            if self.contains(.hamManual) {
+                out += "FLAG_HAM_MANUAL = \(Flag.hamManual.rawValue)\n"
+            }
+            if self.contains(.autoPhishing) {
+                out += "FLAG_AUTO_PHISHING = \(Flag.autoPhishing.rawValue)\n"
             }
             return out
         }

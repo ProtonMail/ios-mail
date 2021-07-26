@@ -22,9 +22,9 @@
 
 
 import Foundation
-import PMKeymaker
 import Crypto
 import CoreData
+import ProtonCore_Keymaker
 
 struct AppVersion {
     typealias MigrationBlock = ()->Void

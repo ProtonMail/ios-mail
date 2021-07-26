@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -29,7 +27,7 @@
                 <constraint firstItem="hDH-ep-KjN" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="9Gf-jN-mIr"/>
                 <constraint firstAttribute="bottom" secondItem="hDH-ep-KjN" secondAttribute="bottom" id="CE8-db-cHT"/>
                 <constraint firstAttribute="trailing" secondItem="hDH-ep-KjN" secondAttribute="trailing" id="hsi-TV-rJi"/>
-                <constraint firstItem="hDH-ep-KjN" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" constant="-20" id="yWz-hj-gdE"/>
+                <constraint firstItem="hDH-ep-KjN" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" id="yWz-hj-gdE"/>
             </constraints>
             <point key="canvasLocation" x="-1159" y="99"/>
         </view>

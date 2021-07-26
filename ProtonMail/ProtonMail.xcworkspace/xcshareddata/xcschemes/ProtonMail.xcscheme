@@ -68,16 +68,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4C4094ADA302FE10FF33218039B6C756"
-               BuildableName = "KeymakerTests.xctest"
-               BlueprintName = "KeymakerTests"
-               ReferencedContainer = "container:ProtonMail.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "8150D92393298F02FA3A03CA9FE6DF20"
                BuildableName = "ProtonMailTests.xctest"
                BlueprintName = "ProtonMailTests"

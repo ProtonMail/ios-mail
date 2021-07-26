@@ -54,3 +54,17 @@ extension MBProgressHUD
         hud.hide(animated: true, afterDelay: 3)
     }
 }
+
+extension UIViewController {
+    func showProgressHud() {
+        DispatchQueue.main.async {
+            MBProgressHUD.showAdded(to: self.view, animated: true)
+        }
+    }
+
+    func hideProgressHud() {
+        DispatchQueue.main.async {
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }
+    }
+}

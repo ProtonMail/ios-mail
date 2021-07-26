@@ -52,7 +52,6 @@ class ComposeCoordinator : DefaultCoordinator {
         case password          = "to_eo_password_segue"
         case expirationWarning = "expiration_warning_segue"
         case subSelection      = "toContactGroupSubSelection"
-        case attachment        = "to_attachment"
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -75,15 +74,16 @@ class ComposeCoordinator : DefaultCoordinator {
             popup.setupPasswords(vc.encryptionPassword, confirmPassword: vc.encryptionConfirmPassword, hint: vc.encryptionPasswordHint)
             
         case .expirationWarning:
-            guard let popup = destination as? ExpirationWarningViewController else {
-                return false
-            }
             guard let vc = viewController else {
                 return false
             }
-            popup.delegate = self
-            let nonePMEmail = vc.encryptionPassword.count <= 0 ? vc.headerView.nonePMEmails : [String]()
-            popup.config(needPwd: nonePMEmail, pgp: vc.headerView.pgpEmails)
+            let nonPMEmails = vc.encryptionPassword.count <= 0 ? vc.headerView.nonePMEmails : [String]()
+            let pgpEmails = vc.headerView.pgpEmails
+            guard (nonPMEmails.count > 0 || pgpEmails.count > 0) else {
+                vc.sendMessageStepTwo()
+                return false
+            }
+            vc.showExpirationUnavailabilityAlert(nonPMEmails: nonPMEmails, pgpEmails: pgpEmails)
         case .subSelection:
             guard let destination = destination as? ContactGroupSubSelectionViewController else {
                 return false
@@ -99,18 +99,6 @@ class ComposeCoordinator : DefaultCoordinator {
             destination.contactGroupName = group.contactTitle
             destination.selectedEmails = group.getSelectedEmailData()
             destination.callback = vc.pickedCallback
-        case .attachment:
-            guard let nav = destination as? UINavigationController else {
-                return false
-            }
-            guard let destination = nav.viewControllers.first as? AttachmentsTableViewController else {
-                return false
-            }
-            
-            destination.delegate = viewController
-            destination.message = viewModel.message
-            
-            break
         }
         return true
     }
@@ -145,7 +133,6 @@ extension ComposeCoordinator : ComposePasswordViewControllerDelegate {
         vc.encryptionPassword = password
         vc.encryptionConfirmPassword = confirmPassword
         vc.encryptionPasswordHint = hint
-        vc.headerView.showEncryptionDone()
         vc.updateEO()
     }
     
@@ -156,28 +143,6 @@ extension ComposeCoordinator : ComposePasswordViewControllerDelegate {
         vc.encryptionPassword = ""
         vc.encryptionConfirmPassword = ""
         vc.encryptionPasswordHint = ""
-        
-        vc.headerView.showEncryptionRemoved()
         vc.updateEO()
-    }
-}
-
-
-extension ComposeCoordinator: ExpirationWarningVCDelegate{
-    func send() {
-        guard let vc = viewController else {
-            return
-        }
-        vc.sendMessageStepTwo()
-    }
-    
-    func learnMore() {
-        #if !APP_EXTENSION
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(.eoLearnMore, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(.eoLearnMore)
-        }
-        #endif
     }
 }

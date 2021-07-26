@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 fileprivate let pinCodeViewIdentifier = "PinCodeViewController.pinCodeView"
 fileprivate let pinCodeAttemptStaticTextIdentifier = "PinCodeViewController.attempsLabel"
 fileprivate let pinCodeLogoutButtonIdentifier = "PinCodeViewController.backButton"
@@ -146,7 +148,7 @@ class PinInputRobot {
         
         @discardableResult
         func pinErrorMessageShows(_ count: Int) -> PinInputRobot {
-            let errorMessage = String(format: "Incorrect PIN, %d attempts remaining", (10-count))
+            let errorMessage = String(format: "Incorrect PIN. %d attempts remaining", (10-count))
             Element.wait.forStaticTextFieldWithIdentifier(pinCodeAttemptStaticTextIdentifier).assertWithLabel(errorMessage)
             return PinInputRobot()
         }

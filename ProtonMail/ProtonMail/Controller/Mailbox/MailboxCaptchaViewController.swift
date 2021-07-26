@@ -23,7 +23,7 @@
 
 import Foundation
 import MBProgressHUD
-import PMCommon
+import ProtonCore_Services
 
 protocol MailboxCaptchaVCDelegate : AnyObject {
     func cancel()
@@ -41,10 +41,6 @@ class MailboxCaptchaViewController : UIViewController, AccessibleView {
     @IBOutlet var cancelView: UIView!
     
     weak var delegate : MailboxCaptchaVCDelegate?
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,8 +93,10 @@ extension MailboxCaptchaViewController {
     }
     
     private func loadWebView(_ token : String) {
-        let cptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=\(token)&client=ios&host=\(Server.live.hostUrl)")!
-        let requestObj = URLRequest(url: cptcha)
+        let users: UsersManager = sharedServices.get(by: UsersManager.self)
+        let doh = users.doh
+        let captcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=\(token)&client=ios&host=\(doh.captchaHost)")!
+        let requestObj = URLRequest(url: captcha)
         self.wkWebView.load(requestObj)
     }
 }

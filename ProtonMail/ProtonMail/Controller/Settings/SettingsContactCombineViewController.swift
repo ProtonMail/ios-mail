@@ -20,74 +20,71 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 class SettingsContactCombineViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
     internal var viewModel: SettingsCombineContactViewModel!
     internal var coordinator: SettingsDeviceCoordinator?
-    
+
     struct Key {
-        static let cellHeight: CGFloat = 44.0
-        
+        static let cellHeight: CGFloat = 48.0
+
         static let headerCell: String = "header_cell"
-        static let switchCell: String = "switch_table_view_cell"
     }
-    
-    //MARK: - Life cycle
-    
+
+    // MARK: - Life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateTitle()
+        self.view.backgroundColor = UIColorManager.BackgroundSecondary
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
-        
+        self.tableView.register(SwitchTableViewCell.self)
+
         self.tableView.estimatedSectionFooterHeight = 36.0
         self.tableView.sectionFooterHeight = UITableView.automaticDimension
-        
+
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
     }
-    
+
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
-    
+
     func set(coordinator: SettingsDeviceCoordinator) {
         self.coordinator = coordinator
     }
-    
+
     func set(viewModel: SettingsCombineContactViewModel) {
         self.viewModel = viewModel
     }
-    
+
     private func updateTitle() {
         self.title = LocalString._combined_contacts
     }
 }
 
 extension SettingsContactCombineViewController {
-    //MARK: Tableview setup
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections.count
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
-        
+
         let eSection = self.viewModel.sections[section]
         switch eSection {
         case .combineContact:
-            let cell = tableView.dequeueReusableCell(withIdentifier: Key.switchCell, for: indexPath)
-            cell.accessoryType = UITableViewCell.AccessoryType.none
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            
-            
-            if let c = cell as? SwitchTableViewCell {
-                c.configCell(eSection.title, bottomLine: "", status: self.viewModel.isContactCombined) { (cell, newStatus, feedback) in
-                    
+            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
+
+            if let switchCell = cell as? SwitchTableViewCell {
+                switchCell.configCell(eSection.title, bottomLine: "", status: viewModel.isContactCombined) { _, _, _ in
                     let status = self.viewModel.isContactCombined
                     self.viewModel.isContactCombined = !status
                 }
@@ -95,29 +92,28 @@ extension SettingsContactCombineViewController {
             return cell
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
         header?.contentView.subviews.forEach { $0.removeFromSuperview() }
-        
+        header?.contentView.backgroundColor = UIColorManager.BackgroundSecondary
+
         if let headerCell = header {
             let textLabel = UILabel()
-            
-            textLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-            textLabel.adjustsFontForContentSizeCategory = true
             textLabel.numberOfLines = 0
-            textLabel.textColor = UIColor.ProtonMail.Gray_8E8E8E
+            textLabel.translatesAutoresizingMaskIntoConstraints = false
+
             let eSection = self.viewModel.sections[section]
-            textLabel.text = eSection.foot
-            
+            textLabel.attributedText = NSAttributedString(string: eSection.foot, attributes: FontManager.CaptionWeak)
+
             headerCell.contentView.addSubview(textLabel)
-            
-            textLabel.mas_makeConstraints({ (make) in
-                let _ = make?.top.equalTo()(headerCell.contentView.mas_top)?.with()?.offset()(8)
-                let _ = make?.bottom.equalTo()(headerCell.contentView.mas_bottom)?.with()?.offset()(-8)
-                let _ = make?.left.equalTo()(headerCell.contentView.mas_left)?.with()?.offset()(8)
-                let _ = make?.right.equalTo()(headerCell.contentView.mas_right)?.with()?.offset()(-8)
-            })
+
+            NSLayoutConstraint.activate([
+                textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
+                textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),
+                textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
+                textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
+            ])
         }
         return header
     }

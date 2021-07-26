@@ -20,184 +20,181 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import UIKit
 import MBProgressHUD
+import ProtonCore_Networking
+import ProtonCore_UIFoundations
+import UIKit
 
 class ChangePasswordViewController: UIViewController {
-    
-    @IBOutlet weak var currentPwdEditor: UITextField!
-    @IBOutlet weak var newPwdEditor: UITextField!
-    @IBOutlet weak var confirmPwdEditor: UITextField!
-    
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var labelOne: UILabel!
-    @IBOutlet weak var labelTwo: UILabel!
-    @IBOutlet weak var labelThree: UILabel!
-    
-    @IBOutlet weak var topOffset: NSLayoutConstraint!
-    
-    var keyboardHeight : CGFloat = 0.0
-    var textFieldPoint : CGFloat = 0.0
-    
+
+    @IBOutlet private weak var currentPasswordEditor: PMTextField!
+    @IBOutlet private weak var newPasswordEditor: PMTextField!
+    @IBOutlet private weak var confirmPasswordEditor: PMTextField!
+    @IBOutlet private weak var saveButton: ProtonButton!
+    @IBOutlet private weak var topOffset: NSLayoutConstraint!
+
+    var keyboardHeight: CGFloat = 0.0
+    var textFieldPoint: CGFloat = 0.0
+
     let kAsk2FASegue = "password_to_twofa_code_segue"
-    
-    fileprivate var doneButton: UIBarButtonItem!
-    fileprivate var viewModel : ChangePWDViewModel!
-    func setViewModel(_ vm:ChangePWDViewModel) -> Void {
-        self.viewModel = vm
+
+    private var doneButton: UIBarButtonItem!
+    private var viewModel: ChangePasswordViewModel!
+
+    func setViewModel(_ viewModel: ChangePasswordViewModel) {
+        self.viewModel = viewModel
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        doneButton = self.editButtonItem
-        doneButton.target = self
-        doneButton.action = #selector(ChangePasswordViewController.doneAction(_:))
-        doneButton.title = LocalString._general_save_action
+        view.backgroundColor = UIColorManager.BackgroundNorm
+
+        saveButton.setMode(mode: .solid)
+        saveButton.setTitle(LocalString._general_save_action, for: .normal)
+        saveButton.isEnabled = false
 
         self.navigationItem.title = viewModel.getNavigationTitle()
-        self.titleLabel.text = viewModel.getSectionTitle()
-        self.labelOne.text = viewModel.getLabelOne()
-        self.labelTwo.text = viewModel.getLabelTwo()
-        self.labelThree.text = viewModel.getLabelThree()
-        
-        currentPwdEditor.placeholder = LocalString._settings_current_password
-        newPwdEditor.placeholder = LocalString._settings_new_password
-        confirmPwdEditor.placeholder = LocalString._settings_confirm_new_password
-        
+
+        self.currentPasswordEditor.title = viewModel.getCurrentPasswordEditorTitle()
+        self.currentPasswordEditor.isPassword = true
+        self.currentPasswordEditor.delegate = self
+
+        self.newPasswordEditor.title = viewModel.getNewPasswordEditorTitle()
+        self.newPasswordEditor.isPassword = true
+        self.newPasswordEditor.delegate = self
+
+        self.confirmPasswordEditor.title = viewModel.getConfirmPasswordEditorTitle()
+        self.confirmPasswordEditor.isPassword = true
+        self.confirmPasswordEditor.delegate = self
+
+        currentPasswordEditor.placeholder = LocalString._settings_current_password
+        newPasswordEditor.placeholder = LocalString._settings_new_password
+        confirmPasswordEditor.placeholder = LocalString._settings_confirm_new_password
+
         focusFirstEmpty()
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    // MARK: privat methods
-    fileprivate func dismissKeyboard() {
-        if (self.currentPwdEditor != nil) {
-            self.currentPwdEditor.resignFirstResponder()
-        }
-        if (self.newPwdEditor != nil) {
-            self.newPwdEditor.resignFirstResponder()
-        }
-        if (self.confirmPwdEditor != nil) {
-            self.confirmPwdEditor.resignFirstResponder()
-        }
-    }
-    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
-        dismissKeyboard()
-    }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
     }
 
-    func updateView() {
-        let screenHeight = view.frame.height
-        let offbox = screenHeight - textFieldPoint
-        if offbox > keyboardHeight {
-            topOffset.constant = 8
-        } else {
-            topOffset.constant = offbox - keyboardHeight
-        }
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == kAsk2FASegue {
-            let popup = segue.destination as! TwoFACodeViewController
-            popup.delegate = self
-            popup.mode = .twoFactorCode
-            self.setPresentationStyleForSelfController(self, presentingController: popup)
+        if segue.identifier == kAsk2FASegue, let next = segue.destination as? TwoFACodeViewController {
+            next.delegate = self
+            next.mode = .twoFactorCode
+            self.setPresentationStyleForSelfController(self, presentingController: next)
         }
     }
-    
-    internal func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController) {
+
+    func setPresentationStyleForSelfController(_ selfController: UIViewController,
+                                               presentingController: UIViewController) {
         presentingController.providesPresentationContextTransitionStyle = true
         presentingController.definesPresentationContext = true
         presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     }
 
-
-    
-    @IBAction func StartEditing(_ sender: UITextField) {
-        let frame = sender.convert(sender.frame, to: self.view)
-        textFieldPoint = frame.origin.y + frame.height + 40
-        updateView()
+    // MARK: - private methods
+    private func dismissKeyboard() {
+        if self.currentPasswordEditor != nil {
+            _ = self.currentPasswordEditor.resignFirstResponder()
+        }
+        if self.newPasswordEditor != nil {
+            _ = self.newPasswordEditor.resignFirstResponder()
+        }
+        if self.confirmPasswordEditor != nil {
+            _ = self.confirmPasswordEditor.resignFirstResponder()
+        }
     }
-    
-    fileprivate func isInputEmpty() -> Bool {
-        let cPwd = (currentPwdEditor.text ?? "") //.trim()
-        let nPwd = (newPwdEditor.text ?? "") //.trim()
-        let cnPwd = (confirmPwdEditor.text ?? "") //.trim()
-        if !cPwd.isEmpty {
+
+    private func updateView() {
+        let screenHeight = view.frame.height
+        let keyboardTop = screenHeight - self.keyboardHeight
+        if self.textFieldPoint > keyboardTop {
+            topOffset.constant = keyboardTop - self.textFieldPoint
+        } else {
+            topOffset.constant = 32
+        }
+    }
+
+    private func isInputEmpty() -> Bool {
+        let currentPassword = (currentPasswordEditor.value ) // .trim()
+        let newPassword = (newPasswordEditor.value ) // .trim()
+        let confirmNewPassword = (confirmPasswordEditor.value ) // .trim()
+        if !currentPassword.isEmpty {
             return false
         }
-        if !nPwd.isEmpty {
+        if !newPassword.isEmpty {
             return false
         }
-        if !cnPwd.isEmpty {
+        if !confirmNewPassword.isEmpty {
             return false
         }
         return true
     }
-    
-    fileprivate func focusFirstEmpty() -> Void {
-        let cPwd = (currentPwdEditor.text ?? "") //.trim()
-        let nPwd = (newPwdEditor.text ?? "") //.trim()
-        let cnPwd = (confirmPwdEditor.text ?? "") //.trim()
-        if cPwd.isEmpty {
-            currentPwdEditor.becomeFirstResponder()
-        }
-        else if nPwd.isEmpty {
-            newPwdEditor.becomeFirstResponder()
-        }
-        else if cnPwd.isEmpty {
-            confirmPwdEditor.becomeFirstResponder()
+
+    private func focusFirstEmpty() {
+        let currentPassword = (currentPasswordEditor.value ) // .trim()
+        let newPassword = (newPasswordEditor.value ) // .trim()
+        let confirmNewPassword = (confirmPasswordEditor.value ) // .trim()
+        if currentPassword.isEmpty {
+            _ = currentPasswordEditor.becomeFirstResponder()
+        } else if newPassword.isEmpty {
+            _ = newPasswordEditor.becomeFirstResponder()
+        } else if confirmNewPassword.isEmpty {
+            _ = confirmPasswordEditor.becomeFirstResponder()
         }
     }
-    
-    var cached2faCode : String?
-    fileprivate func startUpdatePwd () -> Void {
+
+    var cached2faCode: String?
+
+    private func startUpdatePwd () {
         dismissKeyboard()
         if viewModel.needAsk2FA() && cached2faCode == nil {
             NotificationCenter.default.removeKeyboardObserver(self)
             self.performSegue(withIdentifier: self.kAsk2FASegue, sender: self)
         } else {
             MBProgressHUD.showAdded(to: view, animated: true)
-            viewModel.setNewPassword(currentPwdEditor.text!, new_pwd: newPwdEditor.text!, confirm_new_pwd: confirmPwdEditor.text!, tfaCode: self.cached2faCode, complete: { value, error in
+            viewModel.setNewPassword(currentPasswordEditor.value ,
+                                     newPassword: newPasswordEditor.value ,
+                                     confirmNewPassword: confirmPasswordEditor.value ,
+                                     tFACode: self.cached2faCode,
+                                     complete: { _, error in
                 self.cached2faCode = nil
                 MBProgressHUD.hide(for: self.view, animated: true)
                 if let error = error, !error.isBadVersionError {
                     if error.code == APIErrorCode.UserErrorCode.currentWrong {
-                        self.currentPwdEditor.becomeFirstResponder()
+                        _ = self.currentPasswordEditor.becomeFirstResponder()
+                    } else if error.code == APIErrorCode.UserErrorCode.newNotMatch {
+                        _ = self.newPasswordEditor.becomeFirstResponder()
                     }
-                    else if error.code == APIErrorCode.UserErrorCode.newNotMatch {
-                        self.newPwdEditor.becomeFirstResponder()
+                    if let responseError = error as? ResponseError,
+                       let underlyingError = responseError.underlyingError {
+                        underlyingError.alertToast()
+                    } else {
+                        error.alertToast()
                     }
-                    
-                    let alertController = error.alertController()
-                    alertController.addOKAction()
-                    self.present(alertController, animated: true, completion: nil)
                 } else {
-                    let _ = self.navigationController?.popToRootViewController(animated: true)
+                    _ = self.navigationController?.popToRootViewController(animated: true)
                 }
             })
         }
     }
 
     // MARK: - Actions
-    @IBAction func doneAction(_ sender: AnyObject) {
+    @IBAction func saveAction(_ sender: Any) {
         startUpdatePwd()
     }
-}
 
+    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
+        dismissKeyboard()
+    }
+}
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ChangePasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
@@ -205,65 +202,63 @@ extension ChangePasswordViewController: NSNotificationCenterKeyboardObserverProt
         keyboardHeight = 0
         updateView()
     }
-    
+
     func keyboardWillShowNotification(_ notification: Notification) {
-        let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        let info = notification.userInfo as NSDictionary?
+        if let keyboardSize = (info?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height
             updateView()
         }
     }
 }
 
-extension ChangePasswordViewController : TwoFACodeViewControllerDelegate {
-    func ConfirmedCode(_ code: String, pwd : String) {
+extension ChangePasswordViewController: TwoFACodeViewControllerDelegate {
+    func confirmedCode(_ code: String, pwd: String) {
         NotificationCenter.default.addKeyboardObserver(self)
         self.cached2faCode = code
         self.startUpdatePwd()
     }
-    
-    func Cancel2FA() {
+
+    func cancel2FA() {
         NotificationCenter.default.addKeyboardObserver(self)
     }
 }
 
-// MARK: - UITextFieldDelegate
-extension ChangePasswordViewController: UITextFieldDelegate {
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        return true
+extension ChangePasswordViewController: PMTextFieldDelegate {
+    func didChangeValue(_ textField: PMTextField, value: String) {
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
+
+    func didEndEditing(textField: PMTextField) {
         if isInputEmpty() {
-            self.navigationItem.rightBarButtonItem = nil
-        }
-        else {
-            self.navigationItem.rightBarButtonItem = doneButton
+            self.saveButton.isEnabled = false
+        } else {
+            self.saveButton.isEnabled = true
         }
     }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return true
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        switch textField
-        {
-        case currentPwdEditor:
-            newPwdEditor.becomeFirstResponder()
-            break
-        case newPwdEditor:
-            confirmPwdEditor.becomeFirstResponder()
-            break
+
+    func textFieldShouldReturn(_ textField: PMTextField) -> Bool {
+        switch textField {
+        case currentPasswordEditor:
+            _ = newPasswordEditor.becomeFirstResponder()
+        case newPasswordEditor:
+            _ = confirmPasswordEditor.becomeFirstResponder()
         default:
             if !isInputEmpty() {
                 startUpdatePwd()
-            }
-            else {
+            } else {
                 focusFirstEmpty()
             }
-            break
         }
         return true
+    }
+
+    func didBeginEditing(textField: PMTextField) {
+        textFieldPoint = textField.frame.origin.y + textField.frame.height
+
+        if textField == confirmPasswordEditor {
+            let padding: CGFloat = 24
+            textFieldPoint += ( padding + self.saveButton.frame.height )
+        }
+        updateView()
     }
 }

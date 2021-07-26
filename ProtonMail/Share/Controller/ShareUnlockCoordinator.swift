@@ -59,7 +59,6 @@ class ShareUnlockCoordinator : PushCoordinator {
     private func goPin() {
         //UI refe
         guard let navigationController = self.navigationController else { return }
-        self.viewController?.bioCodeView?.pinUnlock?.isEnabled = false                // FIXME: do we actually need this?
         let pinView = SharePinUnlockCoordinator(navigation: navigationController,
                                                 vm: ShareUnlockPinCodeModelImpl(unlock: self.services.get()),
                                                 services: self.services,
@@ -78,7 +77,7 @@ class ShareUnlockCoordinator : PushCoordinator {
         let coreDataService = self.services.get(by: CoreDataService.self)
         let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare, msgService: user.messageService, user: user, coreDataService: coreDataService)
         let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
-        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
         next.set(coordinator: ComposeContainerViewCoordinator(controller: next, services: self.services))
         navigationController.setViewControllers([next], animated: true)
     }
@@ -95,7 +94,11 @@ class ShareUnlockCoordinator : PushCoordinator {
 
 extension ShareUnlockCoordinator : SharePinUnlockViewControllerDelegate {
     func cancel() {
-        self.viewController?.loginCheck()
+        let users = self.services.get(by: UsersManager.self)
+        users.clean().done { [weak self] _ in
+            let error = NSError(domain: Bundle.main.bundleIdentifier!, code: 0)
+            self?.viewController?.extensionContext?.cancelRequest(withError: error)
+        }.cauterize()
     }
     
     func next() {

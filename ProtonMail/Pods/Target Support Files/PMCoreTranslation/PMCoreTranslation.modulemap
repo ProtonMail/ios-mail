@@ -1,6 +1,0 @@
-framework module PMCoreTranslation {
-  umbrella header "PMCoreTranslation-umbrella.h"
-
-  export *
-  module * { export * }
-}

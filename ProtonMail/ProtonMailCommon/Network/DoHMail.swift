@@ -22,18 +22,17 @@
 
 
 import Foundation
-import PMCommon
-
+import ProtonCore_Doh
 
 class DoHMail : DoH, ServerConfig {
-    //defind your signup domain
+    //define your signup domain
     var signupDomain: String = "protonmail.com"
-    //defind your default host
+    //define your default host
     var defaultHost: String = Constants.App.API_HOST_URL
-    //defind your host path  /api /
+    //define your host path  /api /
     var defaultPath: String = Constants.App.API_PATH
-    //defind your default captcha host
-    var captchaHost: String = "https://mail-api.protonmail.com"
+    //define your default captcha host
+    var captchaHost: String = Constants.App.API_HOST_URL
 
     //defind your query host
     var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"

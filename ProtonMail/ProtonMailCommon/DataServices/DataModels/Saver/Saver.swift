@@ -23,11 +23,13 @@
 
 import Foundation
 
-protocol KeyValueStoreProvider: class {
+protocol KeyValueStoreProvider: AnyObject {
     func data(forKey key: String) -> Data?
     func int(forKey key: String) -> Int?
+    func bool(forKey defaultName: String) -> Bool
     func set(_ intValue: Int, forKey key: String)
     func set(_ data: Data, forKey key: String)
+    func set(_ value: Bool, forKey defaultName: String)
     func remove(forKey key: String)
 }
 
