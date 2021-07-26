@@ -86,7 +86,8 @@ final class LocalConversationUpdater {
                     completion: ((Result<Void, Error>) -> Void)?) {
         context.performAndWait {
             for conversationID in conversationIDs {
-                guard let conversation = Conversation.conversationForConversationID(conversationID, inManagedObjectContext: context) else {
+                guard let conversation = Conversation
+                        .conversationForConversationID(conversationID, inManagedObjectContext: context) else {
                     continue
                 }
                 let messages = Message

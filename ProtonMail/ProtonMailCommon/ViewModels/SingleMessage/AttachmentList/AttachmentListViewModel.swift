@@ -92,8 +92,8 @@ class AttachmentListViewModel {
     }
 
     func open(attachmentInfo: AttachmentInfo,
-                 showPreviewer: @escaping () -> Void,
-                 failed: @escaping (NSError) -> Void) {
+              showPreviewer: @escaping () -> Void,
+              failed: @escaping (NSError) -> Void) {
         guard let attachment = attachmentInfo.att else {
             // two attachment types. inline and normal att in core data
             // inline att doesn't need to decrypt and it saved in cache temporarily when decrypting the message
@@ -169,9 +169,10 @@ class AttachmentListViewModel {
                                     success: @escaping ((Attachment, URL) throws -> Void),
                                     fail: @escaping (NSError) -> Void) {
         let service = user.messageService
-        service.fetchAttachmentForAttachment(attachment) { [weak self] task in
+        service.fetchAttachmentForAttachment(attachment,
+                                             downloadTask: { [weak self] task in
             self?.downloadingTask[attachment.attachmentID] = task
-        } completion: { [weak self] _, url, error in
+        }, completion: { [weak self] _, url, error in
             self?.downloadingTask.removeValue(forKey: attachment.attachmentID)
             if let error = error {
                 fail(error)
@@ -183,7 +184,7 @@ class AttachmentListViewModel {
                     fail(error as NSError)
                 }
             }
-        }
+        })
     }
 
     private func decrypt(_ attachment: Attachment,

@@ -1598,7 +1598,7 @@ class MessageDataService : Service, HasLocalStorage {
                 return self.contactDataService.cleanUp()
             }.ensure {
                 self.lastUpdatedStore.clear()
-                guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
+                guard self.viewModeDataSource?.getCurrentViewMode() != nil else {
                     return
                 }
                 

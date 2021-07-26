@@ -49,7 +49,6 @@ class CacheService: Service {
             }
 
             if let lid = msgToUpdate.remove(labelID: fLabel), msgToUpdate.unRead {
-                #warning("v4 update counter")
                 self.updateCounterSync(plus: false, with: lid, context: context)
                 if let id = msgToUpdate.selfSent(labelID: lid) {
                     self.updateCounterSync(plus: false, with: id, context: context)
@@ -69,7 +68,6 @@ class CacheService: Service {
                 }
 
                 if msgToUpdate.unRead {
-                    #warning("v4 update counter")
                     self.updateCounterSync(plus: true, with: lid, context: context)
                     if let id = msgToUpdate.selfSent(labelID: lid) {
                         self.updateCounterSync(plus: true, with: id, context: context)
@@ -104,7 +102,6 @@ class CacheService: Service {
             }
 
             if let lid = msgToUpdate.remove(labelID: label), msgToUpdate.unRead {
-                #warning("v4 update counter")
                 self.updateCounterSync(plus: false, with: lid, context: context)
                 if let id = msgToUpdate.selfSent(labelID: lid) {
                     self.updateCounterSync(plus: false, with: id, context: context)
@@ -147,7 +144,6 @@ class CacheService: Service {
                 conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID)
             }
 
-            #warning("v4 update counter")
             self.updateCounterSync(markUnRead: unRead, on: msgToUpdate, context: context)
 
             let error = context.saveUpstreamIfNeeded()
@@ -185,7 +181,6 @@ class CacheService: Service {
 
                 if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
                     conversation.applyLabelChangesOnOneMessage(labelID: label, apply: apply)
-                    #warning("v4 update count locally.")
                 }
             }
 
@@ -209,7 +204,6 @@ class CacheService: Service {
         }
         let unread = cleanUnread ? message.unRead : cleanUnread
         for label in labels {
-            #warning("v4 update counter")
             if let labelId = message.remove(labelID: label), unread {
                 self.updateCounterSync(plus: false, with: labelId, context: context)
                 if let id = message.selfSent(labelID: labelId) {

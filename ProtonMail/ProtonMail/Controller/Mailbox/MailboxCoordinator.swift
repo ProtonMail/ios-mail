@@ -149,34 +149,14 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             guard let next = destination as? MessageContainerViewController else {
                 return false
             }
-            let vmService = self.services.get() as ViewModelService
-            vmService.messageDetails(fromList: next)
-            guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
-                  let message = self.viewModel.item(index: indexPathForSelectedRow)
-            else {
-                return false
-            }
-
-            next.set(viewModel: .init(message: message,
-                                      msgService: self.viewModel.messageService,
-                                      user: self.viewModel.user,
-                                      labelID: self.viewModel.labelID))
-            next.set(coordinator: .init(controller: next))
+            return navigateToDetails(nextViewController: next)
         case .composer:
             guard let nav = destination as? UINavigationController,
                   let next = nav.viewControllers.first as? ComposeContainerViewController
             else {
                 return false
             }
-            let user = self.viewModel.user
-            let viewModel = ContainableComposeViewModel(msg: nil,
-                                                        action: .newDraft,
-                                                        msgService: user.messageService,
-                                                        user: user,
-                                                        coreDataService: self.services.get(by: CoreDataService.self))
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
-            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
-
+            navigateToComposer(nextViewController: next)
         case .composeShow, .composeMailto:
             self.viewController?.cancelButtonTapped()
 
@@ -187,14 +167,7 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                 return false
             }
 
-            let user = self.viewModel.user
-            let viewModel = ContainableComposeViewModel(msg: message,
-                                                        action: .openDraft,
-                                                        msgService: user.messageService,
-                                                        user: user,
-                                                        coreDataService: self.services.get(by: CoreDataService.self))
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
-            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
+            navigateToCompose(message: message, nextViewController: next)
         case .humanCheck:
             guard let next = destination as? MailboxCaptchaViewController else {
                 return false
@@ -228,9 +201,9 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case .newLabel:
             presentCreateFolder(type: .label)
         case .onboarding:
-            let vc = OnboardViewController()
-            vc.modalPresentationStyle = .fullScreen
-            self.viewController?.present(vc, animated: true, completion: nil)
+            let viewController = OnboardViewController()
+            viewController.modalPresentationStyle = .fullScreen
+            self.viewController?.present(viewController, animated: true, completion: nil)
         default:
             guard let viewController = self.viewController else { return }
             if let presented = viewController.presentedViewController {
@@ -256,40 +229,9 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                   ).first,
                   let navigationController = viewController?.navigationController else { return }
 
-            switch self.viewModel.viewMode {
-            case .conversation:
-                let internetStatusProvider = InternetConnectionStatusProvider()
-                internetStatusProvider.getConnectionStatuses(currentStatus: { [weak self] status in
-                    guard status != .NotReachable else {
-                        return
-                    }
-                    self?.viewController?.showProgressHud()
-                    self?.viewModel.fetchConversationDetail(conversationID: message.conversationID) { [weak self] _ in
-                        defer {
-                            self?.viewController?.hideProgressHud()
-                        }
-                        guard let self = self else { return }
-                        if let conversation = Conversation
-                            .conversationForConversationID(message.conversationID,
-                                                           inManagedObjectContext: coreDataService.mainContext) {
-                            let coordinator = ConversationCoordinator(labelId: self.viewModel.labelID,
-                                                                      navigationController: navigationController,
-                                                                      conversation: conversation,
-                                                                      user: self.viewModel.user)
-                            coordinator.start(openFromNotification: true)
-                        }
-                    }
-                })
-                internetStatusProvider.stopInternetConnectionStatusObservation()
-            case .singleMessage:
-                let coordinator = SingleMessageCoordinator(
-                    navigationController: navigationController,
-                    labelId: viewModel.labelID,
-                    message: message,
-                    user: self.viewModel.user
-                )
-                coordinator.start()
-            }
+            followToDetails(message: message,
+                            coreDataService: coreDataService,
+                            navigationController: navigationController)
 
             self.viewModel.resetNotificationMessage()
         case .composeShow where path.value != nil:
@@ -306,7 +248,6 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
 
                 showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
             }
-
         case .composeShow where path.value == nil:
             if let nav = self.navigation {
                 let user = self.viewModel.user
@@ -318,19 +259,7 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                 showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
             }
         case .composeMailto where path.value != nil:
-            if let nav = self.navigation,
-               let value = path.value,
-               let mailToURL = URL(string: value) {
-                let user = self.viewModel.user
-                let mailToURL = URL(string: value)!
-                let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user, coreDataService: self.services.get(by: CoreDataService.self))
-                viewModel.parse(mailToURL: mailToURL)
-
-                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: nil), services: services)
-                composer.start()
-                composer.follow(deeplink)
-            }
-
+            followToComposeMailTo(path: path.value, deeplink: deeplink)
         default:
             self.go(to: dest, sender: deeplink)
         }
@@ -388,5 +317,104 @@ extension MailboxCoordinator {
             user: self.viewModel.user
         )
         coordinator.start()
+    }
+
+    private func navigateToDetails(nextViewController next: MessageContainerViewController) -> Bool {
+        let vmService = self.services.get() as ViewModelService
+        vmService.messageDetails(fromList: next)
+        guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
+              let message = self.viewModel.item(index: indexPathForSelectedRow)
+        else {
+            return false
+        }
+
+        next.set(viewModel: .init(message: message,
+                                  msgService: self.viewModel.messageService,
+                                  user: self.viewModel.user,
+                                  labelID: self.viewModel.labelID))
+        next.set(coordinator: .init(controller: next))
+        return true
+    }
+
+    private func navigateToComposer(nextViewController next: ComposeContainerViewController) {
+        let user = self.viewModel.user
+        let viewModel = ContainableComposeViewModel(msg: nil,
+                                                    action: .newDraft,
+                                                    msgService: user.messageService,
+                                                    user: user,
+                                                    coreDataService: self.services.get(by: CoreDataService.self))
+        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
+        next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
+    }
+
+    private func navigateToCompose(message: Message, nextViewController next: ComposeContainerViewController) {
+        let user = self.viewModel.user
+        let viewModel = ContainableComposeViewModel(msg: message,
+                                                    action: .openDraft,
+                                                    msgService: user.messageService,
+                                                    user: user,
+                                                    coreDataService: self.services.get(by: CoreDataService.self))
+        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
+        next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
+    }
+
+    private func followToDetails(message: Message,
+                                 coreDataService: CoreDataService,
+                                 navigationController: UINavigationController) {
+        switch self.viewModel.viewMode {
+        case .conversation:
+            let internetStatusProvider = InternetConnectionStatusProvider()
+            internetStatusProvider.getConnectionStatuses(currentStatus: { [weak self] status in
+                guard status != .NotReachable else {
+                    return
+                }
+                self?.viewController?.showProgressHud()
+                self?.viewModel.fetchConversationDetail(conversationID: message.conversationID) { [weak self] _ in
+                    defer {
+                        self?.viewController?.hideProgressHud()
+                    }
+                    guard let self = self else { return }
+                    if let conversation = Conversation
+                        .conversationForConversationID(message.conversationID,
+                                                       inManagedObjectContext: coreDataService.mainContext) {
+                        let coordinator = ConversationCoordinator(labelId: self.viewModel.labelID,
+                                                                  navigationController: navigationController,
+                                                                  conversation: conversation,
+                                                                  user: self.viewModel.user)
+                        coordinator.start(openFromNotification: true)
+                    }
+                }
+            })
+            internetStatusProvider.stopInternetConnectionStatusObservation()
+        case .singleMessage:
+            let coordinator = SingleMessageCoordinator(
+                navigationController: navigationController,
+                labelId: viewModel.labelID,
+                message: message,
+                user: self.viewModel.user
+            )
+            coordinator.start()
+        }
+    }
+
+    private func followToComposeMailTo(path: String?, deeplink: DeepLink) {
+        if let nav = self.navigation,
+           let value = path,
+           let mailToURL = URL(string: value) {
+            let user = self.viewModel.user
+            let coreDataService = self.services.get(by: CoreDataService.self)
+            let viewModel = ContainableComposeViewModel(msg: nil,
+                                                        action: .newDraft,
+                                                        msgService: user.messageService,
+                                                        user: user,
+                                                        coreDataService: coreDataService)
+            viewModel.parse(mailToURL: mailToURL)
+            let containerViewModel = ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: nil)
+            let composer = ComposeContainerViewCoordinator(nav: nav,
+                                                           viewModel: containerViewModel,
+                                                           services: services)
+            composer.start()
+            composer.follow(deeplink)
+        }
     }
 }

@@ -97,7 +97,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
         viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
         self.viewController?.present(destination, animated: true)
     }
-    
+
     private func presentCompose(with mailToURL: URL) {
         let board = UIStoryboard.Storyboard.composer.storyboard
         guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,
