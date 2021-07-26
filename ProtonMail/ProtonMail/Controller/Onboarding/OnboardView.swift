@@ -65,7 +65,7 @@ class OnboardView: UIView {
             topSpaceView.bottomAnchor.constraint(equalTo: topPlaceHolder.bottomAnchor)
         ].activate()
 
-        let heightRatio: CGFloat = 398.0 / 656.0//414.0 / 763.0
+        let heightRatio: CGFloat = 398.0 / 656.0 // 414.0 / 763.0
         [
             topPlaceHolder.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             topPlaceHolder.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
