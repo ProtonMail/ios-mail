@@ -226,7 +226,7 @@ PODS:
   - SkeletonView (1.11.0)
   - SwiftGen (6.4.0)
   - SwiftyGif (5.4.0)
-  - SwipyCell (4.0.1)
+  - SwipyCell (4.1.1)
   - TrustKit (1.7.0)
 
 DEPENDENCIES:
@@ -266,7 +266,7 @@ DEPENDENCIES:
   - SideMenuSwift (= 2.0.6)
   - SkeletonView (= 1.11.0)
   - SwiftGen (~> 6.0)
-  - SwipyCell (= 4.0.1)
+  - SwipyCell (from `https://github.com/xxi511/SwipyCell.git`, branch `main`)
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `master`)
 
 SPEC REPOS:
@@ -316,7 +316,6 @@ SPEC REPOS:
     - SkeletonView
     - SwiftGen
     - SwiftyGif
-    - SwipyCell
 
 EXTERNAL SOURCES:
   pmtest:
@@ -325,6 +324,9 @@ EXTERNAL SOURCES:
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 4.5.0
+  SwipyCell:
+    :branch: main
+    :git: https://github.com/xxi511/SwipyCell.git
   TrustKit:
     :branch: master
     :git: https://github.com/ProtonMail/TrustKit.git
@@ -336,6 +338,9 @@ CHECKOUT OPTIONS:
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 4.5.0
+  SwipyCell:
+    :commit: 20626bed8f7339e5a4cb1298bfa5bafbfa167716
+    :git: https://github.com/xxi511/SwipyCell.git
   TrustKit:
     :commit: 838fba789e01c9cabff77acea3fb7135f71a220f
     :git: https://github.com/ProtonMail/TrustKit.git
@@ -387,9 +392,9 @@ SPEC CHECKSUMS:
   SkeletonView: cc84ce90a804dd0dd7198dd802833411c8a64eaf
   SwiftGen: 67860cc7c3cfc2ed25b9b74cfd55495fc89f9108
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
-  SwipyCell: 3fbfd7dc091c4699d1cb03f015e2ecdc6f26929d
+  SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
 
-PODFILE CHECKSUM: 40809b9f956a41d91a1ef88d1c3bc2f537abf5dd
+PODFILE CHECKSUM: c307ac29a7671fa5320bbd29ab14c5d0c93a6825
 
 COCOAPODS: 1.10.1

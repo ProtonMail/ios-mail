@@ -38,8 +38,8 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
     var animationDuration: TimeInterval!
     
     var contentScreenshotView: UIImageView?
-    var colorIndicatorView: UIView!
-    var slidingView: UIView!
+    var colorIndicatorView: UIView?
+    var slidingView: UIView?
     var activeView: UIView?
     
     fileprivate(set) public var triggers: [SwipyCellState: SwipyCellTrigger] = [:] {
@@ -101,16 +101,19 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
         
         let contentViewScreenshotImage = image(withView: self)
         
-        colorIndicatorView = UIView(frame: bounds)
-        colorIndicatorView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        addSubview(colorIndicatorView)
+        let indicatorView = UIView(frame: bounds)
+        colorIndicatorView = indicatorView
+        indicatorView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        addSubview(indicatorView)
+
+        let slidingViewTemp = UIView()
+        slidingView = slidingViewTemp
+        slidingViewTemp.contentMode = .center
+        indicatorView.addSubview(slidingViewTemp)
         
-        slidingView = UIView()
-        slidingView.contentMode = .center
-        colorIndicatorView.addSubview(slidingView)
-        
-        contentScreenshotView = UIImageView(image: contentViewScreenshotImage)
-        addSubview(contentScreenshotView!)
+        let screenshotViewTemp = UIImageView(image: contentViewScreenshotImage)
+        contentScreenshotView = screenshotViewTemp
+        addSubview(screenshotViewTemp)
     }
     
 // MARK: - Public Interface
@@ -146,13 +149,13 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
             return
         }
         
-        slidingView.removeFromSuperview()
+        slidingView?.removeFromSuperview()
         slidingView = nil
         
-        colorIndicatorView.removeFromSuperview()
+        colorIndicatorView?.removeFromSuperview()
         colorIndicatorView = nil
         
-        contentScreenshotView!.removeFromSuperview()
+        contentScreenshotView?.removeFromSuperview()
         contentScreenshotView = nil
     }
 
@@ -372,12 +375,12 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
         
         if let view = view {
             setView(ofSlidingView: view)
-            slidingView.alpha = swipeAlpha(withPercentage: percentage)
+            slidingView?.alpha = swipeAlpha(withPercentage: percentage)
             slideSwipeView(withPercentage: percentage, view: view, isDragging: shouldAnimateSwipeViews)
         }
         
         let color = swipeColor(withSwipeState: state)
-        colorIndicatorView.backgroundColor = color
+        colorIndicatorView?.backgroundColor = color
     }
 
     func slideSwipeView(withPercentage percentage: CGFloat, view: UIView?, isDragging: Bool) {
@@ -420,7 +423,7 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
                                      height: activeViewSize.height)
         
         activeViewFrame = activeViewFrame.integral
-        slidingView.frame = activeViewFrame
+        slidingView?.frame = activeViewFrame
     }
     
     func move(withDuration duration: TimeInterval, inDirection direction: SwipyCellDirection) {
@@ -439,11 +442,11 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
         
         let state = swipeState(withPercentage: currentPercentage)
         let color = swipeColor(withSwipeState: state)
-        colorIndicatorView.backgroundColor = color
+        colorIndicatorView?.backgroundColor = color
         
         UIView.animate(withDuration: duration, delay: 0, options: [.curveEaseOut, .allowUserInteraction], animations: {
             self.contentScreenshotView?.frame = frame
-            self.slidingView.alpha = 0
+            self.slidingView?.alpha = 0
             self.slideSwipeView(withPercentage: percentage, view: self.activeView, isDragging: self.shouldAnimateSwipeViews)
         }, completion: { _ in
             self.executeTriggerBlock()
@@ -456,9 +459,9 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
             frame.origin.x = 0
             self.contentScreenshotView?.frame = frame
             
-            self.colorIndicatorView.backgroundColor = self.defaultColor
+            self.colorIndicatorView?.backgroundColor = self.defaultColor
             
-            self.slidingView.alpha = 0
+            self.slidingView?.alpha = 0
             self.slideSwipeView(withPercentage: 0, view: self.activeView, isDragging: false)
         }, completion: { finished in
             self.isExited = false
@@ -473,11 +476,11 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
 // MARK: - View setup
     
     func setView(ofSlidingView view: UIView) {
-        let subviews = slidingView.subviews
+        guard let subviews = slidingView?.subviews else { return }
         _ = subviews.map { view in
             view.removeFromSuperview()
         }
-        slidingView.addSubview(view)
+        slidingView?.addSubview(view)
     }
 
 // MARK: - Utilities
