@@ -46,7 +46,7 @@ end
 
 def pm_pods
   common_pods
-  pod 'SwipyCell', '4.0.1'
+  pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :branch =>  'main'
   pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
   pod 'ProtonCore-Challenge', proton_core_version
   pod 'ProtonCore-CoreTranslation', proton_core_version

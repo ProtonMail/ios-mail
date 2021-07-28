@@ -1,8 +1,8 @@
 SwipyCell
 ---------
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
-[![Swift 4.2](https://img.shields.io/badge/Swift-5.1-orange.svg?style=flat)](https://developer.apple.com/swift/)
 [![Build Status](https://travis-ci.org/moritzsternemann/SwipyCell.svg)](https://travis-ci.org/moritzsternemann/SwipyCell)
+[![Swift Copatibility](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmoritzsternemann%2FSwipyCell%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/moritzsternemann/SwipyCell)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SwipyCell.svg)](https://github.com/moritzsternemann/SwipyCell)
 [![Platform](https://img.shields.io/cocoapods/p/SwipyCell.svg)](https://github.com/moritzsternemann/SwipyCell)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/moritzsternemann/SwipyCell/master/LICENSE)
@@ -13,46 +13,43 @@ SwipyCell
 <p align="center"><img src=".github/images/swipycell-hero.jpg" width="50%"/></p>
 
 ## Preview
+
 ### Exit Mode
+
 The `.exit` mode is the original behavior, known from the Mailbox app.
 <p align="center"><img src=".github/images/swipycell-exit.gif" width="50%"/></p>
 
 ### Toggle Mode
+
 The `.toggle` is another behavior where the cell will bounce back after swiping it.
 <p align="center"><img src=".github/images/swipycell-switch.gif" width="50%"/></p>
 
 ## Installation
+
+### Swift Package Manager (recommended)
+[Swift Package Manger](https://github.com/apple/swift-package-manager) is Apples first party tool for managing distribution of source code, aimed at making it easy to share your code and reuse others’ code.
+
+To use the `SwipyCell` library in a SwiftPM project, add the following line to the dependencies in your `Package.swift` file:
+
+```swift
+.package(url: "https://github.com/moritzsternemann/SwipyCell", .upToNextMinor(from: "4.1.0")),
+```
+
 ### CocoaPods
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects.
-```
-$ gem install cocoapods
-```
+
 To integrate SwipyCell into your project using CocoaPods, add it to your `Podfile`:
 ```
-pod 'SwipyCell', '~> 4.0'
-```
-Then run the following command:
-```
-$ pod install
+pod 'SwipyCell', '~> 4.1'
 ```
 
 ### Carthage
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that automates the process of adding frameworks to your Cocoa application.
 
-Carthage can be installed with [Homebrew](http://brew.sh) using the following commands:
-```
-$ brew update
-$ brew install carthage
-```
-
 To integrate SwipyCell into your project using Carthage, add it to your `Cartfile`:
 ```
-github "moritzsternemann/SwipyCell" >= 4.0
+github "moritzsternemann/SwipyCell" >= 4.1
 ```
-
-### Manual
-Of course you can also add SwipyCell to your project by hand.
-To do this clone the repo to your computer and drag the `SwipyCell.xcodeproj` intp your project in Xcode. Then you have to add the `SwipyCell.framework` to your `Embedded Binaries` inside of your project's properties.
 
 ## Usage
 ### Example
@@ -60,7 +57,7 @@ A complete example is available in the [Example](https://github.com/moritzsterne
 The following code is a very basic example:
 ```swift
 override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-	let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SwipyCell
+    let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SwipyCell
     cell.selectionStyle = .gray
     cell.contentView.backgroundColor = UIColor.white
 
@@ -82,7 +79,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
     cell.textLabel?.text = "Switch Mode Cell"
     cell.detailTextLabel?.text = "Swipe to switch"
 
-	cell.addSwipeTrigger(forState: .state(0, .left), withMode: .toggle, swipeView: checkView, swipeColor: greenColor, completion: { cell, trigger, state, mode in
+    cell.addSwipeTrigger(forState: .state(0, .left), withMode: .toggle, swipeView: checkView, swipeColor: greenColor, completion: { cell, trigger, state, mode in
         print("Did swipe \"Checkmark\" cell")
     })
 
@@ -201,9 +198,15 @@ var defaultSwipeViewColor: UIColor
 You can animate the cell back to it's default position when using `.exit` mode using the `swipeToOrigin(_:)` method. This could be useful if your app asks the user for confirmation and the user want's to cancel the action.
 ```swift
 cell.swipeToOrigin {
-	print("Swiped back")
+    print("Swiped back")
 }
 ```
+
+## Author
+I'm [Moritz Sternemann](https://github.com/moritzsternemann), a computer-science student at [Technical University of Munich](https://www.tum.de/en/).
+- Email: [opensource@moritzsternemann.de](mailto:opensource@moritzsternemann.de)
+- Twitter: [@strnmn](https://twitter.com/strnmn)
+- LinkedIn: [/in/moritzsternemann](https://www.linkedin.com/in/moritzsternemann)
 
 ## License
 SwipyCell is available under the MIT license. See LICENSE file for more info.
