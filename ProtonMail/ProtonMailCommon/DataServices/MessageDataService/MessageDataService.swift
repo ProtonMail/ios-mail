@@ -155,13 +155,15 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - labelID: labelid, location id, forlder id
     ///   - time: the latest update time
     ///   - forceClean: force clean the exsition messages first
+    ///   - onDownload: Closure called when items have been downloaded but not yet parsed. Gives a chance to clean up right before we add a new dataset
     ///   - completion: aync complete handler
-    func fetchMessages(byLabel labelID : String, time: Int, forceClean: Bool, isUnread: Bool, completion: CompletionBlock?) {
+    func fetchMessages(byLabel labelID : String, time: Int, forceClean: Bool, isUnread: Bool, completion: CompletionBlock?, onDownload: (() -> Void)? = nil) {
         self.queueManager?.queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if error != nil {
                     completion?(task, responseDict, error)
                 } else if let response = responseDict {
+                    onDownload?()
                     self.cacheService.parseMessagesResponse(labelID: labelID, isUnread: isUnread, response: response) { (errorFromParsing) in
                         if let err = errorFromParsing {
                             DispatchQueue.main.async {
@@ -227,23 +229,25 @@ class MessageDataService : Service, HasLocalStorage {
                     }
                 }
                 
-                self.cleanMessage(removeAllDraft: removeAllDraft).then { (_) -> Promise<Void> in
-                    self.lastUpdatedStore.removeUpdateTime(by: self.userID,
-                                                           type: .singleMessage)
-                    self.lastUpdatedStore.removeUpdateTime(by: self.userID,
-                                                           type: .conversation)
-                    if cleanContact {
-                        return self.contactDataService.cleanUp()
-                    } else {
-                        return Promise<Void>()
-                    }
-                }.ensure {
-                    if cleanContact {
-                        self.contactDataService.fetchContacts(completion: nil)
-                    }
-                    self.labelDataService.fetchV4Labels().cauterize()
-                    self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: false, completion: completionWrapper)
-                }.cauterize()
+                self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: false, completion: completionWrapper) {
+                    self.cleanMessage(removeAllDraft: removeAllDraft).then { (_) -> Promise<Void> in
+                        self.lastUpdatedStore.removeUpdateTime(by: self.userID,
+                                                               type: .singleMessage)
+                        self.lastUpdatedStore.removeUpdateTime(by: self.userID,
+                                                               type: .conversation)
+                        if cleanContact {
+                            return self.contactDataService.cleanUp()
+                        } else {
+                            return Promise<Void>()
+                        }
+                    }.ensure {
+                        if cleanContact {
+                            self.contactDataService.fetchContacts(completion: nil)
+                        }
+                        self.labelDataService.fetchV4Labels().cauterize()
+
+                    }.cauterize()
+                }
             }
         }
     }
@@ -1594,32 +1598,32 @@ class MessageDataService : Service, HasLocalStorage {
                 completion?(task, nil, response.error?.toNSError)
                 return
             }
-            self.cleanMessage().then { _ -> Promise<Void> in
-                return self.contactDataService.cleanUp()
-            }.ensure {
-                self.lastUpdatedStore.clear()
-                guard self.viewModeDataSource?.getCurrentViewMode() != nil else {
-                    return
-                }
-                
-                let completionBlock: CompletionBlock = { task, dict, error in
-                    _ = self.labelDataService.fetchV4Labels().done { (_) in
-                        self.contactDataService.fetchContacts { (_, error) in
-                            if error == nil {
-                                _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
-                                    completion?(task, nil, error)
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    completion?(task, nil, error)
-                                }
+            self.lastUpdatedStore.clear()
+            guard self.viewModeDataSource?.getCurrentViewMode() != nil else {
+                return
+            }
+            
+            let completionBlock: CompletionBlock = { task, dict, error in
+                _ = self.labelDataService.fetchV4Labels().done { (_) in
+                    self.contactDataService.fetchContacts { (_, error) in
+                        if error == nil {
+                            _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
+                                completion?(task, nil, error)
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                completion?(task, nil, error)
                             }
                         }
                     }
                 }
-                
-                self.fetchMessages(byLabel: Message.Location.inbox.rawValue, time: 0, forceClean: false, isUnread: false, completion: completionBlock)
-            }.cauterize()
+            }
+            
+            self.fetchMessages(byLabel: Message.Location.inbox.rawValue, time: 0, forceClean: false, isUnread: false, completion: completionBlock) {
+                self.cleanMessage().then { _ -> Promise<Void> in
+                    return self.contactDataService.cleanUp()
+                }.cauterize()
+            }
         }
     }
     
