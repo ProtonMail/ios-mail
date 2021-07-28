@@ -49,8 +49,8 @@ final class QueueManager: Service {
     //These two variables are used to prevent concurrent call of dequeue=
     private var isMessageRunning: Bool = false
     private var isMiscRunning: Bool = false
-    // The last allowed background executing timing
-    private var allowedTime: TimeInterval? = nil
+    // The remaining background executing time closure
+    private var backgroundTimeRemaining: (() -> TimeInterval)?
 
     // A block will be called when exceed allowed background execute time
     private var exceedNotify: (() -> Void)?
@@ -120,11 +120,11 @@ final class QueueManager: Service {
 
     /// Claim the app enter the background
     /// - Parameters:
-    ///   - allowedTime: The time that the last time the tasks can be executed
+    ///   - remainingTime: The closure that can get the remaining background time of the system
     ///   - notify: Execute when all of tasks finish or the time is running out
-    func backgroundFetch(allowedTime: TimeInterval, notify: @escaping (() -> Void)) {
+    func backgroundFetch(remainingTime: (() -> TimeInterval)?, notify: @escaping (() -> Void)) {
         self.queue.async {
-            self.allowedTime = allowedTime
+            self.backgroundTimeRemaining = remainingTime
             self.exceedNotify = notify
             self.dequeueIfNeeded()
         }
@@ -132,7 +132,7 @@ final class QueueManager: Service {
 
     func enterForeground() {
         self.queue.async {
-            self.allowedTime = nil
+            self.backgroundTimeRemaining = nil
             self.dequeueIfNeeded()
         }
     }
@@ -270,14 +270,13 @@ extension QueueManager {
 
     /// Check the execute time limitation
     private func allowedToDequeue() -> Bool {
-        guard let limitation = self.allowedTime else {
+        guard let remainingTime = self.backgroundTimeRemaining?() else {
             // App in the foreground
             return true
         }
 
         // App in the background
-        let now = Date().timeIntervalSinceNow
-        let isAllowed = limitation > now
+        let isAllowed = remainingTime > 5.0
         if !isAllowed {
             if !self.isMiscRunning && !self.isMessageRunning {
                 self.exceedNotify?()

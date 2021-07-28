@@ -319,7 +319,6 @@ extension AppDelegate: UIApplicationDelegate {
         
         let users: UsersManager = sharedServices.get()
         let queueManager: QueueManager = sharedServices.get()
-        //TODO: - v4 set background remaining time to queue manager
         
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask {
@@ -335,12 +334,12 @@ extension AppDelegate: UIApplicationDelegate {
             user.messageService.purgeOldMessages()
             user.cacheService.cleanOldAttachment()
             user.messageService.updateMessageCount()
-            
-            let maxium = min(10, application.backgroundTimeRemaining)
-            let limitation = Date().timeIntervalSinceNow + maxium
-            queueManager.backgroundFetch(allowedTime: limitation) {
+
+            queueManager.backgroundFetch(remainingTime: {
+                application.backgroundTimeRemaining
+            }, notify: {
                 delayedCompletion()
-            }
+            })
         } else {
             delayedCompletion()
         }
@@ -383,19 +382,20 @@ extension AppDelegate: UIApplicationDelegate {
     // MARK: Background methods
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // this feature can only work if user did not lock the app
-        let signInManager = SignInManagerProvider()
-        let unlockManager = UnlockManagerProvider()
-        guard signInManager.isSignedIn, unlockManager.isUnlocked else {
-            completionHandler(.noData)
-            return
-        }
-        
-        let queueManager = sharedServices.get(by: QueueManager.self)
-        let maxium = min(5, application.backgroundTimeRemaining)
-        let limitation = Date().timeIntervalSinceNow + maxium
-        queueManager.backgroundFetch(allowedTime: limitation) {
-            completionHandler(.newData)
-        }
+//        let signInManager = SignInManagerProvider()
+//        let unlockManager = UnlockManagerProvider()
+//        guard signInManager.isSignedIn, unlockManager.isUnlocked else {
+//            completionHandler(.noData)
+//            return
+//        }
+//
+//        let queueManager = sharedServices.get(by: QueueManager.self)
+//        queueManager.backgroundFetch(remainingTime: {
+//            application.backgroundTimeRemaining
+//        }, notify: {
+//            completionHandler(.newData)
+//        })
+        completionHandler(.noData)
     }
     
     // MARK: Notification methods
