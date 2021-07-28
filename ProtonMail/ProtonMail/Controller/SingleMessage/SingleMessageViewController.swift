@@ -341,7 +341,6 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
                                                      currentOptionsStatus: currentOptionsStatus)
                         }
                         self?.dismissActionSheet()
-                        self?.navigationController?.popViewController(animated: true)
                      })
     }
 }

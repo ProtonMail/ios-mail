@@ -49,7 +49,7 @@ protocol SearchVMProtocol {
     func getFolderMenuItems() -> [MenuLabel]
 }
 
-final class SearchViewModel {
+final class SearchViewModel: NSObject {
     typealias LocalObjectsIndexRow = Dictionary<String, Any>
     let user: UserManager
     let coreDataService: CoreDataService
@@ -63,6 +63,7 @@ final class SearchViewModel {
         }
     }
     private(set) var selectedIDs: Set<String> = []
+    private var fetchController: NSFetchedResultsController<NSFetchRequestResult>?
     private var messageService: MessageDataService { self.user.messageService }
     private let localObjectIndexing: Progress = Progress(totalUnitCount: 1)
     private var localObjectsIndexingObserver: NSKeyValueObservation? {
@@ -105,6 +106,8 @@ extension SearchViewModel: SearchVMProtocol {
     func cleanLocalIndex() {
         // switches off indexing of Messages in local db
         self.localObjectIndexing.cancel()
+        self.fetchController?.delegate = nil
+        self.fetchController = nil
     }
     
     func fetchRemoteData(query: String, fromStart: Bool) {
@@ -149,6 +152,7 @@ extension SearchViewModel: SearchVMProtocol {
                 } else {
                     self?.messages = messagesInContext
                 }
+                self?.updateFetchController()
             }
         }
     }
@@ -356,28 +360,6 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
 // MARK: Action bar / sheet related
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel {
-    private func reloadSelectedCells() {
-        let rows = self.selectedIDs
-            .compactMap { [weak self] messageID -> Int? in
-                guard let index = self?.messages
-                        .firstIndex(where: { $0.messageID == messageID }) else {
-                    return nil
-                }
-                return index
-            }
-        // anson todo the context
-        let context = self.coreDataService.operationContext
-        context.performAndWait { [weak self] in
-            for index in rows {
-                guard let selectedMessage = self?.messages[safe: index],
-                      let dbMessage = try? context.existingObject(with: selectedMessage.objectID) as? Message else {
-                    continue
-                }
-                self?.messages[index] = dbMessage
-            }
-        }
-    }
-
     private func checkToUseReadOrUnreadAction(messageIDs: NSMutableSet, labelID: String) -> Bool {
         var readCount = 0
         coreDataService.mainContext.performAndWait {
@@ -396,7 +378,6 @@ extension SearchViewModel {
     private func mark(IDs messageIDs : NSMutableSet, unread: Bool) {
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
         messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
-        self.reloadSelectedCells()
     }
     
     private func move(toLabel: Message.Location) {
@@ -408,7 +389,6 @@ extension SearchViewModel {
             fLabels.append(msg.firstValidFolder() ?? self.labelID)
         }
         messageService.move(messages: messages, from: fLabels, to: toLabel.rawValue)
-        self.reloadSelectedCells()
     }
     
     private func delete(IDs: NSMutableSet) {
@@ -428,7 +408,6 @@ extension SearchViewModel {
     private func label(IDs messageIDs : NSMutableSet, with labelID: String, apply: Bool) {
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
         messageService.label(messages: messages, label: labelID, apply: apply)
-        self.reloadSelectedCells()
     }
 
     private func handleUnstarAction() {
@@ -555,8 +534,35 @@ extension SearchViewModel {
         }
     }
 
+    private func updateFetchController() {
+        if let previous = self.fetchController {
+            previous.delegate = nil
+            self.fetchController = nil
+        }
+
+        let context = self.coreDataService.mainContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        let ids = self.messages.map { $0.messageID }
+        fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, ids)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
+        fetchRequest.includesPropertyValues = true
+        self.fetchController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        self.fetchController?.delegate = self
+        do {
+            try self.fetchController?.performFetch()
+        } catch let ex as NSError {
+            PMLog.D(" error: \(ex)")
+        }
+    }
+
     private func date(of message: Message, weekStart: WeekStart) -> String {
         guard let date = message.time else { return .empty }
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
+    }
+}
+
+extension SearchViewModel: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.uiDelegate?.reloadTable()
     }
 }

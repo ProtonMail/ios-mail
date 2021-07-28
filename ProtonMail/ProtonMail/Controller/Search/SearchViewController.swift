@@ -100,6 +100,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.tableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -116,7 +117,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
-        self.viewModel.cleanLocalIndex()
     }
     
     override func viewDidLayoutSubviews() {
@@ -193,6 +193,7 @@ extension SearchViewController {
         if listEditing {
             self.cancelEditingMode()
         } else {
+            self.viewModel.cleanLocalIndex()
             self.dismiss(animated: true, completion: nil)
         }
     }
