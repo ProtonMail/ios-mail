@@ -52,6 +52,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         viewModel.fetchConversationDetails()
         viewModel.observeConversationMessages(tableView: customView.tableView)
         showActionBar()
+
+        starBarButton.isAccessibilityElement = true
+        starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }
 
     override func viewDidAppear(_ animated: Bool) {

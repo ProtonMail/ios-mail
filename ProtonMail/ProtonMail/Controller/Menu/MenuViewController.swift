@@ -96,6 +96,10 @@ extension MenuViewController {
         self.tableView.register(MenuItemTableViewCell.self)
         self.tableView.tableFooterView = self.createTableFooter()
         self.primaryUserview.setCornerRadius(radius: 6)
+
+        self.primaryUserview.accessibilityTraits = [.button]
+        self.primaryUserview.accessibilityHint = LocalString._menu_open_account_switcher
+
         self.shortNameView.setCornerRadius(radius: 2)
         self.avatarLabel.adjustsFontSizeToFitWidth = true
         self.avatarLabel.accessibilityElementsHidden =  true
@@ -165,7 +169,8 @@ extension MenuViewController {
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
-    
+
+    @objc
     private func showAccountSwitcher() {
         let list = self.viewModel.getAccountList()
         var origin = self.primaryUserview.frame.origin
@@ -207,6 +212,8 @@ extension MenuViewController: MenuUIProtocol {
     
     func update(displayName: String) {
         self.displayName.text = displayName
+        self.primaryUserview.accessibilityLabel = displayName
+        UIAccessibility.post(notification: .screenChanged, argument: primaryUserview)
     }
     
     func update(avatar: String) {
