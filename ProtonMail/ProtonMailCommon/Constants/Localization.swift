@@ -2149,4 +2149,9 @@ class LocalizedString {
     lazy var _accessibility_list_view_custom_action_of_switch_editing_mode = NSLocalizedString("Switch selection mode", comment: "The string that will be read by VoiceOver if the user wants to switch selection mode.")
 
     lazy var _yesterday = NSLocalizedString("Yesterday", comment: "")
+
+    // MARK: - Accessibility
+    lazy var _menu_open_account_switcher = NSLocalizedString("Open account switcher", comment: "VoiceOver title of account switcher button in the menu")
+
+    lazy var _star_btn_in_message_view = NSLocalizedString("Star", comment: "VoiceOver title of star button in the message view")
 }

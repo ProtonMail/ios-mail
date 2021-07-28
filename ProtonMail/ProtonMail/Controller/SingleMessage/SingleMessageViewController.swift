@@ -74,6 +74,9 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         embedChildren()
         emptyBackButtonTitleForNextView()
         showActionBar()
+
+        starBarButton.isAccessibilityElement = true
+        starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }
 
     private func embedChildren() {
