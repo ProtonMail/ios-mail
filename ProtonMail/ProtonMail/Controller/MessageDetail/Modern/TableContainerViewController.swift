@@ -169,6 +169,11 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
     // --
     
     @objc func presentBanner(_ sender: BannerRequester) {
+        #if !APP_EXTENSION
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
+        #endif
         guard let banner = sender.errorBannerToPresent() else {
             return
         }

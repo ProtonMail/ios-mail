@@ -372,6 +372,9 @@ extension SearchViewController {
     }
 
     private func showMessageMoved(title : String) {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         let banner = PMBanner(message: title, style: PMBannerStyle.info, dismissDuration: 3)
         banner.show(at: .bottom, on: self)
     }

@@ -1402,7 +1402,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
 
     private func showInternetConnectionBanner() {
-        guard let container = bannerContainer, isInternetBannerPresented == false else { return }
+        guard let container = bannerContainer, isInternetBannerPresented == false,
+              UIApplication.shared.applicationState == .active else { return }
         hideAllBanners()
         let banner = MailBannerView()
 
@@ -1824,12 +1825,15 @@ extension MailboxViewController : MailboxCaptchaVCDelegate {
 // MARK: - Show banner or alert
 extension MailboxViewController {
     private func showErrorMessage(_ error: NSError?) {
-        guard let error = error else { return }
+        guard let error = error, UIApplication.shared.applicationState == .active else { return }
         let banner = PMBanner(message: error.localizedDescription, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
         banner.show(at: .top, on: self)
     }
 
     private func showTimeOutErrorMessage() {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         let banner = PMBanner(message: LocalString._general_request_timed_out, style: PMBannerNewStyle.error, dismissDuration: 5.0)
         banner.addButton(text: LocalString._retry) { _ in
             banner.dismiss()
@@ -1839,6 +1843,9 @@ extension MailboxViewController {
     }
 
     private func showNoInternetErrorMessage() {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         let banner = PMBanner(message: LocalString._general_no_connectivity_detected, style: PMBannerNewStyle.error, dismissDuration: 5.0)
         banner.addButton(text: LocalString._retry) { _ in
             banner.dismiss()
@@ -1848,6 +1855,9 @@ extension MailboxViewController {
     }
 
     internal func showOfflineErrorMessage(_ error : NSError?) {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         let banner = PMBanner(message: error?.localizedDescription ?? LocalString._general_pm_offline, style: PMBannerNewStyle.error, dismissDuration: 5.0)
         banner.addButton(text: LocalString._retry) { _ in
             banner.dismiss()
@@ -1857,6 +1867,9 @@ extension MailboxViewController {
     }
 
     private func show503ErrorMessage(_ error : NSError?) {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         let banner = PMBanner(message: LocalString._general_api_server_not_reachable, style: PMBannerNewStyle.error, dismissDuration: 5.0)
         banner.addButton(text: LocalString._retry) { _ in
             banner.dismiss()
@@ -1866,6 +1879,9 @@ extension MailboxViewController {
     }
 
     private func showError(_ error : NSError) {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         let banner = PMBanner(message: "We could not connect to the servers. Pull down to retry.", style: PMBannerNewStyle.error, dismissDuration: 5.0)
         banner.addButton(text: "Learn more") { _ in
             banner.dismiss()
