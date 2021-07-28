@@ -88,8 +88,9 @@ class QueueManagerTests: XCTestCase {
         XCTAssertTrue(sut.addTask(task, autoExecute: false))
         
         let finish = expectation(description: "Notification Raised")
-        let time = Date().timeIntervalSince1970 + 999
-        sut.backgroundFetch(allowedTime: time) {
+        sut.backgroundFetch(remainingTime: {
+            999.0
+        }) {
             finish.fulfill()
         }
         
@@ -114,8 +115,9 @@ class QueueManagerTests: XCTestCase {
         XCTAssertEqual(self.miscQueue.count, 1)
         
         let finish = expectation(description: "Notification Raised")
-        let time = Date().timeIntervalSince1970 + 999
-        sut.backgroundFetch(allowedTime: time) {
+        sut.backgroundFetch(remainingTime: {
+            999.0
+        }) {
             finish.fulfill()
         }
         
@@ -154,8 +156,9 @@ class QueueManagerTests: XCTestCase {
         XCTAssertEqual(miscTasks[1].dependencyIDs, [])
         
         let finish = expectation(description: "Notification Raised")
-        let time = Date().timeIntervalSince1970 + 999
-        sut.backgroundFetch(allowedTime: time) {
+        sut.backgroundFetch(remainingTime: {
+            999.0
+        }) {
             finish.fulfill()
         }
         
@@ -169,8 +172,9 @@ class QueueManagerTests: XCTestCase {
         _ = self.messageQueue.add(task1.uuid, object: task1)
         
         let finish = expectation(description: "Notification Raised")
-        let time = Date().timeIntervalSince1970 + 999
-        sut.backgroundFetch(allowedTime: time) {
+        sut.backgroundFetch(remainingTime: {
+            999.0
+        }) {
             finish.fulfill()
         }
         
@@ -218,8 +222,9 @@ class QueueManagerTests: XCTestCase {
         loadTestData()
         
         let finish = expectation(description: "Notification Raised")
-        let time = Date().timeIntervalSince1970 + 999
-        sut.backgroundFetch(allowedTime: time) {
+        sut.backgroundFetch(remainingTime: {
+            999.0
+        }) {
             finish.fulfill()
         }
         
@@ -231,7 +236,9 @@ class QueueManagerTests: XCTestCase {
     func testPauseDequeueIfNeeded() {
         loadTestData()
         let pause = expectation(description: "Pause")
-        sut.backgroundFetch(allowedTime: 0) {
+        sut.backgroundFetch {
+            0
+        } notify: {
             pause.fulfill()
         }
 
@@ -242,8 +249,9 @@ class QueueManagerTests: XCTestCase {
         loadTestData()
 
         let finish = expectation(description: "Finish")
-        let time = Date().timeIntervalSince1970 + 999
-        self.sut.backgroundFetch(allowedTime: time) {
+        sut.backgroundFetch(remainingTime: {
+            999.0
+        }) {
             finish.fulfill()
         }
 
@@ -264,8 +272,9 @@ class QueueManagerTests: XCTestCase {
         loadTestData(autoExecute: true)
 
         let finish = expectation(description: "Notification Raised")
-        let time = Date().timeIntervalSince1970 + 999
-        sut.backgroundFetch(allowedTime: time) {
+        sut.backgroundFetch(remainingTime: {
+            999.0
+        }) {
             finish.fulfill()
         }
         
@@ -370,8 +379,9 @@ class QueueManagerTests: XCTestCase {
         XCTAssertTrue(sut.addTask(task3, autoExecute: false))
         
         let finish = expectation(description: "Notification Raised")
-        let time = Date().timeIntervalSince1970 + 999
-        sut.backgroundFetch(allowedTime: time) {
+        sut.backgroundFetch(remainingTime: {
+            999.0
+        }) {
             finish.fulfill()
         }
         
