@@ -25,6 +25,7 @@ import Foundation
 
 class HeaderedPrintRenderer: UIPrintPageRenderer {
     var header: CustomViewPrintRenderer?
+    var attachmentView: CustomViewPrintRenderer?
     
     class CustomViewPrintRenderer: UIPrintPageRenderer {
         private(set) var view: UIView
@@ -60,23 +61,35 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
     }
     
     override func drawContentForPage(at pageIndex: Int, in contentRect: CGRect) {
-        if pageIndex == 0, let headerHeight = self.header?.contentSize.height {
-            let (shortRect, longRect) = contentRect.divided(atDistance: headerHeight, from: .minYEdge)
-            self.header?.drawContentForPage(at: pageIndex, in: shortRect)
-            super.drawContentForPage(at: pageIndex, in: longRect)
-        } else {
+        guard pageIndex == 0,
+              let headerHeight = self.header?.contentSize.height else {
             super.drawContentForPage(at: pageIndex, in: contentRect)
+            return
+        }
+
+        let (shortRect, longRect) = contentRect.divided(atDistance: headerHeight, from: .minYEdge)
+        self.header?.drawContentForPage(at: pageIndex, in: shortRect)
+
+        if let attachmentHeight = self.attachmentView?.contentSize.height {
+            let (shortRectB, longRectB) = longRect.divided(atDistance: attachmentHeight,
+                                                           from: .minYEdge)
+            self.attachmentView?.drawContentForPage(at: pageIndex, in: shortRectB)
+            super.drawContentForPage(at: pageIndex, in: longRectB)
+        } else {
+            super.drawContentForPage(at: pageIndex, in: longRect)
         }
     }
     
     override func drawPrintFormatter(_ printFormatter: UIPrintFormatter, forPageAt pageIndex: Int) {
-        if pageIndex == 0 {
-            printFormatter.perPageContentInsets = UIEdgeInsets(top: (self.header?.contentSize.height ?? 0) * 1.25, left: 0, bottom: 0, right: 0)
+        guard pageIndex == 0 else {
             super.drawPrintFormatter(printFormatter, forPageAt: pageIndex)
-            printFormatter.perPageContentInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
-        } else {
-            super.drawPrintFormatter(printFormatter, forPageAt: pageIndex)
+            return
         }
+        let headerHeight = self.header?.contentSize.height ?? 0
+        let attachHeight = self.attachmentView?.contentSize.height ?? 0
+        printFormatter.perPageContentInsets = UIEdgeInsets(top: (headerHeight + attachHeight) * 1.25, left: 0, bottom: 0, right: 0)
+        super.drawPrintFormatter(printFormatter, forPageAt: pageIndex)
+        printFormatter.perPageContentInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
     }
 }
 

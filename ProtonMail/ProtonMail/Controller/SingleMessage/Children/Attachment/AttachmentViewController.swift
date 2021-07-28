@@ -49,26 +49,27 @@ class AttachmentViewController: UIViewController {
         super.viewDidLoad()
 
         viewModel.reloadView = { [weak self] in
-            self?.setUpView()
+            guard let self = self else { return }
+            self.setup(view: self.customView, with: self.viewModel)
         }
 
-        setUpView()
+        setup(view: customView, with: viewModel)
         setUpTapGesture()
     }
 
-    private func setUpView() {
-        var text = "\(viewModel.numberOfAttachments) "
-        if viewModel.numberOfAttachments <= 1 {
+    private func setup(view: AttachmentView, with data: AttachmentViewModel) {
+        var text = "\(data.numberOfAttachments) "
+        if data.numberOfAttachments <= 1 {
             text += "\(LocalString._one_attachment_title) "
         } else {
             text += "\(LocalString._attachments_title) "
         }
 
         let byteCountFormatter = ByteCountFormatter()
-        let sizeString = "(\(byteCountFormatter.string(fromByteCount: Int64(viewModel.totalSizeOfAllAttachments))))"
+        let sizeString = "(\(byteCountFormatter.string(fromByteCount: Int64(data.totalSizeOfAllAttachments))))"
 
         text += sizeString
-        customView.titleLabel.attributedText = text.apply(style: FontManager.DefaultSmall)
+        view.titleLabel.attributedText = text.apply(style: FontManager.DefaultSmall)
     }
 
     private func setUpTapGesture() {
@@ -79,5 +80,25 @@ class AttachmentViewController: UIViewController {
     @objc
     private func handleTap() {
         delegate?.openAttachmentList()
+    }
+}
+
+extension AttachmentViewController: Printable {
+    typealias Renderer = HeaderedPrintRenderer.CustomViewPrintRenderer
+    func printPageRenderer() -> UIPrintPageRenderer {
+        let newView = AttachmentView()
+        self.setup(view: newView, with: viewModel)
+        newView.backgroundColor = .white
+        return Renderer(newView)
+    }
+
+    func printingWillStart(renderer: UIPrintPageRenderer) {
+        guard let renderer = renderer as? Renderer,
+              let newView = renderer.view as? AttachmentView else { return }
+
+        newView.widthAnchor.constraint(equalToConstant: 560).isActive = true
+        newView.layoutIfNeeded()
+
+        renderer.updateImage(in: newView.frame)
     }
 }
