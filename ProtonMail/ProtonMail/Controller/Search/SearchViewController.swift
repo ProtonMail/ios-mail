@@ -25,6 +25,7 @@ import CoreData
 import ProtonCore_UIFoundations
 
 protocol SearchViewUIProtocol: UIViewController {
+    var listEditing: Bool { get }
     func update(progress: Float)
     func setupProgressBar(isHidden: Bool)
     func checkNoResultView()
@@ -67,7 +68,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
     
     private let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
     private var messageTapped = false
-    private var listEditing: Bool = false
+    private(set) var listEditing: Bool = false
     
     private(set) var viewModel: SearchVMProtocol!
     private var currentPage = 0

@@ -183,10 +183,12 @@ extension SearchViewModel: SearchVMProtocol {
             of: .folder,
             context: CoreDataService.shared.mainContext
         )
+        let isSelected = self.selectedMessages.contains(message)
+        let isEditing = self.uiDelegate?.listEditing ?? false
         return .init(
             location: nil,
             isLabelLocation: true, // to show origin location icons
-            style: .normal,
+            style: isEditing ? .selection(isSelected: isSelected) : .normal,
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
             sender: sender,
