@@ -263,8 +263,8 @@ class LocalizedString {
     lazy var _composer_on            = NSLocalizedString("On", comment: "Title")
     /// "wrote:"
     lazy var _composer_wrote         = NSLocalizedString("wrote:", comment: "Title")
-    /// "On EE, MMM d, yyyy at %@"
-    lazy var _composer_forward_header = NSLocalizedString("On EE, MMM d, yyyy at %@", comment: "forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.")
+    /// "On E, MMM d, yyyy at %@"
+    lazy var _composer_forward_header = NSLocalizedString("On E, MMM d, yyyy at %@", comment: "forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.")
 
     /// "Date:"
     lazy var _composer_date_field    = NSLocalizedString("Date:", comment: "message Date: text")
@@ -1385,7 +1385,7 @@ class LocalizedString {
 
     /// On Fri, Jul 23, 2021 at 3:40 PM
     /// %@ is 12-hour clock or 24-hour clock
-    lazy var _reply_time_desc = NSLocalizedString("'On' EE, MMM d, yyyy 'at' %@", comment: "reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. EE, M...yyyy is date formate")
+    lazy var _reply_time_desc = NSLocalizedString("'On' E, MMM d, yyyy 'at' %@", comment: "reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate")
 
     /// "Message expired"
     lazy var _message_expired = NSLocalizedString("Message expired", comment: "")
