@@ -106,7 +106,7 @@ extension Message {
     }
 
     var isSent : Bool {
-        contains(label: Location.sent)
+        contains(label: Location.sent) || contains(label: HiddenLocation.sent.rawValue)
     }
     /// get messsage label ids
     ///
