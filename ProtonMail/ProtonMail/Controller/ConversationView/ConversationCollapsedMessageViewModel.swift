@@ -21,9 +21,9 @@ class ConversationCollapsedMessageViewModel {
         .init(
             messageLocation: message.messageLocation,
             isCustomFolderLocation: message.isCustomFolder,
-            initial: message.initial(replacingEmails: replacingEmails).apply(style: FontManager.body3RegularNorm),
+            initial: message.displaySender(replacingEmails).initials().apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
-            sender: message.sender(replacingEmails: replacingEmails),
+            sender: message.displaySender(replacingEmails),
             time: date(of: message, weekStart: weekStart),
             isForwarded: message.forwarded,
             isReplied: message.replied,
