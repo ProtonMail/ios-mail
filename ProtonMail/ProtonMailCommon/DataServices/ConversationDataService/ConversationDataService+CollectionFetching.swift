@@ -44,10 +44,6 @@ extension ConversationDataService {
                             unreadOnly: Bool,
                             shouldReset: Bool,
                             completion: ((Result<Void, Error>) -> Void)?) {
-        if shouldReset {
-            cleanAll()
-            lastUpdatedStore.clear()
-        }
         var para = ConversationsRequest.Parameters()
         if timestamp > 0 {
             para.end = timestamp - 1
@@ -76,7 +72,10 @@ extension ConversationDataService {
                     }
                     return
                 }
-
+                if shouldReset {
+                    self.cleanAll()
+                    self.lastUpdatedStore.clear()
+                }
                 let messcount = responseDict?["Total"] as? Int ?? 0
                 let context = self.coreDataService.rootSavingContext
                 self.coreDataService.enqueue(context: context) { context in
