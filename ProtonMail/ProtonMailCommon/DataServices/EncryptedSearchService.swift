@@ -339,11 +339,12 @@ extension EncryptedSearchService {
             keyWordsPerEmail = self.extractKeywordsFromBody(bodyOfEmail: body!)
             
             //TODO create encryptedContentField
-            self.createEncryptedContent(message: m as! Message, cleanedBody: keyWordsPerEmail)
+            var encryptedContent: EncryptedsearchEncryptedMessageContent? = nil
+            encryptedContent = self.createEncryptedContent(message: m as! Message, cleanedBody: keyWordsPerEmail)
             
-            self.addMessageKewordsToSearchIndex(keyWordsPerEmail, m as! Message, decryptionFailed)
+            self.addMessageKewordsToSearchIndex(m as! Message, encryptedContent, decryptionFailed)
             //for debugging only
-            break
+            //break
         }
         
         //return keywords
@@ -516,7 +517,7 @@ extension EncryptedSearchService {
         var bccList: RecipientList = RecipientList(recipient: [nil])
     }*/
     
-    func createEncryptedContent(message: Message, cleanedBody: String) -> Void {
+    func createEncryptedContent(message: Message, cleanedBody: String) -> EncryptedsearchEncryptedMessageContent? {
         //1. create decryptedMessageContent
         let decoder = JSONDecoder()
         let senderJsonData = Data(message.sender!.utf8)
@@ -558,7 +559,7 @@ extension EncryptedSearchService {
             print(error)
         }
         
-        print("Decrypted Message Content (subject): ", decryptedMessageContent!.subject)
+        //print("Decrypted Message Content (subject): ", decryptedMessageContent!.subject)
         
         //2. encrypt content via gomobile
         //TODO generate a key
@@ -569,11 +570,13 @@ extension EncryptedSearchService {
         
         do {
             ESEncryptedMessageContent = try cipher?.encrypt(decryptedMessageContent)
-            print("Encrypted content (ciphertext): ", String(decoding: ESEncryptedMessageContent!.ciphertext!, as: UTF8.self))
-            print("Encrypted content (IV): ", String(decoding:ESEncryptedMessageContent!.iv!, as: UTF8.self))
+            //print("Encrypted content (ciphertext): ", String(decoding: ESEncryptedMessageContent!.ciphertext!, as: UTF8.self))
+            //print("Encrypted content (IV): ", String(decoding:ESEncryptedMessageContent!.iv!, as: UTF8.self))
         } catch {
             print(error)
         }
+        
+        return ESEncryptedMessageContent
     }
     
     private func generateSearchIndexKey() -> Data? {
@@ -583,7 +586,7 @@ extension EncryptedSearchService {
         return bytes
     }
     
-    func addMessageKewordsToSearchIndex(_ keywordsPerEmail: String,_ message: Message, _ decryptionFailed: Bool) -> Void {
+    func addMessageKewordsToSearchIndex(_ message: Message, _ encryptedContent: EncryptedsearchEncryptedMessageContent?, _ decryptionFailed: Bool) -> Void {
         //encryptionIV, encryptedContent, encryptedConentenFile
         
         var hasBody: Bool = true
@@ -595,7 +598,13 @@ extension EncryptedSearchService {
         let time: Int = Int((message.time)!.timeIntervalSince1970)
         let order: Int = Int(truncating: message.order)
         
-        let row: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(messageID: message.messageID, time: time, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: "", encryptedContent: "", encryptedContentFile: "")
+        let iv: String = String(decoding: (encryptedContent?.iv)!, as: UTF8.self)
+        let ciphertext: String = String(decoding: (encryptedContent?.ciphertext)!, as: UTF8.self)
+        
+        //print("IV: ", iv)
+        //print("ciphertext: ", ciphertext)
+        
+        let row: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(messageID: message.messageID, time: time, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: iv, encryptedContent: ciphertext, encryptedContentFile: "")
         print("message inserted at row: ", row!)
     }
 
