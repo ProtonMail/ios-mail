@@ -322,10 +322,12 @@ private extension ConversationViewController {
         )
 
         viewModel.recalculateCellHeight = { [weak self] in
-            UIView.setAnimationsEnabled(false)
             let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
             let heightInfo = HeightStoreInfo(height: height, isHeaderExpanded: viewModel.messageContent.isExpanded)
+            let storedHeightInfo = self?.storedSize[viewModel.message.messageID]
+            guard heightInfo != storedHeightInfo else { return }
             self?.storedSize[viewModel.message.messageID] = heightInfo
+            UIView.setAnimationsEnabled(false)
             self?.customView.tableView.beginUpdates()
             self?.customView.tableView.endUpdates()
             UIView.setAnimationsEnabled(true)

@@ -222,7 +222,6 @@ class BannerViewController: UIViewController {
 
         containerView.insertArrangedSubview(viewToAdd, at: indexToInsert)
         displayedBanners[type] = viewToAdd
-        viewModel.recalculateCellHeight?()
     }
 
     private func findIndexToInsert(_ typeToInsert: BannerType) -> Int {
