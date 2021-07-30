@@ -621,9 +621,96 @@ extension EncryptedSearchService {
 
     //Encrypted Search
     func search(_ query: String, page: Int, completion: (([Message.ObjectIDContainer]?, NSError?) -> Void)?) {
+        let error: NSError? = nil
         //TODO implement
         print("encrypted search on client side!")
         
-        completion!(nil, nil)
+        print("Query: ", query)
+        print("Page: ", page)
+        
+        //TODO get total messages
+        let totalMessages: Int = 0
+        
+        //TODO get searcher
+        let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
+        
+        //TODO get cipher
+        let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
+        
+        //TODO do Cached Search
+        //TODO if we don't succeed with cached search, do index search
+        let searchResults: EncryptedsearchResultList? = nil
+        //self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: searchResults!, totalMessages: totalMessages)
+        
+        //TODO extract messages from result of search
+        let messages: [Message.ObjectIDContainer]? = nil
+        
+        completion!(messages, error)
+    }
+    
+    func getSearcher(_ query: String) -> EncryptedsearchSimpleSearcher {
+        //TODO add parameters keywords, and context Size
+        let SEARCH_PREVIEW_MAX_LENGTH: CLong = 50 // The max size of the content showed in the preview
+        var keywords = query //TODO some manipluation is done in Android
+        //TODO list of strings to go List?
+        let searcher: EncryptedsearchSimpleSearcher = EncryptedsearchSimpleSearcher()
+        return searcher
+    }
+    
+    func getCipher() -> EncryptedsearchAESGCMCipher {
+        let cipher: EncryptedsearchAESGCMCipher = EncryptedsearchAESGCMCipher()
+        //TODO implement
+        return cipher
+    }
+    
+    func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchResults: EncryptedsearchResultList, totalMessages:Int) {
+        let index: EncryptedsearchIndex = getIndex()
+        do {
+            try index.openDBConnection()
+        } catch {
+            print("Error when opening DB connection: \(error)")
+        }
+        
+        var batchCount: Int = 0
+        var previousLength: Int = searchResults.length()
+        
+        while !searchResults.isComplete && !hasEnoughResults(searchResults: searchResults) {   //TODO add some more condition-> see Android
+            var startBatchSearch: Int = 0
+            
+            let batchSize: Int = 0 // TODO
+            do {
+                try index.searchNewBatch(fromDB: searcher, cipher: cipher, results: searchResults, batchSize: batchSize)
+            } catch {
+                print("Error while searching... ", error)
+            }
+            if !hasEnoughResults(searchResults: searchResults) {
+                if previousLength != searchResults.length() {
+                    //TODO publish
+                    previousLength = searchResults.length()
+                }
+                //publisheProgress
+            }
+            let endBatchSearch: Int = 0 //TODO time
+            batchCount += 1
+        }
+        
+        do {
+            try index.closeDBConnection()
+        } catch {
+            print("Error while closing database Connection: \(error)")
+        }
+    }
+    
+    func getIndex() -> EncryptedsearchIndex {
+        let index: EncryptedsearchIndex = EncryptedsearchIndex()
+        //TODO implement
+        return index
+    }
+    
+    func hasEnoughResults(searchResults: EncryptedsearchResultList) -> Bool {
+        let pageSize: Int = 15 // The size of a page of results in the search activity
+        let page: Int = 0 // TODO
+        let pageLowerBound = pageSize * (page + 1)
+        return searchResults.length() >= pageLowerBound
     }
 }
