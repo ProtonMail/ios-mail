@@ -103,20 +103,10 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
         self.tableView.reloadData()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willResignActiveNotification, object: nil)
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         searchBar.textField.resignFirstResponder()
         navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -127,11 +117,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
     override func configureNavigationBar() {
         super.configureNavigationBar()
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-    }
-    
-    // my selector that was defined above
-    @objc func willEnterForeground() {
-        self.dismiss(animated: false, completion: nil)
     }
 }
 
