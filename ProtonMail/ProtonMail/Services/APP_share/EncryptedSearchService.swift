@@ -13,6 +13,8 @@ import SQLite
 //import ProtonCore_Crypto
 import Crypto
 
+import CryptoKit
+
 
 public class EncryptedSearchService {
     //instance of Singleton
@@ -573,14 +575,11 @@ extension EncryptedSearchService {
         //print("Decrypted Message Content (subject): ", decryptedMessageContent!.subject)
         
         //2. encrypt content via gomobile
-        //TODO generate a key
-        let key = generateSearchIndexKey()
-        
-        let cipher = EncryptedsearchAESGCMCipher(key)
+        let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
         var ESEncryptedMessageContent: EncryptedsearchEncryptedMessageContent? = nil
         
         do {
-            ESEncryptedMessageContent = try cipher?.encrypt(decryptedMessageContent)
+            ESEncryptedMessageContent = try cipher.encrypt(decryptedMessageContent)
             //print("Encrypted content (ciphertext): ", String(decoding: ESEncryptedMessageContent!.ciphertext!, as: UTF8.self))
             //print("Encrypted content (IV): ", String(decoding:ESEncryptedMessageContent!.iv!, as: UTF8.self))
         } catch {
@@ -590,11 +589,56 @@ extension EncryptedSearchService {
         return ESEncryptedMessageContent
     }
     
-    private func generateSearchIndexKey() -> Data? {
+    private func getCipher() -> EncryptedsearchAESGCMCipher {
+        let key: Data? = self.retrieveSearchIndexKey()
+        
+        let cipher: EncryptedsearchAESGCMCipher = EncryptedsearchAESGCMCipher(key)!
+        return cipher
+    }
+    
+    private func generateSearchIndexKey(_ userID: String) -> Data? {
         let keylen: Int = 32
         var error: NSError?
         let bytes = CryptoRandomToken(keylen, &error)
+        self.storeSearchIndexKey(bytes, userID: userID)
         return bytes
+    }
+    
+    private func storeSearchIndexKey(_ key: Data?, userID: String) {
+        var encData: Data? = nil
+        
+        if #available(iOS 13.0, *) {
+            let key256 = CryptoKit.SymmetricKey(size: .bits256)
+            encData = try! AES.GCM.seal(key!, using: key256).combined
+        } else {
+            // Fallback on earlier versions - do not encrypt key?
+            encData = key
+        }
+        KeychainWrapper.keychain.set(encData!, forKey: "searchIndexKey_" + userID)
+    }
+    
+    private func retrieveSearchIndexKey() -> Data? {
+        let uid: String = self.user.userInfo.userId
+        var key: Data? = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + uid)
+        
+        //Check if user already has an key
+        if key != nil {
+            var decryptedKey:Data? = nil
+            if #available(iOS 13.0, *) {
+                let box = try! AES.GCM.SealedBox(combined: key!)
+                let key256 = CryptoKit.SymmetricKey(size: .bits256)
+                decryptedKey = try! AES.GCM.open(box, using: key256)
+            } else {
+                // Fallback on earlier versions - do not decrypt key?
+                decryptedKey = key
+            }
+            
+            return decryptedKey // if yes, return
+        }
+ 
+        // if no, generate a new key and then return
+        key = self.generateSearchIndexKey(uid)
+        return key
     }
     
     func addMessageKewordsToSearchIndex(_ message: Message, _ encryptedContent: EncryptedsearchEncryptedMessageContent?, _ decryptionFailed: Bool) -> Void {
@@ -634,7 +678,6 @@ extension EncryptedSearchService {
         //TODO get searcher
         let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
         
-        //TODO get cipher
         let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
         
         //TODO do Cached Search
@@ -655,12 +698,6 @@ extension EncryptedSearchService {
         //TODO list of strings to go List?
         let searcher: EncryptedsearchSimpleSearcher = EncryptedsearchSimpleSearcher()
         return searcher
-    }
-    
-    func getCipher() -> EncryptedsearchAESGCMCipher {
-        let cipher: EncryptedsearchAESGCMCipher = EncryptedsearchAESGCMCipher()
-        //TODO implement
-        return cipher
     }
     
     func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchResults: EncryptedsearchResultList, totalMessages:Int) {
