@@ -1438,13 +1438,13 @@ class LocalizedString {
     lazy var _create_new_account = NSLocalizedString("Create new account", comment: "title of button in account connect page")
 
     // "Sending Message"
-    lazy var _sending_message = NSLocalizedString("Sending message", comment: "Alert title")
+    lazy var _sending_message = NSLocalizedString("Sending in progress", comment: "Alert title")
 
     // "Closing"
     lazy var _closing_draft = NSLocalizedString("Closing", comment: "the message will show when closing a draft from the share extension")
 
     // "This can take a while, please do not dismiss the app"
-    lazy var _please_wait_in_foreground = NSLocalizedString("This can take a while. Please do not dismiss the app.", comment: "Alert message")
+    lazy var _please_wait_in_foreground = NSLocalizedString("Please keep ProtonMail open until the operation is done.", comment: "Alert message")
 
 
     /// "Please use the web application to reset your password."
