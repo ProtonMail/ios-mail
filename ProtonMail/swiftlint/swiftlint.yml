@@ -192,6 +192,7 @@ included:
   - ${PWD}/ProtonMail/Controller/Onboarding/OnboardViewController.swift
   - ${PWD}/ProtonMailCommon/Extensions/UIBarButtonItem+BackButton.swift
   - ${PWD}/ProtonMailCommon/Extensions/ImageAsset+Extension.swift
+  - ${PWD}/ProtonMail/Utilities/AttachmentStreamingCrypto/AttachmentStreamingEncryptor.swift
 
 excluded:
   - ${PWD}/Pods

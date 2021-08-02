@@ -532,11 +532,7 @@ extension MainQueueHandler {
             }
             
             autoreleasepool(){
-                guard
-                    let (kP, dP) = attachment.encrypt(byKey: key, mailbox_pwd: passphrase),
-                    let keyPacket = kP,
-                    let dataPacket = dP
-                else
+                guard let (keyPacket, dataPacket) = attachment.encrypt(byKey: key, mailbox_pwd: passphrase) else
                 {
                     completion?(nil, nil, NSError.encryptionError())
                     return

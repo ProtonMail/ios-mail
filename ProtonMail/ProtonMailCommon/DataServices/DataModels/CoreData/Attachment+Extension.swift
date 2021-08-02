@@ -69,16 +69,18 @@ extension Attachment {
     }
 
     // Mark : public functions
-    func encrypt(byKey key: Key, mailbox_pwd: String) -> (Data?, NSMutableData?)? {
+    func encrypt(byKey key: Key, mailbox_pwd: String) -> (Data, Data)? {
         do {
             if let clearData = self.fileData {
                 let splitMsg = try clearData.encryptAttachment(fileName: self.fileName, pubKey: key.publicKey)
-                return (splitMsg?.keyPacket, splitMsg?.dataPacket?.mutable)
+                if let keyPacket = splitMsg?.keyPacket, let dataPacket = splitMsg?.dataPacket {
+                    return (keyPacket, dataPacket)
+                } else {
+                    return nil
+                }
             }
-            
-            guard let localURL = self.localURL,
-                  let totalSize = try FileManager.default.attributesOfItem(atPath: localURL.path)[.size] as? Int
-            else {
+
+            guard let localURL = self.localURL else {
                 return nil
             }
             
@@ -92,55 +94,14 @@ extension Attachment {
             if let err = error {
                 throw err
             }
-            
-            // We set the buffer with some margin to be sure to hold
-            // the full data packet
-            let bufferSize = totalSize + 1000000
-            
-            // We manually allocate the buffer for the data packet
-            guard let dataBuffer = NSMutableData(length: bufferSize) else {
+
+            guard let aKeyRing = keyRing else {
                 return nil
             }
-            
-            // We create the processor with the buffer
-            guard let encryptor = try keyRing?.newManualAttachmentProcessor(totalSize, filename: self.fileName, dataBuffer: dataBuffer as Data) else {
-                return nil
-            }
-            
-            let fileHandle = try FileHandle(forReadingFrom: localURL)
-            
-            // We encrypt the file chunk by chunk
-            let chunkSize = 1000000 // 1 mb
-            var offset = 0
-            while offset < totalSize {
-                try autoreleasepool {
-                    let currentChunkSize = offset + chunkSize > totalSize ? totalSize - offset : chunkSize
-                    let currentChunk = fileHandle.readData(ofLength: currentChunkSize)
-                    offset += currentChunkSize
-                    fileHandle.seek(toFileOffset: UInt64(offset))
-                    try encryptor.process(currentChunk)
-                }
-                // Forces golang to return unused memory
-                HelperFreeOSMemory()
-            }
-            fileHandle.closeFile()
-            // We finalize the encryption
-            try encryptor.finish()
-            HelperFreeOSMemory()
-            
-            // We get back the key packet
-            let keyPacket = encryptor.getKeyPacket()
-            
-            // And we resize the data packet buffer to the right length
-            let dataLength = encryptor.getDataLength()
-            if dataLength > bufferSize {
-                return nil
-            } else if dataLength < bufferSize {
-                dataBuffer.length = dataLength
-            }
-            // Forces golang to return unused memory
-            defer { HelperFreeOSMemory() }
-            return (keyPacket, dataBuffer)
+            let cipherURL = localURL.appendingPathExtension("cipher")
+            let keyPacket = try AttachmentStreamingEncryptor.encryptStream(localURL, cipherURL, aKeyRing, 2_000_000)
+
+            return try (keyPacket, Data(contentsOf: cipherURL))
         } catch {
             return nil
         }

@@ -144,6 +144,7 @@
 		0D9B313BF0A7343E477F57D19AA2CA37 /* ContactGroupSubSelectionEmailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE4331F081AA90E7986906F6000B49CE /* ContactGroupSubSelectionEmailCell.xib */; };
 		0DA929C3E5843DDB604F1F98C9F227DE /* ContactSectionHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA310AD75EF147FEF5E2C05CA8916FD9 /* ContactSectionHeadView.xib */; };
 		0DCB8C7A220C3E41AD66805EF1F79D3E /* DropLandingZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3F8063AC2797A497E3780E5689868D /* DropLandingZone.swift */; };
+		0DFB6D746D0887ACB0ECEB9AB64E4388 /* AttachmentStreamingEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12DE739E92713B7AF83361681F6FA82 /* AttachmentStreamingEncryptor.swift */; };
 		0DFC958FFF01BEB682C50CD17C03F172 /* InternetConnectionStatusProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C3E60A6CDF2E114DE6546195CC8DB /* InternetConnectionStatusProvider.swift */; };
 		0E1F2B6A3DEC3310A1022971A1CF69A4 /* LinkOpenerCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC526600186BFADBF928D87FB626F1AC /* LinkOpenerCacheProtocol.swift */; };
 		0E29BAA2714CDAC375CEEB88F3E4EBED /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29702CCB5249E56A99A11AF8FF0AED36 /* ComposeViewModel.swift */; };
@@ -1901,6 +1902,7 @@
 		BA36E66BF1C01E53370D5FA066E175B7 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0742E240B9FDE75FE62CBCAA2789AF /* Address.swift */; };
 		BA49F9196B50C9745BE60FBD07E36D08 /* NonExpandedHeaderViewModel+LockIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987F181D4CF7D745CE42C1DC3B45866F /* NonExpandedHeaderViewModel+LockIcon.swift */; };
 		BA5BDD546C86F839CB64787CCD570D2E /* DataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7172825915E9D32EB8B24F78F70667 /* DataService+Error.swift */; };
+		BA6627C23DCB9F49FA6821A7A5AAFB65 /* AttachmentStreamingEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12DE739E92713B7AF83361681F6FA82 /* AttachmentStreamingEncryptor.swift */; };
 		BA8A2C2C65BF74548AA3D14D78B74858 /* PHAsset+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143C96A0E19B4D8FE22D4A7744818B98 /* PHAsset+Extension.swift */; };
 		BAA0AA0B60AFB0C8E3265957A5522EAC /* UISearchBar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7DF3E3EC0C6D1E955782E2B9F0AE44 /* UISearchBar+Extension.swift */; };
 		BB027935DAEE9DF414FA766D8528C658 /* ContactGroupEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C87CB8247C927A6A9D72F57CD09704E /* ContactGroupEditViewController.swift */; };
@@ -2268,6 +2270,7 @@
 		DB2111834F56AE63FADAE1662C16A2DA /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D431E59E92DCD1B3B034B3FE874D02 /* NSManagedObjectExtension.swift */; };
 		DB34D1699BBC4C9133E34AA5EA288110 /* LocalNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8B4288C5616BC0386F1E7673A353E7 /* LocalNotificationService.swift */; };
 		DB3CD65995DF9004FD1DB81AF727B971 /* OpenPGP+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484BA40D9AED8FE12BB572BA8EF99800 /* OpenPGP+String+Extension.swift */; };
+		DB45940CEA0DA5CAEB3FD3F1A6D06660 /* AttachmentStreamingEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12DE739E92713B7AF83361681F6FA82 /* AttachmentStreamingEncryptor.swift */; };
 		DB7155C8CFDA4C01882F0E8527370704 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
 		DB86C5A30869359ABE14B4AC9980C7EC /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5893FDE19FD570A2A4670A50896625A1 /* MimeTypes.swift */; };
 		DB943A15F3942E14BC473D4E39FAA3F6 /* ViewModeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B313E00338666A47BD3E341D05C6DCF3 /* ViewModeDataSource.swift */; };
@@ -2342,6 +2345,7 @@
 		E05DA327FE7B756DA6A5A92D78E0ABF0 /* ExpandedHeaderRecipientRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EAE2B13C2E682DCC41F9421A0E1832 /* ExpandedHeaderRecipientRowViewModel.swift */; };
 		E060FBB2C8220C7BE1C05FD8BC507697 /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */; };
 		E076FF8F3FAA68B96B359940E930DCF3 /* MenuButtonViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9E4ADDA5A5231CD7E48089F5C8CC4C /* MenuButtonViewCell.swift */; };
+		E07E1542029293C83D5354A251A36A4E /* AttachmentStreamingEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12DE739E92713B7AF83361681F6FA82 /* AttachmentStreamingEncryptor.swift */; };
 		E0DD0308DE650D66F3B54331E930965E /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E69C5B65182DB326ABC46A0FAAE2CE1 /* Part.swift */; };
 		E1086069CF38C7AA3302B8F14B0795A1 /* UserEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985D24B6234418EBEE7B7CDFA7558C35 /* UserEvent.swift */; };
 		E12D4F816EB55955935798BEDF4EC490 /* SingleRowTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D468152A407E916AACD45330874DAB /* SingleRowTagsView.swift */; };
@@ -3981,6 +3985,7 @@
 		F0299D313A7A1544B29AD839C2DA2F9E /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAPI.swift; sourceTree = "<group>"; };
 		F0466DB6812B789E32ADF3673EAC8268 /* ContactGroupSelectColorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSelectColorViewModel.swift; sourceTree = "<group>"; };
+		F12DE739E92713B7AF83361681F6FA82 /* AttachmentStreamingEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentStreamingEncryptor.swift; sourceTree = "<group>"; };
 		F16D99CBE67AC61BF48C40859A597851 /* ExpirationBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationBannerView.swift; sourceTree = "<group>"; };
 		F1AB46393CCFCAFF41AA979C674E54AC /* MigrateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateTests.swift; sourceTree = "<group>"; };
 		F1DAF94419961652FDD5E8C13A0AC3E1 /* OnboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardView.swift; sourceTree = "<group>"; };
@@ -5127,6 +5132,14 @@
 			path = StoryBoard;
 			sourceTree = "<group>";
 		};
+		62B7C1526FFE52CA9EE982FE2B04DFA8 /* AttachmentStreamingCrypto */ = {
+			isa = PBXGroup;
+			children = (
+				F12DE739E92713B7AF83361681F6FA82 /* AttachmentStreamingEncryptor.swift */,
+			);
+			path = AttachmentStreamingCrypto;
+			sourceTree = "<group>";
+		};
 		63131881B4F81FB90AD15E39C832B776 /* Pin */ = {
 			isa = PBXGroup;
 			children = (
@@ -5827,6 +5840,7 @@
 		9BD2DE47B0AE3E8F6CCE44E094DB610A /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				62B7C1526FFE52CA9EE982FE2B04DFA8 /* AttachmentStreamingCrypto */,
 				F84D425B223D7A37E8AA7A9A5E8BB091 /* CollectionView */,
 				8885EBB3E76E67C74FB67A7E325E4CC1 /* DurationPickerViewController */,
 				25549FE2ECEA18AC99EEF32E23FBFF4A /* Localization */,
@@ -8546,6 +8560,7 @@
 				6980E430186A12E7EF840F878CB7AFE0 /* AttachmentListViewController.swift in Sources */,
 				643693AB5B4ADF21DE8A91F2F25E9BCD /* AttachmentListViewModel.swift in Sources */,
 				F50F324AF1FBCB686D9B1F8312137C8C /* AttachmentProvider.swift in Sources */,
+				0DFB6D746D0887ACB0ECEB9AB64E4388 /* AttachmentStreamingEncryptor.swift in Sources */,
 				2989CC2E72277614F6A9738A24AF5B46 /* AttachmentTableViewCell.swift in Sources */,
 				7612D1D751F1638A3E7D0963267A841F /* AttachmentView.swift in Sources */,
 				B6DC90BCC0E6A2FD2E33AC10687A726D /* AttachmentViewController.swift in Sources */,
@@ -9309,6 +9324,7 @@
 				2029023A3996847E0D42AB8767CD1E04 /* AttachmentListViewController.swift in Sources */,
 				BD586851202CF252E531116BB2E710AE /* AttachmentListViewModel.swift in Sources */,
 				618CD291BB632D49CDD1F8E76337F75C /* AttachmentProvider.swift in Sources */,
+				BA6627C23DCB9F49FA6821A7A5AAFB65 /* AttachmentStreamingEncryptor.swift in Sources */,
 				381EA105ED35194084B6EFDC03744328 /* AttachmentTableViewCell.swift in Sources */,
 				C9684017F2BFDA33820881044205721D /* AttachmentView.swift in Sources */,
 				28CF902E23C178E641B804B92B0DDEF2 /* AttachmentViewController.swift in Sources */,
@@ -10097,6 +10113,7 @@
 				741A270F698CD8992816BFEF947D5BEE /* Attachment.swift in Sources */,
 				10F2A88FA3F35B110EEEA4F40027799F /* AttachmentAPI.swift in Sources */,
 				9DDCBBE82B6ACBFF924528F77BF0D436 /* AttachmentProvider.swift in Sources */,
+				DB45940CEA0DA5CAEB3FD3F1A6D06660 /* AttachmentStreamingEncryptor.swift in Sources */,
 				40FC6C85578F176C90BBB469834C4C8C /* AttachmentTableViewCell.swift in Sources */,
 				D3847DC3D063CCC7CC2CB9C8D6492E24 /* AuthAPI.swift in Sources */,
 				B97B9A09708F9946269C6EF44E748F2F /* AuthCredential+Locked.swift in Sources */,
@@ -10442,6 +10459,7 @@
 				1305E60AC8C305059433B4EF56E6FE8C /* Attachment.swift in Sources */,
 				4A0825CD454A2424F450C2E82FA6BAE9 /* AttachmentAPI.swift in Sources */,
 				69943ECF9DB94D45A0BA8056F117FEB7 /* AttachmentProvider.swift in Sources */,
+				E07E1542029293C83D5354A251A36A4E /* AttachmentStreamingEncryptor.swift in Sources */,
 				974A716BDF5003DFC979463D43FA2312 /* AttachmentTableViewCell.swift in Sources */,
 				AC9F2845E7C86BC273B7A347BB35167F /* AuthAPI.swift in Sources */,
 				45E364FD600426F4C5CA0E7E0795B02B /* AuthCredential+Locked.swift in Sources */,
