@@ -672,32 +672,38 @@ extension EncryptedSearchService {
         print("Query: ", query)
         print("Page: ", page)
         
-        //TODO get total messages
-        let totalMessages: Int = 0
-        
-        //TODO get searcher
-        let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
-        
-        let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
-        
-        //TODO do Cached Search
-        //TODO if we don't succeed with cached search, do index search
-        let searchResults: EncryptedsearchResultList? = nil
-        //self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: searchResults!, totalMessages: totalMessages)
-        
-        //TODO extract messages from result of search
-        let messages: [Message.ObjectIDContainer]? = nil
-        
-        completion!(messages, error)
+        self.getTotalMessages {
+            //TODO get searcher
+            let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
+            let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
+            
+            //TODO do Cached Search
+            //TODO if we don't succeed with cached search, do index search
+            let searchResults: EncryptedsearchResultList? = nil
+            self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: searchResults!, totalMessages: self.totalMessages)
+            
+            //TODO extract messages from result of search
+            let messages: [Message.ObjectIDContainer]? = nil
+            
+            completion!(messages, error)
+        }
     }
     
     func getSearcher(_ query: String) -> EncryptedsearchSimpleSearcher {
-        //TODO add parameters keywords, and context Size
-        let SEARCH_PREVIEW_MAX_LENGTH: CLong = 50 // The max size of the content showed in the preview
-        var keywords = query //TODO some manipluation is done in Android
-        //TODO list of strings to go List?
-        let searcher: EncryptedsearchSimpleSearcher = EncryptedsearchSimpleSearcher()
+        let contextSize: CLong = 50 // The max size of the content showed in the preview
+        let keywords: EncryptedsearchStringList? = createEncryptedSearchStringList(query)   //split query into individual keywords
+
+        let searcher: EncryptedsearchSimpleSearcher = EncryptedsearchSimpleSearcher(keywords, contextSize: contextSize)!
         return searcher
+    }
+    
+    func createEncryptedSearchStringList(_ query: String) -> EncryptedsearchStringList {
+        let result: EncryptedsearchStringList? = EncryptedsearchStringList()
+        let searchQueryArray: [String] = query.components(separatedBy: " ")
+        searchQueryArray.forEach { q in
+            result?.add(q)
+        }
+        return result!
     }
     
     func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchResults: EncryptedsearchResultList, totalMessages:Int) {
