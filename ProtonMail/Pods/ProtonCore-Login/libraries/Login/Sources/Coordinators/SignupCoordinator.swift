@@ -28,6 +28,7 @@ import ProtonCore_Payments
 enum FlowStartKind {
     case over(UIViewController, UIModalTransitionStyle)
     case inside(LoginNavigationViewController)
+    case unmanaged
 }
 
 protocol SignupCoordinatorDelegate: AnyObject {
@@ -104,11 +105,13 @@ final class SignupCoordinator {
         signupViewController.signupAccountType = signupAccountType
 
         switch kind {
+        case .unmanaged:
+            assertionFailure("we do not support the unmanaged signup showing")
         case let .over(viewController, modalTransitionStyle):
             let navigationController = LoginNavigationViewController(rootViewController: signupViewController)
             self.navigationController = navigationController
-            navigationController.modalTransitionStyle = modalTransitionStyle
             container.setupHumanVerification(viewController: navigationController)
+            navigationController.modalTransitionStyle = modalTransitionStyle
             viewController.present(navigationController, animated: true, completion: nil)
         case .inside(let navigationViewController):
             self.navigationController = navigationViewController

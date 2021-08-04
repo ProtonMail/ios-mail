@@ -139,7 +139,72 @@ public class AlamofireSession: Session {
             }
         }
     }
-    
+
+    public func uploadFromFile(with request: SessionRequest,
+                               keyPacket: Data, dataPacketSourceFileURL: URL, signature: Data?,
+                               completion: @escaping ResponseCompletion) {
+        guard let alamofireRequest = request as? AlamofireRequest else {
+            completion(nil, nil, nil)
+            return
+        }
+        
+        guard let parameters = alamofireRequest.parameters as? [String: String] else {
+            completion(nil, nil, nil)
+            return
+        }
+        alamofireRequest.updateHeader()
+        var taskOut: URLSessionDataTask?
+        self.session.upload(multipartFormData: { (formData) -> Void in
+            let data: MultipartFormData = formData
+            if let value = parameters["Filename"], let fileName = value.data(using: .utf8) {
+                data.append(fileName, withName: "Filename")
+            }
+            if let value = parameters["MIMEType"], let mimeType = value.data(using: .utf8) {
+                data.append(mimeType, withName: "MIMEType")
+            }
+            if let value = parameters["MessageID"], let id = value.data(using: .utf8) {
+                data.append(id, withName: "MessageID")
+            }
+            data.append(keyPacket, withName: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
+            data.append(dataPacketSourceFileURL, withName: "DataPacket", fileName: "DataPacket.txt", mimeType: "")
+            if let sign = signature {
+                data.append(sign, withName: "Signature", fileName: "Signature.txt", mimeType: "" )
+            }
+        }, with: alamofireRequest)
+        .onURLSessionTaskCreation { task in
+            taskOut = task as? URLSessionDataTask
+        }
+        .responseString(queue: requestQueue) { response in
+            switch response.result {
+            case let .success(value):
+                if let data = value.data(using: .utf8) {
+                    do {
+                        let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                        if let error = response.error {
+                            completion(taskOut, dict, error as NSError)
+                            break
+                        }
+                        if let code = response.response?.statusCode, code != 200 {
+                            let userInfo: [String: Any] = [NSLocalizedDescriptionKey: dict?["Error"] ?? "",
+                                                           NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""]
+                            let err = NSError.init(domain: "ProtonCore-Networking", code: code, userInfo: userInfo)
+                            completion(taskOut, dict, err)
+                            break
+                        }
+                        completion(taskOut, dict, nil)
+                        break
+                    } catch let error {
+                        completion(taskOut, nil, error as NSError)
+                        return
+                    }
+                }
+                completion(taskOut, nil, nil)
+            case let .failure(error):
+                completion(taskOut, nil, error as NSError)
+            }
+        }
+    }
+
     public func request(with request: SessionRequest,
                         completion: @escaping ResponseCompletion) {
         

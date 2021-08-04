@@ -21,13 +21,13 @@
 
 import Foundation
 
-private enum GenericPinProtectionConstants {
+private enum PinProtectionConstants {
     static let saltKeychainKey = "PinProtection" + ".salt"
     static let versionKey = "PinProtection" + ".version"
     static let numberOfIterations: Int = 32768
 }
 
-public struct GenericPinProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
+public struct PinProtection: ProtectionStrategy {
     public static var keychainLabel: String {
         return "PinProtection"
     }
@@ -55,7 +55,7 @@ public struct GenericPinProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
         self.keychain = keychain
     }
     
-    private typealias Const = GenericPinProtectionConstants
+    private typealias Const = PinProtectionConstants
     
     enum Errors: Error {
         case saltNotFound
@@ -63,13 +63,13 @@ public struct GenericPinProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
     }
     
     public func lock(value: MainKey) throws {
-        let salt = GenericPinProtection<SUBTLE>.generateRandomValue(length: 8)
+        let salt = PinProtection.generateRandomValue(length: 8)
         var error: NSError?
-        guard let ethemeralKey = SUBTLE.DeriveKey(pin, Data(salt), Const.numberOfIterations, &error) else {
+        guard let ethemeralKey = CryptoSubtle.DeriveKey(pin, Data(salt), Const.numberOfIterations, &error) else {
             throw error ?? Errors.failedToDeriveKey
         }
-        let locked = try GenericLocked<MainKey, SUBTLE>(clearValue: value, with: ethemeralKey.bytes)
-        GenericPinProtection<SUBTLE>.saveCyphertext(locked.encryptedValue, in: self.keychain)
+        let locked = try Locked<MainKey>(clearValue: value, with: ethemeralKey.bytes)
+        PinProtection.saveCyphertext(locked.encryptedValue, in: self.keychain)
         self.keychain.set(Data(salt), forKey: Const.saltKeychainKey)
         self.keychain.set(self.version.rawValue, forKey: Const.versionKey)
     }
@@ -79,7 +79,7 @@ public struct GenericPinProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
             throw Errors.saltNotFound
         }
         var error: NSError?
-        guard let ethemeralKey = SUBTLE.DeriveKey(pin, salt, Const.numberOfIterations, &error) else {
+        guard let ethemeralKey = CryptoSubtle.DeriveKey(pin, salt, Const.numberOfIterations, &error) else {
             throw error ?? Errors.failedToDeriveKey
         }
         
@@ -87,12 +87,12 @@ public struct GenericPinProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
         do {
             switch curVer {
             case .lagcy:
-                let locked = GenericLocked<MainKey, SUBTLE>.init(encryptedValue: cypherBits)
+                let locked = Locked<MainKey>.init(encryptedValue: cypherBits)
                 let key = try locked.lagcyUnlock(with: ethemeralKey.bytes)
                 try self.lock(value: key)
                 return key
             default:
-                let locked = GenericLocked<MainKey, SUBTLE>.init(encryptedValue: cypherBits)
+                let locked = Locked<MainKey>.init(encryptedValue: cypherBits)
                 return try locked.unlock(with: ethemeralKey.bytes)
             }
         } catch let error {

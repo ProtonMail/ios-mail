@@ -414,6 +414,12 @@ fails.
  */
 FOUNDATION_EXPORT NSString* _Nonnull HelperVerifyCleartextMessageArmored(NSString* _Nullable publicKey, NSString* _Nullable armored, int64_t verifyTime, NSError* _Nullable* _Nullable error);
 
+/**
+ * VerifySignatureExplicit calls the reader's VerifySignature()
+and tries to cast the returned error to a SignatureVerificationError.
+ */
+FOUNDATION_EXPORT CryptoSignatureVerificationError* _Nullable HelperVerifySignatureExplicit(CryptoPlainMessageReader* _Nullable reader, NSError* _Nullable* _Nullable error);
+
 @class HelperMobileReader;
 
 /**

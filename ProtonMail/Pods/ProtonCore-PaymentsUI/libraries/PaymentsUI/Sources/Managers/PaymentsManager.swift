@@ -57,10 +57,7 @@ final class PaymentsManager {
             }
         } errorCompletion: { error in
             DispatchQueue.main.async {
-                if self.callbackExecuted == false {
-                    finishCallback(.purchaseError(error: error, processingPlan: self.unfinishedPurchasePlan))
-                    self.callbackExecuted = true
-                }
+                finishCallback(.purchaseError(error: error, processingPlan: self.unfinishedPurchasePlan))
             }
         }
     }

@@ -230,6 +230,7 @@ extension AccountManagerVC {
 
         // Left item
         let closeBtn = UIBarButtonItem(image: UIImage(named: "icon_cross", in: Bundle.switchBundle, compatibleWith: nil), style: .plain, target: self, action: #selector(self.dismissView))
+        closeBtn.accessibilityLabel = CoreString._as_dismiss_button
         closeBtn.tintColor = UIColorManager.TextNorm
         self.navigationItem.leftBarButtonItem = closeBtn
 

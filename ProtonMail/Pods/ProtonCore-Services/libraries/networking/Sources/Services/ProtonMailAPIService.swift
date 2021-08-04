@@ -25,6 +25,7 @@ import Foundation
 import ProtonCore_Doh
 import ProtonCore_Log
 import ProtonCore_Networking
+import ProtonCore_Utilities
 
 #if canImport(TrustKit)
 import TrustKit
@@ -421,16 +422,10 @@ public class PMAPIService: APIService {
                         if let urlres = task?.response as? HTTPURLResponse,
                            let allheader = urlres.allHeaderFields as? [String: Any] {
                             // PMLog.D("\(allheader.json(prettyPrinted: true))")
-                            if let strData = allheader["Date"] as? String {
-                                // create dateFormatter with UTC time format
-                                let dateFormatter = DateFormatter()
-                                dateFormatter.calendar = .some(.init(identifier: .gregorian))
-                                dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
-                                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-                                if let date = dateFormatter.date(from: strData) {
-                                    let timeInterval = date.timeIntervalSince1970
-                                    self.serviceDelegate?.onUpdate(serverTime: Int64(timeInterval))
-                                }
+                            if let strData = allheader["Date"] as? String,
+                               let date = DateParser.parse(time: strData) {
+                                let timeInterval = date.timeIntervalSince1970
+                                self.serviceDelegate?.onUpdate(serverTime: Int64(timeInterval))
                             }
                         }
                         
@@ -526,16 +521,10 @@ public class PMAPIService: APIService {
                         self.debugError(error)
                         if let urlres = task?.response as? HTTPURLResponse,
                            let allheader = urlres.allHeaderFields as? [String: Any] {
-                            if let strData = allheader["Date"] as? String {
-                                // create dateFormatter with UTC time format
-                                let dateFormatter = DateFormatter()
-                                dateFormatter.calendar = .some(.init(identifier: .gregorian))
-                                dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
-                                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-                                if let date = dateFormatter.date(from: strData) {
-                                    let timeInterval = date.timeIntervalSince1970
-                                    self.serviceDelegate?.onUpdate(serverTime: Int64(timeInterval))
-                                }
+                            if let strData = allheader["Date"] as? String,
+                               let date = DateParser.parse(time: strData) {
+                                let timeInterval = date.timeIntervalSince1970
+                                self.serviceDelegate?.onUpdate(serverTime: Int64(timeInterval))
                             }
                         }
                         // reachability temporarily failed because was switching from WiFi to Cellular
@@ -570,7 +559,116 @@ public class PMAPIService: APIService {
             authBlock(customAuthCredential?.accessToken, customAuthCredential?.sessionID, nil)
         }
     }
-    
+
+    public func uploadFromFile (byPath path: String,
+                                parameters: [String: String],
+                                keyPackets: Data,
+                                dataPacketSourceFileURL: URL,
+                                signature: Data?,
+                                headers: [String: Any]?,
+                                authenticated: Bool = true,
+                                customAuthCredential: AuthCredential? = nil,
+                                completion: @escaping CompletionBlock) {
+        
+        let url = self.doh.getHostUrl() + path
+        let authBlock: AuthTokenBlock = { token, userID, error in
+            if let error = error {
+                self.debugError(error)
+                completion(nil, nil, error)
+            } else {
+                
+                do {
+                    let accessToken = token ?? ""
+                    if authenticated && accessToken.isEmpty {
+                        let localerror = NSError.protonMailError(401,
+                                                                 localizedDescription: "The upload request failed, invalid access token.",
+                                                                 localizedFailureReason: "The upload request failed, invalid access token.",
+                                                                 localizedRecoverySuggestion: nil)
+                        return completion(nil, nil, localerror)
+                    }
+                    
+                    let request = try self.session.generate(with: .post, urlString: url, parameters: parameters)
+                    if let header = headers {
+                        for (k, v) in header {
+                            request.setValue(header: k, "\(v)")
+                        }
+                    }
+                    request.setValue(header: "Authorization", "Bearer \(accessToken)")
+                    
+                    if let userid = userID {
+                        request.setValue(header: "x-pm-uid", userid)
+                    }
+                    
+                    var appversion = "iOS_\(Bundle.main.majorVersion)"
+                    if let delegateAppVersion = self.serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
+                        appversion = delegateAppVersion
+                    }
+                    request.setValue(header: "Accept", "application/vnd.protonmail.v1+json")
+                    request.setValue(header: "x-pm-appversion", appversion)
+                    
+                    var locale = "en_US"
+                    if let lc = self.serviceDelegate?.locale, !lc.isEmpty {
+                        locale = lc
+                    }
+                    request.setValue(header: "x-pm-locale", locale)
+                    
+                    var ua = UserAgent.default.ua
+                    if let delegateAgent = self.serviceDelegate?.userAgent, !delegateAgent.isEmpty {
+                        ua = delegateAgent
+                    }
+                    request.setValue(header: "User-Agent", ua)
+                    
+                    try self.session.uploadFromFile(with: request,
+                                                    keyPacket: keyPackets, dataPacketSourceFileURL: dataPacketSourceFileURL,
+                                                    signature: signature) { task, res, error in
+                        self.debugError(error)
+                        if let urlres = task?.response as? HTTPURLResponse,
+                           let allheader = urlres.allHeaderFields as? [String: Any] {
+                            if let strData = allheader["Date"] as? String {
+                                // create dateFormatter with UTC time format
+                                let dateFormatter = DateFormatter()
+                                dateFormatter.calendar = .some(.init(identifier: .gregorian))
+                                dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+                                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+                                if let date = dateFormatter.date(from: strData) {
+                                    let timeInterval = date.timeIntervalSince1970
+                                    self.serviceDelegate?.onUpdate(serverTime: Int64(timeInterval))
+                                }
+                            }
+                        }
+                        // reachability temporarily failed because was switching from WiFi to Cellular
+                        if (error as NSError?)?.code == -1005,
+                           self.serviceDelegate?.isReachable() == true {
+                            // retry task asynchonously
+                            DispatchQueue.global(qos: .utility).async {
+                                self.uploadFromFile(byPath: url,
+                                                    parameters: parameters,
+                                                    keyPackets: keyPackets,
+                                                    dataPacketSourceFileURL: dataPacketSourceFileURL,
+                                                    signature: signature,
+                                                    headers: headers,
+                                                    authenticated: authenticated,
+                                                    customAuthCredential: customAuthCredential,
+                                                    completion: completion)
+                            }
+                            return
+                        }
+                        let resObject = res as? [String: Any]
+                        completion(task, resObject, error as NSError?)
+                    }
+                } catch let error {
+                    completion(nil, nil, error as NSError)
+                }
+            }
+        }
+        
+        if authenticated && customAuthCredential == nil {
+            fetchAuthCredential(authBlock)
+        } else {
+            authBlock(customAuthCredential?.accessToken, customAuthCredential?.sessionID, nil)
+        }
+    }
+
     public func download(byUrl url: String,
                          destinationDirectoryURL: URL,
                          headers: [String: Any]?,

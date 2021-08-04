@@ -78,6 +78,35 @@ public class AFNetworkingSession: Session {
         })
         uploadTask?.resume()
     }
+
+    public func uploadFromFile(with request: SessionRequest,
+                               keyPacket: Data,
+                               dataPacketSourceFileURL: URL,
+                               signature: Data?, completion: @escaping ResponseCompletion) throws {
+        let afnRequest = self.sessionManager
+            .requestSerializer
+            .multipartFormRequest(withMethod: request.method.toString(),
+                                  urlString: request.urlString,
+                                  parameters: request.parameters as? [String: Any],
+                                  constructingBodyWith: { (formData) -> Void in
+                                    let data: AFMultipartFormData = formData
+                                    data.appendPart(withFileData: keyPacket, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
+                                    try? data.appendPart(withFileURL: dataPacketSourceFileURL, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "")
+                                    if let sign = signature {
+                                        data.appendPart(withFileData: sign, name: "Signature", fileName: "Signature.txt", mimeType: "" )
+                                    }
+                                  }, error: nil)
+        request.request = afnRequest as URLRequest
+        request.updateHeader()
+        var uploadTask: URLSessionDataTask?
+        uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request.request!, progress: { (_) in
+            // nothing
+        }, completionHandler: { (_, responseObject, error) in
+            let resObject = responseObject as? [String: Any]
+            completion(uploadTask, resObject, error as NSError?)
+        })
+        uploadTask?.resume()
+    }
     
     public func download(with request: SessionRequest, destinationDirectoryURL: URL, completion: @escaping DownloadCompletion) throws {
         let afnRequest = try self.sessionManager.requestSerializer.request(withMethod: request.method.toString(),

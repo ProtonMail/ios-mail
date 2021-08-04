@@ -45,11 +45,17 @@ public class LoginInterfaceMock: LoginInterface {
         presentMailboxPasswordFlowStub(viewController, completion)
     }
 
-    @FuncStub(LoginInterfaceMock.presentFlowFromWelcomeScreen) public var presentFlowFromWelcomeScreenStub
+    @FuncStub(LoginInterfaceMock.presentFlowFromWelcomeScreen(over:welcomeScreen:username:completion:)) public var presentFlowFromWelcomeScreenStub
     public func presentFlowFromWelcomeScreen(over viewController: UIViewController,
                                              welcomeScreen: WelcomeScreenVariant,
                                              username: String?,
                                              completion: @escaping (LoginResult) -> Void) {
         presentFlowFromWelcomeScreenStub(viewController, welcomeScreen, username, completion)
+    }
+
+    @FuncStub(LoginInterfaceMock.welcomeScreenForPresentingFlow(variant:username:completion:),
+              initialReturn: .crash) public var welcomeScreenForPresentingFlowStub
+    public func welcomeScreenForPresentingFlow(variant welcomeScreen: WelcomeScreenVariant, username: String?, completion: @escaping (LoginResult) -> Void) -> UIViewController {
+        welcomeScreenForPresentingFlowStub(welcomeScreen, username, completion)
     }
 }

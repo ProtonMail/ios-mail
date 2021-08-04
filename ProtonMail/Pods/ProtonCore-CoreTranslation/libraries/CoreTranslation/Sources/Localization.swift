@@ -383,6 +383,8 @@ public class LocalizedString {
 
     public lazy var _as_signout_alert_text = NSLocalizedString("Are you sure you want to sign out %@?", bundle: Common.bundle, comment: "Alert message of sign out the email address")
 
+    public lazy var _as_dismiss_button = NSLocalizedString("Dismiss account switcher", bundle: Common.bundle, comment: "Button for dismissing account switcher")
+
     // Signup
 
     /// Signup main view title
@@ -423,11 +425,29 @@ public class LocalizedString {
     /// Repeat password field title
     public lazy var _su_repeat_password_field_title = NSLocalizedString("Repeat password", bundle: Common.bundle, comment: "Repeat password field title")
 
+    // TODO: CP-2352 — remove the default value once the text is translated to all languages
     /// Signup recovery view title
-    public lazy var _su_recovery_view_title = NSLocalizedString("Set recovery method", bundle: Common.bundle, comment: "Recovery view title")
+    public lazy var _su_recovery_view_title = NSLocalizedString(
+        "Set recovery method (optional)",
+        tableName: nil,
+        bundle: Common.bundle,
+        value: _su_recovery_method_button,
+        comment: "Recovery view title"
+    )
 
+    // TODO: CP-2352 — remove the string once the new text (below) is translated to all languages
+    /// Signup recovery view description — old string
+    public lazy var _su_recovery_view_desc_old = NSLocalizedString("This will help you access your account in case you forget your password or get locked out of your account.", bundle: Common.bundle, comment: "Recovery view description (old string, replaced)")
+
+    // TODO: CP-2352 — remove the default value once the text is translated to all languages
     /// Signup recovery view description
-    public lazy var _su_recovery_view_desc = NSLocalizedString("This will help you access your account in case you forget your password or get locked out of your account.", bundle: Common.bundle, comment: "Recovery view description")
+    public lazy var _su_recovery_view_desc = NSLocalizedString(
+        "We will send recovery instructions to this email or phone number if you get locked out of your account.",
+        tableName: nil,
+        bundle: Common.bundle,
+        value: _su_recovery_view_desc_old,
+        comment: "Recovery view description"
+    )
 
     /// Signup recovery segmented email
     public lazy var _su_recovery_seg_email = NSLocalizedString("Email", bundle: Common.bundle, comment: "Recovery segmenet email")

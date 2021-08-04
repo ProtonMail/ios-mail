@@ -60,14 +60,53 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             createAccountDescriptionLabel.textColor = UIColorManager.TextWeak
         }
     }
-    @IBOutlet weak var nameTextField: PMTextField! {
+    @IBOutlet weak var internalNameTextField: PMTextField! {
         didSet {
-            nameTextField.delegate = self
-            nameTextField.autocorrectionType = .no
-            nameTextField.autocapitalizationType = .none
-            nameTextField.spellCheckingType = .no
+            internalNameTextField.title = CoreString._su_username_field_title
+            internalNameTextField.keyboardType = .default
+            internalNameTextField.textContentType = .username
+            internalNameTextField.isPassword = false
+            internalNameTextField.delegate = self
+            internalNameTextField.autocorrectionType = .no
+            internalNameTextField.autocapitalizationType = .none
+            internalNameTextField.spellCheckingType = .no
         }
     }
+    @IBOutlet weak var externalEmailTextField: PMTextField! {
+        didSet {
+            externalEmailTextField.title = CoreString._su_email_field_title
+            externalEmailTextField.autocorrectionType = .no
+            externalEmailTextField.keyboardType = .emailAddress
+            externalEmailTextField.textContentType = .emailAddress
+            externalEmailTextField.isPassword = false
+            externalEmailTextField.delegate = self
+            externalEmailTextField.autocapitalizationType = .none
+            externalEmailTextField.spellCheckingType = .no
+        }
+    }
+    var currentlyUsedTextField: PMTextField {
+        switch signupAccountType {
+        case .external:
+            return externalEmailTextField
+        case .internal:
+            return internalNameTextField
+        case .none:
+            assertionFailure("signupAccountType should be configured during the segue")
+            return internalNameTextField
+        }
+    }
+    var currentlyNotUsedTextField: PMTextField {
+        switch signupAccountType {
+        case .external:
+            return internalNameTextField
+        case .internal:
+            return externalEmailTextField
+        case .none:
+            assertionFailure("signupAccountType should be configured during the segue")
+            return externalEmailTextField
+        }
+    }
+
     @IBOutlet weak var otherAccountButton: ProtonButton! {
         didSet {
             otherAccountButton.setMode(mode: .text)
@@ -98,12 +137,16 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         setupGestures()
         setupNotifications()
         otherAccountButton.isHidden = !showOtherAccountButton
-        focusOnce(view: nameTextField, delay: .milliseconds(750))
+
+        focusOnce(view: currentlyUsedTextField, delay: .milliseconds(750))
+
         setUpCloseButton(showCloseButton: showCloseButton, action: #selector(SignupViewController.onCloseButtonTap(_:)))
         requestDomain()
         configureAccountType()
         generateAccessibilityIdentifiers()
-        try? nameTextField.setUpChallenge(viewModel.challenge, type: .username)
+        [internalNameTextField, externalEmailTextField].forEach {
+            try? $0.setUpChallenge(viewModel.challenge, type: .username)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -117,18 +160,18 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     @IBAction func onOtherAccountButtonTap(_ sender: ProtonButton) {
         cancelFocus()
         PMBanner.dismissAll(on: self)
-        let isFirstResponder = nameTextField.isFirstResponder
-        if isFirstResponder { _ = nameTextField.resignFirstResponder() }
+        let isFirstResponder = currentlyUsedTextField.isFirstResponder
+        if isFirstResponder { _ = currentlyUsedTextField.resignFirstResponder() }
         contentView.fadeOut(withDuration: 0.5) { [self] in
             self.contentView.fadeIn(withDuration: 0.5)
-            self.nameTextField.isError = false
+            self.currentlyUsedTextField.isError = false
             if self.signupAccountType == .internal {
                 signupAccountType = .external
             } else {
                 signupAccountType = .internal
             }
             configureAccountType()
-            if isFirstResponder { _ = nameTextField.becomeFirstResponder() }
+            if isFirstResponder { _ = currentlyUsedTextField.becomeFirstResponder() }
         }
     }
 
@@ -136,15 +179,15 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         cancelFocus()
         PMBanner.dismissAll(on: self)
         nextButton.isSelected = true
-        nameTextField.isError = false
+        currentlyUsedTextField.isError = false
         lockUI()
         viewModel.generateDeviceToken { result in
             switch result {
             case .success(let deviceToken):
                 if self.signupAccountType == .internal {
-                    self.checkUsername(userName: self.nameTextField.value, deviceToken: deviceToken)
+                    self.checkUsername(userName: self.currentlyUsedTextField.value, deviceToken: deviceToken)
                 } else {
-                    self.requestValidationToken(email: self.nameTextField.value, deviceToken: deviceToken)
+                    self.requestValidationToken(email: self.currentlyUsedTextField.value, deviceToken: deviceToken)
                 }
             case .failure(let error):
                 self.unlockUI()
@@ -174,27 +217,18 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
 
     private func configureAccountType() {
-        nameTextField.value = ""
-        if signupAccountType == .internal {
-            nameTextField.title = CoreString._su_username_field_title
-            nameTextField.keyboardType = .default
-            nameTextField.textContentType = .username
-        } else {
-            nameTextField.title = CoreString._su_email_field_title
-            nameTextField.keyboardType = .emailAddress
-            nameTextField.textContentType = .emailAddress
-        }
-        let title = signupAccountType == .internal ? CoreString._su_email_address_button : CoreString._su_proton_address_button
+        internalNameTextField.value = ""
+        externalEmailTextField.value = ""
+        currentlyUsedTextField.isHidden = false
+        currentlyNotUsedTextField.isHidden = true
+        let title = signupAccountType == .internal ? CoreString._su_email_address_button
+                                                   : CoreString._su_proton_address_button
         otherAccountButton.setTitle(title, for: .normal)
         configureDomainSuffix()
     }
 
     private func configureDomainSuffix() {
-        if signupAccountType == .internal {
-            nameTextField.suffix = domain ?? "@\(viewModel.signUpDomain)"
-        } else {
-            nameTextField.suffix = nil
-        }
+        internalNameTextField.suffix = domain ?? "@\(viewModel.signUpDomain)"
     }
     
     private func setupGestures() {
@@ -207,16 +241,16 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
 
     private func dismissKeyboard() {
-        if nameTextField.isFirstResponder {
-            _ = nameTextField.resignFirstResponder()
+        if currentlyUsedTextField.isFirstResponder {
+            _ = currentlyUsedTextField.resignFirstResponder()
         }
     }
 
     private func validateNextButton() {
         if signupAccountType == .internal {
-        nextButton.isEnabled = viewModel.isUserNameValid(name: nameTextField.value)
+            nextButton.isEnabled = viewModel.isUserNameValid(name: currentlyUsedTextField.value)
         } else {
-            nextButton.isEnabled = viewModel.isEmailValid(email: nameTextField.value)
+            nextButton.isEnabled = viewModel.isEmailValid(email: currentlyUsedTextField.value)
         }
     }
 
@@ -232,7 +266,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
                 case .generic(let message):
                     self.showError(message: message)
                 case .notAvailable(let message):
-                    self.nameTextField.isError = true
+                    self.currentlyUsedTextField.isError = true
                     self.showError(message: message)
                 }
             }
@@ -252,7 +286,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             case .failure(let error):
                 self.unlockUI()
                 self.showError(error: error)
-                self.nameTextField.isError = true
+                self.currentlyUsedTextField.isError = true
             }
         })
     }
@@ -265,7 +299,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
 
     @objc private func keyboardWillShow(notification: NSNotification) {
-        adjust(scrollView, notification: notification, topView: nameTextField, bottomView: signinButton)
+        adjust(scrollView, notification: notification, topView: currentlyUsedTextField, bottomView: signinButton)
     }
 
     @objc private func keyboardWillHide(notification: NSNotification) {
@@ -283,7 +317,7 @@ extension SignupViewController: PMTextFieldDelegate {
     }
 
     func textFieldShouldReturn(_ textField: PMTextField) -> Bool {
-        _ = nameTextField.resignFirstResponder()
+        _ = currentlyUsedTextField.resignFirstResponder()
         return true
     }
 
