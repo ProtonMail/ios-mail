@@ -10,6 +10,7 @@ enum ConversationNavigationAction {
     case viewHeaders(url: URL)
     case viewHTML(url: URL)
     case url(url: URL)
+    case inAppSafari(url: URL)
     case addNewLabel
     case addNewFolder
 }
