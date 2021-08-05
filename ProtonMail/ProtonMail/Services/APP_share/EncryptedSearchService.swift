@@ -28,7 +28,7 @@ public class EncryptedSearchService {
         
         messageService = user.messageService
         
-        searchIndex = EncryptedSearchIndexService.shared.createSearchIndex()!
+        searchIndex = EncryptedSearchIndexService.shared.createSearchIndex(user.userInfo.userId)!
         EncryptedSearchIndexService.shared.createSearchIndexTable()
         
         //self.conversationStateService = user.conversationStateService
@@ -45,18 +45,7 @@ public class EncryptedSearchService {
     var isRefresh: Bool = false
     
     internal var searchIndex: Connection
-    //private let conversationStateService: ConversationStateService
-    
-    /*var viewMode: ViewMode {
-        //TODO check what I actually need from here
-        let singleMessageOnlyLabels: [Message.Location] = [.draft, .sent]
-        if let location = Message.Location.init(rawValue: labelID),
-           singleMessageOnlyLabels.contains(location),
-           self.conversationStateService.viewMode == .conversation {
-            return .singleMessage
-        }
-        return self.conversationStateService.viewMode
-    }*/
+    internal var cipherForSearchIndex: EncryptedsearchAESGCMCipher? = nil
 }
 
 extension EncryptedSearchService {
@@ -590,10 +579,13 @@ extension EncryptedSearchService {
     }
     
     private func getCipher() -> EncryptedsearchAESGCMCipher {
-        let key: Data? = self.retrieveSearchIndexKey()
+        if self.cipherForSearchIndex == nil {   //TODO we need to regenerate the cipher if there is a switch between users
+            let key: Data? = self.retrieveSearchIndexKey()
         
-        let cipher: EncryptedsearchAESGCMCipher = EncryptedsearchAESGCMCipher(key)!
-        return cipher
+            let cipher: EncryptedsearchAESGCMCipher = EncryptedsearchAESGCMCipher(key!)!
+            self.cipherForSearchIndex = cipher
+        }
+        return self.cipherForSearchIndex!
     }
     
     private func generateSearchIndexKey(_ userID: String) -> Data? {
@@ -607,13 +599,14 @@ extension EncryptedSearchService {
     private func storeSearchIndexKey(_ key: Data?, userID: String) {
         var encData: Data? = nil
         
-        if #available(iOS 13.0, *) {
+        /*if #available(iOS 13.0, *) {
             let key256 = CryptoKit.SymmetricKey(size: .bits256)
             encData = try! AES.GCM.seal(key!, using: key256).combined
         } else {
             // Fallback on earlier versions - do not encrypt key?
             encData = key
-        }
+        }*/
+        encData = key // disable encrypting key for testing purposes
         KeychainWrapper.keychain.set(encData!, forKey: "searchIndexKey_" + userID)
     }
     
@@ -621,17 +614,26 @@ extension EncryptedSearchService {
         let uid: String = self.user.userInfo.userId
         var key: Data? = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + uid)
         
+        //var key2: Data? = KeychainWrapper.keychain.data(forKey: "abc" + uid)
+        
+        //print("Key(data): ", key!)
+        //print("key (string) :", String(decoding: key!, as: UTF8.self))
+        
+        //print("Key(data): ", key2!)
+        //print("key (string) :", String(decoding: key2!, as: UTF8.self))
+        
         //Check if user already has an key
         if key != nil {
             var decryptedKey:Data? = nil
-            if #available(iOS 13.0, *) {
+            /*if #available(iOS 13.0, *) {
                 let box = try! AES.GCM.SealedBox(combined: key!)
                 let key256 = CryptoKit.SymmetricKey(size: .bits256)
                 decryptedKey = try! AES.GCM.open(box, using: key256)
             } else {
                 // Fallback on earlier versions - do not decrypt key?
                 decryptedKey = key
-            }
+            }*/
+            decryptedKey = key  //disable encrypting key for testing purposes
             
             return decryptedKey // if yes, return
         }
@@ -673,14 +675,15 @@ extension EncryptedSearchService {
         print("Page: ", page)
         
         self.getTotalMessages {
-            //TODO get searcher
             let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
             let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
             
             //TODO do Cached Search
             //TODO if we don't succeed with cached search, do index search
-            let searchResults: EncryptedsearchResultList? = nil
-            self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: searchResults!, totalMessages: self.totalMessages)
+            let searchResults: EncryptedsearchResultList? = EncryptedsearchResultList()
+            self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: searchResults, totalMessages: self.totalMessages)
+            
+            print("Search Results: ", searchResults!)
             
             //TODO extract messages from result of search
             let messages: [Message.ObjectIDContainer]? = nil
@@ -706,8 +709,8 @@ extension EncryptedSearchService {
         return result!
     }
     
-    func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchResults: EncryptedsearchResultList, totalMessages:Int) {
-        let index: EncryptedsearchIndex = getIndex()
+    func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchResults: EncryptedsearchResultList?, totalMessages:Int) {
+        let index: EncryptedsearchIndex = self.getIndex()
         do {
             try index.openDBConnection()
         } catch {
@@ -715,9 +718,12 @@ extension EncryptedSearchService {
         }
         
         var batchCount: Int = 0
-        var previousLength: Int = searchResults.length()
+        var previousLength: Int = 0
+        if searchResults != nil {
+            previousLength = searchResults!.length()
+        }
         
-        while !searchResults.isComplete && !hasEnoughResults(searchResults: searchResults) {   //TODO add some more condition-> see Android
+        while !searchResults!.isComplete && !hasEnoughResults(searchResults: searchResults!) {   //TODO add some more condition-> see Android
             var startBatchSearch: Int = 0
             
             let batchSize: Int = 0 // TODO
@@ -726,10 +732,10 @@ extension EncryptedSearchService {
             } catch {
                 print("Error while searching... ", error)
             }
-            if !hasEnoughResults(searchResults: searchResults) {
-                if previousLength != searchResults.length() {
+            if !hasEnoughResults(searchResults: searchResults!) {
+                if previousLength != searchResults!.length() {
                     //TODO publish
-                    previousLength = searchResults.length()
+                    previousLength = searchResults!.length()
                 }
                 //publisheProgress
             }
@@ -745,8 +751,8 @@ extension EncryptedSearchService {
     }
     
     func getIndex() -> EncryptedsearchIndex {
-        let index: EncryptedsearchIndex = EncryptedsearchIndex()
-        //TODO implement
+        let dbParams: EncryptedsearchDBParams = EncryptedSearchIndexService.shared.getDBParams(self.user.userInfo.userId)
+        let index: EncryptedsearchIndex = EncryptedsearchIndex(dbParams)!
         return index
     }
     
