@@ -8,6 +8,7 @@
 
 import Foundation
 import SQLite
+import Crypto
 
 public class EncryptedSearchIndexService {
     //instance of Singleton
@@ -26,13 +27,12 @@ public class EncryptedSearchIndexService {
 }
 
 extension EncryptedSearchIndexService {
-    func createSearchIndex() -> Connection? {
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let path = urls[0]
-        
+    func createSearchIndex(_ userID: String) -> Connection? {
+        let dbName: String = self.getSearchIndexName(userID)
+        let pathToDB: String = self.getSearchIndexPathToDB(dbName)
         do {
-            self.handleToSQliteDB = try Connection("\(path)/encryptedSearchIndex.sqlite3")
-            print("path to database: ", path)
+            self.handleToSQliteDB = try Connection(pathToDB)
+            print("path to database: ", pathToDB)
         } catch {
             print("Create database connection. Unexpected error: \(error).")
         }
@@ -119,5 +119,30 @@ extension EncryptedSearchIndexService {
             print("Insert in Table. Unexpected error: \(error).")
         }
         return rowID
+    }
+    
+    func getDBParams(_ userID: String) -> EncryptedsearchDBParams {
+        var dbParams: EncryptedsearchDBParams? = nil
+        let dbName: String = self.getSearchIndexName(userID)
+        let pathToDB: String = self.getSearchIndexPathToDB(dbName)
+
+        dbParams = EncryptedsearchDBParams(pathToDB, table: DatabaseConstants.Table_Searchable_Messages, id_: DatabaseConstants.Column_Searchable_Message_Id, time: DatabaseConstants.Column_Searchable_Message_Time, location: DatabaseConstants.Column_Searchable_Message_Location, read: DatabaseConstants.Column_Searchable_Message_Unread, starred: DatabaseConstants.Column_Searchable_Message_Is_Starred, labels: DatabaseConstants.Column_Searchable_Message_Labels, iv: DatabaseConstants.Column_Searchable_Message_Encryption_IV, content: DatabaseConstants.Column_Searchable_Message_Encrypted_Content, contentFile: DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File)
+        
+        return dbParams!
+    }
+    
+    // dbName = encryptedSearchIndex_TODO.sqlite3
+    func getSearchIndexName(_ userID: String) -> String {
+        let dbName: String = "encryptedSearchIndex"
+        let fileExtension: String = "sqlite3"
+        return dbName + "_" + userID + "." + fileExtension
+    }
+    
+    func getSearchIndexPathToDB(_ dbName: String) -> String {
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let path: URL = urls[0]
+        
+        let pathToDB: String = path.absoluteString + dbName
+        return pathToDB
     }
 }
