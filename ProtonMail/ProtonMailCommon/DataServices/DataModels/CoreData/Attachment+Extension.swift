@@ -69,17 +69,12 @@ extension Attachment {
     }
 
     // Mark : public functions
-    func encrypt(byKey key: Key, mailbox_pwd: String) -> (Data, Data)? {
+    func encrypt(byKey key: Key, mailbox_pwd: String) -> (Data, URL)? {
         do {
-            if let clearData = self.fileData {
-                let splitMsg = try clearData.encryptAttachment(fileName: self.fileName, pubKey: key.publicKey)
-                if let keyPacket = splitMsg?.keyPacket, let dataPacket = splitMsg?.dataPacket {
-                    return (keyPacket, dataPacket)
-                } else {
-                    return nil
-                }
+            if let clearData = self.fileData, localURL == nil {
+                try writeToLocalURL(data: clearData)
+                self.fileData = nil
             }
-
             guard let localURL = self.localURL else {
                 return nil
             }
@@ -98,15 +93,16 @@ extension Attachment {
             guard let aKeyRing = keyRing else {
                 return nil
             }
+
             let cipherURL = localURL.appendingPathExtension("cipher")
             let keyPacket = try AttachmentStreamingEncryptor.encryptStream(localURL, cipherURL, aKeyRing, 2_000_000)
 
-            return try (keyPacket, Data(contentsOf: cipherURL))
+            return (keyPacket, cipherURL)
         } catch {
             return nil
         }
     }
-    
+
     func sign(byKey key: Key, userKeys: [Data], passphrase: String) -> Data? {
         do {
             var pwd : String = passphrase
@@ -123,11 +119,19 @@ extension Attachment {
                 }
             }
             
-            guard let out = try fileData?.signAttachment(byPrivKey: key.privateKey, passphrase: pwd) else {
+            var signature: String?
+            if let fileData = fileData,
+               let out = try fileData.signAttachment(byPrivKey: key.privateKey, passphrase: pwd) {
+                signature = out
+            } else if let localURL = localURL,
+                      let out = try Data(contentsOf: localURL).signAttachment(byPrivKey: key.privateKey, passphrase: pwd) {
+                signature = out
+            }
+            guard let signature = signature else {
                 return nil
             }
             var error : NSError?
-            let data = ArmorUnarmor(out, &error)
+            let data = ArmorUnarmor(signature, &error)
             if error != nil {
                 return nil
             }

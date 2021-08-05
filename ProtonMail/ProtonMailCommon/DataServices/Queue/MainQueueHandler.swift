@@ -532,7 +532,7 @@ extension MainQueueHandler {
             }
             
             autoreleasepool(){
-                guard let (keyPacket, dataPacket) = attachment.encrypt(byKey: key, mailbox_pwd: passphrase) else
+                guard let (keyPacket, dataPacketURL) = attachment.encrypt(byKey: key, mailbox_pwd: passphrase) else
                 {
                     completion?(nil, nil, NSError.encryptionError())
                     return
@@ -579,15 +579,15 @@ extension MainQueueHandler {
                 
                 PMLog.D("SendAttachmentDebug == start upload att!")
                 ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
-                self.user?.apiService.upload(byPath: "/attachments",
-                                             parameters: params,
-                                             keyPackets: keyPacket,
-                                             dataPacket: dataPacket as Data,
-                                             signature: signed,
-                                             headers: [HTTPHeader.apiVersion: 3],
-                                             authenticated: true,
-                                             customAuthCredential: attachment.message.cachedAuthCredential,
-                                             completion: completionWrapper)
+                self.user?.apiService.uploadFromFile(byPath: "/attachments",
+                                                     parameters: params,
+                                                     keyPackets: keyPacket,
+                                                     dataPacketSourceFileURL: dataPacketURL,
+                                                     signature: signed,
+                                                     headers: [HTTPHeader.apiVersion: 3],
+                                                     authenticated: true,
+                                                     customAuthCredential: attachment.message.cachedAuthCredential,
+                                                     completion: completionWrapper)
             }
         }
         
