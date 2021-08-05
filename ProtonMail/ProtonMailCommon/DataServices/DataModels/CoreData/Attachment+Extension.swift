@@ -325,6 +325,15 @@ extension Attachment {
         self.headerInfo = "{ \"content-disposition\": \"\(disposition)\",  \"content-id\": \"\(id)\" }"
     }
 
+    func writeToLocalURL(data: Data) throws {
+        let writeURL = try FileManager.default.url(for: .cachesDirectory,
+                                                   in: .userDomainMask,
+                                                   appropriateFor: nil,
+                                                   create: true)
+            .appendingPathComponent(UUID().uuidString)
+        try data.write(to: writeURL)
+        self.localURL = writeURL
+    }
 }
 
 extension Collection where Element == Attachment {
