@@ -62,4 +62,14 @@ class APIServiceSpy: APIService {
         completion: @escaping CompletionBlock
     ) {}
 
+    func uploadFromFile(byPath path: String,
+                        parameters: [String : String],
+                        keyPackets: Data,
+                        dataPacketSourceFileURL: URL,
+                        signature: Data?,
+                        headers: [String : Any]?,
+                        authenticated: Bool,
+                        customAuthCredential: AuthCredential?,
+                        completion: @escaping CompletionBlock
+    ) {}
 }
