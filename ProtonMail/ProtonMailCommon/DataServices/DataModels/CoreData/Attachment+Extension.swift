@@ -342,6 +342,16 @@ extension Collection where Element == Attachment {
         allSatisfy { $0.isUploaded }
     }
 
+    func cleanLocalURLs() {
+        if let localURL = localURL {
+            try? FileManager.default.removeItem(at: localURL)
+            self.localURL = nil
+        }
+        let cipherURL = localURL?.appendingPathExtension("cipher")
+        if let cipherURL = cipherURL {
+            try? FileManager.default.removeItem(at: cipherURL)
+        }
+    }
 }
 
 protocol AttachmentConvertible {
