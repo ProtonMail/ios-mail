@@ -680,16 +680,20 @@ extension EncryptedSearchService {
             
             //TODO do Cached Search
             //TODO if we don't succeed with cached search, do index search
-            let searchResults: EncryptedsearchResultList? = EncryptedsearchResultList()
-            self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: searchResults, totalMessages: self.totalMessages)
+            var searchResults: EncryptedsearchResultList? = EncryptedsearchResultList()
+            self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: &searchResults, totalMessages: self.totalMessages)
             
-            print("Search Results: ", searchResults!)
-            
-            //TODO extract messages from result of search
-            let messages: [Message.ObjectIDContainer]? = nil
+            let messages: [Message.ObjectIDContainer]? = self.extractSearchResults(searchResults!)
             
             completion!(messages, error)
         }
+    }
+
+    func extractSearchResults(_ searchResults: EncryptedsearchResultList) -> [Message.ObjectIDContainer]? {
+        print("Search Results: ", searchResults)
+        //TODO extract search results from EncryptedsearchResultList
+        // and return [Message.ObjectIDContainer]
+        return nil
     }
     
     func getSearcher(_ query: String) -> EncryptedsearchSimpleSearcher {
@@ -709,13 +713,14 @@ extension EncryptedSearchService {
         return result!
     }
     
-    func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchResults: EncryptedsearchResultList?, totalMessages:Int) {
+    func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchResults: inout EncryptedsearchResultList?, totalMessages:Int) {
         let index: EncryptedsearchIndex = self.getIndex()
         do {
             try index.openDBConnection()
         } catch {
             print("Error when opening DB connection: \(error)")
         }
+        print("Successfully opened connection to searchindex...")
         
         var batchCount: Int = 0
         var previousLength: Int = 0
@@ -723,23 +728,31 @@ extension EncryptedSearchService {
             previousLength = searchResults!.length()
         }
         
+        print("Start search...")
         while !searchResults!.isComplete && !hasEnoughResults(searchResults: searchResults!) {   //TODO add some more condition-> see Android
-            var startBatchSearch: Int = 0
+            var startBatchSearch: Double = NSDate().timeIntervalSince1970   //do we need it more accurate?
             
-            let batchSize: Int = 0 // TODO
+            let SEARCH_BATCH_HEAP_PERCENT = 0.1 // Percentage of heap that can be used to load messages from the index
+            let SEARCH_MSG_SIZE: Double = 14000 // An estimation of how many bytes take a search message in memory
+            let batchSize: Int = Int((getAppMemory() * SEARCH_BATCH_HEAP_PERCENT)/SEARCH_MSG_SIZE)
             do {
                 try index.searchNewBatch(fromDB: searcher, cipher: cipher, results: searchResults, batchSize: batchSize)
+                //Is that running async?
+                print("search result: ", searchResults!)
+                print("searchedCount: \(searchResults!.searchedCount), lastID: \(searchResults!.lastIDSearched), lasttime: \(searchResults!.lastTimeSearched), iscomplete: \(searchResults!.isComplete)")
+                print("batchsize: ", batchSize)
             } catch {
                 print("Error while searching... ", error)
             }
             if !hasEnoughResults(searchResults: searchResults!) {
                 if previousLength != searchResults!.length() {
-                    //TODO publish
+                    //self.publishIntermediateResults(&searchResults)
                     previousLength = searchResults!.length()
                 }
-                //publisheProgress
+                //self.publishProgress(searchResults, totalMessages)
             }
-            let endBatchSearch: Int = 0 //TODO time
+            let endBatchSearch: Double = NSDate().timeIntervalSince1970
+            print("Batch \(batchCount) search. start: \(startBatchSearch), end: \(endBatchSearch), with batchsize: \(batchSize)")
             batchCount += 1
         }
         
@@ -761,5 +774,49 @@ extension EncryptedSearchService {
         let page: Int = 0 // TODO
         let pageLowerBound = pageSize * (page + 1)
         return searchResults.length() >= pageLowerBound
+    }
+    
+    func publishIntermediateResults(_ searchResults: inout EncryptedsearchResultList?) {
+        //batchResults = extractResultpage(searchresults)
+        let pageSize = 15 // The size of a page of results in the search activity
+        let page = 0 //TODO set correct size
+        let pageIndexLowerBound = page * pageSize
+        let pageIndexUpperBound = pageIndexLowerBound + pageSize
+        
+        //prepareResultsPage (SearchMessages.kt)
+        //val result = searchResults.get(index)
+        //val message = getResultMessage(result)
+        
+        let result = EncryptedsearchSearchResult()
+        
+        searchResults?.add(result)
+        
+        //update UI with search results?
+        //IntermediateSearchResultEvent -> SearchInfo (batchResults)
+        //SearchInfo class : List<MailboxUiItem>
+    }
+    
+    func publishProgress(_ searchResults: EncryptedsearchResultList?, _ totalMessages:Int) {
+        
+    }
+    
+    //Code from here: https://stackoverflow.com/a/64738201
+    private func getAppMemory() -> Double {
+        var taskInfo = task_vm_info_data_t()
+        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
+        let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
+                }
+        }
+        let usedMb = Float(taskInfo.phys_footprint)// / 1048576.0
+        let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
+        //result != KERN_SUCCESS ? print("Memory used: ? of \(totalMb)") : print("Memory used: \(usedMb) of \(totalMb)")
+        if result != KERN_SUCCESS {
+            print("Memory used: ? of \(totalMb) (in byte)")
+        } else {
+            print("Memory used: \(usedMb) (in byte) of \(totalMb) (in byte)")
+        }
+        return Double(totalMb)
     }
 }
