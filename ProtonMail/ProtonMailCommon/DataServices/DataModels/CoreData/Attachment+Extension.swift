@@ -370,11 +370,12 @@ extension UIImage: AttachmentConvertible {
                     attachment.attachmentID = "0"
                     attachment.fileName = fileName
                     attachment.mimeType = "image/jpg"
-                    attachment.fileData = stripMetadata ? fileData.strippingExif() : fileData
+                    attachment.fileData = nil
                     attachment.fileSize = fileData.count as NSNumber
                     attachment.isTemp = false
                     attachment.keyPacket = ""
-                    attachment.localURL = nil
+                    let dataToWrite = stripMetadata ? fileData.strippingExif() : fileData
+                    try? attachment.writeToLocalURL(data: dataToWrite)
                 
                     attachment.message = message
                     
@@ -415,12 +416,11 @@ extension Data: AttachmentConvertible {
                 attachment.attachmentID = "0"
                 attachment.fileName = fileName
                 attachment.mimeType = type
-                attachment.fileData = stripMetadata ? self.strippingExif() : self
+                attachment.fileData = nil
                 attachment.fileSize = self.count as NSNumber
                 attachment.isTemp = false
                 attachment.keyPacket = ""
-                attachment.localURL = nil
-                
+                try? attachment.writeToLocalURL(data: stripMetadata ? self.strippingExif() : self)
                 attachment.message = message
                 
                 let number = message.numAttachments.int32Value
