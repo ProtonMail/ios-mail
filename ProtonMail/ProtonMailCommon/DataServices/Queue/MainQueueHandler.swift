@@ -556,12 +556,7 @@ extension MainQueueHandler {
                             if let headerInfoDict = attDict["Headers"] as? Dictionary<String, String> {
                                 attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
                             }
-                            
-                            if let fileUrl = attachment.localURL,
-                               let _ = try? FileManager.default.removeItem(at: fileUrl)
-                            {
-                                attachment.localURL = nil
-                            }
+                            attachment.cleanLocalURLs()
                             
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")

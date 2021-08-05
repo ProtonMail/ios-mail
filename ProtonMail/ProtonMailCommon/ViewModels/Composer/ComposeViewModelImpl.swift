@@ -597,7 +597,11 @@ class ComposeViewModelImpl : ComposeViewModel {
             }
 
             self.updateDraft()
-            self.messageService.send(inQueue: self.message, completion: nil)
+            self.messageService.send(inQueue: self.message) { [weak self] _, _, error in
+                if error == nil {
+                    self?.message?.attachments.compactMap { $0 as? Attachment }.forEach { $0.cleanLocalURLs() }
+                }
+            }
         }
     }
     
