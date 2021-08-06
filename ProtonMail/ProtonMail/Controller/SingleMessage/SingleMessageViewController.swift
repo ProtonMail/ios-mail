@@ -152,9 +152,7 @@ private extension SingleMessageViewController {
     }
 
     private func showActionBar() {
-        guard self.actionBar == nil else {
-            return
-        }
+        guard self.actionBar == nil else { return }
 
         let actions = viewModel.getActionTypes()
         var actionBarItems: [PMActionBarItem] = []
@@ -192,9 +190,7 @@ private extension SingleMessageViewController {
             }
             actionBarItems.append(actionBarItem)
         }
-        let separator = PMActionBarItem(width: 1,
-                                        verticalPadding: 6,
-                                        color: UIColorManager.FloatyText)
+        let separator = PMActionBarItem(width: 1, verticalPadding: 6, color: UIColorManager.FloatyText)
         actionBarItems.insert(separator, at: 1)
         self.actionBar = PMActionBar(items: actionBarItems,
                                      backgroundColor: UIColorManager.FloatyBackground,

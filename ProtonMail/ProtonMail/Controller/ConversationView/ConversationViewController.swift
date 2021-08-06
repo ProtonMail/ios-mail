@@ -63,7 +63,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         guard !customView.tableView.visibleCells.isEmpty && // tableview finish reloading
                 !viewModel.isExpandedAtLaunch,
               let row = viewModel.messagesDataSource
-                .firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false }) else { return }
+                .firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false }),
+              viewModel.messagesDataSource.count > 1 else { return }
         viewModel.setCellIsExpandedAtLaunch()
         let indexPath = IndexPath(row: row, section: 1)
         customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
@@ -137,24 +138,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         } else {
             presentDetailedNavigationTitle()
             customView.separator.isHidden = false
-        }
-    }
-
-    private func refreshNavigationViewIfNeeded() {
-        if navigationItem.titleView is ConversationNavigationSimpleView {
-            navigationItem.titleView = viewModel.simpleNavigationViewType.titleView
-        }
-
-        if navigationItem.titleView is ConversationNavigationDetailView {
-            navigationItem.titleView = viewModel.detailedNavigationViewType.titleView
-        }
-    }
-
-    private func reloadActionBar() {
-        if actionBar != nil {
-            actionBar?.dismiss()
-            actionBar = nil
-            showActionBar()
         }
     }
 
@@ -342,6 +325,24 @@ private extension ConversationViewController {
 
     private func presentSimpleNavigationTitle() {
         conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
+    }
+
+    private func refreshNavigationViewIfNeeded() {
+        if navigationItem.titleView is ConversationNavigationSimpleView {
+            navigationItem.titleView = viewModel.simpleNavigationViewType.titleView
+        }
+
+        if navigationItem.titleView is ConversationNavigationDetailView {
+            navigationItem.titleView = viewModel.detailedNavigationViewType.titleView
+        }
+    }
+
+    private func reloadActionBar() {
+        if actionBar != nil {
+            actionBar?.dismiss()
+            actionBar = nil
+            showActionBar()
+        }
     }
 }
 
