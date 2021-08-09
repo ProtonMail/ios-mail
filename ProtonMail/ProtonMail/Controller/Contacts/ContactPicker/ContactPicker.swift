@@ -498,7 +498,7 @@ extension ContactPicker : ContactCollectionViewDelegate {
                                     self.contactCollectionView.selectedContacts)
         }
         
-        let filteredContacts = self.contacts.filter { predicate.evaluate(with: $0) }
+        let filteredContacts = self.contacts.filter { predicate.evaluate(with: $0) }.compactMap{ $0.copy() as? ContactPickerModelProtocol }
         if self.hideWhenNoResult && filteredContacts.isEmpty {
             self.hideSearchTableView()
         } else {
