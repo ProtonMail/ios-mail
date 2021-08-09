@@ -4,7 +4,13 @@ import UIKit
 class ConversationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
                                   UIScrollViewDelegate, ComposeSaveHintProtocol {
 
-    private var actionBar: PMActionBar?
+    private var actionBar: PMActionBar? {
+        didSet {
+            guard actionBar == nil else { return }
+            oldValue?.dismiss()
+        }
+    }
+
     let viewModel: ConversationViewModel
     let coordinator: ConversationCoordinator
     private(set) lazy var customView = ConversationView()
@@ -39,9 +45,12 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             guard let self = self else { return }
             self.refreshNavigationViewIfNeeded()
             self.starButtonSetUp(starred: self.viewModel.conversation.starred)
-            self.reloadActionBar()
             // Prevent the banner being covered by the action bar
             self.view.subviews.compactMap({ $0 as? PMBanner }).forEach({ self.view.bringSubviewToFront($0) })
+            let isNewMessageFloatyPresented = self.customView.subviews
+                .contains(where: { $0 is ConversationNewMessageFloatyView })
+            guard !isNewMessageFloatyPresented else { return }
+            self.reloadActionBar()
         }
 
         viewModel.showNewMessageArrivedFloaty = { [weak self] messageId in
@@ -141,6 +150,12 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             presentDetailedNavigationTitle()
             customView.separator.isHidden = false
         }
+    }
+
+    private func reloadActionBar() {
+        guard actionBar != nil else { return }
+        actionBar = nil
+        showActionBar()
     }
 
     private func cellTapped(messageId: String) {
@@ -341,14 +356,6 @@ private extension ConversationViewController {
 
         if navigationItem.titleView is ConversationNavigationDetailView {
             navigationItem.titleView = viewModel.detailedNavigationViewType.titleView
-        }
-    }
-
-    private func reloadActionBar() {
-        if actionBar != nil {
-            actionBar?.dismiss()
-            actionBar = nil
-            showActionBar()
         }
     }
 }
@@ -727,8 +734,13 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 // MARK: - New Message floaty view
 extension ConversationViewController {
     private func showNewMessageFloatyView(messageId: String) {
-        let floatyView = customView.showNewMessageFloatyView(messageId: messageId)
-        floatyView.show { [weak self] in
+        actionBar = nil
+
+        let floatyView = customView.showNewMessageFloatyView(messageId: messageId) { [weak self] in
+            self?.showActionBar()
+        }
+
+        floatyView.handleTapAction { [weak self] in
             guard let index = self?.viewModel.messagesDataSource
                     .firstIndex(where: { $0.message?.messageID == messageId }),
                   let messageViewModel = self?.viewModel.messagesDataSource[safe: index]?.messageViewModel,
