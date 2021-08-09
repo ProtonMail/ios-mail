@@ -1,3 +1,5 @@
+import SafariServices
+
 class ConversationCoordinator: CoordinatorDismissalObserver {
 
     weak var viewController: ConversationViewController?
@@ -75,6 +77,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             presentCreateFolder(type: .label)
         case .url(let url):
             presentWebView(url: url)
+        case .inAppSafari(let url):
+            presentInAppSafari(url: url)
         }
     }
 
@@ -166,6 +170,11 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
                                       options: [:],
                                       completionHandler: nil)
         }
+    }
+
+    private func presentInAppSafari(url: URL) {
+        let safari = SFSafariViewController(url: url)
+        self.viewController?.present(safari, animated: true, completion: nil)
     }
 }
 
