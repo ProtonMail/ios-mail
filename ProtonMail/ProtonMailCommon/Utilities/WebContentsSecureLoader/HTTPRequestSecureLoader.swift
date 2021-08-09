@@ -55,10 +55,12 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     }
     
     func load(contents: WebContents, in webView: WKWebView) {
+        addSpinnerIfNeeded(to: webView)
+
         self.webView?.stopLoading()
         self.renderedContents.invalidate()
         self.webView?.configuration.userContentController.removeAllUserScripts()
-        self.webView?.loadHTMLString("⏱", baseURL: URL(string: "about:blank")!)
+        self.webView?.loadHTMLString("", baseURL: URL(string: "about:blank")!)
         
         self.webView = webView
         
@@ -172,6 +174,8 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             self.loopbacks[url] = data
             
             self.webView?.load(request)
+
+            removeAllSpinners()
         }
         if let preheight = dict["preheight"] as? Double {
             self.renderedContents.preheight = CGFloat(preheight)
@@ -184,6 +188,27 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     func inject(into config: WKWebViewConfiguration) {
         config.userContentController.add(self, name: "loaded")
         config.setURLSchemeHandler(self, forURLScheme: HTTPRequestSecureLoader.loopbackScheme)
+    }
+
+    private func addSpinnerIfNeeded(to webView: WKWebView) {
+        guard webView.subviews.compactMap({ $0 as? UIActivityIndicatorView }).isEmpty else {
+            return
+        }
+        let spinner = UIActivityIndicatorView()
+        webView.addSubview(spinner)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        [
+            spinner.topAnchor.constraint(equalTo: webView.topAnchor, constant: 4),
+            spinner.centerXAnchor.constraint(equalTo: webView.centerXAnchor)
+        ].activate()
+        spinner.startAnimating()
+    }
+
+    private func removeAllSpinners() {
+        self.webView?.subviews.compactMap({ $0 as? UIActivityIndicatorView }).forEach({ view in
+            view.stopAnimating()
+            view.removeFromSuperview()
+        })
     }
 }
 
