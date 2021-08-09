@@ -40,6 +40,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             self.refreshNavigationViewIfNeeded()
             self.starButtonSetUp(starred: self.viewModel.conversation.starred)
             self.reloadActionBar()
+            // Prevent the banner being covered by the action bar
+            self.view.subviews.compactMap({ $0 as? PMBanner }).forEach({ self.view.bringSubviewToFront($0) })
         }
 
         viewModel.showNewMessageArrivedFloaty = { [weak self] messageId in
