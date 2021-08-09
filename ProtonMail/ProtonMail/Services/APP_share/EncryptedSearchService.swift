@@ -112,6 +112,7 @@ extension EncryptedSearchService {
                 msgs in
                 messages = msgs
                 print("# of message objects: ", messages.count)
+                //print("message id [0]: ", (messages[0] as! Message).messageID)
                 
                 NSLog("Downloading message details...") //if needed
                 //3. downloads message details
@@ -310,17 +311,25 @@ extension EncryptedSearchService {
     
     func getMessageObjects(_ messageIDs: NSArray, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
         //print("Iterate through messages:")
+        let group = DispatchGroup()
         let messages: NSMutableArray = []
-        var processedMessages: Int = 0
+        //var processedMessages: Int = 0
         for msgID in messageIDs {
-            self.getMessage(msgID as! String) {
-                m in
-                messages.add(m!)
-                processedMessages += 1
-                print("message: ", processedMessages)
-                
-                if processedMessages == messageIDs.count {
-                    completionHandler(messages)
+            group.enter()
+            //print("enter group")
+            
+            //Do not block main queue to avoid deadlock
+            DispatchQueue.global(qos: .default).async {
+                self.getMessage(msgID as! String) {
+                    m in
+                    messages.add(m!)
+                    //processedMessages += 1
+                    //print("message: ", processedMessages)
+                    
+                    //if processedMessages == messageIDs.count {
+                    //    completionHandler(messages)
+                    //}
+                    group.leave()
                 }
             }
             
@@ -330,7 +339,11 @@ extension EncryptedSearchService {
         }
         
         //do I have to call it here as well?
-        if processedMessages == messageIDs.count {
+        //if processedMessages == messageIDs.count {
+        //    completionHandler(messages)
+        //}
+        group.notify(queue: .main) {
+            print("Fetching message objects completed!")
             completionHandler(messages)
         }
     }
@@ -363,6 +376,7 @@ extension EncryptedSearchService {
     }*/
     
     func getMessageDetailsIfNotAvailable(_ messages: NSArray, messagesToProcess: Int, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
+        let group = DispatchGroup()
         let msg: NSMutableArray = []
         var processedMessageCount: Int = 0
         for m in messages {
@@ -370,40 +384,48 @@ extension EncryptedSearchService {
                 msg.add(m)
                 processedMessageCount += 1
             } else {
-                self.messageService.fetchMessageDetailForMessage(m as! Message, labelID: "5") { _, response, _, error in
-                    //print("Response: ", response!)
-                    print("Fetching message details for message: ", (m as! Message).messageID)
-                    
-                    if error == nil {
-                        //let abc:NSDictionary = response!["Message"] as! NSDictionary
-                        //print("abc:", abc)
-                        //TODO extract message id
-                        let mID: String = (m as! Message).messageID
-                        //call get message (from cache) -> now with details
-                        //let newM:Message? = self.getMessage(mID)
-                        self.getMessage(mID) { newM in
-                            msg.add(newM!)
-                            print("Message: (", mID, ") successfull added!")
-                            processedMessageCount += 1  //increase message count if successfully added
-                            
-                            //if we are already finished with for loop, we have to check here to be able to return
-                            if processedMessageCount == messagesToProcess {
-                                completionHandler(msg)
+                group.enter()
+                //Do not block main queue to avoid deadlock
+                DispatchQueue.global(qos: .default).async {
+                    self.messageService.fetchMessageDetailForMessage(m as! Message, labelID: "5") { _, response, _, error in
+                        //print("Response: ", response!)
+                        print("Fetching message details for message: ", (m as! Message).messageID)
+                        
+                        if error == nil {
+                            //let abc:NSDictionary = response!["Message"] as! NSDictionary
+                            //print("abc:", abc)
+                            //TODO extract message id
+                            let mID: String = (m as! Message).messageID
+                            //call get message (from cache) -> now with details
+                            //let newM:Message? = self.getMessage(mID)
+                            self.getMessage(mID) { newM in
+                                msg.add(newM!)
+                                print("Message: (", mID, ") successfull added!")
+                                processedMessageCount += 1  //increase message count if successfully added
+                                
+                                //if we are already finished with for loop, we have to check here to be able to return
+                                //if processedMessageCount == messagesToProcess {
+                                //    completionHandler(msg)
+                                //}
                             }
                         }
+                        else {
+                            NSLog("Error: ", error!)
+                        }
+                        group.leave()
                     }
-                    else {
-                        NSLog("Error: ", error!)
-                    }
-                    //print("Finish fetching message detail")
-                }
+                }//dispatchqueue
             }
             print("Messages processed: ", processedMessageCount)
         }
         
         //check if all messages have been processed
         //do I have to check here as well?
-        if processedMessageCount == messagesToProcess {
+        //if processedMessageCount == messagesToProcess {
+        //    completionHandler(msg)
+        //}
+        group.notify(queue: .main) {
+            print("Fetching message details completed!")
             completionHandler(msg)
         }
     }
@@ -430,13 +452,9 @@ extension EncryptedSearchService {
     }
     
     func decryptBodyAndExtractData(_ messages: NSArray, completionHandler: @escaping () -> Void) {
-        //2. decrypt messages (using the user's PGP key)
         var processedMessagesCount: Int = 0
-        var decryptionFailed: Bool = true
         for m in messages {
-            //print("Message:")
-            //print((m as! Message).body)
-            
+            var decryptionFailed: Bool = true
             var body: String? = ""
             do {
                 body = try self.messageService.decryptBodyIfNeeded(message: m as! Message)
