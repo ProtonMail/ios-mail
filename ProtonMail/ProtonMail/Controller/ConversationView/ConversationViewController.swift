@@ -188,9 +188,14 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
     private func presentActionSheet(for message: Message) {
         let forbidden = [Message.Location.allmail.rawValue,
-                          Message.Location.starred.rawValue]
+                          Message.Location.starred.rawValue,
+                          Message.HiddenLocation.sent.rawValue,
+                          Message.HiddenLocation.draft.rawValue]
         guard let labels = message.labels.allObjects as? [Label],
               let location = labels
+                .sorted(by: { label1, label2 in
+                    return label1.labelID < label2.labelID
+                })
                 .first(where: {
                         !forbidden.contains($0.labelID)
                     && ($0.type.intValue == 3 || Int($0.labelID) != nil)
