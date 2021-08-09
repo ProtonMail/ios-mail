@@ -15,8 +15,11 @@ class ConversationFeatureFlagService {
             apiService.exec(route: request) { (dataTask, response: ConversationFeatureFlagResponse) in
                 if let error = dataTask?.error {
                     resolver.reject(error)
+                } else if let error = response.error {
+                    resolver.reject(error)
+                } else {
+                    resolver.fulfill(response.isConversationModeEnabled == true)
                 }
-                resolver.fulfill(response.isConversationModeEnabled == true)
             }
         }
     }

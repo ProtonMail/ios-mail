@@ -70,8 +70,8 @@ class ConversationFeatureFlagServiceTests: XCTestCase {
 
         wait(for: [finallyExpectation], timeout: 1)
 
-        XCTAssertFalse(result ?? true)
-        XCTAssertNil(error)
+        XCTAssertNil(result)
+        XCTAssertNotNil(error)
     }
 
     func testGetConversationFlagFailureResponse() {
