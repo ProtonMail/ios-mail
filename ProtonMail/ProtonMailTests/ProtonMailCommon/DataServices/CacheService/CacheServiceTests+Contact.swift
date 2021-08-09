@@ -27,7 +27,7 @@ extension CacheServiceTest {
         let contactData = testSingleContactData.parseJson()!
 
         let expect = expectation(description: "Add contact")
-        sut.addNewContact(serverReponse: contactData) { (contacts, error) in
+        sut.addNewContact(serverResponse: contactData) { (contacts, error) in
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)
@@ -45,7 +45,7 @@ extension CacheServiceTest {
         //Load data
         let contactData = testSingleContactData.parseJson()!
         let expect = expectation(description: "Add contact")
-        sut.addNewContact(serverReponse: contactData) { (contacts, error) in
+        sut.addNewContact(serverResponse: contactData) { (contacts, error) in
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)
@@ -76,7 +76,7 @@ extension CacheServiceTest {
         let contactID = "_9E6ypCp6i9m7sUDdX9sYi3WDmPGUkidbhpA-d3qszlhMaglnj-OvfJLk2zdUsTaNy3ZavFFW3JvFn_VE_2wdg=="
         let contactData = testSingleContactData.parseJson()!
         let expect = expectation(description: "Add contact")
-        sut.addNewContact(serverReponse: contactData) { (contacts, error) in
+        sut.addNewContact(serverResponse: contactData) { (contacts, error) in
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)
@@ -97,7 +97,7 @@ extension CacheServiceTest {
         let contactID = "_9E6ypCp6i9m7sUDdX9sYi3WDmPGUkidbhpA-d3qszlhMaglnj-OvfJLk2zdUsTaNy3ZavFFW3JvFn_VE_2wdg=="
         let contactData = testSingleContactData.parseJson()!
         let expect = expectation(description: "Add contact")
-        sut.addNewContact(serverReponse: contactData) { (contacts, error) in
+        sut.addNewContact(serverResponse: contactData) { (contacts, error) in
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)

@@ -22,6 +22,7 @@
 
 import Foundation
 import Groot
+import PromiseKit
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -35,6 +36,8 @@ final class MainQueueHandler: QueueHandler {
     private let conversationDataService: ConversationProvider
     private let labelDataService: LabelsDataService
     private let localNotificationService: LocalNotificationService
+    private let contactService: ContactDataService
+    private let contactGroupService: ContactGroupsDataService
     private weak var user: UserManager?
     
     init(cacheService: CacheService,
@@ -53,6 +56,8 @@ final class MainQueueHandler: QueueHandler {
         self.conversationDataService = conversationDataService
         self.labelDataService = labelDataService
         self.localNotificationService = localNotificationService
+        self.contactService = user.contactService
+        self.contactGroupService = user.contactGroupService
         self.user = user
     }
 
@@ -69,7 +74,9 @@ final class MainQueueHandler: QueueHandler {
             switch action {
             case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .send,
                  .updateLabel, .createLabel, .deleteLabel, .signout, .signin,
-                 .fetchMessageDetail, .updateAttKeyPacket:
+                 .fetchMessageDetail, .updateAttKeyPacket,
+                 .updateContact, .deleteContact, .addContact,
+                 .addContactGroup, .updateContactGroup, .deleteContactGroup:
                 fatalError()
             case .emptyTrash, .emptySpam:   // keep this as legacy option for 2-3 releases after 1.11.12
                 fatalError()
@@ -132,6 +139,18 @@ final class MainQueueHandler: QueueHandler {
                 break
             case .fetchMessageDetail:
                 self.fetchMessageDetail(messageID: task.messageID, completion: completeHandler)
+            case .updateContact(let objectID, let cardDatas):
+                self.updateContact(objectID: objectID, cardDatas: cardDatas, completion: completeHandler)
+            case .deleteContact(let objectID):
+                self.deleteContact(objectID: objectID, completion: completeHandler)
+            case .addContact(let objectID, let cardDatas):
+                self.addContact(objectID: objectID, cardDatas: cardDatas, completion: completeHandler)
+            case .addContactGroup(let objectID, let name, let color, let emailIDs):
+                self.createContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs, completion: completeHandler)
+            case .updateContactGroup(let objectID, let name, let color, let addedEmailList, let removedEmailList):
+                self.updateContactGroup(objectID: objectID, name: name, color: color, addedEmailList: addedEmailList, removedEmailList: removedEmailList, completion: completeHandler)
+            case .deleteContactGroup(let objectID):
+                self.deleteContactGroup(objectID: objectID, completion: completeHandler)
             }
         }
     }
@@ -820,6 +839,134 @@ extension MainQueueHandler {
                 }
                 completion?(nil, nil, nil)
             })
+        }
+    }
+}
+
+// MARK: Contact service
+extension MainQueueHandler {
+    private func updateContact(objectID: String, cardDatas: [CardData], completion: CompletionBlock?) {
+        let dataService = self.coreDataService
+        let context = self.coreDataService.operationContext
+        let service = self.contactService
+        context.perform {
+            guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
+                  let managedObject = try? context.existingObject(with: managedID),
+                  let contact = managedObject as? Contact else
+            {
+                completion?(nil, nil, NSError.badParameter("contact objectID"))
+                return
+            }
+            service.update(contactID: contact.contactID, cards: cardDatas) { contact, error in
+                completion?(nil, nil, error)
+            }
+        }
+    }
+
+    private func deleteContact(objectID: String, completion: CompletionBlock?) {
+        let dataService = self.coreDataService
+        let context = self.coreDataService.operationContext
+        let service = self.contactService
+        context.perform {
+            guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
+                  let managedObject = try? context.existingObject(with: managedID),
+                  let contact = managedObject as? Contact else
+            {
+                completion?(nil, nil, NSError.badParameter("contact objectID"))
+                return
+            }
+            service.delete(contactID: contact.contactID) { error in
+                completion?(nil, nil, error)
+            }
+        }
+    }
+    
+    private func addContact(objectID: String, cardDatas: [CardData], completion: CompletionBlock?) {
+        let service = self.contactService
+        service.add(cards: [cardDatas], authCredential: nil, objectID: objectID) { contacts, error in
+            completion?(nil, nil, error)
+        }
+    }
+
+    /// - Parameters:
+    ///   - objectID: CoreData object ID of temp group label
+    ///   - name: Group label name
+    ///   - color: Group label color
+    ///   - emailIDs: Email id array
+    ///   - completion: Completion
+    private func createContactGroup(objectID:String, name: String, color: String, emailIDs: [String], completion: CompletionBlock?) {
+        let service = self.contactGroupService
+        firstly {
+            return service.createContactGroup(name: name,
+                                              color: color,
+                                              objectID: objectID)
+        }.then { (id: String) -> Promise<Void> in
+            return service.addEmailsToContactGroup(groupID: id,
+                                                   emailList: [],
+                                                   emailIDs: emailIDs)
+        }.done {
+            completion?(nil, nil, nil)
+        }.catch { error in
+            completion?(nil, nil, error as NSError)
+        }
+    }
+
+    /// - Parameters:
+    ///   - objectID: Core data object of the group label
+    ///   - name: Group label name
+    ///   - color: Group label color
+    ///   - addedEmailList: The emailID list that will add to this group label
+    ///   - removedEmailList: The emailID list that will remove from this group label
+    ///   - completion: Completion
+    private func updateContactGroup(objectID: String, name: String, color: String, addedEmailList: [String], removedEmailList: [String], completion: CompletionBlock?) {
+        let dataService = self.coreDataService
+        let context = self.coreDataService.operationContext
+        let service = self.contactGroupService
+        context.perform {
+            guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
+                  let managedObject = try? context.existingObject(with: managedID),
+                  let label = managedObject as? Label else
+            {
+                completion?(nil, nil, NSError.badParameter("Group label objectID"))
+                return
+            }
+            let groupID = label.labelID
+            firstly {
+                return service.editContactGroup(groupID: groupID, name: name, color: color)
+            }.then {
+                return service.addEmailsToContactGroup(groupID: groupID,
+                                                       emailList: [],
+                                                       emailIDs: addedEmailList)
+            }.then {
+                return service.removeEmailsFromContactGroup(groupID: groupID,
+                                                            emailList: [],
+                                                            emailIDs: removedEmailList)
+            }.done {
+                completion?(nil, nil, nil)
+            }.catch { error in
+                completion?(nil, nil, error as NSError)
+            }
+        }
+    }
+
+    private func deleteContactGroup(objectID: String, completion: CompletionBlock?) {
+        let dataService = self.coreDataService
+        let context = self.coreDataService.operationContext
+        let service = self.contactGroupService
+        context.perform {
+            guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
+                  let managedObject = try? context.existingObject(with: managedID),
+                  let label = managedObject as? Label else
+            {
+                completion?(nil, nil, NSError.badParameter("Group label objectID"))
+                return
+            }
+            let groupID = label.labelID
+            service.deleteContactGroup(groupID: groupID).done {
+                completion?(nil, nil, nil)
+            }.catch { error in
+                completion?(nil, nil, error as NSError)
+            }
         }
     }
 }

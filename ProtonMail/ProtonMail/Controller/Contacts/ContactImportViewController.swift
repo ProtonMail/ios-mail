@@ -91,7 +91,6 @@ class ContactImportViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.cancelled = true
-        self.dismiss()
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
@@ -107,7 +106,7 @@ class ContactImportViewController: UIViewController {
                                                 style: .destructive, handler: { (action) -> Void in
             self.showedCancel = false
             self.cancelled = true
-            self.dismiss()
+                                                    self.user.contactService.cancelImportTask()
         }))
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: {(action) -> Void in
             self.showedCancel = false
@@ -118,14 +117,15 @@ class ContactImportViewController: UIViewController {
     
     private func dismiss() {
         delay(2) {
+            let isOffline = !self.isOnline
             self.dismiss(animated: true, completion: {
-                
+                if isOffline {
+                    LocalString._contacts_saved_offline_hint.alertToastBottom()
+                }
             })
             
             if self.showedCancel {
-                self.dismiss(animated: true, completion: {
-                    
-                })
+                self.dismiss(animated: true, completion: nil)
             }
         }
     }
@@ -156,198 +156,30 @@ class ContactImportViewController: UIViewController {
     
     internal func retrieveContactsWithStore(store: CNContactStore) {
         guard case let mailboxPassword = self.user.mailboxPassword,
-            let userkey = self.user.userInfo.firstUserKey(),
-            case let authCredential = self.user.authCredential else
+              let userkey = self.user.userInfo.firstUserKey() else
         {
             NSError.lockError().alertToast()
             return
         }
+        let existed = (fetchedResultsController?.fetchedObjects as? [Contact]) ?? []
         
-        {
-            var pre_contacts : [[CardData]] = []
-            var found: Int = 0
-            //build boday first
-            do {
-                let contacts = self.contacts
-                let titleCount = contacts.count
-                var index : Float = 0
-                for contact in contacts {
-                    if self.cancelled {
-                        {
-                            self.messageLabel.text = LocalString._contacts_cancelling_title
-                        } ~> .main
-                        return
-                    }
-                    
-                    {
-                        let offset = index / Float(titleCount)
-                        self.progressView.setProgress(offset, animated: true)
-                    } ~> .main
-                    
-                    index += 1.0
-                    
-                    //check is uuid in the exsiting contacts
-                    let identifier = contact.identifier
-                    
-                    if !self.isExsit(uuid: identifier) {
-                        found += 1
-                        {
-                            self.messageLabel.text = "Encrypting contacts...\(found)"
-                        } ~> .main
-                        
-                        /* not included into requested keys since iOS 13 SDK, see comment in AddressBookSerivice.getAllContacts() */
-                        // let note = contact.note
-                        let note = ""
-                        
-                        let rawData = try CNContactVCardSerialization.data(with: [contact])
-                        let vcardStr = String(data: rawData, encoding: .utf8)!
-                        if let vcard3 = PMNIEzvcard.parseFirst(vcardStr) {
-                            let uuid = PMNIUid.createInstance(identifier)
-                            guard let vcard2 = PMNIVCard.createInstance() else {
-                                continue
-                            }
-                            var defaultName = LocalString._general_unknown_title
-                            let emails = vcard3.getEmails()
-                            var vcard2Emails: [PMNIEmail] = []
-                            var i : Int = 1
-                            for e in emails {
-                                let ng = "EItem\(i)"
-                                let group = e.getGroup()
-                                if group.isEmpty {
-                                    e.setGroup(ng)
-                                    i += 1
-                                }
-                                let em = e.getValue()
-                                if !em.isEmpty {
-                                    defaultName = em
-                                }
-                                
-                                if em.isValidEmail() {
-                                    vcard2Emails.append(e)
-                                }
-                            }
-                            
-                            if let fn = vcard3.getFormattedName() {
-                                var name = fn.getValue().trim()
-                                name = name.preg_replace("  ", replaceto: " ")
-                                if name.isEmpty {
-                                    if let fn = PMNIFormattedName.createInstance(defaultName) {
-                                        vcard2.setFormattedName(fn)
-                                    }
-                                } else {
-                                    if let fn = PMNIFormattedName.createInstance(name) {
-                                        vcard2.setFormattedName(fn)
-                                    }
-                                }
-                                vcard3.clearFormattedName()
-                            } else {
-                                if let fn = PMNIFormattedName.createInstance(defaultName) {
-                                    vcard2.setFormattedName(fn)
-                                }
-                            }
-                            
-                            vcard2.setEmails(vcard2Emails)
-                            vcard3.clearEmails()
-                            vcard2.setUid(uuid)
-                            
-                            do {
-                                // add others later
-                                guard let vcard2Str = try vcard2.write() else {
-                                    continue
-                                }
-                                let signed_vcard2 = try Crypto().signDetached(plainData: vcard2Str,
-                                                                              privateKey: userkey.privateKey,
-                                                                              passphrase: mailboxPassword)
-                                
-                                //card 2 object
-                                let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
-                                
-                                vcard3.setUid(uuid)
-                                vcard3.setVersion(PMNIVCardVersion.vCard40())
-                                
-                                if !note.isEmpty {
-                                    vcard3.setNote(PMNINote.createInstance("", note: note))
-                                }
-                                
-                                guard let vcard3Str = try vcard3.write() else {
-                                    continue
-                                }
-                                let encrypted_vcard3 = try vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", passphrase: "")
-                                let signed_vcard3 = try Crypto().signDetached(plainData: vcard3Str,
-                                                                              privateKey: userkey.privateKey,
-                                                                              passphrase: mailboxPassword)
-                                //card 3 object
-                                let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3)
-                                
-                                let cards : [CardData] = [card2, card3]
-                                
-                                pre_contacts.append(cards)
-                            } catch {
-                                // upload vcardStr when see error
-                                Analytics.shared.error(message: .vcard, error: vcardStr, user: self.user)
-                            }
-                        }
-                    }
+        self.user.contactService.queueImport(contacts: self.contacts, existedContact: existed, userKey: userkey, mailboxPassword: mailboxPassword, progress: { [weak self] progress, message in
+            DispatchQueue.main.async {
+                if let progress = progress {
+                    self?.progressView.setProgress(progress, animated: false)
                 }
-            } catch let error as NSError {
-                error.alertToast()
-            }
-            
-            if !pre_contacts.isEmpty {
-                let pre_count = pre_contacts.count
-                if self.cancelled {
-                    {
-                        self.messageLabel.text = LocalString._contacts_cancelling_title
-                    } ~> .main
-                    return
+                if let message = message {
+                    self?.messageLabel.text = message
                 }
-
-                {
-                    self.progressView.setProgress(0.0, animated: false)
-                    self.messageLabel.text = "Uploading contacts. 0/\(pre_count)"
-                } ~> .main
-                
-                self.user.contactService.imports(cards: pre_contacts, authCredential: authCredential, cancel: { () -> Bool in
-                    return self.cancelled
-                }, update: { (processed) in
-                    {
-                        let uploadOffset = Float(processed) / Float(pre_count)
-                        self.progressView.setProgress(uploadOffset, animated: true)
-                        self.messageLabel.text = "Uploading contacts. \(processed)/\(pre_count)"
-                    } ~> .main
-                }, completion: { (contacts : [Contact]?, error : String) in
-                    {
-                        self.finished = true
-                        if let conts = contacts {
-                            let count = conts.count
-                            self.progressView.setProgress(1, animated: true)
-                            self.messageLabel.text = "You have imported \(count) of \(found) contacts!"
-                        }
-                        
-                        if error.isEmpty {
-                            self.dismiss()
-                        } else {
-                            let alertController = UIAlertController(title: LocalString._contacts_import_error,
-                                                                    message: error,
-                                                                    preferredStyle: .alert)
-                            alertController.addAction(UIAlertAction(title: LocalString._general_ok_action,
-                                                                    style: .default, handler: {(action) -> Void in
-                                self.dismiss()
-                            }))
-                            self.present(alertController, animated: true, completion: nil)
-                        }
-                    } ~> .main
-                })
-                
-            } else {
-                {
-                    self.finished = true
-                    self.messageLabel.text = LocalString._contacts_all_imported
-                    self.dismiss()
-                } ~> .main
             }
-            
-        } ~> .async
+        }, dismiss: { [weak self] error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self?.messageLabel.text = error.localizedDescription
+                }
+                self?.dismiss()
+            }
+        })
     }
     
 }

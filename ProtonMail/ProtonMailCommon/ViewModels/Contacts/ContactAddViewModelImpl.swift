@@ -383,7 +383,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             cards.append(card3)
         }
         //TODO:: can be improved
-        user.contactService.add(cards: [cards], authCredential: authCredential) { (contacts : [Contact]?, error : NSError?) in
+        user.contactService.queueAddContact(cardDatas: cards, name: self.profile.newDisplayName, emails: self.emails) { _, error in
             DispatchQueue.main.async {
                 if error == nil {
                     complete(nil)

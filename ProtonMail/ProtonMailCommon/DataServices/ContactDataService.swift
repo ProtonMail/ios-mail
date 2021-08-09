@@ -23,11 +23,13 @@
 
 import Foundation
 import CoreData
+import Contacts
 import Groot
 import PromiseKit
 import AwaitKit
 import Crypto
 import OpenPGP
+import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 
@@ -50,7 +52,10 @@ class ContactDataService: Service, HasLocalStorage {
     private let userID : String
     private var lastUpdatedStore: LastUpdatedStoreProtocol
     private let cacheService: CacheService
-    init(api: APIService, labelDataService: LabelsDataService, userID : String, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, cacheService: CacheService) {
+    private weak var queueManager: QueueManager?
+    private let contactImportQueue = OperationQueue()
+    private var contactImportTask: BlockOperation?
+    init(api: APIService, labelDataService: LabelsDataService, userID: String, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, cacheService: CacheService, queueManager: QueueManager) {
         self.userID = userID
         self.apiService = api
         self.addressBookService = AddressBookService()
@@ -58,6 +63,7 @@ class ContactDataService: Service, HasLocalStorage {
         self.coreDataService = coreDataService
         self.lastUpdatedStore = lastUpdatedStore
         self.cacheService = cacheService
+        self.queueManager = queueManager
     }
     
     /**
@@ -127,7 +133,9 @@ class ContactDataService: Service, HasLocalStorage {
         fetchRequest.sortDescriptors = [strComp]
         
         if !isCombineContact {
-            fetchRequest.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.userID)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == 0", Contact.Attributes.userID, self.userID, Contact.Attributes.isSoftDeleted)
+        } else {
+            fetchRequest.predicate = NSPredicate(format: "%K == 0", Contact.Attributes.isSoftDeleted)
         }
         return NSFetchedResultsController(fetchRequest: fetchRequest,
                                           managedObjectContext: moc,
@@ -153,107 +161,56 @@ class ContactDataService: Service, HasLocalStorage {
      add a new contact
      
      - Parameter cards: vcard contact data -- 4 different types
+     - Parameter objectID: CoreData object ID of group label
      - Parameter completion: async add contact complete response
      **/
-    func add(cards: [[CardData]], authCredential: AuthCredential?, completion: ContactAddComplete?) {
+    func add(cards: [[CardData]], authCredential: AuthCredential?, objectID: String? = nil, completion: ContactAddComplete?) {
         let route = ContactAddRequest(cards: cards, authCredential: authCredential)
-        self.apiService.exec(route: route) { (response: ContactAddResponse) in
+        self.apiService.exec(route: route) { [weak self] (response: ContactAddResponse) in
+            guard let self = self else { return }
+            let context = self.coreDataService.operationContext
             var contacts_json : [[String : Any]] = []
             var lasterror : NSError?
             let results = response.results
-            if !results.isEmpty {
-                let isCountMatch = cards.count == results.count
-                var i : Int = 0
-                for res in results {
+            context.perform {
+                guard !results.isEmpty,
+                      cards.count == results.count else {
+                    DispatchQueue.main.async {
+                        completion?(nil, lasterror)
+                    }
+                    return
+                }
+                
+                for (i, res) in results.enumerated() {
                     if let error = res as? NSError {
                         lasterror = error
+                        guard let objectID = objectID,
+                              let managedID = self.coreDataService.managedObjectIDForURIRepresentation(objectID),
+                              let managedObject = try? context.existingObject(with: managedID) else {
+                            continue
+                        }
+                        context.delete(managedObject)
                     } else if var contact = res as? [String: Any] {
-                        if isCountMatch {
-                            contact["Cards"] = cards[i].toDictionary()
-                            contacts_json.append(contact)
+                        contact["Cards"] = cards[i].toDictionary()
+                        contacts_json.append(contact)
+                    }
+                }
+                
+                if !contacts_json.isEmpty {
+                    self.cacheService.addNewContact(serverResponse: contacts_json, objectID: objectID) { (contacts, error) in
+                        DispatchQueue.main.async {
+                            completion?(contacts, error)
                         }
                     }
-                    i += 1
+                } else {
+                    DispatchQueue.main.async {
+                        completion?(nil, lasterror)
+                    }
                 }
-            }
-            
-            if !contacts_json.isEmpty {
-                self.cacheService.addNewContact(serverReponse: contacts_json) { (contacts, error) in
-                    completion?(contacts, error)
-                }
-            } else {
-                completion?(nil, lasterror)
             }
         }
     }
-    
-    /**
-     import a new conact
-     
-     - Parameter name: contact name
-     - Parameter emails: contact email list
-     - Parameter cards: vcard contact data -- 4 different types
-     - Parameter completion: async add contact complete response
-     **/
-    func imports(cards: [[CardData]], authCredential: AuthCredential?,
-                 cancel: ContactImportCancel?, update: ContactImportUpdate?, completion: ContactImportComplete?) {
-        
-        {
-            var lasterror : [String] = []
-            let count : Int = cards.count
-            var processed : Int = 0
-            var tempCards : [[CardData]] = []
-            var importedContacts : [Contact] = []
-            for card in cards {
 
-                if let isCancel = cancel?(), isCancel == true {
-                    completion?(importedContacts, "")
-                    return
-                }
-
-                tempCards.append(card)
-                processed += 1
-                if processed == count || tempCards.count >= 3 {
-
-                    let api = ContactAddRequest(cards: tempCards, authCredential: authCredential)
-                    do {
-                        let response: ContactAddResponse = try `await`(self.apiService.run(route: api))
-                        update?(processed)
-                        var contacts_json : [[String : Any]] = []
-                        let results = response.results
-                        if !results.isEmpty {
-                            let isCountMatch = tempCards.count == results.count
-                            var i : Int = 0
-                            for res in results {
-                                if let error = res as? NSError {
-                                    lasterror.append(error.description)
-                                } else if var contact = res as? [String: Any] {
-                                    if isCountMatch {
-                                        contact["Cards"] = tempCards[i].toDictionary()
-                                    }
-                                    contacts_json.append(contact)
-                                }
-                                i += 1
-                            }
-                        }
-
-                        tempCards.removeAll()
-
-                        if !contacts_json.isEmpty {
-                            self.cacheService.addNewContact(serverReponse: contacts_json) { (contacts, error) in
-                                importedContacts.append(contentsOf: contacts ?? [])
-                                PMLog.D("error: \(String(describing: error))")
-                            }
-                        }
-                    } catch let ex as NSError {
-                        PMLog.D(" error: \(ex)")
-                    }
-                }
-            }
-            completion?(importedContacts, lasterror.joined(separator: "\n"))
-        } ~> .async
-    }
-    
     /**
      update a exsiting conact
      
@@ -298,24 +255,28 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     func delete(contactID: String, completion: @escaping ContactDeleteComplete) {
         let api = ContactDeleteRequest(ids: [contactID])
-        self.apiService.exec(route: api) { (task, response) in
-            if let error = response.error {
-                if error.responseCode == 13043 { //not exsit
-                    self.cacheService.deleteContact(by: contactID) { (cacheError) in
-                        PMLog.D(" error: \(String(describing: cacheError))")
-                    }
-                }
-                completion(error.toNSError)
-            } else {
-                self.cacheService.deleteContact(by: contactID) { (error) in
-                    if let cacheError = error {
-                        DispatchQueue.main.async {
-                            completion(cacheError)
+        self.apiService.exec(route: api) { [weak self] (task, response) in
+            guard let self = self else { return }
+            let context = self.coreDataService.operationContext
+            context.perform {
+                if let error = response.error {
+                    if error.responseCode == 13043 { //not exsit
+                        self.cacheService.deleteContact(by: contactID) { (cacheError) in
+                            PMLog.D(" error: \(String(describing: cacheError))")
                         }
                     } else {
-                        DispatchQueue.main.async {
-                            completion(nil)
-                        }
+                        let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context)
+                        contact?.isSoftDeleted = false
+                        _ = context.saveUpstreamIfNeeded()
+                    }
+                    DispatchQueue.main.async {
+                        completion(error.toNSError)
+                    }
+                    return
+                }
+                self.cacheService.deleteContact(by: contactID) { (error) in
+                    DispatchQueue.main.async {
+                        completion(error)
                     }
                 }
             }
@@ -487,7 +448,7 @@ class ContactDataService: Service, HasLocalStorage {
                         } else {
                             fetched = fetched + contacts.count
                         }
-                        self.cacheService.addNewContact(serverReponse: contacts, shouldFixName: true) { (_, error) in
+                        self.cacheService.addNewContact(serverResponse: contacts, shouldFixName: true) { (_, error) in
                             if let err = error {
                                 DispatchQueue.main.async {
                                     err.alertErrorToast()
@@ -526,7 +487,7 @@ class ContactDataService: Service, HasLocalStorage {
                         } else {
                             fetched = fetched + contactsArray.count
                         }
-                        self.cacheService.addNewContact(serverReponse: contactsArray, shouldFixName: true) { (_, error) in
+                        self.cacheService.addNewContact(serverResponse: contactsArray, shouldFixName: true) { (_, error) in
                             if let err = error {
                                 DispatchQueue.main.async {
                                     err.alertErrorToast()
@@ -678,6 +639,297 @@ class ContactDataService: Service, HasLocalStorage {
                 complete?(nil, -1)
             }
         }
+    }
+}
+
+// MRAK: Queue related
+extension ContactDataService {
+    func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], completion: ContactAddComplete?) {
+        let context = self.coreDataService.operationContext
+        let userID = self.userID
+        context.perform { [weak self] in
+            guard let self = self else { return }
+            do {
+                let contact = try Contact.makeTempContact(context: context,
+                                                          userID: userID,
+                                                          name: name,
+                                                          cardDatas: cardDatas,
+                                                          emails: emails)
+                if let error = context.saveUpstreamIfNeeded() {
+                    completion?(nil, error)
+                    return
+                }
+                let objectID = contact.objectID.uriRepresentation().absoluteString
+                let action: MessageAction = .addContact(objectID: objectID,
+                                                        cardDatas: cardDatas)
+                let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+                _ = self.queueManager?.addTask(task)
+                completion?(nil, nil)
+            } catch {
+                completion?(nil, error as NSError)
+            }
+        }
+    }
+
+    func queueUpdate(objectID: NSManagedObjectID, contactID: String, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?) {
+        let context = self.coreDataService.operationContext
+        context.perform { [weak self] in
+            guard let self = self else { return }
+            do {
+                guard let contactInContext = try context.existingObject(with: objectID) as? Contact else {
+                    let error = NSError(domain: "", code: -1,
+                                        localizedDescription: LocalString._error_no_object)
+                    completion?(nil, error)
+                    return
+                }
+                contactInContext.cardData = try cardDatas.toJSONString()
+                contactInContext.name = newName
+                if let emailObjects = contactInContext.emails.allObjects as? [Email] {
+                    for emailObject in emailObjects {
+                        context.delete(emailObject)
+                    }
+                }
+                // These temp emails will be removed when process real api response
+                // CacheService > updateContact(contactID:...)
+                _ = emails.map { $0.makeTempEmail(context: context, contact: contactInContext) }
+                if let error = context.saveUpstreamIfNeeded() {
+                    completion?(nil, error)
+                } else {
+                    let idString = objectID.uriRepresentation().absoluteString
+                    let action: MessageAction = .updateContact(objectID: idString,
+                                                               cardDatas: cardDatas)
+                    let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+                    _ = self.queueManager?.addTask(task)
+                    completion?(nil, nil)
+                }
+            } catch {
+                completion?(nil, error as NSError)
+            }
+        }
+    }
+
+    func queueDelete(objectID: NSManagedObjectID, completion: ContactDeleteComplete?) {
+        let context = self.coreDataService.operationContext
+        context.perform {
+            do {
+                guard let contactInContext = try context.existingObject(with: objectID) as? Contact else {
+                    let error = NSError(domain: "", code: -1,
+                                        localizedDescription: LocalString._error_no_object)
+                    completion?(error)
+                    return
+                }
+                contactInContext.isSoftDeleted = true
+                if let error = context.saveUpstreamIfNeeded() {
+                    completion?(error as NSError)
+                    return
+                }
+                let idString = objectID.uriRepresentation().absoluteString
+                let action: MessageAction = .deleteContact(objectID: idString)
+                let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+                _ = self.queueManager?.addTask(task)
+                completion?(nil)
+            } catch {
+                completion?(error as NSError)
+            }
+        }
+    }
+
+    func queueImport(contacts: [CNContact], existedContact: [Contact], userKey: Key, mailboxPassword: String, progress: ((Float?, String?) -> Void)?, dismiss: @escaping ((Error?) -> Void)) {
+        let task = BlockOperation()
+        task.addExecutionBlock { [weak self] in
+            guard let self = self else { return }
+            do {
+                let (cardDatas, names, definedMails) = try self.parse(contacts: contacts,
+                                                                      existedContact: existedContact,
+                                                                      userKey: userKey,
+                                                                      mailboxPassword: mailboxPassword,
+                                                                      progress: progress)
+                guard !cardDatas.isEmpty,
+                      cardDatas.count == names.count,
+                      cardDatas.count == definedMails.count else {
+                    progress?(100, LocalString._contacts_all_imported)
+                    dismiss(nil)
+                    return
+                }
+
+                if self.contactImportTask?.isCancelled ?? true {
+                    progress?(nil, LocalString._contacts_cancelling_title)
+                    return
+                }
+                let total = cardDatas.count
+                progress?(0, "Uploading contacts. 0/\(total)")
+                for (index, cardData) in cardDatas.enumerated() {
+                    self.queueAddContact(cardDatas: cardData,
+                                         name: names[index],
+                                         emails: definedMails[index]) { _, error in
+                        error?.localizedFailureReason?.alertToastBottom()
+                    }
+                    let offset = Float(index) / Float(total)
+                    progress?(offset, "Uploading contacts. \(index)/\(total)")
+                }
+                dismiss(nil)
+            } catch {
+                dismiss(error)
+            }
+        }
+        self.contactImportQueue.addOperation(task)
+        self.contactImportTask = task
+    }
+
+    private func parse(contacts: [CNContact], existedContact: [Contact], userKey: Key, mailboxPassword: String, progress: ((Float?, String?) -> Void)?) throws -> ([[CardData]], [String], [[ContactEditEmail]]) {
+        var cardDatas: [[CardData]] = []
+        var names: [String] = []
+        var definedMails: [[ContactEditEmail]] = []
+        let existedIDs = existedContact.map { $0.uuid }
+        let titleCount = contacts.count
+        var found: Int = 0
+        //build body first
+        for (index, contact) in contacts.enumerated() {
+            if self.contactImportTask?.isCancelled ?? true {
+                progress?(nil, LocalString._contacts_cancelling_title)
+                return (cardDatas, names, definedMails)
+            }
+
+            let offset = Float(index) / Float(titleCount)
+            progress?(offset, nil)
+
+            //check is uuid in the exsiting contacts
+            let identifier = contact.identifier
+            guard !existedIDs.contains(identifier) else { continue }
+
+            found += 1
+            progress?(nil, "Encrypting contacts...\(found)")
+
+            /* not included into requested keys since iOS 13 SDK, see comment in AddressBookService.getAllContacts() */
+            // let note = contact.note
+            let note = ""
+
+            let rawData = try CNContactVCardSerialization.data(with: [contact])
+            guard let vcardStr = String(data: rawData, encoding: .utf8),
+                  let vcard3 = PMNIEzvcard.parseFirst(vcardStr),
+                  let vcard2 = PMNIVCard.createInstance() else { continue }
+
+            let uuid = PMNIUid.createInstance(identifier)
+            var defaultName = LocalString._general_unknown_title
+
+            var contactName = defaultName
+            if let fn = vcard3.getFormattedName() {
+                var name = fn.getValue().trim()
+                name = name.preg_replace("  ", replaceto: " ")
+                if name.isEmpty {
+                    if let fn = PMNIFormattedName.createInstance(defaultName) {
+                        vcard2.setFormattedName(fn)
+                        contactName = fn.getValue()
+                            .trim()
+                            .preg_replace("  ", replaceto: " ")
+                    }
+                } else {
+                    if let fn = PMNIFormattedName.createInstance(name) {
+                        vcard2.setFormattedName(fn)
+                        contactName = fn.getValue()
+                            .trim()
+                            .preg_replace("  ", replaceto: " ")
+                    }
+                }
+                vcard3.clearFormattedName()
+            } else {
+                if let fn = PMNIFormattedName.createInstance(defaultName) {
+                    vcard2.setFormattedName(fn)
+                    contactName = fn.getValue()
+                        .trim()
+                        .preg_replace("  ", replaceto: " ")
+                }
+            }
+            names.append(contactName)
+
+            let emails = vcard3.getEmails()
+            var contactMails: [ContactEditEmail] = []
+            var vcard2Emails: [PMNIEmail] = []
+            var i : Int = 1
+            for e in emails {
+                let ng = "EItem\(i)"
+                let group = e.getGroup()
+                if group.isEmpty {
+                    e.setGroup(ng)
+                    i += 1
+                }
+                let em = e.getValue()
+                if !em.isEmpty {
+                    defaultName = em
+                }
+
+                let types = e.getTypes()
+                var field = ContactFieldType.empty
+                for type in types {
+                    let fieldType = ContactFieldType(raw: type)
+                    if fieldType != .empty {
+                        field = fieldType
+                        break
+                    }
+                }
+
+                if em.isValidEmail() {
+                    vcard2Emails.append(e)
+                }
+                let editMail = ContactEditEmail(order: i,
+                                                type: field,
+                                                email: em,
+                                                isNew: true,
+                                                keys: nil,
+                                                contactID: nil,
+                                                encrypt: nil,
+                                                sign: nil,
+                                                scheme: nil,
+                                                mimeType: nil,
+                                                delegate: nil,
+                                                coreDataService: self.coreDataService)
+                contactMails.append(editMail)
+            }
+            definedMails.append(contactMails)
+            
+            vcard2.setEmails(vcard2Emails)
+            vcard3.clearEmails()
+            vcard2.setUid(uuid)
+            
+            // add others later
+            guard let vcard2Str = try vcard2.write() else {
+                continue
+            }
+            let signed_vcard2 = try Crypto().signDetached(plainData: vcard2Str,
+                                                          privateKey: userKey.privateKey,
+                                                          passphrase: mailboxPassword)
+            
+            //card 2 object
+            let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
+            
+            vcard3.setUid(uuid)
+            vcard3.setVersion(PMNIVCardVersion.vCard40())
+            
+            if !note.isEmpty {
+                vcard3.setNote(PMNINote.createInstance("", note: note))
+            }
+            
+            guard let vcard3Str = try vcard3.write() else {
+                continue
+            }
+            let encrypted_vcard3 = try vcard3Str.encrypt(withPubKey: userKey.publicKey, privateKey: "", passphrase: "")
+            let signed_vcard3 = try Crypto().signDetached(plainData: vcard3Str,
+                                                          privateKey: userKey.privateKey,
+                                                          passphrase: mailboxPassword)
+            //card 3 object
+            let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3)
+            
+            let cards : [CardData] = [card2, card3]
+            
+            cardDatas.append(cards)
+        }
+        return (cardDatas, names, definedMails)
+    }
+    
+    func cancelImportTask() {
+        guard let task = self.contactImportTask else { return }
+        task.cancel()
+        self.contactImportTask = nil
     }
 }
 

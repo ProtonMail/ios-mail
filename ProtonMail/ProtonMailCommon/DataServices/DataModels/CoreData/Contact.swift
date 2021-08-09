@@ -39,6 +39,7 @@ public class Contact: NSManagedObject {
     @NSManaged var isDownloaded : Bool
     @NSManaged var isCorrected : Bool
     @NSManaged var needsRebuild : Bool
+    @NSManaged var isSoftDeleted: Bool
 
     // relation
     @NSManaged var emails: NSSet

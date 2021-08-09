@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import CoreData
 import Foundation
 import OpenPGP
 
@@ -150,6 +150,10 @@ final class ContactEditEmail: ContactEditTypeInterface {
         return ContactFieldType.emailTypes
     }
     
+    func update(order: Int) {
+        self.newOrder = order
+    }
+    
     // to
     func toContactEmail() -> ContactEmail {
         return ContactEmail(e: newEmail, t: newType.vcardType)
@@ -258,6 +262,27 @@ final class ContactEditEmail: ContactEditTypeInterface {
     
     func isEmpty() -> Bool {
         return newEmail.isEmpty
+    }
+    
+    func makeTempEmail(context: NSManagedObjectContext, contact: Contact) -> Email {
+        let mail = Email(context: context)
+        mail.userID = contact.userID
+        mail.contactID = contact.contactID
+        mail.emailID = UUID().uuidString
+        mail.name = contact.name
+        mail.email = self.newEmail
+        mail.defaults = NSNumber(value: 1)
+        mail.order = NSNumber(value: self.newOrder)
+        mail.type = self.newType.rawString
+        mail.contact = contact
+        let labelIDs = self.getCurrentlySelectedContactGroupsID()
+        var labels: [Label] = []
+        for id in labelIDs {
+            guard let label = Label.labelGroup(byID: id, inManagedObjectContext: context) else { continue }
+            labels.append(label)
+        }
+        mail.labels = Set(labels) as NSSet
+        return mail
     }
 }
 

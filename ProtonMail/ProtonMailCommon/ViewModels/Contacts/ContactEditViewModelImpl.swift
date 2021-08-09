@@ -507,6 +507,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     
     override func done(complete : @escaping ContactEditSaveComplete) {
         if let c = contact, c.managedObjectContext != nil {
+            for (index, mail) in self.emails.enumerated() {
+                mail.update(order: index)
+            }
             var cards : [CardData] = []
             
             // contact group, card type 0
@@ -775,7 +778,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             }
             
             let completion = { (contacts : [Contact]?, error : NSError?) in
-                DispatchQueue.main.async {
+                // The data merge from operationContext to mainContext take some time
+                // Delay for better UX
+                delay(0.3) {
                     if error == nil {
                         // we locally maintain the emailID by deleting all old ones
                         // and use the response to update the core data (see sharedContactDataService.update())
@@ -785,10 +790,12 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     }
                 }
             }
-            
-            self.user.contactService.update(contactID: c.contactID,
-                                            cards: cards,
-                                            completion: completion)
+            self.user.contactService.queueUpdate(objectID: c.objectID,
+                                                 contactID: c.contactID,
+                                                 cardDatas: cards,
+                                                 newName: self.profile.newDisplayName,
+                                                 emails: self.emails,
+                                                 completion: completion)
         } else {
             // pop error
         }
@@ -798,15 +805,21 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         if isNew() {
             complete(nil)
         } else {
-            let contactID = contact?.contactID
-            
-            self.user.contactService.delete(contactID: contactID!, completion: { (error) in
-                if let err = error {
-                    complete(err)
-                } else {
-                    complete(nil)
+            guard let objectID = contact?.objectID else {
+                let error = NSError(domain: "", code: -1,
+                                    localizedDescription: LocalString._error_no_object)
+                complete(error)
+                return
+            }
+            self.user.contactService.queueDelete(objectID: objectID) { error in
+                DispatchQueue.main.async {
+                    if let err = error {
+                        complete(err)
+                    } else {
+                        complete(nil)
+                    }
                 }
-            })
+            }
         }
     }
     
