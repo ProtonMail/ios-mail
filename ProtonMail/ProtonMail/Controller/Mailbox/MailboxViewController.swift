@@ -1050,6 +1050,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] task, res, error in
                 self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
             }
+            
+            self?.showNoResultLabel()
         }
     }
     
@@ -1098,29 +1100,31 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     fileprivate func showNoResultLabel() {
-        
-        {
-            let count =  self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
-            if (count <= 0 && !self.fetchingMessage ) {
-                let isNotInInbox = self.viewModel.labelID != Message.Location.inbox.rawValue
-                
-                self.noResultImage.image = isNotInInbox ? UIImage(named: "mail_folder_no_result_icon") : UIImage(named: "mail_no_result_icon")
-                self.noResultImage.isHidden = false
-                
-                self.noResultMainLabel.attributedText = NSMutableAttributedString(string: isNotInInbox ? LocalString._mailbox_folder_no_result_mail_label : LocalString._mailbox_no_result_main_label, attributes: FontManager.Headline)
-                self.noResultMainLabel.isHidden = false
-                
-                self.noResultSecondaryLabel.attributedText = NSMutableAttributedString(string: isNotInInbox ? LocalString._mailbox_folder_no_result_secondary_label : LocalString._mailbox_no_result_secondary_label, attributes: FontManager.DefaultWeak)
-                self.noResultSecondaryLabel.isHidden = false
-                
-                self.noResultFooterLabel.isHidden = false
-            } else {
-                self.noResultImage.isHidden = true
-                self.noResultMainLabel.isHidden = true
-                self.noResultSecondaryLabel.isHidden = true
-                self.noResultFooterLabel.isHidden = true
-            }
-        } ~> .main
+        delay(0.5) {
+            {
+                let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
+                if (count <= 0 && !self.fetchingMessage ) {
+                    let isNotInInbox = self.viewModel.labelID != Message.Location.inbox.rawValue
+
+                    self.noResultImage.image = isNotInInbox ? UIImage(named: "mail_folder_no_result_icon") : UIImage(named: "mail_no_result_icon")
+                    self.noResultImage.isHidden = false
+
+                    self.noResultMainLabel.attributedText = NSMutableAttributedString(string: isNotInInbox ? LocalString._mailbox_folder_no_result_mail_label : LocalString._mailbox_no_result_main_label, attributes: FontManager.Headline)
+                    self.noResultMainLabel.isHidden = false
+
+                    self.noResultSecondaryLabel.attributedText = NSMutableAttributedString(string: isNotInInbox ? LocalString._mailbox_folder_no_result_secondary_label : LocalString._mailbox_no_result_secondary_label, attributes: FontManager.DefaultWeak)
+                    self.noResultSecondaryLabel.isHidden = false
+
+                    self.noResultFooterLabel.isHidden = false
+                } else {
+                    let isHidden = count > 0 || self.fetchingMessage == false
+                    self.noResultImage.isHidden = isHidden
+                    self.noResultMainLabel.isHidden = isHidden
+                    self.noResultSecondaryLabel.isHidden = isHidden
+                    self.noResultFooterLabel.isHidden = isHidden
+                }
+            } ~> .main
+        }
     }
     
     private func showRefreshController() {
