@@ -260,6 +260,11 @@ extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
     }
 
     func reloadWebView() {
+        // Prevent unnecessary webView reload
+        guard isViewLoaded else {
+            return
+        }
+
         self.customView.removeReloadView()
         guard let contents = viewModel.contents else { return }
         if let webView = self.webView {
