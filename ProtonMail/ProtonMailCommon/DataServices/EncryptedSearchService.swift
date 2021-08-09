@@ -12,6 +12,7 @@ import SwiftSoup
 import SQLite
 //import ProtonCore_Crypto
 import Crypto
+import ProtonCore_Services
 
 import CryptoKit
 
@@ -99,7 +100,9 @@ extension EncryptedSearchService {
         
         //1. download all messages locally
         NSLog("Downloading messages locally...")
-        self.fetchMessages(Message.Location.allmail.rawValue){ids in
+        //self.fetchMessages(Message.Location.allmail.rawValue){ids in
+        self.fetchMessagesWithSemaphore(Message.Location.allmail.rawValue){ids in
+        //self.fetchMessagesWithLoop(Message.Location.allmail.rawValue){ids in
             messageIDs = ids
             print("# of message ids: ", messageIDs.count)
 
@@ -126,6 +129,97 @@ extension EncryptedSearchService {
                     }
                 }
             }
+        }
+    }
+    
+    //Async/Await just available with swift 5.5 (enable again when released)
+    /*func fetchMessagesWithLoop(_ mailBoxID: String, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
+        let messageIDs:NSMutableArray = []
+        
+        repeat {
+            var messagesBatch: NSMutableArray = []
+            let result = await self.fetchMessagesWrapper(mailBoxID, self.lastMessageTimeIndexed)
+            messagesBatch = self.getMessageIDs(result)
+            self.processedMessages += messagesBatch.count
+            print("Processed messages: ", self.processedMessages)
+            self.lastMessageTimeIndexed = self.getOldestMessageInMessageBatch(result)
+            
+            //add messagesBatch to all messages
+            messageIDs.add(messagesBatch)
+            
+            //For testing purposes only
+            break
+        } while self.processedMessages < self.totalMessages
+        
+        print("Fetching messages in loop completed!")
+        
+        //for testing purposes only!!!
+        exit(1)
+        
+        completionHandler(messageIDs)
+    }*/
+    
+    //Async/Await just available with swift 5.5 (enable again when released)
+    /*func fetchMessagesWrapper(_ mailboxID: String, _ time: Int) async -> NSMutableArray {
+        return await withUnsafeContinuation {
+            continuation in
+            self.messageService.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { _, result, error in
+                if error == nil {
+                    continuation.resume(returning: result)
+                } else {
+                    print("Error while fetching!")
+                }
+            }
+        }
+    }*/
+    
+    func fetchMessagesWithSemaphore(_ mailBoxID: String, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
+        let semaphore = DispatchSemaphore(value: 1)
+        let group = DispatchGroup()
+        let messageIDs:NSMutableArray = []
+        let numberOfFetches:Int = Int(ceil(Double(self.totalMessages)/Double(self.limitPerRequest)))
+        
+        //repeat {
+        for _ in 0...numberOfFetches {
+            group.enter()
+            print("enter group")
+            
+            DispatchQueue.global(qos: .userInitiated).async {
+                semaphore.wait()
+                print("Fetching new messages...")
+                print("Running on thread: ", Thread.current)
+                print("Last message time fetched: ", self.lastMessageTimeIndexed)
+                self.messageService.fetchMessages(byLabel: mailBoxID, time: self.lastMessageTimeIndexed, forceClean: false, isUnread: false) { _, result, error in
+                    if error == nil {
+                        //NSLog("Messages: %@", result!)
+                        //print("response: %@", result!)
+                        let msgIDs = self.getMessageIDs(result)
+                        messageIDs.addObjects(from: msgIDs as! [Any])
+                        self.processedMessages += msgIDs.count
+                        self.lastMessageTimeIndexed = self.getOldestMessageInMessageBatch(result)
+                        print("Processed messages: ", self.processedMessages)
+                    } else {
+                        NSLog(error as! String)
+                    }
+                    //count += 1
+                    print("Finished fetching messages...")
+                    semaphore.signal()
+                    group.leave()
+                }
+            }
+        }
+        //} while self.processedMessages < self.totalMessages
+        
+        //print("Fetching messages in loop completed!")
+        
+        //for testing purposes only!!!
+        //exit(1)
+        
+        //Wait to call completion handler until all message id's are here
+        group.notify(queue: .main) {
+            print("Fetching messages completed!")
+            //return messageIDs once all are here
+            completionHandler(messageIDs)
         }
     }
     
@@ -196,6 +290,22 @@ extension EncryptedSearchService {
         //print(messageIDs)
         
         return messageIDs
+    }
+    
+    func getOldestMessageInMessageBatch(_ response: [String:Any]?) -> Int {
+        var time: Int = Int.max
+        //print("response: ", response)
+        let messagesBatch: NSArray = response!["Messages"] as! NSArray
+        
+        for msg in messagesBatch {
+            let m = msg as? Dictionary<String, AnyObject>
+            let mInt = Int(truncating: m!["Time"]! as! NSNumber)
+            if mInt < time {
+                time = mInt
+            }
+        }
+        
+        return time
     }
     
     func getMessageObjects(_ messageIDs: NSArray, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
