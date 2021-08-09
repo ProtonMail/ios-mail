@@ -63,7 +63,7 @@ extension CacheServiceTest {
         let labelJson = testSingleLabelData.parseObjectAny()!
 
         let expect = expectation(description: "Add New label")
-        sut.addNewLabel(serverReponse: labelJson) {
+        sut.addNewLabel(serverResponse: labelJson) {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)

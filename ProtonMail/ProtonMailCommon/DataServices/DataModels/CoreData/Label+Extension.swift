@@ -38,6 +38,7 @@ extension Label {
         static let exclusive = "exclusive"
         static let userID = "userID"
         static let emails = "emails"
+        static let isSoftDeleted = "isSoftDeleted"
     }
     
     // MARK: - Public methods
@@ -57,7 +58,7 @@ extension Label {
 
     class func labelFetchController(for labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Attributes.labelID, labelID)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == 0", Attributes.labelID, labelID, Attributes.isSoftDeleted)
         let strComp = NSSortDescriptor(key: Label.Attributes.name,
                                        ascending: true,
                                        selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
@@ -78,10 +79,28 @@ extension Label {
     }
     
     class func labelGroup( by name: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
-        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.name : name, Attributes.type : "2"]) as? Label
+        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.name : name, Attributes.type : NSNumber(value: 2)]) as? Label
     }
     
     class func labelGroup( byID: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
-        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.labelID : byID, Attributes.type : "2"]) as? Label
+        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.labelID : byID, Attributes.type : NSNumber(value: 2)]) as? Label
+    }
+
+    class func makeGroupLabel(context: NSManagedObjectContext, userID: String, color: String, name: String, emailIDs: [String]) -> Label {
+        let label = Label(context: context)
+        label.userID = userID
+        label.labelID = UUID().uuidString
+        label.name = name
+        label.path = name
+        label.color = color
+        label.type = NSNumber(value: 2)
+        label.sticky = NSNumber(value: 0)
+        label.notify = NSNumber(value: 0)
+        label.order = NSNumber(value: 20)
+        
+        let mails = emailIDs
+            .compactMap { Email.EmailForID($0, inManagedObjectContext: context) }
+        label.emails = Set(mails) as NSSet
+        return label
     }
 }

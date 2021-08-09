@@ -59,6 +59,11 @@ final class QueueManager: Service {
          miscQueue: PMPersistentQueueProtocol) {
         self.messageQueue = messageQueue
         self.miscQueue = miscQueue
+        self.internetStatusProvider.getConnectionStatuses { [weak self] status in
+            if status == .ReachableViaWWAN || status == .ReachableViaWiFi {
+                self?.dequeueIfNeeded()
+            }
+        }
     }
 
     func addTask(_ task: Task, autoExecute: Bool = true) -> Bool {
@@ -80,7 +85,9 @@ final class QueueManager: Service {
                  .delete,
                  .emptyTrash, .emptySpam, .empty,
                  .label, .unlabel, .folder,
-                 .updateLabel, .createLabel, .deleteLabel:
+                 .updateLabel, .createLabel, .deleteLabel,
+                 .updateContact, .deleteContact, .addContact,
+                 .addContactGroup, .updateContactGroup, .deleteContactGroup:
                 _ = self.miscQueue.add(task.uuid, object: task)
             case .signout:
                 self.handleSignout(signoutTask: task)

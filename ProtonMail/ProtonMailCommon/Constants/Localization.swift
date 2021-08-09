@@ -629,6 +629,9 @@ class LocalizedString {
 
     /// "Do you want to cancel the process?"
     lazy var _contacts_import_cancel_wanring = NSLocalizedString("Do you want to cancel the process?", comment: "Description")
+    
+    lazy var _contacts_saved_offline_hint = NSLocalizedString("Contact saved, will be synced when connection is available", comment: "Hint when users create / edit contact offline ")
+    lazy var _contacts_deleted_offline_hint = NSLocalizedString("Contact deleted, will be synced when connection is available", comment: "Hint when users delete contact offline ")
 
     /// "Confirm"
     lazy var _general_confirm_action = NSLocalizedString("Confirm", comment: "Action")

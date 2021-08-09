@@ -139,6 +139,14 @@ extension UIViewController {
         let backItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backItem
     }
+    
+    var isOnline: Bool {
+        guard let reachability = Reachability.forInternetConnection(),
+              reachability.currentReachabilityStatus() != .NotReachable else {
+            return false
+        }
+        return true
+    }
 }
 
 

@@ -258,7 +258,7 @@ class LabelsDataService: Service, HasLocalStorage {
         case .label:
             return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
         case .contactGroup:
-            return NSPredicate(format: "(%K == 2) AND (%K == %@)", Label.Attributes.type, Label.Attributes.userID, self.userID)
+            return NSPredicate(format: "(%K == 2) AND (%K == %@) AND (%K == 0)", Label.Attributes.type, Label.Attributes.userID, self.userID, Label.Attributes.isSoftDeleted)
         }
     }
     
@@ -313,15 +313,16 @@ class LabelsDataService: Service, HasLocalStorage {
         }
     }
 
-    func createNewLabel(name: String, color: String, type: PMLabelType = .label, parentID: String? = nil, notify: Bool = true, completion: ((String?, NSError?) -> Void)?) {
+    func createNewLabel(name: String, color: String, type: PMLabelType = .label, parentID: String? = nil, notify: Bool = true, objectID: String? = nil, completion: ((String?, NSError?) -> Void)?) {
         let route = CreateLabelRequest(name: name, color: color, type: type, parentID: parentID, notify: notify, expanded: true)
         self.apiService.exec(route: route) { (task, response: CreateLabelRequestResponse) in
             if let err = response.error {
                 completion?(nil, err.toNSError)
             } else {
                 let ID = response.label?["ID"] as? String
+                let objectID = objectID ?? ""
                 if let labelResponse = response.label {
-                    self.cacheService.addNewLabel(serverReponse: labelResponse, completion: nil)
+                    self.cacheService.addNewLabel(serverResponse: labelResponse, objectID: objectID, completion: nil)
                 }
                 completion?(ID, nil)
             }

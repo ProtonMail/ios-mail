@@ -159,9 +159,14 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         }
     }
     
-    private func dismiss() {
+    private func dismiss(message: String? = nil) {
+        let isOffline = !self.isOnline
         if self.presentingViewController != nil {
-            self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true) {
+                if isOffline {
+                    message?.alertToastBottom()
+                }
+            }
         } else {
             let _ = self.navigationController?.popViewController(animated: true)
         }
@@ -173,7 +178,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             return viewModel.saveDetail()
         }.done {
-            self.dismiss()
+            self.dismiss(message: LocalString._contacts_saved_offline_hint)
         }.ensure {
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             MBProgressHUD.hide(for: self.view, animated: true)
@@ -282,7 +287,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
                     UIApplication.shared.isNetworkActivityIndicatorVisible = true
                     return self.viewModel.deleteContactGroup()
                     }.done {
-                        self.dismiss()
+                        self.dismiss(message: LocalString._contacts_deleted_offline_hint)
                     }.ensure {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         MBProgressHUD.hide(for: self.view, animated: true)

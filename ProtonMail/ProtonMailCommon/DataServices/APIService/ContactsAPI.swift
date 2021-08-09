@@ -217,7 +217,7 @@ final class ContactEmail : Package {
 }
 
 // 0, 1, 2, 3 // 0 for cleartext, 1 for encrypted only (not used), 2 for signed, 3 for both
-enum CardDataType : Int {
+enum CardDataType: Int, Codable {
     case PlainText = 0
     case EncryptedOnly = 1
     case SignedOnly = 2
@@ -225,15 +225,15 @@ enum CardDataType : Int {
 }
 
 // add contacts Card object
-final class CardData : Package {
-    let type : CardDataType
-    let data : String
-    let sign : String
+final class CardData: Package, Codable, Equatable {
+    let type: CardDataType
+    let data: String
+    let sign: String
     
     // t   "Type": CardDataType
     // d   "Data": ""
     // s   "Signature": ""
-    init(t : CardDataType, d: String, s : String) {
+    init(t: CardDataType, d: String, s: String) {
         self.data = d
         self.type = t
         self.sign = s
@@ -246,6 +246,18 @@ final class CardData : Package {
             "Signature": self.sign
         ]
     }
+
+    enum CodingKeys: String, CodingKey {
+        case data = "Data"
+        case type = "Type"
+        case sign = "Signature"
+    }
+    
+    static func == (lhs: CardData, rhs: CardData) -> Bool {
+        return lhs.type.rawValue == rhs.type.rawValue &&
+            lhs.data == rhs.data &&
+            lhs.sign == rhs.sign
+    }
 }
 
 extension Array where Element: CardData {
@@ -257,6 +269,16 @@ extension Array where Element: CardData {
             }
         }
         return dicts
+    }
+    
+    func toJSONString() throws -> String {
+        let jsonData = try JSONEncoder().encode(self)
+        guard let jsonString = String(data: jsonData, encoding: .utf8) else {
+            let error = NSError(domain: "", code: -1,
+                                localizedDescription: LocalString._error_no_object)
+            throw error
+        }
+        return jsonString
     }
 }
 

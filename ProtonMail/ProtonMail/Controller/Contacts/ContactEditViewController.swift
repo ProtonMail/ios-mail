@@ -247,13 +247,19 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         let v : UIView = self.navigationController?.view ?? self.view
         MBProgressHUD.showAdded(to: v, animated: true)
         
-        viewModel.done { (error : NSError?) in            
+        viewModel.done { [weak self] (error : NSError?) in
+            guard let self = self else { return }
             MBProgressHUD.hide(for: v, animated: true)
-            if error == nil {
-                self.delegate?.updated()
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                error!.alertToast()
+            if let error = error {
+                error.alertToast()
+                return
+            }
+            self.delegate?.updated()
+            let isOnline = self.isOnline
+            self.dismiss(animated: true) {
+                if !isOnline {
+                    LocalString._contacts_saved_offline_hint.alertToastBottom()
+                }
             }
         }
     }
@@ -857,15 +863,19 @@ extension ContactEditViewController: UITableViewDelegate {
             alertController.addAction(UIAlertAction(title: LocalString._delete_contact, style: .destructive, handler: { (action) -> Void in
                 let v : UIView = self.navigationController?.view ?? self.view
                 MBProgressHUD.showAdded(to: v, animated: true)
-                self.viewModel.delete(complete: { (error) in
+                self.viewModel.delete(complete: { [weak self] (error) in
                     MBProgressHUD.hide(for: v, animated: true)
                     if let err = error {
                         err.alertToast()
-                    } else {
-                        self.navigationController?.dismiss(animated: false, completion: {
-                            self.delegate?.deleted()
-                        })
+                        return
                     }
+                    self?.delegate?.deleted()
+                    let isOnline = self?.isOnline ?? false
+                    self?.navigationController?.dismiss(animated: false, completion: {
+                        if !isOnline {
+                            LocalString._contacts_deleted_offline_hint.alertToastBottom()
+                        }
+                    })
                 })
             }))
             

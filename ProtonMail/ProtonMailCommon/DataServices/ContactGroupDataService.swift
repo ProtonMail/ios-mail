@@ -51,11 +51,15 @@ class ContactGroupsDataService: Service, HasLocalStorage {
     private let apiService : APIService
     private let labelDataService: LabelsDataService
     private let coreDataService: CoreDataService
+    private weak var queueManager: QueueManager?
+    private let userID: String
     
-    init(api: APIService , labelDataService: LabelsDataService, coreDataServie: CoreDataService) {
+    init(api: APIService , labelDataService: LabelsDataService, coreDataService: CoreDataService, queueManager: QueueManager, userID: String) {
         self.apiService = api
         self.labelDataService = labelDataService
-        self.coreDataService = coreDataServie
+        self.coreDataService = coreDataService
+        self.queueManager = queueManager
+        self.userID = userID
     }
     
     /**
@@ -64,11 +68,12 @@ class ContactGroupsDataService: Service, HasLocalStorage {
      - Parameters:
      - name: The name of the contact group
      - color: The color of the contact group
+     - objectID: CoreData object ID of group label
      */
-    func createContactGroup(name: String, color: String) -> Promise<String> {
+    func createContactGroup(name: String, color: String, objectID: String? = nil) -> Promise<String> {
         return Promise {
             seal in
-            self.labelDataService.createNewLabel(name: name, color: color, type: .contactGroup) { (labelId, error) in
+            self.labelDataService.createNewLabel(name: name, color: color, type: .contactGroup, objectID: objectID) { (labelId, error) in
                 if let err = error {
                     seal.reject(err)
                 } else {
@@ -144,18 +149,23 @@ class ContactGroupsDataService: Service, HasLocalStorage {
         }
     }
     
-    func addEmailsToContactGroup(groupID: String, emailList: [Email]) -> Promise<Void> {
+    func addEmailsToContactGroup(groupID: String, emailList: [Email], emailIDs: [String]? = nil) -> Promise<Void> {
         return Promise { seal in
+            var emailList = emailList
             // check
-            if emailList.count == 0 {
+            if emailList.isEmpty && (emailIDs ?? []).isEmpty {
                 seal.fulfill(())
                 return
             }
-            
-            let emails = emailList.map({
-                (email: Email) -> String in
-                return email.emailID
-            })
+
+            if let emailIDs = emailIDs {
+                let context = self.coreDataService.operationContext
+                let mails = emailIDs
+                    .compactMap { Email.EmailForID($0, inManagedObjectContext: context)}
+                emailList += mails
+            }
+
+            let emails = emailList.map { $0.emailID }
             
             let route = ContactLabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
             self.apiService.exec(route: route) { (response: ContactLabelAnArrayOfContactEmailsResponse) in
@@ -206,19 +216,22 @@ class ContactGroupsDataService: Service, HasLocalStorage {
         }
     }
     
-    func removeEmailsFromContactGroup(groupID: String, emailList: [Email]) -> Promise<Void> {
+    func removeEmailsFromContactGroup(groupID: String, emailList: [Email], emailIDs: [String]? = nil) -> Promise<Void> {
         return Promise {
             seal in
-            
-            if emailList.count == 0 {
+            var emailList = emailList
+            let emailIDs = emailIDs ?? []
+            // check
+            if emailList.isEmpty && emailIDs.isEmpty {
                 seal.fulfill(())
                 return
             }
+            let context = self.coreDataService.operationContext
+            let mails = emailIDs
+                .compactMap { Email.EmailForID($0, inManagedObjectContext: context) }
+            emailList += mails
             
-            let emails = emailList.map({
-                (email: Email) -> String in
-                return email.emailID
-            })
+            let emails = emailList.map { $0.emailID }
             let route = ContactUnlabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
             self.apiService.exec(route: route) { (response: ContactUnlabelAnArrayOfContactEmailsResponse) in
                 if let error = response.error {
@@ -280,5 +293,99 @@ class ContactGroupsDataService: Service, HasLocalStorage {
         }
         
         return result
+    }
+}
+
+// MAKR: Queue
+extension ContactGroupsDataService {
+    func queueCreate(name: String, color: String, emailIDs: [String]) -> Promise<Void> {
+        return Promise<Void> { [weak self] seal in
+            guard let self = self else { return }
+            let context = self.coreDataService.operationContext
+            let userID = self.userID
+            let queue = self.queueManager
+            context.perform {
+                // Create a temporary label for display, the label will be removed after getting response
+                let groupLabel = Label.makeGroupLabel(context: context,
+                                                      userID: userID,
+                                                      color: color,
+                                                      name: name,
+                                                      emailIDs: emailIDs)
+                if let error = context.saveUpstreamIfNeeded() {
+                    seal.reject(error)
+                } else {
+                    let objectID = groupLabel.objectID.uriRepresentation().absoluteString
+                    let action: MessageAction = .addContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs)
+                    let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
+                    _ = queue?.addTask(task)
+                    seal.fulfill_()
+                }
+            }
+        }
+    }
+
+    func queueUpdate(groupID: String, name: String, color: String, addedEmailIDs: [String], removedEmailIDs: [String]) -> Promise<Void> {
+        return Promise<Void> { [weak self] seal in
+            guard let self = self else { return }
+            let context = self.coreDataService.operationContext
+            let userID = self.userID
+            let queue = self.queueManager
+            context.perform {
+                guard let label = Label.labelGroup(byID: groupID, inManagedObjectContext: context) else {
+                    seal.fulfill_()
+                    return
+                }
+                label.name = name
+                label.color = color
+                if var mails = label.emails.allObjects as? [Email] {
+                    for id in addedEmailIDs {
+                        if let _ = mails.first(where: { $0.emailID == id }) { continue }
+                        guard let mail = Email.EmailForID(id, inManagedObjectContext: context) else { continue }
+                        mails.append(mail)
+                    }
+                    for id in removedEmailIDs {
+                        guard let index = mails.firstIndex(where: { $0.emailID == id }) else {
+                            continue
+                        }
+                        mails.remove(at: index)
+                    }
+                    label.emails = Set(mails) as NSSet
+                }
+
+                if let error = context.saveUpstreamIfNeeded() {
+                    seal.reject(error)
+                } else {
+                    let objectID = label.objectID.uriRepresentation().absoluteString
+                    let action: MessageAction = .updateContactGroup(objectID: objectID, name: name, color: color, addedEmailList: addedEmailIDs, removedEmailList: removedEmailIDs)
+                    let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
+                    _ = queue?.addTask(task)
+                    seal.fulfill_()
+                }
+            }
+        }
+    }
+
+    func queueDelete(groupID: String) -> Promise<Void> {
+        let context = self.coreDataService.operationContext
+        let userID = self.userID
+        let queue = self.queueManager
+        return Promise<Void> { seal in
+            context.perform {
+                guard let label = Label.labelGroup(byID: groupID, inManagedObjectContext: context) else {
+                    seal.fulfill_()
+                    return
+                }
+                label.isSoftDeleted = true
+                if let error = context.saveUpstreamIfNeeded() {
+                    seal.reject(error)
+                    return
+                }
+                let objectID = label.objectID.uriRepresentation().absoluteString
+                let action: MessageAction = .deleteContactGroup(objectID: objectID)
+                let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
+                _ = queue?.addTask(task)
+                seal.fulfill_()
+            }
+        }
     }
 }

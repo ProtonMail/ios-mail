@@ -195,7 +195,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             if selectedGroupIDs.count > 0 {
                 var arrayOfPromises: [Promise<Void>] = []
                 for groupID in selectedGroupIDs {
-                    arrayOfPromises.append(self.contactGroupService.deleteContactGroup(groupID: groupID))
+                    arrayOfPromises.append(self.contactGroupService.queueDelete(groupID: groupID))
                 }
                 
                 when(fulfilled: arrayOfPromises).done {

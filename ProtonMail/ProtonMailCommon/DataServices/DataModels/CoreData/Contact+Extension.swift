@@ -33,6 +33,7 @@ extension Contact {
         static let emails = "emails"
         static let userID = "userID"
         static let sectionName = "sectionName"
+        static let isSoftDeleted = "isSoftDeleted"
     }
 
     // MARK: - methods
@@ -123,6 +124,22 @@ extension Contact {
             PMLog.D(" func parseJson() -> error error \(ex)")
         }
         return cards
+    }
+    
+    class func makeTempContact(context: NSManagedObjectContext, userID: String, name: String, cardDatas: [CardData], emails: [ContactEditEmail]) throws -> Contact {
+        let contact = Contact(context: context)
+        contact.userID = userID
+        contact.contactID = UUID().uuidString
+        contact.name = name
+        contact.cardData = try cardDatas.toJSONString()
+        contact.size = NSNumber(value: 0)
+        contact.uuid = UUID().uuidString
+        contact.createTime = Date()
+        contact.isDownloaded = true
+        contact.isCorrected = true
+        contact.needsRebuild = false
+        _ = emails.map { $0.makeTempEmail(context: context, contact: contact) }
+        return contact
     }
 }
 

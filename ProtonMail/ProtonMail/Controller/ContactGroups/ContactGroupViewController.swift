@@ -277,8 +277,12 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                 // attempt to delete selected groups
                 MBProgressHUD.showAdded(to: self.view, animated: true)
                 return self.viewModel.deleteGroups()
-                }.done {
-                    self.resetStateFromMultiSelect()
+                }.done { [weak self] in
+                    self?.resetStateFromMultiSelect()
+                    let isOnline = self?.isOnline ?? true
+                    if !isOnline {
+                        LocalString._contacts_saved_offline_hint.alertToastBottom()
+                    }
                 }.ensure {
                     MBProgressHUD.hide(for: self.view, animated: true)
                 }.catch {

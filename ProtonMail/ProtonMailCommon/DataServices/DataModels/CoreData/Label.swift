@@ -56,6 +56,7 @@ public class Label: NSManagedObject {
     
     @NSManaged public var messages: NSSet
     @NSManaged public var emails: NSSet
+    @NSManaged var isSoftDeleted: Bool
 }
 
 

@@ -481,10 +481,18 @@ extension CacheService {
 
 // MARK: - label related functions
 extension CacheService {
-    func addNewLabel(serverReponse: [String: Any], completion: (() -> Void)?) {
-        context.perform {
+    func addNewLabel(serverResponse: [String: Any], objectID: String? = nil, completion: (() -> Void)?) {
+        context.perform { [weak self] in
             do {
-                var response = serverReponse
+                guard let self = self else { return }
+                if let objectID = objectID,
+                    let id = self.coreDataService.managedObjectIDForURIRepresentation(objectID),
+                    let managedObject = try? self.context.existingObject(with: id),
+                    let label = managedObject as? Label,
+                    let labelID = serverResponse["ID"] as? String {
+                    label.labelID = labelID
+                }
+                var response = serverResponse
                 response["UserID"] = self.userID
                 try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: response, in: self.context)
                 if let error = self.context.saveUpstreamIfNeeded() {
@@ -567,29 +575,37 @@ extension CacheService {
 
 // MARK: - contact related functions
 extension CacheService {
-    func addNewContact(serverReponse: [[String: Any]], shouldFixName: Bool = false, completion: (([Contact]?, NSError?) -> Void)?) {
-        context.perform {
+    func addNewContact(serverResponse: [[String: Any]], shouldFixName: Bool = false, objectID: String? = nil, completion: (([Contact]?, NSError?) -> Void)?) {
+        context.perform { [weak self] in
+            guard let self = self else { return }
             do {
-                if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                   fromJSONArray: serverReponse,
-                                                                   in: self.context) as? [Contact] {
-                    contacts.forEach { (c) in
-                        c.userID = self.userID
-                        if shouldFixName {
-                            _ = c.fixName(force: true)
-                        }
-                        if let emails = c.emails.allObjects as? [Email] {
-                            emails.forEach { (e) in
-                                e.userID = self.userID
-                            }
+                if let id = objectID,
+                   let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
+                   let managedObject = try? self.context.existingObject(with: objectID),
+                   let contact = managedObject as? Contact,
+                   let contactID = serverResponse[0]["ID"] as? String {
+                    contact.contactID = contactID
+                }
+
+                let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                fromJSONArray: serverResponse,
+                                                                in: self.context) as? [Contact]
+                contacts?.forEach { (c) in
+                    c.userID = self.userID
+                    if shouldFixName {
+                        _ = c.fixName(force: true)
+                    }
+                    if let emails = c.emails.allObjects as? [Email] {
+                        emails.forEach { (e) in
+                            e.userID = self.userID
                         }
                     }
-                    if let error = self.context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                        completion?(nil, error)
-                    } else {
-                        completion?(contacts, nil)
-                    }
+                }
+                if let error = self.context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                    completion?(nil, error)
+                } else {
+                    completion?(contacts, nil)
                 }
             } catch {
                 PMLog.D("error: \(error)")

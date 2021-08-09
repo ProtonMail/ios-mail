@@ -46,12 +46,19 @@ enum MessageAction: Equatable {
         case signout
         case signin
         case fetchMessageDetail
+        case updateContact
+        case deleteContact
+        case addContact
+        case addContactGroup
+        case updateContactGroup
+        case deleteContactGroup
     }
 
     enum NestedCodingKeys: CodingKey {
         case messageObjectID
         case attachmentObjectID
         case objectIDs
+        case objectID
         case currentLabelID
         case itemIDs
         case shouldFetch
@@ -61,6 +68,10 @@ enum MessageAction: Equatable {
         case color
         case isFolder
         case addressID
+        case contactID
+        case cardDatas
+        case emailIDs
+        case removedEmailIDs
     }
     
     
@@ -98,6 +109,14 @@ enum MessageAction: Equatable {
     case signout
     case signin
     case fetchMessageDetail
+
+    // Contact
+    case updateContact(objectID: String, cardDatas: [CardData])
+    case deleteContact(objectID: String)
+    case addContact(objectID: String, cardDatas: [CardData])
+    case addContactGroup(objectID: String, name: String, color: String, emailIDs: [String])
+    case updateContactGroup(objectID: String, name: String, color: String, addedEmailList: [String], removedEmailList: [String])
+    case deleteContactGroup(objectID: String)
 
     var rawValue: String {
         switch self {
@@ -143,6 +162,18 @@ enum MessageAction: Equatable {
             return "signin"
         case .fetchMessageDetail:
             return "fetchMessageDetail"
+        case .updateContact:
+            return "updateContact"
+        case .deleteContact:
+            return "deleteContact"
+        case .addContact:
+            return "addContact"
+        case .addContactGroup:
+            return "addContactGroup"
+        case .updateContactGroup:
+            return "updateContactGroup"
+        case .deleteContactGroup:
+            return "deleteContactGroup"
         }
     }
 }
@@ -215,6 +246,37 @@ extension MessageAction: Codable {
             self = .signin
         case .fetchMessageDetail:
             self = .fetchMessageDetail
+        case .updateContact:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateContact)
+            self = .updateContact(objectID: try nestedContainer.decode(String.self, forKey: .objectID),
+                                  cardDatas: try nestedContainer.decode([CardData].self, forKey: .cardDatas))
+        case .deleteContact:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteContact)
+            self = .deleteContact(objectID: try nestedContainer.decode(String.self, forKey: .objectID))
+        case .addContact:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContact)
+            self = .addContact(objectID: try nestedContainer.decode(String.self,
+                                                                     forKey: .objectID),
+                               cardDatas: try nestedContainer.decode([CardData].self,
+                                                                     forKey: .cardDatas))
+        case .addContactGroup:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContactGroup)
+            let objectID = try nestedContainer.decode(String.self, forKey: .objectID)
+            let name = try nestedContainer.decode(String.self, forKey: .name)
+            let color = try nestedContainer.decode(String.self, forKey: .color)
+            let emailIDs = try nestedContainer.decode([String].self, forKey: .emailIDs)
+            self = .addContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs)
+        case .updateContactGroup:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateContactGroup)
+            let objectID = try nestedContainer.decode(String.self, forKey: .objectID)
+            let name = try nestedContainer.decode(String.self, forKey: .name)
+            let color = try nestedContainer.decode(String.self, forKey: .color)
+            let added = try nestedContainer.decode([String].self, forKey: .emailIDs)
+            let removed = try nestedContainer.decode([String].self, forKey: .removedEmailIDs)
+            self = .updateContactGroup(objectID: objectID, name: name, color: color, addedEmailList: added, removedEmailList: removed)
+        case .deleteContactGroup:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteContactGroup)
+            self = .deleteContactGroup(objectID: try nestedContainer.decode(String.self, forKey: .objectID))
         }
     }
     
@@ -297,6 +359,33 @@ extension MessageAction: Codable {
             try container.encode(rawValue, forKey: .signin)
         case .fetchMessageDetail:
             try container.encode(rawValue, forKey: .fetchMessageDetail)
+        case .updateContact(objectID: let objectID, cardDatas: let cardDatas):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateContact)
+            try nestedContainer.encode(objectID, forKey: .objectID)
+            try nestedContainer.encode(cardDatas, forKey: .cardDatas)
+        case .deleteContact(objectID: let objectID):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteContact)
+            try nestedContainer.encode(objectID, forKey: .objectID)
+        case .addContact(objectID: let objectID, cardDatas: let cardDatas):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContact)
+            try nestedContainer.encode(objectID, forKey: .objectID)
+            try nestedContainer.encode(cardDatas, forKey: .cardDatas)
+        case .addContactGroup(objectID: let objectID, name: let name, color: let color, emailIDs: let emailIDs):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContactGroup)
+            try nestedContainer.encode(objectID, forKey: .objectID)
+            try nestedContainer.encode(name, forKey: .name)
+            try nestedContainer.encode(color, forKey: .color)
+            try nestedContainer.encode(emailIDs, forKey: .emailIDs)
+        case .updateContactGroup(let objectID, let name, let color, let addedEmailList, let removedEmailList):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateContactGroup)
+            try nestedContainer.encode(objectID, forKey: .objectID)
+            try nestedContainer.encode(name, forKey: .name)
+            try nestedContainer.encode(color, forKey: .color)
+            try nestedContainer.encode(addedEmailList, forKey: .emailIDs)
+            try nestedContainer.encode(removedEmailList, forKey: .removedEmailIDs)
+        case .deleteContactGroup(let objectID):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteContactGroup)
+            try nestedContainer.encode(objectID, forKey: .objectID)
         }
     }
 }

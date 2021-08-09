@@ -30,7 +30,7 @@ class MessageActionCodableTests: XCTestCase {
         switch action {
         case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .read, .unread, .delete, .send, .emptyTrash,
              .emptySpam, .empty, .label, .unlabel, .folder, .updateLabel, .createLabel, .deleteLabel, .signout,
-             .signin, .fetchMessageDetail, .updateAttKeyPacket:
+             .signin, .fetchMessageDetail, .updateAttKeyPacket, .updateContact, .deleteContact, .addContact, .addContactGroup, .updateContactGroup, .deleteContactGroup:
             break
         }
     }
@@ -201,6 +201,55 @@ class MessageActionCodableTests: XCTestCase {
 
     func testFetchMessageDetail() throws {
         let action: MessageAction = .fetchMessageDetail
+        let encoded = try JSONEncoder().encode(action)
+        let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
+        XCTAssertEqual(action, decoded)
+    }
+
+    func testUpdateContact() throws {
+        let cardDatas: [CardData] = [.init(t: .PlainText, d: "data", s: "sign")]
+        let action: MessageAction = .updateContact(objectID: "objectID",
+                                                   cardDatas: cardDatas)
+        let encoded = try JSONEncoder().encode(action)
+        let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
+        XCTAssertEqual(action, decoded)
+    }
+
+    func testDeleteContact() throws {
+        let action: MessageAction = .deleteContactGroup(objectID: "deleteObjectID")
+        let encoded = try JSONEncoder().encode(action)
+        let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
+        XCTAssertEqual(action, decoded)
+    }
+
+    func testAddContact() throws {
+        let cardDatas: [CardData] = [.init(t: .PlainText, d: "data", s: "sign")]
+        let action: MessageAction = .addContact(objectID: "addObjectID",
+                                                cardDatas: cardDatas)
+        let encoded = try JSONEncoder().encode(action)
+        let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
+        XCTAssertEqual(action, decoded)
+    }
+
+    func testAddContactGroup() throws {
+        let emailIDs = ["id 1", "id 2"]
+        let action: MessageAction = .addContactGroup(objectID: "addGroupObjectID", name: "group name", color: "group color", emailIDs: emailIDs)
+        let encoded = try JSONEncoder().encode(action)
+        let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
+        XCTAssertEqual(action, decoded)
+    }
+
+    func testUpdateContactGroup() throws {
+        let addedEmailIDs = ["add id 1", "add id 2"]
+        let removedEmailIDs = ["removed id 1", "removed id 2"]
+        let action: MessageAction = .updateContactGroup(objectID: "updateGroupobjectID", name: "a name", color: "a color", addedEmailList: addedEmailIDs, removedEmailList: removedEmailIDs)
+        let encoded = try JSONEncoder().encode(action)
+        let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
+        XCTAssertEqual(action, decoded)
+    }
+
+    func testDeleteContactGroup() throws {
+        let action: MessageAction = .deleteContactGroup(objectID: "delete group objectID")
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)
