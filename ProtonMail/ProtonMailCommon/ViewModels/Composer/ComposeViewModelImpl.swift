@@ -130,7 +130,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         super.init()
         self.composerContext = coreDataService.makeComposerMainContext()
         
-        if msg == nil || msg!.contains(label: .draft)  {
+        if msg == nil || msg?.draft == true {
             if let m = msg, let msgToEdit = try? self.composerContext?.existingObject(with: m.objectID) as? Message {
                 self.message = msgToEdit
             }
