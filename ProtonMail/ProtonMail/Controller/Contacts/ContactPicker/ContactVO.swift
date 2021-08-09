@@ -406,3 +406,10 @@ extension Array where Element: ContactVO {
         }
     }
 }
+
+extension ContactVO {
+    public func copy(with zone: NSZone? = nil) -> Any {
+        let contact = ContactVO(id: contactId, name: name, email: email, isProtonMailContact: isProtonMailContact)
+        return contact
+    }
+}

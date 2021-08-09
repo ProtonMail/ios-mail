@@ -348,3 +348,10 @@ extension ContactGroupVO {
         }
     }
 }
+
+extension ContactGroupVO {
+    func copy(with zone: NSZone? = nil) -> Any {
+        let contactGroup = ContactGroupVO(ID: ID, name: contactTitle, groupSize: groupSize, color: groupColor)
+        return contactGroup
+    }
+}
