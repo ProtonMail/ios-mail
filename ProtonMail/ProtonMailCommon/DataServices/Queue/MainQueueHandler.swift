@@ -351,6 +351,10 @@ extension MainQueueHandler {
                     }
                     message.messageID = messageID
                     message.isDetailDownloaded = true
+
+                    if let conversationID = mess["ConversationID"] as? String {
+                        message.conversationID = conversationID
+                    }
                 
                     var hasTemp = false
                     let attachments = message.mutableSetValue(forKey: "attachments")
