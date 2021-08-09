@@ -27,10 +27,12 @@ class ConversationNewMessageFloatyView: UIView {
 
     let titleLabel = UILabel(frame: .zero)
     var handleTapAction: (() -> Void)?
+    private let didHide: () -> Void
     private let button = UIButton(frame: .zero)
     private var timer: Timer?
 
-    init() {
+    init(didHide: @escaping () -> Void) {
+        self.didHide = didHide
         super.init(frame: .zero)
         addSubviews()
         setUpLayout()
@@ -73,12 +75,14 @@ class ConversationNewMessageFloatyView: UIView {
         timer?.invalidate()
         handleTapAction?()
         removeFromSuperview()
+        didHide()
     }
 
-    func show(handleTapAction: (() -> Void)?) {
+    func handleTapAction(action: (() -> Void)?) {
         timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block: { [weak self] _ in
             self?.removeFromSuperview()
+            self?.didHide()
         })
-        self.handleTapAction = handleTapAction
+        self.handleTapAction = action
     }
 }
