@@ -101,7 +101,7 @@ final class ComposerAttachmentVC: UIViewController {
             let existedID = self.datas
                 .map { $0.objectID.uriRepresentation().absoluteString }
             let attachments = attachments
-                .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) }
+                .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) && !$0.isSoftDeleted }
 
             // swiftlint:disable:next todo
             // FIXME: insert function for better UX
