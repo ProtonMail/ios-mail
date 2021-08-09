@@ -51,7 +51,7 @@ class AttachmentListViewModel {
         }
     }
 
-    private(set) var attachmentSections: [AttachmentSection] = []
+    let attachmentSections: [AttachmentSection] = [.normal, .inline]
     private(set) var inlineAttachments: [AttachmentInfo] = []
     private(set) var normalAttachments: [AttachmentInfo] = []
     private(set) var inlineCIDS: [String]?
@@ -67,28 +67,8 @@ class AttachmentListViewModel {
     init(attachments: [AttachmentInfo], user: UserManager, inlineCIDS: [String]?) {
         self.user = user
         self.inlineCIDS = inlineCIDS
-        inlineAttachments = attachments.filter({ attachmentInfo -> Bool in
-            if let att = attachmentInfo.att {
-                return self.isInline(att)
-            } else {
-                return false
-            }
-        })
-        normalAttachments = attachments.filter({ attachmentInfo -> Bool in
-            if let att = attachmentInfo.att {
-                return !self.isInline(att)
-            } else {
-                return false
-            }
-        })
-
-        attachmentSections.removeAll()
-        if !normalAttachments.isEmpty {
-            attachmentSections.append(.normal)
-        }
-        if !inlineAttachments.isEmpty {
-            attachmentSections.append(.inline)
-        }
+        self.inlineAttachments = attachments.inlineAttachments(inlineCIDS: inlineCIDS)
+        self.normalAttachments = attachments.normalAttachments(inlineCIDS: inlineCIDS)
     }
 
     func open(attachmentInfo: AttachmentInfo,
@@ -146,6 +126,11 @@ class AttachmentListViewModel {
         }
 
         decryptor(attachment, localURL)
+    }
+
+    func isEmpty(section: AttachmentSection) -> Bool {
+        let sectionItems = section == .inline ? inlineAttachments : normalAttachments
+        return sectionItems.isEmpty
     }
 
     func isAttachmentDownloading(id: String) -> Bool {
@@ -219,12 +204,29 @@ class AttachmentListViewModel {
         self.attachmentDownloaded?(attachment.attachmentID, tempClearFileURL)
     }
 
-    func isInline(_ attachment: Attachment) -> Bool {
-        if let cids = self.inlineCIDS {
-            // inline must have CID
+}
+
+private extension AttachmentInfo {
+
+    func isInline(inlineCIDS: [String]?) -> Bool {
+        guard let attachment = att else { return false }
+        if let inlineCIDS = inlineCIDS {
             guard let contentID = attachment.contentID() else { return false }
-            return cids.contains(contentID)
+            return inlineCIDS.contains(contentID)
         }
         return attachment.inline()
     }
+
+}
+
+private extension Collection where Element == AttachmentInfo {
+
+    func inlineAttachments(inlineCIDS: [String]?) -> [Element] {
+        filter { $0.isInline(inlineCIDS: inlineCIDS) }
+    }
+
+    func normalAttachments(inlineCIDS: [String]?) -> [Element] {
+        filter { !$0.isInline(inlineCIDS: inlineCIDS) }
+    }
+
 }
