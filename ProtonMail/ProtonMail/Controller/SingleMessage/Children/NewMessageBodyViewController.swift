@@ -303,7 +303,7 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         guard !webView.isLoading else { return }
-        webView.evaluateJavaScript("document.readyState") { [weak self] a, b in
+        webView.evaluateJavaScript("document.readyState") { [weak self] _, _ in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 self?.viewModel.recalculateCellHeight?()
             }

@@ -205,7 +205,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     override func done(complete : @escaping ContactEditSaveComplete) {
         let mailboxPassword = user.mailboxPassword
         guard let userkey = user.userInfo.firstUserKey(),
-            case let authCredential = user.authCredential else
+              case _ = user.authCredential else
         {
             DispatchQueue.main.async {
                 complete(NSError.lockError())

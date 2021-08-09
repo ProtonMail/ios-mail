@@ -206,6 +206,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                           Message.Location.starred.rawValue,
                           Message.HiddenLocation.sent.rawValue,
                           Message.HiddenLocation.draft.rawValue]
+        // swiftlint:disable sorted_first_last
+        // Better to disable linter rule here keep it this way for readability
         guard let labels = message.labels.allObjects as? [Label],
               let location = labels
                 .sorted(by: { label1, label2 in
@@ -215,6 +217,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                         !forbidden.contains($0.labelID)
                     && ($0.type.intValue == 3 || Int($0.labelID) != nil)
                 }) else { return }
+        // swiftlint:enable sorted_first_last
         let viewModel = MessageViewActionSheetViewModel(title: message.subject,
                                                         labelID: location.labelID,
                                                         includeStarring: true,
@@ -272,7 +275,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         cell.customView.titleLabel.attributedText = subject.apply(style: style)
         return cell
     }
+}
 
+private extension ConversationViewController {
     private func messageCell(
         _ tableView: UITableView,
         indexPath: IndexPath,
@@ -305,9 +310,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             return cell
         }
     }
-}
 
-private extension ConversationViewController {
     private func embedController(
         viewModel: ConversationExpandedMessageViewModel,
         in cell: ConversationExpandedMessageCell,
