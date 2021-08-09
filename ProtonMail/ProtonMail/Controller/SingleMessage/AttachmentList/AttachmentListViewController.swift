@@ -64,7 +64,6 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.register(AttachmentListTableViewCell.self)
-        tableView.sectionHeaderHeight = 52.0
         tableView.rowHeight = 72.0
 
         var titleToAdd = "\(viewModel.attachmentCount) "
@@ -157,12 +156,17 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let sectionItem = viewModel.attachmentSections[section]
+        guard !viewModel.isEmpty(section: sectionItem) else { return nil }
         return PMHeaderView(title: sectionItem.actionTitle,
                             fontSize: 15,
                             titleColor: UIColorManager.TextWeak,
                             titleLeft: 16,
                             titleBottom: 8,
                             background: UIColorManager.BackgroundNorm)
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        viewModel.isEmpty(section: viewModel.attachmentSections[section]) ? 0 : 52
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
