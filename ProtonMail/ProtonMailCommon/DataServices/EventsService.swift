@@ -355,32 +355,6 @@ extension EventsService {
                             msg.message?["messageStatus"] = 1
                         }
                         
-                        if let lo = msg.message?["Location"] as? Int {
-                            if lo == 1 || lo == 8 { //if it is a draft
-                                if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
-                                    if exsitMes.messageStatus == 1 {
-                                        if let subject = msg.message?["Subject"] as? String {
-                                            exsitMes.title = subject
-                                        }
-                                        if let timeValue = msg.message?["Time"] {
-                                            if let timeString = timeValue as? NSString {
-                                                let time = timeString.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            } else if let dateNumber = timeValue as? NSNumber {
-                                                let time = dateNumber.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            }
-                                        }
-                                        continue
-                                    }
-                                }
-                            }
-                        }
-                        
                         if let labelIDs = msg.message?["LabelIDs"] as? NSArray {
                             if labelIDs.contains("1") || labelIDs.contains("8") {
                                 if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
@@ -400,6 +374,9 @@ extension EventsService {
                                                     exsitMes.time = time.asDate()
                                                 }
                                             }
+                                        }
+                                        if let conversationID = msg.message?["ConversationID"] as? String {
+                                            exsitMes.conversationID = conversationID
                                         }
                                         continue
                                     }
