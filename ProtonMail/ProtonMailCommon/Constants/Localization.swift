@@ -2091,6 +2091,7 @@ class LocalizedString {
     lazy var _remove_attachment_warning = NSLocalizedString("Do you really want to remove this file from attachments?", comment: "")
 
     lazy var _banner_embedded_image_title = NSLocalizedString("This message contains embedded images.", comment: "")
+    lazy var _banner_remote_and_embedded_title  = NSLocalizedString("This message contains remote content and embedded images", comment: "")
     lazy var _banner_load_embedded_image = NSLocalizedString("Load images", comment: "")
     lazy var _banner_trashed_message_title = NSLocalizedString("This conversation contains trashed messages", comment: "")
 

@@ -71,7 +71,7 @@ class RemoteAndEmbeddedBannerView: UIView {
         [
             titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8),
             titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            titleLabel.topAnchor.constraint(equalTo: iconView.topAnchor)
+            titleLabel.centerYAnchor.constraint(equalTo: iconView.centerYAnchor)
         ].activate()
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
@@ -81,7 +81,7 @@ class RemoteAndEmbeddedBannerView: UIView {
         ].activate()
 
         [
-            buttonStackView.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 12.0),
+            buttonStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12.0),
             buttonStackView.leadingAnchor.constraint(equalTo: iconView.leadingAnchor),
             buttonStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             buttonStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
@@ -109,7 +109,7 @@ private enum SubviewsFactory {
 
     static var titleLabel: UILabel {
         let label = UILabel(frame: .zero)
-        label.attributedText = LocalString._banner_embedded_image_title.apply(style: FontManager.Caption)
+        label.attributedText = LocalString._banner_remote_and_embedded_title.apply(style: FontManager.Caption)
         label.numberOfLines = 0
         return label
     }

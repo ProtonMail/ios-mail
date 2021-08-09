@@ -124,7 +124,7 @@ class NewMessageBodyViewModel {
                 showEmbedImage(message, body: decryptedBody) { [weak self] in
                     self?.contents = WebContents(
                         body: self?.body ?? "",
-                        remoteContentMode: .allowed
+                        remoteContentMode: remoteContentMode
                     )
                 }
                 return false
