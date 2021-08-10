@@ -587,10 +587,12 @@ extension EncryptedSearchService {
         let time: Int = Int((message.time)!.timeIntervalSince1970)
         let order: Int = Int(truncating: message.order)
         
-        let iv: String = String(decoding: (encryptedContent?.iv)!, as: UTF8.self)
-        let ciphertext: String = String(decoding: (encryptedContent?.ciphertext)!, as: UTF8.self)
+        //let iv: String = String(decoding: (encryptedContent?.iv)!, as: UTF8.self)
+        let iv: Data = (encryptedContent?.iv)!.base64EncodedData()
+        //let ciphertext: String = String(decoding: (encryptedContent?.ciphertext)!, as: UTF8.self)
+        let ciphertext:Data = (encryptedContent?.ciphertext)!.base64EncodedData()
         
-        let row: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(messageID: message.messageID, time: time, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: iv, encryptedContent: ciphertext, encryptedContentFile: "")
+        let _: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(messageID: message.messageID, time: time, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: iv, encryptedContent: ciphertext, encryptedContentFile: "")
         //print("message inserted at row: ", row!)
     }
 
@@ -606,14 +608,19 @@ extension EncryptedSearchService {
         self.getTotalMessages {
             let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
             let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
-            
-            //TODO do Cached Search
-            //TODO if we don't succeed with cached search, do index search
+            let cache: EncryptedsearchCache? = self.getCache(cipher: cipher)
             var searchResults: EncryptedsearchResultList? = EncryptedsearchResultList()
-            self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: &searchResults, totalMessages: self.totalMessages)
+            
+            self.doCachedSearch(searcher: searcher, cache: cache!, searchResult: &searchResults, totalMessages: self.totalMessages)
+            let numberOfResultsFoundByCachedSearch: Int = (searchResults?.length())!
+            
+            //Check if there are enough results from the cached search
+            let searchResultPageSize: Int = 15  //TODO Why 15?
+            if !searchResults!.isComplete && numberOfResultsFoundByCachedSearch <= searchResultPageSize {
+                self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: &searchResults, totalMessages: self.totalMessages)
+            }
             
             let messages: [Message.ObjectIDContainer]? = self.extractSearchResults(searchResults!)
-            
             completion!(messages, error)
         }
     }
@@ -631,6 +638,12 @@ extension EncryptedSearchService {
 
         let searcher: EncryptedsearchSimpleSearcher = EncryptedsearchSimpleSearcher(keywords, contextSize: contextSize)!
         return searcher
+    }
+    
+    func getCache(cipher: EncryptedsearchAESGCMCipher) -> EncryptedsearchCache {
+        let dbParams: EncryptedsearchDBParams = EncryptedSearchIndexService.shared.getDBParams(self.user.userInfo.userId)
+        let cache: EncryptedsearchCache? = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.user.userinfo.userId, dbParams: dbParams, cipher: cipher)
+        return cache!
     }
     
     func createEncryptedSearchStringList(_ query: String) -> EncryptedsearchStringList {
@@ -690,6 +703,18 @@ extension EncryptedSearchService {
         } catch {
             print("Error while closing database Connection: \(error)")
         }
+    }
+    
+    func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchResult: inout EncryptedsearchResultList?, totalMessages: Int){
+        let startCacheSearch: Double = NSDate().timeIntervalSince1970
+        print("Start cache search...")
+        do {
+            try cache.search(searchResult, searcher: searcher)
+        } catch {
+            print("Error while searching the cache: \(error)")
+        }
+        let endCacheSearch: Double = NSDate().timeIntervalSince1970
+        print("Cache search: start: \(startCacheSearch), end: \(endCacheSearch)")
     }
     
     func getIndex() -> EncryptedsearchIndex {
