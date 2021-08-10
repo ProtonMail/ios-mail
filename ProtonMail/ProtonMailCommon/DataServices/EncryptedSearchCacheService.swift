@@ -24,11 +24,15 @@ public class EncryptedSearchCacheService {
     
     //set initializer to private - Singleton
     private init() {
-        self.maxCacheSize = 0   //TODO intialize
-        self.batchSize = 0      //TODO initialize
+        let maxMemory: Double = EncryptedSearchService.shared.getAppMemory()
+        self.maxCacheSize = Int64((maxMemory * self.searchCacheHeapPercent))
+        self.batchSize = Int64((maxMemory * self.searchCacheHeapPercent) / self.searchMsgSize)
         self.cache = EncryptedsearchCache(self.maxCacheSize)
     }
     
+    internal let searchCacheHeapPercent: Double = 0.2 // Percentage of heap that can be used by the cache
+    internal let searchBatchHeapPercent: Double = 0.1 // Percentage of heap that can be used to load messages from the index
+    internal let searchMsgSize: Double = 14000 // An estimation of how many bytes take a search message in memory
     internal var maxCacheSize: Int64 = 0
     internal var batchSize: Int64 = 0
     internal var cache: EncryptedsearchCache? = nil
@@ -37,10 +41,9 @@ public class EncryptedSearchCacheService {
 
 extension EncryptedSearchCacheService {
     func buildCacheForUser(userId: String, dbParams: EncryptedsearchDBParams, cipher: EncryptedsearchAESGCMCipher) -> EncryptedsearchCache {
-        print("Build cache for user \(userId)")
         //If cache is not build or we have a new user
         if currentUserID != userId || !(self.cache?.isBuilt())! {
-            print("cache not available, build new cache")
+            print("Build cache for user \(userId)")
             self.cache?.deleteAll()
             let parallelDecryptions: Int = 100  //TODO why 100?
             do {
@@ -50,7 +53,6 @@ extension EncryptedSearchCacheService {
             }
             self.currentUserID = userId
         }
-        print("cache: ", self.cache!)
         return self.cache!
     }
     
