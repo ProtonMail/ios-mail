@@ -134,9 +134,9 @@ extension MenuViewModel: MenuVMProtocol {
         case .folders:
             return self.folderItems.getFolderItem(by: indexPath)
         case .labels:
-            return self.labelItems[row]
+            return self.labelItems[safe:row]
         case .more:
-            return self.moreItems[row]
+            return self.moreItems[safe:row]
         default: return nil
         }
     }

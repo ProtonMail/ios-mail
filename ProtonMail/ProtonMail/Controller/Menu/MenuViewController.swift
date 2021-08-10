@@ -205,6 +205,36 @@ extension MenuViewController {
             AccountSwitcher.dismiss(from: sideMenu)
         }
     }
+    
+    private func checkAddLabelAbility(label: MenuLabel) {
+        guard self.viewModel.allowToCreate(type: .label) else {
+            let title = LocalString._creating_label_not_allowed
+            let message = LocalString._upgrade_to_create_label
+            self.showAlert(title: title, message: message)
+            return
+        }
+        self.coordinator.go(to: label)
+    }
+
+    private func checkAddFolderAbility(label: MenuLabel) {
+        guard self.viewModel.allowToCreate(type: .folder) else {
+            let title = LocalString._creating_folder_not_allowed
+            let message = LocalString._upgrade_to_create_folder
+            self.showAlert(title: title, message: message)
+            return
+        }
+        self.coordinator.go(to: label)
+    }
+
+    @objc
+    private func clickAddLabelFromSection() {
+        self.checkAddLabelAbility(label: .init(location: .addLabel))
+    }
+
+    @objc
+    private func clickAddFolderFromSection() {
+        self.checkAddFolderAbility(label: .init(location: .addFolder))
+    }
 }
 
 // MARK: MenuUIProtocol
@@ -331,21 +361,9 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         case .customize(_):
             self.coordinator.go(to: label)
         case .addLabel:
-            guard self.viewModel.allowToCreate(type: .label) else {
-                let title = LocalString._creating_label_not_allowed
-                let message = LocalString._upgrade_to_create_label
-                self.showAlert(title: title, message: message)
-                return
-            }
-            self.coordinator.go(to: label)
+            self.checkAddLabelAbility(label: label)
         case .addFolder:
-            guard self.viewModel.allowToCreate(type: .folder) else {
-                let title = LocalString._creating_folder_not_allowed
-                let message = LocalString._upgrade_to_create_folder
-                self.showAlert(title: title, message: message)
-                return
-            }
-            self.coordinator.go(to: label)
+            self.checkAddFolderAbility(label: label)
         default:
             self.coordinator.go(to: label)
         }
@@ -388,6 +406,45 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         
         label.leadingAnchor.constraint(equalTo: vi.leadingAnchor, constant: 16).isActive = true
         label.bottomAnchor.constraint(equalTo: vi.bottomAnchor, constant: -8).isActive = true
+        return self.addPlusButtonIfNeeded(vi: vi, section: section)
+    }
+
+    private func addPlusButtonIfNeeded(vi: UIView, section: MenuSection) -> UIView {
+        guard section == .folders || section == .labels else {
+            return vi
+        }
+        let sectionIndex = section == .folders ? 1: 2
+        let path = IndexPath(row: 0, section: sectionIndex)
+        let addTypes: [LabelLocation] = [.addFolder, .addLabel]
+        if let label = self.viewModel.getMenuItem(indexPath: path),
+           addTypes.contains(label.location) {
+            return vi
+        }
+
+        let plusView = UIView()
+        plusView.backgroundColor = .clear
+        plusView.isUserInteractionEnabled = true
+        vi.addSubview(plusView)
+        [
+            plusView.topAnchor.constraint(equalTo: vi.topAnchor),
+            plusView.trailingAnchor.constraint(equalTo: vi.trailingAnchor),
+            plusView.bottomAnchor.constraint(equalTo: vi.bottomAnchor),
+            plusView.widthAnchor.constraint(equalToConstant: 50)
+        ].activate()
+        let selector = section == .folders ? #selector(self.clickAddFolderFromSection): #selector(self.clickAddLabelFromSection)
+        let tapGesture = UITapGestureRecognizer(target: self, action: selector)
+        plusView.addGestureRecognizer(tapGesture)
+    
+        let plusIcon = UIImageView(image: Asset.menuPlus.image)
+        plusIcon.tintColor = UIColor(hexColorCode: "#9CA0AA")
+        
+        plusView.addSubview(plusIcon)
+        [
+            plusIcon.trailingAnchor.constraint(equalTo: plusView.trailingAnchor, constant: -16),
+            plusIcon.centerYAnchor.constraint(equalTo: plusView.centerYAnchor),
+            plusIcon.widthAnchor.constraint(equalToConstant: 20),
+            plusIcon.heightAnchor.constraint(equalToConstant: 20)
+        ].activate()
         return vi
     }
     
