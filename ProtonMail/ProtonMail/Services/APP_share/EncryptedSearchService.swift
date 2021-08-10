@@ -613,6 +613,7 @@ extension EncryptedSearchService {
             
             self.doCachedSearch(searcher: searcher, cache: cache!, searchResult: &searchResults, totalMessages: self.totalMessages)
             let numberOfResultsFoundByCachedSearch: Int = (searchResults?.length())!
+            print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
             
             //Check if there are enough results from the cached search
             let searchResultPageSize: Int = 15  //TODO Why 15?
@@ -627,6 +628,9 @@ extension EncryptedSearchService {
 
     func extractSearchResults(_ searchResults: EncryptedsearchResultList) -> [Message.ObjectIDContainer]? {
         print("Search Results: ", searchResults)
+        print("Search Results length: ", searchResults.length())
+        print("cachedsearchdone: ", searchResults.cachedSearchDone)
+        print("cacheSearchedcount: ", searchResults.cacheSearchedCount)
         //TODO extract search results from EncryptedsearchResultList
         // and return [Message.ObjectIDContainer]
         return nil
@@ -707,7 +711,7 @@ extension EncryptedSearchService {
     
     func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchResult: inout EncryptedsearchResultList?, totalMessages: Int){
         let startCacheSearch: Double = NSDate().timeIntervalSince1970
-        print("Start cache search...")
+        //print("Start cache search...")
         do {
             try cache.search(searchResult, searcher: searcher)
         } catch {
@@ -755,7 +759,7 @@ extension EncryptedSearchService {
     }*/
     
     //Code from here: https://stackoverflow.com/a/64738201
-    private func getAppMemory() -> Double {
+    func getAppMemory() -> Double {
         var taskInfo = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
         let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
