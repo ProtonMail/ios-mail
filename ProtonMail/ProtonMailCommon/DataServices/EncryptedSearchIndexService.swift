@@ -66,14 +66,14 @@ extension EncryptedSearchIndexService {
         var order:Expression<CLong?> = Expression(value: nil)
         var hasBody:Expression<Bool> = Expression(value: false)
         var decryptionFailed:Expression<Bool> = Expression(value: false)
-        var encryptionIV: Expression<String?> = Expression(value: nil)
-        var encryptedContent:Expression<String?> = Expression(value: nil)
+        var encryptionIV: Expression<Data?> = Expression(value: nil)
+        var encryptedContent:Expression<Data?> = Expression(value: nil)
         var encryptedContentFile: Expression<String?> = Expression(value: nil)
     }
     
     func createSearchIndexTable() -> Void {
         //self.searchableMessages = Table(DatabaseConstants.Table_Searchable_Messages)
-        self.databaseSchema = DatabaseEntries(messageID: Expression<String>(DatabaseConstants.Column_Searchable_Message_Id), time: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Time), labelIDs: Expression<String>(DatabaseConstants.Column_Searchable_Message_Labels), isStarred: Expression<Bool?>(DatabaseConstants.Column_Searchable_Message_Is_Starred), unread: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Unread), location: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Location), order: Expression<CLong?>(DatabaseConstants.Column_Searchable_Message_Order), hasBody: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Has_Body), decryptionFailed: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Decryption_Failed), encryptionIV: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV), encryptedContent: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content), encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File))
+        self.databaseSchema = DatabaseEntries(messageID: Expression<String>(DatabaseConstants.Column_Searchable_Message_Id), time: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Time), labelIDs: Expression<String>(DatabaseConstants.Column_Searchable_Message_Labels), isStarred: Expression<Bool?>(DatabaseConstants.Column_Searchable_Message_Is_Starred), unread: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Unread), location: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Location), order: Expression<CLong?>(DatabaseConstants.Column_Searchable_Message_Order), hasBody: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Has_Body), decryptionFailed: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Decryption_Failed), encryptionIV: Expression<Data?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV), encryptedContent: Expression<Data?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content), encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File))
         
         do {
             try self.handleToSQliteDB?.run(self.searchableMessages.create(ifNotExists: true) {
@@ -99,7 +99,7 @@ extension EncryptedSearchIndexService {
         //return messages
     }
     
-    func addNewEntryToSearchIndex(messageID:String, time: Int, labelIDs: NSSet, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:String, encryptedContent:String, encryptedContentFile:String) -> Int64? {
+    func addNewEntryToSearchIndex(messageID:String, time: Int, labelIDs: NSSet, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:Data, encryptedContent:Data, encryptedContentFile:String) -> Int64? {
         
         var rowID:Int64? = -1
         var allLabels:String = ""
