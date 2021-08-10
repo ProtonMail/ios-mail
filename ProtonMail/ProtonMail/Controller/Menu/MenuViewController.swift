@@ -44,9 +44,9 @@ final class MenuViewController: UIViewController, AccessibleView {
         self.viewModel = vm
         self.coordinator = coordinator
     }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    
+    override var prefersStatusBarHidden: Bool {
+        true
     }
     
     override func viewDidLoad() {
@@ -370,6 +370,16 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         vi.backgroundColor = .clear
         
         if section == .inboxes { return vi }
+        
+        let line = UIView()
+        line.backgroundColor = UIColor(hexColorCode: "#303239")
+        vi.addSubview(line)
+        [
+            line.topAnchor.constraint(equalTo: vi.topAnchor),
+            line.leadingAnchor.constraint(equalTo: vi.leadingAnchor),
+            line.trailingAnchor.constraint(equalTo: vi.trailingAnchor),
+            line.heightAnchor.constraint(equalToConstant: 2)
+        ].activate()
         
         let label = UILabel(font: .systemFont(ofSize: 13), text: section.title, textColor: UIColor(RRGGBB: UInt(0x9ca0aa)))
         label.translatesAutoresizingMaskIntoConstraints = false

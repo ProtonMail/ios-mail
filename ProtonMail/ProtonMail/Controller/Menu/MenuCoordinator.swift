@@ -65,7 +65,7 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
          coreDataService: CoreDataService,
          lastUpdatedStore:LastUpdatedStoreProtocol,
          usersManager: UsersManager,
-         vc: VC, vm: MenuVMProtocol, menuWidth: CGFloat = 350) {
+         vc: VC, vm: MenuVMProtocol, menuWidth: CGFloat = 327) {
         defer {
             NotificationCenter
                 .default
