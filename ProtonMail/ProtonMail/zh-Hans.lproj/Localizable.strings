@@ -1,3 +1,6 @@
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+"'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
+
 /* Key size text when setup key */
 "(2048 bit)" = "（2048 位）";
 
@@ -22,11 +25,23 @@
 /* Service plan capability */
 "%@ storage capacity" = "%@ 存储空间";
 
+/* Description */
+"%d attempt remaining" = "%d attempt remaining";
+
+/* Error */
+"%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
+
 /* The title of single selected conversation of action sheet in inbox */
 "%d conversation" = "%d conversation";
 
 /* The title of multiple selected conversations of action sheet in inbox */
 "%d conversations" = "%d conversations";
+
+/* day */
+"%d day" = "%d day";
+
+/* hour */
+"%d hour" = "%d hour";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d 人";
@@ -58,6 +73,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 拖至此处作为附件导入";
 
+/* alert body for how many extra mail addresses, e.g. +3 others */
+"+%d others" = "+%d others";
+
 /* default empty object */
 "<no object>" = "<no object>";
 
@@ -76,9 +94,6 @@
 
 /* Description */
 "A new version of ProtonMail app is available. Please update to the latest version." = "ProtonMail 有新版本发布，请升级到最新版。";
-
-/* alert description */
-"A paid ProtonMail plan is required to use this feature" = "此功能需要付费";
 
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "口令未设置，请在系统设置中开启";
@@ -99,7 +114,7 @@
 "Account password invalid" = "密码无效";
 
 /* section title in settings */
-"Account Settings" = "账户设置";
+"Account settings" = "Account settings";
 
 /* (No Comment) */
 "Add" = "新建";
@@ -233,7 +248,7 @@
 "App is locked" = "程序已锁定";
 
 /* section title in settings */
-"App Settings" = "程序设置";
+"App settings" = "App settings";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple 应用内购分成";
@@ -307,15 +322,6 @@
 /* VoiceOver: email has attachments */
 "Attachments" = "附件";
 
-/* Error */
-"attempt remaining until secure data wipe!" = "尝试保留, 直到安全数据擦除!";
-
-/* Description */
-"attempts remaining" = "次";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "尝试保留, 直到安全数据擦除!";
-
 /* Title */
 "Authentication" = "身份验证";
 
@@ -375,6 +381,9 @@
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "生日";
+
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
 
 /* Title */
 "Bug Description" = "问题描述";
@@ -448,9 +457,6 @@
 
 /* update password error */
 "Can't get user auth info" = "无法获取用户身份验证信息";
-
-/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Can't load share content!" = "无法加载共享内容！";
 
 /* Error */
 "Can't load the file" = "无法加载该文件";
@@ -565,11 +571,9 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "正在关闭";
 
-/* cell title in device settings */
+/* cell title in device settings
+   The title of combined contact in settings */
 "Combined contacts" = "Combined contacts";
-
-/* The title of combined contact in settings */
-"Combined Contacts" = "共用通讯录";
 
 /* *
  *  Composer Email view controller */
@@ -609,8 +613,14 @@
 /* Account manager title */
 "Connect Account" = "添加账户";
 
+/* Hint when users delete contact offline */
+"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+
 /* contact section title */
 "Contact details" = "Contact details";
+
+/* Hint when users create / edit contact offline */
+"Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
 
 /* Title */
 "Contact the ProtonMail team" = "请联系 ProtonMail 团队";
@@ -656,9 +666,6 @@
 /* Create account button */
 "Create Account" = "创建账户";
 
-/* Description */
-"Create and add Labels to organize your inbox. Long press on a message for all options." = "可创建并使用标签来整理您的收件箱。长按邮件可查看所有选项。";
-
 /* title of button in account connect page */
 "Create new account" = "创建账户";
 
@@ -696,9 +703,6 @@
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "日期: %@";
-
-/* day */
-"day" = "day";
 
 /* days
    Title */
@@ -849,6 +853,9 @@
 /* mail location title */
 "DRAFTS" = "草稿箱";
 
+/* Onboarding title */
+"Easily up-to-date" = "Easily up-to-date";
+
 /* Action */
 "Edit" = "更改";
 
@@ -933,7 +940,7 @@
 "Enable email notices" = "Enable email notices";
 
 /* settings protection section title */
-"Enable FaceID" = "启用 FaceID";
+"Enable Face ID" = "Enable Face ID";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "启用口令";
@@ -944,16 +951,13 @@
 /* settings protection section title */
 "Enable PIN Protection" = "Enable PIN Protection";
 
-/* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "启用口令/FaceID";
-
-/* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "启用口令/TouchID";
-
 /* Title */
 "Enable signature" = "Enable signature";
 
 /* settings protection section title */
+"Enable Touch ID" = "Enable Touch ID";
+
+/* (No Comment) */
 "Enable TouchID" = "启用 TouchID";
 
 /* The footer shown when there is not result in the inbox */
@@ -998,8 +1002,11 @@
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "与已验证的地址经过端到端加密";
 
-/* Title */
+/* (No Comment) */
 "End-to-End Encryption" = "端对端加密";
+
+/* Onboarding content */
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
 
 /* Action in 2fa popup view */
 "Enter" = "进入";
@@ -1008,7 +1015,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Enter a PIN code with min 4 characters and max 21 characters.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter PIN code" = "Enter PIN code";
+"Enter current PIN code" = "Enter current PIN code";
 
 /* Title */
 "Enter Verification Code" = "输入验证码";
@@ -1034,11 +1041,14 @@
 /* No comment provided by engineer. */
 "Enter your signature here" = "Enter your signature here";
 
+/* Title of alert in share extension. */
+"Error" = "Error";
+
 /* settings debug section title */
 "Error Logs" = "错误日志";
 
 /* Error alert title */
-"Error occured" = "出错了";
+"Error occurred" = "Error occurred";
 
 /* incorrect email format error in composer */
 "Error sending" = "发送时出现错误";
@@ -1052,7 +1062,7 @@
 /* VoiceOver: email can expire */
 "Expires" = "过期时间";
 
-/* Title */
+/* (No Comment) */
 "Expiring Messages" = "邮件有效期";
 
 /* Key size checkbox */
@@ -1071,6 +1081,9 @@
  *  Core Data Service & local error */
 "Failed to initialize the application's saved data" = "程序数据初始化失败";
 
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Failed to load content!\nPlease try again." = "Failed to load content!\nPlease try again.";
+
 /* default vcard types */
 "Fax" = "传真";
 
@@ -1079,6 +1092,9 @@
 
 /* Error */
 "Fetch user info failed" = "获取用户信息失败";
+
+/* Onboarding content */
+"File, label, and color code messages to create your perfect, custom inbox." = "File, label, and color code messages to create your perfect, custom inbox.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "文件夹";
@@ -1123,7 +1139,7 @@
 "From:" = "发件人：";
 
 /* abbreviation of forward: */
-"Fw:" = "转发：";
+"Fw:" = "Fw:";
 
 /* abbreviation of forward: */
 "Fwd:" = "转发：";
@@ -1149,6 +1165,9 @@
 /* Action */
 "Get more information" = "了解详细信息";
 
+/* title of the next button */
+"Get Started" = "Get Started";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "转至草稿";
 
@@ -1173,7 +1192,7 @@
 /* menu title (contact groups) */
 "Groups" = "群组";
 
-/* Title */
+/* (No Comment) */
 "Help & Support" = "帮助与支持";
 
 /* Title */
@@ -1190,9 +1209,6 @@
 
 /* Key size checkbox */
 "High Security" = "高安全性";
-
-/* hour */
-"hour" = "hour";
 
 /* hours */
 "hours" = "小时";
@@ -1260,7 +1276,7 @@
 "Incorrect password" = "密码错误";
 
 /* Error */
-"Incorrect PIN." = "口令错误，还可尝试";
+"Incorrect PIN." = "Incorrect PIN.";
 
 /* Option title */
 "Inherit color from parent folder" = "Inherit color from parent folder";
@@ -1271,8 +1287,11 @@
 /* Title */
 "inline attachments" = "内嵌附件";
 
+/* (No Comment) */
+"Input Display Name ..." = "输入对外名称...";
+
 /* place holder */
-"Input Display Name…" = "输入对外名称…";
+"Input Display Name…" = "Input Display Name…";
 
 /* place holder */
 "Input Notification Email …" = "Input Notification Email …";
@@ -1345,7 +1364,7 @@
    Title */
 "Label as…" = "Label as…";
 
-/* Title */
+/* (No Comment) */
 "Label Management" = "管理标签";
 
 /* createing lable input place holder */
@@ -1475,9 +1494,6 @@
 /* mark message as read action */
 "Mark Read" = "标记为已读";
 
-/* No comment provided by engineer. */
-"Mark unread" = "Mark unread";
-
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
 
@@ -1527,7 +1543,7 @@
 /* Title */
 "Message Swipe Actions" = "邮件滑动操作";
 
-/* Description */
+/* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "您可以指定发出的邮件过一段时间自动销毁。";
 
 /* minute */
@@ -1605,6 +1621,9 @@
 /* title */
 "Name" = "Name";
 
+/* Onboarding title */
+"Neat and tidy" = "Neat and tidy";
+
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "免费注册";
 
@@ -1633,11 +1652,17 @@
 /* Title */
 "New mailbox password" = "新的邮箱密码";
 
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "New Message";
+
 /* Placeholder */
 "New password" = "新密码";
 
 /* Title */
 "New sign-in password" = "New sign-in password";
+
+/* title of the next button */
+"Next" = "Next";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "昵称";
@@ -1735,8 +1760,8 @@
    Title */
 "On" = "在";
 
-/* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On EE, MMM d, yyyy at %@" = "yyyy 年 MMM d 日EE %1$@";
+/* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
+"On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
@@ -1746,6 +1771,9 @@
 
 /* Open action */
 "Open" = "打开";
+
+/* VoiceOver title of account switcher button in the menu */
+"Open account switcher" = "Open account switcher";
 
 /* (No Comment) */
 "OpenDraft" = "正在编写的草稿";
@@ -1836,17 +1864,11 @@
 /* device settings auto lock type title */
 "PIN" = "PIN";
 
-/* The protection title of PIN Code protection */
-"PIN Code" = "PIN Code";
+/* The protection title of PIN code protection */
+"PIN code" = "PIN code";
 
 /* Description */
 "PIN code can't be empty." = "PIN code can't be empty.";
-
-/* device settings auto lock type title */
-"PIN/Face ID" = "PIN/Face ID";
-
-/* device settings auto lock type title */
-"PIN/Touch ID" = "PIN/Touch ID";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Plans can be edited on the web version.";
@@ -1871,6 +1893,9 @@
 
 /* error message */
 "Please input a valid email address." = "请输入有效的的邮件地址。";
+
+/* Alert message */
+"Please keep ProtonMail open until the operation is done." = "Please keep ProtonMail open until the operation is done.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "请确认您已连接网络。";
@@ -1941,9 +1966,6 @@
 /* alert title */
 "Please, manage it in your phone." = "请在移动设备中设置。";
 
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "付费功能";
-
 /* Action */
 "Print" = "打印";
 
@@ -1971,7 +1993,7 @@
 /* Title */
 "ProtonMail" = "ProtonMail";
 
-/* Description */
+/* (No Comment) */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail 不经营广告业务，也不侵犯用户隐私。您的支持对 ProtonMail 至关重要。您可以开通付费账户或捐款来支持 ProtonMail。";
 
 /* Title */
@@ -1998,7 +2020,7 @@
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "代理服务器或防火墙干扰";
 
-/* Title */
+/* (No Comment) */
 "Quick swipe actions" = "快速滑动操作";
 
 /* Title */
@@ -2054,7 +2076,7 @@
 "Remove All" = "全部移除";
 
 /* Settings row */
-"Remove image metadata" = "移除图片元数据";
+"Remove image metadata" = "Remove image metadata";
 
 /* action title */
 "Remove password" = "Remove password";
@@ -2104,7 +2126,7 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "您举报的邮件会被上传，以便我们分析并改进过滤机制。这意味着我们将得知此邮件的所有内容。";
 
 /* link opeining confirmation */
-"Request Link Confirmation" = "打开链接前提示";
+"Request link confirmation" = "Request link confirmation";
 
 /* Action */
 "RESET MAILBOX PASSWORD" = "重置邮箱密码";
@@ -2180,7 +2202,7 @@
 "Sending failed" = "发送失败";
 
 /* Alert title */
-"Sending message" = "正在发送邮件";
+"Sending in progress" = "Sending in progress";
 
 /* Description */
 "Sending Message" = "正在发送邮件";
@@ -2230,14 +2252,14 @@
 /* menu title */
 "Settings" = "设置";
 
-/* Title */
-"Share Alert" = "分享提醒";
-
 /* action */
 "Share contact" = "Share contact";
 
 /* Title */
 "Share it with your friends" = "与你的朋友分享";
+
+/* Action */
+"Show" = "Show";
 
 /* Title */
 "Sign in" = "Sign in";
@@ -2273,6 +2295,12 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Signed out from %1$@ and signed in with %2$@";
+
+/* Onboarding title */
+"Simply private" = "Simply private";
+
+/* skip button title in onboarding page */
+"Skip" = "Skip";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "免打扰";
@@ -2311,7 +2339,8 @@
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
 
-/* The title of the star action in action sheet */
+/* The title of the star action in action sheet
+   VoiceOver title of star button in the message view */
 "Star" = "星标";
 
 /* Title */
@@ -2351,7 +2380,8 @@
 /* subject: text when forward */
 "Subject:" = "主题：";
 
-/* menu title */
+/* menu title
+   The title of a subscription plans screen */
 "Subscription" = "账户";
 
 /* Fetch subscription data failed */
@@ -2363,7 +2393,7 @@
 /* network troubleshot cell title */
 "support form" = "客服表单";
 
-/* Action */
+/* (No Comment) */
 "Support ProtonMail" = "支持 ProtonMail";
 
 /* cell title in app settings */
@@ -2381,6 +2411,9 @@
 /* cell title in device settings
    Swiping gestures */
 "Swiping gestures" = "滑动手势";
+
+/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
+"Switch selection mode" = "Switch selection mode";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "已转至 %@";
@@ -2522,11 +2555,11 @@
 /* Alert message when user tries to delete folder */
 "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder.";
 
-/* Alert message */
-"This can take a while. Please do not dismiss the app." = "此操作需要一段时间，请勿离开本程序。";
-
 /* alert desc */
 "This contact belongs to your Address Book." = "您的通讯录中有此联系人。";
+
+/* No comment provided by engineer. */
+"This conversation contains trashed messages" = "This conversation contains trashed messages";
 
 /* No comment provided by engineer. */
 "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!";
@@ -2542,6 +2575,9 @@
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "This message contains embedded images.";
+
+/* No comment provided by engineer. */
+"This message contains remote content and embedded images" = "此消息包含远程内容和嵌入的图像";
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "This message contains remote content.";
@@ -2596,11 +2632,17 @@
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
 
+/* settings touchid error */
+"Touch ID is not enrolled, enable it in the system Settings" = "Touch ID is not enrolled, enable it in the system Settings";
+
+/* settings touchid/faceid error */
+"Touch ID not available" = "Touch ID not available";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID 未设置，请在系统设置中开启";
 
-/* settings touchid/faceid error */
+/* (No Comment) */
 "TouchID not available" = "TouchID 不可用";
 
 /* *
@@ -2629,7 +2671,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "开启后程序将自动锁定，您需要输入 PIN 码或使用面容 ID 来解锁。";
+"Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it.";
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "开启后程序将自动锁定，您需要输入 PIN 码或使用指纹来解锁。";
@@ -2755,9 +2797,6 @@
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "开通付费账户方可从 %@ 地址发送邮件";
 
-/* alert description */
-"Upgrade to get all paid features." = "升级后方可使用所有功能。";
-
 /* Action */
 "Upload device contacts" = "Upload device contacts";
 
@@ -2812,14 +2851,11 @@
 /* message details-> more action-> view raw html of message body */
 "View HTML" = "查看 HTML";
 
-/* Action */
-"View Plans" = "查看套餐";
-
 /* Title */
 "Warning" = "警告";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!" = "Warning: Before you pass the human check you can't sent email!";
+"Warning: Before you pass the human check you can't send email!" = "Warning: Before you pass the human check you can't send email!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "警告：您没有设置密保邮箱，一旦忘记密码，账户将无法找回。是否继续？";
@@ -2851,7 +2887,7 @@
 /* week */
 "week" = "week";
 
-/* Title */
+/* (No Comment) */
 "Welcome to ProtonMail!" = "欢迎使用 ProtonMail！";
 
 /* Description */
@@ -2875,6 +2911,9 @@
 /* Error message */
 "Yes, attach details of payment" = "是的，附上付款数据";
 
+/* No comment provided by engineer. */
+"Yesterday" = "Yesterday";
+
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "您即将在浏览器中打开";
 
@@ -2890,17 +2929,17 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "You are offline";
 
-/* Description */
+/* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "您可以在 ProtonMail 应用设置中设定滑动操作。";
 
-/* Description */
+/* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "您可以在 protonmail.com/support 获取帮助与支持，也可以在应用内反馈程序缺陷。";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您需要付费才能将 %@ 设为首选地址。";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "您已在系统设置中关闭 FaceID。此账户已受 FaceID 保护，请前往系统设置开启 FaceID 或重新登录。";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "您设置了邮件有效期，但并非所有收件人都能使用此功能。给邮件添加密码或关闭 PGP 方可为所有收件人设置邮件有效期。";
@@ -2952,7 +2991,7 @@
 /* The section title of folder manager table */
 "Your folders" = "Your folders";
 
-/* Description */
+/* (No Comment) */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "您的邮箱已受端对端加密技术保护。要和朋友们轻松使用加密邮件交流，快介绍他们使用 ProtonMail 吧！即使他们不用 ProtonMail，您也可以手动加密邮件。";
 
 /* The section title of label manager table */
@@ -2966,7 +3005,7 @@
 "Your new secure email\r\n account is ready." = "Your new secure email\r\n account is ready.";
 
 /* Service plan description footer */
-"Your plan is currently active until" = "您的等级有效期至";
+"Your plan is currently active until" = "您的订阅有效期至";
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "下次自动续费日期为";

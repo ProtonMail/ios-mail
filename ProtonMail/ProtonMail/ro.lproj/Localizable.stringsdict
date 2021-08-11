@@ -2,6 +2,100 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%d attempt remaining</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>Au mai rămas %d încercări</string>
+			<key>one</key>
+			<string>A mai rămas o încercare</string>
+			<key>other</key>
+			<string>Au mai rămas %d de încercări</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d attempt remaining until secure data wipe!</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>Au mai rămas %d încercări până la ștergerea sigură a datelor!</string>
+			<key>one</key>
+			<string>A mai rămas o încercare până la ștergerea sigură a datelor!</string>
+			<key>other</key>
+			<string>Au mai rămas %d de încercări până la ștergerea sigură a datelor!</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d day</key>
+	<dict>
+		<key>DAY</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d zile</string>
+			<key>one</key>
+			<string>O zi</string>
+			<key>other</key>
+			<string>%d de zile</string>
+			<key>zero</key>
+			<string>%d day</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@DAY@</string>
+	</dict>
+	<key>%d hour</key>
+	<dict>
+		<key>HOUR</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d ore</string>
+			<key>one</key>
+			<string>O oră</string>
+			<key>other</key>
+			<string>%d de ore</string>
+			<key>zero</key>
+			<string>%d hour</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@HOUR@</string>
+	</dict>
+	<key>+%d others</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@OTHER@</string>
+		<key>OTHER</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>încă %d</string>
+			<key>one</key>
+			<string>încă %d</string>
+			<key>other</key>
+			<string>încă %d</string>
+		</dict>
+	</dict>
 	<key>Updated %d min ago</key>
 	<dict>
 		<key>MINUTE</key>

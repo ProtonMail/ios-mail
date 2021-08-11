@@ -2,6 +2,100 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%d attempt remaining</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d attempts remaining</string>
+			<key>one</key>
+			<string>%d attempt remaining</string>
+			<key>other</key>
+			<string>%d attempts remaining</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d attempt remaining until secure data wipe!</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d attempts remaining until secure data wipe!</string>
+			<key>one</key>
+			<string>%d attempt remaining until secure data wipe!</string>
+			<key>other</key>
+			<string>%d attempts remaining until secure data wipe!</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d day</key>
+	<dict>
+		<key>DAY</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d days</string>
+			<key>one</key>
+			<string>%d day</string>
+			<key>other</key>
+			<string>%d days</string>
+			<key>zero</key>
+			<string>%d day</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@DAY@</string>
+	</dict>
+	<key>%d hour</key>
+	<dict>
+		<key>HOUR</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d hours</string>
+			<key>one</key>
+			<string>%d hour</string>
+			<key>other</key>
+			<string>%d hours</string>
+			<key>zero</key>
+			<string>%d hour</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@HOUR@</string>
+	</dict>
+	<key>+%d others</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@OTHER@</string>
+		<key>OTHER</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d druga</string>
+			<key>one</key>
+			<string>%d drugo</string>
+			<key>other</key>
+			<string>%d drugih</string>
+		</dict>
+	</dict>
 	<key>Updated %d min ago</key>
 	<dict>
 		<key>MINUTE</key>

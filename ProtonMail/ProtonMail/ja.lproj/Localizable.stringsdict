@@ -2,6 +2,80 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%d attempt remaining</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d attempts remaining</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d attempt remaining until secure data wipe!</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d attempts remaining until secure data wipe!</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d day</key>
+	<dict>
+		<key>DAY</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d 日</string>
+			<key>zero</key>
+			<string>%d day</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@DAY@</string>
+	</dict>
+	<key>%d hour</key>
+	<dict>
+		<key>HOUR</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d 時間</string>
+			<key>zero</key>
+			<string>%d hour</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@HOUR@</string>
+	</dict>
+	<key>+%d others</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@OTHER@</string>
+		<key>OTHER</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>other</key>
+			<string>他 %d</string>
+		</dict>
+	</dict>
 	<key>Updated %d min ago</key>
 	<dict>
 		<key>MINUTE</key>
@@ -11,7 +85,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>Updated %d mins ago</string>
+			<string>%d 分前に更新</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -25,7 +99,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%u conversations</string>
+			<string>%u 件の会話</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -41,7 +115,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%u messages</string>
+			<string>%u 件のメッセージ</string>
 		</dict>
 	</dict>
 	<key>minute</key>
@@ -53,7 +127,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d mins</string>
+			<string>%d 分</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>

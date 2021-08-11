@@ -1,12 +1,12 @@
 /* (No Comment) */
-"Enabled" = "Enabled";
+"Enabled" = "Zapnuto";
 
 /* A single strings file, whose title is specified in your preferences schema. The strings files provide the localized content to display to the user for each of your preferences. */
-"Group" = "Group";
+"Group" = "Skupina";
 
 /* (No Comment) */
-"Name" = "Name";
+"Name" = "Název";
 
 /* (No Comment) */
-"none given" = "none given";
+"none given" = "žádné zadání";
 
