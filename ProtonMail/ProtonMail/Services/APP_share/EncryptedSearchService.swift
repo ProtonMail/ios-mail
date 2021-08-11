@@ -599,9 +599,8 @@ extension EncryptedSearchService {
     //Encrypted Search
     func search(_ query: String, page: Int, completion: (([Message.ObjectIDContainer]?, NSError?) -> Void)?) {
         let error: NSError? = nil
-        //TODO implement
-        print("encrypted search on client side!")
         
+        print("encrypted search on client side!")
         print("Query: ", query)
         print("Page: ", page)
         
@@ -621,19 +620,39 @@ extension EncryptedSearchService {
                 self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: &searchResults, totalMessages: self.totalMessages)
             }
             
-            let messages: [Message.ObjectIDContainer]? = self.extractSearchResults(searchResults!)
-            completion!(messages, error)
+            if searchResults?.length() == 0 {
+                completion!(nil, error)
+            } else {
+                self.extractSearchResults(searchResults!) { messages in
+                    //return search results when available
+                    completion!(messages, error)
+                }
+            }
         }
     }
 
-    func extractSearchResults(_ searchResults: EncryptedsearchResultList) -> [Message.ObjectIDContainer]? {
-        print("Search Results: ", searchResults)
-        print("Search Results length: ", searchResults.length())
-        print("cachedsearchdone: ", searchResults.cachedSearchDone)
-        print("cacheSearchedcount: ", searchResults.cacheSearchedCount)
-        //TODO extract search results from EncryptedsearchResultList
-        // and return [Message.ObjectIDContainer]
-        return nil
+    func extractSearchResults(_ searchResults: EncryptedsearchResultList, completionHandler: @escaping ([Message.ObjectIDContainer]?) -> Void) -> Void {
+        let group = DispatchGroup()
+        var messages: [Message] = []
+
+        for index in 0...(searchResults.length()-1) {
+            group.enter()
+            DispatchQueue.global(qos: .userInitiated).async {
+                let res: EncryptedsearchSearchResult? = searchResults.get(index)
+                let m: EncryptedsearchMessage? = res?.message
+                self.getMessage(m!.id_) { mnew in
+                    messages.append(mnew!)
+                    group.leave()
+                }
+            }
+        }
+
+        //Wait to call completion handler until all search results are extracted
+        group.notify(queue: .main) {
+            print("Extracting search results completed!")
+            let results: [Message.ObjectIDContainer]? = messages.map(ObjectBox.init)
+            completionHandler(results)
+        }
     }
     
     func getSearcher(_ query: String) -> EncryptedsearchSimpleSearcher {
@@ -674,7 +693,7 @@ extension EncryptedSearchService {
             previousLength = searchResults!.length()
         }
         
-        print("Start search...")
+        print("Start index search...")
         while !searchResults!.isComplete && !hasEnoughResults(searchResults: searchResults!) {   //TODO add some more condition-> see Android
             let startBatchSearch: Double = NSDate().timeIntervalSince1970   //do we need it more accurate?
             
