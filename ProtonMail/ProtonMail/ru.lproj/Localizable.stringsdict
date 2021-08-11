@@ -2,6 +2,110 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%d attempt remaining</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>Осталось %d попыток</string>
+			<key>many</key>
+			<string>Осталось %d попыток</string>
+			<key>one</key>
+			<string>Осталась %d попытка</string>
+			<key>other</key>
+			<string>Осталось %d попыток</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d attempt remaining until secure data wipe!</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d попыток осталась до тех пор, пока защищённые данные не будут стерты!</string>
+			<key>many</key>
+			<string>%d попыток осталась до тех пор, пока защищённые данные не будут стерты!</string>
+			<key>one</key>
+			<string>%d попытка осталась до тех пор, пока защищённые данные не будут стерты!</string>
+			<key>other</key>
+			<string>%d попыток(ки) осталась до тех пор, пока защищённые данные не будут стерты!</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d day</key>
+	<dict>
+		<key>DAY</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d дней</string>
+			<key>many</key>
+			<string>%d дней</string>
+			<key>one</key>
+			<string>%d день</string>
+			<key>other</key>
+			<string>%d дней (дня)</string>
+			<key>zero</key>
+			<string>%d day</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ДЕНЬ@</string>
+	</dict>
+	<key>%d hour</key>
+	<dict>
+		<key>HOUR</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d часов</string>
+			<key>many</key>
+			<string>%d часов</string>
+			<key>one</key>
+			<string>%d час</string>
+			<key>other</key>
+			<string>%d часа(ов)</string>
+			<key>zero</key>
+			<string>%d hour</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ЧАС@</string>
+	</dict>
+	<key>+%d others</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@OTHER@</string>
+		<key>OTHER</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d другие</string>
+			<key>many</key>
+			<string>%d другие</string>
+			<key>one</key>
+			<string>%d другой</string>
+			<key>other</key>
+			<string>%d другой</string>
+		</dict>
+	</dict>
 	<key>Updated %d min ago</key>
 	<dict>
 		<key>MINUTE</key>
@@ -31,13 +135,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u conversations</string>
+			<string>%u разговоров</string>
 			<key>many</key>
-			<string>%u conversations</string>
+			<string>%u разговоров</string>
 			<key>one</key>
-			<string>%u conversation</string>
+			<string>%u разговор</string>
 			<key>other</key>
-			<string>%u conversations</string>
+			<string>%u разговор</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -71,13 +175,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d mins</string>
+			<string>%d минут</string>
 			<key>many</key>
-			<string>%d mins</string>
+			<string>%d минут</string>
 			<key>one</key>
-			<string>%d min</string>
+			<string>%d минута</string>
 			<key>other</key>
-			<string>%d mins</string>
+			<string>%d минута</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>

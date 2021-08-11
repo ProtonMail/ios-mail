@@ -1,14 +1,17 @@
-/* Key size text when setup key */
-"(2048 bit)" = "(2048 bit)";
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+"'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
 
 /* Key size text when setup key */
-"(4096 bit)" = "(4096 bit)";
+"(2048 bit)" = "(2048-bit)";
+
+/* Key size text when setup key */
+"(4096 bit)" = "(4096-bit)";
 
 /* Comment for disconnected account in Account Manager */
-"(logged out)" = "(logged out)";
+"(logged out)" = "(utloggad)";
 
 /* Service plan capability detail; like in '50 email addresses (total)' */
-"(total)" = "(total)";
+"(total)" = "(totalt)";
 
 /* secret */
 "**********" = "**********";
@@ -22,11 +25,23 @@
 /* Service plan capability */
 "%@ storage capacity" = "%@ lagringskapacitet";
 
+/* Description */
+"%d attempt remaining" = "%d försök återstår";
+
+/* Error */
+"%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
+
 /* The title of single selected conversation of action sheet in inbox */
 "%d conversation" = "%d konversation";
 
 /* The title of multiple selected conversations of action sheet in inbox */
 "%d conversations" = "%d konversationer";
+
+/* day */
+"%d day" = "%d dag";
+
+/* hour */
+"%d hour" = "%d timme";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d medlem";
@@ -58,6 +73,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Släpp här för att lägga till som bilaga";
 
+/* alert body for how many extra mail addresses, e.g. +3 others */
+"+%d others" = "+%d andra";
+
 /* default empty object */
 "<no object>" = "<no object>";
 
@@ -77,9 +95,6 @@
 /* Description */
 "A new version of ProtonMail app is available. Please update to the latest version." = "En ny version av ProtonMail är tillgänglig. Vänligen uppdatera till den senaste versionen.";
 
-/* alert description */
-"A paid ProtonMail plan is required to use this feature" = "A paid ProtonMail plan is required to use this feature";
-
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "A passcode has not been set, enable it in the system Settings";
 
@@ -96,10 +111,10 @@
 "Account" = "Konto";
 
 /* title */
-"Account password invalid" = "Invalid account password";
+"Account password invalid" = "Felaktigt konto-lösenord";
 
 /* section title in settings */
-"Account Settings" = "Kontoinställningar";
+"Account settings" = "Kontoinställningar";
 
 /* (No Comment) */
 "Add" = "Lägg till";
@@ -111,7 +126,7 @@
 "Add anniversary" = "Lägg till årsdag";
 
 /* menu title */
-"Add attachment" = "Add attachment";
+"Add attachment" = "Bifoga bilaga";
 
 /* new contacts add Birthday */
 "Add birthday" = "Lägg till födelsedag";
@@ -206,19 +221,19 @@
 "Also Archive" = "Arkivera";
 
 /* Description */
-"Also used to reset a forgotten password." = "Also used to reset a forgotten password.";
+"Also used to reset a forgotten password." = "Används också för att återställa ett glömt lösenord.";
 
 /* cell title in app settings */
 "Alternative routing" = "Alternative routing";
 
 /* agree check box middle word */
-"and" = "and";
+"and" = "och";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Årsdag";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Antivirus interference";
+"Antivirus interference" = "Antivirus-störningar";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "Alla osparade ändringar kommer gå förlorade.";
@@ -227,13 +242,13 @@
 "API Server not reachable…" = "API-server kan inte nås…";
 
 /* section title in settings */
-"APP INFORMATION" = "APP INFORMATION";
+"APP INFORMATION" = "APP-INFORMATION";
 
 /* Error */
 "App is locked" = "Appen är låst";
 
 /* section title in settings */
-"App Settings" = "App Settings";
+"App settings" = "App-inställningar";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple in-app purchase fee";
@@ -256,7 +271,7 @@
 "ARCHIVE" = "Arkiv";
 
 /* Description */
-"Archived" = "Archived";
+"Archived" = "Arkiverad";
 
 /* Message of message permanent deletion alert, plural */
 "Are you sure you want to delete permanently these %d messages?" = "Är du säker på att du vill radera dessa %d meddelanden?";
@@ -307,15 +322,6 @@
 /* VoiceOver: email has attachments */
 "Attachments" = "Bilagor";
 
-/* Error */
-"attempt remaining until secure data wipe!" = "attempt remaining until secure data wipe!";
-
-/* Description */
-"attempts remaining" = "attempts remaining";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "attempts remaining until secure data wipe!";
-
 /* Title */
 "Authentication" = "Autentisering";
 
@@ -341,13 +347,13 @@
 "Auto Show Images" = "Visa bilder automatiskt";
 
 /* settings general section title */
-"Auto show remote content" = "Visa externt innehåll automatiskt";
+"Auto show remote content" = "Visa fjärrinnehåll automatiskt";
 
 /* settings general section title */
-"Auto-load embedded images" = "Auto-load embedded images";
+"Auto-load embedded images" = "Ladda automatiskt inbäddade bilder";
 
 /* section title in settings */
-"Auto-lock" = "Auto-lock";
+"Auto-lock" = "Autolås";
 
 /* top left back button */
 "Back" = "Tillbaka";
@@ -356,16 +362,16 @@
 "Bad auth cache" = "Bad auth cache";
 
 /* title */
-"Bad parameter" = "Bad parameter";
+"Bad parameter" = "Ogiltig parameter";
 
 /* Error Description */
-"Bad parameter: %@" = "Bad parameter: %@";
+"Bad parameter: %@" = "Ogiltig parameter: %@";
 
 /* title */
-"Bad path" = "Bad path";
+"Bad path" = "Felaktig sökväg";
 
 /* title */
-"Bad response" = "Bad response";
+"Bad response" = "Felaktigt svar";
 
 /* Title */
 "Bcc" = "BCC";
@@ -375,6 +381,9 @@
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Födelsedag";
+
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
 
 /* Title */
 "Bug Description" = "Felbeskrivning";
@@ -392,7 +401,7 @@
 "By using ProtonMail, you agree to our" = "Genom att använda ProtonMail godkänner du våra";
 
 /* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "Genom att använda ProtonMail godkänner du våra %1$@ och %2$@.";
+"By using ProtonMail, you agree to our %@ and %@." = "Genom att använda ProtonMail godkänner du våra %1$@ och vår %2$@.";
 
 /* Call the contact (button title text) */
 "Call contact" = "Ring kontakt";
@@ -401,22 +410,22 @@
 "Can take several minutes to setup." = "Can take several minutes to setup.";
 
 /* Error */
-"Can't copy the file" = "Can't copy the file";
+"Can't copy the file" = "Kan inte kopiera filen";
 
 /* update password error */
-"Can't create a SRP Client" = "Can't create a SRP Client";
+"Can't create a SRP Client" = "Kan inte skapa en SRP-klient";
 
 /* update password error */
 "Can't create a SRP verifier!" = "Can't create a SRP verifier!";
 
 /* When quick look attachment but can't decrypt it! */
-"Can't decrypt this attachment!" = "Can't decrypt this attachment!";
+"Can't decrypt this attachment!" = "Kan inte dekryptera den bifogade filen!";
 
 /* The error message title that will be shown when the deletion of the contact group failed */
-"Can't delete contact group" = "Can't delete contact group";
+"Can't delete contact group" = "Kunde inte radera kontaktgrupp";
 
 /* The error message will be shown when the deletionn of the contact group through API failed */
-"Can't delete contact group through API" = "Can't delete contact group through API";
+"Can't delete contact group through API" = "Kunde inte radera kontaktgrupp genom API";
 
 /* *
  *  MessageViewController */
@@ -426,31 +435,28 @@
 "Can't download message body. Please try again." = "Can't download message body. Please try again.";
 
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
-"Can't fetch contact groups" = "Can't fetch contact groups";
+"Can't fetch contact groups" = "Kunde inte hämta kontaktgrupper";
 
 /* (No Comment) */
 "Can't find the clicked message please try again!" = "Can't find the clicked message please try again!";
 
 /* Description */
-"Can't find the selected message. Please try again." = "Can't find the selected message. Please try again.";
+"Can't find the selected message. Please try again." = "Kan inte hitta valt meddelande. Försök igen.";
 
 /* Description */
 "Can't find the value from the response body" = "Can't find the value from the response body";
 
 /* when quick look attachment but can't find the data */
-"Can't find this attachment!" = "Can't find this attachment!";
+"Can't find this attachment!" = "Kan inte hitta den bifogade filen!";
 
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Can't get a Modulus ID!";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus!" = "Kan inte hämta modulo!";
+"Can't get a Modulus!" = "Can't get a Modulus!";
 
 /* update password error */
 "Can't get user auth info" = "Can't get user auth info";
-
-/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Can't load share content!" = "Can't load share content!";
 
 /* Error */
 "Can't load the file" = "Det går inte att ladda filen";
@@ -459,7 +465,7 @@
 "Can't open the file" = "Det går inte att öppna filen";
 
 /* The error message title that will be shown when the contact group being created or edited can't be saved */
-"Can't save contact group" = "Can't save contact group";
+"Can't save contact group" = "Kunde inte spara kontaktgrupp";
 
 /* The error message will be shown when the update of the contact group through API failed */
 "Can't update contact group through the API" = "Can't update contact group through the API";
@@ -472,7 +478,7 @@
 "Cancel Check" = "Cancel Check";
 
 /* Title */
-"Cancelling" = "Cancelling";
+"Cancelling" = "Avbryter";
 
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Unable to decrypt this attachment.";
@@ -486,7 +492,7 @@
 
 /* *
  *  PhoneVerifyViewController */
-"Cell phone number" = "Cell phone number";
+"Cell phone number" = "Mobilnummer";
 
 /* settings general section title */
 "Change account password" = "Ändra kontolösenord";
@@ -499,7 +505,7 @@
 
 /* settings general section title
    Title */
-"Change mailbox password" = "Change mailbox password";
+"Change mailbox password" = "Ändra lösenord för brevlådan";
 
 /* settings general section title
    title */
@@ -527,7 +533,7 @@
 "Change sign-in password" = "Ändra inloggningslösenord";
 
 /* Title */
-"Change single password" = "Ändra enkel-lösenord";
+"Change single password" = "Change single password";
 
 /* Action */
 "Check Again" = "Kontrollera igen";
@@ -548,28 +554,26 @@
 "City" = "Stad";
 
 /* cell title in device setting */
-"Clear local cache" = "Töm lokal cache";
+"Clear local cache" = "Rensa lokal cache";
 
 /* settings general section title */
 "Clear Local Message Cache" = "Clear local message cache";
 
 /* Menu action to remove text formatting */
-"Clear Style" = "Clear Style";
+"Clear Style" = "Rensa stil";
 
 /* general close action */
 "Close" = "Stäng";
 
 /* Action */
-"close tour" = "close tour";
+"close tour" = "stäng rundtur";
 
 /* the message will show when closing a draft from the share extension */
-"Closing" = "Closing";
+"Closing" = "Stänger";
 
-/* cell title in device settings */
+/* cell title in device settings
+   The title of combined contact in settings */
 "Combined contacts" = "Kombinerade kontakter";
-
-/* The title of combined contact in settings */
-"Combined Contacts" = "Kombinerade kontakter";
 
 /* *
  *  Composer Email view controller */
@@ -583,10 +587,10 @@
 "Confirm" = "Bekräfta";
 
 /* "Mailbox Password" */
-"Confirm Mailbox Password" = "Confirm mailbox password";
+"Confirm Mailbox Password" = "Bekräfta lösenordet för brevlådan";
 
 /* Title */
-"Confirm new mailbox password" = "Confirm new mailbox password";
+"Confirm new mailbox password" = "Bekräfta nytt lösenord för brevlådan";
 
 /* Placeholder */
 "Confirm new password" = "Bekräfta nytt lösenord";
@@ -601,7 +605,7 @@
 "Confirm phishing report" = "Bekräfta nätfiskerapport";
 
 /* Title */
-"Confirmation" = "Confirmation";
+"Confirmation" = "Bekräftelse";
 
 /* view top title */
 "Congratulations!" = "Grattis!";
@@ -609,8 +613,14 @@
 /* Account manager title */
 "Connect Account" = "Anslut konto";
 
+/* Hint when users delete contact offline */
+"Contact deleted, will be synced when connection is available" = "Kontakt raderad och kommer att synkas när en anslutning finns tillgänglig";
+
 /* contact section title */
 "Contact details" = "Kontaktuppgifter";
+
+/* Hint when users create / edit contact offline */
+"Contact saved, will be synced when connection is available" = "Kontakt sparad och kommer att synkas när en anslutning finns tillgänglig";
 
 /* Title */
 "Contact the ProtonMail team" = "Kontakta ProtonMail-teamet";
@@ -633,10 +643,10 @@
 "Conversation" = "Konversation";
 
 /* No comment provided by engineer. */
-"Conversation mode" = "Conversation mode";
+"Conversation mode" = "Konversationsläge";
 
 /* Title */
-"Copy address" = "Copy address";
+"Copy address" = "Kopiera adress";
 
 /* Title */
 "Copy name" = "Kopiera namn";
@@ -656,17 +666,14 @@
 /* Create account button */
 "Create Account" = "Skapa konto";
 
-/* Description */
-"Create and add Labels to organize your inbox. Long press on a message for all options." = "Create and add Labels to organize your inbox. Long press on a message for all options.";
-
 /* title of button in account connect page */
 "Create new account" = "Skapa nytt konto";
 
 /* error part & alert title */
-"Create user failed" = "Create user failed";
+"Create user failed" = "Kunde inte skapa användare";
 
 /* Error */
-"Create User failed. Please try again." = "Create User failed. Please try again.";
+"Create User failed. Please try again." = "Kunde inte skapa användare. Försök igen.";
 
 /* Alert title */
 "Creating folder not allowed" = "Ej tillåtet att skapa mapp";
@@ -689,16 +696,13 @@
 /* action sheet option
    contacts default label type
    Custom option for time config picker */
-"Custom" = "Custom";
+"Custom" = "Anpassad";
 
 /* message Date: text */
 "Date:" = "Datum:";
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "Datum: %@";
-
-/* day */
-"day" = "dag";
 
 /* days
    Title */
@@ -708,19 +712,19 @@
 "Debug" = "Felsök";
 
 /* Action */
-"Decrypt" = "Decrypt";
+"Decrypt" = "Dekryptera";
 
 /* Title */
-"DECRYPT MAILBOX" = "DECRYPT MAILBOX";
+"DECRYPT MAILBOX" = "DEKRYPTERA POSTLÅDA";
 
 /* Description */
 "Decrypt token failed. Please try again." = "Decrypt token failed. Please try again.";
 
 /* error title */
-"Decryption error" = "Decryption error";
+"Decryption error" = "Dekrypteringsfel";
 
 /* error details */
-"Decryption of this content failed" = "Decryption of this content failed";
+"Decryption of this content failed" = "Dekryptering av innehållet misslyckades";
 
 /* Title */
 "Default" = "Standard";
@@ -729,7 +733,7 @@
 "Default browser" = "Standardwebbläsare";
 
 /* error message when create new user */
-"Default error. Please try again." = "Default error. Please try again.";
+"Default error. Please try again." = "Standardfel. Var god försök igen.";
 
 /* Placeholder */
 "Define Expiration Date" = "Define Expiration Date";
@@ -738,7 +742,7 @@
 "Define Hint (Optional)" = "Definiera ledtråd (Valfritt)";
 
 /* place holder */
-"Define Password" = "Define password";
+"Define Password" = "Definiera lösenord";
 
 /* *
  *  Contacts View Controller */
@@ -766,7 +770,7 @@
 "Delete message" = "Radera meddelande";
 
 /* mail location desc */
-"Deleted" = "Deleted";
+"Deleted" = "Raderad";
 
 /* *
  *  Email Header View */
@@ -776,13 +780,13 @@
 "Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
 
 /* Cert pinning failed alert message */
-"Disable Validation" = "Disable Validation";
+"Disable Validation" = "Inaktivera validering";
 
 /* Action */
 "Discard" = "Discard";
 
 /* Action */
-"Discard changes" = "Discard changes";
+"Discard changes" = "Ignorera ändringar";
 
 /* Action */
 "Discard draft" = "Discard draft";
@@ -801,16 +805,16 @@
 "DisplayName" = "Visningsnamn";
 
 /* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "Vill du verkligen ta bort den här filen från bilagor?";
+"Do you really want to remove this file from attachments?" = "Do you really want to remove this file from attachments?";
 
 /* Description */
 "Do you want to cancel the process?" = "Vill du avbryta processen?";
 
 /* Warning message */
-"Do you want to discard the changes?" = "Vill du förkasta ändringarna?";
+"Do you want to discard the changes?" = "Do you want to discard the changes?";
 
 /* No comment provided by engineer. */
-"Do you want to discard your changes?" = "Vill du förkasta dina ändringar?";
+"Do you want to discard your changes?" = "Do you want to discard your changes?";
 
 /* Title */
 "Do you want to save the unsaved changes?" = "Vill du spara de osparade ändringarna?";
@@ -848,6 +852,9 @@
 
 /* mail location title */
 "DRAFTS" = "Utkast";
+
+/* Onboarding title */
+"Easily up-to-date" = "Easily up-to-date";
 
 /* Action */
 "Edit" = "Redigera";
@@ -893,14 +900,14 @@
 "email" = "e-post";
 
 /* default vcard types */
-"Email" = "Email";
+"Email" = "E-post";
 
 /* *
  *  Email Verify View Controller */
 "Email address" = "E-postadress";
 
 /* alert title */
-"Email address invalid" = "Email address invalid";
+"Email address invalid" = "E-postadressen är ogiltig";
 
 /* The error message is shown in composer */
 "Email address is invalid" = "E-postadressen är ogiltig";
@@ -918,10 +925,10 @@
 "Email domain invalid" = "Ogiltig e-postdomän";
 
 /* human check option button */
-"Email Verification" = "Email Verification";
+"Email Verification" = "E-postverifiering";
 
 /* "Cancel" */
-"Empty Folder" = "Empty folder";
+"Empty Folder" = "Tom mapp";
 
 /* it is an option to empty the label */
 "Empty Label" = "Töm etikett";
@@ -933,7 +940,7 @@
 "Enable email notices" = "Aktivera e-postaviseringar";
 
 /* settings protection section title */
-"Enable FaceID" = "Aktivera Face ID";
+"Enable Face ID" = "Aktivera Face ID";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "Aktivera PIN";
@@ -944,16 +951,13 @@
 /* settings protection section title */
 "Enable PIN Protection" = "Aktivera PIN-skydd";
 
-/* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Aktivera PIN/Face ID";
-
-/* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Aktivera PIN/Touch ID";
-
 /* Title */
 "Enable signature" = "Aktivera signatur";
 
 /* settings protection section title */
+"Enable Touch ID" = "Aktivera Touch ID";
+
+/* (No Comment) */
 "Enable TouchID" = "Aktivera Touch ID";
 
 /* The footer shown when there is not result in the inbox */
@@ -984,7 +988,7 @@
 "Encryption Setup" = "Encryption Setup";
 
 /* settings option (End Time: 8am) */
-"End Time" = "End Time";
+"End Time" = "Sluttid";
 
 /* encryption lock description */
 "End-to-end encrypted" = "End-to-end encrypted";
@@ -998,8 +1002,11 @@
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "End-to-end encrypted to verified address";
 
-/* Title */
+/* (No Comment) */
 "End-to-End Encryption" = "End-to-end encryption";
+
+/* Onboarding content */
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
 
 /* Action in 2fa popup view */
 "Enter" = "Ange";
@@ -1008,10 +1015,10 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Ange en PIN-kod med minst 4 tecken och högst 21 tecken.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter PIN code" = "Ange PIN-kod";
+"Enter current PIN code" = "Ange nuvarande PIN-kod";
 
 /* Title */
-"Enter Verification Code" = "Enter verification code";
+"Enter Verification Code" = "Ange verifieringskod";
 
 /* human verification top title */
 "Enter your cell phone number" = "Ange ditt mobilnummer";
@@ -1020,28 +1027,31 @@
 "Enter your existing email address." = "Ange din befintliga e-postadress.";
 
 /* Account manager title */
-"Enter your mailbox password" = "Enter your mailbox password";
+"Enter your mailbox password" = "Ange ditt lösenord för brevlådan";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Ange ditt lösenord för att göra ändringar";
 
 /* set PIN title */
-"Enter your PIN" = "Enter your PIN";
+"Enter your PIN" = "Ange din PIN-kod";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Enter your PIN to unlock your inbox.";
+"Enter your PIN to unlock your inbox." = "Ange PIN-kod för att låsa upp inkorgen.";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "Ange din signatur här";
 
+/* Title of alert in share extension. */
+"Error" = "Error";
+
 /* settings debug section title */
-"Error Logs" = "Error logs";
+"Error Logs" = "Felloggar";
 
 /* Error alert title */
-"Error occured" = "Error occured";
+"Error occurred" = "Ett fel uppstod";
 
 /* incorrect email format error in composer */
-"Error sending" = "Error sending";
+"Error sending" = "Fel vid sändning";
 
 /* lock app option */
 "Every time enter app" = "Every time enter app";
@@ -1052,17 +1062,17 @@
 /* VoiceOver: email can expire */
 "Expires" = "Upphör";
 
-/* Title */
+/* (No Comment) */
 "Expiring Messages" = "Expiring messages";
 
 /* Key size checkbox */
-"Extreme Security" = "Extreme Security";
+"Extreme Security" = "Extrem säkerhet";
 
 /* The protection title of Face ID protection */
 "Face ID" = "Face ID";
 
 /* Error message */
-"Failed to determine type of file" = "Failed to determine type of file";
+"Failed to determine type of file" = "Kunde inte bestämma typen av fil";
 
 /* Description */
 "Failed to initialize the app's saved data" = "Failed to initialize the app's saved data";
@@ -1071,6 +1081,9 @@
  *  Core Data Service & local error */
 "Failed to initialize the application's saved data" = "Failed to initialize the application's saved data";
 
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Failed to load content!\nPlease try again." = "Failed to load content!\nPlease try again.";
+
 /* default vcard types */
 "Fax" = "Fax";
 
@@ -1078,7 +1091,10 @@
 "Feedback" = "Feedback";
 
 /* Error */
-"Fetch user info failed" = "Fetch user info failed";
+"Fetch user info failed" = "Hämtning av användarinfo misslyckades";
+
+/* Onboarding content */
+"File, label, and color code messages to create your perfect, custom inbox." = "File, label, and color code messages to create your perfect, custom inbox.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Mapp";
@@ -1147,19 +1163,22 @@
 "Get %@" = "Skaffa %@";
 
 /* Action */
-"Get more information" = "Get more information";
+"Get more information" = "Få mer information";
+
+/* title of the next button */
+"Get Started" = "Kom igång";
 
 /* title of alert acton of incorrect email format error */
-"Go to drafts" = "Go to drafts";
+"Go to drafts" = "Gå till utkast";
 
 /* Action */
 "Go to inbox" = "Gå till Inkorg";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "Go to settings";
+"Go to settings" = "Gå till inställningar";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Go to sign-in";
+"Go to sign-in" = "Gå till inloggning";
 
 /* network troubleshot cell title */
 "Government block" = "Government block";
@@ -1173,7 +1192,7 @@
 /* menu title (contact groups) */
 "Groups" = "Grupper";
 
-/* Title */
+/* (No Comment) */
 "Help & Support" = "Hjälp & Support";
 
 /* Title */
@@ -1189,10 +1208,7 @@
 "Hide Details" = "Dölj detaljer";
 
 /* Key size checkbox */
-"High Security" = "High Security";
-
-/* hour */
-"hour" = "timme";
+"High Security" = "Hög säkerhet";
 
 /* hours */
 "hours" = "Timmar";
@@ -1219,7 +1235,7 @@
 "IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP-stöd via ProtonMail Bridge";
 
 /* Action */
-"Import Error" = "Import Error";
+"Import Error" = "Fel vid import";
 
 /* (No Comment) */
 "Import File From..." = "Importera fil från...";
@@ -1231,7 +1247,7 @@
 "Import from…" = "Importera från…";
 
 /* Downloading attachments from cloud */
-"Importing" = "Importing";
+"Importing" = "Importerar";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Importerar bilaga, det kan ta ett tag";
@@ -1247,7 +1263,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@";
 
 /* Error */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "In order to use our services, you must agree to ProtonMail's Terms of Service.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "För att kunna använda våra tjänster måste du godkänna ProtonMail's användarvillkor.";
 
 /* "Deleted" */
 "Inbox" = "Inkorg";
@@ -1257,10 +1273,10 @@
 "INBOX" = "Inkorg";
 
 /* Title */
-"Incorrect password" = "Incorrect password";
+"Incorrect password" = "Felaktigt lösenord";
 
 /* Error */
-"Incorrect PIN." = "Incorrect PIN.";
+"Incorrect PIN." = "Felaktig PIN-kod.";
 
 /* Option title */
 "Inherit color from parent folder" = "Inherit color from parent folder";
@@ -1271,11 +1287,14 @@
 /* Title */
 "inline attachments" = "inline attachments";
 
+/* (No Comment) */
+"Input Display Name ..." = "Ange visningsnamn ...";
+
 /* place holder */
 "Input Display Name…" = "Ange visningsnamn…";
 
 /* place holder */
-"Input Notification Email …" = "Ange notifikations-e-post …";
+"Input Notification Email …" = "Input Notification Email …";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Osäker anslutning";
@@ -1293,22 +1312,22 @@
 "Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
 
 /* alert title */
-"Invalid credential" = "Invalid credential";
+"Invalid credential" = "Ogiltig inloggningsuppgift";
 
 /* update password error */
-"Invalid hashed password!" = "Invalid hashed password!";
+"Invalid hashed password!" = "Ogiltigt hashat lösenord!";
 
 /* The error message of entering an invalid password */
-"Invalid password" = "Invalid password";
+"Invalid password" = "Ogiltigt lösenord";
 
 /* Error */
-"Invalid Password" = "Invalid Password";
+"Invalid Password" = "Ogiltigt lösenord";
 
 /* Invalid URL error when click a url in contact */
-"Invalid URL" = "Invalid URL";
+"Invalid URL" = "Ogiltig URL";
 
 /* title */
-"Invalid UserName" = "Invalid username";
+"Invalid UserName" = "Ogiltigt användarnamn";
 
 /* Error message */
 "Invalid username!" = "Ogiltigt användarnamn!";
@@ -1320,10 +1339,10 @@
 "It is not possible to switch to %@ within our iOS app." = "It is not possible to switch to %@ within our iOS app.";
 
 /* The string used to show in the plan update page when the user not able to upgrade the account */
-"It's not possible to switch to another plan within the app. %1$@" = "Det är inte möjligt att byta till en annan plan inom appen. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "It's not possible to switch to another plan within the app. %1$@";
 
 /* Title */
-"Keep me updated about new features" = "Keep me updated about new features";
+"Keep me updated about new features" = "Håll mig uppdaterad om nya funktioner";
 
 /* Error */
 "Key generation failed" = "Key generation failed";
@@ -1332,7 +1351,7 @@
 "Key generation failed. Please try again." = "Key generation failed. Please try again.";
 
 /* Error */
-"Key invalid. Please go back and try again." = "Key invalid. Please go back and try again.";
+"Key invalid. Please go back and try again." = "Ogiltig nyckel. Gå tillbaka och försök igen.";
 
 /* No comment provided by engineer. */
 "Label as" = "Märk som";
@@ -1345,8 +1364,8 @@
    Title */
 "Label as…" = "Märk som…";
 
-/* Title */
-"Label Management" = "Label management";
+/* (No Comment) */
+"Label Management" = "Etiketthantering";
 
 /* createing lable input place holder */
 "Label Name" = "Etikettnamn";
@@ -1361,7 +1380,7 @@
 "Labels have been applied." = "Etiketter har applicerats.";
 
 /* Service plan capability */
-"Labels, Folders, Filters & More" = "Labels, Folders, Filters & More";
+"Labels, Folders, Filters & More" = "Etiketter, Mappar, Filter & Mer";
 
 /* Title */
 "Labels/Folders" = "Etiketter/Mappar";
@@ -1378,16 +1397,16 @@
 "Learn More" = "Läs mer";
 
 /* learn more button */
-"Learn more here" = "Learn more here";
+"Learn more here" = "Läs mer här";
 
 /* settings swipe actions section title */
-"Left to Right" = "Left to Right";
+"Left to Right" = "Vänster till höger";
 
 /* Title of alert when the free account limit is reached */
-"Limit reached" = "Limit reached";
+"Limit reached" = "Gräns uppnådd";
 
 /* Service plan capability */
-"Limited to 150 messages sent/day" = "Limited to 150 messages sent/day";
+"Limited to 150 messages sent/day" = "Begränsad till 150 meddelanden skickade/dag";
 
 /* No comment provided by engineer. */
 "Load content" = "Ladda innehåll";
@@ -1396,7 +1415,7 @@
 "Load images" = "Ladda bilder";
 
 /* Action */
-"Load remote content" = "Load remote content";
+"Load remote content" = "Ladda fjärrinnehåll";
 
 /* (No Comment) */
 "Loading..." = "Laddar...";
@@ -1411,7 +1430,7 @@
 "Local Cache Management" = "Local Cache Management";
 
 /* cell title in device settings */
-"Local storage limit" = "Local storage limit";
+"Local storage limit" = "Lokal lagringsgräns";
 
 /* *
  *  file string type */
@@ -1424,23 +1443,23 @@
 "Log out" = "Logga ut";
 
 /* error title */
-"Logs" = "Logs";
+"Logs" = "Loggar";
 
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Looking to secure your contact's details?";
 
 /* cell title in device settings */
-"Mailbox" = "Mailbox";
+"Mailbox" = "Brevlåda";
 
 /* (No Comment) */
-"Mailbox Password" = "Mailbox password";
+"Mailbox Password" = "Lösenord för brevlåda";
 
 /* *
  *  MailboxPasswordViewController */
-"MAILBOX PASSWORD" = "Mailbox password";
+"MAILBOX PASSWORD" = "Lösenord för brevlåda";
 
 /* (No Comment) */
-"Mailbox password doesn't match" = "Mailbox password doesn't match";
+"Mailbox password doesn't match" = "Lösenord för brevlåda matchar inte";
 
 /* menu title */
 "Manage accounts" = "Hantera konton";
@@ -1452,7 +1471,7 @@
 "Manage folders" = "Hantera mappar";
 
 /* Settings row */
-"Manage in device Settings" = "Manage in device Settings";
+"Manage in device Settings" = "Hantera i enhetsinställningar";
 
 /* The title of label manager page */
 "Manage labels" = "Hantera etiketter";
@@ -1461,7 +1480,7 @@
 "Manage Labels/Folders" = "Hantera Etiketter/Mappar";
 
 /* No comment provided by engineer. */
-"Mark as legitimate" = "Mark as legitimate";
+"Mark as legitimate" = "Markera som legitimt";
 
 /* The title of the read action in action sheet */
 "Mark as read" = "Markera som läst";
@@ -1474,9 +1493,6 @@
 
 /* mark message as read action */
 "Mark Read" = "Markera som läst";
-
-/* No comment provided by engineer. */
-"Mark unread" = "Markera som oläst";
 
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
@@ -1507,19 +1523,19 @@
 "Message headers" = "Message headers";
 
 /* Placeholder */
-"Message Password" = "Message Password";
+"Message Password" = "Meddelandelösenord";
 
 /* composer view */
-"Message password does not match." = "Message password does not match.";
+"Message password does not match." = "Meddelandelösenorden matchar inte.";
 
 /* "Cancel" */
-"Message Queue" = "Message queue";
+"Message Queue" = "Meddelandekö";
 
 /* (No Comment) */
-"Message sending failed please try again" = "Message sending failed please try again";
+"Message sending failed please try again" = "Det gick inte att skicka meddelandet, försök igen";
 
 /* Description */
-"Message sending failed. Please try again." = "Message sending failed. Please try again.";
+"Message sending failed. Please try again." = "Det gick inte att skicka meddelandet. Var god försök igen.";
 
 /* Description after message have been sent */
 "Message sent" = "Meddelandet har skickats";
@@ -1527,14 +1543,14 @@
 /* Title */
 "Message Swipe Actions" = "Message Swipe Actions";
 
-/* Description */
-"Messages you send can be set to auto delete after a certain time period." = "Messages you send can be set to auto delete after a certain time period.";
+/* (No Comment) */
+"Messages you send can be set to auto delete after a certain time period." = "Meddelanden du skickar kan ställas in att automatiskt raderas efter en viss tidsperiod.";
 
 /* minute */
-"minute" = "minute";
+"minute" = "minut";
 
 /* default vcard types */
-"Mobile" = "Mobile";
+"Mobile" = "Mobil";
 
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Mobilsignatur";
@@ -1547,7 +1563,7 @@
 "Modifying or turning off the default mobile signature is a paid feature." = "Modifying or turning off the default mobile signature is a paid feature.";
 
 /* More actions button */
-"More" = "More";
+"More" = "Mer";
 
 /* Screen header */
 "More Credits" = "Fler krediter";
@@ -1559,7 +1575,7 @@
 "Move to All Mail" = "Flytta till All e-post";
 
 /* Action title of move to archive */
-"Move to archive" = "Move to archive";
+"Move to archive" = "Flytta till arkiv";
 
 /* move action */
 "Move to Archive" = "Flytta till Arkiv";
@@ -1568,7 +1584,7 @@
 "Move to Draft" = "Flytta till Utkast";
 
 /* folder apply - title */
-"Move to Folder" = "Move to Folder";
+"Move to Folder" = "Flytta till mapp";
 
 /* The title of the remove action in action sheet */
 "Move to inbox" = "Move to inbox";
@@ -1581,7 +1597,7 @@
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
-"Move to spam" = "Move to spam";
+"Move to spam" = "Flytta till skräppost";
 
 /* move action */
 "Move to Spam" = "Flytta till Skräppost";
@@ -1600,17 +1616,20 @@
 "Move to…" = "Flytta till…";
 
 /* Title */
-"Multiple Addresses" = "Multiple addresses";
+"Multiple Addresses" = "Flera adresser";
 
 /* title */
 "Name" = "Namn";
+
+/* Onboarding title */
+"Neat and tidy" = "Neat and tidy";
 
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Registrera dig gratis";
 
 /* section title 
    The title of alternative routing settings */
-"Networking" = "Networking";
+"Networking" = "Nätverk";
 
 /* Contacts add new contact */
 "New contact" = "Ny kontakt";
@@ -1631,19 +1650,25 @@
 "New Label" = "Ny etikett";
 
 /* Title */
-"New mailbox password" = "New mailbox password";
+"New mailbox password" = "Nytt lösenord för brevlådan";
+
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "Nytt meddelande";
 
 /* Placeholder */
 "New password" = "Nytt lösenord";
 
 /* Title */
-"New sign-in password" = "New sign-in password";
+"New sign-in password" = "Nytt inloggningslösenord";
+
+/* title of the next button */
+"Next" = "Nästa";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Smeknamn";
 
 /* Title */
-"No connectivity detected…" = "No connectivity detected…";
+"No connectivity detected…" = "Ingen anslutning upptäcktes…";
 
 /* network troubleshot cell title */
 "No internet connection" = "Ingen internetanslutning";
@@ -1658,7 +1683,7 @@
 "No Recipient" = "Ingen mottagare";
 
 /* Warning message option when user want to resignin to another account */
-"No, for another ProtonMail account" = "No, for another ProtonMail account";
+"No, for another ProtonMail account" = "Nej, för ett annat ProtonMail-konto";
 
 /* Error message */
 "No, not related to in-app purchase" = "No, not related to in-app purchase";
@@ -1667,10 +1692,10 @@
    Action title of none
    The protection title of None protection
    Title */
-"None" = "None";
+"None" = "Ingen";
 
 /* Title */
-"normal attachments" = "normal attachments";
+"normal attachments" = "normala bilagor";
 
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "Not a spam (move to inbox)";
@@ -1697,7 +1722,7 @@
 "Notes" = "Anteckningar";
 
 /* The main title of no result message */
-"Nothing to see here" = "Nothing to see here";
+"Nothing to see here" = "Inget att se här";
 
 /* Alert title */
 "Notice" = "Notice";
@@ -1713,7 +1738,7 @@
 
 /* A option title that enable/disable notification feature
    cell title in device settings */
-"Notifications" = "Notifications";
+"Notifications" = "Aviseringar";
 
 /* VoiceOver description */
 "Notifications Are Snoozed" = "Notifications Are Snoozed";
@@ -1735,29 +1760,32 @@
    Title */
 "On" = "På";
 
-/* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On EE, MMM d, yyyy at %@" = "On EE, MMM d, yyyy at %@";
+/* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
+"On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Only one free account can be added";
+"Only one free account can be added" = "Endast ett gratiskonto kan läggas till";
 
 /* Open action */
 "Open" = "Öppna";
+
+/* VoiceOver title of account switcher button in the menu */
+"Open account switcher" = "Öppna kontoväxlare";
 
 /* (No Comment) */
 "OpenDraft" = "Öppna utkast";
 
 /* contacts talbe cell Organization title */
-"Organization" = "Organization";
+"Organization" = "Organisation";
 
 /* The title of the iOS 10 upgrate alert */
-"OS compatibility" = "OS compatibility";
+"OS compatibility" = "OS-kompatibilitet";
 
 /* default vcard types */
-"Other" = "Other";
+"Other" = "Annat";
 
 /* Section header */
 "OTHER PLANS" = "ÖVRIGA PLANER";
@@ -1779,55 +1807,55 @@
 "Password" = "Lösenord";
 
 /* Description */
-"Password cannot be empty." = "Password cannot be empty.";
+"Password cannot be empty." = "Lösenord kan inte vara tomt.";
 
 /* title */
 "Password Hint" = "Lösenordsledtråd";
 
 /* cell title in device settings */
-"Password management" = "Password management";
+"Password management" = "Lösenordshantering";
 
 /* Title */
 "Password Mismatch" = "Lösenorden matchar inte";
 
 /* update password error */
-"Password update failed" = "Password update failed";
+"Password update failed" = "Lösenordsuppdatering misslyckades";
 
 /* Title */
-"Password Updated" = "Password updated";
+"Password Updated" = "Lösenord uppdaterat";
 
 /* Placeholder */
-"Passwords must match" = "Passwords must match";
+"Passwords must match" = "Lösenorden måste matcha";
 
 /* default vcard types */
-"Personal" = "Personal";
+"Personal" = "Privat";
 
 /* encryption lock description */
-"PGP-encrypted" = "PGP-encrypted";
+"PGP-encrypted" = "PGP-krypterat";
 
 /* encryption lock description */
-"PGP-encrypted message" = "PGP-encrypted message";
+"PGP-encrypted message" = "PGP-krypterat meddelande";
 
 /* encryption lock description */
-"PGP-encrypted message from verified address" = "PGP-encrypted message from verified address";
+"PGP-encrypted message from verified address" = "PGP-krypterat meddelande från verifierad adress";
 
 /* encryption lock description */
-"PGP-signed" = "PGP-signed";
+"PGP-signed" = "PGP-signerat";
 
 /* encryption lock description */
-"PGP-signed message from verified address" = "PGP-signed message from verified address";
+"PGP-signed message from verified address" = "PGP-signerat meddelande från verifierad adress";
 
 /* default vcard types */
-"Phone" = "Phone";
+"Phone" = "Telefon";
 
 /* contact placeholder */
 "Phone number" = "Telefonnummer";
 
 /* "Verification code request failed" */
-"Phone number invalid" = "Phone number invalid";
+"Phone number invalid" = "Telefonnumret är ogiltigt";
 
 /* human check option button */
-"Phone Verification" = "Phone Verification";
+"Phone Verification" = "Telefonverifiering";
 
 /* *
  *  Attachment table ViewController */
@@ -1836,17 +1864,11 @@
 /* device settings auto lock type title */
 "PIN" = "PIN";
 
-/* The protection title of PIN Code protection */
-"PIN Code" = "PIN-kod";
+/* The protection title of PIN code protection */
+"PIN code" = "PIN-kod";
 
 /* Description */
 "PIN code can't be empty." = "PIN-koden kan inte vara tom.";
-
-/* device settings auto lock type title */
-"PIN/Face ID" = "PIN/Face ID";
-
-/* device settings auto lock type title */
-"PIN/Touch ID" = "PIN/Touch ID";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Plans can be edited on the web version.";
@@ -1855,10 +1877,10 @@
 "Please add a password for the following recipients." = "Lägg till ett lösenord för följande mottagare.";
 
 /* Description */
-"Please check your cell phone for the verification code." = "Please check your cell phone for the verification code.";
+"Please check your cell phone for the verification code." = "Kontrollera din mobiltelefon för verifieringskoden.";
 
 /* error message */
-"Please check your email for the verification code." = "Please check your email for the verification code.";
+"Please check your email for the verification code." = "Kontrollera din e-post efter verifieringskoden.";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Vänligen anslut och försök igen";
@@ -1867,58 +1889,61 @@
 "Please disable PGP Sending for following addresses." = "Please disable PGP Sending for following addresses.";
 
 /* Description */
-"Please input a valid cell phone number." = "Please input a valid cell phone number.";
+"Please input a valid cell phone number." = "Ange ett giltigt mobilnummer.";
 
 /* error message */
 "Please input a valid email address." = "Ange en giltig e-postadress.";
+
+/* Alert message */
+"Please keep ProtonMail open until the operation is done." = "Please keep ProtonMail open until the operation is done.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
 
 /* Error */
-"Please pick a user name first!" = "Please pick a username first!";
+"Please pick a user name first!" = "Vänligen välj ett användarnamn först!";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
-"Please provide a group name" = "Ange ett gruppnamn";
+"Please provide a group name" = "Vänligen ange ett gruppnamn";
 
 /* when switch sender but email has attachments */
 "Please remove all attachments before changing sender!" = "Please remove all attachments before changing the sender";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Please select at least one email";
+"Please select at least one email" = "Välj minst en e-post";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Please select at least one email for the contact group";
 
 /* human check select option title */
-"Please select one of the following options:" = "Please select one of the following options:";
+"Please select one of the following options:" = "Vänligen, välj ett av följande alternativ:";
 
 /* Description */
-"Please set a password." = "Please set a password.";
+"Please set a password." = "Vänligen ange ett lösenord.";
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Please set a recovery / notification email";
 
 /* (No Comment) */
-"Please try a different domain." = "Please try a different domain.";
+"Please try a different domain." = "Försök med en annan domän.";
 
 /* (No Comment) */
-"Please try a different email address." = "Please try a different email address.";
+"Please try a different email address." = "Försök med en annan e-postadress.";
 
 /* (No Comment) */
-"Please try a different password." = "Please try a different password.";
+"Please try a different password." = "Försök med ett annat lösenord.";
 
 /* (No Comment) */
-"Please try a different user name." = "Please try a different username.";
+"Please try a different user name." = "Försök med ett annat användarnamn.";
 
 /* (No Comment) */
 "Please try again." = "Var god försök igen";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Uppgradera till en betald plan för fler än 3 mappar";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Uppgradera till en betald plan för fler än 3 etiketter";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Please use ProtonMail App sign-in first.";
@@ -1936,19 +1961,16 @@
 "Please use your new password when signing in." = "Använd ditt nya lösenord när du loggar in.";
 
 /* The */
-"Please wait until the email downloaded!" = "Please wait until the email downloaded!";
+"Please wait until the email downloaded!" = "Vänta tills e-postmeddelandet hämtats!";
 
 /* alert title */
 "Please, manage it in your phone." = "Please, manage it in your phone.";
-
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "PREMIUMFUNKTION";
 
 /* Action */
 "Print" = "Skriv ut";
 
 /* cell title in device settings */
-"Privacy" = "Privacy";
+"Privacy" = "Integritet";
 
 /* agree check box privacy */
 "privacy policy." = "integritetspolicy.";
@@ -1957,7 +1979,7 @@
 "Problem sending message" = "Problem sending message";
 
 /* Title */
-"Protection" = "Protection";
+"Protection" = "Skydd";
 
 /* settings protection section title */
 "Protection Entire App" = "Protection entire app";
@@ -1971,20 +1993,20 @@
 /* Title */
 "ProtonMail" = "ProtonMail";
 
-/* Description */
+/* (No Comment) */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.";
 
 /* Title */
 "ProtonMail encrypted emails" = "ProtonMail encrypted emails";
 
 /* Description */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail är f.n. offline, kolla vår twitter för aktuell status: https://twitter.com/protonmail";
 
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail är för närvarande offline…";
 
 /* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus is required to customize your mobile signature";
+"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus krävs för att kunna anpassa din mobilsignatur";
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.";
@@ -1993,12 +2015,12 @@
 "ProtonVPN" = "ProtonVPN";
 
 /* Service plan capability */
-"ProtonVPN included" = "ProtonVPN included";
+"ProtonVPN included" = "ProtonVPN inkluderad";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Proxy/Firewall interference";
+"Proxy/Firewall interference" = "Proxy-/brandväggstörningar";
 
-/* Title */
+/* (No Comment) */
 "Quick swipe actions" = "Quick Swipe actions";
 
 /* Title */
@@ -2014,7 +2036,7 @@
 "Re:" = "Re:";
 
 /* No comment provided by engineer. */
-"Read" = "Read";
+"Read" = "Läs";
 
 /* Title */
 "Reading device contacts data…" = "Reading device contacts data…";
@@ -2023,17 +2045,17 @@
 "Recipient details" = "Recipient details";
 
 /* The error message is shown in composer */
-"Recipient not found" = "Recipient not found";
+"Recipient not found" = "Mottagaren hittades inte";
 
 /* Title */
-"Recovery Code" = "Recovery Code";
+"Recovery Code" = "Återställningskod";
 
 /* Title */
-"Recovery email" = "Recovery email";
+"Recovery email" = "Återställningsadress";
 
 /* *
  *  SignUpEmailViewController */
-"Recovery Email" = "Recovery Email";
+"Recovery Email" = "Återställningsadress";
 
 /* Title */
 "Recovery Email Warning" = "Recovery Email Warning";
@@ -2048,22 +2070,22 @@
 "Remind Me Later" = "Påminn mig senare";
 
 /* remove action */
-"Remove" = "Remove";
+"Remove" = "Ta bort";
 
 /* account right bar item title */
-"Remove All" = "Remove All";
+"Remove All" = "Ta bort alla";
 
 /* Settings row */
-"Remove image metadata" = "Remove image metadata";
+"Remove image metadata" = "Ta bort bild-metadata";
 
 /* action title */
-"Remove password" = "Remove password";
+"Remove password" = "Ta bort lösenord";
 
 /* un star message */
-"Remove Star" = "Remove Star";
+"Remove Star" = "Ta bort stjärnmärkning";
 
 /* The button to enable label list reorder */
-"Reorder" = "Reorder";
+"Reorder" = "Omordna";
 
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Upprepa";
@@ -2086,7 +2108,7 @@
 "Reply All" = "Svara alla";
 
 /* composer view model impl */
-"Reply message" = "Reply message";
+"Reply message" = "Svara meddelande";
 
 /* (No Comment) */
 "ReplyAll" = "Svara alla";
@@ -2104,10 +2126,10 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.";
 
 /* link opeining confirmation */
-"Request Link Confirmation" = "Request Link Confirmation";
+"Request link confirmation" = "Begär länkbekräftelse";
 
 /* Action */
-"RESET MAILBOX PASSWORD" = "RESET MAILBOX PASSWORD";
+"RESET MAILBOX PASSWORD" = "ÅTERSTÄLL LÖSENORD FÖR BREVLÅDAN";
 
 /* Title */
 "Resetting message cache…" = "Resetting message cache…";
@@ -2119,7 +2141,7 @@
 "Retry after %d seconds" = "Försök igen om %d sekunder";
 
 /* settings swipe actions section title */
-"Right to Left" = "Right to Left";
+"Right to Left" = "Höger till vänster";
 
 /* Title */
 "Save" = "Spara";
@@ -2131,14 +2153,14 @@
 "Save draft" = "Spara utkast";
 
 /* action sheet option */
-"Scheduled" = "Scheduled";
+"Scheduled" = "Schemalagd";
 
 /* *
  *  SearchViewController */
 "Search" = "Sök";
 
 /* section title in settings */
-"Security" = "Security";
+"Security" = "Säkerhet";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "Välj ett alternativ";
@@ -2165,7 +2187,7 @@
 "Send plain but stored encrypted" = "Send plain but stored encrypted";
 
 /* No comment provided by engineer. */
-"Send to archive?" = "Send to archive?";
+"Send to archive?" = "Skicka till arkiv?";
 
 /* Title */
 "Send Verification Code" = "Skicka verifieringskod";
@@ -2180,10 +2202,10 @@
 "Sending failed" = "Sending failed";
 
 /* Alert title */
-"Sending message" = "Sending message";
+"Sending in progress" = "Sending in progress";
 
 /* Description */
-"Sending Message" = "Sending message";
+"Sending Message" = "Skickar meddelande";
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Skickar meddelande…";
@@ -2204,7 +2226,7 @@
 "Sent by you with end-to-end encryption" = "Sent by you with end-to-end encryption";
 
 /* Description */
-"Sent Failed" = "Sent Failed";
+"Sent Failed" = "Kunde inte skicka";
 
 /* Description */
 "Server proofs not valid!" = "Server proofs not valid!";
@@ -2216,10 +2238,10 @@
 "Set a password to encrypt this message for non-ProtonMail users." = "Set a password to encrypt this message for non-ProtonMail users.";
 
 /* Title */
-"Set Password" = "Set Password";
+"Set Password" = "Ange lösenord";
 
 /* Signup passwords top title */
-"Set passwords" = "Set passwords";
+"Set passwords" = "Ange lösenord";
 
 /* The title of PIN code setup1 view */
 "Set PIN code" = "Ställ in PIN-kod";
@@ -2230,14 +2252,14 @@
 /* menu title */
 "Settings" = "Inställningar";
 
-/* Title */
-"Share Alert" = "Share Alert";
-
 /* action */
 "Share contact" = "Dela kontakt";
 
 /* Title */
-"Share it with your friends" = "Share it with your friends";
+"Share it with your friends" = "Dela med dina vänner";
+
+/* Action */
+"Show" = "Visa";
 
 /* Title */
 "Sign in" = "Logga in";
@@ -2260,13 +2282,13 @@
 "Sign Out All" = "Logga ut alla";
 
 /* Error */
-"Sign-in password doesn't match" = "Sign-in password doesn't match";
+"Sign-in password doesn't match" = "Inloggningslösenordet matchar inte";
 
 /* Title in signature settings */
 "Signature" = "Signatur";
 
 /* Title */
-"Signature Updated" = "Signature Updated";
+"Signature Updated" = "Signaturen har uppdaterats";
 
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Inloggad som %@";
@@ -2274,8 +2296,14 @@
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Signed out from %1$@ and signed in with %2$@";
 
+/* Onboarding title */
+"Simply private" = "Helt enkelt privat";
+
+/* skip button title in onboarding page */
+"Skip" = "Hoppa över";
+
 /* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "Snooze";
+"Snooze" = "Snooza";
 
 /* settings option */
 "Snooze Notifications" = "Snooze Notifications";
@@ -2284,10 +2312,10 @@
 "Snoozed for" = "Snoozed for";
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
-"Snoozed till" = "Snoozed till";
+"Snoozed till" = "Snoozad till";
 
 /* (No Comment) */
-"Space Warning" = "Space warning";
+"Space Warning" = "Utrymmesvarning";
 
 /* mail location desc
    menu title */
@@ -2297,13 +2325,13 @@
 "SPAM" = "Skräppost";
 
 /* Description */
-"Spammed" = "Spammed";
+"Spammed" = "Spammad";
 
 /* Error */
-"SRP Client" = "SRP Client";
+"SRP Client" = "SRP-klient";
 
 /* Error */
-"SRP Server" = "SRP Server";
+"SRP Server" = "SRP-server";
 
 /* Description */
 "SRP single password keysalt invalid!" = "SRP single password keysalt invalid!";
@@ -2311,7 +2339,8 @@
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
 
-/* The title of the star action in action sheet */
+/* The title of the star action in action sheet
+   VoiceOver title of star button in the message view */
 "Star" = "Star";
 
 /* Title */
@@ -2324,26 +2353,26 @@
 "STARRED" = "Stjärnmärkt";
 
 /* settings option (Start Time: 8am) */
-"Start Time" = "Start Time";
+"Start Time" = "Starttid";
 
 /* contact placeholder */
 "State" = "State";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Still can't find a solution";
+"Still can't find a solution" = "Kan fortfarande inte hitta en lösning";
 
 /* cell title in device settings
    Title */
 "Storage" = "Lagring";
 
 /* Title */
-"Storage Warning" = "Storage Warning";
+"Storage Warning" = "Lagringsvarning";
 
 /* encryption lock description */
 "Stored with zero access encryption" = "Stored with zero access encryption";
 
 /* contact placeholder */
-"Street" = "Street";
+"Street" = "Gata";
 
 /* Placeholder */
 "Subject" = "Ämne";
@@ -2351,19 +2380,20 @@
 /* subject: text when forward */
 "Subject:" = "Ämne:";
 
-/* menu title */
+/* menu title
+   The title of a subscription plans screen */
 "Subscription" = "Prenumeration";
 
 /* Fetch subscription data failed */
 "Subscription information temporarily unavailable. Please try again later." = "Subscription information temporarily unavailable. Please try again later.";
 
 /* Service plan capability; i = 2 */
-"Support for %i custom domains (e.g. user@yourdomain.com)" = "Support for %i custom domains (e.g. user@yourdomain.com)";
+"Support for %i custom domains (e.g. user@yourdomain.com)" = "Stöd för %i anpassade domäner (t.ex. user@yourdomain.com)";
 
 /* network troubleshot cell title */
-"support form" = "support form";
+"support form" = "supportformulär";
 
-/* Action */
+/* (No Comment) */
 "Support ProtonMail" = "Stöd ProtonMail";
 
 /* cell title in app settings */
@@ -2382,11 +2412,14 @@
    Swiping gestures */
 "Swiping gestures" = "Swiping gestures";
 
+/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
+"Switch selection mode" = "Switch selection mode";
+
 /* Alert when switched account by clicking notification of another account */
-"Switched to account '%@'" = "Switched to account '%@'";
+"Switched to account '%@'" = "Växlade till konto '%@'";
 
 /* Error */
-"System can't copy the file" = "System can't copy the file";
+"System can't copy the file" = "Systemet kan inte kopiera filen";
 
 /* Title */
 "Take a Photo" = "Ta ett foto";
@@ -2410,7 +2443,7 @@
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Thank you for submitting a bug report.  We have added your report to our bug tracking system.";
 
 /* Error message */
-"The 2 passwords are not matching" = "The 2 passwords are not matching";
+"The 2 passwords are not matching" = "De två lösenorden matchar inte";
 
 /* Description */
 "The authentication credentials are invalid." = "The authentication credentials are invalid.";
@@ -2419,7 +2452,7 @@
 "The authentication token has expired." = "The authentication token has expired.";
 
 /* key size notes */
-"The current standard" = "The current standard";
+"The current standard" = "Nuvarande standard";
 
 /* Description */
 "The display name is now %@." = "The display name is now %@.";
@@ -2431,7 +2464,7 @@
 "The draft format incorrectly sending failed!" = "Sending failed. There was an error with the draft format.";
 
 /* key size note part 1 */
-"The highest level of encryption available." = "The highest level of encryption available.";
+"The highest level of encryption available." = "Den högsta nivån av kryptering tillgänglig.";
 
 /* Error */
 "The mailbox password is incorrect." = "The mailbox password is incorrect.";
@@ -2444,13 +2477,13 @@
 "The maximum number of labels is %d." = "The maximum number of labels is %d.";
 
 /* update password error */
-"The new password can't be empty." = "The new password can't be empty.";
+"The new password can't be empty." = "Det nya lösenordet kan inte vara tomt.";
 
 /* (No Comment) */
 "The new password can't empty" = "The new password can't be empty";
 
 /* update password error */
-"The new password does not match." = "The new password does not match.";
+"The new password does not match." = "Det nya lösenordet matchar inte.";
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
@@ -2492,17 +2525,17 @@
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
 
 /* Alert when the account is already logged in */
-"The user is already logged in" = "The user is already logged in";
+"The user is already logged in" = "Användaren är redan inloggad";
 
 /* (No Comment) */
-"The UserName have been taken." = "The username have been taken.";
+"The UserName have been taken." = "Användarnamnet är upptaget.";
 
 /* title */
 "The verification email invalid" = "Invalid verification email";
 
 /* *
  *  RecaptchaViewController */
-"The verification failed!" = "The verification failed!";
+"The verification failed!" = "Verifieringen misslyckades!";
 
 /* alert when sign out user if in queue still have tasks */
 "There are still some messages in queue. If you sign out, the draft will be deleted." = "There are still some messages in queue. If you sign out, the draft will be deleted.";
@@ -2520,13 +2553,13 @@
 "This action cannot be undone." = "Denna åtgärd kan inte ångras.";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder.";
-
-/* Alert message */
-"This can take a while. Please do not dismiss the app." = "This can take a while. Please do not dismiss the app.";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Denna åtgärd kan inte ångras. E-postmeddelanden som är lagrade i denna mapp raderas inte och kan hittas i mappen All e-post.";
 
 /* alert desc */
-"This contact belongs to your Address Book." = "This contact belongs to your address book.";
+"This contact belongs to your Address Book." = "Den här kontakten tillhör din adressbok.";
+
+/* No comment provided by engineer. */
+"This conversation contains trashed messages" = "This conversation contains trashed messages";
 
 /* No comment provided by engineer. */
 "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!";
@@ -2541,10 +2574,13 @@
 "This folder is empty" = "Denna mapp är tom";
 
 /* No comment provided by engineer. */
-"This message contains embedded images." = "This message contains embedded images.";
+"This message contains embedded images." = "Detta meddelande innehåller inbäddade bilder.";
 
 /* No comment provided by engineer. */
-"This message contains remote content." = "This message contains remote content.";
+"This message contains remote content and embedded images" = "This message contains remote content and embedded images";
+
+/* No comment provided by engineer. */
+"This message contains remote content." = "Detta meddelande innehåller fjärrinnehåll.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "This message is from a mailing list.";
@@ -2559,7 +2595,7 @@
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "This preference will fallback to Safari if the browser of choice will be uninstalled.";
 
 /* The secondary title of no result message */
-"Time to relax" = "Time to relax";
+"Time to relax" = "Dags att koppla av";
 
 /* contacts talbe cell Title title */
 "Title" = "Titel";
@@ -2575,7 +2611,7 @@
 "To" = "Till";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\r\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "För att förhindra missbruk av ProtonMail,\r\n måste vi verifiera att du är en människa.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com";
@@ -2596,28 +2632,34 @@
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
 
+/* settings touchid error */
+"Touch ID is not enrolled, enable it in the system Settings" = "Touch ID is not enrolled, enable it in the system Settings";
+
+/* settings touchid/faceid error */
+"Touch ID not available" = "Touch ID är inte tillgängligt";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID is not enrolled, enable it in the system Settings";
 
-/* settings touchid/faceid error */
-"TouchID not available" = "TouchID not available";
+/* (No Comment) */
+"TouchID not available" = "Touch ID är inte tillgängligt";
 
 /* *
  *  MessageAction */
-"Trash" = "Trash";
+"Trash" = "Papperskorg";
 
 /* mail location title */
 "TRASH" = "Papperskorg";
 
 /* troubleshooting view button */
-"Troubleshoot" = "Troubleshoot";
+"Troubleshoot" = "Felsök";
 
 /* network troubleshot view title */
 "Troubleshooting" = "Felsökning";
 
 /* Title */
-"Troubleshooting guide" = "Troubleshooting guide";
+"Troubleshooting guide" = "Felsökningsguide";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Try connecting to Proton from a different network (or use ProtonVPN or Tor).";
@@ -2629,7 +2671,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it.";
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.";
@@ -2647,16 +2689,16 @@
 "Type casting error" = "Type casting error";
 
 /* Description */
-"Unable to connect to the server" = "Unable to connect to the server";
+"Unable to connect to the server" = "Kunde inte ansluta till servern";
 
 /* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "Unable to construct a valid URL with the following path: %@";
 
 /* Description */
-"Unable to create SRP Client!" = "Unable to create SRP Client!";
+"Unable to create SRP Client!" = "Kunde inte skapa SRP-klient!";
 
 /* Error */
-"Unable to decrypt message." = "Unable to decrypt message.";
+"Unable to decrypt message." = "Kunde inte dekryptera meddelande.";
 
 /* Description */
 "Unable to edit this message offline" = "Unable to edit this message offline";
@@ -2665,7 +2707,7 @@
 "Unable to generate hashed password!" = "Unable to generate hashed password!";
 
 /* Error */
-"Unable to get contacts" = "Unable to get contacts";
+"Unable to get contacts" = "Kunde inte hämta kontakter";
 
 /* Description */
 "Unable to parse authentication info!" = "Unable to parse authentication info!";
@@ -2687,7 +2729,7 @@
 
 /* *
  *  MessageDataService */
-"Unable to send the email" = "Unable to send the email.";
+"Unable to send the email" = "Det gick inte att skicka e-postmeddelandet.";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Undisclosed Recipients";
@@ -2696,13 +2738,13 @@
 "Undo" = "Ångra";
 
 /* Description */
-"Unknow Error" = "Unknown error";
+"Unknow Error" = "Okänt fel";
 
 /* (No Comment) */
 "Unknow file" = "Okänd fil";
 
 /* title, default display name */
-"Unknown" = "Unknown";
+"Unknown" = "Okänd";
 
 /* Error */
 "Unknown Error" = "Okänt fel";
@@ -2714,7 +2756,7 @@
 "Unlimited messages sent/day" = "Unlimited messages sent/day";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Unlock required" = "Unlock required";
+"Unlock required" = "Upplåsning krävs";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "oläst";
@@ -2735,34 +2777,31 @@
 "Up to %i users" = "Upp till %i användare";
 
 /* like top right action text */
-"Update" = "Update";
+"Update" = "Uppdatera";
 
 /* update notification email error title */
 "Update Notification Email" = "Update Notification Email";
 
 /* The title of last update status of updated time */
-"Updated %d min ago" = "Updated %d min ago";
+"Updated %d min ago" = "Uppdaterad %d min sedan";
 
 /* The title of last update status of more than 1 hour */
-"Updated >1 hour ago" = "Updated >1 hour ago";
+"Updated >1 hour ago" = "Uppdaterad >1 timme sedan";
 
 /* The title of last update status of updated just now */
-"Updated just now" = "Updated just now";
+"Updated just now" = "Uppdaterad just nu";
 
 /* Service plan description footer */
-"Upgrade to a paid plan to benefit from more features" = "Upgrade to a paid plan to benefit from more features";
+"Upgrade to a paid plan to benefit from more features" = "Uppgradera till en betald plan för att dra nytta av fler funktioner";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Uppgradera till en betald plan för att skicka e-post från din %@-adress";
 
-/* alert description */
-"Upgrade to get all paid features." = "Upgrade to get all paid features.";
-
 /* Action */
-"Upload device contacts" = "Upload device contacts";
+"Upload device contacts" = "Ladda upp enhetskontakter";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Upload iOS contacts to ProtonMail?";
+"Upload iOS contacts to ProtonMail?" = "Ladda upp iOS-kontakter till ProtonMail?";
 
 /* default vcard types */
 "Url" = "Url";
@@ -2774,13 +2813,13 @@
 "Use folder colors" = "Använd mappfärger";
 
 /* error when user already exist */
-"User already exist!" = "Username already taken";
+"User already exist!" = "Användarnamnet finns redan";
 
 /* (No Comment) */
 "User is available!" = "Användarnamn är tillgängligt";
 
 /* title */
-"User name exist" = "Username exist";
+"User name exist" = "Användarnamnet existerar";
 
 /* alert title */
 "User name invalid" = "Ogiltigt användarnamn";
@@ -2792,10 +2831,10 @@
 "Verification code request failed" = "Verification code request failed";
 
 /* alert title */
-"Verification code sent" = "Verification code sent";
+"Verification code sent" = "Verifieringskod har skickats";
 
 /* error title */
-"Verification error" = "Verification error";
+"Verification error" = "Verifieringsfel";
 
 /* error details */
 "Verification of this content’s signature failed" = "Verification of this content’s signature failed";
@@ -2804,28 +2843,25 @@
 "Version %@ %@" = "Version %@ %@";
 
 /* No comment provided by engineer. */
-"View headers" = "View headers";
+"View headers" = "Visa headers";
 
 /* message details-> more action-> view headers */
-"View Headers" = "View Headers";
+"View Headers" = "Visa headers";
 
 /* message details-> more action-> view raw html of message body */
 "View HTML" = "Visa HTML";
-
-/* Action */
-"View Plans" = "Visa planer";
 
 /* Title */
 "Warning" = "Varning";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!" = "Varning: Du kan inte skicka e-post förrän du har passerat den mänskliga kontrollen!";
+"Warning: Before you pass the human check you can't send email!" = "Varning: Du kan inte skicka e-post förrän du bekräftar att du inte är en robot!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Vi kunde inte skicka ditt meddelande, p.g.a. en svag nätverksanslutning. Ditt meddelande sparades i Utkast och skickas automatiskt nästa gång du öppnar appen.";
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "We have trouble connecting to the servers. Please reconnect.";
@@ -2851,7 +2887,7 @@
 /* week */
 "week" = "vecka";
 
-/* Title */
+/* (No Comment) */
 "Welcome to ProtonMail!" = "Välkommen till ProtonMail";
 
 /* Description */
@@ -2861,19 +2897,22 @@
 "When you send an email, this is the name that appears in the sender field." = "When you send an email, this is the name that appears in the sender field.";
 
 /* default vcard types */
-"Work" = "Work";
+"Work" = "Arbete";
 
 /* title */
 "Wrong verification code" = "Fel verifieringskod";
 
 /* Title */
-"wrote:" = "wrote:";
+"wrote:" = "skrev:";
 
 /* Yes action */
 "Yes" = "Ja";
 
 /* Error message */
 "Yes, attach details of payment" = "Yes, attach details of payment";
+
+/* No comment provided by engineer. */
+"Yesterday" = "I går";
 
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "You are about to launch the web browser and navigate to";
@@ -2890,26 +2929,26 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Du är offline";
 
-/* Description */
+/* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "You can customize swipe gestures in the ProtonMail App Settings.";
 
-/* Description */
+/* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "You can get help and support at protonmail.com/support. Bugs can also be reported with the app.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "You can't set %@ address as default because it is a paid feature.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in.";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.";
 
 /* Message */
-"You have %d new emails!" = "You have %d new emails!";
+"You have %d new emails!" = "Du har %d nya e-postmeddelanden!";
 
 /* Title */
-"You have a new email!" = "You have a new email!";
+"You have a new email!" = "Du har ett nytt e-postmeddelande!";
 
 /* incorrect email format error while sending */
 "You have entered at least one invalid email address. Please verify your recipients." = "You have entered at least one invalid email address. Please verify your recipients.";
@@ -2918,7 +2957,7 @@
 "You have entered at least one unknown recipient. Please verify your recipients." = "You have entered at least one unknown recipient. Please verify your recipients.";
 
 /* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "You have unsaved changes. Do you want to save it?";
+"You have unsaved changes. Do you want to save it?" = "Du har osparade ändringar. Vill du spara dem?";
 
 /* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Du har använt %d%% av ditt lagringsutrymme (%@).";
@@ -2932,7 +2971,7 @@
 
 /* Alert to confirm signout
    Alert when signout primary account from account manager */
-"You will be switched to %@" = "You will be switched to %@";
+"You will be switched to %@" = "Du kommer att växlas till %@";
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "You're going to delete the message irreversibly. Are you sure?";
@@ -2952,7 +2991,7 @@
 /* The section title of folder manager table */
 "Your folders" = "Dina mappar";
 
-/* Description */
+/* (No Comment) */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.";
 
 /* The section title of label manager table */
@@ -2972,7 +3011,7 @@
 "Your plan will automatically renew on" = "Your plan will automatically renew on";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session har upphört eftersom du har varit inaktiv ett tag eller för att den har återkallats. Logga in igen.";
 
 /* Description */
 "Your signature has been updated." = "Din signatur har uppdaterats.";

@@ -1,3 +1,6 @@
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+"'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
+
 /* Key size text when setup key */
 "(2048 bit)" = "(2.048 bit)";
 
@@ -22,11 +25,23 @@
 /* Service plan capability */
 "%@ storage capacity" = "%@-lagerpladskapacitet";
 
+/* Description */
+"%d attempt remaining" = "%d forsøg tilbage";
+
+/* Error */
+"%d attempt remaining until secure data wipe!" = "%d forsøg tilbage før sikker sletning af data!";
+
 /* The title of single selected conversation of action sheet in inbox */
 "%d conversation" = "%d samtale";
 
 /* The title of multiple selected conversations of action sheet in inbox */
 "%d conversations" = "%d samtaler";
+
+/* day */
+"%d day" = "%d dag";
+
+/* hour */
+"%d hour" = "%d time";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d medlem";
@@ -58,6 +73,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Drop hér for at tilføje som vedhæftning";
 
+/* alert body for how many extra mail addresses, e.g. +3 others */
+"+%d others" = "+%d andre";
+
 /* default empty object */
 "<no object>" = "<no object>";
 
@@ -77,11 +95,8 @@
 /* Description */
 "A new version of ProtonMail app is available. Please update to the latest version." = "En ny version af ProtonMail-app'en er tilgængelig. Opdatér venligst til seneste version.";
 
-/* alert description */
-"A paid ProtonMail plan is required to use this feature" = "Et betalt ProtonMail-abonnement kræves til denne funktion";
-
 /* settings touchid error */
-"A passcode has not been set, enable it in the system Settings" = "En PIN-kode er ikke opsat. Opæt én i Systemindstillinger";
+"A passcode has not been set, enable it in the system Settings" = "En pinkode er ikke indstillet, aktivér den i systemets indstillinger";
 
 /* Alert message is shown when folder name duplicated */
 "A sub-folder with this name already exists in the destination folder" = "En undermappe med dette navn findes allerede i destinationsmappen";
@@ -99,7 +114,7 @@
 "Account password invalid" = "Ugyldig kontoadgangskode";
 
 /* section title in settings */
-"Account Settings" = "Kontoindstillinger";
+"Account settings" = "Kontoindstillinger";
 
 /* (No Comment) */
 "Add" = "Tilføj";
@@ -233,7 +248,7 @@
 "App is locked" = "App er låst";
 
 /* section title in settings */
-"App Settings" = "App-indstillinger";
+"App settings" = "App-indstillinger";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple In-app købspris";
@@ -307,15 +322,6 @@
 /* VoiceOver: email has attachments */
 "Attachments" = "Vedhæftninger";
 
-/* Error */
-"attempt remaining until secure data wipe!" = "forsøg tilbage, indtil sikker datarydning!";
-
-/* Description */
-"attempts remaining" = "forsøg tilbage";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "forsøg tilbage, indtil sikker datarydning!";
-
 /* Title */
 "Authentication" = "Godkendelse";
 
@@ -375,6 +381,9 @@
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Fødselsdag";
+
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Gå hurtigt gennem tråd af meddelelser i samtaletilstand.";
 
 /* Title */
 "Bug Description" = "Fejlbeskriveslse";
@@ -448,9 +457,6 @@
 
 /* update password error */
 "Can't get user auth info" = "Kan ikke hente brugergodkendelsesinfo";
-
-/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Can't load share content!" = "Kan ikke indlæse delt indhold!";
 
 /* Error */
 "Can't load the file" = "Kan ikke indlæse filen";
@@ -565,11 +571,9 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Lukker";
 
-/* cell title in device settings */
+/* cell title in device settings
+   The title of combined contact in settings */
 "Combined contacts" = "Kombinerede kontakter";
-
-/* The title of combined contact in settings */
-"Combined Contacts" = "Kombinerede kontakter";
 
 /* *
  *  Composer Email view controller */
@@ -609,8 +613,14 @@
 /* Account manager title */
 "Connect Account" = "Forbind konto";
 
+/* Hint when users delete contact offline */
+"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+
 /* contact section title */
 "Contact details" = "Kontaktdetaljer";
+
+/* Hint when users create / edit contact offline */
+"Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
 
 /* Title */
 "Contact the ProtonMail team" = "Kontakt ProtonMail-teamet";
@@ -656,9 +666,6 @@
 /* Create account button */
 "Create Account" = "Opret konto";
 
-/* Description */
-"Create and add Labels to organize your inbox. Long press on a message for all options." = "Opret og tilføj Etiketter for at organisere din indbakke. Langt tryk på en besked for at se alle valgmuligheder.";
-
 /* title of button in account connect page */
 "Create new account" = "Opret ny konto";
 
@@ -696,9 +703,6 @@
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "Dato: %@";
-
-/* day */
-"day" = "dag";
 
 /* days
    Title */
@@ -849,6 +853,9 @@
 /* mail location title */
 "DRAFTS" = "Kladder";
 
+/* Onboarding title */
+"Easily up-to-date" = "Nemt up-to-date";
+
 /* Action */
 "Edit" = "Redigér";
 
@@ -933,7 +940,7 @@
 "Enable email notices" = "Aktiver e-mail-meddelelser";
 
 /* settings protection section title */
-"Enable FaceID" = "Aktiveér TouchID";
+"Enable Face ID" = "Aktivér Ansigts-ID";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "Aktivér PIN-kode";
@@ -944,17 +951,14 @@
 /* settings protection section title */
 "Enable PIN Protection" = "Aktivér PIN-beskyttelse";
 
-/* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Aktivér PIN/FaceID";
-
-/* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Aktivér PIN/TouchID";
-
 /* Title */
 "Enable signature" = "Aktivér signatur";
 
 /* settings protection section title */
-"Enable TouchID" = "Aktivér TouchID";
+"Enable Touch ID" = "Aktivér Fingeraftryk-ID";
+
+/* (No Comment) */
+"Enable TouchID" = "Aktivér Fingeraftryk-ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Krypteret af Proton";
@@ -998,8 +1002,11 @@
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "End-to-end krypteret for at bekræfte adresse";
 
-/* Title */
+/* (No Comment) */
 "End-to-End Encryption" = "End-to-end-kryptering";
+
+/* Onboarding content */
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Få glæde af end-to-end-kryptering, selv med ikke-Proton-kontakter: Inviter dem til ProtonMail eller kryptere deres beskeder manuelt.";
 
 /* Action in 2fa popup view */
 "Enter" = "Angiv";
@@ -1008,7 +1015,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Indtast en pinkode med min 4 tegn og maks 21 tegn.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter PIN code" = "Indtast PIN-kode";
+"Enter current PIN code" = "Indtast aktuel pinkode";
 
 /* Title */
 "Enter Verification Code" = "Angiv bekræftelseskode";
@@ -1034,11 +1041,14 @@
 /* No comment provided by engineer. */
 "Enter your signature here" = "Indtast din signatur her";
 
+/* Title of alert in share extension. */
+"Error" = "Fejl";
+
 /* settings debug section title */
 "Error Logs" = "Fejllogger";
 
 /* Error alert title */
-"Error occured" = "Fejl opstod";
+"Error occurred" = "Der opstod en fejl";
 
 /* incorrect email format error in composer */
 "Error sending" = "Fejl ved afsendelse";
@@ -1052,7 +1062,7 @@
 /* VoiceOver: email can expire */
 "Expires" = "Udløber";
 
-/* Title */
+/* (No Comment) */
 "Expiring Messages" = "Beskedudløb";
 
 /* Key size checkbox */
@@ -1071,6 +1081,9 @@
  *  Core Data Service & local error */
 "Failed to initialize the application's saved data" = "Mislykkedes at initialisere app'ens gemte data";
 
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Failed to load content!\nPlease try again." = "Kunne ikke hente indhold!\nPrøv venligst igen.";
+
 /* default vcard types */
 "Fax" = "Fax";
 
@@ -1079,6 +1092,9 @@
 
 /* Error */
 "Fetch user info failed" = "Hentning af brugeroplysninger mislykkedes";
+
+/* Onboarding content */
+"File, label, and color code messages to create your perfect, custom inbox." = "Arkivér, etikettér og farvekod beskeder for at skabe din perfekte, tilpassede indbakke.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Mapppe";
@@ -1123,7 +1139,7 @@
 "From:" = "Fra:";
 
 /* abbreviation of forward: */
-"Fw:" = "VS:";
+"Fw:" = "Vs:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Videresend:";
@@ -1149,6 +1165,9 @@
 /* Action */
 "Get more information" = "Få flere oplysninger";
 
+/* title of the next button */
+"Get Started" = "Kom i gang";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Gå til kladder";
 
@@ -1173,7 +1192,7 @@
 /* menu title (contact groups) */
 "Groups" = "Grupper";
 
-/* Title */
+/* (No Comment) */
 "Help & Support" = "Hjælp og Support";
 
 /* Title */
@@ -1190,9 +1209,6 @@
 
 /* Key size checkbox */
 "High Security" = "Høj sikkerhed";
-
-/* hour */
-"hour" = "time";
 
 /* hours */
 "hours" = "Timer";
@@ -1260,7 +1276,7 @@
 "Incorrect password" = "Forkert adgangskode";
 
 /* Error */
-"Incorrect PIN." = "Forkert PIN-kode.";
+"Incorrect PIN." = "Forkert PIN.";
 
 /* Option title */
 "Inherit color from parent folder" = "Nedarv farve fra overordnet mappe";
@@ -1270,6 +1286,9 @@
 
 /* Title */
 "inline attachments" = "integrerede vedhæftninger";
+
+/* (No Comment) */
+"Input Display Name ..." = "Angiv visningsnavn...";
 
 /* place holder */
 "Input Display Name…" = "Angiv visningsnavn…";
@@ -1345,7 +1364,7 @@
    Title */
 "Label as…" = "Anvend etiketten…";
 
-/* Title */
+/* (No Comment) */
 "Label Management" = "Etikethåndtering";
 
 /* createing lable input place holder */
@@ -1475,9 +1494,6 @@
 /* mark message as read action */
 "Mark Read" = "Markér som Læst";
 
-/* No comment provided by engineer. */
-"Mark unread" = "Marker som ulæst";
-
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
 
@@ -1527,7 +1543,7 @@
 /* Title */
 "Message Swipe Actions" = "Besked stryge-handlinger";
 
-/* Description */
+/* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Beskeder, du afsender, kan indstilles til auto-sletning efter et forudbestemt tidsinterval.";
 
 /* minute */
@@ -1605,6 +1621,9 @@
 /* title */
 "Name" = "Navn";
 
+/* Onboarding title */
+"Neat and tidy" = "Pæn og ryddelig";
+
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "BEHOV FOR EN KONTO? TILMELD DIG.";
 
@@ -1633,11 +1652,17 @@
 /* Title */
 "New mailbox password" = "Ny postkasseadgangskode";
 
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "Ny besked";
+
 /* Placeholder */
 "New password" = "Ny adgangskode";
 
 /* Title */
 "New sign-in password" = "Ny login-adgangskode";
+
+/* title of the next button */
+"Next" = "Næste";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Kaldenavn";
@@ -1735,8 +1760,8 @@
    Title */
 "On" = "Til";
 
-/* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On EE, MMM d, yyyy at %@" = "EE d. MMM yyyy %@";
+/* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
+"On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorer kun aktiveringen af købet, hvis du er sikker på, at alle dine abonnementer er opdaterede. For yderligere hjælp, kontakt venligst kundesupport. \r\n\r\n Er du sikker på, at du vil ignorere aktiveringen?";
@@ -1746,6 +1771,9 @@
 
 /* Open action */
 "Open" = "Åbn";
+
+/* VoiceOver title of account switcher button in the menu */
+"Open account switcher" = "Åbn kontoskifter";
 
 /* (No Comment) */
 "OpenDraft" = "Åbn kladde";
@@ -1836,17 +1864,11 @@
 /* device settings auto lock type title */
 "PIN" = "PIN";
 
-/* The protection title of PIN Code protection */
-"PIN Code" = "PIN-kode";
+/* The protection title of PIN code protection */
+"PIN code" = "PIN-kode";
 
 /* Description */
 "PIN code can't be empty." = "Pinkode skal udfyldes.";
-
-/* device settings auto lock type title */
-"PIN/Face ID" = "Pin/Ansigts-ID";
-
-/* device settings auto lock type title */
-"PIN/Touch ID" = "Pin/Touch ID";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Abonnementer kan redigeres på webversionen.";
@@ -1871,6 +1893,9 @@
 
 /* error message */
 "Please input a valid email address." = "Angiv en gyldig e-mail.";
+
+/* Alert message */
+"Please keep ProtonMail open until the operation is done." = "Hold venligst ProtonMail åben indtil handlingen er fuldført.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Sørg for at din internetforbindelse fungerer.";
@@ -1941,9 +1966,6 @@
 /* alert title */
 "Please, manage it in your phone." = "Håndtér det på din mobil.";
 
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "** PREMIUM FUNKTION **";
-
 /* Action */
 "Print" = "Udskriv";
 
@@ -1971,7 +1993,7 @@
 /* Title */
 "ProtonMail" = "ProtonMail";
 
-/* Description */
+/* (No Comment) */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail sælger ikke annoncer eller misbruger dit privatliv. Din støtte er afgørende for at holde ProtonMail kørende. Du kan opgradere til en betalt konto eller donere for at støtte ProtonMail.";
 
 /* Title */
@@ -1998,7 +2020,7 @@
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Proxy/firewall-interferens";
 
-/* Title */
+/* (No Comment) */
 "Quick swipe actions" = "Hurtig-stryg handlinger";
 
 /* Title */
@@ -2054,7 +2076,7 @@
 "Remove All" = "Fjern alle";
 
 /* Settings row */
-"Remove image metadata" = "Fjern metadata for billede";
+"Remove image metadata" = "Fjern metadata fra billede";
 
 /* action title */
 "Remove password" = "Fjern adgangskode";
@@ -2104,7 +2126,7 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Anmeldelse af en besked som phishing-forsøg videresender beskeden til os, så vi kan analysere den og forbedre vores filtre. Det betyder, at vi vil kunne se indholdet af beskeden fuldt ud.";
 
 /* link opeining confirmation */
-"Request Link Confirmation" = "Anmod om linkbekræftelse";
+"Request link confirmation" = "Anmod om linkbekræftelse";
 
 /* Action */
 "RESET MAILBOX PASSWORD" = "NULSTIL POSTKASSEADGANGSKODE";
@@ -2180,7 +2202,7 @@
 "Sending failed" = "Afsendelse mislykkedes";
 
 /* Alert title */
-"Sending message" = "Sender besked";
+"Sending in progress" = "Afsendelse i gang";
 
 /* Description */
 "Sending Message" = "Sender besked";
@@ -2230,14 +2252,14 @@
 /* menu title */
 "Settings" = "Indstillinger";
 
-/* Title */
-"Share Alert" = "Delingsalarm";
-
 /* action */
 "Share contact" = "Del kontakt";
 
 /* Title */
 "Share it with your friends" = "Del med dine venner";
+
+/* Action */
+"Show" = "Vis";
 
 /* Title */
 "Sign in" = "Log ind";
@@ -2273,6 +2295,12 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Logget ud fra %1$@ og logget ind med %2$@";
+
+/* Onboarding title */
+"Simply private" = "Ganske enkelt privat";
+
+/* skip button title in onboarding page */
+"Skip" = "Spring over";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Udsæt";
@@ -2311,7 +2339,8 @@
 /* Description */
 "Srp single password keyslat invalid!" = "SRP enkeltstående adgangskode keysalt ugyldig!";
 
-/* The title of the star action in action sheet */
+/* The title of the star action in action sheet
+   VoiceOver title of star button in the message view */
 "Star" = "Stjerne";
 
 /* Title */
@@ -2351,7 +2380,8 @@
 /* subject: text when forward */
 "Subject:" = "Emne:";
 
-/* menu title */
+/* menu title
+   The title of a subscription plans screen */
 "Subscription" = "Abonnement";
 
 /* Fetch subscription data failed */
@@ -2363,7 +2393,7 @@
 /* network troubleshot cell title */
 "support form" = "supportformular";
 
-/* Action */
+/* (No Comment) */
 "Support ProtonMail" = "Støt ProtonMail";
 
 /* cell title in app settings */
@@ -2381,6 +2411,9 @@
 /* cell title in device settings
    Swiping gestures */
 "Swiping gestures" = "Strygebevægelser";
+
+/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
+"Switch selection mode" = "Skift valgmetode";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Skiftede til konto '%@'";
@@ -2522,11 +2555,11 @@
 /* Alert message when user tries to delete folder */
 "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Denne handling kan ikke fortrydes. E-mails gemt i denne mappe vil ikke blive slettet og kan findes i Alle mails-mappen.";
 
-/* Alert message */
-"This can take a while. Please do not dismiss the app." = "Det kan tage et stykke tid. Luk/forlad venligst ikke app'en.";
-
 /* alert desc */
 "This contact belongs to your Address Book." = "Denne kontakt er fra din Kontakter.";
+
+/* No comment provided by engineer. */
+"This conversation contains trashed messages" = "Denne samtale indeholder slettede beskeder";
 
 /* No comment provided by engineer. */
 "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail bestod ikke sit domænes autentificeringskrav. Den kan være forfalsket eller ukorrekt videresendt!";
@@ -2542,6 +2575,9 @@
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Denne besked indeholder indlejrede billeder.";
+
+/* No comment provided by engineer. */
+"This message contains remote content and embedded images" = "This message contains remote content and embedded images";
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "Denne besked indeholder eksternt indhold.";
@@ -2568,7 +2604,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS-certifikatvalidering mislykkedes. Din forbindelse kan overvåges, og appen blokeres midlertidigt af hensyn til din sikkerhed.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS-certifikatvalidering mislykkedes. Din forbindelse kan overvåges, og appen blokeres midlertidigt af hensyn til din sikkerhed.\n\nSkift netværk øjeblikkeligt";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS-certifikatvalidering mislykkedes. Din forbindelse kan være overvåget, og appen blokeres derfor midlertidigt af hensyn til din sikkerhed.\n\nSkift netværk øjeblikkeligt";
 
 /* message To: feild
    Title */
@@ -2594,14 +2630,20 @@
 "Tor" = "Tor";
 
 /* The protection title of Touch ID protection */
-"Touch ID" = "Fingertryks-ID";
+"Touch ID" = "Fingeraftryk-ID";
+
+/* settings touchid error */
+"Touch ID is not enrolled, enable it in the system Settings" = "Fingeraftryk-ID er ikke registreret, aktivér det i Systemindstillinger";
+
+/* settings touchid/faceid error */
+"Touch ID not available" = "Fingeraftryk-ID ikke tilgængelig";
 
 /* *
  *  SettingTableViewController */
-"TouchID is not enrolled, enable it in the system Settings" = "Berørings-ID er ikke registreret, aktivér det i Systemindstillinger";
+"TouchID is not enrolled, enable it in the system Settings" = "Fingeraftryk-ID er ikke registreret, aktivér det i Systemindstillinger";
 
-/* settings touchid/faceid error */
-"TouchID not available" = "Berørings-ID utilgængelig";
+/* (No Comment) */
+"TouchID not available" = "Fingeraftryk-Id ikke tilgængelig";
 
 /* *
  *  MessageAction */
@@ -2629,7 +2671,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Slå funktionen til for at autoudfylde e-mailadresser vha. kontakter fra alle dine indloggede konti.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Slå funktionen til for at autolåse din app og benytte PIN-kode eller Ansigts-ID til oplåsning af den.";
+"Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it." = "Slå funktionen til for at autolåse din app og benyt PIN-kode eller Ansigts-ID til oplåsning af den.";
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Slå funktionen til for at autolåse din app og benytte PIN-kode eller fingeraftryk til oplåsning af den.";
@@ -2755,9 +2797,6 @@
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Opgradér til et abonnement for at sende fra din %@-adresse";
 
-/* alert description */
-"Upgrade to get all paid features." = "Opgradér for at få alle betalte funktioner.";
-
 /* Action */
 "Upload device contacts" = "Upload enhedskontakter";
 
@@ -2812,14 +2851,11 @@
 /* message details-> more action-> view raw html of message body */
 "View HTML" = "Se HTML";
 
-/* Action */
-"View Plans" = "Vis abonnementer";
-
 /* Title */
 "Warning" = "Advarsel";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!" = "Advarsel: Du ikke sende e-mails, før du beviser, at du ikke er en robot!";
+"Warning: Before you pass the human check you can't send email!" = "Advarsel: Du ikke sende e-mails, før du beviser, at du ikke er en robot!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Advarsel: Du har ikke angivet en genoprettelses-e-mail, så kontogenoprettelse er umulig, hvis du skulle glemme din adgangskode. Fortsæt uden genoprettelses-e-mail?";
@@ -2851,7 +2887,7 @@
 /* week */
 "week" = "uge";
 
-/* Title */
+/* (No Comment) */
 "Welcome to ProtonMail!" = "Velkommen til ProtonMail!";
 
 /* Description */
@@ -2875,6 +2911,9 @@
 /* Error message */
 "Yes, attach details of payment" = "Ja, vedhæft betalingsoplysninger";
 
+/* No comment provided by engineer. */
+"Yesterday" = "I går";
+
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Du er ved at starte webbrowseren og navigere til";
 
@@ -2890,17 +2929,17 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Du er offline";
 
-/* Description */
+/* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Du kan tilpasse stryge-gestusser i ProtonMail App-indstillinger.";
 
-/* Description */
+/* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Du kan få hjælp og support via protonmail.com/support. Fejl kan tillige anmeldes via app'en.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Du kan ikke angive %@-adressen som standard, da dette er en betalingsfunktion.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Du har deaktiveret FaceID i dine systemindstillinger. FaceID er blevet brugt til at beskytte vigtige kontooplysninger. For at få adgang til din konto, gå til indstillinger og genaktiver FaceID eller log ind igen.";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Du har deaktiveret Ansigts-ID i dine systemindstillinger. Ansigts-ID er blevet brugt til at beskytte vigtige kontooplysninger. Få adgang til din konto ved at gå til indstillinger og genaktivere Ansigts-ID eller logge ind igen.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Beskedudløb er aktiveret, men ikke alle modtagerne understøtter denne funktion. Tilføj en adgangskode og/eller deaktivér PGP-afsendelse for at benytte udløb til alle modtagere.";
@@ -2952,7 +2991,7 @@
 /* The section title of folder manager table */
 "Your folders" = "Dine mapper";
 
-/* Description */
+/* (No Comment) */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Din indbakke er nu beskyttet med end-to-end-kryptering. For automatisk at sikre e-mails til venner, så få dem til at hente ProtonMail! Du kan også manuelt kryptere beskeder til dem, hvis de ikke benytter ProtonMail.";
 
 /* The section title of label manager table */

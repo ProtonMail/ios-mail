@@ -1,3 +1,6 @@
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+"'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
+
 /* Key size text when setup key */
 "(2048 bit)" = "(2048 bit)";
 
@@ -22,11 +25,23 @@
 /* Service plan capability */
 "%@ storage capacity" = "%@ opslagcapaciteit";
 
+/* Description */
+"%d attempt remaining" = "%d attempt remaining";
+
+/* Error */
+"%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
+
 /* The title of single selected conversation of action sheet in inbox */
 "%d conversation" = "%d gesprek";
 
 /* The title of multiple selected conversations of action sheet in inbox */
 "%d conversations" = "%d conversaties";
+
+/* day */
+"%d day" = "%d day";
+
+/* hour */
+"%d hour" = "%d hour";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d lid";
@@ -58,6 +73,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Sleep hier om toe te voegen als bijlage";
 
+/* alert body for how many extra mail addresses, e.g. +3 others */
+"+%d others" = "+%d anderen";
+
 /* default empty object */
 "<no object>" = "<geen object>";
 
@@ -76,9 +94,6 @@
 
 /* Description */
 "A new version of ProtonMail app is available. Please update to the latest version." = "Er is een nieuwe versie van de ProtonMail app beschikbaar. Update de app.";
-
-/* alert description */
-"A paid ProtonMail plan is required to use this feature" = "Een betaald ProtonMail-abonnement is nodig om deze functie te gebruiken";
 
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "Er is geen wachtwoord ingesteld, stel er een in in de systeem instellingen";
@@ -99,7 +114,7 @@
 "Account password invalid" = "Ongeldig accountwachtwoord";
 
 /* section title in settings */
-"Account Settings" = "Account Instellingen";
+"Account settings" = "Accountinstellingen";
 
 /* (No Comment) */
 "Add" = "Toevoegen";
@@ -233,7 +248,7 @@
 "App is locked" = "App is vergrendeld";
 
 /* section title in settings */
-"App Settings" = "Appinstellingen";
+"App settings" = "App instellingen";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Kosten Apple in-app aankoop";
@@ -287,7 +302,7 @@
 "At least one recipient email address is improperly formatted, please double check them." = "Ten minste één e-mailadres van de ontvangers is onjuist opgemaakt, gelieve deze te controleren.";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Tenminste één e-mailadres/domeinnaam van de ontvangers bestaat niet of is onjuist opgemaakt. Bericht is verplaatst naar concepten.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Ten minste één e-mailadres/domeinnaam van de ontvangers bestaat niet of is onjuist opgemaakt. Bericht is verplaatst naar concepten.";
 
 /* No comment provided by engineer. */
 "attachment" = "bijlage";
@@ -306,15 +321,6 @@
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Bijlagen";
-
-/* Error */
-"attempt remaining until secure data wipe!" = "poging over tot het vernietigen van alle gegevens!";
-
-/* Description */
-"attempts remaining" = "pogingen resterend";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "pogingen over tot het vernietigen van alle gegevens!";
 
 /* Title */
 "Authentication" = "Authenticatie";
@@ -375,6 +381,9 @@
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Verjaardag";
+
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
 
 /* Title */
 "Bug Description" = "Omschrijving van de bug";
@@ -449,9 +458,6 @@
 /* update password error */
 "Can't get user auth info" = "Kan geen informatie over de gebruikersauthenticatie verkrijgen";
 
-/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Can't load share content!" = "Kan gedeelde inhoud niet laden!";
-
 /* Error */
 "Can't load the file" = "Kan het bestand niet laden";
 
@@ -524,10 +530,10 @@
 "Change sender address to .." = "Wijzig afzenderadres naar...";
 
 /* change password input label */
-"Change sign-in password" = "Change sign-in password";
+"Change sign-in password" = "Inlogwachtwoord wijzigen";
 
 /* Title */
-"Change single password" = "Change single password";
+"Change single password" = "Enkel wachtwoord wijzigen";
 
 /* Action */
 "Check Again" = "Controleer opnieuw";
@@ -565,11 +571,9 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Sluiten";
 
-/* cell title in device settings */
+/* cell title in device settings
+   The title of combined contact in settings */
 "Combined contacts" = "Gecombineerde contacten";
-
-/* The title of combined contact in settings */
-"Combined Contacts" = "Gecombineerde contacten";
 
 /* *
  *  Composer Email view controller */
@@ -609,8 +613,14 @@
 /* Account manager title */
 "Connect Account" = "Account Verbinden";
 
+/* Hint when users delete contact offline */
+"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+
 /* contact section title */
 "Contact details" = "Contactgegevens";
+
+/* Hint when users create / edit contact offline */
+"Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
 
 /* Title */
 "Contact the ProtonMail team" = "Neem contact op met het ProtonMail-team";
@@ -656,9 +666,6 @@
 /* Create account button */
 "Create Account" = "Account aanmaken";
 
-/* Description */
-"Create and add Labels to organize your inbox. Long press on a message for all options." = "Voeg labels toe om uw inbox te ordenen. Houd een bericht ingedrukt voor alle opties.";
-
 /* title of button in account connect page */
 "Create new account" = "Nieuw account aanmaken";
 
@@ -684,7 +691,7 @@
 "Current Recovery Email" = "Huidig herstel-e-mailadres";
 
 /* Title */
-"Current sign-in password" = "Current sign-in password";
+"Current sign-in password" = "Huidig inlogwachtwoord";
 
 /* action sheet option
    contacts default label type
@@ -696,9 +703,6 @@
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "Datum: %@";
-
-/* day */
-"day" = "dag";
 
 /* days
    Title */
@@ -849,6 +853,9 @@
 /* mail location title */
 "DRAFTS" = "Concepten";
 
+/* Onboarding title */
+"Easily up-to-date" = "Easily up-to-date";
+
 /* Action */
 "Edit" = "Bewerken";
 
@@ -933,7 +940,7 @@
 "Enable email notices" = "Schakel e-mailberichten in";
 
 /* settings protection section title */
-"Enable FaceID" = "Activeer FaceID";
+"Enable Face ID" = "Face ID inschakelen";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "PIN inschakelen";
@@ -944,16 +951,13 @@
 /* settings protection section title */
 "Enable PIN Protection" = "PIN-bescherming inschakelen";
 
-/* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "PIN/FaceID inschakelen";
-
-/* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "PIN/TouchID inschakelen";
-
 /* Title */
 "Enable signature" = "Handtekening inschakelen";
 
 /* settings protection section title */
+"Enable Touch ID" = "Touch ID inschakelen";
+
+/* (No Comment) */
 "Enable TouchID" = "Activeer TouchID";
 
 /* The footer shown when there is not result in the inbox */
@@ -998,8 +1002,11 @@
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "End-to-end versleuteld naar geverifieerd e-mailadres";
 
-/* Title */
+/* (No Comment) */
 "End-to-End Encryption" = "End-to-end versleuteling";
+
+/* Onboarding content */
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
 
 /* Action in 2fa popup view */
 "Enter" = "Invoeren";
@@ -1008,7 +1015,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Voer een PIN-code in met min. 4 tekens en max 21 tekens.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter PIN code" = "PIN-code invoeren";
+"Enter current PIN code" = "Enter current PIN code";
 
 /* Title */
 "Enter Verification Code" = "Voer verificatiecode in";
@@ -1034,11 +1041,14 @@
 /* No comment provided by engineer. */
 "Enter your signature here" = "Voer hier uw handtekening in";
 
+/* Title of alert in share extension. */
+"Error" = "Error";
+
 /* settings debug section title */
 "Error Logs" = "Foutenlogboek";
 
 /* Error alert title */
-"Error occured" = "Er is iets fout gegaan";
+"Error occurred" = "Er is iets fout gegaan";
 
 /* incorrect email format error in composer */
 "Error sending" = "Fout bij verzenden";
@@ -1052,7 +1062,7 @@
 /* VoiceOver: email can expire */
 "Expires" = "Verloopt";
 
-/* Title */
+/* (No Comment) */
 "Expiring Messages" = "Verlooptijd";
 
 /* Key size checkbox */
@@ -1071,6 +1081,9 @@
  *  Core Data Service & local error */
 "Failed to initialize the application's saved data" = "Het initialiseren van de applicatiedata is mislukt";
 
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Failed to load content!\nPlease try again." = "Failed to load content!\nPlease try again.";
+
 /* default vcard types */
 "Fax" = "Fax";
 
@@ -1079,6 +1092,9 @@
 
 /* Error */
 "Fetch user info failed" = "Ophalen van gebruikersgegevens is mislukt";
+
+/* Onboarding content */
+"File, label, and color code messages to create your perfect, custom inbox." = "File, label, and color code messages to create your perfect, custom inbox.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Map";
@@ -1149,6 +1165,9 @@
 /* Action */
 "Get more information" = "Meer informatie";
 
+/* title of the next button */
+"Get Started" = "Get Started";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ga naar concepten";
 
@@ -1173,7 +1192,7 @@
 /* menu title (contact groups) */
 "Groups" = "Groepen";
 
-/* Title */
+/* (No Comment) */
 "Help & Support" = "Hulp & Ondersteuning";
 
 /* Title */
@@ -1190,9 +1209,6 @@
 
 /* Key size checkbox */
 "High Security" = "Strikte beveiliging";
-
-/* hour */
-"hour" = "uur";
 
 /* hours */
 "hours" = "Uren";
@@ -1260,7 +1276,7 @@
 "Incorrect password" = "Onjuist wachtwoord";
 
 /* Error */
-"Incorrect PIN." = "Onjuiste pincode.";
+"Incorrect PIN." = "Incorrect PIN.";
 
 /* Option title */
 "Inherit color from parent folder" = "Kleur van bovenliggende map overnemen";
@@ -1271,8 +1287,11 @@
 /* Title */
 "inline attachments" = "inline-bijlagen";
 
+/* (No Comment) */
+"Input Display Name ..." = "Weergavenaam invoeren ...";
+
 /* place holder */
-"Input Display Name…" = "Weergavenaam invoeren…";
+"Input Display Name…" = "Input Display Name…";
 
 /* place holder */
 "Input Notification Email …" = "Notificatie e-mailadres invoeren …";
@@ -1345,7 +1364,7 @@
    Title */
 "Label as…" = "Label als…";
 
-/* Title */
+/* (No Comment) */
 "Label Management" = "Labelbeheer";
 
 /* createing lable input place holder */
@@ -1475,9 +1494,6 @@
 /* mark message as read action */
 "Mark Read" = "Markeer als gelezen";
 
-/* No comment provided by engineer. */
-"Mark unread" = "Markeer als ongelezen";
-
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPromp";
 
@@ -1527,11 +1543,11 @@
 /* Title */
 "Message Swipe Actions" = "Acties bericht vegen";
 
-/* Description */
+/* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Berichten die u verstuurt kunnen na een bepaalde tijd automatisch verwijderd worden.";
 
 /* minute */
-"minute" = "minute";
+"minute" = "minuut";
 
 /* default vcard types */
 "Mobile" = "Mobiel";
@@ -1605,6 +1621,9 @@
 /* title */
 "Name" = "Naam";
 
+/* Onboarding title */
+"Neat and tidy" = "Neat and tidy";
+
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Meld u gratis aan";
 
@@ -1633,11 +1652,17 @@
 /* Title */
 "New mailbox password" = "Nieuw mailbox-wachtwoord";
 
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "Nieuw bericht";
+
 /* Placeholder */
 "New password" = "Nieuw wachtwoord";
 
 /* Title */
 "New sign-in password" = "Nieuw inlogwachtwoord";
+
+/* title of the next button */
+"Next" = "Next";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Bijnaam";
@@ -1735,8 +1760,8 @@
    Title */
 "On" = "Aan";
 
-/* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On EE, MMM d, yyyy at %@" = "Op EE, MMM d, jjjjj om %@";
+/* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
+"On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Negeer alleen de aankoopactivatie als u zeker weet dat al uw abonnementen up-to-date zijn. Voor verdere hulp, neem contact op met klantenondersteuning. \r\n\r\n Weet u zeker dat u de activering wilt negeren?";
@@ -1746,6 +1771,9 @@
 
 /* Open action */
 "Open" = "Open";
+
+/* VoiceOver title of account switcher button in the menu */
+"Open account switcher" = "Open account switcher";
 
 /* (No Comment) */
 "OpenDraft" = "Open conceptbericht";
@@ -1836,17 +1864,11 @@
 /* device settings auto lock type title */
 "PIN" = "PIN";
 
-/* The protection title of PIN Code protection */
-"PIN Code" = "PIN Code";
+/* The protection title of PIN code protection */
+"PIN code" = "PIN-code";
 
 /* Description */
 "PIN code can't be empty." = "PIN-code mag niet leeg zijn.";
-
-/* device settings auto lock type title */
-"PIN/Face ID" = "PIN/Face ID";
-
-/* device settings auto lock type title */
-"PIN/Touch ID" = "PIN/Touch ID";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Abonnementen kunnen worden bewerkt op de webversie.";
@@ -1871,6 +1893,9 @@
 
 /* error message */
 "Please input a valid email address." = "Voer een geldig e-mailadres in.";
+
+/* Alert message */
+"Please keep ProtonMail open until the operation is done." = "Please keep ProtonMail open until the operation is done.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Zorg ervoor dat uw internetverbinding werkt.";
@@ -1941,9 +1966,6 @@
 /* alert title */
 "Please, manage it in your phone." = "Beheer dit vanaf uw telefoon.";
 
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "PREMIUM FUNCTIONALITEIT";
-
 /* Action */
 "Print" = "Afdrukken";
 
@@ -1971,7 +1993,7 @@
 /* Title */
 "ProtonMail" = "ProtonMail";
 
-/* Description */
+/* (No Comment) */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail verkoopt geen advertenties en maakt geen misbruik van uw privacy. Uw steun is essentieel om ProtonMail draaiende te houden. U kunt upgraden naar een betaald account of doneren om ProtonMail te steunen.";
 
 /* Title */
@@ -1998,7 +2020,7 @@
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Proxy/Firewall interferentie";
 
-/* Title */
+/* (No Comment) */
 "Quick swipe actions" = "Snelle veegacties";
 
 /* Title */
@@ -2054,7 +2076,7 @@
 "Remove All" = "Alles verwijderen";
 
 /* Settings row */
-"Remove image metadata" = "Verwijder afbeelding metadata";
+"Remove image metadata" = "Remove image metadata";
 
 /* action title */
 "Remove password" = "Verwijder wachtwoord";
@@ -2104,7 +2126,7 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Een bericht rapporteren als phishing stuurt het bericht naar ons, zodat wij onze filters kunnen verbeteren. Dit betekent dat wij in staat zijn om de volledige inhoud van de e-mail te zien.";
 
 /* link opeining confirmation */
-"Request Link Confirmation" = "Bevestigingslink Aanvragen";
+"Request link confirmation" = "Bevestigingslink aanvragen";
 
 /* Action */
 "RESET MAILBOX PASSWORD" = "MAILBOX-WACHTWOORD OPNIEUW INSTELLEN";
@@ -2180,7 +2202,7 @@
 "Sending failed" = "Verzenden mislukt";
 
 /* Alert title */
-"Sending message" = "Bericht wordt verzonden";
+"Sending in progress" = "Sending in progress";
 
 /* Description */
 "Sending Message" = "Bericht wordt verzonden";
@@ -2230,14 +2252,14 @@
 /* menu title */
 "Settings" = "Instellingen";
 
-/* Title */
-"Share Alert" = "Waarschuwing delen";
-
 /* action */
 "Share contact" = "Contactpersoon delen";
 
 /* Title */
 "Share it with your friends" = "Deel het met uw vrienden";
+
+/* Action */
+"Show" = "Tonen";
 
 /* Title */
 "Sign in" = "Inloggen";
@@ -2273,6 +2295,12 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Afgemeld bij %1$@ en ingelogd met %2$@";
+
+/* Onboarding title */
+"Simply private" = "Simply private";
+
+/* skip button title in onboarding page */
+"Skip" = "Skip";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Uitstellen";
@@ -2311,7 +2339,8 @@
 /* Description */
 "Srp single password keyslat invalid!" = "SRP enkel wachtwoord keysalt ongeldig!";
 
-/* The title of the star action in action sheet */
+/* The title of the star action in action sheet
+   VoiceOver title of star button in the message view */
 "Star" = "Ster";
 
 /* Title */
@@ -2351,7 +2380,8 @@
 /* subject: text when forward */
 "Subject:" = "Onderwerp:";
 
-/* menu title */
+/* menu title
+   The title of a subscription plans screen */
 "Subscription" = "Abonnement";
 
 /* Fetch subscription data failed */
@@ -2363,7 +2393,7 @@
 /* network troubleshot cell title */
 "support form" = "contactformulier";
 
-/* Action */
+/* (No Comment) */
 "Support ProtonMail" = "ProtonMail steunen";
 
 /* cell title in app settings */
@@ -2381,6 +2411,9 @@
 /* cell title in device settings
    Swiping gestures */
 "Swiping gestures" = "Swipe gebaren";
+
+/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
+"Switch selection mode" = "Schakelen tussen selectiemodus";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Overgeschakeld naar account '%@'";
@@ -2522,11 +2555,11 @@
 /* Alert message when user tries to delete folder */
 "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Deze actie kan niet ongedaan worden gemaakt. E-mails die zijn opgeslagen in deze map worden niet verwijderd en kunnen worden gevonden in de Alle e-mailmap.";
 
-/* Alert message */
-"This can take a while. Please do not dismiss the app." = "Dit kan een tijdje duren. Veeg de app niet weg.";
-
 /* alert desc */
 "This contact belongs to your Address Book." = "Deze contactpersoon behoort toe tot uw adresboek.";
+
+/* No comment provided by engineer. */
+"This conversation contains trashed messages" = "Dit gesprek bevat verwijderde berichten";
 
 /* No comment provided by engineer. */
 "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail voldoet niet aan de authenticatievereisten van de domeinnaam. Mogelijk wordt deze gespoofed of onjuist doorgestuurd!";
@@ -2542,6 +2575,9 @@
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Dit bericht bevat ingesloten afbeeldingen.";
+
+/* No comment provided by engineer. */
+"This message contains remote content and embedded images" = "This message contains remote content and embedded images";
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "Dit bericht bevat externe inhoud.";
@@ -2568,7 +2604,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "De validatie van het TLS-certificaat is mislukt. Uw verbinding kan worden bewaakt en de app is tijdelijk geblokkeerd voor uw veiligheid.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "De validatie van het TLS-certificaat is mislukt. Uw gegevens kunnen onderschept worden en de app is voor uw veiligheid tijdelijk geblokkeerd.\n\nschakel direct van netwerk";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately";
 
 /* message To: feild
    Title */
@@ -2596,11 +2632,17 @@
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
 
+/* settings touchid error */
+"Touch ID is not enrolled, enable it in the system Settings" = "Touch ID is niet actief, activeer het in de systeeminstellingen";
+
+/* settings touchid/faceid error */
+"Touch ID not available" = "Touch ID niet beschikbaar";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID is niet actief, activeer het in de systeeminstellingen";
 
-/* settings touchid/faceid error */
+/* (No Comment) */
 "TouchID not available" = "TouchID is niet beschikbaar";
 
 /* *
@@ -2629,7 +2671,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Schakel deze functie in om e-mailadressen automatisch aan te vullen met behulp van contacten van al uw ingelogde accounts.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Schakel deze functie in om uw app automatisch te vergrendelen en een pincode of FaceID te gebruiken om het te ontgrendelen.";
+"Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it." = "Schakel deze functie in om uw app automatisch te vergrendelen en een PIN-code of Face ID te gebruiken om te ontgrendelen.";
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Schakel deze functie in om uw app automatisch te vergrendelen en een pincode of vingerafdruk te gebruiken om te ontgrendelen.";
@@ -2755,9 +2797,6 @@
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Upgrade naar een betaald abonnement om te kunnen verzenden vanaf uw adres %@";
 
-/* alert description */
-"Upgrade to get all paid features." = "Upgrade om alle betaalde functies te krijgen.";
-
 /* Action */
 "Upload device contacts" = "Apparaat contacten uploaden";
 
@@ -2812,14 +2851,11 @@
 /* message details-> more action-> view raw html of message body */
 "View HTML" = "Bekijk HTML";
 
-/* Action */
-"View Plans" = "Bekijk Abonnementen";
-
 /* Title */
 "Warning" = "Waarschuwing";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!" = "Warning: Before you pass the human check you can't sent email!";
+"Warning: Before you pass the human check you can't send email!" = "Waarschuwing: Voordat u bewezen heeft een natuurlijk persoon te zijn kunt u geen e-mail versturen!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Waarschuwing: U heeft geen herstel-e-mailadres ingesteld, hierdoor is accountherstel niet mogelijk als u uw wachtwoord vergeet. Doorgaan zonder herstel-e-mailadres?";
@@ -2851,7 +2887,7 @@
 /* week */
 "week" = "week";
 
-/* Title */
+/* (No Comment) */
 "Welcome to ProtonMail!" = "Welkom bij ProtonMail!";
 
 /* Description */
@@ -2875,6 +2911,9 @@
 /* Error message */
 "Yes, attach details of payment" = "Ja, voeg details toe van betaling";
 
+/* No comment provided by engineer. */
+"Yesterday" = "Yesterday";
+
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "U staat op het punt de webbrowser te starten en te navigeren naar";
 
@@ -2890,17 +2929,17 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "U bent offline";
 
-/* Description */
+/* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "U kunt onder \"Instellingen\" in de ProtonMail-app veeggebaren instellen.";
 
-/* Description */
+/* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via ProtonMail.com/support. U kunt ook bugs melden via de app.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "U hebt FaceID uitgeschakeld in uw systeeminstellingen. FaceID is gebruikt om belangrijke accountinformatie te beschermen. Om toegang te krijgen tot uw account, gaat u naar de instellingen en heractiveert u FaceID, of u meldt zich opnieuw aan.";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "U heeft Face ID uitgeschakeld in uw systeeminstellingen. Face ID is gebruikt om belangrijke accountgegevens te beschermen. Om toegang te krijgen tot uw account gaat u naar instellingen en reactiveer Face ID of log opnieuw in.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "U heeft verlopend bericht ingeschakeld, maar niet alle ontvangers ondersteunen dit. Voeg een wachtwoord toe en/of schakel PGP uit om verlopende berichten te kunnen gebruiken voor alle geadresseerden.";
@@ -2952,7 +2991,7 @@
 /* The section title of folder manager table */
 "Your folders" = "Uw mappen";
 
-/* Description */
+/* (No Comment) */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Uw inbox is nu met end-to-end versleuteling beveiligd. Om automatisch veilig met uw vrienden te e-mailen moeten zij ook ProtonMail gebruiken! U kunt ook handmatig berichten versleutelen als zij geen ProtonMail gebruiken.";
 
 /* The section title of label manager table */
