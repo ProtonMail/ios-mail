@@ -52,6 +52,10 @@ extension Attachment {
             }
         }
     }
+
+    var isUploaded: Bool {
+        attachmentID != "0" && attachmentID != .empty
+    }
     
     // MARK: - This is private functions
     
@@ -359,6 +363,15 @@ extension Attachment {
         let id = contentID ?? UUID().uuidString
         self.headerInfo = "{ \"content-disposition\": \"\(disposition)\",  \"content-id\": \"\(id)\" }"
     }
+
+}
+
+extension Collection where Element == Attachment {
+
+    var areUploaded: Bool {
+        allSatisfy { $0.isUploaded }
+    }
+
 }
 
 protocol AttachmentConvertible {
