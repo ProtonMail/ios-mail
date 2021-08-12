@@ -45,6 +45,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     private var toolbarBottom: NSLayoutConstraint!
     private var toolbar: ComposeToolbar!
     private var isAddingAttachment: Bool = false
+    private var attachmentsReloaded = false
     /// MARK: Attachment variables
     let kDefaultAttachmentFileSize: Int = 25 * 1_000 * 1_000 // 25 mb
     private(set) var currentAttachmentSize: Int = 0
@@ -64,6 +65,13 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
                     DocumentAttachmentProvider(for: self)]
         #endif
     }()
+
+    var isUploadingAttachments: Bool = false {
+        didSet {
+            setupSendButton()
+            setUpTitleView()
+        }
+    }
     
     deinit {
         self.childrenHeightObservations = []
@@ -136,7 +144,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         
         self.navigationController?.navigationBar.barTintColor = UIColorManager.BackgroundNorm
         self.navigationController?.navigationBar.isTranslucent = false
-        
+
         self.setupSendButton()
         self.setupCancelButton()
     }
@@ -147,7 +155,24 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         cell.backgroundColor = .white
         return cell
     }
-    
+
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        super.scrollViewDidScroll(scrollView)
+
+        guard let cell = tableView.cellForRow(at: .init(row: 2, section: 0)) else { return }
+
+        let areAttachmentsVisibleOnScreen = cell.frame.minY < (scrollView.contentOffset.y + scrollView.frame.height)
+
+        if !attachmentsReloaded && areAttachmentsVisibleOnScreen  {
+            attachmentsReloaded = true
+            children.compactMap { $0 as? ComposerAttachmentVC }.first?.refreshAttachmentsLoadingState()
+        }
+
+        if attachmentsReloaded == true && areAttachmentsVisibleOnScreen == false {
+            attachmentsReloaded = false
+        }
+    }
+
     /// MARK: IBAction
     @objc
     func cancelAction(_ sender: UIBarButtonItem) {
@@ -227,28 +252,25 @@ extension ComposeContainerViewController {
         guard let icon = UIImage(named: "menu_sent") else {
             return
         }
-        
-        if self.viewModel.hasRecipients() {
-            self.sendButton = icon.toUIBarButtonItem(target: self,
-                                   action: #selector(sendAction),
-                                   style: .plain,
-                                   tintColor: UIColorManager.IconInverted,
-                                   squareSize: 21.74,
-                                   backgroundColor: UIColorManager.InteractionStrong,
-                                   backgroundSquareSize: 40,
-                                   isRound: true)
-        } else {
-            self.sendButton = icon.toUIBarButtonItem(target: self,
-                                   action: nil,
-                                   style: .plain,
-                                   tintColor: UIColorManager.IconDisabled,
-                                   squareSize: 21.74,
-                                   backgroundColor: UIColorManager.InteractionWeakDisabled,
-                                   backgroundSquareSize: 40,
-                                   isRound: true)
-        }
+        let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
+        let backgroundColor = isEnabled ? UIColorManager.InteractionStrong : UIColorManager.InteractionWeakDisabled
+        let tintColor = isEnabled ? UIColorManager.IconInverted : UIColorManager.IconDisabled
+        self.sendButton = icon.toUIBarButtonItem(
+            target: self,
+            action: isEnabled ? #selector(sendAction) : nil,
+            style: .plain,
+            tintColor: tintColor,
+            squareSize: 21.74,
+            backgroundColor: backgroundColor,
+            backgroundSquareSize: 40,
+            isRound: true
+        )
         self.navigationItem.rightBarButtonItem = self.sendButton
         self.sendButton.accessibilityLabel = LocalString._general_send_action
+    }
+
+    private func setUpTitleView() {
+        navigationItem.titleView = isUploadingAttachments ? ComposeAttachmentsAreUploadingTitleView() : nil
     }
     
     private func setupCancelButton() {

@@ -30,6 +30,9 @@ final class ComposerAttachmentVC: UIViewController {
 
     private var tableView: UITableView?
     @objc dynamic private(set) var tableHeight: CGFloat = 0
+
+    var isUploading: ((Bool) -> Void)?
+
     private(set) var datas: [Attachment] = []
     private weak var delegate: ComposerAttachmentVCDelegate?
     private let queue: OperationQueue = {
@@ -64,10 +67,18 @@ final class ComposerAttachmentVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setup()
+        self.isUploading?(!datas.areUploaded)
+
+        navigationController?.presentationController?.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.tableView?.reloadData()
+    }
+
+    func refreshAttachmentsLoadingState() {
+        guard !datas.areUploaded else { return }
         self.tableView?.reloadData()
     }
 
@@ -97,7 +108,8 @@ final class ComposerAttachmentVC: UIViewController {
     }
 
     func add(attachments: [Attachment], completeHandler: (() -> Void)? = nil) {
-        self.queue.addOperation {
+        self.queue.addOperation { [weak self] in
+            guard let self = self else { return }
             let existedID = self.datas
                 .map { $0.objectID.uriRepresentation().absoluteString }
             let attachments = attachments
@@ -111,12 +123,14 @@ final class ComposerAttachmentVC: UIViewController {
             DispatchQueue.main.async {
                 self.tableView?.reloadData()
                 self.updateTableViewHeight()
+                self.isUploading?(!self.datas.areUploaded)
             }
         }
     }
 
     func delete(attachment: Attachment) {
-        self.queue.addOperation {
+        self.queue.addOperation { [weak self] in
+            guard let self = self else { return }
             guard let index = self.datas.firstIndex(of: attachment) else {
                 return
             }
@@ -125,6 +139,7 @@ final class ComposerAttachmentVC: UIViewController {
             DispatchQueue.main.async {
                 self.tableView?.reloadData()
                 self.updateTableViewHeight()
+                self.isUploading?(!self.datas.areUploaded)
             }
         }
     }
@@ -169,8 +184,9 @@ extension ComposerAttachmentVC {
 
     @objc
     private func attachmentUploaded(noti: Notification) {
-        self.queue.addOperation {
-            guard let objectID = noti.userInfo?["objectID"] as? String,
+        self.queue.addOperation { [weak self] in
+            guard let self = self,
+                  let objectID = noti.userInfo?["objectID"] as? String,
                   let attachmentID = noti.userInfo?["attachmentID"] as? String,
                   let index = self.datas
                     .firstIndex(where: { $0.objectID.uriRepresentation().absoluteString == objectID }) else {
@@ -187,6 +203,7 @@ extension ComposerAttachmentVC {
             DispatchQueue.main.async {
                 self.tableView?.reloadData()
                 self.tableView?.endUpdates()
+                self.isUploading?(!self.datas.areUploaded)
             }
         }
     }
@@ -234,4 +251,12 @@ extension ComposerAttachmentVC: UITableViewDataSource, UITableViewDelegate, Comp
         [cancel, remove].forEach(alert.addAction)
         self.present(alert, animated: true, completion: nil)
     }
+}
+
+extension ComposerAttachmentVC: UIAdaptivePresentationControllerDelegate {
+
+    func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+        tableView?.reloadData()
+    }
+
 }

@@ -130,6 +130,9 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         self.attachmentView = component
         self.controller.updateAttachmentCount(number: component.datas.count)
         component.addNotificationObserver()
+        component.isUploading = { [weak self] in
+            self?.controller.isUploadingAttachments = $0
+        }
         return component
     }
     

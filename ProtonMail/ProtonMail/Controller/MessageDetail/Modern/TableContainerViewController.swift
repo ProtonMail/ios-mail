@@ -119,6 +119,8 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
     }
 
     // --
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {}
     
     @objc func scrollToTop() {
         guard self.presentedViewController == nil, self.navigationController?.topViewController == self else { return }
