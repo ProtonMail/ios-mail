@@ -190,7 +190,7 @@ extension MenuViewController {
     }
 
     private func setPrimaryUserview(hightlight: Bool) {
-        let color = hightlight ? UIColor(RRGGBB: UInt(0x494D55)): UIColor(RRGGBB: UInt(0x303239))
+        let color = hightlight ? UIColor(RRGGBB: UInt(0x494D55)): UIColor(RRGGBB: UInt(0x3B3D41))
         self.primaryUserview.backgroundColor = color
         self.arrowBtn.isHighlighted = hightlight
     }
@@ -370,7 +370,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 56
+        return 48
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -396,16 +396,17 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
             line.topAnchor.constraint(equalTo: vi.topAnchor),
             line.leadingAnchor.constraint(equalTo: vi.leadingAnchor),
             line.trailingAnchor.constraint(equalTo: vi.trailingAnchor),
-            line.heightAnchor.constraint(equalToConstant: 2)
+            line.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
         
-        let label = UILabel(font: .systemFont(ofSize: 13), text: section.title, textColor: UIColor(RRGGBB: UInt(0x9ca0aa)))
+        let label = UILabel(font: .systemFont(ofSize: 14), text: section.title, textColor: UIColor(RRGGBB: UInt(0x9ca0aa)))
         label.translatesAutoresizingMaskIntoConstraints = false
         
         vi.addSubview(label)
-        
-        label.leadingAnchor.constraint(equalTo: vi.leadingAnchor, constant: 16).isActive = true
-        label.bottomAnchor.constraint(equalTo: vi.bottomAnchor, constant: -8).isActive = true
+        [
+            label.leadingAnchor.constraint(equalTo: vi.leadingAnchor, constant: 16),
+            label.centerYAnchor.constraint(equalTo: vi.centerYAnchor)
+        ].activate()
         return self.addPlusButtonIfNeeded(vi: vi, section: section)
     }
 

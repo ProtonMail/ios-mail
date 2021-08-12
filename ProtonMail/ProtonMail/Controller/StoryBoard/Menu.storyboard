@@ -188,9 +188,9 @@
                                                     <constraint firstAttribute="width" constant="24" id="plS-5z-kHW"/>
                                                 </constraints>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="mail_attachment-closed"/>
+                                                <state key="normal" image="arrow_down"/>
                                                 <state key="selected" image="menu_snooze-active"/>
-                                                <state key="highlighted" image="mail_attachment-open"/>
+                                                <state key="highlighted" image="arrow_up"/>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bmi-aw-Fr6" userLabel="shortNameView">
                                                 <rect key="frame" x="10" y="10" width="28" height="28"/>
@@ -1794,14 +1794,14 @@
         <segue reference="tgC-Ba-c8Y"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="arrow_down" width="15" height="8"/>
+        <image name="arrow_up" width="14" height="8"/>
         <image name="attached_main" width="14.5" height="16.5"/>
         <image name="encrypted_main" width="15" height="20.5"/>
         <image name="favorite_main" width="19.5" height="19"/>
         <image name="favorite_main_selected" width="19.5" height="19"/>
         <image name="label_edit-active" width="24" height="24"/>
         <image name="mail_attachment" width="14" height="14"/>
-        <image name="mail_attachment-closed" width="14" height="14"/>
-        <image name="mail_attachment-open" width="14" height="14"/>
         <image name="mail_check" width="24" height="24"/>
         <image name="mail_lock" width="14" height="14"/>
         <image name="mail_no_result_icon" width="220" height="213.5"/>
