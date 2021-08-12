@@ -35,6 +35,8 @@ public class EncryptedSearchService {
     var lastMessageTimeIndexed: Int = 0     //stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
     var processedMessages: Int = 0
     
+    //var messageIDs: NSMutableArray = []
+    
     var isInit: Bool = true
     var isRefresh: Bool = false
     
@@ -88,10 +90,13 @@ extension EncryptedSearchService {
         
         //1. download all messages locally
         NSLog("Downloading messages locally...")
-        self.fetchMessagesWithSemaphore(Message.Location.allmail.rawValue){ids in
+        self.fetchMessageIDs(Message.Location.allmail.rawValue){ids in
+        //self.fetchMessagesWithSemaphore(Message.Location.allmail.rawValue){ids in
         //self.fetchMessagesWithLoop(Message.Location.allmail.rawValue){ids in
             messageIDs = ids
             print("# of message ids: ", messageIDs.count)
+            //print("# of message ids in global array: ", self.messageIDs.count)
+            //exit(1) //DEBUGGING REASONS
 
             NSLog("Downloading message objects...")
             //2. download message objects
@@ -159,18 +164,69 @@ extension EncryptedSearchService {
         }
     }*/
     
+    func fetchMessageIDs(_ mailBoxID: String,_ completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
+        print("Start fetching message ids...")
+        self.fetchMessageWrapper(mailBoxID, 0) { messages in
+            completionHandler(messages)
+        }
+    }
+    
+    func fetchMessageWrapper(_ mailboxID: String, _ time: Int, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
+        let group = DispatchGroup()
+        let messageIDs:NSMutableArray = []
+        
+        group.enter()
+        self.messageService.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { _, result, error in
+            if error == nil {
+                let messagesBatch: NSMutableArray = self.getMessageIDs(result)
+                //add messagesBatch to all messages
+                messageIDs.addObjects(from: messagesBatch as! [Any])
+                self.processedMessages += messagesBatch.count
+                self.lastMessageTimeIndexed = self.getOldestMessageInMessageBatch(result)
+                group.leave()
+            } else {
+                print("Error while fetching messages: ", error)
+            }
+        }
+        
+        //Wait to call completion handler until all message id's are here
+        group.notify(queue: .main) {
+            //print("Fetching batch of messages completed!")
+            print("Processed messages: ", self.processedMessages)
+            //self.messageIDs.addObjects(from: messageIDs as! [Any])
+            //if we processed all messages then return
+            if self.processedMessages == self.totalMessages {
+                completionHandler(messageIDs)
+            } else {
+                //call recursively
+                self.fetchMessageWrapper(mailboxID, self.lastMessageTimeIndexed) { mIDs in
+                    mIDs.addObjects(from: messageIDs as! [Any])
+                    completionHandler(mIDs)
+                }
+            }
+        }
+    }
+    
     func fetchMessagesWithSemaphore(_ mailBoxID: String, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
         let semaphore = DispatchSemaphore(value: 1)
         let group = DispatchGroup()
         let messageIDs:NSMutableArray = []
+        
+        self.limitPerRequest = 100
         let numberOfFetches:Int = Int(ceil(Double(self.totalMessages)/Double(self.limitPerRequest)))
         
-        for _ in 0...numberOfFetches {
+        print("total messages: ", self.totalMessages)
+        print("limitperrequest: ", self.limitPerRequest)
+        print("number of fetches: ", numberOfFetches)
+        
+        for index in 0...numberOfFetches {
+            print("fetch start for index: ", index)
             group.enter()
 
             DispatchQueue.global(qos: .userInitiated).async {
                 semaphore.wait()
                 self.messageService.fetchMessages(byLabel: mailBoxID, time: self.lastMessageTimeIndexed, forceClean: false, isUnread: false) { _, result, error in
+                    //print("result: ", result)
                     if error == nil {
                         let msgIDs = self.getMessageIDs(result)
                         messageIDs.addObjects(from: msgIDs as! [Any])
@@ -179,6 +235,7 @@ extension EncryptedSearchService {
                     } else {
                         print("Error when fetching messages:", error!)
                     }
+                    print("fetch completed for index: ", index)
                     semaphore.signal()
                     group.leave()
                 }
@@ -270,7 +327,7 @@ extension EncryptedSearchService {
                     }
                 }//dispatchqueue
             }
-            //print("Messages processed: ", processedMessageCount)
+            print("Messages processed: ", processedMessageCount)
         }
 
         group.notify(queue: .main) {
@@ -318,6 +375,7 @@ extension EncryptedSearchService {
             self.addMessageKewordsToSearchIndex(m as! Message, encryptedContent, decryptionFailed)
             
             processedMessagesCount += 1
+            print("Processed messages: ", processedMessagesCount)
             
             if processedMessagesCount == messages.count {
                 completionHandler()
@@ -614,9 +672,17 @@ extension EncryptedSearchService {
             let numberOfResultsFoundByCachedSearch: Int = (searchResults?.length())!
             print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
             
+            print("searchedCount: ", searchResults!.searchedCount)
+            print("cacheSearchedCount: ", searchResults!.cacheSearchedCount)
+            print("cache search done?: ", searchResults!.cachedSearchDone)
+            print("search completed?: ", searchResults!.isComplete)
+            print("last message id searched: ", searchResults!.lastIDSearched)
+            print("last message time searched: ", searchResults!.lastTimeSearched)
+            
             //Check if there are enough results from the cached search
             let searchResultPageSize: Int = 15  //TODO Why 15?
             if !searchResults!.isComplete && numberOfResultsFoundByCachedSearch <= searchResultPageSize {
+                print("do index search")
                 self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: &searchResults, totalMessages: self.totalMessages)
             }
             
