@@ -59,68 +59,53 @@ class SingleRowTagsView: UIView {
     }
 
     private func setUpViews() {
-        var row = builtViews()
-        let containerMax = frame.width
-        var rowWidth: CGFloat = 0
+        let row = builtViews()
 
         row.enumerated().forEach { index, item in
-            let isFirst = index == 0
-            let size = item.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-            var frame = CGRect(origin: .zero, size: size)
+            self.addSubview(item)
+            let itemSize = item.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
 
-            if isFirst {
-                frame.origin.x = 0
+            let leadingConstrain: NSLayoutConstraint
+            if let previousItem = row[safe: index - 1] {
+                let trailing = previousItem.trailingAnchor
+                leadingConstrain = item.leadingAnchor.constraint(equalTo: trailing, constant: horizontalSpacing)
             } else {
-                let previousItem = row[safe: index - 1]
-                frame.origin.x = (previousItem?.frame.maxX ?? 0) + horizontalSpacing
+                leadingConstrain = item.leadingAnchor.constraint(equalTo: self.leadingAnchor)
             }
 
-            rowWidth += size.width + horizontalSpacing
+            [
+                item.widthAnchor.constraint(lessThanOrEqualTo: self.widthAnchor),
+                item.heightAnchor.constraint(equalToConstant: itemSize.height),
+                item.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                leadingConstrain
+            ].activate()
+            let widthConstraint = item.widthAnchor.constraint(equalToConstant: itemSize.width)
+            widthConstraint.priority = .defaultLow
+            widthConstraint.isActive = true
 
-            if rowWidth >= containerMax {
-                frame.size.width -= (rowWidth - containerMax - horizontalSpacing)
+            if index == 0 {
+                [
+                    self.heightAnchor.constraint(equalToConstant: itemSize.height)
+                ].activate()
             }
-
-            item.frame = frame
         }
-
-        row = addLabelWithNumberIfNeeded(row: row, rowWidth: rowWidth)
-        row.forEach(addSubview)
+        self.addLabelWithNumberIfNeeded(row: row)
     }
 
-    private func addLabelWithNumberIfNeeded(row: [UIView], rowWidth: CGFloat) -> [UIView] {
-        guard tagViews.count > row.count else { return row }
-        var row = row
-        let containerWidth = frame.width
+    private func addLabelWithNumberIfNeeded(row: [UIView]) {
+        guard tagViews.count > row.count,
+              let lastItem = row.last else { return }
         let numberLabel = UILabel()
+        self.addSubview(numberLabel)
         numberLabel.attributedText = "+\(tagViews.count - row.count)"
             .apply(style: FontManager.OverlineRegularTextWeak)
-        let size = numberLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        var frame = CGRect(origin: .zero, size: size)
-        var previousItem = row[safe: row.count - 1]
-        let isSingleLongTag = row.count == 1
-        if isSingleLongTag {
-            previousItem?.frame.size.width -= (horizontalSpacing + size.width)
-            frame.origin.x = (previousItem?.frame.maxX ?? 0) + horizontalSpacing
-        } else {
-            let doesLabelFitRow = rowWidth + size.width <= containerWidth
-
-            if doesLabelFitRow {
-                frame.origin.x = (previousItem?.frame.maxX ?? 0) + horizontalSpacing
-            } else {
-                row.removeLastSafe()
-                previousItem = row[safe: row.count - 1]
-                numberLabel.attributedText = "+\(tagViews.count - row.count)"
-                    .apply(style: FontManager.OverlineRegularTextWeak)
-                frame.size = numberLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-                frame.origin.x = (previousItem?.frame.maxX ?? 0) + horizontalSpacing
-            }
-        }
-
-        frame.size.height = self.frame.height
-
-        numberLabel.frame = frame
-        return row + [numberLabel]
+        [
+            numberLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            numberLabel.leadingAnchor.constraint(equalTo: lastItem.trailingAnchor, constant: horizontalSpacing),
+            numberLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+        ].activate()
+        numberLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        numberLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 
     private func builtViews() -> [UIView] {
