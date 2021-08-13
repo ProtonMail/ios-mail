@@ -9,6 +9,7 @@ class ConversationViewModel {
     private(set) var isTrashedMessageHidden = false
 
     var refreshView: (() -> Void)?
+    var dismissView: (() -> Void)?
 
     var showNewMessageArrivedFloaty: ((String) -> Void)?
 
@@ -35,6 +36,7 @@ class ConversationViewModel {
     private let conversationService: ConversationProvider
     private let eventsService: EventsFetching
     private let contactService: ContactDataService
+    private let coreDataService: CoreDataService
     private weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
@@ -59,13 +61,15 @@ class ConversationViewModel {
     init(labelId: String,
          conversation: Conversation,
          user: UserManager,
-         openFromNotification: Bool = false) {
+         openFromNotification: Bool = false,
+         coreDataService: CoreDataService) {
         self.labelId = labelId
         self.conversation = conversation
         self.messageService = user.messageService
         self.conversationService = user.conversationService
         self.contactService = user.contactService
         self.eventsService = user.eventsService
+        self.coreDataService = coreDataService
         self.user = user
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
         self.openFromNotification = openFromNotification
@@ -176,6 +180,17 @@ class ConversationViewModel {
                 return viewModel
             }
             return messageType(with: newMessage)
+        }
+        if self.messagesDataSource.isEmpty {
+            let context = self.coreDataService.operationContext
+            context.perform { [weak self] in
+                guard let self = self,
+                      let object = try? context.existingObject(with: self.conversation.objectID) else {
+                    return
+                }
+                context.delete(object)
+                self.dismissView?()
+            }
         }
     }
 

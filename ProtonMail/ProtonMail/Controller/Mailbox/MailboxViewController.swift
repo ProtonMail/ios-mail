@@ -2128,6 +2128,9 @@ extension MailboxViewController {
         if navigationController?.topViewController is ConversationViewController
             || navigationController?.topViewController is SingleMessageViewController {
             if let contextLabel = anObject as? ContextLabel {
+                if contextLabel.messageCount.intValue != 0 {
+                    return
+                }
                 if coordinator?.conversationCoordinator?.conversation.conversationID == contextLabel.conversationID {
                     navigationController?.popViewController(animated: true)
                 }
@@ -2140,7 +2143,6 @@ extension MailboxViewController {
         }
     }
 }
-
 
 // MARK: - UITableViewDelegate
 
