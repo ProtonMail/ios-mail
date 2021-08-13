@@ -102,6 +102,16 @@ extension Message {
         )
     }
 
+    func getLocationImage(in labelID: String) -> UIImage? {
+        labels
+            .compactMap { $0 as? Label }
+            .map(\.labelID)
+            .filter { $0 == labelID }
+            .compactMap(Message.Location.init)
+            .first(where: { $0 != .allmail && $0 != .starred })?.originImage()
+
+    }
+
     func initial(replacingEmails: [Email]) -> String {
         let senderName = self.senderName(replacingEmails: replacingEmails)
         return senderName.isEmpty ? "?" : senderName.initials()
