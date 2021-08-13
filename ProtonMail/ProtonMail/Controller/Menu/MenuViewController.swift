@@ -370,7 +370,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 48
+        return section == 0 ? 8: 48
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

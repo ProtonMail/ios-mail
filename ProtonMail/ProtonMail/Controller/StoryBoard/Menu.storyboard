@@ -153,12 +153,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ev-su-1bQ">
                                 <rect key="frame" x="468" y="0.0" width="300" height="1024"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="njC-bj-9R7">
-                                        <rect key="frame" x="0.0" y="49" width="300" height="975"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="njC-bj-9R7">
+                                        <rect key="frame" x="0.0" y="35" width="300" height="989"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TX6-HM-gJ2" userLabel="primaryUserView">
-                                        <rect key="frame" x="8" y="24" width="284" height="48"/>
+                                        <rect key="frame" x="8" y="10" width="284" height="48"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hwj-yU-PiN" userLabel="displayName">
                                                 <rect key="frame" x="52" y="7" width="182" height="18"/>
@@ -236,7 +236,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="TX6-HM-gJ2" firstAttribute="leading" secondItem="2ev-su-1bQ" secondAttribute="leading" constant="8" id="8Gi-yC-bKr"/>
-                                    <constraint firstItem="TX6-HM-gJ2" firstAttribute="top" secondItem="2ev-su-1bQ" secondAttribute="top" constant="24" id="C3D-33-mjF"/>
+                                    <constraint firstItem="TX6-HM-gJ2" firstAttribute="top" secondItem="2ev-su-1bQ" secondAttribute="top" constant="10" id="C3D-33-mjF"/>
                                     <constraint firstItem="njC-bj-9R7" firstAttribute="top" secondItem="hwj-yU-PiN" secondAttribute="bottom" id="Gzy-Fu-HnQ"/>
                                     <constraint firstAttribute="width" constant="300" id="Hgm-15-2Y6"/>
                                     <constraint firstAttribute="trailing" secondItem="TX6-HM-gJ2" secondAttribute="trailing" constant="8" id="RDi-0w-MBU"/>
