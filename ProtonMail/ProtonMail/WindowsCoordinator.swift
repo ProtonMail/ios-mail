@@ -52,7 +52,9 @@ class WindowsCoordinator: CoordinatorNew {
     private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(color: .red), scene: nil) {
         didSet {
             guard appWindow == nil else { return }
-            oldValue.rootViewController?.dismiss(animated: false)
+            if let oldAppWindow = oldValue {
+                oldAppWindow.rootViewController?.dismiss(animated: false)
+            }
         }
     }
 

@@ -43,7 +43,7 @@ public enum SettingDeviceSection: Int, CustomStringConvertible {
 }
 
 public enum DeviceSectionItem: Int, CustomStringConvertible {
-    case autolock = 0
+    case appPIN = 0
     case swipeAction = 1
     case combinContacts = 2
     case alternativeRouting = 3
@@ -51,8 +51,8 @@ public enum DeviceSectionItem: Int, CustomStringConvertible {
 
     public var description: String {
         switch self {
-        case .autolock:
-            return LocalString._auto_lock
+        case .appPIN:
+            return LocalString._app_pin
         case .combinContacts:
             return LocalString._combined_contacts
         case .browser:
@@ -99,19 +99,23 @@ protocol SettingsDeviceViewModel: AnyObject {
     var combineContactOn: Bool { get }
     var isDohOn: Bool { get }
 
+    var appPINTitle: String { get }
+
     func cleanCache(completion: ((Result<Void, NSError>) -> Void)?)
 }
 
 class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
+
     var sections: [SettingDeviceSection] = [ .account, .app, .general, .clearCache]
     
-    var appSettigns: [DeviceSectionItem] = [.autolock, .combinContacts, .browser, .alternativeRouting, .swipeAction]
+    var appSettigns: [DeviceSectionItem] = [.appPIN, .combinContacts, .browser, .alternativeRouting, .swipeAction]
 
     var generalSettings: [GeneralSectionItem] = [.notification, .language]
 
-    var userManager: UserManager
+    private(set) var userManager: UserManager
     private let users: UsersManager
-    private var dohSetting: DohStatusProtocol
+    private let dohSetting: DohStatusProtocol
+    private let biometricStatus: BiometricStatusProvider
 
     var lockOn: Bool {
         return userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled
@@ -136,10 +140,22 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
         return self.dohSetting.status == .on
     }
 
-    init(user: UserManager, users: UsersManager, dohSetting: DohStatusProtocol) {
+    var appPINTitle: String {
+        switch biometricStatus.biometricType {
+        case .faceID:
+            return LocalString._app_pin_with_faceid
+        case .touchID:
+            return LocalString._app_pin_with_touchid
+        default:
+            return LocalString._app_pin
+        }
+    }
+
+    init(user: UserManager, users: UsersManager, dohSetting: DohStatusProtocol, biometricStatus: BiometricStatusProvider) {
         self.userManager = user
         self.users = users
         self.dohSetting = dohSetting
+        self.biometricStatus = biometricStatus
     }
 
     func appVersion() -> String {

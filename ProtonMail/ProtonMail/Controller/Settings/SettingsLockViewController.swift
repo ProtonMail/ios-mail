@@ -76,7 +76,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     }
     
     private func updateTitle() {
-        self.title = LocalString._security
+        self.title = viewModel.appPINTitle
     }
     
     override func didReceiveMemoryWarning() {

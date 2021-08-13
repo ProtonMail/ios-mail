@@ -23,11 +23,12 @@
 
 import UIKit
 import ProtonCore_AccountSwitcher
+import ProtonCore_UIFoundations
 
 final class MenuViewController: UIViewController, AccessibleView {
 
     @IBOutlet weak var accountSwitcherTopConstraint: NSLayoutConstraint!
-    @IBOutlet private var menuWidth: NSLayoutConstraint!
+    @IBOutlet private weak var menuWidth: NSLayoutConstraint!
     @IBOutlet private var shortNameView: UIView!
     @IBOutlet private var primaryUserview: UIView!
     @IBOutlet private var avatarLabel: UILabel!
@@ -62,7 +63,6 @@ final class MenuViewController: UIViewController, AccessibleView {
                                                selector: #selector(self.appDidEnterBackground),
                                                name: UIApplication.didEnterBackgroundNotification,
                                                object: nil)
-        accountSwitcherTopConstraint.constant = UIDevice.hasNotch ? -2 : 24
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,6 +95,9 @@ extension MenuViewController {
         self.tableView.backgroundColor = .clear
         self.tableView.register(MenuItemTableViewCell.self)
         self.tableView.tableFooterView = self.createTableFooter()
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+
         self.primaryUserview.setCornerRadius(radius: 6)
 
         self.primaryUserview.accessibilityTraits = [.button]
