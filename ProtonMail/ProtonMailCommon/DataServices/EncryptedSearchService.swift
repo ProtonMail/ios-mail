@@ -14,6 +14,14 @@ import Crypto
 //import ProtonCore_Services
 import CryptoKit
 
+extension Array {
+    func chunks(_ chunkSize: Int) -> [[Element]] {
+        return stride(from: 0, to: self.count, by: chunkSize).map {
+            Array(self[$0..<Swift.min($0 + chunkSize, self.count)])
+        }
+    }
+}
+
 public class EncryptedSearchService {
     //instance of Singleton
     static let shared = EncryptedSearchService()
@@ -21,8 +29,7 @@ public class EncryptedSearchService {
     //set initializer to private - Singleton
     private init(){
         let users: UsersManager = sharedServices.get()
-        user = users.firstUser!
-        //TODO is the firstUser correct? Should we select user by ID?
+        user = users.firstUser! //should return the currently active user
         messageService = user.messageService
         searchIndex = EncryptedSearchIndexService.shared.createSearchIndex(user.userInfo.userId)!
         EncryptedSearchIndexService.shared.createSearchIndexTable()
@@ -34,6 +41,7 @@ public class EncryptedSearchService {
     var limitPerRequest: Int = 1
     var lastMessageTimeIndexed: Int = 0     //stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
     var processedMessages: Int = 0
+    var processedMessagesDetailsDownloaded: Int = 0
     
     //var messageIDs: NSMutableArray = []
     
@@ -47,6 +55,8 @@ public class EncryptedSearchService {
 extension EncryptedSearchService {
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Bool {
+        self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
+        let startIndexingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
         //Run code in the background
         DispatchQueue.global(qos: .userInitiated).async {
             NSLog("Check total number of messages on the backend")
@@ -61,12 +71,26 @@ extension EncryptedSearchService {
                 self.downloadAllMessagesAndBuildSearchIndex(){
                     //Search index build -> update progress bar to finished?
                     print("Finished building search index!")
+                    let finishedIndexingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
+                    self.printTiming("Building the Index", startIndexingTimeStamp, finishedIndexingTimeStamp)
+                    
                     viewModel.isEncryptedSearch = true
                     return
                 }
             }
         }
         return false
+    }
+    
+    private func updateCurrentUserIfNeeded() -> Void {
+        let users: UsersManager = sharedServices.get()
+        self.user = users.firstUser
+    }
+    
+    private func printTiming(_ title: String, _ startTime: Double, _ stopTime: Double) -> Void {
+        let timeElapsed: Double = stopTime - startTime
+        
+        print("Time for \(title): elapsed: \(timeElapsed)s, startTimeStamp: \(startTime), stopTimeStamp: \(stopTime)")
     }
     
     // Checks the total number of messages on the backend
@@ -88,6 +112,7 @@ extension EncryptedSearchService {
         var messages: NSMutableArray = []   //Array containing all messages of a user
         var completeMessages: NSMutableArray = []
         
+        let startFetchingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
         //1. download all messages locally
         NSLog("Downloading messages locally...")
         self.fetchMessageIDs(Message.Location.allmail.rawValue){ids in
@@ -95,6 +120,7 @@ extension EncryptedSearchService {
         //self.fetchMessagesWithLoop(Message.Location.allmail.rawValue){ids in
             messageIDs = ids
             print("# of message ids: ", messageIDs.count)
+            let finishedFetchingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
             //print("# of message ids in global array: ", self.messageIDs.count)
             //exit(1) //DEBUGGING REASONS
 
@@ -105,17 +131,26 @@ extension EncryptedSearchService {
                 messages = msgs
                 print("# of message objects: ", messages.count)
                 
+                let startDownloadingMessageDetailTimeStamp: Double = CFAbsoluteTimeGetCurrent()
                 NSLog("Downloading message details...") //if needed
                 //3. downloads message details
-                self.getMessageDetailsIfNotAvailable(messages, messagesToProcess: messages.count){
+                //self.getMessageDetailsIfNotAvailable(messages, messagesToProcess: messages.count){
+                self.getMessageDetails(messages){
                     compMsgs in
                     completeMessages = compMsgs
                     print("complete messages: ", completeMessages.count)
+                    let finishedDownloadingMessageDetailTimeStamp: Double = CFAbsoluteTimeGetCurrent()
                     
                     NSLog("Decrypting messages...")
+                    let startDecyptingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
                     //4. decrypt messages (using the user's PGP key)
                     self.decryptBodyAndExtractData(completeMessages) {
                         //If index is build, call completion handler
+                        let finishedDecryptingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
+                        
+                        self.printTiming("Fetching message IDs from server", startFetchingTimeStamp, finishedFetchingTimeStamp)
+                        self.printTiming("Downloading message details", startDownloadingMessageDetailTimeStamp, finishedDownloadingMessageDetailTimeStamp)
+                        self.printTiming("Decrypting and Extracting Data", startDecyptingTimeStamp, finishedDecryptingTimeStamp)
                         completionHandler()
                     }
                 }
@@ -195,7 +230,7 @@ extension EncryptedSearchService {
             print("Processed messages: ", self.processedMessages)
             //self.messageIDs.addObjects(from: messageIDs as! [Any])
             //if we processed all messages then return
-            if self.processedMessages == self.totalMessages {
+            if self.processedMessages >= self.totalMessages {
                 completionHandler(messageIDs)
             } else {
                 //call recursively
@@ -299,35 +334,107 @@ extension EncryptedSearchService {
             completionHandler(messages)
         }
     }
+    
+    func getMessageDetailsForBatch(_ messages: NSArray, _ batchCount: Int, completionHandler: @escaping (NSMutableArray) -> Void){
+        let group = DispatchGroup()
+        let messageBatch: NSMutableArray = []
+        
+        for m in messages {
+            group.enter()
+            self.messageService.fetchMessageDetailForMessage(m as! Message, labelID: Message.Location.allmail.rawValue) { _, _, _, error in
+                if error == nil {
+                    let mID: String = (m as! Message).messageID
+                    self.getMessage(mID) { newM in
+                        messageBatch.add(newM!)
+                        group.leave()
+                    }
+                }
+                else {
+                    print("Error when fetching message details: ", error!)
+                }
+            }
+        }
+        
+        group.notify(queue: .main) {
+            print("Fetching completed for message batch \(batchCount)!")
+            completionHandler(messageBatch)
+        }
+    }
+        
+    func getMessageDetails(_ messages: NSArray, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
+        let group = DispatchGroup()
+        let semaphore = DispatchSemaphore(value: 0)
+        let batchSize: Int = 50 //TODO some calculation based on the number of available threads is most probably needed
+        let numberOfBatches: Int = messages.count/batchSize
+        print("There will be \(numberOfBatches) batches...")
+        //split messages in batches of 50 messages each
+        let messageBatches = (messages as! Array<Any>).chunks(batchSize)
+        
+        let results: NSMutableArray = []
+        //for each batch:
+        DispatchQueue.global(qos: .default).async {
+            for (batchCount, batch) in messageBatches.enumerated() {
+                //  download message details
+                group.enter()
+                DispatchQueue.global(qos: .default).async {
+                    print("Download details for batch: \(batchCount)")
+                    self.getMessageDetailsForBatch(batch as NSArray, batchCount) { messageDetails in
+                        //combine results
+                        results.addObjects(from: messageDetails as! [Any])
+                        semaphore.signal()
+                        group.leave()
+                    }
+                }
+                //group.wait()
+                semaphore.wait()
+                if batchCount == numberOfBatches {
+                    print("Fetching message details completed!")
+                    completionHandler(results)
+                }
+            }
+        }
+        
+        /*group.notify(queue: .main) {
+            print("Fetching message details completed!")
+            completionHandler(results)
+        }*/
+    }
 
     func getMessageDetailsIfNotAvailable(_ messages: NSArray, messagesToProcess: Int, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
         let group = DispatchGroup()
         let msg: NSMutableArray = []
-        var processedMessageCount: Int = 0
+        var count: Int = 0
         for m in messages {
             if (m as! Message).isDetailDownloaded {
                 msg.add(m)
-                processedMessageCount += 1
+                count += 1
+                self.processedMessagesDetailsDownloaded += 1
+                print("Details for message already downloaded: ", self.processedMessagesDetailsDownloaded)
             } else {
+                count += 1
                 group.enter()
                 //Do not block main queue to avoid deadlock
                 DispatchQueue.global(qos: .default).async {
+                    print("Count: \(count), thread: \(Thread.current)")
                     self.messageService.fetchMessageDetailForMessage(m as! Message, labelID: "5") { _, response, _, error in
                         if error == nil {
                             let mID: String = (m as! Message).messageID
                             self.getMessage(mID) { newM in
                                 msg.add(newM!)
-                                processedMessageCount += 1
+                                //processedMessageCount += 1
+                                self.processedMessagesDetailsDownloaded += 1
+                                print("Messages processed: ", self.processedMessagesDetailsDownloaded)
+                                group.leave()
                             }
                         }
                         else {
                             print("Error when fetching message details: ", error!)
+                            group.leave()
                         }
-                        group.leave()
+                        //group.leave()
                     }
                 }//dispatchqueue
             }
-            print("Messages processed: ", processedMessageCount)
         }
 
         group.notify(queue: .main) {
