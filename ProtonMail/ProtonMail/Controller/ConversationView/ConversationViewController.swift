@@ -53,6 +53,12 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             self.reloadActionBar()
         }
 
+        viewModel.dismissView = { [weak self] in
+            DispatchQueue.main.async {
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
+
         viewModel.showNewMessageArrivedFloaty = { [weak self] messageId in
             self?.showNewMessageFloatyView(messageId: messageId)
         }

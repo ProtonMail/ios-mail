@@ -22,7 +22,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             labelId: labelId,
             conversation: conversation,
             user: user,
-            openFromNotification: openFromNotification
+            openFromNotification: openFromNotification,
+            coreDataService: CoreDataService.shared
         )
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
