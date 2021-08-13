@@ -48,8 +48,7 @@ final class ContactEditEmailCell: UITableViewCell, AccessibleCell {
 
         groupButton.setAttributedTitle("Group".apply(style: .DefaultSmall), for: .normal)
 
-        valueField.attributedText = NSAttributedString(string: self.email.newEmail,
-                                                       attributes: FontManager.Default)
+        valueField.text = self.email.newEmail
         self.delegate = callback
 
         if becomeFirstResponder {
@@ -101,6 +100,8 @@ final class ContactEditEmailCell: UITableViewCell, AccessibleCell {
         self.valueField.delegate = self
         self.valueField.tintColor = UIColorManager.TextHint
         self.valueField.placeholder = LocalString._contacts_email_address_placeholder
+        self.valueField.font = FontManager.Default[.font] as? UIFont
+        self.valueField.textColor = FontManager.Default[.foregroundColor] as? UIColor
     }
 
     @IBAction func typeAction(_ sender: UIButton) {
@@ -126,8 +127,6 @@ extension ContactEditEmailCell: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.attributedText = NSAttributedString(string: textField.attributedText?.string.trim() ?? "",
-                                                      attributes: FontManager.Default)
-        email.newEmail = valueField.attributedText?.string ?? ""
+        email.newEmail = valueField.text ?? ""
     }
 }
