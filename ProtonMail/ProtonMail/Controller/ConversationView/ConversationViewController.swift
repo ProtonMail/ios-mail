@@ -539,6 +539,8 @@ private extension ConversationViewController {
             coordinator.handle(navigationAction: .url(url: url))
         case .inAppSafari(let url):
             coordinator.handle(navigationAction: .inAppSafari(url: url))
+        case .mailToUrl(let url):
+            coordinator.handle(navigationAction: .mailToUrl(url: url))
         default:
             break
         }
