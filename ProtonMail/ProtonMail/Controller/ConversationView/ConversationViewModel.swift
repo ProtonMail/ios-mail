@@ -78,8 +78,10 @@ class ConversationViewModel {
         recordNumOfMessages = conversation.numMessages.intValue
     }
 
-    func fetchConversationDetails() {
-        conversationService.fetchConversation(with: conversation.conversationID, includeBodyOf: nil, completion: nil)
+    func fetchConversationDetails(completion: (() -> Void)?) {
+        conversationService.fetchConversation(with: conversation.conversationID, includeBodyOf: nil) { _ in
+            completion?()
+        }
     }
 
     func observeConversationMessages(tableView: UITableView) {

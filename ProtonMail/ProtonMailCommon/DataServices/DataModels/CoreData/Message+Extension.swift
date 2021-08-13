@@ -336,8 +336,20 @@ extension Message {
         return (managedObjectContext.managedObjectsWithEntityName(Attributes.entityName, forKey: Attributes.isSending, matchingValue: NSNumber(value: true)) as? [Message])?.compactMap{ $0.messageID }
     }
     
-    class func messagesForConversationID(_ conversationID: String, inManagedObjectContext context: NSManagedObjectContext) -> [Message]? {
-        return context.managedObjectsWithEntityName(Attributes.entityName, forKey: Attributes.conversationID, matchingValue: conversationID) as? [Message]
+    class func messagesForConversationID(_ conversationID: String, inManagedObjectContext context: NSManagedObjectContext, shouldSort: Bool = false) -> [Message]? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Attributes.conversationID, conversationID)
+        if shouldSort {
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: true), NSSortDescriptor(key: #keyPath(Message.order), ascending: true)]
+        }
+
+        do {
+            let results = try context.fetch(fetchRequest)
+            return results as? [Message]
+        } catch let ex as NSError {
+            PMLog.D("error: \(ex)")
+        }
+        return nil
     }
     
     override public func awakeFromInsert() {

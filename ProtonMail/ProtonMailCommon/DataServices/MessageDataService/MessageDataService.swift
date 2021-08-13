@@ -673,9 +673,8 @@ class MessageDataService : Service, HasLocalStorage {
             closure? {
                 let completionWrapper: CompletionBlock = { task, response, error in
                     let context = self.coreDataService.operationContext
-                    let objectId = message.objectID
                     self.coreDataService.enqueue(context: context) { (context) in
-                        if response != nil, let message = context.object(with: objectId) as? Message {
+                        if response != nil {
                             if var msg: [String : Any] = response?["Message"] as? [String : Any] {
                                 msg.removeValue(forKey: "Location")
                                 msg.removeValue(forKey: "Starred")
@@ -687,13 +686,6 @@ class MessageDataService : Service, HasLocalStorage {
                                         message_n.unsubscribeMethods = unsubscribeMethods?.toString()
                                         message_n.messageStatus = 1
                                         message_n.isDetailDownloaded = true
-                                        if let labelID = message.firstValidFolder() {
-                                            self.mark(messages: [message], labelID: labelID, unRead: false)
-                                        }
-                                        if message_n.unRead {
-                                            self.cacheService.updateCounterSync(markUnRead: false, on: message, context: context)
-                                        }
-                                        message_n.unRead = false
                                         
                                         let tmpError = context.saveUpstreamIfNeeded()
                                         DispatchQueue.main.async {

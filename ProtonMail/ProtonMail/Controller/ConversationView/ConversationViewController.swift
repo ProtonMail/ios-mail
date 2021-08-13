@@ -66,7 +66,16 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
         customView.separator.isHidden = true
 
-        viewModel.fetchConversationDetails()
+        viewModel.fetchConversationDetails { [weak self] in
+            delay(0.5) { // wait a bit for the UI to update
+                self?.viewModel.messagesDataSource
+                .compactMap {
+                    $0.messageViewModel?.state.expandedViewModel?.messageContent
+                }.forEach {
+                    $0.markReadIfNeeded()
+                }
+            }
+        }
         viewModel.observeConversationMessages(tableView: customView.tableView)
         showActionBar()
 

@@ -225,13 +225,14 @@ extension Conversation {
     /// Apply single mark as changes for single message in conversation.
     func applySingleMarkAsChanges(unRead: Bool, labelID: String) {
         let labels = self.mutableSetValue(forKey: Conversation.Attributes.labels)
-        let contextNumUnread = labels.compactMap{$0 as? ContextLabel}.filter{ $0.labelID == labelID }.first?.unreadCount ?? 0
+        let contextLabels = labels.compactMap{ $0 as? ContextLabel }
+
+        let labelsToUpdate = contextLabels.filter{ $0.labelID == labelID || $0.labelID == Message.Location.allmail.rawValue }
+        let offset = unRead ? 1: -1
         
-        let updatedContextNumUnread = unRead ? contextNumUnread.intValue + 1 : max(contextNumUnread.intValue - 1, 0)
-        for label in labels {
-            if let l = label as? ContextLabel, l.labelID == labelID {
-                l.unreadCount = NSNumber(value: updatedContextNumUnread)
-            }
+        for label in labelsToUpdate {
+            let newUnreadCount = max(label.unreadCount.intValue + offset, 0)
+            label.unreadCount = NSNumber(value: newUnreadCount)
         }
     }
     
@@ -241,14 +242,15 @@ extension Conversation {
         let contextLabels = labels.compactMap{ $0 as? ContextLabel }
         let messages = Message
             .messagesForConversationID(self.conversationID,
-                                       inManagedObjectContext: context) ?? []
+                                       inManagedObjectContext: context,
+                                       shouldSort: true) ?? []
         
         var changedLabels: Set<String> = []
         if unRead {
             // It marks the latest message of the conversation of the current location (inbox, archive, etc...) as unread.
             if let message = messages
-                    .filter({ $0.contains(label: labelID)})
-                    .last {
+                .filter({ $0.contains(label: labelID)})
+                .last {
                 message.unRead = true
                 if let messageLabels = message.labels.allObjects as? [Label] {
                     let changed = messageLabels.map { $0.labelID }
