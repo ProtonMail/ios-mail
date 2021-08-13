@@ -58,6 +58,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     private let propertylist_ket = kUTTypePropertyList as String
     private let url_key = kUTTypeURL as String
     private var localized_errors: [String] = []
+    private var isUnlock = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +77,9 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                                                                 action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name.didUnlock, object: nil, queue: .main) { [weak self] _ in
+            guard self?.isUnlock == false else { return }
             self?.signInIfRememberedCredentials()
+            self?.isUnlock = true
         }
     }
     
