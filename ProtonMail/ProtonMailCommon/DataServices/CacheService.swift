@@ -138,18 +138,28 @@ class CacheService: Service {
                 return
             }
 
+            guard msgToUpdate.unRead != unRead else {
+                return
+            }
+
             msgToUpdate.unRead = unRead
 
             if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
                 conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID)
             }
-
             self.updateCounterSync(markUnRead: unRead, on: msgToUpdate, context: context)
 
             let error = context.saveUpstreamIfNeeded()
             if let error = error {
                 PMLog.D(" error: \(error)")
                 hasError = true
+            }
+        }
+
+        if let conversation = Conversation.conversationForConversationID(message.conversationID, inManagedObjectContext: self.coreDataService.mainContext) {
+            (conversation.labels as? Set<ContextLabel>)?.forEach {
+                self.coreDataService.mainContext.refresh(conversation, mergeChanges: true)
+                self.coreDataService.mainContext.refresh($0, mergeChanges: true)
             }
         }
 

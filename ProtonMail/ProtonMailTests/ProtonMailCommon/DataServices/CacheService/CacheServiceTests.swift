@@ -212,7 +212,7 @@ class CacheServiceTest: XCTestCase {
     
     func testMarkUnreadMessageAsUnread() {
         self.testMessage.unRead = true
-        loadTestDataOfUnreadCount(defaultUnreadCount: 0, labelID: Message.Location.inbox.rawValue)
+        loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: Message.Location.inbox.rawValue)
         
         XCTAssertTrue(sut.mark(message: self.testMessage, labelID: Message.Location.inbox.rawValue, unRead: true))
         

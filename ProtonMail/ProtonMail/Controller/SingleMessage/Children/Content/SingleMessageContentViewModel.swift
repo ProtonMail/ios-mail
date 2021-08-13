@@ -21,6 +21,10 @@ class SingleMessageContentViewModel {
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
     var updateErrorBanner: ((NSError?) -> Void)?
 
+    var isEmbedInConversationView: Bool {
+        context.viewMode == .conversation
+    }
+
     let context: SingleMessageContentViewContext
 
     private let internetStatusProvider: InternetConnectionStatusProvider
@@ -90,7 +94,6 @@ class SingleMessageContentViewModel {
     }
 
     func viewDidLoad() {
-        markReadIfNeeded()
         messageBodyViewModel.messageHasChanged(message: self.message, isError: false)
         downloadDetails()
     }
@@ -103,6 +106,9 @@ class SingleMessageContentViewModel {
             return
         }
         guard !(self.isDetailedDownloaded ?? false) else {
+            if !isEmbedInConversationView {
+                markReadIfNeeded()
+            }
             self.messageBodyViewModel.messageHasChanged(message: self.message)
             return
         }
@@ -114,10 +120,14 @@ class SingleMessageContentViewModel {
             } else if shouldLoadBody {
                 self.messageBodyViewModel.messageHasChanged(message: self.message)
             }
+
+            if !self.isEmbedInConversationView {
+                self.markReadIfNeeded()
+            }
         }
     }
 
-    private func markReadIfNeeded() {
+    func markReadIfNeeded() {
         guard message.unRead else { return }
         messageService.mark(messages: [message], labelID: context.labelId, unRead: false)
     }

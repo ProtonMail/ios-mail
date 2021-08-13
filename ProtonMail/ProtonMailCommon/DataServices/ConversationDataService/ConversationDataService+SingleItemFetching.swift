@@ -38,7 +38,7 @@ extension ConversationDataService {
                 }
                 
                 let context = self.coreDataService.rootSavingContext
-                self.coreDataService.enqueue(context: context) { (context) in
+                context.perform {
                     do {
                         guard var conversationDict = response.conversation, var messagesDict = response.messages else {
                             let err = NSError.protonMailError(1000, localizedDescription: "Data not found")

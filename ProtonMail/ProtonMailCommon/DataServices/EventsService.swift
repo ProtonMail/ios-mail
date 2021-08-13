@@ -904,7 +904,7 @@ extension EventsService {
                     guard let unread = count["Unread"] as? Int else {
                         continue
                     }
-                    self.lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userManager.userInfo.userId, count: unread, type: .conversation, shouldSave: true)
+                    self.lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userManager.userInfo.userId, count: unread, type: .conversation, shouldSave: false)
                 }
             }
             

@@ -92,9 +92,12 @@ extension NSManagedObjectContext {
         return nil
     }
     
-    func managedObjectsWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> [NSManagedObject]? {
+    func managedObjectsWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg, sortKey: String? = nil, isAscending: Bool = true) -> [NSManagedObject]? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
+        if let sortKey = sortKey {
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: sortKey, ascending: isAscending)]
+        }
         
         do {
             let results = try fetch(fetchRequest)

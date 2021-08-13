@@ -262,6 +262,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             UIAccessibility.post(notification: .layoutChanged,
                                  argument: self.navigationController?.view)
         }
+
+        self.updateUnreadButton()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1093,6 +1095,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.fetchingMessage = true
         stopAutoFetch()
         viewModel.fetchDataWithReset(time: 0, cleanContact: true, removeAllDraft: false) { [weak self] task, res, error in
+            if self?.unreadFilterButton.isSelected == true {
+                self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: true, completion: nil)
+            }
             self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
             self?.startAutoFetch()
         }
@@ -2125,6 +2130,15 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 // MARK: - Popping Handling
 extension MailboxViewController {
     private func popPresentedItemIfNeeded(_ anObject: Any) {
+        /*
+         When the unread filter is enable and we enter message or conversation detail view,
+         the message or conversation will be set to read.
+         This action results in the message or conversation will be removed from the list.
+         And will trigger the detail view to be popped.
+         */
+        guard !unreadFilterButton.isSelected else {
+            return
+        }
         if navigationController?.topViewController is ConversationViewController
             || navigationController?.topViewController is SingleMessageViewController {
             if let contextLabel = anObject as? ContextLabel {
