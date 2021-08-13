@@ -11,7 +11,7 @@ class ConversationExpandedMessageView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundSecondary
+        backgroundColor = UIColorManager.BackgroundNorm
         addSubviews()
         setUpLayout()
         setUpActions()
@@ -28,18 +28,18 @@ class ConversationExpandedMessageView: UIView {
             topArrowControl.topAnchor.constraint(equalTo: topAnchor, constant: 2),
             topArrowControl.leadingAnchor.constraint(equalTo: leadingAnchor),
             topArrowControl.trailingAnchor.constraint(equalTo: trailingAnchor),
-            topArrowControl.bottomAnchor.constraint(equalTo: contentContainer.topAnchor),
-            topArrowControl.heightAnchor.constraint(equalToConstant: 22)
+            topArrowControl.heightAnchor.constraint(equalToConstant: 64)
         ].activate()
 
         [
+            contentContainer.topAnchor.constraint(equalTo: topAnchor, constant: 22),
             contentContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2)
         ].activate()
 
         [
-            arrowImageView.centerYAnchor.constraint(equalTo: topArrowControl.centerYAnchor),
+            arrowImageView.topAnchor.constraint(equalTo: topArrowControl.topAnchor, constant: 4),
             arrowImageView.centerXAnchor.constraint(equalTo: topArrowControl.centerXAnchor)
         ].activate()
     }
@@ -70,7 +70,7 @@ private enum SubviewsFactory {
 
     static var topArrowControl: UIControl {
         let control = UIControl(frame: .zero)
-        control.backgroundColor = UIColorManager.BackgroundNorm
+        control.backgroundColor = .clear
         return control
     }
 
