@@ -23,15 +23,10 @@
 
 import Foundation
 import UIKit
-import AFNetworking
+import ProtonCore_Services
 
 @objc(ShareExtensionEntry)
 class ShareExtensionEntry : UINavigationController {
-    var reachabilityManager: AFNetworkReachabilityManager = {
-        let manager = AFNetworkReachabilityManager.shared()
-        manager.startMonitoring()
-        return manager
-    }()
     var appCoordinator : ShareAppCoordinator?
 
     required init(coder aDecoder: NSCoder) {
@@ -45,6 +40,9 @@ class ShareExtensionEntry : UINavigationController {
     }
     
     private func setup() {
+        #if DEBUG
+        PMAPIService.noTrustKit = true
+        #endif
         TrustKitWrapper.start(delegate: self)
         appCoordinator = ShareAppCoordinator(navigation: self)
     }
