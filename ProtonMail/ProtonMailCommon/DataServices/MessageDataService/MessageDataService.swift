@@ -161,7 +161,9 @@ class MessageDataService : Service, HasLocalStorage {
         self.queueManager?.queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if error != nil {
-                    completion?(task, responseDict, error)
+                    DispatchQueue.main.async {
+                        completion?(task, responseDict, error)
+                    }
                 } else if let response = responseDict {
                     onDownload?()
                     self.cacheService.parseMessagesResponse(labelID: labelID, isUnread: isUnread, response: response) { (errorFromParsing) in
@@ -220,7 +222,9 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 let completionWrapper: CompletionBlock = { task, responseDict, error in
                     guard error == nil else {
-                        completion?(task, responseDict, error)
+                        DispatchQueue.main.async {
+                            completion?(task, responseDict, error)
+                        }
                         return
                     }
                     self.lastUpdatedStore.clear()
