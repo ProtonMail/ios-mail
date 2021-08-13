@@ -1361,13 +1361,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         if isInUnreadFilter {
             var selectedAttributes = FontManager.CaptionStrong
-            selectedAttributes[.foregroundColor] = UIColorManager.TextInverted.cgColor
+            selectedAttributes[.foregroundColor] = UIColorManager.TextInverted
 
             unreadFilterButton.setAttributedTitle("\(number) \(LocalString._unread_action) ".apply(style: selectedAttributes),
                                                   for: .selected)
         } else {
             var normalAttributes = FontManager.CaptionStrong
-            normalAttributes[.foregroundColor] = UIColorManager.BrandNorm.cgColor
+            normalAttributes[.foregroundColor] = UIColorManager.BrandNorm
 
             unreadFilterButton.setAttributedTitle("\(number) \(LocalString._unread_action) ".apply(style: normalAttributes),
                                                   for: .normal)

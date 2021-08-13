@@ -199,9 +199,9 @@ extension SettingsDeviceViewController {
             if let settingsGeneralCell = cell as? SettingsGeneralCell {
                 settingsGeneralCell.configure(left: item.description)
                 switch item {
-                case .autolock:
+                case .appPIN:
                     let status = self.viewModel.lockOn ? LocalString._settings_On_title : LocalString._settings_Off_title
-                    settingsGeneralCell.configure(left: LocalString._security)
+                    settingsGeneralCell.configure(left: viewModel.appPINTitle)
                     settingsGeneralCell.configure(right: status)
                 case .combinContacts:
                     let status = self.viewModel.combineContactOn ? LocalString._settings_On_title : LocalString._settings_Off_title
@@ -313,7 +313,7 @@ extension SettingsDeviceViewController {
         case .app:
             let item = self.viewModel.appSettigns[row]
             switch item {
-            case .autolock:
+            case .appPIN:
                 self.coordinator?.go(to: .autoLock)
                 break
             case .combinContacts:

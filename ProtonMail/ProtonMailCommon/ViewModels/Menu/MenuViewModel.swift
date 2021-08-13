@@ -118,7 +118,7 @@ extension MenuViewModel: MenuVMProtocol {
     
     func menuViewInit() {
         self.updatePrimaryUserView()
-        self.updateMoreItems()
+        self.updateMoreItems(shouldReload: false)
         _ = self.updateUnread().done {
             self.delegate?.updateMenu(section: nil)
         }
@@ -415,7 +415,7 @@ extension MenuViewModel {
         }
     }
     
-    private func updateMoreItems() {
+    private func updateMoreItems(shouldReload: Bool = true) {
         var newMore = [MenuLabel(location: .subscription),
                        MenuLabel(location: .settings),
                        MenuLabel(location: .contacts),
@@ -432,7 +432,9 @@ extension MenuViewModel {
         
         if newMore.count != self.moreItems.count {
             self.moreItems = newMore
-            self.delegate?.updateMenu(section: 3)
+            if shouldReload {
+                self.delegate?.updateMenu(section: 3)
+            }
         }
     }
     

@@ -332,7 +332,8 @@ extension MenuCoordinator {
         }
         let vm = SettingsDeviceViewModelImpl(user: user,
                                              users: self.usersManager,
-                                             dohSetting: DoHMail.default)
+                                             dohSetting: DoHMail.default,
+                                             biometricStatus: UIDevice.current)
         guard let settings = SettingsDeviceCoordinator(sideMenu: self.viewController?.sideMenuController,
                                                        nav: navigation,
                                                        vm: vm,

@@ -86,27 +86,6 @@ public enum AddressItem : Int, CustomStringConvertible {
     }
 }
 
-
-public enum SnoozeItem : Int, CustomStringConvertible {
-    case autolock
-    case language
-    case combinContacts
-    case cleanCache
-    
-    public var description : String {
-        switch(self){
-        case .autolock:
-            return LocalString._auto_lock
-        case .language:
-            return LocalString._app_language
-        case .combinContacts:
-            return LocalString._combined_contacts
-        case .cleanCache:
-            return LocalString._local_cache_management
-        }
-    }
-}
-
 public enum MailboxItem : Int, CustomStringConvertible, Equatable {
     case privacy
     case conversation

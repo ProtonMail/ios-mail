@@ -71,6 +71,7 @@ protocol SettingsLockViewModel : AnyObject {
     var isPinCodeEnabled: Bool { get }
     var auto_logout_time_options: [Int] { get }
     var biometricType: BiometricType { get }
+    var appPINTitle: String { get }
 
     func updateProtectionItems()
     func enableBioProtection( completion: @escaping () -> Void)
@@ -103,6 +104,17 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
         return self.userCacheStatus.isTouchIDEnabled
     }
 
+    var appPINTitle: String {
+        switch biometricType {
+        case .faceID:
+            return LocalString._app_pin_with_faceid
+        case .touchID:
+            return LocalString._app_pin_with_touchid
+        default:
+            return LocalString._app_pin
+        }
+    }
+
     let auto_logout_time_options = [-1, 0, 1, 2, 5,
                                     10, 15, 30, 60]
     
@@ -119,6 +131,7 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
     }
     
     func updateProtectionItems() {
+        let oldStatus = sections
         sections = [.enableProtection]
 
         if lockOn {
@@ -126,14 +139,17 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
                 switch self.biometricStatus.biometricType {
                 case .none:
                     break
-                case .touchID:
-                    keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
-                case .faceID:
+                case .touchID, .faceID:
                     keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
                 }
             } else if isPinCodeEnabled {
                 sections.append(.changePin)
                 keymaker.deactivate(BioProtection())
+
+                if !oldStatus.contains(.changePin) {
+                    // just set pin protection
+                    userCachedStatus.lockTime = AutolockTimeout(rawValue: 15)
+                }
             }
 
             if self.userCacheStatus.isPinCodeEnabled || self.userCacheStatus.isTouchIDEnabled {

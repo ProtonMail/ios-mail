@@ -1853,8 +1853,10 @@ class LocalizedString {
     lazy var _app_information = NSLocalizedString("APP INFORMATION", comment: "section title in settings")
     lazy var _app_general_settings = NSLocalizedString("General settings", comment: "section title in settings")
 
-    lazy var _auto_lock = NSLocalizedString("Auto-lock", comment: "section title in settings")
-    lazy var _security = NSLocalizedString("Security", comment: "section title in settings")
+    lazy var _app_pin = NSLocalizedString("App PIN", comment: "security title in settings")
+    lazy var _app_pin_with_touchid = NSLocalizedString("App PIN & TouchID", comment: "security title in settings")
+    lazy var _app_pin_with_faceid = NSLocalizedString("App PIN & FaceID", comment: "security title in settings")
+
     lazy var _app_language = NSLocalizedString("Language", comment: "cell title in device settings")
     lazy var _combined_contacts = NSLocalizedString("Combined contacts", comment: "cell title in device settings")
     lazy var _local_cache_management = NSLocalizedString("Local Cache Management", comment: "cell title in device settings")
