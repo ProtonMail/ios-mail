@@ -978,7 +978,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         
         if let error = error {
-            self.handleRequestError(error)
+            DispatchQueue.main.async {
+                self.handleRequestError(error)
+            }
         }
         
         var loadMore: Int?
@@ -2183,7 +2185,9 @@ extension MailboxViewController: UITableViewDelegate {
                     }
                     let unixTimt: Int = (endTime == Date.distantPast ) ? 0 : Int(endTime.timeIntervalSince1970)
                     self.viewModel.fetchMessages(time: unixTimt, forceClean: false, isUnread: self.isShowingUnreadMessageOnly, completion: { (task, response, error) -> Void in
-                        self.tableView.hideLoadingFooter()
+                        DispatchQueue.main.async {
+                            self.tableView.hideLoadingFooter()
+                        }
                         DispatchQueue.main.asyncAfter(deadline: .now()+1) {
                             self.showNoResultLabel()
                         }
