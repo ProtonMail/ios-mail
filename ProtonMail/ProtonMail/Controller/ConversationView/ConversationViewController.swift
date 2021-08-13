@@ -142,20 +142,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if let cell = customView.tableView.visibleCells.compactMap({ $0 as? ConversationViewHeaderCell }).first {
-            let headerLabelConvertedFrame = cell.convert(cell.customView.titleLabel.frame, to: customView.tableView)
-            let shouldPresentDetailedNavigationTitle = scrollView.contentOffset.y >= headerLabelConvertedFrame.maxY
-            shouldPresentDetailedNavigationTitle ? presentDetailedNavigationTitle() : presentSimpleNavigationTitle()
-
-            let separatorConvertedFrame = cell.convert(cell.customView.separator.frame, to: customView.tableView)
-            let shouldShowSeparator = customView.tableView.contentOffset.y >= separatorConvertedFrame.maxY
-            customView.separator.isHidden = !shouldShowSeparator
-
-            cell.customView.topSpace = scrollView.contentOffset.y < 0 ? scrollView.contentOffset.y : 0
-        } else {
-            presentDetailedNavigationTitle()
-            customView.separator.isHidden = false
-        }
+        self.checkNavigationTitle()
     }
 
     private func reloadActionBar() {
@@ -175,6 +162,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         } else {
             messageViewModel.toggleState()
             customView.tableView.reloadRows(at: [.init(row: index, section: 1)], with: .automatic)
+            checkNavigationTitle()
         }
     }
 
@@ -348,6 +336,25 @@ private extension ConversationViewController {
         }
 
         return viewController
+    }
+
+    private func checkNavigationTitle() {
+        let tableview = customView.tableView
+        guard let cell = tableview.visibleCells.compactMap({ $0 as? ConversationViewHeaderCell }).first else {
+            presentDetailedNavigationTitle()
+            customView.separator.isHidden = false
+            return
+        }
+
+        let headerLabelConvertedFrame = cell.convert(cell.customView.titleLabel.frame, to: customView.tableView)
+        let shouldPresentDetailedNavigationTitle = tableview.contentOffset.y >= headerLabelConvertedFrame.maxY
+        shouldPresentDetailedNavigationTitle ? presentDetailedNavigationTitle() : presentSimpleNavigationTitle()
+
+        let separatorConvertedFrame = cell.convert(cell.customView.separator.frame, to: customView.tableView)
+        let shouldShowSeparator = customView.tableView.contentOffset.y >= separatorConvertedFrame.maxY
+        customView.separator.isHidden = !shouldShowSeparator
+
+        cell.customView.topSpace = tableview.contentOffset.y < 0 ? tableview.contentOffset.y : 0
     }
 
     private func presentDetailedNavigationTitle() {
