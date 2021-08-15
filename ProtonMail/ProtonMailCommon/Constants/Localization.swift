@@ -259,12 +259,17 @@ class LocalizedString {
     lazy var _composer_short_forward = NSLocalizedString("Fwd:", comment: "abbreviation of forward:")
     /// "Fw:"
     lazy var _composer_short_forward_shorter = NSLocalizedString("Fw:", comment: "abbreviation of forward:")
-    /// "On"
-    lazy var _composer_on            = NSLocalizedString("On", comment: "Title")
     /// "wrote:"
     lazy var _composer_wrote         = NSLocalizedString("wrote:", comment: "Title")
     /// "On E, MMM d, yyyy at %@"
     lazy var _composer_forward_header = NSLocalizedString("On E, MMM d, yyyy at %@", comment: "forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.")
+
+    /// "At {time}, e.g.: At 19:00"
+    lazy var _composer_forward_header_at = NSLocalizedString("At %@", comment: "At {time}, e.g.: At 19:00")
+    /// "On {date}, e.g.: On Aug 14"
+    lazy var _composer_forward_header_on = NSLocalizedString("On %@", comment: "On {date}, e.g.: On Aug 14")
+    /// "On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00"
+    lazy var _composer_forward_header_on_detail = NSLocalizedString("On %@ at %@", comment: "On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00")
 
     /// "Date:"
     lazy var _composer_date_field    = NSLocalizedString("Date:", comment: "message Date: text")
@@ -503,8 +508,6 @@ class LocalizedString {
     lazy var _general_cc_label        = NSLocalizedString("Cc", comment: "message Cc: feild")
     /// "Cc:"
     lazy var _general_bcc_label        = NSLocalizedString("Bcc:", comment: "message Bcc: feild")
-    /// "at"
-    lazy var _general_at_label        = NSLocalizedString("at", comment: "like at 10:00pm")
     /// "Delete"
     lazy var _general_delete_action   = NSLocalizedString("Delete", comment: "general delete action")
     /// "Close"
