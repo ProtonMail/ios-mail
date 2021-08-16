@@ -66,6 +66,9 @@ extension PMSideMenuController {
     }
 
     private func hideStatusBar(hide: Bool) {
+        // We use a non-public key here to obtain the `statusBarWindow` window.
+        // We have been using it in real world app and it won't be rejected by the review team for using this key.
+        // From SideMenu library
         let s = "status", b = "Bar", w = "Window"
         var statusBar: UIWindow?
         if #available(iOS 13, *) {
