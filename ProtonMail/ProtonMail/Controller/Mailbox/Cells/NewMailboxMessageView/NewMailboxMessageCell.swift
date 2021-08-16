@@ -91,7 +91,7 @@ class NewMailboxMessageCell: SwipyCell {
                 self?.shouldUpdateTime = false
             }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: workItem)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: workItem)
         self.workItem = workItem
     }
 
