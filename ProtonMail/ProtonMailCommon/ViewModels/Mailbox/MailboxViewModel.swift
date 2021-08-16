@@ -921,7 +921,7 @@ extension MailboxViewModel {
     func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: CompletionBlock?) {
         switch self.viewMode {
         case .singleMessage:
-            messageService.fetchMessages(byLabel: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, completion: completion)
+            messageService.fetchMessages(byLabel: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, queued: false, completion: completion)
         case .conversation:
             conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: isUnread, shouldReset: forceClean) { result in
                 switch result {
@@ -937,7 +937,7 @@ extension MailboxViewModel {
     func fetchDataWithReset(time: Int, cleanContact: Bool, removeAllDraft: Bool, completion: CompletionBlock?) {
         switch viewMode {
         case .singleMessage:
-            messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: cleanContact, removeAllDraft: removeAllDraft, completion: completion)
+            messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: cleanContact, removeAllDraft: removeAllDraft, queued: false, completion: completion)
         case .conversation:
             messageService.fetchLatestEventID(completion: nil)
             conversationService.fetchConversationCounts(addressID: nil, completion: nil)

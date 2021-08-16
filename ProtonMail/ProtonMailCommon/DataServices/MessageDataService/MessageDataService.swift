@@ -157,8 +157,10 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - forceClean: force clean the exsition messages first
     ///   - onDownload: Closure called when items have been downloaded but not yet parsed. Gives a chance to clean up right before we add a new dataset
     ///   - completion: aync complete handler
-    func fetchMessages(byLabel labelID : String, time: Int, forceClean: Bool, isUnread: Bool, completion: CompletionBlock?, onDownload: (() -> Void)? = nil) {
-        self.queueManager?.queue {
+
+    func fetchMessages(byLabel labelID : String, time: Int, forceClean: Bool, isUnread: Bool, queued: Bool = true, completion: CompletionBlock?, onDownload: (() -> Void)? = nil) {
+        let queue = queued ? queueManager?.queue : noQueue
+        queue? {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if error != nil {
                     DispatchQueue.main.async {
@@ -210,8 +212,10 @@ class MessageDataService : Service, HasLocalStorage {
                                 time: Int,
                                 cleanContact: Bool = true,
                                 removeAllDraft: Bool = false,
+                                queued: Bool = true,
                                 completion: CompletionBlock?) {
-        self.queueManager?.queue {
+        let queue = queued ? queueManager?.queue : noQueue
+        queue? {
             let getLatestEventID = EventLatestIDRequest()
             self.apiService.exec(route: getLatestEventID) { [weak self] (task, IDRes: EventLatestIDResponse) in
                 guard !IDRes.eventID.isEmpty,
@@ -219,7 +223,7 @@ class MessageDataService : Service, HasLocalStorage {
                     completion?(task, nil, nil)
                     return
                 }
-                
+
                 let completionWrapper: CompletionBlock = { task, responseDict, error in
                     guard error == nil else {
                         DispatchQueue.main.async {
@@ -232,8 +236,8 @@ class MessageDataService : Service, HasLocalStorage {
                         completion?(task, responseDict, error)
                     }
                 }
-                
-                self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: false, completion: completionWrapper) {
+
+                self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: false, queued: queued, completion: completionWrapper) {
                     self.cleanMessage(removeAllDraft: removeAllDraft).then { (_) -> Promise<Void> in
                         self.lastUpdatedStore.removeUpdateTime(by: self.userID,
                                                                type: .singleMessage)
