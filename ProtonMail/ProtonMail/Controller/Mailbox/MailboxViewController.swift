@@ -106,6 +106,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var needToShowNewMessage : Bool = false
     private var newMessageCount = 0
     private var hasNetworking = true
+    private var isFirstFetch = true
     
     // MAKR : - Private views
     private var refreshControl: UIRefreshControl!
@@ -134,9 +135,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var isShowingUnreadMessageOnly: Bool {
         return self.unreadFilterButton.isSelected
     }
-    
-    ///This variable is to determine should we show the skeleton view or not
-    private var isFirstQueryOfThisEmptyIndex = true
 
     private let messageCellPresenter = NewMailboxMessageCellPresenter()
     private let mailListActionSheetPresenter = MailListActionSheetPresenter()
@@ -1066,26 +1064,24 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             fetchingMessage = true
             self.beginRefreshingManually(animated: self.viewModel.rowCount(section: 0) < 1 ? true : false)
             self.showRefreshController()
-            if viewModel.isEventIDValid() {
-                //fetch
-                self.needToShowNewMessage = true
-                viewModel.fetchEvents(time: 0,
-                                      notificationMessageID: self.viewModel.notificationMessageID) { [weak self] task, res, error in
+            if isFirstFetch {
+                isFirstFetch = false
+                viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] task, res, error in
                     self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
                 }
-            } else {// this new
-                if !viewModel.isEventIDValid() { //if event id is not valid reset
+            } else {
+                if viewModel.isEventIDValid() {
+                    //fetch
+                    self.needToShowNewMessage = true
+                    viewModel.fetchEvents(time: 0,
+                                          notificationMessageID: self.viewModel.notificationMessageID) { [weak self] task, res, error in
+                        self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
+                    }
+                } else {// this new
                     viewModel.fetchDataWithReset(time: 0, cleanContact: false, removeAllDraft: false) { [weak self] task, res, error in
                         self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
                     }
                 }
-                else {
-                    viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] task, res, error in
-                        self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
-                    }
-                }
-                
-                isFirstQueryOfThisEmptyIndex = false
             }
             self.checkContact()
         }
