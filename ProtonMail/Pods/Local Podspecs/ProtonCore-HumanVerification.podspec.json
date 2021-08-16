@@ -1,0 +1,68 @@
+{
+  "name": "ProtonCore-HumanVerification",
+  "version": "2.4.0",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "2.4.0"
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "swift_versions": [
+    "5.1"
+  ],
+  "dependencies": {
+    "ProtonCore-UIFoundations": [
+      "2.4.0"
+    ],
+    "ProtonCore-CoreTranslation": [
+      "2.4.0"
+    ],
+    "ProtonCore-Foundations": [
+      "2.4.0"
+    ],
+    "ProtonCore-Utilities": [
+      "2.4.0"
+    ],
+    "ProtonCore-APIClient": [
+      "2.4.0"
+    ]
+  },
+  "source_files": [
+    "libraries/HumanVerification/Sources/*.{h,m,swift}",
+    "libraries/HumanVerification/Sources/**/*.{h,m,swift}"
+  ],
+  "resource_bundles": {
+    "Resources-HV": [
+      "libraries/HumanVerification/Sources/**/*.{xib,storyboard,xcassets,geojson}"
+    ]
+  },
+  "exclude_files": "Classes/Exclude",
+  "frameworks": "UIKit",
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
+          "2.4.0"
+        ]
+      },
+      "source_files": "libraries/HumanVerification/Tests/**/*"
+    }
+  ],
+  "swift_version": "5.1"
+}

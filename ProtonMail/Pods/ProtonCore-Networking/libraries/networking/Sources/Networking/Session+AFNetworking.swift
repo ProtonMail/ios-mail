@@ -53,7 +53,7 @@ public class AFNetworkingSession: Session {
     public func upload(with request: SessionRequest,
                        keyPacket: Data,
                        dataPacket: Data,
-                       signature: Data?, completion: @escaping ResponseCompletion) throws {
+                       signature: Data?, completion: @escaping ResponseCompletion, uploadProgress: ProgressCompletion?) throws {
         let afnRequest = self.sessionManager
             .requestSerializer
             .multipartFormRequest(withMethod: request.method.toString(),
@@ -70,8 +70,8 @@ public class AFNetworkingSession: Session {
         request.request = afnRequest as URLRequest
         request.updateHeader()
         var uploadTask: URLSessionDataTask?
-        uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request.request!, progress: { (_) in
-            // nothing
+        uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request.request!, progress: { (progress) in
+            uploadProgress?(progress)
         }, completionHandler: { (_, responseObject, error) in
             let resObject = responseObject as? [String: Any]
             completion(uploadTask, resObject, error as NSError?)
@@ -82,7 +82,7 @@ public class AFNetworkingSession: Session {
     public func uploadFromFile(with request: SessionRequest,
                                keyPacket: Data,
                                dataPacketSourceFileURL: URL,
-                               signature: Data?, completion: @escaping ResponseCompletion) throws {
+                               signature: Data?, completion: @escaping ResponseCompletion, uploadProgress: ProgressCompletion?) throws {
         let afnRequest = self.sessionManager
             .requestSerializer
             .multipartFormRequest(withMethod: request.method.toString(),
@@ -99,8 +99,8 @@ public class AFNetworkingSession: Session {
         request.request = afnRequest as URLRequest
         request.updateHeader()
         var uploadTask: URLSessionDataTask?
-        uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request.request!, progress: { (_) in
-            // nothing
+        uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request.request!, progress: { (progress) in
+            uploadProgress?(progress)
         }, completionHandler: { (_, responseObject, error) in
             let resObject = responseObject as? [String: Any]
             completion(uploadTask, resObject, error as NSError?)

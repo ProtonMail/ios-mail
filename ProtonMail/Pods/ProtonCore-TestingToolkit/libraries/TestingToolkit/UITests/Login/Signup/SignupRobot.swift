@@ -24,7 +24,8 @@ import pmtest
 import ProtonCore_CoreTranslation
 
 private let titleId = "SignupViewController.createAccountTitleLabel"
-private let nameTextFieldId = "SignupViewController.nameTextField.textField"
+private let nameTextFieldId = "SignupViewController.internalNameTextField.textField"
+private let externalEmailTextFieldId = "SignupViewController.externalEmailTextField.textField"
 private let nextButtonId = "SignupViewController.nextButton"
 private let signinButtonId = "SignupViewController.signinButton"
 private let errorBannerMessage = "Username already used"
@@ -86,6 +87,11 @@ public final class SignupRobot: CoreElements {
     
     public func insertName(name: String) -> SignupRobot {
         textField(nameTextFieldId).tap().typeText(name)
+        return self
+    }
+    
+    public func insertExternalEmail(name: String) -> SignupRobot {
+        textField(externalEmailTextFieldId).tap().typeText(name)
         return self
     }
     

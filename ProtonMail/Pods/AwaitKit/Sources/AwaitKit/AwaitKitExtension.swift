@@ -50,7 +50,7 @@ public protocol AwaitKitCompatible {
 
 public extension AwaitKitCompatible {
   /// By default the `ak` category returns an Extension object which contains itself.
-  public var ak: Extension<Self> {
+  var ak: Extension<Self> {
     get { return Extension(self) }
   }
 }

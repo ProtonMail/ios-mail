@@ -49,9 +49,12 @@ public final class AccountSwitcher: UIView {
 
     @IBOutlet private var containerView: UIView!
     @IBOutlet private var containerViewTop: NSLayoutConstraint!
-    @IBOutlet private var containerViewLeft: NSLayoutConstraint!
     @IBOutlet var bgView: UIView!
 
+    @IBOutlet private var titleView: UIView!
+    @IBOutlet private var titleViewHeight: NSLayoutConstraint!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var primaryViewTop: NSLayoutConstraint!
     @IBOutlet private var shortUserNameView: UIView!
     @IBOutlet private var shortUserName: UILabel!
     @IBOutlet private var username: UILabel!
@@ -76,7 +79,7 @@ public final class AccountSwitcher: UIView {
 
     /// Account switcher initialization
     /// - Parameter accounts: The list of account data, the first data is primary user
-    /// - Parameter origin: A point that specifies the coordinates of the rectangle’s origin.
+    /// - Parameter origin: A point that specifies the coordinates of the rectangle’s origin. Note: only y is used, x will be ignored
     /// - Parameter disablePanGes: Disable pan gesturer of side menu if needed
     /// - Throws: The account number is zero or the signed in account is zero
     public init(accounts: [AccountData], origin: CGPoint, disablePanGes: Bool = true) throws {
@@ -208,6 +211,7 @@ extension AccountSwitcher {
     private func setup() {
         self.setupContainerView()
         self.setupGesture()
+        self.setupTitleView()
         self.setupPrimaryUserData()
         self.setupAccountTable()
         self.manageAccountLabel.text = CoreString._as_manage_accounts
@@ -215,8 +219,21 @@ extension AccountSwitcher {
 
     private func setupContainerView() {
         self.containerViewTop.constant = self.origin.y
-        self.containerViewLeft.constant = self.origin.x
         self.containerView.roundCorner(6)
+    }
+
+    private func setupTitleView() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.titleView.isHidden = false
+            self.titleLabel.text = CoreString._as_accounts
+            self.titleViewHeight.constant = 44
+            self.primaryViewTop.constant = 6
+            return
+        }
+        // iPhone and other device
+        self.titleView.isHidden = true
+        self.titleViewHeight.constant = 0
+        self.primaryViewTop.constant = 0
     }
 
     private func setupGesture() {

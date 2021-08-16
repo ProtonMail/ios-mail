@@ -70,16 +70,18 @@ extension DoHProviderInternal {
     /// Return data from synchronous URL request
     private func fetchSynchronous(request: NSURLRequest) -> Data? {
         var data: Data?
-        let semaphore = DispatchSemaphore(value: 0)
-        let task = URLSession.shared.dataTask(with: request as URLRequest) { taskData, response, error in
-            data = taskData
-            //  if data == nil, let _ = error {
-            // TODO:: log error or throw error. for now we ignore it and upper layer will use the default values
-            // }
-            semaphore.signal()
+        DispatchQueue.global(qos: .userInitiated).sync {
+            let semaphore = DispatchSemaphore(value: 0)
+            let task = URLSession.shared.dataTask(with: request as URLRequest) { taskData, response, error in
+                data = taskData
+                //  if data == nil, let _ = error {
+                // TODO:: log error or throw error. for now we ignore it and upper layer will use the default values
+                // }
+                semaphore.signal()
+            }
+            task.resume()
+            semaphore.wait()
         }
-        task.resume()
-        semaphore.wait()
         return data
     }
     
