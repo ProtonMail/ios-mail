@@ -24,7 +24,7 @@ public class EncryptedSearchCacheService {
     
     //set initializer to private - Singleton
     private init() {
-        let maxMemory: Double = EncryptedSearchService.shared.getAppMemory()
+        let maxMemory: Double = EncryptedSearchService.shared.getTotalAvailableMemory()
         self.maxCacheSize = Int64((maxMemory * self.searchCacheHeapPercent))
         self.batchSize = Int64((maxMemory * self.searchCacheHeapPercent) / self.searchMsgSize)
         self.cache = EncryptedsearchCache(self.maxCacheSize)
