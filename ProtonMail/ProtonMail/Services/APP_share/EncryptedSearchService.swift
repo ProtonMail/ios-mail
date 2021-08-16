@@ -31,8 +31,6 @@ public class EncryptedSearchService {
         let users: UsersManager = sharedServices.get()
         user = users.firstUser! //should return the currently active user
         messageService = user.messageService
-        searchIndex = EncryptedSearchIndexService.shared.createSearchIndex(user.userInfo.userId)!
-        EncryptedSearchIndexService.shared.createSearchIndexTable()
     }
     
     internal var user: UserManager!
@@ -43,12 +41,7 @@ public class EncryptedSearchService {
     var processedMessages: Int = 0
     var processedMessagesDetailsDownloaded: Int = 0
     
-    //var messageIDs: NSMutableArray = []
-    
-    var isInit: Bool = true
-    var isRefresh: Bool = false
-    
-    internal var searchIndex: Connection
+    internal var searchIndex: Connection? = nil
     internal var cipherForSearchIndex: EncryptedsearchAESGCMCipher? = nil
 }
 
@@ -64,10 +57,17 @@ extension EncryptedSearchService {
                 print("Total messages: ", self.totalMessages)
                 
                 //if search index already build, and there are no new messages we can return here
-                if self.isInit == false && self.isRefresh == true {
-                    return
+                if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
+                    print("Search index already exists for user!")
+                    //check if search index needs updating
+                    if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.user.userInfo.userId) == self.totalMessages {
+                        print("Search index already contains all available messages.")
+                        viewModel.isEncryptedSearch = true
+                        return
+                    }
                 }
                 
+                //build search index completely new
                 self.downloadAllMessagesAndBuildSearchIndex(){
                     //Search index build -> update progress bar to finished?
                     print("Finished building search index!")
@@ -339,9 +339,10 @@ extension EncryptedSearchService {
         let group = DispatchGroup()
         let messageBatch: NSMutableArray = []
         
-        for m in messages {
+        for (index, m) in messages.enumerated() {
             group.enter()
             self.messageService.fetchMessageDetailForMessage(m as! Message, labelID: Message.Location.allmail.rawValue) { _, _, _, error in
+                //print("For batch: \(batchCount), message: \(index), available memory: \(self.getCurrentlyAvailableAppMemory())")
                 if error == nil {
                     let mID: String = (m as! Message).messageID
                     self.getMessage(mID) { newM in
@@ -463,6 +464,11 @@ extension EncryptedSearchService {
     
     func decryptBodyAndExtractData(_ messages: NSArray, completionHandler: @escaping () -> Void) {
         var processedMessagesCount: Int = 0
+        
+        //connect to search index database
+        self.searchIndex = EncryptedSearchIndexService.shared.connectToSearchIndex(user.userInfo.userId)!
+        EncryptedSearchIndexService.shared.createSearchIndexTable()
+        
         for m in messages {
             var decryptionFailed: Bool = true
             var body: String? = ""
@@ -872,7 +878,7 @@ extension EncryptedSearchService {
             
             let SEARCH_BATCH_HEAP_PERCENT = 0.1 // Percentage of heap that can be used to load messages from the index
             let SEARCH_MSG_SIZE: Double = 14000 // An estimation of how many bytes take a search message in memory
-            let batchSize: Int = Int((getAppMemory() * SEARCH_BATCH_HEAP_PERCENT)/SEARCH_MSG_SIZE)
+            let batchSize: Int = Int((getTotalAvailableMemory() * SEARCH_BATCH_HEAP_PERCENT)/SEARCH_MSG_SIZE)
             do {
                 try index.searchNewBatch(fromDB: searcher, cipher: cipher, results: searchResults, batchSize: batchSize)
                 //Is that running async?
@@ -951,7 +957,27 @@ extension EncryptedSearchService {
     }*/
     
     //Code from here: https://stackoverflow.com/a/64738201
-    func getAppMemory() -> Double {
+    func getTotalAvailableMemory() -> Double {
+        var taskInfo = task_vm_info_data_t()
+        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
+        let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
+                }
+        }
+        //let usedMb = Float(taskInfo.phys_footprint)// / 1048576.0
+        let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
+        //result != KERN_SUCCESS ? print("Memory used: ? of \(totalMb)") : print("Memory used: \(usedMb) of \(totalMb)")
+        //if result != KERN_SUCCESS {
+        //    print("Memory used: ? of \(totalMb) (in byte)")
+        //} else {
+        //    print("Memory used: \(usedMb) (in byte) of \(totalMb) (in byte)")
+        //}
+        return Double(totalMb)
+    }
+    
+    //Code from here: https://stackoverflow.com/a/64738201
+    func getCurrentlyAvailableAppMemory() -> Double {
         var taskInfo = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
         let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
@@ -962,11 +988,14 @@ extension EncryptedSearchService {
         let usedMb = Float(taskInfo.phys_footprint)// / 1048576.0
         let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
         //result != KERN_SUCCESS ? print("Memory used: ? of \(totalMb)") : print("Memory used: \(usedMb) of \(totalMb)")
+        var availableMemory: Double = 0
         if result != KERN_SUCCESS {
-            print("Memory used: ? of \(totalMb) (in byte)")
+            //print("Memory used: ? of \(totalMb) (in byte)")
+            availableMemory = Double(totalMb)
         } else {
-            print("Memory used: \(usedMb) (in byte) of \(totalMb) (in byte)")
+            //print("Memory used: \(usedMb) (in byte) of \(totalMb) (in byte)")
+            availableMemory = Double(totalMb - usedMb)
         }
-        return Double(totalMb)
+        return availableMemory
     }
 }
