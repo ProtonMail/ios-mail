@@ -154,11 +154,11 @@
                                 <rect key="frame" x="468" y="0.0" width="300" height="1024"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="njC-bj-9R7">
-                                        <rect key="frame" x="0.0" y="35" width="300" height="989"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <rect key="frame" x="0.0" y="25" width="300" height="999"/>
+                                        <color key="backgroundColor" red="0.14509803921568626" green="0.15294117647058825" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TX6-HM-gJ2" userLabel="primaryUserView">
-                                        <rect key="frame" x="8" y="10" width="284" height="48"/>
+                                        <rect key="frame" x="8" y="0.0" width="284" height="48"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hwj-yU-PiN" userLabel="displayName">
                                                 <rect key="frame" x="52" y="7" width="182" height="18"/>
@@ -214,7 +214,7 @@
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.18823529410000001" green="0.1960784314" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.23137254901960785" green="0.23921568627450979" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <bool key="isElement" value="YES"/>
                                         </accessibility>
@@ -236,7 +236,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="TX6-HM-gJ2" firstAttribute="leading" secondItem="2ev-su-1bQ" secondAttribute="leading" constant="8" id="8Gi-yC-bKr"/>
-                                    <constraint firstItem="TX6-HM-gJ2" firstAttribute="top" secondItem="2ev-su-1bQ" secondAttribute="top" constant="10" id="C3D-33-mjF"/>
+                                    <constraint firstItem="TX6-HM-gJ2" firstAttribute="top" secondItem="2ev-su-1bQ" secondAttribute="top" id="C3D-33-mjF"/>
                                     <constraint firstItem="njC-bj-9R7" firstAttribute="top" secondItem="hwj-yU-PiN" secondAttribute="bottom" id="Gzy-Fu-HnQ"/>
                                     <constraint firstAttribute="width" constant="300" id="Hgm-15-2Y6"/>
                                     <constraint firstAttribute="trailing" secondItem="TX6-HM-gJ2" secondAttribute="trailing" constant="8" id="RDi-0w-MBU"/>
@@ -247,7 +247,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="drn-kV-BLY"/>
-                        <color key="backgroundColor" red="0.090196078431372548" green="0.094117647058823528" blue="0.10980392156862745" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.14509803921568626" green="0.15294117647058825" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="2ev-su-1bQ" firstAttribute="top" secondItem="drn-kV-BLY" secondAttribute="top" id="9Ts-g7-s5u"/>
                             <constraint firstItem="2ev-su-1bQ" firstAttribute="leading" secondItem="drn-kV-BLY" secondAttribute="leading" priority="250" id="FTK-EO-DCc"/>
@@ -256,6 +256,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="accountSwitcherTopConstraint" destination="C3D-33-mjF" id="1Er-yB-sJy"/>
                         <outlet property="addressLabel" destination="rQv-1p-oTK" id="ixq-IA-zVw"/>
                         <outlet property="arrowBtn" destination="DjK-92-oDv" id="klK-bJ-TeC"/>
                         <outlet property="avatarLabel" destination="98f-eY-mC2" id="tby-cR-dNq"/>

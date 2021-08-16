@@ -46,7 +46,11 @@ final class MenuViewController: UIViewController, AccessibleView {
     }
     
     override var prefersStatusBarHidden: Bool {
-        true
+        if #available(iOS 13.0, *) {
+            return true
+        } else {
+            return false
+        }
     }
     
     override func viewDidLoad() {
@@ -91,6 +95,7 @@ final class MenuViewController: UIViewController, AccessibleView {
 // MARK: Private functions
 extension MenuViewController {
     private func viewInit() {
+        self.view.backgroundColor = UIColor(hexString: "#25272c", alpha: 1)
         self.menuWidth.constant = self.viewModel.menuWidth
         self.tableView.backgroundColor = .clear
         self.tableView.register(MenuItemTableViewCell.self)
@@ -102,6 +107,11 @@ extension MenuViewController {
 
         self.primaryUserview.accessibilityTraits = [.button]
         self.primaryUserview.accessibilityHint = LocalString._menu_open_account_switcher
+        if #available(iOS 13.0, *), !UIDevice.hasNotch {
+            self.accountSwitcherTopConstraint.constant = 10
+        } else {
+            self.accountSwitcherTopConstraint.constant = 0
+        }
 
         self.shortNameView.setCornerRadius(radius: 2)
         self.avatarLabel.adjustsFontSizeToFitWidth = true
