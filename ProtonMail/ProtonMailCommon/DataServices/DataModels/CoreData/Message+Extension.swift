@@ -378,8 +378,6 @@ extension Message {
             }
         }
         
-        let users = sharedServices.get(by: UsersManager.self)
-        let user = users.firstUser
         let extra: [String: Any] = ["newSchema": false,
                                     "Ks count": keys.count,
                                     "Error message": errorMessages]
