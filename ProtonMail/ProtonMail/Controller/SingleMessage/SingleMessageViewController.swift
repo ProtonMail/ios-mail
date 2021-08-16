@@ -29,7 +29,8 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
     private lazy var contentController: SingleMessageContentViewController = { [unowned self] in
         SingleMessageContentViewController(
             viewModel: self.viewModel.contentViewModel,
-            parentScrollView: self.customView.scrollView) { action in
+            parentScrollView: self.customView.scrollView,
+            viewMode: .singleMessage) { action in
             self.coordinator.navigate(to: action)
         }
     }()
