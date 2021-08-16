@@ -294,7 +294,9 @@ class WindowsCoordinator: CoordinatorNew {
                 if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
                 }
-                _ = self.navigate(from: self.currentWindow, to: self.appWindow)
+                if self.navigate(from: self.currentWindow, to: self.appWindow), let deeplink = self.deeplink {
+                    self.handleMailToDeepLinkIfNeeded(deeplink)
+                }
             }
         }
     }
@@ -405,5 +407,17 @@ class WindowsCoordinator: CoordinatorNew {
         self.deeplink = deeplink
         _ = deeplink.popFirst
         
+    }
+
+    private func handleMailToDeepLinkIfNeeded(_ deeplink: DeepLink) {
+        if deeplink.first?.name == "toMailboxSegue" && deeplink.first?.next?.name == "toComposeMailto" {
+            self.appWindow.enumerateViewControllerHierarchy { controller, stop in
+                if let menu = controller as? MenuViewController,
+                    let coordinator = menu.coordinator {
+                    coordinator.follow(deeplink)
+                    stop = true
+                }
+            }
+        }
     }
 }
