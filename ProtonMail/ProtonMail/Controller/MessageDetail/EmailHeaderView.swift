@@ -432,13 +432,13 @@ class EmailHeaderView: UIView, AccessibleView {
         self.emailFavoriteButton.isSelected = self.starred
         self.emailFavoriteButton.accessibilityLabel = self.starred ? LocalString._starred : LocalString._locations_add_star_action
         
-        let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+        let timeFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
         let isToday = Calendar.current.isDateInToday(self.date)
-        let at = LocalString._general_at_label
-        let on = LocalString._composer_on
-        self.emailShortTime.text = "\(isToday ? at : on) \(self.date.string(format: isToday ? timeformat : "MMM d"))"
-        let tm = self.date.formattedWith("'\(on)' E, MMM d, yyyy '\(at)' \(timeformat)")
-        self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
+        let dateOrTimeString = isToday ? self.date.string(format: timeFormat) : self.date.string(format: "MMM d")
+        self.emailShortTime.text = String(format: isToday  ? LocalString._composer_forward_header_at : LocalString._composer_forward_header_on , dateOrTimeString)
+        let date = self.date.formattedWith("E, MMM d, yyyy")
+        let detailedDate = String(format: LocalString._composer_forward_header_on_detail, date, self.date.formattedWith(timeFormat))
+        self.emailDetailDateLabel.text = String(format: LocalString._date, detailedDate)
 
         var tmplabels : [Label] = []
         if let alllabels = labels {
@@ -757,9 +757,9 @@ class EmailHeaderView: UIView, AccessibleView {
         self.emailDetailDateLabel.font = Fonts.h6.medium
         self.emailDetailDateLabel.numberOfLines = 1
         if let messageTime = self.date {
-            let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
-            let tm = messageTime.formattedWith("'\(LocalString._composer_on)' E, MMM d, yyyy '\(LocalString._general_at_label)' \(timeformat)")
-            self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
+            let timeFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+            let tm = String(format: LocalString._composer_forward_header_on_detail, messageTime.formattedWith("E, MMM d, yyyy"), messageTime.formattedWith(timeFormat))
+            self.emailDetailDateLabel.text = String(format: LocalString._date, tm)
         } else {
             self.emailDetailDateLabel.text = String(format: LocalString._date, "")
         }
