@@ -387,14 +387,12 @@ extension Message {
         if let error = firstError {
             Analytics.shared.error(message: .decryptedMessageBodyFailed,
                                    error: error,
-                                   extra: extra,
-                                   user: user)
+                                   extra: extra)
             throw error
         }
         Analytics.shared.error(message: .decryptedMessageBodyFailed,
                                error: "No error from crypto library",
-                               extra: extra,
-                               user: user)
+                               extra: extra)
         return nil
     }
     
@@ -432,28 +430,6 @@ extension Message {
                 PMLog.D(error.localizedDescription)
             }
         }
-        
-        let users = sharedServices.get(by: UsersManager.self)
-        let user = users.firstUser
-        let extra: [String: Any] = ["newSchema": true,
-                                    "Ks count": keys.count,
-                                    "UKs count": userKeys.count,
-                                    "newScheme Ks": newScheme,
-                                    "oldSchemaWithT Ks": oldSchemaWithToken,
-                                    "oldSchema Ks": oldSchema,
-                                    "Error message": errorMessages]
-        
-        if let error = firstError {
-            Analytics.shared.error(message: .decryptedMessageBodyFailed,
-                                   error: error,
-                                   extra: extra,
-                                   user: user)
-            throw error
-        }
-        Analytics.shared.error(message: .decryptedMessageBodyFailed,
-                               error: "No error from crypto library",
-                               extra: extra,
-                               user: user)
         return nil
     }
     

@@ -487,20 +487,17 @@ class MessageDataService : Service, HasLocalStorage {
                                         PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName saveUpstreamIfNeeded failed \(error)")
                                         Analytics.shared.error(message: .fetchMetadata,
                                                                error: error,
-                                                               extra: [Analytics.Reason.status: "save"],
-                                                               user: self.parent)
+                                                               extra: [Analytics.Reason.status: "save"])
                                     }
                                 } else {
                                     Analytics.shared.error(message: .fetchMetadata,
-                                                           error: "insert empty",
-                                                           user: self.parent)
+                                                           error: "insert empty")
                                     PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName failed \(String(describing: error))")
                                 }
                             } catch let err as NSError {
                                 Analytics.shared.error(message: .fetchMetadata,
                                                        error: err,
-                                                       extra: ["status": "try catch"],
-                                                       user: self.parent)
+                                                       extra: ["status": "try catch"])
                                 PMLog.D("fetchMessagesWithIDs failed \(err)")
                             }
                         }
@@ -511,8 +508,7 @@ class MessageDataService : Service, HasLocalStorage {
                             details = err.description
                         }
                         Analytics.shared.error(message: .fetchMetadata,
-                                               error: "Can't get the response Messages -- " + details,
-                                               user: self.parent)
+                                               error: "Can't get the response Messages -- " + details)
                         PMLog.D("fetchMessagesWithIDs can't get the response Messages")
                     }
                 }
@@ -1036,8 +1032,7 @@ class MessageDataService : Service, HasLocalStorage {
                 }
             } catch let ex as NSError {
                 Analytics.shared.error(message: .purgeOldMessages,
-                                       error: ex,
-                                       user: self.parent)
+                                       error: ex)
                 PMLog.D("error : \(ex)")
             }
         }
@@ -1322,8 +1317,7 @@ class MessageDataService : Service, HasLocalStorage {
                                                    "IsBodyEmpty": message.body == "",
                                                    "HasPlainText": sendBuilder.hasPlainText,
                                                    "HasMIME": sendBuilder.hasMime,
-                                                   "HasAtt": attachments.count != 0],
-                                           user: userManager)
+                                                   "HasAtt": attachments.count != 0])
                 }
                 
                 if let _ = UUID(uuidString: message.messageID) {
@@ -1390,7 +1384,7 @@ class MessageDataService : Service, HasLocalStorage {
                         "status": status.rawValue,
                         "emailCount": emails.count,
                         "attCount": attachments.count
-                    ], user: userManager)
+                    ])
                     // show message now
                     self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
                                                                                                  error: "\(LocalString._message_sent_failed_desc):\n\(error!.localizedDescription)",
@@ -1454,7 +1448,7 @@ class MessageDataService : Service, HasLocalStorage {
                     "status": status.rawValue,
                     "emailCount": emails.count,
                     "attCount": attachments.count
-                ], user: userManager)
+                ])
                 completion?(nil, nil, err as NSError)
             }.finally {
                 context.performAndWait {

@@ -352,8 +352,7 @@ extension CacheService {
                 try self.context.execute(request)
             } catch let ex as NSError {
                 Analytics.shared.error(message: .purgeOldMessages,
-                                       error: ex,
-                                       user: nil)
+                                       error: ex)
                 PMLog.D("error : \(ex)")
             }
         }

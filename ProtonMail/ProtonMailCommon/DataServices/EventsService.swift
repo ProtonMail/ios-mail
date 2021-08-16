@@ -332,8 +332,7 @@ extension EventsService {
                                 if error != nil  {
                                     Analytics.shared.error(message: .grtJSONSerialization,
                                                            error: error!,
-                                                           extra: [Analytics.Reason.status: "Delete"],
-                                                           user: self.userManager)
+                                                           extra: [Analytics.Reason.status: "Delete"])
                                     PMLog.D(" error: \(String(describing: error))")
                                 }
                             }
@@ -434,8 +433,7 @@ extension EventsService {
                                         messagesNoCache.append(messageid)
                                     }
                                     Analytics.shared.error(message: .grtJSONSerialization,
-                                                           error: "GRTJSONSerialization Insert - context nil",
-                                                           user: self.userManager)
+                                                           error: "GRTJSONSerialization Insert - context nil")
                                 }
                             } else {
                                 // when GRTJSONSerialization inset returns no thing
@@ -444,8 +442,7 @@ extension EventsService {
                                 }
                                 PMLog.D(" case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2): insert empty")
                                 Analytics.shared.error(message: .grtJSONSerialization,
-                                                       error: "GRTJSONSerialization Insert - insert empty",
-                                                       user: self.userManager)
+                                                       error: "GRTJSONSerialization Insert - insert empty")
                             }
                         } catch let err as NSError {
                             // when GRTJSONSerialization insert failed
@@ -468,8 +465,7 @@ extension EventsService {
                             }
                             Analytics.shared.error(message: .grtJSONSerialization,
                                                    error: err,
-                                                   extra: [Analytics.Reason.status: status],
-                                                   user: self.userManager)
+                                                   extra: [Analytics.Reason.status: status])
                             PMLog.D(" error: \(err)")
                         }
                     default:
@@ -481,8 +477,7 @@ extension EventsService {
                     if error != nil  {
                         Analytics.shared.error(message: .grtJSONSerialization,
                                                error: error!,
-                                               extra: [Analytics.Reason.status: "Save"],
-                                               user: self.userManager)
+                                               extra: [Analytics.Reason.status: "Save"])
                         PMLog.D(" error: \(String(describing: error))")
                     }
                 }
@@ -535,8 +530,7 @@ extension EventsService {
                                 if error != nil {
                                     Analytics.shared.error(message: .coreDataError,
                                                            error: error!,
-                                                           extra: [Analytics.Reason.status: "Delete"],
-                                                           user: self.userManager)
+                                                           extra: [Analytics.Reason.status: "Delete"])
                                     PMLog.D(" error: \(String(describing: error))")
                                 }
                             }
@@ -557,8 +551,7 @@ extension EventsService {
                                 if error != nil {
                                     Analytics.shared.error(message: .coreDataError,
                                                            error: error!,
-                                                           extra: [Analytics.Reason.status: "Insert"],
-                                                           user: self.userManager)
+                                                           extra: [Analytics.Reason.status: "Insert"])
                                     PMLog.D(" error: \(String(describing: error))")
                                     conversationsNeedRefetch.append(conversationEvent.ID)
                                 }
@@ -567,8 +560,7 @@ extension EventsService {
                                 conversationsNeedRefetch.append(conversationEvent.ID)
                                 Analytics.shared.error(message: .grtJSONSerialization,
                                                        error: error,
-                                                       extra: [Analytics.Reason.status: "Insert"],
-                                                       user: self.userManager)
+                                                       extra: [Analytics.Reason.status: "Insert"])
                             }
                         case IncrementalUpdateType.update_draft, IncrementalUpdateType.update_flags:
                             do {
@@ -597,8 +589,7 @@ extension EventsService {
                                 if error != nil {
                                     Analytics.shared.error(message: .coreDataError,
                                                            error: error!,
-                                                           extra: [Analytics.Reason.status: "Update"],
-                                                           user: self.userManager)
+                                                           extra: [Analytics.Reason.status: "Update"])
                                     PMLog.D(" error: \(String(describing: error))")
                                     conversationsNeedRefetch.append(conversationEvent.ID)
                                 }
@@ -606,8 +597,7 @@ extension EventsService {
                                 conversationsNeedRefetch.append(conversationEvent.ID)
                                 Analytics.shared.error(message: .grtJSONSerialization,
                                                        error: error,
-                                                       extra: [Analytics.Reason.status: "Update"],
-                                                       user: self.userManager)
+                                                       extra: [Analytics.Reason.status: "Update"])
                             }
                         default:
                             break
@@ -617,8 +607,7 @@ extension EventsService {
                         if error != nil  {
                             Analytics.shared.error(message: .grtJSONSerialization,
                                                    error: error!,
-                                                   extra: [Analytics.Reason.status: "Save"],
-                                                   user: self.userManager)
+                                                   extra: [Analytics.Reason.status: "Save"])
                             PMLog.D(" error: \(String(describing: error))")
                         }
                     }
