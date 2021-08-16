@@ -27,7 +27,7 @@ public class EncryptedSearchIndexService {
 }
 
 extension EncryptedSearchIndexService {
-    func createSearchIndex(_ userID: String) -> Connection? {
+    func connectToSearchIndex(_ userID: String) -> Connection? {
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
         do {
@@ -144,5 +144,38 @@ extension EncryptedSearchIndexService {
         
         let pathToDB: String = path.absoluteString + dbName
         return pathToDB
+    }
+    
+    func checkIfSearchIndexExists(for userID: String) -> Bool {
+        let dbName: String = self.getSearchIndexName(userID)
+        let pathToDB: String = self.getSearchIndexPathToDB(dbName)
+        let urlToDB: URL? = URL(string: pathToDB)
+        
+        if FileManager.default.fileExists(atPath: urlToDB!.path) {
+            //print("Search index already exists!")
+            return true
+        }
+        
+        return false
+    }
+    
+    func getNumberOfEntriesInSearchIndex(for userID: String) -> Int {
+        var numberOfEntries: Int? = 0
+        
+        //If there is no search index for an user, then the number of entries is zero
+        if self.checkIfSearchIndexExists(for: userID) == false {
+            return numberOfEntries!
+        }
+        
+        //connect to DB
+        let handleToDB: Connection? = self.connectToSearchIndex(userID)
+        //check total number of rows in db
+        do {
+            numberOfEntries = try handleToDB?.scalar(self.searchableMessages.count)
+        } catch {
+            print("Error when getting the number of entries in the search index: \(error)")
+        }
+        
+        return numberOfEntries!
     }
 }
