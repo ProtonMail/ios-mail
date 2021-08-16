@@ -168,7 +168,7 @@ final class MainQueueHandler: QueueHandler {
             }
             
             PMLog.D("Handle queue task error: \(String(describing: error))")
-            Analytics.shared.error(message: .queueError, error: error, user: nil)
+            Analytics.shared.error(message: .queueError, error: error)
             
             var statusCode = 200
             let errorCode = error.code
@@ -251,8 +251,7 @@ final class MainQueueHandler: QueueHandler {
             if statusCode != .ok && statusCode != .notFound && statusCode != .internalServerError && !isInternetIssue {
                 //show error
                 Analytics.shared.error(message: .queueError,
-                                       error: error.localizedDescription,
-                                       user: nil)
+                                       error: error.localizedDescription)
                 taskResult.action = .removeRelated
                 notifyQueueManager(queueTask, taskResult)
                 return
@@ -335,7 +334,7 @@ extension MainQueueHandler {
                 let completionWrapper: CompletionBlock = { task, response, error in
                     guard let mess = response else {
                         if let err = error {
-                            Analytics.shared.error(message: .saveDraftError, error: err, user: self.user)
+                            Analytics.shared.error(message: .saveDraftError, error: err)
                             DispatchQueue.main.async {
                                 NSError.alertSavingDraftError(details: err.localizedDescription)
                             }
@@ -351,8 +350,7 @@ extension MainQueueHandler {
                         let messageIDError = NSError.badParameter("messageID")
                         Analytics.shared.error(message: .saveDraftError,
                                                error: messageIDError,
-                                               extra: ["dicKeys": keys],
-                                               user: self.user)
+                                               extra: ["dicKeys": keys])
                         // The error is messageID missing from the response
                         // But this is meanless to users
                         // I think parse error is more understandable
@@ -419,7 +417,7 @@ extension MainQueueHandler {
                                 PMLog.D(" error: \(save_error)")
                             }
                         } catch let exc as NSError {
-                            Analytics.shared.error(message: .grtJSONSerialization, error: exc, user: self.user)
+                            Analytics.shared.error(message: .grtJSONSerialization, error: exc)
                             completion?(task, response, exc)
                             return
                         }
@@ -464,7 +462,7 @@ extension MainQueueHandler {
                 }
             } catch let ex as NSError {
                 // error: context thrown trying to get Message
-                Analytics.shared.error(message: .saveDraftError, error: ex, user: self.user)
+                Analytics.shared.error(message: .saveDraftError, error: ex)
                 completion?(nil, nil, ex)
                 return
             }
@@ -582,7 +580,7 @@ extension MainQueueHandler {
                         }
                     } else {
                         if let err = error {
-                            Analytics.shared.error(message: .uploadAttachmentError, error: err, user: self.user)
+                            Analytics.shared.error(message: .uploadAttachmentError, error: err)
                         }
                         completion?(task, response, error)
                     }
@@ -695,7 +693,7 @@ extension MainQueueHandler {
                 completion?(nil, nil, nil)
             } catch let ex as NSError {
                 // error: context thrown trying to get Message
-                Analytics.shared.error(message: .updateAddressIDError, error: ex, user: self.user)
+                Analytics.shared.error(message: .updateAddressIDError, error: ex)
                 completion?(nil, nil, ex)
                 return
             }

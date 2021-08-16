@@ -33,7 +33,7 @@ final class MenuViewModel: NSObject {
     
     private var labelDataService: LabelsDataService? {
         guard let labelService = self.currentUser?.labelService else {
-            Analytics.shared.debug(message: .menuSetupFailed, extra: ["IsUserNil": self.currentUser == nil], user: self.currentUser)
+            Analytics.shared.debug(message: .menuSetupFailed, extra: ["IsUserNil": self.currentUser == nil])
             return nil
         }
         
@@ -320,8 +320,7 @@ extension MenuViewModel {
         guard let service = self.labelDataService else {
             let user = self.currentUser
             Analytics.shared.debug(message: .menuSetupFailed,
-                                   extra: ["IsUserNil": user == nil],
-                                   user: user)
+                                   extra: ["IsUserNil": user == nil])
             return
         }
         
