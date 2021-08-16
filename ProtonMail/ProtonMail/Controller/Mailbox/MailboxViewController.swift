@@ -264,6 +264,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
 
         self.updateUnreadButton()
+        deleteExpiredMessages()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

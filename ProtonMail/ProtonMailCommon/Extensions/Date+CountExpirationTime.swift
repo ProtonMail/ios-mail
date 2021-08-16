@@ -27,9 +27,9 @@ extension Date {
     var countExpirationTime: String {
         let distance: TimeInterval
         if #available(iOS 13.0, *) {
-            distance = Date().distance(to: self)
+            distance = Date().distance(to: self) + 60
         } else {
-            distance = timeIntervalSinceReferenceDate - Date().timeIntervalSinceReferenceDate
+            distance = timeIntervalSinceReferenceDate - Date().timeIntervalSinceReferenceDate + 60
         }
 
         if distance > 86_400 {
