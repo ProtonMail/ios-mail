@@ -60,7 +60,7 @@ class ExpirationBannerView: UIView {
     }
 
     func updateTitleWith(offset: Int) {
-        let (d, h, m) = durationsBySecond(seconds: offset)
+        let (d, h, m) = durationsBySecond(seconds: offset + 60)
         var textAttribute = FontManager.DefaultSmallStrong
         textAttribute.addTruncatingTail()
         if offset <= 0 {

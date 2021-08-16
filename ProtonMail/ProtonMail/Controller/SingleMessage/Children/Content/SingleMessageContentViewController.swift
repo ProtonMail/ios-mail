@@ -347,6 +347,7 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
     }
 
     func handleMessageExpired() {
+        self.viewModel.deleteExpiredMessages()
         self.navigationController?.popViewController(animated: true)
     }
 
