@@ -324,6 +324,7 @@ private extension ConversationViewController {
         let singleMessageContentViewController = SingleMessageContentViewController(
             viewModel: contentViewModel,
             parentScrollView: customView.tableView,
+            viewMode: .conversation,
             navigationAction: { [weak self] in self?.handleSingleMessageAction(action: $0) }
         )
 

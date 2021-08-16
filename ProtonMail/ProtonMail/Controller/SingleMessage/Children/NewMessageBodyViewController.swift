@@ -57,17 +57,19 @@ class NewMessageBodyViewController: UIViewController {
     private var scrollDecelerationOverlay: ViewBlowingAfterTouch!
     private var scrollDecelerationOverlayObservation: NSKeyValueObservation!
     private var enclosingScrollerObservation: NSKeyValueObservation!
-    private var verticalRecognizer: UIPanGestureRecognizer!
+    private var verticalRecognizer: UIPanGestureRecognizer?
     private var gestureInitialOffset: CGPoint = .zero
 
     private var lastContentOffset: CGPoint = .zero
     private var lastZoom: CGAffineTransform = .identity
     private var initialZoom: CGAffineTransform = .identity
     private var defaultScale: CGFloat?
+    private let viewMode: ViewMode
 
-    init(viewModel: NewMessageBodyViewModel, parentScrollView: ScrollableContainer) {
+    init(viewModel: NewMessageBodyViewModel, parentScrollView: ScrollableContainer, viewMode: ViewMode) {
         self.viewModel = viewModel
         self.scrollViewContainer = parentScrollView
+        self.viewMode = viewMode
         super.init(nibName: nil, bundle: nil)
         viewModel.delegate = self
     }
@@ -132,19 +134,23 @@ class NewMessageBodyViewController: UIViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.navigationDelegate = self
         webView.uiDelegate = self
-        webView.scrollView.delegate = self
+        if viewMode == .singleMessage {
+            webView.scrollView.delegate = self
+            // Work around for webview tap too sensitive. Disable the recognizer when the view is just loaded.
+            webView.scrollView.isScrollEnabled = false
+        }
         webView.scrollView.contentInsetAdjustmentBehavior = .never
         webView.scrollView.bounces = false // otherwise 1px margin will make contents horizontally scrollable
         webView.scrollView.bouncesZoom = false
         webView.scrollView.isDirectionalLockEnabled = false
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.showsHorizontalScrollIndicator = true
-        // Work around for webview tap too sensitive. Disable the recognizer when the view is just loaded.
-        webView.scrollView.isScrollEnabled = false
 
         self.customView.embed(webView)
 
-        self.prepareGestureRecognizer()
+        if viewMode == .singleMessage {
+            self.prepareGestureRecognizer()
+        }
     }
 
     private func updateViewHeight(to newHeight: CGFloat) {
@@ -152,14 +158,15 @@ class NewMessageBodyViewController: UIViewController {
     }
 
     private func prepareGestureRecognizer() {
-        self.verticalRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan))
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(pan))
+        self.verticalRecognizer = gesture
         if #available(iOS 13.4, *) {
-            self.verticalRecognizer.allowedScrollTypesMask = .all
+            self.verticalRecognizer?.allowedScrollTypesMask = .all
         }
-        self.verticalRecognizer.delegate = self
-        self.verticalRecognizer.maximumNumberOfTouches = 1
-        self.webView?.scrollView.addGestureRecognizer(verticalRecognizer)
-        self.verticalRecognizer.isEnabled = false
+        self.verticalRecognizer?.delegate = self
+        self.verticalRecognizer?.maximumNumberOfTouches = 1
+        self.webView?.scrollView.addGestureRecognizer(gesture)
+        self.verticalRecognizer?.isEnabled = false
     }
 
     private func stopInertia() {
@@ -365,7 +372,7 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
 extension NewMessageBodyViewController: UIScrollViewDelegate {
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
         self.webView?.scrollView.isScrollEnabled = true
-        self.verticalRecognizer.isEnabled = true
+        self.verticalRecognizer?.isEnabled = true
         self.contentSizeObservation = nil
         self.loadingObservation = nil
         self.lastZoom = view?.transform ?? .identity
@@ -391,7 +398,7 @@ extension NewMessageBodyViewController: UIScrollViewDelegate {
         if let defaultScale = self.defaultScale {
             if round(scrollView.zoomScale * 1_000) / 1_000.0 == defaultScale {
                 self.webView?.scrollView.isScrollEnabled = false
-                self.verticalRecognizer.isEnabled = false
+                self.verticalRecognizer?.isEnabled = false
                 if self.originalHeight >= 0 {
                     self.updateViewHeight(to: self.originalHeight)
                 }
@@ -399,7 +406,7 @@ extension NewMessageBodyViewController: UIScrollViewDelegate {
             }
         }
         self.webView?.scrollView.isScrollEnabled = true
-        self.verticalRecognizer.isEnabled = true
+        self.verticalRecognizer?.isEnabled = true
     }
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
@@ -407,8 +414,10 @@ extension NewMessageBodyViewController: UIScrollViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if !scrollView.isZooming {
-            scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
+        if let defaultScale = self.defaultScale {
+            if round(scrollView.zoomScale * 1_000) / 1_000.0 == defaultScale {
+                scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
+            }
         }
     }
 }

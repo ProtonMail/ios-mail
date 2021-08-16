@@ -25,6 +25,7 @@ class SingleMessageContentViewController: UIViewController {
 
     init(viewModel: SingleMessageContentViewModel,
          parentScrollView: UIScrollView,
+         viewMode: ViewMode,
          navigationAction: @escaping (SingleMessageNavigationAction) -> Void) {
         self.viewModel = viewModel
         self.parentScrollView = parentScrollView
@@ -36,7 +37,7 @@ class SingleMessageContentViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         self.messageBodyViewController =
-            NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel, parentScrollView: self)
+            NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel, parentScrollView: self, viewMode: viewMode)
         self.messageBodyViewController.delegate = self
 
         self.attachmentViewController?.delegate = self
