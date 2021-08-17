@@ -1261,13 +1261,16 @@ extension MailboxViewController {
     }
     
     internal func showErrorMessage(_ error: NSError?) {
-        guard let error = error else { return }
+        guard let error = error, UIApplication.shared.applicationState == .active else { return }
         showBanner(error.localizedDescription,
                    appearance: .red,
                    from: .top)
     }
     
     internal func showTimeOutErrorMessage() {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         showBanner(LocalString._general_request_timed_out,// + " --- this is a extra long error message. test message.",
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
@@ -1275,6 +1278,9 @@ extension MailboxViewController {
     }
     
     internal func showNoInternetErrorMessage() {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         showBanner(LocalString._general_no_connectivity_detected,
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
@@ -1282,6 +1288,9 @@ extension MailboxViewController {
     }
     
     internal func showOfflineErrorMessage(_ error : NSError?) {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         showBanner(error?.localizedDescription ?? LocalString._general_pm_offline,
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
@@ -1289,6 +1298,9 @@ extension MailboxViewController {
     }
     
     internal func show503ErrorMessage(_ error : NSError?) {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         showBanner(LocalString._general_api_server_not_reachable,
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
@@ -1296,6 +1308,9 @@ extension MailboxViewController {
     }
     
     internal func showError(_ error : NSError) {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         let message = error.localizedDescription
         showBanner(message,
                    appearance: .red,
