@@ -196,6 +196,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self?.handleViewModeIsChanged()
         }
 
+        configureUnreadFilterButton()
+
+        if [Message.Location.spam,
+            Message.Location.archive,
+            Message.Location.trash,
+            Message.Location.sent].map(\.rawValue).contains(viewModel.labelID)
+            && viewModel.isCurrentUserSelectedUnreadFilterInInbox {
+            unreadMessageFilterButtonTapped(unreadFilterButton as Any)
+        }
+
         self.viewModel.setupFetchController(self,
                                             isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
         
@@ -224,8 +234,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         //Setup top actions
         self.topActionsView.backgroundColor = UIColorManager.BackgroundNorm
         self.updateTimeLabel.textColor = UIColorManager.TextHint
-        
-        configureUnreadFilterButton()
         
         self.updateUnreadButton()
         self.updateLastUpdateTimeLabel()
