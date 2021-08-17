@@ -247,6 +247,15 @@
 /* Error */
 "App is locked" = "Програму заблоковано";
 
+/* security title in settings */
+"App PIN" = "ПІН";
+
+/* security title in settings */
+"App PIN & FaceID" = "ПІН і FaceID";
+
+/* security title in settings */
+"App PIN & TouchID" = "ПІН і TouchID";
+
 /* section title in settings */
 "App settings" = "Параметри програми";
 
@@ -351,9 +360,6 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Автозавантаження вбудованих зображень";
-
-/* section title in settings */
-"Auto-lock" = "Автозамкнення";
 
 /* top left back button */
 "Back" = "Назад";
@@ -2159,9 +2165,6 @@
  *  SearchViewController */
 "Search" = "Пошук";
 
-/* section title in settings */
-"Security" = "Безпека";
-
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "Виберіть варіант";
 
@@ -2212,6 +2215,9 @@
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Надсилання повідомлень з адреси %1$@ є платною функцією. Ваше повідомлення буде надіслано з типової адреси %2$@";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Можна буде надіслати\nпісля вивантаження вкладень";
 
 /* menu title */
 "Sent" = "Надіслані";

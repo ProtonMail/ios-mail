@@ -247,6 +247,15 @@
 /* Error */
 "App is locked" = "アプリはロックされています。";
 
+/* security title in settings */
+"App PIN" = "App PIN";
+
+/* security title in settings */
+"App PIN & FaceID" = "App PIN & FaceID";
+
+/* security title in settings */
+"App PIN & TouchID" = "App PIN & TouchID";
+
 /* section title in settings */
 "App settings" = "アプリの設定";
 
@@ -350,10 +359,7 @@
 "Auto show remote content" = "外部コンテンツの自動読み込み";
 
 /* settings general section title */
-"Auto-load embedded images" = "Auto-load embedded images";
-
-/* section title in settings */
-"Auto-lock" = "自動ロック";
+"Auto-load embedded images" = "埋め込み画像を自動で読み込む";
 
 /* top left back button */
 "Back" = "戻る";
@@ -805,16 +811,16 @@
 "DisplayName" = "表示名";
 
 /* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "Do you really want to remove this file from attachments?";
+"Do you really want to remove this file from attachments?" = "この添付ファイルを削除してよろしいですか？";
 
 /* Description */
-"Do you want to cancel the process?" = "手続きをキャンセルしますか？";
+"Do you want to cancel the process?" = "キャンセルしてよろしいですか？";
 
 /* Warning message */
-"Do you want to discard the changes?" = "変更を破棄しますか。";
+"Do you want to discard the changes?" = "変更を破棄してよろしいですか？";
 
 /* No comment provided by engineer. */
-"Do you want to discard your changes?" = "変更を破棄しますか。";
+"Do you want to discard your changes?" = "変更を破棄してよろしいですか？";
 
 /* Title */
 "Do you want to save the unsaved changes?" = "未保存の変更を保存しますか？";
@@ -940,25 +946,25 @@
 "Enable email notices" = "メール通知を有効化";
 
 /* settings protection section title */
-"Enable Face ID" = "Enable Face ID";
+"Enable Face ID" = "Face ID を有効にする";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "PIN を有効にする";
 
 /* (No Comment) */
-"Enable Pin Protection" = "PINによる保護を有効にする";
+"Enable Pin Protection" = "PIN による保護を有効にする";
 
 /* settings protection section title */
-"Enable PIN Protection" = "Enable PIN Protection";
+"Enable PIN Protection" = "PIN による保護を有効にする";
 
 /* Title */
 "Enable signature" = "署名の有効化";
 
 /* settings protection section title */
-"Enable Touch ID" = "Enable Touch ID";
+"Enable Touch ID" = "Touch ID を有効にする";
 
 /* (No Comment) */
-"Enable TouchID" = "TouchIDを有効にする";
+"Enable TouchID" = "Touch ID を有効にする";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Protonによって暗号化済み";
@@ -1949,7 +1955,7 @@
 "Please use ProtonMail App sign-in first." = "Please use ProtonMail App sign-in first.";
 
 /* Alert */
-"Please use the web application to reset your password." = "パスワードをリセットするにはWeb版のProtonMailを使用してください。";
+"Please use the web application to reset your password." = "パスワードのリセットにはウェブ版 ProtonMail をご使用ください。";
 
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "メールボックスパスワードを変更するにはProtonMailのWeb版を使用してください。";
@@ -2159,9 +2165,6 @@
  *  SearchViewController */
 "Search" = "検索";
 
-/* section title in settings */
-"Security" = "セキュリティ";
-
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "オプションの選択";
 
@@ -2212,6 +2215,9 @@
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "アドレス%1$@からのメッセージ送信は有料の機能です。 あなたのメッセージは既定のアドレス%2$@から送信されます";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
 
 /* menu title */
 "Sent" = "送信済み";

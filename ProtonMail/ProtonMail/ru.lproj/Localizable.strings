@@ -247,6 +247,15 @@
 /* Error */
 "App is locked" = "Приложение заблокировано";
 
+/* security title in settings */
+"App PIN" = "PIN-код";
+
+/* security title in settings */
+"App PIN & FaceID" = "PIN-код & FaceID";
+
+/* security title in settings */
+"App PIN & TouchID" = "PIN-код & TouchID";
+
 /* section title in settings */
 "App settings" = "Настройки приложения";
 
@@ -351,9 +360,6 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Автозагрузка встроенных изображений";
-
-/* section title in settings */
-"Auto-lock" = "Автоблокировка";
 
 /* top left back button */
 "Back" = "Назад";
@@ -614,13 +620,13 @@
 "Connect Account" = "Подключить учётную запись";
 
 /* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+"Contact deleted, will be synced when connection is available" = "Контакт удалён. Он будет синхронизирован, когда подключение станет доступно";
 
 /* contact section title */
 "Contact details" = "Информация контакта";
 
 /* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
+"Contact saved, will be synced when connection is available" = "Контакт сохранён. Он будет синхронизирован, когда подключение станет доступно";
 
 /* Title */
 "Contact the ProtonMail team" = "Связаться с командой ProtonMail";
@@ -2159,9 +2165,6 @@
  *  SearchViewController */
 "Search" = "Поиск";
 
-/* section title in settings */
-"Security" = "Безопасность";
-
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "Выберите вариант";
 
@@ -2212,6 +2215,9 @@
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Отправка сообщений с %1$@ – платная функция. Ваше сообщение будет отправлено с вашего обычного адреса %2$@";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Отправка будет возможна когда будут загружены вложения";
 
 /* menu title */
 "Sent" = "Отправленные";
@@ -2577,7 +2583,7 @@
 "This message contains embedded images." = "Это сообщение содержит встроенные изображения.";
 
 /* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "This message contains remote content and embedded images";
+"This message contains remote content and embedded images" = "В этом сообщении есть внешнее содержимое и встроенные изображения";
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "Это сообщение содержит удаленное содержимое.";

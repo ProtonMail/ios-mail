@@ -247,6 +247,15 @@
 /* Error */
 "App is locked" = "Asnas yesekkeṛ";
 
+/* security title in settings */
+"App PIN" = "PIN n usnas";
+
+/* security title in settings */
+"App PIN & FaceID" = "PIN n usnas & FaceID";
+
+/* security title in settings */
+"App PIN & TouchID" = "PIN n usnas & TouchID";
+
 /* section title in settings */
 "App settings" = "Iɣewwaṛen n usnas";
 
@@ -351,9 +360,6 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Sali tugniwin tusliɣin s wudem awurman";
-
-/* section title in settings */
-"Auto-lock" = "Asekkeṛ awurman";
 
 /* top left back button */
 "Back" = "Ar deffir";
@@ -2159,9 +2165,6 @@
  *  SearchViewController */
 "Search" = "Nadi";
 
-/* section title in settings */
-"Security" = "Taɣellist";
-
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "Fren tarrayt";
 
@@ -2212,6 +2215,9 @@
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Tuzna n iznan seg tansa %1$@ d tamahilt s uxeles. Izen-inek ad itwazen seg tansa-inek tamezwart %2$@";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Ad tili tuzna mi ara d-alin yimeddayen";
 
 /* menu title */
 "Sent" = "Yettwazen";
