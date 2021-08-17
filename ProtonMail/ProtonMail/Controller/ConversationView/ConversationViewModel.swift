@@ -14,7 +14,7 @@ class ConversationViewModel {
     var showNewMessageArrivedFloaty: ((String) -> Void)?
 
     var messagesTitle: String {
-        .localizedStringWithFormat(LocalString._general_message, messagesDataSource.count)
+        .localizedStringWithFormat(LocalString._general_message, conversation.numMessages.intValue)
     }
 
     var simpleNavigationViewType: NavigationViewType {
