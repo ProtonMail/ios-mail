@@ -45,12 +45,13 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             guard let self = self else { return }
             self.refreshNavigationViewIfNeeded()
             self.starButtonSetUp(starred: self.viewModel.conversation.starred)
-            // Prevent the banner being covered by the action bar
-            self.view.subviews.compactMap({ $0 as? PMBanner }).forEach({ self.view.bringSubviewToFront($0) })
             let isNewMessageFloatyPresented = self.customView.subviews
                 .contains(where: { $0 is ConversationNewMessageFloatyView })
             guard !isNewMessageFloatyPresented else { return }
             self.reloadActionBar()
+
+            // Prevent the banner being covered by the action bar
+            self.view.subviews.compactMap({ $0 as? PMBanner }).forEach({ self.view.bringSubviewToFront($0) })
         }
 
         viewModel.dismissView = { [weak self] in

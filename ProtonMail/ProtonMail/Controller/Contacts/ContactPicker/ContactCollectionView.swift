@@ -377,7 +377,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         } else if self.isCell(entry: indexPath) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContactEntryCell", for: indexPath) as! ContactCollectionViewEntryCell
             cell.delegate = self
-            if (self.isFirstResponder || !self.searchText.isEmpty)
+            if (self.isFirstResponder || (!self.searchText.isEmpty && self.searchText != " "))
                 && self.indexPathOfSelectedCell == nil {
                 delay(0.1) {
                     cell.setFocus()

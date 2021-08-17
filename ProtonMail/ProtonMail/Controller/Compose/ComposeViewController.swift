@@ -81,7 +81,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         self.dismissKeyboard()
         self.dismiss(animated: true, completion: nil)
     }
-    private var isShowingConfirm : Bool = false
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -162,21 +161,11 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             switch self.viewModel.messageAction
             {
             case .openDraft, .reply, .replyAll:
-                if !self.isShowingConfirm {
-                    //TODO:: remove the focus for now revert later
-                    //self.focus()
-                }
                 self.headerView?.notifyViewSize(true)
             case .forward:
-                if !self.isShowingConfirm {
-                    let _ = self.headerView?.toContactPicker.becomeFirstResponder()
-                }
+                let _ = self.headerView?.toContactPicker.becomeFirstResponder()
             default:
-                if !self.isShowingConfirm {
-                    //TODO:: remove the focus for now revert later
-                    //let _ = self.composeView.toContactPicker.becomeFirstResponder()
-                }
-                break
+                let _ = self.headerView?.toContactPicker.becomeFirstResponder()
             }
         }.catch { error in
             // TODO: handle error
@@ -188,18 +177,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         /// change message as read
         self.viewModel.markAsRead()
         generateAccessibilityIdentifiers()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        #if !APP_EXTENSION
-        let actionToFilter: [ComposeMessageAction] = [.reply, .replyAll]
-        if !actionToFilter.contains(viewModel.messageAction) {
-            _ = headerView.toContactPicker.becomeFirstResponder()
-        }
-        #endif
-        
     }
 
     private func retrieveAllContacts() -> Promise<Void> {
@@ -523,7 +500,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         
         // Cancel handling
         let dismiss: (() -> Void) = {
-            self.isShowingConfirm = false
             self.dismissKeyboard()
             self.cancel()
             self.dismiss()
