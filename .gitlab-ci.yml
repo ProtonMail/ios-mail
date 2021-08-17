@@ -50,6 +50,8 @@ unit_tests:
     - merge_requests
   except:
     - schedules
+  variables:
+    GIT_DEPTH: 1
   artifacts:
     reports:
       cobertura: ./test_output/slatherOutput/cobertura.xml
@@ -82,6 +84,8 @@ ui_tests:
       - merge_requests
     variables:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "develop"
+  variables:
+    GIT_DEPTH: 1
   artifacts:
     when: always
     name: "test-report"
@@ -110,6 +114,8 @@ feature_tests:
   stage: test
   rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
+  variables:
+    GIT_DEPTH: 1
   artifacts:
     when: always
     name: "test-report"
@@ -196,6 +202,8 @@ build-release-enterprise-app-and-upload:
   dependencies: []
   stage: enterprise_release
   when: manual
+  variables:
+    GIT_DEPTH: 1
   artifacts:
     name: "iOS mail app release enterprise build"
     paths:
@@ -218,6 +226,8 @@ build-test-enterprise-app-and-upload:
   dependencies: []
   stage: enterprise_test
   when: manual
+  variables:
+    GIT_DEPTH: 1
   artifacts:
     name: "iOS mail app test enterprise build"
     paths:
