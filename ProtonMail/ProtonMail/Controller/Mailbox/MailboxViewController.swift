@@ -159,6 +159,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         self.updateLastUpdateTimeLabel()
         self.updateUnreadButton()
+
+        startAutoFetch()
+    }
+
+    @objc func doEnterBackground() {
+        stopAutoFetch()
     }
     
     func resetTableView() {
@@ -227,10 +233,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel.cleanReviewItems()
         generateAccessibilityIdentifiers()
         configureBannerContainer()
-        
-        if viewModel.eventsService.status != .started {
-            self.startAutoFetch()
-        }
 
         SwipyCellConfig.shared.triggerPoints.removeValue(forKey: -0.75)
         SwipyCellConfig.shared.triggerPoints.removeValue(forKey: 0.75)
@@ -249,10 +251,20 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                                    selector:#selector(doEnterForeground),
                                                    name:  UIWindowScene.willEnterForegroundNotification,
                                                    object: nil)
+
+            NotificationCenter.default.addObserver(self,
+                                                   selector:#selector(doEnterBackground),
+                                                   name:  UIWindowScene.didEnterBackgroundNotification,
+                                                   object: nil)
         } else {
             NotificationCenter.default.addObserver(self,
                                                     selector:#selector(doEnterForeground),
                                                     name: UIApplication.willEnterForegroundNotification,
+                                                    object: nil)
+
+            NotificationCenter.default.addObserver(self,
+                                                    selector:#selector(doEnterBackground),
+                                                    name: UIApplication.didEnterBackgroundNotification,
                                                     object: nil)
         }
 
@@ -261,6 +273,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                  argument: self.navigationController?.view)
         }
 
+        if viewModel.eventsService.status != .started {
+            self.startAutoFetch()
+        } else {
+            viewModel.eventsService.resume()
+            viewModel.eventsService.call()
+        }
         self.updateUnreadButton()
         deleteExpiredMessages()
     }
@@ -269,7 +287,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         super.viewWillDisappear(animated)
         self.hideTopMessage()
         NotificationCenter.default.removeObserver(self)
-//        self.stopAutoFetch()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -497,21 +514,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.showError(error)
         return true
         
-    }
-    
-    private var timerInterval : TimeInterval = 30
-    private var failedTimes = 30
-    
-    private func offlineTimerReset() {
-        timerInterval = TimeInterval(arc4random_uniform(90)) + 30
-        stopAutoFetch()
-        startAutoFetch(false)
-    }
-    
-    private func onlineTimerReset() {
-        timerInterval = 30
-        stopAutoFetch()
-        startAutoFetch(false)
     }
 
     // MARK: cell configuration methods
@@ -930,10 +932,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             showNoInternetErrorMessage()
         case APIErrorCode.API_offline:
             showOfflineErrorMessage(error)
-            offlineTimerReset()
         case APIErrorCode.HTTP503, NSURLErrorBadServerResponse:
             show503ErrorMessage(error)
-            offlineTimerReset()
         case APIErrorCode.forcePasswordChange:
             showErrorMessage(error)
         default:
@@ -984,7 +984,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         var loadMore: Int?
         if error == nil {
-            self.onlineTimerReset()
             self.viewModel.resetNotificationMessage()
             if let notices = res?["Notices"] as? [String] {
                 serverNotice.check(notices)
