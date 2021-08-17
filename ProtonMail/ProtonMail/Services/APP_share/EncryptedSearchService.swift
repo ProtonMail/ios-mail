@@ -43,6 +43,8 @@ public class EncryptedSearchService {
     
     internal var searchIndex: Connection? = nil
     internal var cipherForSearchIndex: EncryptedsearchAESGCMCipher? = nil
+    internal var lastSearchQuery: String = ""
+    internal var searchResults: EncryptedsearchResultList? = nil
 }
 
 extension EncryptedSearchService {
@@ -363,7 +365,7 @@ extension EncryptedSearchService {
     }
         
     func getMessageDetails(_ messages: NSArray, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
-        let group = DispatchGroup()
+        //let group = DispatchGroup()
         let semaphore = DispatchSemaphore(value: 0)
         let batchSize: Int = 50 //TODO some calculation based on the number of available threads is most probably needed
         let numberOfBatches: Int = messages.count/batchSize
@@ -376,14 +378,14 @@ extension EncryptedSearchService {
         DispatchQueue.global(qos: .default).async {
             for (batchCount, batch) in messageBatches.enumerated() {
                 //  download message details
-                group.enter()
+                //group.enter()
                 DispatchQueue.global(qos: .default).async {
                     print("Download details for batch: \(batchCount)")
                     self.getMessageDetailsForBatch(batch as NSArray, batchCount) { messageDetails in
                         //combine results
                         results.addObjects(from: messageDetails as! [Any])
                         semaphore.signal()
-                        group.leave()
+                        //group.leave()
                     }
                 }
                 //group.wait()
@@ -775,62 +777,89 @@ extension EncryptedSearchService {
         print("Query: ", query)
         print("Page: ", page)
         
-        self.getTotalMessages {
-            let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
-            let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
-            let cache: EncryptedsearchCache? = self.getCache(cipher: cipher)
-            var searchResults: EncryptedsearchResultList? = EncryptedsearchResultList()
-            
-            self.doCachedSearch(searcher: searcher, cache: cache!, searchResult: &searchResults, totalMessages: self.totalMessages)
-            let numberOfResultsFoundByCachedSearch: Int = (searchResults?.length())!
-            print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
-            
-            print("searchedCount: ", searchResults!.searchedCount)
-            print("cacheSearchedCount: ", searchResults!.cacheSearchedCount)
-            print("cache search done?: ", searchResults!.cachedSearchDone)
-            print("search completed?: ", searchResults!.isComplete)
-            print("last message id searched: ", searchResults!.lastIDSearched)
-            print("last message time searched: ", searchResults!.lastTimeSearched)
-            
-            //Check if there are enough results from the cached search
-            let searchResultPageSize: Int = 15  //TODO Why 15?
-            if !searchResults!.isComplete && numberOfResultsFoundByCachedSearch <= searchResultPageSize {
-                print("do index search")
-                self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: &searchResults, totalMessages: self.totalMessages)
-            }
-            
-            if searchResults?.length() == 0 {
+        if query == "" {
+            completion!(nil, error) //There are no results for an empty search query
+        }
+        
+        //if search query hasn't changed, but just the page, then just display results
+        if query == self.lastSearchQuery {
+            if self.searchResults!.length() == 0 {
                 completion!(nil, error)
             } else {
-                self.extractSearchResults(searchResults!) { messages in
-                    //return search results when available
+                self.extractSearchResults(self.searchResults!, page) { messages in
                     completion!(messages, error)
+                }
+            }
+        } else {    //If there is a new search query, then trigger new search
+            self.getTotalMessages {
+                let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
+                let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
+                let cache: EncryptedsearchCache? = self.getCache(cipher: cipher)
+                self.searchResults = EncryptedsearchResultList()
+                
+                self.doCachedSearch(searcher: searcher, cache: cache!, searchResult: &self.searchResults, totalMessages: self.totalMessages)
+                let numberOfResultsFoundByCachedSearch: Int = (self.searchResults?.length())!
+                print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
+                
+                print("searchedCount: ", self.searchResults!.searchedCount)
+                print("cacheSearchedCount: ", self.searchResults!.cacheSearchedCount)
+                print("cache search done?: ", self.searchResults!.cachedSearchDone)
+                print("search completed?: ", self.searchResults!.isComplete)
+                print("last message id searched: ", self.searchResults!.lastIDSearched)
+                print("last message time searched: ", self.searchResults!.lastTimeSearched)
+                
+                //Check if there are enough results from the cached search
+                let searchResultPageSize: Int = 15  //TODO Why 15?
+                if !self.searchResults!.isComplete && numberOfResultsFoundByCachedSearch <= searchResultPageSize {
+                    print("do index search")
+                    self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: &self.searchResults, totalMessages: self.totalMessages)
+                }
+                
+                if self.searchResults!.length() == 0 {
+                    completion!(nil, error)
+                } else {
+                    self.extractSearchResults(self.searchResults!, page) { messages in
+                        //return search results when available
+                        completion!(messages, error)
+                    }
                 }
             }
         }
     }
 
-    func extractSearchResults(_ searchResults: EncryptedsearchResultList, completionHandler: @escaping ([Message.ObjectIDContainer]?) -> Void) -> Void {
-        let group = DispatchGroup()
-        var messages: [Message] = []
-
-        for index in 0...(searchResults.length()-1) {
-            group.enter()
-            DispatchQueue.global(qos: .userInitiated).async {
-                let res: EncryptedsearchSearchResult? = searchResults.get(index)
-                let m: EncryptedsearchMessage? = res?.message
-                self.getMessage(m!.id_) { mnew in
-                    messages.append(mnew!)
-                    group.leave()
+    func extractSearchResults(_ searchResults: EncryptedsearchResultList, _ page: Int, completionHandler: @escaping ([Message.ObjectIDContainer]?) -> Void) -> Void {
+        let pageSize: Int = 50
+        let numberOfPages: Int = Int(ceil(Double(searchResults.length()/pageSize)))
+        if page > numberOfPages {
+            completionHandler([])
+        } else {
+            let startIndex: Int = page * pageSize
+            var endIndex: Int = startIndex + (pageSize-1)
+            if page == numberOfPages {  //final page
+                endIndex = startIndex + (searchResults.length() % pageSize)-1
+            }
+            
+            var messages: [Message] = []
+            let group = DispatchGroup()
+            //for index in 0...(searchResults.length()-1) {
+            for index in startIndex...endIndex {
+                group.enter()
+                DispatchQueue.global(qos: .userInitiated).async {
+                    let res: EncryptedsearchSearchResult? = searchResults.get(index)
+                    let m: EncryptedsearchMessage? = res?.message
+                    self.getMessage(m!.id_) { mnew in
+                        messages.append(mnew!)
+                        group.leave()
+                    }
                 }
             }
-        }
 
-        //Wait to call completion handler until all search results are extracted
-        group.notify(queue: .main) {
-            print("Extracting search results completed!")
-            let results: [Message.ObjectIDContainer]? = messages.map(ObjectBox.init)
-            completionHandler(results)
+            //Wait to call completion handler until all search results are extracted
+            group.notify(queue: .main) {
+                print("Extracting search results completed!")
+                let results: [Message.ObjectIDContainer]? = messages.map(ObjectBox.init)
+                completionHandler(results)
+            }
         }
     }
     
