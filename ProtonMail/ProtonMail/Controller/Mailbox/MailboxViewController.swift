@@ -860,7 +860,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func showUndoView(_ title : String) {
         undoLabel.text = String(format: LocalString._messages_with_title, title)
         self.undoBottomDistance.constant = self.kUndoShowPosition
-        self.undoButton.isHidden = self.viewModel.viewMode == .conversation
+        self.undoButton.isHidden = true
         self.undoView.isHidden = false
         self.undoButtonWidth.constant = 100.0
         self.updateViewConstraints()
@@ -879,7 +879,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func showMessageMoved(title : String) {
         undoLabel.text = title
         self.undoBottomDistance.constant = self.kUndoShowPosition
-        self.undoButton.isHidden = false
+        self.undoButton.isHidden = true
         self.undoView.isHidden = false
         self.undoButtonWidth.constant = 0.0
         self.updateViewConstraints()
