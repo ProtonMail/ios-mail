@@ -247,6 +247,15 @@
 /* Error */
 "App is locked" = "應用程式已鎖定";
 
+/* security title in settings */
+"App PIN" = "應用程式 PIN";
+
+/* security title in settings */
+"App PIN & FaceID" = "應用程式 PIN 與 FaceID";
+
+/* security title in settings */
+"App PIN & TouchID" = "應用程式 PIN 與 TouchID";
+
 /* section title in settings */
 "App settings" = "應用程式設定";
 
@@ -351,9 +360,6 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "自動載入內嵌圖片";
-
-/* section title in settings */
-"Auto-lock" = "自動鎖定";
 
 /* top left back button */
 "Back" = "返回";
@@ -2159,9 +2165,6 @@
  *  SearchViewController */
 "Search" = "搜尋";
 
-/* section title in settings */
-"Security" = "安全性";
-
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "請選一個項目";
 
@@ -2212,6 +2215,9 @@
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "從 %1$@ 寄送郵件是付費功能，您的郵件將會從預設地址 %2$@ 寄出。";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "附件上傳後\n才可以傳送";
 
 /* menu title */
 "Sent" = "已傳送";

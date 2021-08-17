@@ -1,5 +1,5 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'Dana' EE, d. MMM, yyyy 'u' %@";
 
 /* Key size text when setup key */
 "(2048 bit)" = "(2048 bita)";
@@ -26,7 +26,7 @@
 "%@ storage capacity" = "%@ prostora za pohranu";
 
 /* Description */
-"%d attempt remaining" = "%d attempt remaining";
+"%d attempt remaining" = "%d pokušaja preostalo";
 
 /* Error */
 "%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
@@ -38,10 +38,10 @@
 "%d conversations" = "%d razgovora";
 
 /* day */
-"%d day" = "%d day";
+"%d day" = "%d dan";
 
 /* hour */
-"%d hour" = "%d hour";
+"%d hour" = "%d sat";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d član";
@@ -247,6 +247,15 @@
 /* Error */
 "App is locked" = "Aplikacija je zaključana";
 
+/* security title in settings */
+"App PIN" = "App PIN";
+
+/* security title in settings */
+"App PIN & FaceID" = "App PIN & FaceID";
+
+/* security title in settings */
+"App PIN & TouchID" = "App PIN & TouchID";
+
 /* section title in settings */
 "App settings" = "Postavke aplikacije";
 
@@ -351,9 +360,6 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Automatsko prikazivanje ugrađenih slika";
-
-/* section title in settings */
-"Auto-lock" = "Automatsko zaključavanje";
 
 /* top left back button */
 "Back" = "Natrag";
@@ -854,7 +860,7 @@
 "DRAFTS" = "Skice";
 
 /* Onboarding title */
-"Easily up-to-date" = "Easily up-to-date";
+"Easily up-to-date" = "Lako ažurirano";
 
 /* Action */
 "Edit" = "Uredi";
@@ -1015,7 +1021,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Unesite PIN kôd s najmanje 4 znaka i najviše 21 znak.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Enter current PIN code";
+"Enter current PIN code" = "Unesite trenutni PIN kôd";
 
 /* Title */
 "Enter Verification Code" = "Unesite kôd za provjeru";
@@ -1042,7 +1048,7 @@
 "Enter your signature here" = "Unesite vaš potpis ovdje";
 
 /* Title of alert in share extension. */
-"Error" = "Error";
+"Error" = "Pogreška";
 
 /* settings debug section title */
 "Error Logs" = "Zapisnici pogrešaka";
@@ -1166,7 +1172,7 @@
 "Get more information" = "Zatražite dodatne informacije";
 
 /* title of the next button */
-"Get Started" = "Get Started";
+"Get Started" = "Započni";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Idi u skice";
@@ -1276,7 +1282,7 @@
 "Incorrect password" = "Nevažeća lozinka";
 
 /* Error */
-"Incorrect PIN." = "Incorrect PIN.";
+"Incorrect PIN." = "Pogrešan PIN.";
 
 /* Option title */
 "Inherit color from parent folder" = "Naslijedi boju iz roditeljske mape";
@@ -1291,7 +1297,7 @@
 "Input Display Name ..." = "Unesi zaslonski naziv...";
 
 /* place holder */
-"Input Display Name…" = "Input Display Name…";
+"Input Display Name…" = "Unesite zaslonsko ime…";
 
 /* place holder */
 "Input Notification Email …" = "Unesi adresu e-pošte za obavijesti…";
@@ -1622,7 +1628,7 @@
 "Name" = "Naziv";
 
 /* Onboarding title */
-"Neat and tidy" = "Neat and tidy";
+"Neat and tidy" = "Uredno i čisto";
 
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Prijavite se besplatno";
@@ -1662,7 +1668,7 @@
 "New sign-in password" = "Nova lozinka za prijavu";
 
 /* title of the next button */
-"Next" = "Next";
+"Next" = "Sljedeće";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Nadimak";
@@ -1761,7 +1767,7 @@
 "On" = "Uklj";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
+"On E, MMM d, yyyy at %@" = "Dana EE, d. MMM, yyyy u %@";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Zanemarite aktivaciju kupnje samo ako ste sigurni da su sve vaše pretplate ažurirane. Za daljnju pomoć obratite se korisničkoj podršci. \r\n\r\n Jeste li sigurni da želite zanemariti aktivaciju?";
@@ -1773,7 +1779,7 @@
 "Open" = "Otvori";
 
 /* VoiceOver title of account switcher button in the menu */
-"Open account switcher" = "Open account switcher";
+"Open account switcher" = "Otvori prebacivač računa";
 
 /* (No Comment) */
 "OpenDraft" = "Otvori skicu";
@@ -2076,7 +2082,7 @@
 "Remove All" = "Ukloni sve";
 
 /* Settings row */
-"Remove image metadata" = "Remove image metadata";
+"Remove image metadata" = "Ukloni meta podatke slika";
 
 /* action title */
 "Remove password" = "Ukloni lozinku";
@@ -2153,14 +2159,11 @@
 "Save draft" = "Spremi skicu";
 
 /* action sheet option */
-"Scheduled" = "Planirano";
+"Scheduled" = "Zakazano";
 
 /* *
  *  SearchViewController */
 "Search" = "Pretraga";
-
-/* section title in settings */
-"Security" = "Sigurnost";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "Odaberite opciju";
@@ -2202,7 +2205,7 @@
 "Sending failed" = "Slanje nije uspjelo";
 
 /* Alert title */
-"Sending in progress" = "Sending in progress";
+"Sending in progress" = "Slanje u tijeku";
 
 /* Description */
 "Sending Message" = "Slanje poruke";
@@ -2212,6 +2215,9 @@
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Slanje poruka s %1$@ adrese je plaćena značajka. Poruka će biti poslana s zadane adrese %2$@";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
 
 /* menu title */
 "Sent" = "Poslano";
@@ -2297,10 +2303,10 @@
 "Signed out from %@ and signed in with %@" = "Odjavili ste se s %1$@ i prijavili s %2$@";
 
 /* Onboarding title */
-"Simply private" = "Simply private";
+"Simply private" = "Jednostavno privatno";
 
 /* skip button title in onboarding page */
-"Skip" = "Skip";
+"Skip" = "Preskoči";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Utišaj";
@@ -2912,7 +2918,7 @@
 "Yes, attach details of payment" = "Da, priloži pojedinosti o plaćanju";
 
 /* No comment provided by engineer. */
-"Yesterday" = "Yesterday";
+"Yesterday" = "Jučer";
 
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Upravo će te pokrenuti web preglednik i ići na";

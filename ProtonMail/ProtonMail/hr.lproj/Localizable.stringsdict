@@ -11,11 +11,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d attempts remaining</string>
+			<string>%d pokušaja preostala</string>
 			<key>one</key>
-			<string>%d attempt remaining</string>
+			<string>%d pokušaj preostao</string>
 			<key>other</key>
-			<string>%d attempts remaining</string>
+			<string>%d pokušaja preostalo</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -47,11 +47,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d days</string>
+			<string>%d dana</string>
 			<key>one</key>
-			<string>%d day</string>
+			<string>%d dan</string>
 			<key>other</key>
-			<string>%d days</string>
+			<string>%d dana</string>
 			<key>zero</key>
 			<string>%d day</string>
 		</dict>
@@ -67,11 +67,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d hours</string>
+			<string>%d sata</string>
 			<key>one</key>
-			<string>%d hour</string>
+			<string>%d sat</string>
 			<key>other</key>
-			<string>%d hours</string>
+			<string>%d sati</string>
 			<key>zero</key>
 			<string>%d hour</string>
 		</dict>

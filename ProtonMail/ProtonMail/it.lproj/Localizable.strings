@@ -247,6 +247,15 @@
 /* Error */
 "App is locked" = "L'app è bloccata";
 
+/* security title in settings */
+"App PIN" = "PIN App";
+
+/* security title in settings */
+"App PIN & FaceID" = "PIN & FaceID App";
+
+/* security title in settings */
+"App PIN & TouchID" = "PIN & TouchID App";
+
 /* section title in settings */
 "App settings" = "Impostazioni applicazione";
 
@@ -351,9 +360,6 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Carica automaticamente le immagini incorporate";
-
-/* section title in settings */
-"Auto-lock" = "Blocco automatico";
 
 /* top left back button */
 "Back" = "Indietro";
@@ -614,13 +620,13 @@
 "Connect Account" = "Connetti Account";
 
 /* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+"Contact deleted, will be synced when connection is available" = "Contatto eliminato, verrà sincronizzato quando la connessione sarà disponibile";
 
 /* contact section title */
 "Contact details" = "Dettagli del contatto";
 
 /* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
+"Contact saved, will be synced when connection is available" = "Contatto salvato, verrà sincronizzato quando la connessione sarà disponibile";
 
 /* Title */
 "Contact the ProtonMail team" = "Contattare il team di ProtonMail";
@@ -2159,9 +2165,6 @@
  *  SearchViewController */
 "Search" = "Cercare";
 
-/* section title in settings */
-"Security" = "Sicurezza";
-
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "Seleziona Un'Opzione";
 
@@ -2212,6 +2215,9 @@
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "L'invio dei messaggi dall'indirizzo %1$@ è una funzionalità a pagamento. Il messaggio sarà inviato dal tuo indirizzo predefinito %2$@";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "L'invio sarà disponibile\nquando vengono caricati gli allegati";
 
 /* menu title */
 "Sent" = "Inviata";
@@ -2577,7 +2583,7 @@
 "This message contains embedded images." = "Questo messaggio contiene immagini incorporate.";
 
 /* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "This message contains remote content and embedded images";
+"This message contains remote content and embedded images" = "Questo messaggio contiene contenuto remoto e immagini incorporate";
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "Questo messaggio contiene contenuti remoti.";

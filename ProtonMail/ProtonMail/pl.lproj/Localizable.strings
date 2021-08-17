@@ -59,7 +59,7 @@
 "%d Minute" = "%d minuta";
 
 /* auto lock time format */
-"%d Minutes" = "%d minutes";
+"%d Minutes" = "%d min.";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d zaznaczone";
@@ -247,6 +247,15 @@
 /* Error */
 "App is locked" = "Aplikacja jest zablokowana";
 
+/* security title in settings */
+"App PIN" = "Kod PIN aplikacji";
+
+/* security title in settings */
+"App PIN & FaceID" = "Kod PIN aplikacji i Face ID";
+
+/* security title in settings */
+"App PIN & TouchID" = "Kod PIN aplikacji i Touch ID";
+
 /* section title in settings */
 "App settings" = "Ustawienia aplikacji";
 
@@ -351,9 +360,6 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Automatycznie załaduj osadzone obrazy";
-
-/* section title in settings */
-"Auto-lock" = "Automatyczna blokada";
 
 /* top left back button */
 "Back" = "Wstecz";
@@ -2159,9 +2165,6 @@
  *  SearchViewController */
 "Search" = "Wyszukiwanie";
 
-/* section title in settings */
-"Security" = "Bezpieczeństwo";
-
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "Wybierz opcję";
 
@@ -2212,6 +2215,9 @@
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Wysyłanie wiadomości z adresu %1$@ jest funkcją płatną. Twoja wiadomość zostanie wysłana z Twojego domyślnego adresu %2$@";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Wysyłanie będzie dostępne\npo przesłaniu załączników";
 
 /* menu title */
 "Sent" = "Wysłane";
@@ -2783,7 +2789,7 @@
 "Update Notification Email" = "Zaktualizuj adres powiadomień";
 
 /* The title of last update status of updated time */
-"Updated %d min ago" = "Updated %d min ago";
+"Updated %d min ago" = "Zaktualizowano %d min. temu";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Zaktualizowano ponad godzinę temu";

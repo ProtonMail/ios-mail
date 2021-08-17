@@ -247,6 +247,15 @@
 /* Error */
 "App is locked" = "L’App est verrouillée";
 
+/* security title in settings */
+"App PIN" = "Code PIN de l'application";
+
+/* security title in settings */
+"App PIN & FaceID" = "Code PIN & Face ID de l’application";
+
+/* security title in settings */
+"App PIN & TouchID" = "Code PIN & Touch ID de l’application";
+
 /* section title in settings */
 "App settings" = "Paramètres de l'application";
 
@@ -351,9 +360,6 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Charger automatiquement les images incorporées";
-
-/* section title in settings */
-"Auto-lock" = "Verrouillage automatique";
 
 /* top left back button */
 "Back" = "Retour";
@@ -2159,9 +2165,6 @@
  *  SearchViewController */
 "Search" = "Rechercher";
 
-/* section title in settings */
-"Security" = "Sécurité";
-
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "Sélectionner une option";
 
@@ -2212,6 +2215,9 @@
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Envoyer des messages depuis l'adresse %1$@ est une fonctionnalité payante. Votre message sera envoyé à partir de votre adresse par défaut %2$@";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "L'envoi sera possible\nlorsque les pièces jointes auront été téléchargées";
 
 /* menu title */
 "Sent" = "Envoyés";

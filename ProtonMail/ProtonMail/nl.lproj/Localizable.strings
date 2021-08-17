@@ -247,6 +247,15 @@
 /* Error */
 "App is locked" = "App is vergrendeld";
 
+/* security title in settings */
+"App PIN" = "App PIN";
+
+/* security title in settings */
+"App PIN & FaceID" = "App PIN & FaceID";
+
+/* security title in settings */
+"App PIN & TouchID" = "App PIN & TouchID";
+
 /* section title in settings */
 "App settings" = "App instellingen";
 
@@ -351,9 +360,6 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Ingesloten afbeeldingen automatisch laden";
-
-/* section title in settings */
-"Auto-lock" = "Automatisch vergrendelen";
 
 /* top left back button */
 "Back" = "Vorige";
@@ -2159,9 +2165,6 @@
  *  SearchViewController */
 "Search" = "Zoeken";
 
-/* section title in settings */
-"Security" = "Beveiliging";
-
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "Kies een optie";
 
@@ -2212,6 +2215,9 @@
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Het verzenden van berichten vanaf het adres %1$@ is een betaalde functionaliteit. Uw bericht zal vanaf uw standaard e-mailadres %2$@ verzonden worden";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
 
 /* menu title */
 "Sent" = "Verzonden";
