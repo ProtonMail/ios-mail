@@ -84,6 +84,37 @@ extension EncryptedSearchService {
         return false
     }
     
+    func updateSearchIndex(_ action: NSFetchedResultsChangeType, _ message: Message?) {
+        switch action {
+        case .delete:
+            print("Delete message from search index")
+            self.updateMessageMetadataInSearchIndex(message!)    //delete just triggers a move to the bin folder
+        case .insert:
+            print("Insert new message to search index")
+            self.insertSingleMessageToSearchIndex(message!)
+        case .move:
+            print("Move message in search index")
+            self.updateMessageMetadataInSearchIndex(message!)    //move just triggers a change in the location of the message
+        case .update:
+            print("Update message")
+            self.updateMessageMetadataInSearchIndex(message!)
+        default:
+            return
+        }
+    }
+    
+    func insertSingleMessageToSearchIndex(_ message: Message) {
+        
+    }
+    
+    func deleteMessageFromSearchIndex(_ message: Message) {
+        //TODO implement
+    }
+    
+    func updateMessageMetadataInSearchIndex(_ message: Message) {
+        //TODO implement
+    }
+    
     private func updateCurrentUserIfNeeded() -> Void {
         let users: UsersManager = sharedServices.get()
         self.user = users.firstUser
