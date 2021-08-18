@@ -137,7 +137,9 @@ extension EncryptedSearchService {
                 NSLog("Downloading message details...") //if needed
                 //3. downloads message details
                 //self.getMessageDetailsIfNotAvailable(messages, messagesToProcess: messages.count){
-                self.getMessageDetails(messages){
+                //self.getMessageDetails(messages){
+                let messagesArray: [Message] = messages as! [Message]
+                self.getMessageDetailsWithRecursion(messagesArray) {
                     compMsgs in
                     completeMessages = compMsgs
                     print("complete messages: ", completeMessages.count)
@@ -334,6 +336,47 @@ extension EncryptedSearchService {
         group.notify(queue: .main) {
             print("Fetching message objects completed!")
             completionHandler(messages)
+        }
+    }
+    
+    func getMessageDetailsWithRecursion(_ messages: [Message], completionHandler: @escaping (NSMutableArray) -> Void){
+        let messagesWithDetails: NSMutableArray = []
+        
+        print("number of messages left to fetch details: \(messages.count)")
+        //stop recursion
+        if messages.count == 0 {
+            completionHandler(messagesWithDetails)
+        } else {
+            let m: Message = messages[0]//get the first message
+            let group = DispatchGroup()
+            
+            group.enter()
+            self.messageService.fetchMessageDetailForMessage(m, labelID: Message.Location.allmail.rawValue) { _, _, _, error in
+                if error == nil {
+                    //let mID: String = m.messageID
+                    self.getMessage(m.messageID) { newMessage in
+                        messagesWithDetails.add(newMessage!)
+                        group.leave()
+                    }
+                } else {
+                    print("Error when fetching message details: \(String(describing: error))")
+                }
+            }
+            
+            group.notify(queue: .main) {
+                //print("Fetching message details completed for message: \(m.messageID)")
+                //remove already processed entry from messages array
+                var remaindingMessages: [Message] = messages
+                if let index = remaindingMessages.firstIndex(of: m) {
+                    remaindingMessages.remove(at: index)
+                }
+                
+                //call function recursively until entire message array has been processed
+                self.getMessageDetailsWithRecursion(remaindingMessages) { mWithDetails in
+                    mWithDetails.addObjects(from: messagesWithDetails as! [Any])
+                    completionHandler(mWithDetails)
+                }
+            }
         }
     }
     
