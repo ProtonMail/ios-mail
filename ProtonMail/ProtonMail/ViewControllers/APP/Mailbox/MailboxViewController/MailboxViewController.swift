@@ -2274,6 +2274,9 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         default:
             return
         }
+        
+        //Update encrypted search index
+        EncryptedSearchService.shared.updateSearchIndex(type, anObject as? Message)
     }
 }
 
