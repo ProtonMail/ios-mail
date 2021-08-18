@@ -111,6 +111,11 @@ class NewMessageBodyViewController: UIViewController {
         var textAttribute = FontManager.Default
         textAttribute[.foregroundColor] = UIColorManager.TextInverted
         self.customView.addReloadView()
+
+        let heightConstraint = view.heightAnchor.constraint(equalToConstant: 300)
+        heightConstraint.priority = .init(999.0)
+        [heightConstraint].activate()
+        self.heightConstraint = heightConstraint
     }
 
     func prepareWebView(with loader: WebContentsSecureLoader? = nil) {
