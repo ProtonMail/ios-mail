@@ -570,8 +570,9 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
 
     private func showLabelAsActionSheetForConversation() {
         let labels = labelAsActionHandler.getLabelMenuItems()
-        let labelAsViewModel = LabelAsActionSheetViewModelConversations(menuLabels: labels,
-                                                                        conversations: [viewModel.conversation])
+        let convMessages = viewModel.messagesDataSource.compactMap(\.message)
+        let labelAsViewModel = LabelAsActionSheetViewModelConversationMessages(menuLabels: labels,
+                                                                               conversationMessages: convMessages)
 
         labelAsActionSheetPresenter
             .present(on: self.navigationController ?? self,
