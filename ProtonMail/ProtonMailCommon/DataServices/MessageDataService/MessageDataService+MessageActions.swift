@@ -96,6 +96,12 @@ extension MessageDataService {
 
         let messagesIds = messages.map(\.messageID)
         self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds), isConversation: false)
+        
+        //Delete from encrypted search index
+        for message in messages {
+            EncryptedSearchService.shared.deleteMessageFromSearchIndex(message)
+        }
+
         return true
     }
     
