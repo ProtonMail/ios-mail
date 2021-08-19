@@ -194,7 +194,8 @@ extension EncryptedSearchIndexService {
     }
     
     func deleteSearchIndex(for userID: String) -> Bool {
-        //set handles to nil
+        //explicitly close connection to DB and then set handle to nil
+        sqlite3_close(self.handleToSQliteDB?.handle)
         self.handleToSQliteDB = nil
         
         //delete database on file
