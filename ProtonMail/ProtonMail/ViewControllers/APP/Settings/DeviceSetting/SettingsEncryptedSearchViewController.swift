@@ -27,6 +27,8 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     internal var viewModel: SettingsEncryptedSearchViewModel!
     internal var coordinator: SettingsDeviceCoordinator?
     
+    internal let deleteSearchIndexButton = UIButton(type: UIButton.ButtonType.system) as UIButton
+    
     struct Key {
         static let cellHeight: CGFloat = 48.0
         
@@ -47,6 +49,13 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
+        
+        self.deleteSearchIndexButton.frame = CGRect(x: 50, y: 100, width: 150, height: 45)
+        self.deleteSearchIndexButton.backgroundColor = UIColor.lightGray
+        self.deleteSearchIndexButton.setTitle("delete searchindex", for: UIControl.State.normal)
+        self.deleteSearchIndexButton.tintColor = UIColor.black
+        self.deleteSearchIndexButton.addTarget(self, action: #selector(self.deleteSearchIndex), for: .touchUpInside)
+        self.view.addSubview(self.deleteSearchIndexButton)
     }
     
     func getCoordinator() -> CoordinatorNew? {
@@ -127,4 +136,10 @@ extension SettingsEncryptedSearchViewController {
         }
         return header
     }*/
+    
+    @objc func deleteSearchIndex(_ sender: UIButton!){
+        EncryptedSearchService.shared.deleteSearchIndex()
+        self.viewModel.isEncryptedSearch = false //set toggle button to false
+        self.tableView.reloadData() //refresh the view after
+    }
 }
