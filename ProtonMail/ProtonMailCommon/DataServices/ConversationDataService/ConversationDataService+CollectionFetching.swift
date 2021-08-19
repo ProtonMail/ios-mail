@@ -75,6 +75,8 @@ extension ConversationDataService {
                 if shouldReset {
                     self.cleanAll()
                     self.lastUpdatedStore.clear()
+                    self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
+                    self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
                 }
                 let messcount = responseDict?["Total"] as? Int ?? 0
                 let context = self.coreDataService.rootSavingContext
@@ -131,8 +133,8 @@ extension ConversationDataService {
                                         updateTime.total = Int32(messcount)
                                     }
                                     if let time = lastConversation.getTime(labelID: labelID),
-                                       (updateTime.unreadEndTime.compare(time) == .orderedDescending)
-                                        || updateTime.unreadEndTime == .distantPast {
+                                       (updateTime.endTime.compare(time) == .orderedDescending)
+                                        || updateTime.endTime == .distantPast {
                                         updateTime.end = time
                                     }
                                     updateTime.update = Date()

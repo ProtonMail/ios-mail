@@ -1073,7 +1073,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.showRefreshController()
             if isFirstFetch {
                 isFirstFetch = false
-                viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] task, res, error in
+                viewModel.fetchMessages(time: 0, forceClean: false, isUnread: isShowingUnreadMessageOnly) { [weak self] task, res, error in
                     self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
                 }
             } else {
@@ -1085,7 +1085,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                         self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
                     }
                 } else {// this new
-                    viewModel.fetchDataWithReset(time: 0, cleanContact: false, removeAllDraft: false) { [weak self] task, res, error in
+                    viewModel.fetchDataWithReset(time: 0, cleanContact: false, removeAllDraft: false, unreadOnly: false) { [weak self] task, res, error in
                         self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
                     }
                 }
@@ -1100,9 +1100,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard !self.fetchingMessage else { return }
         self.fetchingMessage = true
         stopAutoFetch()
-        viewModel.fetchDataWithReset(time: 0, cleanContact: true, removeAllDraft: false) { [weak self] task, res, error in
+
+        viewModel.fetchDataWithReset(time: 0, cleanContact: true, removeAllDraft: false, unreadOnly: isShowingUnreadMessageOnly) { [weak self] task, res, error in
             if self?.unreadFilterButton.isSelected == true {
-                self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: true, completion: nil)
+                self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: nil)
             }
             self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
             self?.startAutoFetch()
