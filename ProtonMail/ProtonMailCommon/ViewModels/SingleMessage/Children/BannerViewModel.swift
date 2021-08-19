@@ -43,6 +43,10 @@ class BannerViewModel {
         return isAvailable && !message.flag.contains(.unsubscribed)
     }
 
+    var isAutoReply: Bool {
+        message.isAutoReply
+    }
+
     private(set) var message: Message {
         didSet {
             reloadBanners?()

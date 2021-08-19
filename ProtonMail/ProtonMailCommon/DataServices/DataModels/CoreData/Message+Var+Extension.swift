@@ -180,19 +180,18 @@ extension Message {
             return self.contains(label: Message.Location.draft) || self.contains(label: "1")
         }
     }
+
+    var isAutoReply: Bool {
+        guard !isSent, !draft else {
+            return false
+        }
+        let autoReplyKeys = ["X-Autoreply", "X-Autorespond", "X-Autoreply-From", "X-Mail-Autoreply"]
+        guard let headersString = header,
+              let headerData = headersString.data(using: .utf8),
+              let parsedHeader = Part(header: headerData),
+              parsedHeader.headers.contains(where: { autoReplyKeys.contains($0.name) }) else {
+            return false
+        }
+        return true
+    }
 }
-
-
-
-
-
-
-
-//    var sendOrDraft : Bool {
-//        get {
-//            if self.flag.contains(.rece) || self.flag.contains(.sent) {
-//                return true
-//            }
-//            return false
-//        }
-//    }

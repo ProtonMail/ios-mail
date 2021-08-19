@@ -36,6 +36,7 @@ class BannerViewController: UIViewController {
         case spam
         case error
         case unsubscribe
+        case autoReply
 
         var order: Int {
             rawValue
@@ -54,6 +55,7 @@ class BannerViewController: UIViewController {
     private(set) lazy var remoteAndEmbeddedContentBanner = RemoteAndEmbeddedBannerView()
     private(set) lazy var unsubscribeBanner = UnsubscribeBanner()
     private(set) lazy var spamBanner = SpamBannerView()
+    private lazy var autoReplyBanner = AutoReplyBanner()
 
     private(set) var displayedBanners: [BannerType: UIView] = [:] {
         didSet {
@@ -92,6 +94,7 @@ class BannerViewController: UIViewController {
         }
         handleUnsubscribeBanner()
         handleSpamBanner()
+        handleAutoReplyBanner()
         setUpMessageObservation()
     }
 
@@ -140,6 +143,7 @@ class BannerViewController: UIViewController {
         viewModel.reloadBanners = { [weak self] in
             self?.handleUnsubscribeBanner()
             self?.handleSpamBanner()
+            self?.handleAutoReplyBanner()
         }
     }
 
@@ -150,6 +154,18 @@ class BannerViewController: UIViewController {
         }
         guard viewModel.canUnsubscribe && !isUnsubscribeBannerDisplayed else { return }
         showUnsubscribeBanner()
+    }
+
+    private func handleAutoReplyBanner() {
+        let isAutoReplyBannerDisplayed = displayedBanners.contains(where: { $0.key == .autoReply })
+
+        if !isAutoReplyBannerDisplayed && viewModel.isAutoReply {
+            showAutoReplyBanner()
+        }
+    }
+
+    private func showAutoReplyBanner() {
+        addBannerView(type: .autoReply, shouldAddContainer: true, bannerView: autoReplyBanner)
     }
 
     private func setupContainerView() {
@@ -208,15 +224,15 @@ class BannerViewController: UIViewController {
         guard let containerView = self.containerView else { return }
         var viewToAdd = bannerView
         if shouldAddContainer {
-            let bannerConainterView = UIView()
-            bannerConainterView.addSubview(bannerView)
+            let bannerContainerView = UIView()
+            bannerContainerView.addSubview(bannerView)
             [
-                bannerView.topAnchor.constraint(equalTo: bannerConainterView.topAnchor, constant: 12),
-                bannerView.leadingAnchor.constraint(equalTo: bannerConainterView.leadingAnchor, constant: 12),
-                bannerView.trailingAnchor.constraint(equalTo: bannerConainterView.trailingAnchor, constant: -12),
-                bannerView.bottomAnchor.constraint(equalTo: bannerConainterView.bottomAnchor, constant: -12)
+                bannerView.topAnchor.constraint(equalTo: bannerContainerView.topAnchor, constant: 12),
+                bannerView.leadingAnchor.constraint(equalTo: bannerContainerView.leadingAnchor, constant: 12),
+                bannerView.trailingAnchor.constraint(equalTo: bannerContainerView.trailingAnchor, constant: -12),
+                bannerView.bottomAnchor.constraint(equalTo: bannerContainerView.bottomAnchor, constant: -12)
             ].activate()
-            viewToAdd = bannerConainterView
+            viewToAdd = bannerContainerView
         }
         let indexToInsert = findIndexToInsert(type)
 
