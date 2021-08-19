@@ -88,30 +88,45 @@ extension EncryptedSearchService {
         switch action {
         case .delete:
             print("Delete message from search index")
-            self.updateMessageMetadataInSearchIndex(message!)    //delete just triggers a move to the bin folder
+            self.updateMessageMetadataInSearchIndex(message)    //delete just triggers a move to the bin folder
         case .insert:
             print("Insert new message to search index")
-            self.insertSingleMessageToSearchIndex(message!)
+            self.insertSingleMessageToSearchIndex(message)
         case .move:
             print("Move message in search index")
-            self.updateMessageMetadataInSearchIndex(message!)    //move just triggers a change in the location of the message
+            self.updateMessageMetadataInSearchIndex(message)    //move just triggers a change in the location of the message
         case .update:
             print("Update message")
-            self.updateMessageMetadataInSearchIndex(message!)
+            self.updateMessageMetadataInSearchIndex(message)
         default:
             return
         }
     }
     
-    func insertSingleMessageToSearchIndex(_ message: Message) {
+    func insertSingleMessageToSearchIndex(_ message: Message?) {
+        //some simple error handling
+        if message == nil {
+            print("message nil!")
+            return
+        }
         
+        //just insert a new message if the search index exists for the user - otherwise it needs to be build first
+        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
+            //get message details
+            self.getMessageDetailsWithRecursion([message!]) { result in
+                self.decryptBodyAndExtractData(result) {
+                    print("Sucessfully inserted new message \(message!.messageID) in search index")
+                    //TODO update some flags?
+                }
+            }
+        }
     }
     
-    func deleteMessageFromSearchIndex(_ message: Message) {
+    func deleteMessageFromSearchIndex(_ message: Message?) {
         //TODO implement
     }
     
-    func updateMessageMetadataInSearchIndex(_ message: Message) {
+    func updateMessageMetadataInSearchIndex(_ message: Message?) {
         //TODO implement
     }
     
