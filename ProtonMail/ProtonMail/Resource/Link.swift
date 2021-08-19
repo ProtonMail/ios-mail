@@ -27,4 +27,5 @@ enum Link {
     static let unsubscribeInfo = "https://protonmail.com/support/knowledge-base/auto-unsubscribe"
     static let dmarcFailedInfo = "https://protonmail.com/support/knowledge-base/email-has-failed-its-domains-authentication-requirements-warning/"
     static let encryptOutsideInfo = "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/"
+    static let autoReplyInfo = "https://protonmail.com/support/knowledge-base/autoresponder/"
 }
