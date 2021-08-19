@@ -174,13 +174,10 @@ class MessageDataService : Service, HasLocalStorage {
                                 completion?(task, responseDict, err as NSError)
                             }
                         } else {
-                            // fetch inbox count
-                            if labelID == Message.Location.inbox.rawValue {
-                                let counterRoute = MessageCount()
-                                self.apiService.exec(route: counterRoute) { (response: MessageCountResponse) in
-                                    if response.error == nil {
-                                        self.parent?.eventsService.processEvents(counts: response.counts)
-                                    }
+                            let counterRoute = MessageCount()
+                            self.apiService.exec(route: counterRoute) { (response: MessageCountResponse) in
+                                if response.error == nil {
+                                    self.parent?.eventsService.processEvents(counts: response.counts)
                                 }
                             }
                             DispatchQueue.main.async {
@@ -213,6 +210,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 cleanContact: Bool = true,
                                 removeAllDraft: Bool = false,
                                 queued: Bool = true,
+                                unreadOnly: Bool = false,
                                 completion: CompletionBlock?) {
         let queue = queued ? queueManager?.queue : noQueue
         queue? {
@@ -237,7 +235,7 @@ class MessageDataService : Service, HasLocalStorage {
                     }
                 }
 
-                self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: false, queued: queued, completion: completionWrapper) {
+                self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: unreadOnly, queued: queued, completion: completionWrapper) {
                     self.cleanMessage(removeAllDraft: removeAllDraft).then { (_) -> Promise<Void> in
                         self.lastUpdatedStore.removeUpdateTime(by: self.userID,
                                                                type: .singleMessage)

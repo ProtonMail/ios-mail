@@ -934,14 +934,14 @@ extension MailboxViewModel {
         }
     }
 
-    func fetchDataWithReset(time: Int, cleanContact: Bool, removeAllDraft: Bool, completion: CompletionBlock?) {
+    func fetchDataWithReset(time: Int, cleanContact: Bool, removeAllDraft: Bool, unreadOnly: Bool, completion: CompletionBlock?) {
         switch viewMode {
         case .singleMessage:
-            messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: cleanContact, removeAllDraft: removeAllDraft, queued: false, completion: completion)
+            messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: cleanContact, removeAllDraft: removeAllDraft, queued: false, unreadOnly: unreadOnly, completion: completion)
         case .conversation:
             messageService.fetchLatestEventID(completion: nil)
             conversationService.fetchConversationCounts(addressID: nil, completion: nil)
-            conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: false, shouldReset: true) { result in
+            conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: unreadOnly, shouldReset: true) { result in
                 completion?(nil, nil, result.nsError)
             }
         }
