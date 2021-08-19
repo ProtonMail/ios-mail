@@ -122,12 +122,8 @@ extension ComposePasswordVC {
     private func setupNavigation() {
         self.title = LocalString._composer_set_password
 
-        // swiftlint:disable:next object_literal
-        let arrowIcon = UIImage(named: "back-arrow")
-        guard let backBtn = arrowIcon?.toUIBarButtonItem(target: self, action: #selector(self.clickBackButton)) else {
-            return
-        }
-        self.navigationItem.leftBarButtonItem = backBtn
+        let backButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.clickBackButton))
+        self.navigationItem.leftBarButtonItem = backButtonItem
     }
 
     private func setupInfoView() {

@@ -29,7 +29,6 @@ class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModel
     var viewModel: ContactGroupSelectColorViewModel!
     @IBOutlet weak var collectionView: UICollectionView!
     private var doneButton: UIBarButtonItem!
-    private var cancelButton: UIBarButtonItem!
 
     func set(viewModel: ContactGroupSelectColorViewModel) {
         self.viewModel = viewModel
@@ -48,10 +47,7 @@ class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModel
         self.doneButton.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = doneButton
 
-        self.cancelButton = Asset.backArrow.image.toUIBarButtonItem(target: self,
-                                                                    action: #selector(self.didTapCancelButton(_:)),
-                                                                    tintColor: UIColorManager.IconNorm)
-        self.navigationItem.leftBarButtonItem = cancelButton
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.didTapCancelButton(_:)))
     }
 
     @objc

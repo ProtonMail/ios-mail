@@ -46,17 +46,7 @@ class PinCodeSetUpViewController: ProtonMailViewController {
         nextButton.setMode(mode: .solid)
         nextButton.setTitle(LocalString._pin_code_setup1_button_title, for: .normal)
 
-        let dismissBtn = #imageLiteral(resourceName: "back-arrow")
-            .toUIBarButtonItem(target: self,
-                               action: #selector(self.dismissView),
-                               style: .done,
-                               tintColor: UIColorManager.TextNorm,
-                               squareSize: 24,
-                               backgroundColor: nil,
-                               backgroundSquareSize: nil,
-                               isRound: nil)
-        navigationItem.leftBarButtonItem = dismissBtn
-
+        navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.dismissView))
         self.emptyBackButtonTitleForNextView()
     }
 

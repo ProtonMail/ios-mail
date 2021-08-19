@@ -131,12 +131,9 @@ extension ComposeExpirationVC {
         setButton.setTitleTextAttributes(attr, for: .normal)
         self.navigationItem.rightBarButtonItem = setButton
 
-        // swiftlint:disable:next object_literal
-        let arrowIcon = UIImage(named: "back-arrow")
-        guard let backBtn = arrowIcon?.toUIBarButtonItem(target: self, action: #selector(self.clickBackButton)) else {
-            return
-        }
-        self.navigationItem.leftBarButtonItem = backBtn
+        let backButtonItem = UIBarButtonItem.backBarButtonItem(target: self,
+                                                               action: #selector(self.clickBackButton))
+        self.navigationItem.leftBarButtonItem = backButtonItem
     }
 
     private func setupTableView() {
