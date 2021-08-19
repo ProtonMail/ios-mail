@@ -137,8 +137,11 @@ extension EncryptedSearchService {
     func deleteSearchIndex(){
         //just delete the search index if it exists
         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
-            let _: Bool = EncryptedSearchIndexService.shared.deleteSearchIndex(for: self.user.userInfo.userId)
+            let result: Bool = EncryptedSearchIndexService.shared.deleteSearchIndex(for: self.user.userInfo.userId)
             //TODO do we want to do anything when deleting fails?
+            if result {
+                print("Search index for user \(self.user.userInfo.userId) sucessfully deleted!")
+            }
         }
     }
     
