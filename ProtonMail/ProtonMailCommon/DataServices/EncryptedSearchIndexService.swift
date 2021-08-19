@@ -121,6 +121,20 @@ extension EncryptedSearchIndexService {
         return rowID
     }
     
+    func removeEntryFromSearchIndex(_ messageID: String){
+        let filter = self.searchableMessages.filter(self.databaseSchema.messageID == messageID)
+        
+        do {
+            if try (self.handleToSQliteDB?.run(filter.delete()))! > 0 {
+                print("sucessfully deleted message \(messageID) from search index")
+            } else {
+                print("message \(messageID) not found in search index")
+            }
+        } catch {
+            print("deleting messages from search index failed: \(error)")
+        }
+    }
+    
     func getDBParams(_ userID: String) -> EncryptedsearchDBParams {
         var dbParams: EncryptedsearchDBParams? = nil
         let dbName: String = self.getSearchIndexName(userID)
@@ -177,5 +191,28 @@ extension EncryptedSearchIndexService {
         }
         
         return numberOfEntries!
+    }
+    
+    func deleteSearchIndex(for userID: String) -> Bool {
+        //set handles to nil
+        self.handleToSQliteDB = nil
+        
+        //delete database on file
+        let dbName: String = self.getSearchIndexName(userID)
+        let pathToDB: String = self.getSearchIndexPathToDB(dbName)
+        let urlToDB: URL? = URL(string: pathToDB)
+        
+        if FileManager.default.fileExists(atPath: urlToDB!.path) {
+            do {
+                try FileManager.default.removeItem(atPath: urlToDB!.path)
+            } catch {
+                print("Error when deleting the search index: \(error)")
+            }
+        } else {
+            print("Error: cannot find search index at path: \(urlToDB!.path)")
+            return false
+        }
+        
+        return true
     }
 }
