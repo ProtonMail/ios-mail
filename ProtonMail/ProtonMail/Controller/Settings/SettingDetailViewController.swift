@@ -88,15 +88,7 @@ class SettingDetailViewController: UIViewController {
         
         self.navigationItem.hidesBackButton = true
 
-        let newBackButton = Asset.backArrow.image.toUIBarButtonItem(target: self,
-                                                          action: #selector(SettingDetailViewController.back(sender:)),
-                                                          style: .plain,
-                                                          tintColor: UIColorManager.TextNorm,
-                                                          squareSize: 24.0,
-                                                          backgroundColor: nil,
-                                                          backgroundSquareSize: nil,
-                                                          isRound: false)
-        self.navigationItem.leftBarButtonItem = newBackButton
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(back(sender:)))
         
         if viewModel.isDisplaySwitch() {
             switchLabel.attributedText = NSAttributedString(string: viewModel.getSwitchText(), attributes: FontManager.Default)

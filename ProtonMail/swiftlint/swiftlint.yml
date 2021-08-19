@@ -190,6 +190,8 @@ included:
   - ${PWD}/ProtonMail/Controller/Onboarding/NewOnboardView.swift
   - ${PWD}/ProtonMail/Controller/Onboarding/OnboardView.swift
   - ${PWD}/ProtonMail/Controller/Onboarding/OnboardViewController.swift
+  - ${PWD}/ProtonMailCommon/Extensions/UIBarButtonItem+BackButton.swift
+  - ${PWD}/ProtonMailCommon/Extensions/ImageAsset+Extension.swift
 
 excluded:
   - ${PWD}/Pods

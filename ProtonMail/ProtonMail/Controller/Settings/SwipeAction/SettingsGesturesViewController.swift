@@ -102,10 +102,7 @@ class SettingsGesturesViewController: ProtonMailViewController, ViewModelProtoco
                                action: #selector(self.dismissView),
                                style: .done,
                                tintColor: UIColorManager.TextNorm,
-                               squareSize: 24,
-                               backgroundColor: nil,
-                               backgroundSquareSize: nil,
-                               isRound: nil)
+                               squareSize: 24)
         navigationItem.leftBarButtonItem = dismissBtn
     }
 
