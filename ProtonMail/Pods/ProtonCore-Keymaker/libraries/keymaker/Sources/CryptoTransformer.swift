@@ -21,7 +21,7 @@
 
 import Foundation
 
-public class GenericStringCryptoTransformer<SUBTLE: SubtleProtocol>: CryptoTransformer {
+public class StringCryptoTransformer: CryptoTransformer {
     // String -> Data
     override public func transformedValue(_ value: Any?) -> Any? {
         guard let string = value as? String else {
@@ -29,7 +29,7 @@ public class GenericStringCryptoTransformer<SUBTLE: SubtleProtocol>: CryptoTrans
         }
         
         do {
-            let locked = try GenericLocked<String, SUBTLE>(clearValue: string, with: self.key)
+            let locked = try Locked<String>(clearValue: string, with: self.key)
             let result = locked.encryptedValue as NSData
             return result
         } catch let error {
@@ -45,7 +45,7 @@ public class GenericStringCryptoTransformer<SUBTLE: SubtleProtocol>: CryptoTrans
             return nil
         }
         
-        let locked = GenericLocked<String, SUBTLE>(encryptedValue: data)
+        let locked = Locked<String>(encryptedValue: data)
         do {
             let string = try locked.unlock(with: self.key)
             return string

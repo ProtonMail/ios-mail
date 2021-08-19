@@ -33,7 +33,11 @@ public protocol Session {
     func upload(with request: SessionRequest,
                 keyPacket: Data, dataPacket: Data, signature: Data?,
                 completion: @escaping ResponseCompletion) throws
-    
+
+    func uploadFromFile(with request: SessionRequest,
+                        keyPacket: Data, dataPacketSourceFileURL: URL, signature: Data?,
+                        completion: @escaping ResponseCompletion) throws
+
     func download(with request: SessionRequest,
                   destinationDirectoryURL: URL,
                   completion: @escaping DownloadCompletion) throws

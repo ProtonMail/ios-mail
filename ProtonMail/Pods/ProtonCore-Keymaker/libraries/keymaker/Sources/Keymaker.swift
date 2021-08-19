@@ -21,6 +21,7 @@
 
 import Foundation
 import EllipticCurveKeyPair
+import Crypto
 
 #if canImport(UIKit)
 import UIKit
@@ -35,7 +36,7 @@ public enum Constants {
 
 public typealias MainKey = [UInt8]
 
-public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
+public class Keymaker: NSObject {
     public typealias Const = Constants
         
     private var autolocker: Autolocker?
@@ -95,8 +96,8 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
     // if there is any significant Protection active - post message that obtainMainKey(_:_:) is needed
     private func provokeMainKeyObtention() -> MainKey? {
         // if we have any significant Protector - wait for obtainMainKey(_:_:) method to be called
-        guard !self.isProtectorActive(GenericBioProtection<SUBTLE>.self),
-            !self.isProtectorActive(GenericPinProtection<SUBTLE>.self) else
+        guard !self.isProtectorActive(BioProtection.self),
+            !self.isProtectorActive(PinProtection.self) else
         {
             NoneProtection.removeCyphertext(from: self.keychain)
             NotificationCenter.default.post(.init(name: Const.requestMainKey))
@@ -125,8 +126,8 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
     
     public func wipeMainKey() {
         NoneProtection.removeCyphertext(from: self.keychain)
-        GenericBioProtection<SUBTLE>.removeCyphertext(from: self.keychain)
-        GenericPinProtection<SUBTLE>.removeCyphertext(from: self.keychain)
+        BioProtection.removeCyphertext(from: self.keychain)
+        PinProtection.removeCyphertext(from: self.keychain)
         
         self._mainKey = nil
         self.setupCryptoTransformers(key: nil)
@@ -134,8 +135,8 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
     
     @discardableResult @objc
     public func mainKeyExists() -> Bool { // cuz another process can wipe main key from memory while the app is in background
-        if !self.isProtectorActive(GenericBioProtection<SUBTLE>.self),
-            !self.isProtectorActive(GenericPinProtection<SUBTLE>.self),
+        if !self.isProtectorActive(BioProtection.self),
+            !self.isProtectorActive(PinProtection.self),
             !self.isProtectorActive(NoneProtection.self)
         {
             self._mainKey = nil
@@ -191,12 +192,15 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
             } catch let error {
                 NotificationCenter.default.post(name: Const.errorObtainingMainKey, object: self, userInfo: ["error": error])
                 
+                if #available(iOS 14.0, *) {
+                    self._mainKey = nil
+                }
                 // this CFError trows randomly on iOS 13 (up to 13.3 beta 2) on TouchID capable devices
                 // it happens less if auth prompt is invoked with 1 sec delay after app gone foreground but still happens
                 // description: "Could not decrypt. Failed to get externalizedContext from LAContext"
-                if #available(iOS 13.0, *),
-                   case EllipticCurveKeyPair.Error.underlying(message: _, error: let underlyingError) = error,
-                   underlyingError.code == -2
+                else if #available(iOS 13.0, *),
+                        case EllipticCurveKeyPair.Error.underlying(message: _, error: let underlyingError) = error,
+                        underlyingError.code == -2
                 {
                     isMainThread
                         ? DispatchQueue.main.async { self.obtainMainKey(with: protector, handler: handler) }
@@ -240,8 +244,8 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
         protector.removeCyphertextFromKeychain()
         
         // need to keep mainKey in keychain in case user switches off all the significant Protectors
-        if !self.isProtectorActive(GenericBioProtection<SUBTLE>.self),
-            !self.isProtectorActive(GenericPinProtection<SUBTLE>.self)
+        if !self.isProtectorActive(BioProtection.self),
+            !self.isProtectorActive(PinProtection.self)
         {
             self.activate(NoneProtection(keychain: self.keychain), completion: { _ in })
         }
@@ -265,7 +269,7 @@ public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
             ValueTransformer.setValueTransformer(nil, forName: .init(rawValue: "StringCryptoTransformer"))
             return
         }
-        ValueTransformer.setValueTransformer(GenericStringCryptoTransformer<SUBTLE>(key: key),
+        ValueTransformer.setValueTransformer(StringCryptoTransformer(key: key),
                                              forName: .init(rawValue: "StringCryptoTransformer"))
     }
     

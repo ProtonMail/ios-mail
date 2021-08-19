@@ -41,6 +41,10 @@ public protocol LoginInterface {
                                       welcomeScreen: WelcomeScreenVariant,
                                       username: String?,
                                       completion: @escaping (LoginResult) -> Void)
+
+    func welcomeScreenForPresentingFlow(variant welcomeScreen: WelcomeScreenVariant,
+                                        username: String?,
+                                        completion: @escaping (LoginResult) -> Void) -> UIViewController
 }
 
 extension LoginInterface {
@@ -53,6 +57,11 @@ extension LoginInterface {
                                              welcomeScreen: WelcomeScreenVariant,
                                              completion: @escaping (LoginResult) -> Void) {
         presentFlowFromWelcomeScreen(over: viewController, welcomeScreen: welcomeScreen, username: nil, completion: completion)
+    }
+
+    public func welcomeScreenForPresentingFlow(variant welcomeScreen: WelcomeScreenVariant,
+                                               completion: @escaping (LoginResult) -> Void) -> UIViewController {
+        welcomeScreenForPresentingFlow(variant: welcomeScreen, username: nil, completion: completion)
     }
 }
 
@@ -117,26 +126,41 @@ public class PMLogin: LoginInterface {
                                              completion: @escaping (LoginResult) -> Void) {
         presentLogin(over: viewController, username: username, welcomeScreen: welcomeScreen, completion: completion)
     }
+
+    public func welcomeScreenForPresentingFlow(variant welcomeScreen: WelcomeScreenVariant,
+                                               username: String?,
+                                               completion: @escaping (LoginResult) -> Void) -> UIViewController {
+        presentLogin(over: nil, welcomeScreen: welcomeScreen, completion: completion)
+    }
     
     public func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void) {
         container.login.logout(credential: credential, completion: completion)
     }
 
-    private func presentLogin(over viewController: UIViewController,
+    @discardableResult
+    private func presentLogin(over viewController: UIViewController?,
                               username: String? = nil,
                               welcomeScreen: WelcomeScreenVariant?,
-                              completion: @escaping (LoginResult) -> Void) {
+                              completion: @escaping (LoginResult) -> Void) -> UINavigationController {
         self.viewController = viewController
         self.loginCompletion = completion
-
-        loginCoordinator = LoginCoordinator(container: container,
-                                            isCloseButtonAvailable: isCloseButtonAvailable,
-                                            isSignupAvailable: signupMode != .notAvailable)
-        loginCoordinator?.delegate = self
+        let loginCoordinator = LoginCoordinator(container: container,
+                                                isCloseButtonAvailable: isCloseButtonAvailable,
+                                                isSignupAvailable: signupMode != .notAvailable)
+        self.loginCoordinator = loginCoordinator
+        loginCoordinator.delegate = self
         if let welcomeScreen = welcomeScreen {
-            loginCoordinator?.startFromWelcomeScreen(viewController: viewController, variant: welcomeScreen, username: username)
+            if let viewController = viewController {
+                return loginCoordinator.startFromWelcomeScreen(viewController: viewController, variant: welcomeScreen, username: username)
+            } else {
+                return loginCoordinator.startWithUnmanagedWelcomeScreen(variant: welcomeScreen, username: username)
+            }
         } else {
-            loginCoordinator?.start(.over(viewController, .coverVertical), username: username)
+            if let viewController = viewController {
+                return loginCoordinator.start(.over(viewController, .coverVertical), username: username)
+            } else {
+                return loginCoordinator.start(.unmanaged, username: username)
+            }
         }
     }
 

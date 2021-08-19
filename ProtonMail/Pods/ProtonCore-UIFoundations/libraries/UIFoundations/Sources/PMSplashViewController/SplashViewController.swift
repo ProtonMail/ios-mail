@@ -22,123 +22,156 @@
 import UIKit
 import ProtonCore_CoreTranslation
 
-public enum ScreenVariant<SpecificScreenData, CustomScreenData> {
-    case mail(SpecificScreenData)
-    case calendar(SpecificScreenData)
-    case drive(SpecificScreenData)
-    case vpn(SpecificScreenData)
-    case custom(CustomScreenData)
-}
-
-public typealias SplashScreenVariant = ScreenVariant<Void, SplashScreenData>
-
-public extension SplashScreenVariant {
-    static var mail: SplashScreenVariant { .mail(()) }
-    static var calendar: SplashScreenVariant { .calendar(()) }
-    static var drive: SplashScreenVariant { .drive(()) }
-    static var vpn: SplashScreenVariant { .vpn(()) }
-}
-
-public struct SplashScreenData {
-    let icon: UIImage
-    let name: String
-    let colorSchemeForBrand: Brand
-}
-
 public final class SplashViewController: UIViewController {
 
-    private let appIcon: UIImageView
-    private let name: String
-    private let appName: UILabel
-    private let footer: UILabel
-    private let brand: Brand
-
     override public var preferredStatusBarStyle: UIStatusBarStyle {
-        switch brand {
+        switch data.colorSchemeForBrand {
         case .proton: return .default
         case .vpn: return .lightContent
         }
     }
 
-    public convenience init(variant: SplashScreenVariant) {
-        switch variant {
-        case .mail:
-            self.init(icon: icon(named: "SplashMailIcon"), name: "ProtonMail", colorSchemeForBrand: .proton)
-        case .calendar:
-            self.init(icon: icon(named: "SplashCalendarIcon"), name: "ProtonCalendar", colorSchemeForBrand: .proton)
-        case .drive:
-            self.init(icon: icon(named: "SplashDriveIcon"), name: "ProtonDrive", colorSchemeForBrand: .proton)
-        case .vpn:
-            self.init(icon: icon(named: "SplashVPNIcon"), name: "ProtonVPN", colorSchemeForBrand: .vpn)
-        case let .custom(data):
-            self.init(icon: data.icon, name: data.name, colorSchemeForBrand: data.colorSchemeForBrand)
-        }
+    private var data: SplashScreenData
+
+    public convenience init(variant: SplashScreenIBVariant) {
+        self.init(customData: variant.splashScreenData)
     }
 
-    private init(icon: UIImage, name: String, colorSchemeForBrand: Brand) {
-        self.appIcon = UIImageView(image: icon)
-        self.name = name
+    public init(customData data: SplashScreenData) {
+        self.data = data
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    override public func loadView() {
+        view = SplashView(customData: data)
+        modalPresentationStyle = .fullScreen
+        modalTransitionStyle = .crossDissolve
+    }
+}
+
+public final class SplashView: UIView {
+
+    private var appIcon: UIImageView = .init()
+    private var name: String = ""
+    private var appName: UILabel = .init()
+    private var footer: UILabel = .init()
+    private var footerText: String = ""
+    private var brand: Brand = .proton
+
+    public var variant: SplashScreenIBVariant = .mail {
+        didSet { updateViewAccordingToVariant(data: variant.splashScreenData) }
+    }
+
+    public convenience init(variant: SplashScreenIBVariant) {
+        self.init(customData: variant.splashScreenData)
+    }
+
+    public init(customData data: SplashScreenData) {
+        super.init(frame: .zero)
+        updateViewAccordingToVariant(data: data)
+        setupConstraints()
+    }
+
+    private func updateViewAccordingToVariant(data: SplashScreenData) {
+        self.appIcon = UIImageView(image: data.icon)
+        self.name = data.name
         self.appName = UILabel(frame: .zero)
         self.footer = UILabel(frame: .zero)
-        self.brand = colorSchemeForBrand
-        super.init(nibName: nil, bundle: nil)
+        self.footerText = data.footer
+        self.brand = data.colorSchemeForBrand
+        setupUI()
     }
 
     required init?(coder: NSCoder) { fatalError("not designed to be initialized this way") }
 
-    override public func viewDidLoad() {
-        super.viewDidLoad()
+    private func setupUI() {
         setupMainView()
-        setupAppIcon()
         setupAppName()
         setupFooter()
     }
 
     private func setupMainView() {
-        modalPresentationStyle = .fullScreen
-        modalTransitionStyle = .crossDissolve
         UIColorManager.brand = brand
-        view.backgroundColor = UIColorManager.Splash.Background
-
-        [appIcon, appName, footer].forEach {
-            view.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-    }
-
-    private func setupAppIcon() {
-        let position = NSLayoutConstraint(item: appIcon, attribute: .top, relatedBy: .equal, toItem: view,
-                                          attribute: .bottom, multiplier: 0.333, constant: 0)
-        NSLayoutConstraint.activate([
-            position,
-            appIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
+        backgroundColor = UIColorManager.Splash.Background
     }
 
     private func setupAppName() {
         appName.attributedText = NSAttributedString(string: name, attributes: .Splash.appName)
-        NSLayoutConstraint.activate([
-            appName.topAnchor.constraint(equalTo: appIcon.bottomAnchor, constant: 16),
-            appName.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
     }
 
     private func setupFooter() {
         let iconAttachment = NSTextAttachment()
         iconAttachment.image = icon(named: "SplashProtonLogo")
         let iconString = NSAttributedString(attachment: iconAttachment)
-        let footerString = NSMutableAttributedString(string: "\(CoreString._splash_made_by) ")
+        let footerString = NSMutableAttributedString(string: "\(footerText) ")
         footerString.append(iconString)
         footerString.addAttributes(.Splash.footer, range: .init(location: 0, length: footerString.length))
         footer.attributedText = footerString
+    }
 
+    private func setupConstraints() {
+        [appIcon, appName, footer].forEach {
+            addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        let position = NSLayoutConstraint(item: appIcon, attribute: .top, relatedBy: .equal, toItem: self,
+                                          attribute: .bottom, multiplier: 0.333, constant: 0)
         NSLayoutConstraint.activate([
-            footer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -56),
-            footer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            footer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 32),
-            footer.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -32)
+            position,
+            appIcon.centerXAnchor.constraint(equalTo: centerXAnchor),
+
+            appName.topAnchor.constraint(equalTo: appIcon.bottomAnchor, constant: 16),
+            appName.centerXAnchor.constraint(equalTo: centerXAnchor),
+
+            footer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -56),
+            footer.centerXAnchor.constraint(equalTo: centerXAnchor),
+            footer.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 32),
+            footer.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -32)
         ])
     }
+}
+
+extension SplashScreenIBVariant {
+    var splashScreenData: SplashScreenData {
+        switch self {
+        case .mail:
+            return SplashScreenData(icon: icon(named: "SplashMailIcon"),
+                                    name: "ProtonMail",
+                                    footer: CoreString._splash_made_by,
+                                    colorSchemeForBrand: .proton)
+        case .calendar:
+            return SplashScreenData(icon: icon(named: "SplashCalendarIcon"),
+                                    name: "ProtonCalendar",
+                                    footer: CoreString._splash_made_by,
+                                    colorSchemeForBrand: .proton)
+        case .drive:
+            return SplashScreenData(icon: icon(named: "SplashDriveIcon"),
+                                    name: "ProtonDrive",
+                                    footer: CoreString._splash_made_by,
+                                    colorSchemeForBrand: .proton)
+        case .vpn:
+            return SplashScreenData(icon: icon(named: "SplashVPNIcon"),
+                                    name: "ProtonVPN",
+                                    footer: CoreString._splash_made_by,
+                                    colorSchemeForBrand: .vpn)
+        }
+    }
+}
+
+@objc public enum SplashScreenIBVariant: Int {
+    case mail = 1
+    case calendar = 2
+    case drive = 3
+    case vpn = 4
+}
+
+public struct SplashScreenData {
+    let icon: UIImage
+    let name: String
+    let footer: String
+    let colorSchemeForBrand: Brand
 }
 
 private func icon(named name: String) -> UIImage {
@@ -147,4 +180,38 @@ private func icon(named name: String) -> UIImage {
         return .init()
     }
     return icon
+}
+
+public enum ScreenVariant<SpecificScreenData, CustomScreenData> {
+    case mail(SpecificScreenData)
+    case calendar(SpecificScreenData)
+    case drive(SpecificScreenData)
+    case vpn(SpecificScreenData)
+    case custom(CustomScreenData)
+}
+
+@available(*, deprecated, message: "Will be removed in the future version")
+public typealias SplashScreenVariant = ScreenVariant<Void, SplashScreenData>
+
+@available(*, deprecated, message: "Will be removed in the future version")
+public extension SplashScreenVariant {
+    static var mail: SplashScreenVariant { .mail(()) }
+    static var calendar: SplashScreenVariant { .calendar(()) }
+    static var drive: SplashScreenVariant { .drive(()) }
+    static var vpn: SplashScreenVariant { .vpn(()) }
+}
+
+@available(*, deprecated, message: "Will be removed in the future version")
+extension SplashViewController {
+
+    @available(*, deprecated, message: "Use other initializers")
+    public convenience init(variant: SplashScreenVariant) {
+        switch variant {
+        case .mail: self.init(variant: SplashScreenIBVariant.mail)
+        case .drive: self.init(variant: SplashScreenIBVariant.drive)
+        case .calendar: self.init(variant: SplashScreenIBVariant.calendar)
+        case .vpn: self.init(variant: SplashScreenIBVariant.vpn)
+        case .custom(let data): self.init(customData: data)
+        }
+    }
 }

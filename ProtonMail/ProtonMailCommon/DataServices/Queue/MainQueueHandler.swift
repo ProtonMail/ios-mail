@@ -532,11 +532,7 @@ extension MainQueueHandler {
             }
             
             autoreleasepool(){
-                guard
-                    let (kP, dP) = attachment.encrypt(byKey: key, mailbox_pwd: passphrase),
-                    let keyPacket = kP,
-                    let dataPacket = dP
-                else
+                guard let (keyPacket, dataPacketURL) = attachment.encrypt(byKey: key, mailbox_pwd: passphrase) else
                 {
                     completion?(nil, nil, NSError.encryptionError())
                     return
@@ -560,12 +556,7 @@ extension MainQueueHandler {
                             if let headerInfoDict = attDict["Headers"] as? Dictionary<String, String> {
                                 attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
                             }
-                            
-                            if let fileUrl = attachment.localURL,
-                               let _ = try? FileManager.default.removeItem(at: fileUrl)
-                            {
-                                attachment.localURL = nil
-                            }
+                            attachment.cleanLocalURLs()
                             
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
@@ -588,15 +579,15 @@ extension MainQueueHandler {
                 
                 PMLog.D("SendAttachmentDebug == start upload att!")
                 ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
-                self.user?.apiService.upload(byPath: "/attachments",
-                                             parameters: params,
-                                             keyPackets: keyPacket,
-                                             dataPacket: dataPacket as Data,
-                                             signature: signed,
-                                             headers: [HTTPHeader.apiVersion: 3],
-                                             authenticated: true,
-                                             customAuthCredential: attachment.message.cachedAuthCredential,
-                                             completion: completionWrapper)
+                self.user?.apiService.uploadFromFile(byPath: "/attachments",
+                                                     parameters: params,
+                                                     keyPackets: keyPacket,
+                                                     dataPacketSourceFileURL: dataPacketURL,
+                                                     signature: signed,
+                                                     headers: [HTTPHeader.apiVersion: 3],
+                                                     authenticated: true,
+                                                     customAuthCredential: attachment.message.cachedAuthCredential,
+                                                     completion: completionWrapper)
             }
         }
         

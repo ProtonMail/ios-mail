@@ -51,13 +51,21 @@ final class LoginCoordinator {
         externalLinks = container.makeExternalLinks()
     }
 
-    func start(_ kind: FlowStartKind, username: String? = nil) {
+    @discardableResult
+    func start(_ kind: FlowStartKind, username: String? = nil) -> UINavigationController {
         showInitialViewController(kind, initialViewController: loginViewController(username: username))
     }
 
-    func startFromWelcomeScreen(viewController: UIViewController, variant: WelcomeScreenVariant, username: String? = nil) {
+    func startFromWelcomeScreen(
+        viewController: UIViewController, variant: WelcomeScreenVariant, username: String? = nil
+    ) -> UINavigationController {
         let welcome = WelcomeViewController(variant: variant, delegate: self, username: username, signupAvailable: isSignupAvailable)
-        showInitialViewController(.over(viewController, .crossDissolve), initialViewController: welcome, navigationBarHidden: true)
+        return showInitialViewController(.over(viewController, .crossDissolve), initialViewController: welcome, navigationBarHidden: true)
+    }
+
+    func startWithUnmanagedWelcomeScreen(variant: WelcomeScreenVariant, username: String? = nil) -> UINavigationController {
+        let welcome = WelcomeViewController(variant: variant, delegate: self, username: username, signupAvailable: isSignupAvailable)
+        return showInitialViewController(.unmanaged, initialViewController: welcome, navigationBarHidden: true)
     }
 
     private func loginViewController(username: String?) -> UIViewController {
@@ -72,24 +80,36 @@ final class LoginCoordinator {
     }
 
     // MARK: - Actions
-
     private func showInitialViewController(
         _ kind: FlowStartKind,
         initialViewController: UIViewController,
         navigationBarHidden: Bool = false
-    ) {
+    ) -> UINavigationController {
         switch kind {
+        case .unmanaged:
+            return embedInNavigationController(initialViewController: initialViewController,
+                                               navigationBarHidden: navigationBarHidden)
         case let .over(viewController, modalTransitionStyle):
-            let navigationController = LoginNavigationViewController(rootViewController: initialViewController, navigationBarHidden: navigationBarHidden)
+            let navigationController = embedInNavigationController(initialViewController: initialViewController,
+                                                                   navigationBarHidden: navigationBarHidden)
             navigationController.modalTransitionStyle = modalTransitionStyle
-            self.navigationController = navigationController
-            container.setupHumanVerification(viewController: navigationController)
             viewController.present(navigationController, animated: true, completion: nil)
+            return navigationController
         case .inside(let navigationViewController):
             self.navigationController = navigationViewController
             container.setupHumanVerification(viewController: navigationViewController)
             navigationController?.setViewControllers([initialViewController], animated: true)
+            return navigationViewController
         }
+    }
+
+    private func embedInNavigationController(initialViewController: UIViewController,
+                                             navigationBarHidden: Bool) -> UINavigationController {
+        let navigationController = LoginNavigationViewController(rootViewController: initialViewController,
+                                                                 navigationBarHidden: navigationBarHidden)
+        self.navigationController = navigationController
+        container.setupHumanVerification(viewController: navigationController)
+        return navigationController
     }
 
     private func showHelp() {

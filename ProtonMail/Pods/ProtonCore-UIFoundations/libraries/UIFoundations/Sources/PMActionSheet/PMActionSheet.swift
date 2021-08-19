@@ -20,9 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+
 public protocol PMActionSheetEventsListener: AnyObject {
     func willPresent()
     func willDismiss()
+    func didDismiss()
 }
 
 protocol PMActionSheetProtocol: AnyObject {
@@ -149,6 +151,7 @@ extension PMActionSheet {
             self.layoutIfNeeded()
         }, completion: { (_) in
             self.removeFromSuperview()
+            self.eventsListener?.didDismiss()
         })
     }
 }

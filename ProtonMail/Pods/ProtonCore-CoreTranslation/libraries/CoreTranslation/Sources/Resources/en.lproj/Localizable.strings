@@ -191,6 +191,7 @@
 "You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
 "Remove" = "Remove";
 "Are you sure you want to sign out %@?" = "Are you sure you want to sign out %@?";
+"Dismiss account switcher" = "Dismiss account switcher";
 
 /**
  * Signup
@@ -208,8 +209,10 @@
 "Password" = "Password";
 "Password must contain at least 8 characters" = "Password must contain at least 8 characters";
 "Repeat password" = "Repeat password";
-"Set recovery method" = "Set recovery method";
+"Set recovery method (optional)" = "Set recovery method (optional)";
+// TODO: CP-2352 — remove the string once the new text (below) is translated to all languages
 "This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
 "Email" = "Email";
 "Phone" = "Phone";
 "Recovery email" = "Recovery email";

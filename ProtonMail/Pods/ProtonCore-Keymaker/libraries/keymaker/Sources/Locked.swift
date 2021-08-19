@@ -21,6 +21,7 @@
 
 import Foundation
 
+public typealias LockedErrors = Errors
 public enum Errors: Error {
     case failedToTurnValueIntoData
     case keyDoesNotMatch
@@ -30,7 +31,7 @@ public enum Errors: Error {
 
 private let IVsize: Int = 16
 
-public struct GenericLocked<T, SUBTLE: SubtleProtocol> {
+public struct Locked<T> {
     public private(set) var encryptedValue: Data
     public init(encryptedValue: Data) {
         self.encryptedValue = encryptedValue
@@ -45,53 +46,53 @@ public struct GenericLocked<T, SUBTLE: SubtleProtocol> {
     }
 }
 
-extension GenericLocked where T == String {
+extension Locked where T == String {
     public init(clearValue: T, with key: MainKey) throws {
-        self.encryptedValue = try GenericLocked<[String], SUBTLE>.init(clearValue: [clearValue], with: key).encryptedValue
+        self.encryptedValue = try Locked<[String]>.init(clearValue: [clearValue], with: key).encryptedValue
     }
     
     public func unlock(with key: MainKey) throws -> T {
-        guard let value = try GenericLocked<[String], SUBTLE>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
+        guard let value = try Locked<[String]>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
             throw Errors.failedToDecrypt
         }
         return value
     }
     
     public func lagcyUnlock(with key: MainKey) throws -> T {
-        guard let value = try GenericLocked<[String], SUBTLE>.init(encryptedValue: self.encryptedValue).lagcyUnlock(with: key).first else {
+        guard let value = try Locked<[String]>.init(encryptedValue: self.encryptedValue).lagcyUnlock(with: key).first else {
             throw Errors.failedToDecrypt
         }
         return value
     }
 }
 
-extension GenericLocked where T == Data {
+extension Locked where T == Data {
     public init(clearValue: T, with key: MainKey) throws {
-        self.encryptedValue = try GenericLocked<[Data], SUBTLE>.init(clearValue: [clearValue], with: key).encryptedValue
+        self.encryptedValue = try Locked<[Data]>.init(clearValue: [clearValue], with: key).encryptedValue
     }
     
     public func unlock(with key: MainKey) throws -> T {
-        guard let value = try GenericLocked<[Data], SUBTLE>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
+        guard let value = try Locked<[Data]>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
             throw Errors.failedToDecrypt
         }
         return value
     }
     
     public func lagcyUnlock(with key: MainKey) throws -> T {
-        guard let value = try GenericLocked<[Data], SUBTLE>.init(encryptedValue: self.encryptedValue).lagcyUnlock(with: key).first else {
+        guard let value = try Locked<[Data]>.init(encryptedValue: self.encryptedValue).lagcyUnlock(with: key).first else {
             throw Errors.failedToDecrypt
         }
         return value
     }
 }
 
-extension GenericLocked where T: Codable {
+extension Locked where T: Codable {
     public init(clearValue: T, with key: MainKey) throws {
         let data = try PropertyListEncoder().encode(clearValue)
         var error: NSError?
         
-        let random = SUBTLE.Random(IVsize) ?? Data(key.prefix(IVsize))
-        let cypherData = SUBTLE.EncryptWithoutIntegrity(Data(key), data, random, &error)
+        let random = CryptoSubtle.Random(IVsize) ?? Data(key.prefix(IVsize))
+        let cypherData = CryptoSubtle.EncryptWithoutIntegrity(Data(key), data, random, &error)
         
         if let error = error {
             throw error
@@ -113,7 +114,7 @@ extension GenericLocked where T: Codable {
         // swiftlint:disable:next legacy_constructor
         mutableData.replaceBytes(in: NSMakeRange(0, IVsize), withBytes: nil, length: 0)
         let valu1e = mutableData as Data
-        let clearData = SUBTLE.DecryptWithoutIntegrity(Data(key), valu1e, randomIV, &error)
+        let clearData = CryptoSubtle.DecryptWithoutIntegrity(Data(key), valu1e, randomIV, &error)
 
         if let error = error {
             throw error
@@ -127,7 +128,7 @@ extension GenericLocked where T: Codable {
     
     public func lagcyUnlock(with key: MainKey) throws -> T {
         var error: NSError?
-        let clearData = SUBTLE.DecryptWithoutIntegrity(Data(key), self.encryptedValue, Data(key.prefix(IVsize)), &error)
+        let clearData = CryptoSubtle.DecryptWithoutIntegrity(Data(key), self.encryptedValue, Data(key.prefix(IVsize)), &error)
         
         if let error = error {
             throw error

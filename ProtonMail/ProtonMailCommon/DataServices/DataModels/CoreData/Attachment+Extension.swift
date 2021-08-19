@@ -69,16 +69,13 @@ extension Attachment {
     }
 
     // Mark : public functions
-    func encrypt(byKey key: Key, mailbox_pwd: String) -> (Data?, NSMutableData?)? {
+    func encrypt(byKey key: Key, mailbox_pwd: String) -> (Data, URL)? {
         do {
-            if let clearData = self.fileData {
-                let splitMsg = try clearData.encryptAttachment(fileName: self.fileName, pubKey: key.publicKey)
-                return (splitMsg?.keyPacket, splitMsg?.dataPacket?.mutable)
+            if let clearData = self.fileData, localURL == nil {
+                try writeToLocalURL(data: clearData)
+                self.fileData = nil
             }
-            
-            guard let localURL = self.localURL,
-                  let totalSize = try FileManager.default.attributesOfItem(atPath: localURL.path)[.size] as? Int
-            else {
+            guard let localURL = self.localURL else {
                 return nil
             }
             
@@ -92,60 +89,20 @@ extension Attachment {
             if let err = error {
                 throw err
             }
-            
-            // We set the buffer with some margin to be sure to hold
-            // the full data packet
-            let bufferSize = totalSize + 1000000
-            
-            // We manually allocate the buffer for the data packet
-            guard let dataBuffer = NSMutableData(length: bufferSize) else {
+
+            guard let aKeyRing = keyRing else {
                 return nil
             }
-            
-            // We create the processor with the buffer
-            guard let encryptor = try keyRing?.newManualAttachmentProcessor(totalSize, filename: self.fileName, dataBuffer: dataBuffer as Data) else {
-                return nil
-            }
-            
-            let fileHandle = try FileHandle(forReadingFrom: localURL)
-            
-            // We encrypt the file chunk by chunk
-            let chunkSize = 1000000 // 1 mb
-            var offset = 0
-            while offset < totalSize {
-                try autoreleasepool {
-                    let currentChunkSize = offset + chunkSize > totalSize ? totalSize - offset : chunkSize
-                    let currentChunk = fileHandle.readData(ofLength: currentChunkSize)
-                    offset += currentChunkSize
-                    fileHandle.seek(toFileOffset: UInt64(offset))
-                    try encryptor.process(currentChunk)
-                }
-                // Forces golang to return unused memory
-                HelperFreeOSMemory()
-            }
-            fileHandle.closeFile()
-            // We finalize the encryption
-            try encryptor.finish()
-            HelperFreeOSMemory()
-            
-            // We get back the key packet
-            let keyPacket = encryptor.getKeyPacket()
-            
-            // And we resize the data packet buffer to the right length
-            let dataLength = encryptor.getDataLength()
-            if dataLength > bufferSize {
-                return nil
-            } else if dataLength < bufferSize {
-                dataBuffer.length = dataLength
-            }
-            // Forces golang to return unused memory
-            defer { HelperFreeOSMemory() }
-            return (keyPacket, dataBuffer)
+
+            let cipherURL = localURL.appendingPathExtension("cipher")
+            let keyPacket = try AttachmentStreamingEncryptor.encryptStream(localURL, cipherURL, aKeyRing, 2_000_000)
+
+            return (keyPacket, cipherURL)
         } catch {
             return nil
         }
     }
-    
+
     func sign(byKey key: Key, userKeys: [Data], passphrase: String) -> Data? {
         do {
             var pwd : String = passphrase
@@ -162,11 +119,19 @@ extension Attachment {
                 }
             }
             
-            guard let out = try fileData?.signAttachment(byPrivKey: key.privateKey, passphrase: pwd) else {
+            var signature: String?
+            if let fileData = fileData,
+               let out = try fileData.signAttachment(byPrivKey: key.privateKey, passphrase: pwd) {
+                signature = out
+            } else if let localURL = localURL,
+                      let out = try Data(contentsOf: localURL).signAttachment(byPrivKey: key.privateKey, passphrase: pwd) {
+                signature = out
+            }
+            guard let signature = signature else {
                 return nil
             }
             var error : NSError?
-            let data = ArmorUnarmor(out, &error)
+            let data = ArmorUnarmor(signature, &error)
             if error != nil {
                 return nil
             }
@@ -364,6 +329,26 @@ extension Attachment {
         self.headerInfo = "{ \"content-disposition\": \"\(disposition)\",  \"content-id\": \"\(id)\" }"
     }
 
+    func writeToLocalURL(data: Data) throws {
+        let writeURL = try FileManager.default.url(for: .cachesDirectory,
+                                                   in: .userDomainMask,
+                                                   appropriateFor: nil,
+                                                   create: true)
+            .appendingPathComponent(UUID().uuidString)
+        try data.write(to: writeURL)
+        self.localURL = writeURL
+    }
+
+    func cleanLocalURLs() {
+        if let localURL = localURL {
+            try? FileManager.default.removeItem(at: localURL)
+            self.localURL = nil
+        }
+        let cipherURL = localURL?.appendingPathExtension("cipher")
+        if let cipherURL = cipherURL {
+            try? FileManager.default.removeItem(at: cipherURL)
+        }
+    }
 }
 
 extension Collection where Element == Attachment {
@@ -371,7 +356,6 @@ extension Collection where Element == Attachment {
     var areUploaded: Bool {
         allSatisfy { $0.isUploaded }
     }
-
 }
 
 protocol AttachmentConvertible {
@@ -400,11 +384,12 @@ extension UIImage: AttachmentConvertible {
                     attachment.attachmentID = "0"
                     attachment.fileName = fileName
                     attachment.mimeType = "image/jpg"
-                    attachment.fileData = stripMetadata ? fileData.strippingExif() : fileData
+                    attachment.fileData = nil
                     attachment.fileSize = fileData.count as NSNumber
                     attachment.isTemp = false
                     attachment.keyPacket = ""
-                    attachment.localURL = nil
+                    let dataToWrite = stripMetadata ? fileData.strippingExif() : fileData
+                    try? attachment.writeToLocalURL(data: dataToWrite)
                 
                     attachment.message = message
                     
@@ -445,12 +430,11 @@ extension Data: AttachmentConvertible {
                 attachment.attachmentID = "0"
                 attachment.fileName = fileName
                 attachment.mimeType = type
-                attachment.fileData = stripMetadata ? self.strippingExif() : self
+                attachment.fileData = nil
                 attachment.fileSize = self.count as NSNumber
                 attachment.isTemp = false
                 attachment.keyPacket = ""
-                attachment.localURL = nil
-                
+                try? attachment.writeToLocalURL(data: stripMetadata ? self.strippingExif() : self)
                 attachment.message = message
                 
                 let number = message.numAttachments.int32Value

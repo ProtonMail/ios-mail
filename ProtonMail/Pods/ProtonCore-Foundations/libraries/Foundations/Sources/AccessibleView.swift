@@ -107,7 +107,7 @@ public extension AccessibleView {
         if deepnessLevel > maxDeepness { return }
 
         for child in mirror.children {
-            var object: UIAccessibilityIdentification? = nil
+            var object: UIAccessibilityIdentification?
             
             switch child.value {
             case let view as UIView:

@@ -79,142 +79,142 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.13.1):
     - PromiseKit/CorePromise
-  - ProtonCore-AccountSwitcher (2.0.1):
-    - ProtonCore-CoreTranslation (= 2.0.1)
-    - ProtonCore-Log (= 2.0.1)
-    - ProtonCore-UIFoundations (= 2.0.1)
-    - ProtonCore-Utilities (= 2.0.1)
-  - ProtonCore-APIClient (2.0.1):
-    - ProtonCore-DataModel (= 2.0.1)
-    - ProtonCore-Networking (= 2.0.1)
-    - ProtonCore-Services (= 2.0.1)
-  - ProtonCore-Authentication (2.0.1):
-    - ProtonCore-APIClient (= 2.0.1)
-    - ProtonCore-Crypto (= 2.0.1)
-    - ProtonCore-Services (= 2.0.1)
-  - ProtonCore-Authentication-KeyGeneration (2.0.1):
-    - ProtonCore-Authentication (= 2.0.1)
-    - ProtonCore-Crypto (= 2.0.1)
-    - ProtonCore-OpenPGP (= 2.0.1)
-  - ProtonCore-Challenge (2.0.1):
-    - ProtonCore-Foundations (= 2.0.1)
-  - ProtonCore-Common (2.0.1):
-    - ProtonCore-Services (= 2.0.1)
-    - ProtonCore-UIFoundations (= 2.0.1)
-  - ProtonCore-CoreTranslation (2.0.1)
-  - ProtonCore-Crypto (2.0.1)
-  - ProtonCore-DataModel (2.0.1):
-    - ProtonCore-Utilities (= 2.0.1)
-  - ProtonCore-Doh (2.0.1):
-    - ProtonCore-Log (= 2.0.1)
-  - ProtonCore-ForceUpgrade (2.0.1):
-    - ProtonCore-CoreTranslation (= 2.0.1)
-    - ProtonCore-Networking (= 2.0.1)
-    - ProtonCore-UIFoundations (= 2.0.1)
-  - ProtonCore-Foundations (2.0.1)
-  - ProtonCore-HumanVerification (2.0.1):
-    - ProtonCore-APIClient (= 2.0.1)
-    - ProtonCore-CoreTranslation (= 2.0.1)
-    - ProtonCore-Foundations (= 2.0.1)
-    - ProtonCore-UIFoundations (= 2.0.1)
-    - ProtonCore-Utilities (= 2.0.1)
-  - ProtonCore-Keymaker (2.0.1):
+  - ProtonCore-AccountSwitcher (2.2.0):
+    - ProtonCore-CoreTranslation (= 2.2.0)
+    - ProtonCore-Log (= 2.2.0)
+    - ProtonCore-UIFoundations (= 2.2.0)
+    - ProtonCore-Utilities (= 2.2.0)
+  - ProtonCore-APIClient (2.2.0):
+    - ProtonCore-DataModel (= 2.2.0)
+    - ProtonCore-Networking (= 2.2.0)
+    - ProtonCore-Services (= 2.2.0)
+  - ProtonCore-Authentication (2.2.0):
+    - ProtonCore-APIClient (= 2.2.0)
+    - ProtonCore-Crypto (= 2.2.0)
+    - ProtonCore-Services (= 2.2.0)
+  - ProtonCore-Authentication-KeyGeneration (2.2.0):
+    - ProtonCore-Authentication (= 2.2.0)
+    - ProtonCore-Crypto (= 2.2.0)
+    - ProtonCore-OpenPGP (= 2.2.0)
+  - ProtonCore-Challenge (2.2.0):
+    - ProtonCore-Foundations (= 2.2.0)
+  - ProtonCore-Common (2.2.0):
+    - ProtonCore-Services (= 2.2.0)
+    - ProtonCore-UIFoundations (= 2.2.0)
+  - ProtonCore-CoreTranslation (2.2.0)
+  - ProtonCore-Crypto (2.2.0)
+  - ProtonCore-DataModel (2.2.0):
+    - ProtonCore-Utilities (= 2.2.0)
+  - ProtonCore-Doh (2.2.0):
+    - ProtonCore-Log (= 2.2.0)
+  - ProtonCore-ForceUpgrade (2.2.0):
+    - ProtonCore-CoreTranslation (= 2.2.0)
+    - ProtonCore-Networking (= 2.2.0)
+    - ProtonCore-UIFoundations (= 2.2.0)
+  - ProtonCore-Foundations (2.2.0)
+  - ProtonCore-HumanVerification (2.2.0):
+    - ProtonCore-APIClient (= 2.2.0)
+    - ProtonCore-CoreTranslation (= 2.2.0)
+    - ProtonCore-Foundations (= 2.2.0)
+    - ProtonCore-UIFoundations (= 2.2.0)
+    - ProtonCore-Utilities (= 2.2.0)
+  - ProtonCore-Keymaker (2.2.0):
     - EllipticCurveKeyPair (~> 2.0)
-    - ProtonCore-Crypto (= 2.0.1)
-  - ProtonCore-Log (2.0.1)
-  - ProtonCore-Login (2.0.1):
+    - ProtonCore-Crypto (= 2.2.0)
+  - ProtonCore-Log (2.2.0)
+  - ProtonCore-Login (2.2.0):
     - lottie-ios
-    - ProtonCore-Authentication (= 2.0.1)
-    - ProtonCore-Authentication-KeyGeneration (= 2.0.1)
-    - ProtonCore-Challenge (= 2.0.1)
-    - ProtonCore-CoreTranslation (= 2.0.1)
-    - ProtonCore-Crypto (= 2.0.1)
-    - ProtonCore-DataModel (= 2.0.1)
-    - ProtonCore-Foundations (= 2.0.1)
-    - ProtonCore-HumanVerification (= 2.0.1)
-    - ProtonCore-Log (= 2.0.1)
-    - ProtonCore-OpenPGP (= 2.0.1)
-    - ProtonCore-Payments (= 2.0.1)
-    - ProtonCore-PaymentsUI (= 2.0.1)
-    - ProtonCore-UIFoundations (= 2.0.1)
+    - ProtonCore-Authentication (= 2.2.0)
+    - ProtonCore-Authentication-KeyGeneration (= 2.2.0)
+    - ProtonCore-Challenge (= 2.2.0)
+    - ProtonCore-CoreTranslation (= 2.2.0)
+    - ProtonCore-Crypto (= 2.2.0)
+    - ProtonCore-DataModel (= 2.2.0)
+    - ProtonCore-Foundations (= 2.2.0)
+    - ProtonCore-HumanVerification (= 2.2.0)
+    - ProtonCore-Log (= 2.2.0)
+    - ProtonCore-OpenPGP (= 2.2.0)
+    - ProtonCore-Payments (= 2.2.0)
+    - ProtonCore-PaymentsUI (= 2.2.0)
+    - ProtonCore-UIFoundations (= 2.2.0)
     - TrustKit
-  - ProtonCore-Networking (2.0.1):
-    - ProtonCore-Networking/AFNetworking (= 2.0.1)
-  - ProtonCore-Networking/AFNetworking (2.0.1):
+  - ProtonCore-Networking (2.2.0):
+    - ProtonCore-Networking/AFNetworking (= 2.2.0)
+  - ProtonCore-Networking/AFNetworking (2.2.0):
     - AFNetworking (~> 4.0)
     - TrustKit
-  - ProtonCore-Networking/Alamofire (2.0.1):
+  - ProtonCore-Networking/Alamofire (2.2.0):
     - Alamofire (~> 5.2)
     - TrustKit
-  - ProtonCore-OpenPGP (2.0.1)
-  - ProtonCore-Payments (2.0.1):
+  - ProtonCore-OpenPGP (2.2.0)
+  - ProtonCore-Payments (2.2.0):
     - AwaitKit (~> 5.0.0)
-    - ProtonCore-APIClient (= 2.0.1)
-    - ProtonCore-Authentication (= 2.0.1)
-    - ProtonCore-CoreTranslation (= 2.0.1)
-    - ProtonCore-Foundations (= 2.0.1)
-    - ProtonCore-Log (= 2.0.1)
-    - ProtonCore-Services (= 2.0.1)
-    - ProtonCore-SRP (= 2.0.1)
+    - ProtonCore-APIClient (= 2.2.0)
+    - ProtonCore-Authentication (= 2.2.0)
+    - ProtonCore-CoreTranslation (= 2.2.0)
+    - ProtonCore-Foundations (= 2.2.0)
+    - ProtonCore-Log (= 2.2.0)
+    - ProtonCore-Services (= 2.2.0)
+    - ProtonCore-SRP (= 2.2.0)
     - ReachabilitySwift (~> 5.0.0)
-  - ProtonCore-PaymentsUI (2.0.1):
-    - ProtonCore-CoreTranslation (= 2.0.1)
-    - ProtonCore-Foundations (= 2.0.1)
-    - ProtonCore-Log (= 2.0.1)
-    - ProtonCore-Payments (= 2.0.1)
-    - ProtonCore-UIFoundations (= 2.0.1)
-  - ProtonCore-Services (2.0.1):
+  - ProtonCore-PaymentsUI (2.2.0):
+    - ProtonCore-CoreTranslation (= 2.2.0)
+    - ProtonCore-Foundations (= 2.2.0)
+    - ProtonCore-Log (= 2.2.0)
+    - ProtonCore-Payments (= 2.2.0)
+    - ProtonCore-UIFoundations (= 2.2.0)
+  - ProtonCore-Services (2.2.0):
     - AwaitKit (~> 5.0.0)
     - PromiseKit (~> 6.0)
-    - ProtonCore-DataModel (= 2.0.1)
-    - ProtonCore-Doh (= 2.0.1)
-    - ProtonCore-Log (= 2.0.1)
-    - ProtonCore-Networking (= 2.0.1)
-    - ProtonCore-Utilities (= 2.0.1)
+    - ProtonCore-DataModel (= 2.2.0)
+    - ProtonCore-Doh (= 2.2.0)
+    - ProtonCore-Log (= 2.2.0)
+    - ProtonCore-Networking (= 2.2.0)
+    - ProtonCore-Utilities (= 2.2.0)
     - TrustKit
-  - ProtonCore-SRP (2.0.1)
-  - ProtonCore-TestingToolkit/UITests/HumanVerification (2.0.1):
+  - ProtonCore-SRP (2.2.0)
+  - ProtonCore-TestingToolkit/UITests/HumanVerification (2.2.0):
     - pmtest
-    - ProtonCore-CoreTranslation (= 2.0.1)
-  - ProtonCore-TestingToolkit/UITests/Login (2.0.1):
+    - ProtonCore-CoreTranslation (= 2.2.0)
+  - ProtonCore-TestingToolkit/UITests/Login (2.2.0):
     - pmtest
-    - ProtonCore-CoreTranslation (= 2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/Authentication (2.0.1):
-    - ProtonCore-Authentication (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Services (= 2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/Core (2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/DataModel (2.0.1):
-    - ProtonCore-DataModel (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/Doh (2.0.1):
-    - ProtonCore-Doh (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/HumanVerification (2.0.1):
-    - ProtonCore-HumanVerification (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/Login (2.0.1):
-    - ProtonCore-Login (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Authentication (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/HumanVerification (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Services (= 2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/Networking (2.0.1):
-    - ProtonCore-Networking (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/Services (2.0.1):
-    - ProtonCore-Services (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Doh (= 2.0.1)
-    - ProtonCore-TestingToolkit/UnitTests/Networking (= 2.0.1)
-  - ProtonCore-UIFoundations (2.0.1):
-    - ProtonCore-CoreTranslation (= 2.0.1)
-    - ProtonCore-Foundations (= 2.0.1)
-    - ProtonCore-Log (= 2.0.1)
-  - ProtonCore-Utilities (2.0.1):
-    - ProtonCore-Log (= 2.0.1)
+    - ProtonCore-CoreTranslation (= 2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Authentication (2.2.0):
+    - ProtonCore-Authentication (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Services (= 2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Core (2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/DataModel (2.2.0):
+    - ProtonCore-DataModel (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Doh (2.2.0):
+    - ProtonCore-Doh (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/HumanVerification (2.2.0):
+    - ProtonCore-HumanVerification (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Login (2.2.0):
+    - ProtonCore-Login (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Authentication (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/HumanVerification (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Services (= 2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Networking (2.2.0):
+    - ProtonCore-Networking (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Services (2.2.0):
+    - ProtonCore-Services (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Doh (= 2.2.0)
+    - ProtonCore-TestingToolkit/UnitTests/Networking (= 2.2.0)
+  - ProtonCore-UIFoundations (2.2.0):
+    - ProtonCore-CoreTranslation (= 2.2.0)
+    - ProtonCore-Foundations (= 2.2.0)
+    - ProtonCore-Log (= 2.2.0)
+  - ProtonCore-Utilities (2.2.0):
+    - ProtonCore-Log (= 2.2.0)
   - ReachabilitySwift (5.0.0)
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
@@ -239,29 +239,29 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift (= 9.0.0)
   - "pmtest (from `git@gitlab.protontech.ch:apple/shared/pmtestautomation.git`, branch `master`)"
   - PromiseKit (= 6.13.1)
-  - ProtonCore-AccountSwitcher (= 2.0.1)
-  - ProtonCore-Authentication (= 2.0.1)
-  - ProtonCore-Authentication-KeyGeneration (= 2.0.1)
-  - ProtonCore-Challenge (= 2.0.1)
-  - ProtonCore-Common (= 2.0.1)
-  - ProtonCore-CoreTranslation (= 2.0.1)
-  - ProtonCore-Crypto (= 2.0.1)
-  - ProtonCore-ForceUpgrade (= 2.0.1)
-  - ProtonCore-HumanVerification (= 2.0.1)
-  - ProtonCore-Keymaker (= 2.0.1)
-  - ProtonCore-Log (= 2.0.1)
-  - ProtonCore-Login (= 2.0.1)
-  - ProtonCore-Networking/Alamofire (= 2.0.1)
-  - ProtonCore-OpenPGP (= 2.0.1)
-  - ProtonCore-Payments (= 2.0.1)
-  - ProtonCore-SRP (= 2.0.1)
-  - ProtonCore-TestingToolkit/UITests/HumanVerification (= 2.0.1)
-  - ProtonCore-TestingToolkit/UITests/Login (= 2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/Core (= 2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/Doh (= 2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/Login (= 2.0.1)
-  - ProtonCore-TestingToolkit/UnitTests/Services (= 2.0.1)
-  - ProtonCore-UIFoundations (= 2.0.1)
+  - ProtonCore-AccountSwitcher (= 2.2.0)
+  - ProtonCore-Authentication (= 2.2.0)
+  - ProtonCore-Authentication-KeyGeneration (= 2.2.0)
+  - ProtonCore-Challenge (= 2.2.0)
+  - ProtonCore-Common (= 2.2.0)
+  - ProtonCore-CoreTranslation (= 2.2.0)
+  - ProtonCore-Crypto (= 2.2.0)
+  - ProtonCore-ForceUpgrade (= 2.2.0)
+  - ProtonCore-HumanVerification (= 2.2.0)
+  - ProtonCore-Keymaker (= 2.2.0)
+  - ProtonCore-Log (= 2.2.0)
+  - ProtonCore-Login (= 2.2.0)
+  - ProtonCore-Networking/Alamofire (= 2.2.0)
+  - ProtonCore-OpenPGP (= 2.2.0)
+  - ProtonCore-Payments (= 2.2.0)
+  - ProtonCore-SRP (= 2.2.0)
+  - ProtonCore-TestingToolkit/UITests/HumanVerification (= 2.2.0)
+  - ProtonCore-TestingToolkit/UITests/Login (= 2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Core (= 2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Doh (= 2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Login (= 2.2.0)
+  - ProtonCore-TestingToolkit/UnitTests/Services (= 2.2.0)
+  - ProtonCore-UIFoundations (= 2.2.0)
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `4.5.0`)
   - SideMenuSwift (= 2.0.6)
   - SkeletonView (= 1.11.0)
@@ -382,8 +382,8 @@ SPEC CHECKSUMS:
   ProtonCore-PaymentsUI: e930c75b63a19ee1facb153379d9e1abf413e8de
   ProtonCore-Services: 363bc43f40d21f920b27bcef550e385997cb1cc2
   ProtonCore-SRP: decfb41f19b768173e92f8812d03c312bc8f5813
-  ProtonCore-TestingToolkit: 52e5e95e02d9791a831a814b11e16627f1ae68e9
-  ProtonCore-UIFoundations: cf63e9b22e72d429c00d1ac777718bb1838f2738
+  ProtonCore-TestingToolkit: 446f9d93d117b68901a4880a0ae4fafa0410d83d
+  ProtonCore-UIFoundations: 7a72efabf713b72d177d59185dd3919a406b40ec
   ProtonCore-Utilities: d4abe182ff9489dbd2f434aad2ad1b491624a465
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
@@ -395,6 +395,6 @@ SPEC CHECKSUMS:
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
 
-PODFILE CHECKSUM: c307ac29a7671fa5320bbd29ab14c5d0c93a6825
+PODFILE CHECKSUM: fd109bc7efafea5f571db128c962c218fd0ffb58
 
 COCOAPODS: 1.10.1

@@ -23,6 +23,7 @@ import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
+import func AVFoundation.AVMakeRect
 
 public typealias WelcomeScreenVariant = ScreenVariant<WelcomeScreenTexts, WelcomeScreenCustomData>
 
@@ -105,6 +106,9 @@ final class WelcomeView: UIView {
     private let loginButton = ProtonButton()
     private let signupButton = UIButton()
     private let signupAvailable: Bool
+    private var topImageView: UIImageView?
+
+    private var logoTopOffsetConstraint: NSLayoutConstraint?
 
     init(variant: WelcomeScreenVariant,
          target: UIViewController,
@@ -139,6 +143,8 @@ final class WelcomeView: UIView {
         }
 
         topImage.contentMode = .scaleAspectFill
+        logoTopOffsetConstraint = logo.topAnchor.constraint(greaterThanOrEqualTo: topImage.topAnchor, constant: 0)
+        logoTopOffsetConstraint?.isActive = false
 
         NSLayoutConstraint.activate([
             topImage.topAnchor.constraint(equalTo: topAnchor),
@@ -190,7 +196,9 @@ final class WelcomeView: UIView {
         case .vpn: topImage = image(named: "WelcomeTopImageForVPN")
         case .custom(let data): topImage = data.topImage
         }
-        return UIImageView(image: topImage)
+        let imageView = UIImageView(image: topImage)
+        topImageView = imageView
+        return imageView
     }
 
     private func logo(for variant: WelcomeScreenVariant) -> UIImageView {
@@ -301,6 +309,17 @@ final class WelcomeView: UIView {
     private func setUpInteractions(target: UIViewController, loginAction: Selector, signupAction: Selector) {
         loginButton.addTarget(target, action: loginAction, for: .touchUpInside)
         signupButton.addTarget(target, action: signupAction, for: .touchUpInside)
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        guard let topImageView = topImageView, let image = topImageView.image else { return }
+
+        let scaleRect = CGRect(origin: topImageView.bounds.origin,
+                               size: .init(width: topImageView.bounds.width, height: .infinity))
+        let imageHeight = AVMakeRect(aspectRatio: image.size, insideRect: scaleRect).height
+        logoTopOffsetConstraint?.constant = imageHeight
+        logoTopOffsetConstraint?.isActive = true
     }
 
 }
