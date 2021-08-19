@@ -123,7 +123,23 @@ extension EncryptedSearchService {
     }
     
     func deleteMessageFromSearchIndex(_ message: Message?) {
-        //TODO implement
+        if message == nil {
+            print("message nil!")
+            return
+        }
+        
+        //just delete a message if the search index exists for the user - otherwise it needs to be build first
+        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
+            EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(message!.messageID)
+        }
+    }
+    
+    func deleteSearchIndex(){
+        //just delete the search index if it exists
+        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
+            let _: Bool = EncryptedSearchIndexService.shared.deleteSearchIndex(for: self.user.userInfo.userId)
+            //TODO do we want to do anything when deleting fails?
+        }
     }
     
     func updateMessageMetadataInSearchIndex(_ message: Message?) {
