@@ -338,13 +338,6 @@ extension Attachment {
         try data.write(to: writeURL)
         self.localURL = writeURL
     }
-}
-
-extension Collection where Element == Attachment {
-
-    var areUploaded: Bool {
-        allSatisfy { $0.isUploaded }
-    }
 
     func cleanLocalURLs() {
         if let localURL = localURL {
@@ -355,6 +348,13 @@ extension Collection where Element == Attachment {
         if let cipherURL = cipherURL {
             try? FileManager.default.removeItem(at: cipherURL)
         }
+    }
+}
+
+extension Collection where Element == Attachment {
+
+    var areUploaded: Bool {
+        allSatisfy { $0.isUploaded }
     }
 }
 
