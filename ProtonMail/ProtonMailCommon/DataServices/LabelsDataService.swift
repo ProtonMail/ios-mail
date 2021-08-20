@@ -299,12 +299,6 @@ class LabelsDataService: Service, HasLocalStorage {
             return Promise<Int>.value(0)
         }
         
-        let mustBeSingle = [Message.Location.draft.rawValue,
-                            Message.Location.sent.rawValue]
-        if mustBeSingle.contains(labelID) {
-            return lastUpdatedStore.unreadCount(by: labelID, userID: userID ?? self.userID, type: .singleMessage)
-        }
-        
         switch viewMode {
         case .conversation:
             return lastUpdatedStore.unreadCount(by: labelID, userID: userID ?? self.userID, type: .conversation)

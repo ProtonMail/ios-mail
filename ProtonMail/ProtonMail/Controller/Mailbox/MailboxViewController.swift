@@ -530,7 +530,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return
         }
         
-        switch self.viewModel.viewMode {
+        switch self.viewModel.locationViewMode {
         case .singleMessage:
             guard let message: Message = self.viewModel.item(index: indexPath) else {
                 return
@@ -1073,6 +1073,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.showRefreshController()
             if isFirstFetch {
                 isFirstFetch = false
+                if viewModel.currentViewMode == .conversation {
+                    viewModel.fetchConversationCount(completion: nil)
+                }
                 viewModel.fetchMessages(time: 0, forceClean: false, isUnread: isShowingUnreadMessageOnly) { [weak self] task, res, error in
                     self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
                 }
@@ -1168,7 +1171,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
 
     private func tapped(at indexPath: IndexPath) {
-        switch viewModel.viewMode {
+        switch viewModel.locationViewMode {
         case .singleMessage:
             if let message = viewModel.item(index: indexPath) {
                 tappedMessage(message)
@@ -1614,7 +1617,7 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
             showNoEmailSelected(title: LocalString._apply_labels)
             return
         }
-        switch viewModel.viewMode {
+        switch viewModel.locationViewMode {
         case .conversation:
             showLabelAsActionSheet(conversations: viewModel.selectedConversations)
         case .singleMessage:
@@ -2213,7 +2216,7 @@ extension MailboxViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch viewModel.viewMode {
+        switch viewModel.locationViewMode {
         case .singleMessage:
             handleMessageSelection(indexPath: indexPath)
         case .conversation:

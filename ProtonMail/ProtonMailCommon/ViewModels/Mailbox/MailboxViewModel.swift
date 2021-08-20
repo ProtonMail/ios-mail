@@ -110,8 +110,12 @@ class MailboxViewModel: StorageLimit {
             return ""
         }
     }
+
+    var currentViewMode: ViewMode {
+        conversationStateService.viewMode
+    }
     
-    var viewMode: ViewMode {
+    var locationViewMode: ViewMode {
         let singleMessageOnlyLabels: [Message.Location] = [.draft, .sent]
         if let location = Message.Location.init(rawValue: labelID),
            singleMessageOnlyLabels.contains(location),
@@ -141,7 +145,7 @@ class MailboxViewModel: StorageLimit {
 
     var actionSheetViewModel: MailListActionSheetViewModel {
         return .init(labelId: labelId,
-                     title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: viewMode))
+                     title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: locationViewMode))
     }
 
     var selectedMessages: [Message] {
@@ -252,7 +256,7 @@ class MailboxViewModel: StorageLimit {
     ///
     /// - Returns: fetched result controller
     private func makeFetchController(isUnread: Bool) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        let fetchedResultsController = messageService.fetchedResults(by: self.labelID, viewMode: self.viewMode, isUnread: isUnread)
+        let fetchedResultsController = messageService.fetchedResults(by: self.labelID, viewMode: self.locationViewMode, isUnread: isUnread)
         if let fetchedResultsController = fetchedResultsController {
             do {
                 try fetchedResultsController.performFetch()
@@ -279,7 +283,7 @@ class MailboxViewModel: StorageLimit {
     
     private func makeUnreadFetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         var controller: NSFetchedResultsController<NSFetchRequestResult>?
-        switch viewMode {
+        switch locationViewMode {
         case .singleMessage:
             let moc = self.coreDataService.mainContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
@@ -439,7 +443,7 @@ class MailboxViewModel: StorageLimit {
     ///
     /// - Returns: location cache info
     func lastUpdateTime() -> LabelCount? {
-        switch self.viewMode {
+        switch currentViewMode {
         case .singleMessage:
             return lastUpdatedStore.lastUpdate(by: self.labelID, userID: self.messageService.userID, context: self.coreDataService.mainContext, type: .singleMessage)
         case .conversation:
@@ -618,7 +622,7 @@ class MailboxViewModel: StorageLimit {
     }
     
     func undo(_ undo: UndoMessage) {
-        switch viewMode {
+        switch locationViewMode {
         case .conversation:
             conversationService.move(conversationIDs: [undo.messageID],
                                      from: undo.newLabels,
@@ -646,7 +650,7 @@ class MailboxViewModel: StorageLimit {
     }
     
     final func delete(IDs: NSMutableSet) {
-        switch viewMode {
+        switch locationViewMode {
         case .conversation:
             deletePermanently(conversationIDs: IDs.asArrayOfStrings)
         case .singleMessage:
@@ -796,7 +800,7 @@ class MailboxViewModel: StorageLimit {
     }
 
     func getTimeOfItem(at indexPath: IndexPath) -> Date? {
-        switch viewMode {
+        switch locationViewMode {
         case .singleMessage:
             return item(index: indexPath)?.time
         case .conversation:
@@ -824,7 +828,7 @@ class MailboxViewModel: StorageLimit {
 
     private func handleUnstarAction() {
         let starredItemsIds: [String]
-        switch viewMode {
+        switch locationViewMode {
         case .conversation:
             starredItemsIds = selectedConversations
                 .filter { $0.starred }
@@ -839,7 +843,7 @@ class MailboxViewModel: StorageLimit {
 
     private func handleStarAction() {
         let unstarredItemsIds: [String]
-        switch viewMode {
+        switch locationViewMode {
         case .conversation:
             unstarredItemsIds = selectedConversations
                 .filter { !$0.starred }
@@ -854,7 +858,7 @@ class MailboxViewModel: StorageLimit {
 
     private func handleMarkReadAction() {
         let unreadItemsIds: [String]
-        switch viewMode {
+        switch locationViewMode {
         case .conversation:
             unreadItemsIds = selectedConversations
                 .filter { $0.isUnread(labelID: labelID) }
@@ -869,7 +873,7 @@ class MailboxViewModel: StorageLimit {
 
     private func handleMarkUnreadAction() {
         let unreadItemsIds: [String]
-        switch viewMode {
+        switch locationViewMode {
         case .conversation:
             unreadItemsIds = selectedConversations
                 .filter { !$0.isUnread(labelID: labelID) }
@@ -919,7 +923,7 @@ extension MailboxViewModel {
     }
 
     func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: CompletionBlock?) {
-        switch self.viewMode {
+        switch self.locationViewMode {
         case .singleMessage:
             messageService.fetchMessages(byLabel: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, queued: false, completion: completion)
         case .conversation:
@@ -935,7 +939,7 @@ extension MailboxViewModel {
     }
 
     func fetchDataWithReset(time: Int, cleanContact: Bool, removeAllDraft: Bool, unreadOnly: Bool, completion: CompletionBlock?) {
-        switch viewMode {
+        switch locationViewMode {
         case .singleMessage:
             messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: cleanContact, removeAllDraft: removeAllDraft, queued: false, unreadOnly: unreadOnly, completion: completion)
         case .conversation:
@@ -954,7 +958,7 @@ extension MailboxViewModel {
     func checkToUseReadOrUnreadAction(messageIDs: NSMutableSet, labelID: String) -> Bool {
         var readCount = 0
         coreDataService.mainContext.performAndWait {
-            switch self.viewMode {
+            switch self.locationViewMode {
             case .conversation:
                 let conversations = self.conversationService.fetchLocalConversations(withIDs: messageIDs, in: coreDataService.mainContext)
                 readCount = conversations.reduce(0) { (result, next) -> Int in
@@ -979,7 +983,7 @@ extension MailboxViewModel {
     }
     
     func label(IDs messageIDs : NSMutableSet, with labelID: String, apply: Bool) {
-        switch self.viewMode {
+        switch self.locationViewMode {
         case .singleMessage:
             let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
             messageService.label(messages: messages, label: labelID, apply: apply)
@@ -1003,7 +1007,7 @@ extension MailboxViewModel {
     }
     
     func mark(IDs messageIDs : NSMutableSet, unread: Bool) {
-        switch self.viewMode {
+        switch self.locationViewMode {
         case .singleMessage:
             let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
             messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
@@ -1027,7 +1031,7 @@ extension MailboxViewModel {
     }
     
     func move(IDs messageIDs : NSMutableSet, from fLabel: String, to tLabel: String) {
-        switch self.viewMode {
+        switch self.locationViewMode {
         case .singleMessage:
             let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
             var fLabels: [String] = []
@@ -1067,7 +1071,7 @@ extension MailboxViewModel {
             return false
         }
         let object = fetchedResultsController?.object(at: index)
-        switch self.viewMode {
+        switch self.locationViewMode {
         case .conversation:
             if let conversation = object as? Conversation {
                 self.selectedIDs.insert(conversation.conversationID)
