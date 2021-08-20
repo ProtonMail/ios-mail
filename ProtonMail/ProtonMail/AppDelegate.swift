@@ -344,6 +344,7 @@ extension AppDelegate: UIApplicationDelegate {
             delayedCompletion()
         }
         PMLog.D("Enter Background")
+        BackgroundTimer.shared.willEnterBackgroundOrTerminate()
     }
     
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, deprecated in favor of similar method in WindowSceneDelegate" )
@@ -367,6 +368,7 @@ extension AppDelegate: UIApplicationDelegate {
         rootContext.performAndWait {
             let _ = rootContext.saveUpstreamIfNeeded()
         }
+        BackgroundTimer().willEnterBackgroundOrTerminate()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

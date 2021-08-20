@@ -38,35 +38,6 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     private(set) var singleMessageCoordinator: SingleMessageCoordinator?
     private(set) var conversationCoordinator: ConversationCoordinator?
 
-    init(sideMenu: SideMenuController?, viewModel: MailboxViewModel, services: ServiceFactory) {
-        self.sideMenu = sideMenu
-        self.viewModel = viewModel
-        self.services = services
-
-        let inbox = UIStoryboard.Storyboard.inbox.storyboard
-        let viewController = inbox.make(VC.self)
-        let nav = UINavigationController(rootViewController: viewController)
-        self.viewController = viewController
-        self.navBeforeStart = nav
-        self.navigation = nav
-    }
-
-    init(nav: UINavigationController?,
-         viewController: MailboxViewController,
-         viewModel: MailboxViewModel,
-         services: ServiceFactory) {
-        self.viewModel = viewModel
-        self.viewController = viewController
-        self.services = services
-        self.navigation = nav
-    }
-
-    init(viewController: MailboxViewController, viewModel: MailboxViewModel, services: ServiceFactory) {
-        self.viewModel = viewModel
-        self.services = services
-        self.viewController = viewController
-    }
-
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
          viewController: MailboxViewController,
