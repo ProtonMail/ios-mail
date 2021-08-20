@@ -79,4 +79,8 @@ class SkeletonViewController: ProtonMailTableViewController {
         cell.showAnimatedGradientSkeleton()
         return cell
     }
+
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        false
+    }
 }

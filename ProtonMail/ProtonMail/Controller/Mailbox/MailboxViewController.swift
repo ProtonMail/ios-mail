@@ -132,6 +132,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var lastNetworkStatus : NetworkStatus? = nil
     
     private var shouldAnimateSkeletonLoading = false
+    private var shouldKeepSkeletonUntilManualDismissal = false
     private var isShowingUnreadMessageOnly: Bool {
         return self.unreadFilterButton.isSelected
     }
@@ -160,11 +161,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.updateLastUpdateTimeLabel()
         self.updateUnreadButton()
 
+        refetchAllIfNeeded()
         startAutoFetch()
     }
 
     @objc func doEnterBackground() {
         stopAutoFetch()
+    }
+
+    private func refetchAllIfNeeded() {
+        if BackgroundTimer.shared.wasInBackgroundForMoreThanOneHour {
+            pullDown()
+            BackgroundTimer.shared.updateLastForegroundDate()
+        }
     }
     
     func resetTableView() {
@@ -244,6 +253,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         SwipyCellConfig.shared.triggerPoints.removeValue(forKey: -0.75)
         SwipyCellConfig.shared.triggerPoints.removeValue(forKey: 0.75)
+
+        refetchAllIfNeeded()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -1102,11 +1113,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func forceRefreshAllMessages() {
         guard !self.fetchingMessage else { return }
         self.fetchingMessage = true
+        self.shouldAnimateSkeletonLoading = true
+        self.shouldKeepSkeletonUntilManualDismissal = true
+        self.tableView.reloadData()
         stopAutoFetch()
 
         viewModel.fetchDataWithReset(time: 0, cleanContact: true, removeAllDraft: false, unreadOnly: isShowingUnreadMessageOnly) { [weak self] task, res, error in
             if self?.unreadFilterButton.isSelected == true {
                 self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: nil)
+            }
+            delay(0.2) {
+                self?.shouldAnimateSkeletonLoading = false
+                self?.shouldKeepSkeletonUntilManualDismissal = false
+                self?.tableView.reloadData()
             }
             self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
             self?.startAutoFetch()
@@ -2032,6 +2051,10 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.updateUnreadButton()
             return
         }
+
+        if shouldKeepSkeletonUntilManualDismissal {
+            return
+        }
         
         self.tableView.endUpdates()
         if self.refreshControl.isRefreshing {
@@ -2048,7 +2071,9 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         }
         
         if self.shouldAnimateSkeletonLoading {
-            self.shouldAnimateSkeletonLoading = false
+            if !shouldKeepSkeletonUntilManualDismissal {
+                self.shouldAnimateSkeletonLoading = false
+            }
             self.updateTimeLabel.hideSkeleton()
             self.unreadFilterButton.titleLabel?.hideSkeleton()
             self.updateUnreadButton()
@@ -2056,11 +2081,15 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.tableView.reloadData()
         }
         
-        tableView.beginUpdates()
+        if !shouldKeepSkeletonUntilManualDismissal {
+            tableView.beginUpdates()
+        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        if controller == self.viewModel.labelFetchedResults || controller == self.viewModel.unreadFetchedResult {
+        if controller == self.viewModel.labelFetchedResults
+        || controller == self.viewModel.unreadFetchedResult
+        || shouldKeepSkeletonUntilManualDismissal {
             return
         }
         switch(type) {
@@ -2074,7 +2103,9 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        if controller == self.viewModel.labelFetchedResults || controller == self.viewModel.unreadFetchedResult {
+        if controller == self.viewModel.labelFetchedResults
+        || controller == self.viewModel.unreadFetchedResult
+        || shouldKeepSkeletonUntilManualDismissal {
             return
         }
         switch(type) {
@@ -2214,6 +2245,10 @@ extension MailboxViewController: UITableViewDelegate {
             return UITableView.automaticDimension
         }
     }
+
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        return !shouldAnimateSkeletonLoading
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch viewModel.locationViewMode {
@@ -2329,7 +2364,7 @@ extension MailboxViewController: SkeletonTableViewDataSource {
 
 extension MailboxViewController: EventsConsumer {
     func shouldCallFetchEvents() {
-        guard self.hasNetworking else { return }
+        guard self.hasNetworking, !fetchingMessage else { return }
         getLatestMessages()
     }
 }
