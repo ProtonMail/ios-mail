@@ -85,19 +85,20 @@ extension EncryptedSearchService {
     }
     
     func updateSearchIndex(_ action: NSFetchedResultsChangeType, _ message: Message?) {
+        //print("action type: \(action.rawValue)")
         switch action {
         case .delete:
             print("Delete message from search index")
-            self.updateMessageMetadataInSearchIndex(message)    //delete just triggers a move to the bin folder
+            self.updateMessageMetadataInSearchIndex(message, action)    //delete just triggers a move to the bin folder
         case .insert:
             print("Insert new message to search index")
             self.insertSingleMessageToSearchIndex(message)
         case .move:
             print("Move message in search index")
-            self.updateMessageMetadataInSearchIndex(message)    //move just triggers a change in the location of the message
+            self.updateMessageMetadataInSearchIndex(message, action)    //move just triggers a change in the location of the message
         case .update:
             print("Update message")
-            self.updateMessageMetadataInSearchIndex(message)
+            //self.updateMessageMetadataInSearchIndex(message, action)
         default:
             return
         }
@@ -145,8 +146,22 @@ extension EncryptedSearchService {
         }
     }
     
-    func updateMessageMetadataInSearchIndex(_ message: Message?) {
-        //TODO implement
+    func updateMessageMetadataInSearchIndex(_ message: Message?, _ action: NSFetchedResultsChangeType) {
+        if message == nil {
+            print("message nil!")
+            return
+        }
+        
+        switch action {
+        case .delete:
+            print("DELETE: message location: \(message!.getLabelIDs()), labels: \(message!.labels)")
+        case .move:
+            print("MOVE: message location: \(message!.getLabelIDs()), labels: \(message!.labels)")
+        case .update:
+            print("UPDATE: message \(message!), labelid: \(message!.getLabelIDs()), labels: \(message!.labels)")
+        default:
+            return
+        }
     }
     
     private func updateCurrentUserIfNeeded() -> Void {
