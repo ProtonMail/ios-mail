@@ -96,7 +96,7 @@ final class MenuLabel: NSObject {
         self.parentID = nil
         self.path = location.localizedTitle
         self.textColor = "#FFFFFF"
-        self.iconColor = "#FFFFFF"
+        self.iconColor = "#9CA0AA"
         self.type = .folder
         self.order = 1
         self.notify = true

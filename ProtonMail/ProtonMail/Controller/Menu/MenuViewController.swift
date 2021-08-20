@@ -44,9 +44,13 @@ final class MenuViewController: UIViewController, AccessibleView {
         self.viewModel = vm
         self.coordinator = coordinator
     }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    
+    override var prefersStatusBarHidden: Bool {
+        if #available(iOS 13.0, *) {
+            return true
+        } else {
+            return false
+        }
     }
     
     override func viewDidLoad() {
@@ -91,6 +95,7 @@ final class MenuViewController: UIViewController, AccessibleView {
 // MARK: Private functions
 extension MenuViewController {
     private func viewInit() {
+        self.view.backgroundColor = UIColor(hexString: "#25272c", alpha: 1)
         self.menuWidth.constant = self.viewModel.menuWidth
         self.tableView.backgroundColor = .clear
         self.tableView.register(MenuItemTableViewCell.self)
@@ -102,6 +107,11 @@ extension MenuViewController {
 
         self.primaryUserview.accessibilityTraits = [.button]
         self.primaryUserview.accessibilityHint = LocalString._menu_open_account_switcher
+        if #available(iOS 13.0, *), !UIDevice.hasNotch {
+            self.accountSwitcherTopConstraint.constant = 10
+        } else {
+            self.accountSwitcherTopConstraint.constant = 0
+        }
 
         self.shortNameView.setCornerRadius(radius: 2)
         self.avatarLabel.adjustsFontSizeToFitWidth = true
@@ -190,7 +200,7 @@ extension MenuViewController {
     }
 
     private func setPrimaryUserview(hightlight: Bool) {
-        let color = hightlight ? UIColor(RRGGBB: UInt(0x494D55)): UIColor(RRGGBB: UInt(0x303239))
+        let color = hightlight ? UIColor(RRGGBB: UInt(0x494D55)): UIColor(RRGGBB: UInt(0x3B3D41))
         self.primaryUserview.backgroundColor = color
         self.arrowBtn.isHighlighted = hightlight
     }
@@ -204,6 +214,36 @@ extension MenuViewController {
         if let sideMenu = self.sideMenuController {
             AccountSwitcher.dismiss(from: sideMenu)
         }
+    }
+    
+    private func checkAddLabelAbility(label: MenuLabel) {
+        guard self.viewModel.allowToCreate(type: .label) else {
+            let title = LocalString._creating_label_not_allowed
+            let message = LocalString._upgrade_to_create_label
+            self.showAlert(title: title, message: message)
+            return
+        }
+        self.coordinator.go(to: label)
+    }
+
+    private func checkAddFolderAbility(label: MenuLabel) {
+        guard self.viewModel.allowToCreate(type: .folder) else {
+            let title = LocalString._creating_folder_not_allowed
+            let message = LocalString._upgrade_to_create_folder
+            self.showAlert(title: title, message: message)
+            return
+        }
+        self.coordinator.go(to: label)
+    }
+
+    @objc
+    private func clickAddLabelFromSection() {
+        self.checkAddLabelAbility(label: .init(location: .addLabel))
+    }
+
+    @objc
+    private func clickAddFolderFromSection() {
+        self.checkAddFolderAbility(label: .init(location: .addFolder))
     }
 }
 
@@ -331,28 +371,16 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         case .customize(_):
             self.coordinator.go(to: label)
         case .addLabel:
-            guard self.viewModel.allowToCreate(type: .label) else {
-                let title = LocalString._creating_label_not_allowed
-                let message = LocalString._upgrade_to_create_label
-                self.showAlert(title: title, message: message)
-                return
-            }
-            self.coordinator.go(to: label)
+            self.checkAddLabelAbility(label: label)
         case .addFolder:
-            guard self.viewModel.allowToCreate(type: .folder) else {
-                let title = LocalString._creating_folder_not_allowed
-                let message = LocalString._upgrade_to_create_folder
-                self.showAlert(title: title, message: message)
-                return
-            }
-            self.coordinator.go(to: label)
+            self.checkAddFolderAbility(label: label)
         default:
             self.coordinator.go(to: label)
         }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 56
+        return section == 0 ? 8: 48
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -371,13 +399,63 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         
         if section == .inboxes { return vi }
         
-        let label = UILabel(font: .systemFont(ofSize: 13), text: section.title, textColor: UIColor(RRGGBB: UInt(0x9ca0aa)))
+        let line = UIView()
+        line.backgroundColor = UIColor(hexColorCode: "#303239")
+        vi.addSubview(line)
+        [
+            line.topAnchor.constraint(equalTo: vi.topAnchor),
+            line.leadingAnchor.constraint(equalTo: vi.leadingAnchor),
+            line.trailingAnchor.constraint(equalTo: vi.trailingAnchor),
+            line.heightAnchor.constraint(equalToConstant: 1)
+        ].activate()
+        
+        let label = UILabel(font: .systemFont(ofSize: 14), text: section.title, textColor: UIColor(RRGGBB: UInt(0x9ca0aa)))
         label.translatesAutoresizingMaskIntoConstraints = false
         
         vi.addSubview(label)
+        [
+            label.leadingAnchor.constraint(equalTo: vi.leadingAnchor, constant: 16),
+            label.centerYAnchor.constraint(equalTo: vi.centerYAnchor)
+        ].activate()
+        return self.addPlusButtonIfNeeded(vi: vi, section: section)
+    }
+
+    private func addPlusButtonIfNeeded(vi: UIView, section: MenuSection) -> UIView {
+        guard section == .folders || section == .labels else {
+            return vi
+        }
+        let sectionIndex = section == .folders ? 1: 2
+        let path = IndexPath(row: 0, section: sectionIndex)
+        let addTypes: [LabelLocation] = [.addFolder, .addLabel]
+        if let label = self.viewModel.getMenuItem(indexPath: path),
+           addTypes.contains(label.location) {
+            return vi
+        }
+
+        let plusView = UIView()
+        plusView.backgroundColor = .clear
+        plusView.isUserInteractionEnabled = true
+        vi.addSubview(plusView)
+        [
+            plusView.topAnchor.constraint(equalTo: vi.topAnchor),
+            plusView.trailingAnchor.constraint(equalTo: vi.trailingAnchor),
+            plusView.bottomAnchor.constraint(equalTo: vi.bottomAnchor),
+            plusView.widthAnchor.constraint(equalToConstant: 50)
+        ].activate()
+        let selector = section == .folders ? #selector(self.clickAddFolderFromSection): #selector(self.clickAddLabelFromSection)
+        let tapGesture = UITapGestureRecognizer(target: self, action: selector)
+        plusView.addGestureRecognizer(tapGesture)
+    
+        let plusIcon = UIImageView(image: Asset.menuPlus.image)
+        plusIcon.tintColor = UIColor(hexColorCode: "#9CA0AA")
         
-        label.leadingAnchor.constraint(equalTo: vi.leadingAnchor, constant: 16).isActive = true
-        label.bottomAnchor.constraint(equalTo: vi.bottomAnchor, constant: -8).isActive = true
+        plusView.addSubview(plusIcon)
+        [
+            plusIcon.trailingAnchor.constraint(equalTo: plusView.trailingAnchor, constant: -16),
+            plusIcon.centerYAnchor.constraint(equalTo: plusView.centerYAnchor),
+            plusIcon.widthAnchor.constraint(equalToConstant: 20),
+            plusIcon.heightAnchor.constraint(equalToConstant: 20)
+        ].activate()
         return vi
     }
     

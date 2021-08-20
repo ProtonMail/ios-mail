@@ -32,9 +32,9 @@ enum MenuSection {
     var title: String {
         switch self {
         case .inboxes: return LocalString._locations_inbox_title
-        case .folders: return LocalString._folder
+        case .folders: return LocalString._folders
         case .labels: return LocalString._labels
-        // todo: the translation title could be worng
+        // todo: the translation title could be wrong
         case .more: return LocalString._general_more
         default:
             return ""

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "menu_folder_multiple.png",
+      "filename" : "ic-folder-multiple.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "menu_folder_multiple@2x.png",
+      "filename" : "ic-folder-multiple@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "menu_folder_multiple@3x.png",
+      "filename" : "ic-folder-multiple@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

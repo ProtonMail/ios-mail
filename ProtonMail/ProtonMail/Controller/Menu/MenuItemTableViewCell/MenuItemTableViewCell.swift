@@ -48,8 +48,8 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         self.selectedBackgroundView = selectedView
         
         self.badgeBGView.setCornerRadius(radius: 10)
-        self.arrow.image = UIImage(named: "mail_attachment-closed")
-        self.arrow.highlightedImage = UIImage(named: "mail_attachment-open")
+        self.arrow.image = Asset.arrowDown.image
+        self.arrow.highlightedImage = Asset.arrowUp.image
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickArrow))
         self.arrowBGView.addGestureRecognizer(tap)

@@ -134,9 +134,9 @@ extension MenuViewModel: MenuVMProtocol {
         case .folders:
             return self.folderItems.getFolderItem(by: indexPath)
         case .labels:
-            return self.labelItems[row]
+            return self.labelItems[safe:row]
         case .more:
-            return self.moreItems[row]
+            return self.moreItems[safe:row]
         default: return nil
         }
     }
@@ -266,7 +266,7 @@ extension MenuViewModel: MenuVMProtocol {
     }
     
     func getColor(of label: MenuLabel) -> UIColor {
-        guard let user = self.currentUser else { return .white }
+        guard let user = self.currentUser else { return UIColor(hexColorCode: "#9CA0AA") }
         guard label.type == .folder else {
             return UIColor(hexColorCode: label.iconColor)
         }
@@ -274,10 +274,10 @@ extension MenuViewModel: MenuVMProtocol {
         let enableColor = user.userinfo.enableFolderColor == 1
         let inherit = user.userinfo.inheritParentFolderColor == 1
         
-        guard enableColor else { return .white }
+        guard enableColor else { return UIColor(hexColorCode: "#9CA0AA") }
         if inherit {
             guard let parent = self.folderItems.getRootItem(of: label) else {
-                return UIColor(hexColorCode: "#FFFFFF")
+                return UIColor(hexColorCode: "#9CA0AA")
             }
             return UIColor(hexColorCode: parent.iconColor)
         } else {
