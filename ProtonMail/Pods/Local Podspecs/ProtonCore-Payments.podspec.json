@@ -1,0 +1,77 @@
+{
+  "name": "ProtonCore-Payments",
+  "version": "2.4.0",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "2.4.0"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.12.1"
+  },
+  "swift_versions": [
+    "5.1"
+  ],
+  "dependencies": {
+    "ProtonCore-APIClient": [
+      "2.4.0"
+    ],
+    "ProtonCore-Authentication": [
+      "2.4.0"
+    ],
+    "ProtonCore-Log": [
+      "2.4.0"
+    ],
+    "ProtonCore-Services": [
+      "2.4.0"
+    ],
+    "ProtonCore-SRP": [
+      "2.4.0"
+    ],
+    "ProtonCore-CoreTranslation": [
+      "2.4.0"
+    ],
+    "ProtonCore-Foundations": [
+      "2.4.0"
+    ],
+    "AwaitKit": [
+      "~> 5.2.0"
+    ],
+    "ReachabilitySwift": [
+      "~> 5.0.0"
+    ]
+  },
+  "source_files": [
+    "libraries/Payments/Sources/**/*.swift",
+    "libraries/v/Sources/**/*.swift"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "libraries/Payments/Tests/**/*.swift",
+      "dependencies": {
+        "OHHTTPStubs/Swift": [
+
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Payments": [
+          "2.4.0"
+        ]
+      }
+    }
+  ],
+  "swift_version": "5.1"
+}

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "menu_setting.png",
+      "filename" : "ic-cog-wheel.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "menu_setting@2x.png",
+      "filename" : "ic-cog-wheel@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "menu_setting@3x.png",
+      "filename" : "ic-cog-wheel@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -77,7 +77,7 @@ public class AlamofireSession: Session {
 
     public func upload(with request: SessionRequest,
                        keyPacket: Data, dataPacket: Data, signature: Data?,
-                       completion: @escaping ResponseCompletion) {
+                       completion: @escaping ResponseCompletion, uploadProgress: ProgressCompletion?) {
         guard let alamofireRequest = request as? AlamofireRequest else {
             completion(nil, nil, nil)
             return
@@ -100,6 +100,14 @@ public class AlamofireSession: Session {
             if let value = parameters["MessageID"], let id = value.data(using: .utf8) {
                 data.append(id, withName: "MessageID")
             }
+            if let value = parameters["ContentID"],
+               let id = value.data(using: .utf8) {
+                data.append(id, withName: "ContentID")
+            }
+            if let value = parameters["Disposition"],
+               let position = value.data(using: .utf8) {
+                data.append(position, withName: "Disposition")
+            }
             data.append(keyPacket, withName: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
             data.append(dataPacket, withName: "DataPacket", fileName: "DataPacket.txt", mimeType: "" )
             if let sign = signature {
@@ -108,6 +116,9 @@ public class AlamofireSession: Session {
         }, with: alamofireRequest)
         .onURLSessionTaskCreation { task in
             taskOut = task as? URLSessionDataTask
+        }
+        .uploadProgress { (progress) in
+            uploadProgress?(progress)
         }
         .responseString(queue: requestQueue) { response in
             switch response.result {
@@ -142,7 +153,7 @@ public class AlamofireSession: Session {
 
     public func uploadFromFile(with request: SessionRequest,
                                keyPacket: Data, dataPacketSourceFileURL: URL, signature: Data?,
-                               completion: @escaping ResponseCompletion) {
+                               completion: @escaping ResponseCompletion, uploadProgress: ProgressCompletion?) {
         guard let alamofireRequest = request as? AlamofireRequest else {
             completion(nil, nil, nil)
             return
@@ -165,6 +176,14 @@ public class AlamofireSession: Session {
             if let value = parameters["MessageID"], let id = value.data(using: .utf8) {
                 data.append(id, withName: "MessageID")
             }
+            if let value = parameters["ContentID"],
+               let id = value.data(using: .utf8) {
+                data.append(id, withName: "ContentID")
+            }
+            if let value = parameters["Disposition"],
+               let position = value.data(using: .utf8) {
+                data.append(position, withName: "Disposition")
+            }
             data.append(keyPacket, withName: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
             data.append(dataPacketSourceFileURL, withName: "DataPacket", fileName: "DataPacket.txt", mimeType: "")
             if let sign = signature {
@@ -173,6 +192,9 @@ public class AlamofireSession: Session {
         }, with: alamofireRequest)
         .onURLSessionTaskCreation { task in
             taskOut = task as? URLSessionDataTask
+        }
+        .uploadProgress { (progress) in
+            uploadProgress?(progress)
         }
         .responseString(queue: requestQueue) { response in
             switch response.result {
@@ -217,6 +239,9 @@ public class AlamofireSession: Session {
         self.session.request(alamofireRequest)
             .onURLSessionTaskCreation { task in
                 taskOut = task as? URLSessionDataTask
+            }
+            .uploadProgress { (progress) in
+                
             }
             .responseString(queue: requestQueue) { response in
                 switch response.result {
@@ -264,6 +289,8 @@ public class AlamofireSession: Session {
         self.session.download(alamofireRequest, to: destination)
             .onURLSessionTaskCreation { task in
                 taskOut = task as? URLSessionDataTask
+            }
+            .uploadProgress { (progress) in
             }
             .response { response in
                 switch response.result {

@@ -367,6 +367,8 @@ public class LocalizedString {
 
     public lazy var _as_switch_to_title = NSLocalizedString("switch to", bundle: Common.bundle, comment: "Section title of account switcher")
 
+    public lazy var _as_accounts = NSLocalizedString("Accounts", bundle: Common.bundle, comment: "Title of account switcher")
+
     public lazy var _as_manage_accounts = NSLocalizedString("Manage accounts", bundle: Common.bundle, comment: "Manage accounts button")
 
     public lazy var _as_signed_in_to_protonmail = NSLocalizedString("Signed in to ProtonMail", bundle: Common.bundle, comment: "Section title of account manager")

@@ -11,7 +11,7 @@ Have you ever dream to write asynchronous code like its synchronous counterpart?
 
 _AwaitKit_ is a powerful Swift library inspired by the [Async/Await specification in ES8 (ECMAScript 2017)](https://github.com/tc39/ecmascript-asyncawait) which provides a powerful way to write asynchronous code in a sequential manner.
 
-Internally it uses [PromiseKit](https://github.com/mxcl/PromiseKit) v6.2 to create and manage promises.
+Internally it uses [PromiseKit](https://github.com/mxcl/PromiseKit) v6.10 to create and manage promises.
 
 <p align="center">
     <a href="#requirements">Requirements</a> • <a href="#getting-started">Getting Started</a> • <a href="#usage">Usage</a> • <a href="#installation">Installation</a> • <a href="#contribution">Contribution</a> • <a href="#contact">Contact</a> • <a href="#license-mit">License</a>
@@ -162,7 +162,7 @@ $ touch Podfile
 $ edit Podfile
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
-pod 'AwaitKit', '~> 5.0.1'
+pod 'AwaitKit', '~> 5.2.0'
 ```
 
 Install into your project:
@@ -171,7 +171,7 @@ Install into your project:
 $ pod install
 ```
 
-If CocoaPods did not find the `PromiseKit 6.0` dependency execute this command:
+If CocoaPods did not find the `PromiseKit 6.10` dependency execute this command:
 
 ```bash
 $ pod repo update
@@ -214,14 +214,14 @@ $ brew install carthage
 To integrate AwaitKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "yannickl/AwaitKit" ~> 5.0.1
+github "yannickl/AwaitKit" ~> 5.2.0
 ```
 
 Run `carthage update` to build the framework and drag the built `AwaitKit.framework` into your Xcode project.
 
 ### Manually
 
-[Download](https://github.com/YannickL/AwaitKit/archive/master.zip) the project and copy the `AwaitKit` folder into your project to use it in. Note that you also need to download the [PromiseKit](https://github.com/mxcl/PromiseKit) v6.2 library and import it to your project.
+[Download](https://github.com/YannickL/AwaitKit/archive/master.zip) the project and copy the `AwaitKit` folder into your project to use it in. Note that you also need to download the [PromiseKit](https://github.com/mxcl/PromiseKit) v6.7 library and import it to your project.
 
 ## Contribution
 

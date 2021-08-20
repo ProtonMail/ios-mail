@@ -24,6 +24,7 @@ import TrustKit
 
 public typealias ResponseCompletion = (_ task: URLSessionDataTask?, _ response: Any?, _ error: NSError?) -> Void
 public typealias DownloadCompletion = (_ response: URLResponse?, _ url: URL?, _ error: NSError?) -> Void
+public typealias ProgressCompletion = (_ progress: Progress) -> Void
 
 public protocol Session {
     func generate(with method: HTTPMethod, urlString: String, parameters: Any?) throws -> SessionRequest
@@ -33,10 +34,20 @@ public protocol Session {
     func upload(with request: SessionRequest,
                 keyPacket: Data, dataPacket: Data, signature: Data?,
                 completion: @escaping ResponseCompletion) throws
-
+    
+    func upload(with request: SessionRequest,
+                keyPacket: Data, dataPacket: Data, signature: Data?,
+                completion: @escaping ResponseCompletion,
+                uploadProgress: ProgressCompletion?) throws
+    
     func uploadFromFile(with request: SessionRequest,
                         keyPacket: Data, dataPacketSourceFileURL: URL, signature: Data?,
                         completion: @escaping ResponseCompletion) throws
+
+    func uploadFromFile(with request: SessionRequest,
+                        keyPacket: Data, dataPacketSourceFileURL: URL, signature: Data?,
+                        completion: @escaping ResponseCompletion,
+                        uploadProgress: ProgressCompletion?) throws
 
     func download(with request: SessionRequest,
                   destinationDirectoryURL: URL,
@@ -51,6 +62,29 @@ extension Session {
                                    urlString: urlString,
                                    method: method)
     }
+    
+    public func uploadFromFile(with request: SessionRequest,
+                               keyPacket: Data,
+                               dataPacketSourceFileURL: URL,
+                               signature: Data?, completion: @escaping ResponseCompletion) throws {
+        try self.uploadFromFile(with: request,
+                                keyPacket: keyPacket,
+                                dataPacketSourceFileURL: dataPacketSourceFileURL,
+                                signature: signature,
+                                completion: completion, uploadProgress: nil)
+    }
+    
+    public func upload(with request: SessionRequest,
+                       keyPacket: Data,
+                       dataPacket: Data,
+                       signature: Data?, completion: @escaping ResponseCompletion) throws {
+        try self.upload(with: request,
+                        keyPacket: keyPacket,
+                        dataPacket: dataPacket,
+                        signature: signature,
+                        completion: completion, uploadProgress: nil)
+    }
+    
 }
 
 public class SessionRequest {

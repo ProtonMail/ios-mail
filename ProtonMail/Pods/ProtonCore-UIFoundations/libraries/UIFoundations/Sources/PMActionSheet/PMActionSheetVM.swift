@@ -131,10 +131,14 @@ extension PMActionSheetVM {
     private func handleSingleSelectionEventAt(_ indexPath: IndexPath) {
         guard self.itemGroups != nil else { return }
 
+        var updateRows: [Int] = []
         let count = self.itemGroups![indexPath.section].items.count
         for i in 0..<count {
             let isOn = i == indexPath.row
             if var itemToUpdate = itemGroups![indexPath.section].items[i] as? PMActionSheetPlainItem {
+                if itemToUpdate.isOn != isOn {
+                    updateRows.append(i)
+                }
                 itemToUpdate.isOn = isOn
                 itemToUpdate.markType = isOn ? .checkMark : .none
                 self.itemGroups![indexPath.section].items[i] = itemToUpdate
@@ -146,7 +150,9 @@ extension PMActionSheetVM {
                 _item.handler?(_item)
             }
         }
-        self.actionsheet?.reloadSection(indexPath.section)
+        let updatePaths = updateRows
+            .map { IndexPath(row: $0, section: indexPath.section) }
+        self.actionsheet?.reloadRows(at: updatePaths)
     }
 
     private func handleMultiSelectionEventAt(_ indexPath: IndexPath) {
