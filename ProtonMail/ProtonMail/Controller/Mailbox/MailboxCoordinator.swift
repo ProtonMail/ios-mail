@@ -197,7 +197,7 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     func go(to dest: Destination, sender: Any? = nil) {
         switch dest {
         case .details:
-            self.viewModel.viewMode == .conversation ? self.presentConversation() : self.presentSingleMessage()
+            self.viewModel.locationViewMode == .conversation ? self.presentConversation() : self.presentSingleMessage()
         case .newFolder:
             self.presentCreateFolder(type: .folder)
         case .newLabel:
@@ -365,7 +365,7 @@ extension MailboxCoordinator {
     private func followToDetails(message: Message,
                                  coreDataService: CoreDataService,
                                  navigationController: UINavigationController) {
-        switch self.viewModel.viewMode {
+        switch self.viewModel.locationViewMode {
         case .conversation:
             let internetStatusProvider = InternetConnectionStatusProvider()
             internetStatusProvider.getConnectionStatuses(currentStatus: { [weak self] status in
