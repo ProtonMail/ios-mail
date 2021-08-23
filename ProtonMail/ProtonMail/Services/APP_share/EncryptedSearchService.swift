@@ -11,7 +11,6 @@ import CoreData
 import SwiftSoup
 import SQLite
 import Crypto
-//import ProtonCore_Services
 import CryptoKit
 
 extension Array {
@@ -39,19 +38,26 @@ public class EncryptedSearchService {
     var limitPerRequest: Int = 1
     var lastMessageTimeIndexed: Int = 0     //stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
     var processedMessages: Int = 0
-    var processedMessagesDetailsDownloaded: Int = 0
     
     internal var searchIndex: Connection? = nil
     internal var cipherForSearchIndex: EncryptedsearchAESGCMCipher? = nil
     internal var lastSearchQuery: String = ""
     internal var searchResults: EncryptedsearchResultList? = nil
+    
+    internal var timingsBuildIndex: NSMutableArray = []
+    internal var timingsMessageFetching: NSMutableArray = []
+    internal var timingsMessageDetailsFetching: NSMutableArray = []
+    internal var timingsDecryptMessages: NSMutableArray = []
+    internal var timingsExtractData: NSMutableArray = []
+    internal var timingsCreateEncryptedContent: NSMutableArray = []
+    internal var timingsWriteToDatabase: NSMutableArray = []
 }
 
 extension EncryptedSearchService {
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Bool {
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
-        let startIndexingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
+        self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
         //Run code in the background
         DispatchQueue.global(qos: .userInitiated).async {
             NSLog("Check total number of messages on the backend")
@@ -73,8 +79,14 @@ extension EncryptedSearchService {
                 self.downloadAllMessagesAndBuildSearchIndex(){
                     //Search index build -> update progress bar to finished?
                     print("Finished building search index!")
-                    let finishedIndexingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
-                    self.printTiming("Building the Index", startIndexingTimeStamp, finishedIndexingTimeStamp)
+                    self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add stop time
+                    self.printTiming("Building the Index", for: self.timingsBuildIndex)
+                    self.printTiming("Message Fetching", for: self.timingsMessageFetching)
+                    self.printTiming("Message Details Downloading", for: self.timingsMessageDetailsFetching)
+                    self.printTiming("Decrypting Data", for: self.timingsDecryptMessages)
+                    self.printTiming("Extracting Data", for: self.timingsExtractData)
+                    self.printTiming("Create Encrypted Content", for: self.timingsCreateEncryptedContent)
+                    self.printTiming("Writing to Database", for: self.timingsWriteToDatabase)
                     
                     viewModel.isEncryptedSearch = true
                     return
@@ -169,10 +181,16 @@ extension EncryptedSearchService {
         self.user = users.firstUser
     }
     
-    private func printTiming(_ title: String, _ startTime: Double, _ stopTime: Double) -> Void {
-        let timeElapsed: Double = stopTime - startTime
+    private func printTiming(_ title: String, for array: NSMutableArray) -> Void {
+        var timeElapsed: Double = 0
         
-        print("Time for \(title): elapsed: \(timeElapsed)s, startTimeStamp: \(startTime), stopTimeStamp: \(stopTime)")
+        for index in stride(from: 0, to: array.count, by: 2) {
+            let start: Double = array[index] as! Double
+            let stop : Double = array[index+1] as! Double
+            timeElapsed += (stop-start)
+        }
+        
+        print("Time for \(title): elapsed: \(timeElapsed)s")
     }
     
     // Checks the total number of messages on the backend
@@ -190,181 +208,65 @@ extension EncryptedSearchService {
     
     // Downloads Messages and builds Search Index
     func downloadAllMessagesAndBuildSearchIndex(completionHandler: @escaping () -> Void) -> Void {
-        var messageIDs: NSMutableArray = []
-        var messages: NSMutableArray = []   //Array containing all messages of a user
-        var completeMessages: NSMutableArray = []
-        
-        let startFetchingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
-        //1. download all messages locally
-        NSLog("Downloading messages locally...")
-        self.fetchMessageIDs(Message.Location.allmail.rawValue){ids in
-        //self.fetchMessagesWithSemaphore(Message.Location.allmail.rawValue){ids in
-        //self.fetchMessagesWithLoop(Message.Location.allmail.rawValue){ids in
-            messageIDs = ids
-            print("# of message ids: ", messageIDs.count)
-            let finishedFetchingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
-            //print("# of message ids in global array: ", self.messageIDs.count)
-            //exit(1) //DEBUGGING REASONS
+        self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) {
+            completionHandler()
+        }
+    }
 
-            NSLog("Downloading message objects...")
-            //2. download message objects
-            self.getMessageObjects(messageIDs){
-                msgs in
-                messages = msgs
-                print("# of message objects: ", messages.count)
-                
-                let startDownloadingMessageDetailTimeStamp: Double = CFAbsoluteTimeGetCurrent()
-                NSLog("Downloading message details...") //if needed
-                //3. downloads message details
-                //self.getMessageDetailsIfNotAvailable(messages, messagesToProcess: messages.count){
-                //self.getMessageDetails(messages){
-                let messagesArray: [Message] = messages as! [Message]
-                self.getMessageDetailsWithRecursion(messagesArray) {
-                    compMsgs in
-                    completeMessages = compMsgs
-                    print("complete messages: ", completeMessages.count)
-                    let finishedDownloadingMessageDetailTimeStamp: Double = CFAbsoluteTimeGetCurrent()
-                    
-                    NSLog("Decrypting messages...")
-                    let startDecyptingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
-                    //4. decrypt messages (using the user's PGP key)
-                    self.decryptBodyAndExtractData(completeMessages) {
-                        //If index is build, call completion handler
-                        let finishedDecryptingTimeStamp: Double = CFAbsoluteTimeGetCurrent()
-                        
-                        self.printTiming("Fetching message IDs from server", startFetchingTimeStamp, finishedFetchingTimeStamp)
-                        self.printTiming("Downloading message details", startDownloadingMessageDetailTimeStamp, finishedDownloadingMessageDetailTimeStamp)
-                        self.printTiming("Decrypting and Extracting Data", startDecyptingTimeStamp, finishedDecryptingTimeStamp)
-                        completionHandler()
-                    }
-                }
-            }
-        }
-    }
-    
-    //Async/Await just available with swift 5.5 (enable again when released)
-    /*func fetchMessagesWithLoop(_ mailBoxID: String, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
-        let messageIDs:NSMutableArray = []
-        
-        repeat {
-            var messagesBatch: NSMutableArray = []
-            let result = await self.fetchMessagesWrapper(mailBoxID, self.lastMessageTimeIndexed)
-            messagesBatch = self.getMessageIDs(result)
-            self.processedMessages += messagesBatch.count
-            print("Processed messages: ", self.processedMessages)
-            self.lastMessageTimeIndexed = self.getOldestMessageInMessageBatch(result)
-            
-            //add messagesBatch to all messages
-            messageIDs.add(messagesBatch)
-            
-            //For testing purposes only
-            break
-        } while self.processedMessages < self.totalMessages
-        
-        print("Fetching messages in loop completed!")
-        
-        //for testing purposes only!!!
-        exit(1)
-        
-        completionHandler(messageIDs)
-    }*/
-    
-    //Async/Await just available with swift 5.5 (enable again when released)
-    /*func fetchMessagesWrapper(_ mailboxID: String, _ time: Int) async -> NSMutableArray {
-        return await withUnsafeContinuation {
-            continuation in
-            self.messageService.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { _, result, error in
-                if error == nil {
-                    continuation.resume(returning: result)
-                } else {
-                    print("Error while fetching!")
-                }
-            }
-        }
-    }*/
-    
-    func fetchMessageIDs(_ mailBoxID: String,_ completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
-        print("Start fetching message ids...")
-        self.fetchMessageWrapper(mailBoxID, 0) { messages in
-            completionHandler(messages)
-        }
-    }
-    
-    func fetchMessageWrapper(_ mailboxID: String, _ time: Int, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
+    func downloadAndProcessPage(_ mailboxID: String, _ time: Int, completionHandler: @escaping () -> Void) -> Void {
         let group = DispatchGroup()
-        let messageIDs:NSMutableArray = []
         
+        self.timingsMessageFetching.add(CFAbsoluteTimeGetCurrent())  //add start time
         group.enter()
         self.messageService.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { _, result, error in
             if error == nil {
                 let messagesBatch: NSMutableArray = self.getMessageIDs(result)
-                //add messagesBatch to all messages
-                messageIDs.addObjects(from: messagesBatch as! [Any])
-                self.processedMessages += messagesBatch.count
-                self.lastMessageTimeIndexed = self.getOldestMessageInMessageBatch(result)
-                group.leave()
+                print("Process page...")
+                self.processPage(messagesBatch) {
+                    print("Page successfull processed!")
+
+                    //update processed messages
+                    self.processedMessages += messagesBatch.count
+                    self.lastMessageTimeIndexed = self.getOldestMessageInMessageBatch(result)
+
+                    group.leave()
+                }
             } else {
-                print("Error while fetching messages: ", error)
+                print("Error while fetching messages: \(String(describing: error))")
             }
         }
         
         //Wait to call completion handler until all message id's are here
         group.notify(queue: .main) {
-            //print("Fetching batch of messages completed!")
             print("Processed messages: ", self.processedMessages)
-            //self.messageIDs.addObjects(from: messageIDs as! [Any])
             //if we processed all messages then return
             if self.processedMessages >= self.totalMessages {
-                completionHandler(messageIDs)
+                completionHandler()
             } else {
                 //call recursively
-                self.fetchMessageWrapper(mailboxID, self.lastMessageTimeIndexed) { mIDs in
-                    mIDs.addObjects(from: messageIDs as! [Any])
-                    completionHandler(mIDs)
+                self.downloadAndProcessPage(mailboxID, self.lastMessageTimeIndexed) {
+                    completionHandler()
                 }
             }
         }
     }
     
-    func fetchMessagesWithSemaphore(_ mailBoxID: String, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
-        let semaphore = DispatchSemaphore(value: 1)
-        let group = DispatchGroup()
-        let messageIDs:NSMutableArray = []
-        
-        self.limitPerRequest = 100
-        let numberOfFetches:Int = Int(ceil(Double(self.totalMessages)/Double(self.limitPerRequest)))
-        
-        print("total messages: ", self.totalMessages)
-        print("limitperrequest: ", self.limitPerRequest)
-        print("number of fetches: ", numberOfFetches)
-        
-        for index in 0...numberOfFetches {
-            print("fetch start for index: ", index)
-            group.enter()
+    func processPage(_ messageIDs: NSMutableArray, completionHandler: @escaping () -> Void) -> Void {
+        self.getMessageObjects(messageIDs){
+            messageObjects in
 
-            DispatchQueue.global(qos: .userInitiated).async {
-                semaphore.wait()
-                self.messageService.fetchMessages(byLabel: mailBoxID, time: self.lastMessageTimeIndexed, forceClean: false, isUnread: false) { _, result, error in
-                    //print("result: ", result)
-                    if error == nil {
-                        let msgIDs = self.getMessageIDs(result)
-                        messageIDs.addObjects(from: msgIDs as! [Any])
-                        self.processedMessages += msgIDs.count
-                        self.lastMessageTimeIndexed = self.getOldestMessageInMessageBatch(result)
-                    } else {
-                        print("Error when fetching messages:", error!)
-                    }
-                    print("fetch completed for index: ", index)
-                    semaphore.signal()
-                    group.leave()
+            NSLog("Downloading message details...")
+            self.timingsMessageFetching.add(CFAbsoluteTimeGetCurrent())  //add stop time
+            self.timingsMessageDetailsFetching.add(CFAbsoluteTimeGetCurrent())  //add start time
+            self.getMessageDetailsWithRecursion(messageObjects as! [Message]) {
+                messagesWithDetails in
+
+                NSLog("Decrypting messages...")
+                self.timingsMessageDetailsFetching.add(CFAbsoluteTimeGetCurrent())  //add stop time
+                self.decryptBodyAndExtractData(messagesWithDetails) {
+                    completionHandler()
                 }
             }
-        }
-
-        //Wait to call completion handler until all message id's are here
-        group.notify(queue: .main) {
-            print("Fetching messages completed!")
-            completionHandler(messageIDs)
         }
     }
     
@@ -372,7 +274,7 @@ extension EncryptedSearchService {
         let messages:NSArray = response!["Messages"] as! NSArray
         
         let messageIDs:NSMutableArray = []
-        for message in messages{
+        for message in messages {
             if let msg = message as? Dictionary<String, AnyObject> {
                 messageIDs.add(msg["ID"]!)
             }
@@ -414,7 +316,7 @@ extension EncryptedSearchService {
         }
 
         group.notify(queue: .main) {
-            print("Fetching message objects completed!")
+            //print("Fetching message objects completed!")
             completionHandler(messages)
         }
     }
@@ -444,7 +346,6 @@ extension EncryptedSearchService {
             }
             
             group.notify(queue: .main) {
-                //print("Fetching message details completed for message: \(m.messageID)")
                 //remove already processed entry from messages array
                 var remaindingMessages: [Message] = messages
                 if let index = remaindingMessages.firstIndex(of: m) {
@@ -457,115 +358,6 @@ extension EncryptedSearchService {
                     completionHandler(mWithDetails)
                 }
             }
-        }
-    }
-    
-    func getMessageDetailsForBatch(_ messages: NSArray, _ batchCount: Int, completionHandler: @escaping (NSMutableArray) -> Void){
-        let group = DispatchGroup()
-        let messageBatch: NSMutableArray = []
-        
-        for (index, m) in messages.enumerated() {
-            group.enter()
-            self.messageService.fetchMessageDetailForMessage(m as! Message, labelID: Message.Location.allmail.rawValue) { _, _, _, error in
-                //print("For batch: \(batchCount), message: \(index), available memory: \(self.getCurrentlyAvailableAppMemory())")
-                if error == nil {
-                    let mID: String = (m as! Message).messageID
-                    self.getMessage(mID) { newM in
-                        messageBatch.add(newM!)
-                        group.leave()
-                    }
-                }
-                else {
-                    print("Error when fetching message details: ", error!)
-                }
-            }
-        }
-        
-        group.notify(queue: .main) {
-            print("Fetching completed for message batch \(batchCount)!")
-            completionHandler(messageBatch)
-        }
-    }
-        
-    func getMessageDetails(_ messages: NSArray, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
-        //let group = DispatchGroup()
-        let semaphore = DispatchSemaphore(value: 0)
-        let batchSize: Int = 50 //TODO some calculation based on the number of available threads is most probably needed
-        let numberOfBatches: Int = messages.count/batchSize
-        print("There will be \(numberOfBatches) batches...")
-        //split messages in batches of 50 messages each
-        let messageBatches = (messages as! Array<Any>).chunks(batchSize)
-        
-        let results: NSMutableArray = []
-        //for each batch:
-        DispatchQueue.global(qos: .default).async {
-            for (batchCount, batch) in messageBatches.enumerated() {
-                //  download message details
-                //group.enter()
-                DispatchQueue.global(qos: .default).async {
-                    print("Download details for batch: \(batchCount)")
-                    self.getMessageDetailsForBatch(batch as NSArray, batchCount) { messageDetails in
-                        //combine results
-                        results.addObjects(from: messageDetails as! [Any])
-                        semaphore.signal()
-                        //group.leave()
-                    }
-                }
-                //group.wait()
-                semaphore.wait()
-                if batchCount == numberOfBatches {
-                    print("Fetching message details completed!")
-                    completionHandler(results)
-                }
-            }
-        }
-        
-        /*group.notify(queue: .main) {
-            print("Fetching message details completed!")
-            completionHandler(results)
-        }*/
-    }
-
-    func getMessageDetailsIfNotAvailable(_ messages: NSArray, messagesToProcess: Int, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
-        let group = DispatchGroup()
-        let msg: NSMutableArray = []
-        var count: Int = 0
-        for m in messages {
-            if (m as! Message).isDetailDownloaded {
-                msg.add(m)
-                count += 1
-                self.processedMessagesDetailsDownloaded += 1
-                print("Details for message already downloaded: ", self.processedMessagesDetailsDownloaded)
-            } else {
-                count += 1
-                group.enter()
-                //Do not block main queue to avoid deadlock
-                DispatchQueue.global(qos: .default).async {
-                    print("Count: \(count), thread: \(Thread.current)")
-                    self.messageService.fetchMessageDetailForMessage(m as! Message, labelID: "5") { _, response, _, error in
-                        if error == nil {
-                            let mID: String = (m as! Message).messageID
-                            self.getMessage(mID) { newM in
-                                msg.add(newM!)
-                                //processedMessageCount += 1
-                                self.processedMessagesDetailsDownloaded += 1
-                                print("Messages processed: ", self.processedMessagesDetailsDownloaded)
-                                group.leave()
-                            }
-                        }
-                        else {
-                            print("Error when fetching message details: ", error!)
-                            group.leave()
-                        }
-                        //group.leave()
-                    }
-                }//dispatchqueue
-            }
-        }
-
-        group.notify(queue: .main) {
-            print("Fetching message details completed!")
-            completionHandler(msg)
         }
     }
 
@@ -596,6 +388,8 @@ extension EncryptedSearchService {
         
         for m in messages {
             var decryptionFailed: Bool = true
+            
+            self.timingsDecryptMessages.add(CFAbsoluteTimeGetCurrent())     // add start time
             var body: String? = ""
             do {
                 body = try self.messageService.decryptBodyIfNeeded(message: m as! Message)
@@ -604,13 +398,23 @@ extension EncryptedSearchService {
                 print("Error when decrypting messages: \(error).")
             }
             
+            self.timingsDecryptMessages.add(CFAbsoluteTimeGetCurrent())     // add stop time
+            self.timingsExtractData.add(CFAbsoluteTimeGetCurrent())     //add start time
+            
             var keyWordsPerEmail: String = ""
             keyWordsPerEmail = self.extractKeywordsFromBody(bodyOfEmail: body!)
+            self.timingsExtractData.add(CFAbsoluteTimeGetCurrent())     //add stop time
+            self.timingsCreateEncryptedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
             
             var encryptedContent: EncryptedsearchEncryptedMessageContent? = nil
             encryptedContent = self.createEncryptedContent(message: m as! Message, cleanedBody: keyWordsPerEmail)
             
+            self.timingsCreateEncryptedContent.add(CFAbsoluteTimeGetCurrent()) //add stop time
+            self.timingsWriteToDatabase.add(CFAbsoluteTimeGetCurrent()) //add start time
+            
             self.addMessageKewordsToSearchIndex(m as! Message, encryptedContent, decryptionFailed)
+            
+            self.timingsWriteToDatabase.add(CFAbsoluteTimeGetCurrent()) //add stop time
             
             processedMessagesCount += 1
             print("Processed messages: ", processedMessagesCount)
@@ -1083,30 +887,6 @@ extension EncryptedSearchService {
         let pageLowerBound = pageSize * (page + 1)
         return searchResults.length() >= pageLowerBound
     }
-    
-    /*func publishIntermediateResults(_ searchResults: inout EncryptedsearchResultList?) {
-        //batchResults = extractResultpage(searchresults)
-        let pageSize = 15 // The size of a page of results in the search activity
-        let page = 0 //TODO set correct size
-        let pageIndexLowerBound = page * pageSize
-        let pageIndexUpperBound = pageIndexLowerBound + pageSize
-        
-        //prepareResultsPage (SearchMessages.kt)
-        //val result = searchResults.get(index)
-        //val message = getResultMessage(result)
-        
-        let result = EncryptedsearchSearchResult()
-        
-        searchResults?.add(result)
-        
-        //update UI with search results?
-        //IntermediateSearchResultEvent -> SearchInfo (batchResults)
-        //SearchInfo class : List<MailboxUiItem>
-    }*/
-    
-    /*func publishProgress(_ searchResults: EncryptedsearchResultList?, _ totalMessages:Int) {
-        
-    }*/
     
     //Code from here: https://stackoverflow.com/a/64738201
     func getTotalAvailableMemory() -> Double {
