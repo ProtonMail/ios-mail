@@ -153,6 +153,11 @@ class ConversationViewModel {
                     self.tableView?.deleteRows(at: [row], with: .automatic)
                 }
             }
+            if self.isTrashedMessageHidden {
+                self.isTrashedMessageHidden = false
+                let section = IndexSet(integer: 1)
+                self.tableView?.reloadSections(section, with: .automatic)
+            }
         } else if !self.headerSectionDataSource.contains(.trashedHint) {
             self.headerSectionDataSource.append(.trashedHint)
             if visible > 0 {
