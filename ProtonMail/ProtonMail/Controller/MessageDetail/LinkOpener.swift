@@ -73,56 +73,57 @@ enum LinkOpener: String, CaseIterable {
             return  nil
         }
 
+        var specificURL: URL?
         switch self {
         case .chrome:
             if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
                 components.scheme = components.scheme == "https" ? "googlechromes" : "googlechrome"
-                return components.url
+                specificURL = components.url
             }
         case .operaMini:
             if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
                 components.scheme = components.scheme == "https" ? "opera-https" : "opera-http"
-                return components.url
+                specificURL = components.url
             }
         case .operaTouch:
             if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
                 components.scheme = components.scheme == "https" ? "touch-https" : "touch-http"
-                return components.url
+                specificURL = components.url
             }
         case .edge:
             if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
                 components.scheme = components.scheme == "https" ? "microsoft-edge-https" : "microsoft-edge-http"
-                return components.url
+                specificURL = components.url
             }
         case .onion:
             if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
                 components.scheme = components.scheme == "https" ? "onionhttps" : "onionhttp"
-                return components.url
+                specificURL = components.url
             }
         case .firefox:
             if let escapedUrl = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) {
-                return URL(string: "firefox://open-url?url=\(escapedUrl)")
+                specificURL = URL(string: "firefox://open-url?url=\(escapedUrl)")
             }
         case .firefoxFocus:
             if let escapedUrl = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) {
-                return URL(string: "firefox-focus://open-url?url=\(escapedUrl)")
+                specificURL = URL(string: "firefox-focus://open-url?url=\(escapedUrl)")
             }
         case .brave:
             if let escapedUrl = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) {
-                return URL(string: "brave://open-url?url=\(escapedUrl)")
+                specificURL = URL(string: "brave://open-url?url=\(escapedUrl)")
             }
         case .yandex:
             if let escapedUrl = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
-                return URL(string: "yandexbrowser-open-url://\(escapedUrl)")
+                specificURL = URL(string: "yandexbrowser-open-url://\(escapedUrl)")
             }
         case .duckDuckGo:
-            return URL(string: "ddgQuickLink://\(url)")
+            specificURL = URL(string: "ddgQuickLink://\(url)")
             
         case .safari, .inAppSafari:
-            return url
+            specificURL = url
         }
-        
-        return nil
+
+        return isInstalled ? specificURL : url
     }
 }
 
