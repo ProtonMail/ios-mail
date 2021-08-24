@@ -298,8 +298,8 @@
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Ви впевнені? Це незворотна дія.";
 
-/* like at 10:00pm */
-"at" = "в";
+/* At {time}, e.g.: At 19:00 */
+"At %@" = "%@";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "Не вдається знайти принаймні одну адресу електронної пошти в групі";
@@ -1762,9 +1762,14 @@
  *  ReportBugsViewController */
 "OK" = "Гаразд";
 
-/* The title of On setting options
-   Title */
+/* The title of On setting options */
 "On" = "‎";
+
+/* On {date}, e.g.: On Aug 14 */
+"On %@" = "%@";
+
+/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
+"On %@ at %@" = "%1$@, %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "E, d MMM, yyyy, %@";
@@ -2587,6 +2592,9 @@
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "Це повідомлення містить зовнішній вміст.";
+
+/* No comment provided by engineer. */
+"This message is automatically generated as a response to a previous message." = "This message is automatically generated as a response to a previous message.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Це повідомлення зі списку розсилки.";

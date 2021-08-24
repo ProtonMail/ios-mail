@@ -298,8 +298,8 @@
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "您確定嗎？這將無法恢復。";
 
-/* like at 10:00pm */
-"at" = "在";
+/* At {time}, e.g.: At 19:00 */
+"At %@" = "於 %@";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "該群組之中至少有一個電子郵件地址找不到";
@@ -1762,9 +1762,14 @@
  *  ReportBugsViewController */
 "OK" = "確定";
 
-/* The title of On setting options
-   Title */
+/* The title of On setting options */
 "On" = "開啟";
+
+/* On {date}, e.g.: On Aug 14 */
+"On %@" = "於 %@";
+
+/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
+"On %@ at %@" = "在 %1$@ 於 %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "在 E, MMM d, yyyy 在 %@";
@@ -2587,6 +2592,9 @@
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "此郵件包含遠端內容。";
+
+/* No comment provided by engineer. */
+"This message is automatically generated as a response to a previous message." = "此訊息將自動產生回覆來回應前一個訊息。";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "這是一封寄給郵寄清單的郵件。";

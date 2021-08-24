@@ -298,8 +298,8 @@
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Sigur continuați? Această acțiune nu poate fi anulată.";
 
-/* like at 10:00pm */
-"at" = "la";
+/* At {time}, e.g.: At 19:00 */
+"At %@" = "La %@";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "Cel puțin o adresă de e-mail din grup nu a putut fi găsită.";
@@ -1762,9 +1762,14 @@
  *  ReportBugsViewController */
 "OK" = "OK";
 
-/* The title of On setting options
-   Title */
+/* The title of On setting options */
 "On" = "Pornit";
+
+/* On {date}, e.g.: On Aug 14 */
+"On %@" = "În %@";
+
+/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
+"On %@ at %@" = "%1$@ la %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "E, d MMM yyyy la %@";
@@ -2587,6 +2592,9 @@
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "Acest mesaj cuprinde conținut la distanță.";
+
+/* No comment provided by engineer. */
+"This message is automatically generated as a response to a previous message." = "Acest mesaj este generat automat ca răspuns la un mesaj anterior.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Acest mesaj este de la o listă de corespondență.";
