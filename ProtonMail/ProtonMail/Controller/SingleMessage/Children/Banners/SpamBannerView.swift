@@ -48,6 +48,14 @@ class SpamBannerView: UIView {
         contentStackView.addArrangedSubview(button)
     }
 
+    private var heightConstraint: NSLayoutConstraint?
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        heightConstraint?.constant = infoTextView.intrinsicContentSize.height
+    }
+
     private func setUpLayout() {
         [
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
@@ -71,6 +79,11 @@ class SpamBannerView: UIView {
             infoTextView.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor),
             infoTextView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8)
         ].activate()
+
+        heightConstraint = infoTextView.heightAnchor.constraint(
+            equalToConstant: infoTextView.intrinsicContentSize.height
+        )
+        heightConstraint?.isActive = true
 
         [button.heightAnchor.constraint(equalToConstant: 32)].activate()
     }
