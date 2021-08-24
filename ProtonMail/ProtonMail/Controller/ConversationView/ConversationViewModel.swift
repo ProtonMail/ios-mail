@@ -426,18 +426,13 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
             guard status != .dash else { continue } // Ignore the option in dash
             if selectedLabelAsLabels
                 .contains(where: { $0.labelID == label.location.labelID }) {
-                // Add to message which does not have this label
-                if !conversation.getLabelIds().contains(label.location.labelID) {
-                    conversationService.label(conversationIDs: conversations.map(\.conversationID),
-                                              as: label.location.labelID,
-                                              completion: fetchEvents)
-                }
+                conversationService.label(conversationIDs: conversations.map(\.conversationID),
+                                          as: label.location.labelID,
+                                          completion: fetchEvents)
             } else {
-                if conversation.getLabelIds().contains(label.location.labelID) {
-                    conversationService.unlabel(conversationIDs: conversations.map(\.conversationID),
-                                                as: label.location.labelID,
-                                                completion: fetchEvents)
-                }
+                conversationService.unlabel(conversationIDs: conversations.map(\.conversationID),
+                                            as: label.location.labelID,
+                                            completion: fetchEvents)
             }
         }
 

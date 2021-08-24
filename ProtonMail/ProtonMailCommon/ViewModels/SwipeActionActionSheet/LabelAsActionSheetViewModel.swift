@@ -93,3 +93,33 @@ struct LabelAsActionSheetViewModelConversations: LabelAsActionSheetViewModel {
         }
     }
 }
+
+struct LabelAsActionSheetViewModelConversationMessages: LabelAsActionSheetViewModel {
+    let menuLabels: [MenuLabel]
+    private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
+    private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
+
+    init(menuLabels: [MenuLabel], conversationMessages: [Message]) {
+        self.menuLabels = menuLabels
+        menuLabels.forEach { initialLabelSelectionCount[$0] = 0 }
+        initialLabelSelectionCount.forEach { (label, _) in
+            for message in conversationMessages where message.getLabelIDs().contains(label.location.labelID) {
+                if let labelCount = initialLabelSelectionCount[label] {
+                    initialLabelSelectionCount[label] = labelCount + 1
+                } else {
+                    initialLabelSelectionCount[label] = 1
+                }
+            }
+        }
+
+        initialLabelSelectionCount.forEach { (key, value) in
+            if value == conversationMessages.count {
+                initialLabelSelectionStatus[key] = .checkMark
+            } else if value < conversationMessages.count && value > 0 {
+                initialLabelSelectionStatus[key] = .dash
+            } else {
+                initialLabelSelectionStatus[key] = PMActionSheetPlainItem.MarkType.none
+            }
+        }
+    }
+}
