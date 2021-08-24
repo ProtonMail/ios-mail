@@ -237,10 +237,8 @@ class MessageDataService : Service, HasLocalStorage {
 
                 self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: unreadOnly, queued: queued, completion: completionWrapper) {
                     self.cleanMessage(removeAllDraft: removeAllDraft).then { (_) -> Promise<Void> in
-                        self.lastUpdatedStore.removeUpdateTime(by: self.userID,
-                                                               type: .singleMessage)
-                        self.lastUpdatedStore.removeUpdateTime(by: self.userID,
-                                                               type: .conversation)
+                        self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .singleMessage)
+                        self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .conversation)
                         if cleanContact {
                             return self.contactDataService.cleanUp()
                         } else {

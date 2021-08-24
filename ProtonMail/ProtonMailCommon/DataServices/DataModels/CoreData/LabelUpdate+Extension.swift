@@ -34,7 +34,11 @@ extension LabelUpdate {
     class func lastUpdate(by labelID: String, userID: String,  inManagedObjectContext context: NSManagedObjectContext) -> LabelUpdate? {
         return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.labelID : labelID, Attributes.userID : userID]) as? LabelUpdate
     }
-    
+
+    class func lastUpdates(userID: String, inManagedObjectContext context: NSManagedObjectContext) -> [LabelUpdate] {
+        return context.managedObjectsWithEntityName(Attributes.entityName,
+                                                    matching: [Attributes.userID : userID]) as? [LabelUpdate] ?? []
+    }
     
     class func newLabelUpdate(by labelID: String, userID: String, inManagedObjectContext context: NSManagedObjectContext) -> LabelUpdate {
         let update = LabelUpdate(context: context)
@@ -74,5 +78,14 @@ extension LabelUpdate {
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
-    
+
+    func resetDataExceptUnread() {
+        start = Date.distantPast
+        end = Date.distantPast
+        update = Date.distantPast
+
+        unreadStart = Date.distantPast
+        unreadEnd = Date.distantPast
+        unreadUpdate = Date.distantPast
+    }
 }

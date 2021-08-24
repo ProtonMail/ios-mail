@@ -113,4 +113,8 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     func removeUpdateTime(by userID: String, type: ViewMode) {
         
     }
+
+    func removeUpdateTimeExceptUnread(by userID: String, type: ViewMode) {
+        
+    }
 }

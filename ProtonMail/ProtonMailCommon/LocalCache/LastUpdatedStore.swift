@@ -47,6 +47,7 @@ protocol LastUpdatedStoreProtocol {
     func unreadCount(by labelID : String, userID: String, type: ViewMode) -> Int
     func updateUnreadCount(by labelID : String, userID: String, count: Int, type: ViewMode, shouldSave: Bool)
     func removeUpdateTime(by userID: String, type: ViewMode)
+    func removeUpdateTimeExceptUnread(by userID: String, type: ViewMode)
 }
 
 final class LastUpdatedStore : SharedCacheBase, HasLocalStorage, LastUpdatedStoreProtocol, Service {
@@ -304,6 +305,20 @@ extension LastUpdatedStore {
             case .conversation:
                 let _ = ConversationCount.remove(by: userID, inManagedObjectContext: context)
             }
+        }
+    }
+
+    func removeUpdateTimeExceptUnread(by userID: String, type: ViewMode) {
+        self.coreDataService.enqueue(context: context) { context in
+            switch type {
+            case .singleMessage:
+                let data = LabelUpdate.lastUpdates(userID: userID, inManagedObjectContext: context)
+                data.forEach({ $0.resetDataExceptUnread() })
+            case .conversation:
+                let data = ConversationCount.getConversationCounts(userID: userID, inManagedObjectContext: context)
+                data.forEach({ $0.resetDataExceptUnread() })
+            }
+            _ = context.saveUpstreamIfNeeded()
         }
     }
 }
