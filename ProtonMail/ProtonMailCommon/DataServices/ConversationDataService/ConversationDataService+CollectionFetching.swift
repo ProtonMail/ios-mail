@@ -74,9 +74,9 @@ extension ConversationDataService {
                 }
                 if shouldReset {
                     self.cleanAll()
+                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .singleMessage)
+                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .conversation)
                     self.lastUpdatedStore.clear()
-                    self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
-                    self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
                 }
                 let messcount = responseDict?["Total"] as? Int ?? 0
                 let context = self.coreDataService.rootSavingContext
