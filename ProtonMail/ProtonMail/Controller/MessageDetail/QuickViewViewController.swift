@@ -33,6 +33,22 @@ class QuickViewViewController: QLPreviewController {
         return true
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(self.dismissWhenAppGoesToBackground),
+                                                   name: UIWindowScene.didEnterBackgroundNotification,
+                                                   object: nil)
+        } else {
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(self.dismissWhenAppGoesToBackground),
+                                                   name: UIApplication.didEnterBackgroundNotification,
+                                                   object: nil)
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -62,6 +78,11 @@ class QuickViewViewController: QLPreviewController {
                 self?.loadingView = nil
             }
         }
+    }
+
+    @objc
+    func dismissWhenAppGoesToBackground() {
+        dismiss(animated: true, completion: nil)
     }
 
     private func configureNavigationBar(_ navigationController: UINavigationController) {
