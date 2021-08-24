@@ -298,8 +298,8 @@
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Är du säker? Detta kan inte ångras.";
 
-/* like at 10:00pm */
-"at" = "at";
+/* At {time}, e.g.: At 19:00 */
+"At %@" = "Vid %@";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "Minst en e-postadress i gruppen kunde inte hittas";
@@ -1762,9 +1762,14 @@
  *  ReportBugsViewController */
 "OK" = "OK";
 
-/* The title of On setting options
-   Title */
+/* The title of On setting options */
 "On" = "På";
+
+/* On {date}, e.g.: On Aug 14 */
+"On %@" = "On %@";
+
+/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
+"On %@ at %@" = "On %1$@ at %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
@@ -2587,6 +2592,9 @@
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "Detta meddelande innehåller fjärrinnehåll.";
+
+/* No comment provided by engineer. */
+"This message is automatically generated as a response to a previous message." = "This message is automatically generated as a response to a previous message.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "This message is from a mailing list.";
