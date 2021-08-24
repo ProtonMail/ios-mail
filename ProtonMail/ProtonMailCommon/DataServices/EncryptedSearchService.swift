@@ -10,6 +10,9 @@ import Foundation
 import CoreData
 import SwiftSoup
 import SQLite
+//import ProtonCore_Crypto
+import Crypto
+
 
 public class EncryptedSearchService {
     //instance of Singleton
@@ -495,7 +498,7 @@ extension EncryptedSearchService {
         var Address: String = ""
     }
     
-    struct Recipient: Codable {
+    /*struct Recipient: Codable {
         var name: String = ""
         var email: String = ""
     }
@@ -511,7 +514,7 @@ extension EncryptedSearchService {
         var toList: RecipientList = RecipientList(recipient: [nil])
         var ccList: RecipientList = RecipientList(recipient: [nil])
         var bccList: RecipientList = RecipientList(recipient: [nil])
-    }
+    }*/
     
     func createEncryptedContent(message: Message, cleanedBody: String) -> Void {
         //1. create decryptedMessageContent
@@ -526,44 +529,58 @@ extension EncryptedSearchService {
         print("BCC List: ", message.bccList)
         print("Extract data from Json string... ")*/
         
-        var decryptedMessageContent: DecryptedMessageContent = DecryptedMessageContent()
+        var decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchDecryptedMessageContent()
         do {
             let senderStruct = try decoder.decode(Sender.self, from: senderJsonData)
             let toListStruct = try decoder.decode([Sender].self, from: toListJsonData)
             let ccListStruct = try decoder.decode([Sender].self, from: ccListJsonData)
             let bccListStruct = try decoder.decode([Sender].self, from: bccListJsonData)
             
-            let sender = Recipient(name: senderStruct.Name, email: senderStruct.Address)
-            
-            var recList: [Recipient] = []
+            let sender: EncryptedsearchRecipient? = EncryptedsearchRecipient(senderStruct.Name, email: senderStruct.Address)
+            let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
             toListStruct.forEach { s in
-                let r = Recipient(name: s.Name, email: s.Address)
-                recList.append(r)
+                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s.Name, email: s.Address)
+                toList.add(r)
             }
-            let toList = RecipientList(recipient: recList)
-            
-            var recList2: [Recipient] = []
+            let ccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
             ccListStruct.forEach { s in
-                let r = Recipient(name: s.Name, email: s.Address)
-                recList2.append(r)
+                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s.Name, email: s.Address)
+                ccList.add(r)
             }
-            let ccList = RecipientList(recipient: recList2)
-            
-            var recList3: [Recipient] = []
+            let bccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
             bccListStruct.forEach { s in
-                let r = Recipient(name: s.Name, email: s.Address)
-                recList3.append(r)
+                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s.Name, email: s.Address)
+                bccList.add(r)
             }
-            let bccList = RecipientList(recipient: recList3)
             
-            decryptedMessageContent = DecryptedMessageContent(subject: message.subject, sender: sender, body: cleanedBody, toList: toList, ccList: ccList, bccList: bccList)
+            decryptedMessageContent = EncryptedsearchNewDecryptedMessageContent(message.subject, sender, cleanedBody, toList, ccList, bccList)
         } catch {
             print(error)
         }
         
-        print("Decrypted Message Content: ", decryptedMessageContent)
+        print("Decrypted Message Content (subject): ", decryptedMessageContent!.subject)
         
         //2. encrypt content via gomobile
+        //TODO generate a key
+        let key = generateSearchIndexKey()
+        
+        let cipher = EncryptedsearchAESGCMCipher(key)
+        var ESEncryptedMessageContent: EncryptedsearchEncryptedMessageContent? = nil
+        
+        do {
+            ESEncryptedMessageContent = try cipher?.encrypt(decryptedMessageContent)
+            print("Encrypted content (ciphertext): ", String(decoding: ESEncryptedMessageContent!.ciphertext!, as: UTF8.self))
+            print("Encrypted content (IV): ", String(decoding:ESEncryptedMessageContent!.iv!, as: UTF8.self))
+        } catch {
+            print(error)
+        }
+    }
+    
+    private func generateSearchIndexKey() -> Data? {
+        let keylen: Int = 32
+        var error: NSError?
+        let bytes = CryptoRandomToken(keylen, &error)
+        return bytes
     }
     
     func addMessageKewordsToSearchIndex(_ keywordsPerEmail: String,_ message: Message, _ decryptionFailed: Bool) -> Void {
