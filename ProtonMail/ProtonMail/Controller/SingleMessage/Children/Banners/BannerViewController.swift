@@ -125,9 +125,12 @@ class BannerViewController: UIViewController {
 
     private func handleSpamBanner() {
         let isSpamBannerPresenter = displayedBanners.contains(where: { $0.key == .spam })
-        isSpamBannerPresenter ? hideBanner(type: .spam) : ()
-        guard let spamType = viewModel.spamType else { return }
-        showSpamBanner(spamType: spamType)
+        let isSpam = viewModel.message.spam != nil
+        if isSpamBannerPresenter && isSpam == false {
+            hideBanner(type: .spam)
+        } else if let spamType = viewModel.spamType, isSpamBannerPresenter == false {
+            showSpamBanner(spamType: spamType)
+        }
     }
 
     private func showSpamBanner(spamType: SpamType) {
