@@ -51,6 +51,10 @@ public class EncryptedSearchService {
     internal var timingsExtractData: NSMutableArray = []
     internal var timingsCreateEncryptedContent: NSMutableArray = []
     internal var timingsWriteToDatabase: NSMutableArray = []
+    
+    internal var timingsParseBody: NSMutableArray = []
+    internal var timingsRemoveElements: NSMutableArray = []
+    internal var timingsParseCleanedContent: NSMutableArray = []
 }
 
 extension EncryptedSearchService {
@@ -87,6 +91,10 @@ extension EncryptedSearchService {
                     self.printTiming("Extracting Data", for: self.timingsExtractData)
                     self.printTiming("Create Encrypted Content", for: self.timingsCreateEncryptedContent)
                     self.printTiming("Writing to Database", for: self.timingsWriteToDatabase)
+                    
+                    self.printTiming("Parse Body", for: self.timingsParseBody)
+                    self.printTiming("Remove Elements", for: self.timingsRemoveElements)
+                    self.printTiming("Parse Cleaned Content", for: self.timingsParseCleanedContent)
                     
                     viewModel.isEncryptedSearch = true
                     return
@@ -429,9 +437,13 @@ extension EncryptedSearchService {
         var contentOfEmail: String = ""
         
         do {
+            self.timingsParseBody.add(CFAbsoluteTimeGetCurrent()) //add start time
             //parse HTML email as DOM tree
             let doc: Document = try SwiftSoup.parse(body)
             
+            self.timingsParseBody.add(CFAbsoluteTimeGetCurrent()) //add stop time
+            
+            self.timingsRemoveElements.add(CFAbsoluteTimeGetCurrent()) //add start time
             //remove style elements from DOM tree
             let styleElements: Elements = try doc.getElementsByTag("style")
             for s in styleElements {
@@ -446,9 +458,13 @@ extension EncryptedSearchService {
             } else {
                 content = try doc.html()
             }
+            self.timingsRemoveElements.add(CFAbsoluteTimeGetCurrent()) //add start time
             
+            self.timingsParseCleanedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
             let newBodyOfEmail: Document = try SwiftSoup.parse(content)
             contentOfEmail = try newBodyOfEmail.text().trim()
+            self.timingsParseCleanedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
+            
             //TODO replace multiple whitespaces with a single whitespace
             //i.e. in Kotlin -> .replace("\\s+", " ")
         } catch Exception.Error(_, let message) {
