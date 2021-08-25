@@ -46,7 +46,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let data = userActivity.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
         }
     }
     
@@ -57,7 +57,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
         }
         completionHandler(true)
     }
@@ -147,7 +147,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
             deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
             deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
             return true
         }
         

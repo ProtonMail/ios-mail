@@ -67,6 +67,8 @@ class WindowsCoordinator: CoordinatorNew {
             self.currentWindow.makeKeyAndVisible()
         }
     }
+
+    private var arePrimaryUserSettingsFetched = false
     
     enum Destination {
         enum SignInDestination: String { case form, mailboxPassword }
@@ -94,6 +96,7 @@ class WindowsCoordinator: CoordinatorNew {
                 }
             }
             NotificationCenter.default.addObserver(forName: .fetchPrimaryUserSettings, object: nil, queue: .main) { [weak self] _ in
+                self?.arePrimaryUserSettingsFetched = true
                 self?.restoreAppStates()
             }
             
@@ -295,7 +298,7 @@ class WindowsCoordinator: CoordinatorNew {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
                 }
                 if self.navigate(from: self.currentWindow, to: self.appWindow), let deeplink = self.deeplink {
-                    self.handleMailToDeepLinkIfNeeded(deeplink)
+                    self.handleDeepLinkIfNeeded(deeplink)
                 }
             }
         }
@@ -403,20 +406,22 @@ class WindowsCoordinator: CoordinatorNew {
         self.start()
     }
     
-    internal func setDeepDeeplink(_ deeplink: DeepLink) {
+    func followDeepDeeplinkIfNeeded(_ deeplink: DeepLink) {
         self.deeplink = deeplink
         _ = deeplink.popFirst
-        
+
+        if arePrimaryUserSettingsFetched {
+            start()
+        }
     }
 
-    private func handleMailToDeepLinkIfNeeded(_ deeplink: DeepLink) {
-        if deeplink.first?.name == "toMailboxSegue" && deeplink.first?.next?.name == "toComposeMailto" {
-            self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-                if let menu = controller as? MenuViewController,
-                    let coordinator = menu.coordinator {
-                    coordinator.follow(deeplink)
-                    stop = true
-                }
+    private func handleDeepLinkIfNeeded(_ deeplink: DeepLink) {
+        guard arePrimaryUserSettingsFetched else { return }
+        self.appWindow.enumerateViewControllerHierarchy { controller, stop in
+            if let menu = controller as? MenuViewController,
+                let coordinator = menu.coordinator {
+                coordinator.follow(deeplink)
+                stop = true
             }
         }
     }
