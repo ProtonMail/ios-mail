@@ -944,9 +944,9 @@ extension MailboxViewModel {
             messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: cleanContact, removeAllDraft: removeAllDraft, queued: false, unreadOnly: unreadOnly, completion: completion)
         case .conversation:
             messageService.fetchLatestEventID(completion: nil)
-            conversationService.fetchConversationCounts(addressID: nil, completion: nil)
-            conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: unreadOnly, shouldReset: true) { result in
+            conversationService.fetchConversations(for: self.labelID, before: time, unreadOnly: unreadOnly, shouldReset: true) { [weak self] result in
                 completion?(nil, nil, result.nsError)
+                self?.conversationService.fetchConversationCounts(addressID: nil, completion: nil)
             }
         }
     }
