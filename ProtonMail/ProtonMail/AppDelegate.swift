@@ -355,7 +355,7 @@ extension AppDelegate: UIApplicationDelegate {
         if let data = userActivity.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
         }
         return true
     }
@@ -476,7 +476,7 @@ extension AppDelegate: UIApplicationDelegate {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
         }
         completionHandler(true)
     }
