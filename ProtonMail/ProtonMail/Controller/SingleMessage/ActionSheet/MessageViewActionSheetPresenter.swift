@@ -26,6 +26,7 @@ class MessageViewActionSheetPresenter {
 
     func present(
         on viewController: UIViewController,
+        listener: PMActionSheetEventsListener?,
         viewModel: ActionSheetViewModel,
         action: @escaping (MessageViewActionSheetAction) -> Void) {
         let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { _ in
@@ -50,6 +51,7 @@ class MessageViewActionSheetPresenter {
 
         let actionsGroup = PMActionSheetItemGroup(items: actions, style: .clickable)
         let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup])
+        actionSheet.eventsListener = listener
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
     }
 }

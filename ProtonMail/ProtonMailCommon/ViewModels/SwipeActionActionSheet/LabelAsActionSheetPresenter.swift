@@ -25,6 +25,7 @@ import ProtonCore_UIFoundations
 class LabelAsActionSheetPresenter {
     func present(
         on viewController: UIViewController,
+        listener: PMActionSheetEventsListener? = nil,
         viewModel: LabelAsActionSheetViewModel,
         hasNewLabelButton: Bool = true,
         addNewLabel: @escaping () -> Void,
@@ -112,6 +113,7 @@ class LabelAsActionSheetPresenter {
         }
         let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups)
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
+        actionSheet.eventsListener = listener
         labelSelectionActionSheet = actionSheet
     }
 }

@@ -27,6 +27,7 @@ class MoveToActionSheetPresenter {
 
     func present(
         on viewController: UIViewController,
+        listener: PMActionSheetEventsListener? = nil,
         viewModel: MoveToActionSheetViewModel,
         hasNewFolderButton: Bool = true,
         addNewFolder: @escaping () -> Void,
@@ -117,6 +118,7 @@ class MoveToActionSheetPresenter {
             itemGroups.insert(addFolderGroup, at: 0)
         }
         let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups)
+        actionSheet.eventsListener = listener
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
         folderSelectionActionSheet = actionSheet
     }
