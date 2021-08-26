@@ -42,7 +42,9 @@ public class EncryptedSearchService {
     internal var searchIndex: Connection? = nil
     internal var cipherForSearchIndex: EncryptedsearchAESGCMCipher? = nil
     internal var lastSearchQuery: String = ""
-    internal var searchResults: EncryptedsearchResultList? = nil
+    internal var cacheSearchResults: EncryptedsearchResultList? = nil
+    internal var indexSearchResults: EncryptedsearchResultList? = nil
+    internal var searchState: EncryptedsearchSearchState? = nil
     
     internal var timingsBuildIndex: NSMutableArray = []
     internal var timingsMessageFetching: NSMutableArray = []
@@ -726,44 +728,48 @@ extension EncryptedSearchService {
         
         //if search query hasn't changed, but just the page, then just display results
         if query == self.lastSearchQuery {
-            if self.searchResults!.length() == 0 {
+            //TODO is searchedCount the same as searchresults.length?
+            if self.searchState!.searchedCount == 0 {//self.searchResults!.length() == 0 {
                 completion!(nil, error)
             } else {
-                self.extractSearchResults(self.searchResults!, page) { messages in
+                //TODO
+                /*self.extractSearchResults(self.searchResults!, page) { messages in
                     completion!(messages, error)
-                }
+                }*/
             }
         } else {    //If there is a new search query, then trigger new search
-            self.getTotalMessages {
-                let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
-                let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
-                let cache: EncryptedsearchCache? = self.getCache(cipher: cipher)
-                self.searchResults = EncryptedsearchResultList()
-                
-                self.doCachedSearch(searcher: searcher, cache: cache!, searchResult: &self.searchResults, totalMessages: self.totalMessages)
-                let numberOfResultsFoundByCachedSearch: Int = (self.searchResults?.length())!
-                print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
-                
-                /*print("searchedCount: ", self.searchResults!.searchedCount)
-                print("cacheSearchedCount: ", self.searchResults!.cacheSearchedCount)
-                print("cache search done?: ", self.searchResults!.cachedSearchDone)
-                print("search completed?: ", self.searchResults!.isComplete)
-                print("last message id searched: ", self.searchResults!.lastIDSearched)
-                print("last message time searched: ", self.searchResults!.lastTimeSearched)
-                */
-                
-                //Check if there are enough results from the cached search
-                let searchResultPageSize: Int = 15  //TODO Why 15?
-                /*if !self.searchResults!.isComplete && numberOfResultsFoundByCachedSearch <= searchResultPageSize {
-                    print("do index search")
-                    self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: &self.searchResults, totalMessages: self.totalMessages)
-                }*/
-                
-                if self.searchResults!.length() == 0 {
-                    completion!(nil, error)
-                } else {
-                    self.extractSearchResults(self.searchResults!, page) { messages in
-                        //return search results when available
+            let startSearch: Double = CFAbsoluteTimeGetCurrent()
+            let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
+            let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
+            let cache: EncryptedsearchCache? = self.getCache(cipher: cipher)
+            self.searchState = EncryptedsearchSearchState()
+            
+            let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, totalMessages: self.totalMessages)
+            //print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
+            
+            //Check if there are enough results from the cached search
+            let searchResultPageSize: Int = 15
+            var numberOfResultsFoundByIndexSearch: Int = 0
+            if !self.searchState!.isComplete && numberOfResultsFoundByCachedSearch <= searchResultPageSize {
+                numberOfResultsFoundByIndexSearch = self.doIndexSearch(searcher: searcher, cipher: cipher, searchState: &self.searchState, resultsFoundInCache: numberOfResultsFoundByCachedSearch)
+            }
+            
+            let endSearch: Double = CFAbsoluteTimeGetCurrent()
+            print("Search finished. Time: \(endSearch-startSearch)")
+            
+            if numberOfResultsFoundByCachedSearch + numberOfResultsFoundByIndexSearch == 0 {
+                completion!(nil, error)
+            } else {
+                self.extractSearchResults(self.cacheSearchResults!, page) { messagesCacheSearch in
+                    if numberOfResultsFoundByIndexSearch > 0 {
+                        self.extractSearchResults(self.indexSearchResults!, page) { messagesIndexSearch in
+                            let combinedMessages: [Message] = messagesCacheSearch! + messagesIndexSearch!
+                            let messages: [Message.ObjectIDContainer]? = combinedMessages.map(ObjectBox.init)
+                            completion!(messages, error)
+                        }
+                    } else {
+                        //no results from index search - so we only need to return results from cache search
+                        let messages: [Message.ObjectIDContainer]? = messagesCacheSearch!.map(ObjectBox.init)
                         completion!(messages, error)
                     }
                 }
@@ -771,7 +777,7 @@ extension EncryptedSearchService {
         }
     }
 
-    func extractSearchResults(_ searchResults: EncryptedsearchResultList, _ page: Int, completionHandler: @escaping ([Message.ObjectIDContainer]?) -> Void) -> Void {
+    func extractSearchResults(_ searchResults: EncryptedsearchResultList, _ page: Int, completionHandler: @escaping ([Message]?) -> Void) -> Void {
         let pageSize: Int = 50
         let numberOfPages: Int = Int(ceil(Double(searchResults.length()/pageSize)))
         if page > numberOfPages {
@@ -801,8 +807,7 @@ extension EncryptedSearchService {
             //Wait to call completion handler until all search results are extracted
             group.notify(queue: .main) {
                 print("Extracting search results completed!")
-                let results: [Message.ObjectIDContainer]? = messages.map(ObjectBox.init)
-                completionHandler(results)
+                completionHandler(messages)
             }
         }
     }
@@ -830,7 +835,8 @@ extension EncryptedSearchService {
         return result!
     }
     
-    func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchResults: inout EncryptedsearchResultList?, totalMessages:Int) {
+    func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchState: inout EncryptedsearchSearchState?, resultsFoundInCache:Int) -> Int {
+        let startIndexSearch: Double = CFAbsoluteTimeGetCurrent()
         let index: EncryptedsearchIndex = self.getIndex()
         do {
             try index.openDBConnection()
@@ -840,36 +846,24 @@ extension EncryptedSearchService {
         print("Successfully opened connection to searchindex...")
         
         var batchCount: Int = 0
-        var previousLength: Int = 0
-        if searchResults != nil {
-            previousLength = searchResults!.length()
-        }
-        
+        let searchFetchPageSize: Int = 150
+        var resultsFound: Int = resultsFoundInCache
         print("Start index search...")
-        while /*!searchResults!.isComplete &&*/ !hasEnoughResults(searchResults: searchResults!) {   //TODO add some more condition-> see Android
-            let startBatchSearch: Double = NSDate().timeIntervalSince1970   //do we need it more accurate?
+        while !searchState!.isComplete && resultsFound < searchFetchPageSize {
+            let startBatchSearch: Double = CFAbsoluteTimeGetCurrent()
             
-            let SEARCH_BATCH_HEAP_PERCENT = 0.1 // Percentage of heap that can be used to load messages from the index
-            let SEARCH_MSG_SIZE: Double = 14000 // An estimation of how many bytes take a search message in memory
-            let batchSize: Int = Int((getTotalAvailableMemory() * SEARCH_BATCH_HEAP_PERCENT)/SEARCH_MSG_SIZE)
+            let searchBatchHeapPercent: Double = 0.1 // Percentage of heap that can be used to load messages from the index
+            let searchMsgSize: Double = 14000 // An estimation of how many bytes take a search message in memory
+            let batchSize: Int = Int((getTotalAvailableMemory() * searchBatchHeapPercent)/searchMsgSize)
             do {
-                /*try index.searchNewBatch(fromDB: searcher, cipher: cipher, results: searchResults, batchSize: batchSize)*/
-                //Is that running async?
-                print("search result: ", searchResults!)
-                /*print("searchedCount: \(searchResults!.searchedCount), lastID: \(searchResults!.lastIDSearched), lasttime: \(searchResults!.lastTimeSearched), iscomplete: \(searchResults!.isComplete)")*/
-                print("batchsize: ", batchSize)
+                self.indexSearchResults = EncryptedsearchResultList()
+                self.indexSearchResults = try index.searchNewBatch(fromDB: searcher, cipher: cipher, state: searchState, batchSize: batchSize)
+                resultsFound += self.indexSearchResults!.length()
             } catch {
                 print("Error while searching... ", error)
             }
-            if !hasEnoughResults(searchResults: searchResults!) {
-                if previousLength != searchResults!.length() {
-                    //self.publishIntermediateResults(&searchResults)
-                    previousLength = searchResults!.length()
-                }
-                //self.publishProgress(searchResults, totalMessages)
-            }
-            let endBatchSearch: Double = NSDate().timeIntervalSince1970
-            print("Batch \(batchCount) search. start: \(startBatchSearch), end: \(endBatchSearch), with batchsize: \(batchSize)")
+            let endBatchSearch: Double = CFAbsoluteTimeGetCurrent()
+            print("Batch \(batchCount) search. time: \(endBatchSearch-startBatchSearch), with batchsize: \(batchSize)")
             batchCount += 1
         }
         
@@ -878,18 +872,28 @@ extension EncryptedSearchService {
         } catch {
             print("Error while closing database Connection: \(error)")
         }
+        
+        let endIndexSearch: Double = CFAbsoluteTimeGetCurrent()
+        print("Index search finished. Time: \(endIndexSearch-startIndexSearch)")
+        
+        return resultsFound
     }
     
-    func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchResult: inout EncryptedsearchResultList?, totalMessages: Int){
-        let startCacheSearch: Double = NSDate().timeIntervalSince1970
-        //print("Start cache search...")
-        /*do {
-            try cache.search(searchResult, searcher: searcher)
-        } catch {
-            print("Error while searching the cache: \(error)")
-        }*/
-        let endCacheSearch: Double = NSDate().timeIntervalSince1970
-        print("Cache search: start: \(startCacheSearch), end: \(endCacheSearch)")
+    func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, totalMessages: Int) -> Int {
+        let searchCacheDecryptedMessages: Bool = true
+        if searchCacheDecryptedMessages && !searchState!.cachedSearchDone && !searchState!.isComplete {
+            self.cacheSearchResults = EncryptedsearchResultList()
+            let startCacheSearch: Double = CFAbsoluteTimeGetCurrent()
+            do {
+                self.cacheSearchResults = try cache.search(searchState, searcher: searcher)
+            } catch {
+                print("Error while searching the cache: \(error)")
+            }
+            let endCacheSearch: Double = CFAbsoluteTimeGetCurrent()
+            print("Cache search: \(endCacheSearch-startCacheSearch) seconds")
+            return self.cacheSearchResults!.length()
+        }
+        return 0
     }
     
     func getIndex() -> EncryptedsearchIndex {
@@ -898,30 +902,16 @@ extension EncryptedSearchService {
         return index
     }
     
-    func hasEnoughResults(searchResults: EncryptedsearchResultList) -> Bool {
-        let pageSize: Int = 15 // The size of a page of results in the search activity
-        let page: Int = 0 // TODO
-        let pageLowerBound = pageSize * (page + 1)
-        return searchResults.length() >= pageLowerBound
-    }
-    
     //Code from here: https://stackoverflow.com/a/64738201
     func getTotalAvailableMemory() -> Double {
         var taskInfo = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
-        let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
+        let re_kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
             $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
                 task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
                 }
         }
-        //let usedMb = Float(taskInfo.phys_footprint)// / 1048576.0
         let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
-        //result != KERN_SUCCESS ? print("Memory used: ? of \(totalMb)") : print("Memory used: \(usedMb) of \(totalMb)")
-        //if result != KERN_SUCCESS {
-        //    print("Memory used: ? of \(totalMb) (in byte)")
-        //} else {
-        //    print("Memory used: \(usedMb) (in byte) of \(totalMb) (in byte)")
-        //}
         return Double(totalMb)
     }
     
@@ -936,7 +926,6 @@ extension EncryptedSearchService {
         }
         let usedMb = Float(taskInfo.phys_footprint)// / 1048576.0
         let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
-        //result != KERN_SUCCESS ? print("Memory used: ? of \(totalMb)") : print("Memory used: \(usedMb) of \(totalMb)")
         var availableMemory: Double = 0
         if result != KERN_SUCCESS {
             //print("Memory used: ? of \(totalMb) (in byte)")
