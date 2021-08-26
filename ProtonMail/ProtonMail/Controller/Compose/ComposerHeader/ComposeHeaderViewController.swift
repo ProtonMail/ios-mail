@@ -234,6 +234,11 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
                                        self.subject!
         ]
         generateAccessibilityIdentifiers()
+        if let showCcBcc = self.datasource?.ccBccIsShownInitially(),
+           showCcBcc {
+            self.setShowingCcBccView(to: showCcBcc)
+            self.showCcBccButton.isHidden = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -244,9 +249,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let showCcBcc = self.datasource?.ccBccIsShownInitially(), showCcBcc {
-            self.setShowingCcBccView(to: showCcBcc)
-        }
         self.notifyViewSize( false )
     }
     
@@ -422,6 +424,11 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         
         self.bccContactPickerHeight = bccContactPicker.heightAnchor.constraint(equalToConstant: 44)
         self.bccContactPickerHeight.isActive = true
+    }
+
+    private func checkShowCcBccButton() {
+        let count = self.ccContactPicker.contactsSelected.count + self.bccContactPicker.contactsSelected.count
+        self.showCcBccButton.isHidden = count != 0
     }
     
     fileprivate func updateContactPickerHeight(_ contactPicker: ContactPicker, newHeight: CGFloat) {
@@ -599,12 +606,14 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
         let contactPicker = contactPickerForContactCollectionView(at)
         self.notifyViewSize(true)
         self.delegate?.composeView(self, didAddContact: contact, toPicker: contactPicker)
+        self.checkShowCcBccButton()
     }
     
     func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol) {
         let contactPicker = contactPickerForContactCollectionView(at)
         self.notifyViewSize(true)
         self.delegate?.composeView(self, didRemoveContact: contact, fromPicker: contactPicker)
+        self.checkShowCcBccButton()
     }
     
     func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
