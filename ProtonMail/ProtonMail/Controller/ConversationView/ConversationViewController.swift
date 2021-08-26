@@ -226,7 +226,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                                                         labelID: location.labelID,
                                                         includeStarring: true,
                                                         isStarred: message.starred)
-        actionSheetPresenter.present(on: navigationController ?? self, viewModel: viewModel) { [weak self] in
+        actionSheetPresenter.present(on: navigationController ?? self,
+                                     listener: self,
+                                     viewModel: viewModel) { [weak self] in
             self?.handleActionSheetAction($0, message: message)
         }
     }
@@ -478,6 +480,7 @@ private extension ConversationViewController {
                                                                     isStarred: isStarred,
                                                                     isAllMessagesInTrash: isAllMessagesInTrash)
         actionSheetPresenter.present(on: navigationVC,
+                                     listener: self,
                                      viewModel: actionSheetViewModel) { [weak self] action in
             self?.handleActionSheetAction(action)
         }
@@ -576,6 +579,7 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
 
         labelAsActionSheetPresenter
             .present(on: self.navigationController ?? self,
+                     listener: self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
                         self?.coordinator.pendingActionAfterDismissal = { [weak self] in
@@ -614,6 +618,7 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
 
         labelAsActionSheetPresenter
             .present(on: self.navigationController ?? self,
+                     listener: self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
                         self?.coordinator.pendingActionAfterDismissal = { [weak self] in
@@ -680,6 +685,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 
         moveToActionSheetPresenter.present(
             on: self.navigationController ?? self,
+            listener: self,
             viewModel: moveToViewModel,
             addNewFolder: { [weak self] in
                 self?.coordinator.pendingActionAfterDismissal = { [weak self] in
@@ -727,6 +733,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
+                     listener: self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
                         self?.coordinator.pendingActionAfterDismissal = { [weak self] in
@@ -791,5 +798,17 @@ extension ConversationViewController {
         cellTapped(messageId: messageId)
         let indexPath = IndexPath(row: index, section: 1)
         customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+    }
+}
+
+extension ConversationViewController: PMActionSheetEventsListener {
+    func willPresent() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
+
+    func willDismiss() {}
+
+    func didDismiss() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
 }

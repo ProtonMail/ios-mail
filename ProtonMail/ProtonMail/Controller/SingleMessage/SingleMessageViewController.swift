@@ -228,6 +228,7 @@ private extension SingleMessageViewController {
                                                                    includeStarring: false,
                                                                    isStarred: viewModel.message.starred)
         actionSheetPresenter.present(on: navigationVC,
+                                     listener: self,
                                      viewModel: actionSheetViewModel) { [weak self] action in
             self?.handleActionSheetAction(action)
         }
@@ -310,6 +311,7 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
 
         labelAsActionSheetPresenter
             .present(on: self.navigationController ?? self,
+                     listener: self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
                         self?.coordinator.pendingActionAfterDismissal = { [weak self] in
@@ -358,6 +360,7 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                                                labelId: viewModel.labelId)
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
+                     listener: self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
                         self?.coordinator.pendingActionAfterDismissal = { [weak self] in
@@ -400,4 +403,16 @@ extension SingleMessageViewController: Deeplinkable {
         )
     }
 
+}
+
+extension SingleMessageViewController: PMActionSheetEventsListener {
+    func willPresent() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
+
+    func willDismiss() {}
+
+    func didDismiss() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
 }
