@@ -277,7 +277,9 @@ class UserManager : Service, HasLocalStorage {
     }
     
     func save() {
-        self.conversationStateService.userInfoHasChanged(viewMode: self.userinfo.viewMode)
+        DispatchQueue.main.async {
+            self.conversationStateService.userInfoHasChanged(viewMode: self.userinfo.viewMode)
+        }
         self.delegate?.onSave(userManger: self)
     }
     
