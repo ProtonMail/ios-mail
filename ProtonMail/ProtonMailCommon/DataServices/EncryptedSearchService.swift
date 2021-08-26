@@ -45,6 +45,8 @@ public class EncryptedSearchService {
     internal var cacheSearchResults: EncryptedsearchResultList? = nil
     internal var indexSearchResults: EncryptedsearchResultList? = nil
     internal var searchState: EncryptedsearchSearchState? = nil
+    internal var indexBuildingInProcess: Bool = false
+    internal var eventsWhileIndexing: [MessageAction]? = []
     
     internal var timingsBuildIndex: NSMutableArray = []
     internal var timingsMessageFetching: NSMutableArray = []
@@ -62,6 +64,7 @@ public class EncryptedSearchService {
 extension EncryptedSearchService {
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Bool {
+        self.indexBuildingInProcess = true
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
         self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
         //Run code in the background
@@ -77,6 +80,7 @@ extension EncryptedSearchService {
                     if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.user.userInfo.userId) == self.totalMessages {
                         print("Search index already contains all available messages.")
                         viewModel.isEncryptedSearch = true
+                        self.indexBuildingInProcess = false
                         return
                     }
                 }
@@ -99,6 +103,7 @@ extension EncryptedSearchService {
                     self.printTiming("Parse Cleaned Content", for: self.timingsParseCleanedContent)
                     
                     viewModel.isEncryptedSearch = true
+                    self.indexBuildingInProcess = false
                     return
                 }
             }
@@ -106,23 +111,47 @@ extension EncryptedSearchService {
         return false
     }
     
-    func updateSearchIndex(_ action: NSFetchedResultsChangeType, _ message: Message?) {
-        //print("action type: \(action.rawValue)")
-        switch action {
-        case .delete:
-            print("Delete message from search index")
-            self.updateMessageMetadataInSearchIndex(message, action)    //delete just triggers a move to the bin folder
-        case .insert:
-            print("Insert new message to search index")
-            self.insertSingleMessageToSearchIndex(message)
-        case .move:
-            print("Move message in search index")
-            self.updateMessageMetadataInSearchIndex(message, action)    //move just triggers a change in the location of the message
-        case .update:
-            print("Update message")
-            //self.updateMessageMetadataInSearchIndex(message, action)
-        default:
-            return
+    struct MessageAction {
+        var action: NSFetchedResultsChangeType? = nil
+        var message: Message? = nil
+        var indexPath: IndexPath? = nil
+        var newIndexPath: IndexPath? = nil
+    }
+    
+    func updateSearchIndex(_ action: NSFetchedResultsChangeType, _ message: Message?, _ indexPath: IndexPath?, _ newIndexPath: IndexPath?) {
+        if self.indexBuildingInProcess {
+            let messageAction: MessageAction = MessageAction(action: action, message: message, indexPath: indexPath, newIndexPath: newIndexPath)
+            self.eventsWhileIndexing!.append(messageAction)
+        } else {
+            //print("action type: \(action.rawValue)")
+            switch action {
+                case .delete:
+                    print("Delete message from search index")
+                    self.updateMessageMetadataInSearchIndex(message, action)    //delete just triggers a move to the bin folder
+                case .insert:
+                    print("Insert new message to search index")
+                    self.insertSingleMessageToSearchIndex(message)
+                case .move:
+                    print("Move message in search index")
+                    self.updateMessageMetadataInSearchIndex(message, action)    //move just triggers a change in the location of the message
+                case .update:
+                    print("Update message")
+                    //self.updateMessageMetadataInSearchIndex(message, action)
+                default:
+                    return
+            }
+        }
+    }
+    
+    func processEventsAfterIndexing(completionHandler: @escaping () -> Void) {
+        if self.eventsWhileIndexing!.isEmpty {
+            completionHandler()
+        } else {
+            let messageAction: MessageAction = self.eventsWhileIndexing!.removeFirst()
+            self.updateSearchIndex(messageAction.action!, messageAction.message, messageAction.indexPath, messageAction.newIndexPath)
+            self.processEventsAfterIndexing {
+                print("Events remainding to process: \(self.eventsWhileIndexing!.count)")
+            }
         }
     }
     
