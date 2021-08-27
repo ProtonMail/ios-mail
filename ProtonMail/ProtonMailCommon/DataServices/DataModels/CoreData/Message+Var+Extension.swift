@@ -181,6 +181,20 @@ extension Message {
         }
     }
 
+    var hasReceiptRequest: Bool {
+        guard let headerString = self.header,
+              let data = headerString.data(using: .utf8),
+              let parsed = Part(header: data),
+              let _ = parsed.headers.first(where: { $0.name == "Disposition-Notification-To"}) else {
+            return false
+        }
+        return true
+    }
+
+    var hasSentReceipt: Bool {
+        return self.flag.contains(.receiptSent)
+    }
+
     var isAutoReply: Bool {
         guard !isSent, !draft else {
             return false

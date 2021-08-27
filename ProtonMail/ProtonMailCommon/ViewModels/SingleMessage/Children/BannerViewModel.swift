@@ -30,7 +30,14 @@ class BannerViewModel {
     private var timer: Timer?
     private let unsubscribeService: UnsubscribeService
     private let markLegitimateService: MarkLegitimateService
+    private let receiptService: ReceiptService
     private let urlOpener: URLOpener
+    var shouldShowReceiptBanner: Bool {
+        return message.hasReceiptRequest && !message.isSent
+    }
+    var hasSentReceipt: Bool {
+        return message.hasSentReceipt
+    }
 
     var recalculateCellHeight: (() -> Void)?
     var updateExpirationTime: ((Int) -> Void)?
@@ -63,12 +70,14 @@ class BannerViewModel {
          shouldAutoLoadEmbeddedImage: Bool,
          unsubscribeService: UnsubscribeService,
          markLegitimateService: MarkLegitimateService,
+         receiptService: ReceiptService,
          urlOpener: URLOpener = UIApplication.shared) {
         self.message = message
         self.shouldAutoLoadRemoteContent = shouldAutoLoadRemoteContent
         self.shouldAutoLoadEmbeddedImage = shouldAutoLoadEmbeddedImage
         self.unsubscribeService = unsubscribeService
         self.markLegitimateService = markLegitimateService
+        self.receiptService = receiptService
         self.urlOpener = urlOpener
         setUpTimer(expirationTime: expirationTime)
     }
@@ -111,6 +120,10 @@ class BannerViewModel {
 
     func markAsLegitimate() {
         markLegitimateService.markAsLegitimate(messageId: message.messageID)
+    }
+
+    func sendReceipt() {
+        self.receiptService.sendReceipt(messageID: self.message.messageID)
     }
 
     private func open(url: String) {
