@@ -464,7 +464,7 @@ extension CacheService {
             if conversationCount < 0 {
                 conversationCount = 0
             }
-            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, type: .conversation, shouldSave: false)
+            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: conversationCount, type: .conversation, shouldSave: false)
         }
     }
 
@@ -484,7 +484,7 @@ extension CacheService {
         if conversationCount < 0 {
             conversationCount = 0
         }
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, type: .conversation, shouldSave: true)
+        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: conversationCount, type: .conversation, shouldSave: true)
     }
 }
 
