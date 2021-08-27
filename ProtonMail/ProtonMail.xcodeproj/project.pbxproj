@@ -1438,6 +1438,7 @@
 		88E8136CCD42FC01FDE5D4BEB24E80A1 /* ShareAppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D8128B46D4B7C22F889D85E7DF773B /* ShareAppCoordinator.swift */; };
 		8911B3E0448510AE9F31C7EA0700209A /* ContactDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934EB5CEA1ACDD4A4555A00DDA4B7F8D /* ContactDataService.swift */; };
 		893B626DA6575FCB543F7B01981BECD9 /* LocalNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8B4288C5616BC0386F1E7673A353E7 /* LocalNotificationService.swift */; };
+		8940E249551C29D88DA5EF94ED1CE917 /* String+Parse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3E9EA0CE4352CBFBB3A341A5B1D784 /* String+Parse+Extension.swift */; };
 		896C1B8DE3BBD5EF41813218B8F3F08B /* GeneralSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA7289C7A00897216DF37D848BDD1EE /* GeneralSettingViewCell.swift */; };
 		8970AEB92F04E04FD36E38DD415BF2D6 /* Test Failed Htmls.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07B056EBF53B06599D9AFD58EFF16608 /* Test Failed Htmls.bundle */; };
 		899B289FF6339103D81AEA51AC327B19 /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD83722A1989FBEACE70896416C38CF /* OpenPGP+Extension.swift */; };
@@ -2232,6 +2233,7 @@
 		D77A806C9A9ADBCEF92201428C548FA2 /* DocumentAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C454B0EB20457CA14B2ED3F3D5809882 /* DocumentAttachmentProvider.swift */; };
 		D780355919F7D2D35D8C7EA870A917E9 /* UIAlertAction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BA643D53FC04548412B132F956D8D /* UIAlertAction+Extension.swift */; };
 		D783433C3BF6130CA72E0955A9D8D233 /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD83722A1989FBEACE70896416C38CF /* OpenPGP+Extension.swift */; };
+		D795BB3A244D9E1CAB1BF154A5FB0D09 /* String+Parse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3E9EA0CE4352CBFBB3A341A5B1D784 /* String+Parse+Extension.swift */; };
 		D7A1C0D48126175231279B1D22BDB307 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE03E4C1B81FCFF1E29F8781505C5DC /* CacheService.swift */; };
 		D7A3C9A0338434698AB5742FEC08E53E /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F63E64A2521F20E5630AC0AC144F79 /* UIImage+Extension.swift */; };
 		D7A6AF25B5C570AF22DF6D95A6654C50 /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D59ABED3CFB1977BE8ED282A2EA2FA /* UserCachedStatus.swift */; };
@@ -10375,6 +10377,7 @@
 				AD3052C99B808B30D2C85550760B58E7 /* String+Extension.swift in Sources */,
 				0416FFFA987A18E01D660BE80BC66ECE /* String+Html+Ext.swift in Sources */,
 				D093BBD13671D3C6615B7FB6EBA5C7C3 /* String+Mime.swift in Sources */,
+				D795BB3A244D9E1CAB1BF154A5FB0D09 /* String+Parse+Extension.swift in Sources */,
 				F55F7F917DBD11BFB4E8CE2C1625F78B /* String+Toast+Extension.swift in Sources */,
 				D66C0B7E0C96CB65203DBD6AD7CCD6F6 /* String+Values.swift in Sources */,
 				C89196462C77914570FCC2474A05A6E0 /* SwiftTryCatch.m in Sources */,
@@ -10718,6 +10721,7 @@
 				F7094FDFA2A4050842A4F4AB6D97782B /* String+Extension.swift in Sources */,
 				363A574ABE22F01F74F34722D83EF186 /* String+Html+Ext.swift in Sources */,
 				92246A8C749E11EB8B15101AE67E6C3B /* String+Mime.swift in Sources */,
+				8940E249551C29D88DA5EF94ED1CE917 /* String+Parse+Extension.swift in Sources */,
 				5009C511B6A7FD03B3FD2A032582C02D /* String+Toast+Extension.swift in Sources */,
 				55A38E0C7AE3E9CFFA4ED5DC72D88A38 /* String+Values.swift in Sources */,
 				2A07B875B14503AB79DCC0ED40B92AD3 /* SwiftTryCatch.m in Sources */,

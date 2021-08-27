@@ -610,6 +610,8 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
         
     }
+
+    func collectionView(at: ContactCollectionView, pasted groupName: String, addresses: [String]) -> Bool { return false }
     
     func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
@@ -630,6 +632,62 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
             contactPicker = bccContactPicker
         }
         return contactPicker
+    }
+
+    func showContactMenu(contact: ContactPickerModelProtocol) {
+        // Don't need to implement
+    }
+
+    func showContactMenu(contact: ContactPickerModelProtocol, contactPicker: ContactPicker) {
+        self.subject.becomeFirstResponder()
+        self.subject.endEditing(true)
+        self.view.endEditing(true)
+        if let contact = contact as? ContactVO {
+            self.showContactMenu(contact: contact, contactPicker: contactPicker)
+        } else if let group = contact as? ContactGroupVO {
+            self.showContactMenu(contact: group, contactPicker: contactPicker)
+        }
+    }
+
+    private func showContactMenu(contact: ContactVO, contactPicker: ContactPicker) {
+        guard let parent = self.parent?.navigationController,
+              let address = contact.displayEmail else { return }
+        let copy = PMActionSheetPlainItem(title: LocalString._general_copy, icon: nil) { _ in
+            UIPasteboard.general.string = address
+            contactPicker.deselectCells()
+        }
+        let cut = PMActionSheetPlainItem(title: LocalString._general_cut, icon: nil) { _ in
+            UIPasteboard.general.string = address
+            contactPicker.removeContact(address: address)
+            contactPicker.deselectCells()
+        }
+        let group = PMActionSheetItemGroup(items: [copy, cut], style: .clickable)
+        let header = PMActionSheetHeaderView(title: address, subtitle: nil, leftItem: nil, rightItem: nil)
+        let sheet = PMActionSheet(headerView: header, itemGroups: [group])
+        sheet.eventsListener = self
+        sheet.presentAt(parent, animated: true)
+    }
+
+    private func showContactMenu(contact: ContactGroupVO, contactPicker: ContactPicker) {
+        let name = contact.contactTitle
+        let selected = contact.getSelectedEmailAddresses()
+        guard let parent = self.parent?.navigationController,
+              let value = ["\(name)": selected].toString() else {
+            return
+        }
+
+        let copy = PMActionSheetPlainItem(title: LocalString._general_copy, icon: nil) { _ in
+            UIPasteboard.general.string = value
+        }
+        let cut = PMActionSheetPlainItem(title: LocalString._general_cut, icon: nil) { _ in
+            UIPasteboard.general.string = value
+            contactPicker.removeContact(contact: contact)
+        }
+        let group = PMActionSheetItemGroup(items: [copy, cut], style: .clickable)
+        let header = PMActionSheetHeaderView(title: name, subtitle: nil, leftItem: nil, rightItem: nil)
+        let sheet = PMActionSheet(headerView: header, itemGroups: [group])
+        sheet.eventsListener = self
+        sheet.presentAt(parent, animated: true)
     }
 }
 
@@ -723,4 +781,16 @@ extension ContactPicker {
         }
         return out
     }
+}
+
+extension ComposeHeaderViewController: PMActionSheetEventsListener {
+    func willPresent() { }
+
+    func willDismiss() {
+        self.toContactPicker.deselectCells()
+        self.ccContactPicker.deselectCells()
+        self.bccContactPicker.deselectCells()
+    }
+
+    func didDismiss() {}
 }
