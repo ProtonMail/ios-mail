@@ -47,6 +47,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     
     /// private vars
     private var contacts: [ContactPickerModelProtocol] = []
+    private var phoneContacts: [ContactPickerModelProtocol] = []
     private var attachments: [Any]?
     
     private var actualEncryptionStep              = EncryptionStep.DefinePassword
@@ -116,39 +117,23 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         // load all contacts and groups
         // TODO: move to view model
         firstly { () -> Promise<Void> in
-//            self.contacts = contactService.allContactVOs() // contacts in core data
-            return retrieveAllContacts() // contacts in phone book
-        }.done { [weak self] in
+            return retrievePMContacts()
+        }.then({ [weak self] _ in
+            return self?.retrievePhoneContacts() ?? Promise<Void>()
+        }).done { [weak self] in
             guard let self = self else { return }
-            // get contact groups
 
-            // TODO: figure where to put this thing
             let user = self.viewModel.getUser()
+
+            var contactsWithoutLastTimeUsed: [ContactPickerModelProtocol] = self.phoneContacts
+
             if user.hasPaidMailPlan {
-                self.contacts.append(contentsOf: user.contactGroupService.getAllContactGroupVOs())
+                contactsWithoutLastTimeUsed.append(contentsOf: user.contactGroupService.getAllContactGroupVOs())
             }
-            
-            // Sort contacts and contact groups
-            self.contacts.sort {
-                (first: ContactPickerModelProtocol, second: ContactPickerModelProtocol) -> Bool in
-                
-                if let first = first as? ContactVO,
-                    let second = second as? ContactVO {
-                    return first.name.lowercased() == second.name.lowercased() ?
-                        first.email.lowercased() < second.email.lowercased() :
-                        first.name.lowercased() < second.name.lowercased()
-                } else if let first = first as? ContactGroupVO,
-                    let second = second as? ContactGroupVO {
-                    return first.contactTitle.lowercased() < second.contactTitle.lowercased()
-                } else {
-                    // contact groups go first
-                    if let _ = first as? ContactGroupVO {
-                        return true
-                    } else {
-                        return false
-                    }
-                }
-            }
+            // sort the contact group and phone address together
+            contactsWithoutLastTimeUsed.sort(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
+
+            self.contacts = self.contacts + contactsWithoutLastTimeUsed
             
             self.headerView?.toContactPicker?.reloadData()
             self.headerView?.ccContactPicker?.reloadData()
@@ -179,15 +164,28 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         generateAccessibilityIdentifiers()
     }
 
-    private func retrieveAllContacts() -> Promise<Void> {
+    private func retrievePMContacts() -> Promise<Void> {
         return Promise { seal in
             let service = self.viewModel.getUser().contactService
-            service.getContactVOs { (contacts, error) in
+            service.getContactVOs() { (contacts, error) in
                 if let error = error {
                     PMLog.D(" error: \(error)")
                     // seal.reject(error) // TODO: should I?
                 }
                 self.contacts = contacts
+                seal.fulfill(())
+            }
+        }
+    }
+
+    private func retrievePhoneContacts() -> Promise<Void> {
+        return Promise { seal in
+            let service = self.viewModel.getUser().contactService
+            service.getContactVOsFromPhone { phoneContacts, error in
+                if let error = error {
+                    PMLog.D(" error: \(error)")
+                }
+                self.phoneContacts = phoneContacts
                 seal.fulfill(())
             }
         }

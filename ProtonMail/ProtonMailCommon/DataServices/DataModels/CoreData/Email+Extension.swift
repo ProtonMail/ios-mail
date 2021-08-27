@@ -32,6 +32,8 @@ extension Email {
         static let email = "email"
         static let emailID = "emailID"
         static let userID = "userID"
+        static let name = "name"
+        static let lastUsedTime = "lastUsedTime"
     }
     
     /// Removes all messages from the store.
