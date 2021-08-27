@@ -126,9 +126,10 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         #endif
 
         let attachments = childViewModel.getAttachments() ?? []
-        let component = ComposerAttachmentVC(attachments: attachments, delegate: self)
+        let dataService: CoreDataService = self.services.get(by: CoreDataService.self)
+        let component = ComposerAttachmentVC(attachments: attachments, coreDataService: dataService, delegate: self)
         self.attachmentView = component
-        self.controller.updateAttachmentCount(number: component.datas.count)
+        self.controller.updateAttachmentCount(number: component.attachmentCount)
         component.addNotificationObserver()
         component.isUploading = { [weak self] in
             self?.controller.isUploadingAttachments = $0
@@ -197,14 +198,14 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         guard let component = self.attachmentView else { return }
         component.add(attachments: [attachment]) { [weak self] in
             DispatchQueue.main.async {
-                let number = component.datas.count
+                let number = component.attachmentCount
                 self?.controller.updateAttachmentCount(number: number)
             }
         }
         
         guard shouldUpload else { return }
         _ = self.editor.attachments(pickup: attachment).done { [weak self] in
-            let number = self?.attachmentView?.datas.count ?? 0
+            let number = self?.attachmentView?.attachmentCount ?? 0
             self?.controller.updateAttachmentCount(number: number)
         }
     }
@@ -248,7 +249,7 @@ extension ComposeContainerViewCoordinator: ComposerAttachmentVCDelegate {
         self.header.view.endEditing(true)
         self.controller.view.endEditing(true)
         _ = self.editor.attachments(deleted: attachment).done { [weak self] in
-            let number = self?.attachmentView?.datas.count ?? 0
+            let number = self?.attachmentView?.attachmentCount ?? 0
             self?.controller.updateAttachmentCount(number: number)
             self?.controller.updateCurrentAttachmentSize()
         }
