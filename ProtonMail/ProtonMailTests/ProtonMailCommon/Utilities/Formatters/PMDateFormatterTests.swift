@@ -4,26 +4,32 @@ import XCTest
 class PMDateFormatterTests: XCTestCase {
 
     var sut: PMDateFormatter!
+    var notificationCenter: NotificationCenter!
 
     override func setUp() {
         super.setUp()
 
-        sut = PMDateFormatter()
+        notificationCenter = NotificationCenter()
+        sut = PMDateFormatter(notificationCenter: notificationCenter)
     }
 
     override func tearDown() {
         super.tearDown()
 
+        notificationCenter = nil
+        sut = nil
         Environment.restore()
     }
 
     func testFormattingWithEnglishUKLocaleWhenWeekStartIsMonday() {
-        Environment.locale = Locale(identifier: "en_GB")
+        Environment.locale = { .enGB }
         Environment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
         Environment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         sut.isDateInToday = { _ in true }
+        XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 11:00:00"), weekStart: .monday), "11:00")
         XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 12:00:00"), weekStart: .monday), "12:00")
+        XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 13:00:00"), weekStart: .monday), "13:00")
         sut.isDateInToday = { _ in false }
 
         sut.isDateInYesterday = { _ in true }
@@ -44,7 +50,7 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testFormattingWithEnglishUKLocaleWhenWeekStartIsSunday() {
-        Environment.locale = Locale(identifier: "en_GB")
+        Environment.locale = { .enGB }
         Environment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
         Environment.timeZone = TimeZone(secondsFromGMT: 0)!
 
@@ -65,7 +71,7 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testFormattingWithEnglishUKLocaleWhenWeekStartIsSaturday() {
-        Environment.locale = Locale(identifier: "en_GB")
+        Environment.locale = { .enGB }
         Environment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
         Environment.timeZone = TimeZone(secondsFromGMT: 0)!
 
@@ -86,12 +92,14 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testFormattingWithEnglishUSALocaleWhenWeekStartIsMonday() {
-        Environment.locale = Locale(identifier: "en_US")
+        Environment.locale = { .enUS }
         Environment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
         Environment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         sut.isDateInToday = { _ in true }
-        XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 12:00:00"), weekStart: .monday), "12:00")
+        XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 11:00:00"), weekStart: .monday), "11:00 AM")
+        XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 12:00:00"), weekStart: .monday), "12:00 PM")
+        XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 13:00:00"), weekStart: .monday), "1:00 PM")
         sut.isDateInToday = { _ in false }
 
         sut.isDateInYesterday = { _ in true }
@@ -107,7 +115,7 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testFormattingWithAutomaticEn_USWeekStart() {
-        Environment.locale = Locale(identifier: "en_US")
+        Environment.locale = { .enUS }
         Environment.currentDate = { Date.fixture("2021-06-23 00:00:00") }
         Environment.timeZone = TimeZone(secondsFromGMT: 0)!
 
@@ -121,7 +129,7 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testFormattingWithAutomaticEn_GNWeekStart() {
-        Environment.locale = Locale(identifier: "en_GB")
+        Environment.locale = { .enGB }
         Environment.currentDate = { Date.fixture("2021-06-23 00:00:00") }
         Environment.timeZone = TimeZone(secondsFromGMT: 0)!
 
@@ -132,6 +140,14 @@ class PMDateFormatterTests: XCTestCase {
         XCTAssertEqual(sut.string(from: Date.fixture("2021-06-21 00:00:00"), weekStart: .automatic), "Monday")
         XCTAssertEqual(sut.string(from: Date.fixture("2021-06-20 00:00:00"), weekStart: .automatic), "20 June 2021")
         XCTAssertEqual(sut.string(from: Date.fixture("2021-06-19 00:00:00"), weekStart: .automatic), "19 June 2021")
+    }
+
+    func testUserChangedLocaleAndRecreateFormatter() {
+        let initialFormatterInstance = PMDateFormatter.shared
+
+        notificationCenter.post(name: NSLocale.currentLocaleDidChangeNotification, object: nil)
+
+        XCTAssertFalse(initialFormatterInstance === PMDateFormatter.shared)
     }
 
 }
