@@ -178,7 +178,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     func resetTableView() {
         self.viewModel.resetFetchedController()
-        self.viewModel.setupFetchController(self)
+        self.viewModel.setupFetchController(self, isUnread: self.unreadFilterButton.isSelected)
         self.tableView.reloadData()
     }
 
