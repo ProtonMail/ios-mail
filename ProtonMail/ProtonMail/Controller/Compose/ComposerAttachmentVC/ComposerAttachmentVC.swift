@@ -26,14 +26,40 @@ protocol ComposerAttachmentVCDelegate: AnyObject {
     func delete(attachment: Attachment)
 }
 
+fileprivate struct AttachInfo {
+    let objectID: String
+    let name: String
+    let size: Int
+    let mimeType: String
+    var attachmentID: String
+    var isUploaded: Bool {
+        attachmentID != "0" && attachmentID != .empty
+    }
+
+    init(attachment: Attachment) {
+        self.objectID = attachment.objectID.uriRepresentation().absoluteString
+        self.name = attachment.fileName
+        self.size = attachment.fileSize.intValue
+        self.mimeType = attachment.mimeType
+        self.attachmentID = attachment.attachmentID
+    }
+}
+
+fileprivate extension Collection where Element == AttachInfo {
+    var areUploaded: Bool {
+        allSatisfy { $0.isUploaded }
+    }
+}
+
 final class ComposerAttachmentVC: UIViewController {
 
     private var tableView: UITableView?
+    private let coreDataService: CoreDataService
     @objc dynamic private(set) var tableHeight: CGFloat = 0
 
     var isUploading: ((Bool) -> Void)?
 
-    private(set) var datas: [Attachment] = []
+    private var datas: [AttachInfo] = []
     private weak var delegate: ComposerAttachmentVCDelegate?
     private let queue: OperationQueue = {
         let queue = OperationQueue()
@@ -42,8 +68,12 @@ final class ComposerAttachmentVC: UIViewController {
     }()
     private var height: NSLayoutConstraint?
     private let cellHeight: CGFloat = 52
+    var attachmentCount: Int { self.datas.count }
 
-    init(attachments: [Attachment], delegate: ComposerAttachmentVCDelegate?) {
+    init(attachments: [Attachment],
+         coreDataService: CoreDataService,
+         delegate: ComposerAttachmentVCDelegate?) {
+        self.coreDataService = coreDataService
         super.init(nibName: nil, bundle: nil)
         attachments.forEach { att in
             if att.objectID.isTemporaryID {
@@ -52,7 +82,7 @@ final class ComposerAttachmentVC: UIViewController {
                 }
             }
         }
-        self.datas = attachments
+        self.datas = attachments.map { AttachInfo(attachment: $0) }
         self.delegate = delegate
     }
 
@@ -101,7 +131,7 @@ final class ComposerAttachmentVC: UIViewController {
         self.queue.addOperation { [weak self] in
             let array = self?.datas ?? []
             let size = array.reduce(into: 0) {
-                $0 += $1.fileSize.intValue
+                $0 += $1.size
             }
             completeHandler?(size)
         }
@@ -110,15 +140,14 @@ final class ComposerAttachmentVC: UIViewController {
     func add(attachments: [Attachment], completeHandler: (() -> Void)? = nil) {
         self.queue.addOperation { [weak self] in
             guard let self = self else { return }
-            let existedID = self.datas
-                .map { $0.objectID.uriRepresentation().absoluteString }
+            let existedID = self.datas.map { $0.objectID }
             let attachments = attachments
                 .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) && !$0.isSoftDeleted }
 
             // swiftlint:disable:next todo
             // FIXME: insert function for better UX
             // the insert function could break in the concurrency
-            self.datas += attachments
+            self.datas += attachments.map { AttachInfo(attachment: $0) }
             completeHandler?()
             DispatchQueue.main.async {
                 self.tableView?.reloadData()
@@ -128,12 +157,11 @@ final class ComposerAttachmentVC: UIViewController {
         }
     }
 
-    func delete(attachment: Attachment) {
+    func delete(objectID: String) {
         self.queue.addOperation { [weak self] in
-            guard let self = self else { return }
-            guard let index = self.datas.firstIndex(of: attachment) else {
-                return
-            }
+            guard let self = self,
+                  let index = self.datas.firstIndex(where: { $0.objectID == objectID })
+            else { return }
             self.datas.remove(at: index)
 
             DispatchQueue.main.async {
@@ -189,17 +217,10 @@ extension ComposerAttachmentVC {
                   let objectID = noti.userInfo?["objectID"] as? String,
                   let attachmentID = noti.userInfo?["attachmentID"] as? String,
                   let index = self.datas
-                    .firstIndex(where: { $0.objectID.uriRepresentation().absoluteString == objectID }) else {
+                    .firstIndex(where: { $0.objectID == objectID }) else {
                 return
             }
-            let attachment = self.datas[index]
-            let context = attachment.managedObjectContext
-            context?.performAndWait {
-                attachment.attachmentID = attachmentID
-                if let error = context?.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(String(describing: error))")
-                }
-            }
+            self.datas[index].attachmentID = attachmentID
             DispatchQueue.main.async {
                 self.tableView?.reloadData()
                 self.tableView?.endUpdates()
@@ -227,25 +248,35 @@ extension ComposerAttachmentVC: UITableViewDataSource, UITableViewDelegate, Comp
 
         let row = indexPath.row
         let data = self.datas[row]
-        let isUploading = data.attachmentID == "0"
-        cell.config(objectID: data.objectID.uriRepresentation().absoluteString,
-                    name: data.fileName,
-                    size: data.fileSize.intValue,
+        cell.config(objectID: data.objectID,
+                    name: data.name,
+                    size: data.size,
                     mime: data.mimeType,
-                    isUploading: isUploading,
+                    isUploading: !data.isUploaded,
                     delegate: self)
         return cell
     }
 
     func clickDeleteButton(for objectID: String) {
-        guard let data = self.datas.first(where: { $0.objectID.uriRepresentation().absoluteString == objectID }) else {
+        guard let data = self.datas.first(where: { $0.objectID == objectID }) else {
             return
         }
+
         let message = LocalString._remove_attachment_warning
-        let alert = UIAlertController(title: data.fileName, message: message, preferredStyle: .alert)
-        let remove = UIAlertAction(title: LocalString._general_remove_button, style: .destructive) { _ in
-            self.delete(attachment: data)
-            self.delegate?.delete(attachment: data)
+        let alert = UIAlertController(title: data.name, message: message, preferredStyle: .alert)
+        let remove = UIAlertAction(title: LocalString._general_remove_button, style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            let context = self.coreDataService.mainContext
+            self.coreDataService.enqueue(context: context, block: { [weak self] context in
+                guard let self = self,
+                      let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(objectID),
+                      let managedObject = try? context.existingObject(with: managedObjectID),
+                      let attachment = managedObject as? Attachment else { return }
+                self.delete(objectID: objectID)
+                DispatchQueue.main.async {
+                    self.delegate?.delete(attachment: attachment)
+                }
+            })
         }
         let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .default, handler: nil)
         [cancel, remove].forEach(alert.addAction)
