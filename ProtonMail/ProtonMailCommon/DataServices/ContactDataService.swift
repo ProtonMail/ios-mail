@@ -943,54 +943,86 @@ extension ContactDataService {
             .map { ContactVO(id: $0.contactID, name: $0.name, email: $0.email, isProtonMailContact: true) }
     }
     
-    func fetchContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
-        // fetch latest contacts from server
-        //getContacts { (_, error) -> Void in
-        self.requestAccessToAddressBookIfNeeded(completion)
-        self.processContacts(addressBookAccessGranted: addressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
-        //}
-    }
-    
     func getContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
-        
-        self.requestAccessToAddressBookIfNeeded(completion)
-        self.processContacts(addressBookAccessGranted: addressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
-        
+        self.processContacts(lastError: nil, completion: completion)
     }
-    
-    fileprivate func requestAccessToAddressBookIfNeeded(_ cp: @escaping ContactVOCompletionBlock) {
-        if !addressBookService.hasAccessToAddressBook() {
-            addressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: Error?) -> Void in
-                self.processContacts(addressBookAccessGranted: granted, lastError: error, completion: cp)
-            })
-        }
-    }
-    
-    fileprivate func processContacts(addressBookAccessGranted granted: Bool, lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
-        DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
-            var contacts: [ContactVO] = []
-            if granted {
-                // get contacts from address book
-                contacts = self.addressBookService.contacts()
+
+    func getContactVOsFromPhone(_ completion: @escaping ContactVOCompletionBlock) {
+        guard addressBookService.hasAccessToAddressBook() else {
+            addressBookService.requestAuthorizationWithCompletion { granted, error in
+                if granted {
+                    completion(self.addressBookService.contacts(), nil)
+                } else {
+                    completion([], error)
+                }
             }
+            return
+        }
+        completion(addressBookService.contacts(), nil)
+    }
+    
+    private func processContacts(lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
+        struct ContactWrapper: Hashable {
+            let contact: ContactVO
+            let lastUsedTime: Date?
+        }
+
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
+            var contacts: [ContactWrapper] = []
             
             // merge address book and core data contacts
             let context = self.coreDataService.operationContext // VALIDATE
             context.performAndWait() {
                 let emailsCache = self.allEmailsInManagedObjectContext(context,
                                                                        isContactCombine: userCachedStatus.isCombineContactOn)
-                var pm_contacts: [ContactVO] = []
+                var pm_contacts: [ContactWrapper] = []
                 for email in emailsCache {
                     if email.managedObjectContext != nil {
-                        pm_contacts.append(ContactVO(id: email.contactID, name: email.name, email: email.email, isProtonMailContact: true))
+                        let contact = ContactVO(id: email.contactID, name: email.name, email: email.email, isProtonMailContact: true)
+                        pm_contacts.append(ContactWrapper(contact: contact, lastUsedTime: email.lastUsedTime))
                     }
                 }
                 contacts.append(contentsOf: pm_contacts)
             }
-            contacts.sort { $0.name.lowercased() == $1.name.lowercased() ? $0.email.lowercased() < $1.email.lowercased() : $0.name.lowercased() < $1.name.lowercased()}
+
+            // sort rule: 1. lastUsedTime 2. name 3. email
+            contacts.sort(by: { (first: ContactWrapper, second: ContactWrapper) -> Bool in
+                if let t1 = first.lastUsedTime, let t2 = second.lastUsedTime {
+                    let result = t1.compare(t2)
+                    if result == .orderedAscending {
+                        return false
+                    } else if result == .orderedDescending {
+                        return true
+                    }
+                }
+
+                if first.lastUsedTime != nil && second.lastUsedTime == nil {
+                    return true
+                }
+
+                if second.lastUsedTime != nil && first.lastUsedTime == nil {
+                    return false
+                }
+
+                if first.contact.name.lowercased() != second.contact.name.lowercased() {
+                    return first.contact.name.lowercased() < second.contact.name.lowercased()
+                } else {
+                    return first.contact.email.lowercased() < second.contact.email.lowercased()
+                }
+            })
+
+            // Remove the duplicated items
+            var set = Set<ContactVO>()
+            var filteredResult = [ContactVO]()
+            for wrapper in contacts {
+                if !set.contains(wrapper.contact) {
+                    set.insert(wrapper.contact)
+                    filteredResult.append(wrapper.contact)
+                }
+            }
             
             DispatchQueue.main.async {
-                completion(Array(Set(contacts)), lastError)
+                completion(filteredResult, lastError)
             }
         }
     }

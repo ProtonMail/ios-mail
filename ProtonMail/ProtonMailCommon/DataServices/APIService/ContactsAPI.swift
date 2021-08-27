@@ -110,13 +110,15 @@ class ContactEmailsRequest : Request {  //ContactEmailsResponse
 // TODO: performance enhancement?
 class ContactEmailsResponse: Response {
     var total : Int = -1
-    var contacts : [[String : Any]] = [] // [["ID": ..., "Name": ..., "ContactEmails": ...], ...]
-    override func ParseResponse (_ response: [String : Any]!) -> Bool {
+    var contacts : [[String : Any]] = [] // [["ID": ..., "Name": ..., "ContactEmails": ..., "LastUsedTime": ...], ...]
+    override func ParseResponse (_ response: [String : Any]?) -> Bool {
         self.total = response?["Total"] as? Int ?? -1
         if let tempContactEmails = response?["ContactEmails"] as? [[String : Any]] {
             // setup emails
             for var email in tempContactEmails { // for every email in ContactEmails
-                if let contactID = email["ContactID"] as? String, let name = email["Name"] as? String {
+                if let contactID = email["ContactID"] as? String,
+                   let name = email["Name"] as? String,
+                   let lastUpdateTime = email["LastUsedTime"] as? Int {
                     // convert the labelID strings into JSON dictionary
                     if let labelIDs = email["LabelIDs"] as? [String] {
                         let mapping: [[String: Any]] = labelIDs.map({
@@ -143,14 +145,16 @@ class ContactEmailsResponse: Response {
                             } else {
                                 c["ContactEmails"] = [email]
                             }
+
+                            c["LastUsedTime"] = lastUpdateTime
                             contacts[index] = c
                         }
                     }
                     if !found {
                         let newContact : [String : Any] = [ // this is contact object
-                            "ID" : contactID, // contactID
-                            "Name" : name, // contact name (email don't have their individual name, so it's contact's name?)
-                            "ContactEmails" : [email] // these are the email objects (contact has a relation to email)
+                            "ID": contactID, // contactID
+                            "Name": name, // contact name (email don't have their individual name, so it's contact's name?)
+                            "ContactEmails": [email] // these are the email objects (contact has a relation to email)
                         ]
                         self.contacts.append(newContact)
                     }

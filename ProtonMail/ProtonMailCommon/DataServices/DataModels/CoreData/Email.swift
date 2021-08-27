@@ -38,4 +38,6 @@ class Email: NSManagedObject {
     
     @NSManaged var contact: Contact
     @NSManaged var labels: NSSet
+
+    @NSManaged var lastUsedTime: Date?
 }

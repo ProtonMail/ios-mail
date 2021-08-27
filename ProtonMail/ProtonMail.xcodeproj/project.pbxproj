@@ -3250,6 +3250,7 @@
 		561B63F554A3FC1EDC86C6D7A0F03DB1 /* ExpandedHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedHeaderViewModel.swift; sourceTree = "<group>"; };
 		5659ADC577F02FBBD35B34B299A700FD /* UpdateTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTime.swift; sourceTree = "<group>"; };
 		5674A158BA6DE932DFEE0870B23D29C7 /* TagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewModel.swift; sourceTree = "<group>"; };
+		56BEF260D5A15F1C2AD6B0FB0DFC3E29 /* 2.0.6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.6.xcdatamodel; sourceTree = "<group>"; };
 		56C38DB00341740E144292F28F667AF3 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		57295F845FB5B0093197283C600A53DB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hans"; path = "../../ProtonMail/zh-Hans.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		579EF9D08376E58A1CEDA8219D7235F3 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
@@ -8313,7 +8314,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "if which sentry-cli >/dev/null; then\n    source ~/.bashrc\n    ERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\n    echo \"warning: sentry-cli - $ERROR\"\nfi\nelse\n    echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
+			shellScript = "#if which sentry-cli >/dev/null; then\n#    source ~/.bashrc\n#    ERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\n#if [ ! $? -eq 0 ]; then\n#    echo \"warning: sentry-cli - $ERROR\"\n#fi\n#else\n#    echo \"warning: sentry-cli not installed, download from #https://github.com/getsentry/sentry-cli/releases\"\n#fi\n";
 		};
 		E117BBD6ECFCD59D138CE291EDC9C951 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -12695,9 +12696,10 @@
 				CA36EC65E0B9D8E40B8BD182E12C9992 /* 2.0.3.xcdatamodel */,
 				CE3410BE45176643A51C83A135533207 /* 2.0.4.xcdatamodel */,
 				42C69F4F5E21A17EB1BFD422D980F26E /* 2.0.5.xcdatamodel */,
+				56BEF260D5A15F1C2AD6B0FB0DFC3E29 /* 2.0.6.xcdatamodel */,
 				4AC8B46F567BE34418EFC96C5472E216 /* ProtonMail.xcdatamodel */,
 			);
-			currentVersion = 42C69F4F5E21A17EB1BFD422D980F26E /* 2.0.5.xcdatamodel */;
+			currentVersion = 56BEF260D5A15F1C2AD6B0FB0DFC3E29 /* 2.0.6.xcdatamodel */;
 			name = ProtonMail.xcdatamodeld;
 			path = ProtonMail/ProtonMail.xcdatamodeld;
 			sourceTree = SOURCE_ROOT;
