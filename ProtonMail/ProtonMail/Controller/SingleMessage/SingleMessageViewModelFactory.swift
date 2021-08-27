@@ -59,13 +59,17 @@ class SingleMessageContentViewModelFactory {
             messageDataService: user.messageService,
             eventsService: user.eventsService
         )
+        let receiptService = ReceiptService(labelID: labelId,
+                                            apiService: user.apiService,
+                                            eventsService: user.eventsService)
         return .init(
             message: message,
             shouldAutoLoadRemoteContent: user.userinfo.showImages.contains(.remote),
             expirationTime: message.expirationTime,
             shouldAutoLoadEmbeddedImage: user.userinfo.showImages.contains(.embedded),
             unsubscribeService: unsubscribeService,
-            markLegitimateService: markLegitimateService
+            markLegitimateService: markLegitimateService,
+            receiptService: receiptService
         )
     }
 
@@ -115,13 +119,17 @@ class SingleMessageViewModelFactory {
             messageDataService: user.messageService,
             eventsService: user.eventsService
         )
+        let receiptService = ReceiptService(labelID: labelId,
+                                            apiService: user.apiService,
+                                            eventsService: user.eventsService)
         return .init(
             message: message,
             shouldAutoLoadRemoteContent: user.userinfo.showImages.contains(.remote),
             expirationTime: message.expirationTime,
             shouldAutoLoadEmbeddedImage: user.userinfo.showImages.contains(.embedded),
             unsubscribeService: unsubscribeService,
-            markLegitimateService: markLegitimateService
+            markLegitimateService: markLegitimateService,
+            receiptService: receiptService
         )
     }
 

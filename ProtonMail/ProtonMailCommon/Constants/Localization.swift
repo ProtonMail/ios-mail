@@ -2035,6 +2035,12 @@ class LocalizedString {
     lazy var _settings_detail_re_auth_alert_content = NSLocalizedString("Enter your password to make changes", comment: "The content of the re auth alert")
     // MARK: - Banners
 
+    lazy var _banner_requested_read_receipt = NSLocalizedString("The sender has requested a read receipt.", comment: "Message of a banner which is displayed when sender request a read receipt")
+
+    lazy var _send_receipt = NSLocalizedString("Send receipt", comment: "A button title to send read receipt")
+
+    lazy var _receipt_sent = NSLocalizedString("Receipt sent", comment: "A label text which is displayed after sending read receipt to sender")
+
     lazy var _banner_no_internet_connection = NSLocalizedString("We have trouble connecting to the servers. Please reconnect.", comment: "Message of a banner which is displayed on the messages list when offline")
 
     lazy var _single_message_delete_confirmation_alert_title = NSLocalizedString("Delete message", comment: "Title of message permanent deletion alert, singular")

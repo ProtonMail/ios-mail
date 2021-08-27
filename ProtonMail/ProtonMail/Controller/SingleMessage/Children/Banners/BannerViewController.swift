@@ -37,6 +37,7 @@ class BannerViewController: UIViewController {
         case error
         case unsubscribe
         case autoReply
+        case sendReceipt
 
         var order: Int {
             rawValue
@@ -56,6 +57,7 @@ class BannerViewController: UIViewController {
     private(set) lazy var unsubscribeBanner = UnsubscribeBanner()
     private(set) lazy var spamBanner = SpamBannerView()
     private lazy var autoReplyBanner = AutoReplyBanner()
+    private(set) lazy var receiptBanner = ReceiptBannerView()
 
     private(set) var displayedBanners: [BannerType: UIView] = [:] {
         didSet {
@@ -96,6 +98,7 @@ class BannerViewController: UIViewController {
         handleSpamBanner()
         handleAutoReplyBanner()
         setUpMessageObservation()
+        handleReceiptBanner()
     }
 
     func hideBanner(type: BannerType) {
@@ -148,6 +151,13 @@ class BannerViewController: UIViewController {
             self?.handleSpamBanner()
             self?.handleAutoReplyBanner()
         }
+    }
+
+    private func handleReceiptBanner() {
+        let isPresented = displayedBanners.contains(where: { $0.key == .sendReceipt })
+        guard !isPresented,
+              viewModel.shouldShowReceiptBanner else { return }
+        showReceiptBanner()
     }
 
     private func handleUnsubscribeBanner() {
@@ -223,6 +233,18 @@ class BannerViewController: UIViewController {
         addBannerView(type: .unsubscribe, shouldAddContainer: true, bannerView: banner)
     }
 
+    private func showReceiptBanner() {
+        let banner = receiptBanner
+        if viewModel.hasSentReceipt {
+            banner.hasSentReceipt()
+        } else {
+            banner.sendButton.addTarget(self,
+                                        action: #selector(self.sendReceipt),
+                                        for: .touchUpInside)
+        }
+        addBannerView(type: .sendReceipt, shouldAddContainer: true, bannerView: banner)
+    }
+
     private func addBannerView(type: BannerType, shouldAddContainer: Bool, bannerView: UIView) {
         guard let containerView = self.containerView else { return }
         var viewToAdd = bannerView
@@ -295,4 +317,13 @@ class BannerViewController: UIViewController {
         hideBanner(type: .spam)
     }
 
+    @objc
+    private func sendReceipt() {
+        guard self.isOnline else {
+            LocalString._no_internet_connection.alertToast()
+            return
+        }
+        viewModel.sendReceipt()
+        self.receiptBanner.hasSentReceipt()
+    }
 }

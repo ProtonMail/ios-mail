@@ -137,6 +137,7 @@ included:
   - ${PWD}/ProtonMail/Controller/SingleMessage/SingleMessageCoordinator.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Banners/BannerViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Banners/RemoteContentBannerView.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Banners/ReceiptBannerView.swift
   - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/BannerViewModel.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposeToolbar/ComposeToolbar.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposeToolbar/ComposePasswordVC.swift
@@ -193,6 +194,7 @@ included:
   - ${PWD}/ProtonMailCommon/Extensions/UIBarButtonItem+BackButton.swift
   - ${PWD}/ProtonMailCommon/Extensions/ImageAsset+Extension.swift
   - ${PWD}/ProtonMail/Utilities/AttachmentStreamingCrypto/AttachmentStreamingEncryptor.swift
+  - ${PWD}/ProtonMailCommon/DataServices/APIService/ReceiptService.swift
 
 excluded:
   - ${PWD}/Pods
