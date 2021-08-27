@@ -24,20 +24,27 @@ import Foundation
 
 class PMDateFormatter {
 
-    static let shared = PMDateFormatter()
+    private(set) static var shared = PMDateFormatter()
 
     var isDateInToday = Environment.calendar.isDateInToday
     var isDateInYesterday = Environment.calendar.isDateInYesterday
 
-    private lazy var todayFormatter = formatterFactory(localizedDateFormatFromTemplate: "HHmm")
+    private let notificationCenter: NotificationCenter
+
+    private lazy var todayFormatter = formatterFactory(localizedDateFormatFromTemplate: "jjmm")
     private lazy var currentWeekFormatter = formatterFactory(localizedDateFormatFromTemplate: "EEEE")
     private lazy var fullDateFormatter = formatterFactory(localizedDateFormatFromTemplate: "MMMMddyyyy")
 
     private var calendar: Calendar {
         var calendar = Environment.calendar
         calendar.timeZone = Environment.timeZone
-        calendar.locale = Environment.locale
+        calendar.locale = Environment.locale()
         return calendar
+    }
+
+    init(notificationCenter: NotificationCenter = .default) {
+        self.notificationCenter = notificationCenter
+        addLocaleChangesObserver()
     }
 
     func string(from date: Date, weekStart: WeekStart) -> String {
@@ -82,10 +89,24 @@ class PMDateFormatter {
 
     private func formatterFactory(localizedDateFormatFromTemplate: String) -> DateFormatter {
         let formatter = DateFormatter()
-        formatter.locale = Environment.locale
+        formatter.locale = Environment.locale()
         formatter.timeZone = Environment.timeZone
         formatter.setLocalizedDateFormatFromTemplate(localizedDateFormatFromTemplate)
         return formatter
+    }
+
+    @objc
+    private func localeChanged() {
+        Self.shared = PMDateFormatter()
+    }
+
+    private func addLocaleChangesObserver() {
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(localeChanged),
+            name: NSLocale.currentLocaleDidChangeNotification,
+            object: nil
+        )
     }
 
 }
