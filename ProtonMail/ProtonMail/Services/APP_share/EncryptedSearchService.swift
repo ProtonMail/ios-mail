@@ -471,7 +471,6 @@ extension EncryptedSearchService {
             self.timingsParseBody.add(CFAbsoluteTimeGetCurrent()) //add start time
             //parse HTML email as DOM tree
             let doc: Document = try SwiftSoup.parse(body)
-            
             self.timingsParseBody.add(CFAbsoluteTimeGetCurrent()) //add stop time
             
             self.timingsRemoveElements.add(CFAbsoluteTimeGetCurrent()) //add start time
@@ -482,27 +481,22 @@ extension EncryptedSearchService {
             }
             
             //remove quoted text, unless the email is forwarded
-            var content: String = ""
             if removeQuotes {
                 let (noQuoteContent, _) = try locateBlockQuotes(doc)
-                content = noQuoteContent
+                self.timingsParseCleanedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
+                let newBodyOfEmail: Document = try SwiftSoup.parse(noQuoteContent)
+                contentOfEmail = try newBodyOfEmail.text().preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
+                self.timingsParseCleanedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
             } else {
-                content = try doc.html()
+                contentOfEmail = try doc.text().preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
             }
             self.timingsRemoveElements.add(CFAbsoluteTimeGetCurrent()) //add start time
-            
-            self.timingsParseCleanedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
-            let newBodyOfEmail: Document = try SwiftSoup.parse(content)
-            contentOfEmail = try newBodyOfEmail.text().trim()
-            self.timingsParseCleanedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
-            
-            //TODO replace multiple whitespaces with a single whitespace
-            //i.e. in Kotlin -> .replace("\\s+", " ")
         } catch Exception.Error(_, let message) {
             print(message)
         } catch {
             print("error")
         }
+
         return contentOfEmail
     }
 
