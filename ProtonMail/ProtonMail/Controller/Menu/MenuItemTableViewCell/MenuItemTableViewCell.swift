@@ -103,6 +103,10 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
     func update(attribure: [NSAttributedString.Key: Any]) {
         self.name.attributedText = self.name.text?.apply(style: attribure)
     }
+
+    func update(badge: Int) {
+        self.setup(badge: badge)
+    }
 }
 
 // MARK: Private functions

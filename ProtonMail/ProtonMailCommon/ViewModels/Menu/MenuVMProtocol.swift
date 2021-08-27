@@ -27,6 +27,7 @@ import ProtonCore_AccountSwitcher
 protocol MenuVMProtocol: AnyObject {
     var menuWidth: CGFloat! { get }
     var sections: [MenuSection] { get }
+    var folderItems: [MenuLabel] { get }
     var currentUser: UserManager? { get }
     var secondUser: UserManager? { get }
     var enableFolderColor: Bool { get }
