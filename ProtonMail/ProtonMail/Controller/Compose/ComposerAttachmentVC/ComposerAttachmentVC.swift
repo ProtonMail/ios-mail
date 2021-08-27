@@ -26,7 +26,7 @@ protocol ComposerAttachmentVCDelegate: AnyObject {
     func delete(attachment: Attachment)
 }
 
-fileprivate struct AttachInfo {
+private struct AttachInfo {
     let objectID: String
     let name: String
     let size: Int
@@ -45,7 +45,7 @@ fileprivate struct AttachInfo {
     }
 }
 
-fileprivate extension Collection where Element == AttachInfo {
+private extension Collection where Element == AttachInfo {
     var areUploaded: Bool {
         allSatisfy { $0.isUploaded }
     }

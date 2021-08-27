@@ -39,9 +39,7 @@ class BannerViewController: UIViewController {
         case autoReply
         case sendReceipt
 
-        var order: Int {
-            rawValue
-        }
+        var order: Int { rawValue }
     }
 
     let viewModel: BannerViewModel
