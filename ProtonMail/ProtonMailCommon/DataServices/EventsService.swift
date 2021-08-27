@@ -523,6 +523,9 @@ extension EventsService {
                         case IncrementalUpdateType.delete:
                             if let conversation = Conversation.conversationForConversationID(conversationEvent.ID, inManagedObjectContext: context) {
                                 let labelObjs = conversation.mutableSetValue(forKey: Conversation.Attributes.labels)
+                                labelObjs.allObjects
+                                    .compactMap ({ $0 as? ContextLabel })
+                                    .forEach { $0.messageCount = 0 }
                                 labelObjs.removeAllObjects()
                                 context.delete(conversation)
                                 
