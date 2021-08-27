@@ -36,6 +36,7 @@ protocol ContactCollectionViewDelegate : NSObjectProtocol, ContactCollectionView
     func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol)
     func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol)
     func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool)
+    func collectionView(at: ContactCollectionView, pasted groupName: String, addresses: [String]) -> Bool
 }
 
 enum ContactCollectionViewSection : Int {
@@ -277,6 +278,27 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
                 self.setFocusOnEntry()
             }
         }
+    }
+    
+    func removeContact(address: String) {
+        guard let index = self.selectedContacts.firstIndex(where: { $0.displayEmail == address }) else { return }
+        self.removeFromSelectedContacts(index: index, withCompletion: nil)
+    }
+
+    func removeContact(contact: ContactPickerModelProtocol) {
+        guard let index = self.selectedContacts.firstIndex(where: { selected in
+            if let selected = selected as? ContactVO,
+               let contact = contact as? ContactVO {
+                return selected == contact
+            } else if let selected = selected as? ContactGroupVO,
+                      let contact = contact as? ContactGroupVO {
+                return selected == contact
+            }
+            return false
+        }) else {
+            return
+        }
+        self.removeFromSelectedContacts(index: index, withCompletion: nil)
     }
     
     func isCell(entry index: IndexPath) -> Bool {
@@ -550,6 +572,14 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
         
         if string == "," || string == ";" {
             textField.resignFirstResponder()
+            return false
+        }
+
+        if let dict = string.parseObjectAny(),
+           dict.keys.count == 1,
+           let name = dict.keys.first,
+           let selected = dict[name] as? [String],
+           self.contactDelegate?.collectionView(at: self, pasted: name, addresses: selected) ?? false {
             return false
         }
         newString = text.replacingCharacters(in: Range(range, in: text)!, with: string)

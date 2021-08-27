@@ -26,6 +26,7 @@ import UIKit
 protocol ContactCollectionViewContactCellDelegate: AnyObject {
     func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
     func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?)
+    func showContactMenu(contact: ContactPickerModelProtocol)
 }
 
 class ContactCollectionViewContactCell: UICollectionViewCell {
@@ -71,10 +72,20 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.bgView.backgroundColor = UIColorManager.InteractionWeak
         self.contactTitleLabel.textColor = UIColorManager.TextNorm
         
+        let long = UILongPressGestureRecognizer(target: self, action: #selector(self.showMenu(gesture:)))
+        long.minimumPressDuration = 1
+        self.addGestureRecognizer(long)
+        
         #if DEBUG_BORDERS
         self.contactTitleLabel.layer.borderColor = UIColor(hexColorCode: "0x6789AB").cgColor
         self.contactTitleLabel.layer.borderWidth = 1.0
         #endif
+    }
+    
+    @objc func showMenu(gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began else { return }
+        self.pickerFocused = true
+        self.delegate?.showContactMenu(contact: self._model)
     }
     
     override func tintColorDidChange() {
@@ -92,15 +103,20 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 self.contactTitleLabel.textColor = UIColorManager.TextInverted
                 self.lockImage.tintColor = UIColorManager.IconInverted
                 self.bgView.backgroundColor = UIColorManager.InteractionNorm
+                return
             }
-            else {
-                if isError {
-                    self.bgView.backgroundColor = UIColorManager.NotificationError
-                    self.contactTitleLabel.textColor = .white
-                } else {
-                    self.bgView.backgroundColor = UIColorManager.InteractionWeak
-                    self.contactTitleLabel.textColor = UIColorManager.TextNorm
-                }
+            
+            if isError {
+                self.bgView.backgroundColor = UIColorManager.NotificationError
+                self.contactTitleLabel.textColor = .white
+                return
+            }
+            self.bgView.backgroundColor = UIColorManager.InteractionWeak
+            self.contactTitleLabel.textColor = UIColorManager.TextNorm
+            
+            if self.model is ContactGroupVO {
+                self.lockImage.isHighlighted = false
+                self.lockImage.tintColor = UIColorManager.IconNorm
             }
         }
     }
@@ -127,17 +143,18 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         }
     }
     
-    func prepareTitleForContactGroup() {
-        if let contactGroup = self._model as? ContactGroupVO {
+    func prepareTitleForContactGroup(shouldCheckMails: Bool = true) {
+        guard let contactGroup = self._model as? ContactGroupVO else { return }
             
-            let (selectedCount, totalCount, color) = contactGroup.getGroupInformation()
-            let text = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
-            self.contactTitleLabel.attributedText = text.apply(style: FontManager.Caption.lineBreakMode(.byTruncatingMiddle))
-            self.contactTitleLabel.textAlignment = .left
-            self.lockImage.image = UIImage.init(named: "contact_groups_icon")
-            self.lockImage.setupImage(scale: 0.8,
-                                      tintColor: UIColor.white,
-                                      backgroundColor: UIColor.init(hexString: color, alpha: 1))
+        let (selectedCount, totalCount, color) = contactGroup.getGroupInformation()
+        let text = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
+        self.contactTitleLabel.attributedText = text.apply(style: FontManager.Caption.lineBreakMode(.byTruncatingMiddle))
+        self.contactTitleLabel.textAlignment = .left
+        self.lockImage.image = UIImage.init(named: "ic-contact-groups-filled")
+        self.lockImage.setupImage(scale: 1,
+                                  tintColor: UIColor.white,
+                                  backgroundColor: UIColor.init(hexString: color, alpha: 1))
+        if shouldCheckMails {
             self.checkMails(in: contactGroup)
         }
     }

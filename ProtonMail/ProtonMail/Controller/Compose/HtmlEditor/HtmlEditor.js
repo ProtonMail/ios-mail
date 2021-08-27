@@ -129,8 +129,63 @@ html_editor.editor.addEventListener("drop", function(event) {
 
 html_editor.editor.addEventListener("paste", function(event) {
     var items = event.clipboardData.items;
+    html_editor.absorbContactGroupPaste(event);
     html_editor.absorbImage(event, items, window.getSelection().getRangeAt(0).commonAncestorContainer);
 });
+
+html_editor.absorbContactGroupPaste = function(event) {
+    const paste = (event.clipboardData || window.clipboardData).getData("text");
+    let parsed;
+
+    try {
+      parsed = JSON.parse(paste);
+    } catch (e) {
+      return;
+    }
+
+    if (!parsed) {
+      return;
+    }
+
+    const values = Object.values(parsed);
+
+    if (values.length !== 1) {
+      // If the pasted data is contact group, it must have 1 key
+      return;
+    }
+
+    const [data] = values;
+
+    if (!Array.isArray(data)) {
+      return;
+    }
+
+    const notStrings = data.some((item) => typeof item !== "string");
+
+    if (notStrings) {
+      // If the pasted data is contact group, the data must a string array
+      return;
+    }
+
+    const selection = window.getSelection();
+
+    if (!selection.rangeCount) {
+      return;
+    }
+
+    selection.deleteFromDocument();
+
+    const divs = data.map((item) => {
+      const div = document.createElement("div");
+      div.textContent = item;
+      return div;
+    });
+
+    const range = selection.getRangeAt(0);
+
+    divs.reverse().forEach((item) => range.insertNode(item));
+    event.preventDefault();
+}
 
 /// cathes pasted images to turn them into data blobs and add as attachments
 html_editor.absorbImage = function(event, items, target) {

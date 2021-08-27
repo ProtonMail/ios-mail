@@ -1534,6 +1534,8 @@ class LocalizedString {
     lazy var _copy_address    = NSLocalizedString("Copy address", comment: "Title")
     /// "Copy name"
     lazy var _copy_name       = NSLocalizedString("Copy name", comment: "Title")
+    lazy var _general_copy = NSLocalizedString("Copy", comment: "Title")
+    lazy var _general_cut = NSLocalizedString("Cut", comment: "Title")
     /// "Compose to"
     lazy var _compose_to      = NSLocalizedString("Compose to", comment: "Title")
     /// "Add to contacts"

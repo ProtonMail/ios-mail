@@ -42,6 +42,7 @@ protocol ContactPickerDelegate: ContactCollectionViewDelegate {
     func customFilterPredicate(searchString: String) -> NSPredicate
     
     func finishLockCheck()
+    func showContactMenu(contact: ContactPickerModelProtocol, contactPicker: ContactPicker)
 }
 
 class ContactPicker: UIView, AccessibleView {
@@ -239,7 +240,21 @@ class ContactPicker: UIView, AccessibleView {
     func reload() {
         self.contactCollectionView.reloadData()
     }
-    
+
+    func removeContact(address: String) {
+        self.contactCollectionView.removeContact(address: address)
+    }
+
+    func removeContact(contact: ContactPickerModelProtocol) {
+        self.contactCollectionView.removeContact(contact: contact)
+    }
+
+    func deselectCells() {
+        self.contactCollectionView.visibleCells
+            .compactMap { $0 as? ContactCollectionViewContactCell }
+            .filter { $0.pickerFocused == true }
+            .forEach { $0.pickerFocused = false }
+    }
     //
     //#pragma mark - Properties
     //
@@ -384,6 +399,26 @@ class ContactPicker: UIView, AccessibleView {
         let intersection = CGRect(origin: .zero, size: size).intersection(superview.frame.insetBy(dx: 0, dy: -1 * window.frame.height))
         return CGRect(origin: topLine, size: intersection.size)
     }
+
+    private func filteredContacts(by query: String) -> [ContactPickerModelProtocol] {
+        let predicate : NSPredicate!
+        
+        if let hasCustom = self.delegate?.useCustomFilter(), hasCustom == true {
+            predicate = self.delegate?.customFilterPredicate(searchString: query)
+        } else if self.allowsCompletionOfSelectedContacts {
+            predicate = NSPredicate(format: "contactTitle contains[cd] %@",
+                                    query)
+        } else {
+            predicate = NSPredicate(format: "contactTitle contains[cd] %@ && !SELF IN %@",
+                                    query,
+                                    self.contactCollectionView.selectedContacts)
+        }
+        
+        let filteredContacts = self.contacts
+            .filter { predicate.evaluate(with: $0) }
+            .compactMap{ $0.copy() as? ContactPickerModelProtocol }
+        return filteredContacts
+    }
 }
 
 extension ContactPicker : UIPopoverPresentationControllerDelegate {
@@ -485,20 +520,7 @@ extension ContactPicker : ContactCollectionViewDelegate {
         }
         
         let searchString = text.trimmingCharacters(in: NSCharacterSet.whitespaces)
-        let predicate : NSPredicate!
-        
-        if let hasCustom = self.delegate?.useCustomFilter(), hasCustom == true {
-            predicate = self.delegate?.customFilterPredicate(searchString: searchString)
-        } else if self.allowsCompletionOfSelectedContacts {
-            predicate = NSPredicate(format: "contactTitle contains[cd] %@",
-                                    searchString)
-        } else {
-            predicate = NSPredicate(format: "contactTitle contains[cd] %@ && !SELF IN %@",
-                                    searchString,
-                                    self.contactCollectionView.selectedContacts)
-        }
-        
-        let filteredContacts = self.contacts.filter { predicate.evaluate(with: $0) }.compactMap{ $0.copy() as? ContactPickerModelProtocol }
+        let filteredContacts = self.filteredContacts(by: searchString)
         if self.hideWhenNoResult && filteredContacts.isEmpty {
             self.hideSearchTableView()
         } else {
@@ -531,5 +553,21 @@ extension ContactPicker : ContactCollectionViewDelegate {
     
     internal func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
         self.delegate?.contactPicker(picker: self, pasted: text, needFocus: focus)
+    }
+
+    func collectionView(at: ContactCollectionView, pasted groupName: String, addresses: [String]) -> Bool {
+        let contacts = self.filteredContacts(by: groupName)
+        guard contacts.count == 1,
+              let group = contacts.first as? ContactGroupVO else { return false }
+        group.selectAllEmailFromGroup()
+        let selected = group.getSelectedEmailData()
+            .filter { addresses.contains($0.email) }
+        group.overwriteSelectedEmails(with: selected)
+        self.addToSelectedContacts(model: group, needFocus: false)
+        return true
+    }
+
+    func showContactMenu(contact: ContactPickerModelProtocol) {
+        self.delegate?.showContactMenu(contact: contact, contactPicker: self)
     }
 }
