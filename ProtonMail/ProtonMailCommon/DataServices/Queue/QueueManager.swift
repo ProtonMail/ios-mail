@@ -29,6 +29,12 @@ protocol QueueHandler {
 
 /// This manager is to handle the queue opeartions of all users.
 final class QueueManager: Service {
+
+    enum QueueStatus {
+        case idle
+        case running
+    }
+
     typealias ReadBlock = (() -> Void)
     typealias TaskID = UUID
     typealias UserID = String
@@ -260,7 +266,7 @@ extension QueueManager {
 
     /// Do notify if all of queues are empty
     /// - Returns: Any tasks in the queue?
-    private func checkQueueStatus() -> Bool {
+    func checkQueueStatus() -> QueueStatus {
         if self.messageQueue.count <= 0 &&
             self.miscQueue.count <= 0 &&
             self.readQueue.count <= 0 {
@@ -270,9 +276,9 @@ extension QueueManager {
             // To end the background task
             self.exceedNotify?()
             self.exceedNotify = nil
-            return false
+            return .idle
         }
-        return true
+        return .running
     }
 
     /// Check the execute time limitation
@@ -312,7 +318,7 @@ extension QueueManager {
 
     private func dequeueIfNeeded() {
         guard internetStatusProvider.currentStatus != .NotReachable,
-              self.checkQueueStatus(),
+              self.checkQueueStatus() == .running,
               self.allowedToDequeue() else {return}
         if !self.hasDequeued {
             self.fetchMessageDataIfNeeded()

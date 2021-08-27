@@ -104,7 +104,8 @@ final class EventsService: Service, EventsFetching {
     }
     
     func call() {
-        if case .running = status {
+        if case .running = status,
+           sharedServices.get(by: QueueManager.self).checkQueueStatus() == .idle {
             subscribers.forEach({ $0?() })
         }
     }
