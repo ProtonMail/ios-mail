@@ -443,9 +443,16 @@ extension MenuCoordinator {
     
     private func navigateToCreateFolder(type: PMLabelType) {
         guard let user = self.vm.currentUser else { return }
-        // The add button is shown when the labels data is empty
-        // So just send empty array is fine
-        let vm = LabelEditViewModel(user: user, label: nil, type: type, labels: [])
+        var folders = self.vm.folderItems
+        if folders.count == 1,
+           let first = folders.first,
+           first.location == .addFolder {
+            folders = []
+        }
+        let vm = LabelEditViewModel(user: user,
+                                    label: nil,
+                                    type: type,
+                                    labels: folders)
         let vc = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: self.services,
                                                viewController: vc,

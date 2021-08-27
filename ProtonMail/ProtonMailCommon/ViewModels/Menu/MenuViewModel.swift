@@ -56,7 +56,7 @@ final class MenuViewModel: NSObject {
     private var rawData = [MenuLabel]()
     let sections: [MenuSection]
     private let inboxItems: [MenuLabel]
-    private var folderItems: [MenuLabel] = []
+    private(set) var folderItems: [MenuLabel] = []
     private var labelItems: [MenuLabel] = []
     private var moreItems: [MenuLabel]
     /// When BE has issue, BE will disable subcription functionality

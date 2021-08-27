@@ -134,6 +134,7 @@ extension LabelParentSelectViewController: UITableViewDelegate, UITableViewDataS
             cell.update(textColor: UIColorManager.TextDisabled)
             cell.update(iconColor: self.viewModel.getFolderColor(label: label), alpha: 0.4)
         }
+        cell.update(badge: 0)
         let isParent = label.location.labelID == self.viewModel.parentID
         cell.accessoryType = isParent ? .checkmark: .none
         cell.addSeparator(padding: 0)
