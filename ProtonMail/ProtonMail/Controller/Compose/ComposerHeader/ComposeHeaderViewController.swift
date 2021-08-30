@@ -213,6 +213,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         }
 
         self.showCcBccButton.tintColor = UIColorManager.IconWeak
+        self.showCcBccButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 7)
         
         self.configureContactPickerTemplate()
         

@@ -65,6 +65,11 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
                     DocumentAttachmentProvider(for: self)]
         #endif
     }()
+    private lazy var separatorView: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = UIColorManager.Shade20
+        return view
+    }()
 
     var isUploadingAttachments: Bool = false {
         didSet {
@@ -95,6 +100,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.configureNavigationBar()
         self.setupChildViewModel()
         self.setupToolbar()
+        self.setupTopSeparatorView()
         self.emptyBackButtonTitleForNextView()
         let childVM = self.viewModel.childViewModel
         if childVM.shareOverLimitationAttachment {
@@ -159,6 +165,11 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         super.scrollViewDidScroll(scrollView)
 
+        if let headerCell = tableView.cellForRow(at: .init(row: 0, section: 0)) {
+            separatorView.isHidden = tableView.visibleCells.contains(headerCell)
+        } else {
+            separatorView.isHidden = false
+        }
         guard let cell = tableView.cellForRow(at: .init(row: 2, section: 0)) else { return }
 
         let areAttachmentsVisibleOnScreen = cell.frame.minY < (scrollView.contentOffset.y + scrollView.frame.height)
@@ -253,17 +264,17 @@ extension ComposeContainerViewController {
             return
         }
         let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
-        let backgroundColor = isEnabled ? UIColorManager.InteractionStrong : UIColorManager.InteractionWeakDisabled
-        let tintColor = isEnabled ? UIColorManager.IconInverted : UIColorManager.IconDisabled
+        let tintColor = isEnabled ? UIColorManager.IconNorm : UIColorManager.IconDisabled
         self.sendButton = icon.toUIBarButtonItem(
             target: self,
             action: isEnabled ? #selector(sendAction) : nil,
             style: .plain,
             tintColor: tintColor,
             squareSize: 21.74,
-            backgroundColor: backgroundColor,
+            backgroundColor: UIColorManager.BackgroundNorm,
             backgroundSquareSize: 40,
-            isRound: true
+            isRound: true,
+            imageInsets: UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         )
         self.navigationItem.rightBarButtonItem = self.sendButton
         self.sendButton.accessibilityLabel = LocalString._general_send_action
@@ -291,6 +302,17 @@ extension ComposeContainerViewController {
         self.toolbarBottom = bar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -1*UIDevice.safeGuide.bottom)
         self.toolbarBottom.isActive = true
         self.toolbar = bar
+    }
+
+    private func setupTopSeparatorView() {
+        view.addSubview(separatorView)
+        [
+            separatorView.topAnchor.constraint(equalTo: view.topAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: 2)
+        ].activate()
+        separatorView.isHidden = true
     }
     
     private func startAutoSync() {
