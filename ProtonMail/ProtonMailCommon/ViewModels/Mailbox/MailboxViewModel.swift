@@ -690,29 +690,15 @@ class MailboxViewModel: StorageLimit {
         if self.labelID == Message.Location.trash.rawValue {
             return (.nothing, nil, false)
         } else {
-            let localConvos = conversationService.fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs),
-                                                                          in: coreDataService.mainContext)
-            let allTrashed = localConvos.allSatisfy { convo in
-                if let labels = convo.labels as? Set<ContextLabel>,
-                   labels.contains(where: { $0.labelID == Message.Location.trash.rawValue }) {
-                    return true
-                } else {
-                    return false
+            conversationService.move(conversationIDs: conversationIDs,
+                                     from: self.labelID,
+                                     to: Message.Location.trash.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
-            if allTrashed {
-                return (.nothing, nil, false)
-            } else {
-                conversationService.move(conversationIDs: conversationIDs,
-                                         from: self.labelID,
-                                         to: Message.Location.trash.rawValue) { [weak self] result in
-                    guard let self = self else { return }
-                    if let _ = try? result.get() {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
-                }
-                return (.nothing, nil, true)
-            }
+            return (.nothing, nil, true)
         }
     }
 
