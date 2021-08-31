@@ -30,6 +30,20 @@ extension LabelUpdate {
         static let userID = "userID"
         static let labelID = "labelID"
     }
+
+    class func fetchLastUpdates(by labelIDs: [String], userID: String, context: NSManagedObjectContext) -> [LabelUpdate] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
+        let predicate = NSPredicate(format: "%K == %@ AND %K IN %@", LabelUpdate.Attributes.userID, userID, LabelUpdate.Attributes.labelID, labelIDs)
+        fetchRequest.predicate = predicate
+
+        do {
+            let results = try context.fetch(fetchRequest)
+            return results as? [LabelUpdate] ?? []
+        } catch let ex as NSError {
+            PMLog.D("error: \(ex)")
+        }
+        return []
+    }
     
     class func lastUpdate(by labelID: String, userID: String,  inManagedObjectContext context: NSManagedObjectContext) -> LabelUpdate? {
         return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.labelID : labelID, Attributes.userID : userID]) as? LabelUpdate

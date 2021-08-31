@@ -117,4 +117,12 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     func removeUpdateTimeExceptUnread(by userID: String, type: ViewMode) {
         
     }
+
+    func lastUpdates(by labelIDs: [String], userID: String, context: NSManagedObjectContext, type: ViewMode) -> [LabelCount] {
+        return []
+    }
+
+    func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode) -> Promise<[String: Int]> {
+        return Promise<[String: Int]>.value([:])
+    }
 }

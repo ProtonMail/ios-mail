@@ -37,6 +37,7 @@ class ConversationViewModel {
     private let eventsService: EventsFetching
     private let contactService: ContactDataService
     private let coreDataService: CoreDataService
+    private let sharedReplacingEmails: [Email]
     private weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
@@ -45,6 +46,9 @@ class ConversationViewModel {
     /// Used to decide if there is any new messages coming
     private var recordNumOfMessages = 0
     private(set) var isExpandedAtLaunch = false
+
+    /// Used to find out if there is any changes of the items of action types
+    var actionTypeSnapshot: [MailboxViewModel.ActionTypes] = []
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -73,6 +77,7 @@ class ConversationViewModel {
         self.user = user
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
         self.openFromNotification = openFromNotification
+        self.sharedReplacingEmails = contactService.allAccountEmails()
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
         recordNumOfMessages = conversation.numMessages.intValue
@@ -103,7 +108,10 @@ class ConversationViewModel {
     }
 
     func messageType(with message: Message) -> ConversationViewItemType {
-        let viewModel = ConversationMessageViewModel(labelId: labelId, message: message, user: user)
+        let viewModel = ConversationMessageViewModel(labelId: labelId,
+                                                     message: message,
+                                                     user: user,
+                                                     replacingEmails: sharedReplacingEmails)
         return .message(viewModel: viewModel)
     }
 
@@ -431,11 +439,15 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
             guard status != .dash else { continue } // Ignore the option in dash
             if selectedLabelAsLabels
                 .contains(where: { $0.labelID == label.location.labelID }) {
-                conversationService.label(conversationIDs: conversations.map(\.conversationID),
+                let conversationIDsToApply = findConversationIDsToApplyLabels(conversations: conversations,
+                                                                              labelID: label.location.labelID)
+                conversationService.label(conversationIDs: conversationIDsToApply,
                                           as: label.location.labelID,
                                           completion: fetchEvents)
             } else {
-                conversationService.unlabel(conversationIDs: conversations.map(\.conversationID),
+                let conversationIDsToRemove = findConversationIDSToRemoveLables(conversations: conversations,
+                                                                                labelID: label.location.labelID)
+                conversationService.unlabel(conversationIDs: conversationIDsToRemove,
                                             as: label.location.labelID,
                                             completion: fetchEvents)
             }
@@ -451,6 +463,42 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                                          completion: fetchEvents)
             }
         }
+    }
+
+    private func findConversationIDsToApplyLabels(conversations: [Conversation], labelID: String) -> [String] {
+        var conversationIDsToApplyLabel: [String] = []
+        conversations.forEach { conversaion in
+            if let context = conversaion.managedObjectContext {
+                context.performAndWait {
+                    let messages = Message.messagesForConversationID(conversaion.conversationID,
+                                                                     inManagedObjectContext: context)
+                    let needToUpdate = messages?
+                        .allSatisfy({ $0.contains(label: labelID) }) == false
+                    if needToUpdate {
+                        conversationIDsToApplyLabel.append(conversaion.conversationID)
+                    }
+                }
+            }
+        }
+        return conversationIDsToApplyLabel
+    }
+
+    private func findConversationIDSToRemoveLables(conversations: [Conversation], labelID: String) -> [String] {
+        var conversationIDsToRemove: [String] = []
+        conversations.forEach { conversaion in
+            if let context = conversaion.managedObjectContext {
+                context.performAndWait {
+                    let messages = Message.messagesForConversationID(conversaion.conversationID,
+                                                                     inManagedObjectContext: context)
+                    let needToUpdate = messages?
+                        .allSatisfy({ !$0.contains(label: labelID) }) == false
+                    if needToUpdate {
+                        conversationIDsToRemove.append(conversaion.conversationID)
+                    }
+                }
+            }
+        }
+        return conversationIDsToRemove
     }
 
     private func expandSpecificMessage(dataModels: inout [ConversationViewItemType]) -> IndexPath? {

@@ -307,6 +307,19 @@ class LabelsDataService: Service, HasLocalStorage {
         }
     }
 
+    func getUnreadCounts(by labelIDs: [String], userID: String? = nil) -> Promise<[String: Int]> {
+        guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
+            return Promise<[String: Int]>.value([:])
+        }
+
+        switch viewMode {
+        case .conversation:
+            return lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: userID ?? self.userID, type: .conversation)
+        case .singleMessage:
+            return lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: userID ?? self.userID, type: .singleMessage)
+        }
+    }
+
     func createNewLabel(name: String, color: String, type: PMLabelType = .label, parentID: String? = nil, notify: Bool = true, objectID: String? = nil, completion: ((String?, NSError?) -> Void)?) {
         let route = CreateLabelRequest(name: name, color: color, type: type, parentID: parentID, notify: notify, expanded: true)
         self.apiService.exec(route: route) { (task, response: CreateLabelRequestResponse) in

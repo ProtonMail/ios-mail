@@ -460,19 +460,16 @@ extension MenuViewModel {
     private func getUnreadNumbers() -> Promise<Void> {
         return Promise<Void> { seal in
             let tmp = self.inboxItems + self.rawData
-            let unreads = tmp.compactMap {self.labelDataService?.unreadCount(by: $0.location.labelID, userID: nil)}
-            when(resolved: unreads).done { (unreads) in
-                for (idx, unread) in unreads.enumerated() {
-                    switch unread {
-                    case .fulfilled(let num):
-                        tmp[idx].unread = num
-                    default: continue
-                    }
+            let labels = tmp.map({ $0.location.labelID })
+
+            self.labelDataService?.getUnreadCounts(by: labels, userID: nil).done({ labelUnreadDict in
+                for item in tmp {
+                    item.unread = labelUnreadDict[item.location.labelID] ?? 0
                 }
-                let unread = tmp.first(where: { $0.location == .inbox })?.unread ?? 0
-                UIApplication.setBadge(badge: unread)
+                let unreadOfInbox = labelUnreadDict[Message.Location.inbox.rawValue] ?? 0
+                UIApplication.setBadge(badge: unreadOfInbox)
                 seal.fulfill_()
-            }
+            }).cauterize()
         }
     }
     

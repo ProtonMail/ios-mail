@@ -48,6 +48,8 @@ protocol LastUpdatedStoreProtocol {
     func updateUnreadCount(by labelID : String, userID: String, count: Int, type: ViewMode, shouldSave: Bool)
     func removeUpdateTime(by userID: String, type: ViewMode)
     func removeUpdateTimeExceptUnread(by userID: String, type: ViewMode)
+    func lastUpdates(by labelIDs: [String], userID: String, context: NSManagedObjectContext, type: ViewMode) -> [LabelCount]
+    func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode) -> Promise<[String: Int]>
 }
 
 final class LastUpdatedStore : SharedCacheBase, HasLocalStorage, LastUpdatedStoreProtocol, Service {
@@ -221,6 +223,15 @@ extension LastUpdatedStore {
 
 // MARK: - Conversation/Message Counts
 extension LastUpdatedStore {
+
+    func lastUpdates(by labelIDs: [String], userID: String, context: NSManagedObjectContext, type: ViewMode) -> [LabelCount] {
+        switch type {
+        case .singleMessage:
+            return LabelUpdate.fetchLastUpdates(by: labelIDs, userID: userID, context: context)
+        case .conversation:
+            return ConversationCount.fetchConversationCounts(by: labelIDs, userID: userID, context: context)
+        }
+    }
     
     func lastUpdate(by labelID : String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount? {
         //TODO:: fix me fetch everytime is expensive
@@ -251,15 +262,26 @@ extension LastUpdatedStore {
     func unreadCount(by labelID : String, userID: String, type: ViewMode) -> Promise<Int> {
         return Promise { seal in
             var unreadCount: Int32?
-            self.coreDataService.enqueue(context: context) { (context) in
-                let update = self.lastUpdate(by: labelID, userID: userID, context: context, type: type)
+            context.perform {
+                let update = self.lastUpdate(by: labelID, userID: userID, context: self.context, type: type)
                 unreadCount = update?.unread
-                
+
                 guard let result = unreadCount else {
                     seal.fulfill(0)
                     return
                 }
                 seal.fulfill(Int(result))
+            }
+        }
+    }
+
+    func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode) -> Promise<[String: Int]> {
+        return Promise { seal in
+            context.perform {
+                var results: [String: Int] = [:]
+                let labelCounts = self.lastUpdates(by: labelID, userID: userID, context: self.context, type: type)
+                labelCounts.forEach({ results[$0.labelID] = Int($0.unread) })
+                seal.fulfill(results)
             }
         }
     }
