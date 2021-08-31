@@ -58,7 +58,8 @@ class ConversationLabelResponse: Response {
     override func ParseResponse(_ response: [String: Any]) -> Bool {
         responseDict = response
 
-        guard let data = try? JSONSerialization.data(withJSONObject: response["Responses"] as Any, options: .prettyPrinted) else {
+        guard let jsonObject = response["Responses"],
+              let data = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
             return false
         }
 
