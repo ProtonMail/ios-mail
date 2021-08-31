@@ -113,11 +113,11 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        height(for: indexPath)
+        height(for: indexPath, estimated: false)
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        height(for: indexPath)
+        height(for: indexPath, estimated: true)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -239,7 +239,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
 
-    private func countHeightFor(viewType: ConversationViewItemType) -> CGFloat {
+    private func countHeightFor(viewType: ConversationViewItemType, estimated: Bool) -> CGFloat {
         guard let viewModel = viewType.messageViewModel else {
             return UITableView.automaticDimension
         }
@@ -256,14 +256,15 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         guard let storedHeightInfo = storedSize[viewModel.message.messageID] else {
             return UITableView.automaticDimension
         }
-        let isExpanded = viewModel.state.expandedViewModel?.messageContent.isExpanded
-        if storedHeightInfo.isHeaderExpanded == isExpanded {
+
+        if estimated {
             return storedHeightInfo.height
         }
-        return UITableView.automaticDimension
+
+        return storedHeightInfo.loaded ? storedHeightInfo.height : UITableView.automaticDimension
     }
 
-    private func height(for indexPath: IndexPath) -> CGFloat {
+    private func height(for indexPath: IndexPath, estimated: Bool) -> CGFloat {
         switch indexPath.section {
         case 0:
             return UITableView.automaticDimension
@@ -271,7 +272,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             guard let viewType = self.viewModel.messagesDataSource[safe: indexPath.row] else {
                 return UITableView.automaticDimension
             }
-            return countHeightFor(viewType: viewType)
+            return countHeightFor(viewType: viewType, estimated: estimated)
         default:
             fatalError("Not supported section")
         }
@@ -342,19 +343,48 @@ private extension ConversationViewController {
             singleMessageContentViewController: singleMessageContentViewController
         )
 
-        viewModel.recalculateCellHeight = { [weak self] in
-            let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-            let heightInfo = HeightStoreInfo(height: height, isHeaderExpanded: viewModel.messageContent.isExpanded)
-            let storedHeightInfo = self?.storedSize[viewModel.message.messageID]
-            guard heightInfo != storedHeightInfo else { return }
-            self?.storedSize[viewModel.message.messageID] = heightInfo
-            UIView.setAnimationsEnabled(false)
-            self?.customView.tableView.beginUpdates()
-            self?.customView.tableView.endUpdates()
-            UIView.setAnimationsEnabled(true)
+        viewModel.recalculateCellHeight = { [weak self] isLoaded in
+            self?.recalculateHeight(
+                for: cell,
+                messageId: viewModel.message.messageID,
+                isHeaderExpanded: viewModel.messageContent.isExpanded,
+                isLoaded: isLoaded
+            )
+        }
+
+        viewModel.resetLoadedHeight = { [weak self] in
+            self?.storedSize[viewModel.message.messageID] = nil
         }
 
         return viewController
+    }
+
+    private func recalculateHeight(
+        for cell: ConversationExpandedMessageCell,
+        messageId: String,
+        isHeaderExpanded: Bool,
+        isLoaded: Bool
+    ) {
+        let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        let newHeightInfo = HeightStoreInfo(height: height, isHeaderExpanded: isHeaderExpanded, loaded: isLoaded)
+        let storedHeightInfo = storedSize[messageId]
+
+        let shouldChangeLoadedHeight = storedHeightInfo?.loaded == true && newHeightInfo.loaded
+        let isHeightForLoadedPageStored = storedHeightInfo?.loaded == true
+        let isStoredHeightInfoEmpty = storedHeightInfo == nil
+        let headerStateHasChanged = newHeightInfo.isHeaderExpanded != storedHeightInfo?.isHeaderExpanded
+
+        if shouldChangeLoadedHeight ||
+            !isHeightForLoadedPageStored ||
+            isStoredHeightInfoEmpty ||
+            headerStateHasChanged {
+            storedSize[messageId] = newHeightInfo
+        }
+
+        UIView.setAnimationsEnabled(false)
+        customView.tableView.beginUpdates()
+        customView.tableView.endUpdates()
+        UIView.setAnimationsEnabled(true)
     }
 
     private func checkNavigationTitle() {
@@ -408,9 +438,10 @@ private extension Array where Element == ConversationViewItemType {
 
 }
 
-private struct HeightStoreInfo: Hashable {
+private struct HeightStoreInfo: Hashable, Equatable {
     let height: CGFloat
     let isHeaderExpanded: Bool
+    let loaded: Bool
 }
 
 // MARK: - Action Bar

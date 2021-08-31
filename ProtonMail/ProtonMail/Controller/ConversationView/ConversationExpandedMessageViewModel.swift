@@ -1,13 +1,17 @@
 class ConversationExpandedMessageViewModel {
 
-    var recalculateCellHeight: (() -> Void)? {
-        didSet { messageContent.recalcualteCellHeight = { [weak self] in self?.recalculateCellHeight?() } }
+    var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)? {
+        didSet { messageContent.recalculateCellHeight = { [weak self] in self?.recalculateCellHeight?($0) } }
+    }
+
+    var resetLoadedHeight: (() -> Void)? {
+        didSet { messageContent.resetLoadedHeight = { [weak self] in self?.resetLoadedHeight?() } }
     }
 
     var message: Message {
         didSet {
             messageContent.messageHasChanged(message: message)
-            recalculateCellHeight?()
+            recalculateCellHeight?(false)
         }
     }
 

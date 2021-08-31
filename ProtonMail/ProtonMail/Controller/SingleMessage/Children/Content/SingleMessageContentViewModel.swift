@@ -36,10 +36,16 @@ class SingleMessageContentViewModel {
         didSet { isExpanded ? createExpandedHeaderViewModel() : createNonExpandedHeaderViewModel() }
     }
 
-    var recalcualteCellHeight: (() -> Void)? {
+    var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)? {
         didSet {
-            messageBodyViewModel.recalculateCellHeight = { [weak self] in self?.recalcualteCellHeight?() }
-            bannerViewModel.recalculateCellHeight = { [weak self] in self?.recalcualteCellHeight?() }
+            messageBodyViewModel.recalculateCellHeight = { [weak self] in self?.recalculateCellHeight?($0) }
+            bannerViewModel.recalculateCellHeight = { [weak self] in self?.recalculateCellHeight?($0) }
+        }
+    }
+
+    var resetLoadedHeight: (() -> Void)? {
+        didSet {
+            bannerViewModel.resetLoadedHeight = { [weak self] in self?.resetLoadedHeight?() }
         }
     }
 
@@ -90,7 +96,7 @@ class SingleMessageContentViewModel {
             self.isDetailedDownloaded = true
             self.messageBodyViewModel.messageHasChanged(message: self.message)
         }
-        recalcualteCellHeight?()
+        recalculateCellHeight?(false)
     }
 
     func viewDidLoad() {

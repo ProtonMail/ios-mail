@@ -152,7 +152,9 @@ class SingleMessageContentViewController: UIViewController {
         oldBottomConstraint?.isActive = !(newController is ExpandedHeaderViewController)
         bottomConstraint.isActive = newController is ExpandedHeaderViewController
 
-        viewModel.recalcualteCellHeight?()
+        viewModel.recalculateCellHeight?(false)
+
+        UIView.setAnimationsEnabled(true)
 
         UIView.animate(withDuration: 0.25) {
             newController.view.alpha = 1
@@ -162,7 +164,7 @@ class SingleMessageContentViewController: UIViewController {
             oldController.removeFromParent()
             newController.didMove(toParent: self)
             bottomConstraint.isActive = true
-            self?.viewModel.recalcualteCellHeight?()
+            self?.viewModel.recalculateCellHeight?(false)
         }
     }
 
