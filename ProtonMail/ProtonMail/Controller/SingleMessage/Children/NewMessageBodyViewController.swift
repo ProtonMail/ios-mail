@@ -88,6 +88,8 @@ class NewMessageBodyViewController: UIViewController {
         nil
     }
 
+    private(set) var placeholder: Bool = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -102,8 +104,11 @@ class NewMessageBodyViewController: UIViewController {
         } else if viewModel.internetStatusProvider.currentStatus == .NotReachable {
             prepareReloadView()
         } else {
+            placeholder = true
             webView.loadHTMLString(self.viewModel.placeholderContent, baseURL: URL(string: "about:blank"))
         }
+
+        setupContentSizeObservation()
     }
 
     func prepareReloadView() {
@@ -179,6 +184,26 @@ class NewMessageBodyViewController: UIViewController {
         self.scrollDecelerationOverlay?.blow()
     }
 
+    var updatesTimer: Timer? {
+        didSet { oldValue?.invalidate() }
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        guard placeholder == false else { return }
+        if webView.isLoading {
+            updatesTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { [weak self] _ in
+                self?.updateViewHeight(to: webView.scrollView.contentSize.height)
+                self?.viewModel.recalculateCellHeight?(false)
+            })
+        } else {
+            updatesTimer?.invalidate()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+                self?.updateViewHeight(to: webView.scrollView.contentSize.height)
+                self?.viewModel.recalculateCellHeight?(true)
+            }
+        }
+    }
+
     @objc
     private func pan(sender gesture: UIPanGestureRecognizer) {
         switch gesture.state {
@@ -237,8 +262,6 @@ class NewMessageBodyViewController: UIViewController {
                       let old = change.oldValue?.height,
                       new - old > 10.0 else { return }
 
-                self?.updateViewHeight(to: scrollView.contentSize.height)
-
                 // Update the original height here for the web page that has image to be downloaded.
                 self?.originalHeight = webView.scrollView.contentSize.height
             }
@@ -252,7 +275,6 @@ class NewMessageBodyViewController: UIViewController {
             // skip first call because it will inherit irrelevant contentSize
 
             guard webView.estimatedProgress > 0.1 else { return }
-            self?.updateViewHeight(to: webView.scrollView.contentSize.height)
 
             // Work around for webview tap too sensitive. Save the default scale value
             self?.defaultScale = round(webView.scrollView.zoomScale * 1_000) / 1_000.0
@@ -283,10 +305,12 @@ extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
             if !customView.subviews.contains(webView) {
                 customView.embed(webView)
             }
+            placeholder = false
             self.loader.load(contents: contents, in: webView)
         } else {
             self.prepareWebView(with: self.loader)
             if let webView = self.webView {
+                placeholder = false
                 self.loader.load(contents: contents, in: webView)
             }
         }
@@ -313,15 +337,6 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
         return viewModel.userManager
     }
 
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        guard !webView.isLoading else { return }
-        webView.evaluateJavaScript("document.readyState") { [weak self] _, _ in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self?.viewModel.recalculateCellHeight?()
-            }
-        }
-    }
-
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -343,7 +358,6 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
             }
             decisionHandler(.cancel)
         default:
-            setupContentSizeObservation()
             decisionHandler(.allow)
         }
     }

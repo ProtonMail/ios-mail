@@ -39,7 +39,8 @@ class BannerViewModel {
         return message.hasSentReceipt
     }
 
-    var recalculateCellHeight: (() -> Void)?
+    var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)?
+    var resetLoadedHeight: (() -> Void)?
     var updateExpirationTime: ((Int) -> Void)?
     var messageExpired: (() -> Void)?
     var reloadBanners: (() -> Void)?

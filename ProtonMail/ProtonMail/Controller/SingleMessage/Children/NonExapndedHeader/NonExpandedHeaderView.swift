@@ -105,6 +105,8 @@ class NonExpandedHeaderView: UIView {
             lockContainer.widthAnchor.constraint(equalToConstant: 24)
         ].activate()
 
+        [recipientLabel.heightAnchor.constraint(equalToConstant: 20)].activate()
+
         senderLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
         timeLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)

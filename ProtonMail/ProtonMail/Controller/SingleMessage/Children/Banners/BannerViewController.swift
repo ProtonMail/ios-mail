@@ -30,18 +30,6 @@ protocol BannerViewControllerDelegate: AnyObject {
 
 class BannerViewController: UIViewController {
 
-    enum BannerType: Int {
-        case remoteContent
-        case expiration
-        case spam
-        case error
-        case unsubscribe
-        case autoReply
-        case sendReceipt
-
-        var order: Int { rawValue }
-    }
-
     let viewModel: BannerViewModel
     weak var delegate: BannerViewControllerDelegate?
 
@@ -76,9 +64,7 @@ class BannerViewController: UIViewController {
         }
     }
 
-    required init?(coder: NSCoder) {
-        nil
-    }
+    required init?(coder: NSCoder) { nil }
 
     override func loadView() {
         view = customView
@@ -89,6 +75,8 @@ class BannerViewController: UIViewController {
 
         setupContainerView()
 
+        let bannersBeforeUpdate = displayedBanners
+
         if viewModel.expirationTime != .distantFuture {
             self.showExpirationBanner()
         }
@@ -97,6 +85,9 @@ class BannerViewController: UIViewController {
         handleAutoReplyBanner()
         setUpMessageObservation()
         handleReceiptBanner()
+
+        guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
+        viewModel.recalculateCellHeight?(false)
     }
 
     func hideBanner(type: BannerType) {
@@ -104,10 +95,11 @@ class BannerViewController: UIViewController {
             view.removeFromSuperview()
             displayedBanners.removeValue(forKey: type)
         }
-        viewModel.recalculateCellHeight?()
+        viewModel.recalculateCellHeight?(false)
     }
 
     func showContentBanner(remoteContent: Bool, embeddedImage: Bool) {
+        let bannersBeforeUpdate = displayedBanners
         if displayedBanners[.remoteContent]?.subviews.first as? RemoteAndEmbeddedBannerView != nil {
             return
         } else if remoteContent && embeddedImage {
@@ -117,6 +109,9 @@ class BannerViewController: UIViewController {
         } else if embeddedImage {
             showEmbeddedImageBanner()
         }
+
+        guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
+        viewModel.recalculateCellHeight?(false)
     }
 
     func showErrorBanner(error: NSError) {
@@ -153,8 +148,7 @@ class BannerViewController: UIViewController {
 
     private func handleReceiptBanner() {
         let isPresented = displayedBanners.contains(where: { $0.key == .sendReceipt })
-        guard !isPresented,
-              viewModel.shouldShowReceiptBanner else { return }
+        guard !isPresented, viewModel.shouldShowReceiptBanner else { return }
         showReceiptBanner()
     }
 
@@ -236,9 +230,7 @@ class BannerViewController: UIViewController {
         if viewModel.hasSentReceipt {
             banner.hasSentReceipt()
         } else {
-            banner.sendButton.addTarget(self,
-                                        action: #selector(self.sendReceipt),
-                                        for: .touchUpInside)
+            banner.sendButton.addTarget(self, action: #selector(self.sendReceipt), for: .touchUpInside)
         }
         addBannerView(type: .sendReceipt, shouldAddContainer: true, bannerView: banner)
     }
@@ -286,6 +278,7 @@ class BannerViewController: UIViewController {
         if remoteAndEmbeddedContentBanner.areBothButtonDisabled {
             self.hideBanner(type: .remoteContent)
         }
+        viewModel.resetLoadedHeight?()
     }
 
     @objc
@@ -295,18 +288,21 @@ class BannerViewController: UIViewController {
         if remoteAndEmbeddedContentBanner.areBothButtonDisabled {
             self.hideBanner(type: .remoteContent)
         }
+        viewModel.resetLoadedHeight?()
     }
 
     @objc
     private func loadRemoteContent() {
         delegate?.loadRemoteContent()
         self.hideBanner(type: .remoteContent)
+        viewModel.resetLoadedHeight?()
     }
 
     @objc
     private func loadEmbeddedImages() {
         delegate?.loadEmbeddedImage()
         self.hideBanner(type: .remoteContent)
+        viewModel.resetLoadedHeight?()
     }
 
     @objc
@@ -324,4 +320,12 @@ class BannerViewController: UIViewController {
         viewModel.sendReceipt()
         self.receiptBanner.hasSentReceipt()
     }
+}
+
+private extension Dictionary where Key == BannerType, Value == UIView {
+
+    var sortedBanners: [Key] {
+        keys.sorted(by: { $0.order > $1.order })
+    }
+
 }
