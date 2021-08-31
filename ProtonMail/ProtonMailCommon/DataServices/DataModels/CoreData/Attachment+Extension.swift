@@ -124,7 +124,8 @@ extension Attachment {
                let out = try fileData.signAttachment(byPrivKey: key.privateKey, passphrase: pwd) {
                 signature = out
             } else if let localURL = localURL,
-                      let out = try Data(contentsOf: localURL).signAttachment(byPrivKey: key.privateKey, passphrase: pwd) {
+                      let fileData = NSMutableData(contentsOf: localURL),
+                      let out = try Crypto().signDetached(plainData: fileData, privateKey: key.privateKey, passphrase: pwd) {
                 signature = out
             }
             guard let signature = signature else {

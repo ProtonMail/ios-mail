@@ -29,7 +29,14 @@ class PhotoAttachmentProvider: AnyImagePickerDelegate {
         return PMActionSheetPlainItem(title: LocalString._from_your_photo_library, icon: UIImage(named: "ic-photo")) { (_) -> (Void) in
             let picker = PMImagePickerController()
             picker.setup(withDelegate: self)
+
+            #if APP_EXTENSION
+            self.checkPhotoPermission { _ in
+                self.controller?.present(picker, animated: true, completion: nil)
+            }
+            #else
             self.controller?.present(picker, animated: true, completion: nil)
+            #endif
         }
     }
 }

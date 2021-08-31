@@ -85,6 +85,10 @@ class ComposeContainerViewModel: TableContainerViewModel {
 }
 
 extension ComposeContainerViewModel: FileImporter, AttachmentController {
+    func error(title: String, description: String) {
+        self.showErrorBanner(description)
+    }
+
     func present(_ controller: UIViewController, animated: Bool, completion: (() -> Void)?) {
         fatalError()
     }

@@ -36,6 +36,28 @@ class AnyImagePickerDelegate: NSObject, AttachmentProvider, ImageProcessor {
     var actionSheetItem: PMActionSheetItem {
         fatalError() // override
     }
+
+    func checkPhotoPermission(_ handler: @escaping (_ granted: Bool) -> Void) {
+        func hasPhotoPermission() -> Bool {
+            return PHPhotoLibrary.authorizationStatus() == .authorized
+        }
+
+        func needsToRequestPhotoPermission() -> Bool {
+            return PHPhotoLibrary.authorizationStatus() == .notDetermined
+        }
+
+        if hasPhotoPermission() {
+            handler(true)
+        } else if needsToRequestPhotoPermission() {
+            PHPhotoLibrary.requestAuthorization({ status in
+                DispatchQueue.main.async(execute: { () in
+                    hasPhotoPermission() ? handler(true) : handler(false)
+                })
+            })
+        } else {
+            handler(false)
+        }
+    }
 }
 
 extension AnyImagePickerDelegate: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -46,10 +68,20 @@ extension AnyImagePickerDelegate: UIImagePickerControllerDelegate, UINavigationC
         if let asset = info[UIImagePickerController.InfoKey.phAsset.rawValue] as? PHAsset {
             self.process(asset: asset)
             picker.dismiss(animated: true, completion: nil)
-        } else if let originalImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage {
+        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage {
             self.process(original: originalImage).done { (_) in
                 picker.dismiss(animated: true, completion: nil)
             }.cauterize()
+        } else if let referenceUrl = info[UIImagePickerController.InfoKey.referenceURL.rawValue] as? URL {
+            // If the info dict does not contain the PHAsset, that means we do not have access to read the file.
+            let result = PHAsset.fetchAssets(withALAssetURLs: [referenceUrl], options: nil)
+            if let asset = result.firstObject {
+                self.process(asset: asset)
+            } else {
+                self.controller?.error(title: LocalString._no_photo_library_permission_title,
+                                       description: LocalString._no_photo_library_permission_content)
+            }
+            picker.dismiss(animated: true, completion: nil)
         } else {
             self.controller?.error(LocalString._cant_copy_the_file)
             picker.dismiss(animated: true, completion: nil)
@@ -66,7 +98,3 @@ fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [U
 	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }
 
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
-	return input.rawValue
-}
