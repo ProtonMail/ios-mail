@@ -208,6 +208,12 @@ extension MenuLabel: NSItemProviderWriting {
 extension Array where Element == MenuLabel {
 
     init(labels: [Label], previousRawData: [MenuLabel]) {
+
+        var labelIDToIndexOfPrevicesRawData: [String: Int] = [:]
+        for (index, menuLabel) in previousRawData.enumerated() {
+            labelIDToIndexOfPrevicesRawData[menuLabel.location.labelID] = index
+        }
+
         var datas: [MenuLabel] = []
         for item in labels {
             let label = MenuLabel(id: item.labelID,
@@ -219,7 +225,8 @@ extension Array where Element == MenuLabel {
                                   type: item.type.intValue,
                                   order: item.order.intValue,
                                   notify: item.notify.boolValue)
-            if let oldData = previousRawData.first(where: { $0.location.labelID == item.labelID }) {
+            if let index = labelIDToIndexOfPrevicesRawData[item.labelID],
+               let oldData = previousRawData[safe: index] {
                 // retain state
                 label.expanded = oldData.expanded
                 label.isSelected = oldData.isSelected
@@ -327,12 +334,18 @@ extension Array where Element == MenuLabel {
 
         let indexes: [Int] = [Int](0..<rawFolders.count)
 
+        let rawFolderLabelIds = rawFolders.map { $0.location.labelID }
+        var labelIDToIndex: [String: Int] = [:]
+        for (labelId, index) in zip(rawFolderLabelIds, indexes) {
+            labelIDToIndex[labelId] = index
+        }
+
         var folders = [MenuLabel]()
         for index in indexes.reversed() {
             let label = rawFolders[index]
 
             guard let parentID = label.parentID,
-                  let parentIdx = rawFolders.firstIndex(where: { $0.location.labelID == parentID }) else {
+                  let parentIdx = labelIDToIndex[parentID] else {
                 folders.insert(label, at: 0)
                 continue
             }

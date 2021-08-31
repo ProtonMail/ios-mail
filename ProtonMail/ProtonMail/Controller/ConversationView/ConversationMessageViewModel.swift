@@ -37,15 +37,17 @@ class ConversationMessageViewModel {
     private let labelId: String
     private let user: UserManager
     private let messageContentViewModelFactory = SingleMessageContentViewModelFactory()
+    private let replacingEmails: [Email]
 
-    init(labelId: String, message: Message, user: UserManager) {
+    init(labelId: String, message: Message, user: UserManager, replacingEmails: [Email]) {
         self.labelId = labelId
         self.message = message
         self.user = user
+        self.replacingEmails = replacingEmails
         let collapsedViewModel = ConversationCollapsedMessageViewModel(
             message: message,
-            contactService: user.contactService,
-            weekStart: user.userinfo.weekStartValue
+            weekStart: user.userinfo.weekStartValue,
+            replacingEmails: replacingEmails
         )
         self.state = .collapsed(viewModel: collapsedViewModel)
     }
@@ -56,7 +58,7 @@ class ConversationMessageViewModel {
 
     func toggleState() {
         state = state.isExpanded ?
-            .collapsed(viewModel: .init(message: message, contactService: user.contactService, weekStart: weekStart)) :
+            .collapsed(viewModel: .init(message: message, weekStart: weekStart, replacingEmails: replacingEmails)) :
             .expanded(viewModel: .init(message: message, messageContent: singleMessageContentViewModel(for: message)))
     }
 

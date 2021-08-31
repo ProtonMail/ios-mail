@@ -4,7 +4,6 @@ class ConversationCollapsedMessageViewModel {
         didSet { reloadView?(model) }
     }
 
-    private let contactService: ContactDataService
     private let weekStart: WeekStart
 
     var reloadView: ((ConversationMessageModel) -> Void)?
@@ -13,9 +12,7 @@ class ConversationCollapsedMessageViewModel {
         message.subject
     }
 
-    var replacingEmails: [Email] {
-        contactService.allAccountEmails()
-    }
+    let replacingEmails: [Email]
 
     var model: ConversationMessageModel {
         .init(
@@ -35,10 +32,10 @@ class ConversationCollapsedMessageViewModel {
         )
     }
 
-    init(message: Message, contactService: ContactDataService, weekStart: WeekStart) {
+    init(message: Message, weekStart: WeekStart, replacingEmails: [Email]) {
         self.message = message
-        self.contactService = contactService
         self.weekStart = weekStart
+        self.replacingEmails = replacingEmails
     }
 
     func messageHasChanged(message: Message) {

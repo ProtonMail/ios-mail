@@ -157,6 +157,12 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
     private func reloadActionBar() {
         guard actionBar != nil else { return }
+
+        // Only reload the action bar if needed
+        let actions = viewModel.getActionTypes()
+        guard viewModel.actionTypeSnapshot != actions else { return }
+        viewModel.actionTypeSnapshot = actions
+
         actionBar = nil
         showActionBar()
     }
@@ -379,12 +385,16 @@ private extension ConversationViewController {
     }
 
     private func refreshNavigationViewIfNeeded() {
-        if navigationItem.titleView is ConversationNavigationSimpleView {
-            navigationItem.titleView = viewModel.simpleNavigationViewType.titleView
-        }
-
-        if navigationItem.titleView is ConversationNavigationDetailView {
-            navigationItem.titleView = viewModel.detailedNavigationViewType.titleView
+        // only reassign the titleView if needed
+        if let titleView = navigationItem.titleView as? ConversationNavigationSimpleView {
+            if titleView.titleLabel.attributedText?.string != viewModel.messagesTitle {
+                navigationItem.titleView = viewModel.simpleNavigationViewType.titleView
+            }
+        } else if let titleView = navigationItem.titleView as? ConversationNavigationDetailView {
+            if titleView.topLabel.attributedText?.string != viewModel.messagesTitle ||
+                titleView.bottomLabel.attributedText?.string != viewModel.conversation.subject {
+                navigationItem.titleView = viewModel.detailedNavigationViewType.titleView
+            }
         }
     }
 }
