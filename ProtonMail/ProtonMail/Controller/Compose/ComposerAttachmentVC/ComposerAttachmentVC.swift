@@ -271,7 +271,10 @@ extension ComposerAttachmentVC: UITableViewDataSource, UITableViewDelegate, Comp
                 guard let self = self,
                       let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(objectID),
                       let managedObject = try? context.existingObject(with: managedObjectID),
-                      let attachment = managedObject as? Attachment else { return }
+                      let attachment = managedObject as? Attachment else {
+                    self?.delete(objectID: objectID)
+                    return
+                }
                 self.delete(objectID: objectID)
                 DispatchQueue.main.async {
                     self.delegate?.delete(attachment: attachment)

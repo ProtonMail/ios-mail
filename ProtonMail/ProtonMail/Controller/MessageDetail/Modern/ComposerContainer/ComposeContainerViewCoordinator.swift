@@ -188,9 +188,8 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     func addAttachment(_ attachment: Attachment, shouldUpload: Bool = true) {
-        guard let message = self.editor.viewModel.message else { return }
-        let coreDataService: CoreDataService = sharedServices.get(by: CoreDataService.self)
-        let context = coreDataService.operationContext
+        guard let message = self.editor.viewModel.message,
+              let context = message.managedObjectContext else { return }
         context.performAndWait {
             attachment.message = message
             _ = context.saveUpstreamIfNeeded()

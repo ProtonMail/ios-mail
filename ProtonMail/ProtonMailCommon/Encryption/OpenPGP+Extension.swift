@@ -222,11 +222,6 @@ extension Data {
         return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privateKey, passphrase: passphrase)
     }
     
-
-    func signAttachment(byPrivKey: String, passphrase: String) throws -> String? {
-        return try Crypto().signDetached(plainData: self, privateKey: byPrivKey, passphrase: passphrase)
-    }
-    
     func encryptAttachment(fileName:String, pubKey: String) throws -> SplitMessage? {
         return try Crypto().encryptAttachment(plainData: self, fileName: fileName, publicKey: pubKey)
     }

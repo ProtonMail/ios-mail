@@ -708,28 +708,28 @@ class Crypto {
 
     
     // MARK - sign
-    
-    public func signDetached(plainData: Data, privateKey: String, passphrase: String) throws -> String? {
+
+    public func signDetached(plainData: NSMutableData, privateKey: String, passphrase: String) throws -> String? {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
             throw err
         }
-        
+
         let passSlic = passphrase.data(using: .utf8)
         let unlockedKey = try key?.unlock(passSlic)
         let keyRing = CryptoNewKeyRing(unlockedKey, &error)
         if let err = error {
             throw err
         }
-        
-        let plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
+
+        let plainMessage = CryptoNewPlainMessage(plainData as Data)
         let pgpSignature = try keyRing?.signDetached(plainMessage)
         let signature = pgpSignature?.getArmored(&error)
         if let err = error {
             throw err
         }
-        
+
         return signature
     }
     

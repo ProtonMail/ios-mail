@@ -472,6 +472,14 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
 }
 
 extension ComposeContainerViewController: AttachmentController {
+    func error(title: String, description: String) {
+        let alert = description.alertController(title)
+        alert.addOKAction()
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
         return Promise { seal in
             self.attachmentProcessQueue.addOperation {

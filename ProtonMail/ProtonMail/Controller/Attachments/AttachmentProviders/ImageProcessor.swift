@@ -68,16 +68,43 @@ extension ImageProcessor where Self: AttachmentProvider {
             }
             PHImageManager.default().requestAVAsset(forVideo: asset, options: options, resultHandler: { asset, audioMix, info in
                 if let error = info?[PHImageErrorKey] as? NSError {
-                    self.controller?.error(error.debugDescription)
+                    DispatchQueue.main.async {
+                        self.controller?.error(error.debugDescription)
+                    }
                     return
                 }
-                guard let asset = asset as? AVURLAsset, let image_data = try? Data(contentsOf: asset.url) else {
-                    self.controller?.error(LocalString._cant_open_the_file)
+
+                var fileData: ConcreteFileData<Data>?
+                var isSlowMotion = false
+
+                if let asset = asset as? AVURLAsset,
+                   let image_data = try? Data(contentsOf: asset.url) { // video files
+                    let fileName = asset.url.lastPathComponent
+                    fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: image_data)
+                } else if let asset = asset as? AVComposition,
+                          let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetMediumQuality) { // slow motion files
+                    isSlowMotion = true
+
+                    convertMovieFilesForSlowMotionVideo(exportSession: exportSession) { fileData in
+                        self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.controller?.error(LocalString._cant_open_the_file)
+                    }
                     return
                 }
-                
-                let fileName = asset.url.lastPathComponent
-                let fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: image_data)
+
+                guard !isSlowMotion else {
+                    return
+                }
+
+                guard let fileData = fileData else {
+                    DispatchQueue.main.async {
+                        self.controller?.error(LocalString._cant_open_the_file)
+                    }
+                    return
+                }
                 self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
             })
             
@@ -91,7 +118,9 @@ extension ImageProcessor where Self: AttachmentProvider {
             }
             PHImageManager.default().requestImageData(for: asset, options: options) { imagedata, dataUTI, orientation, info in
                 guard var image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
-                    self.controller?.error(LocalString._cant_open_the_file)
+                    DispatchQueue.main.async {
+                        self.controller?.error(LocalString._cant_open_the_file)
+                    }
                     return
                 }
                 var fileName = "\(NSUUID().uuidString).jpg"
@@ -115,6 +144,31 @@ extension ImageProcessor where Self: AttachmentProvider {
             
         default:
             self.controller?.error(LocalString._cant_open_the_file)
+        }
+    }
+
+    private func convertMovieFilesForSlowMotionVideo(exportSession: AVAssetExportSession, completion: ((ConcreteFileData<Data>) -> Void)?) {
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).mov")
+        exportSession.outputURL = tempUrl
+        exportSession.outputFileType = AVFileType.mov
+        exportSession.shouldOptimizeForNetworkUse = true
+
+        exportSession.exportAsynchronously {
+            defer {
+                try? FileManager.default.removeItem(at: tempUrl)
+            }
+            let exportedAsset = AVURLAsset(url: tempUrl)
+
+            guard let videoData = try? Data(contentsOf: exportedAsset.url) else {
+                DispatchQueue.main.async {
+                    self.controller?.error(LocalString._cant_open_the_file)
+                }
+                return
+            }
+
+            let fileName = exportedAsset.url.lastPathComponent
+            let fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: videoData)
+            completion?(fileData)
         }
     }
 }

@@ -235,6 +235,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
 }
 
 extension ShareUnlockViewController: AttachmentController, FileImporter {
+    func error(title: String, description: String) {
+        self.localized_errors.append(description)
+    }
+
     var barItem: UIBarButtonItem? {
         return nil
     }

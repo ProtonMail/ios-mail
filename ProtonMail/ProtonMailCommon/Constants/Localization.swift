@@ -1530,6 +1530,9 @@ class LocalizedString {
     /// "Can't copy the file"
     lazy var _cant_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
 
+    lazy var _no_photo_library_permission_content = NSLocalizedString("ProtonMail needs photo library access in your device settings.", comment: "The message about the app is not having the permission to access photo library")
+    lazy var _no_photo_library_permission_title = NSLocalizedString("Forbidden", comment: "The title of alert that the app is not having the permission to access photo library")
+
     /// "Copy address"
     lazy var _copy_address    = NSLocalizedString("Copy address", comment: "Title")
     /// "Copy name"
