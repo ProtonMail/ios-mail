@@ -49,13 +49,13 @@ extension HelpItem {
     var icon: UIImage {
         switch self {
         case .forgotUsername:
-            return UIImage(named: "ForgotUsernameIcon", in: PMLogin.bundle, compatibleWith: nil)!
+            return UIImage(named: "ForgotUsernameIcon", in: LoginAndSignup.bundle, compatibleWith: nil)!
         case .forgotPassword:
-            return UIImage(named: "ForgotPasswordIcon", in: PMLogin.bundle, compatibleWith: nil)!
+            return UIImage(named: "ForgotPasswordIcon", in: LoginAndSignup.bundle, compatibleWith: nil)!
         case .otherIssues:
-            return UIImage(named: "OtherIssuesIcon", in: PMLogin.bundle, compatibleWith: nil)!
+            return UIImage(named: "OtherIssuesIcon", in: LoginAndSignup.bundle, compatibleWith: nil)!
         case .support:
-            return UIImage(named: "SupportIcon", in: PMLogin.bundle, compatibleWith: nil)!
+            return UIImage(named: "SupportIcon", in: LoginAndSignup.bundle, compatibleWith: nil)!
         }
     }
 }

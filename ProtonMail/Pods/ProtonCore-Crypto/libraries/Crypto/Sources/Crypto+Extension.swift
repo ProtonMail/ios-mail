@@ -20,7 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+#if canImport(Crypto_VPN)
+import Crypto_VPN
+#elseif canImport(Crypto)
 import Crypto
+#endif
 
 enum Either<Left, Right> {
     case left(Left)
@@ -87,7 +91,7 @@ public class Crypto {
             throw err
         }
         
-        let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0).getString() ?? ""
+        let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: CryptoGetUnixTime()).getString() ?? ""
         return plainMessageString
     }
     
@@ -117,7 +121,7 @@ public class Crypto {
                     continue
                 }
                 
-                let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0).getString() ?? ""
+                let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: CryptoGetUnixTime()).getString() ?? ""
                 return plainMessageString
             } catch {
                 continue
@@ -147,7 +151,7 @@ public class Crypto {
         
         let pgpMsg = CryptoNewPGPMessage(binMessage.mutable as Data)
         
-        let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0).getString() ?? ""
+        let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: CryptoGetUnixTime()).getString() ?? ""
         return plainMessageString
     }
     

@@ -43,11 +43,13 @@ final class LoginCoordinator {
     private var navigationController: LoginNavigationViewController?
     private var childCoordinators: [ChildCoordinators: Any] = [:]
     private let externalLinks: ExternalLinks
+    private var performBeforeFlowCompletion: WorkBeforeFlowCompletion?
 
-    init(container: Container, isCloseButtonAvailable: Bool, isSignupAvailable: Bool) {
+    init(container: Container, isCloseButtonAvailable: Bool, isSignupAvailable: Bool, performBeforeFlowCompletion: WorkBeforeFlowCompletion?) {
         self.container = container
         self.isCloseButtonAvailable = isCloseButtonAvailable
         self.isSignupAvailable = isSignupAvailable
+        self.performBeforeFlowCompletion = performBeforeFlowCompletion
         externalLinks = container.makeExternalLinks()
     }
 
@@ -143,7 +145,27 @@ final class LoginCoordinator {
         coordinator.start()
     }
 
-    private func finish(data: LoginData) {
+    private func finish(endLoading: @escaping () -> Void, data: LoginData) {
+        guard let workBeforeFlowCompletion = performBeforeFlowCompletion else {
+            completeLoginFlow(data: data)
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            workBeforeFlowCompletion { [weak self] result in
+                DispatchQueue.main.async { [weak self] in
+                    endLoading()
+                    switch result {
+                    case .success:
+                        self?.completeLoginFlow(data: data)
+                    case .failure(let error):
+                        self?.popAndShowError(error: .generic(message: error.messageForTheUser))
+                    }
+                }
+            }
+        }
+    }
+
+    private func completeLoginFlow(data: LoginData) {
         navigationController?.dismiss(animated: true, completion: nil)
         delegate?.loginCoordinatorDidFinish(loginCoordinator: self, data: data)
     }
@@ -153,7 +175,6 @@ final class LoginCoordinator {
             guard let errorCapable = self.navigationController?.topViewController as? LoginErrorCapable else {
                 return
             }
-
             errorCapable.showError(error: error)
         }
     }
@@ -200,8 +221,8 @@ extension LoginCoordinator: LoginViewControllerDelegate {
         showHelp()
     }
 
-    func loginViewControllerDidFinish(data: LoginData) {
-        finish(data: data)
+    func loginViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData) {
+        finish(endLoading: endLoading, data: data)
     }
 }
 
@@ -229,10 +250,9 @@ extension LoginCoordinator: HelpViewControllerDelegate {
 // MARK: - Create address delegate
 
 extension LoginCoordinator: CreateAddressCoordinatorDelegate {
-    func createAddressCoordinatorDidFinish(createAddressCoordinator: CreateAddressCoordinator, data: LoginData) {
+    func createAddressCoordinatorDidFinish(endLoading: @escaping () -> Void, createAddressCoordinator: CreateAddressCoordinator, data: LoginData) {
         childCoordinators[.createAddress] = nil
-        navigationController?.dismiss(animated: true, completion: nil)
-        delegate?.loginCoordinatorDidFinish(loginCoordinator: self, data: data)
+        finish(endLoading: endLoading, data: data)
     }
 }
 
@@ -261,8 +281,8 @@ extension LoginCoordinator: MailboxPasswordViewControllerDelegate {
         popAndShowError(error: error)
     }
 
-    func mailboxPasswordViewControllerDidFinish(data: LoginData) {
-        finish(data: data)
+    func mailboxPasswordViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData) {
+        finish(endLoading: endLoading, data: data)
     }
 
     func userDidRequestPasswordReset() {
@@ -277,8 +297,8 @@ extension LoginCoordinator: TwoFactorViewControllerDelegate {
         popAndShowError(error: error)
     }
 
-    func twoFactorViewControllerDidFinish(data: LoginData) {
-        finish(data: data)
+    func twoFactorViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData) {
+        finish(endLoading: endLoading, data: data)
     }
 }
 

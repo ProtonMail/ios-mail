@@ -127,6 +127,7 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
         self.textColor = textColor ?? AdaptiveTextColors._N5
         self.iconColor = iconColor ?? AdaptiveTextColors._N5
         self.markType = isOn ? .checkMark : .none
+        self.isOn = isOn
         if let type = markType {
             self.markType = type
         }

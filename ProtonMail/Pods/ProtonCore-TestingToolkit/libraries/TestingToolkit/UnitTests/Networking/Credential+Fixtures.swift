@@ -23,7 +23,7 @@ import ProtonCore_Networking
 
 public extension Credential {
     static var dummy: Credential {
-        Credential(UID: .empty, accessToken: .empty, refreshToken: .empty, expiration: .distantFuture, scope: [])
+        Credential(UID: .empty, accessToken: .empty, refreshToken: .empty, expiration: .distantFuture, userName: .empty, userID: .empty, scope: [])
     }
 
     func updated(
@@ -33,6 +33,8 @@ public extension Credential {
                    accessToken: accessToken ?? self.accessToken,
                    refreshToken: refreshToken ?? self.refreshToken,
                    expiration: expiration ?? self.expiration,
+                   userName: userName,
+                   userID: userID,
                    scope: scope ?? self.scope)
     }
 }

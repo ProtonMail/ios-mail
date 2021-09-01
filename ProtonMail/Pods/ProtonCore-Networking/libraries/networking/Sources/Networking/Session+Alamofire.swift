@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+// swiftlint:disable function_parameter_count
+
 #if canImport(Alamofire)
 import Foundation
 import TrustKit
@@ -75,6 +77,7 @@ public class AlamofireSession: Session {
         self.sessionChallenge.noTrustKit = noTrustKit
     }
 
+    // swiftlint:disable function_parameter_count
     public func upload(with request: SessionRequest,
                        keyPacket: Data, dataPacket: Data, signature: Data?,
                        completion: @escaping ResponseCompletion, uploadProgress: ProgressCompletion?) {
@@ -146,11 +149,76 @@ public class AlamofireSession: Session {
                 }
                 completion(taskOut, nil, nil)
             case let .failure(error):
-                completion(taskOut, nil, error as NSError)
+                let err = error.underlyingError ?? (error as NSError)
+                completion(taskOut, nil, err as NSError)
+            }
+        }
+    }
+    
+    public func upload(with request: SessionRequest,
+                       files: [String: URL],
+                       completion: @escaping ResponseCompletion, uploadProgress: ProgressCompletion?) throws {
+        guard let alamofireRequest = request as? AlamofireRequest else {
+            completion(nil, nil, nil)
+            return
+        }
+        guard let parameters = alamofireRequest.parameters as? [String: String] else {
+            completion(nil, nil, nil)
+            return
+        }
+        alamofireRequest.updateHeader()
+        var taskOut: URLSessionDataTask?
+        self.session.upload(multipartFormData: { (formData) -> Void in
+            let data: MultipartFormData = formData
+            for (key, value) in parameters {
+                if let valueData = value.data(using: .utf8) {
+                    data.append(valueData, withName: key)
+                }
+            }
+            
+            for (name, file) in files {
+                data.append(file, withName: name)
+            }
+        }, with: alamofireRequest)
+        .onURLSessionTaskCreation { task in
+            taskOut = task as? URLSessionDataTask
+        }
+        .uploadProgress { (progress) in
+            uploadProgress?(progress)
+        }
+        .responseString(queue: requestQueue) { response in
+            switch response.result {
+            case let .success(value):
+                if let data = value.data(using: .utf8) {
+                    do {
+                        let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                        if let error = response.error {
+                            completion(taskOut, dict, error as NSError)
+                            break
+                        }
+                        if let code = response.response?.statusCode, code != 200 {
+                            let userInfo: [String: Any] = [NSLocalizedDescriptionKey: dict?["Error"] ?? "",
+                                                           NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""]
+                            let err = NSError.init(domain: "ProtonCore-Networking", code: code, userInfo: userInfo)
+                            completion(taskOut, dict, err)
+                            break
+                        }
+                        completion(taskOut, dict, nil)
+                        break
+                    } catch let error {
+                        completion(taskOut, nil, error as NSError)
+                        return
+                    }
+                }
+                completion(taskOut, nil, nil)
+            case let .failure(error):
+                let err = error.underlyingError ?? (error as NSError)
+                completion(taskOut, nil, err as NSError)
             }
         }
     }
 
+    // swiftlint:disable function_parameter_count
     public func uploadFromFile(with request: SessionRequest,
                                keyPacket: Data, dataPacketSourceFileURL: URL, signature: Data?,
                                completion: @escaping ResponseCompletion, uploadProgress: ProgressCompletion?) {
@@ -222,7 +290,8 @@ public class AlamofireSession: Session {
                 }
                 completion(taskOut, nil, nil)
             case let .failure(error):
-                completion(taskOut, nil, error as NSError)
+                let err = error.underlyingError ?? (error as NSError)
+                completion(taskOut, nil, err as NSError)
             }
         }
     }
@@ -269,7 +338,8 @@ public class AlamofireSession: Session {
                     }
                     completion(taskOut, nil, nil)
                 case let .failure(error):
-                    completion(taskOut, nil, error as NSError)
+                    let err = error.underlyingError ?? (error as NSError)
+                    completion(taskOut, nil, err as NSError)
                 }
             }
     }
@@ -297,13 +367,14 @@ public class AlamofireSession: Session {
                 case let .success(value):
                     completion(taskOut?.response, value, nil)
                 case let .failure(error):
-                    completion(taskOut?.response, nil, error as NSError)
+                    let err = error.underlyingError ?? (error as NSError)
+                    completion(taskOut?.response, nil, err as NSError)
                 }
             }
     }
     
-    public func generate(with method: HTTPMethod, urlString: String, parameters: Any? = nil) -> SessionRequest {
-        return AlamofireRequest.init(parameters: parameters, urlString: urlString, method: method)
+    public func generate(with method: HTTPMethod, urlString: String, parameters: Any? = nil, timeout: TimeInterval? = nil) -> SessionRequest {
+        return AlamofireRequest.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout ?? defaultTimeout)
     }
 }
 
@@ -317,15 +388,15 @@ class AlamofireRequest: SessionRequest, URLRequestConvertible {
         }
     }
     
-    override init(parameters: Any?, urlString: String, method: HTTPMethod) {
-        super.init(parameters: parameters, urlString: urlString, method: method)
+    override init(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval) {
+        super.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout)
         let url = URL.init(string: urlString)!
         self.request = URLRequest(url: url)
     }
     
     func asURLRequest() throws -> URLRequest {
         self.request!.httpMethod = self.method.toString()
-        // urlRequest.timeoutInterval = ApiConstants.defaultRequestTimeout
+        // self.request?.timeoutInterval  = ApiConstants.defaultRequestTimeout
         return try parameterEncoding.encode(request!, with: parameters as? [String: Any])
     }
 }

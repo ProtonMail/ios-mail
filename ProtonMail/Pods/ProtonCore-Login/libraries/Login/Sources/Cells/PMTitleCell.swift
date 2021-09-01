@@ -25,7 +25,7 @@ import ProtonCore_UIFoundations
 final class PMTitleCell: UITableViewCell {
 
     static let reuseIdentifier = "PMTitleCell"
-    static let nib = UINib(nibName: "PMTitleCell", bundle: PMLogin.bundle)
+    static let nib = UINib(nibName: "PMTitleCell", bundle: LoginAndSignup.bundle)
 
     // MARK: - Outlets
 

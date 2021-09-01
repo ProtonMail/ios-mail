@@ -80,7 +80,7 @@ final class SignInCoordinator: DefaultCoordinator {
     private var isStarted = false
 
     private let environment: SignInCoordinatorEnvironment
-    private let login: LoginInterface
+    private let login: LoginAndSignupInterface
     private let username: String?
     private let isFirstAccountFlow: Bool
     private let onFinish: (FlowResult) -> Void

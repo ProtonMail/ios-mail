@@ -70,7 +70,7 @@ public final class SignupHumanVerificationRobot: CoreElements {
         return Robot()
     }
     
-    //TODO remove it once recaptcha is changed to hCaptcha on all environments
+    // TODO remove it once recaptcha is changed to hCaptcha on all environments
     public func humanVerificationReCaptchaTap<Robot: CoreElements>(to: Robot.Type) -> Robot {
         let element = XCUIApplication().webViews["RecaptchaViewController.webView"].webViews.switches[recaptchaButtonCheckName]
         Wait().forElement(element)

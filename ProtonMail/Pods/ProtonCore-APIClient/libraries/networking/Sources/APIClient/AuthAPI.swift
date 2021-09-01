@@ -25,7 +25,6 @@ import Foundation
 import ProtonCore_Networking
 
 // Auth API
-// Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_auth.md
 public struct AuthAPI: APIClient {
     /// base message api path
     static let route: String = "/auth"

@@ -20,7 +20,17 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+#if canImport(Crypto_VPN)
+import Crypto_VPN
+#elseif canImport(Crypto)
 import Crypto
+#endif
+
+#if canImport(Crypto_VPN)
+import Crypto_VPN
+#elseif canImport(Crypto)
+import Crypto
+#endif
 
 extension Data { // need follow the gomobile fixes
     /// This computed value is only needed because of [this](https://github.com/golang/go/issues/33745) issue in the

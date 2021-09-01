@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import class WebKit.WKWebView
 import ProtonCore_Networking
 import ProtonCore_Services
 
@@ -63,8 +64,14 @@ class RecaptchaViewModel: BaseTokenViewModel {
         return urlString.replacingOccurrences(of: recaptchaRes, with: "", options: NSString.CompareOptions.widthInsensitive, range: nil)
     }
 
-    func isDocHeight(webView: UIWebView) -> Bool {
-        return webView.stringByEvaluatingJavaScript(from: docHeight) != nil
+    func isDocHeight(webView: WKWebView, completion: @escaping (Bool) -> Void) {
+        webView.evaluateJavaScript(docHeight) { result, error in
+            if result == nil {
+                completion(false)
+            } else {
+                completion(true)
+            }
+        }
     }
 
     // MARK: - Private properties

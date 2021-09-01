@@ -600,4 +600,9 @@ public class LocalizedString {
 
     /// Part of "Made by Proton" text at the bottom of the splash screen
     public lazy var _splash_made_by = NSLocalizedString("Made by", bundle: Common.bundle, comment: "Made by")
+
+// Networking
+
+    /// Networking connection error
+    public lazy var _net_connection_error = NSLocalizedString("Network connection error", bundle: Common.bundle, comment: "Networking connection error")
 }

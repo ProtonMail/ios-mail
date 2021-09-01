@@ -77,8 +77,18 @@ class SignInManager: Service {
                         existError: @escaping () -> Void,
                         showSkeleton: @escaping () -> Void,
                         tryUnlock: @escaping () -> Void) {
-        let userInfo = loginData.toUserInfo
-        let auth = loginData.credential
+        let userInfo: UserInfo
+        let auth: AuthCredential
+        switch loginData {
+        case .userData(let userData):
+            auth = userData.credential
+            userInfo = userData.toUserInfo
+        case .credential(let credential):
+            assertionFailure("Signin was misconfigured — you should always get full user data. Check minimumAccountType parameter value in LoginAndSignup initializer")
+            auth = AuthCredential(credential)
+            userInfo = .init(response: [:])
+        }
+
         if self.usersManager.isExist(userID: userInfo.userId) {
             existError()
             return

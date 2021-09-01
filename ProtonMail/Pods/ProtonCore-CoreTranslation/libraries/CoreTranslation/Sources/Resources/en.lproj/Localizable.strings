@@ -272,3 +272,9 @@
  */
 
 "Made by" = "Made by";
+
+/**
+ * Networking
+ */
+
+"Network connection error" = "Network connection error";

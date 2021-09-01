@@ -21,7 +21,11 @@
 
 import Foundation
 import EllipticCurveKeyPair
+#if canImport(Crypto_VPN)
+import Crypto_VPN
+#elseif canImport(Crypto)
 import Crypto
+#endif
 
 #if canImport(UIKit)
 import UIKit
@@ -77,7 +81,19 @@ public class Keymaker: NSObject {
         }
     }
     
+    private var _key: MainKey? {
+        didSet {
+            if _key != nil {
+                self.setupCryptoTransformers(key: _mainKey)
+            } else {
+                NotificationCenter.default.post(name: Const.removedMainKeyFromMemory, object: self)
+            }
+        }
+    }
+    
     // accessor for stored value; if stored value is nill - calls provokeMainKeyObtention() method
+    
+    @available(*, deprecated, message: "this shouldn't be used after the migration and this will be private.")
     public var mainKey: MainKey? {
         if self.autolocker?.shouldAutolockNow() == true {
             self._mainKey = nil
@@ -88,8 +104,64 @@ public class Keymaker: NSObject {
         return self._mainKey
     }
     
+    public func mainKey(by protection: RandomPinProtection?) -> MainKey? {
+        if self._mainKey != nil {
+            return _mainKey
+        }
+        
+        guard let protectionStrategy = protection else {
+            return self.mainKey
+        }
+        if self._key == nil, let newKey = self.obtainMainKeyBackground(with: protectionStrategy) {
+            self._key = newKey
+        }
+        
+        return self._key
+    }
+    
+    // try to get mainkey from background, this will not always on main thread.
+    public func obtainMainKeyBackground(with protector: RandomPinProtection) -> MainKey? {
+        guard self._key == nil else {
+            return self._key
+        }
+        
+        guard let cypherBits = protector.getCypherBits() else {
+            return nil
+        }
+        
+        do {
+            let mainKeyBytes = try protector.unlock(cypherBits: cypherBits)
+            self._key = mainKeyBytes
+        } catch let error {
+            self._key = nil
+        }
+        return self._key
+    }
+    
     public func resetAutolock() {
         self.autolocker?.releaseCountdown()
+    }
+    
+    // Try to get main key from storage if it exists, otherwise create one.
+    // if there is any significant Protection active - post message that obtainMainKey(_:_:) is needed
+    private func getMainKeyByRandomPin() -> MainKey? {
+        // if we have any significant Protector - wait for obtainMainKey(_:_:) method to be called
+        guard !self.isProtectorActive(RandomPinProtection.self) else {
+            return nil
+        }
+        
+        // if we have NoneProtection active - get the key right ahead
+        if let cypherText = NoneProtection.getCypherBits(from: self.keychain) {
+            do {
+                return try NoneProtection(keychain: self.keychain).unlock(cypherBits: cypherText)
+            } catch let error {
+                fatalError(error.localizedDescription)
+            }
+        }
+        
+        // otherwise there is no saved mainKey at all, so we should generate a new one with default protection
+        let newKey = self.generateNewMainKeyWithDefaultProtection()
+        return newKey
     }
     
     // Try to get main key from storage if it exists, otherwise create one.
@@ -130,6 +202,7 @@ public class Keymaker: NSObject {
         PinProtection.removeCyphertext(from: self.keychain)
         
         self._mainKey = nil
+        self._key = nil
         self.setupCryptoTransformers(key: nil)
     }
     
@@ -243,10 +316,15 @@ public class Keymaker: NSObject {
     @discardableResult public func deactivate(_ protector: ProtectionStrategy) -> Bool {
         protector.removeCyphertextFromKeychain()
         
+        if protector is RandomPinProtection {
+            self._key = nil
+        }
+        
         // need to keep mainKey in keychain in case user switches off all the significant Protectors
         if !self.isProtectorActive(BioProtection.self),
             !self.isProtectorActive(PinProtection.self)
         {
+            self._key = nil
             self.activate(NoneProtection(keychain: self.keychain), completion: { _ in })
         }
         

@@ -37,6 +37,7 @@ public protocol ApiPackage {
 }
 
 // abstract api request base class
+@available(*, deprecated, message: "this will be removed. use `APIService` for api requests")
 open class ApiRequest<T: ApiResponse>: ApiPackage {
 
     init () { }
@@ -146,6 +147,7 @@ open class ApiRequest<T: ApiResponse>: ApiPackage {
 }
 
 // abstract api request base class
+@available(*, deprecated, message: "this will be removed. use `APIService` for api requests")
 open class ApiRequestNew<T: ApiResponse>: ApiPackage {
 
     public init (api: API) {

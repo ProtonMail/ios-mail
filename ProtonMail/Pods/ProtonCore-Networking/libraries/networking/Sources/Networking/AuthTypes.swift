@@ -26,12 +26,16 @@ public final class AuthCredential: NSObject, NSCoding {
                 accessToken: String,
                 refreshToken: String,
                 expiration: Date,
+                userName: String,
+                userID: String,
                 privateKey: String?,
                 passwordKeySalt: String?) {
         self.sessionID = sessionID
         self.accessToken = accessToken
         self.refreshToken = refreshToken
         self.expiration = expiration
+        self.userName = userName
+        self.userID = userID
         self.privateKey = privateKey
         self.passwordKeySalt = passwordKeySalt
     }
@@ -55,7 +59,7 @@ public final class AuthCredential: NSObject, NSCoding {
         static let userName      = "AuthCredential.UserName"
     }
 
-    public static var none: AuthCredential = AuthCredential.init(res: AuthResponse() )
+    public static var none: AuthCredential = AuthCredential.init(res: AuthResponse(), userName: "" )
 
     // user session id, this change in every login
     public var sessionID: String
@@ -65,6 +69,10 @@ public final class AuthCredential: NSObject, NSCoding {
     public var refreshToken: String
     // the expiration time
     public var expiration: Date
+    // user ID
+    public var userID: String
+    // user name
+    public var userName: String
 
     // the login private key, ususally it is first userkey
     public var privateKey: String?
@@ -77,6 +85,8 @@ public final class AuthCredential: NSObject, NSCoding {
         RefreshToken: \(refreshToken)
         Expiration: \(expiration))
         SessionID: \(sessionID)
+        UserName: \(userName)
+        UserUD: \(userID)
         """
     }
 
@@ -107,11 +117,13 @@ public final class AuthCredential: NSObject, NSCoding {
         self.expiration = expiration
     }
 
-    required init(res: AuthResponse) {
+    required init(res: AuthResponse, userName: String) {
         self.sessionID = res.sessionID ?? ""
         self.accessToken = res.accessToken
         self.refreshToken = res.refreshToken
         self.expiration = Date(timeIntervalSinceNow: res.expiresIn )
+        self.userName = userName
+        self.userID = res.userID
     }
 
     public required init?(coder aDecoder: NSCoder) {
@@ -132,6 +144,8 @@ public final class AuthCredential: NSObject, NSCoding {
         self.privateKey = aDecoder.decodeObject(forKey: CoderKey.key) as? String
         self.passwordKeySalt = aDecoder.decodeObject(forKey: CoderKey.salt) as? String
         self.mailboxpassword = aDecoder.decodeObject(forKey: CoderKey.password) as? String ?? ""
+        self.userName = aDecoder.decodeObject(forKey: CoderKey.userName) as? String ?? ""
+        self.userID = aDecoder.decodeObject(forKey: CoderKey.userID) as? String ?? ""
     }
 
     public class func unarchive(data: NSData?) -> AuthCredential? {
@@ -162,6 +176,8 @@ public final class AuthCredential: NSObject, NSCoding {
         aCoder.encode(privateKey, forKey: CoderKey.key)
         aCoder.encode(mailboxpassword, forKey: CoderKey.password)
         aCoder.encode(passwordKeySalt, forKey: CoderKey.salt)
+        aCoder.encode(userName, forKey: CoderKey.userName)
+        aCoder.encode(userID, forKey: CoderKey.userID)
     }
 }
 
@@ -171,6 +187,8 @@ extension AuthCredential {
                   accessToken: credential.accessToken,
                   refreshToken: credential.refreshToken,
                   expiration: credential.expiration,
+                  userName: credential.userName,
+                  userID: credential.userID,
                   privateKey: nil,
                   passwordKeySalt: nil)
     }
@@ -184,21 +202,27 @@ public struct Credential {
     public var accessToken: String
     public var refreshToken: String
     public var expiration: Date
+    public var userName: String
+    public var userID: String
     public var scope: Scope
 
-    public init(UID: String, accessToken: String, refreshToken: String, expiration: Date, scope: Credential.Scope) {
+    public init(UID: String, accessToken: String, refreshToken: String, expiration: Date, userName: String, userID: String, scope: Credential.Scope) {
         self.UID = UID
         self.accessToken = accessToken
         self.refreshToken = refreshToken
         self.expiration = expiration
+        self.userName = userName
+        self.userID = userID
         self.scope = scope
     }
 
-    public init(res: CredentialConvertible, UID: String = "") {
+    public init(res: CredentialConvertible, UID: String = "", userName: String, userID: String) {
         self.UID = res.UID ?? res.sessionID ?? UID
         self.accessToken = res.accessToken
         self.refreshToken = res.refreshToken
         self.expiration = Date(timeIntervalSinceNow: res.expiresIn)
+        self.userName = userName
+        self.userID = userID
         self.scope = res.scope.components(separatedBy: " ")
     }
 
@@ -234,6 +258,8 @@ extension Credential {
                   accessToken: authCredential.accessToken,
                   refreshToken: authCredential.refreshToken,
                   expiration: authCredential.expiration,
+                  userName: authCredential.userName,
+                  userID: authCredential.userID,
                   scope: [])
     }
 }
@@ -276,6 +302,7 @@ public final class AuthResponse: Response, CredentialConvertible {
     public var accessToken: String = ""
     public var expiresIn: TimeInterval = 0.0
     public var tokenType: String = ""
+    public var userID: String = ""
     public var scope: Scope = ""
     public var refreshToken: String = ""
 
@@ -350,5 +377,11 @@ public enum AuthErrors: Error {
         case .notImplementedYet(let message):
             return message
         }
+    }
+}
+
+public extension AuthErrors {
+    var messageForTheUser: String {
+        return localizedDescription
     }
 }

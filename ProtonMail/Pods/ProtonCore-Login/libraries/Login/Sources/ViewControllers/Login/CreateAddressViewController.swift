@@ -27,7 +27,7 @@ import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 protocol CreateAddressViewControllerDelegate: NavigationDelegate {
-    func userDidFinishCreatingAddress(data: LoginData)
+    func userDidFinishCreatingAddress(endLoading: @escaping () -> Void, data: LoginData)
     func userDidRequestTermsAndConditions()
 }
 
@@ -103,7 +103,7 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
             self?.showError(message: message)
         }
         viewModel.finished.bind { [weak self] data in
-            self?.delegate?.userDidFinishCreatingAddress(data: data)
+            self?.delegate?.userDidFinishCreatingAddress(endLoading: { [weak self] in self?.viewModel.isLoading.value = false }, data: data)
         }
     }
 

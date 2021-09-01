@@ -60,9 +60,9 @@ extension AuthErrors {
                     ? .invalid2FACode(message: responseError.localizedDescription)
                     : .invalidCredentials(message: responseError.localizedDescription)
             }
-            return .generic(message: responseError.localizedDescription)
+            return .generic(message: responseError.messageForTheUser)
         default:
-            return .generic(message: localizedDescription)
+            return .generic(message: messageForTheUser)
         }
     }
 
@@ -71,7 +71,7 @@ extension AuthErrors {
         case .networkingError(let responseError) where responseError.responseCode == 12106:
             return .notAvailable(message: localizedDescription)
         default:
-            return .generic(message: localizedDescription)
+            return .generic(message: messageForTheUser)
         }
     }
 
@@ -80,11 +80,11 @@ extension AuthErrors {
         case .networkingError(let responseError) where responseError.responseCode == 2011:
             return .alreadySet(message: localizedDescription)
         default:
-            return .generic(message: localizedDescription)
+            return .generic(message: messageForTheUser)
         }
     }
 
     func asCreateAddressKeysError() -> CreateAddressKeysError {
-        .generic(message: localizedDescription)
+        .generic(message: messageForTheUser)
     }
 }

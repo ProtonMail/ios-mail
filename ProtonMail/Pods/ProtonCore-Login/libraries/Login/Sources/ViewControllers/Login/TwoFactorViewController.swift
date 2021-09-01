@@ -25,7 +25,7 @@ import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 protocol TwoFactorViewControllerDelegate: NavigationDelegate & LoginStepsDelegate {
-    func twoFactorViewControllerDidFinish(data: LoginData)
+    func twoFactorViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData)
     func twoFactorViewControllerDidFail(error: LoginError)
 }
 
@@ -101,7 +101,7 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
         viewModel.finished.bind { [weak self] result in
             switch result {
             case let .done(data):
-                self?.delegate?.twoFactorViewControllerDidFinish(data: data)
+                self?.delegate?.twoFactorViewControllerDidFinish(endLoading: { [weak self] in self?.viewModel.isLoading.value = false }, data: data)
             case .mailboxPasswordNeeded:
                 self?.delegate?.mailboxPasswordNeeded()
             case let .createAddressNeeded(data):

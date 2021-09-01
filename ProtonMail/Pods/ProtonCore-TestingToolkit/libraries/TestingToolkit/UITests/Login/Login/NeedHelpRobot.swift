@@ -48,25 +48,25 @@ public final class NeedHelpRobot: CoreElements {
     
     public func forgotUsernameLink() -> NeedHelpRobot {
         staticText(forgotUsernameLabel).tap()
-        safari.staticTexts[forgotUsernamePageHeader].exists
+        _ = safari.staticTexts[forgotUsernamePageHeader].exists
         return NeedHelpRobot()
     }
     
     public func forgotPasswordLink() -> NeedHelpRobot {
         staticText(forgotPasswordLabel).tap()
-        safari.staticTexts[forgotPasswordPageHeader].exists
+        _ = safari.staticTexts[forgotPasswordPageHeader].exists
         return NeedHelpRobot()
     }
     
     public func otherSignInIssuesLink() -> NeedHelpRobot {
         staticText(otherSignInIssuesLabel).tap()
-        safari.staticTexts[commonLoginIssuesPageHeader].exists
+        _ = safari.staticTexts[commonLoginIssuesPageHeader].exists
         return NeedHelpRobot()
     }
     
     public func customerSupportLink() {
         staticText(customerSupportLabel).tap()
-        safari.staticTexts[customerSupportPageHeader].exists
+        _ = safari.staticTexts[customerSupportPageHeader].exists
     }
     
     public func goBackToSampleApp() -> NeedHelpRobot {

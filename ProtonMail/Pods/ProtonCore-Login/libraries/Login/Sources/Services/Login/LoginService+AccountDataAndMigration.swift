@@ -22,6 +22,7 @@
 import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Log
+import ProtonCore_Networking
 
 // these methods are responsible for fetching and refreshing the data: user, addresses, keys, salts etc.
 // in case we detect the need for account migration, it's also performed (if possible, otherwise process fails with error)
@@ -29,43 +30,40 @@ import ProtonCore_Log
 extension LoginService {
 
     func getAccountDataPerformingAccountMigrationIfNeeded(user: User?, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        let manager = self.manager
-
-        guard let user = user else {
-            manager.getUserInfo { result in
-                switch result {
-                case .success(let user):
-                    self.getAccountDataPerformingAccountMigrationIfNeeded(user: user, mailboxPassword: mailboxPassword, completion: completion)
-                case .failure(let error):
-                    PMLog.debug("Fetching user info with \(error)")
-                    completion(.failure(error.asLoginError()))
-                }
-            }
-            return
-        }
-
-        // first login of a private user who has not changed the default password yet
-        if user.keys.isEmpty && user.role == 1 && user.private == 1 {
-            completion(.failure(.needsFirstTimePasswordChange))
-            return
-        }
 
         switch self.minimumAccountType {
         case .username:
-            // no need to get addresses or encryption data, user info is enough
+            
+            let authCredential = authManager.getToken(bySessionUID: LoginAndSignup.sessionId)!
+            var credential = Credential(authCredential)
+            credential.scope = authManager.scopes ?? []
+            completion(.success(.finished(LoginData.credential(credential))))
+            return
+        case .external, .internal:
 
-            if let key = user.keys.first(where: { $0.primary == 1 }) ?? user.keys.first {
-                self.authManager.updateAuth(password: nil, salt: nil, privateKey: key.privateKey)
+            guard let user = user else {
+                manager.getUserInfo { result in
+                    switch result {
+                    case .success(let user):
+                        self.getAccountDataPerformingAccountMigrationIfNeeded(user: user, mailboxPassword: mailboxPassword, completion: completion)
+                    case .failure(let error):
+                        PMLog.debug("Fetching user info with \(error)")
+                        completion(.failure(error.asLoginError()))
+                    }
+                }
+                return
             }
 
-            completion(.success(.finished(LoginData(credential: self.authManager.getToken(bySessionUID: PMLogin.sessionId)!, user: user, salts: [], passphrases: [:], addresses: [], scopes: self.authManager.scopes ?? []))))
-
-        case .external, .internal:
+            // first login of a private user who has not changed the default password yet
+            if user.keys.isEmpty && user.role == 1 && user.private == 1 {
+                completion(.failure(.needsFirstTimePasswordChange))
+                return
+            }
 
             // external account used but internal needed
             // account migration needs to take place and we cannot do it automatically because user has not chosen the internal username yet
             if user.isExternal && self.minimumAccountType == .internal {
-                completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: self.authManager.getToken(bySessionUID: PMLogin.sessionId)!, user: user, mailboxPassword: mailboxPassword))))
+                completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: self.authManager.getToken(bySessionUID: LoginAndSignup.sessionId)!, user: user, mailboxPassword: mailboxPassword))))
                 return
             }
 
@@ -189,7 +187,7 @@ extension LoginService {
                                                    mailboxPassword: mailboxPassword,
                                                    completion: completion)
                 case let .failure(error):
-                    completion(.failure(.generic(message: error.localizedDescription)))
+                    completion(.failure(.generic(message: error.messageForTheUser)))
                 }
             }
 
@@ -220,7 +218,7 @@ extension LoginService {
                                                    mailboxPassword: mailboxPassword,
                                                    completion: completion)
                 case let .failure(error):
-                    completion(.failure(.generic(message: error.localizedDescription)))
+                    completion(.failure(.generic(message: error.messageForTheUser)))
                 }
             }
         }
@@ -245,7 +243,7 @@ extension LoginService {
                     self?.createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, completion: completion)
                 case let .failure(error):
                     PMLog.debug("Fetching user info with \(error)")
-                    completion(.failure(.generic(message: error.localizedDescription)))
+                    completion(.failure(.generic(message: error.messageForTheUser)))
                 }
             }
             return
@@ -371,11 +369,11 @@ extension LoginService {
                                             privateKey: key.privateKey)
             }
 
-            completion(.success(.finished(LoginData(credential: self.authManager.getToken(bySessionUID: PMLogin.sessionId)!, user: user, salts: salts, passphrases: passphrases, addresses: addresses, scopes: self.authManager.scopes ?? []))))
+            completion(.success(.finished(LoginData.userData(UserData(credential: self.authManager.getToken(bySessionUID: LoginAndSignup.sessionId)!, user: user, salts: salts, passphrases: passphrases, addresses: addresses, scopes: self.authManager.scopes ?? [])))))
 
         case let .failure(error):
             PMLog.debug("Making passphrases failed with \(error)")
-            completion(.failure(.generic(message: error.localizedDescription)))
+            completion(.failure(.generic(message: error.messageForTheUser)))
         }
     }
 }

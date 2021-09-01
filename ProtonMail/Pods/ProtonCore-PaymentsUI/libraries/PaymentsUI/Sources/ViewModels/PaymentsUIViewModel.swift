@@ -53,6 +53,14 @@ final class PaymentsUIViewModelViewModel: NSObject {
             planType = MailPlansViewModel()
         case .vpn:
             planType = VPNPlansViewModel()
+        case .mailWithoutUpgrades:
+            let planType = MailPlansViewModel()
+            planType.plansToShow.removeAll { $0 != .free }
+            self.planType = planType
+        case .vpnWithoutUpgrades:
+            let planType = VPNPlansViewModel()
+            planType.plansToShow.removeAll { $0 != .free }
+            self.planType = planType
         }
         self.planRefreshHandler = planRefreshHandler
         super.init()

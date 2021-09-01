@@ -22,10 +22,6 @@
 import Foundation
 import ProtonCore_Networking
 
-enum AccountTypeD: Int {
-    case full = 1
-}
-
 public struct UserParameters {
     public let userName: String
     public let email: String?
@@ -65,7 +61,6 @@ extension AuthService {
             ]
             var out: [String: Any] = [
                 "Username": userParameters.userName,
-                "Type": AccountTypeD.full.rawValue,
                 "Auth": auth,
                 "Payload": payload
             ]

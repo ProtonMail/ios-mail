@@ -57,19 +57,35 @@ public final class LoginNavigationViewController: UINavigationController {
 
     public func setUpShadowLessNavigationBar() {
         baseNavigationBarConfiguration()
-        navigationBar.shadowImage = .colored(with: .clear)
+        if #available(iOS 13.0, *) {
+            navigationBar.standardAppearance.shadowImage = .colored(with: .clear)
+        } else {
+            navigationBar.shadowImage = .colored(with: .clear)
+        }
     }
 
     public func setUpNavigationBarWithShadow() {
         baseNavigationBarConfiguration()
-        navigationBar.shadowImage = .colored(with: UIColorManager.Shade20)
+        if #available(iOS 13.0, *) {
+            navigationBar.standardAppearance.shadowImage = .colored(with: UIColorManager.Shade20)
+        } else {
+            navigationBar.shadowImage = .colored(with: UIColorManager.Shade20)
+        }
     }
 
     private func baseNavigationBarConfiguration() {
         let color = topViewController?.view.backgroundColor ?? .clear
         navigationBar.isTranslucent = false
-        navigationBar.setBackgroundImage(.colored(with: color), for: .default)
-        navigationBar.backgroundColor = .clear
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithTransparentBackground()
+            appearance.backgroundColor = color
+            navigationBar.standardAppearance = appearance
+            navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
+        } else {
+            navigationBar.setBackgroundImage(.colored(with: color), for: .default)
+            navigationBar.backgroundColor = .clear
+        }
     }
 }
 

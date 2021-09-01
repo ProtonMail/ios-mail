@@ -83,7 +83,7 @@ final class LoginService {
         apiService.exec(route: route) { (result: Result<AvailableDomainResponse, ResponseError>) in
             switch result {
             case .failure(let error):
-                completion(.failure(LoginError.generic(message: error.localizedDescription)))
+                completion(.failure(LoginError.generic(message: error.messageForTheUser)))
             case .success(let response):
                 completion(.success(response.domains))
             }
@@ -101,6 +101,11 @@ final class LoginService {
             PMLog.debug("No mailbox password required, finishing up")
             getAccountDataPerformingAccountMigrationIfNeeded(user: nil, mailboxPassword: mailboxPassword, completion: completion)
         case .two:
+            if minimumAccountType == .username {
+                completion(.success(.finished(LoginData.credential(credential))))
+                return
+            }
+            
             manager.getUserInfo(credential) { result in
                 switch result {
                 case let .success(user):
@@ -109,16 +114,6 @@ final class LoginService {
                         completion(.success(.askSecondPassword))
                         return
                     }
-
-                    if self.minimumAccountType == .username {
-                        if let key = user.keys.first(where: { $0.primary == 1 }) ?? user.keys.first {
-                            self.authManager.updateAuth(password: nil, salt: nil, privateKey: key.privateKey)
-                        }
-
-                        completion(.success(.finished(LoginData(credential: self.authManager.getToken(bySessionUID: PMLogin.sessionId)!, user: user, salts: [], passphrases: [:], addresses: [], scopes: self.authManager.scopes ?? []))))
-                        return
-                    }
-
                     self.getAccountDataPerformingAccountMigrationIfNeeded(user: user, mailboxPassword: mailboxPassword, completion: completion)
                 case let .failure(error):
                     PMLog.debug("Getting user info failed with \(error)")

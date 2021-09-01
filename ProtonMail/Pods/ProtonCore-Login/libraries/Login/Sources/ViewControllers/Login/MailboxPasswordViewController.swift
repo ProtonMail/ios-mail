@@ -32,7 +32,7 @@ protocol MailboxPasswordViewControllerInStandaloneFlowDelegate: AnyObject {
 
 protocol MailboxPasswordViewControllerDelegate: NavigationDelegate & LoginStepsDelegate {
     func userDidRequestPasswordReset()
-    func mailboxPasswordViewControllerDidFinish(data: LoginData)
+    func mailboxPasswordViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData)
     func mailboxPasswordViewControllerDidFail(error: LoginError)
 }
 
@@ -102,7 +102,7 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
         viewModel.finished.bind { [weak self] result in
             switch result {
             case let .done(data):
-                self?.delegate?.mailboxPasswordViewControllerDidFinish(data: data)
+                self?.delegate?.mailboxPasswordViewControllerDidFinish(endLoading: { [weak self] in self?.viewModel.isLoading.value = false }, data: data)
             case let .createAddressNeeded(data):
                 self?.delegate?.createAddressNeeded(data: data)
             }

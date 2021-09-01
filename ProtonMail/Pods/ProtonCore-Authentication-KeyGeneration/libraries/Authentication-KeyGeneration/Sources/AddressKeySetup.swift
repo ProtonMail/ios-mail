@@ -19,9 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(Crypto_VPN)
+import Crypto_VPN
+#elseif canImport(Crypto)
 import Crypto
+#endif
 import Foundation
-import OpenPGP
 import ProtonCore_Authentication
 
 final class AddressKeySetup {
@@ -38,13 +41,11 @@ final class AddressKeySetup {
         let hashedPassword = PasswordHash.hashPassword(password, salt: salt)
         
         // new openpgp instance
-        let openPGP = PMNOpenPgp.createInstance()!
-        let timeinterval = CryptoGetUnixTime()
-        let int32Value = NSNumber(value: timeinterval).int32Value
-        let key = openPGP.generateKey(keyName, domain: email,
-                                      passphrase: hashedPassword,
-                                      bits: Int32(2048), time: int32Value)
-        let armoredKey = key.privateKey
+        var error: NSError?
+        let armoredKey = HelperGenerateKey(keyName, email, hashedPassword.data(using: .utf8), "x25519", 0, &error)
+        if let err = error {
+            throw err
+        }
         return GeneratedAddressKey(password: hashedPassword, armoredKey: armoredKey)
     }
 

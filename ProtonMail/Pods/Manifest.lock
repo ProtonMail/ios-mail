@@ -79,142 +79,177 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.13.1):
     - PromiseKit/CorePromise
-  - ProtonCore-AccountSwitcher (2.4.0):
-    - ProtonCore-CoreTranslation (= 2.4.0)
-    - ProtonCore-Log (= 2.4.0)
-    - ProtonCore-UIFoundations (= 2.4.0)
-    - ProtonCore-Utilities (= 2.4.0)
-  - ProtonCore-APIClient (2.4.0):
-    - ProtonCore-DataModel (= 2.4.0)
-    - ProtonCore-Networking (= 2.4.0)
-    - ProtonCore-Services (= 2.4.0)
-  - ProtonCore-Authentication (2.4.0):
-    - ProtonCore-APIClient (= 2.4.0)
-    - ProtonCore-Crypto (= 2.4.0)
-    - ProtonCore-Services (= 2.4.0)
-  - ProtonCore-Authentication-KeyGeneration (2.4.0):
-    - ProtonCore-Authentication (= 2.4.0)
-    - ProtonCore-Crypto (= 2.4.0)
-    - ProtonCore-OpenPGP (= 2.4.0)
-  - ProtonCore-Challenge (2.4.0):
-    - ProtonCore-Foundations (= 2.4.0)
-  - ProtonCore-Common (2.4.0):
-    - ProtonCore-Services (= 2.4.0)
-    - ProtonCore-UIFoundations (= 2.4.0)
-  - ProtonCore-CoreTranslation (2.4.0)
-  - ProtonCore-Crypto (2.4.0)
-  - ProtonCore-DataModel (2.4.0):
-    - ProtonCore-Utilities (= 2.4.0)
-  - ProtonCore-Doh (2.4.0):
-    - ProtonCore-Log (= 2.4.0)
-  - ProtonCore-ForceUpgrade (2.4.0):
-    - ProtonCore-CoreTranslation (= 2.4.0)
-    - ProtonCore-Networking (= 2.4.0)
-    - ProtonCore-UIFoundations (= 2.4.0)
-  - ProtonCore-Foundations (2.4.0)
-  - ProtonCore-HumanVerification (2.4.0):
-    - ProtonCore-APIClient (= 2.4.0)
-    - ProtonCore-CoreTranslation (= 2.4.0)
-    - ProtonCore-Foundations (= 2.4.0)
-    - ProtonCore-UIFoundations (= 2.4.0)
-    - ProtonCore-Utilities (= 2.4.0)
-  - ProtonCore-Keymaker (2.4.0):
+  - ProtonCore-AccountSwitcher (2.5.0):
+    - ProtonCore-CoreTranslation (= 2.5.0)
+    - ProtonCore-Log (= 2.5.0)
+    - ProtonCore-UIFoundations (= 2.5.0)
+    - ProtonCore-Utilities (= 2.5.0)
+  - ProtonCore-APIClient (2.5.0):
+    - ProtonCore-DataModel (= 2.5.0)
+    - ProtonCore-Networking (= 2.5.0)
+    - ProtonCore-Services (= 2.5.0)
+  - ProtonCore-Authentication (2.5.0):
+    - ProtonCore-APIClient (= 2.5.0)
+    - ProtonCore-Authentication/UsingCrypto (= 2.5.0)
+    - ProtonCore-Services (= 2.5.0)
+  - ProtonCore-Authentication-KeyGeneration (2.5.0):
+    - ProtonCore-Authentication-KeyGeneration/UsingCrypto (= 2.5.0)
+    - ProtonCore-OpenPGP (= 2.5.0)
+  - ProtonCore-Authentication-KeyGeneration/UsingCrypto (2.5.0):
+    - ProtonCore-Authentication/UsingCrypto (= 2.5.0)
+    - ProtonCore-Crypto (= 2.5.0)
+    - ProtonCore-OpenPGP (= 2.5.0)
+  - ProtonCore-Authentication/UsingCrypto (2.5.0):
+    - ProtonCore-APIClient (= 2.5.0)
+    - ProtonCore-Crypto (= 2.5.0)
+    - ProtonCore-Services (= 2.5.0)
+  - ProtonCore-Challenge (2.5.0):
+    - ProtonCore-Foundations (= 2.5.0)
+  - ProtonCore-Common (2.5.0):
+    - ProtonCore-Services (= 2.5.0)
+    - ProtonCore-UIFoundations (= 2.5.0)
+  - ProtonCore-CoreTranslation (2.5.0)
+  - ProtonCore-Crypto (2.5.0)
+  - ProtonCore-DataModel (2.5.0):
+    - ProtonCore-Utilities (= 2.5.0)
+  - ProtonCore-Doh (2.5.0):
+    - ProtonCore-Log (= 2.5.0)
+  - ProtonCore-ForceUpgrade (2.5.0):
+    - ProtonCore-CoreTranslation (= 2.5.0)
+    - ProtonCore-Networking (= 2.5.0)
+    - ProtonCore-UIFoundations (= 2.5.0)
+  - ProtonCore-Foundations (2.5.0)
+  - ProtonCore-HumanVerification (2.5.0):
+    - ProtonCore-APIClient (= 2.5.0)
+    - ProtonCore-CoreTranslation (= 2.5.0)
+    - ProtonCore-Foundations (= 2.5.0)
+    - ProtonCore-UIFoundations (= 2.5.0)
+    - ProtonCore-Utilities (= 2.5.0)
+  - ProtonCore-Keymaker (2.5.0):
     - EllipticCurveKeyPair (~> 2.0)
-    - ProtonCore-Crypto (= 2.4.0)
-  - ProtonCore-Log (2.4.0)
-  - ProtonCore-Login (2.4.0):
+    - ProtonCore-Keymaker/UsingCrypto (= 2.5.0)
+  - ProtonCore-Keymaker/UsingCrypto (2.5.0):
+    - EllipticCurveKeyPair (~> 2.0)
+    - ProtonCore-Crypto (= 2.5.0)
+  - ProtonCore-Log (2.5.0)
+  - ProtonCore-Login (2.5.0):
     - lottie-ios
-    - ProtonCore-Authentication (= 2.4.0)
-    - ProtonCore-Authentication-KeyGeneration (= 2.4.0)
-    - ProtonCore-Challenge (= 2.4.0)
-    - ProtonCore-CoreTranslation (= 2.4.0)
-    - ProtonCore-Crypto (= 2.4.0)
-    - ProtonCore-DataModel (= 2.4.0)
-    - ProtonCore-Foundations (= 2.4.0)
-    - ProtonCore-HumanVerification (= 2.4.0)
-    - ProtonCore-Log (= 2.4.0)
-    - ProtonCore-OpenPGP (= 2.4.0)
-    - ProtonCore-Payments (= 2.4.0)
-    - ProtonCore-PaymentsUI (= 2.4.0)
-    - ProtonCore-UIFoundations (= 2.4.0)
+    - ProtonCore-Challenge (= 2.5.0)
+    - ProtonCore-CoreTranslation (= 2.5.0)
+    - ProtonCore-DataModel (= 2.5.0)
+    - ProtonCore-Foundations (= 2.5.0)
+    - ProtonCore-HumanVerification (= 2.5.0)
+    - ProtonCore-Log (= 2.5.0)
+    - ProtonCore-Login/UsingCrypto (= 2.5.0)
+    - ProtonCore-OpenPGP (= 2.5.0)
+    - ProtonCore-UIFoundations (= 2.5.0)
     - TrustKit
-  - ProtonCore-Networking (2.4.0):
-    - ProtonCore-Networking/AFNetworking (= 2.4.0)
-  - ProtonCore-Networking/AFNetworking (2.4.0):
+  - ProtonCore-Login/UsingCrypto (2.5.0):
+    - lottie-ios
+    - ProtonCore-Authentication-KeyGeneration/UsingCrypto (= 2.5.0)
+    - ProtonCore-Authentication/UsingCrypto (= 2.5.0)
+    - ProtonCore-Challenge (= 2.5.0)
+    - ProtonCore-CoreTranslation (= 2.5.0)
+    - ProtonCore-Crypto (= 2.5.0)
+    - ProtonCore-DataModel (= 2.5.0)
+    - ProtonCore-Foundations (= 2.5.0)
+    - ProtonCore-HumanVerification (= 2.5.0)
+    - ProtonCore-Log (= 2.5.0)
+    - ProtonCore-OpenPGP (= 2.5.0)
+    - ProtonCore-Payments/UsingCrypto (= 2.5.0)
+    - ProtonCore-PaymentsUI/UsingCrypto (= 2.5.0)
+    - ProtonCore-UIFoundations (= 2.5.0)
+    - TrustKit
+  - ProtonCore-Networking (2.5.0):
+    - ProtonCore-CoreTranslation (= 2.5.0)
+    - ProtonCore-Networking/AFNetworking (= 2.5.0)
+  - ProtonCore-Networking/AFNetworking (2.5.0):
     - AFNetworking (~> 4.0)
+    - ProtonCore-CoreTranslation (= 2.5.0)
     - TrustKit
-  - ProtonCore-Networking/Alamofire (2.4.0):
+  - ProtonCore-Networking/Alamofire (2.5.0):
     - Alamofire (~> 5.2)
+    - ProtonCore-CoreTranslation (= 2.5.0)
     - TrustKit
-  - ProtonCore-OpenPGP (2.4.0)
-  - ProtonCore-Payments (2.4.0):
+  - ProtonCore-OpenPGP (2.5.0)
+  - ProtonCore-Payments (2.5.0):
     - AwaitKit (~> 5.2.0)
-    - ProtonCore-APIClient (= 2.4.0)
-    - ProtonCore-Authentication (= 2.4.0)
-    - ProtonCore-CoreTranslation (= 2.4.0)
-    - ProtonCore-Foundations (= 2.4.0)
-    - ProtonCore-Log (= 2.4.0)
-    - ProtonCore-Services (= 2.4.0)
-    - ProtonCore-SRP (= 2.4.0)
+    - ProtonCore-APIClient (= 2.5.0)
+    - ProtonCore-CoreTranslation (= 2.5.0)
+    - ProtonCore-Foundations (= 2.5.0)
+    - ProtonCore-Log (= 2.5.0)
+    - ProtonCore-Payments/UsingCrypto (= 2.5.0)
+    - ProtonCore-Services (= 2.5.0)
+    - ProtonCore-SRP (= 2.5.0)
     - ReachabilitySwift (~> 5.0.0)
-  - ProtonCore-PaymentsUI (2.4.0):
-    - ProtonCore-CoreTranslation (= 2.4.0)
-    - ProtonCore-Foundations (= 2.4.0)
-    - ProtonCore-Log (= 2.4.0)
-    - ProtonCore-Payments (= 2.4.0)
-    - ProtonCore-UIFoundations (= 2.4.0)
-  - ProtonCore-Services (2.4.0):
+  - ProtonCore-Payments/UsingCrypto (2.5.0):
+    - AwaitKit (~> 5.2.0)
+    - ProtonCore-APIClient (= 2.5.0)
+    - ProtonCore-Authentication/UsingCrypto (= 2.5.0)
+    - ProtonCore-CoreTranslation (= 2.5.0)
+    - ProtonCore-Foundations (= 2.5.0)
+    - ProtonCore-Log (= 2.5.0)
+    - ProtonCore-Services (= 2.5.0)
+    - ProtonCore-SRP (= 2.5.0)
+    - ReachabilitySwift (~> 5.0.0)
+  - ProtonCore-PaymentsUI/UsingCrypto (2.5.0):
+    - ProtonCore-CoreTranslation (= 2.5.0)
+    - ProtonCore-Foundations (= 2.5.0)
+    - ProtonCore-Log (= 2.5.0)
+    - ProtonCore-Payments/UsingCrypto (= 2.5.0)
+    - ProtonCore-UIFoundations (= 2.5.0)
+  - ProtonCore-Services (2.5.0):
     - AwaitKit (~> 5.2.0)
     - PromiseKit (~> 6.0)
-    - ProtonCore-DataModel (= 2.4.0)
-    - ProtonCore-Doh (= 2.4.0)
-    - ProtonCore-Log (= 2.4.0)
-    - ProtonCore-Networking (= 2.4.0)
-    - ProtonCore-Utilities (= 2.4.0)
+    - ProtonCore-DataModel (= 2.5.0)
+    - ProtonCore-Doh (= 2.5.0)
+    - ProtonCore-Log (= 2.5.0)
+    - ProtonCore-Networking (= 2.5.0)
+    - ProtonCore-Utilities (= 2.5.0)
     - TrustKit
-  - ProtonCore-SRP (2.4.0)
-  - ProtonCore-TestingToolkit/UITests/HumanVerification (2.4.0):
+  - ProtonCore-SRP (2.5.0)
+  - ProtonCore-TestingToolkit/UITests/HumanVerification (2.5.0):
     - pmtest
-    - ProtonCore-CoreTranslation (= 2.4.0)
-  - ProtonCore-TestingToolkit/UITests/Login (2.4.0):
+    - ProtonCore-CoreTranslation (= 2.5.0)
+  - ProtonCore-TestingToolkit/UITests/Login (2.5.0):
     - pmtest
-    - ProtonCore-CoreTranslation (= 2.4.0)
-  - ProtonCore-TestingToolkit/UnitTests/Authentication (2.4.0):
-    - ProtonCore-Authentication (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Services (= 2.4.0)
-  - ProtonCore-TestingToolkit/UnitTests/Core (2.4.0)
-  - ProtonCore-TestingToolkit/UnitTests/DataModel (2.4.0):
-    - ProtonCore-DataModel (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.4.0)
-  - ProtonCore-TestingToolkit/UnitTests/Doh (2.4.0):
-    - ProtonCore-Doh (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.4.0)
-  - ProtonCore-TestingToolkit/UnitTests/HumanVerification (2.4.0):
-    - ProtonCore-HumanVerification (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.4.0)
-  - ProtonCore-TestingToolkit/UnitTests/Login (2.4.0):
-    - ProtonCore-Login (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Authentication (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/HumanVerification (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Services (= 2.4.0)
-  - ProtonCore-TestingToolkit/UnitTests/Networking (2.4.0):
-    - ProtonCore-Networking (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.4.0)
-  - ProtonCore-TestingToolkit/UnitTests/Services (2.4.0):
-    - ProtonCore-Services (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Doh (= 2.4.0)
-    - ProtonCore-TestingToolkit/UnitTests/Networking (= 2.4.0)
-  - ProtonCore-UIFoundations (2.4.0):
-    - ProtonCore-CoreTranslation (= 2.4.0)
-    - ProtonCore-Foundations (= 2.4.0)
-    - ProtonCore-Log (= 2.4.0)
-  - ProtonCore-Utilities (2.4.0):
-    - ProtonCore-Log (= 2.4.0)
+    - ProtonCore-CoreTranslation (= 2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCrypto (2.5.0):
+    - ProtonCore-Authentication/UsingCrypto (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Services (= 2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/Core (2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/DataModel (2.5.0):
+    - ProtonCore-DataModel (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/Doh (2.5.0):
+    - ProtonCore-Doh (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/HumanVerification (2.5.0):
+    - ProtonCore-HumanVerification (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto (2.5.0):
+    - ProtonCore-Login/UsingCrypto (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCrypto (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/HumanVerification (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Services (= 2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/Networking (2.5.0):
+    - ProtonCore-Networking (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/Services (2.5.0):
+    - ProtonCore-Services (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Core (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/DataModel (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Doh (= 2.5.0)
+    - ProtonCore-TestingToolkit/UnitTests/Networking (= 2.5.0)
+  - ProtonCore-UIFoundations (2.5.0):
+    - ProtonCore-CoreTranslation (= 2.5.0)
+    - ProtonCore-Foundations (= 2.5.0)
+    - ProtonCore-Log (= 2.5.0)
+  - ProtonCore-Utilities (2.5.0):
+    - ProtonCore-Log (= 2.5.0)
   - ReachabilitySwift (5.0.0)
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
@@ -239,29 +274,29 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift (= 9.0.0)
   - "pmtest (from `git@gitlab.protontech.ch:apple/shared/pmtestautomation.git`, branch `master`)"
   - PromiseKit (= 6.13.1)
-  - "ProtonCore-AccountSwitcher (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-Authentication (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-Authentication-KeyGeneration (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-Challenge (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-Common (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-CoreTranslation (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-Crypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-ForceUpgrade (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-HumanVerification (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-Keymaker (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-Log (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-Networking/Alamofire (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-OpenPGP (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-Payments (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-SRP (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-TestingToolkit/UITests/HumanVerification (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-TestingToolkit/UITests/Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-TestingToolkit/UnitTests/Core (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-TestingToolkit/UnitTests/Doh (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-TestingToolkit/UnitTests/Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-TestingToolkit/UnitTests/Services (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
-  - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, commit `07fc0e4fa250872c8df130f3e`)"
+  - ProtonCore-AccountSwitcher (= 2.5.0)
+  - ProtonCore-Authentication (= 2.5.0)
+  - ProtonCore-Authentication-KeyGeneration (= 2.5.0)
+  - ProtonCore-Challenge (= 2.5.0)
+  - ProtonCore-Common (= 2.5.0)
+  - ProtonCore-CoreTranslation (= 2.5.0)
+  - ProtonCore-Crypto (= 2.5.0)
+  - ProtonCore-ForceUpgrade (= 2.5.0)
+  - ProtonCore-HumanVerification (= 2.5.0)
+  - ProtonCore-Keymaker (= 2.5.0)
+  - ProtonCore-Log (= 2.5.0)
+  - ProtonCore-Login (= 2.5.0)
+  - ProtonCore-Networking/Alamofire (= 2.5.0)
+  - ProtonCore-OpenPGP (= 2.5.0)
+  - ProtonCore-Payments (= 2.5.0)
+  - ProtonCore-SRP (= 2.5.0)
+  - ProtonCore-TestingToolkit/UITests/HumanVerification (= 2.5.0)
+  - ProtonCore-TestingToolkit/UITests/Login (= 2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/Core (= 2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/Doh (= 2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto (= 2.5.0)
+  - ProtonCore-TestingToolkit/UnitTests/Services (= 2.5.0)
+  - ProtonCore-UIFoundations (= 2.5.0)
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `4.5.0`)
   - SideMenuSwift (= 2.0.6)
   - SkeletonView (= 1.11.0)
@@ -271,12 +306,30 @@ DEPENDENCIES:
 
 SPEC REPOS:
   "git@gitlab.protontech.ch:apple/shared/protoncore.git":
+    - ProtonCore-AccountSwitcher
     - ProtonCore-APIClient
+    - ProtonCore-Authentication
+    - ProtonCore-Authentication-KeyGeneration
+    - ProtonCore-Challenge
+    - ProtonCore-Common
+    - ProtonCore-CoreTranslation
+    - ProtonCore-Crypto
     - ProtonCore-DataModel
     - ProtonCore-Doh
+    - ProtonCore-ForceUpgrade
     - ProtonCore-Foundations
+    - ProtonCore-HumanVerification
+    - ProtonCore-Keymaker
+    - ProtonCore-Log
+    - ProtonCore-Login
+    - ProtonCore-Networking
+    - ProtonCore-OpenPGP
+    - ProtonCore-Payments
     - ProtonCore-PaymentsUI
     - ProtonCore-Services
+    - ProtonCore-SRP
+    - ProtonCore-TestingToolkit
+    - ProtonCore-UIFoundations
     - ProtonCore-Utilities
   trunk:
     - AFNetworking
@@ -303,60 +356,6 @@ EXTERNAL SOURCES:
   pmtest:
     :branch: master
     :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
-  ProtonCore-AccountSwitcher:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Authentication:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Authentication-KeyGeneration:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Challenge:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Common:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-CoreTranslation:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Crypto:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-ForceUpgrade:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-HumanVerification:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Keymaker:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Log:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Login:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Networking:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-OpenPGP:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Payments:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-SRP:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-TestingToolkit:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-UIFoundations:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 4.5.0
@@ -371,60 +370,6 @@ CHECKOUT OPTIONS:
   pmtest:
     :commit: 579ef5f66deea4231784614d936956982f53ee30
     :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
-  ProtonCore-AccountSwitcher:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Authentication:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Authentication-KeyGeneration:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Challenge:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Common:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-CoreTranslation:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Crypto:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-ForceUpgrade:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-HumanVerification:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Keymaker:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Log:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Login:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Networking:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-OpenPGP:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-Payments:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-SRP:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-TestingToolkit:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  ProtonCore-UIFoundations:
-    :commit: 07fc0e4fa250872c8df130f3e
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 4.5.0
@@ -450,30 +395,30 @@ SPEC CHECKSUMS:
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
   pmtest: cb339e22597f14ee4aba80b8c7d850018fb44496
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
-  ProtonCore-AccountSwitcher: 88ec2392120c8b81bc730c2013491fb4b8ce1f1d
-  ProtonCore-APIClient: d32b49784c93dbcdf8727c02c7d56dc3b8ef53b3
-  ProtonCore-Authentication: 4c9a9bcbd2f81dd95722be7dcea42be55e203d4d
-  ProtonCore-Authentication-KeyGeneration: 432255dd9b5aa5362d59d491adcd8baf0f11fbae
-  ProtonCore-Challenge: 949db64be8bd0ccd8e447d1e7a3c8e3e05087097
-  ProtonCore-Common: 099c7a818f218645fbe7c22ec94c74a4c1283de3
-  ProtonCore-CoreTranslation: ac5571ab5b46c33f39990689b5d934b160632a7b
-  ProtonCore-Crypto: ff56ae9e8f2cfd1ab581ffef8db6a83045fd488e
+  ProtonCore-AccountSwitcher: 5507361b5125aef517d55bd40bd158d6f4e42991
+  ProtonCore-APIClient: 9b0f62434c41cf35463c6f07f7535e516f439b9b
+  ProtonCore-Authentication: 03b5f2db12081004341134e505f5b79c7ce13d82
+  ProtonCore-Authentication-KeyGeneration: fdbe2277f1200f4d1ba88a8fc9bcfcd4d629a105
+  ProtonCore-Challenge: bd935427f93890db353a444588361910b965de66
+  ProtonCore-Common: fa4572539b9d17239e968088ee5c6c28e433b333
+  ProtonCore-CoreTranslation: 144d6056b99726675c4fa7d0ee082b2c040ca57f
+  ProtonCore-Crypto: da4bfd4c95c731b623edfabd956ce6dd81f72528
   ProtonCore-DataModel: 824f9a92eb9194d4d177e89da332d73cfcc9cad7
   ProtonCore-Doh: 98f9e0df440fc3bba335b36d36db07ede1df2bf1
-  ProtonCore-ForceUpgrade: d40f480ab8fd1794d5faa4412aa27d629c6d88f4
+  ProtonCore-ForceUpgrade: 0e7843321c7947d3dab234f5f76553c4695a3aaf
   ProtonCore-Foundations: 9c9278ee52e908bd552facc587c032e4af9f558f
-  ProtonCore-HumanVerification: e05409005c2382565fff0e0550c6930501b0ebe2
-  ProtonCore-Keymaker: 6354e5ba2c4b7c43777b9089595dbe2e1ed0f2ef
-  ProtonCore-Log: cd5d90c4bb701ddb90fdc32cf9e4e2e592ce8ec4
-  ProtonCore-Login: 97535e0326d3fe67a776c61f77ca57d7523e569e
-  ProtonCore-Networking: 2e40f1913bedec5f5a88944d9634f6db277a21c4
-  ProtonCore-OpenPGP: 772b98afa6f9576f2d38d67a16e029f83a3ad875
-  ProtonCore-Payments: e4a4d71782c701db99e18b110530421ad8efb5ba
-  ProtonCore-PaymentsUI: e930c75b63a19ee1facb153379d9e1abf413e8de
+  ProtonCore-HumanVerification: 2356d1b091e9e409842e16cb84336b179ca00714
+  ProtonCore-Keymaker: de32821f4d952540df0d9d65a1652b3f5007c9b5
+  ProtonCore-Log: e711c2314bc1638fc7c16cef0ce12f6df3023ddc
+  ProtonCore-Login: 76ef9ba8534fe5354db769a838feba38002cadec
+  ProtonCore-Networking: 502ace3b797a5375df276565b76b2e6e8dbf5f2a
+  ProtonCore-OpenPGP: e2914f0994c15a66be4b6dea87553098c3ab74f6
+  ProtonCore-Payments: 4e2e2533fc6a654a01ca0d1b2b1de5b0f1ced6f6
+  ProtonCore-PaymentsUI: e658f9bb7914793bf7860f239db548e306d59e87
   ProtonCore-Services: 76a927e5358619b2bc3bb50b97004538cdc42f8e
-  ProtonCore-SRP: e79844b9a93689d7c5e61a904cb228b5c4e6d7f7
-  ProtonCore-TestingToolkit: a0f719535163cd03ed27201b91751f2211412d72
-  ProtonCore-UIFoundations: c2ebf3dbee788b39d1b13bec42c3b243103cb8f6
+  ProtonCore-SRP: decfb41f19b768173e92f8812d03c312bc8f5813
+  ProtonCore-TestingToolkit: ac41c26c421fe065ecf7cb0396c5610bff5230b0
+  ProtonCore-UIFoundations: 7a72efabf713b72d177d59185dd3919a406b40ec
   ProtonCore-Utilities: d4abe182ff9489dbd2f434aad2ad1b491624a465
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
@@ -485,6 +430,6 @@ SPEC CHECKSUMS:
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
 
-PODFILE CHECKSUM: d6818e529533531d2436b5531a34c537e23746d3
+PODFILE CHECKSUM: 25ebce51ced466256211899257bcc793679d4b51
 
 COCOAPODS: 1.10.1

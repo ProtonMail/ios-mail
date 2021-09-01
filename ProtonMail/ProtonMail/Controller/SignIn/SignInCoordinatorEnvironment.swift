@@ -27,7 +27,7 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 struct SignInCoordinatorEnvironment {
-    typealias LoginCreationClosure = (String, AccountType, SignupMode, SignupPasswordRestrictions, Bool) -> LoginInterface
+    typealias LoginCreationClosure = (String, AccountType, SignupMode, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
 
     let services: ServiceFactory
     let doh: DoH
@@ -67,15 +67,15 @@ extension SignInCoordinatorEnvironment {
                      unlockIfRememberedCredentials: services.get(by: UnlockManager.self)
                         .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
                      loginCreationClosure: { appName, minimumAccountType, signupMode, signupPasswordRestrictions, isCloseButtonAvailable in
-                        PMLogin(appName: appName,
-                                doh: doh,
-                                apiServiceDelegate: apiServiceDelegate,
-                                forceUpgradeDelegate: forceUpgradeDelegate,
-                                minimumAccountType: minimumAccountType,
-                                signupMode: signupMode,
-                                signupPasswordRestrictions: signupPasswordRestrictions,
-                                isCloseButtonAvailable: isCloseButtonAvailable,
-                                isPlanSelectorAvailable: true)
+                        LoginAndSignup(appName: appName,
+                                       doh: doh,
+                                       apiServiceDelegate: apiServiceDelegate,
+                                       forceUpgradeDelegate: forceUpgradeDelegate,
+                                       minimumAccountType: minimumAccountType,
+                                       signupMode: signupMode,
+                                       signupPasswordRestrictions: signupPasswordRestrictions,
+                                       isCloseButtonAvailable: isCloseButtonAvailable,
+                                       planTypes: .mail)
                      },
                      shouldShowAlertOnError: true
         )
