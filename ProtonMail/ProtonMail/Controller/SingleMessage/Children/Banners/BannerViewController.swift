@@ -250,8 +250,7 @@ class BannerViewController: UIViewController {
             viewToAdd = bannerContainerView
         }
         let indexToInsert = findIndexToInsert(type)
-
-        containerView.insertArrangedSubview(viewToAdd, at: indexToInsert)
+        containerView.insertWithFadeInAnimation(subview: viewToAdd, at: indexToInsert)
         displayedBanners[type] = viewToAdd
     }
 
@@ -328,4 +327,14 @@ private extension Dictionary where Key == BannerType, Value == UIView {
         keys.sorted(by: { $0.order > $1.order })
     }
 
+}
+
+private extension UIStackView {
+    func insertWithFadeInAnimation(subview: UIView, at index: Int) {
+        subview.alpha = 0.0
+        insertArrangedSubview(subview, at: index)
+        UIView.animate(withDuration: 0.15, delay: 0.2, options: .curveEaseInOut) {
+            subview.alpha = 1.0
+        }
+    }
 }
