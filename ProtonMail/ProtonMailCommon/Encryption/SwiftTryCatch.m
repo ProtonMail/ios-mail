@@ -48,7 +48,11 @@
         return YES;
     }
     @catch (NSException *exception) {
-        *error = [[NSError alloc] initWithDomain:exception.name code:1000000 userInfo:exception.userInfo];
+        if (exception.name != NULL) {
+            *error = [[NSError alloc] initWithDomain:exception.name code:1000000 userInfo:exception.userInfo];
+        } else {
+            *error = [[NSError alloc] initWithDomain:@"ExceptionInObjC" code:1000000 userInfo:exception.userInfo];
+        }
     }
 }
 

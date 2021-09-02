@@ -184,6 +184,9 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
             self.setPresentationStyleForSelfController(self,
                                                        presentingController: popup,
                                                        style: .overFullScreen)
+            popup.reloadAllContact = { [weak self] in
+                self?.tableView.reloadData()
+            }
         default:
             break
         }

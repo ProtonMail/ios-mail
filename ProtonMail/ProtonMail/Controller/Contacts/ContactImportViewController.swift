@@ -43,6 +43,8 @@ class ContactImportViewController: UIViewController {
     private var cancelled : Bool = false
     private var showedCancel : Bool = false
     private var finished : Bool = false
+
+    var reloadAllContact: (() -> Void)?
     
     // MARK: - fetch controller
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
@@ -122,6 +124,7 @@ class ContactImportViewController: UIViewController {
                 if isOffline {
                     LocalString._contacts_saved_offline_hint.alertToastBottom()
                 }
+                self.reloadAllContact?()
             })
             
             if self.showedCancel {
@@ -139,16 +142,20 @@ class ContactImportViewController: UIViewController {
                     self.retrieveContactsWithStore(store: store)
                 } else {
                     {"Contacts access is not authorized".alertToast()} ~> .main
+                    self.dismiss()
                 }
             })
         case .authorized:
             self.retrieveContactsWithStore(store: store)
         case .denied:
             {"Contacts access denied, please allow access from settings".alertToast()} ~> .main
+            self.dismiss()
         case .restricted:
             {"The application is not authorized to access contact data".alertToast()} ~> .main
+            self.dismiss()
         @unknown default:
             {"Contacts access denied, please allow access from settings".alertToast()} ~> .main
+            self.dismiss()
         }
     }
     
@@ -178,6 +185,10 @@ class ContactImportViewController: UIViewController {
                     self?.messageLabel.text = error.localizedDescription
                 }
                 self?.dismiss()
+            }
+        }, disableCancel: { [weak self] in
+            DispatchQueue.main.async {
+                self?.cancelButton.isEnabled = false
             }
         })
     }

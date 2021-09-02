@@ -644,10 +644,11 @@ class ContactDataService: Service, HasLocalStorage {
 
 // MRAK: Queue related
 extension ContactDataService {
-    func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], completion: ContactAddComplete?) {
+    func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail]) -> NSError? {
         let context = self.coreDataService.operationContext
         let userID = self.userID
-        context.perform { [weak self] in
+        var error: NSError?
+        context.performAndWait { [weak self] in
             guard let self = self else { return }
             do {
                 let contact = try Contact.makeTempContact(context: context,
@@ -655,20 +656,20 @@ extension ContactDataService {
                                                           name: name,
                                                           cardDatas: cardDatas,
                                                           emails: emails)
-                if let error = context.saveUpstreamIfNeeded() {
-                    completion?(nil, error)
+                if let err = context.saveUpstreamIfNeeded() {
+                    error = err
                     return
                 }
                 let objectID = contact.objectID.uriRepresentation().absoluteString
                 let action: MessageAction = .addContact(objectID: objectID,
                                                         cardDatas: cardDatas)
-                let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+                let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
                 _ = self.queueManager?.addTask(task)
-                completion?(nil, nil)
             } catch {
-                completion?(nil, error as NSError)
+                return
             }
         }
+        return error
     }
 
     func queueUpdate(objectID: NSManagedObjectID, contactID: String, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?) {
@@ -734,7 +735,7 @@ extension ContactDataService {
         }
     }
 
-    func queueImport(contacts: [CNContact], existedContact: [Contact], userKey: Key, mailboxPassword: String, progress: ((Float?, String?) -> Void)?, dismiss: @escaping ((Error?) -> Void)) {
+    func queueImport(contacts: [CNContact], existedContact: [Contact], userKey: Key, mailboxPassword: String, progress: ((Float?, String?) -> Void)?, dismiss: @escaping ((Error?) -> Void), disableCancel: (() -> Void)?) {
         let task = BlockOperation()
         task.addExecutionBlock { [weak self] in
             guard let self = self else { return }
@@ -744,6 +745,13 @@ extension ContactDataService {
                                                                       userKey: userKey,
                                                                       mailboxPassword: mailboxPassword,
                                                                       progress: progress)
+
+                guard self.contactImportTask?.isCancelled == false else {
+                    progress?(nil, LocalString._contacts_cancelling_title)
+                    dismiss(nil)
+                    return
+                }
+
                 guard !cardDatas.isEmpty,
                       cardDatas.count == names.count,
                       cardDatas.count == definedMails.count else {
@@ -752,17 +760,22 @@ extension ContactDataService {
                     return
                 }
 
-                if self.contactImportTask?.isCancelled ?? true {
-                    progress?(nil, LocalString._contacts_cancelling_title)
-                    return
+                CoreDataService.shouldIgnoreContactUpdateInMainContext = true
+                defer {
+                    CoreDataService.shouldIgnoreContactUpdateInMainContext = false
+                    CoreDataService.shared.operationContext.refreshAllObjects()
+                    CoreDataService.shared.mainContext.refreshAllObjects()
                 }
+
+                disableCancel?()
+
                 let total = cardDatas.count
                 progress?(0, "Uploading contacts. 0/\(total)")
                 for (index, cardData) in cardDatas.enumerated() {
-                    self.queueAddContact(cardDatas: cardData,
-                                         name: names[index],
-                                         emails: definedMails[index]) { _, error in
-                        error?.localizedFailureReason?.alertToastBottom()
+                    if let error = self.queueAddContact(cardDatas: cardData,
+                                                        name: names[index],
+                                                        emails: definedMails[index]) {
+                        error.localizedFailureReason?.alertToastBottom()
                     }
                     let offset = Float(index) / Float(total)
                     progress?(offset, "Uploading contacts. \(index)/\(total)")
