@@ -652,6 +652,9 @@
 "Conversation mode" = "Mode de conversa";
 
 /* Title */
+"Copy" = "Copia";
+
+/* Title */
 "Copy address" = "Copia l'adreça";
 
 /* Title */
@@ -703,6 +706,9 @@
    contacts default label type
    Custom option for time config picker */
 "Custom" = "Personalitza";
+
+/* Title */
+"Cut" = "Retalla";
 
 /* message Date: text */
 "Date:" = "Data:";
@@ -2052,6 +2058,9 @@
 /* Title */
 "Reading device contacts data…" = "Llegint dades dels contactes del dispositiu…";
 
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Confirmació enviada";
+
 /* No comment provided by engineer. */
 "Recipient details" = "Detalls del destinatari";
 
@@ -2193,6 +2202,9 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Enviar en text net però emmagatzemar xifrat";
+
+/* A button title to send read receipt */
+"Send receipt" = "Enviar confirmació";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "Enviar a l'arxiu?";
@@ -2525,6 +2537,9 @@
 
 /* Title */
 "The request timed out." = "S'ha esgotat la sol·licitud.";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"The sender has requested a read receipt." = "L'emissor ha sol·licitat una confirmació de lectura.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "El límit de mida pels arxius adjunts és de 25Mb.";

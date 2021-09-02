@@ -652,6 +652,9 @@
 "Conversation mode" = "Conversation mode";
 
 /* Title */
+"Copy" = "Copy";
+
+/* Title */
 "Copy address" = "复制邮箱地址";
 
 /* Title */
@@ -703,6 +706,9 @@
    contacts default label type
    Custom option for time config picker */
 "Custom" = "自定义";
+
+/* Title */
+"Cut" = "Cut";
 
 /* message Date: text */
 "Date:" = "日期：";
@@ -2052,6 +2058,9 @@
 /* Title */
 "Reading device contacts data…" = "Reading device contacts data…";
 
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Receipt sent";
+
 /* No comment provided by engineer. */
 "Recipient details" = "Recipient details";
 
@@ -2193,6 +2202,9 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Send plain but stored encrypted";
+
+/* A button title to send read receipt */
+"Send receipt" = "Send receipt";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "Send to archive?";
@@ -2526,6 +2538,9 @@
 /* Title */
 "The request timed out." = "连接超时。";
 
+/* Message of a banner which is displayed when sender request a read receipt */
+"The sender has requested a read receipt." = "The sender has requested a read receipt.";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "The size limit for attachments is 25 MB.";
 
@@ -2588,7 +2603,7 @@
 "This message contains embedded images." = "This message contains embedded images.";
 
 /* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "此消息包含远程内容和嵌入的图像";
+"This message contains remote content and embedded images" = "此邮件含有外链内容和嵌入图像";
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "This message contains remote content.";

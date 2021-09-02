@@ -652,6 +652,9 @@
 "Conversation mode" = "Режим диалога";
 
 /* Title */
+"Copy" = "Копировать";
+
+/* Title */
 "Copy address" = "Копировать адрес";
 
 /* Title */
@@ -703,6 +706,9 @@
    contacts default label type
    Custom option for time config picker */
 "Custom" = "Свой";
+
+/* Title */
+"Cut" = "Вырезать";
 
 /* message Date: text */
 "Date:" = "Дата:";
@@ -2052,6 +2058,9 @@
 /* Title */
 "Reading device contacts data…" = "Чтение данных о контактах в устройстве…";
 
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Квитанция отправлена";
+
 /* No comment provided by engineer. */
 "Recipient details" = "Информация о получателе";
 
@@ -2193,6 +2202,9 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Отправляется в открытом виде, но хранится зашифрованным";
+
+/* A button title to send read receipt */
+"Send receipt" = "Отправить квитанцию";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "Отправить в архив?";
@@ -2526,6 +2538,9 @@
 /* Title */
 "The request timed out." = "Истекло время ожидания запроса.";
 
+/* Message of a banner which is displayed when sender request a read receipt */
+"The sender has requested a read receipt." = "Отправитель запросил квитанцию о прочтении.";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "Максимальный размер вложений - 25 МБ.";
 
@@ -2594,7 +2609,7 @@
 "This message contains remote content." = "Это сообщение содержит удаленное содержимое.";
 
 /* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "This message is automatically generated as a response to a previous message.";
+"This message is automatically generated as a response to a previous message." = "Это сообщение автоматически создано в ответ на предыдущее сообщение.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Это сообщение от списка рассылки.";

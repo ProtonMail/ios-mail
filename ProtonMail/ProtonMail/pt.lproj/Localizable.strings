@@ -652,6 +652,9 @@
 "Conversation mode" = "Modo Conversação";
 
 /* Title */
+"Copy" = "Copy";
+
+/* Title */
 "Copy address" = "Copiar endereço";
 
 /* Title */
@@ -703,6 +706,9 @@
    contacts default label type
    Custom option for time config picker */
 "Custom" = "Personalizado";
+
+/* Title */
+"Cut" = "Cut";
 
 /* message Date: text */
 "Date:" = "Data:";
@@ -2052,6 +2058,9 @@
 /* Title */
 "Reading device contacts data…" = "A ler dados de contactos do dispositivo…";
 
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Receipt sent";
+
 /* No comment provided by engineer. */
 "Recipient details" = "Detalhes do destinatário";
 
@@ -2193,6 +2202,9 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Enviar texto simples mas armazenado encriptado";
+
+/* A button title to send read receipt */
+"Send receipt" = "Send receipt";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "Enviar para o arquivo?";
@@ -2525,6 +2537,9 @@
 
 /* Title */
 "The request timed out." = "O pedido expirou.";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"The sender has requested a read receipt." = "The sender has requested a read receipt.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "O limite de tamanho para anexos é de 25 MB.";

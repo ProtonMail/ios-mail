@@ -652,6 +652,9 @@
 "Conversation mode" = "Mode percakapan";
 
 /* Title */
+"Copy" = "Copy";
+
+/* Title */
 "Copy address" = "Salin alamat";
 
 /* Title */
@@ -703,6 +706,9 @@
    contacts default label type
    Custom option for time config picker */
 "Custom" = "Sesuaikan";
+
+/* Title */
+"Cut" = "Cut";
 
 /* message Date: text */
 "Date:" = "Tanggal:";
@@ -2052,6 +2058,9 @@
 /* Title */
 "Reading device contacts data…" = "Membaca data kontak perangkat…";
 
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Receipt sent";
+
 /* No comment provided by engineer. */
 "Recipient details" = "Detail penerima";
 
@@ -2193,6 +2202,9 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Kirim secara polosan tapi simpan dengan enkripsi";
+
+/* A button title to send read receipt */
+"Send receipt" = "Send receipt";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "Kirim ke arsip?";
@@ -2525,6 +2537,9 @@
 
 /* Title */
 "The request timed out." = "Waktu permintaan habis.";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"The sender has requested a read receipt." = "The sender has requested a read receipt.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Batas ukuran untuk lampiran adalah 25 MB.";
