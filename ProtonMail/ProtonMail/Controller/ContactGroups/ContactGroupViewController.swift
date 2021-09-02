@@ -370,6 +370,9 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             self.setPresentationStyleForSelfController(self,
                                                        presentingController: popup,
                                                        style: .overFullScreen)
+            popup.reloadAllContact = { [weak self] in
+                self?.tableView.reloadData()
+            }
         } else if segue.identifier == kToComposerSegue {
             self.isOnMainView = true
             guard let nav = segue.destination as? UINavigationController,

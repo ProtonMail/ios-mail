@@ -31,6 +31,7 @@ class CoreDataService: Service {
     var container: NSPersistentContainer
     let rootSavingContext: NSManagedObjectContext
     let mainContext: NSManagedObjectContext
+    static var shouldIgnoreContactUpdateInMainContext = false
 
     private let serialQueue: OperationQueue = {
         let persistentContainerQueue = OperationQueue()
@@ -69,6 +70,7 @@ class CoreDataService: Service {
         NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: parent, queue: nil) { [weak context] (noti) in
             DispatchQueue.main.async {
                 guard let _ = noti.object as? NSManagedObjectContext,
+                      !shouldIgnoreContactUpdateInMainContext,
                       let context = context else {
                     return
                 }
