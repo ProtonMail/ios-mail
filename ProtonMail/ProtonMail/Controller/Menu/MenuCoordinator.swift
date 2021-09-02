@@ -315,7 +315,8 @@ extension MenuCoordinator {
     private func navigateToSubscribe() {
         guard let user = self.usersManager.firstUser,
               let sideMenuViewController = viewController?.sideMenuController else { return }
-        let paymentsUI = PaymentsUI(servicePlanDataService: user.sevicePlanService, planTypes: .mail)
+        let paymentsUI = PaymentsUI(servicePlanDataService: user.sevicePlanService,
+                                    planTypes: .currentPlanDifferentForTestflightAndProd)
         let coordinator = StorefrontCoordinator(
             paymentsUI: paymentsUI,
             sideMenu: sideMenuViewController,

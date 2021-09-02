@@ -75,7 +75,7 @@ extension SignInCoordinatorEnvironment {
                                        signupMode: signupMode,
                                        signupPasswordRestrictions: signupPasswordRestrictions,
                                        isCloseButtonAvailable: isCloseButtonAvailable,
-                                       planTypes: .mail)
+                                       planTypes: .signupPlansDifferentForTestflightAndProd)
                      },
                      shouldShowAlertOnError: true
         )
