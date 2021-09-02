@@ -12,6 +12,7 @@ import SwiftSoup
 import SQLite
 import Crypto
 import CryptoKit
+import Network
 //import HTMLEmailParser
 
 extension Array {
@@ -31,6 +32,9 @@ public class EncryptedSearchService {
         let users: UsersManager = sharedServices.get()
         user = users.firstUser! //should return the currently active user
         messageService = user.messageService
+        
+        //enable network monitoring for internet connection
+        self.checkForNetworkConnectivity()
     }
     
     internal var user: UserManager!
@@ -48,6 +52,11 @@ public class EncryptedSearchService {
     internal var searchState: EncryptedsearchSearchState? = nil
     internal var indexBuildingInProcess: Bool = false
     internal var eventsWhileIndexing: [MessageAction]? = []
+
+    @available(iOS 12.0, *)
+    internal static var monitorInternetConnectivity: NWPathMonitor? {
+        return NWPathMonitor()
+    }
     
     internal var timingsBuildIndex: NSMutableArray = []
     internal var timingsMessageFetching: NSMutableArray = []
@@ -961,5 +970,43 @@ extension EncryptedSearchService {
             availableMemory = Double(totalMb - usedMb)
         }
         return availableMemory
+    }
+    
+    func checkForNetworkConnectivity() {
+        //If iOS 12 is available use NWPathMonitor
+        if #available(iOS 12, *) {
+            print("Check for network connectivity in ES")
+            //start network monitoring in the background
+            let queue: DispatchQueue = DispatchQueue.global(qos: .background)
+            EncryptedSearchService.monitorInternetConnectivity?.start(queue: queue)
+
+            //Check for changes in the network
+            EncryptedSearchService.monitorInternetConnectivity?.pathUpdateHandler = { path in
+                print("Network change detected!")
+                if path.status == .satisfied {
+                    print("Internet connectivity satisfied")
+                }
+                if path.status == .unsatisfied {
+                    print("We lost Internet connection!")
+                }
+                if path.usesInterfaceType(.wifi) {
+                    print("Wifi connection established")
+                } else if path.usesInterfaceType(.cellular) {
+                    print("Cellular connection established")
+                }
+            }
+        } else {
+            //TODO
+        }
+    }
+    
+    func stopCheckingForNetworkConnectivity() {
+        //If iOS 12 is available use NWPathMonitor
+        if #available(iOS 12, *) {
+            //stop monitoring network for changes of the internet connectivity
+            EncryptedSearchService.monitorInternetConnectivity?.cancel()
+        } else {
+            //TODO
+        }
     }
 }
