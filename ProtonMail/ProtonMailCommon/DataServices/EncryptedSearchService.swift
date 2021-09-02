@@ -12,6 +12,7 @@ import SwiftSoup
 import SQLite
 import Crypto
 import CryptoKit
+//import HTMLEmailParser
 
 extension Array {
     func chunks(_ chunkSize: Int) -> [[Element]] {
@@ -442,6 +443,8 @@ extension EncryptedSearchService {
             
             var keyWordsPerEmail: String = ""
             keyWordsPerEmail = self.extractKeywordsFromBody(bodyOfEmail: body!)
+            //TODO check how to include (framework, or as pod?)
+            //keyWordsPerEmail = HTMLEmailParser.EmailParserExtractData(body!, true)
             self.timingsExtractData.add(CFAbsoluteTimeGetCurrent())     //add stop time
             self.timingsCreateEncryptedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
             
