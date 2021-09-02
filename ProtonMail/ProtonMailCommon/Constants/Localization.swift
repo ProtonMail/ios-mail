@@ -413,7 +413,7 @@ class LocalizedString {
     /// "Country"
     lazy var _contacts_country_field_placeholder = NSLocalizedString("Country", comment: "contact placeholder")
     /// "Url"
-    lazy var _contacts_vcard_url_placeholder = NSLocalizedString("Url", comment: "default vcard types")
+    lazy var _contacts_vcard_url_placeholder = NSLocalizedString("URL", comment: "default vcard types")
     /// "Organization"
     lazy var _contacts_info_organization = NSLocalizedString("Organization", comment: "contacts talbe cell Organization title")
     /// "Nickname"
