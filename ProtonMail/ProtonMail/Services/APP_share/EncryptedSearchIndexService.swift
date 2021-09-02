@@ -19,11 +19,16 @@ public class EncryptedSearchIndexService {
         //TODO initialize variables if needed
         databaseSchema = DatabaseEntries()
         searchableMessages = Table(DatabaseConstants.Table_Searchable_Messages)
+        fileByteCountFormatter = ByteCountFormatter()
+        fileByteCountFormatter?.allowedUnits = [.useMB]
+        fileByteCountFormatter?.countStyle = .file
     }
     
     internal var handleToSQliteDB: Connection?
     internal var databaseSchema: DatabaseEntries
     internal var searchableMessages: Table
+    
+    private var fileByteCountFormatter: ByteCountFormatter? = nil
 }
 
 extension EncryptedSearchIndexService {
@@ -215,5 +220,44 @@ extension EncryptedSearchIndexService {
         }
         
         return true
+    }
+    
+    func getSizeOfSearchIndex(for userID: String) -> String {
+        let dbName: String = self.getSearchIndexName(userID)
+        let pathToDB: String = self.getSearchIndexPathToDB(dbName)
+        let urlToDB: URL? = URL(string: pathToDB)
+        
+        var size: String = ""
+        if FileManager.default.fileExists(atPath: urlToDB!.path) {
+            //Check size of file
+            let sizeOfIndex: Int64? = FileManager.default.sizeOfFile(atPath: urlToDB!.path)
+            size = (self.fileByteCountFormatter?.string(fromByteCount: sizeOfIndex!))!
+        } else {
+            print("Error: cannot find search index at path: \(urlToDB!.path)")
+        }
+        
+        return size
+    }
+    
+    func getFreeDiskSpace() -> String {
+        var size: String = ""
+        do {
+            let systemAttributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
+            let freeSpace: Int64? = (systemAttributes[FileAttributeKey.systemFreeSize] as? NSNumber)?.int64Value
+            size = (self.fileByteCountFormatter?.string(fromByteCount: freeSpace!))!
+        } catch {
+            print("error \(error)")
+        }
+        
+        return size
+    }
+}
+
+extension FileManager {
+    func sizeOfFile(atPath path: String) -> Int64? {
+        guard let attrs = try? attributesOfItem(atPath: path) else {
+            return nil
+        }
+        return attrs[.size] as? Int64
     }
 }
