@@ -1,5 +1,5 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'På' E, d MMM, yyyy 'kl.' %@";
 
 /* Key size text when setup key */
 "(2048 bit)" = "(2.048 bit)";
@@ -620,13 +620,13 @@
 "Connect Account" = "Forbind konto";
 
 /* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+"Contact deleted, will be synced when connection is available" = "Kontakt slettet. Den synkroniseres, når forbindelse bliver tilgængelig";
 
 /* contact section title */
 "Contact details" = "Kontaktdetaljer";
 
 /* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
+"Contact saved, will be synced when connection is available" = "Kontakt gemt. Den synkroniseres, når forbindelse bliver tilgængelig";
 
 /* Title */
 "Contact the ProtonMail team" = "Kontakt ProtonMail-teamet";
@@ -650,6 +650,9 @@
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Samtaletilstand";
+
+/* Title */
+"Copy" = "Kopiér";
 
 /* Title */
 "Copy address" = "Kopiér addresse";
@@ -703,6 +706,9 @@
    contacts default label type
    Custom option for time config picker */
 "Custom" = "Tilpasset";
+
+/* Title */
+"Cut" = "Klip";
 
 /* message Date: text */
 "Date:" = "Dato:";
@@ -961,10 +967,10 @@
 "Enable signature" = "Aktivér signatur";
 
 /* settings protection section title */
-"Enable Touch ID" = "Aktivér Fingeraftryk-ID";
+"Enable Touch ID" = "Aktivér Touch ID";
 
 /* (No Comment) */
-"Enable TouchID" = "Aktivér Fingeraftryk-ID";
+"Enable TouchID" = "Aktivér TouchID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Krypteret af Proton";
@@ -1772,7 +1778,7 @@
 "On %@ at %@" = "D.%1$@ kl. %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
+"On E, MMM d, yyyy at %@" = "På E, d MMM, yyyy kl. %@";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorer kun aktiveringen af købet, hvis du er sikker på, at alle dine abonnementer er opdaterede. For yderligere hjælp, kontakt venligst kundesupport. \r\n\r\n Er du sikker på, at du vil ignorere aktiveringen?";
@@ -2052,6 +2058,9 @@
 /* Title */
 "Reading device contacts data…" = "Læser enheds kontaktdata…";
 
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Kvittering sendt";
+
 /* No comment provided by engineer. */
 "Recipient details" = "Modtageroplysninger";
 
@@ -2194,6 +2203,9 @@
 /* Title */
 "Send plain but stored encrypted" = "Send som simpel, men gem som krypteret";
 
+/* A button title to send read receipt */
+"Send receipt" = "Send kvittering";
+
 /* No comment provided by engineer. */
 "Send to archive?" = "Send til arkiv?";
 
@@ -2222,7 +2234,7 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Afsendelse af beskeder fra en %1$@-adresse er en betalingsfunktion. Din besked afsendes via din standardadresse %2$@";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
+"Sending will be available\nwhen attachments are uploaded" = "Afsendelse bliver mulig\nnår vedhæftninger er overført";
 
 /* menu title */
 "Sent" = "Sendt";
@@ -2526,6 +2538,9 @@
 /* Title */
 "The request timed out." = "Forespørgslen fik timeout.";
 
+/* Message of a banner which is displayed when sender request a read receipt */
+"The sender has requested a read receipt." = "Afsenderen har anmodet om en læsekvittering.";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "Størrelsesgrænsen for vedhæftede filer er 25 MB.";
 
@@ -2588,13 +2603,13 @@
 "This message contains embedded images." = "Denne besked indeholder indlejrede billeder.";
 
 /* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "This message contains remote content and embedded images";
+"This message contains remote content and embedded images" = "Denne besked indeholder eksternt indhold og indlejrede billeder";
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "Denne besked indeholder eksternt indhold.";
 
 /* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "This message is automatically generated as a response to a previous message.";
+"This message is automatically generated as a response to a previous message." = "Denne besked er automatisk genereret som svar på en tidligere besked.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Denne besked er fra en mailingliste.";
@@ -2644,20 +2659,20 @@
 "Tor" = "Tor";
 
 /* The protection title of Touch ID protection */
-"Touch ID" = "Fingeraftryk-ID";
+"Touch ID" = "Touch ID";
 
 /* settings touchid error */
-"Touch ID is not enrolled, enable it in the system Settings" = "Fingeraftryk-ID er ikke registreret, aktivér det i Systemindstillinger";
+"Touch ID is not enrolled, enable it in the system Settings" = "TouchID er ikke registreret, aktivér det i Systemindstillinger";
 
 /* settings touchid/faceid error */
-"Touch ID not available" = "Fingeraftryk-ID ikke tilgængelig";
+"Touch ID not available" = "Touch ID ikke tilgængelig";
 
 /* *
  *  SettingTableViewController */
-"TouchID is not enrolled, enable it in the system Settings" = "Fingeraftryk-ID er ikke registreret, aktivér det i Systemindstillinger";
+"TouchID is not enrolled, enable it in the system Settings" = "TouchID er ikke registreret, aktivér det i Systemindstillinger";
 
 /* (No Comment) */
-"TouchID not available" = "Fingeraftryk-Id ikke tilgængelig";
+"TouchID not available" = "TouchID ikke tilgængelig";
 
 /* *
  *  MessageAction */
@@ -2685,7 +2700,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Slå funktionen til for at autoudfylde e-mailadresser vha. kontakter fra alle dine indloggede konti.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it." = "Slå funktionen til for at autolåse din app og benyt PIN-kode eller Ansigts-ID til oplåsning af den.";
+"Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it." = "Slå funktionen til for at autolåse din app og benyt PIN-kode eller FaceID til oplåsning af den.";
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Slå funktionen til for at autolåse din app og benytte PIN-kode eller fingeraftryk til oplåsning af den.";
@@ -2953,7 +2968,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Du kan ikke angive %@-adressen som standard, da dette er en betalingsfunktion.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Du har deaktiveret Ansigts-ID i dine systemindstillinger. Ansigts-ID er blevet brugt til at beskytte vigtige kontooplysninger. Få adgang til din konto ved at gå til indstillinger og genaktivere Ansigts-ID eller logge ind igen.";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Du har deaktiveret FaceID i dine systemindstillinger. FaceID er blevet brugt til at beskytte vigtige kontooplysninger. Få adgang til din konto ved at gå til indstillinger og genaktivere FaceID eller logge ind igen.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Beskedudløb er aktiveret, men ikke alle modtagerne understøtter denne funktion. Tilføj en adgangskode og/eller deaktivér PGP-afsendelse for at benytte udløb til alle modtagere.";

@@ -652,6 +652,9 @@
 "Conversation mode" = "Modo de conversa";
 
 /* Title */
+"Copy" = "Copiar";
+
+/* Title */
 "Copy address" = "Copiar endereço";
 
 /* Title */
@@ -703,6 +706,9 @@
    contacts default label type
    Custom option for time config picker */
 "Custom" = "Personalizado";
+
+/* Title */
+"Cut" = "Recortar";
 
 /* message Date: text */
 "Date:" = "Data:";
@@ -2052,6 +2058,9 @@
 /* Title */
 "Reading device contacts data…" = "Lendo dados de contatos no dispositivo…";
 
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Confirmação de leitura enviada";
+
 /* No comment provided by engineer. */
 "Recipient details" = "Dados do destinatário";
 
@@ -2193,6 +2202,9 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Enviar texto puro mas armazenar criptografado";
+
+/* A button title to send read receipt */
+"Send receipt" = "Enviar confirmação de leitura";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "Enviar para o arquivo?";
@@ -2526,6 +2538,9 @@
 /* Title */
 "The request timed out." = "Solicitação excedeu o tempo limite.";
 
+/* Message of a banner which is displayed when sender request a read receipt */
+"The sender has requested a read receipt." = "O remetente solicitou uma confirmação de leitura.";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "O limite de tamanho para anexos é de 25 MB.";
 
@@ -2594,7 +2609,7 @@
 "This message contains remote content." = "Esta mensagem contém conteúdo remoto.";
 
 /* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "This message is automatically generated as a response to a previous message.";
+"This message is automatically generated as a response to a previous message." = "Esta mensagem é gerada automaticamente como resposta a uma mensagem anterior.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Esta mensagem é de uma lista de endereços.";

@@ -50,7 +50,7 @@
 			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@DAY@</string>
+		<string>%#@DAG@</string>
 	</dict>
 	<key>%d hour</key>
 	<dict>
@@ -68,7 +68,7 @@
 			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@HOUR@</string>
+		<string>%#@TIME@</string>
 	</dict>
 	<key>+%d others</key>
 	<dict>

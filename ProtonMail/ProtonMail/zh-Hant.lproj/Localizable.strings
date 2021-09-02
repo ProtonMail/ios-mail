@@ -652,6 +652,9 @@
 "Conversation mode" = "會話模式";
 
 /* Title */
+"Copy" = "複製";
+
+/* Title */
 "Copy address" = "複製郵箱地址";
 
 /* Title */
@@ -703,6 +706,9 @@
    contacts default label type
    Custom option for time config picker */
 "Custom" = "自訂";
+
+/* Title */
+"Cut" = "剪下";
 
 /* message Date: text */
 "Date:" = "日期：";
@@ -2052,6 +2058,9 @@
 /* Title */
 "Reading device contacts data…" = "正在讀取裝置通訊錄資料…";
 
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "讀取回條已傳送";
+
 /* No comment provided by engineer. */
 "Recipient details" = "收件人詳細資訊";
 
@@ -2193,6 +2202,9 @@
 
 /* Title */
 "Send plain but stored encrypted" = "明文寄送但以加密方式儲存";
+
+/* A button title to send read receipt */
+"Send receipt" = "傳送讀取回條";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "要送歸封存嗎？";
@@ -2525,6 +2537,9 @@
 
 /* Title */
 "The request timed out." = "要求逾時。";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"The sender has requested a read receipt." = "寄件人要求發送讀取回條。";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "附件大小上限為 25 Mb。。";

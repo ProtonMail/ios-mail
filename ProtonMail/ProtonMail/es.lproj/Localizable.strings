@@ -26,7 +26,7 @@
 "%@ storage capacity" = "%@ de capacidad de almacenamiento";
 
 /* Description */
-"%d attempt remaining" = "%d attempt remaining";
+"%d attempt remaining" = "%d intento restante";
 
 /* Error */
 "%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
@@ -38,10 +38,10 @@
 "%d conversations" = "%d conversaciones";
 
 /* day */
-"%d day" = "%d day";
+"%d day" = "%d día";
 
 /* hour */
-"%d hour" = "%d hour";
+"%d hour" = "%d hora";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d miembro";
@@ -652,6 +652,9 @@
 "Conversation mode" = "Modo de conversación";
 
 /* Title */
+"Copy" = "Copiar";
+
+/* Title */
 "Copy address" = "Copiar dirección";
 
 /* Title */
@@ -703,6 +706,9 @@
    contacts default label type
    Custom option for time config picker */
 "Custom" = "Personalizar";
+
+/* Title */
+"Cut" = "Cortar";
 
 /* message Date: text */
 "Date:" = "Fecha:";
@@ -946,7 +952,7 @@
 "Enable email notices" = "Habilitar avisos de correo electrónico";
 
 /* settings protection section title */
-"Enable Face ID" = "Enable Face ID";
+"Enable Face ID" = "Habilitar FaceID";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "Habilitar PIN";
@@ -961,7 +967,7 @@
 "Enable signature" = "Habilitar firma";
 
 /* settings protection section title */
-"Enable Touch ID" = "Enable Touch ID";
+"Enable Touch ID" = "Habilitar TouchID";
 
 /* (No Comment) */
 "Enable TouchID" = "Habilitar TouchID";
@@ -1054,7 +1060,7 @@
 "Error Logs" = "Registro de errores";
 
 /* Error alert title */
-"Error occurred" = "Error occurred";
+"Error occurred" = "Ha ocurrido un error";
 
 /* incorrect email format error in composer */
 "Error sending" = "Error al enviar";
@@ -1282,7 +1288,7 @@
 "Incorrect password" = "Contraseña incorrecta";
 
 /* Error */
-"Incorrect PIN." = "Incorrect PIN.";
+"Incorrect PIN." = "PIN incorrecto.";
 
 /* Option title */
 "Inherit color from parent folder" = "Heredar color de la carpeta principal";
@@ -1766,10 +1772,10 @@
 "On" = "On";
 
 /* On {date}, e.g.: On Aug 14 */
-"On %@" = "On %@";
+"On %@" = "El %@";
 
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
-"On %@ at %@" = "On %1$@ at %2$@";
+"On %@ at %@" = "El %1$@ a las %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
@@ -2052,6 +2058,9 @@
 /* Title */
 "Reading device contacts data…" = "Leyendo datos de contactos del dispositivo…";
 
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Receipt sent";
+
 /* No comment provided by engineer. */
 "Recipient details" = "Datos del destinatario";
 
@@ -2194,6 +2203,9 @@
 /* Title */
 "Send plain but stored encrypted" = "Enviar en plano pero almacenado cifrado";
 
+/* A button title to send read receipt */
+"Send receipt" = "Enviar acuse de recibo";
+
 /* No comment provided by engineer. */
 "Send to archive?" = "¿Enviar al archivo?";
 
@@ -2270,7 +2282,7 @@
 "Share it with your friends" = "Compartir con tus amigos";
 
 /* Action */
-"Show" = "Show";
+"Show" = "Mostrar";
 
 /* Title */
 "Sign in" = "Iniciar sesión";
@@ -2525,6 +2537,9 @@
 
 /* Title */
 "The request timed out." = "Tiempo de espera agotado.";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"The sender has requested a read receipt." = "The sender has requested a read receipt.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "El límite de tamaño para los archivos adjuntos es de 25 MB.";
@@ -2926,7 +2941,7 @@
 "Yes, attach details of payment" = "Sí, adjuntar detalles del pago";
 
 /* No comment provided by engineer. */
-"Yesterday" = "Yesterday";
+"Yesterday" = "Ayer";
 
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Estás a punto de abrir el navegador web y navegar hacia";
