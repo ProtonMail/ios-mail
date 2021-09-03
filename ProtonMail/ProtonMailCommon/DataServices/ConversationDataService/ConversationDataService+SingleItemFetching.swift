@@ -24,7 +24,7 @@ import Foundation
 import Groot
 
 extension ConversationDataService {
-    func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Void, Error>) -> Void)?) {
+    func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Conversation, Error>) -> Void)?) {
         let request = ConversationDetailsRequest(conversationID: conversationID, messageID: messageID)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
@@ -70,14 +70,23 @@ extension ConversationDataService {
                         for (index, _) in messagesDict.enumerated() {
                             messagesDict[index]["UserID"] = self.userID
                         }
-                        try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesDict, in: context)
+                        let message = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesDict, in: context)
+                        if let messages = message as? [Message] {
+                            messages.first(where: { $0.messageID == messageID })?.isDetailDownloaded = true
+                        }
                         
                         if let error = context.saveUpstreamIfNeeded() {
                             throw error
                         }
                         
                         DispatchQueue.main.async {
-                            completion?(.success(()))
+                            if let conversation = conversation as? Conversation {
+                                completion?(.success((conversation)))
+                            } else {
+                                let error = NSError(domain: "", code: -1,
+                                                    localizedDescription: LocalString._error_no_object)
+                                completion?(.failure(error))
+                            }
                         }
                     } catch {
                         PMLog.D("error: \(error)")

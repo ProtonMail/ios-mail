@@ -18,6 +18,7 @@
 import CoreData
 import Foundation
 import ProtonCore_UIFoundations
+import PromiseKit
 
 protocol SearchVMProtocol {
     var user: UserManager { get }
@@ -25,6 +26,7 @@ protocol SearchVMProtocol {
     var selectedIDs: Set<String> { get }
     var selectedMessages: [Message] { get }
     var labelID: String { get }
+    var viewMode: ViewMode { get }
 
     func viewDidLoad()
     func cleanLocalIndex()
@@ -47,6 +49,8 @@ protocol SearchVMProtocol {
     func deleteSelectedMessage()
     func handleActionSheetAction(_ action: MailListSheetAction)
     func getFolderMenuItems() -> [MenuLabel]
+    func getConversation(conversationID: String,
+                         messageID: String) -> Promise<Conversation>
 }
 
 final class SearchViewModel: NSObject {
@@ -81,6 +85,7 @@ final class SearchViewModel: NSObject {
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
     var labelID: String { Message.Location.allmail.rawValue }
+    var viewMode: ViewMode { self.user.getCurrentViewMode() }
     var selectedMessages: [Message] {
         self.messages.filter { selectedIDs.contains($0.messageID) }
     }
@@ -298,6 +303,28 @@ extension SearchViewModel: SearchVMProtocol {
         let datas: [MenuLabel] = Array(labels: folders, previousRawData: [])
         let (_, folderItems) = datas.sortoutData()
         return defaultItems + folderItems
+    }
+
+    func getConversation(conversationID: String,
+                         messageID: String) -> Promise<Conversation> {
+        return Promise { [weak self] seal in
+            guard let self = self else {
+                let error = NSError(domain: "", code: -1,
+                                    localizedDescription: LocalString._error_no_object)
+                seal.reject(error)
+                return
+            }
+
+            self.user.conversationService.fetchConversation(with: conversationID, includeBodyOf: messageID) { result in
+                switch result {
+                case .success(let conversation):
+                    seal.fulfill(conversation)
+                case .failure(let error):
+                    seal.reject(error)
+                }
+            }
+        }
+        
     }
 }
 

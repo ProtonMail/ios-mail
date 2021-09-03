@@ -87,14 +87,24 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        guard !customView.tableView.visibleCells.isEmpty && // tableview finish reloading
-                !viewModel.isExpandedAtLaunch,
-              let row = viewModel.messagesDataSource
-                .firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false }),
-              viewModel.messagesDataSource.count > 1 else { return }
-        viewModel.setCellIsExpandedAtLaunch()
-        let indexPath = IndexPath(row: row, section: 1)
-        customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        guard !customView.tableView.visibleCells.isEmpty,
+              !viewModel.isExpandedAtLaunch else { return }
+              
+        guard viewModel.messagesDataSource.count > 1 else {
+            if let targetID = self.viewModel.targetID {
+                self.cellTapped(messageId: targetID)
+            }
+            return
+        }
+
+        if let row = viewModel.messagesDataSource
+            .firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false }) {
+            viewModel.setCellIsExpandedAtLaunch()
+            let indexPath = IndexPath(row: row, section: 1)
+            customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        } else if let targetID = self.viewModel.targetID {
+            self.cellTapped(messageId: targetID)
+        }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {

@@ -22,6 +22,7 @@
 
 import UIKit
 import CoreData
+import MBProgressHUD
 import ProtonCore_UIFoundations
 
 protocol SearchViewUIProtocol: UIViewController {
@@ -497,6 +498,53 @@ extension SearchViewController {
         coordinator.start()
     }
 
+    private func prepareFor(message: Message) {
+        guard self.viewModel.viewMode == .singleMessage else {
+            self.prepareConversationFor(message: message)
+            return
+        }
+        if message.draft {
+            self.prepareForDraft(message)
+            return
+        }
+        self.updateTapped(status: false)
+        guard let navigationController = navigationController else { return }
+        let coordinator = SingleMessageCoordinator(
+            navigationController: navigationController,
+            labelId: "",
+            message: message,
+            user: self.viewModel.user
+        )
+        coordinator.start()
+    }
+
+    private func prepareConversationFor(message: Message) {
+        guard let navigation = self.navigationController else {
+            self.updateTapped(status: false)
+            return
+        }
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        let conversationID = message.conversationID
+        let messageID = message.messageID
+        self.viewModel.getConversation(conversationID: conversationID, messageID: messageID).done { [weak self] conversation in
+            guard let self = self else { return }
+            let coordinator = ConversationCoordinator(
+                labelId: self.viewModel.labelID,
+                navigationController: navigation,
+                conversation: conversation,
+                user: self.viewModel.user,
+                targetID: messageID
+            )
+            coordinator.start()
+        }.catch { error in
+            error.alertToast()
+        }.finally { [weak self] in
+            guard let self = self else { return }
+            self.updateTapped(status: false)
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }
+    }
+
     private func showCheckOptions(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         let point: CGPoint = longPressGestureRecognizer.location(in: self.tableView)
         let indexPath: IndexPath? = self.tableView.indexPathForRow(at: point)
@@ -637,21 +685,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
             tableView.deselectRow(at: indexPath, animated: true)
             return
         }
-        
-        // open messages in MessageContainerViewController
-        guard message.contains(label: .draft) else {
-            self.updateTapped(status: false)
-            guard let navigationController = navigationController else { return }
-            let coordinator = SingleMessageCoordinator(
-                navigationController: navigationController,
-                labelId: "",
-                message: message,
-                user: self.viewModel.user
-            )
-            coordinator.start()
-            return
-        }
-        self.prepareForDraft(message)
+        self.prepareFor(message: message)
     }
 }
 

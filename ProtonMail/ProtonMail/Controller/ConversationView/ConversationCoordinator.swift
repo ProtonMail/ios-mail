@@ -8,13 +8,19 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
     private let navigationController: UINavigationController
     let conversation: Conversation
     private let user: UserManager
+    private let targetID: String?
     var pendingActionAfterDismissal: (() -> Void)?
 
-    init(labelId: String, navigationController: UINavigationController, conversation: Conversation, user: UserManager) {
+    init(labelId: String,
+         navigationController: UINavigationController,
+         conversation: Conversation,
+         user: UserManager,
+         targetID: String? = nil) {
         self.labelId = labelId
         self.navigationController = navigationController
         self.conversation = conversation
         self.user = user
+        self.targetID = targetID
     }
 
     func start(openFromNotification: Bool = false) {
@@ -23,7 +29,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             conversation: conversation,
             user: user,
             openFromNotification: openFromNotification,
-            coreDataService: CoreDataService.shared
+            coreDataService: CoreDataService.shared,
+            targetID: targetID
         )
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController

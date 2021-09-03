@@ -103,7 +103,7 @@ extension ConversationDataServiceProxy {
 
     func fetchConversation(with conversationID: String,
                            includeBodyOf messageID: String?,
-                           completion: ((Result<Void, Error>) -> Void)?) {
+                           completion: ((Result<Conversation, Error>) -> Void)?) {
         conversationDataService.fetchConversation(with: conversationID,
                                                   includeBodyOf: messageID,
                                                   completion: completion)
