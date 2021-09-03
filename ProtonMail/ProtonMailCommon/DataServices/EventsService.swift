@@ -870,19 +870,14 @@ extension EventsService {
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(error.localizedDescription)
             }
-            
+
+            guard let users = self.userManager.parentManager,
+                  let primaryUser = users.firstUser,
+                  primaryUser.userInfo.userId == self.userManager.userInfo.userId,
+                  primaryUser.getCurrentViewMode() == .singleMessage else { return }
+
             let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userManager.userInfo.userId, type: .singleMessage)
-            
-            guard let viewMode = self.userManager?.getCurrentViewMode() else {
-                return
-            }
-            if viewMode == .singleMessage {
-                var badgeNumber = unreadCount
-                if  badgeNumber < 0 {
-                    badgeNumber = 0
-                }
-                UIApplication.setBadge(badge: badgeNumber)
-            }
+            UIApplication.setBadge(badge: max(0, unreadCount))
         }
     }
     
@@ -905,18 +900,13 @@ extension EventsService {
                 PMLog.D(error.localizedDescription)
             }
             
+            guard let users = self.userManager.parentManager,
+                  let primaryUser = users.firstUser,
+                  primaryUser.userInfo.userId == self.userManager.userInfo.userId,
+                  primaryUser.getCurrentViewMode() == .conversation else { return }
+
             let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userManager.userInfo.userId, type: .conversation)
-            
-            guard let viewMode = self.userManager?.getCurrentViewMode() else {
-                return
-            }
-            if viewMode == .conversation {
-                var badgeNumber = unreadCount
-                if  badgeNumber < 0 {
-                    badgeNumber = 0
-                }
-                UIApplication.setBadge(badge: badgeNumber)
-            }
+            UIApplication.setBadge(badge: max(0, unreadCount))
         }
     }
     
