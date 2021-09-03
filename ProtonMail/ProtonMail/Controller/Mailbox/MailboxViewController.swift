@@ -591,7 +591,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if leftToRightMsgAction != .none && viewModel.isSwipeActionValid(leftToRightMsgAction, message: message) {
             let leftToRightSwipeView = makeSwipeView(messageSwipeAction: leftToRightMsgAction)
             cell.addSwipeTrigger(forState: .state(0, .left),
-                                 withMode: leftToRightAction == .readAndUnread ? .toggle : .exit,
+                                 withMode: .exit,
                                  swipeView: leftToRightSwipeView,
                                  swipeColor: leftToRightMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
                 guard let self = self else { return }
@@ -605,7 +605,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if rightToLeftMsgAction != .none && viewModel.isSwipeActionValid(rightToLeftMsgAction, message: message) {
             let rightToLeftSwipeView = makeSwipeView(messageSwipeAction: rightToLeftMsgAction)
             cell.addSwipeTrigger(forState: .state(0, .right),
-                                 withMode: rightToLeftAction == .readAndUnread ? .toggle : .exit,
+                                 withMode: .exit,
                                  swipeView: rightToLeftSwipeView,
                                  swipeColor: rightToLeftMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
                 guard let self = self else { return }
@@ -622,7 +622,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if leftToRightMsgAction != .none && viewModel.isSwipeActionValid(leftToRightMsgAction, conversation: conversation) {
             let leftToRightSwipeView = makeSwipeView(messageSwipeAction: leftToRightMsgAction)
             cell.addSwipeTrigger(forState: .state(0, .left),
-                                 withMode: leftToRightAction == .readAndUnread ? .toggle : .exit,
+                                 withMode: .exit,
                                  swipeView: leftToRightSwipeView,
                                  swipeColor: leftToRightMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
                 self?.handleSwipeAction(on: cell, action: leftToRightMsgAction, conversation: conversation)
@@ -636,7 +636,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if rightToLeftMsgAction != .none && viewModel.isSwipeActionValid(rightToLeftMsgAction, conversation: conversation) {
             let rightToLeftSwipeView = makeSwipeView(messageSwipeAction: rightToLeftMsgAction)
             cell.addSwipeTrigger(forState: .state(0, .right),
-                                 withMode: rightToLeftAction == .readAndUnread ? .toggle : .exit,
+                                 withMode: .exit,
                                  swipeView: rightToLeftSwipeView,
                                  swipeColor: rightToLeftMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
                 self?.handleSwipeAction(on: cell, action: rightToLeftMsgAction, conversation: conversation)
@@ -817,12 +817,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.viewModel.mark(messages: [message])
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
             viewModel.markConversationAsUnread(conversationIDs: [conversation.conversationID],
-                                               currentLabelID: viewModel.labelID) { [weak self] result in
-                guard let self = self else { return }
-                if let _ = try? result.get() {
-                    self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
-                }
-            }
+                                               currentLabelID: viewModel.labelID,
+                                               completion: nil)
         }
     }
 
@@ -830,12 +826,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if let message = self.viewModel.item(index: indexPath) {
             self.viewModel.mark(messages: [message], unread: false)
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
-            viewModel.markConversationAsRead(conversationIDs: [conversation.conversationID], currentLabelID: viewModel.labelId) { [weak self] result in
-                guard let self = self else { return }
-                if let _ = try? result.get() {
-                    self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
-                }
-            }
+            viewModel.markConversationAsRead(conversationIDs: [conversation.conversationID],
+                                             currentLabelID: viewModel.labelId,
+                                             completion: nil)
         }
     }
 
