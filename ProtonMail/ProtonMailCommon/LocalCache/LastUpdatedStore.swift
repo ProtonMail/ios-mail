@@ -310,12 +310,13 @@ extension LastUpdatedStore {
                 let _ = context.saveUpstreamIfNeeded()
             }
         }
-        
-        if labelID == Message.Location.inbox.rawValue {
-            DispatchQueue.main.async {
-                UIApplication.setBadge(badge: count)
-            }
-        }
+        let users: UsersManager = sharedServices.get(by: UsersManager.self)
+        let isPrimary = users.firstUser?.userInfo.userId == userID
+        guard labelID == Message.Location.inbox.rawValue,
+              isPrimary,
+              let viewMode = users.firstUser?.getCurrentViewMode(),
+              type == viewMode else { return }
+        UIApplication.setBadge(badge: count)
     }
     
     //remove all updates for a user
