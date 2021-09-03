@@ -26,9 +26,9 @@ class LabelsFoldersTests: BaseTestCase {
             .menuDrawer()
             .settings()
             .selectAccount(user.email)
-            .foldersAndLabels()
+            .folders()
             .deleteFolderLabel(folderName)
-            .foldersAndLabels()
+            .folders()
             .verify.folderLabelDeleted(folderName)
     }
     
@@ -46,9 +46,9 @@ class LabelsFoldersTests: BaseTestCase {
             .menuDrawer()
             .settings()
             .selectAccount(user.email)
-            .foldersAndLabels()
+            .labels()
             .deleteFolderLabel(labelName)
-            .foldersAndLabels()
+            .labels()
             .verify.folderLabelDeleted(labelName)
     }
     
@@ -113,14 +113,14 @@ class LabelsFoldersTests: BaseTestCase {
             .menuDrawer()
             .settings()
             .selectAccount(user.email)
-            .foldersAndLabels()
+            .folders()
             .editFolderLabel(folderName)
             .editFolderLabelName(newFolderName)
             .selectFolderColorByIndex(3)
             .done()
             .create()
             .deleteFolderLabel(newFolderName)
-            .foldersAndLabels()
+            .folders()
             .verify.folderLabelDeleted(newFolderName)
     }
     
@@ -139,14 +139,14 @@ class LabelsFoldersTests: BaseTestCase {
             .menuDrawer()
             .settings()
             .selectAccount(user.email)
-            .foldersAndLabels()
+            .labels()
             .editFolderLabel(folderName)
             .editFolderLabelName(newFolderName)
             .selectFolderColorByIndex(3)
             .done()
             .create()
             .deleteFolderLabel(newFolderName)
-            .foldersAndLabels()
+            .labels()
             .verify.folderLabelDeleted(newFolderName)
     }
 }

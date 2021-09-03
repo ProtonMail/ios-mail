@@ -7,54 +7,26 @@
 //
 
 import XCTest
+import pmtest
 
-fileprivate func messageCellIdentifier(_ subject: String) -> String { return subject.replacingOccurrences(of: " ", with: "_") }
+fileprivate struct id {
+    static func messageCellIdentifier(_ subject: String) -> String { return subject.replacingOccurrences(of: " ", with: "_") }
+}
 
 /**
  * [DraftsRobot] implements [MailboxRobotInterface],
  * contains actions and verifications for Drafts composer functionality.
  */
-class DraftsRobot : MailboxRobotInterface {
+class DraftsRobot: MailboxRobotInterface {
     
-    var verify: Verify! = nil
-    required init() { verify = Verify()}
-
-    override func swipeLeftMessageAtPosition(_ position: Int) -> DraftsRobot {
-        super.swipeLeftMessageAtPosition(position)
-        return self
-    }
-
-    override func longClickMessageOnPosition(_ position: Int) -> DraftsRobot {
-        super.longClickMessageOnPosition(position)
-        return self
-    }
-
-    override func deleteMessageWithSwipe(_ position: Int) -> DraftsRobot {
-        super.deleteMessageWithSwipe(position)
-        return self
-    }
+    var verify = Verify()
     
     override func searchBar() -> SearchRobot {
         return super.searchBar()
     }
 
-    func moreOptions() -> DraftsRobot {
-
-        return self
-    }
-
-    func emptyFolder() -> DraftsRobot {
-
-        return self
-    }
-
-    func confirm() -> DraftsRobot {
-
-        return self
-    }
-
     func clickDraftBySubject(_ subject: String) -> ComposerRobot {
-        super.clickMessageBySubject(messageCellIdentifier(subject))
+        super.clickMessageBySubject(id.messageCellIdentifier(subject))
         return ComposerRobot()
     }
     
@@ -66,18 +38,18 @@ class DraftsRobot : MailboxRobotInterface {
     /**
      * Contains all the validations that can be performed by [Drafts].
      */
-    class Verify : MailboxRobotVerifyInterface {
+    class Verify: MailboxRobotVerifyInterface {
 
         func draftMessageSaved(_ draftSubject: String?) -> DraftsRobot {
             return DraftsRobot()
         }
         
         func messageWithSubjectExists(_ subject: String) {
-            Element.wait.forStaticTextFieldWithIdentifier(subject)
+            staticText(subject).wait().checkExists()
         }
         
-        func messageWithSubjectAndRecipientExists(_ subject: String, _ recipient: String) {
-            
+        func messageWithSubjectAndRecipientExists(_ subject: String, _ to: String) {
+            staticText(subject).wait().checkExists()
         }
     }
 }

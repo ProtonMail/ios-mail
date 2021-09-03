@@ -8,6 +8,10 @@
 
 import Foundation
 import XCTest
+import pmtest
+
+let bla = CoreElements()
+var wasTourClosed = false
 
 /**
  Parent class for all the test classes.
@@ -25,6 +29,7 @@ class BaseTestCase: XCTestCase {
         app.terminate()
         continueAfterFailure = false
         app.launchArguments = launchArguments
+        app.launchArguments.append("-disableAnimations")
         if humanVerificationStubs {
             app.launchEnvironment["HumanVerificationStubs"] = "1"
         } else if forceUpgradeStubs {
@@ -51,10 +56,10 @@ class BaseTestCase: XCTestCase {
     
     func handleInterruption() {
         var flag = false
-        addUIInterruptionMonitor(withDescription: "Handle system alerts") { (alert) -> Bool in
-            let buttonLabels = ["Allow Access to All Photos", "Don’t Allow", LocalString._general_ok_action, LocalString._hide]
+        addUIInterruptionMonitor(withDescription: "Handle system alerts") { (ui) -> Bool in
+            let buttonLabels = [LocalString._skip_btn_title, "Allow Access to All Photos", "Don’t Allow", LocalString._general_ok_action, LocalString._hide]
             for (_, label) in buttonLabels.enumerated() {
-                let element = alert.buttons[label].firstMatch
+                let element = ui.buttons[label].firstMatch
                 if element.exists {
                     element.tap()
                     flag = true

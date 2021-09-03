@@ -6,25 +6,29 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-/// Navigation Bar buttons
-fileprivate let labelNavBarButtonIdentifier = "UINavigationItem.topLabelButton"
-fileprivate let folderNavBarButtonIdentifier = "UINavigationItem.topFolderButton"
-fileprivate let trashNavBarButtonIdentifier = "UINavigationItem.topTrashButton"
-fileprivate let moreNavBarButtonIdentifier = "UINavigationItem.topMoreButton"
-fileprivate let backToInboxNavBarButtonIdentifier = LocalString._menu_inbox_title
-fileprivate let moveToSpamButtonIdentifier = LocalString._locations_move_spam_action
-fileprivate let moveToArchiveButtonIdentifier = LocalString._locations_move_archive_action
-fileprivate let backToSearchResultButtonIdentifier = LocalString._general_back_action
+import pmtest
 
-/// Reply/Forward buttons
-fileprivate let replyButtonIdentifier = "MessageContainerViewController.replyButton"
-fileprivate let replyAllButtonIdentifier = "MessageContainerViewController.replyAllButton"
-fileprivate let forwardButtonIdentifier = "MessageContainerViewController.forwardButton"
+fileprivate struct id {
+    /// Navigation Bar buttons
+    static let labelNavBarButtonIdentifier = "UINavigationItem.topLabelButton"
+    static let folderNavBarButtonIdentifier = "UINavigationItem.topFolderButton"
+    static let trashNavBarButtonIdentifier = "UINavigationItem.topTrashButton"
+    static let moreNavBarButtonIdentifier = "UINavigationItem.topMoreButton"
+    static let backToInboxNavBarButtonIdentifier = LocalString._menu_inbox_title
+    static let moveToSpamButtonIdentifier = LocalString._locations_move_spam_action
+    static let moveToArchiveButtonIdentifier = LocalString._locations_move_archive_action
+    static let backToSearchResultButtonIdentifier = LocalString._general_back_action
+
+    /// Reply/Forward buttons
+    static let replyButtonIdentifier = "MessageContainerViewController.replyButton"
+    static let replyAllButtonIdentifier = "MessageContainerViewController.replyAllButton"
+    static let forwardButtonIdentifier = "MessageContainerViewController.forwardButton"
+}
 
 /*
  MessageRobot class contains actions and verifications for Message detail view funcctionality.
  */
-class MessageRobot {
+class MessageRobot: CoreElements {
     
     func addMessageToFolder(_ folderName: String) -> InboxRobot {
         openFoldersModal()
@@ -53,6 +57,7 @@ class MessageRobot {
             .tapKeyboardDoneButton()
             .clickCreateFolderButton()
     }
+    
     func clickMoveToSpam() -> MailboxRobotInterface {
         moreOptions().moveToSpam()
     }
@@ -60,67 +65,66 @@ class MessageRobot {
     func clickMoveToArchive() -> MailboxRobotInterface {
         moreOptions().moveToArchive()
     }
+    
     func moveToTrash() -> InboxRobot {
-        Element.wait.forButtonWithIdentifier(trashNavBarButtonIdentifier, file: #file, line: #line).tap()
+        button(id.trashNavBarButtonIdentifier).tap()
         return InboxRobot()
     }
     
     func navigateBackToInbox() -> InboxRobot {
-        Element.wait.forButtonWithIdentifier(backToInboxNavBarButtonIdentifier, file: #file, line: #line).tap()
+        button(id.backToInboxNavBarButtonIdentifier).tap()
         return InboxRobot()
     }
     
     func navigateBackToSearchResult() -> SearchRobot {
-        Element.wait.forButtonWithIdentifier(backToSearchResultButtonIdentifier, file: #file, line: #line).tap()
+        button(id.backToSearchResultButtonIdentifier).tap()
         return SearchRobot()
     }
     
     func openFoldersModal() -> MoveToFolderRobot {
-        Element.wait.forButtonWithIdentifier(folderNavBarButtonIdentifier, file: #file, line: #line).tap()
+        button(id.folderNavBarButtonIdentifier).tap()
         return MoveToFolderRobot()
     }
     
     func openLabelsModal() -> MoveToFolderRobot {
-        Element.wait.forButtonWithIdentifier(labelNavBarButtonIdentifier, file: #file, line: #line).tap()
+        button(id.labelNavBarButtonIdentifier).tap()
         return MoveToFolderRobot()
     }
     
     func moreOptions() -> MessageMoreOptions {
-        Element.wait.forButtonWithIdentifier(moreNavBarButtonIdentifier, file: #file, line: #line).tap()
+        button(id.moreNavBarButtonIdentifier).tap()
         return MessageMoreOptions()
     }
 
     func reply() -> ComposerRobot {
-        Element.wait.forButtonWithIdentifier(replyButtonIdentifier, file: #file, line: #line).tap()
+        button(id.replyButtonIdentifier).tap()
         return ComposerRobot()
     }
 
     func replyAll() -> ComposerRobot {
-        Element.wait.forButtonWithIdentifier(replyAllButtonIdentifier, file: #file, line: #line).tap()
+        button(id.replyAllButtonIdentifier).tap()
         return ComposerRobot()
     }
 
     func forward() -> ComposerRobot {
-        Element.wait.forButtonWithIdentifier(forwardButtonIdentifier, file: #file, line: #line).tap()
+        button(id.forwardButtonIdentifier).tap()
         return ComposerRobot()
     }
 
     func navigateBackToLabelOrFolder(_ folder: String) -> LabelFolderRobot {
-        Element.wait.forButtonWithIdentifier(folder, file: #file, line: #line).tap()
+        button(folder).tap()
         return LabelFolderRobot()
     }
     
-    class MessageMoreOptions {
+    class MessageMoreOptions: CoreElements {
 
-        func viewHeaders() {
-            
-        }
         func moveToSpam() -> MailboxRobotInterface {
-            Element.wait.forButtonWithIdentifier(moveToSpamButtonIdentifier, file: #file, line: #line).tap()
+            button(id.moveToSpamButtonIdentifier).tap()
             return MailboxRobotInterface()
         }
+        
         func moveToArchive() -> MailboxRobotInterface {
-            Element.wait.forButtonWithIdentifier(moveToArchiveButtonIdentifier, file: #file, line: #line).tap()
+            button(id.moveToArchiveButtonIdentifier).tap()
             return MailboxRobotInterface()
         }
     }
@@ -175,17 +179,4 @@ class MessageRobot {
             return AddNewFolderRobot()
         }
     }
-
-    class Verify {
-        func messageContainsAttachment() {}
-
-        func quotedHeaderShown() {}
-
-        func attachmentsNotAdded() {}
-
-        func attachmentsAdded() {}
-
-        func messageWebViewContainerShown() {}
-    }
 }
-

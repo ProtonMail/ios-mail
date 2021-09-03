@@ -31,7 +31,7 @@ import UIKit
 **/
 
 @IBDesignable
-class SettingsGeneralCell: UITableViewCell {
+class SettingsGeneralCell: UITableViewCell, AccessibleCell {
     @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var stackViewTrailingConstraintWithIconView: NSLayoutConstraint!
     @IBOutlet private weak var stackViewTrailingConstraintWithContainer: NSLayoutConstraint!
@@ -97,6 +97,7 @@ class SettingsGeneralCell: UITableViewCell {
         }
 
         self.accessibilityLabel = left
+        generateCellAccessibilityIdentifiers(leftText.text!)
     }
 
     func configure(left: String, imageType: ImageType = .arrow) {

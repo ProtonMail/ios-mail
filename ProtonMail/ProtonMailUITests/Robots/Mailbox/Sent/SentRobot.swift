@@ -6,24 +6,17 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import pmtest
+
 /**
  Represents Sent view.
 */
 class SentRobot : MailboxRobotInterface {
     
-    var verify: Verify! = nil
-    required init() {
-        super.init()
-        verify = Verify(parent: self)
-    }
+    var verify = Verify()
 
     override func menuDrawer() -> MenuRobot {
         return super.menuDrawer()
-    }
-
-    override func swipeLeftMessageAtPosition(_ position: Int) -> SentRobot {
-        super.swipeLeftMessageAtPosition(position)
-        return self
     }
     
     override func refreshMailbox() -> SentRobot {
@@ -35,11 +28,9 @@ class SentRobot : MailboxRobotInterface {
      Contains all the validations that can be performed by SentRobot.
     */
     class Verify: MailboxRobotVerifyInterface {
-        unowned let sentRobot: SentRobot
-        init(parent: SentRobot) { sentRobot = parent }
         
         func messageWithSubjectExists(_ subject: String) {
-            Element.wait.forStaticTextFieldWithIdentifier(subject)
+            staticText(subject).wait().checkExists()
         }
     }
 }

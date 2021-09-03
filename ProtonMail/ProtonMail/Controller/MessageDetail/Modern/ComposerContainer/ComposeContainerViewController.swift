@@ -281,6 +281,7 @@ extension ComposeContainerViewController {
         )
         self.navigationItem.rightBarButtonItem = self.sendButton
         self.sendButton.accessibilityLabel = LocalString._general_send_action
+        self.sendButton.accessibilityIdentifier = "ComposeContainerViewController.sendButton"
     }
 
     private func setUpTitleView() {

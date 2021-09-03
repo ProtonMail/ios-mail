@@ -6,15 +6,19 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-private let currentPasswordSecureTextFieldIdentifier = LocalString._settings_current_password
-private let newPasswordSecureTextFieldIdentifier = LocalString._settings_new_password
-private let confirmNewPasswordSecureTextFieldIdentifier = LocalString._settings_confirm_new_password
-private let saveNavBarButtonIdentifier = LocalString._general_save_action
+import pmtest
+
+fileprivate struct id {
+    static let currentPasswordSecureTextFieldIdentifier = LocalString._settings_current_password
+    static let newPasswordSecureTextFieldIdentifier = LocalString._settings_new_password
+    static let confirmNewPasswordSecureTextFieldIdentifier = LocalString._settings_confirm_new_password
+    static let saveNavBarButtonIdentifier = LocalString._general_save_action
+}
 
 /**
  Class represents Password management view.
  */
-class SinglePasswordRobot {
+class SinglePasswordRobot: CoreElements {
 
     func changePassword(user: User) -> SettingsRobot {
         return currentPassword(user.password)
@@ -24,22 +28,22 @@ class SinglePasswordRobot {
     }
 
     func currentPassword(_ password: String) -> SinglePasswordRobot {
-        Element.secureTextField.tapByIndex(0).typeText(password)
+        secureTextField().byIndex(0).tap().typeText(password)
         return self
     }
 
     func newPassword(_ password: String) -> SinglePasswordRobot {
-        Element.secureTextField.tapByIndex(1).typeText(password)
+        secureTextField().byIndex(1).tap().typeText(password)
         return self
     }
 
     func confirmNewPassword(_ password: String) -> SinglePasswordRobot {
-        Element.secureTextField.tapByIndex(2).typeText(password)
+        secureTextField().byIndex(2).tap().typeText(password)
         return self
     }
 
     func savePassword() -> SettingsRobot {
-        Element.button.tapByIdentifier(saveNavBarButtonIdentifier)
+        button(id.saveNavBarButtonIdentifier).tap()
         return SettingsRobot()
     }
 }

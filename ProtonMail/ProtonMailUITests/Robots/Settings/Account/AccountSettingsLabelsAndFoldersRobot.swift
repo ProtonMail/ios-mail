@@ -6,65 +6,68 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let addFolderButtonIdentifier = "LabelsViewController.addFolderButton"
-fileprivate let addLabelButtonIdentifier = "LabelsViewController.addLabelButton"
-fileprivate let folderNameTextFieldIdentifier = "LabelEditViewController.newLabelInput"
-fileprivate let createButtonIdentifier = "LabelEditViewController.applyButton"
-fileprivate let closeButtonIdentifier = "LabelEditViewController.closeButton"
-fileprivate let keyboardDoneIdentifier = "Done"
-fileprivate let deleteButtonIdentifier = LocalString._general_delete_action
-fileprivate func labelFolderCellIdentifier(_ name: String) -> String { return "LabelTableViewCell.\(name)" }
-fileprivate func selectLabelFolderButtonIdentifier(_ name: String) -> String { return "\(name).selectStatusButton" }
-fileprivate func editLabelFolderButtonIdentifier(_ name: String) -> String { return "\(name).editButton" }
-fileprivate let colorCollectionViewIdentifier = "LabelEditViewController.collectionView"
+import pmtest
+
+fileprivate struct id {
+    static let addFolderButtonIdentifier = "LabelsViewController.addFolderButton"
+    static let newLabel = "New label"
+    static let folderNameTextFieldIdentifier = "LabelEditViewController.newLabelInput"
+    static let createButtonIdentifier = "LabelEditViewController.applyButton"
+    static let closeButtonIdentifier = "LabelEditViewController.closeButton"
+    static let keyboardDoneIdentifier = "Done"
+    static let deleteButtonIdentifier = LocalString._general_delete_action
+    static func labelFolderCellIdentifier(_ name: String) -> String { return "LabelTableViewCell.\(name)" }
+    static func selectLabelFolderButtonIdentifier(_ name: String) -> String { return "\(name).selectStatusButton" }
+    static func editLabelFolderButtonIdentifier(_ name: String) -> String { return "\(name).editButton" }
+    static let colorCollectionViewIdentifier = "LabelEditViewController.collectionView"
+}
 
 /**
  LabelsAndFoldersRobot class represents Labels/Folders view.
  */
-class AccountSettingsLabelsAndFoldersRobot {
+class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     
-    var verify: Verify! = nil
-    init() { verify = Verify() }
+    var verify = Verify()
 
     func addFolder() -> AddFolderLabelRobot {
-        Element.button.tapByIdentifier(addFolderButtonIdentifier)
+        button(id.addFolderButtonIdentifier).tap()
         return AddFolderLabelRobot()
     }
     
     func addLabel() -> AddFolderLabelRobot {
-        Element.button.tapByIdentifier(addLabelButtonIdentifier)
+        staticText(id.newLabel).tap()
         return AddFolderLabelRobot()
     }
     
     func deleteFolderLabel(_ name: String) -> AccountSettingsRobot {
-        selectFolderLabel(name)
+        return selectFolderLabel(name)
             .delete()
     }
     
     func editFolderLabel(_ folderName: String) -> AddFolderLabelRobot {
-        Element.wait.forButtonWithIdentifier(editLabelFolderButtonIdentifier(folderName), file: #file, line: #line).tap()
+        button(id.editLabelFolderButtonIdentifier(folderName)).tap()
         return AddFolderLabelRobot()
     }
     
     func close() -> AccountSettingsRobot {
-        Element.wait.forButtonWithIdentifier(closeButtonIdentifier, file: #file, line: #line).tap()
+        button(id.closeButtonIdentifier).tap()
         return AccountSettingsRobot()
     }
     
     private func selectFolderLabel(_ name: String) -> AccountSettingsLabelsAndFoldersRobot {
-        Element.button.tapByIdentifier(selectLabelFolderButtonIdentifier(name))
+        button(id.selectLabelFolderButtonIdentifier(name)).tap()
         return self
     }
     
     private func delete() -> AccountSettingsRobot {
-        Element.button.tapByIdentifier(deleteButtonIdentifier)
+        button(id.deleteButtonIdentifier).tap()
         return AccountSettingsRobot()
     }
     
     /**
      AddFolderLabelRobot class represents  modal state with color selection and Label/Folder name text field.
      */
-    class AddFolderLabelRobot {
+    class AddFolderLabelRobot: CoreElements {
         
         func createFolderLabel(_ name: String) -> AccountSettingsLabelsAndFoldersRobot {
             return setFolderLabelName(name)
@@ -73,29 +76,27 @@ class AccountSettingsLabelsAndFoldersRobot {
         }
         
         private func setFolderLabelName(_ name: String) -> AddFolderLabelRobot {
-            Element.wait.forTextFieldWithIdentifier(folderNameTextFieldIdentifier, file: #file, line: #line).typeText(name)
+            textField(id.folderNameTextFieldIdentifier).typeText(name)
             return self
         }
         
         func editFolderLabelName(_ name: String) -> AddFolderLabelRobot {
-            Element.wait.forTextFieldWithIdentifier(folderNameTextFieldIdentifier, file: #file, line: #line)
-                .clear()
-                .typeText(name)
+            textField(id.folderNameTextFieldIdentifier).clearText().typeText(name)
             return AddFolderLabelRobot()
         }
         
         func selectFolderColorByIndex(_ index: Int) -> AddFolderLabelRobot {
-            Element.wait.forCollectionViewWithIdentifier(colorCollectionViewIdentifier, file: #file, line: #line).clickCellByIndex(index)
+            collectionView(id.colorCollectionViewIdentifier).onChild(cell().byIndex(index)).tap()
             return AddFolderLabelRobot()
         }
         
         func done() -> AddFolderLabelRobot {
-            Element.wait.forButtonWithIdentifier(keyboardDoneIdentifier, file: #file, line: #line).tap()
+            button(id.keyboardDoneIdentifier).tap()
             return self
         }
         
         func create() -> AccountSettingsLabelsAndFoldersRobot {
-            Element.wait.forButtonWithIdentifier(createButtonIdentifier, file: #file, line: #line).tap()
+            button(id.createButtonIdentifier).tap()
             return AccountSettingsLabelsAndFoldersRobot()
         }
     }
@@ -103,14 +104,14 @@ class AccountSettingsLabelsAndFoldersRobot {
     /**
      Contains all the validations that can be performed by LabelsAndFoldersRobot.
      */
-    class Verify {
+    class Verify: CoreElements {
         
         func folderLabelExists(_ name: String) {
-            Element.assert.cellWithIdentifierExists(labelFolderCellIdentifier(name))
+            cell(id.labelFolderCellIdentifier(name)).wait().checkExists()
         }
         
         func folderLabelDeleted(_ name: String) {
-            Element.assert.cellWithIdentifierDoesNotExists(labelFolderCellIdentifier(name))
+            cell(id.labelFolderCellIdentifier(name)).waitUntilGone()
         }
     }
 }

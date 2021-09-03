@@ -24,7 +24,7 @@ import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
 
-class SettingsAccountViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
+class SettingsAccountViewController: UITableViewController, ViewModelProtocol, CoordinatedNew, AccessibleView {
     internal var viewModel: SettingsAccountViewModel!
     internal var coordinator: SettingsAccountCoordinator?
 
@@ -70,6 +70,7 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
         tableView.separatorInset = .zero
 
         view.backgroundColor = UIColorManager.BackgroundSecondary
+        generateAccessibilityIdentifiers()
     }
 
     private func updateTitle() {

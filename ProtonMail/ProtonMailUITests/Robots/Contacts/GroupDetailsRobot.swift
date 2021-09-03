@@ -6,30 +6,26 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let editNavBarButtonText = LocalString._general_edit_action
-fileprivate let backToContactsNavBarButtonText = LocalString._menu_contact_group_title
+import pmtest
+
+fileprivate struct id {
+    static let editNavBarButtonText = LocalString._general_edit_action
+    static let backToContactsNavBarButtonText = LocalString._menu_contact_group_title
+}
 
 /**
  GroupDetailsRobot class contains actions and verifications for Contacts functionality.
  */
-class GroupDetailsRobot {
-    
-    var verify: Verify! = nil
-    init() { verify = Verify() }
+class GroupDetailsRobot: CoreElements {
 
     func editGroup() -> AddContactGroupRobot {
-        Element.wait.forButtonWithIdentifier(editNavBarButtonText, file: #file, line: #line).tap()
+        button(id.editNavBarButtonText).tap()
         return AddContactGroupRobot()
     }
 
     func goBackToContacts() -> ContactsRobot {
-        Element.wait.forButtonWithIdentifier(backToContactsNavBarButtonText, file: #file, line: #line).tap()
+        button(id.backToContactsNavBarButtonText).tap()
         return ContactsRobot()
     }
-
-    /**
-     Contains all the validations that can be performed by GroupDetailsRobot.
-     */
-    class Verify {}
 }
 
