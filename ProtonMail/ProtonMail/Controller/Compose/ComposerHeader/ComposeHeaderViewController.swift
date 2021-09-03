@@ -27,19 +27,34 @@ import ProtonCore_UIFoundations
 import UIKit
 
 final class ComposeHeaderViewController: UIViewController, AccessibleView {
+    // MARK : - Outlets
+    @IBOutlet private(set) var subject: UITextField!
+    @IBOutlet private var subjectTopToToContactPicker: NSLayoutConstraint!
+    @IBOutlet private var subjectTopToBccContactPicker: NSLayoutConstraint!
+    @IBOutlet private var showCcBccButton: UIButton!
+    
+    // MARK: - From field
+    @IBOutlet private(set) var fromView: UIView!
+    @IBOutlet private var fromAddress: UILabel!
+    @IBOutlet private var fromPickerButton: UIButton!
+    @IBOutlet private var fromLable: UILabel!
+    @IBOutlet private var fromGrayView: UIView!
+
+    @IBOutlet private(set) var toContactPicker: ContactPicker!
+    @IBOutlet private(set) var ccContactPicker: ContactPicker!
+    @IBOutlet private(set) var bccContactPicker: ContactPicker!
+    @IBOutlet private var toContactPickerHeight: NSLayoutConstraint!
+    @IBOutlet private var ccContactPickerHeight: NSLayoutConstraint!
+    @IBOutlet private var bccContactPickerHeight: NSLayoutConstraint!
+    
     private var height: NSLayoutConstraint!
     private(set) var pickerHeight : CGFloat = 0.0
-    private(set) var toContactPicker: ContactPicker!
     
     @objc
     dynamic var size: CGSize = .zero {
         didSet {
             self.height.constant = size.height
         }
-    }
-    
-    var toContacts: String {
-        return toContactPicker.contactList
     }
     
     var hasOutSideEmails : Bool {
@@ -138,17 +153,15 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         return emails.joined(separator: ",")
     }
 
-    var ccContactPicker: ContactPicker!
     var ccContacts: String {
         return ccContactPicker.contactList
     }
-    var bccContactPicker: ContactPicker!
     var bccContacts: String {
         return bccContactPicker.contactList
     }
-    private var toContactPickerHeight: NSLayoutConstraint!
-    private var ccContactPickerHeight: NSLayoutConstraint!
-    private var bccContactPickerHeight: NSLayoutConstraint!
+    var toContacts: String {
+        return toContactPicker.contactList
+    }
     
     var expirationTimeInterval: TimeInterval = 0
     
@@ -161,18 +174,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
     private var isConnected: Bool?
     
-    // MARK : - Outlets
-    @IBOutlet var fakeContactPickerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var subject: UITextField!
-    @IBOutlet var showCcBccButton: UIButton!
-    
-    // MARK: - From field
-    @IBOutlet weak var fromView: UIView!
-    @IBOutlet weak var fromAddress: UILabel!
-    @IBOutlet weak var fromPickerButton: UIButton!
-    @IBOutlet weak var fromLable: UILabel!
-    @IBOutlet private var fromGrayView: UIView!
-    
     // MARK: - Delegate and Datasource
     weak var datasource: ComposeViewDataSource?
     weak var delegate: ComposeViewDelegate?
@@ -184,8 +185,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     fileprivate let kNumberOfDaysInTimePicker: Int = 30
     fileprivate let kNumberOfHoursInTimePicker: Int = 24
     fileprivate let kCcBccContainerViewHeight: CGFloat = 96.0
-    
-    //
     fileprivate let kAnimationDuration = 0.25
     
     //
@@ -217,9 +216,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         
         self.configureContactPickerTemplate()
         
-        self.configureToContactPicker()
-        self.configureCcContactPicker()
-        self.configureBccContactPicker()
+        self.configureContactPicker()
         self.configureSubject()
         
         self.view.bringSubviewToFront(showCcBccButton)
@@ -250,6 +247,12 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if let showCcBcc = self.datasource?.ccBccIsShownInitially(), showCcBcc {
+            self.setShowingCcBccView(to: showCcBcc)
+        } else {
+            self.view.removeConstraint(self.subjectTopToBccContactPicker)
+            self.view.addConstraint(self.subjectTopToToContactPicker)
+        }
         self.notifyViewSize( false )
     }
     
@@ -336,20 +339,25 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.subject.autocapitalizationType = .sentences
         self.subject.delegate = self
         self.subject.textColor = UIColorManager.TextNorm
+        
+        self.view.removeConstraint(self.subjectTopToBccContactPicker)
+        self.view.addConstraint(self.subjectTopToToContactPicker)
     }
     
     internal func setShowingCcBccView(to show: Bool) {
-        if (show) {
+        if show {
             UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
                 self.ccContactPicker.alpha = 1.0
                 self.bccContactPicker.alpha = 1.0
-                self.fakeContactPickerHeightConstraint.constant = self.toContactPicker.currentContentHeight + self.ccContactPicker.currentContentHeight + self.bccContactPicker.currentContentHeight
+                self.view.addConstraint(self.subjectTopToBccContactPicker)
+                self.view.removeConstraint(self.subjectTopToToContactPicker)
                 self.showCcBccButton.setImage(UIImage(named: "arrow_up"), for:.normal )
                 self.view.layoutIfNeeded()
             })
         } else {
             UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
-                self.fakeContactPickerHeightConstraint.constant = self.toContactPicker.currentContentHeight
+                self.view.addConstraint(self.subjectTopToToContactPicker)
+                self.view.removeConstraint(self.subjectTopToBccContactPicker)
                 self.ccContactPicker.alpha = 0.0
                 self.bccContactPicker.alpha = 0.0
                 self.showCcBccButton.setImage(UIImage(named: "arrow_down"), for:.normal )
@@ -368,63 +376,21 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     fileprivate func updateViewSize() {
         self.size = CGSize(width: self.view.frame.width, height: self.subject.frame.origin.y + self.subject.frame.height)
     }
-    
-    fileprivate func configureToContactPicker() {
-        toContactPicker = ContactPicker()
-        toContactPicker.translatesAutoresizingMaskIntoConstraints = false
+
+    private func configureContactPicker() {
         toContactPicker.cellHeight = self.kDefaultRecipientHeight
-        self.view.addSubview(toContactPicker)
         toContactPicker.datasource = self
         toContactPicker.delegate = self
-        
-        [
-            toContactPicker.topAnchor.constraint(equalTo: self.fromView.bottomAnchor),
-            toContactPicker.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            toContactPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-        ].activate()
-        
-        self.toContactPickerHeight = toContactPicker.heightAnchor.constraint(equalToConstant: 44)
-        self.toContactPickerHeight.isActive = true
-    }
-    
-    fileprivate func configureCcContactPicker() {
-        ccContactPicker = ContactPicker()
+
         ccContactPicker.cellHeight = self.kDefaultRecipientHeight
-        ccContactPicker.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(ccContactPicker)
-        
         ccContactPicker.datasource = self
         ccContactPicker.delegate = self
-        ccContactPicker.alpha = 0.0
-        
-        [
-            ccContactPicker.topAnchor.constraint(equalTo: self.toContactPicker.bottomAnchor),
-            ccContactPicker.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            ccContactPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-        ].activate()
-        
-        self.ccContactPickerHeight = ccContactPicker.heightAnchor.constraint(equalToConstant: 44)
-        self.ccContactPickerHeight.isActive = true
-    }
-    
-    fileprivate func configureBccContactPicker() {
-        bccContactPicker = ContactPicker()
-        bccContactPicker.translatesAutoresizingMaskIntoConstraints = false
+        ccContactPicker.alpha = 0
+
         bccContactPicker.cellHeight = self.kDefaultRecipientHeight
-        self.view.addSubview(bccContactPicker)
-        
         bccContactPicker.datasource = self
         bccContactPicker.delegate = self
-        bccContactPicker.alpha = 0.0
-        
-        [
-            bccContactPicker.topAnchor.constraint(equalTo: self.ccContactPicker.bottomAnchor),
-            bccContactPicker.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            bccContactPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-        ].activate()
-        
-        self.bccContactPickerHeight = bccContactPicker.heightAnchor.constraint(equalToConstant: 44)
-        self.bccContactPickerHeight.isActive = true
+        bccContactPicker.alpha = 0
     }
 
     private func checkShowCcBccButton() {
@@ -440,12 +406,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
             self.ccContactPickerHeight.constant = newHeight
         } else if (contactPicker == self.bccContactPicker) {
             self.bccContactPickerHeight.constant = newHeight
-        }
-        
-        if (isShowingCcBccView) {
-            fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight + ccContactPicker.currentContentHeight + bccContactPicker.currentContentHeight
-        } else {
-            fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight
         }
     }
 
