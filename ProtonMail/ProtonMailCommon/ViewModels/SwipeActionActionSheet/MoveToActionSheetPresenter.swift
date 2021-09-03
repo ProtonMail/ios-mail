@@ -90,10 +90,13 @@ class MoveToActionSheetPresenter {
 
             let iconColor = viewModel.getColor(of: menuLabel)
 
+            let markType = viewModel.initialLabelSelectionStatus[menuLabel] ?? .none
+            let isOn = markType != .none
             let item = PMActionSheetPlainItem(title: menuLabel.name,
                                               icon: icon?.withRenderingMode(.alwaysTemplate),
                                               iconColor: iconColor,
-                                              markType: viewModel.initialLabelSelectionStatus[menuLabel],
+                                              isOn: isOn,
+                                              markType: markType,
                                               indentationLevel: menuLabel.indentationLevel) { item in
                 selected(menuLabel, item.isOn)
             }
