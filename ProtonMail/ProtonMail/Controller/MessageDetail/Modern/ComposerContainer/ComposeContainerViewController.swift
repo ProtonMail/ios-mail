@@ -240,19 +240,22 @@ extension ComposeContainerViewController {
                 self?.tableView.endUpdates()
             },
             attachmentView.observe(\.tableHeight) { [weak self] _, _ in
+                let path = IndexPath(row: 0, section: 0)
                 self?.tableView.beginUpdates()
+                if self?.tableView.cellForRow(at: path) == nil {
+                    self?.tableView.reloadRows(at: [path], with: .none)
+                }
                 self?.tableView.endUpdates()
                 guard self?.isAddingAttachment ?? false else { return }
                 self?.isAddingAttachment = false
                 // A bit of delay can get real contentSize
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     var yOffset: CGFloat = 0
-                    let contentHieht = self?.tableView.contentSize.height ?? 0
+                    let contentHeight = self?.tableView.contentSize.height ?? 0
                     let sizeHeight = self?.tableView.bounds.size.height ?? 0
-                    if contentHieht > sizeHeight {
-                        yOffset = contentHieht - sizeHeight
+                    if contentHeight > sizeHeight {
+                        yOffset = contentHeight - sizeHeight
                     }
-
                     self?.tableView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: false)
                 }
             }

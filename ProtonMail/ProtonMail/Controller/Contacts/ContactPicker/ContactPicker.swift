@@ -164,6 +164,7 @@ class ContactPicker: UIView, AccessibleView {
     }
     
     private func setupPromptLabel() {
+        guard self.promptLabel == nil else { return }
         self.promptLabel = UILabel()
         self.promptLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.promptLabel)
@@ -177,6 +178,7 @@ class ContactPicker: UIView, AccessibleView {
     }
     
     private func setupContactCollectionView() {
+        guard self.contactCollectionView == nil else { return }
         let contactCollectionView = ContactCollectionView.contactCollectionViewWithFrame(frame: self.bounds)
         contactCollectionView.showPrompt = false
         contactCollectionView.contactDelegate = self
@@ -188,7 +190,7 @@ class ContactPicker: UIView, AccessibleView {
         
         [
             self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 11),
-            self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 10),
+            self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
             self.contactCollectionView.leadingAnchor.constraint(equalTo: self.promptLabel.trailingAnchor, constant: 8),
             self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -35)
         ].activate()
