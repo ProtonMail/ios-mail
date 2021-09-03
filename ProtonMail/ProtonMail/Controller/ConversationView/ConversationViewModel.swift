@@ -32,6 +32,8 @@ class ConversationViewModel {
     let labelId: String
     let user: UserManager
     let messageService: MessageDataService
+    /// MessageID that want to expand at the begining
+    let targetID: String?
     private let conversationMessagesProvider: ConversationMessagesProvider
     private let conversationService: ConversationProvider
     private let eventsService: EventsFetching
@@ -66,7 +68,8 @@ class ConversationViewModel {
          conversation: Conversation,
          user: UserManager,
          openFromNotification: Bool = false,
-         coreDataService: CoreDataService) {
+         coreDataService: CoreDataService,
+         targetID: String? = nil) {
         self.labelId = labelId
         self.conversation = conversation
         self.messageService = user.messageService
@@ -78,6 +81,7 @@ class ConversationViewModel {
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
         self.openFromNotification = openFromNotification
         self.sharedReplacingEmails = contactService.allAccountEmails()
+        self.targetID = targetID
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
         recordNumOfMessages = conversation.numMessages.intValue
@@ -512,8 +516,19 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
         /* scroll to the oldest unread message that the current location has
            or to the newest message */
-        if let indexOfOldestUnreadMessage = dataModels
-            .firstIndex(where: {
+        if let targetID = self.targetID,
+           let index = dataModels
+            .lastIndex(where: {
+                $0.message?.messageID == targetID
+            }) {
+            if dataModels[index].messageViewModel?.isDraft ?? false {
+                // The draft can't expand
+                return nil
+            }
+            dataModels[index].messageViewModel?.toggleState()
+            indexPath = IndexPath(row: index, section: 1)
+        } else if let indexOfOldestUnreadMessage = dataModels
+                    .firstIndex(where: {
                 $0.message?.unRead == true &&
                 $0.message?.contains(label: self.labelId) == true &&
                 $0.message?.draft == false

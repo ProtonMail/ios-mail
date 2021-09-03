@@ -44,7 +44,7 @@ protocol ConversationProvider: AnyObject {
                             completion: ((Result<Void, Error>) -> Void)?)
     func fetchConversations(with conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Single item fetching
-    func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Void, Error>) -> Void)?)
+    func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Conversation, Error>) -> Void)?)
     // MARK: - Operations
     func deleteConversations(with conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?)
     func markAsRead(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?)

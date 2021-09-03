@@ -557,7 +557,7 @@ class MailboxViewModel: StorageLimit {
         
     }
     
-    func fetchConversationDetail(conversationID: String, completion: ((Result<Void, Error>) -> Void)?) {
+    func fetchConversationDetail(conversationID: String, completion: ((Result<Conversation, Error>) -> Void)?) {
         conversationService.fetchConversation(with: conversationID, includeBodyOf: nil, completion: completion)
     }
     
