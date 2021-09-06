@@ -29,7 +29,10 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     var contactsCached: Int = 0
     var msgUnreadData: [String: Int] = [:] //[LabelID: UnreadCount]
     var conversationUnreadData: [String: Int] = [:] //[LabelID: UnreadCount]
-    var labelUpdate: [String: LabelUpdate] = [:] //[LabelID: LabelUpdate]
+    var msgLabelUpdate: [String: LabelUpdate] = [:] //[LabelID: LabelUpdate]
+    var conversationLabelUpdate: [String: ConversationCount] = [:] //[LabelID: ConversationCount]
+
+    var testContext: NSManagedObjectContext?
     
     static func clear() {
         
@@ -69,25 +72,42 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     }
     
     func lastUpdate(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount? {
-        return self.labelUpdate[labelID]
+        switch type {
+        case .singleMessage:
+            return self.msgLabelUpdate[labelID]
+        case .conversation:
+            return self.conversationLabelUpdate[labelID]
+        }
     }
     
     func lastUpdateDefault(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount {
-        if let data = self.labelUpdate[labelID] {
-            return data
+        switch type {
+        case .singleMessage:
+            if let data = self.msgLabelUpdate[labelID] {
+                return data
+            } else {
+                let newData = LabelUpdate.newLabelUpdate(by: labelID, userID: userID, inManagedObjectContext: context)
+                self.msgLabelUpdate[labelID] = newData
+                return newData
+            }
+        case .conversation:
+            if let data = self.conversationLabelUpdate[labelID] {
+                return data
+            } else {
+                let newData = ConversationCount.newConversationCount(by: labelID, userID: userID, inManagedObjectContext: context)
+                self.conversationLabelUpdate[labelID] = newData
+                return newData
+            }
         }
-        let newData = LabelUpdate.newLabelUpdate(by: labelID, userID: userID, inManagedObjectContext: context)
-        self.labelUpdate[labelID] = newData
-        return newData
     }
     
     func unreadCount(by labelID: String, userID: String, type: ViewMode) -> Promise<Int> {
         var count = 0
         switch type {
         case .singleMessage:
-            count = self.msgUnreadData[labelID] ?? 0
+            count = Int(self.msgLabelUpdate[labelID]?.unread ?? 0)
         case .conversation:
-            count = self.conversationUnreadData[labelID] ?? 0
+            count = Int(self.conversationLabelUpdate[labelID]?.unread ?? 0)
         }
         return Promise.value(count)
     }
@@ -95,18 +115,30 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     func unreadCount(by labelID: String, userID: String, type: ViewMode) -> Int {
         switch type {
         case .singleMessage:
-            return self.msgUnreadData[labelID] ?? 0
+            return Int(self.msgLabelUpdate[labelID]?.unread ?? 0)
         case .conversation:
-            return self.conversationUnreadData[labelID] ?? 0
+            return Int(self.conversationLabelUpdate[labelID]?.unread ?? 0)
         }
     }
     
     func updateUnreadCount(by labelID: String, userID: String, count: Int, type: ViewMode, shouldSave: Bool) {
         switch type {
         case .singleMessage:
-            self.msgUnreadData[labelID] = count
+            if let data = self.msgLabelUpdate[labelID] {
+                data.unread = Int32(count)
+            } else {
+                let newData = LabelUpdate.newLabelUpdate(by: labelID, userID: userID, inManagedObjectContext: testContext!)
+                newData.unread = Int32(count)
+                self.msgLabelUpdate[labelID] = newData
+            }
         case .conversation:
-            self.conversationUnreadData[labelID] = count
+            if let data = self.conversationLabelUpdate[labelID] {
+                data.unread = Int32(count)
+            } else {
+                let newData = ConversationCount.newConversationCount(by: labelID, userID: userID, inManagedObjectContext: testContext!)
+                newData.unread = Int32(count)
+                self.conversationLabelUpdate[labelID] = newData
+            }
         }
     }
     

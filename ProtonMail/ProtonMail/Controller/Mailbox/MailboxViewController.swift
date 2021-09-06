@@ -142,6 +142,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
 
+    private var isSwipingCell = false
+
     func inactiveViewModel() {
         guard self.viewModel != nil else {
             return
@@ -595,7 +597,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                  swipeView: leftToRightSwipeView,
                                  swipeColor: leftToRightMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
                 guard let self = self else { return }
+                self.isSwipingCell = true
                 self.handleSwipeAction(on: cell, action: leftToRightMsgAction, message: message)
+                delay(0.5) {
+                    self.isSwipingCell = false
+                }
             }
         }
 
@@ -609,7 +615,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                  swipeView: rightToLeftSwipeView,
                                  swipeColor: rightToLeftMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
                 guard let self = self else { return }
+                self.isSwipingCell = true
                 self.handleSwipeAction(on: cell, action: rightToLeftMsgAction, message: message)
+                delay(0.5) {
+                    self.isSwipingCell = false
+                }
             }
         }
     }
@@ -2144,7 +2154,7 @@ extension MailboxViewController: UITableViewDelegate {
             
             let isOlderMessage = endTime.compare(currentTime) != ComparisonResult.orderedAscending
             let loadMore = self.viewModel.loadMore(index: indexPath)
-            if  (isOlderMessage || loadMore) && !self.fetchingOlder {
+            if  (isOlderMessage || loadMore) && !self.fetchingOlder && !isSwipingCell {
                 let sectionCount = self.viewModel.rowCount(section: indexPath.section)
                 let recordedCount = totalMessage
                 //here need add a counter to check if tried too many times make one real call in case count not right
