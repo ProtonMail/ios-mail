@@ -49,16 +49,19 @@ class CacheService: Service {
             }
 
             if let lid = msgToUpdate.remove(labelID: fLabel), msgToUpdate.unRead {
-                self.updateCounterSync(plus: false, with: lid, context: context)
+                self.updateCounterInsideContext(plus: false, with: lid, context: context)
                 if let id = msgToUpdate.selfSent(labelID: lid) {
-                    self.updateCounterSync(plus: false, with: id, context: context)
+                    self.updateCounterInsideContext(plus: false, with: id, context: context)
                 }
             }
             if let lid = msgToUpdate.add(labelID: tLabel) {
-                // if move to trash. clean lables.
+                // if move to trash. clean labels.
                 var labelsFound = msgToUpdate.getNormalLabelIDs()
                 labelsFound.append(Message.Location.starred.rawValue)
-                labelsFound.append(Message.Location.allmail.rawValue)
+                // prevent the unread being substracted once more
+                if fLabel != Message.Location.allmail.rawValue {
+                    labelsFound.append(Message.Location.allmail.rawValue)
+                }
                 if lid == Message.Location.trash.rawValue {
                     self.removeLabel(on: msgToUpdate, labels: labelsFound, cleanUnread: true)
                     msgToUpdate.unRead = false
@@ -68,9 +71,9 @@ class CacheService: Service {
                 }
 
                 if msgToUpdate.unRead {
-                    self.updateCounterSync(plus: true, with: lid, context: context)
+                    self.updateCounterInsideContext(plus: true, with: lid, context: context)
                     if let id = msgToUpdate.selfSent(labelID: lid) {
-                        self.updateCounterSync(plus: true, with: id, context: context)
+                        self.updateCounterInsideContext(plus: true, with: id, context: context)
                     }
                 }
             }
@@ -215,9 +218,9 @@ class CacheService: Service {
         let unread = cleanUnread ? message.unRead : cleanUnread
         for label in labels {
             if let labelId = message.remove(labelID: label), unread {
-                self.updateCounterSync(plus: false, with: labelId, context: context)
+                self.updateCounterInsideContext(plus: false, with: labelId, context: context)
                 if let id = message.selfSent(labelID: labelId) {
-                    self.updateCounterSync(plus: false, with: id, context: context)
+                    self.updateCounterInsideContext(plus: false, with: id, context: context)
                 }
             }
         }
@@ -485,6 +488,27 @@ extension CacheService {
             conversationCount = 0
         }
         lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: conversationCount, type: .conversation, shouldSave: true)
+    }
+
+    func updateCounterInsideContext(plus: Bool, with labelID: String, context: NSManagedObjectContext) {
+        let offset = plus ? 1 : -1
+        // Message Count
+        let labelCount = lastUpdatedStore.lastUpdate(by: labelID, userID: userID, context: context, type: .singleMessage)
+        let unreadCount = Int(labelCount?.unread ?? 0)
+        var count = unreadCount + offset
+        if count < 0 {
+            count = 0
+        }
+        labelCount?.unread = Int32(count)
+
+        // Conversation Count
+        let contextLabelCount = lastUpdatedStore.lastUpdate(by: labelID, userID: userID, context: context, type: .conversation)
+        let conversationUnreadCount = Int(contextLabelCount?.unread ?? 0)
+        var conversationCount = conversationUnreadCount + offset
+        if conversationCount < 0 {
+            conversationCount = 0
+        }
+        contextLabelCount?.unread = Int32(conversationCount)
     }
 }
 

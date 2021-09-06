@@ -93,37 +93,24 @@ final class LocalConversationUpdater {
                 let messages = Message
                     .messagesForConversationID(conversationID,
                                                inManagedObjectContext: context)
-                let untouchedLocations: [Message.Location] = [.draft, .sent, .starred, .archive, .allmail]
+                let untouchedLocations: [Message.Location] = [.draft, .sent, .starred, .allmail]
 
-                if isFolder {
+                var labelsThatAlreadyUpdateTheUnreadCount: [String] = []
+                if isFolder, let messages = messages {
                     // If folder, first remove all labels that are not draft, sent, starred, archive, allmail
-                    let allLabels = conversation.labels as? Set<ContextLabel> ?? []
-                    let filteredLabels = allLabels.filter({ !untouchedLocations.map(\.rawValue).contains($0.labelID) })
-                    for filteredLabel in filteredLabels {
-                        let label = Label.labelForLabelID(filteredLabel.labelID, inManagedObjectContext: context)
-                        // We clear only folder type labels
-                        if label?.type == 0 || label?.type == 3 {
-                            conversation.applyLabelChanges(labelID: filteredLabel.labelID,
-                                                           apply: false,
-                                                           context: context)
-                            messages?.forEach { $0.remove(labelID: filteredLabel.labelID) }
-                            let hasUnread = messages?.contains(where: { $0.unRead }) == true ||
-                                conversation.isUnread(labelID: filteredLabel.labelID)
-                            if hasUnread {
-                                updateConversationCount(for: filteredLabel.labelID, offset: -1, in: context)
-                            }
-                        }
-                     }
+                    labelsThatAlreadyUpdateTheUnreadCount = removeSpecificFolder(of: conversation,
+                                                                                 messagesOfConversation: messages,
+                                                                                 context: context)
                 }
 
                 if let removed = labelToRemove,
                    !removed.isEmpty,
                    !untouchedLocations.map(\.rawValue).contains(removed) {
-                    conversation.applyLabelChanges(labelID: removed, apply: false, context: context)
-                    messages?.forEach { $0.remove(labelID: removed) }
                     let hasUnread = messages?.contains(where: { $0.unRead }) == true ||
                         conversation.isUnread(labelID: removed)
-                    if hasUnread {
+                    conversation.applyLabelChanges(labelID: removed, apply: false, context: context)
+                    messages?.forEach { $0.remove(labelID: removed) }
+                    if hasUnread && !labelsThatAlreadyUpdateTheUnreadCount.contains(removed) {
                         updateConversationCount(for: removed, offset: -1, in: context)
                     }
                 }
@@ -131,15 +118,57 @@ final class LocalConversationUpdater {
                 if let added = labelToAdd, !added.isEmpty {
                     conversation.applyLabelChanges(labelID: added, apply: true, context: context)
                     messages?.forEach { $0.add(labelID: added) }
-                    let hasUnread = messages?.contains(where: { $0.unRead }) == true ||
-                        conversation.isUnread(labelID: added)
-                    if hasUnread {
-                        updateConversationCount(for: added, offset: 1, in: context)
+
+                    // When we trash the conversation, make all unread messsages as read.
+                    if added == Message.Location.trash.rawValue {
+                        messages?.forEach { $0.unRead = false }
+                        conversation.labels
+                            .compactMap({ $0 as? ContextLabel })
+                            .filter({ $0.unreadCount != NSNumber(value: 0) })
+                            .forEach({ contextLabel in
+                                contextLabel.unreadCount = NSNumber(value: 0)
+                                updateConversationCount(for: contextLabel.labelID, offset: -1, in: context)
+                            })
+                    } else {
+                        let hasUnread = messages?.contains(where: { $0.unRead }) == true ||
+                            /* Be carefull to handle the case that the message is not fetched.
+                             Read status from all mail. */
+                            conversation.isUnread(labelID: Message.Location.allmail.rawValue)
+                        if hasUnread {
+                            updateConversationCount(for: added, offset: 1, in: context)
+                        }
                     }
                 }
             }
             save(context: context, completion: completion)
         }
+    }
+
+    private func removeSpecificFolder(of conversation: Conversation,
+                                      messagesOfConversation: [Message],
+                                      context: NSManagedObjectContext) -> [String] {
+        let untouchedLocations: [Message.Location] = [.draft, .sent, .starred, .archive, .allmail]
+        // If folder, first remove all labels that are not draft, sent, starred, archive, allmail
+        var labelsThatAlreadyUpdateTheUnreadCount: [String] = []
+        let allLabels = conversation.labels as? Set<ContextLabel> ?? []
+        let filteredLabels = allLabels.filter({ !untouchedLocations.map(\.rawValue).contains($0.labelID) })
+        for filteredLabel in filteredLabels {
+            let label = Label.labelForLabelID(filteredLabel.labelID, inManagedObjectContext: context)
+            // We clear only folder type labels
+            if label?.type == 0 || label?.type == 3 {
+                let hasUnread = messagesOfConversation.contains(where: { $0.unRead }) == true ||
+                    conversation.isUnread(labelID: filteredLabel.labelID)
+                conversation.applyLabelChanges(labelID: filteredLabel.labelID,
+                                               apply: false,
+                                               context: context)
+                messagesOfConversation.forEach { $0.remove(labelID: filteredLabel.labelID) }
+                if hasUnread {
+                    updateConversationCount(for: filteredLabel.labelID, offset: -1, in: context)
+                    labelsThatAlreadyUpdateTheUnreadCount.append(filteredLabel.labelID)
+                }
+            }
+         }
+        return labelsThatAlreadyUpdateTheUnreadCount
     }
 
     private func updateConversationCount(for labelID: String, offset: Int, in context: NSManagedObjectContext) {

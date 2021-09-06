@@ -45,8 +45,10 @@ class CacheServiceTest: XCTestCase {
         _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: parsedLabel, in: testContext)
         
         try testContext.save()
-        
-        lastUpdatedStore = MockLastUpdatedStore()
+
+        let mock = MockLastUpdatedStore()
+        mock.testContext = testContext
+        lastUpdatedStore = mock
         sut = CacheService(userID: "userID", lastUpdatedStore: lastUpdatedStore, coreDataService: coreDataService)
     }
     
@@ -82,6 +84,7 @@ class CacheServiceTest: XCTestCase {
         let label: String = Message.Location.inbox.rawValue
         self.testMessage.unRead = true
         loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: label)
+        loadTestDataOfUnreadCount(defaultUnreadCount: 0, labelID: Message.Location.archive.rawValue)
 
         let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInbox, 1)
@@ -268,7 +271,9 @@ class CacheServiceTest: XCTestCase {
 
 extension CacheServiceTest {
     func loadTestDataOfUnreadCount(defaultUnreadCount: Int, labelID: String) {
+        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID, context: testContext, type: .singleMessage)
         lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID, count: defaultUnreadCount, type: .singleMessage, shouldSave: true)
+        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID, context: testContext, type: .conversation)
         lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID, count: defaultUnreadCount, type: .conversation, shouldSave: true)
     }
 }
