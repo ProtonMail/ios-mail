@@ -36,7 +36,7 @@ extension Message {
                 }
             }
         }
-        return lists.joined(separator: ",")
+        return lists.asCommaSeparatedList(trailingSpace: false)
     }
     
     static func contactsToAddressesArray (_ contacts : String!) -> [String] {

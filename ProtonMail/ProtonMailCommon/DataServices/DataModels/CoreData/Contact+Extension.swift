@@ -83,7 +83,7 @@ extension Contact {
     func getDisplayEmails() -> String {
         if let emails = getEmailsArray()?.order() {
             let arrayMap: Array = emails.map(){ $0.email }
-            return arrayMap.joined(separator: ",")
+            return arrayMap.asCommaSeparatedList(trailingSpace: false)
         }
         return ""
     }

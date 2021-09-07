@@ -50,7 +50,7 @@ class NonExpandedHeaderViewModel {
 
     var recipient: NSAttributedString {
         let allRecipeints = message.recipients(userContacts: userContacts)
-            .joined(separator: ", ")
+            .asCommaSeparatedList(trailingSpace: true)
         let recipients = allRecipeints.isEmpty ? LocalString._undisclosed_recipients : allRecipeints
         let toText = "\(LocalString._general_to_label): ".apply(style: .toAttributes)
         return toText + recipients.apply(style: .recipientAttibutes)

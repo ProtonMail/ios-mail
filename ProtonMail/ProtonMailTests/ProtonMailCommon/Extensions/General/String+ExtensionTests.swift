@@ -150,5 +150,21 @@ class String_ExtensionTests: XCTestCase {
         let testBackground1 = "<body background=\"URL\">"
         XCTAssertTrue(testBackground1.hasImage())
     }
+
+    func testCommaSeparatedListShouldJoinWithComma() {
+        XCTAssertEqual(["foo", "bar"].asCommaSeparatedList(trailingSpace: false), "foo,bar")
+    }
+
+    func testCommaSeparatedListShouldJoinWithCommaWithTrailingSpaceIfParameterTrue() {
+        XCTAssertEqual(["foo", "bar"].asCommaSeparatedList(trailingSpace: true), "foo, bar")
+    }
+
+    func testCommaSeparatedListShouldIgnoreEmptyStringElementsWhenSingleValue() {
+        XCTAssertEqual(["", "foo"].asCommaSeparatedList(trailingSpace: true), "foo")
+    }
+
+    func testCommaSeparatedListShouldIgnoreEmptyStringElements() {
+        XCTAssertEqual(["", "foo", "", "bar"].asCommaSeparatedList(trailingSpace: true), "foo, bar")
+    }
 }
 

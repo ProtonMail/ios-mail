@@ -164,12 +164,17 @@ extension Message {
 
     func allEmailAddresses(_ replacingEmails: [Email]) -> String {
         let lists: [String] = self.allEmails.map { address in
-            replacingEmails.first(where: { $0.email == address })?.name ?? address
+            if let name = replacingEmails.first(where: { $0.email == address })?.name,
+               !name.isEmpty {
+                return name
+            } else {
+                return address
+            }
         }
         if lists.isEmpty {
             return ""
         }
-        return lists.joined(separator: ", ")
+        return lists.asCommaSeparatedList(trailingSpace: true)
     }
 
 }

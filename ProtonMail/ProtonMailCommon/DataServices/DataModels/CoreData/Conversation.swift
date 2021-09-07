@@ -155,7 +155,8 @@ extension Conversation {
     /// - Returns: String of all name of the senders.
     func getJoinedSendersName(_ replacingEmails: [Email]) -> String {
         let lists: [String] = self.getSenders().map { contact in
-            if let name = replacingEmails.first(where: {$0.email == contact.Address})?.name {
+            if let name = replacingEmails.first(where: {$0.email == contact.Address})?.name,
+               !name.isEmpty {
                 return name
             } else if !contact.Name.isEmpty {
                 return contact.Name
@@ -166,12 +167,13 @@ extension Conversation {
         if lists.isEmpty {
             return ""
         }
-        return lists.joined(separator: ", ")
+        return lists.asCommaSeparatedList(trailingSpace: true)
     }
 
     func getSendersName(_ replacingEmails: [Email]) -> [String] {
         return self.getSenders().map { contact in
-            if let name = replacingEmails.first(where: {$0.email == contact.Address})?.name {
+            if let name = replacingEmails.first(where: {$0.email == contact.Address})?.name,
+               !name.isEmpty {
                 return name
             } else if !contact.Name.isEmpty {
                 return contact.Name
@@ -193,12 +195,17 @@ extension Conversation {
     /// - Returns: String of all name of the recipients.
     func getRecipientsName(_ replacingEmails: [Email]) -> String {
         let lists: [String] = self.getRecipients().map { contact in
-            replacingEmails.first(where: {$0.email == contact.Address})?.name ?? contact.Name
+            if let name = replacingEmails.first(where: {$0.email == contact.Address})?.name,
+               !name.isEmpty {
+                return name
+            } else {
+                return contact.Name
+            }
         }
         if lists.isEmpty {
             return ""
         }
-        return lists.joined(separator: ", ")
+        return lists.asCommaSeparatedList(trailingSpace: true)
     }
     
     /// Fetch the Label from local cache based on the labelIDs from contextLabel

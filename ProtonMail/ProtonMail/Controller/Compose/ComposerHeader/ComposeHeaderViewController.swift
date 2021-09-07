@@ -150,7 +150,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         if emails.isEmpty {
             return ""
         }
-        return emails.joined(separator: ",")
+        return emails.asCommaSeparatedList(trailingSpace: false)
     }
 
     var ccContacts: String {
@@ -693,7 +693,7 @@ extension ContactPicker {
         let contacts = contactsSelected.compactMap { (contact) -> String? in
             return (contact as? ContactVO)?.email
         }
-        contactList = contacts.joined(separator: ",")
+        contactList = contacts.asCommaSeparatedList(trailingSpace: false)
         return contactList
     }
 

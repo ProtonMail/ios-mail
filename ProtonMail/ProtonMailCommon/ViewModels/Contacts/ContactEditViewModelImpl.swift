@@ -183,7 +183,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                     let typeRaw = types.count > 0 ? types.first! : ""
                                     let type = ContactFieldType.get(raw: typeRaw)
 
-                                    let pobox = a.getPoBoxes().joined(separator: ",")
+                                    let pobox = a.getPoBoxes().asCommaSeparatedList(trailingSpace: false)
                                     let street = a.getStreetAddress()
                                     let extention = a.getExtendedAddress()
                                     let locality = a.getLocality()
