@@ -33,14 +33,24 @@ public class EncryptedSearchIndexService {
 
 extension EncryptedSearchIndexService {
     func connectToSearchIndex(_ userID: String) -> Connection? {
+        
+        if self.checkIfSearchIndexExists(for: userID) {
+            return self.handleToSQliteDB
+        }
+        
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
+        
         do {
             self.handleToSQliteDB = try Connection(pathToDB)
             print("path to database: ", pathToDB)
         } catch {
             print("Create database connection. Unexpected error: \(error).")
         }
+        
+        //create table
+        self.createSearchIndexTable()
+        
         return self.handleToSQliteDB
     }
     
@@ -77,7 +87,6 @@ extension EncryptedSearchIndexService {
     }
     
     func createSearchIndexTable() -> Void {
-        //self.searchableMessages = Table(DatabaseConstants.Table_Searchable_Messages)
         self.databaseSchema = DatabaseEntries(messageID: Expression<String>(DatabaseConstants.Column_Searchable_Message_Id), time: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Time), labelIDs: Expression<String>(DatabaseConstants.Column_Searchable_Message_Labels), isStarred: Expression<Bool?>(DatabaseConstants.Column_Searchable_Message_Is_Starred), unread: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Unread), location: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Location), order: Expression<CLong?>(DatabaseConstants.Column_Searchable_Message_Order), hasBody: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Has_Body), decryptionFailed: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Decryption_Failed), encryptionIV: Expression<Data?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV), encryptedContent: Expression<Data?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content), encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File))
         
         do {
@@ -99,9 +108,6 @@ extension EncryptedSearchIndexService {
         } catch {
             print("Create Table. Unexpected error: \(error).")
         }
-        
-        //TODO only return if successfully generated (otherwise return nil)
-        //return messages
     }
     
     func addNewEntryToSearchIndex(messageID:String, time: Int, labelIDs: NSSet, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:Data, encryptedContent:Data, encryptedContentFile:String) -> Int64? {
