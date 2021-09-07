@@ -61,6 +61,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     
     var pickedGroup: ContactGroupVO?
     var pickedCallback: (([DraftEmailData]) -> Void)?
+    var groupSubSelectionPresenter: ContactGroupSubSelectionActionSheetPresenter?
 
     // view model setter
     func set(viewModel: ComposeViewModel) {
@@ -811,6 +812,7 @@ extension ComposeViewController : ComposeViewDelegate {
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void)) {
+        self.dismissKeyboard()
         self.pickedGroup = contactGroup
         self.pickedCallback = callback
         self.coordinator?.go(to: .subSelection)

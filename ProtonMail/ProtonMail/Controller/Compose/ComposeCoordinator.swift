@@ -85,20 +85,7 @@ class ComposeCoordinator : DefaultCoordinator {
             }
             vc.showExpirationUnavailabilityAlert(nonPMEmails: nonPMEmails, pgpEmails: pgpEmails)
         case .subSelection:
-            guard let destination = destination as? ContactGroupSubSelectionViewController else {
-                return false
-            }
-            guard let vc = viewController else {
-                return false
-            }
-            
-            guard let group = vc.pickedGroup else {
-                return false
-            }
-            destination.user = self.viewModel.getUser()
-            destination.contactGroupName = group.contactTitle
-            destination.selectedEmails = group.getSelectedEmailData()
-            destination.callback = vc.pickedCallback
+            return false
         }
         return true
     }
@@ -113,7 +100,24 @@ class ComposeCoordinator : DefaultCoordinator {
     }
     
     func go(to dest: Destination) {
-        self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: nil)
+        if dest == .subSelection {
+            presentGroupSubSelectionActionSheet()
+        } else {
+            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: nil)
+        }
+    }
+
+    func presentGroupSubSelectionActionSheet() {
+        guard let vc = viewController,
+              let navVC = vc.navigationController,
+              let group = vc.pickedGroup else {
+            return
+        }
+        vc.groupSubSelectionPresenter = ContactGroupSubSelectionActionSheetPresenter(sourceViewController: navVC,
+                                                                                     user: self.viewModel.getUser(),
+                                                                                     group: group,
+                                                                                     callback: vc.pickedCallback)
+        vc.groupSubSelectionPresenter?.present()
     }
 }
 
