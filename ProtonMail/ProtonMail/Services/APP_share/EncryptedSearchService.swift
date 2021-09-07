@@ -439,15 +439,13 @@ extension EncryptedSearchService {
     }
     
     func decryptBodyAndExtractData(_ messages: NSArray, completionHandler: @escaping () -> Void) {
-        var processedMessagesCount: Int = 0
-        
         //connect to search index database
-        self.searchIndex = EncryptedSearchIndexService.shared.connectToSearchIndex(user.userInfo.userId)!
-        EncryptedSearchIndexService.shared.createSearchIndexTable()
-        
+        let _ = EncryptedSearchIndexService.shared.connectToSearchIndex(user.userInfo.userId)
+
+        var processedMessagesCount: Int = 0
         for m in messages {
             var decryptionFailed: Bool = true
-            
+
             self.timingsDecryptMessages.add(CFAbsoluteTimeGetCurrent())     // add start time
             var body: String? = ""
             do {
@@ -456,35 +454,29 @@ extension EncryptedSearchService {
             } catch {
                 print("Error when decrypting messages: \(error).")
             }
-            
             self.timingsDecryptMessages.add(CFAbsoluteTimeGetCurrent())     // add stop time
+
             self.timingsExtractData.add(CFAbsoluteTimeGetCurrent())     //add start time
-            
-            var keyWordsPerEmail: String = ""
-            keyWordsPerEmail = self.extractKeywordsFromBody(bodyOfEmail: body!)
-            //TODO check how to include (framework, or as pod?)
+            let keyWordsPerEmail: String = self.extractKeywordsFromBody(bodyOfEmail: body!)
             //keyWordsPerEmail = HTMLEmailParser.EmailParserExtractData(body!, true)
             self.timingsExtractData.add(CFAbsoluteTimeGetCurrent())     //add stop time
+
             self.timingsCreateEncryptedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
-            
-            var encryptedContent: EncryptedsearchEncryptedMessageContent? = nil
-            encryptedContent = self.createEncryptedContent(message: m as! Message, cleanedBody: keyWordsPerEmail)
-            
+            let encryptedContent: EncryptedsearchEncryptedMessageContent? = self.createEncryptedContent(message: m as! Message, cleanedBody: keyWordsPerEmail)
             self.timingsCreateEncryptedContent.add(CFAbsoluteTimeGetCurrent()) //add stop time
+
             self.timingsWriteToDatabase.add(CFAbsoluteTimeGetCurrent()) //add start time
-            
             self.addMessageKewordsToSearchIndex(m as! Message, encryptedContent, decryptionFailed)
-            
             self.timingsWriteToDatabase.add(CFAbsoluteTimeGetCurrent()) //add stop time
-            
+
             processedMessagesCount += 1
             print("Processed messages: ", processedMessagesCount)
-            
+
             //Update UI progress bar
-            DispatchQueue.main.async {
+            //DispatchQueue.main.async {
                 //self.updateIndexBuildingProgress(processedMessages: self.processedMessages + (50 - remaindingMessages.count))
-                self.updateMemoryConsumption()
-            }
+            //    self.updateMemoryConsumption()
+            //}
             
             if processedMessagesCount == messages.count {
                 completionHandler()
