@@ -77,7 +77,8 @@ public typealias CompletionBlock = (_ task: URLSessionDataTask?, _ response: [St
 public protocol API {
 
     func request(method: HTTPMethod, path: String,
-                 parameters: Any?, headers: [String: Any]?,
+                 parameters: Any?,
+                 headers: [String: Any]?,
                  authenticated: Bool, autoRetry: Bool,
                  customAuthCredential: AuthCredential?,
                  completion: CompletionBlock?)
@@ -97,6 +98,15 @@ public protocol API {
                  headers: [String: Any]?,
                  authenticated: Bool,
                  customAuthCredential: AuthCredential?,
+                 completion: @escaping CompletionBlock)
+    
+    func upload (byPath path: String,
+                 parameters: Any?,
+                 files: [String: URL],
+                 headers: [String: Any]?,
+                 authenticated: Bool,
+                 customAuthCredential: AuthCredential?,
+                 uploadProgress: ProgressCompletion?,
                  completion: @escaping CompletionBlock)
 
     func uploadFromFile (byPath path: String,
@@ -353,6 +363,87 @@ public extension APIService {
 
     func exec<T>(route: Request, complete: @escaping (_ result: Result<T, ResponseError>) -> Void) where T: Codable {
         exec(route: route) { (_: URLSessionDataTask?, result: Result<T, ResponseError>) in
+            complete(result)
+        }
+    }
+}
+
+public extension APIService {
+    
+    func upload<T>(route: Request,
+                   files: [String: URL],
+                   uploadProgress: ProgressCompletion?,
+                   complete: @escaping (_ task: URLSessionDataTask?, _ result: Result<T, ResponseError>) -> Void) where T: Codable {
+
+        // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
+        let completionWrapper: CompletionBlock = { task, res, error in
+            do {
+                if let res = res {
+                    // this is a workaround for afnetworking, will change it
+                    let responseData = try JSONSerialization.data(withJSONObject: res, options: .prettyPrinted)
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .decapitaliseFirstLetter
+                    // server error code
+                    if let errorResponse = try? decoder.decode(ErrorResponse.self, from: responseData) {
+                        let responseError = ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
+                                                          responseCode: errorResponse.code,
+                                                          userFacingMessage: errorResponse.error,
+                                                          underlyingError: NSError(errorResponse))
+                        DispatchQueue.main.async {
+                            complete(task, .failure(responseError))
+                        }
+                        return
+                    }
+                    // server SRP
+                    let decodedResponse = try decoder.decode(T.self, from: responseData)
+                    DispatchQueue.main.async {
+                        complete(task, .success(decodedResponse))
+                    }
+                } else if let error = error {
+                    let responseError = ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
+                                                      responseCode: nil,
+                                                      userFacingMessage: nil,
+                                                      underlyingError: error)
+                    DispatchQueue.main.async {
+                        complete(task, .failure(responseError))
+                    }
+                    return
+                } else {
+                    let responseError = ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
+                                                      responseCode: nil,
+                                                      userFacingMessage: nil,
+                                                      underlyingError: nil)
+                    DispatchQueue.main.async {
+                        complete(task, .failure(responseError))
+                    }
+                }
+            } catch let decodingError {
+                let responseError = ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
+                                                  responseCode: nil, // unable to decode means no response
+                                                  userFacingMessage: nil,
+                                                  underlyingError: decodingError as NSError)
+                DispatchQueue.main.async {
+                    complete(task, .failure(responseError))
+                }
+            }
+        }
+        var header = route.header
+        header[HTTPHeader.apiVersion] = route.version
+        
+        self.upload(byPath: route.path,
+                    parameters: route.parameters,
+                    files: files, headers: header,
+                    authenticated: route.isAuth,
+                    customAuthCredential: route.authCredential,
+                    uploadProgress: uploadProgress,
+                    completion: completionWrapper)
+    }
+    
+    func upload<T>(route: Request,
+                   files: [String: URL],
+                   uploadProgress: ProgressCompletion?,
+                   complete: @escaping (_ result: Result<T, ResponseError>) -> Void) where T: Codable {
+        upload(route: route, files: files, uploadProgress: uploadProgress) { (_: URLSessionDataTask?, result: Result<T, ResponseError>) in
             complete(result)
         }
     }

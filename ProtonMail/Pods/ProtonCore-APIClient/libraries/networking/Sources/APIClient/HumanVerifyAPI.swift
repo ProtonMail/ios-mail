@@ -23,8 +23,6 @@ import Foundation
 import ProtonCore_Networking
 
 // Users API
-// Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_users.md
-
 public class HumanVerifyAPI: APIClient {
 
     static let route: String = "/users"

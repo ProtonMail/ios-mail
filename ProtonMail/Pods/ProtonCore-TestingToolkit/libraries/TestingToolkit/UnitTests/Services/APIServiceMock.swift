@@ -57,13 +57,16 @@ public struct APIServiceMock: APIService {
         downloadStub(url, destinationDirectoryURL, headers, authenticated, customAuthCredential, downloadTask, completion)
     }
 
-    @FuncStub(APIServiceMock.upload) public var uploadStub
+//    @FuncStub(APIServiceMock.upload) public var uploadStub
     public func upload(byPath path: String, parameters: [String: String], keyPackets: Data, dataPacket: Data, signature: Data?, headers: [String: Any]?, authenticated: Bool, customAuthCredential: AuthCredential?, completion: @escaping CompletionBlock) {
-        uploadStub(path, parameters, keyPackets, dataPacket, signature, headers, authenticated, customAuthCredential, completion)
+//        uploadStub(path, parameters, keyPackets, dataPacket, signature, headers, authenticated, customAuthCredential, completion)
     }
 
     @FuncStub(APIServiceMock.uploadFromFile) public var uploadFromFileStub
     public func uploadFromFile(byPath path: String, parameters: [String: String], keyPackets: Data, dataPacketSourceFileURL: URL, signature: Data?, headers: [String: Any]?, authenticated: Bool, customAuthCredential: AuthCredential?, completion: @escaping CompletionBlock) {
         uploadFromFileStub(path, parameters, keyPackets, dataPacketSourceFileURL, signature, headers, authenticated, customAuthCredential, completion)
+    }
+    
+    public func upload(byPath path: String, parameters: Any?, files: [String : URL], headers: [String : Any]?, authenticated: Bool, customAuthCredential: AuthCredential?, uploadProgress: ProgressCompletion?, completion: @escaping CompletionBlock) {
     }
 }

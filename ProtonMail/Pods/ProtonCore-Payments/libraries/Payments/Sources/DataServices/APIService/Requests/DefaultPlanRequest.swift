@@ -41,7 +41,7 @@ final class DefaultPlanResponse: ApiResponse {
 
     var defaultMailPlan: ServicePlanDetails? {
         return self.servicePlans?.filter({ (details) -> Bool in
-            return details.title.containsIgnoringCase(check: "ProtonMail Free")
+            return details.title.containsIgnoringCase(check: "Mail Free") || details.title.containsIgnoringCase(check: "ProtonMail Free") || details.name == "free"
         }).first
     }
 

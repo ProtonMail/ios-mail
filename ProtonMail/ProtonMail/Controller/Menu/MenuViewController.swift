@@ -197,6 +197,12 @@ extension MenuViewController {
         }
         guard let sideMenu = self.sideMenuController else {return}
         switcher.present(on: sideMenu, delegate: self)
+
+        delay(0.2) { [weak self] in
+            self?.view.subviews
+                .compactMap({  $0 as? AccountSwitcher })
+                .forEach({ UIAccessibility.post(notification: .screenChanged, argument: $0) })
+        }
     }
 
     private func setPrimaryUserview(hightlight: Bool) {
@@ -501,6 +507,10 @@ extension MenuViewController: AccountSwitchDelegate {
     func accountManagerWillAppear() {
         guard let sideMenu = self.sideMenuController else {return}
         sideMenu.hideMenu()
+    }
+
+    func switcherWillDisappear() {
+        UIAccessibility.post(notification: .screenChanged, argument: primaryUserview)
     }
 }
 

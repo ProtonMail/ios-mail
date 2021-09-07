@@ -129,4 +129,29 @@ extension UIApplication {
             return false
         }
     }
+
+    static var isTestflightBeta: Bool {
+        // If we're running on simulator, we're definitely not Testflight version
+        #if targetEnvironment(simulator)
+        return false
+
+        // If we're compiled in DEBUG configuration, we're definitely not Testflight version
+        #elseif DEBUG
+        return false
+
+        /*
+            Checking for sandbox appstore receipt to determine if the app is beta version
+            installed through Testflight is used by:
+            * Microsoft's AppCenter:
+             https://github.com/microsoft/appcenter-sdk-apple/blob/928227a72dc813070dc05efae04e19fe86558030/AppCenter/AppCenter/Internals/Util/MSACUtility%2BEnvironment.m#L28
+            * Sentry:
+                https://github.com/getsentry/sentry-cocoa/blob/7185a59493cda3aafcbe3b87652ea0256db2ad59/Sources/SentryCrash/Recording/Monitors/SentryCrashMonitor_System.m#L435
+
+            We explore the same idea here.
+        */
+        #else
+        return Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
+        
+        #endif
+    }
 }

@@ -201,7 +201,8 @@ class SettingDetailViewController: UIViewController {
     // MARK: private methods
 
     private func presentPlanUpgrade() {
-        PaymentsUI(servicePlanDataService: viewModel.userManager.sevicePlanService, planTypes: .mail)
+        PaymentsUI(servicePlanDataService: viewModel.userManager.sevicePlanService,
+                   planTypes: .currentPlanDifferentForTestflightAndProd)
             .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
     }
 

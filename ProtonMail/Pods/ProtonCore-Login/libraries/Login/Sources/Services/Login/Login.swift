@@ -1,5 +1,5 @@
 //
-//  SignIn.swift
+//  Login.swift
 //  ProtonCore-Login - Created on 05/11/2020.
 //
 //  Copyright (c) 2019 Proton Technologies AG
@@ -53,6 +53,12 @@ enum LoginError: Error, Equatable {
     case emailAddressAlreadyUsed
 }
 
+extension LoginError {
+    var messageForTheUser: String {
+        return localizedDescription
+    }
+}
+
 enum SignupError: Error, Equatable {
     case deviceTokenError
     case deviceTokenUnsuported
@@ -68,9 +74,21 @@ enum SignupError: Error, Equatable {
     case generic(message: String)
 }
 
+extension SignupError {
+    var messageForTheUser: String {
+        return localizedDescription
+    }
+}
+
 enum AvailabilityError: Error {
     case notAvailable(message: String)
     case generic(message: String)
+}
+
+extension AvailabilityError {
+    var messageForTheUser: String {
+        return localizedDescription
+    }
 }
 
 enum SetUsernameError: Error {
@@ -89,6 +107,12 @@ enum CreateAddressKeysError: Error {
     case generic(message: String)
 }
 
+extension CreateAddressKeysError {
+    var messageForTheUser: String {
+        return localizedDescription
+    }
+}
+
 protocol Login {
     var signUpDomain: String { get }
 
@@ -104,6 +128,7 @@ protocol Login {
     func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void)
     func createAddressKeys(user: User, address: Address, mailboxPassword: String, completion: @escaping (Result<Key, CreateAddressKeysError>) -> Void)
 
+    var minimumAccountType: AccountType { get }
     func updateAccountType(accountType: AccountType)
     func updateAvailableDomain(type: AvailableDomainsType, result: @escaping (String?) -> Void)
 }

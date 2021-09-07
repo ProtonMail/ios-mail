@@ -141,18 +141,17 @@ final class CreateAddressViewModel {
         PMLog.debug("Finishing the flow")
 
         login.finishLoginFlow(mailboxPassword: mailboxPassword) { [weak self] result in
-            self?.isLoading.value = false
-
             switch result {
             case let .success(status):
                 switch status {
                 case .ask2FA, .askSecondPassword, .chooseInternalUsernameAndCreateInternalAddress:
-                    break
+                    self?.isLoading.value = false
                 case let .finished(data):
                     self?.finished.publish(data)
                 }
             case let .failure(error):
                 self?.error.publish(error.description)
+                self?.isLoading.value = false
             }
         }
     }

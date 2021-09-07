@@ -23,11 +23,6 @@ import Foundation
 import ProtonCore_Networking
 
 extension Error {
-
-    private var responseCode: Int? {
-        (self as? ResponseError)?.responseCode
-    }
-
     var isNoSubscriptionError: Bool {
         return responseCode == 22110
     }
@@ -42,30 +37,5 @@ extension Error {
 
    var isPaymentAmmountMismatchError: Bool {
         return responseCode == 22101
-    }
-
-    var isNetworkIssueError: Bool {
-        guard let responseError = self as? ResponseError else { return false }
-        // TODO: I assume it's the error we get from the backend, but is that the right assumption? or is it code from the app gramewor
-        if responseError.responseCode == 3500 { // tls
-            return true
-        }
-        if responseError.httpCode == 451 || responseError.httpCode == 310 {
-            return true
-        }
-        switch responseError.underlyingError?.code {
-        case NSURLErrorTimedOut,
-             NSURLErrorCannotConnectToHost,
-             NSURLErrorNetworkConnectionLost,
-             NSURLErrorNotConnectedToInternet,
-             NSURLErrorDNSLookupFailed,
-             NSURLErrorCannotFindHost,
-             -1200,
-             8 // No internet
-             :
-            return true
-        default:
-            return false
-        }
     }
 }

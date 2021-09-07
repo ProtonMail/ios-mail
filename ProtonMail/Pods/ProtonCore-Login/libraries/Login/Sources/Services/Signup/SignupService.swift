@@ -58,7 +58,7 @@ class SignupService: Signup {
             DispatchQueue.main.async {
                 if response.responseCode != APIErrorCode.responseOK {
                     if let error = response.error {
-                        completion(.failure(SignupError.generic(message: error.localizedDescription)))
+                        completion(.failure(SignupError.generic(message: error.messageForTheUser)))
                     } else {
                         completion(.failure(SignupError.validationTokenRequest))
                     }
@@ -82,7 +82,7 @@ class SignupService: Signup {
                         completion(.failure(SignupError.invalidVerificationCode(message: error.localizedDescription)))
                     } else {
                         if let error = response.error {
-                            completion(.failure(SignupError.generic(message: error.localizedDescription)))
+                            completion(.failure(SignupError.generic(message: error.messageForTheUser)))
                         } else {
                             completion(.failure(SignupError.validationToken))
                         }
@@ -127,7 +127,7 @@ class SignupService: Signup {
             case .success(let res):
                 completion(.success(res))
             case .failure(let error):
-                completion(.failure(SignupError.generic(message: error.localizedDescription)))
+                completion(.failure(SignupError.generic(message: error.messageForTheUser)))
             }
         }
     }
@@ -162,7 +162,7 @@ class SignupService: Signup {
             case .success:
                 completion(.success(()))
             case .failure(let error):
-                completion(.failure(SignupError.generic(message: error.localizedDescription)))
+                completion(.failure(SignupError.generic(message: error.messageForTheUser)))
             }
         }
     }
@@ -179,7 +179,7 @@ class SignupService: Signup {
             case .success:
                 completion(.success(()))
             case .failure(let error):
-                completion(.failure(SignupError.generic(message: error.localizedDescription)))
+                completion(.failure(SignupError.generic(message: error.messageForTheUser)))
             }
         }
     }

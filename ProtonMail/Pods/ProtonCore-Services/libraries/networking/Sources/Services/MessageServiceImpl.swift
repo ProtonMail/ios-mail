@@ -36,17 +36,3 @@ class MessageServiceImpl: MessageService {
         return ""
     }
 }
-
-//
-//
-// mock for testing
-// class MessageServiceMock: Service {
-//     init(service: APIService) {
-//         super.init(...)
-//     }
-//     func someFeature() -> String {
-//         return "fake data"
-//     }
-// }
-//
-//

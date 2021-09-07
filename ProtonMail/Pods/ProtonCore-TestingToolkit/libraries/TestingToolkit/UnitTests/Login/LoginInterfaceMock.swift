@@ -22,40 +22,44 @@
 import UIKit
 import ProtonCore_Login
 
-public class LoginInterfaceMock: LoginInterface {
+public class LoginInterfaceMock: LoginAndSignupInterface {
 
     public init() {}
 
     @FuncStub(LoginInterfaceMock.presentLoginFlow) public var presentLoginFlowStub
     public func presentLoginFlow(over viewController: UIViewController,
                                  username: String?,
+                                 performBeforeFlowCompletion: WorkBeforeFlowCompletion?,
                                  completion: @escaping (LoginResult) -> Void) {
-        presentLoginFlowStub(viewController, username, completion)
+        presentLoginFlowStub(viewController, username, performBeforeFlowCompletion, completion)
     }
 
     @FuncStub(LoginInterfaceMock.presentSignupFlow) public var presentSignupFlowStub
     public func presentSignupFlow(over viewController: UIViewController,
+                                  performBeforeFlowCompletion: WorkBeforeFlowCompletion?,
                                   completion: @escaping (LoginResult) -> Void) {
-        presentSignupFlowStub(viewController, completion)
+        presentSignupFlowStub(viewController, performBeforeFlowCompletion, completion)
     }
 
     @FuncStub(LoginInterfaceMock.presentMailboxPasswordFlow) public var presentMailboxPasswordFlowStub
-    public func presentMailboxPasswordFlow(over viewController: UIViewController,
-                                           completion: @escaping (String) -> Void) {
+    public func presentMailboxPasswordFlow(over viewController: UIViewController, completion: @escaping (String) -> Void) {
         presentMailboxPasswordFlowStub(viewController, completion)
     }
 
-    @FuncStub(LoginInterfaceMock.presentFlowFromWelcomeScreen(over:welcomeScreen:username:completion:)) public var presentFlowFromWelcomeScreenStub
+    @FuncStub(LoginInterfaceMock.presentFlowFromWelcomeScreen) public var presentFlowFromWelcomeScreenStub
     public func presentFlowFromWelcomeScreen(over viewController: UIViewController,
                                              welcomeScreen: WelcomeScreenVariant,
                                              username: String?,
+                                             performBeforeFlowCompletion: WorkBeforeFlowCompletion?,
                                              completion: @escaping (LoginResult) -> Void) {
-        presentFlowFromWelcomeScreenStub(viewController, welcomeScreen, username, completion)
+        presentFlowFromWelcomeScreenStub(viewController, welcomeScreen, username, performBeforeFlowCompletion, completion)
     }
 
-    @FuncStub(LoginInterfaceMock.welcomeScreenForPresentingFlow(variant:username:completion:),
-              initialReturn: .crash) public var welcomeScreenForPresentingFlowStub
-    public func welcomeScreenForPresentingFlow(variant welcomeScreen: WelcomeScreenVariant, username: String?, completion: @escaping (LoginResult) -> Void) -> UIViewController {
-        welcomeScreenForPresentingFlowStub(welcomeScreen, username, completion)
+    @FuncStub(LoginInterfaceMock.welcomeScreenForPresentingFlow, initialReturn: .crash) public var welcomeScreenForPresentingFlowStub
+    public func welcomeScreenForPresentingFlow(variant welcomeScreen: WelcomeScreenVariant,
+                                               username: String?,
+                                               performBeforeFlowCompletion: WorkBeforeFlowCompletion?,
+                                               completion: @escaping (LoginResult) -> Void) -> UIViewController {
+        welcomeScreenForPresentingFlowStub(welcomeScreen, username, performBeforeFlowCompletion, completion)
     }
 }

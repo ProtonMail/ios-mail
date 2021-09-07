@@ -46,20 +46,21 @@ final class MailboxPasswordViewModel {
         isLoading.value = true
 
         login.finishLoginFlow(mailboxPassword: password) { [weak self] result in
-            self?.isLoading.value = false
-
             switch result {
             case let .failure(error):
                 self?.error.publish(error)
+                self?.isLoading.value = false
             case let .success(status):
                 switch status {
                 case let .finished(data):
                     self?.finished.publish(.done(data))
                 case let .chooseInternalUsernameAndCreateInternalAddress(data):
                     self?.finished.publish(.createAddressNeeded(data))
+                    self?.isLoading.value = false
                 case .ask2FA, .askSecondPassword:
                     PMLog.error("Invalid state \(status) after entering Mailbox password")
                     self?.error.publish(.invalidState)
+                    self?.isLoading.value = false
                 }
             }
         }

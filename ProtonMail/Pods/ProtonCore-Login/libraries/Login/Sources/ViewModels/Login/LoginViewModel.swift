@@ -50,20 +50,22 @@ final class LoginViewModel {
             switch result {
             case let .failure(error):
                 self?.error.publish(error)
+                self?.isLoading.value = false
             case let .success(status):
                 switch status {
                 case let .finished(data):
                     self?.finished.publish(.done(data))
                 case .ask2FA:
                     self?.finished.publish(.twoFactorCodeNeeded)
+                    self?.isLoading.value = false
                 case .askSecondPassword:
                     self?.finished.publish(.mailboxPasswordNeeded)
+                    self?.isLoading.value = false
                 case let .chooseInternalUsernameAndCreateInternalAddress(data):
                     self?.finished.publish(.createAddressNeeded(data))
+                    self?.isLoading.value = false
                 }
             }
-
-            self?.isLoading.value = false
         }
     }
 

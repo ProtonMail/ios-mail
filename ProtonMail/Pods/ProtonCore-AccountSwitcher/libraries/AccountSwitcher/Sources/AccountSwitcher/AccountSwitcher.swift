@@ -185,6 +185,11 @@ public final class AccountSwitcher: UIView {
         guard let nav = vc.navigationController else { return }
         self.parentVC?.present(nav, animated: true, completion: nil)
     }
+
+    override public func accessibilityPerformEscape() -> Bool {
+        self.dismiss()
+        return true
+    }
 }
 
 // MARK: UI Initialization
@@ -214,6 +219,9 @@ extension AccountSwitcher {
         self.setupTitleView()
         self.setupPrimaryUserData()
         self.setupAccountTable()
+        self.accessibilityViewIsModal = true
+        self.shouldGroupAccessibilityChildren = true
+        self.accessibilityContainerType = .list
         self.manageAccountLabel.text = CoreString._as_manage_accounts
     }
 

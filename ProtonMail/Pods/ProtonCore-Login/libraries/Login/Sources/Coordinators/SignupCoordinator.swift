@@ -22,8 +22,10 @@
 #if canImport(UIKit)
 import UIKit
 import ProtonCore_CoreTranslation
+import ProtonCore_Networking
 import ProtonCore_UIFoundations
 import ProtonCore_Payments
+import ProtonCore_PaymentsUI
 
 enum FlowStartKind {
     case over(UIViewController, UIModalTransitionStyle)
@@ -45,7 +47,7 @@ final class SignupCoordinator {
     private let signupMode: SignupMode
     private let signupPasswordRestrictions: SignupPasswordRestrictions
     private let isCloseButton: Bool
-    private let isPlanSelectorAvailable: Bool
+    private let planTypes: PlanTypes?
     private var navigationController: LoginNavigationViewController?
     private var signupViewController: SignupViewController?
     private var recoveryViewController: RecoveryViewController?
@@ -57,18 +59,26 @@ final class SignupCoordinator {
     private var deviceToken: String?
     private var password: String?
     private var verifyToken: String?
+    private var performBeforeFlowCompletion: WorkBeforeFlowCompletion?
     
     // Payments
     private var paymentsManager: PaymentsManager?
 
-    init(container: Container, signupMode: SignupMode, signupPasswordRestrictions: SignupPasswordRestrictions, isCloseButton: Bool, isPlanSelectorAvailable: Bool) {
+    init(container: Container,
+         signupMode: SignupMode,
+         signupPasswordRestrictions: SignupPasswordRestrictions,
+         isCloseButton: Bool,
+         planTypes: PlanTypes?,
+         performBeforeFlowCompletion: WorkBeforeFlowCompletion?
+    ) {
         self.container = container
         self.signupMode = signupMode
         self.signupPasswordRestrictions = signupPasswordRestrictions
         self.isCloseButton = isCloseButton
-        self.isPlanSelectorAvailable = isPlanSelectorAvailable
-        if isPlanSelectorAvailable {
-            self.paymentsManager = container.makePaymentsCoordinator()
+        self.planTypes = planTypes
+        self.performBeforeFlowCompletion = performBeforeFlowCompletion
+        if let planTypes = planTypes {
+            self.paymentsManager = container.makePaymentsCoordinator(planTypes: planTypes)
         }
     }
     
@@ -140,7 +150,7 @@ final class SignupCoordinator {
     }
     
     private func finishSignupProcess(email: String? = nil, phoneNumber: String? = nil, completionHandler: (() -> Void)?) {
-        if isPlanSelectorAvailable {
+        if planTypes != nil {
             paymentsManager?.startPaymentProcess(signupViewController: signupViewController, planShownHandler: completionHandler, completionHandler: { result in
                 switch result {
                 case .success:
@@ -211,23 +221,26 @@ final class SignupCoordinator {
     }
 
     private var activeViewController: UIViewController? {
-        guard let viewControllers = navigationController?.viewControllers else { return nil }
+        guard let viewControllers = navigationController?.viewControllers, !viewControllers.isEmpty else { return nil }
+        guard viewControllers.count > 1 else { return viewControllers.first }
         var completeVCIndex: Int?
         for (index, vc) in viewControllers.enumerated() where vc is CompleteViewController {
-                completeVCIndex = index
+            completeVCIndex = index
         }
         guard let completeVCIndex = completeVCIndex, viewControllers.count >= completeVCIndex - 1 else { return nil }
-        return  viewControllers[completeVCIndex - 1]
+        return viewControllers[completeVCIndex - 1]
     }
     
     private func finalizeAccountCreation(loginData: LoginData) {
-        if isPlanSelectorAvailable {
-            paymentsManager?.finishPaymentProcess(loginData: loginData) { result in
-                switch result {
-                case .success:
-                    self.finishAccountCreation(loginData: loginData)
-                case .failure(let error):
-                    self.errorHandler(error: error)
+        if planTypes != nil {
+            paymentsManager?.finishPaymentProcess(loginData: loginData) { [weak self] result in
+                DispatchQueue.main.async { [weak self] in
+                    switch result {
+                    case .success:
+                        self?.finishAccountCreation(loginData: loginData)
+                    case .failure(let error):
+                        self?.errorHandler(error: error)
+                    }
                 }
             }
         } else {
@@ -236,10 +249,28 @@ final class SignupCoordinator {
     }
     
     private func finishAccountCreation(loginData: LoginData) {
-        DispatchQueue.main.async {
-            self.navigationController?.dismiss(animated: true)
-            self.delegate?.signupCoordinatorDidFinish(signupCoordinator: self, loginData: loginData)
+        guard let workBeforeFlowCompletion = performBeforeFlowCompletion else {
+            completeSignupFlow(data: loginData)
+            return
         }
+        DispatchQueue.main.async { [weak self] in
+            workBeforeFlowCompletion { [weak self] result in
+                DispatchQueue.main.async { [weak self] in
+                    switch result {
+                    case .success:
+                        self?.completeSignupFlow(data: loginData)
+                    case .failure(let error):
+                        self?.signinButtonPressed()
+                        self?.errorHandler(error: error)
+                    }
+                }
+            }
+        }
+    }
+
+    private func completeSignupFlow(data: LoginData) {
+        navigationController?.dismiss(animated: true)
+        delegate?.signupCoordinatorDidFinish(signupCoordinator: self, loginData: data)
     }
 }
 
@@ -251,10 +282,10 @@ extension SignupCoordinator: SignupViewControllerDelegate {
         self.deviceToken = deviceToken
         self.signupAccountType = signupAccountType
         if signupAccountType == .internal {
-            container.login.updateAccountType(accountType: .internal)
+            updateAccountType(accountType: .internal)
             showPasswordViewController()
         } else {
-            container.login.updateAccountType(accountType: .external)
+            updateAccountType(accountType: .external)
             showEmailVerificationViewController()
         }
     }
@@ -267,6 +298,12 @@ extension SignupCoordinator: SignupViewControllerDelegate {
     func signinButtonPressed() {
         guard let navigationController = navigationController else { return }
         delegate?.userSelectedSignin(email: nil, navigationViewController: navigationController)
+    }
+    
+    private func updateAccountType(accountType: AccountType) {
+        // changing accountType to intenal, or external is causing key generation on login part. To avoid that we need to skip this when accountType is username
+        if container.login.minimumAccountType == .username { return }
+        container.login.updateAccountType(accountType: accountType)
     }
 }
 
@@ -354,10 +391,15 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
                     vc.showError(error: SignupError.generic(message: message))
                 }
             }
-        } else {
-            let signUpError = SignupError.generic(message: error.localizedDescription)
+        } else if let error = error as? ResponseError, let message = error.userFacingMessage ?? error.underlyingError?.localizedDescription {
             if let vc = errorVC as? SignUpErrorCapable {
-                vc.showError(error: signUpError)
+                vc.showError(error: SignupError.generic(message: message))
+            }
+        } else {
+            if let vc = errorVC as? SignUpErrorCapable {
+                vc.showError(error: SignupError.generic(message: error.messageForTheUser))
+            } else if let vc = errorVC as? LoginErrorCapable {
+                vc.showError(error: LoginError.generic(message: error.messageForTheUser))
             }
         }
         

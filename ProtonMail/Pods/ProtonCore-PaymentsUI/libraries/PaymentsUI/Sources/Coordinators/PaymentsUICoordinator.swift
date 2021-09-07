@@ -130,7 +130,8 @@ final class PaymentsUICoordinator {
             if error == .cancelled || error == .unknown { return }
             self.showError(message: error.localizedDescription)
         } else if let error = error as? ResponseError {
-            self.showError(message: error.localizedDescription)
+            let message = error.userFacingMessage ?? error.underlyingError?.localizedDescription ?? error.localizedDescription
+            self.showError(message: message)
         } else {
             self.showError(message: error.localizedDescription)
         }

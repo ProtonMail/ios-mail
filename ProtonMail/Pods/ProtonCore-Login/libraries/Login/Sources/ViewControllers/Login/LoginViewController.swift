@@ -36,7 +36,7 @@ protocol LoginViewControllerDelegate: LoginStepsDelegate {
     func userDidDismissLoginViewController()
     func userDidRequestSignup()
     func userDidRequestHelp()
-    func loginViewControllerDidFinish(data: LoginData)
+    func loginViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData)
 }
 
 final class LoginViewController: UIViewController, AccessibleView, Focusable {
@@ -154,7 +154,7 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
         viewModel.finished.bind { [weak self] result in
             switch result {
             case let .done(data):
-                self?.delegate?.loginViewControllerDidFinish(data: data)
+                self?.delegate?.loginViewControllerDidFinish(endLoading: { [weak self] in self?.viewModel.isLoading.value = false }, data: data)
             case .twoFactorCodeNeeded:
                 self?.delegate?.twoFactorCodeNeeded()
             case .mailboxPasswordNeeded:

@@ -19,7 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(Crypto_VPN)
+import Crypto_VPN
+#elseif canImport(Crypto)
 import Crypto
+#endif
 import Foundation
 import ProtonCore_APIClient
 import ProtonCore_DataModel
@@ -103,11 +107,11 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                         // are we done yet or need 2FA?
                         switch authResponse._2FA.enabled {
                         case .off:
-                            let credential = Credential(res: authResponse)
+                            let credential = Credential(res: authResponse, userName: username, userID: authResponse.userID)
                             self.apiService.setSessionUID(uid: credential.UID)
                             completion(.success(.newCredential(credential, authResponse.passwordMode)))
                         case .on:
-                            let credential = Credential(res: authResponse)
+                            let credential = Credential(res: authResponse, userName: username, userID: authResponse.userID)
                             self.apiService.setSessionUID(uid: credential.UID)
                             let context = (credential, authResponse.passwordMode)
                             completion(.success(.ask2FA(context)))
@@ -141,14 +145,26 @@ public class Authenticator: NSObject, AuthenticatorInterface {
     
     // Refresh expired access token using refresh token
     public func refreshCredential(_ oldCredential: Credential, completion: @escaping Completion) {
+        refreshCredential(oldCredential) { (result: Result<Credential, ResponseError>) in
+            switch result {
+            case .failure(let responseError):
+                completion(.failure(.networkingError(responseError)))
+            case .success(let credential):
+                completion(.success(.updatedCredential(credential)))
+            }
+        }
+    }
+
+    // Refresh expired access token using refresh token
+    fileprivate func refreshCredential(_ oldCredential: Credential, completion: @escaping (Result<Credential, ResponseError>) -> Void) {
         let route = AuthService.RefreshEndpoint(authCredential: AuthCredential( oldCredential))
         self.apiService.exec(route: route) { (result: Result<AuthService.RefreshResponse, ResponseError>) in
             switch result {
             case .failure(let responseError):
-                completion(.failure(.networkingError(responseError)))
+                completion(.failure(responseError))
             case .success(let response):
-                let credential = Credential(res: response, UID: oldCredential.UID)
-                completion(.success(.updatedCredential(credential)))
+                let credential = Credential(res: response, UID: oldCredential.UID, userName: oldCredential.userName, userID: oldCredential.userID)
+                completion(.success(credential))
             }
         }
     }
@@ -289,6 +305,27 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                 completion(.success(response))
             }
         }
+    }
+}
+
+public enum RefreshAccessToken {
+
+    public static func callAsFunction(
+        credential: Credential, using api: APIService, completion: @escaping (Result<Credential, ResponseError>) -> Void
+    ) {
+        refresh(credential: credential, using: Authenticator(api: api), completion: completion)
+    }
+
+    public static func callAsFunction(
+        credential: Credential, using authenticator: Authenticator, completion: @escaping (Result<Credential, ResponseError>) -> Void
+    ) {
+        refresh(credential: credential, using: authenticator, completion: completion)
+    }
+
+    private static func refresh(
+        credential: Credential, using authenticator: Authenticator, completion: @escaping (Result<Credential, ResponseError>) -> Void
+    ) {
+        authenticator.refreshCredential(credential, completion: completion)
     }
 
 }

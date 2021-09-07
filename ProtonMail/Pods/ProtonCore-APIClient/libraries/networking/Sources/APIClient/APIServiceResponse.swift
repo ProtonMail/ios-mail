@@ -24,6 +24,7 @@
 import Foundation
 import ProtonCore_Networking
 
+@available(*, deprecated, message: "this will be removed. use `APIService Response` for api response")
 open class ApiResponse: ResponseType {
 
     public var responseCode: Int?

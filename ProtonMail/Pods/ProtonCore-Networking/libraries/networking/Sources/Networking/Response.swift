@@ -22,6 +22,7 @@
 // swiftlint:disable identifier_name todo
 
 import Foundation
+import ProtonCore_CoreTranslation
 
 public struct ResponseError: Error, Equatable {
 
@@ -163,5 +164,53 @@ open class Response: ResponseType {
 
     open func ParseResponse(_ response: [String: Any]) -> Bool {
         return true
+    }
+}
+
+public extension ResponseError {
+    var messageForTheUser: String {
+        if isNetworkIssueError {
+            return CoreString._net_connection_error
+        }
+        return localizedDescription
+    }
+}
+
+public extension Error {
+    var responseCode: Int? {
+        (self as? ResponseError)?.responseCode
+    }
+
+    var httpCode: Int? {
+        (self as? ResponseError)?.httpCode
+    }
+
+    var messageForTheUser: String {
+        return localizedDescription
+    }
+    
+    var isNetworkIssueError: Bool {
+        guard let responseError = self as? ResponseError else { return false }
+        if responseError.responseCode == 3500 { // tls
+            return true
+        }
+        if responseError.httpCode == 451 || responseError.httpCode == 310 {
+            return true
+        }
+        switch responseError.underlyingError?.code {
+        case NSURLErrorTimedOut,
+             NSURLErrorCannotConnectToHost,
+             NSURLErrorNetworkConnectionLost,
+             NSURLErrorNotConnectedToInternet,
+             NSURLErrorDNSLookupFailed,
+             NSURLErrorCannotFindHost,
+             310,
+             -1200,
+             8 // No internet
+             :
+            return true
+        default:
+            return false
+        }
     }
 }

@@ -45,11 +45,14 @@ class LabelAsActionSheetPresenter {
             guard let menuLabel = labelItems.getFolderItem(by: indexPath) else {
                 continue
             }
+            let markType = viewModel.initialLabelSelectionStatus[menuLabel] ?? .none
+            let isOn = markType != .none
             let item = PMActionSheetPlainItem(title: menuLabel.name,
                                               icon: Asset.mailUnreadIcon.image,
                                               iconColor:
                                                 UIColor(hexColorCode: menuLabel.iconColor),
-                                              markType: viewModel.initialLabelSelectionStatus[menuLabel],
+                                              isOn: isOn,
+                                              markType: markType,
                                               indentationLevel: menuLabel.indentationLevel) { item in
                 selected(menuLabel, item.isOn)
             }

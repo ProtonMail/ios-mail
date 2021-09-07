@@ -24,7 +24,7 @@ import UIKit
 import ProtonCore_UIFoundations
 
 protocol CreateAddressCoordinatorDelegate: AnyObject {
-    func createAddressCoordinatorDidFinish(createAddressCoordinator: CreateAddressCoordinator, data: LoginData)
+    func createAddressCoordinatorDidFinish(endLoading: @escaping () -> Void, createAddressCoordinator: CreateAddressCoordinator, data: LoginData)
 }
 
 final class CreateAddressCoordinator {
@@ -98,8 +98,8 @@ extension CreateAddressCoordinator: CreateAddressViewControllerDelegate {
         UIApplication.openURLIfPossible(externalLinks.termsAndConditions)
     }
 
-    func userDidFinishCreatingAddress(data: LoginData) {
-        delegate?.createAddressCoordinatorDidFinish(createAddressCoordinator: self, data: data)
+    func userDidFinishCreatingAddress(endLoading: @escaping () -> Void, data: LoginData) {
+        delegate?.createAddressCoordinatorDidFinish(endLoading: endLoading, createAddressCoordinator: self, data: data)
     }
 }
 

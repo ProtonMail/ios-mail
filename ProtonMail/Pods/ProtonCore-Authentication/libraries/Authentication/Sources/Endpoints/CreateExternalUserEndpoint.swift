@@ -59,7 +59,6 @@ extension AuthService {
             ]
             let out: [String: Any] = [
                 "Email": externalUserParameters.email,
-                "Type": AccountTypeD.full.rawValue,
                 "Auth": auth,
                 "Payload": payload
             ]

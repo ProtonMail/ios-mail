@@ -83,8 +83,8 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
     }
     @IBOutlet weak var methodSegmenedControl: PMSegmentedControl! {
         didSet {
-            methodSegmenedControl.setImage(image: UIImage(named: "ic-envelope", in: PMLogin.bundle, compatibleWith: nil)!, withText: CoreString._su_recovery_seg_email, forSegmentAt: 0)
-            methodSegmenedControl.setImage(image: UIImage(named: "ic-mobile", in: PMLogin.bundle, compatibleWith: nil)!, withText: CoreString._su_recovery_seg_phone, forSegmentAt: 1)
+            methodSegmenedControl.setImage(image: UIImage(named: "ic-envelope", in: LoginAndSignup.bundle, compatibleWith: nil)!, withText: CoreString._su_recovery_seg_email, forSegmentAt: 0)
+            methodSegmenedControl.setImage(image: UIImage(named: "ic-mobile", in: LoginAndSignup.bundle, compatibleWith: nil)!, withText: CoreString._su_recovery_seg_phone, forSegmentAt: 1)
         }
     }
     @IBOutlet weak var nextButton: ProtonButton! {

@@ -1,7 +1,7 @@
 source 'https://cdn.cocoapods.org/'
 
 def proton_core_path
-  'git@gitlab.protontech.ch:apple/shared/protoncore.git'
+  "git@gitlab.protontech.ch:apple/shared/protoncore.git"
 end
 
 # proton url is set to env variable because the core module podspecs expect it. 
@@ -14,24 +14,24 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '2.4.0'
+  '2.5.0'
 end
 
 def pm_shared_pods
-  pod 'ProtonCore-Networking/Alamofire', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-Crypto', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-SRP', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-Authentication', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-Keymaker', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-Payments', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
+  pod 'ProtonCore-Networking/Alamofire', proton_core_version
+  pod 'ProtonCore-Crypto', proton_core_version
+  pod 'ProtonCore-SRP', proton_core_version
+  pod 'ProtonCore-Authentication', proton_core_version
+  pod 'ProtonCore-Keymaker', proton_core_version
+  pod 'ProtonCore-Payments', proton_core_version
 end
 
 def common_pods
   pm_shared_pods
-  pod 'ProtonCore-UIFoundations', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-Common', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-OpenPGP', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-Authentication-KeyGeneration', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
+  pod 'ProtonCore-UIFoundations', proton_core_version
+  pod 'ProtonCore-Common', proton_core_version
+  pod 'ProtonCore-OpenPGP', proton_core_version
+  pod 'ProtonCore-Authentication-KeyGeneration', proton_core_version
   pod 'Groot', '3.0.1'
 #  pod 'AFNetworking', '4.0.1'
   pod 'Masonry', '1.1.0'
@@ -48,13 +48,13 @@ def pm_pods
   common_pods
   pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :branch =>  'main'
   pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
-  pod 'ProtonCore-Challenge', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-CoreTranslation', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-Log', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-AccountSwitcher', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-ForceUpgrade', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-HumanVerification', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-Login', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
+  pod 'ProtonCore-Challenge', proton_core_version
+  pod 'ProtonCore-CoreTranslation', proton_core_version
+  pod 'ProtonCore-Log', proton_core_version
+  pod 'ProtonCore-AccountSwitcher', proton_core_version
+  pod 'ProtonCore-ForceUpgrade', proton_core_version
+  pod 'ProtonCore-HumanVerification', proton_core_version
+  pod 'ProtonCore-Login', proton_core_version
   pod 'SideMenuSwift', '2.0.6'
   pod "SkeletonView", '1.11.0'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug']
@@ -90,18 +90,18 @@ target 'ProtonMailTests' do
   pod 'OHHTTPStubs/Swift', '9.0.0'
   pod 'Groot', '3.0.1'
   pod 'PromiseKit', '6.13.1'
-  pod 'ProtonCore-TestingToolkit/UnitTests/Core', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-TestingToolkit/UnitTests/Doh', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-TestingToolkit/UnitTests/Services', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-TestingToolkit/UnitTests/Login', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
+  pod 'ProtonCore-TestingToolkit/UnitTests/Core', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Doh', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Services', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto', proton_core_version
   pm_pods
 end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
   pod 'pmtest', :git => 'git@gitlab.protontech.ch:apple/shared/pmtestautomation.git', :branch =>'master'
-  pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
-  pod 'ProtonCore-TestingToolkit/UITests/Login', :git=> 'git@gitlab.protontech.ch:apple/shared/protoncore.git', :commit => '07fc0e4fa250872c8df130f3e'
+  pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UITests/Login', proton_core_version
 end
 
 target 'Share' do

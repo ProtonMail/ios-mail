@@ -64,7 +64,7 @@ class CompleteViewController: UIViewController, AccessibleView {
         super.viewDidLoad()
         view.backgroundColor = UIColorManager.BackgroundNorm
         navigationItem.setHidesBackButton(true, animated: false)
-        animationView.animation = Animation.named("sign-up-create-account", bundle: PMLogin.bundle)
+        animationView.animation = Animation.named("sign-up-create-account", bundle: LoginAndSignup.bundle)
         animationView.loopMode = .loop
         animationView.backgroundBehavior = .pauseAndRestore
         animationView.play()

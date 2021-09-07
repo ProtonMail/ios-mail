@@ -38,6 +38,8 @@ public enum PaymentsUIResultReason {
 public enum PlanTypes {
     case mail           // mail plans
     case vpn            // vpn plans
+    case mailWithoutUpgrades // mail plans but with no ability to upgrade
+    case vpnWithoutUpgrades  // vpn plans but with no ability to upgrade
 }
 
 enum PaymentsUIMode {

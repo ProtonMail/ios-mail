@@ -57,22 +57,24 @@ final class TwoFactorViewModel {
         isLoading.value = true
 
         login.provide2FACode(code) { [weak self] result in
-            self?.isLoading.value = false
-
             switch result {
             case let .failure(error):
                 self?.error.publish(error)
+                self?.isLoading.value = false
             case let .success(status):
                 switch status {
                 case let .finished(data):
                     self?.finished.publish(.done(data))
                 case let .chooseInternalUsernameAndCreateInternalAddress(data):
                     self?.finished.publish(.createAddressNeeded(data))
+                    self?.isLoading.value = false
                 case .ask2FA:
                     PMLog.error("Asking for 2FA code password after successful 2FA code is an invalid state")
                     self?.error.publish(.invalidState)
+                    self?.isLoading.value = false
                 case .askSecondPassword:
                     self?.finished.publish(.mailboxPasswordNeeded)
+                    self?.isLoading.value = false
                 }
             }
         }

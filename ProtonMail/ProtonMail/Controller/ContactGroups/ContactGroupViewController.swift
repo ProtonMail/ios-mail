@@ -111,7 +111,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     }
 
     private func presentPlanUpgrade() {
-        PaymentsUI(servicePlanDataService: viewModel.user.sevicePlanService, planTypes: .mail)
+        PaymentsUI(servicePlanDataService: viewModel.user.sevicePlanService,
+                   planTypes: .currentPlanDifferentForTestflightAndProd)
             .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
     }
     

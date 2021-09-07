@@ -130,7 +130,8 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
 
     private func presentPlanUpgrade() {
         guard let user = user else { return }
-        PaymentsUI(servicePlanDataService: user.sevicePlanService, planTypes: .mail)
+        PaymentsUI(servicePlanDataService: user.sevicePlanService,
+                   planTypes: .currentPlanDifferentForTestflightAndProd)
             .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
     }
 

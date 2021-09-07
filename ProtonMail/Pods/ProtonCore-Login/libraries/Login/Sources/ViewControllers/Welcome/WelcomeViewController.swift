@@ -325,7 +325,7 @@ final class WelcomeView: UIView {
 }
 
 private func image(named name: String) -> UIImage {
-    guard let icon = UIImage(named: name, in: PMLogin.bundle, compatibleWith: nil) else {
+    guard let icon = UIImage(named: name, in: LoginAndSignup.bundle, compatibleWith: nil) else {
         assertionFailure("Asset not available, configuration error")
         return .init()
     }

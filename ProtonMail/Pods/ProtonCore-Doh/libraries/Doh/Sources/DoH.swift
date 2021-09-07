@@ -421,18 +421,19 @@ open class DoH: DoHInterface {
 
     public func codeCheck(code: Int) -> Bool {
         guard code == NSURLErrorTimedOut ||
-            code == NSURLErrorCannotConnectToHost ||
-            code == NSURLErrorCannotFindHost ||
-            code == NSURLErrorDNSLookupFailed ||
-            code == -1200 ||
-            code == 451 ||
-            code == 310 ||
-//            code == -1004 ||  // only for testing
-            code == -1005 // only for testing
-            else {
-                return false
+                code == NSURLErrorCannotConnectToHost ||
+                code == NSURLErrorCannotFindHost ||
+                code == NSURLErrorDNSLookupFailed ||
+                code == -1200 ||
+                code == 451 ||
+                code == 310 ||
+                code == -1017 || // this is when proxy return nil body
+                //            code == -1004 ||  // only for testing
+                code == -1005 // only for testing
+        else {
+            return false
         }
-
+        
         return true
     }
 }

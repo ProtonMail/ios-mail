@@ -218,11 +218,11 @@ extension LoginService: Login {
                             }
 
                         case let .failure(error):
-                            completion(.failure(.generic(message: error.localizedDescription)))
+                            completion(.failure(.generic(message: error.messageForTheUser)))
                         }
                     }
                 default:
-                    completion(.failure(.generic(message: error.localizedDescription)))
+                    completion(.failure(.generic(message: error.messageForTheUser)))
                 }
             }
         }

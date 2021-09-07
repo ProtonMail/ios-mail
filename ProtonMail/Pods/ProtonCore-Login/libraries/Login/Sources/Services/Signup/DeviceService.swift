@@ -48,7 +48,7 @@ class DeviceService: DeviceServiceProtocol {
                     #if targetEnvironment(simulator)
                         result(.success("test"))
                     #else
-                        result(.failure(SignupError.generic(message: error.localizedDescription)))
+                        result(.failure(SignupError.generic(message: error.messageForTheUser)))
                     #endif
                 } else {
                     result(.failure(SignupError.deviceTokenError))

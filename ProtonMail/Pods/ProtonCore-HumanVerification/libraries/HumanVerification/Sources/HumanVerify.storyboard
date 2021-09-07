@@ -21,47 +21,52 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dlP-lx-EdD">
-                                <rect key="frame" x="232" y="24" width="560" height="1322"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <outlet property="delegate" destination="XYV-2Y-X0C" id="LJa-r6-xeN"/>
-                                </connections>
-                            </webView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="i4x-cs-f9F">
+                            <wkWebView contentMode="scaleToFill" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rV1-5S-G8s">
+                                <rect key="frame" x="232" y="0.0" width="560" height="1346"/>
+                                <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" allowsPictureInPictureMediaPlayback="NO" suppressesIncrementalRendering="YES">
+                                    <dataDetectorTypes key="dataDetectorTypes" none="YES"/>
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <stackView userInteractionEnabled="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="i4x-cs-f9F">
                                 <rect key="frame" x="464.5" y="673" width="95" height="20.5"/>
                                 <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="x3j-AG-62C">
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="x3j-AG-62C">
                                         <rect key="frame" x="0.0" y="0.0" width="20" height="20.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verifying" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sN9-iU-eCL">
                                         <rect key="frame" x="28" y="0.0" width="67" height="20.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20.5" id="d8v-SQ-vhj"/>
                                 </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="MainBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="rV1-5S-G8s" firstAttribute="centerX" secondItem="q2W-eQ-QT3" secondAttribute="centerX" id="Ale-u5-3K4"/>
+                            <constraint firstItem="rV1-5S-G8s" firstAttribute="top" secondItem="feB-ed-vnj" secondAttribute="bottom" id="EnG-rk-2oB"/>
                             <constraint firstItem="i4x-cs-f9F" firstAttribute="centerY" secondItem="q2W-eQ-QT3" secondAttribute="centerY" id="Nsa-mi-kER"/>
-                            <constraint firstItem="dlP-lx-EdD" firstAttribute="trailing" secondItem="q2W-eQ-QT3" secondAttribute="trailingMargin" id="QOj-4V-myf"/>
-                            <constraint firstItem="dlP-lx-EdD" firstAttribute="centerX" secondItem="q2W-eQ-QT3" secondAttribute="centerXWithinMargins" id="X2T-yC-YKI"/>
-                            <constraint firstItem="dlP-lx-EdD" firstAttribute="top" secondItem="feB-ed-vnj" secondAttribute="bottom" constant="24" id="bQq-e2-uwc"/>
+                            <constraint firstItem="rV1-5S-G8s" firstAttribute="leading" secondItem="q2W-eQ-QT3" secondAttribute="leadingMargin" id="Qtf-pC-vhB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="rV1-5S-G8s" secondAttribute="trailing" id="k3Q-6u-PgH"/>
                             <constraint firstItem="i4x-cs-f9F" firstAttribute="centerX" secondItem="q2W-eQ-QT3" secondAttribute="centerX" id="ktT-4J-BQh"/>
-                            <constraint firstItem="mrD-f4-jir" firstAttribute="top" secondItem="dlP-lx-EdD" secondAttribute="bottom" id="sgM-ZK-rxY"/>
-                            <constraint firstItem="dlP-lx-EdD" firstAttribute="leading" secondItem="q2W-eQ-QT3" secondAttribute="leadingMargin" id="xQi-NU-hd5"/>
+                            <constraint firstItem="mrD-f4-jir" firstAttribute="top" secondItem="rV1-5S-G8s" secondAttribute="bottom" id="rvQ-GA-F3A"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="d2z-wT-p3r"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="x3j-AG-62C" id="Ca9-mu-VZt"/>
                         <outlet property="stackView" destination="i4x-cs-f9F" id="y9y-J2-3XV"/>
                         <outlet property="verifyingLabel" destination="sN9-iU-eCL" id="xgD-8G-M8b"/>
-                        <outlet property="webView" destination="dlP-lx-EdD" id="uo2-Ps-qhc"/>
+                        <outlet property="webView" destination="rV1-5S-G8s" id="Jhm-yo-lxp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BUS-HR-nC2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -104,7 +109,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="MainBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="2oH-br-rTi" firstAttribute="trailing" secondItem="LxC-bW-X5q" secondAttribute="trailingMargin" id="Bfe-Wl-ZAT"/>
                             <constraint firstItem="J5Y-XM-Jb6" firstAttribute="leading" secondItem="LxC-bW-X5q" secondAttribute="leadingMargin" id="CuI-eu-Wsl"/>
@@ -209,7 +214,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="MainBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="32w-b6-Cud" firstAttribute="top" secondItem="4AX-hs-bj2" secondAttribute="bottom" id="1GM-lc-UdF"/>
                             <constraint firstAttribute="bottom" secondItem="32w-b6-Cud" secondAttribute="bottom" id="Npa-HX-Niq"/>
@@ -245,9 +250,8 @@
                         <viewControllerLayoutGuide type="top" id="BDR-Ma-NjU"/>
                         <viewControllerLayoutGuide type="bottom" id="iY8-6F-XMZ"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="VBF-OR-USr">
+                    <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VBF-OR-USr">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dDN-fK-XPK">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
@@ -313,7 +317,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="MainBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="dDN-fK-XPK" firstAttribute="leading" secondItem="VBF-OR-USr" secondAttribute="leading" id="28H-e9-EE4"/>
                             <constraint firstAttribute="bottom" secondItem="dDN-fK-XPK" secondAttribute="bottom" id="lUw-za-tIZ"/>
@@ -385,7 +389,7 @@
                                 <rect key="frame" x="232" y="98" width="560" height="1248"/>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="MainBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="91H-bP-4XQ" firstAttribute="top" secondItem="gTo-Gj-Owp" secondAttribute="bottom" constant="4" id="AkF-kk-Yti"/>
                             <constraint firstItem="9S1-d3-Gr5" firstAttribute="top" secondItem="nUY-be-uv0" secondAttribute="bottom" id="CC5-FA-Zz0"/>
@@ -524,7 +528,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="MainBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="VC6-kD-XEw" secondAttribute="bottom" id="Mg3-k1-itb"/>
                             <constraint firstItem="VC6-kD-XEw" firstAttribute="leading" secondItem="2yb-lg-m0B" secondAttribute="leadingMargin" constant="-16" id="cSw-oS-gtj"/>
@@ -569,6 +573,9 @@
         <image name="ic-close" width="24" height="24"/>
         <namedColor name="IconNorm">
             <color red="0.10999999940395355" green="0.090000003576278687" blue="0.097000002861022949" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MainBackgroundColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
