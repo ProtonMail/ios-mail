@@ -448,6 +448,11 @@ extension String {
 
 }
 
+extension Array where Element == String {
+    func asCommaSeparatedList(trailingSpace: Bool) -> String {
+        filter { !$0.trim().isEmpty }.joined(separator: trailingSpace ? ", " : ",")
+    }
+}
 
 extension String {
     
