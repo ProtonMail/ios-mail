@@ -33,7 +33,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     private let groupName: String
     private let groupColor: String
     private var emailArray: [ContactGroupSubSelectionViewModelEmailInfomation]
-    private let delegate: ContactGroupSubSelectionViewModelDelegate
+    private var delegate: ContactGroupSubSelectionViewModelDelegate?
     private let labelsDataService: LabelsDataService
     
     /**
@@ -50,7 +50,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     init(contactGroupName: String,
          selectedEmails: [DraftEmailData],
          user: UserManager,
-         delegate: ContactGroupSubSelectionViewModelDelegate,
+         delegate: ContactGroupSubSelectionViewModelDelegate? = nil,
          labelsDataService: LabelsDataService) {
         self.user = user
         self.groupName = contactGroupName
@@ -124,11 +124,11 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
      Select the given email data
     */
     func select(indexPath: IndexPath) {
-        emailArray[indexPath.row - 1].isSelected = true
+        emailArray[indexPath.row].isSelected = true
         
         // TODO: performance improvement
         if self.isAllSelected() {
-            delegate.reloadTable()
+            delegate?.reloadTable()
         }
     }
     
@@ -139,7 +139,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         for i in emailArray.indices {
             emailArray[i].isSelected = true
         }
-        delegate.reloadTable()
+        delegate?.reloadTable()
     }
     
     /**
@@ -149,10 +149,10 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         // TODO: performance improvement
         let performDeselectInHeader = self.isAllSelected()
         
-        emailArray[indexPath.row - 1].isSelected = false
+        emailArray[indexPath.row].isSelected = false
         
         if performDeselectInHeader {
-             delegate.reloadTable()
+             delegate?.reloadTable()
         }
     }
     
@@ -163,7 +163,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         for i in emailArray.indices {
             emailArray[i].isSelected = false
         }
-        delegate.reloadTable()
+        delegate?.reloadTable()
     }
     
     /**
@@ -187,8 +187,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     }
     
     func getTotalRows() -> Int {
-        // 1 header + n emails
-        return self.emailArray.count + 1
+        self.emailArray.count
     }
     
     func cellForRow(at indexPath: IndexPath) -> ContactGroupSubSelectionViewModelEmailInfomation {
@@ -198,7 +197,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
             return ContactGroupSubSelectionViewModelEmailInfomation.init(email: "", name: "")
         }
         
-        return self.emailArray[indexPath.row - 1] // -1 due to header row
+        return self.emailArray[indexPath.row]
     }
     
     func setRequiredEncryptedCheckStatus(at indexPath: IndexPath,
@@ -210,7 +209,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
             return
         }
         
-        self.emailArray[indexPath.row - 1].isEncrypted = isEncrypted
-        self.emailArray[indexPath.row - 1].checkEncryptedStatus = status // -1 due to header row
+        self.emailArray[indexPath.row].isEncrypted = isEncrypted
+        self.emailArray[indexPath.row].checkEncryptedStatus = status
     }
 }
