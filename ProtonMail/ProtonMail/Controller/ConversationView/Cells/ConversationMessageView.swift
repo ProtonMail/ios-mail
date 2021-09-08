@@ -29,7 +29,7 @@ class ConversationMessageView: UIView {
     let spacer = UIView()
 
     let expirationView = SubviewsFactory.expirationView
-    let tagsView = ConversationMessageViewTags()
+    let tagsView = SingleRowTagsView()
 
     init() {
         super.init(frame: .zero)
@@ -108,10 +108,8 @@ class ConversationMessageView: UIView {
             initialsView.widthAnchor.constraint(equalToConstant: 28)
         ].activate()
 
-        contentStackView.setCustomSpacing(4, after: initialsView)
-
-        senderLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        senderLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        timeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        senderLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 
     private func setUpActions() {
@@ -135,6 +133,7 @@ private enum SubviewsFactory {
         imageView.contentMode = .scaleAspectFit
         imageView.image = Asset.mailAttachment.image
         imageView.tintColor = UIColorManager.IconWeak
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
     }
 
@@ -142,12 +141,14 @@ private enum SubviewsFactory {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
         imageView.image = Asset.mailStar.image
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
     }
 
     static var originImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
     }
 
@@ -156,6 +157,7 @@ private enum SubviewsFactory {
         imageView.image = Asset.mailDraftIcon.image
         imageView.tintColor = UIColorManager.IconNorm
         imageView.contentMode = .scaleAspectFit
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
     }
 
@@ -199,6 +201,7 @@ private enum SubviewsFactory {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
     }
 

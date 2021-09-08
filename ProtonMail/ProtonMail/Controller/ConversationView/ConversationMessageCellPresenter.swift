@@ -2,6 +2,7 @@ import ProtonCore_UIFoundations
 import UIKit
 
 class ConversationMessageCellPresenter {
+    private let tagsPresenter = TagsPresenter()
 
     func present(model: ConversationMessageModel, in view: ConversationMessageView) {
         presentInitialsView(model: model, in: view)
@@ -67,8 +68,7 @@ class ConversationMessageCellPresenter {
             view.expirationView.backgroundColor = expirationTag.color
             view.expirationView.imageView.image = expirationTag.icon
         }
-
-        view.tagsView.tags = model.tags
+        tagsPresenter.presentTags(tags: model.tags, in: view.tagsView)
     }
 
 }

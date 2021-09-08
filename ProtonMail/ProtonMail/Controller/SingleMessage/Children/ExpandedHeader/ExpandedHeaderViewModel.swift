@@ -31,11 +31,15 @@ class ExpandedHeaderViewModel {
     }
 
     var sender: NSAttributedString {
-        senderName.apply(style: .Default)
+        var style = FontManager.Default
+        style.addTruncatingTail(mode: .byTruncatingMiddle)
+        return senderName.apply(style: style)
     }
 
     var senderEmail: NSAttributedString {
-        "<\((message.sender?.toContact()?.email ?? ""))>".apply(style: FontManager.body3RegularInteractionNorm)
+        var style = FontManager.body3RegularInteractionNorm
+        style.addTruncatingTail(mode: .byTruncatingMiddle)
+        return "<\((message.sender?.toContact()?.email ?? ""))>".apply(style: style)
     }
 
     var time: NSAttributedString {
@@ -47,6 +51,11 @@ class ExpandedHeaderViewModel {
     var date: NSAttributedString? {
         guard let date = message.time else { return nil }
         return dateFormatter.string(from: date).apply(style: .CaptionWeak)
+    }
+
+    var size: NSAttributedString? {
+        let value = message.size.intValue
+        return value.toByteCount.apply(style: .CaptionWeak)
     }
 
     var tags: [TagViewModel] {
@@ -77,10 +86,7 @@ class ExpandedHeaderViewModel {
         }
         return message.customFolder?.name.apply(style: .CaptionWeak)
     }
-
-    var senderContact: ContactVO? {
-        message.senderContact(userContacts: userContacts)
-    }
+    private(set) var senderContact: ContactVO?
 
     private(set) var message: Message {
         didSet {
@@ -89,7 +95,7 @@ class ExpandedHeaderViewModel {
     }
 
     private let labelId: String
-    private let user: UserManager
+    let user: UserManager
 
     private var senderName: String {
         let contactsEmails = user.contactService.allEmails().filter { $0.userID == message.userID }
@@ -117,6 +123,10 @@ class ExpandedHeaderViewModel {
         self.message = message
     }
 
+    func setUp(senderContact: ContactVO?) {
+        self.senderContact = senderContact
+    }
+
     private func createRecipientRowViewModel(
         from contacts: [ContactVO],
         title: String
@@ -125,11 +135,13 @@ class ExpandedHeaderViewModel {
         let recipients = contacts.map { recipient -> ExpandedHeaderRecipientRowViewModel in
             let email = recipient.email.isEmpty ? "" : "\(recipient.email ?? "")"
             let emailToDisplay = email.isEmpty ? "" : "<\(email)>"
-            let name = recipient.getName(userContacts: userContacts) ?? ""
-            let title = name.isEmpty ? "\(email) \(emailToDisplay)" : "\(name) \(emailToDisplay)"
+            let name = recipient.getName(userContacts: userContacts) ?? email
+            var addressStyle = FontManager.body3RegularInteractionNorm
+            addressStyle.addTruncatingTail(mode: .byTruncatingMiddle)
             let contact = ContactVO(name: name, email: recipient.email)
             return ExpandedHeaderRecipientRowViewModel(
-                title: title.apply(style: FontManager.body3RegularInteractionNorm),
+                name: name.apply(style: FontManager.body3RegularInteractionNorm),
+                address: emailToDisplay.apply(style: addressStyle),
                 contact: contact
             )
         }
@@ -138,5 +150,4 @@ class ExpandedHeaderViewModel {
             recipients: recipients
         )
     }
-
 }

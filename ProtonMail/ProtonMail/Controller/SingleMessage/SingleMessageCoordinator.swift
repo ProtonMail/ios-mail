@@ -74,7 +74,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         case .addNewLabel:
             presentCreateFolder(type: .label)
         case .more(_):
-            break
+            viewController?.moreButtonTapped()
         }
     }
 

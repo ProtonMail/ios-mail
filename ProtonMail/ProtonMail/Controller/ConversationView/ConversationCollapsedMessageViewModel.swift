@@ -15,7 +15,13 @@ class ConversationCollapsedMessageViewModel {
     let replacingEmails: [Email]
 
     var model: ConversationMessageModel {
-        .init(
+        let tags = message.orderedLabels.map { label in
+            TagViewModel(title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
+                         icon: nil,
+                         color: UIColor(hexString: label.color, alpha: 1.0))
+        }
+
+        return ConversationMessageModel(
             messageLocation: message.messageLocation,
             isCustomFolderLocation: message.isCustomFolder,
             initial: message.displaySender(replacingEmails).initials().apply(style: FontManager.body3RegularNorm),
@@ -27,7 +33,7 @@ class ConversationCollapsedMessageViewModel {
             isRepliedToAll: message.repliedAll,
             isStarred: message.starred,
             hasAttachment: message.numAttachments.intValue > 0,
-            tags: message.orderedLabels.map { UIColor(hexString: $0.color, alpha: 1.0) },
+            tags: tags,
             expirationTag: message.createTagFromExpirationDate
         )
     }

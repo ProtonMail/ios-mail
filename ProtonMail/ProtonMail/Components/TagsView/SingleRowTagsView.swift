@@ -104,6 +104,7 @@ class SingleRowTagsView: UIView {
             numberLabel.leadingAnchor.constraint(equalTo: lastItem.trailingAnchor, constant: horizontalSpacing),
             numberLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ].activate()
+        numberLabel.font = UIFont.systemFont(ofSize: 11, weight: .semibold)
         numberLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         numberLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }

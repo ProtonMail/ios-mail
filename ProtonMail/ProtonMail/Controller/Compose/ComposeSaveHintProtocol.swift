@@ -56,7 +56,7 @@ extension ComposeSaveHintProtocol {
                                              cache: cache,
                                              messageService: messageService)
         }
-        banner.show(at: .bottom, on: self, ignoreKeyboard: true)
+        banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
         
         if let listVC = self as? MailboxViewController {
             // Since we ignore core data event when composer is presented
@@ -79,17 +79,27 @@ extension ComposeSaveHintProtocol {
             banner.dismiss(animated: false)
             self?.showDraftRestoredBanner(cache: cache)
         }
-        banner.show(at: .bottom, on: self)
+        banner.show(at: getPosition(), on: self)
     }
 
     func showDraftRestoredBanner(cache: UserCachedStatus) {
         // _composer_draft_restored
         let banner = PMBanner(message: LocalString._composer_draft_restored, style: PMBannerStyle.info)
-        banner.show(at: .bottom, on: self)
+        banner.show(at: getPosition(), on: self)
     }
     
     func showMessageSendingHintBanner() {
         let banner = PMBanner(message: LocalString._messages_sending_message, style: PMBannerStyle.info)
-        banner.show(at: .bottom, on: self, ignoreKeyboard: true)
+        banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
+    }
+
+    private func getPosition() -> PMBannerPosition {
+        let position: PMBannerPosition
+        if let _ = self as? ConversationViewController {
+            position = .bottomCustom(.init(top: .infinity, left: 8, bottom: 64, right: 8))
+        } else {
+            position = .bottom
+        }
+        return position
     }
 }

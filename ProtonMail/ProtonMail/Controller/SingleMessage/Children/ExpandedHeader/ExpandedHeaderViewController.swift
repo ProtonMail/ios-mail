@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 class ExpandedHeaderViewController: UIViewController {
@@ -28,8 +29,9 @@ class ExpandedHeaderViewController: UIViewController {
 
     private let viewModel: ExpandedHeaderViewModel
     private let tagsPresneter = TagsPresenter()
+    private var hideDetailsAction: (() -> Void)?
 
-    var contactTapped: ((ExpandedHeaderContactContext) -> Void)?
+    var contactTapped: ((MessageHeaderContactContext) -> Void)?
 
     init(viewModel: ExpandedHeaderViewModel) {
         self.viewModel = viewModel
@@ -43,8 +45,13 @@ class ExpandedHeaderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setUpLockTapAction()
         setUpViewModelObservation()
         setUpView()
+    }
+
+    func observeHideDetails(action: @escaping (() -> Void)) {
+        self.hideDetailsAction = action
     }
 
     private func setUpViewModelObservation() {
@@ -93,6 +100,25 @@ class ExpandedHeaderViewController: UIViewController {
         if let image = viewModel.originImage, let title = viewModel.originTitle {
             presentOriginRow(image: image, title: title)
         }
+
+        if let size = viewModel.size {
+            presentSizeRow(size: size)
+        }
+
+        if let icon = viewModel.senderContact?.lock,
+           let reason = viewModel.senderContact?.inboxNotes {
+            presentLockIconRow(icon: icon, reason: reason)
+        }
+        presentHideDetailButton()
+        setUpLock()
+    }
+
+    private func setUpLock() {
+        guard customView.lockImageView.image == nil,
+              viewModel.message.isDetailDownloaded,
+              let contact = viewModel.senderContact else { return }
+        self.customView.lockImageView.image = contact.lock
+        self.customView.lockContainer.isHidden = contact.lock == nil
     }
 
     private func presentTags() {
@@ -114,13 +140,23 @@ class ExpandedHeaderViewController: UIViewController {
 
         viewModel.recipients.map { recipient in
             let control = TextControl()
-            control.label.attributedText = recipient.title
+            control.label.attributedText = recipient.name
+            control.label.setContentCompressionResistancePriority(.required, for: .horizontal)
+            let addressController = TextControl()
+            addressController.label.attributedText = recipient.address
+            addressController.label.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
             if let contact = recipient.contact {
                 control.tap = { [weak self] in
                     self?.contactTapped(sheetType: .recipient, contact: contact)
                 }
+                addressController.tap = { [weak self] in
+                    self?.contactTapped(sheetType: .recipient, contact: contact)
+                }
             }
-            return control
+            let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .leading, spacing: 2)
+            stack.addArrangedSubview(control)
+            stack.addArrangedSubview(addressController)
+            return stack
         }.forEach {
             row.contentStackView.addArrangedSubview($0)
         }
@@ -128,7 +164,7 @@ class ExpandedHeaderViewController: UIViewController {
     }
 
     private func contactTapped(sheetType: MessageDetailsContactActionSheetType, contact: ContactVO) {
-        let context = ExpandedHeaderContactContext(type: sheetType, contact: contact)
+        let context = MessageHeaderContactContext(type: sheetType, contact: contact)
         contactTapped?(context)
     }
 
@@ -150,6 +186,57 @@ class ExpandedHeaderViewController: UIViewController {
         titleLabel.attributedText = title
         row.contentStackView.addArrangedSubview(titleLabel)
         customView.contentStackView.addArrangedSubview(row)
+    }
+
+    private func presentSizeRow(size: NSAttributedString) {
+        let row = ExpandedHeaderRowView()
+        row.titleLabel.isHidden = true
+        row.iconImageView.image = Asset.icUserStorage.image
+        let titleLabel = UILabel()
+        titleLabel.attributedText = size
+        row.contentStackView.addArrangedSubview(titleLabel)
+        customView.contentStackView.addArrangedSubview(row)
+    }
+
+    private func presentLockIconRow(icon: UIImage, reason: String) {
+        let row = ExpandedHeaderRowView()
+        row.titleLabel.isHidden = true
+        row.iconImageView.image = icon
+        let titleLabel = UILabel()
+        titleLabel.attributedText = reason.apply(style: .CaptionWeak)
+        row.contentStackView.addArrangedSubview(titleLabel)
+        customView.contentStackView.addArrangedSubview(row)
+    }
+
+    private func presentHideDetailButton() {
+        let button = UIButton()
+        button.setTitle(LocalString._hide_details, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.setTitleColor(UIColorManager.InteractionNorm, for: .normal)
+        let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
+        let padding = UIView(frame: .zero)
+        stack.addArrangedSubview(padding)
+        stack.addArrangedSubview(button)
+        stack.addArrangedSubview(UIView())
+        [
+            padding.widthAnchor.constraint(equalToConstant: 38)
+        ].activate()
+        customView.contentStackView.addArrangedSubview(stack)
+        button.addTarget(self, action: #selector(self.clickHideDetailsButton), for: .touchUpInside)
+    }
+
+    private func setUpLockTapAction() {
+        customView.lockImageControl.addTarget(self, action: #selector(lockTapped), for: .touchUpInside)
+    }
+
+    @objc
+    private func lockTapped() {
+        viewModel.senderContact?.inboxNotes.alertToastBottom()
+    }
+
+    @objc
+    func clickHideDetailsButton() {
+        self.hideDetailsAction?()
     }
 
     required init?(coder: NSCoder) {

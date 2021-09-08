@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 class NonExpandedHeaderViewController: UIViewController {
@@ -27,6 +28,8 @@ class NonExpandedHeaderViewController: UIViewController {
     private(set) lazy var customView = NonExpandedHeaderView()
     private let viewModel: NonExpandedHeaderViewModel
     private let tagsPresenter = TagsPresenter()
+    private var showDetailsAction: (() -> Void)?
+    var contactTapped: ((MessageHeaderContactContext) -> Void)?
 
     init(viewModel: NonExpandedHeaderViewModel) {
         self.viewModel = viewModel
@@ -45,14 +48,27 @@ class NonExpandedHeaderViewController: UIViewController {
         setUpView()
     }
 
+    func observeShowDetails(action: @escaping (() -> Void)) {
+        self.showDetailsAction = action
+    }
+
     private func setUpView() {
         customView.initialsLabel.text = viewModel.initials.string
         customView.initialsLabel.textAlignment = .center
         customView.originImageView.image = viewModel.originImage
         customView.senderLabel.attributedText = viewModel.sender
         customView.senderLabel.lineBreakMode = .byTruncatingTail
+        customView.senderAddressLabel.label.attributedText = viewModel.senderEmail
+        customView.senderAddressLabel.tap = { [weak self] in
+            guard let sender = self?.viewModel.senderContact else { return }
+            self?.contactTapped(sheetType: .sender, contact: sender)
+        }
         customView.timeLabel.attributedText = viewModel.time
         customView.recipientLabel.attributedText = viewModel.recipient
+        customView.showDetailsButton.setTitleColor(UIColorManager.InteractionNorm, for: .normal)
+        customView.showDetailsButton.addTarget(self,
+                                               action: #selector(self.clickShowDetailsButton),
+                                               for: .touchUpInside)
         customView.starImageView.isHidden = !viewModel.message.starred
         tagsPresenter.presentTags(tags: viewModel.tags, in: customView.tagsView)
         setUpLock()
@@ -75,10 +91,20 @@ class NonExpandedHeaderViewController: UIViewController {
         viewModel.senderContact?.inboxNotes.alertToastBottom()
     }
 
+    @objc
+    private func clickShowDetailsButton() {
+        self.showDetailsAction?()
+    }
+
     private func setUpViewModelObservations() {
         viewModel.reloadView = { [weak self] in
             self?.setUpView()
         }
+    }
+
+    private func contactTapped(sheetType: MessageDetailsContactActionSheetType, contact: ContactVO) {
+        let context = MessageHeaderContactContext(type: sheetType, contact: contact)
+        contactTapped?(context)
     }
 
     required init?(coder: NSCoder) {

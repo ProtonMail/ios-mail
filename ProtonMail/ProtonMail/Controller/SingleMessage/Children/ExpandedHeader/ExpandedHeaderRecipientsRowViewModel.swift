@@ -35,7 +35,8 @@ extension ExpandedHeaderRecipientsRowViewModel {
             title: "\(LocalString._general_to_label):".apply(style: FontManager.body3RegularWeak),
             recipients: [
                 ExpandedHeaderRecipientRowViewModel(
-                    title: LocalString._undisclosed_recipients.apply(style: FontManager.body3RegularInteractionNorm),
+                    name: LocalString._undisclosed_recipients.apply(style: FontManager.body3RegularInteractionNorm),
+                    address: "".apply(style: FontManager.body3RegularInteractionNorm),
                     contact: nil
                 )
             ]

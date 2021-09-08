@@ -21,6 +21,7 @@
 //  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
 struct ExpandedHeaderRecipientRowViewModel {
-    let title: NSAttributedString
+    let name: NSAttributedString
+    let address: NSAttributedString
     let contact: ContactVO?
 }
