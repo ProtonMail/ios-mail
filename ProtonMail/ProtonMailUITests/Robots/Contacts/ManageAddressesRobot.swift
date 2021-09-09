@@ -6,25 +6,29 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate func contactCellIdentifier(_ email: String) -> String { return "ContactGroupEditViewCell.\(email)" }
-fileprivate let backButtonIdentifier = LocalString._contact_groups_add
+import pmtest
+
+fileprivate struct id {
+    static func contactCellIdentifier(_ email: String) -> String { return "ContactGroupEditViewCell.\(email)" }
+    static let backButtonIdentifier = LocalString._contact_groups_add
+}
 
 /**
  ManageAddressesRobot class contains actions and verifications for Adding a Contact to Group.
  */
-class ManageAddressesRobot {
+class ManageAddressesRobot: CoreElements {
 
     func addContactToGroup(_ withEmail: String) -> AddContactGroupRobot {
         return clickContact(withEmail).back()
     }
     
     func clickContact(_ withEmail: String) -> ManageAddressesRobot {
-        Element.wait.forCellWithIdentifier(contactCellIdentifier(withEmail), file: #file, line: #line).tap()
+        cell(id.contactCellIdentifier(withEmail)).tap()
         return self
     }
 
     private func back() -> AddContactGroupRobot {
-        Element.button.tapByIdentifier(backButtonIdentifier)
+        button(id.backButtonIdentifier).tap()
         return AddContactGroupRobot()
     }
 }

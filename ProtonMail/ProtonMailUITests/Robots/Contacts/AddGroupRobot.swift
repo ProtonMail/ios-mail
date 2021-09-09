@@ -6,15 +6,19 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let saveNavBarButtonIdentifier = "ContactGroupEditViewController.saveButton"
-fileprivate let contactGroupNameTextFieldIdentifier = "ContactGroupEditViewController.contactGroupNameLabel"
-fileprivate let manageAddressesStaticText = LocalString._contact_groups_manage_addresses
-fileprivate let deleteGroupText = LocalString._contact_groups_delete
+import pmtest
+
+fileprivate struct id {
+    static let saveNavBarButtonIdentifier = "ContactGroupEditViewController.saveButton"
+    static let contactGroupNameTextFieldIdentifier = "ContactGroupEditViewController.contactGroupNameLabel"
+    static let manageAddressesStaticText = LocalString._contact_groups_manage_addresses
+    static let deleteGroupText = LocalString._contact_groups_delete
+}
 
 /**
  AddContactGroupRobot class contains actions and verifications for Add/Edit Contact Groups.
  */
-class AddContactGroupRobot {
+class AddContactGroupRobot: CoreElements {
 
     func editNameAndSave(_ name: String) -> GroupDetailsRobot {
         editGroupName(name).saveContactSelection()
@@ -22,36 +26,33 @@ class AddContactGroupRobot {
     }
 
     func typeGroupName(_ name: String) -> AddContactGroupRobot {
-        Element.wait.forTextFieldWithIdentifier(contactGroupNameTextFieldIdentifier)
-            .click()
-            .typeText(name)
+        textField(id.contactGroupNameTextFieldIdentifier).tap().typeText(name)
         return self
     }
     
     @discardableResult
     func saveContactSelection() -> ContactsRobot {
-        Element.wait.forButtonWithIdentifier(saveNavBarButtonIdentifier, file: #file, line: #line).tap()
+        button(id.saveNavBarButtonIdentifier).tap()
         return ContactsRobot()
     }
 
     func tapManageAddresses() -> ManageAddressesRobot {
-        Element.staticText.tapByIdentifier(manageAddressesStaticText)
+        staticText(id.manageAddressesStaticText).tap()
         return ManageAddressesRobot()
     }
     
     func delete() -> ContactsRobot {
-        Element.staticText.tapByIdentifier(deleteGroupText)
+        staticText(id.deleteGroupText).tap()
         return ContactsRobot()
     }
 
     private func confirmDeletion() -> ContactsRobot {
+        /// TODO
         return ContactsRobot()
     }
     
-    private func editGroupName(_ name: String) -> AddContactGroupRobot { Element.wait.forTextFieldWithIdentifier(contactGroupNameTextFieldIdentifier)
-            .click()
-            .clear()
-            .typeText(name)
+    private func editGroupName(_ name: String) -> AddContactGroupRobot {
+        textField(id.contactGroupNameTextFieldIdentifier).tap().clearText().typeText(name)
         return self
     }
 }

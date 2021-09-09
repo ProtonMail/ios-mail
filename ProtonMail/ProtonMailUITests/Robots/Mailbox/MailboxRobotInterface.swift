@@ -8,15 +8,17 @@
 
 import pmtest
 
-import ProtonCore_TestingToolkit
+fileprivate struct id {
+    static let menuButtonIdentifier = "MailboxViewController.menuBarButtonItem"
+    static let composeButtonLabelIdentifier = "MailboxViewController.composeBarButtonItem"
+    static let mailboxTableViewIdentifier = "MailboxViewController.tableView"
+    static let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
+    static let mailboxNoResultIdentifier = "MailboxViewController.noResultLabel"
+    static func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)" }
+    static let trashButtonIdentifier = LocalString._menu_trash_title
+    static let skipOnboardingButtonLabel = LocalString._skip_btn_title
+}
 
-fileprivate let menuButtonLabel = "Menu"
-let composeButtonLabel = "Compose"
-fileprivate let mailboxTableViewIdentifier = "MailboxViewController.tableView"
-fileprivate let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
-fileprivate let mailboxNoResultIdentifier = "MailboxViewController.noResultLabel"
-fileprivate func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)" }
-fileprivate let trashButtonIdentifier = LocalString._menu_trash_title
 var subjects = [String]()
 
 /**
@@ -25,66 +27,54 @@ var subjects = [String]()
 class MailboxRobotInterface: CoreElements {
     
     required init() {
-        Element.wait.forTableViewWithIdentifier(mailboxTableViewIdentifier, file: #file, line: #line, timeout: 20)
+        super.init()
+        closeTourIfShown()
+        table(id.mailboxTableViewIdentifier).wait(time: 20)
     }
     
     @discardableResult
     func clickMessageBySubject(_ subject: String) -> MessageRobot {
-        Element.wait.forCellWithIdentifier(messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).forceTap()
+        cell(id.messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).tap()
         return MessageRobot()
     }
     
     @discardableResult
     func clickMessageByIndex(_ index: Int) -> MessageRobot {
-        Element.wait.forCellByIndex(index).forceTap()
+        cell().byIndex(index).tap()
         return MessageRobot()
     }
     
     @discardableResult
-    func swipeLeftMessageAtPosition(_ position: Int) -> MailboxRobotInterface {
-        return self
-    }
-    
-    @discardableResult
     func spamMessageBySubject(_ subject: String) -> MailboxRobotInterface {
-        Element.staticText.swipeLeftByIdentifier(subject)
-        return self
-    }
-    
-    @discardableResult
-    func longClickMessageOnPosition(_ position: Int) -> MailboxRobotInterface {
-        return self
-    }
-
-    func deleteMessageWithSwipe(_ position: Int) -> MailboxRobotInterface {
+        staticText(subject).swipeLeft()
         return self
     }
 
     func searchBar() -> SearchRobot {
-        Element.wait.forHittableButton(searchNavBarButtonIdentifier).tap()
+        button(id.searchNavBarButtonIdentifier).waitForHittable().tap()
         return SearchRobot()
     }
 
     @discardableResult
     func compose() -> ComposerRobot {
-        Element.wait.forButtonWithIdentifier(composeButtonLabel, file: #file, line: #line).tap()
+        button(id.composeButtonLabelIdentifier).tap()
         return ComposerRobot()
     }
 
     func menuDrawer() -> MenuRobot {
-        Element.wait.forHittableButton(menuButtonLabel).tap()
+        button(id.menuButtonIdentifier).waitForHittable().tap()
         return MenuRobot()
     }
     
     @discardableResult
     func selectMessage(position: Int) -> MailboxRobotInterface {
-        Element.wait.forCellByIndex(position).tap()
+        cell().byIndex(position).tap()
         return self
     }
     
     @discardableResult
     func refreshMailbox() -> MailboxRobotInterface {
-        Element.tableView.swipeDownByIdentifier(mailboxTableViewIdentifier)
+        table(id.mailboxTableViewIdentifier).swipeDown()
         return self
     }
     
@@ -101,19 +91,19 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func trash() -> MailboxRobotInterface {
-        Element.button.tapByIdentifier(trashButtonIdentifier)
+        button(id.trashButtonIdentifier).tap()
         return MailboxRobotInterface()
     }
     
     @discardableResult
     func longClickMessageBySubject(_ subject: String) -> MailboxRobotInterface {
-        Element.staticText.longClickByIdentifier(subject)
+        staticText(subject).longPress()
         return MailboxRobotInterface()
     }
     
     @discardableResult
     func longClickMessageOnPositions(_ position: Int) -> MailboxRobotInterface {
-        Element.cell.longClickByPosition(position)
+        cell().byIndex(position).longPress()
         subjects.append(Element.cell.getNameByIndex(position).replacingOccurrences(of: "_", with: " "))
         return MailboxRobotInterface()
     }
@@ -125,32 +115,40 @@ class MailboxRobotInterface: CoreElements {
         }
         return MailboxRobotInterface()
     }
+    
+    private func closeTourIfShown() {
+        let elem = app.buttons[id.skipOnboardingButtonLabel].firstMatch
+        if !wasTourClosed && elem.exists {
+            elem.tap()
+            wasTourClosed = true
+        }
+    }
 }
 
 /**
  Contains all the validations that can be performed by Mailbox Robots.
 */
-class MailboxRobotVerifyInterface {
+class MailboxRobotVerifyInterface: CoreElements {
     
     func messageExists(_ subject: String) {
-        Element.wait.forCellWithIdentifier(messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_")))
+        cell(id.messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).wait().checkExists()
     }
     
     func messageIsEmpty() {
-        Element.wait.forStaticTextFieldWithIdentifier(mailboxNoResultIdentifier).assertWithLabel("No Messages")
+        staticText(id.mailboxNoResultIdentifier).wait().checkHasLabel("No Messages")
     }
 
     func messageSubjectsExist() {
         for subject in subjects {
-            Element.wait.forStaticTextFieldWithIdentifier(subject)
+            staticText(subject).wait().checkExists()
         }
     }
     
     func draftWithAttachmentSaved(draftSubject: String) {
-        
+        ///TODO: add implementation
     }
 
     func mailboxLayoutShown(){
-        
+        ///TODO: add implementation
     }
 }

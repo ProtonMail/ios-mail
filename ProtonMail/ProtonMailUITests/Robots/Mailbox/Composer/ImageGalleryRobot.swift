@@ -6,12 +6,17 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let imageOtherIdentifier = "DKImageAssetAccessibilityIdentifier"
-private func selectButtonIdentifier(_ selectionAmount: Int) -> String { return "Select(\(String(selectionAmount)))" }
+import pmtest
+
+fileprivate struct id {
+    static let imageOtherIdentifier = "DKImageAssetAccessibilityIdentifier"
+    static func selectButtonIdentifier(_ selectionAmount: Int) -> String { return "Select(\(String(selectionAmount)))" }
+}
+
 /**
  Represents Composer view.
 */
-class ImageGalleryRobot {
+class ImageGalleryRobot: CoreElements {
     
     func pickImages(_ attachmentsAmount: Int) -> MessageAttachmentsRobot {
         app.tap() /// Workaround to trigger handleInterruption() on Photos permission alert
@@ -21,13 +26,13 @@ class ImageGalleryRobot {
     
     private func pickImageAtPositions(_ positions: Int) -> ImageGalleryRobot {
         for i in 0...positions-1 {
-            Element.other.tapByIdentifier(imageOtherIdentifier, i)
+            otherElement(id.imageOtherIdentifier).byIndex(i).tap()
         }
         return self
     }
     
     private func confirmSelection(_ attachmentsAmount: Int) -> MessageAttachmentsRobot {
-        Element.button.tapByIdentifier(selectButtonIdentifier(attachmentsAmount))
+        button(id.selectButtonIdentifier(attachmentsAmount)).tap()
         return MessageAttachmentsRobot()
     }
 }

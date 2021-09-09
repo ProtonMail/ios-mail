@@ -6,23 +6,24 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let usernameTextFieldIdentifier = "AccountConnectViewController.usernameTextField"
-fileprivate let passwordSecureTextFieldIdentifier = "AccountConnectViewController.passwordTextField"
-fileprivate let loginButtonIdentifier = "AccountConnectViewController.signInButton"
-fileprivate let mailboxPasswordTextField = "AccountPasswordViewController.passwordTextField"
-fileprivate let decryptButtonIdentifier = "AccountPasswordViewController.signInButton"
-private let twoFaCodeIdentifier = "TwoFACodeViewController.twoFactorCodeField"
-private let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
-private let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
-private let cancelButtonIdentifier = "UINavigationItem.leftBarButtonItem"
+import pmtest
 
-class ConnectAccountRobot {
+fileprivate struct id {
+    static let usernameTextFieldIdentifier = "AccountConnectViewController.usernameTextField"
+    static let passwordSecureTextFieldIdentifier = "AccountConnectViewController.passwordTextField"
+    static let loginButtonIdentifier = "AccountConnectViewController.signInButton"
+    static let mailboxPasswordTextField = "AccountPasswordViewController.passwordTextField"
+    static let decryptButtonIdentifier = "AccountPasswordViewController.signInButton"
+    static let twoFaCodeIdentifier = "TwoFACodeViewController.twoFactorCodeField"
+    static let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
+    static let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
+    static let cancelButtonIdentifier = "UINavigationItem.leftBarButtonItem"
+    static let limitReachedText = LocalString._free_account_limit_reached_title
+}
+
+class ConnectAccountRobot: CoreElements {
     
-    var verify: Verify! = nil
-    
-    init() {
-        verify = Verify()
-    }
+    var verify = Verify()
     
     func connectOnePassAccount(_ user: User) -> InboxRobot {
         return username(user.email)
@@ -73,78 +74,76 @@ class ConnectAccountRobot {
     }
 
     private func signIn() -> InboxRobot {
-        Element.wait.forButtonWithIdentifier(loginButtonIdentifier, file: #file, line: #line).tap()
+        button(id.loginButtonIdentifier).tap()
         return InboxRobot()
     }
     
     private func decrypt() -> InboxRobot {
-        Element.wait.forButtonWithIdentifier(decryptButtonIdentifier, file: #file, line: #line).tap()
+        button(id.decryptButtonIdentifier).tap()
         return InboxRobot()
     }
 
     private func confirmTwoFa() -> InboxRobot {
-        Element.wait.forButtonWithIdentifier(twoFaEnterButtonIdentifier, file: #file, line: #line).tap()
+        button(id.twoFaEnterButtonIdentifier).tap()
         return InboxRobot()
     }
     
     private func confirmTwoFaAndProvideMailboxPassword() -> ConnectAccountRobot {
-        Element.wait.forButtonWithIdentifier(twoFaEnterButtonIdentifier, file: #file, line: #line).tap()
+        button(id.twoFaEnterButtonIdentifier).tap()
         return self
     }
     
     private func confirmTwoFaWithReachedLimit() -> ConnectAccountRobot {
-        Element.wait.forButtonWithIdentifier(twoFaEnterButtonIdentifier, file: #file, line: #line).tap()
+        button(id.twoFaEnterButtonIdentifier).tap()
         return ConnectAccountRobot()
     }
 
     private func cancelTwoFaPrompt() -> ConnectAccountRobot {
-        Element.wait.forButtonWithIdentifier(twoFaCancelButtonIdentifier, file: #file, line: #line).tap()
+        button(id.twoFaCancelButtonIdentifier).tap()
         return ConnectAccountRobot()
     }
 
     private func cancelAccountAdding() -> InboxRobot {
-        Element.wait.forButtonWithIdentifier(cancelButtonIdentifier, file: #file, line: #line).tap()
+        button(id.cancelButtonIdentifier).tap()
         return InboxRobot()
     }
 
     private func username(_ username: String) -> ConnectAccountRobot {
-        Element.textField.tapByIdentifier(usernameTextFieldIdentifier).typeText(username)
+        textField(id.usernameTextFieldIdentifier).tap().typeText(username)
         return self
     }
 
     private func password(_ password: String) -> ConnectAccountRobot {
-        Element.secureTextField.tapByIdentifier(passwordSecureTextFieldIdentifier).typeText(password)
+        secureTextField(id.passwordSecureTextFieldIdentifier).tap().typeText(password)
         return self
     }
 
     private func mailboxPassword(_ mailboxPwd: String) -> ConnectAccountRobot {
-        Element.wait.forSecureTextFieldWithIdentifier(mailboxPasswordTextField, file: #file, line: #line)
-            .click()
-            .typeText(mailboxPwd)
+        secureTextField(id.mailboxPasswordTextField).tap().typeText(mailboxPwd)
         return self
     }
 
     private func twoFaCode(_ code: String) -> ConnectAccountRobot {
-        Element.wait.forTextFieldWithIdentifier(twoFaCodeIdentifier, file: #file, line: #line).typeText(code)
+        textField(id.twoFaCodeIdentifier).typeText(code)
         return self
     }
     
     private func confirm2FA() {
-        Element.wait.forButtonWithIdentifier(twoFaEnterButtonIdentifier, file: #file, line: #line).tap()
+        button(id.twoFaEnterButtonIdentifier).tap()
     }
     
     private func signInWithMailboxPasswordOrTwoFa() -> ConnectAccountRobot {
-        Element.button.tapByIdentifier(loginButtonIdentifier)
+        button(id.loginButtonIdentifier).tap()
         return self
     }
 
     /**
      * Contains all the validations that can be performed by [ConnectAccountRobot].
      */
-    class Verify {
+    class Verify: CoreElements {
 
         func limitReachedDialogDisplayed() {
-            Element.wait.forStaticTextFieldWithIdentifier("Limit reached", file: #file, line: #line)
+            staticText().wait().checkExists()
         }
     }
 }

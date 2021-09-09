@@ -33,27 +33,27 @@ Then run `pod install` in the project directory to install.
 #### Getting started <a name="getting_started"></a>
 
 To start using the `pmtest` you should select one of the below options:
-1. Extend your test class with `CoreTestCase` class and then access any element by using the `ui` constant.
+1. Extend your test class with `CoreTestCase` class which extends XCTestCase class and then access any element by its type.
    ```swift
    class SampleTestCase: CoreTestCase {
    
       func testLoginSample() {
          /// Type text into TextField.
-         ui.textField(usernameTextFieldlocator).typeText("username")
+         textField(usernameTextFieldlocator).typeText("username")
    
          /// Tap, clear text and then type text into SecureTextField.
-         ui.secureTextField(passwordSecureTextFieldidentifier).tap().clearText().typeText("password")
+         secureTextField(passwordSecureTextFieldidentifier).tap().clearText().typeText("password")
    
          /// Tap login button and wait until it is gone.
-         ui.button(loginButtonidentifier).tap().waitUntilGone()
+         button(loginButtonidentifier).tap().waitUntilGone()
    
          /// Check that login successful Static text exists.
-         ui.staticText(loggedInStaticTextidentifier).checkExists()
+         staticText(loggedInStaticTextidentifier).checkExists()
       }
    }
    ```
    
-2. If you follow a page object like test design pattern extend your page class with `CoreElements`. Afterwards you will have direct access to all element types:
+2. If you follow a page object test design pattern extend your page class with `CoreElements`. Afterwards you will have direct access to all element types:
 
    ```swift
    class LoginRobot: CoreElements {

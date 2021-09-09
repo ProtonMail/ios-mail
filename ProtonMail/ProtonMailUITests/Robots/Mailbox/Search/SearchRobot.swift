@@ -7,18 +7,20 @@
 //
 
 import XCTest
+import pmtest
 
-fileprivate let searchTextFieldIdentifier = "SearchViewController.searchTextField"
-fileprivate let searchKeyboardButtonText = LocalString._general_search_placeholder
-fileprivate let cancelButttonIdentifier = LocalString._general_cancel_button
-fileprivate func draftCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)".replacingOccurrences(of: " ", with: "_") }
-fileprivate func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)" }
-
+fileprivate struct id {
+    static let searchTextFieldIdentifier = "SearchViewController.searchTextField"
+    static let searchKeyboardButtonText = LocalString._general_search_placeholder
+    static let cancelButttonIdentifier = LocalString._general_cancel_button
+    static func draftCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)".replacingOccurrences(of: " ", with: "_") }
+    static func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)" }
+}
 
 /**
  SearchRobot class contains actions and verifications for Search functionality.
  */
-class SearchRobot {
+class SearchRobot: CoreElements {
 
     var verify: Verify! = Verify()
     
@@ -28,46 +30,46 @@ class SearchRobot {
     }
     
     func clickSearchedMessageBySubject(_ subject: String) -> MessageRobot {
-        Element.wait.forCellWithIdentifier(messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).tap()
+        cell(id.messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).tap()
         return MessageRobot()
     }
     
     func clickSearchedDraftBySubject(_ subject: String) -> ComposerRobot {
-        Element.wait.forCellWithIdentifier(draftCellIdentifier(subject)).tap()
+        cell(id.draftCellIdentifier(subject)).tap()
         return ComposerRobot()
     }
 
     func goBackToInbox() -> InboxRobot {
-        Element.wait.forButtonWithIdentifier(cancelButttonIdentifier).tap()
+        button(id.cancelButttonIdentifier).tap()
         return InboxRobot()
     }
     
     func goBackToDrafts() -> DraftsRobot {
-        Element.wait.forButtonWithIdentifier(cancelButttonIdentifier).tap()
+        button(id.cancelButttonIdentifier).tap()
         return DraftsRobot()
     }
     
     private func typeTextToSearch(_ text: String) -> SearchRobot {
-        Element.wait.forTextFieldWithIdentifier(searchTextFieldIdentifier).typeText(text)
+        textField(id.searchTextFieldIdentifier).typeText(text)
         return self
     }
     
     private func tapKeyboardSearchButton() -> SearchRobot {
-        Element.wait.forButtonWithIdentifier(searchKeyboardButtonText).tap()
+        button(id.searchKeyboardButtonText).tap()
         return self
     }
     
-    class Verify {
+    class Verify: CoreElements {
         
         @discardableResult
         func messageExists(_ subject: String) -> SearchRobot {
-           Element.wait.forCellWithIdentifier(messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_")))
+            cell(id.messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).wait().checkExists()
             return SearchRobot()
         }
         
         @discardableResult
         func draftMessageExists(_ subject: String) -> SearchRobot {
-            Element.wait.forCellWithIdentifier(draftCellIdentifier(subject.replacingOccurrences(of: " ", with: "_")))
+            cell(id.draftCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).wait().checkExists()
             return SearchRobot()
         }
         

@@ -92,22 +92,22 @@ class AccountSettingsTests : BaseTestCase {
     func testCreateAndDeleteLabelFromAccountSettings() {
         let labelName = StringUtils().randomAlphanumericString()
         accountSettingsRobot
-            .foldersAndLabels()
+            .labels()
             .addLabel()
             .createFolderLabel(labelName)
             .deleteFolderLabel(labelName)
-            .foldersAndLabels()
+            .labels()
             .verify.folderLabelDeleted(labelName)
     }
 
     func testCreateAndDeleteFolderFromAccountSettings() {
         let folderName = StringUtils().randomAlphanumericString()
         accountSettingsRobot
-            .foldersAndLabels()
+            .folders()
             .addFolder()
             .createFolderLabel(folderName)
             .deleteFolderLabel(folderName)
-            .foldersAndLabels()
+            .folders()
             .verify.folderLabelDeleted(folderName)
     }
     

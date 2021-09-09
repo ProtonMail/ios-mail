@@ -6,23 +6,27 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-private let enableSignatureStaticTextLabel = LocalString._settings_enable_default_signature_title
-private let enableMobileSignatureStaticTextLabel = LocalString._settings_enable_mobile_signature_title
-private let saveNavBarButtonLabel = LocalString._general_save_action
+import pmtest
+
+fileprivate struct id {
+    static let enableSignatureStaticTextLabel = LocalString._settings_enable_default_signature_title
+    static let enableMobileSignatureStaticTextLabel = LocalString._settings_enable_mobile_signature_title
+    static let saveNavBarButtonLabel = LocalString._general_save_action
+}
 
 /**
  Class represents Signature and Mobile signature view.
  */
-class SignatureRobot {
+class SignatureRobot: CoreElements {
     
     func disableSignature() -> SignatureRobot {
         if (Element.swittch.isEnabledByIndex(0)) {
             /// Turn switch OFF and then ON
-            Element.swittch.tapByIndex(0)
+            swittch().byIndex(0).tap()
         } else {
             /// Turn switch ON and then OFF
-            Element.swittch.tapByIndex(0)
-            Element.swittch.tapByIndex(0)
+            swittch().byIndex(0).tap()
+            swittch().byIndex(0).tap()
         }
         return self
     }
@@ -30,22 +34,22 @@ class SignatureRobot {
     func enableSignature() -> SignatureRobot {
         if (Element.swittch.isEnabledByIndex(0)) {
             /// Turn switch OFF and then ON
-            Element.swittch.tapByIndex(0)
-            Element.swittch.tapByIndex(0)
+            swittch().byIndex(0).tap()
+            swittch().byIndex(0).tap()
         } else {
             /// Turn switch ON
-            Element.swittch.tapByIndex(0)
+            swittch().byIndex(0).tap()
         }
         return self
     }
     
     func save() -> AccountSettingsRobot {
-        Element.wait.forButtonWithIdentifier(saveNavBarButtonLabel).tap()
+        button(id.saveNavBarButtonLabel).tap()
         return AccountSettingsRobot()
     }
     
     func setSignatureText(_ signature: String) -> SignatureRobot {
-        Element.textView.tapByIndex(0).clear().typeText(signature)
+        textField().byIndex(0).tap().clearText().typeText(signature)
         return self
     }
 }

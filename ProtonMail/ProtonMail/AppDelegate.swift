@@ -158,6 +158,11 @@ extension AppDelegate: UIApplicationDelegate {
         PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
         PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
         PMAPIService.noTrustKit = true
+        
+        if CommandLine.arguments.contains("-disableAnimations") {
+            UIView.setAnimationsEnabled(false)
+        }
+        
         #else
         TrustKitWrapper.start(delegate: self)
         #endif
@@ -184,6 +189,10 @@ extension AppDelegate: UIApplicationDelegate {
         PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
         PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
         PMAPIService.noTrustKit = true
+        
+        if CommandLine.arguments.contains("-disableAnimations") {
+            UIView.setAnimationsEnabled(false)
+        }
         #endif
         TrustKitWrapper.start(delegate: self)
 

@@ -6,61 +6,60 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import pmtest
 import ProtonCore_TestingToolkit
 
-fileprivate let pinCodeViewIdentifier = "PinCodeViewController.pinCodeView"
-fileprivate let pinCodeAttemptStaticTextIdentifier = "PinCodeViewController.attempsLabel"
-fileprivate let pinCodeLogoutButtonIdentifier = "PinCodeViewController.backButton"
-fileprivate let logoutButtonIdentifier = "Log out"
-fileprivate let pinStaticTextZero = "0"
-fileprivate let pinStaticTextOne = "1"
-fileprivate let pinStaticTextTwo = "2"
-fileprivate let pinStaticTextThree = "3"
-fileprivate let pinStaticTextFour = "4"
-fileprivate let pinStaticTextFive = "5"
-fileprivate let pinStaticTextSix = "6"
-fileprivate let pinStaticTextSeven = "7"
-fileprivate let pinStaticTextEight = "8"
-fileprivate let pinStaticTextNine = "9"
+fileprivate struct id {
+    static let pinCodeViewIdentifier = "PinCodeViewController.pinCodeView"
+    static let pinCodeAttemptStaticTextIdentifier = "PinCodeViewController.attempsLabel"
+    static let pinCodeLogoutButtonIdentifier = "PinCodeViewController.backButton"
+    static let logoutButtonIdentifier = "Log out"
+    static let pinStaticTextZero = "0"
+    static let pinStaticTextOne = "1"
+    static let pinStaticTextTwo = "2"
+    static let pinStaticTextThree = "3"
+    static let pinStaticTextFour = "4"
+    static let pinStaticTextFive = "5"
+    static let pinStaticTextSix = "6"
+    static let pinStaticTextSeven = "7"
+    static let pinStaticTextEight = "8"
+    static let pinStaticTextNine = "9"
+    static let pinCreateStaticTextIdentifier = LocalString._general_create_action
+    static let pinConfirmStaticTextIdentifier = LocalString._general_confirm_action
+    static let okButtonIdentifier = LocalString._general_ok_action
+    static let emptyPinStaticTextIdentifier = LocalString._pin_code_cant_be_empty
+}
 
-fileprivate let pinCreateStaticTextIdentifier = LocalString._general_create_action
-fileprivate let pinConfirmStaticTextIdentifier = LocalString._general_confirm_action
-fileprivate let okButtonIdentifier = LocalString._general_ok_action
-fileprivate let emptyPinStaticTextIdentifier = LocalString._pin_code_cant_be_empty
-
-class PinInputRobot {
+class PinInputRobot: CoreElements {
     
-    var verify: Verify! = nil
-    init() {
-        verify = Verify()
-    }
+    var verify = Verify()
     
     func enterPinByNumber(_ number: Int) {
         var identifier: String = ""
         switch number {
         case 0:
-            identifier = pinStaticTextZero
+            identifier = id.pinStaticTextZero
         case 1:
-            identifier = pinStaticTextOne
+            identifier = id.pinStaticTextOne
         case 2:
-            identifier = pinStaticTextTwo
+            identifier = id.pinStaticTextTwo
         case 3:
-            identifier = pinStaticTextThree
+            identifier = id.pinStaticTextThree
         case 4:
-            identifier = pinStaticTextFour
+            identifier = id.pinStaticTextFour
         case 5:
-            identifier = pinStaticTextFive
+            identifier = id.pinStaticTextFive
         case 6:
-            identifier = pinStaticTextSix
+            identifier = id.pinStaticTextSix
         case 7:
-            identifier = pinStaticTextSeven
+            identifier = id.pinStaticTextSeven
         case 8:
-            identifier = pinStaticTextEight
+            identifier = id.pinStaticTextEight
         case 9:
-            identifier = pinStaticTextNine
+            identifier = id.pinStaticTextNine
         default: break
         }
-        Element.wait.forStaticTextFieldWithIdentifier(identifier, file: #file, line: #line).tap()
+        staticText(identifier).tap()
     }
     
     @discardableResult
@@ -97,59 +96,56 @@ class PinInputRobot {
     }
     
     func clickLogoutButton() -> LogoutDialogRobot {
-        Element.wait.forButtonWithIdentifier(pinCodeLogoutButtonIdentifier).tap()
+        button(id.pinCodeLogoutButtonIdentifier).tap()
         return LogoutDialogRobot()
     }
     
     func create() -> PinInputRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(pinCreateStaticTextIdentifier, file: #file, line: #line).tap()
+        staticText(id.pinCreateStaticTextIdentifier).tap()
         return PinInputRobot()
     }
     
     func confirm() {
-        Element.wait.forStaticTextFieldWithIdentifier(pinConfirmStaticTextIdentifier, file: #file, line: #line).tap()
+        staticText(id.pinConfirmStaticTextIdentifier).tap()
     }
     
     func confirmWithEmptyPin() -> PinAlertDialogRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(pinConfirmStaticTextIdentifier, file: #file, line: #line).tap()
+        staticText(id.pinConfirmStaticTextIdentifier).tap()
         return PinAlertDialogRobot()
     }
     
-    class LogoutDialogRobot {
+    class LogoutDialogRobot: CoreElements {
         
         func clickLogout() -> LoginRobot {
-            Element.wait.forButtonWithIdentifier(logoutButtonIdentifier, file: #file, line: #line).tap()
+            button(id.logoutButtonIdentifier).tap()
             return LoginRobot()
         }
     }
     
-    class PinAlertDialogRobot {
+    class PinAlertDialogRobot: CoreElements {
         
-        var verify: Verify! = nil
-        init() {
-            verify = Verify()
-        }
+        var verify = Verify()
         
         func clickOK() -> PinInputRobot {
-            Element.wait.forButtonWithIdentifier(okButtonIdentifier, file: #file, line: #line).tap()
+            button(id.okButtonIdentifier).tap()
             return PinInputRobot()
         }
         
-        class Verify {
+        class Verify: CoreElements {
             @discardableResult
             func emptyPinErrorMessageShows() -> PinAlertDialogRobot {
-                Element.assert.staticTextWithIdentifierExists(emptyPinStaticTextIdentifier)
+                staticText(id.emptyPinStaticTextIdentifier).wait().checkExists()
                 return PinAlertDialogRobot()
             }
         }
     }
     
-    class Verify {
+    class Verify: CoreElements {
         
         @discardableResult
         func pinErrorMessageShows(_ count: Int) -> PinInputRobot {
-            let errorMessage = String(format: "Incorrect PIN. %d attempts remaining", (10-count))
-            Element.wait.forStaticTextFieldWithIdentifier(pinCodeAttemptStaticTextIdentifier).assertWithLabel(errorMessage)
+            let errorMessage = String(format: "Incorrect PIN, %d attempts remaining", (10-count))
+            staticText(id.pinCodeAttemptStaticTextIdentifier).hasLabel(errorMessage).wait().checkExists()
             return PinInputRobot()
         }
     }
