@@ -26,6 +26,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         self.coordinator = coordinator
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.conversationViewController = self
     }
 
     override func loadView() {
@@ -177,7 +178,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         showActionBar()
     }
 
-    private func cellTapped(messageId: String) {
+    func cellTapped(messageId: String) {
         guard let index = self.viewModel.messagesDataSource
                 .firstIndex(where: { $0.message?.messageID == messageId }),
               let messageViewModel = self.viewModel.messagesDataSource[safe: index]?.messageViewModel else {

@@ -87,6 +87,14 @@ extension Message {
             .first(where: { $0 != .allmail && $0 != .starred })
     }
 
+    var orderedLocation: Message.Location? {
+        labels
+            .compactMap { $0 as? Label }
+            .map(\.labelID)
+            .compactMap(Message.Location.init)
+            .min { Int($0.rawValue) ?? 0 < Int($1.rawValue) ?? 0 }
+    }
+
     var createTags: [TagViewModel] {
         [createTagFromExpirationDate].compactMap { $0 } + tagViewModels
     }
