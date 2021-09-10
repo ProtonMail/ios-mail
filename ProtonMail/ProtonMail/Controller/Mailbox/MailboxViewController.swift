@@ -1465,7 +1465,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             tableView.reloadData()
             return
         }
-        self.tableView.endUpdates()
+        self.tableView.reloadData()
         if self.refreshControl.isRefreshing {
             self.refreshControl.endRefreshing()
         }
@@ -1476,82 +1476,25 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         if controller == self.viewModel.labelFetchedResults {
             return
         }
-        tableView.beginUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        if controller == self.viewModel.labelFetchedResults {
-            return
-        }
-        switch(type) {
-        case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-        case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-        default:
-            return
-        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         if controller == self.viewModel.labelFetchedResults {
             return
         }
-        switch(type) {
-        case .delete:
-            if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
+
+        switch type {
         case .insert:
-            if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: .fade)
-                if self.needToShowNewMessage == true {
-                    if let newMsg = anObject as? Message {
-                        if let msgTime = newMsg.time, newMsg.unRead {
-                            if let updateTime = viewModel.lastUpdateTime() {
-                                if msgTime.compare(updateTime.startTime) != ComparisonResult.orderedAscending {
-                                    self.newMessageCount += 1
-                                }
-                            }
-                        }
-                    }
-                }
+            if self.needToShowNewMessage == true,
+               let newMsg = anObject as? Message,
+               let msgTime = newMsg.time,
+               newMsg.unRead,
+               let updateTime = viewModel.lastUpdateTime(),
+               msgTime.compare(updateTime.startTime) != .orderedAscending {
+                self.newMessageCount += 1
             }
-        case .update:
-            //#3 is active
-            /// # 1
-            if let indexPath = indexPath {
-                self.tableView.reloadRows(at: [indexPath], with: .fade)
-            }
-            
-//            if let newIndexPath = newIndexPath {
-//                self.tableView.reloadRows(at: [newIndexPath], with: .fade)
-//            }
-            
-            /// #2
-//            if let indexPath = indexPath {
-//                let cell = tableView.cellForRow(at: indexPath)
-//                self.configure(cell: cell, indexPath: indexPath)
-//            }
-
-//            if let newIndexPath = newIndexPath {
-//                let cell = tableView.cellForRow(at: newIndexPath)
-//                self.configure(cell: cell, indexPath: newIndexPath)
-//            }
-
-            /// #3
-//            if let indexPath = indexPath, let newIndexPath = newIndexPath {
-//                let cell = tableView.cellForRow(at: indexPath)
-//                self.configure(cell: cell, indexPath: newIndexPath)
-//            }/
-        case .move:
-            if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                tableView.insertRows(at: [newIndexPath], with: .fade)
-            }
-            break
         default:
-            return
+            break
         }
         
         if self.noResultLabel.isHidden == false {
