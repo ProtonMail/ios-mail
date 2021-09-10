@@ -40,10 +40,12 @@ class ConversationViewModel {
     private let contactService: ContactDataService
     private let coreDataService: CoreDataService
     private let sharedReplacingEmails: [Email]
-    private weak var tableView: UITableView?
+    private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
     var openFromNotification = false
+    var shouldIgnoreUpdateOnce = false
+    weak var conversationViewController: ConversationViewController?
 
     /// Used to decide if there is any new messages coming
     private var recordNumOfMessages = 0
@@ -223,13 +225,14 @@ class ConversationViewModel {
 
             observeNewMessages()
 
-            if !isExpandedAtLaunch && recordNumOfMessages == messagesDataSource.count {
+            if !isExpandedAtLaunch && recordNumOfMessages == messagesDataSource.count && !shouldIgnoreUpdateOnce {
                 if let path = self.expandSpecificMessage(dataModels: &self.messagesDataSource) {
                     tableView.reloadRows(at: [path], with: .automatic)
                     tableView.scrollToRow(at: path, at: .top, animated: true)
                     setCellIsExpandedAtLaunch()
                 }
             }
+            shouldIgnoreUpdateOnce = false
 
             refreshView?()
         case let .insert(row):
@@ -247,12 +250,8 @@ class ConversationViewModel {
             }
 
             let path = IndexPath(row: toRow, section: 1)
-            guard let cell = tableView.cellForRow(at: path) else { return }
-            if viewModel.isTrashed && cell.frame.height > 0 && self.isTrashedMessageHidden {
-                tableView.reloadRows(at: [path], with: .automatic)
-            } else if !viewModel.isTrashed && cell.frame.height == 0 {
-                tableView.reloadRows(at: [path], with: .automatic)
-            }
+            guard tableView.cellForRow(at: path) != nil else { return }
+            tableView.reloadRows(at: [path], with: .automatic)
         case let .delete(row):
             tableView.deleteRows(at: [.init(row: row, section: 1)], with: .automatic)
         case let .move(fromRow, toRow):
@@ -260,6 +259,10 @@ class ConversationViewModel {
             tableView.moveRow(at: .init(row: fromRow, section: 1), to: .init(row: toRow, section: 1))
         }
     }
+}
+
+// MARK: - Actions
+extension ConversationViewModel {
 
     func starTapped(completion: @escaping (Result<Bool, Error>) -> Void) {
         if conversation.starred {
@@ -288,10 +291,7 @@ class ConversationViewModel {
             }
         }
     }
-}
 
-// MARK: - Actions
-extension ConversationViewModel {
     func getActionTypes() -> [MailboxViewModel.ActionTypes] {
         var actions: [MailboxViewModel.ActionTypes] = []
         if let newestMessage = messagesDataSource.newestMessage {

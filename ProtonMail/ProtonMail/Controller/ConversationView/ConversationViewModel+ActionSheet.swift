@@ -5,10 +5,17 @@ extension ConversationViewModel {
     func handleActionSheetAction(_ action: MessageViewActionSheetAction,
                                  message: Message,
                                  completion: @escaping () -> Void) {
-        guard let messageLocation = message.messageLocation?.rawValue else { return }
+        guard let messageLocation = message.orderedLocation?.rawValue else { return }
         switch action {
         case .markUnread:
+            guard let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == message.messageID }) else {
+                return
+            }
+            self.shouldIgnoreUpdateOnce = true
+            let indexPath = IndexPath(row: index, section: 1)
+            conversationViewController?.cellTapped(messageId: message.messageID)
             messageService.mark(messages: [message], labelID: messageLocation, unRead: true)
+            tableView?.scrollToRow(at: indexPath, at: .top, animated: true)
         case .star:
             messageService.label(messages: [message], label: Message.Location.starred.rawValue, apply: true, shouldFetchEvent: true)
         case .unstar:
