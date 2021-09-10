@@ -702,6 +702,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     fileprivate func showMessageMoved(title : String) {
+        guard UIApplication.shared.applicationState == .active else { return }
         undoLabel.text = title
         self.undoBottomDistance.constant = self.kUndoShowPosition
         self.undoButton.isHidden = false
@@ -1237,6 +1238,7 @@ extension MailboxViewController {
                             button2: BannerView.ButtonConfiguration? = nil,
                             from: BannerView.Base)
     {
+        guard UIApplication.shared.applicationState == .active else { return }
         guard let navigationBar = self.navigationController?.navigationBar else { return }
         let offset: CGFloat = (from == .top) ? (navigationBar.frame.size.height + navigationBar.frame.origin.y) : 8.0
 
