@@ -56,7 +56,15 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         self.deleteSearchIndexButton.setTitle("delete searchindex", for: UIControl.State.normal)
         self.deleteSearchIndexButton.tintColor = UIColor.black
         self.deleteSearchIndexButton.addTarget(self, action: #selector(self.deleteSearchIndex), for: .touchUpInside)
+        self.deleteSearchIndexButton.isHidden = true
+        self.deleteSearchIndexButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.deleteSearchIndexButton)
+        let deleteSearchIndexButtonCenterXAnchor = self.deleteSearchIndexButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        deleteSearchIndexButtonCenterXAnchor.isActive = true
+        let deleteSearchIndexButtonWidthAnchor = self.deleteSearchIndexButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9)
+        deleteSearchIndexButtonWidthAnchor.isActive = true
+        let tAnchor = self.deleteSearchIndexButton.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 300)
+        tAnchor.isActive = true
         
         //initialize progress view
         self.progressView = UIProgressView()
@@ -115,15 +123,8 @@ extension SettingsEncryptedSearchViewController {
                     
                     //If cell is active -> start building a search index
                     if self.viewModel.isEncryptedSearch {
-                        
-                        //show progress view
-                        self.progressView.isHidden = false
-                        //TODO check return value
-                        var returnValue: Bool = false
-                        returnValue = EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
-                        
-                        //set or reset toggle switch according to successfull indexing
-                        self.viewModel.isEncryptedSearch = returnValue
+                        //show alert
+                        self.showAlertContentSearchEnabled()
                     }
                 }
             }
@@ -131,21 +132,21 @@ extension SettingsEncryptedSearchViewController {
         }
     }
     
-    /*override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
-        header?.contentView.subviews.forEach {
-            $0.removeFromSuperview()
-        }
+        header?.contentView.subviews.forEach { $0.removeFromSuperview() }
         header?.contentView.backgroundColor = UIColorManager.BackgroundSecondary
-        
+
         if let headerCell = header {
             let textLabel = UILabel()
             textLabel.numberOfLines = 0
             textLabel.translatesAutoresizingMaskIntoConstraints = false
-            
+
             let eSection = self.viewModel.sections[section]
             textLabel.attributedText = NSAttributedString(string: eSection.foot, attributes: FontManager.CaptionWeak)
-            
+
+            headerCell.contentView.addSubview(textLabel)
+
             NSLayoutConstraint.activate([
                 textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
                 textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),
@@ -154,7 +155,32 @@ extension SettingsEncryptedSearchViewController {
             ])
         }
         return header
-    }*/
+    }
+    
+    func showAlertContentSearchEnabled() {
+        //create the alert
+        let alert = UIAlertController(title: "Enable content search", message: "Messages will download via WiFi. This could take some time and your device may heat up slightly.\n You can pause the action at any time.", preferredStyle: UIAlertController.Style.alert)
+        //add the buttons
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel){ (action:UIAlertAction!) in
+            self.viewModel.isEncryptedSearch = false
+            self.tableView.reloadData() //refresh the view after
+        })
+        alert.addAction(UIAlertAction(title: "Enable", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+            //change UI
+            self.progressView.isHidden = false
+            self.deleteSearchIndexButton.isHidden = false
+
+            //TODO check return value
+            var returnValue: Bool = false
+            returnValue = EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
+            
+            //set or reset toggle switch according to successfull indexing
+            self.viewModel.isEncryptedSearch = returnValue
+        })
+        
+        //show alert
+        self.present(alert, animated: true, completion: nil)
+    }
     
     @objc func deleteSearchIndex(_ sender: UIButton!){
         EncryptedSearchService.shared.deleteSearchIndex()
