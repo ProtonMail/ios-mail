@@ -74,10 +74,6 @@ class NotificationService: UNNotificationServiceExtension {
             let plaintext = try Crypto().decrypt(encrytped: encrypted,
                                                  privateKey: encryptionKit.privateKey,
                                                  passphrase: encryptionKit.passphrase)
-//            let pgp = PMNOpenPgp.createInstance()!
-//            let plaintext = pgp.decryptMessageSingleKey(encrypted, privateKey:
-//                                                                    encryptionKit.privateKey,
-//                                                                 passphras: encryptionKit.passphrase)
             
             guard let push = PushData.parse(with: plaintext) else {
                 #if Enterprise
@@ -89,9 +85,19 @@ class NotificationService: UNNotificationServiceExtension {
             
             bestAttemptContent.title = push.sender.name.isEmpty ? push.sender.address : push.sender.name
             bestAttemptContent.body = push.body
-            
-            if push.badge > 0 && userCachedStatus.primaryUserSessionId == UID {
-                bestAttemptContent.badge = NSNumber(value: push.badge)
+
+            if userCachedStatus.primaryUserSessionId == UID {
+                if bestAttemptContent.userInfo["viewMode"] as? Int == 0,
+                   let unread = bestAttemptContent.userInfo["unreadConversations"] as? Int { // conversation
+                    bestAttemptContent.badge = NSNumber(value: unread)
+                } else if bestAttemptContent.userInfo["viewMode"] as? Int == 1,
+                          let unread = bestAttemptContent.userInfo["unreadMessages"] as? Int { // single message
+                    bestAttemptContent.badge = NSNumber(value: unread)
+                } else if push.badge > 0 {
+                    bestAttemptContent.badge = NSNumber(value: push.badge)
+                } else {
+                    bestAttemptContent.badge = nil
+                }
             } else {
                 bestAttemptContent.badge = nil
             }
