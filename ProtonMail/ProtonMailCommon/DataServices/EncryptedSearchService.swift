@@ -116,6 +116,10 @@ extension EncryptedSearchService {
                     self.printTiming("Remove Elements", for: self.timingsRemoveElements)
                     self.printTiming("Parse Cleaned Content", for: self.timingsParseCleanedContent)
                     
+                    DispatchQueue.main.async {
+                        self.updateMemoryConsumption()
+                    }
+                    
                     //self.view?.viewModel.isEncryptedSearch = true
                     self.viewModel?.isEncryptedSearch = true
                     self.indexBuildingInProcess = false
@@ -263,7 +267,10 @@ extension EncryptedSearchService {
     // Downloads Messages and builds Search Index
     func downloadAllMessagesAndBuildSearchIndex(completionHandler: @escaping () -> Void) -> Void {
         self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) {
-            completionHandler()
+            //Do a final fetch so that the mailbox is not empty - if force clean is set to true
+            //self.messageService.fetchMessages(byLabel: Message.Location.allmail.rawValue, time: 0, forceClean: false, isUnread: false){_,_,_ in
+                completionHandler()
+            //}
         }
     }
 
@@ -273,18 +280,34 @@ extension EncryptedSearchService {
         self.timingsMessageFetching.add(CFAbsoluteTimeGetCurrent())  //add start time
         group.enter()
         self.messageService.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { _, result, error in
+        //set force clean to true to clean old messages before fetching new ones - to avoid to many messages in core data
+        //self.messageService.fetchMessages(byLabel: mailboxID, time: time, forceClean: true, isUnread: false) { _, result, error in
             if error == nil {
                 let messagesBatch: NSMutableArray = self.getMessageIDs(result)
                 print("Process page...")
-                self.processPage(messagesBatch) {
-                    print("Page successfull processed!")
+                
+                //autoreleasepool {
+                    self.processPage(messagesBatch) {
+                        print("Page successfull processed!")
 
-                    //update processed messages
-                    self.processedMessages += messagesBatch.count
-                    self.lastMessageTimeIndexed = self.getOldestMessageInMessageBatch(result)
+                        //print memory usage per page
+                        self.updateMemoryConsumption()
+                        
+                        //print("Cleaning locale message cache!")
+                        //TODO delete messages from cache - to avoid building up too much memory
+                        //self.resetCoreDataContext()
 
-                    group.leave()
-                }
+                        //print memory usage per page
+                        //self.updateMemoryConsumption()
+                        
+                        //update processed messages
+                        self.processedMessages += messagesBatch.count
+                        self.lastMessageTimeIndexed = self.getOldestMessageInMessageBatch(result)
+
+                        group.leave()
+                    }
+                //}//end autoreleasepool
+                
             } else {
                 print("Error while fetching messages: \(String(describing: error))")
             }
@@ -318,7 +341,11 @@ extension EncryptedSearchService {
                 NSLog("Decrypting messages...")
                 self.timingsMessageDetailsFetching.add(CFAbsoluteTimeGetCurrent())  //add stop time
                 self.decryptBodyAndExtractData(messagesWithDetails) {
-                    completionHandler()
+                    
+                    NSLog("Deleting Message batch...")
+                    self.deleteMessageBatch(for: messagesWithDetails) {
+                        completionHandler()
+                    }
                 }
             }
         }
@@ -437,6 +464,52 @@ extension EncryptedSearchService {
                 completionHandler(message)
             }
         }
+    }
+    
+    private func deleteMessageBatch(for messages: NSArray, completionHandler: @escaping () -> Void) -> Void {
+        let group = DispatchGroup()
+        for m in messages {
+            group.enter()
+            self.deleteMessage(for: m as! Message) {
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main){
+            print("Finished deleting messages.")
+            completionHandler()
+        }
+    }
+    
+    private func deleteMessage(for message: Message, completionHandler: @escaping () -> Void) -> Void {
+        let cacheService = self.messageService.cacheService
+        /*cacheService.deleteMessage(messageID: messageID) {
+            completionHandler()
+        }*/
+        //TODO where to take the message label from if there are more labels?
+        if cacheService.delete(message: message, label: Message.Location.allmail.rawValue) {
+            completionHandler()
+        } else {
+            print("Error when deleting message \(message.messageID)")
+            completionHandler()
+        }
+    }
+    
+    private func resetCoreDataContext() {
+        //used by self.getMessage
+        let context = self.messageService.coreDataService.mainContext
+        context.reset()
+        context.parent?.reset()
+        
+        //used by self.messageService.fetchMessageDetailForMessage
+        let rootContext = self.messageService.coreDataService.rootSavingContext
+        rootContext.reset()
+        rootContext.parent?.reset()
+        
+        //used by self.messageService.fetchMessages
+        let operationContext = self.messageService.coreDataService.operationContext
+        operationContext.reset()
+        operationContext.parent?.reset()
     }
     
     func decryptBodyAndExtractData(_ messages: NSArray, completionHandler: @escaping () -> Void) {
