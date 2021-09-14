@@ -113,7 +113,9 @@ class ConversationViewModel {
             self?.checkTrashedHintBanner()
             var messageDataModels = messages.compactMap { self?.messageType(with: $0) }
 
-            _ = self?.expandSpecificMessage(dataModels: &messageDataModels)
+            if messages.count == self?.conversation.numMessages.intValue {
+                _ = self?.expandSpecificMessage(dataModels: &messageDataModels)
+            }
             self?.messagesDataSource = messageDataModels
         }
     }
@@ -237,7 +239,9 @@ class ConversationViewModel {
             if !isExpandedAtLaunch && recordNumOfMessages == messagesDataSource.count && !shouldIgnoreUpdateOnce {
                 if let path = self.expandSpecificMessage(dataModels: &self.messagesDataSource) {
                     tableView.reloadRows(at: [path], with: .automatic)
-                    tableView.scrollToRow(at: path, at: .top, animated: true)
+                    delay(1) { [weak tableView] in
+                        tableView?.scrollToRow(at: path, at: .top, animated: true)
+                    }
                     setCellIsExpandedAtLaunch()
                 }
             }
@@ -515,46 +519,132 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
     }
 
     private func expandSpecificMessage(dataModels: inout [ConversationViewItemType]) -> IndexPath? {
-        var indexPath: IndexPath?
+        var indexToOpen: Int?
 
         guard dataModels.count == recordNumOfMessages else {
-            return indexPath
+            return nil
         }
         guard !dataModels
-                .contains(where: { $0.messageViewModel?.state.isExpanded ?? false }) else { return indexPath }
+                .contains(where: { $0.messageViewModel?.state.isExpanded ?? false }) else { return nil }
 
-        /* scroll to the oldest unread message that the current location has
-           or to the newest message */
         if let targetID = self.targetID,
-           let index = dataModels
-            .lastIndex(where: {
-                $0.message?.messageID == targetID
-            }) {
+           let index = dataModels.lastIndex(where: { $0.message?.messageID == targetID }) {
             if dataModels[index].messageViewModel?.isDraft ?? false {
                 // The draft can't expand
                 return nil
             }
             dataModels[index].messageViewModel?.toggleState()
-            indexPath = IndexPath(row: index, section: 1)
-        } else if let indexOfOldestUnreadMessage = dataModels
-                    .firstIndex(where: {
-                $0.message?.unRead == true &&
-                $0.message?.contains(label: self.labelId) == true &&
-                $0.message?.draft == false
-            }), !openFromNotification {
-            dataModels[indexOfOldestUnreadMessage].messageViewModel?.toggleState()
-            indexPath = IndexPath(row: indexOfOldestUnreadMessage, section: 1)
-        } else if let newestMessageIndex = dataModels
-                    .lastIndex(where: {
-                        $0.message?.contains(label: self.labelId) == true &&
-                        $0.message?.draft == false
-                    }) {
-            dataModels[newestMessageIndex].messageViewModel?.toggleState()
-            indexPath = IndexPath(row: newestMessageIndex, section: 1)
-            openFromNotification = false
+            return IndexPath(row: index, section: 1)
         }
 
-        return indexPath
+        // open the latest message if it contains all_sent label and is read.
+        if let latestMessageIndex = dataModels.lastIndex(where: { $0.message?.draft == false }),
+           let latestMessage = dataModels[safe: latestMessageIndex]?.message,
+           latestMessage.contains(label: Message.HiddenLocation.sent.rawValue),
+           latestMessage.unRead == false {
+            dataModels[latestMessageIndex].messageViewModel?.toggleState()
+            return IndexPath(row: latestMessageIndex, section: 1)
+        }
+
+        let isLatestMessageUnread = dataModels.isLatestMessageUnread(location: labelId)
+
+        switch labelId {
+        case Message.Location.allmail.rawValue, Message.Location.spam.rawValue:
+            indexToOpen = getIndexOfMessageToExpandInSpamOrAllMail(dataModels: dataModels,
+                                                                   isLatestMessageUnread: isLatestMessageUnread)
+        case Message.Location.trash.rawValue:
+            indexToOpen = getIndexOfMessageToExpandInTrashFolder(dataModels: dataModels,
+                                                                 isLatestMessageUnread: isLatestMessageUnread)
+        default:
+            indexToOpen = getIndexOfMessageToExpand(dataModels: dataModels,
+                                                    isLatestMessageUnread: isLatestMessageUnread)
+        }
+
+        if let index = indexToOpen {
+            dataModels[index].messageViewModel?.toggleState()
+            return IndexPath(row: index, section: 1)
+        } else {
+            return nil
+        }
+    }
+
+    private func getIndexOfMessageToExpand(dataModels: [ConversationViewItemType],
+                                           isLatestMessageUnread: Bool) -> Int? {
+        if isLatestMessageUnread {
+            // latest message of current location is unread, open the oldest of the unread messages
+            // of the latest chunk of unread messages (excluding trash, draft).
+            return getTheOldestIndexOfTheLatestChunckOfUnreadMessages(dataModels: dataModels,
+                                                                      targetLabelID: labelId,
+                                                                      shouldExcludeTrash: true)
+        } else {
+            // latest message of current location is read, open that message (excluding draft, trash)
+            return getLatestMessageIndex(of: labelId, dataModels: dataModels)
+        }
+    }
+
+    private func getIndexOfMessageToExpandInSpamOrAllMail(dataModels: [ConversationViewItemType],
+                                                          isLatestMessageUnread: Bool) -> Int? {
+        if isLatestMessageUnread {
+            // latest message is unread, open the oldest of the unread messages
+            // of the latest chunk of unread messages (excluding trash, draft).
+            return getTheOldestIndexOfTheLatestChunckOfUnreadMessages(dataModels: dataModels,
+                                                                      shouldExcludeTrash: true)
+        } else {
+            return getLatestMessageIndex(of: nil, dataModels: dataModels, excludeTrash: false)
+        }
+    }
+
+    private func getIndexOfMessageToExpandInTrashFolder(dataModels: [ConversationViewItemType],
+                                                        isLatestMessageUnread: Bool) -> Int? {
+        if isLatestMessageUnread {
+            // latest message of trashed is unread, open the oldest of the unread messages
+            // of the latest chunk of unread messages (excluding draft).
+            return getTheOldestIndexOfTheLatestChunckOfUnreadMessages(dataModels: dataModels)
+        } else {
+            // latest message of trashed is read, open that message
+            return getLatestMessageIndex(of: labelId, dataModels: dataModels, excludeTrash: false)
+        }
+    }
+
+    private func getLatestMessageIndex(of labelID: String?,
+                                       dataModels: [ConversationViewItemType],
+                                       excludeDraft: Bool = true,
+                                       excludeTrash: Bool = true) -> Int? {
+        let shouldCheckLabelId = labelID != nil
+        if let latestMessageModelIndex = dataModels.lastIndex(where: {
+            ($0.message?.contains(label: labelId) == true || !shouldCheckLabelId) &&
+            ($0.message?.draft == false || !excludeDraft) &&
+            ($0.message?.contains(label: Message.Location.trash.rawValue) == false || !excludeTrash)
+        }) {
+            return latestMessageModelIndex
+        } else {
+            return nil
+        }
+    }
+
+    private func getTheOldestIndexOfTheLatestChunckOfUnreadMessages(dataModels: [ConversationViewItemType],
+                                                                    targetLabelID: String? = nil,
+                                                                    shouldExcludeTrash: Bool = false) -> Int? {
+        // find the oldeset message of latest chunk of unread messages
+        if let latestIndex = getLatestMessageIndex(of: targetLabelID,
+                                                   dataModels: dataModels,
+                                                   excludeTrash: shouldExcludeTrash) {
+            var indexOfOldestUnreadMessage: Int?
+            for index in (0...latestIndex).reversed() {
+                if dataModels[index].message?.unRead != true || dataModels[index].message?.draft == true {
+                    break
+                }
+                if shouldExcludeTrash && (dataModels[index].message?.contains(label: .trash) == true) {
+                    break
+                }
+                if let labelToCheck = targetLabelID, dataModels[index].message?.contains(label: labelToCheck) == false {
+                    break
+                }
+                indexOfOldestUnreadMessage = index
+            }
+            return indexOfOldestUnreadMessage
+        }
+        return nil
     }
 }
 
