@@ -360,7 +360,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         }
         let lhs = self
         
-        return lhs.email == rhs.email
+        return lhs.name + lhs.email == rhs.name + rhs.email
     }
     
     func equals(_ other: ContactPickerModelProtocol) -> Bool {
