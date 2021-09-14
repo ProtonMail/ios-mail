@@ -47,7 +47,7 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
             items.append(.archive)
         }
 
-        if labelID == Message.Location.archive.rawValue {
+        if labelID == Message.Location.archive.rawValue || labelID == Message.Location.trash.rawValue {
             items.append(.inbox)
         }
 
