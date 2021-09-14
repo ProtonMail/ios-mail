@@ -25,6 +25,7 @@ enum BannerType: Int {
     case unsubscribe
     case autoReply
     case sendReceipt
+    case decryptionError
 
     var order: Int { rawValue }
 }

@@ -1317,6 +1317,7 @@ class LocalizedString {
 
     /// "Decryption of this content failed"
     lazy var _decryption_of_this_content_failed = NSLocalizedString("Decryption of this content failed", comment: "error details")
+    lazy var _decryption_of_this_message_failed = NSLocalizedString("decryption of this message's encrypted content failed.", comment: "error details")
 
     /// "Logs"
     lazy var _logs = NSLocalizedString("Logs", comment: "error title")
@@ -1790,6 +1791,7 @@ class LocalizedString {
                                               comment: "Invalid URL error when click a url in contact")
     
     lazy var _general_more = NSLocalizedString("More", comment: "More actions button")
+    lazy var _general_try_again = NSLocalizedString("Try again", comment: "Try again action")
     
     // Local notifications
     

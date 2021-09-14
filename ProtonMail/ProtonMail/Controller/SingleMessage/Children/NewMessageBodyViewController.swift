@@ -28,7 +28,10 @@ import UIKit
 protocol NewMessageBodyViewControllerDelegate: AnyObject {
     func openUrl(_ url: URL)
     func openMailUrl(_ mailUrl: URL)
-    func updateContentBanner(shouldShowRemoteContentBanner: Bool, shouldShowEmbeddedContentBanner: Bool)
+    func updateContentBanner(shouldShowRemoteContentBanner: Bool,
+                             shouldShowEmbeddedContentBanner: Bool)
+    func showDecryptionErrorBanner()
+    func hideDecryptionErrorBanner()
 }
 
 class NewMessageBodyViewController: UIViewController {
@@ -314,6 +317,14 @@ extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
                 self.loader.load(contents: contents, in: webView)
             }
         }
+    }
+
+    func showDecryptionErrorBanner() {
+        self.delegate?.showDecryptionErrorBanner()
+    }
+
+    func hideDecryptionErrorBanner() {
+        self.delegate?.hideDecryptionErrorBanner()
     }
 }
 
