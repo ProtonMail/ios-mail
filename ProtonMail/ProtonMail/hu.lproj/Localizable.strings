@@ -251,10 +251,10 @@
 "App PIN" = "App PIN";
 
 /* security title in settings */
-"App PIN & FaceID" = "App PIN & FaceID";
+"App PIN & Face ID" = "App PIN & Face ID";
 
 /* security title in settings */
-"App PIN & TouchID" = "App PIN & TouchID";
+"App PIN & Touch ID" = "App PIN & Touch ID";
 
 /* section title in settings */
 "App settings" = "App settings";
@@ -1131,6 +1131,9 @@
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Magas szintű felhasználóknak és felhasználói csoportoknak, akik értékelik a teljes anonimitást és adatvédelmet";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Forbidden";
 
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "Elfelejtett jelszó?";
@@ -2022,6 +2025,9 @@
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail is currently offline…";
 
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
+
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "A mobil aláírás testreszabásához ProtonMail Plus előfizetés szükséges";
 
@@ -2831,9 +2837,6 @@
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "Feltölti az iOS névjegyeket a ProtonMailre?";
-
-/* default vcard types */
-"Url" = "Url";
 
 /* default vcard types */
 "URL" = "URL";

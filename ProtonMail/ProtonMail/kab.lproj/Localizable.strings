@@ -251,10 +251,10 @@
 "App PIN" = "PIN n usnas";
 
 /* security title in settings */
-"App PIN & FaceID" = "PIN n usnas & FaceID";
+"App PIN & Face ID" = "PIN n usnas & Face ID";
 
 /* security title in settings */
-"App PIN & TouchID" = "PIN n usnas & TouchID";
+"App PIN & Touch ID" = "PIN n usnas & Touch ID";
 
 /* section title in settings */
 "App settings" = "Iɣewwaṛen n usnas";
@@ -299,7 +299,7 @@
 "Are you sure? This can't be undone." = "S tidet? Ulac tuɣalin ar deffir.";
 
 /* At {time}, e.g.: At 19:00 */
-"At %@" = "At %@";
+"At %@" = "Ɣef %@";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "Xarsum yiwet seg tansiwin n yimayl deg ugraw ur tettwaf ara";
@@ -652,7 +652,7 @@
 "Conversation mode" = "Askar n usqerdec";
 
 /* Title */
-"Copy" = "Copy";
+"Copy" = "Nɣel";
 
 /* Title */
 "Copy address" = "Nɣel tansa";
@@ -708,7 +708,7 @@
 "Custom" = "Udmawan";
 
 /* Title */
-"Cut" = "Cut";
+"Cut" = "Gzem";
 
 /* message Date: text */
 "Date:" = "Azemz:";
@@ -1131,6 +1131,9 @@
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "I yiseqdacen yesɛan tirmit d yigrawen n yimdanen i iḥemmlen asedreg d tbaḍnit s wudem yemmden";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Yettwagdel";
 
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "TETTUḌ AWAL UFFIR?";
@@ -1772,10 +1775,10 @@
 "On" = "Irmed";
 
 /* On {date}, e.g.: On Aug 14 */
-"On %@" = "On %@";
+"On %@" = "Deg %@";
 
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
-"On %@ at %@" = "On %1$@ at %2$@";
+"On %@ at %@" = "Deg %1$@ ɣef %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "Deg EE, d MMM, yyyy ɣef %@";
@@ -2022,6 +2025,9 @@
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail ur yeqqin ara akka tura…";
 
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail yesra anekcum ɣer temkarḍit n tewlafin deg yiɣewwaren n yibenk-ik·im.";
+
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus yettwasra akken ad terreḍ azmul-ik aziraz d udmawan";
 
@@ -2059,7 +2065,7 @@
 "Reading device contacts data…" = "Taɣuri n isefka n inermisen n ibenk…";
 
 /* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Receipt sent";
+"Receipt sent" = "Asentem n tɣuri yettwazen";
 
 /* No comment provided by engineer. */
 "Recipient details" = "Talqayt n uɣerwaḍ";
@@ -2204,7 +2210,7 @@
 "Send plain but stored encrypted" = "Azen aɣawas acu kan kles s wudem awgelhan";
 
 /* A button title to send read receipt */
-"Send receipt" = "Send receipt";
+"Send receipt" = "Azen talɣut ɣef tuṭṭfa";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "Azen s iɣbaren?";
@@ -2539,7 +2545,7 @@
 "The request timed out." = "Asuter yemmut.";
 
 /* Message of a banner which is displayed when sender request a read receipt */
-"The sender has requested a read receipt." = "The sender has requested a read receipt.";
+"The sender has requested a read receipt." = "Amazan yetter-d talɣut ɣef tɣuri n yizen.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Tilist n tiddi n ufaylu yeddan d 25 MB.";
@@ -2609,7 +2615,7 @@
 "This message contains remote content." = "Izen-agi yegber agbur anmeggag.";
 
 /* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "This message is automatically generated as a response to a previous message.";
+"This message is automatically generated as a response to a previous message." = "Izen-a ilul-d s wudem awurman am tririt i yizen yezrin.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Izen-agi yekka-d si tebdart n tnezwit.";
@@ -2831,9 +2837,6 @@
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "Sali inermisen n iOS ɣer protonmail?";
-
-/* default vcard types */
-"Url" = "Url";
 
 /* default vcard types */
 "URL" = "URL";

@@ -251,10 +251,10 @@
 "App PIN" = "App PIN";
 
 /* security title in settings */
-"App PIN & FaceID" = "App PIN & FaceID";
+"App PIN & Face ID" = "App PIN & Face ID";
 
 /* security title in settings */
-"App PIN & TouchID" = "App PIN & TouchID";
+"App PIN & Touch ID" = "App PIN & Touch ID";
 
 /* section title in settings */
 "App settings" = "App instellingen";
@@ -1131,6 +1131,9 @@
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Voor gevorderde gebruikers en groepen die volledige anonimiteit en privacy waarderen";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Verboden";
 
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "Wachtwoord vergeten?";
@@ -2022,6 +2025,9 @@
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail is momenteel offline…";
 
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail moet toegang hebben tot de fotobibliotheek in de instellingen van uw apparaat.";
+
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus is vereist om uw mobiele handtekening te kunnen wijzigen";
 
@@ -2831,9 +2837,6 @@
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "Contactpersonen in iOS naar ProtonMail uploaden?";
-
-/* default vcard types */
-"Url" = "Website";
 
 /* default vcard types */
 "URL" = "Website";
