@@ -24,6 +24,8 @@ protocol NewMessageBodyViewModelDelegate: AnyObject {
     func reloadWebView()
     func showReloadError()
     func updateBannerStatus()
+    func showDecryptionErrorBanner()
+    func hideDecryptionErrorBanner()
 }
 
 class NewMessageBodyViewModel {
@@ -58,6 +60,7 @@ class NewMessageBodyViewModel {
             delegate?.reloadWebView()
         }
     }
+    private var hasAutoRetried = false
 
     lazy var placeholderContent: String = {
         let meta = "<meta name=\"viewport\" content=\"width=device-width\">"
@@ -107,6 +110,18 @@ class NewMessageBodyViewModel {
             reload(from: message)
         }
         self.message = message
+    }
+
+    func tryDecryptionAgain(handler: (() -> Void)?) {
+        let req = GetAddressesRequest()
+        self.userManager.apiService.exec(route: req) { [weak self] (_, res: AddressesResponse) in
+            guard res.error == nil,
+                  let self = self else { return }
+            self.userManager.userinfo.set(addresses: res.addresses)
+            self.userManager.save()
+            self.reload(from: self.message)
+            handler?()
+        }
     }
 
     /// - Returns: Should reload webView or not
@@ -181,10 +196,21 @@ class NewMessageBodyViewModel {
         }
 
         do {
-            return try messageService.decryptBodyIfNeeded(message: message) ?? LocalString._unable_to_decrypt_message
+            let decryptedMessage = try messageService.decryptBodyIfNeeded(message: message)
+            if decryptedMessage != nil {
+                self.delegate?.hideDecryptionErrorBanner()
+            }
+            return decryptedMessage
         } catch let error as NSError {
             PMLog.D("purifyEmailBody error : \(error)")
-            return message.bodyToHtml()
+            self.delegate?.showDecryptionErrorBanner()
+            if !self.hasAutoRetried {
+                // If failed, auto retry one time
+                // Maybe the user just imported a key and event api not sync yet
+                self.hasAutoRetried = true
+                self.tryDecryptionAgain(handler: nil)
+            }
+            return nil
         }
     }
 

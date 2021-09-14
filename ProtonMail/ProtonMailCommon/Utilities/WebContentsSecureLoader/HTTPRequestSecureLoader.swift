@@ -102,7 +102,6 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     
     private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
         self.contents = contents
-        
         let sanitizeRaw = """
         var dirty = document.documentElement.outerHTML.toString();
         var clean0 = DOMPurify.sanitize(dirty);
@@ -149,6 +148,13 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         }
         
         if let sanitized = dict["clearBody"] as? String {
+            if sanitized.contains("<body></body>"),
+               let content = self.contents,
+               !content.body.isEmpty,
+               let webView = self.webView {
+                self.prepareRendering(content, into: webView.configuration)
+                return
+            }
             userContentController.removeAllContentRuleLists()
             userContentController.removeAllUserScripts()
             

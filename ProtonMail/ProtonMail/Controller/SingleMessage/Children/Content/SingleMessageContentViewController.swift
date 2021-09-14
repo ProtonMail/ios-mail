@@ -1,4 +1,5 @@
 import UIKit
+import MBProgressHUD
 import ProtonCore_UIFoundations
 
 class SingleMessageContentViewController: UIViewController {
@@ -316,6 +317,17 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
         self.present(alertController, animated: true, completion: nil)
     }
 
+    func showDecryptionErrorBanner() {
+        self.showBanner()
+        bannerViewController?
+            .showDecryptionBanner(target: self,
+                                  action: #selector(self.tryDecryptionAgain))
+    }
+
+    func hideDecryptionErrorBanner() {
+        bannerViewController?.hideDecryptionBanner()
+    }
+
     @objc
     private func networkStatusUpdated(_ note: Notification) {
         guard let currentReachability = note.object as? Reachability else { return }
@@ -323,6 +335,21 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
             messageBodyViewController.showReloadError()
         } else if currentReachability.currentReachabilityStatus() != .NotReachable && viewModel.message.body.isEmpty {
             viewModel.downloadDetails()
+        }
+    }
+
+    @objc
+    private func tryDecryptionAgain() {
+        if let vi = self.navigationController?.view {
+            MBProgressHUD.showAdded(to: vi, animated: true)
+        }
+        self.viewModel.messageBodyViewModel.tryDecryptionAgain { [weak self] in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                if let vi = self.navigationController?.view {
+                    MBProgressHUD.hide(for: vi, animated: true)
+                }
+            }
         }
     }
 }

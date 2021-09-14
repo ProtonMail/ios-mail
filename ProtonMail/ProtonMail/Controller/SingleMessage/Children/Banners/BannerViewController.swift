@@ -44,6 +44,7 @@ class BannerViewController: UIViewController {
     private(set) lazy var spamBanner = SpamBannerView()
     private lazy var autoReplyBanner = AutoReplyBanner()
     private(set) lazy var receiptBanner = ReceiptBannerView()
+    private(set) lazy var decryptionErrorBanner = DecryptionErrorBannerView()
 
     private(set) var displayedBanners: [BannerType: UIView] = [:] {
         didSet {
@@ -117,6 +118,23 @@ class BannerViewController: UIViewController {
     func showErrorBanner(error: NSError) {
         errorBanner.setErrorTitle(error.localizedDescription)
         addBannerView(type: .error, shouldAddContainer: true, bannerView: errorBanner)
+    }
+
+    func showDecryptionBanner(target: UIViewController, action: Selector) {
+        guard !displayedBanners.contains(where: { $0.key == .decryptionError }) else {
+            return
+        }
+        addBannerView(type: .decryptionError,
+                      shouldAddContainer: true,
+                      bannerView: decryptionErrorBanner)
+        decryptionErrorBanner.setUpTryAgainAction(target: target, action: action)
+    }
+
+    func hideDecryptionBanner() {
+        guard displayedBanners.contains(where: { $0.key == .decryptionError }) else {
+            return
+        }
+        hideBanner(type: .decryptionError)
     }
 
     private func handleSpamBanner() {
