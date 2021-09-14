@@ -28,6 +28,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     internal var coordinator: SettingsDeviceCoordinator?
     
     internal let deleteSearchIndexButton = UIButton(type: UIButton.ButtonType.system) as UIButton
+    internal let pauseIndexingButton = UIButton(type: UIButton.ButtonType.system) as UIButton
     internal var progressView: UIProgressView!
     
     struct Key {
@@ -63,8 +64,23 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         deleteSearchIndexButtonCenterXAnchor.isActive = true
         let deleteSearchIndexButtonWidthAnchor = self.deleteSearchIndexButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9)
         deleteSearchIndexButtonWidthAnchor.isActive = true
-        let tAnchor = self.deleteSearchIndexButton.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 300)
+        let tAnchor = self.deleteSearchIndexButton.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 400)
         tAnchor.isActive = true
+        
+        self.pauseIndexingButton.frame = CGRect(x: 50, y: 100, width: 150, height: 45)
+        self.pauseIndexingButton.backgroundColor = UIColor.lightGray
+        self.pauseIndexingButton.setTitle("Pause", for: UIControl.State.normal)
+        self.pauseIndexingButton.tintColor = UIColor.black
+        self.pauseIndexingButton.addTarget(self, action: #selector(self.pauseIndexing), for: .touchUpInside)
+        self.pauseIndexingButton.isHidden = true
+        self.pauseIndexingButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.pauseIndexingButton)
+        let pauseIndexingButtonXAnchor = self.pauseIndexingButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        pauseIndexingButtonXAnchor.isActive = true
+        let pauseIndexingButtonWidthAnchor = self.pauseIndexingButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9)
+        pauseIndexingButtonWidthAnchor.isActive = true
+        let pauseIndexingButtonTopAnchor = self.pauseIndexingButton.topAnchor.constraint(equalTo: self.deleteSearchIndexButton.bottomAnchor, constant: 25)
+        pauseIndexingButtonTopAnchor.isActive = true
         
         //initialize progress view
         self.progressView = UIProgressView()
@@ -124,10 +140,28 @@ extension SettingsEncryptedSearchViewController {
                     //If cell is active -> start building a search index
                     if self.viewModel.isEncryptedSearch {
                         //show alert
-                        self.showAlertContentSearchEnabled()
+                        self.showAlertContentSearchEnabled(for: indexPath)
                     }
                 }
             }
+            return cell
+        case .downloadViaMobileData:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
+            if let switchCell = cell as? SwitchTableViewCell {
+                switchCell.configCell(eSection.title, bottomLine: "", status: viewModel.downloadViaMobileData) { _, _, _ in
+                    //TODO code here for enableing download via mobile data
+                }
+            }
+            //cell.isHidden = true
+            return cell
+        case .downloadedMessages:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
+            if let switchCell = cell as? SwitchTableViewCell {
+                switchCell.configCell(eSection.title, bottomLine: "", status: viewModel.downloadViaMobileData) { _, _, _ in
+                    //TODO code here for progress view
+                }
+            }
+            //cell.isHidden = true
             return cell
         }
     }
@@ -157,7 +191,7 @@ extension SettingsEncryptedSearchViewController {
         return header
     }
     
-    func showAlertContentSearchEnabled() {
+    func showAlertContentSearchEnabled(for index: IndexPath) {
         //create the alert
         let alert = UIAlertController(title: "Enable content search", message: "Messages will download via WiFi. This could take some time and your device may heat up slightly.\n You can pause the action at any time.", preferredStyle: UIAlertController.Style.alert)
         //add the buttons
@@ -169,6 +203,8 @@ extension SettingsEncryptedSearchViewController {
             //change UI
             self.progressView.isHidden = false
             self.deleteSearchIndexButton.isHidden = false
+            self.pauseIndexingButton.isHidden = false
+            //self.tableView.cellForRow(at: IndexPath.index(index)) as? SwitchTableViewCell
 
             //TODO check return value
             var returnValue: Bool = false
@@ -188,6 +224,10 @@ extension SettingsEncryptedSearchViewController {
         self.progressView.isHidden = true //hide progress bar
         self.progressView.progress = 0 //reset value of progress bar
         self.tableView.reloadData() //refresh the view after
+    }
+    
+    @objc func pauseIndexing(_ sender: UIButton!) {
+        //TODO
     }
         
     func setupProgressViewObserver() {

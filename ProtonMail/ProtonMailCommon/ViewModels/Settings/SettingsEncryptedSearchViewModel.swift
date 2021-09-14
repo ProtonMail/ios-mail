@@ -39,18 +39,28 @@ class Bindable<T> {
 class SettingsEncryptedSearchViewModel {
     enum SettingSection: Int {
         case encryptedSearch = 0
+        case downloadViaMobileData = 1
+        case downloadedMessages = 2
         
         var title: String {
             switch self {
-            case .encryptedSearch:
-                return LocalString._settings_title_of_encrypted_search
+                case .encryptedSearch:
+                    return LocalString._settings_title_of_encrypted_search
+                case .downloadViaMobileData:
+                    return LocalString._settings_title_of_download_via_mobile_data
+                case .downloadedMessages:
+                    return LocalString._settings_title_of_downloaded_messages
             }
         }
         
         var foot: String {
             switch self {
-            case .encryptedSearch:
-                return LocalString._settings_footer_of_encrypted_search
+                case .encryptedSearch:
+                    return LocalString._settings_footer_of_encrypted_search
+                case .downloadViaMobileData:
+                    return LocalString._settings_footer_of_download_via_mobile_data
+                case .downloadedMessages:
+                    return LocalString._settings_footer_of_downloaded_messages
             }
         }
     }
@@ -59,6 +69,7 @@ class SettingsEncryptedSearchViewModel {
     
     init(encryptedSearchCache: EncryptedSearchCacheProtocol) {
         self.encryptedSearchCache = encryptedSearchCache
+        self.downloadViaMobileData = false
     }
     
     var isEncryptedSearch: Bool {
@@ -70,7 +81,9 @@ class SettingsEncryptedSearchViewModel {
         }
     }
     
+    var downloadViaMobileData: Bool
+    
     var progressViewStatus = Bindable<Float>()
     
-    var sections: [SettingSection] = [.encryptedSearch]
+    var sections: [SettingSection] = [.encryptedSearch, .downloadViaMobileData, .downloadedMessages]
 }
