@@ -191,6 +191,11 @@ extension MessageDataService {
             newMessage.setAsDraft()
             
             newMessage.userID = self.userID
+
+            if let conversation = Conversation.conversationForConversationID(message.conversationID, inManagedObjectContext: context) {
+                let newCount = conversation.numMessages.intValue + 1
+                conversation.numMessages = NSNumber(value: newCount)
+            }
             
             if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
                 PMLog.D("error: \(error)")

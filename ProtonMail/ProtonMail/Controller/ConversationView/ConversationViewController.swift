@@ -78,6 +78,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                 }
             }
         }
+        viewModel.observeConversationUpdate()
         viewModel.observeConversationMessages(tableView: customView.tableView)
         showActionBar()
 

@@ -9,9 +9,10 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
         let context = CoreDataService.shared.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(
-            format: "%K == %@",
+            format: "%K == %@ AND %K.length != 0",
             Message.Attributes.conversationID,
-            conversation.conversationID
+            conversation.conversationID,
+            Message.Attributes.messageID
         )
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: #keyPath(Message.time), ascending: true),

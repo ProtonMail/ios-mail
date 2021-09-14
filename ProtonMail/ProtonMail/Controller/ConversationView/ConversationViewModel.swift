@@ -35,6 +35,7 @@ class ConversationViewModel {
     /// MessageID that want to expand at the begining
     let targetID: String?
     private let conversationMessagesProvider: ConversationMessagesProvider
+    private let conversationUpdateProvider: ConversationUpdateProvider
     private let conversationService: ConversationProvider
     private let eventsService: EventsFetching
     private let contactService: ContactDataService
@@ -81,6 +82,8 @@ class ConversationViewModel {
         self.coreDataService = coreDataService
         self.user = user
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
+        self.conversationUpdateProvider = ConversationUpdateProvider(conversationID: conversation.conversationID,
+                                                                     coreDataService: coreDataService)
         self.openFromNotification = openFromNotification
         self.sharedReplacingEmails = contactService.allAccountEmails()
         self.targetID = targetID
@@ -92,6 +95,12 @@ class ConversationViewModel {
     func fetchConversationDetails(completion: (() -> Void)?) {
         conversationService.fetchConversation(with: conversation.conversationID, includeBodyOf: nil) { _ in
             completion?()
+        }
+    }
+
+    func observeConversationUpdate() {
+        conversationUpdateProvider.observe { [weak self] in
+            self?.refreshView?()
         }
     }
 

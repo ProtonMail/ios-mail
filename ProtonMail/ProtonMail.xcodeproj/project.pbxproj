@@ -378,6 +378,7 @@
 		240CA34E535AACA5A9BC039334E5EDFB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235775AD83A1552B74E4185C2702107F /* LaunchScreen.xib */; };
 		2431AA3A666DC5089E6EEEE3133D5572 /* UserEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985D24B6234418EBEE7B7CDFA7558C35 /* UserEvent.swift */; };
 		2431C13D02FF230FD36F6CC4B1EDA0A1 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9158F589E1E0F02DE1CD6F6D51CB8C3 /* Crypto.swift */; };
+		24428CF4005C2D98A9A74FD94EFC96E9 /* ConversationUpdateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EC0A740455BCEC8E3DF416F864D98C /* ConversationUpdateProvider.swift */; };
 		24518277D80AF35B4F6929E4D3BE276F /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D45CBF615966A3BF8366CB1F9699EE /* UserSettings.swift */; };
 		245B6AC5AE3EE165EDCB5704E48E8585 /* HtmlEditor.css in Resources */ = {isa = PBXBuildFile; fileRef = 2578888155BF3E4AF87B99D68D9528F7 /* HtmlEditor.css */; };
 		24649254927D5FC8C5FC66D75B2A5D3A /* MockDiskSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776244072981B1B471989C22C5729D64 /* MockDiskSaver.swift */; };
@@ -2593,6 +2594,7 @@
 		F74CBE3D9072883E9F79D7187340C5E2 /* Foundation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B223C187D4D099D474CBF5E75C09A4 /* Foundation+Extension.swift */; };
 		F7590D5E372AFBED4431E5E0636200CD /* ComposeHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FFBFC2C8C8F31598B00A85625B0E79 /* ComposeHeaderViewController.swift */; };
 		F75B3E8BF2EC6BC90F6A2477A12BD95E /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE03E4C1B81FCFF1E29F8781505C5DC /* CacheService.swift */; };
+		F760603F8FE90F3D3AED165EC86E515A /* ConversationUpdateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EC0A740455BCEC8E3DF416F864D98C /* ConversationUpdateProvider.swift */; };
 		F78CA68DD1989B3F0DD6294E24B23D10 /* WebContentsSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E01F07FD13CAE5F518AE5CDE79CE3F4 /* WebContentsSecureLoader.swift */; };
 		F78CEE15EFE49885E4DDF4693D60341A /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325B84027809DA6DB073D1D84C4DBBB2 /* UserDefaults+Extension.swift */; };
 		F7AC5DC3F0CF6DC9D2AD5136171A4A68 /* ConversationCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9259E3817B32FF1A2D50C41C5B5DA869 /* ConversationCount.swift */; };
@@ -3998,6 +4000,7 @@
 		F0299D313A7A1544B29AD839C2DA2F9E /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAPI.swift; sourceTree = "<group>"; };
 		F0466DB6812B789E32ADF3673EAC8268 /* ContactGroupSelectColorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSelectColorViewModel.swift; sourceTree = "<group>"; };
+		F0EC0A740455BCEC8E3DF416F864D98C /* ConversationUpdateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationUpdateProvider.swift; sourceTree = "<group>"; };
 		F12DE739E92713B7AF83361681F6FA82 /* AttachmentStreamingEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentStreamingEncryptor.swift; sourceTree = "<group>"; };
 		F16D99CBE67AC61BF48C40859A597851 /* ExpirationBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationBannerView.swift; sourceTree = "<group>"; };
 		F1AB46393CCFCAFF41AA979C674E54AC /* MigrateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateTests.swift; sourceTree = "<group>"; };
@@ -6111,6 +6114,7 @@
 				6EAE382387F2DCD9609D4CFCBEFE3C1B /* ConversationNavigationSimpleView.swift */,
 				91E44646B92711706B6A99B21FB46DFD /* ConversationNavigationViewPresenter.swift */,
 				DD5EE2C7F27C2498F88BD099B38B3AE9 /* ConversationNewMessageFloatyView.swift */,
+				F0EC0A740455BCEC8E3DF416F864D98C /* ConversationUpdateProvider.swift */,
 				ADE124BE2D5AF5FCDA78619AB220634F /* ConversationUpdateType.swift */,
 				8F60C29B3A7271736BF51FCE635CE4C7 /* ConversationView.swift */,
 				A94A7B3A0A51B199F27E4BE81697C1D7 /* ConversationViewController+ActionSheet.swift */,
@@ -8745,6 +8749,7 @@
 				4FB3053C5A185DC10D1420DC51C1A3F5 /* ConversationStateServiceDelegate.swift in Sources */,
 				AAA7223163520FD2B43668B481B74263 /* ConversationUnlabel.swift in Sources */,
 				3AD236BBBEA6F118749D59E2C99DC53A /* ConversationUnread.swift in Sources */,
+				F760603F8FE90F3D3AED165EC86E515A /* ConversationUpdateProvider.swift in Sources */,
 				C447FFF052CBF710384CFC86ECC6EA8D /* ConversationUpdateType.swift in Sources */,
 				4A9AE0A9DEC28C93AEEB958C2B3AA774 /* ConversationView.swift in Sources */,
 				A1CD045CC2C352EDFA1FAFBD1A2DE7A6 /* ConversationViewController+ActionSheet.swift in Sources */,
@@ -9515,6 +9520,7 @@
 				7963273C2120EF9AF5C6823D66417DAD /* ConversationStateServiceDelegate.swift in Sources */,
 				0260BCCDEB635330FED6E4F04E3BCCED /* ConversationUnlabel.swift in Sources */,
 				1B4DF46F4662D8747D061724C1F9B28B /* ConversationUnread.swift in Sources */,
+				24428CF4005C2D98A9A74FD94EFC96E9 /* ConversationUpdateProvider.swift in Sources */,
 				9E56CA6EF23D06DC1E357671782993E4 /* ConversationUpdateType.swift in Sources */,
 				1C75EC981B2AB1D4CD0D5FADD342530F /* ConversationView.swift in Sources */,
 				7E95C8207E4F0FA9BFBC25210D175FB3 /* ConversationViewController+ActionSheet.swift in Sources */,
