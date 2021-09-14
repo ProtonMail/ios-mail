@@ -254,7 +254,7 @@ final class SignupCoordinator {
             return
         }
         DispatchQueue.main.async { [weak self] in
-            workBeforeFlowCompletion { [weak self] result in
+            workBeforeFlowCompletion(loginData) { [weak self] result in
                 DispatchQueue.main.async { [weak self] in
                     switch result {
                     case .success:

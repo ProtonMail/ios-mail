@@ -48,7 +48,7 @@ public final class MailboxPasswordRobot: CoreElements {
     }
     
     public func unlock<T: CoreElements>(robot _: T.Type) -> T {
-        button(unlockButtonId).tap().wait()
+        button(unlockButtonId).tap()
         return T()
     }
 }

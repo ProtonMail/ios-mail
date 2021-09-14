@@ -25,8 +25,9 @@ public final class PMActionSheetHeaderView: UIView {
 
     // MARK: Constant
     private let TITLE_PADDING: CGFloat = 63
-    private let MAX_BUTTON_SIZE: CGFloat = 57
-    private let MIN_BUTTON_SIZE: CGFloat = 44
+    private let MAX_TEXT_BUTTON_SIZE: CGFloat = 120
+    private let MIN_TEXT_BUTTON_SIZE: CGFloat = 44
+    private let MIN_ICON_BUTTON_SIZE: CGFloat = 24
 
     // MARK: Customize variable
     private var leftItem: PMActionSheetPlainItem?
@@ -69,9 +70,14 @@ extension PMActionSheetHeaderView {
         guard self.title != nil else { return }
         self.backgroundColor = BackgroundColors._Main
         let titleView = self.createTitleView()
-        self.setupTitlViewConstraint(titleView)
-        self.setupItem(item: self.leftItem, isRightBtn: false)
-        self.setupItem(item: self.rightItem, isRightBtn: true)
+        self.setupTitleViewConstraint(titleView)
+        let refTitle = titleView.arrangedSubviews.sorted(by: { $0.frame.size.width >=  $1.frame.size.width}).first
+        self.setupItem(item: self.leftItem,
+                       isRightBtn: false,
+                       refTitle: refTitle)
+        self.setupItem(item: self.rightItem,
+                       isRightBtn: true,
+                       refTitle: refTitle)
         if hasSeparator {
             self.addLine()
         }
@@ -81,9 +87,11 @@ extension PMActionSheetHeaderView {
         let stack = UIStackView(.vertical, alignment: .center, distribution: .fillProportionally, useAutoLayout: true)
 
         if let title = self.title {
-            let font: UIFont = .systemFont(ofSize: 15, weight: .semibold)
+            let fontSize: CGFloat = self.subtitle == nil ? 17: 15
+            let font: UIFont = .systemFont(ofSize: fontSize, weight: .semibold)
             let color: UIColor = AdaptiveTextColors._N5
             let lbl = UILabel(title, font: font, textColor: color)
+            lbl.sizeToFit()
             stack.addArrangedSubview(lbl)
         }
 
@@ -93,12 +101,13 @@ extension PMActionSheetHeaderView {
             let lbl = UILabel(subtitle, font: font, textColor: color)
             lbl.numberOfLines = 2
             lbl.textAlignment = .center
+            lbl.sizeToFit()
             stack.addArrangedSubview(lbl)
         }
         return stack
     }
 
-    private func setupTitlViewConstraint(_ container: UIStackView) {
+    private func setupTitleViewConstraint(_ container: UIStackView) {
         self.addSubview(container)
         container.topAnchor.constraint(greaterThanOrEqualTo: self.topAnchor, constant: 4).isActive = true
         container.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: TITLE_PADDING).isActive = true
@@ -107,22 +116,23 @@ extension PMActionSheetHeaderView {
         container.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 
-    private func setupItem(item: PMActionSheetPlainItem?, isRightBtn: Bool) {
+    private func setupItem(item: PMActionSheetPlainItem?,
+                           isRightBtn: Bool,
+                           refTitle: UIView?) {
         guard let btn = self.createButton(item: item, isRightBtn: isRightBtn) else { return }
         self.addSubview(btn)
-        btn.heightAnchor.constraint(lessThanOrEqualToConstant: MAX_BUTTON_SIZE).isActive = true
-        btn.widthAnchor.constraint(lessThanOrEqualToConstant: MAX_BUTTON_SIZE).isActive = true
-        btn.heightAnchor.constraint(greaterThanOrEqualToConstant: MIN_BUTTON_SIZE).isActive = true
-        btn.widthAnchor.constraint(greaterThanOrEqualToConstant: MIN_BUTTON_SIZE).isActive = true
         btn.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        let size = btn.sizeThatFits(CGSize(width: MAX_BUTTON_SIZE, height: MAX_BUTTON_SIZE))
 
-        let width = max(min(size.width, MAX_BUTTON_SIZE), MIN_BUTTON_SIZE)
-        let padding = (MAX_BUTTON_SIZE - width) / 2
         if isRightBtn {
-            btn.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -1 * padding).isActive = true
+            btn.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
+            if let refTitle = refTitle {
+                btn.leadingAnchor.constraint(greaterThanOrEqualTo: refTitle.trailingAnchor, constant: 8).isActive = true
+            }
         } else {
-            btn.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding).isActive = true
+            btn.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+            if let refTitle = refTitle {
+                btn.trailingAnchor.constraint(lessThanOrEqualTo: refTitle.leadingAnchor, constant: -8).isActive = true
+            }
         }
     }
 
@@ -132,12 +142,23 @@ extension PMActionSheetHeaderView {
         btn.translatesAutoresizingMaskIntoConstraints = false
         if let title = _item.title {
             btn.setTitle(title, for: .normal)
+            btn.titleLabel?.lineBreakMode = .byTruncatingTail
             btn.setTitleColor(_item.textColor, for: .normal)
+            btn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+            btn.widthAnchor.constraint(greaterThanOrEqualToConstant: MIN_TEXT_BUTTON_SIZE).isActive = true
+            btn.widthAnchor.constraint(lessThanOrEqualToConstant: MAX_TEXT_BUTTON_SIZE).isActive = true
         } else if let icon = _item.icon {
             btn.setImage(icon, for: .normal)
             btn.tintColor = _item.textColor
+            btn.widthAnchor.constraint(greaterThanOrEqualToConstant: MIN_ICON_BUTTON_SIZE).isActive = true
         }
-        btn.tag = isRightBtn ? 10: 20
+        if isRightBtn {
+            btn.contentHorizontalAlignment = .right
+            btn.tag = 10
+        } else {
+            btn.contentHorizontalAlignment = .left
+            btn.tag = 20
+        }
         btn.addTarget(self, action: #selector(self.clickButton(sender:)), for: .touchUpInside)
         return btn
     }

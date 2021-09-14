@@ -13,3 +13,29 @@ This product includes software developed by the "Marcin Krzyzanowski" (http://kr
 ## Contributing notice
 
 By contributing to the ProtonCore iOS you accept the [CONTRIBUTION_POLICY](CONTRIBUTION_POLICY.md). Please read and understand before making a contribution.
+
+## Table of Contents
+
+<!-- TOC depthFrom:3 -->
+- [License](#License)
+- [Modules](#Modules)
+- [Articles](#Articles)
+- [Examples](#Examples)
+<!-- /TOC -->
+
+## Modules
+
+- [Crypto](libraries/Crypto/Readme.md)
+
+## Articles
+
+## Examples
+
+- [CoreExample](apps/CoreExample)
+- [AccountSwitcher](apps/example-accountswitcher)
+- [Features](apps/example-features)
+- [Login](apps/example-login)
+- [Networking](apps/example-networking)
+- [Payments](apps/example-payments)
+- [Settings](apps/example-settings)
+- [UIFoundations](apps/example-uifoundations)

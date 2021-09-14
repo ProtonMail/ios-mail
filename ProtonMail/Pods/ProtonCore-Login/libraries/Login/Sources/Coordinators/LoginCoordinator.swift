@@ -151,7 +151,7 @@ final class LoginCoordinator {
             return
         }
         DispatchQueue.main.async { [weak self] in
-            workBeforeFlowCompletion { [weak self] result in
+            workBeforeFlowCompletion(data) { [weak self] result in
                 DispatchQueue.main.async { [weak self] in
                     endLoading()
                     switch result {

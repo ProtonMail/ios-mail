@@ -31,19 +31,19 @@ import XCTest
  *  Contains functions related to the device or system actions.
  */
 open class UiDevice {
-    
+
     public func pressHome() {
         XCUIDevice.shared.press(.home)
     }
-    
+
     public func saveTextToClipboard(_ text: String) {
         UIPasteboard.general.string = text
     }
-    
+
     public func saveImageToClipboard(_ image: UIImage) {
         UIPasteboard.general.image = image
     }
-    
+
     public func saveUrlToClipboard(_ url: URL) {
         UIPasteboard.general.url = url
     }

@@ -67,7 +67,6 @@ open class UiElement {
     private var tableToSwipeInto: XCUIElement?
 
     internal func getType() -> XCUIElement.ElementType {
-        XCUIDevice.shared.press(.home)
         return self.uiElement().elementType
     }
 
@@ -111,6 +110,14 @@ open class UiElement {
 
     public func hittable() -> Bool {
         return locatedElement!.isHittable
+    }
+    
+    public func childsCount() -> Int {
+        return locatedElement!.children(matching: XCUIElement.ElementType.any).count
+    }
+    
+    public func childsCountByType(_ type: XCUIElement.ElementType) -> Int {
+        return locatedElement!.children(matching: type).count
     }
 
     public func selected() -> Bool {
@@ -207,6 +214,18 @@ open class UiElement {
         Wait().forElement(uiElement()).press(forDuration: timeInterval)
         return self
     }
+    
+    @discardableResult
+    public func pinch(scale: CGFloat, velocity: CGFloat) -> UiElement {
+        Wait().forElement(uiElement()).pinch(withScale: scale, velocity: velocity)
+        return self
+    }
+    
+    @discardableResult
+    public func twoFingerTap(scale: CGFloat, velocity: CGFloat) -> UiElement {
+        Wait().forElement(uiElement()).twoFingerTap()
+        return self
+    }
 
     @discardableResult
     public func swipeDown() -> UiElement {
@@ -235,6 +254,15 @@ open class UiElement {
     @discardableResult
     public func tap() -> UiElement {
         Wait().forElement(uiElement()).tap()
+        return self
+    }
+    
+    @discardableResult
+    public func tapIfExists() -> UiElement {
+        let element = uiElement()
+        if (Wait().forElement(element).exists) {
+            element.tap()
+        }
         return self
     }
 

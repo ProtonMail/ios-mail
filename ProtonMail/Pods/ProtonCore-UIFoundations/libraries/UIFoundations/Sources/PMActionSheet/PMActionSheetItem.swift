@@ -105,7 +105,7 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
     let handler: ((PMActionSheetPlainItem) -> Void)?
     /// Alignment of title, default is `.left`
     let alignment: NSTextAlignment
-    /// Does the cell have bottom spearator?
+    /// Does the cell have bottom separator?
     let hasSeparator: Bool
 
     /// Initializer of `PMActionSheetItem`
@@ -115,8 +115,8 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
     ///   - textColor: Color of text, default value is `AdaptiveTextColors._N5`
     ///   - iconColor: Color of icon, default value is `AdaptiveTextColors._N5`
     ///   - isOn: A Boolean value that determines if the item is selected
-    ///   - alignment: Alignemnt of title
-    ///   - hasSeparator: Does the cell have bottom spearator?
+    ///   - alignment: Alignment of title
+    ///   - hasSeparator: Does the cell have bottom separator?
     ///   - userInfo: Optional information about the the item.
     ///   - indentationLevel: The indentation level of the cell’s content. starts from 0
     ///   - indentationWidth:The width for each level of indentation of a cell's content.
