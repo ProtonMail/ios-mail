@@ -11,9 +11,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d försök återstår</string>
+			<string>%d attempt remaining</string>
 			<key>other</key>
-			<string>%d försök återstår</string>
+			<string>%d attempts remaining</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>

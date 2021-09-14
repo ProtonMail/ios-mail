@@ -251,10 +251,10 @@
 "App PIN" = "PIN-код";
 
 /* security title in settings */
-"App PIN & FaceID" = "PIN-код & FaceID";
+"App PIN & Face ID" = "PIN приложения & Face ID";
 
 /* security title in settings */
-"App PIN & TouchID" = "PIN-код & TouchID";
+"App PIN & Touch ID" = "PIN приложения & Touch ID";
 
 /* section title in settings */
 "App settings" = "Настройки приложения";
@@ -1131,6 +1131,9 @@
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Для опытных пользователей и сообществ, ценящих полную анонимность и конфиденциальность";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Запрещено";
 
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "Забыли пароль?";
@@ -2022,6 +2025,9 @@
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail сейчас не в сети…";
 
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail требуется доступ к библиотеке фото в настройках вашего устройства.";
+
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "Для настройки вашей мобильной подписи необходим тариф ProtonMail Plus";
 
@@ -2831,9 +2837,6 @@
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "Загрузить контакты iOS в ProtonMail?";
-
-/* default vcard types */
-"Url" = "URL";
 
 /* default vcard types */
 "URL" = "Адрес";

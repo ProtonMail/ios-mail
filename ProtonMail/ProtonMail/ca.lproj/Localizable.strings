@@ -251,10 +251,10 @@
 "App PIN" = "PIN de l'aplicació";
 
 /* security title in settings */
-"App PIN & FaceID" = "PIN de l'App i FaceID";
+"App PIN & Face ID" = "PIN d'aplicació i Face ID";
 
 /* security title in settings */
-"App PIN & TouchID" = "PIN de l'App i TouchID";
+"App PIN & Touch ID" = "PIN d'aplicació i Touch ID";
 
 /* section title in settings */
 "App settings" = "Configuració de l'aplicació";
@@ -1131,6 +1131,9 @@
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Per persones i grups que valoren l'anonimat i la privadesa";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Prohibit";
 
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "Ha oblidat la contrasenya?";
@@ -2022,6 +2025,9 @@
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail està actualment fora de línia…";
 
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail necessita accés a la galeria de fotos a la configuració del vostre dispositiu.";
+
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "Es requereix ProtonMail Plus per personalitzar la vostra signatura mòbil";
 
@@ -2831,9 +2837,6 @@
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "Puja els contactes d'iOS a ProtonMail?";
-
-/* default vcard types */
-"Url" = "Url";
 
 /* default vcard types */
 "URL" = "URL";

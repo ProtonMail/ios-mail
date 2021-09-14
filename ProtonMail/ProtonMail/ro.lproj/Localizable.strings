@@ -251,10 +251,10 @@
 "App PIN" = "PIN aplicație";
 
 /* security title in settings */
-"App PIN & FaceID" = "PIN aplicație și Face ID";
+"App PIN & Face ID" = "PIN aplicație și Face ID";
 
 /* security title in settings */
-"App PIN & TouchID" = "PIN aplicație și Touch ID";
+"App PIN & Touch ID" = "PIN aplicație și Touch ID";
 
 /* section title in settings */
 "App settings" = "Setări aplicație";
@@ -652,7 +652,7 @@
 "Conversation mode" = "Mod conversație";
 
 /* Title */
-"Copy" = "Copy";
+"Copy" = "Copiere";
 
 /* Title */
 "Copy address" = "Copiere adresă";
@@ -708,7 +708,7 @@
 "Custom" = "Personalizat";
 
 /* Title */
-"Cut" = "Cut";
+"Cut" = "Decupare";
 
 /* message Date: text */
 "Date:" = "Data:";
@@ -1131,6 +1131,9 @@
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Pentru utilizatori avansați și grupuri de persoane ce apreciază anonimatul și intimitatea";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Interzis";
 
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "Ați uitat parola?";
@@ -2022,6 +2025,9 @@
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail este momentan indisponibil…";
 
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail are nevoie de acces la biblioteca foto în setările dispozitivului.";
+
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus este necesar pentru a putea edita semnătura mobilului.";
 
@@ -2059,7 +2065,7 @@
 "Reading device contacts data…" = "Se citesc datele contactelor din dispozitiv…";
 
 /* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Receipt sent";
+"Receipt sent" = "Confirmare de citire trimisă";
 
 /* No comment provided by engineer. */
 "Recipient details" = "Detalii destinatar";
@@ -2204,7 +2210,7 @@
 "Send plain but stored encrypted" = "Trimitere ca text simplu, dar stocat criptat";
 
 /* A button title to send read receipt */
-"Send receipt" = "Send receipt";
+"Send receipt" = "Trimite confirmare";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "Trimitere în «Arhivă»?";
@@ -2539,7 +2545,7 @@
 "The request timed out." = "Solicitarea a expirat.";
 
 /* Message of a banner which is displayed when sender request a read receipt */
-"The sender has requested a read receipt." = "The sender has requested a read receipt.";
+"The sender has requested a read receipt." = "Expeditorul a solicitat o confirmare de primire.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Limita de dimensiunii atașamentelor este de 25 MB.";
@@ -2831,9 +2837,6 @@
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "Încărcați contactele iOS în ProtonMail?";
-
-/* default vcard types */
-"Url" = "URL";
 
 /* default vcard types */
 "URL" = "URL";

@@ -251,10 +251,10 @@
 "App PIN" = "應用程式 PIN";
 
 /* security title in settings */
-"App PIN & FaceID" = "應用程式 PIN 與 FaceID";
+"App PIN & Face ID" = "應用程式 PIN 與 Face ID";
 
 /* security title in settings */
-"App PIN & TouchID" = "應用程式 PIN 與 TouchID";
+"App PIN & Touch ID" = "應用程式 PIN 與 Touch ID";
 
 /* section title in settings */
 "App settings" = "應用程式設定";
@@ -1131,6 +1131,9 @@
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "適合極為著重匿名及隱私的高階使用者和群組";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "被禁止";
 
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "忘記密碼？";
@@ -2022,6 +2025,9 @@
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail 現正離線…";
 
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail 需要在您的裝置設定中開啟相簿的存取權。";
+
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "成為ProtonMail Plus用戶來更改您的行動版簽名檔";
 
@@ -2831,9 +2837,6 @@
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "是否上傳iOS通訊錄至ProtonMail？";
-
-/* default vcard types */
-"Url" = "網址";
 
 /* default vcard types */
 "URL" = "網址";

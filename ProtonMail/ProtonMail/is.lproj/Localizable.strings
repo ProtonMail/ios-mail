@@ -251,10 +251,10 @@
 "App PIN" = "App PIN";
 
 /* security title in settings */
-"App PIN & FaceID" = "App PIN & FaceID";
+"App PIN & Face ID" = "App PIN & Face ID";
 
 /* security title in settings */
-"App PIN & TouchID" = "App PIN & TouchID";
+"App PIN & Touch ID" = "App PIN & Touch ID";
 
 /* section title in settings */
 "App settings" = "Stillingar forrits";
@@ -1131,6 +1131,9 @@
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Fyrir kraftnotendur og hópa fólks sem kunna að meta fullt nafnleysi og gagnaleynd";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Forbidden";
 
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "Gleymt lykilorð?";
@@ -2022,6 +2025,9 @@
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail is currently offline…";
 
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
+
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "Til að sérsníða farsímaundirskrift er nauðsynlegt að vera með ProtonMail Plus";
 
@@ -2831,9 +2837,6 @@
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "Senda iOS-tengiliði inn í ProtonMail?";
-
-/* default vcard types */
-"Url" = "Slóð";
 
 /* default vcard types */
 "URL" = "Slóð (URL)";

@@ -251,10 +251,10 @@
 "App PIN" = "App PIN";
 
 /* security title in settings */
-"App PIN & FaceID" = "App PIN & FaceID";
+"App PIN & Face ID" = "App PIN & Face ID";
 
 /* security title in settings */
-"App PIN & TouchID" = "App PIN & TouchID";
+"App PIN & Touch ID" = "App PIN & Touch ID";
 
 /* section title in settings */
 "App settings" = "アプリの設定";
@@ -1132,6 +1132,9 @@
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "上級ユーザーと匿名性とプライバシーに価値を感じる方向けです。";
 
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Forbidden";
+
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "パスワードをお忘れですか？";
 
@@ -1217,7 +1220,7 @@
 "Hide" = "非表示";
 
 /* Title */
-"Hide Details" = "詳細を非表示";
+"Hide Details" = "詳細を隠す";
 
 /* Key size checkbox */
 "High Security" = "高水準のセキュリティ(推奨)";
@@ -2021,6 +2024,9 @@
 
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail is currently offline…";
+
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "モバイル署名を編集するには、ProtonMail Plusプラン以上のご契約が必要です。";
@@ -2833,9 +2839,6 @@
 "Upload iOS contacts to ProtonMail?" = "ProtonMailにiOSの連絡先をアップロードしますか?";
 
 /* default vcard types */
-"Url" = "URL";
-
-/* default vcard types */
 "URL" = "URL";
 
 /* Option title */
@@ -2941,7 +2944,7 @@
 "Yes, attach details of payment" = "はい、支払いの詳細を添付します。";
 
 /* No comment provided by engineer. */
-"Yesterday" = "Yesterday";
+"Yesterday" = "昨日";
 
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "ブラウザで次のURLを開こうとしています：";

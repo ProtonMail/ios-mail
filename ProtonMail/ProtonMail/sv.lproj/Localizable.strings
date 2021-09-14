@@ -26,7 +26,7 @@
 "%@ storage capacity" = "%@ lagringskapacitet";
 
 /* Description */
-"%d attempt remaining" = "%d försök återstår";
+"%d attempt remaining" = "%d attempt remaining";
 
 /* Error */
 "%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
@@ -126,7 +126,7 @@
 "Add anniversary" = "Lägg till årsdag";
 
 /* menu title */
-"Add attachment" = "Bifoga bilaga";
+"Add attachment" = "Lägg till en bilaga";
 
 /* new contacts add Birthday */
 "Add birthday" = "Lägg till födelsedag";
@@ -251,10 +251,10 @@
 "App PIN" = "App PIN";
 
 /* security title in settings */
-"App PIN & FaceID" = "App PIN & FaceID";
+"App PIN & Face ID" = "App PIN & Face ID";
 
 /* security title in settings */
-"App PIN & TouchID" = "App PIN & TouchID";
+"App PIN & Touch ID" = "App PIN & Touch ID";
 
 /* section title in settings */
 "App settings" = "App-inställningar";
@@ -1131,6 +1131,9 @@
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "For power users and groups of people that value full anonymity and privacy";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Förbjudet";
 
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "Glömt lösenord?";
@@ -2022,6 +2025,9 @@
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail är för närvarande offline…";
 
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
+
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus krävs för att kunna anpassa din mobilsignatur";
 
@@ -2323,7 +2329,7 @@
 "Simply private" = "Helt enkelt privat";
 
 /* skip button title in onboarding page */
-"Skip" = "Hoppa över";
+"Skip" = "Skip";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Snooza";
@@ -2831,9 +2837,6 @@
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "Ladda upp iOS-kontakter till ProtonMail?";
-
-/* default vcard types */
-"Url" = "Url";
 
 /* default vcard types */
 "URL" = "URL";

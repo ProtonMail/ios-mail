@@ -99,7 +99,7 @@
 "A passcode has not been set, enable it in the system Settings" = "Parola ayarlanmamış, parolanızı sistem ayarlarından etkinleştirin";
 
 /* Alert message is shown when folder name duplicated */
-"A sub-folder with this name already exists in the destination folder" = "A sub-folder with this name already exists in the destination folder";
+"A sub-folder with this name already exists in the destination folder" = "Hedef klasörde bu ada sahip bir alt klasör zaten var";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen protonmail.com üzerinden oturum açın.";
@@ -236,7 +236,7 @@
 "Antivirus interference" = "Antivirüs müdahalesi";
 
 /* Alert message when user tries to discard unsaved changes */
-"Any unsaved changes will be lost." = "Any unsaved changes will be lost.";
+"Any unsaved changes will be lost." = "Kaydedilmemiş tüm değişiklikler kaybolacak.";
 
 /* when server not reachable */
 "API Server not reachable…" = "API Sunucusuna erişilemiyor…";
@@ -251,10 +251,10 @@
 "App PIN" = "Uygulama PIN'i";
 
 /* security title in settings */
-"App PIN & FaceID" = "Uygulama PIN'i & FaceID";
+"App PIN & Face ID" = "App PIN & Face ID";
 
 /* security title in settings */
-"App PIN & TouchID" = "Uygulama PIN'i & TouchID";
+"App PIN & Touch ID" = "App PIN & Touch ID";
 
 /* section title in settings */
 "App settings" = "Uygulama ayarları";
@@ -293,7 +293,7 @@
 
 /* Alert to confirm sign out
    Alert when sign out non-primary account from account manager */
-"Are you sure you want to sign out?" = "Are you sure you want to sign out?";
+"Are you sure you want to sign out?" = "Oturumu kapatmak istediğinizden emin misiniz?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "Emin misiniz? Bu geri alınamaz.";
@@ -652,7 +652,7 @@
 "Conversation mode" = "Conversation mode";
 
 /* Title */
-"Copy" = "Copy";
+"Copy" = "Kopyala";
 
 /* Title */
 "Copy address" = "Adresi kopyala";
@@ -708,7 +708,7 @@
 "Custom" = "Özel";
 
 /* Title */
-"Cut" = "Cut";
+"Cut" = "Kes";
 
 /* message Date: text */
 "Date:" = "Tarih:";
@@ -1060,7 +1060,7 @@
 "Error Logs" = "Hata günlükleri";
 
 /* Error alert title */
-"Error occurred" = "Error occurred";
+"Error occurred" = "Hata oluştu";
 
 /* incorrect email format error in composer */
 "Error sending" = "Gönderme hatası";
@@ -1132,6 +1132,9 @@
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Tam bir anonimlik ve mahremiyete değer veren uzman kullanıcılar ve insanlar için";
 
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Forbidden";
+
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "Parolanızı mı unuttunuz?";
 
@@ -1178,7 +1181,7 @@
 "Get more information" = "Daha fazla bilgi edinin";
 
 /* title of the next button */
-"Get Started" = "Başlarken";
+"Get Started" = "Başlayalım";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Taslaklara git";
@@ -2022,6 +2025,9 @@
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail şu anda çevrimdışı…";
 
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
+
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "Mobil imzayı düzenlemek için, ProtonMail Plus planı gerekir";
 
@@ -2831,9 +2837,6 @@
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "ProtonMail'e iOS kişileri yüklensin mi?";
-
-/* default vcard types */
-"Url" = "URL";
 
 /* default vcard types */
 "URL" = "URL";
