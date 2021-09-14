@@ -2059,6 +2059,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
         
+        self.tableView.reloadData()
         if self.refreshControl.isRefreshing {
             self.refreshControl.endRefreshing()
         }
@@ -2093,21 +2094,17 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 
         switch(type) {
         case .delete:
-            if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
             popPresentedItemIfNeeded(anObject)
         case .insert:
-            guard let newIndexPath = newIndexPath,
+            guard let _ = newIndexPath,
                   self.needToShowNewMessage,
                   let newMsg = anObject as? Message,
                   let msgTime = newMsg.time, newMsg.unRead,
                   let updateTime = viewModel.lastUpdateTime(),
                   msgTime.compare(updateTime.startTime) != ComparisonResult.orderedAscending else { return }
             self.newMessageCount += 1
-            tableView.insertRows(at: [newIndexPath], with: .fade)
         default:
-            self.tableView.reloadData()
+            return
         }
     }
 }
