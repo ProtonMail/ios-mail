@@ -26,13 +26,4 @@
 //  THE SOFTWARE.
 
 import XCTest
-
-open class CoreTestCase: XCTestCase {
-    
-    let device = UiDevice()
-    let ui = Elements()
-    
-    func uiInBundle(appBundleId: String?) -> Elements {
-        return Elements(bundleIdentifier: appBundleId)
-    }
-}
+open class CoreTestCase: XCTestCase, ElementsProtocol {}

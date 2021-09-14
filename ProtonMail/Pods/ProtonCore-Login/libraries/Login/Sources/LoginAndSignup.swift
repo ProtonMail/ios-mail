@@ -29,7 +29,7 @@ import ProtonCore_PaymentsUI
 @available(*, deprecated, renamed: "LoginAndSignupInterface")
 public typealias LoginInterface = LoginAndSignupInterface
 
-public typealias WorkBeforeFlowCompletion = (@escaping (Result<Void, Error>) -> Void) -> Void
+public typealias WorkBeforeFlowCompletion = (LoginData, @escaping (Result<Void, Error>) -> Void) -> Void
 
 public protocol LoginAndSignupInterface {
     

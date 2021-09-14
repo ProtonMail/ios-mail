@@ -35,7 +35,7 @@ private let signUpButtonId = "LoginViewController.signUpButton"
 private let helpButtonId = "LoginViewController.helpButton"
 private let loginFieldTitleLabel = "LoginViewController.loginTextField.titleLabel"
 private let passwordFieldTitleLabel = "LoginViewController.passwordTextField.titleLabel"
-private let suspendedErrorText = "This account has been suspended due to a potential policy violation. If you believe this is in error, please contact us at http://protonmail.com/abuse" // TODO update wording after CP-2527
+private let suspendedErrorText = "This account has been suspended due to a potential policy violation. If you believe this is in error, please contact us at http://protonmail.com/abuse"
 private let textPredicate = NSPredicate(format: "label CONTAINS[c] %@", suspendedErrorText)
 private let textChangePassword = "Change your password"
 private let buttonChangePasswordCancel = "Cancel"
@@ -128,7 +128,7 @@ public final class LoginRobot: CoreElements {
     }
     
     public func signIn<T: CoreElements>(robot _: T.Type) -> T {
-        button(signInButtonId).tap().wait(time: 15)
+        button(signInButtonId).tap()
         return T()
     }
     

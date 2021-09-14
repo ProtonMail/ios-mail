@@ -376,7 +376,7 @@ extension PMBanner {
         case .top, .topCustom:
             self.topConstraint = self.topAnchor.constraint(equalTo: parent.topAnchor, constant: -1 * initValue)
             self.topConstraint?.isActive = true
-        case .bottom:
+        case .bottom, .bottomCustom:
             self.bottomConstraint = self.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: initValue)
             self.bottomConstraint?.isActive = true
         }
@@ -397,7 +397,7 @@ extension PMBanner {
         switch self.position! {
         case .top, .topCustom:
             self.topConstraint?.constant = self.position!.edgeInsets.top + parent.safeGuide.top
-        case .bottom:
+        case .bottom, .bottomCustom:
             let height = keyboardHeight > 0 ? keyboardHeight: parent.safeGuide.bottom
             self.bottomConstraint?.constant = -1 * self.position!.edgeInsets.bottom - height
         }
@@ -411,7 +411,7 @@ extension PMBanner {
         switch self.position! {
         case .top, .topCustom:
             self.topConstraint?.constant = -1 * height
-        case .bottom:
+        case .bottom, .bottomCustom:
             self.bottomConstraint?.constant = height
         }
         UIView.animate(withDuration: self.ANIMATE_DURATION, animations: {
@@ -437,7 +437,7 @@ extension PMBanner {
                            self.lastLocation.y + translation.y)
             self.center = CGPoint(x: self.lastLocation.x,
                                   y: newY)
-        case .bottom:
+        case .bottom, .bottomCustom:
             if yVelocity >= 500 {
                 self.dismissAnimate()
                 ges.cancel()

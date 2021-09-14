@@ -25,6 +25,7 @@ public enum PMBannerPosition {
     case top
     case bottom
     case topCustom(UIEdgeInsets)
+    case bottomCustom(UIEdgeInsets)
 
     public var edgeInsets: UIEdgeInsets {
         switch self {
@@ -33,6 +34,8 @@ public enum PMBannerPosition {
         case .bottom:
             return UIEdgeInsets(top: CGFloat.infinity, left: 8, bottom: 21, right: 8)
         case .topCustom(let insets):
+            return insets
+        case .bottomCustom(let insets):
             return insets
         }
     }

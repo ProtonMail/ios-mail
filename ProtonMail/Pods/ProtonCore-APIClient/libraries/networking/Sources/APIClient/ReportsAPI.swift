@@ -62,11 +62,11 @@ public struct ReportsBugsResponse: Codable {
     let code: Int
 }
 
-final class ReportsBugs: Request {
+public final class ReportsBugs: Request {
     
-    let bug: ReportBug
+    public let bug: ReportBug
     
-    init( _ bug: ReportBug) {
+    public init( _ bug: ReportBug) {
         self.bug = bug
     }
 
@@ -78,7 +78,7 @@ final class ReportsBugs: Request {
         return .post
     }
 
-    var parameters: [String: Any]? {
+    public var parameters: [String: Any]? {
         return [
             "OS": bug.os,
             "OSVersion": bug.osVersion,
@@ -96,7 +96,7 @@ final class ReportsBugs: Request {
     }
     
     var auth: AuthCredential?
-    var authCredential: AuthCredential? {
+    public var authCredential: AuthCredential? {
         return self.auth
     }
 }

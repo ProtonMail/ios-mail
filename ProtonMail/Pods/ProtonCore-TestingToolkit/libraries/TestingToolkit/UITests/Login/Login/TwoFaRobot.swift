@@ -36,7 +36,7 @@ public final class TwoFaRobot: CoreElements {
     }
     
     public func confirm2FA<T: CoreElements>(robot _: T.Type) -> T {
-        button(authenticateButtonId).tap().wait(time: 20)
+        button(authenticateButtonId).tap()
         return T()
     }
     
