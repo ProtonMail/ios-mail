@@ -21,4 +21,11 @@ extension Array where Element == ConversationViewItemType {
     var newestMessage: Message? {
         last { $0.message != nil && $0.message?.draft == false }?.message
     }
+
+    func isLatestMessageUnread(location labelID: String) -> Bool {
+        return last(where: {
+            $0.message?.contains(label: labelID) == true &&
+            $0.message?.draft == false
+        })?.message?.unRead == true
+    }
 }

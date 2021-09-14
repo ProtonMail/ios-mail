@@ -91,7 +91,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
         guard !customView.tableView.visibleCells.isEmpty,
               !viewModel.isExpandedAtLaunch else { return }
-              
+
         guard viewModel.messagesDataSource.count > 1 else {
             if let targetID = self.viewModel.targetID {
                 self.cellTapped(messageId: targetID)
@@ -103,7 +103,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             .firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false }) {
             viewModel.setCellIsExpandedAtLaunch()
             let indexPath = IndexPath(row: row, section: 1)
-            customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            delay(1) { [weak self] in
+                self?.customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            }
         } else if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
         }
@@ -841,7 +843,9 @@ extension ConversationViewController {
 
             self?.cellTapped(messageId: messageId)
             let indexPath = IndexPath(row: Int(index), section: 1)
-            self?.customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            delay(1) { [weak self] in
+                self?.customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            }
         }
     }
 
