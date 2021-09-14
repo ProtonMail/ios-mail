@@ -190,6 +190,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             messageViewModel.toggleState()
             customView.tableView.reloadRows(at: [.init(row: index, section: 1)], with: .automatic)
             checkNavigationTitle()
+            messageViewModel.state.expandedViewModel?.messageContent.markReadIfNeeded()
         }
     }
 
