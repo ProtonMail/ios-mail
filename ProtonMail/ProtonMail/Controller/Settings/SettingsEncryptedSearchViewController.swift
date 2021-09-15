@@ -121,8 +121,25 @@ extension SettingsEncryptedSearchViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section > 0 && !viewModel.isEncryptedSearch {
+            return 0
+        }
         return 1
     }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section > 0 && !viewModel.isEncryptedSearch {
+            return 0
+        }
+        return super.tableView(tableView, heightForHeaderInSection: section)
+    }
+    
+    /*override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section > 0 && !viewModel.isEncryptedSearch {
+            return 0
+        }
+        return super.tableView(tableView, heightForFooterInSection: section)
+    }*/
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let section = indexPath.section
@@ -205,6 +222,7 @@ extension SettingsEncryptedSearchViewController {
             self.deleteSearchIndexButton.isHidden = false
             self.pauseIndexingButton.isHidden = false
             //self.tableView.cellForRow(at: IndexPath.index(index)) as? SwitchTableViewCell
+            self.tableView.reloadData() //refresh the view to show changes in UI
 
             //TODO check return value
             var returnValue: Bool = false
