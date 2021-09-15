@@ -70,10 +70,10 @@ class ConversationMessageView: UIView {
         ].activate()
 
         [
-            container.topAnchor.constraint(equalTo: cellControl.topAnchor, constant: 2),
+            container.topAnchor.constraint(equalTo: cellControl.topAnchor, constant: 4),
             container.leadingAnchor.constraint(equalTo: cellControl.leadingAnchor, constant: 4),
             container.trailingAnchor.constraint(equalTo: cellControl.trailingAnchor, constant: -4),
-            container.bottomAnchor.constraint(equalTo: cellControl.bottomAnchor, constant: -2)
+            container.bottomAnchor.constraint(equalTo: cellControl.bottomAnchor, constant: -4)
         ].activate()
 
         [
