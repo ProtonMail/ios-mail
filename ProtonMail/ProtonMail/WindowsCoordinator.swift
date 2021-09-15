@@ -62,9 +62,9 @@ class WindowsCoordinator: CoordinatorNew {
     
     private var services: ServiceFactory
     
-    var currentWindow: UIWindow! {
+    var currentWindow: UIWindow? {
         didSet {
-            self.currentWindow.makeKeyAndVisible()
+            self.currentWindow?.makeKeyAndVisible()
         }
     }
 
@@ -151,10 +151,12 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     @objc func didEnterBackground() {
-        if let vc = self.currentWindow.topmostViewController() {
+        if let vc = self.currentWindow?.topmostViewController() {
             vc.view.endEditing(true)
         }
-        self.snapshot.show(at: self.currentWindow)
+        if let window = self.currentWindow {
+            self.snapshot.show(at: window)
+        }
     }
     
     @objc func lock() {
@@ -217,7 +219,7 @@ class WindowsCoordinator: CoordinatorNew {
             switch dest {
             case .signInWindow(let signInDestination):
                 // just restart coordinator in case it's already displayed with right configuration
-                if let signInVC = self.currentWindow.rootViewController as? SignInCoordinator.VC,
+                if let signInVC = self.currentWindow?.rootViewController as? SignInCoordinator.VC,
                    signInVC.coordinator.startingPoint == signInDestination {
                     signInVC.coordinator.start()
                     return
@@ -245,7 +247,7 @@ class WindowsCoordinator: CoordinatorNew {
                         }
                         let navigationVC = UINavigationController(rootViewController: troubleshootingVC)
                         navigationVC.modalPresentationStyle = .fullScreen
-                        self?.currentWindow.rootViewController?.present(navigationVC, animated: true, completion: nil)
+                        self?.currentWindow?.rootViewController?.present(navigationVC, animated: true, completion: nil)
                     case .alreadyLoggedIn, .loggedInFreeAccountsLimitReached, .errored:
                         // not sure what else I can do here instead of restarting the process
                         self?.go(dest: .signInWindow(.form))
@@ -261,7 +263,7 @@ class WindowsCoordinator: CoordinatorNew {
 
             case .lockWindow:
                 guard self.lockWindow == nil else {
-                    guard let lockVC = self.currentWindow.rootViewController as? LockCoordinator.VC,
+                    guard let lockVC = self.currentWindow?.rootViewController as? LockCoordinator.VC,
                           lockVC.coordinator.startedOrSheduledForAStart == false
                     else {
                         self.lockWindow = nil
