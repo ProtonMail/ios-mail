@@ -38,6 +38,7 @@ class SingleMessageView: UIView {
     let smallTitleHeaderSeparatorView = SubviewsFactory.smallSeparatorView
     let bigSeparatorView = SubviewsFactory.bigSeparatorView
     let contentContainer = UIView()
+    let toolBar = SubviewsFactory.toolBar
 
     private func addSubviews() {
         addSubview(scrollView)
@@ -49,14 +50,25 @@ class SingleMessageView: UIView {
         stackView.addArrangedSubview(smallTitleHeaderSeparatorView)
         stackView.addArrangedSubview(bigSeparatorView)
         stackView.addArrangedSubview(contentContainer)
+        addSubview(toolBar)
     }
 
     private func setUpLayout() {
+        let bottomPadding = UIDevice.safeGuide.bottom
+        let height = 56.0 + bottomPadding
+
+        [
+            toolBar.leadingAnchor.constraint(equalTo: leadingAnchor),
+            toolBar.trailingAnchor.constraint(equalTo: trailingAnchor),
+            toolBar.bottomAnchor.constraint(equalTo: bottomAnchor),
+            toolBar.heightAnchor.constraint(equalToConstant: height)
+        ].activate()
+
         [
             scrollView.topAnchor.constraint(equalTo: topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            scrollView.bottomAnchor.constraint(equalTo: toolBar.topAnchor)
         ].activate()
 
         [
@@ -111,4 +123,8 @@ private enum SubviewsFactory {
         return label
     }
 
+    static var toolBar: PMToolBarView {
+        let toolBar = PMToolBarView()
+        return toolBar
+    }
 }

@@ -4,13 +4,6 @@ import UIKit
 class ConversationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
                                   UIScrollViewDelegate, ComposeSaveHintProtocol {
 
-    private var actionBar: PMActionBar? {
-        didSet {
-            guard actionBar == nil else { return }
-            oldValue?.dismiss()
-        }
-    }
-
     let viewModel: ConversationViewModel
     let coordinator: ConversationCoordinator
     private(set) lazy var customView = ConversationView()
@@ -49,7 +42,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             let isNewMessageFloatyPresented = self.customView.subviews
                 .contains(where: { $0 is ConversationNewMessageFloatyView })
             guard !isNewMessageFloatyPresented else { return }
-            self.reloadActionBar()
 
             // Prevent the banner being covered by the action bar
             self.view.subviews.compactMap({ $0 as? PMBanner }).forEach({ self.view.bringSubviewToFront($0) })
@@ -80,7 +72,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         }
         viewModel.observeConversationUpdate()
         viewModel.observeConversationMessages(tableView: customView.tableView)
-        showActionBar()
+        setUpToolBar()
 
         starBarButton.isAccessibilityElement = true
         starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
@@ -167,18 +159,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.checkNavigationTitle()
-    }
-
-    private func reloadActionBar() {
-        guard actionBar != nil else { return }
-
-        // Only reload the action bar if needed
-        let actions = viewModel.getActionTypes()
-        guard viewModel.actionTypeSnapshot != actions else { return }
-        viewModel.actionTypeSnapshot = actions
-
-        actionBar = nil
-        showActionBar()
     }
 
     func cellTapped(messageId: String) {
@@ -459,70 +439,54 @@ private struct HeightStoreInfo: Hashable, Equatable {
     let loaded: Bool
 }
 
-// MARK: - Action Bar
+// MARK: - Tool Bar
 private extension ConversationViewController {
-    private func showActionBar() {
-        guard self.actionBar == nil else { return }
+    private func setUpToolBar() {
+        customView.toolBar.setUpTrashAction(target: self, action: #selector(self.trashAction))
+        customView.toolBar.setUpUnreadAction(target: self, action: #selector(self.unreadReadAction))
+        customView.toolBar.setUpMoveToAction(target: self, action: #selector(self.moveToAction))
+        customView.toolBar.setUpLabelAsAction(target: self, action: #selector(self.labelAsAction))
+        customView.toolBar.setUpMoreAction(target: self, action: #selector(self.moreButtonTapped))
+        customView.toolBar.setUpDeleteAction(target: self, action: #selector(self.deleteAction))
 
-        let actions = viewModel.getActionTypes()
-        var actionBarItems: [PMActionBarItem] = []
-        for (key, action) in actions.enumerated() {
-            let actionHandler: (PMActionBarItem) -> Void = { [weak self] _ in
-                switch action {
-                case .more:
-                    self?.moreButtonTapped()
-                case .reply:
-                    if let message = self?.viewModel.messagesDataSource.newestMessage {
-                        self?.coordinator.handle(navigationAction: .reply(message: message))
-                    }
-                case .replyAll:
-                    if let message = self?.viewModel.messagesDataSource.newestMessage {
-                        self?.coordinator.handle(navigationAction: .replyAll(message: message))
-                    }
-                case .delete:
-                    self?.showDeleteAlert(deleteHandler: { [weak self] _ in
-                        self?.viewModel.handleActionBarAction(action)
-                        self?.navigationController?.popViewController(animated: true)
-                    })
-                case .labelAs:
-                    self?.showLabelAsActionSheet(dataSource: .conversation)
-                default:
-                    self?.viewModel.handleActionBarAction(action)
-                    self?.navigationController?.popViewController(animated: true)
-                }
-            }
-
-            let actionBarItem: PMActionBarItem
-            if key == actions.startIndex {
-                actionBarItem = PMActionBarItem(icon: action.iconImage, text: action.name, handler: actionHandler)
-            } else {
-                actionBarItem = PMActionBarItem(icon: action.iconImage, backgroundColor: .clear, handler: actionHandler)
-            }
-            actionBarItems.append(actionBarItem)
+        if viewModel.labelId == Message.Location.spam.rawValue || viewModel.labelId == Message.Location.trash.rawValue {
+            customView.toolBar.trashButtonView.removeFromSuperview()
+        } else {
+            customView.toolBar.deleteButtonView.removeFromSuperview()
         }
-        let separator = PMActionBarItem(width: 1,
-                                        verticalPadding: 6,
-                                        color: UIColorManager.FloatyText)
-        actionBarItems.insert(separator, at: 1)
-        self.actionBar = PMActionBar(items: actionBarItems,
-                                     backgroundColor: UIColorManager.FloatyBackground,
-                                     floatingHeight: 42.0,
-                                     width: .fit,
-                                     height: 48.0)
-        self.actionBar?.show(at: self)
     }
 
-    private func showDeleteAlert(deleteHandler: ((UIAlertAction) -> Void)?) {
-        let alert = UIAlertController(title: LocalString._warning,
-                                      message: LocalString._messages_will_be_removed_irreversibly,
-                                      preferredStyle: .alert)
-        let yes = UIAlertAction(title: LocalString._general_delete_action, style: .destructive, handler: deleteHandler)
-        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel)
-        [yes, cancel].forEach(alert.addAction)
-
-        self.present(alert, animated: true, completion: nil)
+    @objc
+    private func deleteAction() {
+        showDeleteAlert(deleteHandler: { [weak self] _ in
+            self?.viewModel.handleToolBarAction(.delete)
+            self?.navigationController?.popViewController(animated: true)
+        })
     }
 
+    @objc
+    private func trashAction() {
+        viewModel.handleToolBarAction(.trash)
+        navigationController?.popViewController(animated: true)
+    }
+
+    @objc
+    private func unreadReadAction() {
+        viewModel.handleToolBarAction(.readUnread)
+        navigationController?.popViewController(animated: true)
+    }
+
+    @objc
+    private func moveToAction() {
+        showMoveToActionSheet(dataSource: .conversation)
+    }
+
+    @objc
+    private func labelAsAction() {
+        showLabelAsActionSheet(dataSource: .conversation)
+    }
+
+    @objc
     private func moreButtonTapped() {
         guard let navigationVC = self.navigationController else { return }
         let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
@@ -540,6 +504,17 @@ private extension ConversationViewController {
                                      viewModel: actionSheetViewModel) { [weak self] action in
             self?.handleActionSheetAction(action)
         }
+    }
+
+    private func showDeleteAlert(deleteHandler: ((UIAlertAction) -> Void)?) {
+        let alert = UIAlertController(title: LocalString._warning,
+                                      message: LocalString._messages_will_be_removed_irreversibly,
+                                      preferredStyle: .alert)
+        let yes = UIAlertAction(title: LocalString._general_delete_action, style: .destructive, handler: deleteHandler)
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel)
+        [yes, cancel].forEach(alert.addAction)
+
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -827,11 +802,8 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 // MARK: - New Message floaty view
 extension ConversationViewController {
     private func showNewMessageFloatyView(messageId: String) {
-        actionBar = nil
 
-        let floatyView = customView.showNewMessageFloatyView(messageId: messageId) { [weak self] in
-            self?.showActionBar()
-        }
+        let floatyView = customView.showNewMessageFloatyView(messageId: messageId, didHide: {})
 
         floatyView.handleTapAction { [weak self] in
             guard let index = self?.viewModel.messagesDataSource

@@ -2043,6 +2043,7 @@
 		C69639437017F9E7D55DCF7153DC2BB7 /* LabelUpdate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E339161AB614E4FEE415473D46117E /* LabelUpdate+Extension.swift */; };
 		C69BDC7D126633ADB7E3AFFE2CCC48CE /* DohCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B470D1D774DD3F627DAC6725667CF707 /* DohCacheProtocol.swift */; };
 		C6BB1053BD4ECF210D9603A19E96D604 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
+		C70760DA9CA41E2AED35553465B4BB7E /* PMToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AF6C4D66A6828DEF217EB1750F6B7E /* PMToolBarView.swift */; };
 		C70877A95E020CDB36CB0FF1113496C1 /* SettingsConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA55C9C26817BF3D6867F37A4867A15 /* SettingsConversationViewController.swift */; };
 		C71A14AB2F7E14B30707436C6B67675A /* LabelPaletteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A61E816F0ED28BADCC9E2D6B4D490A87 /* LabelPaletteCell.xib */; };
 		C7453A9C5F74E3338FAAD6A2B2AA2A78 /* Saver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C1156C63FF770665F22A72C0E6462 /* Saver.swift */; };
@@ -2120,6 +2121,7 @@
 		CD09B055AC75AB73F98CD039C1DD6847 /* SwipeActionLeftToRightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9CF3527172D409CB88A0F7E6804714 /* SwipeActionLeftToRightTableViewCell.swift */; };
 		CD3101D13A8492585D2803C8A3D19579 /* ContactCollectionViewContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969E254553B2D3B139F9689BDF62BAE1 /* ContactCollectionViewContactCell.swift */; };
 		CD363AB14F086A2C9C56132A0F944DDA /* NotificationsSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9250CDB4D28C069EF3344225BBC3F04B /* NotificationsSnoozerCore.swift */; };
+		CD36C45B0A429EE4B1AB2B3D71A27799 /* PMToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AF6C4D66A6828DEF217EB1750F6B7E /* PMToolBarView.swift */; };
 		CD497B31BF3832C2AECAC46A01C6D865 /* MultiuserManagementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D221102E545202208AFDCC449DF0D12 /* MultiuserManagementTests.swift */; };
 		CD5FB8A0100858CC555A3F920FD4853A /* UInt8+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88611299B9671FB8C9EC5B915B8DD4CC /* UInt8+Mime.swift */; };
 		CD70DC8C8C868BDE04EB69F088091F97 /* LinkOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA8E8BA202ACC845541D5E39C35123 /* LinkOpener.swift */; };
@@ -2792,6 +2794,7 @@
 		0214F4524AF2E8823C6C57E07A7C305A /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
 		02635A572CAAECCED7BCF09361710C5D /* ActionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionLabel.swift; sourceTree = "<group>"; };
 		0274395474CC1045787FCCB2815446EB /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
+		02AF6C4D66A6828DEF217EB1750F6B7E /* PMToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMToolBarView.swift; sourceTree = "<group>"; };
 		02B6812FEE872872B6EB518FFEE27F80 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = pt; path = ../../ProtonMail/pt.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		02B874B017458C7227D9E2D4617DD04D /* Pods_SiriDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SiriDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02BD109C39C8106DA44E9478193995A5 /* SettingsNetworkViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsNetworkViewModelTests.swift; path = ProtonMailTests/ProtonMailCommon/ViewModels/SettingsNetworkViewModelTests.swift; sourceTree = SOURCE_ROOT; };
@@ -5524,6 +5527,7 @@
 			isa = PBXGroup;
 			children = (
 				80D26380718FE7E0D381631A77577CFE /* TagsView */,
+				02AF6C4D66A6828DEF217EB1750F6B7E /* PMToolBarView.swift */,
 				41F2F4631792B6713DFD0DAA6E7145A2 /* TextControl.swift */,
 				53C34003B5808656BAF7A30D8731133C /* UILabel+InitialsLabel.swift */,
 			);
@@ -9048,6 +9052,7 @@
 				67C2E60EE0AF36F0488E40BFE5F2C8F3 /* PMNIBirthday+FormattedBirthday.swift in Sources */,
 				78DD152928F92BDE0C16B04B1FFD09AC /* PMPersistentQueue.swift in Sources */,
 				8A62FB13921F809603CE89DC412DEEB3 /* PMSideMenuController.swift in Sources */,
+				CD36C45B0A429EE4B1AB2B3D71A27799 /* PMToolBarView.swift in Sources */,
 				6E1200F91B4E11BC5955542B532E0FF8 /* PMView.swift in Sources */,
 				EDA34469508C3DCC374989DA1E621103 /* PMWebView.swift in Sources */,
 				F16A4F25462928A9D1DFA2207FD80A61 /* PaddingLabel.swift in Sources */,
@@ -9817,6 +9822,7 @@
 				E594A340920FC26D6B8BD342D744041E /* PMNIBirthday+FormattedBirthday.swift in Sources */,
 				9DE9756BC074596DF0AAF8D3291BB397 /* PMPersistentQueue.swift in Sources */,
 				6351CB6CBF289DB145E3DD9465064E14 /* PMSideMenuController.swift in Sources */,
+				C70760DA9CA41E2AED35553465B4BB7E /* PMToolBarView.swift in Sources */,
 				55EB2659F5F57DFEEB4BACF5EAF166E3 /* PMView.swift in Sources */,
 				0AD99F38855CD71A83F1626597D6C604 /* PMWebView.swift in Sources */,
 				8BFA8618A6422D80A4D39E1B5839C527 /* PaddingLabel.swift in Sources */,

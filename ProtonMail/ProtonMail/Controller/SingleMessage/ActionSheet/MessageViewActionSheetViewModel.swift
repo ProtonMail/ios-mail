@@ -28,9 +28,6 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
         self.title = title
 
         items.append(contentsOf: [
-            .reply,
-            .replyAll,
-            .forward,
             .markUnread,
             .labelAs
         ])

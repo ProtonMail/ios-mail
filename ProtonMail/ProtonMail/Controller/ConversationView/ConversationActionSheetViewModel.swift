@@ -27,11 +27,6 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
     init(title: String, labelID: String, isUnread: Bool, isStarred: Bool, isAllMessagesInTrash: Bool) {
         self.title = title
 
-        items.append(contentsOf: [
-            .reply,
-            .replyAll,
-            .forward
-        ])
         items.append(isUnread ? .markRead : .markUnread)
         items.append(isStarred ? .unstar : .star)
         items.append(.labelAs)
