@@ -23,6 +23,58 @@ extension Array {
     }
 }
 
+enum EncryptedSearchIndexingState {
+    case new, finished, error
+}
+
+public class EncryptedSearchMessageState {
+    var state = EncryptedSearchIndexingState.new
+    var message: Message? = nil
+    let messageID: String
+    
+    init(id: String) {
+        self.messageID = id
+    }
+}
+
+public class IndexSingleMessageWorker: Operation {
+    let encryptedSearchMessageState: EncryptedSearchMessageState
+
+    init(_ state: EncryptedSearchMessageState) {
+        self.encryptedSearchMessageState = state
+    }
+
+    public override func main() {
+        if isCancelled {
+            return
+        }
+
+        /*EncryptedSearchService.shared.getMessage(self.encryptedSearchMessageState.messageID, completionHandler: { message in
+            self.encryptedSearchMessageState.message = message!
+            self.encryptedSearchMessageState.state = .objectFetched
+        })*/
+        
+        EncryptedSearchService.shared.getMessage(self.encryptedSearchMessageState.messageID) { message in
+            EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: message!) { messageWithDetails in
+                EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails!) {
+                    //print("Message \(messageID) sucessfully processed!")
+                    self.encryptedSearchMessageState.state = .finished
+                }
+            }
+        }
+    }
+}
+
+public class PendingOperations {
+    lazy var messageIndexingInProgress: [String:Operation] = [:]
+    lazy var messageIndexingQueue: OperationQueue = {
+        var queue = OperationQueue()
+        queue.name = "Message Indexing Queue"
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+}
+
 public class EncryptedSearchService {
     //instance of Singleton
     static let shared = EncryptedSearchService()
@@ -54,6 +106,8 @@ public class EncryptedSearchService {
     internal var searchState: EncryptedsearchSearchState? = nil
     internal var indexBuildingInProcess: Bool = false
     internal var eventsWhileIndexing: [MessageAction]? = []
+    
+    internal var pendingOperations = PendingOperations()
 
     @available(iOS 12.0, *)
     internal static var monitorInternetConnectivity: NWPathMonitor? {
@@ -351,6 +405,53 @@ extension EncryptedSearchService {
         }
     }
     
+    func processPageOneByOne(forBatch messageIDs: NSMutableArray, completionHandler: @escaping () -> Void) -> Void {
+        //TODO spin up 50 threads and process messages one-by-one
+        
+        var messagesToProcess: [EncryptedSearchMessageState] = []
+        
+        for id in messageIDs {
+            let state = EncryptedSearchMessageState(id: id as! String)
+            messagesToProcess.append(state)
+        }
+        
+        for m in messagesToProcess {
+            switch (m.state) {
+            case .new:
+                self.startIndexing(for: m)
+            case .finished:
+                print("TODO")
+            case .error:
+                print("error")
+            //default:
+            //    print("default case!")
+            }
+        }
+        
+        //this would block the main thread and cause it to freeze
+        self.pendingOperations.messageIndexingQueue.waitUntilAllOperationsAreFinished()
+    }
+    
+    func startIndexing(for message: EncryptedSearchMessageState){
+        //if there is already a operation in progress then return
+        guard self.pendingOperations.messageIndexingInProgress[message.messageID] == nil else {
+            return
+        }
+        
+        let indexingWorker = IndexSingleMessageWorker(message)
+        indexingWorker.completionBlock = {
+            if indexingWorker.isCancelled {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.pendingOperations.messageIndexingInProgress.removeValue(forKey: message.messageID)
+            }
+        }
+        self.pendingOperations.messageIndexingInProgress[message.messageID] = indexingWorker
+        self.pendingOperations.messageIndexingQueue.addOperation(indexingWorker)
+    }
+    
     func getMessageIDs(_ response: [String:Any]?) -> NSMutableArray {
         let messages:NSArray = response!["Messages"] as! NSArray
         
@@ -447,8 +548,20 @@ extension EncryptedSearchService {
             }
         }
     }
+    
+    func getMessageDetailsForSingleMessage(for message: Message, completionHandler: @escaping (Message?) -> Void) -> Void {
+        self.messageService.fetchMessageDetailForMessage(message, labelID: Message.Location.allmail.rawValue) { _, _, _, error in
+            if error == nil {
+                self.getMessage(message.messageID) { messageWithDetails in
+                    completionHandler(messageWithDetails)
+                }
+            } else {
+                print("Error when fetching message details: \(String(describing: error))")
+            }
+        }
+    }
 
-    private func getMessage(_ messageID: String, completionHandler: @escaping (Message?) -> Void) -> Void {
+    func getMessage(_ messageID: String, completionHandler: @escaping (Message?) -> Void) -> Void {
         let fetchedResultsController = self.messageService.fetchedMessageControllerForID(messageID)
         
         if let fetchedResultsController = fetchedResultsController {
@@ -556,6 +669,25 @@ extension EncryptedSearchService {
                 completionHandler()
             }
         }
+    }
+    
+    func decryptAndExtractDataSingleMessage(for message: Message, completionHandler: @escaping () -> Void) -> Void {
+        var body: String? = ""
+        var decryptionFailed: Bool = true
+        do {
+            body = try self.messageService.decryptBodyIfNeeded(message: message)
+            decryptionFailed = false
+        } catch {
+            print("Error when decrypting messages: \(error).")
+        }
+        
+        let emailContent: String = HTMLEmailParser.EmailparserExtractData(body!, true)
+        let encryptedContent: EncryptedsearchEncryptedMessageContent? = self.createEncryptedContent(message: message, cleanedBody: emailContent)
+        
+        //connect to search index database
+        let _ = EncryptedSearchIndexService.shared.connectToSearchIndex(user.userInfo.userId)
+        self.addMessageKewordsToSearchIndex(message, encryptedContent, decryptionFailed)
+        completionHandler()
     }
     
     func extractKeywordsFromBody(bodyOfEmail body: String, _ removeQuotes: Bool = true) -> String {
