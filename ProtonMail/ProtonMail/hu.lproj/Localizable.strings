@@ -1128,7 +1128,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Az iOS alkalmazásban nem lehet erre váltani: %@.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Nem lehetséges az app-on belül előfizetést váltani. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Nem lehetséges az app-on belül előfizetést váltani. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Tájékoztasson az új funkciókról";

@@ -1128,7 +1128,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Non è possibile passare a %@ nella nostra app iOS.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Non è possibile cambiare piano all'interno dell'app. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Non è possibile cambiare piano all'interno dell'app. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Mantenermi aggiornato sulle nuove funzionalità";
