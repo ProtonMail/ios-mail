@@ -586,6 +586,9 @@ private extension ConversationViewController {
             coordinator.handle(navigationAction: .inAppSafari(url: url))
         case .mailToUrl(let url):
             coordinator.handle(navigationAction: .mailToUrl(url: url))
+        case .forward(let messageId):
+            guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
+            coordinator.handle(navigationAction: .forward(message: message))
         default:
             break
         }

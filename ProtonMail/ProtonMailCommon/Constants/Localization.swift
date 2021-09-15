@@ -497,7 +497,7 @@ class LocalizedString {
     /// "Reply"
     lazy var _general_reply_button    = NSLocalizedString("Reply", comment: "reply action")
     /// "Reply All"
-    lazy var _general_replyall_button = NSLocalizedString("Reply All", comment: "reply all action")
+    lazy var _general_replyall_button = NSLocalizedString("Reply all", comment: "reply all action")
     /// "Forward"
     lazy var _general_forward_button  = NSLocalizedString("Forward", comment: "forward action")
     /// "From:"
