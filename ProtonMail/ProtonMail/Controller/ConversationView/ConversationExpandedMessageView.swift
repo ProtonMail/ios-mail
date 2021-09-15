@@ -11,7 +11,7 @@ class ConversationExpandedMessageView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = UIColorManager.BackgroundSecondary
         addSubviews()
         setUpLayout()
         setUpActions()
@@ -25,17 +25,17 @@ class ConversationExpandedMessageView: UIView {
 
     private func setUpLayout() {
         [
-            topArrowControl.topAnchor.constraint(equalTo: topAnchor, constant: 2),
+            topArrowControl.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             topArrowControl.leadingAnchor.constraint(equalTo: leadingAnchor),
             topArrowControl.trailingAnchor.constraint(equalTo: trailingAnchor),
             topArrowControl.heightAnchor.constraint(equalToConstant: 64)
         ].activate()
 
         [
-            contentContainer.topAnchor.constraint(equalTo: topAnchor, constant: 22),
+            contentContainer.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             contentContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2)
+            contentContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4)
         ].activate()
 
         [
@@ -77,6 +77,8 @@ private enum SubviewsFactory {
     static var container: UIView {
         let view = UIView(frame: .zero)
         view.backgroundColor = UIColorManager.BackgroundNorm
+        view.layer.cornerRadius = 20
+        view.layer.apply(shadow: .custom(y: 1))
         return view
     }
 
