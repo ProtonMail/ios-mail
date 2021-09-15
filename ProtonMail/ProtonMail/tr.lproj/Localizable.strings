@@ -1128,7 +1128,7 @@
 "It is not possible to switch to %@ within our iOS app." = "iOS uygulamamız içerisinde %@ planına geçmek mümkün değildir.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Uygulama üzerinden başka bir tarifeye geçmek mümkün değildir. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Uygulama üzerinden başka bir tarifeye geçmek mümkün değildir. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Beni yeni özellikler hakkında bilgilendirmeye devam et";

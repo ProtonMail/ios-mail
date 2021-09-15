@@ -1128,7 +1128,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Il n'est pas possible de passer à %@ depuis notre application iOS.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Il n'est pas possible de basculer vers une autre offre depuis l'application. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Il n'est pas possible de basculer vers une autre offre depuis l'application. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "M'informer des nouvelles fonctionnalités";

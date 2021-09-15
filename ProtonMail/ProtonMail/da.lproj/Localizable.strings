@@ -1128,7 +1128,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Det er ikke muligt at skifte til %@ i iOS-app'en.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Det er ikke muligt at svinge til et andet abonnement i appen. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Det er ikke muligt at svinge til et andet abonnement i appen. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Hold mig unnderrettet om nye funktioner";
