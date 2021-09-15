@@ -305,26 +305,7 @@ extension ConversationViewModel {
         }
     }
 
-    func getActionTypes() -> [MailboxViewModel.ActionTypes] {
-        var actions: [MailboxViewModel.ActionTypes] = []
-        if let newestMessage = messagesDataSource.newestMessage {
-            actions.append(newestMessage.isHavingMoreThanOneContact ? .replyAll : .reply)
-        } else {
-            // Fallback in case the newest message is not available yet
-            actions.append(.reply)
-        }
-        actions.append(.readUnread)
-        let deleteLocation = [
-            Message.Location.draft.rawValue,
-            Message.Location.spam.rawValue,
-            Message.Location.trash.rawValue
-        ]
-        actions.append(deleteLocation.contains(labelId) ? .delete : .trash)
-        actions.append(contentsOf: [.labelAs, .more])
-        return actions
-    }
-
-    func handleActionBarAction(_ action: MailboxViewModel.ActionTypes) {
+    func handleToolBarAction(_ action: MailboxViewModel.ActionTypes) {
         switch action {
         case .delete:
             conversationService.deleteConversations(with: [conversation.conversationID],

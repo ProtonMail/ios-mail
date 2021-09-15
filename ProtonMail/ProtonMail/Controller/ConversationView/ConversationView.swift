@@ -4,6 +4,7 @@ class ConversationView: UIView {
 
     let tableView = SubviewsFactory.tableView
     let separator = SubviewsFactory.separator
+    let toolBar = SubviewsFactory.toolBar
 
     init() {
         super.init(frame: .zero)
@@ -15,14 +16,25 @@ class ConversationView: UIView {
     private func addSubviews() {
         addSubview(tableView)
         addSubview(separator)
+        addSubview(toolBar)
     }
 
     private func setUpLayout() {
+        let bottomPadding = UIDevice.safeGuide.bottom
+        let height = 56.0 + bottomPadding
+
+        [
+            toolBar.leadingAnchor.constraint(equalTo: leadingAnchor),
+            toolBar.trailingAnchor.constraint(equalTo: trailingAnchor),
+            toolBar.bottomAnchor.constraint(equalTo: bottomAnchor),
+            toolBar.heightAnchor.constraint(equalToConstant: height)
+        ].activate()
+
         [
             tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: toolBar.topAnchor)
         ].activate()
 
         [
@@ -72,4 +84,8 @@ private enum SubviewsFactory {
         return view
     }
 
+    static var toolBar: PMToolBarView {
+        let toolbar = PMToolBarView()
+        return toolbar
+    }
 }

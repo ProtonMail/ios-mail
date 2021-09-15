@@ -50,7 +50,6 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
     private(set) lazy var customView = SingleMessageView()
 
     private lazy var actionSheetPresenter = MessageViewActionSheetPresenter()
-    private var actionBar: PMActionBar?
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
 
@@ -74,8 +73,8 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         setUpSelf()
         embedChildren()
         emptyBackButtonTitleForNextView()
-        showActionBar()
 
+        setUpToolBar()
         starBarButton.isAccessibilityElement = true
         starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }
@@ -152,53 +151,63 @@ private extension SingleMessageViewController {
         }
     }
 
-    private func showActionBar() {
-        guard self.actionBar == nil else { return }
+    private func setUpToolBar() {
+        customView.toolBar.setUpUnreadAction(target: self, action: #selector(self.unreadReadAction))
+        customView.toolBar.setUpTrashAction(target: self, action: #selector(self.trashAction))
+        customView.toolBar.setUpMoveToAction(target: self, action: #selector(self.moveToAction))
+        customView.toolBar.setUpLabelAsAction(target: self, action: #selector(self.labelAsAction))
+        customView.toolBar.setUpMoreAction(target: self, action: #selector(self.moreButtonTapped))
+        customView.toolBar.setUpDeleteAction(target: self, action: #selector(self.deleteAction))
 
-        let actions = viewModel.getActionTypes()
-        var actionBarItems: [PMActionBarItem] = []
-        for (key, action) in actions.enumerated() {
-            let actionHandler: (PMActionBarItem) -> Void = { [weak self] _ in
-                switch action {
-                case .more:
-                    self?.moreButtonTapped()
-                case .reply:
-                    self?.coordinator.navigate(to: .reply(messageId: self?.viewModel.message.messageID ?? .empty))
-                case .replyAll:
-                    self?.coordinator.navigate(to: .replyAll(messageId: self?.viewModel.message.messageID ?? .empty))
-                case .delete:
-                    self?.showDeleteAlert(deleteHandler: { [weak self] _ in
-                        self?.viewModel.handleActionBarAction(action)
-                        self?.navigationController?.popViewController(animated: true)
-                    })
-                case .labelAs:
-                    self?.showLabelAsActionSheet()
-                default:
-                    self?.viewModel.handleActionBarAction(action)
-                    self?.navigationController?.popViewController(animated: true)
-                }
-            }
-
-            let actionBarItem: PMActionBarItem
-            if key == actions.startIndex {
-                actionBarItem = PMActionBarItem(icon: action.iconImage,
-                                                text: action.name,
-                                                handler: actionHandler)
-            } else {
-                actionBarItem = PMActionBarItem(icon: action.iconImage,
-                                                backgroundColor: .clear,
-                                                handler: actionHandler)
-            }
-            actionBarItems.append(actionBarItem)
+        if viewModel.labelId == Message.Location.spam.rawValue || viewModel.labelId == Message.Location.trash.rawValue {
+            customView.toolBar.trashButtonView.removeFromSuperview()
+        } else {
+            customView.toolBar.deleteButtonView.removeFromSuperview()
         }
-        let separator = PMActionBarItem(width: 1, verticalPadding: 6, color: UIColorManager.FloatyText)
-        actionBarItems.insert(separator, at: 1)
-        self.actionBar = PMActionBar(items: actionBarItems,
-                                     backgroundColor: UIColorManager.FloatyBackground,
-                                     floatingHeight: 42.0,
-                                     width: .fit,
-                                     height: 48.0)
-        self.actionBar?.show(at: self)
+    }
+
+    @objc
+    private func trashAction() {
+        viewModel.handleToolBarAction(.trash)
+        navigationController?.popViewController(animated: true)
+    }
+
+    @objc
+    private func unreadReadAction() {
+        viewModel.handleToolBarAction(.readUnread)
+        navigationController?.popViewController(animated: true)
+    }
+
+    @objc
+    private func moveToAction() {
+        showMoveToActionSheet()
+    }
+
+    @objc
+    private func labelAsAction() {
+        showLabelAsActionSheet()
+    }
+
+    @objc
+    private func deleteAction() {
+        showDeleteAlert(deleteHandler: { [weak self] _ in
+            self?.viewModel.handleToolBarAction(.delete)
+            self?.navigationController?.popViewController(animated: true)
+        })
+    }
+
+    @objc
+    private func moreButtonTapped() {
+        guard let navigationVC = self.navigationController else { return }
+        let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.subject,
+                                                                   labelID: viewModel.labelId,
+                                                                   includeStarring: false,
+                                                                   isStarred: viewModel.message.starred)
+        actionSheetPresenter.present(on: navigationVC,
+                                     listener: self,
+                                     viewModel: actionSheetViewModel) { [weak self] action in
+            self?.handleActionSheetAction(action)
+        }
     }
 
     private func showDeleteAlert(deleteHandler: ((UIAlertAction) -> Void)?) {
@@ -219,19 +228,6 @@ private extension SingleMessageViewController {
         alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: { _ in }))
         alert.addAction(.init(title: LocalString._general_confirm_action, style: .default, handler: reportHandler))
         self.present(alert, animated: true, completion: nil)
-    }
-
-    private func moreButtonTapped() {
-        guard let navigationVC = self.navigationController else { return }
-        let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.subject,
-                                                                   labelID: viewModel.labelId,
-                                                                   includeStarring: false,
-                                                                   isStarred: viewModel.message.starred)
-        actionSheetPresenter.present(on: navigationVC,
-                                     listener: self,
-                                     viewModel: actionSheetViewModel) { [weak self] action in
-            self?.handleActionSheetAction(action)
-        }
     }
 
 }

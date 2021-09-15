@@ -93,21 +93,7 @@ class SingleMessageViewModel {
         messageService.label(messages: [message], label: Message.Location.starred.rawValue, apply: !message.starred)
     }
 
-    func getActionTypes() -> [MailboxViewModel.ActionTypes] {
-        var actions: [MailboxViewModel.ActionTypes] = []
-        actions.append(message.isHavingMoreThanOneContact ? .replyAll : .reply)
-        actions.append(.readUnread)
-        let deleteLocation = [
-            Message.Location.draft.rawValue,
-            Message.Location.spam.rawValue,
-            Message.Location.trash.rawValue
-        ]
-        actions.append(deleteLocation.contains(labelId) ? .delete : .trash)
-        actions.append(contentsOf: [.labelAs, .more])
-        return actions
-    }
-
-    func handleActionBarAction(_ action: MailboxViewModel.ActionTypes) {
+    func handleToolBarAction(_ action: MailboxViewModel.ActionTypes) {
         switch action {
         case .delete:
             messageService.delete(messages: [message], label: labelId)
