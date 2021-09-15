@@ -79,27 +79,41 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func setUpFooterButtons() {
-        customView.footerButtons.isHidden = viewModel.context.viewMode != .conversation
-        let image = viewModel.message.isHavingMoreThanOneContact ?
-            Asset.replyAllButtonIcon.image : Asset.replyButtonIcon.image
-        customView.footerButtons.replyButton.setImage(image, for: .normal)
+        if !viewModel.message.isHavingMoreThanOneContact {
+            customView.footerButtons.replyAllButton.removeFromSuperview()
+        } else {
+            customView.footerButtons.replyAllButton.tap = { [weak self] in
+                self?.replyAllButtonTapped()
+            }
+        }
 
-        if viewModel.context.viewMode == .conversation {
-            customView.footerButtons.replyButton
-                .addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
-            customView.footerButtons.moreButton
-                .addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
+        customView.footerButtons.replyButton.tap = { [weak self] in
+            self?.replyButtonTapped()
+        }
+        customView.footerButtons.forwardButton.tap = { [weak self] in
+            self?.forwardButtonTapped()
         }
     }
 
-    @objc private func replyButtonTapped() {
+    private func replyButtonTapped() {
         let messageId = viewModel.message.messageID
-        let action: SingleMessageNavigationAction = viewModel.message.isHavingMoreThanOneContact ?
-            .replyAll(messageId: messageId) : .reply(messageId: messageId)
+        let action: SingleMessageNavigationAction = .reply(messageId: messageId)
         navigationAction(action)
     }
 
-    @objc private func moreButtonTapped() {
+    private func replyAllButtonTapped() {
+        let messageId = viewModel.message.messageID
+        let action = SingleMessageNavigationAction.replyAll(messageId: messageId)
+        navigationAction(action)
+    }
+
+    private func forwardButtonTapped() {
+        let messageId = viewModel.message.messageID
+        let action = SingleMessageNavigationAction.forward(messageId: messageId)
+        navigationAction(action)
+    }
+
+    private func moreButtonTapped() {
         navigationAction(.more(messageId: viewModel.message.messageID))
     }
 

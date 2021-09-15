@@ -3,8 +3,10 @@ import ProtonCore_UIFoundations
 
 class SingleMessageFooterButtons: UIView {
 
-    let moreButton = SubviewsFactory.moreButton
+    let stackView = SubviewsFactory.stackView
     let replyButton = SubviewsFactory.replyButton
+    let replyAllButton = SubviewsFactory.replyAllButton
+    let forwardButton = SubviewsFactory.forwardButton
 
     init() {
         super.init(frame: .zero)
@@ -13,25 +15,18 @@ class SingleMessageFooterButtons: UIView {
     }
 
     private func addSubviews() {
-        addSubview(moreButton)
-        addSubview(replyButton)
+        addSubview(stackView)
+        stackView.addArrangedSubview(replyButton)
+        stackView.addArrangedSubview(replyAllButton)
+        stackView.addArrangedSubview(forwardButton)
     }
 
     private func setUpLayout() {
         [
-            moreButton.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            moreButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            moreButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
-            moreButton.leadingAnchor.constraint(equalTo: replyButton.trailingAnchor, constant: 10),
-            moreButton.heightAnchor.constraint(equalToConstant: 24),
-            moreButton.widthAnchor.constraint(equalToConstant: 24)
-        ].activate()
-
-        [
-            replyButton.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            replyButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
-            replyButton.heightAnchor.constraint(equalToConstant: 24),
-            replyButton.widthAnchor.constraint(equalToConstant: 24)
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12.0),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12.0),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12.0)
         ].activate()
     }
 
@@ -43,16 +38,32 @@ class SingleMessageFooterButtons: UIView {
 
 private enum SubviewsFactory {
 
-    static var moreButton: UIButton {
-        let button = UIButton(image: Asset.dotsButtonIcon.image)
-        button.tintColor = UIColorManager.InteractionNorm
+    static var stackView: UIStackView {
+        let view = UIStackView()
+        view.distribution = .fillEqually
+        view.axis = .horizontal
+        view.spacing = 8
+        return view
+    }
+
+    static var replyButton: MailButton {
+        let button = MailButton()
+        button.icon = Asset.mailReply.image
+        button.title = LocalString._general_reply_button
         return button
     }
 
-    static var replyButton: UIButton {
-        let button = UIButton(frame: .zero)
-        button.tintColor = UIColorManager.InteractionNorm
+    static var replyAllButton: MailButton {
+        let button = MailButton()
+        button.icon = Asset.mailReplyAll.image
+        button.title = LocalString._general_replyall_button
         return button
     }
 
+    static var forwardButton: MailButton {
+        let button = MailButton()
+        button.icon = Asset.mailForward.image
+        button.title = LocalString._general_forward_button
+        return button
+    }
 }

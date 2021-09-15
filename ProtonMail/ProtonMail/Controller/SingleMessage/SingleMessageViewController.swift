@@ -274,7 +274,7 @@ private extension SingleMessageViewController {
         case .replyAll:
             coordinator.navigate(to: .replyAll(messageId: viewModel.message.messageID))
         case .forward:
-            coordinator.navigate(to: .forward)
+            coordinator.navigate(to: .forward(messageId: viewModel.message.messageID))
         default:
             return
         }

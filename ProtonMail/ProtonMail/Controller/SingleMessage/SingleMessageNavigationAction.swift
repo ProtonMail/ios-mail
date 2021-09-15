@@ -27,7 +27,7 @@ enum SingleMessageNavigationAction: Equatable {
     case viewHTML(url: URL?)
     case reply(messageId: String)
     case replyAll(messageId: String)
-    case forward
+    case forward(messageId: String)
     case attachmentList(messageId: String, decryptedBody: String?)
     case url(url: URL)
     case inAppSafari(url: URL)
@@ -49,4 +49,8 @@ extension SingleMessageNavigationAction {
         return true
     }
 
+    var isForwardAction: Bool {
+        guard case .forward(_) = self else { return false }
+        return true
+    }
 }
