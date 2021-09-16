@@ -13,6 +13,7 @@ import SQLite
 import Crypto
 import CryptoKit
 import Network
+import Groot
 
 extension Array {
     func chunks(_ chunkSize: Int) -> [[Element]] {
@@ -22,7 +23,7 @@ extension Array {
     }
 }
 
-enum EncryptedSearchIndexingState {
+/*enum EncryptedSearchIndexingState {
     case new, finished, error
 }
 
@@ -48,15 +49,18 @@ public class IndexSingleMessageWorker: Operation {
             return
         }
 
-        /*EncryptedSearchService.shared.getMessage(self.encryptedSearchMessageState.messageID, completionHandler: { message in
-            self.encryptedSearchMessageState.message = message!
-            self.encryptedSearchMessageState.state = .objectFetched
-        })*/
+        //EncryptedSearchService.shared.getMessage(self.encryptedSearchMessageState.messageID, completionHandler: { message in
+        //    self.encryptedSearchMessageState.message = message!
+        //    self.encryptedSearchMessageState.state = .objectFetched
+        //})
         
+        print("processing message: \(self.encryptedSearchMessageState.messageID)")
         EncryptedSearchService.shared.getMessage(self.encryptedSearchMessageState.messageID) { message in
+            print("Message fetched: \(message!.messageID)")
             EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: message!) { messageWithDetails in
+                print("Message detailes downloaded: \(messageWithDetails!.isDetailDownloaded)")
                 EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails!) {
-                    //print("Message \(messageID) sucessfully processed!")
+                    print("Message \(self.encryptedSearchMessageState.messageID) sucessfully processed!")
                     self.encryptedSearchMessageState.state = .finished
                 }
             }
@@ -72,6 +76,91 @@ public class PendingOperations {
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
+}*/
+
+open class IndexSingleMessageAsyncOperation: Operation {
+    public enum State: String {
+        case ready = "Ready"
+        case executing = "Executing"
+        case finished = "Finished"
+        fileprivate var keyPath: String { return "is" + self.rawValue }
+    }
+    private var stateStore: State = .ready
+    private let stateQueue = DispatchQueue(label: "Async State Queue", attributes: .concurrent)
+    public var state: State {
+        get {
+            stateQueue.sync {
+                return stateStore
+            }
+        }
+        set {
+            let oldValue = state
+            willChangeValue(forKey: state.keyPath)
+            willChangeValue(forKey: newValue.keyPath)
+            stateQueue.sync(flags: .barrier) {
+                stateStore = newValue
+            }
+            didChangeValue(forKey: state.keyPath)
+            didChangeValue(forKey: oldValue.keyPath)
+        }
+    }
+    public let messageID: String
+    
+    init(_ messageID: String) {
+        self.messageID = messageID
+    }
+    
+    public override var isAsynchronous: Bool {
+        return true
+    }
+    
+    public override var isExecuting: Bool {
+        return state == .executing
+    }
+    
+    public override var isFinished: Bool {
+        return state == .finished
+    }
+    
+    public override func start() {
+        if self.isCancelled {
+            state = .finished
+        } else {
+            state = .ready
+            main()
+        }
+    }
+    
+    public override func main() {
+        if self.isCancelled {
+            state = .finished
+        } else {
+            state = .executing
+        }
+        
+        //print("processing message: \(self.messageID)")
+        EncryptedSearchService.shared.getMessage(self.messageID) { message in
+            //print("Message fetched: \(message!.messageID), details: \(message!.isDetailDownloaded)")
+            EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: message!) { messageWithDetails in
+                //print("Message detailes downloaded: \(messageWithDetails!.isDetailDownloaded)")
+                EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails!) {
+                    //print("Message \(self.messageID) sucessfully processed!")
+                    EncryptedSearchService.shared.processedMessages += 1    //increase count of processed messages
+                    self.state = .finished
+                    
+                    //Update UI progress bar
+                    DispatchQueue.main.async {
+                        EncryptedSearchService.shared.updateIndexBuildingProgress(processedMessages: EncryptedSearchService.shared.processedMessages)
+                        //EncryptedSearchService.shared.updateMemoryConsumption()
+                    }
+                }
+            }
+        }
+    }
+    
+    public func finish() {
+        state = .finished
+    }
 }
 
 public class EncryptedSearchService {
@@ -106,7 +195,7 @@ public class EncryptedSearchService {
     internal var indexBuildingInProcess: Bool = false
     internal var eventsWhileIndexing: [MessageAction]? = []
     
-    internal var pendingOperations = PendingOperations()
+    //internal var pendingOperations = PendingOperations()
 
     @available(iOS 12.0, *)
     internal static var monitorInternetConnectivity: NWPathMonitor? {
@@ -133,26 +222,24 @@ extension EncryptedSearchService {
         self.viewModel = viewModel
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
         self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
-        //Run code in the background
-        DispatchQueue.global(qos: .userInitiated).async {
-            NSLog("Check total number of messages on the backend")
-            self.getTotalMessages() {
-                print("Total messages: ", self.totalMessages)
-                
-                //if search index already build, and there are no new messages we can return here
-                if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
-                    print("Search index already exists for user!")
-                    //check if search index needs updating
-                    if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.user.userInfo.userId) == self.totalMessages {
-                        print("Search index already contains all available messages.")
-                        //self.view?.viewModel.isEncryptedSearch = true
-                        self.viewModel?.isEncryptedSearch = true
-                        self.indexBuildingInProcess = false
-                        return
-                    }
+
+        self.getTotalMessages() {
+            print("Total messages: ", self.totalMessages)
+
+            //if search index already build, and there are no new messages we can return here
+            if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
+                print("Search index already exists for user!")
+                //check if search index needs updating
+                if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.user.userInfo.userId) == self.totalMessages {
+                    print("Search index already contains all available messages.")
+                    self.viewModel?.isEncryptedSearch = true
+                    self.indexBuildingInProcess = false
+                    return
                 }
+            }
                 
-                //build search index completely new
+            //build search index completely new
+            DispatchQueue.global(qos: .userInitiated).async {
                 self.downloadAllMessagesAndBuildSearchIndex(){
                     //Search index build -> update progress bar to finished?
                     print("Finished building search index!")
@@ -164,7 +251,6 @@ extension EncryptedSearchService {
                     self.printTiming("Extracting Data", for: self.timingsExtractData)
                     self.printTiming("Create Encrypted Content", for: self.timingsCreateEncryptedContent)
                     self.printTiming("Writing to Database", for: self.timingsWriteToDatabase)
-                    
                     self.printTiming("Parse Body", for: self.timingsParseBody)
                     self.printTiming("Remove Elements", for: self.timingsRemoveElements)
                     self.printTiming("Parse Cleaned Content", for: self.timingsParseCleanedContent)
@@ -173,7 +259,6 @@ extension EncryptedSearchService {
                         self.updateMemoryConsumption()
                     }
                     
-                    //self.view?.viewModel.isEncryptedSearch = true
                     self.viewModel?.isEncryptedSearch = true
                     self.indexBuildingInProcess = false
                     return
@@ -320,10 +405,7 @@ extension EncryptedSearchService {
     // Downloads Messages and builds Search Index
     func downloadAllMessagesAndBuildSearchIndex(completionHandler: @escaping () -> Void) -> Void {
         self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) {
-            //Do a final fetch so that the mailbox is not empty - if force clean is set to true
-            //self.messageService.fetchMessages(byLabel: Message.Location.allmail.rawValue, time: 0, forceClean: false, isUnread: false){_,_,_ in
-                completionHandler()
-            //}
+            completionHandler()
         }
     }
 
@@ -340,11 +422,12 @@ extension EncryptedSearchService {
                 print("Process page...")
                 
                 //autoreleasepool {
-                    self.processPage(messagesBatch) {
+                    self.processPageOneByOne(forBatch: messagesBatch){
+                    //self.processPage(messagesBatch) {
                         print("Page successfull processed!")
 
                         //print memory usage per page
-                        self.updateMemoryConsumption()
+                        //self.updateMemoryConsumption()
                         
                         //print("Cleaning locale message cache!")
                         //TODO delete messages from cache - to avoid building up too much memory
@@ -354,7 +437,7 @@ extension EncryptedSearchService {
                         //self.updateMemoryConsumption()
                         
                         //update processed messages
-                        self.processedMessages += messagesBatch.count
+                        //self.processedMessages += messagesBatch.count
                         self.lastMessageTimeIndexed = self.getOldestMessageInMessageBatch(result)
 
                         group.leave()
@@ -405,33 +488,22 @@ extension EncryptedSearchService {
     }
     
     func processPageOneByOne(forBatch messageIDs: NSMutableArray, completionHandler: @escaping () -> Void) -> Void {
-        //TODO spin up 50 threads and process messages one-by-one
-        
-        var messagesToProcess: [EncryptedSearchMessageState] = []
-        
-        for id in messageIDs {
-            let state = EncryptedSearchMessageState(id: id as! String)
-            messagesToProcess.append(state)
-        }
-        
-        for m in messagesToProcess {
-            switch (m.state) {
-            case .new:
-                self.startIndexing(for: m)
-            case .finished:
-                print("TODO")
-            case .error:
-                print("error")
-            //default:
-            //    print("default case!")
+        //start a new thread to process the page
+        DispatchQueue.global(qos: .userInitiated).async {
+            let queue = OperationQueue()
+            //queue.maxConcurrentOperationCount = 1
+            
+            for id in messageIDs {
+                let op = IndexSingleMessageAsyncOperation(id as! String)
+                queue.addOperation(op)
             }
+            
+            queue.waitUntilAllOperationsAreFinished()
+            completionHandler()
         }
-        
-        //this would block the main thread and cause it to freeze
-        self.pendingOperations.messageIndexingQueue.waitUntilAllOperationsAreFinished()
     }
     
-    func startIndexing(for message: EncryptedSearchMessageState){
+    /*func startIndexing(for message: EncryptedSearchMessageState){
         //if there is already a operation in progress then return
         guard self.pendingOperations.messageIndexingInProgress[message.messageID] == nil else {
             return
@@ -449,7 +521,7 @@ extension EncryptedSearchService {
         }
         self.pendingOperations.messageIndexingInProgress[message.messageID] = indexingWorker
         self.pendingOperations.messageIndexingQueue.addOperation(indexingWorker)
-    }
+    }*/
     
     func getMessageIDs(_ response: [String:Any]?) -> NSMutableArray {
         let messages:NSArray = response!["Messages"] as! NSArray
@@ -518,6 +590,7 @@ extension EncryptedSearchService {
                 if error == nil {
                     //let mID: String = m.messageID
                     self.getMessage(m.messageID) { newMessage in
+                        //print("message: \(m.messageID), details: \(m.isDetailDownloaded)")
                         messagesWithDetails.add(newMessage!)
                         group.leave()
                     }
@@ -549,15 +622,26 @@ extension EncryptedSearchService {
     }
     
     func getMessageDetailsForSingleMessage(for message: Message, completionHandler: @escaping (Message?) -> Void) -> Void {
-        self.messageService.fetchMessageDetailForMessage(message, labelID: Message.Location.allmail.rawValue) { _, _, _, error in
+        self.messageService.fetchMessageDetailForMessage(message, labelID: Message.Location.allmail.rawValue) { _, response, newM, error in
             if error == nil {
-                self.getMessage(message.messageID) { messageWithDetails in
-                    completionHandler(messageWithDetails)
-                }
+                let messageWithDetails: Message? = self.parseMessageObjectFromResponse(for: (response?["Message"] as? [String:Any])!)
+                completionHandler(messageWithDetails)
             } else {
                 print("Error when fetching message details: \(String(describing: error))")
             }
         }
+    }
+    
+    private func parseMessageObjectFromResponse(for response: [String : Any]) -> Message? {
+        var message: Message? = nil
+        do {
+            message = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: response, in: self.messageService.coreDataService.operationContext) as? Message
+            message!.messageStatus = 1
+            message!.isDetailDownloaded = true
+        } catch {
+            print("Error when parsing message object: \(error)")
+        }
+        return message
     }
 
     func getMessage(_ messageID: String, completionHandler: @escaping (Message?) -> Void) -> Void {
@@ -635,6 +719,7 @@ extension EncryptedSearchService {
             self.timingsDecryptMessages.add(CFAbsoluteTimeGetCurrent())     // add start time
             var body: String? = ""
             do {
+                //print("DECRYPT: message: \((m as! Message).isDetailDownloaded)")
                 body = try self.messageService.decryptBodyIfNeeded(message: m as! Message)
                 decryptionFailed = false
             } catch {
