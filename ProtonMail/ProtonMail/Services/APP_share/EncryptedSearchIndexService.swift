@@ -22,9 +22,15 @@ public class EncryptedSearchIndexService {
         fileByteCountFormatter = ByteCountFormatter()
         fileByteCountFormatter?.allowedUnits = [.useMB]
         fileByteCountFormatter?.countStyle = .file
+
+        //create initial connection if not existing
+        let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: EncryptedSearchService.shared.user.userInfo.userId)
+        //create table
+        self.createSearchIndexTable(using: handleToSQliteDB!)
     }
     
-    internal var handleToSQliteDB: Connection?
+    internal var databaseConnections = [String:Connection?]()
+    //internal var handleToSQliteDB: Connection?
     internal var databaseSchema: DatabaseEntries
     internal var searchableMessages: Table
     
@@ -32,26 +38,25 @@ public class EncryptedSearchIndexService {
 }
 
 extension EncryptedSearchIndexService {
-    func connectToSearchIndex(_ userID: String) -> Connection? {
-        
+    func connectToSearchIndex(for userID: String) -> Connection? {
         if self.checkIfSearchIndexExists(for: userID) {
-            return self.handleToSQliteDB
+            if let connection = self.databaseConnections[userID] {
+                return connection
+            }
         }
         
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
         
         do {
-            self.handleToSQliteDB = try Connection(pathToDB)
+            let handleToSQliteDB = try Connection(pathToDB)
+            self.databaseConnections[userID] = handleToSQliteDB
             print("path to database: ", pathToDB)
         } catch {
             print("Create database connection. Unexpected error: \(error).")
         }
         
-        //create table
-        self.createSearchIndexTable()
-        
-        return self.handleToSQliteDB
+        return self.databaseConnections[userID]!
     }
     
     enum DatabaseConstants {
@@ -86,11 +91,11 @@ extension EncryptedSearchIndexService {
         var encryptedContentFile: Expression<String?> = Expression(value: nil)
     }
     
-    func createSearchIndexTable() -> Void {
+    func createSearchIndexTable(using handleToSQliteDB: Connection) -> Void {
         self.databaseSchema = DatabaseEntries(messageID: Expression<String>(DatabaseConstants.Column_Searchable_Message_Id), time: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Time), labelIDs: Expression<String>(DatabaseConstants.Column_Searchable_Message_Labels), isStarred: Expression<Bool?>(DatabaseConstants.Column_Searchable_Message_Is_Starred), unread: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Unread), location: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Location), order: Expression<CLong?>(DatabaseConstants.Column_Searchable_Message_Order), hasBody: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Has_Body), decryptionFailed: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Decryption_Failed), encryptionIV: Expression<Data?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV), encryptedContent: Expression<Data?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content), encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File))
         
         do {
-            try self.handleToSQliteDB?.run(self.searchableMessages.create(ifNotExists: true) {
+            try handleToSQliteDB.run(self.searchableMessages.create(ifNotExists: true) {
                 t in
                 t.column(self.databaseSchema.messageID, primaryKey: true)  //TODO set default value
                 t.column(self.databaseSchema.time, defaultValue: 0)
@@ -110,7 +115,7 @@ extension EncryptedSearchIndexService {
         }
     }
     
-    func addNewEntryToSearchIndex(messageID:String, time: Int, labelIDs: NSSet, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:Data, encryptedContent:Data, encryptedContentFile:String) -> Int64? {
+    func addNewEntryToSearchIndex(for userID: String, messageID:String, time: Int, labelIDs: NSSet, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:Data, encryptedContent:Data, encryptedContentFile:String) -> Int64? {
         
         var rowID:Int64? = -1
         var allLabels:String = ""
@@ -125,18 +130,20 @@ extension EncryptedSearchIndexService {
         
         do {
             let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID, self.databaseSchema.time <- time, self.databaseSchema.labelIDs <- allLabels, self.databaseSchema.isStarred <- isStarred, self.databaseSchema.unread <- unread, self.databaseSchema.location <- location, self.databaseSchema.order <- order, self.databaseSchema.hasBody <- hasBody, self.databaseSchema.decryptionFailed <- decryptionFailed, self.databaseSchema.encryptionIV <- encryptionIV, self.databaseSchema.encryptedContent <- encryptedContent, self.databaseSchema.encryptedContentFile <- encryptedContentFile)
-            rowID = try self.handleToSQliteDB?.run(insert!)
+            let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
+            rowID = try handleToSQliteDB?.run(insert!)
         } catch {
             print("Insert in Table. Unexpected error: \(error).")
         }
         return rowID
     }
     
-    func removeEntryFromSearchIndex(_ messageID: String){
+    func removeEntryFromSearchIndex(user userID: String, message messageID: String){
         let filter = self.searchableMessages.filter(self.databaseSchema.messageID == messageID)
         
         do {
-            if try (self.handleToSQliteDB?.run(filter.delete()))! > 0 {
+            let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
+            if try (handleToSQLiteDB?.run(filter.delete()))! > 0 {
                 print("sucessfully deleted message \(messageID) from search index")
             } else {
                 print("message \(messageID) not found in search index")
@@ -193,7 +200,7 @@ extension EncryptedSearchIndexService {
         }
         
         //connect to DB
-        let handleToDB: Connection? = self.connectToSearchIndex(userID)
+        let handleToDB: Connection? = self.connectToSearchIndex(for: userID)
         //check total number of rows in db
         do {
             numberOfEntries = try handleToDB?.scalar(self.searchableMessages.count)
@@ -206,8 +213,10 @@ extension EncryptedSearchIndexService {
     
     func deleteSearchIndex(for userID: String) -> Bool {
         //explicitly close connection to DB and then set handle to nil
-        sqlite3_close(self.handleToSQliteDB?.handle)
-        self.handleToSQliteDB = nil
+        var connection: Connection? = self.connectToSearchIndex(for: userID)
+        sqlite3_close(connection?.handle)
+        self.databaseConnections.removeValue(forKey: userID)
+        connection = nil
         
         //delete database on file
         let dbName: String = self.getSearchIndexName(userID)
