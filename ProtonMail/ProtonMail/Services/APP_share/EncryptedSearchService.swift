@@ -192,10 +192,15 @@ public class EncryptedSearchService {
     internal var cacheSearchResults: EncryptedsearchResultList? = nil
     internal var indexSearchResults: EncryptedsearchResultList? = nil
     internal var searchState: EncryptedsearchSearchState? = nil
-    internal var indexBuildingInProcess: Bool = false
+    internal var indexBuildingInProgress: Bool = false
     internal var eventsWhileIndexing: [MessageAction]? = []
     
-    //internal var pendingOperations = PendingOperations()
+    lazy var messageIndexingQueue: OperationQueue = {
+        var queue = OperationQueue()
+        queue.name = "Message Indexing Queue"
+        //queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
 
     @available(iOS 12.0, *)
     internal static var monitorInternetConnectivity: NWPathMonitor? {
@@ -218,7 +223,7 @@ public class EncryptedSearchService {
 extension EncryptedSearchService {
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Bool {
-        self.indexBuildingInProcess = true
+        self.indexBuildingInProgress = true
         self.viewModel = viewModel
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
         self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
@@ -233,19 +238,21 @@ extension EncryptedSearchService {
                 if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.user.userInfo.userId) == self.totalMessages {
                     print("Search index already contains all available messages.")
                     self.viewModel?.isEncryptedSearch = true
-                    self.indexBuildingInProcess = false
+                    self.indexBuildingInProgress = false
                     return
                 }
             }
                 
             //build search index completely new
             DispatchQueue.global(qos: .userInitiated).async {
-                self.downloadAllMessagesAndBuildSearchIndex(){
+                //If its an build from scratch, start indexing with time = 0
+                self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) {
+                //self.downloadAllMessagesAndBuildSearchIndex(){
                     //Search index build -> update progress bar to finished?
                     print("Finished building search index!")
                     self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add stop time
                     self.printTiming("Building the Index", for: self.timingsBuildIndex)
-                    self.printTiming("Message Fetching", for: self.timingsMessageFetching)
+                    /*self.printTiming("Message Fetching", for: self.timingsMessageFetching)
                     self.printTiming("Message Details Downloading", for: self.timingsMessageDetailsFetching)
                     self.printTiming("Decrypting Data", for: self.timingsDecryptMessages)
                     self.printTiming("Extracting Data", for: self.timingsExtractData)
@@ -253,19 +260,34 @@ extension EncryptedSearchService {
                     self.printTiming("Writing to Database", for: self.timingsWriteToDatabase)
                     self.printTiming("Parse Body", for: self.timingsParseBody)
                     self.printTiming("Remove Elements", for: self.timingsRemoveElements)
-                    self.printTiming("Parse Cleaned Content", for: self.timingsParseCleanedContent)
+                    self.printTiming("Parse Cleaned Content", for: self.timingsParseCleanedContent)*/
                     
                     DispatchQueue.main.async {
                         self.updateMemoryConsumption()
                     }
                     
                     self.viewModel?.isEncryptedSearch = true
-                    self.indexBuildingInProcess = false
+                    self.indexBuildingInProgress = false
                     return
                 }
             }
         }
         return false
+    }
+    
+    func pauseAndResumeIndexing() {
+        if self.viewModel?.pauseIndexing == true {  //pause indexing
+            print("Pause indexing!")
+            self.messageIndexingQueue.cancelAllOperations()
+            self.indexBuildingInProgress = false
+        } else {    //resume indexing
+            print("Resume indexing...")
+            self.indexBuildingInProgress = true
+            self.downloadAndProcessPage(Message.Location.allmail.rawValue, self.lastMessageTimeIndexed) {
+                self.viewModel?.isEncryptedSearch = true
+                self.indexBuildingInProgress = false
+            }
+        }
     }
     
     struct MessageAction {
@@ -276,7 +298,7 @@ extension EncryptedSearchService {
     }
     
     func updateSearchIndex(_ action: NSFetchedResultsChangeType, _ message: Message?, _ indexPath: IndexPath?, _ newIndexPath: IndexPath?) {
-        if self.indexBuildingInProcess {
+        if self.indexBuildingInProgress {
             let messageAction: MessageAction = MessageAction(action: action, message: message, indexPath: indexPath, newIndexPath: newIndexPath)
             self.eventsWhileIndexing!.append(messageAction)
         } else {
@@ -403,16 +425,16 @@ extension EncryptedSearchService {
     }
     
     // Downloads Messages and builds Search Index
-    func downloadAllMessagesAndBuildSearchIndex(completionHandler: @escaping () -> Void) -> Void {
+    /*func downloadAllMessagesAndBuildSearchIndex(completionHandler: @escaping () -> Void) -> Void {
         self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) {
             completionHandler()
         }
-    }
+    }*/
 
     func downloadAndProcessPage(_ mailboxID: String, _ time: Int, completionHandler: @escaping () -> Void) -> Void {
         let group = DispatchGroup()
         
-        self.timingsMessageFetching.add(CFAbsoluteTimeGetCurrent())  //add start time
+        //self.timingsMessageFetching.add(CFAbsoluteTimeGetCurrent())  //add start time
         group.enter()
         self.messageService.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { _, result, error in
         //set force clean to true to clean old messages before fetching new ones - to avoid to many messages in core data
@@ -456,8 +478,13 @@ extension EncryptedSearchService {
             if self.processedMessages >= self.totalMessages {
                 completionHandler()
             } else {
-                //call recursively
-                self.downloadAndProcessPage(mailboxID, self.lastMessageTimeIndexed) {
+                if self.indexBuildingInProgress {
+                    //call recursively
+                    self.downloadAndProcessPage(mailboxID, self.lastMessageTimeIndexed) {
+                        completionHandler()
+                    }
+                } else {
+                    //index building stopped from outside - finish up current page and return
                     completionHandler()
                 }
             }
@@ -490,15 +517,15 @@ extension EncryptedSearchService {
     func processPageOneByOne(forBatch messageIDs: NSMutableArray, completionHandler: @escaping () -> Void) -> Void {
         //start a new thread to process the page
         DispatchQueue.global(qos: .userInitiated).async {
-            let queue = OperationQueue()
+            //let queue = OperationQueue()
             //queue.maxConcurrentOperationCount = 1
             
             for id in messageIDs {
                 let op = IndexSingleMessageAsyncOperation(id as! String)
-                queue.addOperation(op)
+                self.messageIndexingQueue.addOperation(op)
             }
             
-            queue.waitUntilAllOperationsAreFinished()
+            self.messageIndexingQueue.waitUntilAllOperationsAreFinished()
             completionHandler()
         }
     }
