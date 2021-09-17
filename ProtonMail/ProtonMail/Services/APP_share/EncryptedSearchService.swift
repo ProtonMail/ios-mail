@@ -228,6 +228,7 @@ extension EncryptedSearchService {
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
         self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
 
+        var returnValue: Bool = false
         self.getTotalMessages() {
             print("Total messages: ", self.totalMessages)
 
@@ -239,6 +240,7 @@ extension EncryptedSearchService {
                     print("Search index already contains all available messages.")
                     self.viewModel?.isEncryptedSearch = true
                     self.indexBuildingInProgress = false
+                    returnValue = true
                     return
                 }
             }
@@ -272,7 +274,7 @@ extension EncryptedSearchService {
                 }
             }
         }
-        return false
+        return returnValue
     }
     
     func pauseAndResumeIndexing() {
@@ -361,7 +363,7 @@ extension EncryptedSearchService {
         
         //just delete a message if the search index exists for the user - otherwise it needs to be build first
         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
-            EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(message!.messageID)
+            EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(user: self.user.userInfo.userId, message: message!.messageID)
         }
     }
     
@@ -736,9 +738,6 @@ extension EncryptedSearchService {
     }
     
     func decryptBodyAndExtractData(_ messages: NSArray, completionHandler: @escaping () -> Void) {
-        //connect to search index database
-        let _ = EncryptedSearchIndexService.shared.connectToSearchIndex(user.userInfo.userId)
-
         var processedMessagesCount: Int = 0
         for m in messages {
             var decryptionFailed: Bool = true
@@ -795,8 +794,7 @@ extension EncryptedSearchService {
         let emailContent: String = EmailparserExtractData(body!, true)
         let encryptedContent: EncryptedsearchEncryptedMessageContent? = self.createEncryptedContent(message: message, cleanedBody: emailContent)
         
-        //connect to search index database
-        let _ = EncryptedSearchIndexService.shared.connectToSearchIndex(user.userInfo.userId)
+        //add message to search index db
         self.addMessageKewordsToSearchIndex(message, encryptedContent, decryptionFailed)
         completionHandler()
     }
@@ -1070,7 +1068,7 @@ extension EncryptedSearchService {
         //let ciphertext: String = String(decoding: (encryptedContent?.ciphertext)!, as: UTF8.self)
         let ciphertext:Data = (encryptedContent?.ciphertext)!.base64EncodedData()
         
-        let _: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(messageID: message.messageID, time: time, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: iv, encryptedContent: ciphertext, encryptedContentFile: "")
+        let _: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.user.userInfo.userId, messageID: message.messageID, time: time, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: iv, encryptedContent: ciphertext, encryptedContentFile: "")
         //print("message inserted at row: ", row!)
     }
 
