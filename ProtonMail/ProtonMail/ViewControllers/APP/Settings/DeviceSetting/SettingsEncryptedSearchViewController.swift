@@ -245,7 +245,14 @@ extension SettingsEncryptedSearchViewController {
     }
     
     @objc func pauseIndexing(_ sender: UIButton!) {
-        //TODO
+        self.viewModel.pauseIndexing.toggle()
+        //set text on button
+        if self.viewModel.pauseIndexing {
+            self.pauseIndexingButton.setTitle("Resume", for: .normal)
+        } else {
+            self.pauseIndexingButton.setTitle("Pause", for: .normal)
+        }
+        EncryptedSearchService.shared.pauseAndResumeIndexing()
     }
         
     func setupProgressViewObserver() {

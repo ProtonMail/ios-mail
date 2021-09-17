@@ -70,6 +70,7 @@ class SettingsEncryptedSearchViewModel {
     init(encryptedSearchCache: EncryptedSearchCacheProtocol) {
         self.encryptedSearchCache = encryptedSearchCache
         self.downloadViaMobileData = false
+        self.pauseIndexing = false
     }
     
     var isEncryptedSearch: Bool {
@@ -82,6 +83,8 @@ class SettingsEncryptedSearchViewModel {
     }
     
     var downloadViaMobileData: Bool
+    
+    var pauseIndexing: Bool
     
     var progressViewStatus = Bindable<Float>()
     
