@@ -195,6 +195,8 @@ included:
   - ${PWD}/ProtonMailCommon/Extensions/ImageAsset+Extension.swift
   - ${PWD}/ProtonMail/Utilities/AttachmentStreamingCrypto/AttachmentStreamingEncryptor.swift
   - ${PWD}/ProtonMailCommon/DataServices/APIService/ReceiptService.swift
+  - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/HTML+BodyQuoteStripping.swift
+  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Content/SingleMessageContentViewHistoryButtonContainer.swift
 
 excluded:
   - ${PWD}/Pods

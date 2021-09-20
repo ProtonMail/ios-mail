@@ -112,6 +112,7 @@
 		0972F6990E704D016DA06B30DBA60D0E /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2CFA0A2EC91C90BA021AA2387FA522 /* RecipientCell.swift */; };
 		09774923BE6C942B4403375CED80EA9C /* DomainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AA34A18E2E22A96A8348C10B43A531 /* DomainsTableViewCell.swift */; };
 		0996551C5BAAD69E6CC5500CAA7E1EAF /* SettingsContactCombineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07132CCDB640950FFC158BF1015750F0 /* SettingsContactCombineViewController.swift */; };
+		09ADB4CC95D1B801B7B83E5F8BE02536 /* SingleMessageContentViewHistoryButtonContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD524EE7DA09FF7772F1EB0BC7B737C /* SingleMessageContentViewHistoryButtonContainer.swift */; };
 		09D86FB462391753724C8C78707A0B1F /* Pods_ProtonMailDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA59AD999B62E695D152A787E8BAAD0C /* Pods_ProtonMailDev.framework */; };
 		09E8B5B0CC956853EE46C7D7994B9EE2 /* Message+Flag+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BC7241A7A681822E37FB267ABB31D2 /* Message+Flag+Extension.swift */; };
 		09F780646B51A97138C2B511683B066C /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77669C3C0F15ACBCAC5071A59F5E57F0 /* Threading.swift */; };
@@ -301,6 +302,7 @@
 		1CA04D6FF2AC5067D58826B39534C8A4 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680AA287FBEF2802C1CC7D4471321EF3 /* URL+Extension.swift */; };
 		1CA42EED8B03E7D10ABFFC16869E0BBD /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB397285117812BF94A2953E4B56D9C /* CustomHeaderView.swift */; };
 		1CB1DF32831CA69F132E0329820A4451 /* MessageAPI+Packages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E613D0715CC835821135FDA1AAF95B22 /* MessageAPI+Packages.swift */; };
+		1CB744A8814845393C5009DB60A6F99C /* SingleMessageContentViewHistoryButtonContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD524EE7DA09FF7772F1EB0BC7B737C /* SingleMessageContentViewHistoryButtonContainer.swift */; };
 		1CC58F520248C984BA3972F67F5236C4 /* SingleMessageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEE16EAE669FF4CB6DB719616D59DF9 /* SingleMessageContentView.swift */; };
 		1CC9C8EC280602F8945A99536904FC6A /* ConversationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E19B0484D7119454ABA447C7C87DD2 /* ConversationCoordinator.swift */; };
 		1CCD748C2CC41A57A5374CA93FC6560B /* OpenPGP+ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3880932FE2E8B1B094ED8547F9500C4 /* OpenPGP+ExtensionTests.swift */; };
@@ -1549,6 +1551,7 @@
 		9591FA7C042643E49D580DA7D1000396 /* MessageDataService+FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483C01F6D1C97E9AAE607E3F928C97B4 /* MessageDataService+FileManager.swift */; };
 		959BE19AB36E5CD6F655DE21BF4AA2E3 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		95AA447AEFDA858547B27F85F7808CDA /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B8D056C5CE08382D71EDBD635B6A5 /* Label.swift */; };
+		95AFCB78D8E32295961015FD440A1053 /* HTML+BodyQuoteStripping.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCE19FAAB895CF623BAA52D78A8A944 /* HTML+BodyQuoteStripping.swift */; };
 		95B954B9A89B4F49DAFF04EB781347EF /* Message+EncryptType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA3EDD47D591D28907C504F3FF5CBE /* Message+EncryptType.swift */; };
 		95BF9B8DFAF5CA3272303377A3118F95 /* LabelColorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1C235ADD02BE4F2B8F49466034029919 /* LabelColorCell.xib */; };
 		95C5764FFE6CD47421BCF4A1381049EA /* SingleMessageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEE16EAE669FF4CB6DB719616D59DF9 /* SingleMessageContentView.swift */; };
@@ -1915,6 +1918,7 @@
 		BA6627C23DCB9F49FA6821A7A5AAFB65 /* AttachmentStreamingEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12DE739E92713B7AF83361681F6FA82 /* AttachmentStreamingEncryptor.swift */; };
 		BA8A2C2C65BF74548AA3D14D78B74858 /* PHAsset+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143C96A0E19B4D8FE22D4A7744818B98 /* PHAsset+Extension.swift */; };
 		BAA0AA0B60AFB0C8E3265957A5522EAC /* UISearchBar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7DF3E3EC0C6D1E955782E2B9F0AE44 /* UISearchBar+Extension.swift */; };
+		BAAF60A95C70FBBD3584688D1505B462 /* HTML+BodyQuoteStripping.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCE19FAAB895CF623BAA52D78A8A944 /* HTML+BodyQuoteStripping.swift */; };
 		BB027935DAEE9DF414FA766D8528C658 /* ContactGroupEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C87CB8247C927A6A9D72F57CD09704E /* ContactGroupEditViewController.swift */; };
 		BB1267F342F1E7EC3796D783A5FE1F1D /* HtmlEditor.html in Resources */ = {isa = PBXBuildFile; fileRef = C5CAEDD4BF1C083D26B5050E226CE4DC /* HtmlEditor.html */; };
 		BB1A1DA3F8ECAAB1F80F4EFF91BA569B /* ContactCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE7A25E600A79A1B5AF9F044609BC4B /* ContactCollectionView.swift */; };
@@ -3816,6 +3820,7 @@
 		CC985B9AE4DCC8A30D656FD4A00D658C /* ContactDetailsUpgradeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsUpgradeCell.swift; sourceTree = "<group>"; };
 		CD0260D7708EA653314DBEF7C1729A3A /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		CD5A367CDEE326A7DED0F525F8C346A0 /* ComposeHeaderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeHeaderProtocol.swift; sourceTree = "<group>"; };
+		CDCE19FAAB895CF623BAA52D78A8A944 /* HTML+BodyQuoteStripping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTML+BodyQuoteStripping.swift"; sourceTree = "<group>"; };
 		CE3410BE45176643A51C83A135533207 /* 2.0.4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.4.xcdatamodel; sourceTree = "<group>"; };
 		CE71D9C4739F715B22EF067D18BD4BD2 /* SharePinUnlockViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePinUnlockViewController.swift; sourceTree = "<group>"; };
 		CE95D3FB1AE9BF8D3B1B8CCD968BF8E0 /* ConversationFeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationFeatureFlagService.swift; sourceTree = "<group>"; };
@@ -4058,6 +4063,7 @@
 		FC5106BC75A0073888F6DE60DD7793BF /* LabelsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelsView.xib; sourceTree = "<group>"; };
 		FC54E43D3775EFE1C17ACEBCF879C1C1 /* MIMEMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIMEMessage.swift; sourceTree = "<group>"; };
 		FC7E1E9A56A7D74BBF9EFBB27C845267 /* APIService+ContactExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "APIService+ContactExtension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		FCD524EE7DA09FF7772F1EB0BC7B737C /* SingleMessageContentViewHistoryButtonContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleMessageContentViewHistoryButtonContainer.swift; sourceTree = "<group>"; };
 		FCEE16EAE669FF4CB6DB719616D59DF9 /* SingleMessageContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleMessageContentView.swift; sourceTree = "<group>"; };
 		FD15DDE0268AFF138468DDCFF72F146C /* SettingsSwipeActionSelectController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwipeActionSelectController.swift; sourceTree = "<group>"; };
 		FD6B6B54DF5A1A4C4D7DB510E996CF07 /* ConversationDataService+SingleItemFetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConversationDataService+SingleItemFetching.swift"; sourceTree = "<group>"; };
@@ -5053,6 +5059,7 @@
 				C2DB40A3CE8A50ADB96BA8CF3A47B91E /* MailButton.swift */,
 				FCEE16EAE669FF4CB6DB719616D59DF9 /* SingleMessageContentView.swift */,
 				38BD7820972E45EA62F492625CE90EF7 /* SingleMessageContentViewController.swift */,
+				FCD524EE7DA09FF7772F1EB0BC7B737C /* SingleMessageContentViewHistoryButtonContainer.swift */,
 				9D75A4F755A36244D51B0E8073E3A683 /* SingleMessageContentViewModel.swift */,
 				C70ED44C24D130CA8ABA7510638F08F0 /* SingleMessageFooterButtons.swift */,
 			);
@@ -5475,6 +5482,7 @@
 			children = (
 				101661881D7FB420D42942739767CA06 /* AttachmentViewModel.swift */,
 				C3A86E81FC1EB1180CFA9F18CB7DE806 /* BannerViewModel.swift */,
+				CDCE19FAAB895CF623BAA52D78A8A944 /* HTML+BodyQuoteStripping.swift */,
 				4427A8377872F7DECE5A3B24175A8FA0 /* NewMessageBodyViewModel.swift */,
 				C821965B75D450FA3FAF7D19F552F5A5 /* SpamType.swift */,
 			);
@@ -7928,6 +7936,7 @@
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework",
 				"${BUILT_PRODUCTS_DIR}/SwipyCell/SwipyCell.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
@@ -7976,6 +7985,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenuSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkeletonView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyGif.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipyCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
@@ -8071,6 +8081,7 @@
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework",
 				"${BUILT_PRODUCTS_DIR}/SwipyCell/SwipyCell.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
@@ -8119,6 +8130,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenuSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkeletonView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyGif.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipyCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
@@ -8177,6 +8189,7 @@
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework",
 				"${BUILT_PRODUCTS_DIR}/SwipyCell/SwipyCell.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
@@ -8225,6 +8238,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenuSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkeletonView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyGif.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipyCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
@@ -8841,6 +8855,7 @@
 				86C0E2F7D1FB1BF7AE46580117DAC976 /* GeneralSettingActionCell.swift in Sources */,
 				5C37B01A078A55449B117C8CF63BA54F /* GeneralSettingSinglelineCell.swift in Sources */,
 				7B9ACACA5757B5E06DA5D10EE1163462 /* GeneralSettingViewCell.swift in Sources */,
+				BAAF60A95C70FBBD3584688D1505B462 /* HTML+BodyQuoteStripping.swift in Sources */,
 				1BDE3945A36D76360B803809F260622B /* HTMLStringSecureLoader.swift in Sources */,
 				DB9A2F95200199A773432BADDB291D67 /* HTTPRequestSecureLoader.swift in Sources */,
 				6DACB5A3571F53EC1C496F997E642D74 /* Header.swift in Sources */,
@@ -9166,6 +9181,7 @@
 				95C5764FFE6CD47421BCF4A1381049EA /* SingleMessageContentView.swift in Sources */,
 				B81CB8042D0BEAF0C6543312A2EB9157 /* SingleMessageContentViewController+Print.swift in Sources */,
 				1EB92A4A186D8E5C7BA0D0B27B966ECE /* SingleMessageContentViewController.swift in Sources */,
+				09ADB4CC95D1B801B7B83E5F8BE02536 /* SingleMessageContentViewHistoryButtonContainer.swift in Sources */,
 				BFE7C965784900B3283419266B4B3E63 /* SingleMessageContentViewModel.swift in Sources */,
 				CE1EE34EE13942395D6927E8A4AE98FA /* SingleMessageCoordinator.swift in Sources */,
 				E7895E8D5DDE41DDE441EC268EE8659D /* SingleMessageFooterButtons.swift in Sources */,
@@ -9614,6 +9630,7 @@
 				037FABCFA3B05F82C3A9BAE59E48915D /* GeneralSettingActionCell.swift in Sources */,
 				4347C2A1C7472299C71C4B4E78050E83 /* GeneralSettingSinglelineCell.swift in Sources */,
 				896C1B8DE3BBD5EF41813218B8F3F08B /* GeneralSettingViewCell.swift in Sources */,
+				95AFCB78D8E32295961015FD440A1053 /* HTML+BodyQuoteStripping.swift in Sources */,
 				E71702FA38B6800FED81A54652FCB3ED /* HTMLStringSecureLoader.swift in Sources */,
 				D4EF9304C44ED1025C876A7AB7D3FAB0 /* HTTPRequestSecureLoader.swift in Sources */,
 				A668D39D0ED92D0CF0B79F08FE024B50 /* Header.swift in Sources */,
@@ -9936,6 +9953,7 @@
 				1CC58F520248C984BA3972F67F5236C4 /* SingleMessageContentView.swift in Sources */,
 				CCE07A31A3DA8DBAC78DE9B00B995328 /* SingleMessageContentViewController+Print.swift in Sources */,
 				74FD2DF0B08C5E6F3CBE76216D526FF8 /* SingleMessageContentViewController.swift in Sources */,
+				1CB744A8814845393C5009DB60A6F99C /* SingleMessageContentViewHistoryButtonContainer.swift in Sources */,
 				CFEECB948A951415B05D031670E85F75 /* SingleMessageContentViewModel.swift in Sources */,
 				2D5EDFEA665CE07783D04CF74964CD44 /* SingleMessageCoordinator.swift in Sources */,
 				DC33769C800FC6C722B111D61EA754D0 /* SingleMessageFooterButtons.swift in Sources */,

@@ -132,7 +132,8 @@ class SingleMessageViewModel {
         case .delete:
             messageService.delete(messages: [message], label: labelId)
         case .reportPhishing:
-            let messageBody = contentViewModel.messageBodyViewModel.body
+            let displayMode = contentViewModel.messageBodyViewModel.displayMode
+            let messageBody = contentViewModel.messageBodyViewModel.bodyParts?.body(for: displayMode)
             BugDataService(api: self.user.apiService).reportPhishing(messageID: message.messageID,
                                                                      messageBody: messageBody
                                                                         ?? LocalString._error_no_object) { _ in

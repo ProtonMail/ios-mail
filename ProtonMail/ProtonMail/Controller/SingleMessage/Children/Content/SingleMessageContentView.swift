@@ -5,6 +5,7 @@ class SingleMessageContentView: UIView {
 
     let bannerContainer = UIView()
     let messageBodyContainer = UIView()
+    let showHideHistoryButtonContainer = SingleMessageContentViewHistoryButtonContainer()
     let messageHeaderContainer = HeaderContainerView()
     let attachmentContainer = UIView()
     let stackView = UIStackView.stackView(axis: .vertical)
@@ -23,6 +24,7 @@ class SingleMessageContentView: UIView {
         stackView.addArrangedSubview(attachmentContainer)
         stackView.addArrangedSubview(bannerContainer)
         stackView.addArrangedSubview(messageBodyContainer)
+        stackView.addArrangedSubview(showHideHistoryButtonContainer)
         stackView.addArrangedSubview(footerButtons)
 
         footerButtons.setContentHuggingPriority(.defaultLow, for: .horizontal)

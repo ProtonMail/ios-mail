@@ -67,11 +67,24 @@ class SingleMessageContentViewController: UIViewController {
                 self?.bannerViewController?.hideBanner(type: .error)
             }
         }
+        customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !viewModel.messageBodyViewModel.hasStrippedVersion
+        customView.showHideHistoryButtonContainer.showHideHistoryButton.addTarget(self, action: #selector(showHide), for: .touchUpInside)
+        viewModel.messageBodyViewModel.hasStrippedVersionObserver = { [customView] hasStrippedVersion in
+            customView.showHideHistoryButtonContainer.isHidden = !hasStrippedVersion
+        }
 
         addObservations()
         embedChildren()
         setUpExpandAction()
         setUpFooterButtons()
+    }
+
+    @objc private func showHide(_ sender: UIButton) {
+        sender.isHidden = true
+        viewModel.messageBodyViewModel.displayMode.toggle()
+        delay(0.5) {
+            sender.isHidden = false
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -371,7 +384,8 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
 extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
     func openAttachmentList() {
         let messageID = viewModel.message.messageID
-        let body = viewModel.messageBodyViewModel.body
+        let displayMode = viewModel.messageBodyViewModel.displayMode
+        let body = viewModel.messageBodyViewModel.bodyParts?.body(for: displayMode)
         navigationAction(.attachmentList(messageId: messageID, decryptedBody: body))
     }
 }
