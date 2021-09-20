@@ -99,10 +99,10 @@ class AttachmentListTableViewCell: UITableViewCell {
             loadingIndicator.stopAnimating()
         }
 
-        fileNameAttribute.addTruncatingTail()
+        fileNameAttribute = fileNameAttribute.addTruncatingTail()
         fileNameLabel.attributedText = NSAttributedString(string: fileName, attributes: fileNameAttribute)
 
-        fileSizeAttribute.addTruncatingTail()
+        fileSizeAttribute = fileSizeAttribute.addTruncatingTail()
         fileSizeLabel.attributedText = NSAttributedString(string: fileSize, attributes: fileSizeAttribute)
     }
 }

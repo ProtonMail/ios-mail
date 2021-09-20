@@ -32,8 +32,7 @@ final class ContactDetailsDisplayCell: UITableViewCell {
 
         self.title.attributedText = title.apply(style: .DefaultSmallWeek)
         
-        var attribute = FontManager.Default
-        attribute.addTruncatingTail()
+        let attribute = FontManager.Default.addTruncatingTail()
         self.value.attributedText = value.apply(style: attribute)
     }
     

@@ -66,8 +66,7 @@ import UIKit
     }
     
     func configCell(_ topline: String, bottomLine: String, status: Bool, complete: switchActionBlock?) {
-        var leftAttributes = FontManager.Default
-        leftAttributes.addTextAlignment(.left)
+        let leftAttributes = FontManager.Default.alignment(.left)
         topLineLabel.attributedText = NSMutableAttributedString(string: topline, attributes: leftAttributes)
 
         bottomLineLabel.text = bottomLine

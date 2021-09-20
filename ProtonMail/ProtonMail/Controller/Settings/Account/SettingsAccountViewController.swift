@@ -142,8 +142,9 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
         if let headerCell = header {
             let textLabel = UILabel()
 
-            var textAttribute = FontManager.DefaultSmallWeak
-            textAttribute.addTextAlignment(.left)
+            let textAttribute = FontManager
+                .DefaultSmallWeak
+                .alignment(.left)
             textLabel.attributedText = NSAttributedString(string: eSection.description, attributes: textAttribute)
             textLabel.translatesAutoresizingMaskIntoConstraints = false
 

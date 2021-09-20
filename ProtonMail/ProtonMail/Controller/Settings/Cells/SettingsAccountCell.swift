@@ -50,12 +50,10 @@ class SettingsAccountCell: UITableViewCell {
     }
 
     func configure(name: String, email: String) {
-        var nameAttribute = FontManager.DefaultSmall
-        nameAttribute.addTruncatingTail()
+        let nameAttribute = FontManager.DefaultSmall.addTruncatingTail()
         self.nameLabel.attributedText = NSAttributedString(string: name, attributes: nameAttribute)
 
-        var emailAttribute = FontManager.CaptionWeak
-        emailAttribute.addTruncatingTail()
+        let emailAttribute = FontManager.CaptionWeak.addTruncatingTail()
         self.mailLabel.attributedText = NSAttributedString(string: email, attributes: emailAttribute)
 
         self.shortNameLabel.text = name.initials()

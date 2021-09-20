@@ -119,8 +119,10 @@ private enum SubviewsFactory {
 
     static var sentDescLabel: UILabel {
         let label = UILabel()
-        var style = FontManager.DefaultSmall.lineBreakMode()
-        style.addTextAlignment(.center)
+        let style = FontManager
+            .DefaultSmall
+            .lineBreakMode()
+            .alignment(.center)
         label.attributedText = LocalString._receipt_sent.apply(style: style)
         label.backgroundColor = UIColor(hexString: "#FFFFFF", alpha: 0.5)
         label.setCornerRadius(radius: 3)

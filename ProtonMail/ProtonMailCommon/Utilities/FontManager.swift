@@ -528,26 +528,26 @@ extension String {
 }
 
 extension Dictionary where Key == NSAttributedString.Key, Value == Any {
-    mutating func addTextAlignment(_ alignment: NSTextAlignment) {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = alignment
-        self[NSAttributedString.Key.paragraphStyle] = paragraphStyle
-    }
-
-    mutating func addTruncatingTail(mode: NSLineBreakMode = .byTruncatingTail) {
-        if let style = self[NSAttributedString.Key.paragraphStyle] as? NSMutableParagraphStyle {
-            style.lineBreakMode = mode
+    func addTruncatingTail(mode: NSLineBreakMode = .byTruncatingTail) -> Self {
+        var attributes = self
+        if let style = attributes[NSAttributedString.Key.paragraphStyle] as? NSMutableParagraphStyle,
+           let newStyle = style.mutableCopy() as? NSMutableParagraphStyle {
+            newStyle.lineBreakMode = mode
+            attributes[NSAttributedString.Key.paragraphStyle] = newStyle
         } else {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineBreakMode = mode
-            self[NSAttributedString.Key.paragraphStyle] = paragraphStyle
+            attributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
         }
+        return attributes
     }
     
     func lineBreakMode(_ mode: NSLineBreakMode = .byTruncatingTail) -> Self {
         var attributes = self
-        if let style = attributes[NSAttributedString.Key.paragraphStyle] as? NSMutableParagraphStyle {
-            style.lineBreakMode = mode
+        if let style = attributes[NSAttributedString.Key.paragraphStyle] as? NSMutableParagraphStyle,
+           let newStyle = style.mutableCopy() as? NSMutableParagraphStyle {
+            newStyle.lineBreakMode = mode
+            attributes[NSAttributedString.Key.paragraphStyle] = newStyle
         } else {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineBreakMode = mode
@@ -560,7 +560,6 @@ extension Dictionary where Key == NSAttributedString.Key, Value == Any {
         self + [.link: url]
     }
 
-
     func foregroundColor(_ color: UIColor) -> Self {
         var attributes = self
         attributes[.foregroundColor] = color
@@ -569,8 +568,10 @@ extension Dictionary where Key == NSAttributedString.Key, Value == Any {
 
     func alignment(_ alignment: NSTextAlignment) -> Self {
         var attributes = self
-        if let style = attributes[NSAttributedString.Key.paragraphStyle] as? NSMutableParagraphStyle {
-            style.alignment = alignment
+        if let style = attributes[NSAttributedString.Key.paragraphStyle] as? NSMutableParagraphStyle,
+           let newStyle = style.mutableCopy() as? NSMutableParagraphStyle {
+            newStyle.alignment = alignment
+            attributes[NSAttributedString.Key.paragraphStyle] = newStyle
         } else {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = alignment

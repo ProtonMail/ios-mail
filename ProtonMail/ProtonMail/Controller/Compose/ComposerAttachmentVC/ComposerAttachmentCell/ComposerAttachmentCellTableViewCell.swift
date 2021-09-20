@@ -59,7 +59,7 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         self.delegate = delegate
 
         var nameAttr = isUploading ? FontManager.DefaultSmallDisabled: .DefaultSmall
-        nameAttr.addTruncatingTail(mode: .byTruncatingMiddle)
+        nameAttr = nameAttr.addTruncatingTail(mode: .byTruncatingMiddle)
         self.fileName.attributedText = name.apply(style: nameAttr)
 
         let sizeAttr = isUploading ? FontManager.CaptionDisabled: FontManager.CaptionHint

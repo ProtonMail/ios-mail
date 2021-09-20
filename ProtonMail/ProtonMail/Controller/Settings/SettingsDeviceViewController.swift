@@ -274,8 +274,7 @@ extension SettingsDeviceViewController {
         if let headerCell = header {
             let textLabel = UILabel()
 
-            var textAttribute = FontManager.DefaultSmallWeak
-            textAttribute.addTextAlignment(.left)
+            let textAttribute = FontManager.DefaultSmallWeak.alignment(.left)
             textLabel.attributedText = NSAttributedString(string: eSection.description, attributes: textAttribute)
             textLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -377,8 +376,7 @@ extension SettingsDeviceViewController {
         var textToAdd: NSAttributedString?
         switch item {
         case .clearCache:
-            var textAttribute = FontManager.CaptionWeak
-            textAttribute.addTextAlignment(.center)
+            let textAttribute = FontManager.CaptionWeak.alignment(.center)
             let description = "App version: \(self.viewModel.appVersion())"
             textToAdd = NSAttributedString(string: description, attributes: textAttribute)
         default:

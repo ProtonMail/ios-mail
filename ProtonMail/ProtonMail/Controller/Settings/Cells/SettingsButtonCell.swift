@@ -31,8 +31,7 @@ class SettingsButtonCell: UITableViewCell {
     @IBOutlet private weak var titleLabel: UILabel!
 
     func configue(title: String) {
-        var titleAttribute = FontManager.Default
-        titleAttribute.addTextAlignment(.center)
+        var titleAttribute = FontManager.Default.alignment(.center)
         titleAttribute[.foregroundColor] = UIColorManager.InteractionNorm
         titleLabel.attributedText = NSAttributedString(string: title, attributes: titleAttribute)
     }

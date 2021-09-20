@@ -42,8 +42,10 @@ class ConversationNewMessageFloatyView: UIView {
 
         button.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
 
-        var attribute = FontManager.CaptionStrongInverted.alignment(.center)
-        attribute.addTruncatingTail()
+        let attribute = FontManager
+            .CaptionStrongInverted
+            .alignment(.center)
+            .addTruncatingTail()
         titleLabel.attributedText = LocalString._conversation_new_message_button.apply(style: attribute)
 
         backgroundColor = UIColorManager.BrandNorm

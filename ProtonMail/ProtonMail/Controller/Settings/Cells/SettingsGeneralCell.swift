@@ -71,16 +71,16 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
 
     func configureCell(left: String?, right: String?, imageType: ImageType) {
         if let leftString = left {
-            var leftAttributes = FontManager.Default
-            leftAttributes.addTextAlignment(.left)
+            let leftAttributes = FontManager.Default.alignment(.left)
 
             leftText.attributedText = NSMutableAttributedString(string: leftString, attributes: leftAttributes)
         }
 
         if let rightString = right {
-            var rightAttributes = FontManager.DefaultHint
-            rightAttributes.addTextAlignment(.right)
-            rightAttributes.addTruncatingTail()
+            let rightAttributes = FontManager
+                .DefaultHint
+                .alignment(.right)
+                .addTruncatingTail()
 
             rightText.attributedText = NSMutableAttributedString(string: rightString, attributes: rightAttributes)
             stackView.distribution = .equalSpacing
