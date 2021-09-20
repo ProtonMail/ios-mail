@@ -42,6 +42,7 @@ def common_pods
   pod 'MBProgressHUD' , '1.1.0'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
   pod 'SwiftGen', '~> 6.0'
+  pod 'SwiftSoup', '~> 2.3'
 end
 
 def pm_pods

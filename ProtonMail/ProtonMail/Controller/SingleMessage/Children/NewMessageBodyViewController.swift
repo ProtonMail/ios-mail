@@ -304,18 +304,11 @@ extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
 
         self.customView.removeReloadView()
         guard let contents = viewModel.contents else { return }
+
+        self.prepareWebView(with: self.loader)
         if let webView = self.webView {
-            if !customView.subviews.contains(webView) {
-                customView.embed(webView)
-            }
             placeholder = false
             self.loader.load(contents: contents, in: webView)
-        } else {
-            self.prepareWebView(with: self.loader)
-            if let webView = self.webView {
-                placeholder = false
-                self.loader.load(contents: contents, in: webView)
-            }
         }
     }
 

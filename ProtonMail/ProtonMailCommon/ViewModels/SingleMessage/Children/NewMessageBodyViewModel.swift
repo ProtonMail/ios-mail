@@ -28,6 +28,41 @@ protocol NewMessageBodyViewModelDelegate: AnyObject {
     func hideDecryptionErrorBanner()
 }
 
+enum MessageDisplayMode {
+    case collapsed // Only latest message, without previous response
+    case expanded // Full body
+
+    mutating func toggle() {
+        switch self {
+        case .collapsed:
+            self = .expanded
+        case .expanded:
+            self = .collapsed
+        }
+    }
+}
+
+struct BodyParts {
+    let originalBody: String
+    let strippedBody: String
+    let fullBody: String
+
+    init(originalBody: String) {
+        self.originalBody = originalBody
+        self.strippedBody = originalBody.body(strippedFromQuotes: true)
+        self.fullBody = originalBody.body(strippedFromQuotes: false)
+    }
+
+    func body(for displayMode: MessageDisplayMode) -> String {
+        switch displayMode {
+        case .collapsed:
+            return strippedBody
+        case .expanded:
+            return fullBody
+        }
+    }
+}
+
 class NewMessageBodyViewModel {
 
     var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)?
@@ -35,7 +70,22 @@ class NewMessageBodyViewModel {
     private(set) var message: Message
     private let messageService: MessageDataService
     let userManager: UserManager
-    private(set) var body: String?
+    var hasStrippedVersionObserver: ((Bool) -> Void)?
+    private(set) var hasStrippedVersion: Bool = false
+    private(set) var bodyParts: BodyParts? {
+        didSet {
+            hasStrippedVersion = bodyParts?.fullBody != bodyParts?.strippedBody
+            hasStrippedVersionObserver?(hasStrippedVersion)
+        }
+    }
+    var displayMode: MessageDisplayMode = .collapsed {
+        didSet {
+            reload(from: message)
+            // No call to delegate?.reloadWebView() since contents will be changed and will trigger the call
+            // Otherwise, we would call it twice for nothing
+        }
+    }
+
     let internetStatusProvider: InternetConnectionStatusProvider
 
     weak var delegate: NewMessageBodyViewModelDelegate?
@@ -131,27 +181,28 @@ class NewMessageBodyViewModel {
             return true
         }
         if let decryptedBody = decryptBody(from: message) {
-            body = decryptedBody
+            bodyParts = BodyParts(originalBody: decryptedBody)
 
             checkBannerStatus(decryptedBody)
 
             if embeddedContentPolicy == .allowed {
                 showEmbedImage(message, body: decryptedBody) { [weak self] in
-                    self?.contents = WebContents(
-                        body: self?.body ?? "",
+                    guard let self = self else { return }
+                    self.contents = WebContents(
+                        body: self.bodyParts?.body(for: self.displayMode) ?? "",
                         remoteContentMode: remoteContentMode
                     )
                 }
                 return false
             } else {
-                self.contents = WebContents(body: self.body ?? "",
+                self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
                                             remoteContentMode:
                                                 remoteContentMode)
             }
         } else if !message.body.isEmpty {
             // If the detail hasn't download, don't show encrypted body to user
-            body = message.isDetailDownloaded ? message.bodyToHtml(): .empty
-            self.contents = WebContents(body: self.body ?? "",
+            bodyParts = BodyParts(originalBody: message.isDetailDownloaded ? message.bodyToHtml(): .empty)
+            self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
                                         remoteContentMode:
                                             remoteContentMode)
         }
@@ -219,8 +270,8 @@ class NewMessageBodyViewModel {
             let allAttachments = message.attachments.allObjects as? [Attachment],
             case let atts = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false }),
             !atts.isEmpty else {
-            if self.body != body {
-                self.body = body
+            if self.bodyParts?.originalBody != body {
+                self.bodyParts = BodyParts(originalBody: body)
             }
             completion?()
             return
@@ -261,10 +312,10 @@ class NewMessageBodyViewModel {
                     }
                 }
 
-                self.body = updatedBody
+                self.bodyParts = BodyParts(originalBody: updatedBody)
             } else {
-                if self.body != body {
-                    self.body = body
+                if self.bodyParts?.originalBody != body {
+                    self.bodyParts = BodyParts(originalBody: body)
                 }
             }
         }
