@@ -176,6 +176,9 @@ public class EncryptedSearchService {
         //enable network monitoring for internet connection
         //self.checkForNetworkConnectivity()
         //TODO disable for the moment as it might cause memory leaks
+        
+        //enable temperature monitoring
+        self.registerForTermalStateChangeNotifications()
     }
     
     internal var user: UserManager!
@@ -207,6 +210,8 @@ public class EncryptedSearchService {
         return NWPathMonitor()
     }
     
+    internal var pauseIndexingDueToOverheating: Bool = false
+    
     internal var timingsBuildIndex: NSMutableArray = []
     internal var timingsMessageFetching: NSMutableArray = []
     internal var timingsMessageDetailsFetching: NSMutableArray = []
@@ -233,8 +238,8 @@ extension EncryptedSearchService {
             print("Total messages: ", self.totalMessages)
 
             //if search index already build, and there are no new messages we can return here
-            if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
-                print("Search index already exists for user!")
+            //if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
+            //    print("Search index already exists for user!")
                 //check if search index needs updating
                 if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.user.userInfo.userId) == self.totalMessages {
                     print("Search index already contains all available messages.")
@@ -243,7 +248,7 @@ extension EncryptedSearchService {
                     returnValue = true
                     return
                 }
-            }
+            //}
                 
             //build search index completely new
             DispatchQueue.global(qos: .userInitiated).async {
@@ -449,6 +454,9 @@ extension EncryptedSearchService {
                     self.processPageOneByOne(forBatch: messagesBatch){
                     //self.processPage(messagesBatch) {
                         print("Page successfull processed!")
+                        
+                        //print some temperature information
+                        //self.monitorIphoneTemperature()
 
                         //print memory usage per page
                         //self.updateMemoryConsumption()
@@ -1346,5 +1354,38 @@ extension EncryptedSearchService {
         let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: self.user.userInfo.userId)
         
         print("Total Memory: \(totalMemory/1048576.0) mb, free Memory: \(freeMemory/1048576.0) mb, free disk space: \(freeDiskSpace), size of index: \(sizeOfIndex)")
+    }
+    
+    private func registerForTermalStateChangeNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(responseToHeat(_:)), name: ProcessInfo.thermalStateDidChangeNotification, object: nil)
+    }
+    
+    @objc private func responseToHeat(_ notification: Notification){
+        let termalState = ProcessInfo.processInfo.thermalState
+        switch termalState {
+        case .nominal:
+            print("Thermal state nomial. No further action required")
+            if self.pauseIndexingDueToOverheating {
+                self.viewModel?.pauseIndexing = false
+                self.pauseAndResumeIndexing()
+                self.pauseIndexingDueToOverheating = false
+            }
+        case .fair:
+            print("Thermal state fair. No further action required")
+            if self.pauseIndexingDueToOverheating {
+                self.viewModel?.pauseIndexing = false
+                self.pauseAndResumeIndexing()
+                self.pauseIndexingDueToOverheating = false
+            }
+        case .serious:
+            print("Thermal state serious. Reduce CPU usage.")
+        case .critical:
+            print("Thermal state critical. Stop indexing!")
+            self.pauseIndexingDueToOverheating = true
+            self.viewModel?.pauseIndexing = true
+            self.pauseAndResumeIndexing()
+        @unknown default:
+            print("Unknown temperature state. Do something?")
+        }
     }
 }
