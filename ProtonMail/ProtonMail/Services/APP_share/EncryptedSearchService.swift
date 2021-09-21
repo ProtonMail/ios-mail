@@ -131,6 +131,7 @@ open class IndexSingleMessageAsyncOperation: Operation {
         }
     }
     
+    //@available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
     public override func main() {
         if self.isCancelled {
             state = .finished
@@ -148,11 +149,10 @@ open class IndexSingleMessageAsyncOperation: Operation {
                     EncryptedSearchService.shared.processedMessages += 1    //increase count of processed messages
                     self.state = .finished
                     
-                    //Update UI progress bar
-                    DispatchQueue.main.async {
-                        EncryptedSearchService.shared.updateIndexBuildingProgress(processedMessages: EncryptedSearchService.shared.processedMessages)
-                        //EncryptedSearchService.shared.updateMemoryConsumption()
-                    }
+                    #if !APP_EXTENSION
+                        //Update UI progress bar
+                        EncryptedSearchService.shared.updateUIWithProgressBarStatus()
+                    #endif
                 }
             }
         }
@@ -172,6 +172,9 @@ public class EncryptedSearchService {
         let users: UsersManager = sharedServices.get()
         user = users.firstUser! //should return the currently active user
         messageService = user.messageService
+        
+        self.timeFormatter.allowedUnits = [.hour, .minute, .second]
+        self.timeFormatter.unitsStyle = .abbreviated
         
         //enable network monitoring for internet connection
         //self.checkForNetworkConnectivity()
@@ -212,6 +215,9 @@ public class EncryptedSearchService {
     
     internal var pauseIndexingDueToOverheating: Bool = false
     
+    var backgroundTask: UIBackgroundTaskIdentifier = .invalid
+    let timeFormatter = DateComponentsFormatter()
+    
     internal var timingsBuildIndex: NSMutableArray = []
     internal var timingsMessageFetching: NSMutableArray = []
     internal var timingsMessageDetailsFetching: NSMutableArray = []
@@ -228,6 +234,10 @@ public class EncryptedSearchService {
 extension EncryptedSearchService {
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Bool {
+        #if !APP_EXTENSION
+            //enable background processing
+            self.registerBackgroundTask()
+        #endif
         self.indexBuildingInProgress = true
         self.viewModel = viewModel
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
@@ -246,6 +256,13 @@ extension EncryptedSearchService {
                     self.viewModel?.isEncryptedSearch = true
                     self.indexBuildingInProgress = false
                     returnValue = true
+                    if self.backgroundTask != .invalid {
+                        //background processing not needed any longer - clean up
+                        #if !APP_EXTENSION
+                            //enable background processing
+                            self.endBackgroundTask()
+                        #endif
+                    }
                     return
                 }
             //}
@@ -269,12 +286,21 @@ extension EncryptedSearchService {
                     self.printTiming("Remove Elements", for: self.timingsRemoveElements)
                     self.printTiming("Parse Cleaned Content", for: self.timingsParseCleanedContent)*/
                     
-                    DispatchQueue.main.async {
-                        self.updateMemoryConsumption()
-                    }
+                    //DispatchQueue.main.async {
+                    self.updateMemoryConsumption()
+                    //}
                     
                     self.viewModel?.isEncryptedSearch = true
                     self.indexBuildingInProgress = false
+                    
+                    if self.backgroundTask != .invalid {
+                        //background processing not needed any longer - clean up
+                        #if !APP_EXTENSION
+                            //enable background processing
+                            self.endBackgroundTask()
+                        #endif
+                    }
+                    
                     return
                 }
             }
@@ -1347,6 +1373,24 @@ extension EncryptedSearchService {
         self.viewModel?.progressViewStatus.value = updateStep
     }
     
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
+    func updateUIWithProgressBarStatus(){
+        DispatchQueue.main.async {
+            switch UIApplication.shared.applicationState {
+            case .active:
+                self.updateIndexBuildingProgress(processedMessages: self.processedMessages)
+                //EncryptedSearchService.shared.updateMemoryConsumption()
+            case .background:
+                //print("Indexing in background. Processed Messages: \(self.processedMessages)")
+                print("Background time remaining = \(self.timeFormatter.string(from: UIApplication.shared.backgroundTimeRemaining)!)")
+            case .inactive:
+                break
+            @unknown default:
+                print("Unknown state. What to do?")
+            }
+        }
+    }
+    
     func updateMemoryConsumption() {
         let totalMemory: Double = self.getTotalAvailableMemory()
         let freeMemory: Double = self.getCurrentlyAvailableAppMemory()
@@ -1388,4 +1432,29 @@ extension EncryptedSearchService {
             print("Unknown temperature state. Do something?")
         }
     }
+    
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
+    private func registerBackgroundTask() {
+        self.backgroundTask = UIApplication.shared.beginBackgroundTask(){ [weak self] in
+            self?.endBackgroundTask()
+        }
+    }
+    
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
+    private func endBackgroundTask() {
+        print("Background task ended!")
+        //TODO check if indexing has finished, otherwise we can inform the user about it
+        //postUserNotification()
+        UIApplication.shared.endBackgroundTask(self.backgroundTask)
+        self.backgroundTask = .invalid
+    }
+    
+    //only works in runtime, does not work at compile time
+    // `true` when invoked inside the `Extension process`
+    // `false` when invoked inside the `Main process`
+    /*func isAppExtension() -> Bool {
+        let bundleUrl: URL = Bundle.main.bundleURL
+        let bundlePathExtension: String = bundleUrl.pathExtension
+        return bundlePathExtension == "appex"
+    }*/
 }
