@@ -248,6 +248,11 @@ extension AppDelegate: UIApplicationDelegate {
         #if DEBUG
         setupUITestsMocks()
         #endif
+        
+        //register background processing task for building the encrypted search index
+        if #available(iOS 13, *) {
+            EncryptedSearchService.shared.registerIndexBuildingInBackground()
+        }
         return true
     }
     
@@ -366,6 +371,13 @@ extension AppDelegate: UIApplicationDelegate {
         if users.firstUser != nil {
             queueManager.enterForeground()
             users.firstUser?.refreshFeatureFlags()
+        }
+        
+        //If indexing the encrypted search index has not finished in the background - resume indexing when in foreground
+        if EncryptedSearchService.shared.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
+            EncryptedSearchService.shared.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
+            EncryptedSearchService.shared.viewModel?.pauseIndexing = false
+            EncryptedSearchService.shared.pauseAndResumeIndexing()
         }
     }
     
