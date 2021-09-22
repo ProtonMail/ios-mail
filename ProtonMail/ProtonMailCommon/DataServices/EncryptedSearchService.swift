@@ -14,6 +14,7 @@ import Crypto
 import CryptoKit
 import Network
 import Groot
+import BackgroundTasks
 
 extension Array {
     func chunks(_ chunkSize: Int) -> [[Element]] {
@@ -170,8 +171,10 @@ public class EncryptedSearchService {
     //set initializer to private - Singleton
     private init(){
         let users: UsersManager = sharedServices.get()
-        user = users.firstUser! //should return the currently active user
-        messageService = user.messageService
+        if users.firstUser != nil {
+            user = users.firstUser //should return the currently active user
+            messageService = user.messageService
+        }
         
         self.timeFormatter.allowedUnits = [.hour, .minute, .second]
         self.timeFormatter.unitsStyle = .abbreviated
@@ -185,7 +188,7 @@ public class EncryptedSearchService {
     }
     
     internal var user: UserManager!
-    internal var messageService: MessageDataService
+    internal var messageService: MessageDataService? = nil
     var totalMessages: Int = 0
     var limitPerRequest: Int = 1
     var lastMessageTimeIndexed: Int = 0     //stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
@@ -214,6 +217,7 @@ public class EncryptedSearchService {
     }
     
     internal var pauseIndexingDueToOverheating: Bool = false
+    internal var pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
     
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     let timeFormatter = DateComponentsFormatter()
@@ -237,7 +241,11 @@ extension EncryptedSearchService {
         #if !APP_EXTENSION
             //enable background processing
             self.registerBackgroundTask()
+            if #available(iOS 13, *) {
+                self.scheduleIndexBuildingInBackground()
+            }
         #endif
+        
         self.indexBuildingInProgress = true
         self.viewModel = viewModel
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
@@ -263,6 +271,12 @@ extension EncryptedSearchService {
                             self.endBackgroundTask()
                         #endif
                     }
+                    #if !APP_EXTENSION
+                        if #available(iOS 13, *) {
+                            //index building finished - we no longer need a background task
+                            self.cancelIndexBuildingInBackground()
+                        }
+                    #endif
                     return
                 }
             //}
@@ -300,6 +314,12 @@ extension EncryptedSearchService {
                             self.endBackgroundTask()
                         #endif
                     }
+                    #if !APP_EXTENSION
+                        if #available(iOS 13, *) {
+                            //index building finished - we no longer need a background task
+                            self.cancelIndexBuildingInBackground()
+                        }
+                    #endif
                     
                     return
                 }
@@ -308,7 +328,7 @@ extension EncryptedSearchService {
         return returnValue
     }
     
-    func pauseAndResumeIndexing() {
+    func pauseAndResumeIndexing(completionHandler: @escaping () -> Void = {}) {
         if self.viewModel?.pauseIndexing == true {  //pause indexing
             print("Pause indexing!")
             self.messageIndexingQueue.cancelAllOperations()
@@ -319,6 +339,7 @@ extension EncryptedSearchService {
             self.downloadAndProcessPage(Message.Location.allmail.rawValue, self.lastMessageTimeIndexed) {
                 self.viewModel?.isEncryptedSearch = true
                 self.indexBuildingInProgress = false
+                completionHandler()
             }
         }
     }
@@ -430,6 +451,7 @@ extension EncryptedSearchService {
     private func updateCurrentUserIfNeeded() -> Void {
         let users: UsersManager = sharedServices.get()
         self.user = users.firstUser
+        self.messageService = self.user.messageService
     }
     
     private func printTiming(_ title: String, for array: NSMutableArray) -> Void {
@@ -446,7 +468,7 @@ extension EncryptedSearchService {
     
     // Checks the total number of messages on the backend
     func getTotalMessages(completionHandler: @escaping () -> Void) -> Void {
-        self.messageService.fetchMessages(byLabel: Message.Location.allmail.rawValue, time: 0, forceClean: false, isUnread: false) { _, response, error in
+        self.messageService?.fetchMessages(byLabel: Message.Location.allmail.rawValue, time: 0, forceClean: false, isUnread: false) { _, response, error in
             if error == nil {
                 self.totalMessages = response!["Total"] as! Int
                 self.limitPerRequest = response!["Limit"] as! Int
@@ -469,7 +491,7 @@ extension EncryptedSearchService {
         
         //self.timingsMessageFetching.add(CFAbsoluteTimeGetCurrent())  //add start time
         group.enter()
-        self.messageService.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { _, result, error in
+        self.messageService?.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { _, result, error in
         //set force clean to true to clean old messages before fetching new ones - to avoid to many messages in core data
         //self.messageService.fetchMessages(byLabel: mailboxID, time: time, forceClean: true, isUnread: false) { _, result, error in
             if error == nil {
@@ -649,7 +671,7 @@ extension EncryptedSearchService {
             let group = DispatchGroup()
             
             group.enter()
-            self.messageService.fetchMessageDetailForMessage(m, labelID: Message.Location.allmail.rawValue) { _, _, _, error in
+            self.messageService?.fetchMessageDetailForMessage(m, labelID: Message.Location.allmail.rawValue) { _, _, _, error in
                 if error == nil {
                     //let mID: String = m.messageID
                     self.getMessage(m.messageID) { newMessage in
@@ -685,7 +707,7 @@ extension EncryptedSearchService {
     }
     
     func getMessageDetailsForSingleMessage(for message: Message, completionHandler: @escaping (Message?) -> Void) -> Void {
-        self.messageService.fetchMessageDetailForMessage(message, labelID: Message.Location.allmail.rawValue) { _, response, newM, error in
+        self.messageService?.fetchMessageDetailForMessage(message, labelID: Message.Location.allmail.rawValue) { _, response, newM, error in
             if error == nil {
                 let messageWithDetails: Message? = self.parseMessageObjectFromResponse(for: (response?["Message"] as? [String:Any])!)
                 completionHandler(messageWithDetails)
@@ -698,7 +720,7 @@ extension EncryptedSearchService {
     private func parseMessageObjectFromResponse(for response: [String : Any]) -> Message? {
         var message: Message? = nil
         do {
-            message = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: response, in: self.messageService.coreDataService.operationContext) as? Message
+            message = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: response, in: (self.messageService?.coreDataService.operationContext)!) as? Message
             message!.messageStatus = 1
             message!.isDetailDownloaded = true
         } catch {
@@ -708,7 +730,7 @@ extension EncryptedSearchService {
     }
 
     func getMessage(_ messageID: String, completionHandler: @escaping (Message?) -> Void) -> Void {
-        let fetchedResultsController = self.messageService.fetchedMessageControllerForID(messageID)
+        let fetchedResultsController = self.messageService?.fetchedMessageControllerForID(messageID)
         
         if let fetchedResultsController = fetchedResultsController {
             do {
@@ -741,12 +763,12 @@ extension EncryptedSearchService {
     }
     
     private func deleteMessage(for message: Message, completionHandler: @escaping () -> Void) -> Void {
-        let cacheService = self.messageService.cacheService
+        let cacheService = self.messageService?.cacheService
         /*cacheService.deleteMessage(messageID: messageID) {
             completionHandler()
         }*/
         //TODO where to take the message label from if there are more labels?
-        if cacheService.delete(message: message, label: Message.Location.allmail.rawValue) {
+        if cacheService!.delete(message: message, label: Message.Location.allmail.rawValue) {
             completionHandler()
         } else {
             print("Error when deleting message \(message.messageID)")
@@ -756,19 +778,19 @@ extension EncryptedSearchService {
     
     private func resetCoreDataContext() {
         //used by self.getMessage
-        let context = self.messageService.coreDataService.mainContext
-        context.reset()
-        context.parent?.reset()
+        let context = self.messageService?.coreDataService.mainContext
+        context?.reset()
+        context?.parent?.reset()
         
         //used by self.messageService.fetchMessageDetailForMessage
-        let rootContext = self.messageService.coreDataService.rootSavingContext
-        rootContext.reset()
-        rootContext.parent?.reset()
+        let rootContext = self.messageService?.coreDataService.rootSavingContext
+        rootContext?.reset()
+        rootContext?.parent?.reset()
         
         //used by self.messageService.fetchMessages
-        let operationContext = self.messageService.coreDataService.operationContext
-        operationContext.reset()
-        operationContext.parent?.reset()
+        let operationContext = self.messageService?.coreDataService.operationContext
+        operationContext?.reset()
+        operationContext?.parent?.reset()
     }
     
     func decryptBodyAndExtractData(_ messages: NSArray, completionHandler: @escaping () -> Void) {
@@ -780,7 +802,7 @@ extension EncryptedSearchService {
             var body: String? = ""
             do {
                 //print("DECRYPT: message: \((m as! Message).isDetailDownloaded)")
-                body = try self.messageService.decryptBodyIfNeeded(message: m as! Message)
+                body = try self.messageService?.decryptBodyIfNeeded(message: m as! Message)
                 decryptionFailed = false
             } catch {
                 print("Error when decrypting messages: \(error).")
@@ -819,7 +841,7 @@ extension EncryptedSearchService {
         var body: String? = ""
         var decryptionFailed: Bool = true
         do {
-            body = try self.messageService.decryptBodyIfNeeded(message: message)
+            body = try self.messageService?.decryptBodyIfNeeded(message: message)
             decryptionFailed = false
         } catch {
             print("Error when decrypting messages: \(error).")
@@ -1445,8 +1467,68 @@ extension EncryptedSearchService {
         print("Background task ended!")
         //TODO check if indexing has finished, otherwise we can inform the user about it
         //postUserNotification()
+        //pause indexing before finishing up
+        self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
+        self.viewModel?.pauseIndexing = true
+        self.pauseAndResumeIndexing()
         UIApplication.shared.endBackgroundTask(self.backgroundTask)
         self.backgroundTask = .invalid
+    }
+    
+    @available(iOS 13.0, *)
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
+    func registerIndexBuildingInBackground() {
+        let registeredSuccessful = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding", using: nil) { bgTask in
+            self.buildIndexInBackgroundTask(task: bgTask as! BGProcessingTask)
+        }
+        if !registeredSuccessful {
+            print("Error when registering background processing task!")
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    private func cancelIndexBuildingInBackground() {
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding")
+    }
+    
+    @available(iOS 13.0, *)
+    private func scheduleIndexBuildingInBackground() {
+        let request = BGProcessingTaskRequest(identifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding")
+        request.requiresNetworkConnectivity = true  //we need network connectivity when building the index
+        //request.requiresExternalPower = true    //we don't neccesarily need it - however we get more execution time if we enable it
+        
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Error when scheduling index building background task: \(error)")
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    private func buildIndexInBackgroundTask(task: BGProcessingTask) {
+        //Provide an expiration handler in case indexing is not finished in time
+        task.expirationHandler = {
+            //schedule a new background processing task if index building is not finished
+            self.scheduleIndexBuildingInBackground()
+            
+            //pause indexing
+            self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
+            self.viewModel?.pauseIndexing = true
+            self.pauseAndResumeIndexing()
+            
+            //set task to be completed - so that the systems does not terminate the app
+            task.setTaskCompleted(success: true)
+        }
+        
+        //resume indexing in background
+        if self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
+            self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
+            self.viewModel?.pauseIndexing = false
+        }
+        self.pauseAndResumeIndexing() {
+            //if indexing is finshed during background task - set to complete
+            task.setTaskCompleted(success: true)
+        }
     }
     
     //only works in runtime, does not work at compile time
