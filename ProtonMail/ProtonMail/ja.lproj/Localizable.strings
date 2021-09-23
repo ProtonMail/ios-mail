@@ -283,10 +283,10 @@
 "Archived" = "アーカイブ済み";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "本当に %d メッセージを完全に削除しますか？";
+"Are you sure you want to delete permanently these %d messages?" = "%d 件のメッセージを完全に削除してよろしいですか？";
 
 /* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Are you sure you want to delete permanently this message?";
+"Are you sure you want to delete permanently this message?" = "このメッセージを完全に削除してよろしいですか？";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Are you sure you want to sign out %@?";
@@ -737,6 +737,9 @@
 
 /* error details */
 "Decryption of this content failed" = "コンテンツの復号に失敗しました。";
+
+/* error details */
+"decryption of this message's encrypted content failed." = "decryption of this message's encrypted content failed.";
 
 /* Title */
 "Default" = "既定";
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "返信";
 
-/* No comment provided by engineer. */
-"Reply all" = "全員に返信";
-
 /* reply all action */
-"Reply All" = "全員に返信";
+"Reply all" = "全員に返信";
 
 /* composer view model impl */
 "Reply message" = "メッセージを返信";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Troubleshooting guide";
+
+/* Try again action */
+"Try again" = "Try again";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "ProtonVPNやTor等、別のネットワークから接続を試してみてください。";

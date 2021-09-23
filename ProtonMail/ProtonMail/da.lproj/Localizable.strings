@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "Denne indholdsdekryptering mislykkedes";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "dekryptering af denne beskeds krypterede indhold mislykkedes.";
+
 /* Title */
 "Default" = "Standard";
 
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Svar";
 
-/* No comment provided by engineer. */
-"Reply all" = "Svar alle";
-
 /* reply all action */
-"Reply All" = "Svar alle";
+"Reply all" = "Svar alle";
 
 /* composer view model impl */
 "Reply message" = "Svar på besked";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Fejlfindingsguide";
+
+/* Try again action */
+"Try again" = "Prøv igen";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Prøv at forbinde til Proton fra et andet netværk (eller brug ProtonVPN eller Tor).";

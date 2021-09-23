@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "Azmak n agbur agi icceḍ";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "decryption of this message's encrypted content failed.";
+
 /* Title */
 "Default" = "Amezwer";
 
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Err";
 
-/* No comment provided by engineer. */
-"Reply all" = "Err i meṛṛa";
-
 /* reply all action */
-"Reply All" = "Aerr i meṛṛa";
+"Reply all" = "Err i meṛṛa";
 
 /* composer view model impl */
 "Reply message" = "Izen n tririt";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Amnir n useggem";
+
+/* Try again action */
+"Try again" = "Try again";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Ɛreḍ tuqqna ɣer Proton seg uzeṭṭa-nniḍen (neɣ seqdec ProtonVPN neɣ Tor).";

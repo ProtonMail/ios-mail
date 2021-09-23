@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "Bu içeriğin şifre çözülmesi başarısız oldu";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "decryption of this message's encrypted content failed.";
+
 /* Title */
 "Default" = "Varsayılan";
 
@@ -1220,7 +1223,7 @@
 "Hide" = "Gizle";
 
 /* Title */
-"Hide Details" = "Detayları gizle";
+"Hide Details" = "Ayrıntıları gizle";
 
 /* Key size checkbox */
 "High Security" = "Yüksek Güvenlik";
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Yanıtla";
 
-/* No comment provided by engineer. */
-"Reply all" = "Tümünü yanıtla";
-
 /* reply all action */
-"Reply All" = "Tümünü Yanıtla";
+"Reply all" = "Tümünü yanıtla";
 
 /* composer view model impl */
 "Reply message" = "İletiyi yanıtla";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Sorun giderme kılavuzu";
+
+/* Try again action */
+"Try again" = "Try again";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Proton'a bağlanmak için farklı bir deneyin (veya ProtonVPN veya Tor kullanın).";

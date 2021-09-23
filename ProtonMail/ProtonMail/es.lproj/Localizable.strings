@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "El descifrado de este contenido ha fallado";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "el descifrado del contenido cifrado de este mensaje ha fallado.";
+
 /* Title */
 "Default" = "Por defecto";
 
@@ -1133,7 +1136,7 @@
 "For power users and groups of people that value full anonymity and privacy" = "Para personas y grupos que valoran el anonimato y la privacidad";
 
 /* The title of alert that the app is not having the permission to access photo library */
-"Forbidden" = "Forbidden";
+"Forbidden" = "Prohibido";
 
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "¿Has olvidado tu contraseña?";
@@ -1154,7 +1157,7 @@
 "From:" = "De:";
 
 /* abbreviation of forward: */
-"Fw:" = "Fw:";
+"Fw:" = "Reenviar:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Rv:";
@@ -1181,7 +1184,7 @@
 "Get more information" = "Obtener más información";
 
 /* title of the next button */
-"Get Started" = "Get Started";
+"Get Started" = "Empezar";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ir a borradores";
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Responder";
 
-/* No comment provided by engineer. */
-"Reply all" = "Responder a todos";
-
 /* reply all action */
-"Reply All" = "Responder a todos";
+"Reply all" = "Responder a todos";
 
 /* composer view model impl */
 "Reply message" = "Responder mensaje";
@@ -2228,7 +2228,7 @@
 "Sending failed" = "Error al enviar";
 
 /* Alert title */
-"Sending in progress" = "Sending in progress";
+"Sending in progress" = "Envío en progreso";
 
 /* Description */
 "Sending Message" = "Enviando mensaje";
@@ -2240,7 +2240,7 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "El envío de mensajes desde la dirección %1$@ es una característica de pago. Tu mensaje será enviado desde tu dirección predeterminada %2$@";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
+"Sending will be available\nwhen attachments are uploaded" = "El envío estará disponible\ncuando se carguen los archivos adjuntos";
 
 /* menu title */
 "Sent" = "Enviado";
@@ -2326,10 +2326,10 @@
 "Signed out from %@ and signed in with %@" = "Sesión cerrada de %1$@ e iniciada con %2$@";
 
 /* Onboarding title */
-"Simply private" = "Simply private";
+"Simply private" = "Simplemente privado";
 
 /* skip button title in onboarding page */
-"Skip" = "Skip";
+"Skip" = "Omitir";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Silenciar";
@@ -2545,7 +2545,7 @@
 "The request timed out." = "Tiempo de espera agotado.";
 
 /* Message of a banner which is displayed when sender request a read receipt */
-"The sender has requested a read receipt." = "The sender has requested a read receipt.";
+"The sender has requested a read receipt." = "El remitente ha solicitado una recepción de lectura.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "El límite de tamaño para los archivos adjuntos es de 25 MB.";
@@ -2591,7 +2591,7 @@
 "This contact belongs to your Address Book." = "Este contacto pertenece a tu libreta de direcciones.";
 
 /* No comment provided by engineer. */
-"This conversation contains trashed messages" = "This conversation contains trashed messages";
+"This conversation contains trashed messages" = "Esta conversación contiene mensajes basura";
 
 /* No comment provided by engineer. */
 "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo electrónico ha fallado los requisitos de autenticación de su dominio. ¡Puede estar falsificado o reenviado incorrectamente!";
@@ -2609,13 +2609,13 @@
 "This message contains embedded images." = "Este mensaje contiene imágenes incrustadas.";
 
 /* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "This message contains remote content and embedded images";
+"This message contains remote content and embedded images" = "Este mensaje contiene contenido remoto e imágenes incrustadas";
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "Este mensaje contiene contenido remoto.";
 
 /* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "This message is automatically generated as a response to a previous message.";
+"This message is automatically generated as a response to a previous message." = "Este mensaje se genera automáticamente como respuesta a un mensaje anterior.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Este mensaje proviene de una lista de correo.";
@@ -2668,10 +2668,10 @@
 "Touch ID" = "Touch ID";
 
 /* settings touchid error */
-"Touch ID is not enrolled, enable it in the system Settings" = "Touch ID is not enrolled, enable it in the system Settings";
+"Touch ID is not enrolled, enable it in the system Settings" = "Touch ID no está activado, actívalo en los Ajustes del sistema";
 
 /* settings touchid/faceid error */
-"Touch ID not available" = "Touch ID not available";
+"Touch ID not available" = "Touch ID no está disponible";
 
 /* *
  *  SettingTableViewController */
@@ -2696,6 +2696,9 @@
 /* Title */
 "Troubleshooting guide" = "Guía para resolver problemas";
 
+/* Try again action */
+"Try again" = "Inténtalo de nuevo";
+
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Intenta conectarte a Proton desde una red diferente (o utilizando ProtonVPN o Tor).";
 
@@ -2706,7 +2709,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Activa esta característica para completar automáticamente las direcciones utilizando los contactos de todas tus cuentas conectadas.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it." = "Activa esta función para bloquear automáticamente la aplicación y utilizar un código PIN o Face ID para desbloquearla.";
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Activa esta característica para bloquear automáticamente tu aplicación y utilizar un código PIN o huella dactilar para desbloquearla.";
@@ -2971,7 +2974,7 @@
 "You can't set %@ address as default because it is a paid feature." = "No puedes establecer la dirección %@ como predeterminada porque es una característica de pago.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in.";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Has desactivado el Face ID en los ajustes del sistema. El Face ID se ha utilizado para proteger información importante de la cuenta. Para acceder a tu cuenta, ve a los ajustes y activa de nuevo el Face ID, o vuelve a iniciar sesión.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Has habilitado la caducidad de mensajes, pero no todos los destinatarios la admiten. Por favor, agrega una contraseña o deshabilita el envío PGP para utilizar la caducidad con todos los destinatarios.";
