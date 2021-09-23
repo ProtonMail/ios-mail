@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "內容解密失敗";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "加密內容解密失敗。";
+
 /* Title */
 "Default" = "預設";
 
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "回覆";
 
-/* No comment provided by engineer. */
-"Reply all" = "全部回覆";
-
 /* reply all action */
-"Reply All" = "回覆所有";
+"Reply all" = "全部回覆";
 
 /* composer view model impl */
 "Reply message" = "回覆短訊";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "疑難排解指南";
+
+/* Try again action */
+"Try again" = "再試一次";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "嘗試以不同的網路連線至 Proton（或使用 ProtonVPN 或 Tor）。";

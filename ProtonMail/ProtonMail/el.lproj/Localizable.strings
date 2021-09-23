@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "Η αποκρυπτογράφηση αυτού του περιεχομένου απέτυχε";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "decryption of this message's encrypted content failed.";
+
 /* Title */
 "Default" = "Προεπιλογή";
 
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Απάντηση";
 
-/* No comment provided by engineer. */
-"Reply all" = "Απάντηση σε όλους";
-
 /* reply all action */
-"Reply All" = "Απάντηση σε όλους";
+"Reply all" = "Απάντηση σε όλους";
 
 /* composer view model impl */
 "Reply message" = "Απάντηση μηνύματος";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Troubleshooting guide";
+
+/* Try again action */
+"Try again" = "Try again";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Δοκιμάστε να συνδεθείτε στο Proton από διαφορετικό δίκτυο (ή χρησιμοποιήστε το ProtonVPN ή το Tor).";

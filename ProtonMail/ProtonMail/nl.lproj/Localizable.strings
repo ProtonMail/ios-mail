@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "Inhoud decoderen is mislukt";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "decoderen van de berichtinhoud is mislukt.";
+
 /* Title */
 "Default" = "Standaard";
 
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Beantwoorden";
 
-/* No comment provided by engineer. */
-"Reply all" = "Allen beantwoorden";
-
 /* reply all action */
-"Reply All" = "Allen beantwoorden";
+"Reply all" = "Allen beantwoorden";
 
 /* composer view model impl */
 "Reply message" = "Bericht beantwoorden";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Handleiding voor probleemoplossing";
+
+/* Try again action */
+"Try again" = "Opnieuw proberen";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Probeer verbinding te maken met Proton vanuit een ander netwerk (of gebruik ProtonVPN of Tor).";

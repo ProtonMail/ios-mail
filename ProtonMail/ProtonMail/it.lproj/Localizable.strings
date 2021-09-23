@@ -251,10 +251,10 @@
 "App PIN" = "PIN App";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN & Face ID";
+"App PIN & Face ID" = "PIN & Face ID App";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN & Touch ID";
+"App PIN & Touch ID" = "PIN & Touch ID App";
 
 /* section title in settings */
 "App settings" = "Impostazioni applicazione";
@@ -737,6 +737,9 @@
 
 /* error details */
 "Decryption of this content failed" = "Decifratura di questo contenuto fallita";
+
+/* error details */
+"decryption of this message's encrypted content failed." = "la decifratura del contenuto cifrato del messaggio è fallita.";
 
 /* Title */
 "Default" = "Predefinito";
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Rispondi";
 
-/* No comment provided by engineer. */
-"Reply all" = "Rispondi a tutti";
-
 /* reply all action */
-"Reply All" = "Rispondi a tutti";
+"Reply all" = "Rispondi a tutti";
 
 /* composer view model impl */
 "Reply message" = "Rispondi al messaggio";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Guida alla risoluzione dei problemi";
+
+/* Try again action */
+"Try again" = "Riprova";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Prova a connetterti a Proton da una rete diversa (o usa ProtonVPN o Tor).";

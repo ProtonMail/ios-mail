@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "Odszyfrowanie zawartości nie powiodło się";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "odszyfrowanie tej wiadomości nie powiodło się.";
+
 /* Title */
 "Default" = "Domyślny";
 
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Odpowiedz";
 
-/* No comment provided by engineer. */
-"Reply all" = "Odpowiedz wszystkim";
-
 /* reply all action */
-"Reply All" = "Odpowiedz wszystkim";
+"Reply all" = "Odpowiedz wszystkim";
 
 /* composer view model impl */
 "Reply message" = "Odpowiedz na wiadomość";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Przewodnik rozwiązywania problemów";
+
+/* Try again action */
+"Try again" = "Spróbuj ponownie";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Spróbuj połączyć się z usługą Proton z innej sieci (lub skorzystaj z ProtonVPN albo sieci Tor).";

@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "A tartalom visszafejtése sikertelen";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "decryption of this message's encrypted content failed.";
+
 /* Title */
 "Default" = "Alapértelmezett";
 
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Válasz";
 
-/* No comment provided by engineer. */
-"Reply all" = "Válasz mindenkinek";
-
 /* reply all action */
-"Reply All" = "Válasz mindenkinek";
+"Reply all" = "Válasz mindenkinek";
 
 /* composer view model impl */
 "Reply message" = "Válasz üzenet";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Troubleshooting guide";
+
+/* Try again action */
+"Try again" = "Try again";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Csatlakozzon a Prontonhoz egy másik hálózaton keresztül (vagy használjon ProtonVPN-t vagy Tor-t).";

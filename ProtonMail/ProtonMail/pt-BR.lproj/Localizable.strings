@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "Falha ao descriptografar este conteúdo";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "decryption of this message's encrypted content failed.";
+
 /* Title */
 "Default" = "Padrão";
 
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Responder";
 
-/* No comment provided by engineer. */
-"Reply all" = "Responder a todos";
-
 /* reply all action */
-"Reply All" = "Responder a todos";
+"Reply all" = "Responder a todos";
 
 /* composer view model impl */
 "Reply message" = "Responder mensagem";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Guia de solução de problemas";
+
+/* Try again action */
+"Try again" = "Try again";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Tente conectar ao Proton a partir de uma rede diferente (ou use o ProtonVPN ou Tor).";

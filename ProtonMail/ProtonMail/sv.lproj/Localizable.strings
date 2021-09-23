@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "Dekryptering av innehållet misslyckades";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "decryption of this message's encrypted content failed.";
+
 /* Title */
 "Default" = "Standard";
 
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Svara";
 
-/* No comment provided by engineer. */
-"Reply all" = "Svara alla";
-
 /* reply all action */
-"Reply All" = "Svara alla";
+"Reply all" = "Svara alla";
 
 /* composer view model impl */
 "Reply message" = "Svara meddelande";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Felsökningsguide";
+
+/* Try again action */
+"Try again" = "Försök igen";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Try connecting to Proton from a different network (or use ProtonVPN or Tor).";

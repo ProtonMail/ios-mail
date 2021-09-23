@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "При расшифровке содержимого произошёл сбой";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "расшифровка зашифрованного содержимого этого сообщения не удалась.";
+
 /* Title */
 "Default" = "По умолчанию";
 
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Ответить";
 
-/* No comment provided by engineer. */
-"Reply all" = "Ответить всем";
-
 /* reply all action */
-"Reply All" = "Ответить всем";
+"Reply all" = "Ответить всем";
 
 /* composer view model impl */
 "Reply message" = "Ответить на сообщение";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Руководство по устранению проблем";
+
+/* Try again action */
+"Try again" = "Попробовать снова";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Попробуйте подключиться к Proton из другой сети (или используйте ProtonVPN либо Tor).";

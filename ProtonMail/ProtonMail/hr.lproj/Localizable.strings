@@ -738,6 +738,9 @@
 /* error details */
 "Decryption of this content failed" = "Neuspješno dešifriranje ovog sadržaja";
 
+/* error details */
+"decryption of this message's encrypted content failed." = "decryption of this message's encrypted content failed.";
+
 /* Title */
 "Default" = "Zadano";
 
@@ -2127,11 +2130,8 @@
  *  Controller Defined */
 "Reply" = "Odgovori";
 
-/* No comment provided by engineer. */
-"Reply all" = "Odgovori svima";
-
 /* reply all action */
-"Reply All" = "Odgovori svima";
+"Reply all" = "Odgovori svima";
 
 /* composer view model impl */
 "Reply message" = "Odgovori na poruku";
@@ -2695,6 +2695,9 @@
 
 /* Title */
 "Troubleshooting guide" = "Vodič za rješavanje problema";
+
+/* Try again action */
+"Try again" = "Try again";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Pokušajte se povezati na Proton s druge mreže (ili upotrijebite ProtonVPN ili Tor).";
