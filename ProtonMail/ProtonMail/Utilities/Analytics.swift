@@ -46,7 +46,7 @@ class Analytics {
     }
     
     func debug(message: Analytics.Events, extra: [String: Any],
-               user: UserManager?=nil, file: String = #file,
+               file: String = #file,
                function: String = #function, line: Int = #line,
                column: Int = #column) {
         
@@ -54,12 +54,11 @@ class Analytics {
         let event = Event(level: .debug)
         event.message = message.rawValue
         event.extra = extra + appendDic
-        event.user = self.getUsesr(currentUser: user)
         SentrySDK.capture(event: event)
     }
     
     func error(message: Analytics.Events, error: Error, extra: [String: Any]=[:],
-               user: UserManager?=nil, file: String = #file,
+               file: String = #file,
                function: String = #function, line: Int = #line,
                column: Int = #column) {
         
@@ -76,12 +75,11 @@ class Analytics {
         let _error = error as NSError
         event.message = "\(message.rawValue) - \(_error.code)"
         event.extra = extra + appendDic + dic
-        event.user = self.getUsesr(currentUser: user)
         SentrySDK.capture(event: event)
     }
     
     func error(message: Analytics.Events, error: String, extra: [String: Any]=[:],
-               user: UserManager?=nil, file: String = #file,
+               file: String = #file,
                function: String = #function, line: Int = #line,
                column: Int = #column) {
         
@@ -93,16 +91,7 @@ class Analytics {
         let event = Event(level: .error)
         event.message = "\(message.rawValue) - \(-10000000) - \(NSError.protonMailErrorDomain("DataService"))"
         event.extra = extra + appendDic + dic
-        event.user = self.getUsesr(currentUser: user)
         SentrySDK.capture(event: event)
-    }
-    
-    private func getUsesr(currentUser: UserManager?=nil) -> Sentry.User {
-        guard let currentUser = currentUser else {
-            return Sentry.User(userId: "Not record")
-        }
-        let user = Sentry.User(userId: currentUser.userinfo.userId)
-        return user
     }
     
     private func getAppendInfo(_ file: String, _ function: String, _ line: Int, _ column: Int) -> [String: Any] {

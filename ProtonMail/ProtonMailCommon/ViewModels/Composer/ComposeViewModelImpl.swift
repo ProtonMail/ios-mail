@@ -240,7 +240,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                         att.keyChanged = true
                     }
                 } catch let err as NSError{
-                    Analytics.shared.error(message: .updateAddressIDError, error: err, user: self.user)
+                    Analytics.shared.error(message: .updateAddressIDError, error: err)
                 }
             }
             

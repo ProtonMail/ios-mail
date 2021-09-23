@@ -158,8 +158,7 @@ extension MessageDataService {
         }
         
         Analytics.shared.error(message: .decryptedMessageBodyFailed,
-                               error: "passphrase is nil",
-                               user: self.usersManager?.getUser(byUserId: self.userID))
+                               error: "passphrase is nil")
         return message.body
     }
     

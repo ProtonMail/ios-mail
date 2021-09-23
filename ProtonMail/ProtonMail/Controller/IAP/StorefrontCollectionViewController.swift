@@ -45,7 +45,7 @@ final class StorefrontCollectionViewController: UICollectionViewController {
             self.collectionView.reloadData()
         }.catch({ (error) in
             MBProgressHUD.hide(for: self.view, animated: true)
-            Analytics.shared.error(message: .fetchSubscriptionData, error: error, user: self.viewModel.currentUser)
+            Analytics.shared.error(message: .fetchSubscriptionData, error: error)
             self.showErrorAlert()
         })
     }
