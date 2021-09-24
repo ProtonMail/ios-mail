@@ -157,6 +157,7 @@ extension AppDelegate: UIApplicationDelegate {
         PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
         PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
         PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
+        PMAPIService.noTrustKit = true
         #endif
 
         TrustKitWrapper.start(delegate: self)

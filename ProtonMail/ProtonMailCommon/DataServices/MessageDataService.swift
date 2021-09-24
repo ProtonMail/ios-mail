@@ -1463,12 +1463,19 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 let completionWrapper: CompletionBlock = { task, response, error in
                     guard let mess = response else {
-                        if let err = error, !err.isBadVersionError {
-                            Analytics.shared.error(message: .saveDraftError, error: err)
+                        defer {
+                            // error: response nil
+                            completion?(task, nil, error)
+                        }
+                        guard let err = error else { return }
+                        Analytics.shared.error(message: .saveDraftError, error: err)
+                        DispatchQueue.main.async {
                             NSError.alertSavingDraftError(details: err.localizedDescription)
                         }
-                        // error: response nil
-                        completion?(task, nil, error)
+                        if err.isStorageExceeded {
+                            context.delete(message)
+                            _ = context.saveUpstreamIfNeeded()
+                        }
                         return
                     }
                     
@@ -1705,10 +1712,21 @@ class MessageDataService : Service, HasLocalStorage {
                         completion?(task, response, error)
                     }
                 } else {
-                    if let err = error {
-                        Analytics.shared.error(message: .uploadAttachmentError, error: err)
+                    defer {
+                        completion?(task, response, error)
                     }
-                    completion?(task, response, error)
+                    guard let err = error else { return }
+                    
+                    Analytics.shared.error(message: .uploadAttachmentError, error: err)
+                    let reason = response?["Error"] ?? err.localizedDescription
+                    let code = (response?["Code"] as? Int) ?? err.code
+                    NotificationCenter
+                        .default
+                        .post(name: .attachmentUploadFailed,
+                              object: nil,
+                              userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
+                                         "reason": reason,
+                                         "code": code])
                 }
             }
             

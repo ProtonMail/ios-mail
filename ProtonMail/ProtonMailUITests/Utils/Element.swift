@@ -494,15 +494,15 @@ extension XCUIElement {
 
             switch direction {
             case .right:
-                startOffset = CGVector(dx: 0.1, dy: 0.0)
-                endOffset = CGVector(dx: 0.9, dy: 0.0)
+                startOffset = CGVector(dx: 0.1, dy: 0.1)
+                endOffset = CGVector(dx: 0.9, dy: 0.1)
             case .left:
-                startOffset = CGVector(dx: 0.9, dy: 0.0)
-                endOffset = CGVector(dx: 0.1, dy: 0.0)
+                startOffset = CGVector(dx: 0.9, dy: 0.1)
+                endOffset = CGVector(dx: 0.1, dy: 0.1)
             }
 
             let startPoint = self.coordinate(withNormalizedOffset: startOffset)
             let endPoint = self.coordinate(withNormalizedOffset: endOffset)
-            startPoint.press(forDuration: 0, thenDragTo: endPoint)
+            startPoint.press(forDuration: 0.2, thenDragTo: endPoint)
         }
 }

@@ -88,4 +88,7 @@ extension NSError {
         return self.code == PMCommon.APIErrorCode.badAppVersion || self.code == PMCommon.APIErrorCode.badApiVersion
     }
 
+    var isStorageExceeded: Bool {
+        return self.code == 2011
+    }
 }

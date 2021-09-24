@@ -184,12 +184,15 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func uploadPubkey(_ att: Attachment!) {
+        guard !self.user.isStorageExceeded else { return }
+        self.user.usedSpace(plus: att.fileSize.int64Value)
         self.updateDraft()
         messageService.upload(pubKey: att)
         self.updateDraft()
     }
     
     override func deleteAtt(_ att: Attachment!) -> Promise<Void> {
+        self.user.usedSpace(minus: att.fileSize.int64Value)
         return messageService.delete(att: att).done { (_) in
             self.updateDraft()
         }

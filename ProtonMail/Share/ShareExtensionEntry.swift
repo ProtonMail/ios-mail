@@ -46,6 +46,9 @@ class ShareExtensionEntry : UINavigationController {
     }
     
     private func setup() {
+        #if DEBUG
+        PMAPIService.noTrustKit = true
+        #endif
         TrustKitWrapper.start(delegate: self)
         appCoordinator = ShareAppCoordinator(navigation: self)
     }

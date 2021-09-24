@@ -92,6 +92,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var needToShowNewMessage : Bool = false
     private var newMessageCount = 0
     private var hasNetworking = true
+    private var editingMode = false
     
     // MAKR : - Private views
     private var refreshControl: UIRefreshControl!
@@ -100,6 +101,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     // MARK: - Right bar buttons
     
     private var composeBarButtonItem: UIBarButtonItem!
+    private var storageExceededBarButtonItem: UIBarButtonItem!
     private var searchBarButtonItem: UIBarButtonItem!
     private var removeBarButtonItem: UIBarButtonItem!
     private var labelBarButtonItem: UIBarButtonItem!
@@ -319,6 +321,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.coordinator?.go(to: .composer)
         }
     }
+    
+    @objc func storageExceededButtonTapped() {
+        LocalString._storage_exceeded.alertToastBottom(view: self.view)
+    }
+    
     @objc internal func searchButtonTapped() {
         self.coordinator?.go(to: .search)
     }
@@ -815,6 +822,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.handleRequestError(error)
         }
         
+        self.setupRightButtons(self.editingMode)
+        
         var loadMore: Int = 0
         if error == nil {
             self.onlineTimerReset()
@@ -922,6 +931,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     private func forceRefreshAllMessages() {
         stopAutoFetch()
+        viewModel.user.fetchUserInfo()
         viewModel.fetchMessageOnlyWithReset(time: 0) { [weak self] task, res, error in
             self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
             self?.startAutoFetch(false)
@@ -1075,6 +1085,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.composeBarButtonItem.accessibilityLabel = LocalString._composer_compose_action
             }
             
+            if self.storageExceededBarButtonItem == nil {
+                self.storageExceededBarButtonItem = BarItem(image: UIImage.Top.compose, action: #selector(storageExceededButtonTapped))
+                self.storageExceededBarButtonItem.tintColor = UIColor.gray
+                self.storageExceededBarButtonItem.accessibilityLabel = LocalString._storage_exceeded
+            }
+            
             if (self.searchBarButtonItem == nil) {
                 self.searchBarButtonItem = BarItem(image: UIImage.Top.search, action: #selector(searchButtonTapped))
                 self.searchBarButtonItem.accessibilityLabel = LocalString._general_search_placeholder
@@ -1085,10 +1101,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.moreBarButtonItem.accessibilityLabel = LocalString._general_more
             }
             
+            let isStorageFull = self.viewModel.isStorageFull
+            let item: UIBarButtonItem = isStorageFull ? self.storageExceededBarButtonItem: self.composeBarButtonItem
+            
             if viewModel.isShowEmptyFolder() {
-                rightButtons = [self.moreBarButtonItem, self.composeBarButtonItem, self.searchBarButtonItem]
+                rightButtons = [self.moreBarButtonItem, item, self.searchBarButtonItem]
             } else {
-                rightButtons = [self.composeBarButtonItem, self.searchBarButtonItem]
+                rightButtons = [item, self.searchBarButtonItem]
             }
         } else {
             if (self.unreadBarButtonItem == nil) {
@@ -1176,6 +1195,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     fileprivate func updateNavigationController(_ editingMode: Bool) {
+        self.editingMode = editingMode
         self.setupLeftButtons(editingMode)
         self.setupNavigationTitle(editingMode)
         self.setupRightButtons(editingMode)

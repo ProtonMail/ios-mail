@@ -46,11 +46,15 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     }
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {
-        if self.viewModel.user.isPaid {
-            self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
-        } else {
+        guard self.viewModel.user.isPaid else {
             self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+            return
         }
+        guard !self.viewModel.user.isStorageExceeded else {
+            LocalString._storage_exceeded.alertToastBottom()
+            return
+        }
+        self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
     }
     
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
