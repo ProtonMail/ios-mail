@@ -102,6 +102,9 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         child.enclosingScroller = self.controller
         
         let coordinator = ComposeCoordinator(vc: child, vm: childViewModel, services: self.services)
+        coordinator.updateAttachmentsStatus = { [weak self] in
+            self?.controller.checkAttachments()
+        }
         coordinator.start()
         self.editor = child
     }

@@ -22,7 +22,7 @@
     
 
 import Foundation
-class ComposeCoordinator : DefaultCoordinator {
+class ComposeCoordinator: NSObject, DefaultCoordinator {
     typealias VC = ComposeViewController
 
     weak var viewController: ComposeViewController?
@@ -30,6 +30,7 @@ class ComposeCoordinator : DefaultCoordinator {
     
     let viewModel : ComposeViewModel
     var services: ServiceFactory
+    var updateAttachmentsStatus: (() -> Void)?
     
     init(vc: ComposeViewController, vm: ComposeViewModel, services: ServiceFactory) {
         self.viewModel = vm
@@ -109,6 +110,9 @@ class ComposeCoordinator : DefaultCoordinator {
             
             destination.delegate = viewController
             destination.message = viewModel.message
+            if #available(iOS 13, *) {
+                destination.isModalInPresentation = true
+            }
             
             break
         }
@@ -128,9 +132,6 @@ class ComposeCoordinator : DefaultCoordinator {
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: nil)
     }
 }
-
-
-
 
 extension ComposeCoordinator : ComposePasswordViewControllerDelegate {
     

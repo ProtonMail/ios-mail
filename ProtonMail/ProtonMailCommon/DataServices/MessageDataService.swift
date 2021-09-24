@@ -1696,6 +1696,12 @@ class MessageDataService : Service, HasLocalStorage {
                         if let error = context.saveUpstreamIfNeeded() {
                             PMLog.D(" error: \(error)")
                         }
+                        NotificationCenter
+                            .default
+                            .post(name: .attachmentUploaded,
+                                  object: nil,
+                                  userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
+                                             "attachmentID": attachment.attachmentID])
                         completion?(task, response, error)
                     }
                 } else {

@@ -539,7 +539,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
     }
     
-    private func updateAttachmentButton () {
+    private func updateAttachmentButton() {
         guard let atts = self.viewModel.message?.attachments.allObjects as? [Attachment] else {
             self.headerView.updateAttachmentButton(false)
             return
@@ -558,12 +558,14 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         // Data.toAttachment will automatically increment number of attachments in the message
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         
-        return data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata).done { (attachment) in
+        return data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata).done { [weak self] attachment in
             guard let att = attachment else {
                 return
             }
             att.headerInfo = "{ \"content-disposition\": \"inline\", \"content-id\": \"\(sid)\" }"
-            self.viewModel.uploadAtt(att)
+            self?.viewModel.uploadAtt(att)
+            self?.coordinator?.updateAttachmentsStatus?()
+            self?.updateAttachmentButton()
         }
     }
     
@@ -576,8 +578,11 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             let newNum = number > 0 ? number - 1 : 0
             self.viewModel.message?.numAttachments = NSNumber(value: newNum)
         }
-        
-        self.viewModel.deleteAtt(attachment).cauterize()
+
+        self.viewModel.deleteAtt(attachment).ensure { [weak self] in
+            self?.coordinator?.updateAttachmentsStatus?()
+            self?.updateAttachmentButton()
+        }.cauterize()
     }
     
     func htmlEditorDidFinishLoadingContent() {
@@ -867,6 +872,7 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
 
     func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments attachments: [Any]) {
         self.attachments = attachments
+        coordinator?.updateAttachmentsStatus?()
     }
 
     func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {

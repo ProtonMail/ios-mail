@@ -1909,4 +1909,6 @@ class LocalizedString {
 
     lazy var _message_of_unavailable_to_upgrade_account = NSLocalizedString("It's not possible to switch to another plan within the app. %1$@", comment: "")
     lazy var _message_of_unavailable_to_upgrade_url = NSLocalizedString("Plans can be edited on the web version.", comment: "")
+
+    lazy var _attachmets_are_uploading_info = NSLocalizedString("Sending will be available\nwhen attachments are uploaded", comment: "text displayed in composer when attachments are uploading")
 }
