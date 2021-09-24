@@ -69,7 +69,11 @@ extension Notification.Name {
         return .init("didPrimaryAccountLogout")
     }
 
-    static var attachmentUploaded: Notification.Name {
-        return .init("attachmentUploaded")
+    static var attachmentUploadFailed: Notification.Name {
+        return .init("attachmentUploadFailed")
     }
+
+	static var attachmentUploaded: Notification.Name {
+        return .init("attachmentUploaded")
+	}
 }

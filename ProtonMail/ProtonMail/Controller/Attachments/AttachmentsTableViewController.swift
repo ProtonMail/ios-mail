@@ -85,6 +85,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }
     
     weak var delegate: AttachmentsTableViewControllerDelegate?
+    private(set) weak var user: UserManager?
     
     internal let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
     internal var currentAttachmentSize : Int = 0
@@ -215,6 +216,10 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         return true
     }
 
+    func setup(user: UserManager) {
+        self.user = user
+    }
+
     internal func updateAttachmentSize () {
         self.currentAttachmentSize = self.attachments.reduce(into: 0) {
             $0 += $1.fileSize.intValue
@@ -227,6 +232,11 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }
     
     @IBAction func addAction(_ sender: UIBarButtonItem) {
+        if self.user?.isStorageExceeded ?? false {
+            LocalString._storage_exceeded.alertToastBottom(view: self.view)
+            return
+        }
+        
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
@@ -249,7 +259,6 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
     
     // MARK: - Table view data source
     

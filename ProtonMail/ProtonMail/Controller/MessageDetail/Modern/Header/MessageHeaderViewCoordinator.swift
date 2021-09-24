@@ -48,6 +48,10 @@ class MessageHeaderViewCoordinator {
             UIPasteboard.general.string = model.displayName
         }))
         alertController.addAction(UIAlertAction(title: LocalString._compose_to, style: .default, handler: { (action) -> Void in
+            guard !self.user.isStorageExceeded else {
+                LocalString._storage_exceeded.alertToastBottom(view: self.controller.view)
+                return
+            }
             let contactVO = ContactVO(id: "",
                                       name: model.displayName,
                                       email: model.displayEmail,

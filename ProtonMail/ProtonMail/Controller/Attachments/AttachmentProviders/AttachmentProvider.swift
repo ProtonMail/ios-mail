@@ -52,9 +52,26 @@ extension AttachmentsTableViewController {
     }
     
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
-        return Promise { seal in
-            self.processQueue.addOperation {
+        return Promise { [weak self] seal in
+            guard let self = self else {
+                seal.fulfill_()
+                return
+            }
+            self.processQueue.addOperation { [weak self] in
+                guard let self = self else {
+                    seal.fulfill_()
+                    return
+                }
                 let size = fileData.contents.dataSize
+                let usedSpace = self.user?.userinfo.usedSpace ?? 0
+                let maxSpace = self.user?.userinfo.maxSpace ?? 0
+                if (usedSpace + Int64(size)) >= maxSpace ||
+                    self.user?.isStorageExceeded == true {
+                    DispatchQueue.main.async {
+                        LocalString._storage_exceeded.alertToast(view: self.view)
+                    }
+                    return
+                }
                 guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
                     self.sizeError(0)
                     PMLog.D(" Size too big Orig: \(size) -- Limit: \(self.kDefaultAttachmentFileSize)")
@@ -76,13 +93,13 @@ extension AttachmentsTableViewController {
                     self.error(LocalString._cant_copy_the_file)
                     return
                 }
+                self.user?.usedSpace(plus: att.fileSize.int64Value)
                 self.updateAttachments()
+                self.user?.usedSpace(plus: Int64(size))
                 self.delegate?.attachments(self, didPickedAttachment: att)
                 seal.fulfill_()
             }
         }
-        
-        
     }
 }
 

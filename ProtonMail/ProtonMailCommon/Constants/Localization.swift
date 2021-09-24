@@ -1105,6 +1105,8 @@ class LocalizedString {
     lazy var _space_warning = NSLocalizedString("Storage Warning", comment: "Title")
     lazy var _space_all_used_warning = NSLocalizedString("You have used up all of your storage space (%@).", comment: "Content of space warning")
     lazy var _space_partial_used_warning = NSLocalizedString("You have used %d%% of your storage space (%@).", comment: "Content of space warning")
+    lazy var _storage_exceeded = NSLocalizedString("Storage quota exceeded", comment: "Storage warning")
+    lazy var _please_upgrade_plan = NSLocalizedString("Please upgrade your plan", comment: "Content of storage full alert")
 
     /// "Warning"
     lazy var _warning = NSLocalizedString("Warning", comment: "Title")
@@ -1909,6 +1911,8 @@ class LocalizedString {
 
     lazy var _message_of_unavailable_to_upgrade_account = NSLocalizedString("It's not possible to switch to another plan within the app. %1$@", comment: "")
     lazy var _message_of_unavailable_to_upgrade_url = NSLocalizedString("Plans can be edited on the web version.", comment: "")
+    lazy var _attachment_upload_failed_title = NSLocalizedString("Attachment failure", comment: "Alert title when attachment upload failed")
+    lazy var _attachment_upload_failed_body = NSLocalizedString("The following files couldn't be attached:", comment: "Alert message when attachment upload failed")
 
     lazy var _attachmets_are_uploading_info = NSLocalizedString("Sending will be available\nwhen attachments are uploaded", comment: "text displayed in composer when attachments are uploading")
 }

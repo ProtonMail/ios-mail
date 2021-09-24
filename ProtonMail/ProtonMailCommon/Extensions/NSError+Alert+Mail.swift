@@ -54,7 +54,10 @@ extension NSError {
         hud.offset.y = 250.0
         hud.hide(animated: true, afterDelay: 3)
     }
-    
+
+    class func alertStorageExceeded() {
+        LocalString._storage_exceeded.alertToast()
+    }
     
     public class func alertLocalCacheErrorToast() ->Void {
         guard let window : UIWindow = UIApplication.shared.keyWindow else {

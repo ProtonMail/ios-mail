@@ -512,4 +512,8 @@ extension UserInfo {
         }
         return out
     }
+
+    var isStorageFull: Bool {
+        return self.usedSpace >= self.maxSpace
+    }
 }

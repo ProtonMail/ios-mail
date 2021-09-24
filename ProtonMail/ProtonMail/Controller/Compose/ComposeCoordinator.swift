@@ -107,13 +107,12 @@ class ComposeCoordinator: NSObject, DefaultCoordinator {
             guard let destination = nav.viewControllers.first as? AttachmentsTableViewController else {
                 return false
             }
-            
+            destination.setup(user: viewModel.getUser())
             destination.delegate = viewController
             destination.message = viewModel.message
             if #available(iOS 13, *) {
                 destination.isModalInPresentation = true
             }
-            
             break
         }
         return true
