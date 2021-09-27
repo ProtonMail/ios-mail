@@ -31,4 +31,9 @@ extension Int {
             return self == 5003
         }
     }
+
+    var toByteCount: String {
+        let byteCountFormatter = ByteCountFormatter()
+        return byteCountFormatter.string(fromByteCount: Int64(self))
+    }
 }

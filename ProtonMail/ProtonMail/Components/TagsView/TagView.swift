@@ -39,6 +39,7 @@ class TagView: UIView {
     }
 
     private func addSubviews() {
+        tagLabel.setContentHuggingPriority(.required, for: .horizontal)
         addSubview(tagLabel)
     }
 

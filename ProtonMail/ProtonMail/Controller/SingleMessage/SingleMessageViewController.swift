@@ -133,7 +133,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
 }
 
 // MARK: - Actions
-private extension SingleMessageViewController {
+extension SingleMessageViewController {
     @objc
     private func starButtonTapped() {
         viewModel.starTapped()
@@ -197,7 +197,7 @@ private extension SingleMessageViewController {
     }
 
     @objc
-    private func moreButtonTapped() {
+    func moreButtonTapped() {
         guard let navigationVC = self.navigationController else { return }
         let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.subject,
                                                                    labelID: viewModel.labelId,

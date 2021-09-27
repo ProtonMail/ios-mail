@@ -28,6 +28,7 @@ class NonExpandedHeaderView: UIView {
     let initialsContainer = SubviewsFactory.container
     let initialsLabel = UILabel.initialsLabel
     let senderLabel = UILabel(frame: .zero)
+    let senderAddressLabel = TextControl()
     let lockImageView = SubviewsFactory.imageView
     let lockImageControl = UIControl(frame: .zero)
     let originImageView = SubviewsFactory.originImageView
@@ -35,10 +36,13 @@ class NonExpandedHeaderView: UIView {
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
     let recipientLabel = UILabel()
     let tagsView = SingleRowTagsView()
+    let showDetailsButton = SubviewsFactory.showDetailButton
     let starImageView = SubviewsFactory.starImageView
     private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
 
     private let firstLineStackView = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
+    private let senderAddressStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
+    private let detailButtonStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
 
     init() {
         super.init(frame: .zero)
@@ -59,19 +63,28 @@ class NonExpandedHeaderView: UIView {
         let originContainer = StackViewContainer(view: originImageView, top: 2)
 
         firstLineStackView.addArrangedSubview(senderLabel)
-        firstLineStackView.addArrangedSubview(lockContainer)
         firstLineStackView.addArrangedSubview(UIView())
         firstLineStackView.addArrangedSubview(starImageView)
         firstLineStackView.addArrangedSubview(originContainer)
         firstLineStackView.addArrangedSubview(timeLabel)
 
-        contentStackView.addArrangedSubview(StackViewContainer(view: recipientLabel, trailing: -70))
-
-        contentStackView.addArrangedSubview(tagsView)
-
         firstLineStackView.setCustomSpacing(4, after: senderLabel)
         firstLineStackView.setCustomSpacing(6, after: originContainer)
         firstLineStackView.setCustomSpacing(4, after: starImageView)
+
+        contentStackView.addArrangedSubview(senderAddressStack)
+        senderAddressStack.addArrangedSubview(lockContainer)
+        senderAddressStack.addArrangedSubview(senderAddressLabel)
+        senderAddressStack.addArrangedSubview(UIView(frame: .zero))
+        senderAddressStack.setCustomSpacing(4, after: lockContainer)
+        senderAddressStack.setCustomSpacing(32, after: senderAddressLabel)
+
+        contentStackView.addArrangedSubview(StackViewContainer(view: recipientLabel, trailing: -70))
+        contentStackView.addArrangedSubview(tagsView)
+
+        contentStackView.addArrangedSubview(detailButtonStack)
+        detailButtonStack.addArrangedSubview(showDetailsButton)
+        detailButtonStack.addArrangedSubview(UIView())
     }
 
     private func setUpLayout() {
@@ -90,9 +103,9 @@ class NonExpandedHeaderView: UIView {
         ].activate()
 
         [
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 14),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ].activate()
 
         [
@@ -101,8 +114,8 @@ class NonExpandedHeaderView: UIView {
         ].activate()
 
         [
-            lockContainer.heightAnchor.constraint(equalToConstant: 24),
-            lockContainer.widthAnchor.constraint(equalToConstant: 24)
+            lockContainer.heightAnchor.constraint(equalToConstant: 16),
+            lockContainer.widthAnchor.constraint(equalToConstant: 16)
         ].activate()
 
         [recipientLabel.heightAnchor.constraint(equalToConstant: 20)].activate()
@@ -151,4 +164,10 @@ private enum SubviewsFactory {
         return imageView
     }
 
+    static var showDetailButton: UIButton {
+        let button = UIButton()
+        button.setTitle(LocalString._show_details, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        return button
+    }
 }

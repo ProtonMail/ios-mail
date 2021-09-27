@@ -30,6 +30,9 @@ class ExpandedHeaderView: UIView {
     let contentStackView = UIStackView.stackView(axis: .vertical, distribution: .fill, alignment: .fill)
     let senderNameLabel = UILabel()
     let senderEmailControl = TextControl()
+    let lockImageView = SubviewsFactory.imageView
+    let lockImageControl = UIControl(frame: .zero)
+    private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
     let timeLabel = UILabel()
     let starImageView = SubviewsFactory.starImageView
 
@@ -40,9 +43,12 @@ class ExpandedHeaderView: UIView {
     }
 
     private func addSubviews() {
+        lockImageControl.addSubview(lockImageView)
+
         addSubview(initialsContainer)
         addSubview(senderNameLabel)
         addSubview(senderEmailControl)
+        addSubview(lockContainer)
         addSubview(timeLabel)
         addSubview(starImageView)
         addSubview(contentStackView)
@@ -54,8 +60,7 @@ class ExpandedHeaderView: UIView {
             initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 14),
             initialsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
             initialsContainer.heightAnchor.constraint(equalToConstant: 28),
-            initialsContainer.widthAnchor.constraint(equalToConstant: 28),
-            initialsContainer.bottomAnchor.constraint(equalTo: senderEmailControl.topAnchor, constant: -2)
+            initialsContainer.widthAnchor.constraint(equalToConstant: 28)
         ].activate()
 
         [
@@ -65,9 +70,8 @@ class ExpandedHeaderView: UIView {
         ].activate()
 
         [
-            senderNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 14),
             senderNameLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
-            senderNameLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor),
+            senderNameLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor, constant: -2),
             senderNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: starImageView.leadingAnchor, constant: -8)
         ].activate()
 
@@ -82,7 +86,20 @@ class ExpandedHeaderView: UIView {
         ].activate()
 
         [
-            senderEmailControl.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
+            lockImageView.centerXAnchor.constraint(equalTo: lockImageControl.centerXAnchor),
+            lockImageView.centerYAnchor.constraint(equalTo: lockImageControl.centerYAnchor)
+        ].activate()
+
+        [
+            lockContainer.heightAnchor.constraint(equalToConstant: 16),
+            lockContainer.widthAnchor.constraint(equalToConstant: 16),
+            lockContainer.leadingAnchor.constraint(equalTo: senderNameLabel.leadingAnchor),
+            lockContainer.centerYAnchor.constraint(equalTo: senderEmailControl.centerYAnchor)
+        ].activate()
+
+        [
+            senderEmailControl.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 8),
+            senderEmailControl.leadingAnchor.constraint(equalTo: lockContainer.trailingAnchor, constant: 4),
             senderEmailControl.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -48),
             senderEmailControl.bottomAnchor.constraint(equalTo: contentStackView.topAnchor, constant: -8)
         ].activate()
@@ -116,4 +133,9 @@ private enum SubviewsFactory {
         return imageView
     }
 
+    static var imageView: UIImageView {
+        let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }
 }

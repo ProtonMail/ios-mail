@@ -30,15 +30,14 @@ class HeaderContainerView: UIView {
         setUpLayout()
     }
 
-    let expandArrowControl = UIControl(frame: .zero)
+    let moreControl = UIControl(frame: .zero)
     let contentContainer = UIView(frame: .zero)
-    let expandArrowImageView = SubviewsFactory.expandArrowImageView
+    let moreImageView = SubviewsFactory.moreImageView
 
     private func addSubviews() {
         addSubview(contentContainer)
-        addSubview(expandArrowControl)
-
-        expandArrowControl.addSubview(expandArrowImageView)
+        addSubview(moreControl)
+        moreControl.addSubview(moreImageView)
     }
 
     private func setUpLayout() {
@@ -52,16 +51,18 @@ class HeaderContainerView: UIView {
         [contentContainer.widthAnchor.constraint(equalTo: widthAnchor)].activate()
 
         [
-            expandArrowControl.topAnchor.constraint(equalTo: topAnchor),
-            expandArrowControl.trailingAnchor.constraint(equalTo: trailingAnchor),
-            expandArrowControl.widthAnchor.constraint(equalToConstant: 40),
-            expandArrowControl.heightAnchor.constraint(equalToConstant: 90),
-            expandArrowControl.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+            moreControl.topAnchor.constraint(equalTo: topAnchor),
+            moreControl.trailingAnchor.constraint(equalTo: trailingAnchor),
+            moreControl.widthAnchor.constraint(equalToConstant: 40),
+            moreControl.heightAnchor.constraint(equalToConstant: 90),
+            moreControl.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
         ].activate()
 
         [
-            expandArrowImageView.topAnchor.constraint(equalTo: expandArrowControl.topAnchor, constant: 48),
-            expandArrowImageView.trailingAnchor.constraint(equalTo: expandArrowControl.trailingAnchor, constant: -16)
+            moreImageView.topAnchor.constraint(equalTo: moreControl.topAnchor, constant: 48),
+            moreImageView.trailingAnchor.constraint(equalTo: moreControl.trailingAnchor, constant: -16),
+            moreImageView.heightAnchor.constraint(equalToConstant: 20),
+            moreImageView.widthAnchor.constraint(equalToConstant: 20)
         ].activate()
     }
 
@@ -72,12 +73,10 @@ class HeaderContainerView: UIView {
 }
 
 private enum SubviewsFactory {
-
-    static var expandArrowImageView: UIImageView {
+    static var moreImageView: UIImageView {
         let imageView = UIImageView()
-        imageView.image = Asset.mailDownArrow.image
+        imageView.image = Asset.dotsButtonIcon.image
         imageView.tintColor = UIColorManager.IconWeak
         return imageView
     }
-
 }

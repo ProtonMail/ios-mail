@@ -28,7 +28,15 @@ class NonExpandedHeaderViewModel {
     var reloadView: (() -> Void)?
 
     var sender: NSAttributedString {
-        senderName.apply(style: .Default)
+        var style = FontManager.Default
+        style.addTruncatingTail()
+        return senderName.apply(style: style)
+    }
+
+    var senderEmail: NSAttributedString {
+        var style = FontManager.body3RegularInteractionNorm
+        style.addTruncatingTail(mode: .byTruncatingMiddle)
+        return "<\((message.sender?.toContact()?.email ?? ""))>".apply(style: style)
     }
 
     var initials: NSAttributedString {

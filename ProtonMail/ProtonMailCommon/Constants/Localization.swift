@@ -971,7 +971,8 @@ class LocalizedString {
     lazy var _details = NSLocalizedString("Details", comment: "Title")
 
     /// "Hide Details"
-    lazy var _hide_details = NSLocalizedString("Hide Details", comment: "Title")
+    lazy var _hide_details = NSLocalizedString("Hide details", comment: "Title")
+    lazy var _show_details = NSLocalizedString("Show details", comment: "Title")
 
     /// "Phone number"
     lazy var _phone_number = NSLocalizedString("Phone number", comment: "contact placeholder")

@@ -1,5 +1,5 @@
 //
-//  ExpandedHeaderContactContext.swift
+//  MessageHeaderContactContext.swift
 //  ProtonMail
 //
 //
@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
-struct ExpandedHeaderContactContext {
+struct MessageHeaderContactContext {
     let type: MessageDetailsContactActionSheetType
     let contact: ContactVO
 }

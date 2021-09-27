@@ -10,6 +10,6 @@ struct ConversationMessageModel {
     let isRepliedToAll: Bool
     let isStarred: Bool
     let hasAttachment: Bool
-    let tags: [UIColor]
+    let tags: [TagViewModel]
     let expirationTag: TagViewModel?
 }

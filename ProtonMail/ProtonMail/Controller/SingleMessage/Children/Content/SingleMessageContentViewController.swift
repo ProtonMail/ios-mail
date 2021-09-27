@@ -74,8 +74,8 @@ class SingleMessageContentViewController: UIViewController {
         }
 
         addObservations()
+        setUpMoreAction()
         embedChildren()
-        setUpExpandAction()
         setUpFooterButtons()
     }
 
@@ -126,6 +126,7 @@ class SingleMessageContentViewController: UIViewController {
         navigationAction(action)
     }
 
+    @objc
     private func moreButtonTapped() {
         navigationAction(.more(messageId: viewModel.message.messageID))
     }
@@ -170,9 +171,6 @@ class SingleMessageContentViewController: UIViewController {
             newController.view.leadingAnchor.constraint(equalTo: customView.messageHeaderContainer.contentContainer.leadingAnchor),
             newController.view.trailingAnchor.constraint(equalTo: customView.messageHeaderContainer.contentContainer.trailingAnchor)
         ].activate()
-
-        customView.messageHeaderContainer.expandArrowImageView.image = newController is ExpandedHeaderViewController ?
-            Asset.arrowUp.image : Asset.arrowDown.image
 
         let bottomConstraint = newController.view.bottomAnchor
             .constraint(equalTo: customView.messageHeaderContainer.contentContainer.bottomAnchor)
@@ -230,12 +228,8 @@ class SingleMessageContentViewController: UIViewController {
         viewModel.isExpanded.toggle()
     }
 
-    private func setUpExpandAction() {
-        customView.messageHeaderContainer.expandArrowControl.addTarget(
-            self,
-            action: #selector(expandButton),
-            for: .touchUpInside
-        )
+    private func setUpMoreAction() {
+        customView.messageHeaderContainer.moreControl.addTarget(self, action: #selector(self.moreButtonTapped), for: .touchUpInside)
     }
 
     private func embedChildren() {
@@ -258,11 +252,21 @@ class SingleMessageContentViewController: UIViewController {
             viewController.contactTapped = {
                 self?.presentActionSheet(context: $0)
             }
+            viewController.observeHideDetails {
+                self?.expandButton()
+            }
             self?.headerViewController = viewController
         }
 
         viewModel.embedNonExpandedHeader = { [weak self] viewModel in
-            self?.headerViewController = NonExpandedHeaderViewController(viewModel: viewModel)
+            let header = NonExpandedHeaderViewController(viewModel: viewModel)
+            header.observeShowDetails {
+                self?.expandButton()
+            }
+            header.contactTapped = {
+                self?.presentActionSheet(context: $0)
+            }
+            self?.headerViewController = header
         }
 
         headerAnimationOn.toggle()
@@ -270,7 +274,7 @@ class SingleMessageContentViewController: UIViewController {
         headerAnimationOn.toggle()
     }
 
-    private func presentActionSheet(context: ExpandedHeaderContactContext) {
+    private func presentActionSheet(context: MessageHeaderContactContext) {
         let actionSheet = PMActionSheet.messageDetailsContact(for: context.type) { [weak self] action in
             self?.dismissActionSheet()
             self?.handleAction(context: context, action: action)
@@ -278,7 +282,7 @@ class SingleMessageContentViewController: UIViewController {
         actionSheet.presentAt(navigationController ?? self, hasTopConstant: false, animated: true)
     }
 
-    private func handleAction(context: ExpandedHeaderContactContext, action: MessageDetailsContactActionSheetAction) {
+    private func handleAction(context: MessageHeaderContactContext, action: MessageDetailsContactActionSheetAction) {
         switch action {
         case .addToContacts:
             navigationAction(.contacts(contact: context.contact))

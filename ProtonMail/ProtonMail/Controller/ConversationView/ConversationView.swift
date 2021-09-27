@@ -55,7 +55,7 @@ class ConversationView: UIView {
     ) -> ConversationNewMessageFloatyView {
         let safeBottom = superview?.safeGuide.bottom ?? 0.0
         // make sure bottom always on the top of safeArea
-        let bottom = max(1 + safeBottom, 42.0)
+        let bottom = safeBottom + 64.0
 
         let view = ConversationNewMessageFloatyView(didHide: didHide)
         addSubview(view)

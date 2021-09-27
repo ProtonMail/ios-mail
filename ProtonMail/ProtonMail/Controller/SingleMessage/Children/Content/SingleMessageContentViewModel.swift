@@ -60,6 +60,10 @@ class SingleMessageContentViewModel {
     var expandedHeaderViewModel: ExpandedHeaderViewModel? {
         didSet {
             guard let viewModel = expandedHeaderViewModel else { return }
+            if viewModel.senderContact == nil {
+                guard let nonExpandedVM = nonExapndedHeaderViewModel else { return }
+                viewModel.setUp(senderContact: nonExpandedVM.senderContact)
+            }
             embedExpandedHeader?(viewModel)
             nonExapndedHeaderViewModel = nil
         }
@@ -143,7 +147,15 @@ class SingleMessageContentViewModel {
     }
 
     private func createExpandedHeaderViewModel() {
-        expandedHeaderViewModel = ExpandedHeaderViewModel(labelId: context.labelId, message: message, user: user)
+        let newVM = ExpandedHeaderViewModel(labelId: context.labelId,
+                                            message: message,
+                                            user: user)
+        // This will happen when scroll a long conversation
+        if let vm = expandedHeaderViewModel,
+           let contact = vm.senderContact {
+            newVM.setUp(senderContact: contact)
+        }
+        expandedHeaderViewModel = newVM
     }
 
     private func createNonExpandedHeaderViewModel() {
