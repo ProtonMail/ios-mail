@@ -93,7 +93,7 @@ final class LocalConversationUpdater {
                 let messages = Message
                     .messagesForConversationID(conversationID,
                                                inManagedObjectContext: context)
-                let untouchedLocations: [Message.Location] = [.draft, .sent, .starred, .allmail]
+                let untouchedLocations: [Message.Location] = [.draft, .sent, .allmail]
 
                 var labelsThatAlreadyUpdateTheUnreadCount: [String] = []
                 if isFolder, let messages = messages {
