@@ -193,6 +193,7 @@ public class EncryptedSearchService {
     var limitPerRequest: Int = 1
     var lastMessageTimeIndexed: Int = 0     //stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
     var processedMessages: Int = 0
+    internal var prevProcessedMessages: Int = 0 //used to calculate estimated time for indexing
     internal var viewModel: SettingsEncryptedSearchViewModel? = nil
     
     internal var searchIndex: Connection? = nil
@@ -202,6 +203,7 @@ public class EncryptedSearchService {
     internal var indexSearchResults: EncryptedsearchResultList? = nil
     internal var searchState: EncryptedsearchSearchState? = nil
     internal var indexBuildingInProgress: Bool = false
+    internal var indexingStartTime: Double = 0
     internal var eventsWhileIndexing: [MessageAction]? = []
     
     lazy var messageIndexingQueue: OperationQueue = {
@@ -414,6 +416,8 @@ extension EncryptedSearchService {
             self.totalMessages = 0
             self.processedMessages = 0
             self.lastMessageTimeIndexed = 0
+            self.prevProcessedMessages = 0
+            self.indexingStartTime = 0
             //TODO do we want to do anything when deleting fails?
             if result {
                 print("Search index for user \(self.user.userInfo.userId) sucessfully deleted!")
@@ -1530,4 +1534,19 @@ extension EncryptedSearchService {
         let bundlePathExtension: String = bundleUrl.pathExtension
         return bundlePathExtension == "appex"
     }*/
+    
+    func estimateIndexingTime() -> (Int, Int){
+        var estimatedMinutes = 0
+        var currentProgress = 0
+        let currentTime = CFAbsoluteTimeGetCurrent()
+        let minute = 60_000
+
+        if self.totalMessages != 0 && currentTime != self.indexingStartTime && self.processedMessages != self.prevProcessedMessages {
+            let remainingMessages: Int = self.totalMessages - self.processedMessages
+            estimatedMinutes = Int(ceil( Double( (Int(((currentTime-self.indexingStartTime)/Double((self.processedMessages-self.prevProcessedMessages))))*remainingMessages)/minute)) )
+            currentProgress = Int(ceil(Double((self.processedMessages/self.totalMessages)*100)))
+            self.prevProcessedMessages = self.processedMessages
+        }
+        return (estimatedMinutes, currentProgress)
+    }
 }
