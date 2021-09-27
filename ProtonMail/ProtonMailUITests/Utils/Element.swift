@@ -187,7 +187,7 @@ struct Element {
         @discardableResult
         class func swipeLeftByIdentifier(_ identifier: String) -> XCUIElement {
             let element = app.staticTexts[identifier].firstMatch
-            element.longSwipe(.left)
+            element.swipeLeft()
             return element
         }
         

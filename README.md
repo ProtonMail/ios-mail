@@ -65,14 +65,14 @@ See [LICENSE](LICENSE) file
 
 ## Setup
 
-1. Have macOS up to date and install Xcode 11.1
+1. Have macOS up to date and install Xcode 12.5
 2. We use xUnique (ver 4.1.4) in order to prevent merge conflicts in the ProtonMail.xcodeproj file. Each shared scheme has a post-build action, and builds will fail on machines with no xUnique installed. Please follow xUnique's [installation instructions](https://github.com/truebit/xUnique)
 3. `DOMPurify`(@b06b6b2ac8) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules
 4. Open `ProtonMail/ProtonMail.xcworkspace` and click the run button
 
 ## Live version
 
-Current live version 1.11.13
+Current live version 1.15.5
 
 - [Changelogs](Changelog.md)
 - [Apple Store](https://apps.apple.com/app/protonmail-encrypted-email/id979659905)
@@ -84,13 +84,6 @@ Current live version 1.11.13
 
 ## Our Team
 
-- [Feng](https://github.com/zhj4478)
-- [Anatoly](https://github.com/abjurato)
-- [Henry](https://github.com/henrybear327)
-- [Emil](https://github.com/emnproton)
-
-## TODO
-
- - [ ] UI redesign
- - [ ] multiple user support
- - [ ] share frameworks
+- [Anson](https://github.com/xxi511)
+- [Mustapha](https://github.com/justarandomdev)
+- [Steven](https://github.com/Linquas)
