@@ -262,8 +262,17 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         internetConnectionStatusProvider.stopInternetConnectionStatusObservation()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if self.datasource?.ccBccIsShownInitially() == false && isShowingCcBccView == false {
+            if view.constraints.contains(self.subjectTopToBccContactPicker) {
+                self.view.removeConstraint(self.subjectTopToBccContactPicker)
+            }
+            if !view.constraints.contains(self.subjectTopToToContactPicker) {
+                self.view.addConstraint(self.subjectTopToToContactPicker)
+            }
+            self.updateViewSize()
+        }
     }
     
     func reloadPicker() {
@@ -345,6 +354,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
     
     internal func setShowingCcBccView(to show: Bool) {
+        isShowingCcBccView = show
         if show {
             UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
                 self.ccContactPicker.alpha = 1.0
@@ -365,8 +375,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
             })
             
         }
-        
-        isShowingCcBccView = show
     }
     
     internal func plusButtonHandle() {
@@ -374,7 +382,10 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
 
     fileprivate func updateViewSize() {
-        self.size = CGSize(width: self.view.frame.width, height: self.subject.frame.origin.y + self.subject.frame.height)
+        let size = CGSize(width: self.view.frame.width, height: self.subject.frame.origin.y + self.subject.frame.height)
+        if self.size != size {
+            self.size = size
+        }
     }
 
     private func configureContactPicker() {

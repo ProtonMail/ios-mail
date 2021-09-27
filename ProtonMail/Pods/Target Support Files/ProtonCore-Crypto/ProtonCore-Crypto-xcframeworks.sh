@@ -107,27 +107,11 @@ install_framework()
   echo "Copied $source to $destination"
 }
 
-install_xcframework_library() {
-  local basepath="$1"
-  local name="$2"
-  local paths=("$@")
-
-  # Locate the correct slice of the .xcframework for the current architectures
-  select_slice "${paths[@]}"
-  local target_path="$SELECT_SLICE_RETVAL"
-  if [[ -z "$target_path" ]]; then
-    echo "warning: [CP] Unable to find matching .xcframework slice in '${paths[@]}' for the current build architectures ($ARCHS)."
-    return
-  fi
-
-  install_framework "$basepath/$target_path" "$name"
-}
-
 install_xcframework() {
   local basepath="$1"
   local name="$2"
   local package_type="$3"
-  local paths=("$@")
+  local paths=("${@:3}")
 
   # Locate the correct slice of the .xcframework for the current architectures
   select_slice "${paths[@]}"
@@ -149,5 +133,5 @@ install_xcframework() {
   echo "Copied $source to $destination"
 }
 
-install_xcframework "${PODS_ROOT}/ProtonCore-Crypto/vendor/Crypto/Crypto.xcframework" "Crypto" "framework" "ios-arm64_x86_64-maccatalyst" "ios-arm64" "ios-arm64_x86_64-simulator"
+install_xcframework "${PODS_ROOT}/ProtonCore-Crypto/vendor/Crypto/Crypto.xcframework" "ProtonCore-Crypto" "framework" "ios-arm64_x86_64-maccatalyst" "ios-arm64" "ios-arm64_x86_64-simulator"
 

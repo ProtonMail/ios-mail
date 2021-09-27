@@ -33,10 +33,9 @@ def common_pods
   pod 'ProtonCore-OpenPGP', proton_core_version
   pod 'ProtonCore-Authentication-KeyGeneration', proton_core_version
   pod 'Groot', '3.0.1'
-#  pod 'AFNetworking', '4.0.1'
   pod 'Masonry', '1.1.0'
   pod 'PromiseKit', '6.13.1'
-  pod 'AwaitKit', '5.2.0'
+  pod 'AwaitKit', :git => 'https://github.com/yannickl/AwaitKit.git', :commit => '4b725f40dd189f40c0962cba792f06a2073bd977'
   pod 'MCSwipeTableViewCell', '2.1.4'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '4.5.0'
   pod 'MBProgressHUD' , '1.1.0'

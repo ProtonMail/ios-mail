@@ -41,7 +41,7 @@ extension Extension where Base: DispatchQueue {
   public final func await<T>(_ body: @escaping () throws -> T) throws -> T {
     let promise = self.base.async(.promise, execute: body)
 
-    return try await(promise)
+    return try `await`(promise)
   }
 
   /**
