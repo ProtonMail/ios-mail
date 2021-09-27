@@ -180,7 +180,7 @@ end
 platform :ios do 
   desc "Build app"
   lane :build do |options|
-    xcode_select("/Applications/Xcode.app")
+    xcversion(version: "~> 13.0.0")
     set_up_keychain(false)
 
     api_key = set_up_app_store_api_key
@@ -213,47 +213,48 @@ platform :ios do
 
   desc "Build enterprise app"
   lane :enterprise do |options|
-  xcode_select("/Applications/Xcode.app")
-  set_up_keychain(true)
-  
-  # Set build version by git log numbers
-  if options[:usingTimeStamp]
-    timeStamp = Time.now.getutc.to_i
-    bundle_version = sh("./setup_bundle_version.sh " + timeStamp.to_s)
-  else
-    bundle_version = sh("./setup_bundle_version.sh")
-  end
+    xcversion(version: "~> 13.0.0")
+    set_up_keychain(true)
+    
+    # Set build version by git log numbers
+    if options[:usingTimeStamp]
+      timeStamp = Time.now.getutc.to_i
+      bundle_version = sh("./setup_bundle_version.sh " + timeStamp.to_s)
+    else
+      bundle_version = sh("./setup_bundle_version.sh")
+    end
 
-  build_enterprise_app
+    build_enterprise_app
 
-  branchName = git_branch
-  lastGitCommitHash = last_git_commit[:commit_hash]
-  releaseNote = "Build on: " + git_branch + " \nBuild number: " + bundle_version + "\nGit commit: " + lastGitCommitHash
+    branchName = git_branch
+    lastGitCommitHash = last_git_commit[:commit_hash]
+    releaseNote = "Build on: " + git_branch + " \nBuild number: " + bundle_version + "\nGit commit: " + lastGitCommitHash
 
-  firebase_app_distribution(
-            app: "1:75309174866:ios:fb09e26e4130a105",
-            groups: "v4-internal-test-group",
-            release_notes: releaseNote
-        )
+    firebase_app_distribution(
+              app: "1:75309174866:ios:fb09e26e4130a105",
+              groups: "v4-internal-test-group",
+              release_notes: releaseNote
+          )
 
-  tear_down_keychain
+    tear_down_keychain
   
   # send_to_slack(true, releaseNote, "", bundle_version.strip)
   end
 
   desc "Test code coverage"
   lane :unit_test do |options|
+    xcversion(version: "~> 13.0.0")
+    scan(workspace: "Protonmail.xcworkspace", device: "iPhone 8", scheme: "ProtonMailTests", code_coverage: true, derived_data_path: "../test_output")
 
-  scan(workspace: "Protonmail.xcworkspace", device: "iPhone 8", scheme: "ProtonMailTests", code_coverage: true, derived_data_path: "../test_output")
-
-  slather(build_directory: "../test_output/",
-   scheme: "ProtonMailTests",
-   workspace: "Protonmail.xcworkspace",
-   proj: "Protonmail.xcodeproj",
-   output_directory: "../test_output/slatherOutput", 
-   cobertura_xml: true,
-   ignore: ["Pods/*", "Frameworks/*"]
-  )
+    slather(build_directory: "../test_output/",
+    scheme: "ProtonMailTests",
+    workspace: "Protonmail.xcworkspace",
+    proj: "Protonmail.xcodeproj",
+    output_directory: "../test_output/slatherOutput", 
+    cobertura_xml: true,
+    simple_output: true,
+    ignore: ["Pods/*", "Frameworks/*"]
+    )
   end
 
   error do |lane, exception|

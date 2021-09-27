@@ -67,7 +67,6 @@ unit_tests:
     - cd ProtonMail
     - bundle install
     - bundle exec fastlane unit_test
-    - bundle exec slather | tail -2
   tags:
     - iOS_ARM_TAIPEI
 
@@ -219,7 +218,7 @@ build-release-enterprise-app-and-upload:
     - *enterprise_config_setting
     - fastlane ios enterprise usingTimeStamp:false
   tags:
-    - iOS
+    - iOS_ARM_TAIPEI
 
 # --- Build enterprise app for test and upload
 build-test-enterprise-app-and-upload:
@@ -243,7 +242,7 @@ build-test-enterprise-app-and-upload:
     - *enterprise_config_setting
     - fastlane ios enterprise usingTimeStamp:true
   tags:
-    - iOS
+    - iOS_ARM_TAIPEI
 
 # --- Translation related tasks ---
 i18n-sync-crowdin:

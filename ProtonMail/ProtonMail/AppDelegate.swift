@@ -29,6 +29,7 @@ import SideMenuSwift
 import ProtonCore_Keymaker
 import ProtonCore_Payments
 import ProtonCore_Services
+import ProtonCore_UIFoundations
 
 let sharedUserDataService = UserDataService(api: PMAPIService.unauthorized)
 
@@ -200,9 +201,8 @@ extension AppDelegate: UIApplicationDelegate {
         
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
 
-        UINavigationBar.appearance().backIndicatorImage = UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
-        UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
-        
+        configureAppearance()
+
         ///TODO::fixme refactor
         shareViewModelFactoy = ViewModelFactoryProduction()
         sharedVMService.cleanLegacy()
@@ -540,6 +540,29 @@ extension AppDelegate : UnlockManagerDelegate {
     
     func unlocked() {
         // should work via messages
+    }
+}
+
+// MARK: Appearance
+extension AppDelegate {
+    private func configureAppearance() {
+        UINavigationBar.appearance().backIndicatorImage = UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
+        if #available(iOS 15.0, *) {
+            setupNavigationBarAppearance()
+        }
+    }
+
+    @available(iOS 15.0, *)
+    private func setupNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColorManager.BackgroundNorm
+        appearance.shadowColor = .clear
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().compactScrollEdgeAppearance = appearance
     }
 }
 

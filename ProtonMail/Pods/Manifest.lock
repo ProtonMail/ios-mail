@@ -266,7 +266,7 @@ PODS:
   - TrustKit (1.7.0)
 
 DEPENDENCIES:
-  - AwaitKit (= 5.2.0)
+  - AwaitKit (from `https://github.com/yannickl/AwaitKit.git`, commit `4b725f40dd189f40c0962cba792f06a2073bd977`)
   - DKImagePickerController/PhotoGallery (~> 4.2.0)
   - Groot (= 3.0.1)
   - Masonry (= 1.1.0)
@@ -336,7 +336,6 @@ SPEC REPOS:
   trunk:
     - AFNetworking
     - Alamofire
-    - AwaitKit
     - DKImagePickerController
     - DKPhotoGallery
     - EllipticCurveKeyPair
@@ -356,6 +355,9 @@ SPEC REPOS:
     - SwiftyGif
 
 EXTERNAL SOURCES:
+  AwaitKit:
+    :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
+    :git: https://github.com/yannickl/AwaitKit.git
   pmtest:
     :branch: master
     :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
@@ -370,6 +372,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/ProtonMail/TrustKit.git
 
 CHECKOUT OPTIONS:
+  AwaitKit:
+    :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
+    :git: https://github.com/yannickl/AwaitKit.git
   pmtest:
     :commit: d62f0706d144ffa05ad6d36e06b5555b5801ad74
     :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
@@ -434,6 +439,6 @@ SPEC CHECKSUMS:
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
 
-PODFILE CHECKSUM: 03cb4e7a5ffd7902ee3bb40f470414c1ddcba5e8
+PODFILE CHECKSUM: fba79f219e4298360e12ce5901110fade7ffbf88
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.0.beta.2

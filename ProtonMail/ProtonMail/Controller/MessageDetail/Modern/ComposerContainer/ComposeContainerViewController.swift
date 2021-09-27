@@ -146,7 +146,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     
     override func configureNavigationBar() {
         super.configureNavigationBar()
-        
+
         self.navigationController?.navigationBar.barTintColor = UIColorManager.BackgroundNorm
         self.navigationController?.navigationBar.isTranslucent = false
 
@@ -252,7 +252,7 @@ extension ComposeContainerViewController {
             }
         ]
     }
-    
+
     private func setupSendButton() {
         guard let icon = UIImage(named: "menu_sent") else {
             return
