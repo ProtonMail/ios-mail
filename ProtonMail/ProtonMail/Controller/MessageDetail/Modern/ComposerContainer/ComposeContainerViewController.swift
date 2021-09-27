@@ -41,6 +41,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     private var bottomPadding: NSLayoutConstraint!
     private var dropLandingZone: UIView? // drag and drop session items dropped on this view will be added as attachments
     private let timerInterval : TimeInterval = 30
+    private let toolBarHeight: CGFloat = 48
     private var syncTimer: Timer?
     private var toolbarBottom: NSLayoutConstraint!
     private var toolbar: ComposeToolbar!
@@ -96,7 +97,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         
         NotificationCenter.default.addKeyboardObserver(self)
         
-        self.setupButtomPadding()
+        self.setupBottomPadding()
         self.configureNavigationBar()
         self.setupChildViewModel()
         self.setupToolbar()
@@ -126,8 +127,6 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             self.view.window?.windowScene?.title = LocalString._general_draft_action
         }
         #endif
-
-        setBodyMinimumHeight()
         
         generateAccessibilityIdentifiers()
     }
@@ -206,17 +205,9 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
 // MARK: UI related
 extension ComposeContainerViewController {
-    private func setBodyMinimumHeight() {
-        let headerCellHeight = tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.frame.height ?? 0
-        let spaceForFirstAttachment: CGFloat = 72.0
-        let bottomHeightWithToolbar = view.safeAreaInsets.bottom + 48.0
-        let bodyHeight = round(view.frame.height - headerCellHeight - spaceForFirstAttachment - bottomHeightWithToolbar)
-        coordinator.setMinimumHeightForMessageBody(height: bodyHeight)
-    }
-
-    private func setupButtomPadding() {
+    private func setupBottomPadding() {
         self.bottomPadding = self.view.bottomAnchor.constraint(equalTo: self.tableView.bottomAnchor)
-        self.bottomPadding.constant = view.safeAreaInsets.bottom + 48.0
+        self.bottomPadding.constant = UIDevice.safeGuide.bottom + toolBarHeight
         self.bottomPadding.isActive = true
     }
     
@@ -358,13 +349,13 @@ extension ComposeContainerViewController: ComposeContainerUIProtocol {
 
 extension ComposeContainerViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
-        self.bottomPadding.constant = view.safeAreaInsets.bottom + 48.0
-        self.toolbarBottom.constant = -1 * view.safeAreaInsets.bottom
+        self.bottomPadding.constant = UIDevice.safeGuide.bottom + toolBarHeight
+        self.toolbarBottom.constant = -1 * UIDevice.safeGuide.bottom
     }
     
     func keyboardWillShowNotification(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            self.bottomPadding.constant = keyboardFrame.cgRectValue.height + 10
+            self.bottomPadding.constant = keyboardFrame.cgRectValue.height + toolBarHeight
             self.toolbarBottom.constant = -1 * keyboardFrame.cgRectValue.height
             UIView.animate(withDuration: 0.25) {
                 self.view.layoutIfNeeded()
