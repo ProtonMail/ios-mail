@@ -208,13 +208,6 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             self?.controller.updateAttachmentCount(number: number)
         }
     }
-
-    func setMinimumHeightForMessageBody(height: CGFloat) {
-        editor.minimumHeight = height
-        if editor.view.frame.height < height {
-            editor.updateHeight(to: height)
-        }
-    }
 }
 
 extension ComposeContainerViewCoordinator: ComposePasswordDelegate {

@@ -82,6 +82,19 @@ html_editor.setHtml = function(htmlBody, sanitizeConfig) {
     var cleanByConfig = DOMPurify.sanitize(htmlBody, sanitizeConfig);
     html_editor.editor.innerHTML = DOMPurify.sanitize(cleanByConfig);
     // could update the viewport width here in the future.
+    
+    let mobileSignature = document.querySelector('#protonmail_mobile_signature_block');
+    if (mobileSignature) {
+        mobileSignature.setAttribute('contentEditable', 'false')
+    }
+    
+    let signatureBlock = document.querySelector('#protonmail_signature_block');
+    if (signatureBlock) {
+        signatureBlock.setAttribute('contentEditable', 'false')
+    }
+
+    let arr = document.querySelectorAll('div.signature_br')
+    arr.forEach(ele => ele.setAttribute('contentEditable', 'false'))
 };
 
 /// get the html. first removes embedded blobs, then takes the html, then puts embedded stuff back

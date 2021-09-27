@@ -695,14 +695,15 @@ class ComposeViewModelImpl : ComposeViewModel {
         var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
         signature = signature.ln2br()
         
-        var mobileSignature = self.user.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
+        var mobileSignature = self.user.showMobileSignature ? "<div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
         mobileSignature = mobileSignature.ln2br()
         
         let defaultSignature = self.user.defaultSignatureStatus ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
+        let mobileBr = defaultSignature.isEmpty ? "<div><br></div><div><br></div>": "<div class=\"signature_br\"><br></div><div class=\"signature_br\"><br></div>"
         
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
-        let signatureHtml = "\(defaultSignature) \(mobileSignature)"
+        let signatureHtml = "\(defaultSignature) \(mobileBr) \(mobileSignature)"
 
         switch messageAction {
         case .openDraft:
@@ -741,7 +742,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             let w = LocalString._composer_wrote
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             
-            let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
+            let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
             return .init(body: result, remoteContentMode: globalRemoteContentMode)
         case .forward:
             let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
