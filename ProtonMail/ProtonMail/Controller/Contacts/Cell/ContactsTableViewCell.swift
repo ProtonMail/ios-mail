@@ -65,8 +65,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
                                search: highlight,
                                font: .highlightSearchTextForTitle)
 
-        var emailAttributes = FontManager.DefaultSmallWeak
-        emailAttributes.addTruncatingTail()
+        let emailAttributes = FontManager.DefaultSmallWeak.addTruncatingTail()
         self.emailLabel.attributedText =
             .highlightedString(text: email,
                                textAttributes: emailAttributes,
@@ -84,8 +83,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
             self.groupImage.isHidden = true
         }
 
-        var attr = FontManager.body3RegularNorm
-        attr.addTextAlignment(.center)
+        let attr = FontManager.body3RegularNorm.alignment(.center)
         shortName.attributedText = name.initials().apply(style: attr)
         generateCellAccessibilityIdentifiers(name)
     }

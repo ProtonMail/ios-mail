@@ -168,9 +168,10 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         let name = viewModel.getProfile().newDisplayName
         shortNameLabel.text = name.initials()
 
-        var attributes = FontManager.Headline
-        attributes.addTextAlignment(.center)
-        attributes.addTruncatingTail()
+        let attributes = FontManager
+            .Headline
+            .alignment(.center)
+            .addTruncatingTail()
         fullNameLabel.attributedText = name.apply(style: attributes)
     }
     
@@ -193,9 +194,10 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         }
         
         // full name
-        var attributes = FontManager.Headline
-        attributes.addTextAlignment(.center)
-        attributes.addTruncatingTail()
+        let attributes = FontManager
+            .Headline
+            .alignment(.center)
+            .addTruncatingTail()
         fullNameLabel.attributedText = viewModel.getProfile().newDisplayName.apply(style: attributes)
         
         // email contact

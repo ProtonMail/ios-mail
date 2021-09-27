@@ -44,8 +44,7 @@ import UIKit
                     right: String,
                     rightTextAttributes:  [NSAttributedString.Key : Any]? = FontManager.Default) {
         LeftText.attributedText = NSMutableAttributedString(string: left, attributes: leftTextAttributes)
-        var rightAttribute = rightTextAttributes
-        rightAttribute?.addTextAlignment(.right)
+        let rightAttribute = rightTextAttributes?.alignment(.right)
         RightText.attributedText = NSMutableAttributedString(string: right, attributes: rightAttribute)
 
         self.accessibilityLabel = left

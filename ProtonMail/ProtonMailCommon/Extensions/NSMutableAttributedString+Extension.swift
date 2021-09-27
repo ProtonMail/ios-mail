@@ -35,7 +35,7 @@ extension NSAttributedString {
         let resultText = text
         let searchTerm = search
         var attributes = textAttributes ?? FontManager.Default
-        attributes.addTruncatingTail()
+        attributes = attributes.addTruncatingTail()
         let attributedString = NSMutableAttributedString(string: resultText,
                                                          attributes: attributes)
         let pattern = "(\(searchTerm))"

@@ -85,8 +85,7 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
         if let headerCell = header {
             let textLabel = UILabel()
 
-            var textAttribute = FontManager.DefaultSmallWeak
-            textAttribute.addTextAlignment(.left)
+            let textAttribute = FontManager.DefaultSmallWeak.alignment(.left)
             textLabel.attributedText = NSAttributedString(string: eSection.head, attributes: textAttribute)
             textLabel.translatesAutoresizingMaskIntoConstraints = false
 
