@@ -795,10 +795,13 @@ class MessageDataService : Service, HasLocalStorage {
     // MARK : Send message
     func send(inQueue message : Message!, completion: CompletionBlock?) {
         self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID, subtitle: message.title))
+        // We don't want to flag to be set in the app extension or the message will be stuck in the extension is killed before finishing
+        #if !APP_EXTENSION
         message.managedObjectContext?.performAndWait {
             message.isSending = true
             _ = message.managedObjectContext?.saveUpstreamIfNeeded()
         }
+        #endif
         self.queue(message, action: .send)
         DispatchQueue.main.async {
             completion?(nil, nil, nil)

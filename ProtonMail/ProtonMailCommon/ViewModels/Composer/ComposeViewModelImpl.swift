@@ -53,17 +53,20 @@ class ComposeViewModelImpl : ComposeViewModel {
     let messageService : MessageDataService
     let coreDataService: CoreDataService
     let user : UserManager
+    private var checkAttachments: (() -> Void?)?
     
     // for the share target to init composer VM
     init(subject: String, body: String, files: [FileData],
          action : ComposeMessageAction,
          msgService: MessageDataService,
          user: UserManager,
-         coreDataService: CoreDataService) {
+         coreDataService: CoreDataService,
+         checkAttachments: @escaping (() -> Void?)) {
 
         self.messageService = msgService
         self.user = user
         self.coreDataService = coreDataService
+        self.checkAttachments = checkAttachments
         
         super.init()
         self.message = nil
@@ -181,6 +184,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
         messageService.upload(att: att)
         self.updateDraft()
+        checkAttachments?()
     }
     
     override func uploadPubkey(_ att: Attachment!) {
@@ -189,12 +193,14 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
         messageService.upload(pubKey: att)
         self.updateDraft()
+        checkAttachments?()
     }
     
     override func deleteAtt(_ att: Attachment!) -> Promise<Void> {
         self.user.usedSpace(minus: att.fileSize.int64Value)
         return messageService.delete(att: att).done { (_) in
             self.updateDraft()
+            self.checkAttachments?()
         }
     }
     
@@ -207,6 +213,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             self.updateDraft()
             for att in attachments {
                 messageService.upload(att: att)
+                checkAttachments?()
             }
             self.updateDraft()
         }
