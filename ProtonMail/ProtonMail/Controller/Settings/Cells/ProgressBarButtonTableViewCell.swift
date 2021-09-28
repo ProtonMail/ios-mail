@@ -43,12 +43,12 @@ import UIKit
         print("Button pressed!")
     }
     
-    func configCell(_ topLine: String, _ estimatedTime: String, _ currentProgress: Float, _ textButtonNormal: String, _ textButtonPressed: String, complete: buttonActionBlock?) {
+    func configCell(_ topLine: String, _ estimatedTime: Int, _ currentProgress: Int, _ textButtonNormal: String, _ textButtonPressed: String, complete: buttonActionBlock?) {
         
         topLabel.text = topLine
-        estimatedTimeLabel.text = estimatedTime
-        currentProgressLabel.text = String(format: "%3.0f", currentProgress*100) + "%"
-        progressView.progress = currentProgress
+        estimatedTimeLabel.text = String(estimatedTime) + " minutes remaining..."
+        currentProgressLabel.text = String(currentProgress) + "%"
+        progressView.progress = Float(currentProgress)/100.0
         pauseButton.setTitle(textButtonNormal, for: UIControl.State.normal)
         pauseButton.setTitle(textButtonPressed, for: UIControl.State.selected)
         
