@@ -205,6 +205,7 @@ public class EncryptedSearchService {
     internal var indexBuildingInProgress: Bool = false
     internal var indexingStartTime: Double = 0
     internal var eventsWhileIndexing: [MessageAction]? = []
+    internal lazy var indexBuildingTimer: Timer? = nil
     
     lazy var messageIndexingQueue: OperationQueue = {
         var queue = OperationQueue()
@@ -251,8 +252,13 @@ extension EncryptedSearchService {
         self.indexBuildingInProgress = true
         self.viewModel = viewModel
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
+        
+        //set up timer to estimate time for index building every 2 seconds
+        //DispatchQueue.global(qos: .default).async {
+        self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
+        //}
+        
         self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
-
         self.getTotalMessages() {
             print("Total messages: ", self.totalMessages)
 
@@ -263,6 +269,8 @@ extension EncryptedSearchService {
                 if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.user.userInfo.userId) == self.totalMessages {
                     print("Search index already contains all available messages.")
                     self.viewModel?.isEncryptedSearch = true
+                    self.viewModel?.currentProgress.value = 100
+                    self.viewModel?.estimatedTimeRemaining.value = 0
                     self.indexBuildingInProgress = false
                     if self.backgroundTask != .invalid {
                         //background processing not needed any longer - clean up
@@ -296,6 +304,8 @@ extension EncryptedSearchService {
                     //}
                     
                     self.viewModel?.isEncryptedSearch = true
+                    self.viewModel?.currentProgress.value = 100
+                    self.viewModel?.estimatedTimeRemaining.value = 0
                     self.indexBuildingInProgress = false
                     
                     if self.backgroundTask != .invalid {
@@ -328,6 +338,8 @@ extension EncryptedSearchService {
             self.indexBuildingInProgress = true
             self.downloadAndProcessPage(Message.Location.allmail.rawValue, self.lastMessageTimeIndexed) {
                 self.viewModel?.isEncryptedSearch = true
+                self.viewModel?.currentProgress.value = 100
+                self.viewModel?.estimatedTimeRemaining.value = 0
                 self.indexBuildingInProgress = false
                 completionHandler()
             }
@@ -418,6 +430,7 @@ extension EncryptedSearchService {
             self.lastMessageTimeIndexed = 0
             self.prevProcessedMessages = 0
             self.indexingStartTime = 0
+            self.indexBuildingTimer?.invalidate()   //stop timer to estimate remaining time for indexing
             //TODO do we want to do anything when deleting fails?
             if result {
                 print("Search index for user \(self.user.userInfo.userId) sucessfully deleted!")
@@ -1535,18 +1548,32 @@ extension EncryptedSearchService {
         return bundlePathExtension == "appex"
     }*/
     
-    func estimateIndexingTime() -> (Int, Int){
-        var estimatedMinutes = 0
-        var currentProgress = 0
-        let currentTime = CFAbsoluteTimeGetCurrent()
-        let minute = 60_000
+    func estimateIndexingTime() -> (estimatedMinutes: Int, currentProgress: Int){
+        var estimatedMinutes: Int = 0
+        var currentProgress: Int = 0
+        let currentTime: Double = CFAbsoluteTimeGetCurrent()
+        let minute: Double = 60_000.0
 
         if self.totalMessages != 0 && currentTime != self.indexingStartTime && self.processedMessages != self.prevProcessedMessages {
-            let remainingMessages: Int = self.totalMessages - self.processedMessages
-            estimatedMinutes = Int(ceil( Double( (Int(((currentTime-self.indexingStartTime)/Double((self.processedMessages-self.prevProcessedMessages))))*remainingMessages)/minute)) )
-            currentProgress = Int(ceil(Double((self.processedMessages/self.totalMessages)*100)))
+            let remainingMessages: Double = Double(self.totalMessages - self.processedMessages)
+            let timeDifference: Double = currentTime-self.indexingStartTime
+            let processedMessageDifference: Double = Double(self.processedMessages-self.prevProcessedMessages)
+            estimatedMinutes = Int(ceil(((timeDifference/processedMessageDifference)*remainingMessages)/minute))
+            currentProgress = Int(ceil((Double(self.processedMessages)/Double(self.totalMessages))*100))
             self.prevProcessedMessages = self.processedMessages
         }
         return (estimatedMinutes, currentProgress)
+    }
+    
+    @objc func updateRemainingIndexingTime() {
+        if self.indexBuildingInProgress {
+            let result = estimateIndexingTime()
+            
+            //update viewModel
+            self.viewModel?.currentProgress.value = result.currentProgress
+            self.viewModel?.estimatedTimeRemaining.value = result.estimatedMinutes
+            print("Remaining indexing time: \(result.estimatedMinutes)")
+            print("Current progress: \(result.currentProgress)")
+        }
     }
 }
