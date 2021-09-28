@@ -106,6 +106,8 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         topAnchor.isActive = true
         
         setupProgressViewObserver()
+        setupEstimatedTimeUpdateObserver()
+        setupProgressUpdateObserver()
     }
     
     func getCoordinator() -> CoordinatorNew? {
@@ -131,7 +133,6 @@ extension SettingsEncryptedSearchViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("section: \(section), hide sections: \(self.hideSections)")
         if section > 0 && self.hideSections {
             return 0
         }
@@ -178,8 +179,6 @@ extension SettingsEncryptedSearchViewController {
                     _, _, _ in
                     let status = self.viewModel.isEncryptedSearch
                     self.viewModel.isEncryptedSearch = !status
-
-                    print("slider: \(self.viewModel.isEncryptedSearch)")
                     
                     //If cell is active -> start building a search index
                     if self.viewModel.isEncryptedSearch {
@@ -199,16 +198,14 @@ extension SettingsEncryptedSearchViewController {
                     //TODO code here for enableing download via mobile data
                 }
             }
-            //cell.isHidden = true
             return cell
         case .downloadedMessages:
             let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
             if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
-                progressBarButtonCell.configCell("Downloading messages...", "15 minutes remaining...", 0.45, "Pause", "Resume") { _, _, _ in
+                progressBarButtonCell.configCell("Downloading messages...", self.viewModel.estimatedTimeRemaining.value!, self.viewModel.currentProgress.value!, "Pause", "Resume") { _, _, _ in
                     //TODO code here for pause button
                 }
             }
-            //cell.isHidden = true
             return cell
         }
     }
@@ -253,7 +250,6 @@ extension SettingsEncryptedSearchViewController {
             self.pauseIndexingButton.isHidden = false
             self.hideSections = false
 
-            print("es on? : \(self.viewModel.isEncryptedSearch)")
             self.tableView.reloadData() //refresh the view to show changes in UI
 
             //build search index
@@ -290,6 +286,30 @@ extension SettingsEncryptedSearchViewController {
         self.viewModel.progressViewStatus.bind { [weak self] (_) in
             DispatchQueue.main.async {
                 self?.progressView.setProgress((self?.viewModel.progressViewStatus.value)!, animated: true)
+            }
+        }
+    }
+    
+    func setupEstimatedTimeUpdateObserver() {
+        self.viewModel.estimatedTimeRemaining.bind { (_) in
+            DispatchQueue.main.async {
+                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+
+                UIView.performWithoutAnimation {
+                    self.tableView.reloadRows(at: [path], with: .none)
+                }
+            }
+        }
+    }
+    
+    func setupProgressUpdateObserver() {
+        self.viewModel.currentProgress.bind { (_) in
+            DispatchQueue.main.async {
+                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+
+                UIView.performWithoutAnimation {
+                    self.tableView.reloadRows(at: [path], with: .none)
+                }
             }
         }
     }
