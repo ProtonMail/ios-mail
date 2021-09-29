@@ -34,6 +34,7 @@ import UIKit
     
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var estimatedTimeLabel: UILabel!
     @IBOutlet weak var currentProgressLabel: UILabel!
     @IBOutlet weak var pauseButton: UIButton!
@@ -43,8 +44,9 @@ import UIKit
         print("Button pressed!")
     }
     
-    func configCell(_ topLine: String, _ estimatedTime: Int, _ currentProgress: Int, _ textButtonNormal: String, _ textButtonPressed: String, complete: buttonActionBlock?) {
+    func configCell(_ titleLine: String, _ topLine: String, _ estimatedTime: Int, _ currentProgress: Int, _ textButtonNormal: String, _ textButtonPressed: String, complete: buttonActionBlock?) {
         
+        titleLabel.text = titleLine
         topLabel.text = topLine
         estimatedTimeLabel.text = String(estimatedTime) + " minutes remaining..."
         currentProgressLabel.text = String(currentProgress) + "%"
