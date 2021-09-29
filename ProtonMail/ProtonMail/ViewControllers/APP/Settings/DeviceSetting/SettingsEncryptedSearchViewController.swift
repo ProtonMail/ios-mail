@@ -202,7 +202,7 @@ extension SettingsEncryptedSearchViewController {
         case .downloadedMessages:
             let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
             if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
-                progressBarButtonCell.configCell("Downloading messages...", self.viewModel.estimatedTimeRemaining.value!, self.viewModel.currentProgress.value!, "Pause", "Resume") { _, _, _ in
+                progressBarButtonCell.configCell("Downloaded Messages", "Downloading messages...", self.viewModel.estimatedTimeRemaining.value!, self.viewModel.currentProgress.value!, "Pause", "Resume") { _, _, _ in
                     //TODO code here for pause button
                 }
             }
