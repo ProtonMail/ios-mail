@@ -167,6 +167,7 @@ class MailboxViewModel: StorageLimit {
 
     func allEmails() -> [Email] {
         return self.contactService.allEmails()
+            .filter { $0.userID == self.user.userInfo.userId }
     }
         
     func fetchContacts() {
