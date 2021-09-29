@@ -16,29 +16,35 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="110"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7zz-Th-tvh">
+                        <rect key="frame" x="16" y="0.0" width="42" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="52F-0H-slb">
-                        <rect key="frame" x="317" y="52" width="42" height="21"/>
+                        <rect key="frame" x="317" y="56" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xb4-cr-rI8">
-                        <rect key="frame" x="16" y="40" width="42" height="21"/>
+                        <rect key="frame" x="16" y="58" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloading messages..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="htb-a2-PH0">
-                        <rect key="frame" x="16" y="11" width="195" height="21"/>
+                        <rect key="frame" x="16" y="27" width="195" height="14"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Bau-AF-ClQ">
-                        <rect key="frame" x="16" y="40" width="343" height="4"/>
+                        <rect key="frame" x="16" y="52" width="343" height="4"/>
                     </progressView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fi0-qG-XTe">
-                        <rect key="frame" x="16" y="40" width="46" height="30"/>
+                        <rect key="frame" x="16" y="78" width="46" height="30"/>
                         <state key="normal" title="Button"/>
                         <connections>
                             <action selector="pauseButtonPressed:" destination="3QP-tG-Vhv" eventType="touchUpInside" id="9rs-Bn-xuR"/>
@@ -46,17 +52,20 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="htb-a2-PH0" firstAttribute="top" secondItem="y8B-Bl-9LP" secondAttribute="top" constant="11" id="27J-UG-9RD" userLabel="Top Label.top = top + 12"/>
-                    <constraint firstItem="Fi0-qG-XTe" firstAttribute="top" secondItem="Xb4-cr-rI8" secondAttribute="top" id="9dG-Tz-nZu" userLabel="Pause Button.top = Estimated Time Label.bottom + 8"/>
+                    <constraint firstItem="htb-a2-PH0" firstAttribute="top" secondItem="7zz-Th-tvh" secondAttribute="bottom" constant="6" id="27J-UG-9RD" userLabel="Top Label.top = Title Lable.bottom + 8"/>
+                    <constraint firstItem="Fi0-qG-XTe" firstAttribute="top" secondItem="Xb4-cr-rI8" secondAttribute="top" constant="20" id="9dG-Tz-nZu" userLabel="Pause Button.top = Estimated Time Label.bottom + 8"/>
+                    <constraint firstItem="7zz-Th-tvh" firstAttribute="leading" secondItem="htb-a2-PH0" secondAttribute="leading" id="Agq-pz-usm"/>
                     <constraint firstItem="52F-0H-slb" firstAttribute="trailing" secondItem="Bau-AF-ClQ" secondAttribute="trailing" id="GVr-UX-YaS"/>
-                    <constraint firstItem="Bau-AF-ClQ" firstAttribute="top" secondItem="htb-a2-PH0" secondAttribute="bottom" constant="8" id="IGh-3d-HuS"/>
+                    <constraint firstItem="Bau-AF-ClQ" firstAttribute="top" secondItem="htb-a2-PH0" secondAttribute="bottom" constant="11" id="IGh-3d-HuS"/>
                     <constraint firstItem="htb-a2-PH0" firstAttribute="leading" secondItem="Xb4-cr-rI8" secondAttribute="leading" id="Jaa-61-b7f"/>
                     <constraint firstItem="Bau-AF-ClQ" firstAttribute="centerX" secondItem="y8B-Bl-9LP" secondAttribute="centerX" id="Kip-gW-ZpX"/>
                     <constraint firstItem="htb-a2-PH0" firstAttribute="leading" secondItem="Fi0-qG-XTe" secondAttribute="leading" id="QWe-tf-Ggg"/>
+                    <constraint firstItem="Bau-AF-ClQ" firstAttribute="top" secondItem="7zz-Th-tvh" secondAttribute="bottom" constant="31" id="Rk9-HV-LVz"/>
                     <constraint firstItem="htb-a2-PH0" firstAttribute="leading" secondItem="Bau-AF-ClQ" secondAttribute="leading" id="VoM-6N-CB6"/>
-                    <constraint firstItem="52F-0H-slb" firstAttribute="top" secondItem="Bau-AF-ClQ" secondAttribute="bottom" constant="8" id="mQ3-AN-rKq"/>
+                    <constraint firstItem="htb-a2-PH0" firstAttribute="top" secondItem="y8B-Bl-9LP" secondAttribute="topMargin" constant="16" id="lme-Et-qBS"/>
+                    <constraint firstItem="52F-0H-slb" firstAttribute="top" secondItem="Bau-AF-ClQ" secondAttribute="bottom" id="mQ3-AN-rKq"/>
                     <constraint firstItem="htb-a2-PH0" firstAttribute="leading" secondItem="y8B-Bl-9LP" secondAttribute="leadingMargin" id="nVl-eO-Rxz"/>
-                    <constraint firstItem="Xb4-cr-rI8" firstAttribute="top" secondItem="Bau-AF-ClQ" secondAttribute="top" id="oW9-fW-wBI" userLabel="Estimated Time Label.top = Progress View.bottom + 8"/>
+                    <constraint firstItem="Xb4-cr-rI8" firstAttribute="top" secondItem="Bau-AF-ClQ" secondAttribute="top" constant="6" id="oW9-fW-wBI" userLabel="Estimated Time Label.top = Progress View.bottom + 8"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -64,6 +73,7 @@
                 <outlet property="estimatedTimeLabel" destination="Xb4-cr-rI8" id="8ge-EJ-Wk3"/>
                 <outlet property="pauseButton" destination="Fi0-qG-XTe" id="bzu-qz-ViY"/>
                 <outlet property="progressView" destination="Bau-AF-ClQ" id="1OR-Ju-pqr"/>
+                <outlet property="titleLabel" destination="7zz-Th-tvh" id="vvZ-Px-xIn"/>
                 <outlet property="topLabel" destination="htb-a2-PH0" id="9vm-n2-Ky2"/>
             </connections>
             <point key="canvasLocation" x="463.19999999999999" y="-198.80059970014995"/>
