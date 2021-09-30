@@ -35,8 +35,10 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
     private var isUploadingAttachments = false {
         didSet {
-            setUpSendButton()
-            setUpTitleView()
+            DispatchQueue.main.async {
+                self.setUpSendButton()
+                self.setUpTitleView()
+            }
         }
     }
     
