@@ -289,11 +289,11 @@
 "Are you sure you want to delete permanently this message?" = "このメッセージを完全に削除してよろしいですか？";
 
 /* Alert to confirm sign out when only one account signed in */
-"Are you sure you want to sign out %@?" = "Are you sure you want to sign out %@?";
+"Are you sure you want to sign out %@?" = "%@ からサインアウトしますか?";
 
 /* Alert to confirm sign out
    Alert when sign out non-primary account from account manager */
-"Are you sure you want to sign out?" = "Are you sure you want to sign out?";
+"Are you sure you want to sign out?" = "サインアウトしてよろしいですか?";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "元には戻せませんが、本当によろしいですか？";
@@ -1525,7 +1525,7 @@
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "メッセージを送信できませんでした。メールアドレスやドメインが存在しないか、フォーマットが正しくない宛先があります。";
 
 /* Composer expiration page title */
-"Message expiration" = "Message expiration";
+"Message expiration" = "メッセージの有効期限";
 
 /* *
  *  Expiration View */
@@ -1787,7 +1787,7 @@
 "On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "すべてのサブスクリプションが最新であることが確認されている場合にのみ、アクティベーションの購入を無視してください。 さらなるサポートが必要な場合はカスタマーサポートにお問い合わせください。 \r\n\r\n アクティベーションを無視してもよろしいですか？";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "無料アカウントは１つのみ追加できます";
@@ -2240,7 +2240,7 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "アドレス%1$@からのメッセージ送信は有料の機能です。 あなたのメッセージは既定のアドレス%2$@から送信されます";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
+"Sending will be available\nwhen attachments are uploaded" = "添付ファイルがアップロードされると\n送信が可能になります";
 
 /* menu title */
 "Sent" = "送信済み";

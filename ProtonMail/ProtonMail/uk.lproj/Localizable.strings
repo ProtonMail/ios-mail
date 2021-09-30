@@ -807,17 +807,17 @@
 "Discard draft" = "Відхилити чернетку";
 
 /* (No Comment) */
-"Display name" = "Ім'я для показу";
+"Display name" = "Показуване ім'я";
 
 /* Title in settings */
-"Display Name" = "Ім'я для показу";
+"Display Name" = "Показуване ім'я";
 
 /* *
  *  SettingsViewController & alert title */
-"Display Name Updated" = "Ім'я для показу оновлено";
+"Display Name Updated" = "Показуване ім'я оновлено";
 
 /* Title in display name settings */
-"DisplayName" = "Ім'я для показу";
+"DisplayName" = "Показуване ім'я";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Ви дійсно хочете вилучити цей файл з вкладень?";
@@ -1306,10 +1306,10 @@
 "inline attachments" = "вбудовані вкладення";
 
 /* (No Comment) */
-"Input Display Name ..." = "Введіть ім'я ...";
+"Input Display Name ..." = "Введіть показуване ім'я...";
 
 /* place holder */
-"Input Display Name…" = "Введіть ім'я для показу…";
+"Input Display Name…" = "Введіть показуване ім'я…";
 
 /* place holder */
 "Input Notification Email …" = "Введіть е-пошту для сповіщень…";
@@ -2484,7 +2484,7 @@
 "The current standard" = "Чинний стандарт";
 
 /* Description */
-"The display name is now %@." = "Ім'я тепер %@.";
+"The display name is now %@." = "Показуване ім'я тепер %@.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "Кеш чернетки пошкоджено. Будь ласка, спробуйте знову.";

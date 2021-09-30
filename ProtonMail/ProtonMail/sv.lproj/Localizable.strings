@@ -2,7 +2,7 @@
 "'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
 
 /* Key size text when setup key */
-"(2048 bit)" = "(2048-bit)";
+"(2048 bit)" = "(2048 bit)";
 
 /* Key size text when setup key */
 "(4096 bit)" = "(4096-bit)";
@@ -498,7 +498,7 @@
 
 /* *
  *  PhoneVerifyViewController */
-"Cell phone number" = "Mobilnummer";
+"Cell phone number" = "Cell phone number";
 
 /* settings general section title */
 "Change account password" = "Ändra kontolösenord";
@@ -655,7 +655,7 @@
 "Copy" = "Copy";
 
 /* Title */
-"Copy address" = "Kopiera adress";
+"Copy address" = "Copy address";
 
 /* Title */
 "Copy name" = "Kopiera namn";
@@ -1018,7 +1018,7 @@
 "End-to-end encrypted to verified address" = "End-to-end encrypted to verified address";
 
 /* (No Comment) */
-"End-to-End Encryption" = "End-to-end encryption";
+"End-to-End Encryption" = "End-to-end-kryptering";
 
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
@@ -2059,7 +2059,7 @@
 "Re-Enter your PIN" = "Re-Enter your PIN";
 
 /* abbreviation of reply: */
-"Re:" = "Re:";
+"Re:" = "Sv:";
 
 /* No comment provided by engineer. */
 "Read" = "Läs";
@@ -2329,7 +2329,7 @@
 "Simply private" = "Helt enkelt privat";
 
 /* skip button title in onboarding page */
-"Skip" = "Skip";
+"Skip" = "Hoppa över";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Snooza";
@@ -3034,7 +3034,7 @@
 
 /* *
  *  Onboarding */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Your new encrypted email account has been set up and is ready to send and receive encrypted messages.";
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ditt nya krypterade e-postkonto har konfigurerats och är redo att skicka och ta emot krypterade meddelanden.";
 
 /* view top title */
 "Your new secure email\r\n account is ready." = "Your new secure email\r\n account is ready.";

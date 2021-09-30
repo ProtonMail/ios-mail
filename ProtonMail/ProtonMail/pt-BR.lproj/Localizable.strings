@@ -251,10 +251,10 @@
 "App PIN" = "PIN do aplicativo";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN & Face ID";
+"App PIN & Face ID" = "Pin do aplicativo & Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN & Touch ID";
+"App PIN & Touch ID" = "Pin do aplicativo & Touch ID ";
 
 /* section title in settings */
 "App settings" = "Configurações do aplicativo";
@@ -739,7 +739,7 @@
 "Decryption of this content failed" = "Falha ao descriptografar este conteúdo";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "decryption of this message's encrypted content failed.";
+"decryption of this message's encrypted content failed." = "a descriptografia do conteúdo criptografado desta mensagem falhou.";
 
 /* Title */
 "Default" = "Padrão";
@@ -2697,7 +2697,7 @@
 "Troubleshooting guide" = "Guia de solução de problemas";
 
 /* Try again action */
-"Try again" = "Try again";
+"Try again" = "Tentar novamente";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Tente conectar ao Proton a partir de uma rede diferente (ou use o ProtonVPN ou Tor).";
