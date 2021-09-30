@@ -54,12 +54,12 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SwitchTableViewCell.self)
         self.tableView.register(ProgressBarButtonTableViewCell.self)
+        self.tableView.register(ThreeLinesTableViewCell.self)
         
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.sectionFooterHeight = UITableView.automaticDimension
         
         self.tableView.estimatedRowHeight = Key.cellHeight
-        //self.tableView.estimatedRowHeight = 100
         self.tableView.rowHeight = UITableView.automaticDimension
         
         self.deleteSearchIndexButton.frame = CGRect(x: 50, y: 100, width: 150, height: 45)
@@ -200,13 +200,26 @@ extension SettingsEncryptedSearchViewController {
             }
             return cell
         case .downloadedMessages:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
-            if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
-                progressBarButtonCell.configCell("Downloaded Messages", "Downloading messages...", self.viewModel.estimatedTimeRemaining.value!, self.viewModel.currentProgress.value!, "Pause", "Resume") { _, _, _ in
-                    //TODO code here for pause button
+            if EncryptedSearchService.shared.indexBuildingInProgress == false && EncryptedSearchService.shared.totalMessages == EncryptedSearchService.shared.processedMessages {
+                //index building completely finished
+                let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
+                if let threeLineCell = cell as? ThreeLinesTableViewCell {
+                    let userID: String = EncryptedSearchService.shared.user.userInfo.userId
+                    let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                    let sizeOfIndex: String = "Storage used: " + EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID)
+                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestIndexedMessage, sizeOfIndex)
                 }
+                return cell
+            } else {
+                //index building in progress
+                let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
+                if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
+                    progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages, "Downloading messages...", self.viewModel.estimatedTimeRemaining.value!, self.viewModel.currentProgress.value!, "Pause", "Resume") { _, _, _ in
+                        //TODO code here for pause button
+                    }
+                }
+                return cell
             }
-            return cell
         }
     }
     
