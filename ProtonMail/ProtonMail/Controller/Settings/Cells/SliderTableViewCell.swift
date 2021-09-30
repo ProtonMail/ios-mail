@@ -22,16 +22,35 @@ import UIKit
     static var CellID: String {
         return "\(self)"
     }
+    typealias ActionStatus = (_ value: Float) -> Void
+    typealias sliderActionBlock = (_ cell: SliderTableViewCell?, _ newValue: Float, _ feedback: @escaping ActionStatus) -> Void
+    var callback: sliderActionBlock?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        //TODO changes to UI
+    }
     
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
     @IBOutlet weak var slider: UISlider!
     
-    func configCell(_ topLine: String, _ bottomLine: String, _ sliderValue: Float) {
+    @IBAction func sliderValueChanged(_ sender: UISlider) {
+        let value: Float = sender.value
+        callback?(self, value, {(value) -> Void in
+            self.slider.value = value
+            self.layoutIfNeeded()
+        })
+    }
+    
+    func configCell(_ topLine: String, _ bottomLine: String, _ sliderValue: Float, _ sliderMaxValue: Float, complete: sliderActionBlock?) {
         
         topLabel.text = topLine
         bottomLabel.text = bottomLine
         slider.value = sliderValue
+        slider.minimumValue = 0.0
+        slider.maximumValue = sliderMaxValue
+        callback = complete
         
         self.layoutIfNeeded()
     }

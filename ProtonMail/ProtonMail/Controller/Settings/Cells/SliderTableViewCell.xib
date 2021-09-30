@@ -30,6 +30,9 @@
                     </label>
                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="oN9-NA-Hwr">
                         <rect key="frame" x="14" y="13" width="347" height="30"/>
+                        <connections>
+                            <action selector="sliderValueChanged:" destination="Ql9-aK-b5E" eventType="valueChanged" id="lXY-tU-NTW"/>
+                        </connections>
                     </slider>
                 </subviews>
                 <constraints>
