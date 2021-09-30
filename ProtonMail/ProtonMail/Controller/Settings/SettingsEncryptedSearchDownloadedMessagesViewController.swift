@@ -87,22 +87,53 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
             if let threeLineCell = cell as? ThreeLinesTableViewCell {
                 let userID: String = EncryptedSearchService.shared.user.userInfo.userId
                 let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
-                threeLineCell.configCell(LocalString._settings_title_of_message_history, oldestIndexedMessage, "All your messages are downloaded")
+                threeLineCell.configCell(eSection.title, oldestIndexedMessage, "All your messages are downloaded")
                 threeLineCell.accessoryType = .checkmark
             }
             return cell
         case .storageLimit:
             let cell = tableView.dequeueReusableCell(withIdentifier: SliderTableViewCell.CellID, for: indexPath)
+            if let sliderCell = cell as? SliderTableViewCell {
+                let sliderValue: Float = self.viewModel.storageLimit
+                let bottomLinePrefix: String = "Current selection: "
+                let bottomLine: String = bottomLinePrefix + String(sliderValue)
+                let freeDiskSpace: Int64 = EncryptedSearchIndexService.shared.getFreeDiskSpace().asInt64!
+                sliderCell.configCell(eSection.title, bottomLine, sliderValue, Float(freeDiskSpace)){_,newSliderValue,_ in
+                    self.viewModel.storageLimit = newSliderValue
+                    sliderCell.bottomLabel.text = bottomLinePrefix + String(newSliderValue)
+                }
+            }
             return cell
         case .storageUsage:
             let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.CellID, for: indexPath)
             if let buttonCell = cell as? ButtonTableViewCell {
-                let sizeOfIndex: String = "5" //EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: "userid here")
+                let userID: String = EncryptedSearchService.shared.user.userInfo.userId
+                let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID)
                 let storageLimit: Float = self.viewModel.storageLimit
-                let bottomLine = String(sizeOfIndex) + "MB of " + String(storageLimit) + " GB"
-                buttonCell.configCell(LocalString._settings_title_of_storage_usage, bottomLine, "Clear")
+                let bottomLine = sizeOfIndex + "MB of " + String(storageLimit) + " GB"
+                buttonCell.configCell(eSection.title, bottomLine, "Clear"){
+                    self.showAlertDeleteDownloadedMessages()
+                }
             }
             return cell
         }
+    }
+    
+    func showAlertDeleteDownloadedMessages() {
+        //create the alert
+        let alert = UIAlertController(title: "Delete all downloaded messages?", message: "'Search message content' will be diabled.\nIt can be enabled again from settings.", preferredStyle: UIAlertController.Style.alert)
+        //add the buttons
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel){ (action:UIAlertAction!) in
+            self.tableView.reloadData()
+        })
+        alert.addAction(UIAlertAction(title: "Delete", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+            //delete search index
+            EncryptedSearchService.shared.deleteSearchIndex()
+            //self.coordinator?.go(to: .encryptedSearch)
+            self.navigationController?.popViewController(animated: true)
+        })
+        
+        //show alert
+        self.present(alert, animated: true, completion: nil)
     }
 }
