@@ -22,15 +22,15 @@ import UIKit
     static var CellID : String {
         return "\(self)"
     }
-    typealias ActionStatus = (_ status: Bool) -> Void
-    typealias buttonActionBlock = (_ cell: ProgressBarButtonTableViewCell?, _ newStatus: Bool, _ feedback: @escaping ActionStatus) -> Void
+    
+    typealias buttonActionBlock = () -> Void
+    var callback: buttonActionBlock?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         //TODO some UI changes to progress view and button?
+        self.pauseButton.setTitle("Pause", for: UIControl.State.normal)
     }
-    
-    var callback : buttonActionBlock?
     
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var topLabel: UILabel!
@@ -40,8 +40,7 @@ import UIKit
     @IBOutlet weak var pauseButton: UIButton!
     
     @IBAction func pauseButtonPressed(_ sender: UIButton) {
-        //let status = sender.
-        print("Button pressed!")
+        callback?()
     }
     
     func configCell(_ titleLine: String, _ topLine: String, _ estimatedTime: Int, _ currentProgress: Int, _ textButtonNormal: String, _ textButtonPressed: String, complete: buttonActionBlock?) {
@@ -51,8 +50,8 @@ import UIKit
         estimatedTimeLabel.text = String(estimatedTime) + " minutes remaining..."
         currentProgressLabel.text = String(currentProgress) + "%"
         progressView.progress = Float(currentProgress)/100.0
-        pauseButton.setTitle(textButtonNormal, for: UIControl.State.normal)
-        pauseButton.setTitle(textButtonPressed, for: UIControl.State.selected)
+        //pauseButton.setTitle(textButtonNormal, for: UIControl.State.normal)
+        //pauseButton.setTitle(textButtonPressed, for: UIControl.State.selected)
         
         //implementation of pause button
         callback = complete
