@@ -145,7 +145,7 @@ end
 platform :ios do 
   desc "Build app"
   lane :build do |options|
-    xcode_select("/Applications/Xcode.app")
+    xcversion(version: "~> 12.5.0")
     set_up_keychain
 
     api_key = set_up_app_store_api_key
