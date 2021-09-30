@@ -85,7 +85,9 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         case .messageHistory:
             let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
             if let threeLineCell = cell as? ThreeLinesTableViewCell {
-                threeLineCell.configCell(LocalString._settings_title_of_message_history, "Oldest message: blah", "All your messages are downloaded")
+                let userID: String = EncryptedSearchService.shared.user.userInfo.userId
+                let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                threeLineCell.configCell(LocalString._settings_title_of_message_history, oldestIndexedMessage, "All your messages are downloaded")
                 threeLineCell.accessoryType = .checkmark
             }
             return cell
