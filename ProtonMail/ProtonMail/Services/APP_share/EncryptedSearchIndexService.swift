@@ -266,6 +266,31 @@ extension EncryptedSearchIndexService {
         
         return size
     }
+    
+    func getOldestMessageInSearchIndex(for userID: String) -> String {
+        let time: Expression<CLong> = self.databaseSchema.time
+        
+        let query = self.searchableMessages.select(time).order(time.desc).limit(1)
+        // SELECT "time" FROM "SearchableMessages" ORDER BY "time" DESC LIMIT 1
+        
+        let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
+        var oldestMessage: CLong = 0
+        do {
+            for result in try handleToSQLiteDB!.prepare(query) {
+                oldestMessage = result[time]
+            }
+        } catch {
+            print("Error when querying oldest message in search index: \(error)")
+        }
+        return self.timeToDateString(time: oldestMessage)
+    }
+    
+    private func timeToDateString(time: CLong) -> String {
+        let date: Date = Date(timeIntervalSince1970: TimeInterval(time))
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM dd, yyyy"
+        return dateFormatter.string(from: date)
+    }
 }
 
 extension FileManager {
