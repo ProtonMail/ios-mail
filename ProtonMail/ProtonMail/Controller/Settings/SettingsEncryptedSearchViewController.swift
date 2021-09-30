@@ -110,6 +110,16 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         setupProgressUpdateObserver()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if self.viewModel.isEncryptedSearch {
+            self.hideSections = false
+        } else {
+            self.hideSections = true
+        }
+        self.tableView.reloadData()
+    }
+    
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
@@ -262,6 +272,7 @@ extension SettingsEncryptedSearchViewController {
             let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
             let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
             vc.set(viewModel: vm)
+            vc.set(coordinator: self.coordinator!)
             show(vc, sender: self)
             break
         }
