@@ -1,5 +1,5 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy %@";
 
 /* Key size text when setup key */
 "(2048 bit)" = "（2048 位）";
@@ -26,22 +26,22 @@
 "%@ storage capacity" = "%@ 存储空间";
 
 /* Description */
-"%d attempt remaining" = "%d attempt remaining";
+"%d attempt remaining" = "还剩 %d 次尝试机会";
 
 /* Error */
-"%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
+"%d attempt remaining until secure data wipe!" = "若再输错 %d 次数据将被清除！";
 
 /* The title of single selected conversation of action sheet in inbox */
-"%d conversation" = "%d conversation";
+"%d conversation" = "%d 条会话";
 
 /* The title of multiple selected conversations of action sheet in inbox */
-"%d conversations" = "%d conversations";
+"%d conversations" = "%d 条会话";
 
 /* day */
-"%d day" = "%d day";
+"%d day" = "%d 天";
 
 /* hour */
-"%d hour" = "%d hour";
+"%d hour" = "%d 小时";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d 人";
@@ -50,10 +50,10 @@
 "%d Members" = "%d 人";
 
 /* The title of single selected message of action sheet in inbox */
-"%d message" = "%d message";
+"%d message" = "%d 封邮件";
 
 /* The title of multiple selected messages of action sheet in inbox */
-"%d messages" = "%d messages";
+"%d messages" = "%d 封邮件";
 
 /* auto lock time format */
 "%d Minute" = "%d 分钟";
@@ -74,16 +74,16 @@
 "+ Drop here to add as attachment" = "+ 拖至此处作为附件导入";
 
 /* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d others";
+"+%d others" = "+其他 %d 个";
 
 /* default empty object */
-"<no object>" = "<no object>";
+"<no object>" = "<无对象>";
 
 /* 2fa verification failed */
-"2FA failed. Please try to sign in again." = "2FA failed. Please try to sign in again.";
+"2FA failed. Please try to sign in again." = "双重验证失败，请重新登录。";
 
 /* Placeholder */
-"8 to 21 characters long" = "8 to 21 characters long";
+"8 to 21 characters long" = "8 - 21 个字符";
 
 /* *
  *  LabelTableViewCell */
@@ -99,7 +99,7 @@
 "A passcode has not been set, enable it in the system Settings" = "口令未设置，请在系统设置中开启";
 
 /* Alert message is shown when folder name duplicated */
-"A sub-folder with this name already exists in the destination folder" = "A sub-folder with this name already exists in the destination folder";
+"A sub-folder with this name already exists in the destination folder" = "目标文件夹中已存在同名子文件夹";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "此账户因欠费已被停用。请登录 protonmail.com 续费。";
@@ -114,7 +114,7 @@
 "Account password invalid" = "密码无效";
 
 /* section title in settings */
-"Account settings" = "Account settings";
+"Account settings" = "账户设置";
 
 /* (No Comment) */
 "Add" = "新建";
@@ -123,31 +123,31 @@
 "Add accounts" = "添加账户";
 
 /* new contacts add Anniversary */
-"Add anniversary" = "Add anniversary";
+"Add anniversary" = "添加周年纪念日";
 
 /* menu title */
-"Add attachment" = "Add attachment";
+"Add attachment" = "添加附件";
 
 /* new contacts add Birthday */
-"Add birthday" = "Add birthday";
+"Add birthday" = "添加生日";
 
 /* Contacts add new contact */
 "Add Contact" = "添加联系人";
 
 /* The title for the view where user can manage emails in the contact group */
-"Add contacts" = "Add contacts";
+"Add contacts" = "添加联系人";
 
 /* add custom label type action */
-"Add custom label" = "Add custom label";
+"Add custom label" = "添加自定义标签";
 
 /* Action */
 "Add Folder" = "创建文件夹";
 
 /* new contacts add Gender */
-"Add gender" = "Add gender";
+"Add gender" = "添加性别";
 
 /* The title for the contact group creation view */
-"Add group" = "Add group";
+"Add group" = "添加群组";
 
 /* add label action */
 "Add Label" = "创建标签";
@@ -177,19 +177,19 @@
 "Add new URL" = "添加网址";
 
 /* new contacts add Nickname */
-"Add nickname" = "Add nickname";
+"Add nickname" = "添加昵称";
 
 /* new contacts add Organization */
-"Add organization" = "Add organization";
+"Add organization" = "添加单位";
 
 /* The button text for add profile picture */
-"Add photo" = "Add photo";
+"Add photo" = "添加照片";
 
 /* mark message star */
 "Add Star" = "添加星标";
 
 /* new contacts add Title */
-"Add title" = "Add title";
+"Add title" = "添加标题";
 
 /* Title */
 "Add to contacts" = "添加到通讯录";
@@ -224,7 +224,7 @@
 "Also used to reset a forgotten password." = "也会用来重置忘记的密码。";
 
 /* cell title in app settings */
-"Alternative routing" = "Alternative routing";
+"Alternative routing" = "备用线路";
 
 /* agree check box middle word */
 "and" = "和";
@@ -236,10 +236,10 @@
 "Antivirus interference" = "杀毒软件干扰";
 
 /* Alert message when user tries to discard unsaved changes */
-"Any unsaved changes will be lost." = "Any unsaved changes will be lost.";
+"Any unsaved changes will be lost." = "所有未保存的更改都将丢失。";
 
 /* when server not reachable */
-"API Server not reachable…" = "API Server not reachable…";
+"API Server not reachable…" = "API 服务器无法访问...";
 
 /* section title in settings */
 "APP INFORMATION" = "程序信息";
@@ -248,16 +248,16 @@
 "App is locked" = "程序已锁定";
 
 /* security title in settings */
-"App PIN" = "App PIN";
+"App PIN" = "App PIN码";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN & Face ID";
+"App PIN & Face ID" = "App PIN码 & Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN & Touch ID";
+"App PIN & Touch ID" = "App PIN码 & Touch ID";
 
 /* section title in settings */
-"App settings" = "App settings";
+"App settings" = "程序设置";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple 应用内购分成";
@@ -269,7 +269,7 @@
 "Apply Labels" = "设置标签";
 
 /* button title */
-"Apply Password" = "Apply Password";
+"Apply Password" = "确认密码";
 
 /* mail location desc
    menu title
@@ -283,29 +283,29 @@
 "Archived" = "已归档";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete permanently these %d messages?";
+"Are you sure you want to delete permanently these %d messages?" = "您确定要永久删除这 %d 封邮件吗？";
 
 /* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Are you sure you want to delete permanently this message?";
+"Are you sure you want to delete permanently this message?" = "您确定要永久删除这封邮件吗？";
 
 /* Alert to confirm sign out when only one account signed in */
-"Are you sure you want to sign out %@?" = "Are you sure you want to sign out %@?";
+"Are you sure you want to sign out %@?" = "您确定要退出登录 %@ 吗？";
 
 /* Alert to confirm sign out
    Alert when sign out non-primary account from account manager */
-"Are you sure you want to sign out?" = "Are you sure you want to sign out?";
+"Are you sure you want to sign out?" = "您确定要退出登录吗？";
 
 /* emptify folder/label confirmation alert */
 "Are you sure? This can't be undone." = "您确定吗？此操作不能撤销。";
 
 /* At {time}, e.g.: At 19:00 */
-"At %@" = "At %@";
+"At %@" = "于 %@";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "在群组中至少有一个邮件地址无法被找到";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found." = "At least one email address in the group could not be found.";
+"At least one email address in the group could not be found." = "群组中至少有一个邮箱地址无法被找到。";
 
 /* incorrect email format error in composer */
 "At least one recipient email address is improperly formatted, please double check them." = "至少有一个收件人的电子邮件地址格式不正确，请重新检查。";
@@ -317,13 +317,13 @@
 "attachment" = "attachment";
 
 /* No comment provided by engineer. */
-"Attachment" = "Attachment";
+"Attachment" = "附件";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "附件已导入";
 
 /* Alert title */
-"Attachment limit" = "Attachment limit";
+"Attachment limit" = "附件限制";
 
 /* No comment provided by engineer. */
 "attachments" = "attachments";
@@ -341,7 +341,7 @@
 "Authentication Failed Wrong username or password" = "身份验证失败，账号或密码不正确";
 
 /* Error */
-"Authentication failed. Please try to sign in again." = "Authentication failed. Please try to sign in again.";
+"Authentication failed. Please try to sign in again." = "身份验证失败，请尝试重新登录。";
 
 /* Description */
 "Authentication token is not accessible because the app is locked" = "程序已锁定，无法验证";
@@ -356,10 +356,10 @@
 "Auto Show Images" = "自动加载图像";
 
 /* settings general section title */
-"Auto show remote content" = "Auto show remote content";
+"Auto show remote content" = "自动显示外链内容";
 
 /* settings general section title */
-"Auto-load embedded images" = "Auto-load embedded images";
+"Auto-load embedded images" = "自动加载嵌入图像";
 
 /* top left back button */
 "Back" = "返回";
@@ -404,13 +404,13 @@
 "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?";
 
 /* agree check box first part words */
-"By using ProtonMail, you agree to our" = "By using ProtonMail, you agree to our";
+"By using ProtonMail, you agree to our" = "使用 ProtonMail 即表示您同意我们的";
 
 /* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "By using ProtonMail, you agree to our %1$@ and %2$@.";
+"By using ProtonMail, you agree to our %@ and %@." = "使用 ProtonMail 即表示您同意我们的%1$@和%2$@。";
 
 /* Call the contact (button title text) */
-"Call contact" = "Call contact";
+"Call contact" = "致电联系人";
 
 /* key size note part 2 */
 "Can take several minutes to setup." = "可能需要几分钟的时间才能完成设置。";
@@ -456,10 +456,10 @@
 "Can't find this attachment!" = "找不到此附件！";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus ID!" = "Can't get a Modulus ID!";
+"Can't get a Modulus ID!" = "无法获取模块ID！";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus!" = "Can't get a Modulus!";
+"Can't get a Modulus!" = "无法获取模块！";
 
 /* update password error */
 "Can't get user auth info" = "无法获取用户身份验证信息";
@@ -501,7 +501,7 @@
 "Cell phone number" = "手机号码";
 
 /* settings general section title */
-"Change account password" = "Change account password";
+"Change account password" = "更改账户密码";
 
 /* Title */
 "Change default address to .." = "将首选邮箱地址改为...";
@@ -511,7 +511,7 @@
 
 /* settings general section title
    Title */
-"Change mailbox password" = "Change mailbox password";
+"Change mailbox password" = "更改邮箱密码";
 
 /* settings general section title
    title */
@@ -524,10 +524,10 @@
 "Change Pin" = "更改口令";
 
 /* settings protection section title */
-"Change PIN" = "Change PIN";
+"Change PIN" = "更改 PIN 码";
 
 /* The title of change PIN code option in security settings */
-"Change PIN code" = "Change PIN code";
+"Change PIN code" = "更改 PIN 码";
 
 /* settings swipe actions section action description */
 "Change right swipe action" = "更改向左滑动操作";
@@ -536,7 +536,7 @@
 "Change sender address to .." = "将发件人地址改为...";
 
 /* change password input label */
-"Change sign-in password" = "Change sign-in password";
+"Change sign-in password" = "更改登录密码";
 
 /* Title */
 "Change single password" = "Change single password";
@@ -551,7 +551,7 @@
 "Checking ...." = "正在检查 ....";
 
 /* loading message */
-"Checking…" = "Checking…";
+"Checking…" = "正在检查...";
 
 /* place holder */
 "Choose a Password" = "请设置一个密码";
@@ -560,7 +560,7 @@
 "City" = "城市";
 
 /* cell title in device setting */
-"Clear local cache" = "Clear local cache";
+"Clear local cache" = "清除本地缓存";
 
 /* settings general section title */
 "Clear Local Message Cache" = "清除本机邮件缓存";
@@ -579,7 +579,7 @@
 
 /* cell title in device settings
    The title of combined contact in settings */
-"Combined contacts" = "Combined contacts";
+"Combined contacts" = "共用通讯录";
 
 /* *
  *  Composer Email view controller */
@@ -602,7 +602,7 @@
 "Confirm new password" = "确认新密码";
 
 /* Title */
-"Confirm new sign-in password" = "Confirm new sign-in password";
+"Confirm new sign-in password" = "确认新登录密码";
 
 /* Placeholder */
 "Confirm Password" = "确认密码";
@@ -620,13 +620,13 @@
 "Connect Account" = "添加账户";
 
 /* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+"Contact deleted, will be synced when connection is available" = "联系人已删除，将在联网后进行同步。";
 
 /* contact section title */
-"Contact details" = "Contact details";
+"Contact details" = "联系人详情";
 
 /* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
+"Contact saved, will be synced when connection is available" = "联系人已保存，将在联网后进行同步。";
 
 /* Title */
 "Contact the ProtonMail team" = "请联系 ProtonMail 团队";
@@ -646,13 +646,13 @@
 "Continue and Don't ask again" = "继续且不再询问";
 
 /* No comment provided by engineer. */
-"Conversation" = "Conversation";
+"Conversation" = "会话";
 
 /* No comment provided by engineer. */
-"Conversation mode" = "Conversation mode";
+"Conversation mode" = "会话模式";
 
 /* Title */
-"Copy" = "Copy";
+"Copy" = "复制";
 
 /* Title */
 "Copy address" = "复制邮箱地址";
@@ -685,10 +685,10 @@
 "Create User failed. Please try again." = "创建账户失败，请重试。";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "不允许创建文件夹";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "不允许创建标签";
 
 /* Change language title */
 "Current Language is: " = "当前语言： ";
@@ -697,10 +697,10 @@
 "Current password" = "当前密码";
 
 /* No comment provided by engineer. */
-"Current Recovery Email" = "Current Recovery Email";
+"Current Recovery Email" = "当前密保邮箱";
 
 /* Title */
-"Current sign-in password" = "Current sign-in password";
+"Current sign-in password" = "当前登录密码";
 
 /* action sheet option
    contacts default label type
@@ -708,7 +708,7 @@
 "Custom" = "自定义";
 
 /* Title */
-"Cut" = "Cut";
+"Cut" = "剪切";
 
 /* message Date: text */
 "Date:" = "日期：";
@@ -764,25 +764,25 @@
 "Delete" = "删除";
 
 /* Title of message permanent deletion alert, plural */
-"Delete %d Messages" = "Delete %d Messages";
+"Delete %d Messages" = "删除 $%d 封邮件";
 
 /* emptify folder/label confirmation alert */
 "Delete all" = "全部删除";
 
 /* Title-Contacts */
-"Delete contact" = "Delete contact";
+"Delete contact" = "删除联系人";
 
 /* The description of the button for deleting the contact group */
-"Delete contact group" = "Delete contact group";
+"Delete contact group" = "删除联系人群组";
 
 /* The title of delete folder button */
-"Delete folder" = "Delete folder";
+"Delete folder" = "删除文件夹";
 
 /* The title of delete label button */
-"Delete label" = "Delete label";
+"Delete label" = "删除标签";
 
 /* Title of message permanent deletion alert, singular */
-"Delete message" = "Delete message";
+"Delete message" = "删除邮件";
 
 /* mail location desc */
 "Deleted" = "已删除";
@@ -798,7 +798,7 @@
 "Disable Validation" = "关闭验证";
 
 /* Action */
-"Discard" = "Discard";
+"Discard" = "舍弃";
 
 /* Action */
 "Discard changes" = "放弃修改";
@@ -955,7 +955,7 @@
 "Enable email notices" = "Enable email notices";
 
 /* settings protection section title */
-"Enable Face ID" = "Enable Face ID";
+"Enable Face ID" = "启用 Face ID";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "启用口令";
@@ -970,7 +970,7 @@
 "Enable signature" = "Enable signature";
 
 /* settings protection section title */
-"Enable Touch ID" = "Enable Touch ID";
+"Enable Touch ID" = "启用 Touch ID";
 
 /* (No Comment) */
 "Enable TouchID" = "启用 TouchID";
@@ -1157,7 +1157,7 @@
 "From:" = "发件人：";
 
 /* abbreviation of forward: */
-"Fw:" = "Fw:";
+"Fw:" = "转发：";
 
 /* abbreviation of forward: */
 "Fwd:" = "转发：";
@@ -2668,10 +2668,10 @@
 "Touch ID" = "Touch ID";
 
 /* settings touchid error */
-"Touch ID is not enrolled, enable it in the system Settings" = "Touch ID is not enrolled, enable it in the system Settings";
+"Touch ID is not enrolled, enable it in the system Settings" = "Touch ID 未配置，请在系统设置中启用它";
 
 /* settings touchid/faceid error */
-"Touch ID not available" = "Touch ID not available";
+"Touch ID not available" = "Touch ID 不可用";
 
 /* *
  *  SettingTableViewController */

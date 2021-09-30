@@ -11,7 +11,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d attempts remaining</string>
+			<string>还剩 %d 次尝试机会</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -25,7 +25,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d attempts remaining until secure data wipe!</string>
+			<string>若再输错 %d 次数据将被清除！</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -39,7 +39,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d days</string>
+			<string>%d 天</string>
 			<key>zero</key>
 			<string>%d day</string>
 		</dict>
@@ -55,7 +55,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d hours</string>
+			<string>%d 小时</string>
 			<key>zero</key>
 			<string>%d hour</string>
 		</dict>
@@ -73,7 +73,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d others</string>
+			<string>其他 %d 人</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
@@ -85,7 +85,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>Updated %d mins ago</string>
+			<string>更新于 %d 分钟前</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -99,7 +99,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%u conversations</string>
+			<string>%u 条会话</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -115,7 +115,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%u messages</string>
+			<string>%u 封邮件</string>
 		</dict>
 	</dict>
 	<key>minute</key>
@@ -127,7 +127,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d mins</string>
+			<string>%d 分钟</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>

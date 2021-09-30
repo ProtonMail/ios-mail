@@ -1217,7 +1217,7 @@
 "Help us to improve ProtonMail with your input." = "Bantu kami meningkatkan ProtonMail dengan masukan Anda.";
 
 /* Title */
-"Help us to make privacy the default in the web." = "Bantu kami menjadikan privasi sebagai hal baku di web.";
+"Help us to make privacy the default in the web." = "Bantu kami menjadikan privasi sebagai hal yang baku di internet.";
 
 /* Action */
 "Hide" = "Sembunyikan";
@@ -2068,7 +2068,7 @@
 "Reading device contacts data…" = "Membaca data kontak perangkat…";
 
 /* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Receipt sent";
+"Receipt sent" = "Bukti baca telah terkirim";
 
 /* No comment provided by engineer. */
 "Recipient details" = "Detail penerima";
@@ -2105,7 +2105,7 @@
 "Remove All" = "Hapus Semua";
 
 /* Settings row */
-"Remove image metadata" = "Remove image metadata";
+"Remove image metadata" = "Hapus metadata gambar";
 
 /* action title */
 "Remove password" = "Hapus sandi";
@@ -2210,7 +2210,7 @@
 "Send plain but stored encrypted" = "Kirim secara polosan tapi simpan dengan enkripsi";
 
 /* A button title to send read receipt */
-"Send receipt" = "Send receipt";
+"Send receipt" = "Kirim bukti baca";
 
 /* No comment provided by engineer. */
 "Send to archive?" = "Kirim ke arsip?";
@@ -2545,7 +2545,7 @@
 "The request timed out." = "Waktu permintaan habis.";
 
 /* Message of a banner which is displayed when sender request a read receipt */
-"The sender has requested a read receipt." = "The sender has requested a read receipt.";
+"The sender has requested a read receipt." = "Pengirim pesan meminta bukti yang membenarkan bahwa Anda telah membaca pesan ini.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Batas ukuran untuk lampiran adalah 25 MB.";
