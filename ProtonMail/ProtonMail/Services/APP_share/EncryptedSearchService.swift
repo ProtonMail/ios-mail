@@ -431,6 +431,11 @@ extension EncryptedSearchService {
             self.prevProcessedMessages = 0
             self.indexingStartTime = 0
             self.indexBuildingTimer?.invalidate()   //stop timer to estimate remaining time for indexing
+            
+            //update viewmodel
+            self.viewModel?.isEncryptedSearch = false
+            //self.viewModel
+            
             //TODO do we want to do anything when deleting fails?
             if result {
                 print("Search index for user \(self.user.userInfo.userId) sucessfully deleted!")
@@ -1424,7 +1429,7 @@ extension EncryptedSearchService {
     func updateMemoryConsumption() {
         let totalMemory: Double = self.getTotalAvailableMemory()
         let freeMemory: Double = self.getCurrentlyAvailableAppMemory()
-        let freeDiskSpace: String = EncryptedSearchIndexService.shared.getFreeDiskSpace()
+        let freeDiskSpace: String = EncryptedSearchIndexService.shared.getFreeDiskSpace().asString
         let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: self.user.userInfo.userId)
         
         print("Total Memory: \(totalMemory/1048576.0) mb, free Memory: \(freeMemory/1048576.0) mb, free disk space: \(freeDiskSpace), size of index: \(sizeOfIndex)")
