@@ -254,17 +254,18 @@ extension EncryptedSearchIndexService {
         return size
     }
     
-    func getFreeDiskSpace() -> String {
+    func getFreeDiskSpace() -> (asInt64: Int64?, asString: String) {
         var size: String = ""
+        var freeSpace: Int64? = nil
         do {
             let systemAttributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
-            let freeSpace: Int64? = (systemAttributes[FileAttributeKey.systemFreeSize] as? NSNumber)?.int64Value
+            freeSpace = (systemAttributes[FileAttributeKey.systemFreeSize] as? NSNumber)?.int64Value
             size = (self.fileByteCountFormatter?.string(fromByteCount: freeSpace!))!
         } catch {
             print("error \(error)")
         }
         
-        return size
+        return (freeSpace, size)
     }
     
     func getOldestMessageInSearchIndex(for userID: String) -> String {
