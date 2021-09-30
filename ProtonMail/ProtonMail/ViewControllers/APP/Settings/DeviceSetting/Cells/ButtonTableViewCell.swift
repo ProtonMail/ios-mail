@@ -23,19 +23,24 @@ import UIKit
         return "\(self)"
     }
     
+    typealias buttonActionBlock = () -> Void
+    var callback: buttonActionBlock?
+    
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
     @IBOutlet weak var button: UIButton!
     
     @IBAction func buttonPressed(_ sender: UIButton) {
         //let status = sender.
-        print("button pressed!")
+        //print("button pressed!")
+        callback?()
     }
     
-    func configCell(_ topLine: String, _ bottomLine: String, _ titleOfButton: String) {
+    func configCell(_ topLine: String, _ bottomLine: String, _ titleOfButton: String, complete: buttonActionBlock?) {
         topLabel.text = topLine
         bottomLabel.text = bottomLine
         button.setTitle(titleOfButton, for: .normal)
+        callback = complete
         
         self.layoutIfNeeded()
     }
