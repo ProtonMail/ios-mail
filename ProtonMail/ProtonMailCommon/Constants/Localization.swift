@@ -2030,7 +2030,6 @@ class LocalizedString {
     lazy var _settings_title_of_encrypted_search = NSLocalizedString("Search message content", comment: "The title of encrypted search in settings")
     lazy var _settings_footer_of_download_via_mobile_data = NSLocalizedString("If you lose your WiFi connection, download will continue over mobile data", comment: "The footer of the slider for download via mobile data in settings")
     lazy var _settings_title_of_download_via_mobile_data = NSLocalizedString("Download via mobile data", comment: "The title of the slider for download via mobile data in settings")
-    lazy var _settings_footer_of_downloaded_messages = NSLocalizedString("TODO", comment: "The footer of TODO in settings")
     lazy var _settings_title_of_downloaded_messages = NSLocalizedString("Downloaded messages", comment: "The title of downloaded messages in settings")
     lazy var _settings_title_of_message_history = NSLocalizedString("Message history", comment: "The title of message history in settings for encrypted search")
     lazy var _settings_title_of_storage_limit = NSLocalizedString("Storage limit", comment: "The title of storage limit in settings for encrypted search")
