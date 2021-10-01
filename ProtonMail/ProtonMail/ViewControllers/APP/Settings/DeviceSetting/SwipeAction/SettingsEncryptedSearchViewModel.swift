@@ -60,7 +60,7 @@ class SettingsEncryptedSearchViewModel {
                 case .downloadViaMobileData:
                     return LocalString._settings_footer_of_download_via_mobile_data
                 case .downloadedMessages:
-                    return LocalString._settings_footer_of_downloaded_messages
+                    return ""
             }
         }
     }
