@@ -157,12 +157,18 @@ extension SettingsEncryptedSearchViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
             if let switchCell = cell as? SwitchTableViewCell {
                 switchCell.configCell(eSection.title, bottomLine: "", status: viewModel.downloadViaMobileData) { _, _, _ in
-                    //TODO code here for enableing download via mobile data
+                    let status = self.viewModel.downloadViaMobileData
+                    self.viewModel.downloadViaMobileData = !status
+                    
+                    //if indexing is in progress, turn it off if on mobile data
+                    if EncryptedSearchService.shared.indexBuildingInProgress && !self.viewModel.downloadViaMobileData {
+                        EncryptedSearchService.shared.pauseIndexingDueToNetworkSwitch()
+                    }
                 }
             }
             return cell
         case .downloadedMessages:
-            if EncryptedSearchService.shared.indexBuildingInProgress == false && EncryptedSearchService.shared.totalMessages == EncryptedSearchService.shared.processedMessages {
+            if EncryptedSearchService.shared.indexBuildingInProgress == false && EncryptedSearchService.shared.totalMessages == EncryptedSearchService.shared.processedMessages && !EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
                 //index building completely finished
                 let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
                 if let threeLineCell = cell as? ThreeLinesTableViewCell {
