@@ -179,9 +179,12 @@ public class EncryptedSearchService {
         self.timeFormatter.allowedUnits = [.hour, .minute, .second]
         self.timeFormatter.unitsStyle = .abbreviated
         
-        //enable network monitoring for internet connection
-        //self.checkForNetworkConnectivity()
-        //TODO disable for the moment as it might cause memory leaks
+        self.internetStatusProvider = InternetConnectionStatusProvider()
+        self.internetStatusProvider?.getConnectionStatuses(currentStatus: { status in
+            if status.isConnected {
+                print("Internet connection is active!")
+            }
+        })
         
         //enable temperature monitoring
         self.registerForTermalStateChangeNotifications()
@@ -213,12 +216,15 @@ public class EncryptedSearchService {
         //queue.maxConcurrentOperationCount = 1
         return queue
     }()
+    
+    internal lazy var internetStatusProvider: InternetConnectionStatusProvider? = nil
 
-    @available(iOS 12.0, *)
+    /*@available(iOS 12.0, *)
     internal static var monitorInternetConnectivity: NWPathMonitor? {
         return NWPathMonitor()
-    }
+    }*/
     
+    internal var pauseIndexingDueToNetworkConnectivityIssues: Bool = false
     internal var pauseIndexingDueToOverheating: Bool = false
     internal var pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
     
@@ -241,6 +247,19 @@ public class EncryptedSearchService {
 extension EncryptedSearchService {
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Void {
+        
+        let networkStatus: NetworkStatus = self.internetStatusProvider!.currentStatus
+        if !networkStatus.isConnected {
+            print("Error when building the search index - no internet connection.")
+            self.pauseIndexingDueToNetworkConnectivityIssues = true
+            return
+        }
+        if !viewModel.downloadViaMobileData && !(networkStatus == NetworkStatus.ReachableViaWiFi) {
+            print("Indexing with mobile data not enabled")
+            self.pauseIndexingDueToNetworkConnectivityIssues = true
+            return
+        }
+        
         #if !APP_EXTENSION
             //enable background processing
             self.registerBackgroundTask()
@@ -343,6 +362,24 @@ extension EncryptedSearchService {
                 self.indexBuildingInProgress = false
                 completionHandler()
             }
+        }
+    }
+    
+    func pauseIndexingDueToNetworkSwitch(){
+        let networkStatus: NetworkStatus = self.internetStatusProvider!.currentStatus
+        if !networkStatus.isConnected {
+            print("Error no internet connection.")
+            return
+        }
+
+        //if indexing is currently in progress
+        //and the slider is off
+        //and we are using mobile data
+        //then pause indexing
+        if self.indexBuildingInProgress && !self.viewModel!.downloadViaMobileData && (networkStatus != NetworkStatus.ReachableViaWiFi) {
+            print("Pause indexing when using mobile data")
+            self.viewModel?.pauseIndexing = true
+            self.pauseAndResumeIndexing()
         }
     }
     
@@ -1364,7 +1401,7 @@ extension EncryptedSearchService {
         return availableMemory
     }
     
-    func checkForNetworkConnectivity() {
+    /*func checkForNetworkConnectivity() {
         //If iOS 12 is available use NWPathMonitor
         if #available(iOS 12, *) {
             print("Check for network connectivity in ES")
@@ -1390,9 +1427,9 @@ extension EncryptedSearchService {
         } else {
             //TODO
         }
-    }
+    }*/
     
-    func stopCheckingForNetworkConnectivity() {
+    /*func stopCheckingForNetworkConnectivity() {
         //If iOS 12 is available use NWPathMonitor
         if #available(iOS 12, *) {
             //stop monitoring network for changes of the internet connectivity
@@ -1400,7 +1437,7 @@ extension EncryptedSearchService {
         } else {
             //TODO
         }
-    }
+    }*/
     
     func updateIndexBuildingProgress(processedMessages: Int){
         //progress bar runs from 0 to 1 - normalize by totalMessages
