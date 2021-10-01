@@ -27,9 +27,6 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     internal var viewModel: SettingsEncryptedSearchViewModel!
     internal var coordinator: SettingsDeviceCoordinator?
     
-    //internal let pauseIndexingButton = UIButton(type: UIButton.ButtonType.system) as UIButton
-    internal var progressView: UIProgressView!
-    
     internal var hideSections: Bool = true
     
     struct Key {
@@ -47,47 +44,18 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         } else {
             self.hideSections = true
         }
-        
+
         self.updateTitle()
         self.view.backgroundColor = UIColorManager.BackgroundSecondary
+
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SwitchTableViewCell.self)
         self.tableView.register(ProgressBarButtonTableViewCell.self)
         self.tableView.register(ThreeLinesTableViewCell.self)
-        
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.sectionFooterHeight = UITableView.automaticDimension
-        
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
-        
-        /*self.pauseIndexingButton.frame = CGRect(x: 50, y: 100, width: 150, height: 45)
-        self.pauseIndexingButton.backgroundColor = UIColor.lightGray
-        self.pauseIndexingButton.setTitle("Pause", for: UIControl.State.normal)
-        self.pauseIndexingButton.tintColor = UIColor.black
-        self.pauseIndexingButton.addTarget(self, action: #selector(self.pauseIndexing), for: .touchUpInside)
-        self.pauseIndexingButton.isHidden = true
-        self.pauseIndexingButton.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(self.pauseIndexingButton)
-        let pauseIndexingButtonXAnchor = self.pauseIndexingButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        pauseIndexingButtonXAnchor.isActive = true
-        let pauseIndexingButtonWidthAnchor = self.pauseIndexingButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9)
-        pauseIndexingButtonWidthAnchor.isActive = true
-        let pauseIndexingButtonTopAnchor = self.pauseIndexingButton.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 25)
-        pauseIndexingButtonTopAnchor.isActive = true*/
-        
-        //initialize progress view
-        self.progressView = UIProgressView()
-        self.progressView.isHidden = true
-        self.progressView.progress = 0  //initial value
-        self.progressView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(self.progressView)
-        let centerXAnchor = self.progressView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        centerXAnchor.isActive = true
-        let widthAnchor = self.progressView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9)
-        widthAnchor.isActive = true
-        let topAnchor = self.progressView.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 100)
-        topAnchor.isActive = true
         
         setupProgressViewObserver()
         setupEstimatedTimeUpdateObserver()
@@ -158,7 +126,7 @@ extension SettingsEncryptedSearchViewController {
         if section > 0 && self.hideSections {
             return CGFloat.leastNormalMagnitude
         }
-        return Key.footerHeight//super.tableView(tableView, heightForFooterInSection: section)
+        return Key.footerHeight
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
@@ -202,6 +170,7 @@ extension SettingsEncryptedSearchViewController {
                     let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
                     let sizeOfIndex: String = "Storage used: " + EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID)
                     threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestIndexedMessage, sizeOfIndex)
+                    threeLineCell.accessoryType = .checkmark
                 }
                 return cell
             } else {
@@ -278,9 +247,7 @@ extension SettingsEncryptedSearchViewController {
         })
         alert.addAction(UIAlertAction(title: "Enable", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
             //change UI
-            self.progressView.isHidden = false
-            //self.deleteSearchIndexButton.isHidden = false
-            //self.pauseIndexingButton.isHidden = false
+            //self.progressView.isHidden = false
             self.hideSections = false
 
             self.tableView.reloadData() //refresh the view to show changes in UI
@@ -292,37 +259,22 @@ extension SettingsEncryptedSearchViewController {
         //show alert
         self.present(alert, animated: true, completion: nil)
     }
-    
-    /*@objc func deleteSearchIndex(_ sender: UIButton!){
-        EncryptedSearchService.shared.deleteSearchIndex()
-        self.viewModel.isEncryptedSearch = false //set toggle button to false
-        self.progressView.isHidden = true //hide progress bar
-        self.progressView.progress = 0 //reset value of progress bar
-        //self.deleteSearchIndexButton.isHidden = true
-        //self.pauseIndexingButton.isHidden = true
-        self.hideSections = true
-        self.tableView.reloadData() //refresh the view after
-    }*/
-    
-    /*@objc func pauseIndexing(_ sender: UIButton!) {
-        self.viewModel.pauseIndexing.toggle()
-        //set text on button
-        if self.viewModel.pauseIndexing {
-            self.pauseIndexingButton.setTitle("Resume", for: .normal)
-        } else {
-            self.pauseIndexingButton.setTitle("Pause", for: .normal)
-        }
-        EncryptedSearchService.shared.pauseAndResumeIndexing()
-    }*/
-        
+
     func setupProgressViewObserver() {
-        self.viewModel.progressViewStatus.bind { [weak self] (_) in
+        self.viewModel.progressViewStatus.bind { (_) in
+            //DispatchQueue.main.async {
+                //self?.progressView.setProgress((self?.viewModel.progressViewStatus.value)!, animated: true)
+            //}
             DispatchQueue.main.async {
-                self?.progressView.setProgress((self?.viewModel.progressViewStatus.value)!, animated: true)
+                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+
+                UIView.performWithoutAnimation {
+                    self.tableView.reloadRows(at: [path], with: .none)
+                }
             }
         }
     }
-    
+
     func setupEstimatedTimeUpdateObserver() {
         self.viewModel.estimatedTimeRemaining.bind { (_) in
             DispatchQueue.main.async {
@@ -334,7 +286,7 @@ extension SettingsEncryptedSearchViewController {
             }
         }
     }
-    
+
     func setupProgressUpdateObserver() {
         self.viewModel.currentProgress.bind { (_) in
             DispatchQueue.main.async {
