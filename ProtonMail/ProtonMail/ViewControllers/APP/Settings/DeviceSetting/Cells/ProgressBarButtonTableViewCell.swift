@@ -49,7 +49,7 @@ import UIKit
         topLabel.text = topLine
         estimatedTimeLabel.text = String(estimatedTime) + " minutes remaining..."
         currentProgressLabel.text = String(currentProgress) + "%"
-        progressView.progress = Float(currentProgress)/100.0
+        progressView.setProgress(Float(currentProgress)/100.0, animated: true) 
         //pauseButton.setTitle(textButtonNormal, for: UIControl.State.normal)
         //pauseButton.setTitle(textButtonPressed, for: UIControl.State.selected)
         
