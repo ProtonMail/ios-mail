@@ -58,6 +58,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     private var refreshControl: UIRefreshControl!
     private var searchController: UISearchController!
+
+    private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
     
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchView: UIView!
@@ -335,12 +337,22 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     }
     
     @objc func fireFetch() {
-        firstly {
-            return self.viewModel.fetchLatestContactGroup()
+        internetConnectionStatusProvider.getConnectionStatuses { [weak self] status in
+            guard status != .NotReachable else {
+                DispatchQueue.main.async {
+                    self?.refreshControl.endRefreshing()
+                }
+                return
+            }
+
+            guard let self = self else { return }
+            firstly {
+                return self.viewModel.fetchLatestContactGroup()
             }.done {
                 self.refreshControl.endRefreshing()
             }.catch { error in
                 error.alert(at: self.view)
+            }
         }
     }
     
