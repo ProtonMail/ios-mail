@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import ProtonCore_UIFoundations
 
 protocol ShowImageViewDelegate : AnyObject {
     func showImage()
@@ -41,7 +41,7 @@ class ShowImageView: PMView {
     }
     
     override func setup() {
-        showImageButton.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.cgColor
+        showImageButton.layer.borderColor = UIColorManager.SeparatorNorm.cgColor
         showImageButton.layer.borderWidth = 1.0
         showImageButton.layer.cornerRadius = 2.0
         showImageButton.setTitle(LocalString._load_remote_content, for: .normal)

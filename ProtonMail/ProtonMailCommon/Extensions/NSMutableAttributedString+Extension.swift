@@ -49,7 +49,7 @@ extension NSAttributedString {
                 using: { (textCheckingResult, matchingFlags, stop) -> Void in
                     let subRange = textCheckingResult?.range
                     attributedString.addAttribute(NSAttributedString.Key.foregroundColor,
-                                                  value: UIColor.ProtonMail.Blue_6789AB,
+                                                  value: UIColorManager.BrandNorm,
                                                   range: subRange!)
                     
                     attributedString.addAttribute(NSAttributedString.Key.font,

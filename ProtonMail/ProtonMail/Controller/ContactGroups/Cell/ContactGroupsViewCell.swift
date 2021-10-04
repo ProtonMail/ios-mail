@@ -35,7 +35,6 @@ class ContactGroupsViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var sendButtonImage: UIImageView!
     
     let highlightedColor = "#BFBFBF"
-    let normalColor = "#9497CE"
     
     private var labelID = ""
     private var name = ""

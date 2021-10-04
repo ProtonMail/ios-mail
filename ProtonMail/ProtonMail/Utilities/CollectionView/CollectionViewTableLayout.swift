@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import ProtonCore_UIFoundations
 import UIKit
 
 class CollectionViewTableLayout: UICollectionViewFlowLayout {
@@ -96,12 +96,12 @@ extension CollectionViewTableLayout {
     class SeparatorDecorationView: UICollectionReusableView {
         override init(frame: CGRect) {
             super.init(frame: frame)
-            self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
+            self.backgroundColor = UIColorManager.SeparatorNorm
         }
         
         required init?(coder aDecoder: NSCoder) {
             super.init(coder: aDecoder)
-            self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
+            self.backgroundColor = UIColorManager.SeparatorNorm
         }
         
         override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {

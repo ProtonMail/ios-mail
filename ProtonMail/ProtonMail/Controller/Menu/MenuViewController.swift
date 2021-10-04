@@ -95,7 +95,7 @@ final class MenuViewController: UIViewController, AccessibleView {
 // MARK: Private functions
 extension MenuViewController {
     private func viewInit() {
-        self.view.backgroundColor = UIColor(hexString: "#25272c", alpha: 1)
+        self.view.backgroundColor = UIColor(hexString: "#1C223D", alpha: 1)
         self.menuWidth.constant = self.viewModel.menuWidth
         self.tableView.backgroundColor = .clear
         self.tableView.register(MenuItemTableViewCell.self)

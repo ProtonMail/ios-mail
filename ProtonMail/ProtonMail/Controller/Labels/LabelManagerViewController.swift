@@ -104,7 +104,7 @@ extension LabelManagerViewController {
         self.tableView.register(SwitchTableViewCell.self)
         self.tableView.register(MenuItemTableViewCell.defaultNib(),
                                 forCellReuseIdentifier: MenuItemTableViewCell.defaultID())
-
+        self.tableView.separatorStyle = .none
 //        self.tableView.dragDelegate = self
 //        self.tableView.dropDelegate = self
     }
@@ -256,6 +256,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
             cell.switchView.onTintColor = UIColorManager.IconDisabled
             cell.topLineLabel.textColor = UIColorManager.TextDisabled
         }
+        cell.addSeparator(padding: 0)
         return cell
     }
 
@@ -264,6 +265,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: "defaultCellWithIcon")
         }
+        cell?.addSeparator(padding: 0)
         guard let instance = cell else { return .init() }
         instance.textLabel?.attributedText = self.viewModel.createTitle.apply(style: .DefaultHint)
         instance.imageView?.image = Asset.menuPlus.image
@@ -298,6 +300,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
         cell.backgroundColor = UIColorManager.BackgroundNorm
         cell.selectionStyle = .none
         cell.accessoryType = .disclosureIndicator
+        cell.addSeparator(padding: 0)
         return cell
     }
 

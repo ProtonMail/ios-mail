@@ -220,6 +220,10 @@ extension AppDelegate: UIApplicationDelegate {
         //setup language
         LanguageManager.setupCurrentLanguage()
 
+        if #available(iOS 15.0, *) {
+            UITableView.appearance().sectionHeaderTopPadding = .zero
+        }
+
         let pushService : PushNotificationService = sharedServices.get()
         UNUserNotificationCenter.current().delegate = pushService
         pushService.registerForRemoteNotifications()
