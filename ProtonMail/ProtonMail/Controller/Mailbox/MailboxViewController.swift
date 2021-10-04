@@ -128,9 +128,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     @IBOutlet weak var noResultSecondaryLabel: UILabel!
     @IBOutlet weak var noResultFooterLabel: UILabel!
     
-    // MARK: action sheet
-    private var actionSheet: PMActionSheet?
-    
     private var lastNetworkStatus : NetworkStatus? = nil
     
     private var shouldAnimateSkeletonLoading = false
@@ -447,7 +444,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.startAutoFetch(false)
         }
         self.hideActionBar()
-        self.hideActionSheet()
+        self.dismissActionSheet()
     }
     
     @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -1596,11 +1593,6 @@ extension MailboxViewController {
         self.mailActionBar = nil
     }
     
-    private func hideActionSheet() {
-        self.actionSheet?.dismiss(animated: true)
-        self.actionSheet = nil
-    }
-
     private func showDeleteAlert(yesHandler: @escaping () -> Void) {
         let messagesCount = viewModel.selectedIDs.count
         let title = messagesCount > 1 ?
@@ -2112,6 +2104,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         switch(type) {
         case .delete:
             popPresentedItemIfNeeded(anObject)
+            hideActionBarIfNeeded(anObject)
         case .insert:
             guard let _ = newIndexPath,
                   self.needToShowNewMessage,
@@ -2153,6 +2146,25 @@ extension MailboxViewController {
                     navigationController?.popViewController(animated: true)
                 }
             }
+        }
+    }
+
+    private func hideActionBarIfNeeded(_ anObject: Any) {
+        guard let _ = navigationController?.topViewController as? MailboxViewController else {
+            return
+        }
+        var id: String = ""
+        if let contextLabel = anObject as? ContextLabel {
+            id = contextLabel.conversationID
+        } else if let message = anObject as? Message {
+            id = message.messageID
+        }
+        guard viewModel.selectedIDs.contains(id) else { return }
+        viewModel.removeSelected(id: id)
+        self.setupNavigationTitle(self.listEditing)
+        self.dismissActionSheet()
+        if viewModel.selectedIDs.isEmpty {
+            hideActionBar()
         }
     }
 }
@@ -2348,3 +2360,4 @@ extension MailboxViewController: SwipyCellDelegate {
 
     }
 }
+
