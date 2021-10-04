@@ -242,6 +242,9 @@ public class EncryptedSearchService {
     internal var timingsParseBody: NSMutableArray = []
     internal var timingsRemoveElements: NSMutableArray = []
     internal var timingsParseCleanedContent: NSMutableArray = []
+    
+    internal var startBackgroundTask: Double = 0.0
+    internal var backgroundTaskCounter: Int = 0
 }
 
 extension EncryptedSearchService {
@@ -1561,6 +1564,12 @@ extension EncryptedSearchService {
             //schedule a new background processing task if index building is not finished
             self.scheduleIndexBuildingInBackground()
             
+            //stop background execution task
+            let stopTime = CFAbsoluteTimeGetCurrent()
+            let elapsedTime = self.startBackgroundTask - stopTime
+            let text: String = "stop background task. time= " + String(elapsedTime)
+            self.sendNotification(text: text)
+            
             //pause indexing
             self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
             self.viewModel?.pauseIndexing = true
@@ -1569,6 +1578,13 @@ extension EncryptedSearchService {
             //set task to be completed - so that the systems does not terminate the app
             task.setTaskCompleted(success: true)
         }
+        
+        //start background processing task
+        self.backgroundTaskCounter += 1
+        self.startBackgroundTask = CFAbsoluteTimeGetCurrent()
+        let text = "start background task: " + String(self.backgroundTaskCounter)
+        self.sendNotification(text: text)
+        print("BGTASK: \(self.backgroundTaskCounter)")
         
         //resume indexing in background
         if self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
@@ -1617,5 +1633,15 @@ extension EncryptedSearchService {
             print("Remaining indexing time: \(result.estimatedMinutes)")
             print("Current progress: \(result.currentProgress)")
         }
+    }
+    
+    func sendNotification(text: String){
+        let content = UNMutableNotificationContent()
+        content.title = "Background Processing Task"
+        content.subtitle = text
+        content.sound = UNNotificationSound.default
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
     }
 }
