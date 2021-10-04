@@ -319,6 +319,9 @@
 /* No comment provided by engineer. */
 "Attachment" = "添付ファイル";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Attachment failure";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "添付ファイルがインポートされました。";
 
@@ -1223,6 +1226,9 @@
 "Hide" = "非表示";
 
 /* Title */
+"Hide details" = "Hide details";
+
+/* (No Comment) */
 "Hide Details" = "詳細を隠す";
 
 /* Key size checkbox */
@@ -1406,6 +1412,9 @@
 /* cell title in device settings
    Title */
 "Language" = "言語";
+
+/* Action */
+"Later" = "Later";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1968,6 +1977,12 @@
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Please upgrade your plan";
+
+/* Content of storage full alert */
+"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+
 /* Description */
 "Please use ProtonMail App sign-in first." = "Please use ProtonMail App sign-in first.";
 
@@ -2291,6 +2306,9 @@
 "Show" = "Show";
 
 /* Title */
+"Show details" = "Show details";
+
+/* Title */
 "Sign in" = "Sign in";
 
 /* Account manager title */
@@ -2394,6 +2412,12 @@
    Title */
 "Storage" = "ストレージ容量";
 
+/* Alert title */
+"Storage full" = "Storage full";
+
+/* Storage warning */
+"Storage quota exceeded" = "Storage quota exceeded";
+
 /* Title */
 "Storage Warning" = "ストレージ容量の警告";
 
@@ -2491,6 +2515,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "送信に失敗しました。下書きの書式にエラーがありました。";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "The following files couldn't be attached:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "利用可能な暗号化の最高レベル";
@@ -2994,12 +3021,18 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "保存されていない変更があります。保存しますか？";
 
-/* Content of space warning */
+/* (No Comment) */
 "You have used %d%% of your storage space (%@)." = "ストレージ容量 (%@) の %d%% を使用しています。";
+
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "全てのストレージ容量 (%@) が使用されています。";
+
+/* Content of space warning */
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "送信するには少なくとも 1 人の受信者が必要です。";
