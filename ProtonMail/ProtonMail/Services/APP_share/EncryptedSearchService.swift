@@ -24,61 +24,6 @@ extension Array {
     }
 }
 
-/*enum EncryptedSearchIndexingState {
-    case new, finished, error
-}
-
-public class EncryptedSearchMessageState {
-    var state = EncryptedSearchIndexingState.new
-    var message: Message? = nil
-    let messageID: String
-    
-    init(id: String) {
-        self.messageID = id
-    }
-}
-
-public class IndexSingleMessageWorker: Operation {
-    let encryptedSearchMessageState: EncryptedSearchMessageState
-
-    init(_ state: EncryptedSearchMessageState) {
-        self.encryptedSearchMessageState = state
-    }
-
-    public override func main() {
-        if isCancelled {
-            return
-        }
-
-        //EncryptedSearchService.shared.getMessage(self.encryptedSearchMessageState.messageID, completionHandler: { message in
-        //    self.encryptedSearchMessageState.message = message!
-        //    self.encryptedSearchMessageState.state = .objectFetched
-        //})
-        
-        print("processing message: \(self.encryptedSearchMessageState.messageID)")
-        EncryptedSearchService.shared.getMessage(self.encryptedSearchMessageState.messageID) { message in
-            print("Message fetched: \(message!.messageID)")
-            EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: message!) { messageWithDetails in
-                print("Message detailes downloaded: \(messageWithDetails!.isDetailDownloaded)")
-                EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails!) {
-                    print("Message \(self.encryptedSearchMessageState.messageID) sucessfully processed!")
-                    self.encryptedSearchMessageState.state = .finished
-                }
-            }
-        }
-    }
-}
-
-public class PendingOperations {
-    lazy var messageIndexingInProgress: [String:Operation] = [:]
-    lazy var messageIndexingQueue: OperationQueue = {
-        var queue = OperationQueue()
-        queue.name = "Message Indexing Queue"
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
-}*/
-
 open class IndexSingleMessageAsyncOperation: Operation {
     public enum State: String {
         case ready = "Ready"
@@ -132,7 +77,6 @@ open class IndexSingleMessageAsyncOperation: Operation {
         }
     }
     
-    //@available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
     public override func main() {
         if self.isCancelled {
             state = .finished
@@ -218,11 +162,6 @@ public class EncryptedSearchService {
     }()
     
     internal lazy var internetStatusProvider: InternetConnectionStatusProvider? = nil
-
-    /*@available(iOS 12.0, *)
-    internal static var monitorInternetConnectivity: NWPathMonitor? {
-        return NWPathMonitor()
-    }*/
     
     internal var pauseIndexingDueToNetworkConnectivityIssues: Bool = false
     internal var pauseIndexingDueToOverheating: Bool = false
@@ -276,9 +215,7 @@ extension EncryptedSearchService {
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
         
         //set up timer to estimate time for index building every 2 seconds
-        //DispatchQueue.global(qos: .default).async {
         self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
-        //}
         
         self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
         self.getTotalMessages() {
@@ -315,15 +252,10 @@ extension EncryptedSearchService {
             DispatchQueue.global(qos: .userInitiated).async {
                 //If its an build from scratch, start indexing with time = 0
                 self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) {
-                //self.downloadAllMessagesAndBuildSearchIndex(){
-                    //Search index build -> update progress bar to finished?
                     print("Finished building search index!")
                     self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add stop time
                     self.printTiming("Building the Index", for: self.timingsBuildIndex)
-                    
-                    //DispatchQueue.main.async {
                     self.updateMemoryConsumption()
-                    //}
                     
                     self.viewModel?.isEncryptedSearch = true
                     self.viewModel?.currentProgress.value = 100
@@ -333,7 +265,6 @@ extension EncryptedSearchService {
                     if self.backgroundTask != .invalid {
                         //background processing not needed any longer - clean up
                         #if !APP_EXTENSION
-                            //enable background processing
                             self.endBackgroundTask()
                         #endif
                     }
@@ -1625,13 +1556,15 @@ extension EncryptedSearchService {
     
     @objc func updateRemainingIndexingTime() {
         if self.indexBuildingInProgress {
-            let result = estimateIndexingTime()
-            
-            //update viewModel
-            self.viewModel?.currentProgress.value = result.currentProgress
-            self.viewModel?.estimatedTimeRemaining.value = result.estimatedMinutes
-            print("Remaining indexing time: \(result.estimatedMinutes)")
-            print("Current progress: \(result.currentProgress)")
+            DispatchQueue.global().async {
+                let result = self.estimateIndexingTime()
+                
+                //update viewModel
+                self.viewModel?.currentProgress.value = result.currentProgress
+                self.viewModel?.estimatedTimeRemaining.value = result.estimatedMinutes
+                print("Remaining indexing time: \(result.estimatedMinutes)")
+                print("Current progress: \(result.currentProgress)")
+            }
         }
     }
     
