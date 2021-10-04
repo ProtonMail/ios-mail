@@ -10,6 +10,7 @@ class ConversationViewModel {
 
     var refreshView: (() -> Void)?
     var dismissView: (() -> Void)?
+    var dismissDeletedMessageActionSheet: ((String) -> Void)?
 
     var showNewMessageArrivedFloaty: ((String) -> Void)?
 
@@ -218,6 +219,7 @@ class ConversationViewModel {
             context.perform { [weak self] in
                 guard let self = self,
                       let object = try? context.existingObject(with: self.conversation.objectID) else {
+                          self?.dismissView?()
                     return
                 }
                 context.delete(object)
@@ -265,8 +267,9 @@ class ConversationViewModel {
             let path = IndexPath(row: toRow, section: 1)
             guard tableView.cellForRow(at: path) != nil else { return }
             tableView.reloadRows(at: [path], with: .automatic)
-        case let .delete(row):
+        case let .delete(row, messageID):
             tableView.deleteRows(at: [.init(row: row, section: 1)], with: .automatic)
+            dismissDeletedMessageActionSheet?(messageID)
         case let .move(fromRow, toRow):
             guard fromRow != toRow else { return }
             tableView.moveRow(at: .init(row: fromRow, section: 1), to: .init(row: toRow, section: 1))

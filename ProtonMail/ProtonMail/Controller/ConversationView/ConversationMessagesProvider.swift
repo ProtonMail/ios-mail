@@ -70,8 +70,8 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
                 conversationUpdate?(.move(fromRow: oldIndexPath.row, toRow: newIndexPath.row))
             }
         case .delete:
-            if let row = indexPath?.row {
-                conversationUpdate?(.delete(row: row))
+            if let row = indexPath?.row, let message = anObject as? Message {
+                conversationUpdate?(.delete(row: row, messageID: message.messageID))
             }
         @unknown default:
             break

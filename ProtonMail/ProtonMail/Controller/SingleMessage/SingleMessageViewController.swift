@@ -65,7 +65,6 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         viewModel.viewDidLoad()
         viewModel.refreshView = { [weak self] in
             self?.reloadMessageRelatedData()
@@ -87,6 +86,11 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         super.viewDidAppear(animated)
 
         viewModel.userActivity.becomeCurrent()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.dismissActionSheet()
     }
 
     override func viewDidDisappear(_ animated: Bool) {

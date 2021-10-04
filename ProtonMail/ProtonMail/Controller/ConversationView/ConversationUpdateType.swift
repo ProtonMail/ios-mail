@@ -4,5 +4,5 @@ enum ConversationUpdateType {
     case insert(row: Int)
     case update(message: Message, fromRow: Int, toRow: Int)
     case move(fromRow: Int, toRow: Int)
-    case delete(row: Int)
+    case delete(row: Int, messageID: String)
 }
