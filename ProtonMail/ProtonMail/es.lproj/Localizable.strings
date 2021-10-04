@@ -319,6 +319,9 @@
 /* No comment provided by engineer. */
 "Attachment" = "Archivo adjunto";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Attachment failure";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Archivo adjunto importado";
 
@@ -1157,7 +1160,7 @@
 "From:" = "De:";
 
 /* abbreviation of forward: */
-"Fw:" = "Reenviar:";
+"Fw:" = "Fw:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Rv:";
@@ -1223,6 +1226,9 @@
 "Hide" = "Ocultar";
 
 /* Title */
+"Hide details" = "Ocultar detalles";
+
+/* (No Comment) */
 "Hide Details" = "Ocultar detalles";
 
 /* Key size checkbox */
@@ -1406,6 +1412,9 @@
 /* cell title in device settings
    Title */
 "Language" = "Idioma";
+
+/* Action */
+"Later" = "Later";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1968,6 +1977,12 @@
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 labels" = "Actualiza a un plan de pago para utilizar más de 3 etiquetas";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Please upgrade your plan";
+
+/* Content of storage full alert */
+"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+
 /* Description */
 "Please use ProtonMail App sign-in first." = "Primero inicia sesión en la app de ProtonMail.";
 
@@ -2291,6 +2306,9 @@
 "Show" = "Mostrar";
 
 /* Title */
+"Show details" = "Mostrar detalles";
+
+/* Title */
 "Sign in" = "Iniciar sesión";
 
 /* Account manager title */
@@ -2394,6 +2412,12 @@
    Title */
 "Storage" = "Almacenamiento";
 
+/* Alert title */
+"Storage full" = "Storage full";
+
+/* Storage warning */
+"Storage quota exceeded" = "Storage quota exceeded";
+
 /* Title */
 "Storage Warning" = "Advertencia de almacenamiento";
 
@@ -2492,6 +2516,9 @@
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Error al enviar el envío. Hubo un error con el formato de borrador.";
 
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "The following files couldn't be attached:";
+
 /* key size note part 1 */
 "The highest level of encryption available." = "El máximo nivel de cifrado disponible.";
 
@@ -2545,7 +2572,7 @@
 "The request timed out." = "Tiempo de espera agotado.";
 
 /* Message of a banner which is displayed when sender request a read receipt */
-"The sender has requested a read receipt." = "El remitente ha solicitado una recepción de lectura.";
+"The sender has requested a read receipt." = "The sender has requested a read receipt.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "El límite de tamaño para los archivos adjuntos es de 25 MB.";
@@ -2591,7 +2618,7 @@
 "This contact belongs to your Address Book." = "Este contacto pertenece a tu libreta de direcciones.";
 
 /* No comment provided by engineer. */
-"This conversation contains trashed messages" = "Esta conversación contiene mensajes basura";
+"This conversation contains trashed messages" = "This conversation contains trashed messages";
 
 /* No comment provided by engineer. */
 "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo electrónico ha fallado los requisitos de autenticación de su dominio. ¡Puede estar falsificado o reenviado incorrectamente!";
@@ -2994,12 +3021,18 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Tienes cambios sin guardar. ¿Deseas guardarlos?";
 
-/* Content of space warning */
+/* (No Comment) */
 "You have used %d%% of your storage space (%@)." = "Has utilizado %d%% de tu espacio de almacenamiento (%@).";
+
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Has utilizado todo tu espacio de almacenamiento (%@).";
+
+/* Content of space warning */
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Necesitas al menos un destinatario para enviar";

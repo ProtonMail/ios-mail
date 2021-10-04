@@ -319,6 +319,9 @@
 /* No comment provided by engineer. */
 "Attachment" = "Załącznik";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Attachment failure";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Załącznik został zaimportowany";
 
@@ -1223,6 +1226,9 @@
 "Hide" = "Ukryj";
 
 /* Title */
+"Hide details" = "Ukryj szczegóły";
+
+/* (No Comment) */
 "Hide Details" = "Ukryj szczegóły";
 
 /* Key size checkbox */
@@ -1406,6 +1412,9 @@
 /* cell title in device settings
    Title */
 "Language" = "Język";
+
+/* Action */
+"Later" = "Later";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1968,6 +1977,12 @@
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 labels" = "Ulepsz do płatnego planu, aby używać więcej niż 3 etykiet";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Please upgrade your plan";
+
+/* Content of storage full alert */
+"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+
 /* Description */
 "Please use ProtonMail App sign-in first." = "Najpierw zaloguj się w aplikacji ProtonMail.";
 
@@ -2291,6 +2306,9 @@
 "Show" = "Pokaż";
 
 /* Title */
+"Show details" = "Pokaż szczegóły";
+
+/* Title */
 "Sign in" = "Zaloguj się";
 
 /* Account manager title */
@@ -2394,6 +2412,12 @@
    Title */
 "Storage" = "Przestrzeń dyskowa";
 
+/* Alert title */
+"Storage full" = "Storage full";
+
+/* Storage warning */
+"Storage quota exceeded" = "Storage quota exceeded";
+
 /* Title */
 "Storage Warning" = "Ostrzeżenie o przestrzeni dyskowej";
 
@@ -2491,6 +2515,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Wysyłanie nie powiodło się. Wystąpił błąd z formatem szkicu.";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "The following files couldn't be attached:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Najwyższy dostępny poziom szyfrowania.";
@@ -2994,12 +3021,18 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Masz niezapisane zmiany. Czy chcesz je zapisać?";
 
-/* Content of space warning */
+/* (No Comment) */
 "You have used %d%% of your storage space (%@)." = "Używasz %d%% przestrzeni dyskowej (%@).";
+
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Użyłeś całej przestrzeni dyskowej (%@).";
+
+/* Content of space warning */
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Wpisz co najmniej jednego odbiorcę, aby wysłać wiadomość";
