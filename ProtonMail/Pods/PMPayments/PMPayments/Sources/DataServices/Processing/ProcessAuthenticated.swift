@@ -50,7 +50,7 @@ class ProcessAuthenticated: ProcessProtocol {
                 throw StoreKitManager.Errors.transactionFailedByUnknownReason
             }
             let tokenStatusApi = delegate.paymentsApiProtocol.tokenStatusRequest(api: apiService, token: token)
-            let tokenStatusRes = try await(tokenStatusApi.run())
+            let tokenStatusRes = try AwaitKit.await(tokenStatusApi.run())
             let status = tokenStatusRes.paymentTokenStatus?.status ?? .failed
             switch status {
             case .pending:
@@ -91,7 +91,7 @@ class ProcessAuthenticated: ProcessProtocol {
         PMLog.debug("StoreKit: No proton token found")
         do {
             let tokenApi = delegate.paymentsApiProtocol.tokenRequest(api: apiService, amount: plan.yearlyCost, receipt: receipt)
-            let tokenRes = try await(tokenApi.run())
+            let tokenRes = try AwaitKit.await(tokenApi.run())
             guard let token = tokenRes.paymentToken else { return }
             delegate.tokenStorage?.add(token)
             try? self.process(transaction: transaction, plan: plan, completion: completion) // Exception would've been thrown on the first call
@@ -126,7 +126,7 @@ class ProcessAuthenticated: ProcessProtocol {
                 // error from validate subscription
                 request = SubscriptionRequest(api: apiService, planId: planId, amount: plan.yearlyCost, paymentAction: .token(token: token.token))
             }
-            let recieptRes = try await(request.run())
+            let recieptRes = try AwaitKit.await(request.run())
             PMLog.debug("StoreKit: success (1)")
             if let newSubscription = recieptRes.newSubscription {
                 storeKitDelegate.servicePlanDataService?.currentSubscription = newSubscription
@@ -142,7 +142,7 @@ class ProcessAuthenticated: ProcessProtocol {
             // ammount mismatch
             do {
                 let serverUpdateApi = delegate.paymentsApiProtocol.creditRequest(api: apiService, amount: plan.yearlyCost, paymentAction: .token(token: token.token))
-                _ = try await(serverUpdateApi.run())
+                _ = try AwaitKit.await(serverUpdateApi.run())
                 delegate.paymentQueueProtocol.finishTransaction(transaction)
                 delegate.tokenStorage?.clear()
                 delegate.errorCallback(StoreKitManager.Errors.creditsApplied)

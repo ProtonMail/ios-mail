@@ -39,7 +39,7 @@ class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
         }
         do {
             let tokenApi = delegate.paymentsApiProtocol.tokenRequest(api: apiService, amount: plan.yearlyCost, receipt: receipt)
-            let tokenRes = try await(tokenApi.run())
+            let tokenRes = try AwaitKit.await(tokenApi.run())
             guard let token = tokenRes.paymentToken else { return }
             PMLog.debug("StoreKit: payment token created for signup")
             delegate.tokenStorage?.add(token)
@@ -71,7 +71,7 @@ class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
             PMLog.debug("StoreKit: No proton token found")
             do {
                 let tokenApi = delegate.paymentsApiProtocol.tokenRequest(api: apiService, amount: plan.yearlyCost, receipt: receipt)
-                let tokenRes = try await(tokenApi.run())
+                let tokenRes = try AwaitKit.await(tokenApi.run())
                 guard let token = tokenRes.paymentToken else { return }
                 delegate.tokenStorage?.add(token)
                 try self.processAuthenticatedBeforeSignup(transaction: transaction, plan: plan, completion: completion)
@@ -102,7 +102,7 @@ class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
         guard let delegate = delegate, let storeKitDelegate = delegate.storeKitDelegate, let apiService = storeKitDelegate.apiService else { throw StoreKitManager.Errors.transactionFailedByUnknownReason }
 
         let tokenStatusApi = delegate.paymentsApiProtocol.tokenStatusRequest(api: apiService, token: token)
-        let tokenStatusRes = try await(tokenStatusApi.run())
+        let tokenStatusRes = try AwaitKit.await(tokenStatusApi.run())
         let status = tokenStatusRes.paymentTokenStatus?.status ?? .failed
         switch status {
         case .pending:
@@ -149,7 +149,7 @@ class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
         do {
             // buy plan
             if let request = try delegate.paymentsApiProtocol.buySubscriptionRequest(api: apiService, planId: planId, amount: plan.yearlyCost, paymentAction: .token(token: token.token)) {
-                let recieptRes = try await(request.run())
+                let recieptRes = try AwaitKit.await(request.run())
                 PMLog.debug("StoreKit: success (2)")
                 if let newSubscription = recieptRes.newSubscription {
                     storeKitDelegate.servicePlanDataService?.currentSubscription = newSubscription
@@ -176,7 +176,7 @@ class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
 
         do {
             let tokenStatusApi = delegate.paymentsApiProtocol.tokenStatusRequest(api: apiService, token: token)
-            let tokenStatusRes = try await(tokenStatusApi.run())
+            let tokenStatusRes = try AwaitKit.await(tokenStatusApi.run())
             let status = tokenStatusRes.paymentTokenStatus?.status ?? .failed
             switch status {
             case .pending:

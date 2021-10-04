@@ -80,7 +80,7 @@ class KeyManager : Service {
     /// - Throws: SRPError
     /// - Returns: password auth : PasswordAuth
     func generatPasswordAuth(password: String, authCredential: AuthCredential? = nil) throws -> PasswordAuth {
-        let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: authCredential)))
+        let authModuls: AuthModulusResponse = try AwaitKit.await(self.apiService.run(route: AuthModulusRequest(authCredential: authCredential)))
         guard let moduls_id = authModuls.ModulusID else {
             throw SRPError.invalidModulsID
         }
@@ -108,7 +108,7 @@ class KeyManager : Service {
     /// - Throws: exception
     private func uploadUserKey(userName: String, loginPassword: String, keySalt: String, privateKey: String, authCredential: AuthCredential?) throws {
         // get auto info fors srp client
-        let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: userName, authCredential: authCredential)))
+        let info: AuthInfoResponse = try AwaitKit.await(self.apiService.run(route: AuthInfoRequest(username: userName, authCredential: authCredential)))
         guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
             throw UpdatePasswordError.invalideAuthInfo.error
         }
@@ -138,7 +138,7 @@ class KeyManager : Service {
                                                    auth: authPassword,
                                                    authCredential: authCredential)
         
-        let update_res = try await(self.apiService.run(route: uploadKeyApi))
+        let update_res = try AwaitKit.await(self.apiService.run(route: uploadKeyApi))
         guard update_res.code == 1000 else {
             throw UpdatePasswordError.default.error
         }
@@ -171,7 +171,7 @@ class KeyManager : Service {
                         domain: String, authCredential: AuthCredential? = nil) throws {
         
         //need setup address
-        let setupAddrApi: AddressesResponse = try await(self.apiService.run( route: SetupAddressRequest(domain_name: domain, auth: authCredential)))
+        let setupAddrApi: AddressesResponse = try AwaitKit.await(self.apiService.run( route: SetupAddressRequest(domain_name: domain, auth: authCredential)))
         
         let passwordAuth = try self.generatPasswordAuth(password: password, authCredential: authCredential)
      
@@ -197,7 +197,7 @@ class KeyManager : Service {
                                                addressKeys: [addressKey],
                                                passwordAuth: passwordAuth,
                                                credential: authCredential)
-        let setupKeyApi = try await(self.apiService.run(route: setupKeyReq))
+        let setupKeyApi = try AwaitKit.await(self.apiService.run(route: setupKeyReq))
         if setupKeyApi.error != nil {
             PMLog.D("signup seupt key error")
         }
@@ -208,7 +208,7 @@ class KeyManager : Service {
                         domain: String, authCredential: AuthCredential? = nil) throws {
         
         //need setup address
-        let setupAddrApi: AddressesResponse = try await(self.apiService.run( route: SetupAddressRequest(domain_name: domain, auth: authCredential)))
+        let setupAddrApi: AddressesResponse = try AwaitKit.await(self.apiService.run( route: SetupAddressRequest(domain_name: domain, auth: authCredential)))
         
         let passwordAuth = try self.generatPasswordAuth(password: password, authCredential: authCredential)
         
@@ -251,7 +251,7 @@ class KeyManager : Service {
                                                addressKeys: [addressKey], passwordAuth: passwordAuth,
                                                credential: authCredential)
         
-        let setupKeyApi = try await(self.apiService.run(route: setupKeyReq))
+        let setupKeyApi = try AwaitKit.await(self.apiService.run(route: setupKeyReq))
         if setupKeyApi.error != nil {
             PMLog.D("signup seupt key error")
         }
@@ -306,7 +306,7 @@ class KeyManager : Service {
                     //create a key list for key updates
                     if userInfo.role == 2 { //need to get the org keys
                         //check user role if equal 2 try to get the org key.
-                        let cur_org_key: OrgKeyResponse = try await(self.apiService.run(route: GetOrgKeys()))
+                        let cur_org_key: OrgKeyResponse = try AwaitKit.await(self.apiService.run(route: GetOrgKeys()))
                         if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                             do {
                                 new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
@@ -322,7 +322,7 @@ class KeyManager : Service {
                     if buildAuth {
                         
                         ///
-                        let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                        let authModuls: AuthModulusResponse = try AwaitKit.await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                         guard let moduls_id = authModuls.ModulusID else {
                             throw UpdatePasswordError.invalidModulusID.error
                         }
@@ -348,7 +348,7 @@ class KeyManager : Service {
                     var forceRetryVersion = 2
                     repeat {
                         // get auto info
-                        let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                        let info: AuthInfoResponse = try AwaitKit.await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                         let authVersion = info.Version
                         guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
                             throw UpdatePasswordError.invalideAuthInfo.error
@@ -379,7 +379,7 @@ class KeyManager : Service {
                                                                         userKeys: updated_userlevel_keys,
                                                                         auth: authPacket,
                                                                         authCredential: oldAuthCredential)
-                            let update_res = try await(self.apiService.run(route: updatePrivkey))
+                            let update_res = try AwaitKit.await(self.apiService.run(route: updatePrivkey))
                             guard update_res.code == 1000 else {
                                 throw UpdatePasswordError.default.error
                             }
@@ -430,7 +430,7 @@ class KeyManager : Service {
                     //create a key list for key updates
                     if userInfo.role == 2 { //need to get the org keys
                         //check user role if equal 2 try to get the org key.
-                        let cur_org_key: OrgKeyResponse = try await(self.apiService.run(route: GetOrgKeys()))
+                        let cur_org_key: OrgKeyResponse = try AwaitKit.await(self.apiService.run(route: GetOrgKeys()))
                         if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                             do {
                                 new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
@@ -447,7 +447,7 @@ class KeyManager : Service {
                         
                         ///
                         
-                        let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                        let authModuls: AuthModulusResponse = try AwaitKit.await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                         guard let moduls_id = authModuls.ModulusID else {
                             throw UpdatePasswordError.invalidModulusID.error
                         }
@@ -472,7 +472,7 @@ class KeyManager : Service {
                     var forceRetryVersion = 2
                     repeat {
                         // get auto info
-                        let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                        let info: AuthInfoResponse = try AwaitKit.await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                         let authVersion = info.Version
                         guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
                             throw UpdatePasswordError.invalideAuthInfo.error
@@ -495,7 +495,7 @@ class KeyManager : Service {
                         }
 
                         do {
-                            let update_res = try await(self.apiService.run(route: UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
+                            let update_res = try AwaitKit.await(self.apiService.run(route: UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
                                                                                                           clientProof:clientProof.encodeBase64(),
                                                                                                           SRPSession: session,
                                                                                                           keySalt: new_mpwd_salt.encodeBase64(),

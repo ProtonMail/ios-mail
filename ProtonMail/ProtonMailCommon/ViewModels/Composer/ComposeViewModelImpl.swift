@@ -326,13 +326,14 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(c.lock, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { (error) in
             PMLog.D(error.localizedDescription)
-            defer {
-                complete?(nil, errCode)
-            }
             
             let err = error as NSError
             var errCode = err.code
-            
+
+            defer {
+                complete?(nil, errCode)
+            }
+
             if errCode == 33101 {
                 c.pgpType = .failed_server_validation
                 self.showError?(LocalString._signle_address_invalid_error_content)
@@ -362,12 +363,13 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(nil, 0)
         }.catch(policy: .allErrors) { (error) in
             PMLog.D(error.localizedDescription)
-            defer {
-                complete?(nil, errCode)
-            }
             
             let err = error as NSError
             var errCode = err.code
+
+            defer {
+                complete?(nil, errCode)
+            }
 
             // Code=33102 "Recipient could not be found"
             if errCode == 33102 {
@@ -579,7 +581,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 // attach key
                 if attached == false, let context = msg.managedObjectContext {
                     let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                    let attachment = try? await(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
+                    let attachment = try? AwaitKit.await(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
                     var error: NSError? = nil
                     error = context.saveUpstreamIfNeeded()
                     if error != nil {

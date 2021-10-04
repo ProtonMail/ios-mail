@@ -145,7 +145,7 @@ end
 platform :ios do 
   desc "Build app"
   lane :build do |options|
-    xcversion(version: "~> 12.5.0")
+    xcversion(version: "~> 13")
     set_up_keychain
 
     api_key = set_up_app_store_api_key

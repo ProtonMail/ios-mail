@@ -35,13 +35,11 @@ extension Extension where Base: DispatchQueue {
    - parameter body: The closure that is executed on the receiver.
    - throws: The error sent by the closure.
    - returns: The value of the closure when it is done.
-   - seeAlso: await(promise:)
+   - seeAlso: AwaitKit.await(promise:)
    */
   @discardableResult
-  public final func await<T>(_ body: @escaping () throws -> T) throws -> T {
-    let promise = self.base.async(.promise, execute: body)
-
-    return try await(promise)
+  public final func `await`<T>(_ body: @escaping () throws -> T) throws -> T {
+      return try AwaitKit.await(self.base.async(.promise, execute: body))
   }
 
   /**
@@ -52,7 +50,7 @@ extension Extension where Base: DispatchQueue {
    - returns: The value of the promise when it is resolved.
    */
   @discardableResult
-  public final func await<T>(_ promise: Promise<T>) throws -> T {
+  public final func `await`<T>(_ promise: Promise<T>) throws -> T {
     guard self.base.label != DispatchQueue.main.label else {
       throw NSError(domain: "com.yannickloriot.awaitkit", code: 0, userInfo: [
         NSLocalizedDescriptionKey: "Operation was aborted.",
