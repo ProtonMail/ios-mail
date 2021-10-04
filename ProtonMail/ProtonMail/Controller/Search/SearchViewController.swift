@@ -715,6 +715,8 @@ extension SearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        self.query = self.query.trim()
+        textField.text = self.query
         guard self.query.count > 0 else {
             return true
         }
