@@ -145,16 +145,16 @@ class UserDataService : Service, HasLocalStorage {
             let mailSettingsApi = GetMailSettings()
             mailSettingsApi.auth = auth
 
-            let addrRes: AddressesResponse = try await(self.apiService.run(route: addrApi))
-            let userRes: GetUserInfoResponse = try await(self.apiService.run(route: userApi))
-            let userSettingsRes: SettingsResponse = try await(self.apiService.run(route: userSettingsApi))
-            let mailSettingsRes: MailSettingsResponse = try await(self.apiService.run(route: mailSettingsApi))
+            let addrRes: AddressesResponse = try AwaitKit.await(self.apiService.run(route: addrApi))
+            let userRes: GetUserInfoResponse = try AwaitKit.await(self.apiService.run(route: userApi))
+            let userSettingsRes: SettingsResponse = try AwaitKit.await(self.apiService.run(route: userSettingsApi))
+            let mailSettingsRes: MailSettingsResponse = try AwaitKit.await(self.apiService.run(route: mailSettingsApi))
 
             userRes.userInfo?.set(addresses: addrRes.addresses)
             userRes.userInfo?.parse(userSettings: userSettingsRes.userSettings)
             userRes.userInfo?.parse(mailSettings: mailSettingsRes.mailSettings)
 
-            try await(self.activeUserKeys(userInfo: userRes.userInfo, auth: auth) )
+            try AwaitKit.await(self.activeUserKeys(userInfo: userRes.userInfo, auth: auth) )
             return userRes.userInfo
         }
     }
@@ -188,7 +188,7 @@ class UserDataService : Service, HasLocalStorage {
                         api.auth = auth
                         
                         do {
-                            let activateKeyResponse = try await(self.apiService.run(route: api))
+                            let activateKeyResponse = try AwaitKit.await(self.apiService.run(route: api))
                             if activateKeyResponse.code == 1000 {
                                 addr.keys[index].activation = nil
                                 addr.keys[index].private_key = new_private_key
@@ -402,7 +402,7 @@ class UserDataService : Service, HasLocalStorage {
         {//async
             do {
                 //generate new pwd and verifier
-                let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                let authModuls: AuthModulusResponse = try AwaitKit.await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                 guard let moduls_id = authModuls.ModulusID else {
                     throw UpdatePasswordError.invalidModulusID.error
                 }
@@ -423,7 +423,7 @@ class UserDataService : Service, HasLocalStorage {
 
                 repeat {
                     // get auto info
-                    let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                    let info: AuthInfoResponse = try AwaitKit.await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                     let authVersion = info.Version
                     guard let modulus = info.Modulus,
                         let ephemeral = info.ServerEphemeral, let salt = info.Salt,
@@ -448,7 +448,7 @@ class UserDataService : Service, HasLocalStorage {
                     }
 
                     do {
-                        let updatePwd_res = try await(self.apiService.run(route: UpdateLoginPassword(clientEphemeral: clientEphemeral.encodeBase64(),
+                        let updatePwd_res = try AwaitKit.await(self.apiService.run(route: UpdateLoginPassword(clientEphemeral: clientEphemeral.encodeBase64(),
                                                                                                      clientProof: clientProof.encodeBase64(),
                                                                                                      SRPSession: session,
                                                                                                      modulusID: moduls_id,
@@ -521,7 +521,7 @@ class UserDataService : Service, HasLocalStorage {
                     //create a key list for key updates
                     if userInfo.role == 2 { //need to get the org keys
                         //check user role if equal 2 try to get the org key.
-                        let cur_org_key: OrgKeyResponse = try await(self.apiService.run(route: GetOrgKeys()))
+                        let cur_org_key: OrgKeyResponse = try AwaitKit.await(self.apiService.run(route: GetOrgKeys()))
                         if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                             do {
                                 new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
@@ -537,7 +537,7 @@ class UserDataService : Service, HasLocalStorage {
                     if buildAuth {
                         
                         ///
-                        let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                        let authModuls: AuthModulusResponse = try AwaitKit.await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                         guard let moduls_id = authModuls.ModulusID else {
                             throw UpdatePasswordError.invalidModulusID.error
                         }
@@ -563,7 +563,7 @@ class UserDataService : Service, HasLocalStorage {
                     var forceRetryVersion = 2
                     repeat {
                         // get auto info
-                        let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                        let info: AuthInfoResponse = try AwaitKit.await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                         let authVersion = info.Version
                         guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
                             throw UpdatePasswordError.invalideAuthInfo.error
@@ -594,7 +594,7 @@ class UserDataService : Service, HasLocalStorage {
                                                                         userKeys: updated_userlevel_keys,
                                                                         auth: authPacket,
                                                                         authCredential: oldAuthCredential)
-                            let update_res = try await(self.apiService.run(route: updatePrivkey))
+                            let update_res = try AwaitKit.await(self.apiService.run(route: updatePrivkey))
                             guard update_res.code == 1000 else {
                                 throw UpdatePasswordError.default.error
                             }
@@ -645,7 +645,7 @@ class UserDataService : Service, HasLocalStorage {
                     //create a key list for key updates
                     if userInfo.role == 2 { //need to get the org keys
                         //check user role if equal 2 try to get the org key.
-                        let cur_org_key: OrgKeyResponse = try await(self.apiService.run(route: GetOrgKeys()))
+                        let cur_org_key: OrgKeyResponse = try AwaitKit.await(self.apiService.run(route: GetOrgKeys()))
                         if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                             do {
                                 new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
@@ -662,7 +662,7 @@ class UserDataService : Service, HasLocalStorage {
                         
                         ///
                         
-                        let authModuls: AuthModulusResponse = try await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                        let authModuls: AuthModulusResponse = try AwaitKit.await(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                         guard let moduls_id = authModuls.ModulusID else {
                             throw UpdatePasswordError.invalidModulusID.error
                         }
@@ -687,7 +687,7 @@ class UserDataService : Service, HasLocalStorage {
                     var forceRetryVersion = 2
                     repeat {
                         // get auto info
-                        let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                        let info: AuthInfoResponse = try AwaitKit.await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                         let authVersion = info.Version
                         guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
                             throw UpdatePasswordError.invalideAuthInfo.error
@@ -710,7 +710,7 @@ class UserDataService : Service, HasLocalStorage {
                         }
 
                         do {
-                            let update_res = try await(self.apiService.run(route: UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
+                            let update_res = try AwaitKit.await(self.apiService.run(route: UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
                                                                                                           clientProof:clientProof.encodeBase64(),
                                                                                                           SRPSession: session,
                                                                                                           keySalt: new_mpwd_salt.encodeBase64(),
@@ -816,7 +816,7 @@ class UserDataService : Service, HasLocalStorage {
 
                 repeat {
                     // get auto info
-                    let info: AuthInfoResponse = try await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                    let info: AuthInfoResponse = try AwaitKit.await(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
                     let authVersion = info.Version
                     guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
                         throw UpdateNotificationEmailError.invalideAuthInfo.error
@@ -839,7 +839,7 @@ class UserDataService : Service, HasLocalStorage {
                     }
 
                     do {
-                        let updatetNotifyEmailRes = try await(self.apiService.run(route: UpdateNotificationEmail(clientEphemeral: clientEphemeral.encodeBase64(),
+                        let updatetNotifyEmailRes = try AwaitKit.await(self.apiService.run(route: UpdateNotificationEmail(clientEphemeral: clientEphemeral.encodeBase64(),
                                                                                                                  clientProof: clientProof.encodeBase64(),
                                                                                                                  sRPSession: session,
                                                                                                                  notificationEmail: new_notification_email,

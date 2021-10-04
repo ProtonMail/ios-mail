@@ -87,7 +87,7 @@ extension AttachmentsTableViewController {
                 }
                 let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
                 
-                let attachment = try? await(fileData.contents.toAttachment(self.message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata))
+                let attachment = try? AwaitKit.await(fileData.contents.toAttachment(self.message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata))
                 guard let att = attachment else {
                     PMLog.D(" Error during copying size incorrect")
                     self.error(LocalString._cant_copy_the_file)

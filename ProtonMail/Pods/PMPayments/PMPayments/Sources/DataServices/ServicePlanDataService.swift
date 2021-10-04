@@ -108,20 +108,20 @@ extension ServicePlanDataService {
 
     @discardableResult public func updateServicePlans() -> Promise<Void> {
         return Promise {seal in
-            async {
+            AwaitKit.async {
                 // get API atatus
                 let statusApi = self.paymentsApi.statusRequest(api: self.service)
-                let statusRes = try await(statusApi.run())
+                let statusRes = try AwaitKit.await(statusApi.run())
                 self.isIAPUpgradePlanAvailable = statusRes.isAvailable ?? false
 
                 // get service plans
                 let servicePlanApi = self.paymentsApi.plansRequest(api: self.service)
-                let servicePlanRes = try await(servicePlanApi.run())
+                let servicePlanRes = try AwaitKit.await(servicePlanApi.run())
                 self.allPlanDetails = servicePlanRes.availableServicePlans ?? []
 
                 // get default service plan
                 let defaultServicePlanApi = self.paymentsApi.defaultPlanRequest(api: self.service)
-                let defaultServicePlanRes = try await(defaultServicePlanApi.run())
+                let defaultServicePlanRes = try AwaitKit.await(defaultServicePlanApi.run())
                 self.defaultPlanDetails = defaultServicePlanRes.defaultMailPlan
                 seal.fulfill_()
             }.catch { error in
@@ -142,9 +142,9 @@ extension ServicePlanDataService {
 
     public func updateCurrentSubscription() -> Promise<Void> {
         return Promise { seal in
-            async {
+            AwaitKit.async {
                 let subscriptionApi = self.paymentsApi.getSubscriptionRequest(api: self.service)
-                let subscriptionRes = try await(subscriptionApi.run())
+                let subscriptionRes = try AwaitKit.await(subscriptionApi.run())
                 self.currentSubscription = subscriptionRes.subscription
                 self.updatePaymentMethods()
                 self.updateTier()
@@ -170,7 +170,7 @@ extension ServicePlanDataService {
     internal func updatePaymentMethods() {
         do {
             let paymentMethodsApi = self.paymentsApi.methodsRequest(api: self.service)
-            let paymentMethodsRes = try await(paymentMethodsApi.run())
+            let paymentMethodsRes = try AwaitKit.await(paymentMethodsApi.run())
             self.currentSubscription?.paymentMethods = paymentMethodsRes.methods
         } catch {
             self.currentSubscription?.paymentMethods = nil
@@ -185,7 +185,7 @@ extension ServicePlanDataService {
                     let currency = price.1.currencyCode,
                     let countryCode = (price.1 as NSLocale).object(forKey: .countryCode) as? String {
                     let proceedRequest = self.paymentsApi.appleRequest(api: self.service, currency: currency, country: countryCode)
-                    let proceed = try await(proceedRequest.run())
+                    let proceed = try AwaitKit.await(proceedRequest.run())
                     self.proceedTier54 = proceed.proceed
                 } else {
                     self.proceedTier54 = Decimal(0)

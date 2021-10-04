@@ -209,7 +209,7 @@ class ContactDataService: Service, HasLocalStorage {
 
                     let api = ContactAddRequest(cards: tempCards, authCredential: authCredential)
                     do {
-                        let response: ContactAddResponse = try await(self.apiService.run(route: api))
+                        let response: ContactAddResponse = try AwaitKit.await(self.apiService.run(route: api))
                         update?(processed)
                         var contacts_json : [[String : Any]] = []
                         let results = response.results
@@ -531,7 +531,7 @@ class ContactDataService: Service, HasLocalStorage {
                     }
                     loop = loop - 1
                     
-                    let response: ContactsResponse = try await(self.apiService.run(route: ContactsRequest(page: currentPage, pageSize: pageSize)))
+                    let response: ContactsResponse = try AwaitKit.await(self.apiService.run(route: ContactsRequest(page: currentPage, pageSize: pageSize)))
                     if response.error == nil {
                         let contacts = response.contacts //TODO:: fix me set userID
                         if fetched == -1 {
@@ -587,7 +587,7 @@ class ContactDataService: Service, HasLocalStorage {
                         break
                     }
                     loop = loop - 1
-                    let contactsRes: ContactEmailsResponse = try await(self.apiService.run(route: ContactEmailsRequest(page: currentPage,
+                    let contactsRes: ContactEmailsResponse = try AwaitKit.await(self.apiService.run(route: ContactEmailsRequest(page: currentPage,
                                                                                                                        pageSize: pageSize)))
                     if contactsRes.error == nil {
                         currentPage = currentPage + 1

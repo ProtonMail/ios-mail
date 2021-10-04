@@ -3073,7 +3073,7 @@ class MessageDataService : Service, HasLocalStorage {
                             break
                         }
                         do {
-                            try await(user.userService.activeUserKeys(userInfo: user.userinfo, auth: user.authCredential))
+                            try AwaitKit.await(user.userService.activeUserKeys(userInfo: user.userinfo, auth: user.authCredential))
                         } catch let error {
                             print(error.localizedDescription)
                         }

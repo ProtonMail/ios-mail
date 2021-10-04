@@ -560,7 +560,7 @@ class EOAddressBuilder : PackageBuilder {
             let encryptedToken = try based64Token.encrypt(withPwd: self.password) ?? ""
             
             //start build auth package
-            let authModuls: AuthModulusResponse = try await(PMAPIService.shared.run(route: AuthModulusRequest(authCredential: nil)))// will use standard auth credential
+            let authModuls: AuthModulusResponse = try AwaitKit.await(PMAPIService.shared.run(route: AuthModulusRequest(authCredential: nil)))// will use standard auth credential
             guard let moduls_id = authModuls.ModulusID else {
                 throw UpdatePasswordError.invalidModulusID.error
             }
