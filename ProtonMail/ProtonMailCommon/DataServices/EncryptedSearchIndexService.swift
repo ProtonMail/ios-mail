@@ -292,6 +292,21 @@ extension EncryptedSearchIndexService {
         dateFormatter.dateFormat = "MMM dd, yyyy"
         return dateFormatter.string(from: date)
     }
+    
+    func createSearchIndexDBIfNotExisting(for userID: String){
+        //check if db handle exists
+        let handle: Connection? = self.connectToSearchIndex(for: userID)
+        
+        //check if db table exists
+        let table = Table(DatabaseConstants.Table_Searchable_Messages)
+        do {
+            let _ = try handle?.scalar(table.exists)
+            //table exists
+        } catch {
+            print("Search index does not exist. Create it now!")
+            self.createSearchIndexTable(using: handle!)
+        }
+    }
 }
 
 extension FileManager {
