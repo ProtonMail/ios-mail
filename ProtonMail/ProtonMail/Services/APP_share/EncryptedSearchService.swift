@@ -408,7 +408,8 @@ extension EncryptedSearchService {
             
             //update viewmodel
             self.viewModel?.isEncryptedSearch = false
-            //self.viewModel
+            self.viewModel?.currentProgress.value = 0
+            self.viewModel?.estimatedTimeRemaining.value = 0
             
             //TODO do we want to do anything when deleting fails?
             if result {
