@@ -76,7 +76,9 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                 self = .composeMailto
             case "toSearchViewController", String(describing: SearchViewController.self):
                 self = .search
-            case "toMessageDetailViewController", String(describing: SingleMessageViewController.self):
+            case "toMessageDetailViewController",
+                String(describing: SingleMessageViewController.self),
+                String(describing: ConversationViewController.self):
                 self = .details
             case "to_onboarding_segue":
                 self = .onboarding
@@ -201,7 +203,8 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
 
             followToDetails(message: message,
                             coreDataService: coreDataService,
-                            navigationController: navigationController)
+                            navigationController: navigationController,
+                            deeplink: deeplink)
 
             self.viewModel.resetNotificationMessage()
         case .composeShow where path.value != nil:
@@ -315,7 +318,8 @@ extension MailboxCoordinator {
 
     private func followToDetails(message: Message,
                                  coreDataService: CoreDataService,
-                                 navigationController: UINavigationController) {
+                                 navigationController: UINavigationController,
+                                 deeplink: DeepLink?) {
         switch self.viewModel.locationViewMode {
         case .conversation:
             let internetStatusProvider = InternetConnectionStatusProvider()
@@ -332,10 +336,12 @@ extension MailboxCoordinator {
                     if let conversation = Conversation
                         .conversationForConversationID(message.conversationID,
                                                        inManagedObjectContext: coreDataService.mainContext) {
+                        let targetID = deeplink?.popFirst?.value
                         let coordinator = ConversationCoordinator(labelId: self.viewModel.labelID,
                                                                   navigationController: navigationController,
                                                                   conversation: conversation,
-                                                                  user: self.viewModel.user)
+                                                                  user: self.viewModel.user,
+                                                                  targetID: targetID)
                         coordinator.start(openFromNotification: true)
                     }
                 }
@@ -349,6 +355,9 @@ extension MailboxCoordinator {
                 user: self.viewModel.user
             )
             coordinator.start()
+            if let link = deeplink {
+                coordinator.follow(link)
+            }
         }
     }
 

@@ -68,7 +68,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
         case .composeTo(let contact):
             presentCompose(with: contact)
         case let .attachmentList(message, inlineCIDs):
-            presentAttachmnetListView(message: message, inlineCIDS: inlineCIDs)
+            presentAttachmentListView(message: message, inlineCIDS: inlineCIDs)
         case .mailToUrl(let url):
             presentCompose(with: url)
         case .replyAll(let message):
@@ -161,7 +161,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
         self.viewController?.present(destination, animated: true)
     }
 
-    private func presentAttachmnetListView(message: Message, inlineCIDS: [String]?) {
+    private func presentAttachmentListView(message: Message, inlineCIDS: [String]?) {
         let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
             .map(AttachmentNormal.init) + (message.tempAtts ?? [])
 

@@ -845,3 +845,13 @@ extension ConversationViewController: PMActionSheetEventsListener {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
 }
+
+#if !APP_EXTENSION
+extension ConversationViewController: Deeplinkable {
+    var deeplinkNode: DeepLink.Node {
+        let id = self.viewModel.messagesDataSource.first?.message?.messageID ?? ""
+        return DeepLink.Node(name: String(describing: ConversationViewController.self),
+                             value: id)
+    }
+}
+#endif
