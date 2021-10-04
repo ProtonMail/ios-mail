@@ -66,7 +66,10 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     
     @objc private func addButtonTapped() {
         let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { [weak self] _ in
-            self?.dismissActionSheet()
+            let viewController = self?.tabBarController ?? self
+            let subViews = viewController?.view.subviews
+            let actionSheet = subViews?.compactMap { $0 as? PMActionSheet }.last
+            actionSheet?.dismiss(animated: true)
         }
         let headerView =
             PMActionSheetHeaderView(title: LocalString._contacts_action_sheet_title,
