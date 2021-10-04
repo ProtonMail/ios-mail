@@ -271,10 +271,10 @@ class MessageDataService : Service, HasLocalStorage {
                     return
                 }
                 self.parent?.eventsService.processEvents(mailSettings: response.mailSettings)
+                self.parent?.eventsService.processEvents(space: response.usedSpace)
             }
         }
     }
-    
     
     /// upload attachment to server
     ///

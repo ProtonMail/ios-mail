@@ -333,14 +333,19 @@ extension MainQueueHandler {
                 
                 let completionWrapper: CompletionBlock = { task, response, error in
                     guard let mess = response else {
-                        if let err = error {
-                            Analytics.shared.error(message: .saveDraftError, error: err)
-                            DispatchQueue.main.async {
-                                NSError.alertSavingDraftError(details: err.localizedDescription)
-                            }
+                        defer {
+                            // error: response nil
+                            completion?(task, nil, error)
                         }
-                        // error: response nil
-                        completion?(task, nil, error)
+                        guard let err = error else { return }
+                        Analytics.shared.error(message: .saveDraftError, error: err)
+                        DispatchQueue.main.async {
+                            NSError.alertSavingDraftError(details: err.localizedDescription)
+                        }
+                        if err.isStorageExceeded {
+                            context.delete(message)
+                            _ = context.saveUpstreamIfNeeded()
+                        }
                         return
                     }
                     
@@ -570,10 +575,20 @@ extension MainQueueHandler {
                             completion?(task, response, error)
                         }
                     } else {
-                        if let err = error {
-                            Analytics.shared.error(message: .uploadAttachmentError, error: err)
+                        defer {
+                            completion?(task, response, error)
                         }
-                        completion?(task, response, error)
+                        guard let err = error else { return }
+                        
+                        Analytics.shared.error(message: .uploadAttachmentError, error: err)
+                        let reason = err.localizedDescription
+                        NotificationCenter
+                            .default
+                            .post(name: .attachmentUploadFailed,
+                                  object: nil,
+                                  userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
+                                             "reason": reason,
+                                             "code": err.code])
                     }
                 }
                 
@@ -597,21 +612,26 @@ extension MainQueueHandler {
         let context = self.coreDataService.operationContext
         self.coreDataService.enqueue(context: context) { (context) in
             var authCredential: AuthCredential?
-            var att: Attachment?
-            if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(deleteObject),
+            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(deleteObject),
                 let managedObject = try? context.existingObject(with: objectID),
-                let attachment = managedObject as? Attachment
-            {
-                authCredential = attachment.message.cachedAuthCredential
-                att = attachment
+                let att = managedObject as? Attachment else {
+                
+                completion?(nil, nil, NSError.badParameter("Object ID"))
+                return
             }
+            authCredential = att.message.cachedAuthCredential
             
             guard self.user?.userinfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
+
+            guard att.attachmentID != "0" || !att.attachmentID.isEmpty else {
+                completion?(nil, nil, nil)
+                return
+            }
             
-            let api = DeleteAttachment(attID: att?.attachmentID ?? "0", authCredential: authCredential)
+            let api = DeleteAttachment(attID: att.attachmentID, authCredential: authCredential)
             self.apiService.exec(route: api) { (task, response: Response) in
                 completion!(task, nil, response.error?.toNSError)
             }

@@ -9,4 +9,8 @@ extension String {
     static var skeletonTemplate: String {
         return "SkeletonTemplate"
     }
+
+    static var toSubscriptionPage: String {
+        return "Subscription"
+    }
 }

@@ -442,6 +442,10 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
     }
     
     func showAttachmentView() {
+        if self.viewModel.user.isStorageExceeded {
+            LocalString._storage_exceeded.alertToast(withTitle: false, view: self.view)
+            return
+        }
         self.coordinator.header.view.endEditing(true)
         self.coordinator.editor.view.endEditing(true)
         self.view.endEditing(true)
@@ -476,8 +480,23 @@ extension ComposeContainerViewController: AttachmentController {
     }
 
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
-        return Promise { seal in
-            self.attachmentProcessQueue.addOperation {
+        return Promise { [weak self] seal in
+            guard let self = self else {
+                seal.fulfill_()
+                return
+            }
+            self.attachmentProcessQueue.addOperation { [weak self] in
+                guard let self = self else {
+                    seal.fulfill_()
+                    return
+                }
+                if self.viewModel.user.isStorageExceeded {
+                    DispatchQueue.main.async {
+                        LocalString._storage_exceeded.alertToast()
+                    }
+                    seal.fulfill_()
+                    return
+                }
                 let size = fileData.contents.dataSize
                 
                 guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
@@ -505,6 +524,7 @@ extension ComposeContainerViewController: AttachmentController {
                 }
                 self.isAddingAttachment = true
                 self.coordinator.addAttachment(att)
+                self.viewModel.user.usedSpace(plus: Int64(size))
                 self.updateCurrentAttachmentSize()
                 seal.fulfill_()
             }

@@ -289,11 +289,11 @@ class UserManager : Service, HasLocalStorage {
             self?.userinfo = info
             self?.save()
             #if !APP_EXTENSION
-            guard let firstUser = self?.parentManager?.firstUser,
-                  let self = self else { return }
-            if firstUser.userInfo.userId == self.userInfo.userId {
-                userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeLeft, rightToLeft: info.swipeRight)
-            }
+            guard let self = self,
+                  let firstUser = self.parentManager?.firstUser,
+                  firstUser.userInfo.userId == self.userInfo.userId else { return }
+
+            userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeLeft, rightToLeft: info.swipeRight)
             // When app launch, the app will show a skeleton view
             // After getting setting data, show inbox
             NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
@@ -305,6 +305,16 @@ class UserManager : Service, HasLocalStorage {
         conversationStateService.refreshFlag()
     }
 
+    func usedSpace(plus size: Int64) {
+        self.userinfo.usedSpace += size
+        self.save()
+    }
+    
+    func usedSpace(minus size: Int64) {
+        let usedSize = self.userinfo.usedSpace - size
+        self.userInfo.usedSpace = max(usedSize, 0)
+        self.save()
+    }
 }
 
 extension UserManager : AuthDelegate {
@@ -571,6 +581,12 @@ extension UserManager {
 
     var isInheritParentFolderColor: Bool {
         return userinfo.inheritParentFolderColor == 1
+    }
+
+    var isStorageExceeded: Bool {
+        let maxSpace = self.userInfo.maxSpace
+        let usedSpace = self.userInfo.usedSpace
+        return usedSpace >= maxSpace
     }
 }
 

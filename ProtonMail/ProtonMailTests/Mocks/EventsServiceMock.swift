@@ -19,5 +19,5 @@ class EventsServiceMock: EventsFetching {
     func processEvents(counts: [[String : Any]]?) {}
     func processEvents(conversationCounts: [[String : Any]]?) {}
     func processEvents(mailSettings: [String : Any]?) {}
-
+    func processEvents(space usedSpace : Int64?) {}
 }

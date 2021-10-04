@@ -28,19 +28,21 @@ protocol StorageLimit {}
 extension StorageLimit {
     
     // MARK: - Public methods
-    
     func checkSpace(_ usedSpace: Int64, maxSpace: Int64, user: UserManager) {
-        
-        if let isSpaceDisable = userCachedStatus.getIsCheckSpaceDisabledStatus(by: user.userInfo.userId), isSpaceDisable {
+        let maxSpace : Double = Double(maxSpace)
+        let usedSpace : Double = Double(usedSpace)
+        let usedPercentage = usedSpace / maxSpace
+        let threshold = Constants.App.SpaceWarningThresholdDouble / 100.0
+
+        let isSpaceDisable = userCachedStatus.getIsCheckSpaceDisabledStatus(by: user.userInfo.userId) ?? false
+        if isSpaceDisable {
+            if usedSpace > maxSpace {
+                self.showUpgradeAlert()
+            }
             return
         }
-        
-        let maxSpace : Double = Double(maxSpace)
-        let usedSpace : Double = Double(usedSpace) // * 160)
-        let percentage : Double = Double(Constants.App.SpaceWarningThresholdDouble / 100)
-        let threshold : Double = percentage * maxSpace
-        
-        if maxSpace == 0 || usedSpace < threshold {
+
+        if maxSpace == 0 || usedPercentage < threshold {
             return
         }
         
@@ -49,13 +51,10 @@ extension StorageLimit {
         
         if usedSpace >= maxSpace {
             let localized = LocalString._space_all_used_warning
-            if localized.count <= 0 || !localized.contains(check: "%@") {
-                message = String(format: localized, formattedMaxSpace);
-            } else {
-                message = String(format: localized, formattedMaxSpace);
-            }
+            message = String(format: localized, formattedMaxSpace)
         } else {
-            message = String(format: LocalString._space_partial_used_warning, Constants.App.SpaceWarningThreshold, formattedMaxSpace);
+            let percentageStr = Int(String(format: "%.0f", (usedPercentage * 100.0))) ?? 90
+            message = String(format: LocalString._space_partial_used_warning, percentageStr, formattedMaxSpace);
         }
         
         let alertController = UIAlertController(title: LocalString._space_warning,
@@ -65,7 +64,22 @@ extension StorageLimit {
         alertController.addAction(UIAlertAction(title: LocalString._hide, style: .destructive, handler: { action in
             userCachedStatus.setIsCheckSpaceDisabledStatus(uid: user.userInfo.userId, value: true)
         }))
-
+        userCachedStatus.showStorageOverAlert()
         UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+    }
+
+    private func showUpgradeAlert() {
+        guard !userCachedStatus.hasShownStorageOverAlert else { return }
+        userCachedStatus.showStorageOverAlert()
+        let alert = UIAlertController(title: LocalString._storage_full,
+                                      message: LocalString._upgrade_suggestion,
+                                      preferredStyle: .alert)
+        let okAction = UIAlertAction(title: LocalString._general_ok_action, style: .default) { _ in
+            let link = DeepLink(.toSubscriptionPage)
+            NotificationCenter.default.post(name: .switchView, object: link)
+        }
+        let laterAction = UIAlertAction(title: LocalString._general_later_action, style: .default, handler: nil)
+        [laterAction, okAction].forEach(alert.addAction)
+        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
     }
 }

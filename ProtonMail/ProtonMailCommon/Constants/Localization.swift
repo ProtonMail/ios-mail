@@ -650,6 +650,7 @@ class LocalizedString {
 
     /// "OK"
     lazy var _general_ok_action = NSLocalizedString("OK", comment: "Action")
+    lazy var _general_later_action = NSLocalizedString("Later", comment: "Action")
 
     /// "Email address"
     lazy var _contacts_email_address_placeholder = NSLocalizedString("Email address", comment: "contact placeholder")
@@ -1118,8 +1119,12 @@ class LocalizedString {
 
     /// "Storage Warning"
     lazy var _space_warning = NSLocalizedString("Storage Warning", comment: "Title")
-    lazy var _space_all_used_warning = NSLocalizedString("You have used up all of your storage space (%@).", comment: "Content of space warning")
-    lazy var _space_partial_used_warning = NSLocalizedString("You have used %d%% of your storage space (%@).", comment: "Content of space warning")
+    lazy var _space_all_used_warning = NSLocalizedString("You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.", comment: "Content of space warning")
+    lazy var _space_partial_used_warning = NSLocalizedString("You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails.", comment: "Content of space warning")
+    lazy var _storage_full = NSLocalizedString("Storage full", comment: "Alert title")
+    lazy var _storage_exceeded = NSLocalizedString("Storage quota exceeded", comment: "Storage warning")
+    lazy var _please_upgrade_plan = NSLocalizedString("Please upgrade your plan", comment: "Content of storage full alert")
+    lazy var _upgrade_suggestion = NSLocalizedString("Please upgrade your plan to continue to send and receive emails.", comment: "Content of storage full alert")
 
     /// "Warning"
     lazy var _warning = NSLocalizedString("Warning", comment: "Title")
@@ -2181,4 +2186,6 @@ class LocalizedString {
     lazy var _star_btn_in_message_view = NSLocalizedString("Star", comment: "VoiceOver title of star button in the message view")
 
     lazy var _attachmets_are_uploading_info = NSLocalizedString("Sending will be available\nwhen attachments are uploaded", comment: "text displayed in composer when attachments are uploading")
+    lazy var _attachment_upload_failed_title = NSLocalizedString("Attachment failure", comment: "Alert title when attachment upload failed")
+    lazy var _attachment_upload_failed_body = NSLocalizedString("The following files couldn't be attached:", comment: "Alert message when attachment upload failed")
 }

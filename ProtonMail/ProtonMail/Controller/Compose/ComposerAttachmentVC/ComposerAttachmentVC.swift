@@ -120,6 +120,12 @@ final class ComposerAttachmentVC: UIViewController {
                          selector: #selector(self.attachmentUploaded(noti:)),
                          name: .attachmentUploaded,
                          object: nil)
+        NotificationCenter
+            .default
+            .addObserver(self,
+                         selector: #selector(self.attachmentUploadFailed(noti:)),
+                         name: .attachmentUploadFailed,
+                         object: nil)
     }
 
     func removeNotificationObserver() {
@@ -227,6 +233,43 @@ extension ComposerAttachmentVC {
                 self.isUploading?(!self.datas.areUploaded)
             }
         }
+    }
+
+    @objc
+    func attachmentUploadFailed(noti: Notification) {
+        guard let code = noti.userInfo?["code"] as? Int else { return }
+        let uploadingData = self.datas.filter { !$0.isUploaded }
+        DispatchQueue.main.async {
+            let names = uploadingData.map { $0.name }.joined(separator: "\n")
+            let message = "\(LocalString._attachment_upload_failed_body)\n \(names)"
+            let title = code == 422 ? LocalString._storage_exceeded: LocalString._attachment_upload_failed_title
+            let alert = UIAlertController(title: title,
+                                          message: message,
+                                          preferredStyle: .alert)
+            alert.addOKAction()
+            self.present(alert, animated: true, completion: nil)
+        }
+
+        // The message queue is a sequence operation
+        // One of the tasks failed, the rest one will be deleted too
+        // So if one attachment upload failed, the rest of the attachments won't be uploaded
+        let objectIDs = uploadingData.map { $0.objectID }
+        let context = self.coreDataService.mainContext
+        self.coreDataService.enqueue(context: context, block: { [weak self] context in
+            for objectID in objectIDs {
+                guard let self = self,
+                      let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(objectID),
+                      let managedObject = try? context.existingObject(with: managedObjectID),
+                      let attachment = managedObject as? Attachment else {
+                    self?.delete(objectID: objectID)
+                    continue
+                }
+                self.delete(objectID: objectID)
+                DispatchQueue.main.async {
+                    self.delegate?.delete(attachment: attachment)
+                }
+            }
+        })
     }
 }
 

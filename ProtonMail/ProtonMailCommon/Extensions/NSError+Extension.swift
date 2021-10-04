@@ -93,4 +93,7 @@ extension NSError {
         return self.code == 5003 || self.code == 5005
     }
 
+    var isStorageExceeded: Bool {
+        return self.code == 2011
+    }
 }

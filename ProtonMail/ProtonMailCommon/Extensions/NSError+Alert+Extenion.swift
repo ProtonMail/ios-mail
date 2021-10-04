@@ -138,7 +138,7 @@ extension NSError {
     
     
     public class func alertSavingDraftError(details : String) -> Void {
-        details.alertToastBottom()
+        details.alertToast()
     }
 
 }

@@ -107,6 +107,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var newMessageCount = 0
     private var hasNetworking = true
     private var isFirstFetch = true
+    private var isEditingMode = true
     
     // MAKR : - Private views
     private var refreshControl: UIRefreshControl!
@@ -114,6 +115,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     // MARK: - Right bar buttons
     private var composeBarButtonItem: UIBarButtonItem!
+    private var storageExceededBarButtonItem: UIBarButtonItem!
     private var searchBarButtonItem: UIBarButtonItem!
     private var cancelBarButtonItem: UIBarButtonItem!
     
@@ -427,6 +429,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if checkHuman() {
             self.coordinator?.go(to: .composer)
         }
+    }
+
+    @objc func storageExceededButtonTapped() {
+        LocalString._storage_exceeded.alertToastBottom()
     }
     
     @objc internal func searchButtonTapped() {
@@ -971,6 +977,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.refreshControl.endRefreshing()
             return
         }
+        // to update used space, pull down will wipe event data
+        // so the latest used space can't update by event api
+        self.viewModel.user.fetchUserInfo()
         forceRefreshAllMessages()
         self.showNoResultLabel()
     }
@@ -997,7 +1006,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             completeIsFetch?(false)
             return
         }
-        
+        self.setupRightButtons(self.isEditingMode)
         if let error = error {
             DispatchQueue.main.async {
                 self.handleRequestError(error)
@@ -1289,48 +1298,61 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     private func setupRightButtons(_ editingMode: Bool) {
-        var rightButtons: [UIBarButtonItem] = []
-        
-        if (!editingMode) {
-            if (self.composeBarButtonItem == nil) {
-                let button = Asset.composeIcon.image.toUIBarButtonItem(
-                    target: self,
-                    action: #selector(composeButtonTapped),
-                    tintColor: UIColorManager.Shade0,
-                    backgroundColor: UIColorManager.InteractionStrong,
-                    backgroundSquareSize: 40,
-                    isRound: true
-                )
-                self.composeBarButtonItem = button
-                self.composeBarButtonItem.accessibilityLabel = LocalString._composer_compose_action
-            }
-            
-            if (self.searchBarButtonItem == nil) {
-                let button = Asset.searchIcon.image.toUIBarButtonItem(
-                    target: self,
-                    action: #selector(searchButtonTapped),
-                    tintColor: UIColorManager.IconNorm,
-                    backgroundColor: UIColorManager.InteractionWeak,
-                    backgroundSquareSize: 40,
-                    isRound: true
-                )
-                self.searchBarButtonItem = button
-                self.searchBarButtonItem.accessibilityLabel = LocalString._general_search_placeholder
-            }
-            
-            rightButtons = [self.composeBarButtonItem, self.searchBarButtonItem]
-        } else {
+        if editingMode {
             if self.cancelBarButtonItem == nil {
-                self.cancelBarButtonItem = UIBarButtonItem(title: LocalString._general_cancel_button,
-                                                           style: UIBarButtonItem.Style.plain,
-                                                           target: self,
-                                                           action: #selector(cancelButtonTapped))
-                self.cancelBarButtonItem.tintColor = UIColorManager.BrandNorm
+                let item = UIBarButtonItem(title: LocalString._general_cancel_button,
+                                           style: UIBarButtonItem.Style.plain,
+                                           target: self,
+                                           action: #selector(cancelButtonTapped))
+                item.tintColor = UIColorManager.BrandNorm
+                self.cancelBarButtonItem = item
             }
-            
-            rightButtons = [self.cancelBarButtonItem]
+            self.navigationItem.setRightBarButtonItems([self.cancelBarButtonItem],
+                                                       animated: true)
+            return
+        }
+
+        if self.composeBarButtonItem == nil {
+            let button = Asset.composeIcon.image.toUIBarButtonItem(
+                target: self,
+                action: #selector(composeButtonTapped),
+                tintColor: UIColorManager.Shade0,
+                backgroundColor: UIColorManager.InteractionStrong,
+                backgroundSquareSize: 40,
+                isRound: true
+            )
+            self.composeBarButtonItem = button
+            self.composeBarButtonItem.accessibilityLabel = LocalString._composer_compose_action
         }
         
+        if self.storageExceededBarButtonItem == nil {
+            let button = Asset.composeIcon.image.toUIBarButtonItem(
+                target: self,
+                action: #selector(storageExceededButtonTapped),
+                tintColor: UIColorManager.Shade50,
+                backgroundColor: UIColorManager.InteractionWeakDisabled,
+                backgroundSquareSize: 40,
+                isRound: true
+            )
+            self.storageExceededBarButtonItem = button
+            self.storageExceededBarButtonItem.accessibilityLabel = LocalString._storage_exceeded
+        }
+        
+        if (self.searchBarButtonItem == nil) {
+            let button = Asset.searchIcon.image.toUIBarButtonItem(
+                target: self,
+                action: #selector(searchButtonTapped),
+                tintColor: UIColorManager.IconNorm,
+                backgroundColor: UIColorManager.InteractionWeak,
+                backgroundSquareSize: 40,
+                isRound: true
+            )
+            self.searchBarButtonItem = button
+            self.searchBarButtonItem.accessibilityLabel = LocalString._general_search_placeholder
+        }
+
+        let item: UIBarButtonItem = self.viewModel.user.isStorageExceeded ? self.storageExceededBarButtonItem: self.composeBarButtonItem
+        let rightButtons: [UIBarButtonItem] = [item, self.searchBarButtonItem]
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
     
@@ -1366,6 +1388,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     private func updateNavigationController(_ editingMode: Bool) {
+        self.isEditingMode = editingMode
         self.setupLeftButtons(editingMode)
         self.setupNavigationTitle(editingMode)
         self.setupRightButtons(editingMode)

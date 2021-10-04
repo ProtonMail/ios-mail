@@ -47,6 +47,7 @@ protocol EventsFetching: AnyObject {
     func processEvents(counts: [[String : Any]]?)
     func processEvents(conversationCounts: [[String: Any]]?)
     func processEvents(mailSettings: [String : Any]?)
+    func processEvents(space usedSpace : Int64?)
 }
 
 protocol EventsConsumer: AnyObject {
@@ -911,7 +912,7 @@ extension EventsService {
     }
     
     
-    fileprivate func processEvents(space usedSpace : Int64?) {
+    func processEvents(space usedSpace : Int64?) {
         guard let usedSpace = usedSpace else {
             return
         }
