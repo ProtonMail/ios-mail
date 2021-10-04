@@ -26,10 +26,10 @@ class SingleMessageContentViewModel {
     }
 
     let context: SingleMessageContentViewContext
+    let user: UserManager
 
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let messageService: MessageDataService
-    private let user: UserManager
     private var isDetailedDownloaded: Bool?
 
     var isExpanded = false {

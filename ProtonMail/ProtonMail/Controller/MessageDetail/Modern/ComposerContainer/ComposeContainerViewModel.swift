@@ -33,6 +33,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
     internal let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
     private var contactChanged: NSKeyValueObservation!
     weak var uiDelegate: ComposeContainerUIProtocol?
+    var user: UserManager { self.childViewModel.getUser() }
 
     init(editorViewModel: ContainableComposeViewModel,
          uiDelegate: ComposeContainerUIProtocol?) {

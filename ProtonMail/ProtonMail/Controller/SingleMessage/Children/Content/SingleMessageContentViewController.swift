@@ -109,18 +109,30 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func replyButtonTapped() {
+        guard !self.viewModel.user.isStorageExceeded else {
+            LocalString._storage_exceeded.alertToastBottom()
+            return
+        }
         let messageId = viewModel.message.messageID
         let action: SingleMessageNavigationAction = .reply(messageId: messageId)
         navigationAction(action)
     }
 
     private func replyAllButtonTapped() {
+        guard !self.viewModel.user.isStorageExceeded else {
+            LocalString._storage_exceeded.alertToastBottom()
+            return
+        }
         let messageId = viewModel.message.messageID
         let action = SingleMessageNavigationAction.replyAll(messageId: messageId)
         navigationAction(action)
     }
 
     private func forwardButtonTapped() {
+        guard !self.viewModel.user.isStorageExceeded else {
+            LocalString._storage_exceeded.alertToastBottom()
+            return
+        }
         let messageId = viewModel.message.messageID
         let action = SingleMessageNavigationAction.forward(messageId: messageId)
         navigationAction(action)
@@ -287,6 +299,10 @@ class SingleMessageContentViewController: UIViewController {
         case .addToContacts:
             navigationAction(.contacts(contact: context.contact))
         case .composeTo:
+            guard !self.viewModel.user.isStorageExceeded else {
+                LocalString._storage_exceeded.alertToastBottom(view: self.view)
+                return
+            }
             navigationAction(.compose(contact: context.contact))
         case .copyAddress:
             UIPasteboard.general.string = context.contact.email

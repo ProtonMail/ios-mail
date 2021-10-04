@@ -244,6 +244,10 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     }
     
     @IBAction func didTapSendToPrimaryEmailButton(_ sender: UIButton) {
+        guard !self.viewModel.user.isStorageExceeded else {
+            LocalString._storage_exceeded.alertToastBottom()
+            return
+        }
         let emails = viewModel.getEmails()
         let email = emails[0]
         let contact = viewModel.getContact()
@@ -600,6 +604,10 @@ extension ContactDetailViewController: UITableViewDelegate {
         let s = viewModel.sections()[section]
         switch s {
         case .emails:
+            guard !self.viewModel.user.isStorageExceeded else {
+                LocalString._storage_exceeded.alertToastBottom()
+                return
+            }
             let emails = viewModel.getEmails()
             let email = emails[row]
             let contact = viewModel.getContact()

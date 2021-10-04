@@ -57,8 +57,14 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         // notifications
         #if APP_EXTENSION
         NotificationCenter.default.addObserver(forName: NSError.errorOccuredNotification, object: nil, queue: nil) { [weak self] notification in
+            // Prevent to keep showing alert again and again
+            if (self?.step.contains(.storageExceeded) ?? false) { return }
             self?.latestError = notification.userInfo?["text"] as? String
-            self?.step.insert(.sendingFinishedWithError)
+            if self?.latestError == LocalString._storage_exceeded {
+                self?.step.insert(.storageExceeded)
+            } else {
+                self?.step.insert(.sendingFinishedWithError)
+            }
         }
         NotificationCenter.default.addObserver(forName: NSError.noErrorNotification, object: nil, queue: nil) { [weak self] notification in
             self?.step.insert(.sendingFinishedSuccessfully)
@@ -148,10 +154,19 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         static var sendingFinishedSuccessfully = SendingStep(rawValue: 1 << 4)
         static var resultAcknowledged = SendingStep(rawValue: 1 << 5)
         static var queueIsEmpty = SendingStep(rawValue: 1 << 6)
+        static var storageExceeded = SendingStep(rawValue: 1 << 7)
     }
     
     private var step: SendingStep = .composing {
         didSet {
+            if step.contains(.storageExceeded) {
+                let title = LocalString._storage_exceeded
+                let message = LocalString._please_upgrade_plan
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(.init(title: LocalString._general_ok_action, style: .default, handler: { [weak self] _ in self?.dismissAnimation() }))
+                self.stepAlert = alert
+                return
+            }
             guard !step.contains(.composing) else {
                 return
             }

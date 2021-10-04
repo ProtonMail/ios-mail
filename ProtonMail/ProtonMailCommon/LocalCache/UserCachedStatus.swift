@@ -140,6 +140,8 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
             setValue(newValue, forKey: Key.combineContactFlag)
         }
     }
+
+    private(set) var hasShownStorageOverAlert: Bool = false
     
     struct CoderKey {//Conflict with Key object
            static let mailboxPassword           = "UsersManager.AtLeastoneLoggedIn"
@@ -476,6 +478,10 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         getShared().removeObject(forKey: Key.lastLocalMobileSignature)
        
         getShared().synchronize()
+    }
+
+    func showStorageOverAlert() {
+        self.hasShownStorageOverAlert = true
     }
 }
 
