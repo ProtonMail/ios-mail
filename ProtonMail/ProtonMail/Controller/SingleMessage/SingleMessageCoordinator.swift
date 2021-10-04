@@ -30,15 +30,21 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 
     private let labelId: String
     let message: Message
+    private let coreDataService: CoreDataService
     private let user: UserManager
     private let navigationController: UINavigationController
     var pendingActionAfterDismissal: (() -> Void)?
 
-    init(navigationController: UINavigationController, labelId: String, message: Message, user: UserManager) {
+    init(navigationController: UINavigationController,
+         labelId: String,
+         message: Message,
+         user: UserManager,
+         coreDataService: CoreDataService = sharedServices.get(by: CoreDataService.self)) {
         self.navigationController = navigationController
         self.labelId = labelId
         self.message = message
         self.user = user
+        self.coreDataService = coreDataService
     }
 
     func start() {
@@ -47,6 +53,12 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         let viewController = SingleMessageViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
         navigationController.pushViewController(viewController, animated: true)
+    }
+
+    func follow(_ deeplink: DeepLink) {
+        guard let node = deeplink.popFirst,
+              let messageID = node.value else { return }
+        self.presentExistedCompose(messageID: messageID)
     }
 
     func navigate(to navigationAction: SingleMessageNavigationAction) {
@@ -148,6 +160,32 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
         viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
         self.viewController?.present(destination, animated: true)
+    }
+
+    private func presentExistedCompose(messageID: String) {
+        let board = UIStoryboard.Storyboard.composer.storyboard
+        guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,
+              let viewController = destination.viewControllers.first as? ComposeContainerViewController else {
+            return
+        }
+        let context = coreDataService.mainContext
+        guard let message = user.messageService.fetchMessages(withIDs: [messageID], in: context).first else {
+            return
+        }
+
+        let viewModel = ContainableComposeViewModel(
+            msg: message,
+            action: .openDraft,
+            msgService: user.messageService,
+            user: user,
+            coreDataService: sharedServices.get(by: CoreDataService.self)
+        )
+
+        viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
+        viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
+        delay(1) {
+            self.viewController?.present(destination, animated: true, completion: nil)
+        }
     }
 
     private func presentAttachmentListView(decryptedBody: String?) {
