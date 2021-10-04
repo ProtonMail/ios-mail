@@ -47,6 +47,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     // MARK: - Private attributes
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var searchController : UISearchController!
+
+    private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
     
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
@@ -200,14 +202,23 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     }
     
     @objc internal func fireFetch() {
-        self.viewModel.fetchContacts { (contacts: [Contact]?, error: NSError?) in
-            if let error = error as NSError? {
-                PMLog.D(" error: \(error)")
-                let alertController = error.alertController()
-                alertController.addOKAction()
-                self.present(alertController, animated: true, completion: nil)
+        internetConnectionStatusProvider.getConnectionStatuses { [weak self] status in
+            guard status != .NotReachable else {
+                DispatchQueue.main.async {
+                    self?.refreshControl.endRefreshing()
+                }
+                return
             }
-            self.refreshControl.endRefreshing()
+
+            self?.viewModel.fetchContacts { (contacts: [Contact]?, error: NSError?) in
+                if let error = error as NSError? {
+                    PMLog.D(" error: \(error)")
+                    let alertController = error.alertController()
+                    alertController.addOKAction()
+                    self?.present(alertController, animated: true, completion: nil)
+                }
+                self?.refreshControl.endRefreshing()
+            }
         }
     }
 }
