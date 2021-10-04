@@ -65,7 +65,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
     // MARK: - Private Constants
     private let kAnimationDuration: TimeInterval = 0.3
     private let kLongPressDuration: CFTimeInterval    = 0.60 // seconds
-    private let kSegueToMessageDetailController: String = "toMessageDetailViewController"
     
     private let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
     private var messageTapped = false
@@ -113,11 +112,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
-    }
-    
-    override func configureNavigationBar() {
-        super.configureNavigationBar()
-        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
     }
 }
 

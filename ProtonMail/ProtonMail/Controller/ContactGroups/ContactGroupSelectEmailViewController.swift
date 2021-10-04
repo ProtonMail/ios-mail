@@ -102,7 +102,6 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         self.searchController.searchBar.autocapitalizationType = .none
         self.searchController.searchBar.isTranslucent = false
         self.searchController.searchBar.tintColor = .white
-        self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         self.searchController.searchBar.backgroundColor = UIColorManager.BackgroundNorm
 
         self.searchViewConstraint.constant = 0.0

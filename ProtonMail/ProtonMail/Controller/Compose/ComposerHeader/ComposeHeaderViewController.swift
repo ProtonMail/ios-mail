@@ -39,6 +39,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     @IBOutlet private var fromPickerButton: UIButton!
     @IBOutlet private var fromLable: UILabel!
     @IBOutlet private var fromGrayView: UIView!
+    @IBOutlet private weak var subjectGrayView: UIView!
 
     @IBOutlet private(set) var toContactPicker: ContactPicker!
     @IBOutlet private(set) var ccContactPicker: ContactPicker!
@@ -218,6 +219,9 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         
         self.configureContactPicker()
         self.configureSubject()
+
+        self.fromGrayView.backgroundColor = UIColor(hexColorCode: "#EAE7E4")
+        self.subjectGrayView.backgroundColor = UIColor(hexColorCode: "#EAE7E4")
         
         self.view.bringSubviewToFront(showCcBccButton)
         self.view.bringSubviewToFront(subject)
@@ -307,11 +311,11 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     // Mark: -- Private Methods
     fileprivate func includeButtonBorder(_ view: UIView) {
         view.layer.borderWidth = 1.0
-        view.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.cgColor
+        view.layer.borderColor = UIColorManager.SeparatorNorm.cgColor
     }
     
     fileprivate func configureContactPickerTemplate() {
-        ContactCollectionViewContactCell.appearance().tintColor = UIColor.ProtonMail.Blue_6789AB
+        ContactCollectionViewContactCell.appearance().tintColor = UIColorManager.BrandNorm
         ContactCollectionViewContactCell.appearance().font = Fonts.h5.regular
         ContactCollectionViewPromptCell.appearance().font = Fonts.h5.regular
         ContactCollectionViewEntryCell.appearance().font = Fonts.h5.regular

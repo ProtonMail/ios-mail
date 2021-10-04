@@ -520,8 +520,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
         } else {
             textLabel.font = Fonts.h6.regular
         }
-        
-        textLabel.textColor = UIColor.ProtonMail.Gray_8E8E8E
+
         textLabel.numberOfLines = 0
         
         if(setting_headers[section] == SettingSections.version){

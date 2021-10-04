@@ -49,8 +49,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         self.addBarButtonItem = Asset.menuPlus.image.toUIBarButtonItem(
             target: self,
             action: #selector(addButtonTapped),
-            tintColor: UIColorManager.Shade0,
-            backgroundColor: UIColorManager.InteractionStrong,
+            tintColor: UIColorManager.IconNorm,
             backgroundSquareSize: 40,
             isRound: true
         )

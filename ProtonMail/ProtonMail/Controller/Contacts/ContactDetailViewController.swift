@@ -137,7 +137,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         emailContactImageView.image = Asset.envelope.image
         emailContactImageView.setupImage(scale: 0.5,
                                          tintColor: UIColor.white,
-                                         backgroundColor: UIColor.ProtonMail.Blue_9397CD)
+                                         backgroundColor: UIColorManager.BrandNorm)
         sendToPrimaryEmailButton.isUserInteractionEnabled = false
         emailContactImageView.backgroundColor = UIColor.lightGray
         // call contact
@@ -145,7 +145,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         callContactImageView.image = UIImage.init(named: "Phone-28px-#ffffff")
         callContactImageView.setupImage(scale: 0.5,
                                         tintColor: UIColor.white,
-                                        backgroundColor: UIColor.ProtonMail.Blue_9397CD)
+                                        backgroundColor: UIColorManager.BrandNorm)
         callContactButton.isUserInteractionEnabled = false
         callContactImageView.backgroundColor = UIColor.lightGray
         
@@ -154,7 +154,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         shareContactImageView.image = Asset.icArrowOutBox.image
         shareContactImageView.setupImage(scale: 0.5,
                                          tintColor: UIColor.white,
-                                         backgroundColor: UIColor.ProtonMail.Blue_9397CD)
+                                         backgroundColor: UIColorManager.BrandNorm)
         shareContactImageView.isUserInteractionEnabled = false
         shareContactImageView.backgroundColor = UIColor.lightGray
     }
@@ -207,7 +207,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             emailContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
         } else {
             sendToPrimaryEmailButton.isUserInteractionEnabled = true
-            emailContactImageView.backgroundColor = UIColor.ProtonMail.Blue_9397CD
+            emailContactImageView.backgroundColor = UIColorManager.BrandNorm
         }
         
         // call contact
@@ -217,9 +217,9 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             callContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
         } else {
             callContactButton.isUserInteractionEnabled = true
-            callContactImageView.backgroundColor = UIColor.ProtonMail.Blue_9397CD
+            callContactImageView.backgroundColor = UIColorManager.BrandNorm
         }
-        shareContactImageView.backgroundColor = UIColor.ProtonMail.Blue_9397CD
+        shareContactImageView.backgroundColor = UIColorManager.BrandNorm
 
     }
     

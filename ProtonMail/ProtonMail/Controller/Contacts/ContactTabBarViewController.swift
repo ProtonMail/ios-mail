@@ -73,6 +73,7 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBar.tintColor = UIColorManager.InteractionNorm
+        self.tabBar.backgroundColor = UIColorManager.BackgroundNorm
         // setup tab bar item title
         self.tabBar.items?[0].title = LocalString._menu_contacts_title
         self.tabBar.items?[0].image = Asset.contactGroupsContactsTabbar.image

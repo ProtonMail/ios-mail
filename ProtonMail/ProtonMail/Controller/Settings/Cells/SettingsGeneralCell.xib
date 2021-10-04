@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,16 +17,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="oQp-1S-XHl">
-                        <rect key="frame" x="16" y="15" width="380" height="20"/>
+                        <rect key="frame" x="16" y="0.0" width="376" height="50"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="g5P-sJ-gAR">
-                                <rect key="frame" x="0.0" y="0.0" width="190" height="20"/>
+                                <rect key="frame" x="0.0" y="0.0" width="188" height="50"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fmg-ZM-EX4">
-                                <rect key="frame" x="204" y="0.0" width="176" height="20"/>
+                                <rect key="frame" x="200" y="0.0" width="176" height="50"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -32,7 +34,7 @@
                         </subviews>
                     </stackView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xal-YH-iKr">
-                        <rect key="frame" x="404" y="15" width="20" height="20"/>
+                        <rect key="frame" x="400" y="15" width="20" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="1LP-0K-K81"/>
                             <constraint firstAttribute="width" constant="20" id="Kuq-ct-JoS"/>
@@ -42,8 +44,10 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="oQp-1S-XHl" firstAttribute="leading" secondItem="ZEz-em-u1D" secondAttribute="leading" constant="16" id="3We-Jk-11N"/>
-                    <constraint firstItem="oQp-1S-XHl" firstAttribute="top" secondItem="ZEz-em-u1D" secondAttribute="top" constant="15" id="8jt-y4-Vr5"/>
-                    <constraint firstAttribute="bottom" secondItem="oQp-1S-XHl" secondAttribute="bottom" constant="15" id="Jz6-vi-K9g"/>
+                    <constraint firstItem="oQp-1S-XHl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ZEz-em-u1D" secondAttribute="top" id="8jt-y4-Vr5"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="oQp-1S-XHl" secondAttribute="bottom" id="Jz6-vi-K9g"/>
+                    <constraint firstItem="Xal-YH-iKr" firstAttribute="top" secondItem="ZEz-em-u1D" secondAttribute="top" constant="15" id="REQ-tl-Ke0"/>
+                    <constraint firstAttribute="bottom" secondItem="Xal-YH-iKr" secondAttribute="bottom" constant="15" id="U2x-8S-47E"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Xal-YH-iKr" secondAttribute="trailing" id="Yn5-39-AKq"/>
                     <constraint firstAttribute="trailing" secondItem="oQp-1S-XHl" secondAttribute="trailing" priority="750" constant="16" id="gqX-vk-3Zt"/>
                     <constraint firstItem="Xal-YH-iKr" firstAttribute="centerY" secondItem="oQp-1S-XHl" secondAttribute="centerY" id="koO-aI-MwE"/>

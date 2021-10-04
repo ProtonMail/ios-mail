@@ -1316,10 +1316,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             let button = Asset.composeIcon.image.toUIBarButtonItem(
                 target: self,
                 action: #selector(composeButtonTapped),
-                tintColor: UIColorManager.Shade0,
-                backgroundColor: UIColorManager.InteractionStrong,
-                backgroundSquareSize: 40,
-                isRound: true
+                tintColor: UIColorManager.IconNorm,
+                backgroundSquareSize: 40
             )
             self.composeBarButtonItem = button
             self.composeBarButtonItem.accessibilityLabel = LocalString._composer_compose_action
@@ -1330,22 +1328,18 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 target: self,
                 action: #selector(storageExceededButtonTapped),
                 tintColor: UIColorManager.Shade50,
-                backgroundColor: UIColorManager.InteractionWeakDisabled,
-                backgroundSquareSize: 40,
-                isRound: true
+                backgroundSquareSize: 40
             )
             self.storageExceededBarButtonItem = button
             self.storageExceededBarButtonItem.accessibilityLabel = LocalString._storage_exceeded
         }
         
-        if (self.searchBarButtonItem == nil) {
+        if self.searchBarButtonItem == nil {
             let button = Asset.searchIcon.image.toUIBarButtonItem(
                 target: self,
                 action: #selector(searchButtonTapped),
                 tintColor: UIColorManager.IconNorm,
-                backgroundColor: UIColorManager.InteractionWeak,
-                backgroundSquareSize: 40,
-                isRound: true
+                backgroundSquareSize: 40
             )
             self.searchBarButtonItem = button
             self.searchBarButtonItem.accessibilityLabel = LocalString._general_search_placeholder

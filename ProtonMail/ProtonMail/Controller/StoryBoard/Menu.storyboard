@@ -856,9 +856,7 @@
                         <outlet property="unreadFilterButtonWidth" destination="sO4-58-At2" id="imj-xh-0gb"/>
                         <outlet property="updateTimeLabel" destination="5qp-QE-1V1" id="Ot0-58-udf"/>
                         <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="6qA-ON-8KL"/>
-                        <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="f3k-3A-WEA"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="zIE-XJ-wkG"/>
-                        <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewControllerFromNotification" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="hZj-FM-cPb"/>
                         <segue destination="Qwy-GJ-vAH" kind="presentation" identifier="toHumanCheckView" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="dts-X9-0aN"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="XIN-Jt-JzU"/>
                         <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="pageSheet" id="dh2-Js-yHz"/>
@@ -869,16 +867,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1945.3125" y="1892.5781249999998"/>
-        </scene>
-        <!--Message-->
-        <scene sceneID="ysU-co-vh9">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Message" id="kWS-aU-yuK" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="EuP-Cx-7jm"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="X4f-eM-03N" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4290" y="2690"/>
         </scene>
         <!--Label Manager View Controller-->
         <scene sceneID="umd-za-sRK">
@@ -1422,7 +1410,6 @@
                         <outlet property="navigationBarView" destination="2zf-id-O9k" id="Qpq-3g-u6O"/>
                         <outlet property="noResultLabel" destination="hkd-6v-qIH" id="7OS-3B-k7O"/>
                         <outlet property="tableView" destination="bZe-7F-cQr" id="Xyl-eG-V8M"/>
-                        <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" id="w5b-0j-26v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u4L-eI-FSG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1789,7 +1776,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="udh-Uk-5dd"/>
         <segue reference="A0a-yx-qTn"/>
-        <segue reference="hZj-FM-cPb"/>
         <segue reference="zIE-XJ-wkG"/>
         <segue reference="dLq-78-QaD"/>
         <segue reference="tgC-Ba-c8Y"/>

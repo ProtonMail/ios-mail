@@ -80,7 +80,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.definesPresentationContext = true
         self.extendedLayoutIncludesOpaqueBars = true
         self.tableView.noSeparatorsBelowFooter()
-        self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
+        self.tableView.sectionIndexColor = UIColorManager.BrandNorm
         self.tableView.backgroundColor = UIColorManager.BackgroundNorm
         
         //get all contacts

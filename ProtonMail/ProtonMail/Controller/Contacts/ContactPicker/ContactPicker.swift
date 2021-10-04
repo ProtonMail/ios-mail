@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import ProtonCore_UIFoundations
 import UIKit
 
 protocol ContactPickerDataSource: NSObjectProtocol {
@@ -198,7 +198,7 @@ class ContactPicker: UIView, AccessibleView {
     
     private func setupGrayLine() {
         self.grayLine = UIView(frame: .zero)
-        self.grayLine.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
+        self.grayLine.backgroundColor = UIColor(hexColorCode: "#EAE7E4")
         self.grayLine.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.grayLine)
         

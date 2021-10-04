@@ -73,6 +73,7 @@ extension EmailHeaderView {
     }
 }
 
+// TODO: Used in printer mode. Removed this after the improvement of print format
 class EmailHeaderView: UIView, AccessibleView {
     
     weak var viewDelegate: EmailHeaderViewProtocol?
@@ -763,7 +764,7 @@ class EmailHeaderView: UIView, AccessibleView {
         } else {
             self.emailDetailDateLabel.text = String(format: LocalString._date, "")
         }
-        self.emailDetailDateLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_999DA1
+        self.emailDetailDateLabel.textColor = UIColor(RRGGBB: UInt(0x838897))
         self.emailDetailDateLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailDateLabel)
         

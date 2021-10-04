@@ -119,10 +119,7 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
 
         switch dest {
         case .details:
-            guard let next = destination as? MessageContainerViewController else {
-                return false
-            }
-            return navigateToDetails(nextViewController: next)
+            break
         case .composer:
             guard let nav = destination as? UINavigationController,
                   let next = nav.viewControllers.first as? ComposeContainerViewController
@@ -292,23 +289,6 @@ extension MailboxCoordinator {
         )
         conversationCoordinator = coordinator
         coordinator.start()
-    }
-
-    private func navigateToDetails(nextViewController next: MessageContainerViewController) -> Bool {
-        let vmService = self.services.get() as ViewModelService
-        vmService.messageDetails(fromList: next)
-        guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
-              let message = self.viewModel.item(index: indexPathForSelectedRow)
-        else {
-            return false
-        }
-
-        next.set(viewModel: .init(message: message,
-                                  msgService: self.viewModel.messageService,
-                                  user: self.viewModel.user,
-                                  labelID: self.viewModel.labelID))
-        next.set(coordinator: .init(controller: next))
-        return true
     }
 
     private func navigateToComposer(nextViewController next: ComposeContainerViewController) {

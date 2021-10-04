@@ -49,7 +49,6 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-        UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
     }
     
     override func viewWillAppear(_ animated: Bool) {
