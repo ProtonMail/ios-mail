@@ -7,6 +7,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     let viewModel: ConversationViewModel
     let coordinator: ConversationCoordinator
     private(set) lazy var customView = ConversationView()
+    private var selectedMessageID: String?
     private var storedSize: [String: HeightStoreInfo] = [:]
     private let conversationNavigationViewPresenter = ConversationNavigationViewPresenter()
     private let conversationMessageCellPresenter = ConversationMessageCellPresenter()
@@ -51,6 +52,11 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             DispatchQueue.main.async {
                 self?.navigationController?.popViewController(animated: true)
             }
+        }
+
+        viewModel.dismissDeletedMessageActionSheet = { [weak self] messageID in
+            guard messageID == self?.selectedMessageID else { return }
+            self?.dismissActionSheet()
         }
 
         viewModel.showNewMessageArrivedFloaty = { [weak self] messageId in
@@ -101,6 +107,11 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         } else if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.dismissActionSheet()
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -223,6 +234,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                     && ($0.type.intValue == 3 || Int($0.labelID) != nil)
                 }) else { return }
         // swiftlint:enable sorted_first_last
+        self.selectedMessageID = message.messageID
         let viewModel = MessageViewActionSheetViewModel(title: message.subject,
                                                         labelID: location.labelID,
                                                         includeStarring: true,
@@ -842,6 +854,7 @@ extension ConversationViewController: PMActionSheetEventsListener {
     func willDismiss() {}
 
     func didDismiss() {
+        self.selectedMessageID = nil
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
 }
