@@ -176,6 +176,34 @@ platform :ios do
     send_to_slack(true, changelog, "", bundle_version.strip)
   end
 
+  desc "Unit Test"
+  lane :unit_test do |options|
+    xcversion(version: "~> 13.0.0")
+    scan(workspace: "Protonmail.xcworkspace",
+      device: "iPhone 8",
+      scheme: "Tests",
+      code_coverage: true,
+      derived_data_path: "../test_output",
+      reinstall_app: true,
+      app_identifier: "ch.protonmail.protonmail"
+    )
+  end
+
+  desc "UI Test"
+  lane :ui_test do |options|
+    xcversion(version: "~> 13.0.0")
+    scan(workspace: "Protonmail.xcworkspace",
+      device: "iPhone 8",
+      scheme: "ProtonMailUITests",
+      code_coverage: true,
+      derived_data_path: "../test_output",
+      concurrent_workers: 2,
+      testplan: "SmokeTests",
+      reinstall_app: true,
+      app_identifier: "ch.protonmail.protonmail"
+    )
+  end
+
   error do |lane, exception|
     send_to_slack(false, "", exception, "")
   end

@@ -219,6 +219,9 @@ extension AppDelegate: UIApplicationDelegate {
 //            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
         }
 
+        if #available(iOS 15.0, *) {
+            setupNavigationBarAppearance()
+        }
         if #available(iOS 13.0, *) {
             // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
         } else {
@@ -526,6 +529,24 @@ extension AppDelegate : UnlockManagerDelegate {
     
     func unlocked() {
         // should work via messages
+    }
+}
+
+extension AppDelegate {
+    @available(iOS 15.0, *)
+    private func setupNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
+        let navigationBarTitleFont = Fonts.h2.light
+        appearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: navigationBarTitleFont
+        ]
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().compactScrollEdgeAppearance = appearance
     }
 }
 

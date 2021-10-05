@@ -192,7 +192,6 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
             navigationController.navigationBar.standardAppearance = navBarAppearance
             navigationController.navigationBar.compactAppearance = navBarAppearance
             navigationController.navigationBar.scrollEdgeAppearance = navBarAppearance
-
             navigationController.navigationBar.tintColor = UIColor.white
         } else {
             navigationController.navigationBar.barStyle = UIBarStyle.black

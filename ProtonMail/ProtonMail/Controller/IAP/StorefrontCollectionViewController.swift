@@ -34,8 +34,7 @@ final class StorefrontCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.collectionView.setCollectionViewLayout(CollectionViewTableLayout(), animated: true, completion: nil)
+
         MBProgressHUD.showAdded(to: self.view, animated: true)
         _ = firstly {
             self.viewModel.updateSubscription()

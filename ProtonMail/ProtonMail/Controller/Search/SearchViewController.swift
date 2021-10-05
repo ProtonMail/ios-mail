@@ -165,6 +165,7 @@ class SearchViewController: ProtonMailViewController {
     override func configureNavigationBar() {
         super.configureNavigationBar()
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
+
     }
     
     func indexLocalObjects(_ completion: @escaping ()->Void) {
