@@ -186,7 +186,8 @@ extension AppDelegate: UIApplicationDelegate {
         #endif
         
         
-        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
+        //UIApplication.shared.setMinimumBackgroundFetchInterval(300)
+        UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)    //execute fetch as often as possible by the system
 
         configureAppearance()
         
@@ -252,6 +253,7 @@ extension AppDelegate: UIApplicationDelegate {
         //register background processing task for building the encrypted search index
         if #available(iOS 13, *) {
             EncryptedSearchService.shared.registerIndexBuildingInBackground()
+            EncryptedSearchService.shared.registerBGAppRefreshTask()
         }
         return true
     }
