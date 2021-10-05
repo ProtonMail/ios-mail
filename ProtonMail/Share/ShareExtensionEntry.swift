@@ -51,6 +51,9 @@ class ShareExtensionEntry : UINavigationController {
         #endif
         TrustKitWrapper.start(delegate: self)
         appCoordinator = ShareAppCoordinator(navigation: self)
+        if #available(iOSApplicationExtension 15.0, *) {
+            setupNavigationBarAppearance()
+        }
     }
     
     override func viewDidLoad() {
@@ -77,5 +80,24 @@ class ShareExtensionEntry : UINavigationController {
 extension ShareExtensionEntry: TrustKitUIDelegate {
     func onTrustKitValidationError(_ alert: UIAlertController) {
         self.appCoordinator?.navigationController?.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension ShareExtensionEntry {
+    @available(iOS 15.0, *)
+    private func setupNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
+        appearance.shadowColor = .clear
+        let navigationBarTitleFont = Fonts.h2.light
+        appearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: navigationBarTitleFont
+        ]
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().compactScrollEdgeAppearance = appearance
     }
 }

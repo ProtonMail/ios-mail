@@ -143,7 +143,6 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        
         let navigationBarTitleFont = Fonts.h2.light
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white,

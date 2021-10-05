@@ -92,7 +92,7 @@ class StorefrontBuyButtonCell: AutoSizedCell, StorefrontItemConfigurable  {
     }
 }
 
-class StorefrontDisclaimerCell: SubviewSizedCell, StorefrontItemConfigurable {
+class StorefrontDisclaimerCell: AutoSizedCell, StorefrontItemConfigurable {
     @IBOutlet weak var header: ServicePlanTableSectionHeader!
     
     func setup(with item: AnyStorefrontItem) {

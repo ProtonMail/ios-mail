@@ -153,6 +153,7 @@ class MailboxPasswordViewController: UIViewController, AccessibleView {
     func configureNavigationBar() {
         self.navigationController?.navigationBar.barStyle = UIBarStyle.black
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Blue_475F77
+
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
         

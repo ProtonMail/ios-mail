@@ -38,11 +38,11 @@ class QuickViewViewController: QLPreviewController {
     }
     
     func configureNavigationBar(_ navigationController: UINavigationController) {
-        navigationController.navigationBar.barStyle = UIBarStyle.black
-        navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
+        navigationController.navigationBar.barStyle = .blackOpaque
+        navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         navigationController.navigationBar.isTranslucent = false
         navigationController.navigationBar.tintColor = UIColor.white
-        
+
         let navigationBarTitleFont = Fonts.h2.light
         navigationController.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
@@ -56,8 +56,8 @@ class QuickViewViewController: QLPreviewController {
         let views = self.children
         if views.count > 0 {
             if let nav = views[0] as? UINavigationController {
-                configureNavigationBar(nav)
                 setNeedsStatusBarAppearanceUpdate()
+                configureNavigationBar(nav)
             }
         }
     }
