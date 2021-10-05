@@ -23,6 +23,7 @@
 
 import Foundation
 import UIKit
+import ProtonCore_UIFoundations
 import ProtonCore_Services
 
 @objc(ShareExtensionEntry)
@@ -45,6 +46,9 @@ class ShareExtensionEntry : UINavigationController {
         #endif
         TrustKitWrapper.start(delegate: self)
         appCoordinator = ShareAppCoordinator(navigation: self)
+        if #available(iOSApplicationExtension 15.0, *) {
+            setupNavigationBarAppearance()
+        }
     }
     
     override func viewDidLoad() {
@@ -57,5 +61,19 @@ class ShareExtensionEntry : UINavigationController {
 extension ShareExtensionEntry: TrustKitUIDelegate {
     func onTrustKitValidationError(_ alert: UIAlertController) {
         self.appCoordinator?.navigationController?.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension ShareExtensionEntry {
+    @available(iOS 15.0, *)
+    private func setupNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColorManager.BackgroundNorm
+        appearance.shadowColor = .clear
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().compactScrollEdgeAppearance = appearance
     }
 }
