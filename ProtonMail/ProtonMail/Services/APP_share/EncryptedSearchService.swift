@@ -209,6 +209,10 @@ extension EncryptedSearchService {
             }
         #endif
         
+        //add a notification when app is put in background
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+        
         self.indexBuildingInProgress = true
         self.viewModel = viewModel
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
@@ -1463,8 +1467,15 @@ extension EncryptedSearchService {
         content.title = "Background Processing Task"
         content.subtitle = text
         content.sound = UNNotificationSound.default
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
+    }
+    
+    @objc func appMovedToBackground(){
+        print("App moved to background")
+        if self.indexBuildingInProgress {
+            self.sendNotification(text: "Index building is in progress... Please tap to resume index building in foreground.")
+        }
     }
 }
