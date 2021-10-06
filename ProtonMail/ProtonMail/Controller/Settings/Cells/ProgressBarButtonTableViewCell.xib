@@ -34,8 +34,8 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloading messages..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="htb-a2-PH0">
-                        <rect key="frame" x="16" y="27" width="195" height="14"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="htb-a2-PH0">
+                        <rect key="frame" x="16" y="27" width="41.5" height="14"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -43,7 +43,7 @@
                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Bau-AF-ClQ">
                         <rect key="frame" x="16" y="52" width="343" height="4"/>
                     </progressView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fi0-qG-XTe">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fi0-qG-XTe" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
                         <rect key="frame" x="16" y="78" width="46" height="30"/>
                         <state key="normal" title="Button"/>
                         <connections>
@@ -73,8 +73,8 @@
                 <outlet property="estimatedTimeLabel" destination="Xb4-cr-rI8" id="8ge-EJ-Wk3"/>
                 <outlet property="pauseButton" destination="Fi0-qG-XTe" id="bzu-qz-ViY"/>
                 <outlet property="progressView" destination="Bau-AF-ClQ" id="1OR-Ju-pqr"/>
+                <outlet property="statusLabel" destination="htb-a2-PH0" id="klw-gf-kEQ"/>
                 <outlet property="titleLabel" destination="7zz-Th-tvh" id="vvZ-Px-xIn"/>
-                <outlet property="topLabel" destination="htb-a2-PH0" id="9vm-n2-Ky2"/>
             </connections>
             <point key="canvasLocation" x="463.19999999999999" y="-198.80059970014995"/>
         </tableViewCell>
