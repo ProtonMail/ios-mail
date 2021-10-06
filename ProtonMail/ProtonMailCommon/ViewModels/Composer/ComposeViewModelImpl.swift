@@ -607,7 +607,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 self.message = self.messageService.messageWithLocation(recipientList: self.toJsonString(self.toSelectedContacts),
                                                                        bccList: self.toJsonString(self.bccSelectedContacts),
                                                                        ccList: self.toJsonString(self.ccSelectedContacts),
-                                                                       title: self.getSubject(),
+                                                                       title: title,
                                                                        encryptionPassword: "",
                                                                        passwordHint: "",
                                                                        expirationTimeInterval: expir,
@@ -627,7 +627,8 @@ class ComposeViewModelImpl : ComposeViewModel {
                 self.message?.toList = self.toJsonString(self.toSelectedContacts)
                 self.message?.ccList = self.toJsonString(self.ccSelectedContacts)
                 self.message?.bccList = self.toJsonString(self.bccSelectedContacts)
-                self.message?.title = self.getSubject()
+                self.message?.title = title
+                self.message?.body = body
                 self.message?.time = Date()
                 self.message?.password = pwd
                 self.message?.unRead = false

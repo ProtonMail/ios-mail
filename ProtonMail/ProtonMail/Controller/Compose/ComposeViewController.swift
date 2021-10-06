@@ -513,9 +513,13 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 if !body.hasSuffix(foot) {
                     body = body + foot
                 }
-                
+
+                var title = self.headerView.subject.text ?? ""
+                if title.isEmpty {
+                    title = "(No Subject)"
+                }
                 self.viewModel.collectDraft (
-                    self.headerView.subject.text ?? "(No Subject)",
+                    title,
                     body: body,
                     expir: self.headerView.expirationTimeInterval,
                     pwd:self.encryptionPassword,
