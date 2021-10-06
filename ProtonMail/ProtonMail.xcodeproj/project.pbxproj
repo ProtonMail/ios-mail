@@ -5525,7 +5525,6 @@
 			buildConfigurationList = B85F53D2383B81C0673FCA36AD601CEB /* Build configuration list for PBXNativeTarget "PushServiceDev" */;
 			buildPhases = (
 				3C1715097B43678CF36F4C52208D45DD /* [CP] Check Pods Manifest.lock */,
-				CD44A6E68EEB5BF4DADDF6DE5D7507DC /* Setup Version Number */,
 				8BC72C9B2394D4F09ED595DC2567913E /* Sources */,
 				40D67731E7C6B35387668D6752D6F662 /* Frameworks */,
 				4A7194F91C25AF2121AB74AA7801CF0A /* Resources */,
@@ -5544,7 +5543,6 @@
 			buildConfigurationList = 999248DB067D4D4FD5585B2C82EE274E /* Build configuration list for PBXNativeTarget "ShareDev" */;
 			buildPhases = (
 				1B1F2A5EC8751EB5CEBC8594C6762AB0 /* [CP] Check Pods Manifest.lock */,
-				0DD55C25AF691272A64605F0C0621E49 /* Setup Version Number */,
 				D25C01E787911BADE239BB309286F502 /* Sources */,
 				AAB0022C007E2F92622E96DC6C4A3203 /* Frameworks */,
 				EEEC44AD9C4FEEA00FBF6ACCE2DCB313 /* Resources */,
@@ -5599,7 +5597,6 @@
 			buildConfigurationList = F5984BDAEE433904687E1BA406A086B1 /* Build configuration list for PBXNativeTarget "SiriDev" */;
 			buildPhases = (
 				B90BCD6AF6DFF172E4D06377B3CE608F /* [CP] Check Pods Manifest.lock */,
-				F4AACE5E58A2B1C87EF591F7EA703900 /* Setup Version Number */,
 				E83D93EBAE87FD2418B8183CE093E529 /* Sources */,
 				6190219A16B5493DBE4E7AF6D4B33739 /* Frameworks */,
 				E8444BE122802949528CA8140845F77D /* Resources */,
@@ -5617,7 +5614,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E203DC72C731532AA546607E53282AAD /* Build configuration list for PBXNativeTarget "PushDev" */;
 			buildPhases = (
-				C0C5319B94A742C187C88CBC609BB38B /* Setup Version Number */,
 				7637FF1CB0DB33050E00BF4C20BF2803 /* Sources */,
 				24F0381BA784A5E04EAB1AD58C196730 /* Frameworks */,
 				97C1125723257A54E9941DDE6F460C40 /* Resources */,
@@ -5656,7 +5652,6 @@
 			buildConfigurationList = AC0CDE795E003B1982306A387402481B /* Build configuration list for PBXNativeTarget "ProtonMailDev" */;
 			buildPhases = (
 				CB32097D2CA8875CFCA9EF3DE72115A3 /* [CP] Check Pods Manifest.lock */,
-				B72357FB89BB57B686695C3F5724852D /* Setup Version Number */,
 				73F3090EAA97C506D4CAD0C2A0852405 /* Sources */,
 				D4A57E2455B1533EA4BF09C2CE7E5490 /* Frameworks */,
 				8860A78F234125BD6E1662C028B73DC7 /* Resources */,
@@ -6328,20 +6323,6 @@
 			shellPath = /bin/sh;
 			shellScript = "#if which sentry-cli >/dev/null; then\n#source ~/.bashrc\n#ERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\n#if [ ! $? -eq 0 ]; then\n#echo \"warning: sentry-cli - $ERROR\"\n#fi\n#else\n#echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\n#fi\n";
 		};
-		0DD55C25AF691272A64605F0C0621E49 /* Setup Version Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Setup Version Number";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;";
-		};
 		1AA1FDEBD21E985B4F3B2ACC5BCD457A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6564,20 +6545,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B72357FB89BB57B686695C3F5724852D /* Setup Version Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Setup Version Number";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n";
-		};
 		B7EBEAA51F130EAAA1213E69D9E40DBD /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6664,20 +6631,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C0C5319B94A742C187C88CBC609BB38B /* Setup Version Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Setup Version Number";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n";
-		};
 		C72262B8B45609150E84751ED2520A06 /* Swift lint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6713,20 +6666,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		CD44A6E68EEB5BF4DADDF6DE5D7507DC /* Setup Version Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Setup Version Number";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n";
 		};
 		D8ABFD66B15CD9A21671B7560901F0AD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6781,20 +6720,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		F4AACE5E58A2B1C87EF591F7EA703900 /* Setup Version Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Setup Version Number";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n";
 		};
 		FD69D6C7B0EBFBFD87338C14572B81DA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
