@@ -9,10 +9,11 @@
 import pmtest
 
 fileprivate struct id {
-    static let saveNavBarButtonIdentifier = "ContactGroupEditViewController.saveButton"
+    static let saveNavBarButtonText = LocalString._general_save_action
     static let contactGroupNameTextFieldIdentifier = "ContactGroupEditViewController.contactGroupNameLabel"
     static let manageAddressesStaticText = LocalString._contact_groups_manage_addresses
     static let deleteGroupText = LocalString._contact_groups_delete
+    static let doneButtonIdentifier = LocalString._general_done_button
 }
 
 /**
@@ -21,7 +22,7 @@ fileprivate struct id {
 class AddContactGroupRobot: CoreElements {
 
     func editNameAndSave(_ name: String) -> GroupDetailsRobot {
-        editGroupName(name).saveContactSelection()
+        editGroupName(name).doneEditingName()
         return GroupDetailsRobot()
     }
 
@@ -32,7 +33,7 @@ class AddContactGroupRobot: CoreElements {
     
     @discardableResult
     func saveContactSelection() -> ContactsRobot {
-        button(id.saveNavBarButtonIdentifier).tap()
+        button(id.saveNavBarButtonText).tap()
         return ContactsRobot()
     }
 
@@ -43,6 +44,12 @@ class AddContactGroupRobot: CoreElements {
     
     func delete() -> ContactsRobot {
         staticText(id.deleteGroupText).tap()
+        return ContactsRobot()
+    }
+    
+    @discardableResult
+    func doneEditingName() -> ContactsRobot {
+        button(id.doneButtonIdentifier).tap()
         return ContactsRobot()
     }
 

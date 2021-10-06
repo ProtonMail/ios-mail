@@ -13,6 +13,7 @@ fileprivate struct id {
     static let mailboxTableView = "mailboxTableView"
     static let inboxTitleLabel = LocalString._menu_inbox_title
     static let composeButtonLabel = "Compose"
+    static let buttonSkipTutorial = LocalString._skip_btn_title
 }
 
 /**
@@ -29,6 +30,15 @@ class InboxRobot : MailboxRobotInterface {
     
     override func refreshMailbox() -> InboxRobot {
         super.refreshMailbox()
+        return self
+    }
+    
+    public func skipTutorialIfNeeded() -> InboxRobot {
+        //check only once in the whole test run
+        if(XCTestCase.tutorialSkipped == false && button(id.buttonSkipTutorial).wait().exists()) {
+            button(id.buttonSkipTutorial).tap()
+        }
+        XCTestCase.tutorialSkipped = true
         return self
     }
     
