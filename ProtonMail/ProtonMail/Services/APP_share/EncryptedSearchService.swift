@@ -1452,6 +1452,14 @@ extension EncryptedSearchService {
             //schedule a new background app refresh task
             self.scheduleNewAppRefreshTask()
             
+            let currentDateTime = Date()
+            let formatter = DateFormatter()
+            formatter.timeStyle = .medium
+            formatter.dateStyle = .long
+            let text: String = "app refresh finished: " + formatter.string(from: currentDateTime)
+            self.sendNotification(text: text)
+            print("APP_REFRESH_finished: ", formatter.string(from: currentDateTime))
+            
             //set task to be completed - so that the systems does not terminate the app
             task.setTaskCompleted(success: true)
         }
@@ -1461,9 +1469,9 @@ extension EncryptedSearchService {
         let formatter = DateFormatter()
         formatter.timeStyle = .medium
         formatter.dateStyle = .long
-        let text: String = "app refresh: " + formatter.string(from: currentDateTime)
+        let text: String = "app refresh started: " + formatter.string(from: currentDateTime)
         self.sendNotification(text: text)
-        print("APP_REFRESH: ", formatter.string(from: currentDateTime))
+        print("APP_REFRESH_started: ", formatter.string(from: currentDateTime))
         
         //write time of app refresh to file
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
