@@ -153,7 +153,7 @@ class MenuRobot: CoreElements {
             }
             
             func accountShortNameIsCorrect(_ shortName: String) {
-                otherElement(id.primaryUserViewIdentifier).onChild(staticText(shortName)).wait().checkExists()
+                staticText(shortName).wait().checkExists()
             }
         }
     }
