@@ -9,8 +9,8 @@
 import pmtest
 
 fileprivate struct id {
-    static let addContactAlertButtonText = LocalString._contacts_add_contact
-    static let addGroupAlertButtonText = LocalString._contact_groups_add
+    static let addContactAlertButtonText = LocalString._contacts_new_contact
+    static let addGroupAlertButtonText = LocalString._contact_groups_new
     static let deleteContactAlertButtonText = LocalString._delete_contact
     static let deleteGroupAlertButtonText = LocalString._contact_groups_delete
     static let deleteButtonText = LocalString._general_delete_action
@@ -20,7 +20,7 @@ fileprivate struct id {
     static func groupCellIdentifier(_ name: String) -> String { return "ContactGroupsViewCell.\(name)" }
     static func groupCellSendImailButtonIdentifier(_ name: String) -> String { return "\(name).sendButton" }
     static let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
-    static let addContactNavBarButtonIdentifier = "UINavigationItem.addButton"
+    static let addContactNavBarButtonText = LocalString._general_create_action
     static let importContactNavBarButtonIdentifier = "UINavigationItem.importButton"
     static let contactsTableViewIdentifier = "ContactsViewController.tableView"
 }
@@ -56,17 +56,17 @@ class ContactsRobot: CoreElements {
     }
     
     private func add() -> ContactsRobot {
-        button(id.addContactNavBarButtonIdentifier).tap()
+        button(id.addContactNavBarButtonText).tap()
         return ContactsRobot()
     }
     
     private func contact() -> AddContactRobot {
-        button(id.addContactAlertButtonText).tap()
+        staticText(id.addContactAlertButtonText).tap()
         return AddContactRobot()
     }
     
     private func group() -> AddContactGroupRobot {
-        button(id.addGroupAlertButtonText).tap()
+        staticText(id.addGroupAlertButtonText).tap()
         return AddContactGroupRobot()
     }
 

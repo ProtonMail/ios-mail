@@ -10,7 +10,7 @@ import pmtest
 
 fileprivate struct id {
     static func contactCellIdentifier(_ email: String) -> String { return "ContactGroupEditViewCell.\(email)" }
-    static let backButtonIdentifier = LocalString._contact_groups_add
+    static let doneButtonText = LocalString._general_done_button
 }
 
 /**
@@ -28,7 +28,7 @@ class ManageAddressesRobot: CoreElements {
     }
 
     private func back() -> AddContactGroupRobot {
-        button(id.backButtonIdentifier).tap()
+        button(id.doneButtonText).tap()
         return AddContactGroupRobot()
     }
 }
