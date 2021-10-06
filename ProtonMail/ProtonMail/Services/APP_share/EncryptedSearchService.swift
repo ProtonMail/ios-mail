@@ -84,23 +84,28 @@ open class IndexSingleMessageAsyncOperation: Operation {
             state = .executing
         }
         
+        autoreleasepool {
         //print("processing message: \(self.messageID)")
-        EncryptedSearchService.shared.getMessage(self.messageID) { message in
-            //print("Message fetched: \(message!.messageID), details: \(message!.isDetailDownloaded)")
-            EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: message!) { messageWithDetails in
-                //print("Message detailes downloaded: \(messageWithDetails!.isDetailDownloaded)")
-                EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails!) {
-                    //print("Message \(self.messageID) sucessfully processed!")
-                    EncryptedSearchService.shared.processedMessages += 1    //increase count of processed messages
-                    self.state = .finished
-                    
-                    #if !APP_EXTENSION
-                        //Update UI progress bar
-                        EncryptedSearchService.shared.updateUIWithProgressBarStatus()
-                    #endif
+            EncryptedSearchService.shared.getMessage(self.messageID) { [weak self] message in
+                //print("Message fetched: \(message!.messageID), details: \(message!.isDetailDownloaded)")
+                EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: message!) { [weak self] messageWithDetails in
+                    //print("Message detailes downloaded: \(messageWithDetails!.isDetailDownloaded)")
+                    EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails!) { [weak self] in
+                        //print("Message \(self.messageID) sucessfully processed!")
+                        EncryptedSearchService.shared.deleteMessage(for: messageWithDetails!) { [weak self] in
+                            //print("Message \(self.messageID) sucessfully deleted!")
+                            EncryptedSearchService.shared.processedMessages += 1    //increase count of processed messages
+                            self?.state = .finished
+                            
+                            #if !APP_EXTENSION
+                                //Update UI progress bar
+                                EncryptedSearchService.shared.updateUIWithProgressBarStatus()
+                            #endif
+                        }
+                    }
                 }
             }
-        }
+        } //end autoreleasepool
     }
     
     public func finish() {
@@ -258,27 +263,27 @@ extension EncryptedSearchService {
             //build search index completely new
             DispatchQueue.global(qos: .userInitiated).async {
                 //If its an build from scratch, start indexing with time = 0
-                self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) {
+                self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) { [weak self] in
                     print("Finished building search index!")
-                    self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add stop time
-                    self.printTiming("Building the Index", for: self.timingsBuildIndex)
-                    self.updateMemoryConsumption()
+                    self?.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add stop time
+                    self?.printTiming("Building the Index", for: self!.timingsBuildIndex)
+                    self?.updateMemoryConsumption()
                     
-                    self.viewModel?.isEncryptedSearch = true
-                    self.viewModel?.currentProgress.value = 100
-                    self.viewModel?.estimatedTimeRemaining.value = 0
-                    self.indexBuildingInProgress = false
+                    self?.viewModel?.isEncryptedSearch = true
+                    self?.viewModel?.currentProgress.value = 100
+                    self?.viewModel?.estimatedTimeRemaining.value = 0
+                    self?.indexBuildingInProgress = false
                     
-                    if self.backgroundTask != .invalid {
+                    if self?.backgroundTask != .invalid {
                         //background processing not needed any longer - clean up
                         #if !APP_EXTENSION
-                            self.endBackgroundTask()
+                        self?.endBackgroundTask()
                         #endif
                     }
                     #if !APP_EXTENSION
                         if #available(iOS 13, *) {
                             //index building finished - we no longer need a background task
-                            self.cancelIndexBuildingInBackground()
+                            self?.cancelIndexBuildingInBackground()
                         }
                     #endif
                     
@@ -481,13 +486,13 @@ extension EncryptedSearchService {
     func downloadAndProcessPage(_ mailboxID: String, _ time: Int, completionHandler: @escaping () -> Void) -> Void {
         let group = DispatchGroup()
         group.enter()
-        self.messageService?.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { _, result, error in
+        self.messageService?.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { [weak self] _, result, error in
             if error == nil {
-                let messagesBatch: NSMutableArray = self.getMessageIDs(result)
+                let messagesBatch: NSMutableArray = self?.getMessageIDs(result) ?? []
                 print("Process page...")
-                self.processPageOneByOne(forBatch: messagesBatch){
+                self?.processPageOneByOne(forBatch: messagesBatch){ [weak self] in
                     print("Page successfull processed!")
-                    self.lastMessageTimeIndexed = self.getOldestMessageInMessageBatch(result)
+                    self?.lastMessageTimeIndexed = self?.getOldestMessageInMessageBatch(result) ?? 0
                     group.leave()
                 }
             } else {
@@ -519,8 +524,10 @@ extension EncryptedSearchService {
         //start a new thread to process the page
         DispatchQueue.global(qos: .userInitiated).async {
             for id in messageIDs {
-                let op = IndexSingleMessageAsyncOperation(id as! String)
-                self.messageIndexingQueue.addOperation(op)
+                autoreleasepool {
+                    let op = IndexSingleMessageAsyncOperation(id as! String)
+                    self.messageIndexingQueue.addOperation(op)
+                }
             }
             self.messageIndexingQueue.waitUntilAllOperationsAreFinished()
             completionHandler()
@@ -629,9 +636,9 @@ extension EncryptedSearchService {
         if message.isDetailDownloaded {
             completionHandler(message)
         } else {
-            self.messageService?.fetchMessageDetailForMessage(message, labelID: Message.Location.allmail.rawValue) { _, response, newM, error in
+            self.messageService?.fetchMessageDetailForMessage(message, labelID: Message.Location.allmail.rawValue) { [weak self] _, response, newM, error in
                 if error == nil {
-                    let messageWithDetails: Message? = self.parseMessageObjectFromResponse(for: (response?["Message"] as? [String:Any])!)
+                    let messageWithDetails: Message? = self?.parseMessageObjectFromResponse(for: (response?["Message"] as? [String:Any])!)
                     completionHandler(messageWithDetails)
                 } else {
                     print("Error when fetching message details: \(String(describing: error))")
@@ -652,6 +659,7 @@ extension EncryptedSearchService {
         return message
     }
 
+    //TODO reset fetch controller managed object context?
     func getMessage(_ messageID: String, completionHandler: @escaping (Message?) -> Void) -> Void {
         let fetchedResultsController = self.messageService?.fetchedMessageControllerForID(messageID)
         
@@ -685,11 +693,8 @@ extension EncryptedSearchService {
         }
     }*/
     
-    private func deleteMessage(for message: Message, completionHandler: @escaping () -> Void) -> Void {
+    func deleteMessage(for message: Message, completionHandler: @escaping () -> Void) -> Void {
         let cacheService = self.messageService?.cacheService
-        /*cacheService.deleteMessage(messageID: messageID) {
-            completionHandler()
-        }*/
         //TODO where to take the message label from if there are more labels?
         if cacheService!.delete(message: message, label: Message.Location.allmail.rawValue) {
             completionHandler()
@@ -1278,6 +1283,7 @@ extension EncryptedSearchService {
         //progress bar runs from 0 to 1 - normalize by totalMessages
         let updateStep: Float = Float(processedMessages)/Float(self.totalMessages)
         self.viewModel?.progressViewStatus.value = updateStep
+        //TODO
     }
     
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
@@ -1535,6 +1541,8 @@ extension EncryptedSearchService {
                 self.viewModel?.estimatedTimeRemaining.value = result.estimatedMinutes
                 print("Remaining indexing time: \(result.estimatedMinutes)")
                 print("Current progress: \(result.currentProgress)")
+                
+                self.updateMemoryConsumption()
             }
         }
     }
