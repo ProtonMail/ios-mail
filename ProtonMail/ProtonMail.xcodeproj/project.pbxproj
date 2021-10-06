@@ -3362,6 +3362,7 @@
 		740706FF89123145777644994BE4C5BB /* SrpClient+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SrpClient+Extension.swift"; sourceTree = "<group>"; };
 		74A87AD3D46146D5CE0A2782A904DC3D /* kab */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = kab; path = kab.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		74B9D8479C48831A69305E90F288B2A3 /* ContactGroupDefined.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDefined.swift; sourceTree = "<group>"; };
+		74C4D83F25B181700B0AC1F5FED328F8 /* 2.0.7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.7.xcdatamodel; sourceTree = "<group>"; };
 		7540794E9C555FB8DDB5720141F8D48E /* ImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
 		75519BA65C1B6C6FF33258B1F9F5432B /* GeneralSettingActionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralSettingActionCell.xib; sourceTree = "<group>"; };
 		7578306A989094FC9AA14DDBF059C4A3 /* SharePinUnlockCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePinUnlockCoordinator.swift; sourceTree = "<group>"; };
@@ -12579,9 +12580,10 @@
 				CE3410BE45176643A51C83A135533207 /* 2.0.4.xcdatamodel */,
 				42C69F4F5E21A17EB1BFD422D980F26E /* 2.0.5.xcdatamodel */,
 				56BEF260D5A15F1C2AD6B0FB0DFC3E29 /* 2.0.6.xcdatamodel */,
+				74C4D83F25B181700B0AC1F5FED328F8 /* 2.0.7.xcdatamodel */,
 				4AC8B46F567BE34418EFC96C5472E216 /* ProtonMail.xcdatamodel */,
 			);
-			currentVersion = 56BEF260D5A15F1C2AD6B0FB0DFC3E29 /* 2.0.6.xcdatamodel */;
+			currentVersion = 74C4D83F25B181700B0AC1F5FED328F8 /* 2.0.7.xcdatamodel */;
 			name = ProtonMail.xcdatamodeld;
 			path = ProtonMail/ProtonMail.xcdatamodeld;
 			sourceTree = SOURCE_ROOT;
