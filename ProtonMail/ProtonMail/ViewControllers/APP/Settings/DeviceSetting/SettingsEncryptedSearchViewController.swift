@@ -31,7 +31,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     
     struct Key {
         static let cellHeight: CGFloat = 48.0
-        static let footerHeight : CGFloat = 36.0
+        static let footerHeight : CGFloat = 48.0
         static let headerCell: String = "header_cell"
     }
     
@@ -229,10 +229,10 @@ extension SettingsEncryptedSearchViewController {
                 headerCell.contentView.addSubview(textView)
                 
                 NSLayoutConstraint.activate([
-                    textView.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 16),
+                    textView.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
                     textView.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: 8),
-                    textView.leftAnchor.constraint(equalTo: headerCell.contentView.leftAnchor, constant: 16),
-                    textView.rightAnchor.constraint(equalTo: headerCell.contentView.rightAnchor, constant: -16)
+                    textView.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
+                    textView.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
                 ])
                 break
             case .downloadViaMobileData, .downloadedMessages:
