@@ -369,30 +369,49 @@ class MessageDataService : Service, HasLocalStorage {
                     let context = self.coreDataService.mainManagedObjectContext
                     self.coreDataService.enqueue(context: context) { (context) in
                         do {
-                            //Prevent the draft is overriden while sending
-                            if labelID == Message.Location.draft.rawValue, let sendingMessageIDs = Message.getIDsofSendingMessage(managedObjectContext: context) {
-                                let idsSet = Set(sendingMessageIDs)
-                                var msgIDsOfMessageToRemove: [String] = []
-                                
-                                messagesArray.forEach { (messageDict) in
-                                    if let msgID = messageDict["ID"] as? String, idsSet.contains(msgID) {
-                                        msgIDsOfMessageToRemove.append(msgID)
+                            //Prevent the draft is overridden while sending
+                            if labelID == Message.Location.draft.rawValue {
+                                if let sendingMessageIDs = Message.getIDsofSendingMessage(managedObjectContext: context) {
+                                    let idsSet = Set(sendingMessageIDs)
+                                    var msgIDsOfMessageToRemove: [String] = []
+                                    
+                                    messagesArray.forEach { (messageDict) in
+                                        if let msgID = messageDict["ID"] as? String, idsSet.contains(msgID) {
+                                            msgIDsOfMessageToRemove.append(msgID)
+                                        }
+                                    }
+                                    
+                                    msgIDsOfMessageToRemove.forEach { (msgID) in
+                                        messagesArray.removeAll { (msgDict) -> Bool in
+                                            if let id = msgDict["ID"] as? String {
+                                                return id == msgID
+                                            }
+                                            return false
+                                        }
                                     }
                                 }
-                                
-                                msgIDsOfMessageToRemove.forEach { (msgID) in
-                                    messagesArray.removeAll { (msgDict) -> Bool in
-                                        if let id = msgDict["ID"] as? String {
-                                            return id == msgID
-                                        }
-                                        return false
+
+                                let localMessages = messagesArray
+                                    .compactMap({ $0["ID"] as? String })
+                                    .compactMap({ Message.messageForMessageID($0, inManagedObjectContext: context) })
+                                localMessages.forEach { local in
+                                    let index = messagesArray.firstIndex { data in
+                                        guard let id = data["ID"] as? String else { return false }
+                                        return id == local.messageID
+                                    }
+                                    guard let _index = index else { return }
+                                    let dict = messagesArray[_index]
+                                    if let time = dict["Time"] as? TimeInterval,
+                                       let localTime = local.time?.timeIntervalSince1970,
+                                       localTime >= time {
+                                        messagesArray.remove(at: _index)
                                     }
                                 }
                             }
                             
                             if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                                 for message in messages {
-                                    // the matedata set, mark the status
+                                    // the matadata set, mark the status
                                     message.messageStatus = 1
                                     
                                     if let attachments = message.attachments.allObjects as? [Attachment] {
@@ -999,7 +1018,7 @@ class MessageDataService : Service, HasLocalStorage {
                             do {
                                 if newMessage.isDetailDownloaded, let time = msg["Time"] as? TimeInterval, let oldtime = newMessage.time?.timeIntervalSince1970 {
                                     // remote time and local time are not empty
-                                    if oldtime > time {
+                                    if oldtime >= time {
                                         DispatchQueue.main.async {
                                             completion(task, response, Message.ObjectIDContainer(newMessage), error)
                                         }
@@ -1280,7 +1299,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    fileprivate func cleanMessage(removeDraft: Bool = true) -> Promise<Void> {
+    fileprivate func cleanMessage(removeDraft: Bool = false) -> Promise<Void> {
         return Promise { seal in
             self.coreDataService.enqueue(context: self.coreDataService.mainManagedObjectContext) { (context) in
                 if #available(iOS 12, *) {
